@@ -30,14 +30,14 @@ the following command in the R or RStudio console:
 install.packages("devtools")
 ```
 
-Once the package is installed, the only thing required to obtain `auditR` is 
+Once the package is installed, the only thing required to obtain `jfa` is 
 installing the source package with the following command:
 
 ```
 devtools::install_github("koenderks/jfa")
 ```
 
-The `auditR` package can then be loaded in RStudio by typing:
+The `jfa` package can then be loaded in RStudio by typing:
 ```
 library(auditR)
 ```
@@ -55,27 +55,23 @@ This project is licensed under the GPL-3 License.
 ### Available Functions
 
 Below is a list of the available functions in the current development version of
-auditR, sorted by purpose of use.
+jfa, sorted by purpose of use.
 
-**Sample Size Calculations**
+**Sample Size Calculation**
 
-- `calc.n.binomial()`
-- `calc.n.hypergeometric()`
-- `calc.n.beta()`
+- `sampleSize()`
+
+`sampleSize(materiality = NULL, confidence = 0.95, expectedError = 0, distribution = "poisson", errorType = "percentage", N = NULL, maxSize = 5000, prior = FALSE, priorK = NULL, priorN = NULL)`
+
 
 **Sampling Methods**
 
-- `random.sampling()`
+- `sampling()`
+
+`sampling()`
 
 **Confidence Bounds**
 
-- `attributes.bound()`
-- `normal.bound()`
-- `stringer.bound()`
-- `stringer.meikle()`
-- `stringer.lta()`
-- `stinger.bickel()`
-- `stringer.modified()`
-- `modified.moment()`
-- `cox.snell()`
-- `rohrbach.bound()`
+- `confidenceBound()`
+
+`confidenceBound()`

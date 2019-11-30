@@ -5,7 +5,8 @@
 #' to perform Bayesian planning.
 #'
 #' @usage sampleSize(materiality = NULL, confidence = 0.95, expectedError = 0, distribution = "poisson", 
-#'                   errorType = "percentage", N = NULL, maxSize = 5000)
+#'                   errorType = "percentage", N = NULL, maxSize = 5000, 
+#'                   prior = FALSE, priorK = NULL, priorN = NULL)
 #'
 #' @param materiality A value representing the materiality of the audit in percentages.
 #' @param confidence The amount of confidence desired from the bound
@@ -51,7 +52,8 @@
 #' @export
 
 sampleSize <- function(materiality = NULL, confidence = 0.95, expectedError = 0, likelihood = "poisson", 
-                       errorType = "percentage", N = NULL, maxSize = 5000, prior = FALSE, priorK = NULL, priorN = NULL){
+                       errorType = "percentage", N = NULL, maxSize = 5000, 
+                       prior = FALSE, priorK = NULL, priorN = NULL){
   if(is.null(materiality))
     stop("Specify the materiality")
   if(errorType == "percentage" && expectedError >= materiality)

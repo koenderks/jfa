@@ -5,7 +5,8 @@
 \title{Audit sample sizes}
 \usage{
 sampleSize(materiality = NULL, confidence = 0.95, expectedError = 0, distribution = "poisson", 
-                  errorType = "percentage", N = NULL, maxSize = 5000)
+                  errorType = "percentage", N = NULL, maxSize = 5000, 
+                  prior = FALSE, priorK = NULL, priorN = NULL)
 }
 \arguments{
 \item{materiality}{A value representing the materiality of the audit in percentages.}
