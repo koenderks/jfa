@@ -56,20 +56,20 @@ This project is licensed under the GPL-3 License.
 Below is a list of the available functions in the current development version of
 jfa, sorted by purpose of use.
 
-**Sample Size Calculation**
+**Calculating a sample size**
 
 - `sampleSize()`
 
 `sampleSize(materiality = NULL, confidence = 0.95, expectedError = 0, distribution = "poisson", errorType = "percentage", N = NULL, maxSize = 5000, prior = FALSE, priorK = NULL, priorN = NULL)`
 
 
-**Sampling Methods**
+**Sampling from a population**
 
 - `sampling()`
 
 `sampling(population = NULL, sampleSize = NULL, bookValues = NULL, algorithm = "random", units = "record", intervalStartingPoint = 1, ordered = TRUE, ascending = TRUE, withReplacement = FALSE, seed = 1)`
 
-**Confidence Bounds**
+**Calculating confidence bounds**
 
 - `confidenceBound()`
 
