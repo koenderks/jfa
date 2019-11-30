@@ -7,7 +7,6 @@ from data according to standard auditing techniques and calculating various
 confidence bounds for the maximum error.
 
 ![Alt text](./logo.svg)
-<img src="./logo.svg">
 
 ## Getting Started
 
