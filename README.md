@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./logo/logo.png" align="middle" width="200" height="200">
+</p>
+
 # jfa
 
 A multifunctional R package for auditing based on the methods in JASP for Audit. 
@@ -5,10 +9,6 @@ The package provides functions for  planning, performing and evaluating an audit
 More specific, it contains functions for calculating sample sizes for substantial testing, sampling
 from data according to standard auditing techniques and calculating various 
 confidence bounds for the maximum error.
-
-<p align="center">
-  <img src="./logo/logo.png" align="middle" width="200" height="200">
-</p>
 
 ## Getting Started
 
