@@ -5,7 +5,7 @@
 \title{Audit sample sizes}
 \usage{
 sampleSize(materiality = NULL, confidence = 0.95, expectedError = 0, 
-                  distribution = "poisson", errorType = "percentage", N = NULL, 
+                  likelihood = "poisson", errorType = "percentage", N = NULL, 
                   maxSize = 5000, prior = FALSE, priorK = NULL, priorN = NULL)
 }
 \arguments{
