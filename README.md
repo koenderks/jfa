@@ -7,7 +7,7 @@ from data according to standard auditing techniques and calculating various
 confidence bounds for the maximum error.
 
 <p align="center">
-  <img src="./logo.svg" align="middle" width="200" height="200">
+  <img src="./logo/logo.png" align="middle" width="200" height="200">
 </p>
 
 ## Getting Started
