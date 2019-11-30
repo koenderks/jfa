@@ -5,7 +5,7 @@
 #' to perform Bayesian planning.
 #'
 #' @usage sampleSize(materiality = NULL, confidence = 0.95, expectedError = 0, 
-#'                   distribution = "poisson", errorType = "percentage", N = NULL, 
+#'                   likelihood = "poisson", errorType = "percentage", N = NULL, 
 #'                   maxSize = 5000, prior = FALSE, priorK = NULL, priorN = NULL)
 #'
 #' @param materiality a value between 0 and 1 representing the materiality of the audit as a fraction of the total size or value.
@@ -58,7 +58,7 @@ sampleSize <- function(materiality = NULL, confidence = 0.95, expectedError = 0,
     stop("Specify the materiality")
   if(errorType == "percentage" && expectedError >= materiality)
     stop("The expected errors are higher than materiality")
-  if(!(distribution %in% c("binomial", "hypergeometric", "poisson")))
+  if(!(likelihood %in% c("binomial", "hypergeometric", "poisson")))
     stop("Specify a valid distribution")
   if(prior && is.null(priorK) && is.null(priorN))
     stop("When you specify a prior, both priorK and priorN should be specified")
