@@ -10,13 +10,16 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="210mm"
-   height="297mm"
-   viewBox="0 0 210 297"
+   width="149.11334mm"
+   height="145.55992mm"
+   viewBox="0 0 149.11334 145.55992"
    version="1.1"
    id="svg8"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   sodipodi:docname="logo.svg">
+   sodipodi:docname="logo.svg"
+   inkscape:export-filename="C:\Users\derksk\OneDrive - Nyenrode Business Universiteit\Desktop\jfa\logo.png"
+   inkscape:export-xdpi="887"
+   inkscape:export-ydpi="887">
   <defs
      id="defs2">
     <linearGradient
@@ -36,8 +39,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.4"
-     inkscape:cx="344.6107"
-     inkscape:cy="724.55277"
+     inkscape:cx="224.2568"
+     inkscape:cy="139.62663"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -61,9 +64,10 @@
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1">
+     id="layer1"
+     transform="translate(-31.843635,-57.154564)">
     <rect
-       style="fill:#6d94de;fill-opacity:1;stroke:#0000b4;stroke-width:5.23576104;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stroke-linecap:butt;paint-order:normal"
+       style="fill:#6d94de;fill-opacity:1;stroke:#0000b4;stroke-width:5.23576117;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
        id="rect4522"
        width="101.01856"
        height="99.957886"
