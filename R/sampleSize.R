@@ -4,24 +4,24 @@
 #' the poisson, binomial, or hypergeometric likelihood. A prior can be specified
 #' to perform Bayesian planning.
 #'
-#' @usage sampleSize(materiality = NULL, confidence = 0.95, expectedError = 0, distribution = "poisson", 
-#'                   errorType = "percentage", N = NULL, maxSize = 5000, 
-#'                   prior = FALSE, priorK = NULL, priorN = NULL)
+#' @usage sampleSize(materiality = NULL, confidence = 0.95, expectedError = 0, 
+#'                   distribution = "poisson", errorType = "percentage", N = NULL, 
+#'                   maxSize = 5000, prior = FALSE, priorK = NULL, priorN = NULL)
 #'
-#' @param materiality A value representing the materiality of the audit in percentages.
-#' @param confidence The amount of confidence desired from the bound
-#' (on a scale from 0 to 1), defaults to 95\% confidence.
-#' @param expectedError A percentage representing the number of expected mistakes in the sample.
-#' @param likelihood can be one of "binomial", "poisson", or "hypergeometric"
-#' @param errorType Whether the errors are a percentage of the total or an absolute value
-#' @param N The population size (required for hypergeometric calculations)
-#' @param maxSize The maximum sample size that is considered for calculations (for efficiency). 
+#' @param materiality a value between 0 and 1 representing the materiality of the audit as a fraction of the total size or value.
+#' @param confidence the amount of confidence desired from the resulting confidence bound
+#' (on a scale from 0 to 1). Defaults to 0.95, or 95\% confidence.
+#' @param expectedError a fraction representing the number of expected mistakes in the sample relative to the total size.
+#' @param likelihood can be one of "binomial", "poisson", or "hypergeometric".
+#' @param errorType whether the errors are a percentage ("percentage") of the total or an absolute value ("integer").
+#' @param N the population size (required for hypergeometric calculations).
+#' @param maxSize the maximum sample size that is considered for calculations (for efficiency). 
 #' For low materialities, increasing this parameter may be wise.
 #' @param prior if TRUE, add a prior distribution to be updated by the likelihood. Chooses a beta distribution
 #' for the binomial likelihood, a gamma distribution for the poisson likelihood, and a beta-binomial distribution for the 
-#' hypergeometric likelihood.
-#' @param priorK The prior parameter alpha (errors in the assumed prior sample)
-#' @param priorN The prior parameter beta (sample size of assumed prior sample)
+#' hypergeometric likelihood. Defaults to FALSE.
+#' @param priorK the prior parameter alpha (errors in the assumed prior sample).
+#' @param priorN the prior parameter beta (sample size of assumed prior sample).
 #'
 #' @return A list containing the required sample size for the audit.
 #'
@@ -32,20 +32,20 @@
 #' @references
 #'
 #' @examples
-#' # Using the binomial distribution, calculates the required sample size for a materiality of 5\% 
+#' # Using the binomial distribution, calculates the required sample size for a materiality of 5% 
 #' # when 2.5% mistakes are expected to be found in the sample.
 #' 
 #' # Frequentist
-#' jfa::sampleSize(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
-#' likelihood = "binomial")
+#' sampleSize(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
+#'            likelihood = "binomial")
 #' 
 #' # Bayesian (uninformative beta(1, 1) prior)
-#' jfa::sampleSize(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
-#' likelihood = "binomial", prior = TRUE, priorK = 0, priorN = 0)
+#' sampleSize(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
+#'            likelihood = "binomial", prior = TRUE, priorK = 0, priorN = 0)
 #' 
 #' # Bayesian (informative prior of 10 assumed correct observatiosn)
-#' jfa::sampleSize(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
-#' likelihood = "binomial", prior = TRUE, priorK = 0, priorN = 10)
+#' sampleSize(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
+#'            likelihood = "binomial", prior = TRUE, priorK = 0, priorN = 10)
 #'
 #' @keywords sample size
 #'
@@ -140,10 +140,15 @@ sampleSize <- function(materiality = NULL, confidence = 0.95, expectedError = 0,
   }
   if(is.null(ss))
     stop("Sample size could not be calculated, please increase the maxSize argument")
-  results <- list(materiality = materiality, confidence = confidence, sampleSize = ss, expectedSampleError = implicitK, expectedError = expectedError, likelihood = likelihood)
+  results <- list(materiality = as.numeric(materiality), 
+                  confidence = as.numeric(confidence), 
+                  sampleSize = as.numeric(ss), 
+                  expectedSampleError = as.numeric(implicitK), 
+                  expectedError = as.numeric(expectedError), 
+                  likelihood = as.character(likelihood))
   if(prior){
-    results[["priorK"]] <- priorK
-    results[["priorN"]] <- priorN
+    results[["priorK"]] <- as.numeric(priorK)
+    results[["priorN"]] <- as.numeric(priorN)
   }
   return(results)
 }

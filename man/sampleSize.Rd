@@ -4,34 +4,34 @@
 \alias{sampleSize}
 \title{Audit sample sizes}
 \usage{
-sampleSize(materiality = NULL, confidence = 0.95, expectedError = 0, distribution = "poisson", 
-                  errorType = "percentage", N = NULL, maxSize = 5000, 
-                  prior = FALSE, priorK = NULL, priorN = NULL)
+sampleSize(materiality = NULL, confidence = 0.95, expectedError = 0, 
+                  distribution = "poisson", errorType = "percentage", N = NULL, 
+                  maxSize = 5000, prior = FALSE, priorK = NULL, priorN = NULL)
 }
 \arguments{
-\item{materiality}{A value representing the materiality of the audit in percentages.}
+\item{materiality}{a value between 0 and 1 representing the materiality of the audit as a fraction of the total size or value.}
 
-\item{confidence}{The amount of confidence desired from the bound
-(on a scale from 0 to 1), defaults to 95\% confidence.}
+\item{confidence}{the amount of confidence desired from the resulting confidence bound
+(on a scale from 0 to 1). Defaults to 0.95, or 95\% confidence.}
 
-\item{expectedError}{A percentage representing the number of expected mistakes in the sample.}
+\item{expectedError}{a fraction representing the number of expected mistakes in the sample relative to the total size.}
 
-\item{likelihood}{can be one of "binomial", "poisson", or "hypergeometric"}
+\item{likelihood}{can be one of "binomial", "poisson", or "hypergeometric".}
 
-\item{errorType}{Whether the errors are a percentage of the total or an absolute value}
+\item{errorType}{whether the errors are a percentage ("percentage") of the total or an absolute value ("integer").}
 
-\item{N}{The population size (required for hypergeometric calculations)}
+\item{N}{the population size (required for hypergeometric calculations).}
 
-\item{maxSize}{The maximum sample size that is considered for calculations (for efficiency). 
+\item{maxSize}{the maximum sample size that is considered for calculations (for efficiency). 
 For low materialities, increasing this parameter may be wise.}
 
 \item{prior}{if TRUE, add a prior distribution to be updated by the likelihood. Chooses a beta distribution
 for the binomial likelihood, a gamma distribution for the poisson likelihood, and a beta-binomial distribution for the 
-hypergeometric likelihood.}
+hypergeometric likelihood. Defaults to FALSE.}
 
-\item{priorK}{The prior parameter alpha (errors in the assumed prior sample)}
+\item{priorK}{the prior parameter alpha (errors in the assumed prior sample).}
 
-\item{priorN}{The prior parameter beta (sample size of assumed prior sample)}
+\item{priorN}{the prior parameter beta (sample size of assumed prior sample).}
 }
 \value{
 A list containing the required sample size for the audit.
@@ -42,20 +42,20 @@ the poisson, binomial, or hypergeometric likelihood. A prior can be specified
 to perform Bayesian planning.
 }
 \examples{
-# Using the binomial distribution, calculates the required sample size for a materiality of 5\\% 
+# Using the binomial distribution, calculates the required sample size for a materiality of 5\% 
 # when 2.5\% mistakes are expected to be found in the sample.
 
 # Frequentist
-jfa::sampleSize(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
-likelihood = "binomial")
+sampleSize(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
+           likelihood = "binomial")
 
 # Bayesian (uninformative beta(1, 1) prior)
-jfa::sampleSize(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
-likelihood = "binomial", prior = TRUE, priorK = 0, priorN = 0)
+sampleSize(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
+           likelihood = "binomial", prior = TRUE, priorK = 0, priorN = 0)
 
 # Bayesian (informative prior of 10 assumed correct observatiosn)
-jfa::sampleSize(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
-likelihood = "binomial", prior = TRUE, priorK = 0, priorN = 10)
+sampleSize(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
+           likelihood = "binomial", prior = TRUE, priorK = 0, priorN = 10)
 
 }
 \references{
