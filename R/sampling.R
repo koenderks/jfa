@@ -43,6 +43,10 @@
 #' # Random monetary unit sampling
 #' sampling(population = population, sampleSize = ss, algorithm = "random", 
 #'          units = "mus", bookValues = "bookValue", seed = 1)
+#'
+#' @keywords sampling
+#'
+#' @export
 
 sampling <- function(population = NULL, sampleSize = NULL, bookValues = NULL, 
                      algorithm = "random", units = "record", intervalStartingPoint = 1,

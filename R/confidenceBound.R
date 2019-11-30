@@ -16,7 +16,9 @@
 #'
 #' @examples
 #' 
-#' 
+#' @keywords confidence bound
+#'
+#' @export 
 
 confidenceBound <- function(){
   

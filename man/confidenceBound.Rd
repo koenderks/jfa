@@ -14,7 +14,6 @@ This function
 }
 \examples{
 
-
 }
 \references{
 
@@ -25,3 +24,5 @@ This function
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}
 }
+\keyword{bound}
+\keyword{confidence}

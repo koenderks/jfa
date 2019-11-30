@@ -53,6 +53,7 @@ sampling(population = population, sampleSize = ss, algorithm = "random",
 # Random monetary unit sampling
 sampling(population = population, sampleSize = ss, algorithm = "random", 
          units = "mus", bookValues = "bookValue", seed = 1)
+
 }
 \references{
 
@@ -63,3 +64,4 @@ sampling(population = population, sampleSize = ss, algorithm = "random",
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}
 }
+\keyword{sampling}
