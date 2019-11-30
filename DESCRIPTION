@@ -1,5 +1,5 @@
 Package: jfa
-Title: A multifunctional R package for auditing based on the methods in JASP for Audit
+Title: A multifunctional R package for auditing
 Version: 0.0.1
 Authors@R: 
     person(given = "Koen",
