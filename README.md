@@ -37,7 +37,7 @@ Once the package is installed, the only thing required to obtain `jfa` is
 installing the source package with the following command:
 
 ```
-devtools::install_github("koenderks/jfa")
+devtools::install_github("koenderks/jfa", INSTALL_opts=c("--no-multiarch"))
 ```
 
 The `jfa` package can then be loaded in RStudio by typing:
