@@ -14,8 +14,7 @@ local machine for use in R and RStudio.
 ### Prerequisites
 
 * [R](https://cran.r-project.org/mirrors.html) - The programming language used
-* [RStudio](https://www.rstudio.com/products/rstudio/download/) - Integrated 
-Development Environment (IDE)
+* [RStudio](https://www.rstudio.com/products/rstudio/download/) - Integrated Development Environment (IDE)
 
 ### Installing
 
@@ -39,7 +38,7 @@ devtools::install_github("koenderks/jfa")
 
 The `jfa` package can then be loaded in RStudio by typing:
 ```
-library(auditR)
+library(jfa)
 ```
 
 ### Authors
