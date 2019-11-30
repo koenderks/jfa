@@ -6,6 +6,9 @@ More specific, it contains functions for calculating sample sizes for substantia
 from data according to standard auditing techniques and calculating various 
 confidence bounds for the maximum error.
 
+![Alt text](./logo.svg)
+<img src="./logo.svg">
+
 ## Getting Started
 
 These instructions will get you a copy of the package up and running on your 
