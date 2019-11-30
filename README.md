@@ -6,7 +6,7 @@ More specific, it contains functions for calculating sample sizes for substantia
 from data according to standard auditing techniques and calculating various 
 confidence bounds for the maximum error.
 
-![Alt text](./logo.png)
+<img src="./logo.png" align="middle" width="200" height="200">
 
 ## Getting Started
 
