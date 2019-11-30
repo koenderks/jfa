@@ -79,8 +79,8 @@ sampleSize <- function(materiality = NULL, confidence = 0.95, expectedError = 0,
         implicitK <- expectedError
       }
       if(prior){
-        prob <- stats::qgamma(confidence, shape = 1 + priorK + implicitK, rate = priorN + i)
-        if(prob < alpha){
+        bound <- stats::qgamma(confidence, shape = 1 + priorK + implicitK, rate = priorN + i)
+        if(bound < materiality){
           ss <- i
           break
         }
@@ -100,8 +100,8 @@ sampleSize <- function(materiality = NULL, confidence = 0.95, expectedError = 0,
         implicitK <- expectedError
       }
       if(prior){
-        prob <- stats::qbeta(confidence, shape1 = 1 + priorK + implicitK, shape2 = 1 + priorN - implicitK + i)
-        if(prob < alpha){
+        bound <- stats::qbeta(confidence, shape1 = 1 + priorK + implicitK, shape2 = 1 + priorN - implicitK + i)
+        if(bound < materiality){
           ss <- i
           break
         }
@@ -124,8 +124,8 @@ sampleSize <- function(materiality = NULL, confidence = 0.95, expectedError = 0,
         implicitK <- expectedError
       }
       if(prior){
-        prob <- jfa:::.qBetaBinom(p = 1 - alpha, N = N - i, shape1 = 1 + priorK + implicitK, shape2 = 1 + priorN - priorK + (i - implicitK)) / N
-        if(prob < alpha){
+        bound <- jfa:::.qBetaBinom(p = 1 - alpha, N = N - i, shape1 = 1 + priorK + implicitK, shape2 = 1 + priorN - priorK + (i - implicitK)) / N
+        if(bound < materiality){
           ss <- i
           break
         }
