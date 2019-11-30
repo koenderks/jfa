@@ -4,7 +4,7 @@
 #' the poisson, binomial, or hypergeometric likelihood. A prior can be specified
 #' to perform Bayesian planning.
 #'
-#' @usage sampleSize(materiality = NULL, confidence = 0.95, expectedError = 0, 
+#' @usage sampleSize(materiality, confidence = 0.95, expectedError = 0, 
 #'                   likelihood = "poisson", errorType = "percentage", N = NULL, 
 #'                   maxSize = 5000, prior = FALSE, priorK = NULL, priorN = NULL)
 #'
@@ -51,7 +51,7 @@
 #'
 #' @export
 
-sampleSize <- function(materiality = NULL, confidence = 0.95, expectedError = 0, likelihood = "poisson", 
+sampleSize <- function(materiality, confidence = 0.95, expectedError = 0, likelihood = "poisson", 
                        errorType = "percentage", N = NULL, maxSize = 5000, 
                        prior = FALSE, priorK = NULL, priorN = NULL){
   if(is.null(materiality))

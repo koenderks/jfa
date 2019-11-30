@@ -4,7 +4,7 @@
 \alias{sampleSize}
 \title{Audit sample sizes}
 \usage{
-sampleSize(materiality = NULL, confidence = 0.95, expectedError = 0, 
+sampleSize(materiality, confidence = 0.95, expectedError = 0, 
                   likelihood = "poisson", errorType = "percentage", N = NULL, 
                   maxSize = 5000, prior = FALSE, priorK = NULL, priorN = NULL)
 }

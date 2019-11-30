@@ -4,7 +4,7 @@
 #' random sampling, cell sampling, or fixed interval sampling in combination with either
 #' record sampling or monetary unit sampling. 
 #'
-#' @usage sampling(population = NULL, sampleSize = NULL, bookValues = NULL, 
+#' @usage sampling(population, sampleSize, bookValues = NULL, 
 #'                 algorithm = "random", units = "record", intervalStartingPoint = 1,
 #'                 ordered = TRUE, ascending = TRUE, withReplacement = FALSE, seed = 1)
 #'
@@ -48,7 +48,7 @@
 #'
 #' @export
 
-sampling <- function(population = NULL, sampleSize = NULL, bookValues = NULL, 
+sampling <- function(population, sampleSize, bookValues = NULL, 
                      algorithm = "random", units = "record", intervalStartingPoint = 1,
                      ordered = TRUE, ascending = TRUE, withReplacement = FALSE, seed = 1){
   if(sampleSize > nrow(population))

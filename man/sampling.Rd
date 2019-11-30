@@ -4,7 +4,7 @@
 \alias{sampling}
 \title{Audit sampling}
 \usage{
-sampling(population = NULL, sampleSize = NULL, bookValues = NULL, 
+sampling(population, sampleSize, bookValues = NULL, 
                 algorithm = "random", units = "record", intervalStartingPoint = 1,
                 ordered = TRUE, ascending = TRUE, withReplacement = FALSE, seed = 1)
 }
