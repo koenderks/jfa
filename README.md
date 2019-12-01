@@ -4,15 +4,12 @@
 
 # jfa
 
-A multifunctional R package for auditing based on the methods in JASP for Audit. 
-The package provides functions for  planning, performing and evaluating an audit and its results. 
-More specific, it contains functions for calculating sample sizes for substantial testing, sampling
-from data according to standard auditing techniques and calculating various 
-confidence bounds for the maximum error.
+A multifunctional R package for auditing. The package provides functions for planning, performing and evaluating an audit and its results. More specific, it contains functions for calculating sample sizes for substantial testing, sampling
+from data according to standard auditing techniques and calculating various confidence bounds for the maximum error.
 
 ## Getting Started
 
-These instructions will get you a copy of the package up and running on your 
+These instructions will get you a copy of the `jfa` package up and running on your 
 local machine for use in R and RStudio. 
 
 ### Prerequisites
@@ -22,19 +19,19 @@ local machine for use in R and RStudio.
 
 ### Installing
 
-R package jfa is simple to download and set-up. Untill there is a live version
+R package `jfa` is simple to download and set-up. Untill there is a live version
 on [CRAN](https://cran.r-project.org/), the development version can be downloaded
 in the following manner:
 
-The package we need is the `devtools` package. You can obtain this package by running
-the following command in the R or RStudio console:
+The package you will need for this is the `devtools` package. You can obtain this package by running
+the following command in the R or RStudio console (provided you have a working internet connection):
 
 ```
 install.packages("devtools")
 ```
 
-Once the package is installed, the only thing required to obtain `jfa` is 
-installing the source package with the following command:
+Once the `devtools` package is installed, the only thing required to obtain `jfa` is 
+installing the source package from this github page with the following command:
 
 ```
 devtools::install_github("koenderks/jfa", INSTALL_opts=c("--no-multiarch"))
@@ -58,7 +55,7 @@ This project is licensed under the GPL-3 License.
 ### Available Functions
 
 Below is a list of the available functions in the current development version of
-jfa, sorted by purpose of use.
+`jfa`, sorted by purpose of use.
 
 **Calculating a sample size**
 
