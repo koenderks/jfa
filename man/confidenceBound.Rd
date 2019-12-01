@@ -4,15 +4,37 @@
 \alias{confidenceBound}
 \title{Audit confidence / credible bounds}
 \usage{
-confidenceBound()
+confidenceBound(sampleSize, sumErrors, confidence = 0.95, method = "binomial", 
+                       materiality = NULL)
+}
+\arguments{
+\item{sampleSize}{the number of observations in the sample.}
+
+\item{sumErrors}{the sum of the errors found in the sample.}
+
+\item{confidence}{the required confidence for the bound.}
+
+\item{method}{can be either one of "binomial", "hypergeometric", "poisson".}
 }
 \value{
 A list containing the confidence bound for the audit.
 }
 \description{
-This function
+This function takes summary statistics about an evaluated audit sample and calculates
+a confidence bound accordint to a specified method.
 }
 \examples{
+
+# Using the binomial distribution, calculates the upper confidence bound for a materiality of 5\% 
+# when 3 mistakes are found in a sample of 234.
+
+# Frequentist planning (n = 234)
+jfaRes <- jfa::sampleSize(materiality = 0.05, confidence = 0.95,
+                          expectedError = 0.025, likelihood = "binomial")
+
+# Six errors are allowed in the sample. Three are found.
+
+confidenceBound(sampleSize = jfaRes$sampleSize, sumErrors = 3, method = "binomial")
 
 }
 \references{

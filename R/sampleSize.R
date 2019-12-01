@@ -150,7 +150,7 @@ sampleSize <- function(materiality, confidence = 0.95, expectedError = 0, likeli
     results[["priorK"]] <- as.numeric(priorK)
     results[["priorN"]] <- as.numeric(priorN)
   }
+  results[["jfaType"]] <- "planning"
   class(results) <- "jfa"
-  print(results)
-  return(invisible(results))
+  return(results)
 }

@@ -1,12 +1,21 @@
 #' @method print jfa
 #' @export
 print.jfa <- function(x, ...){
-  cat("# jfa results for sample size calculation with", x$likelihood,"likelihood:
+  if(x$jfaType == "planning"){
+    cat("# jfa results for sample size calculation with", x$likelihood,"likelihood
 #      
-# Materiality:" , paste0(round(x$materiality * 100), "%"),"
-# Confidence: ", paste0(round(x$confidence * 100), "%"),"
-# Sample size: ", x$sampleSize,"
-# Allowed sample errors: ", x$expectedSampleError)
+# Materiality:            ", paste0(round(x$materiality * 100, 2), "%"),"
+# Confidence:             ", paste0(round(x$confidence * 100, 2), "%"),"
+# Sample size:            ", x$sampleSize,"
+# Allowed sample errors:  ", x$expectedSampleError)
+  } else if(x$jfaType == "evaluation"){
+    cat("# jfa results for evaluation with", x$method,"method
+#      
+# Confidence:           ", paste0(round(x$confidence * 100, 2), "%"),"
+# Bound:                ", paste0(round(x$confBound * 100, 2), "%"),"
+# Sample size:          ", x$n,"
+# Sum of sample errors: ", x$k)
+  }
 }
 
 .dBetaBinom <- function (x, N, shape1, shape2){
