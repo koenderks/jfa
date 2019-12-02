@@ -4,8 +4,11 @@
 
 # R package jfa
 
-A multifunctional R package for auditing. The package provides functions for planning, performing and evaluating an audit and its results. More specific, it contains functions for calculating sample sizes for substantial testing, sampling
-from data according to standard auditing techniques and calculating various confidence bounds for the maximum error.
+`jfa` is a multifunctional R package for auditing. The package provides the user with three generic functions for planning, 
+performing, and evaluating an audit and its results. Specifically, it contains functions for calculating sample sizes for 
+substantive testing, sampling from data according to standard auditing techniques, and calculating various confidence bounds 
+for the maximum error from data or summary statistics. The `jfa` package can be used to set up the entire audit sampling 
+workflow.
 
 ## Getting Started
 

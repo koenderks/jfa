@@ -2,20 +2,19 @@ require(hexSticker)
 require(ggplot2)
 require(svglite)
 
-subplot <- ggplot() + theme_void() + theme_transparent()
+subplot <- ggplot() + theme_void() + theme_transparent() + theme(plot.margin=unit(c(1,1,1.5,1.2),"cm"))
 sticker <- hexSticker::sticker(subplot = subplot, 
                                package = "jfa", 
                                p_color = "white", 
                                p_size = 25, 
                                p_x = 1, 
                                p_y = 0.6,
-                               h_size = 7, 
+                               h_size = 3, 
                                h_fill = "#223f87", 
                                h_color = "#152c52", 
                                url = "www.github.com/koenderks/jfa", 
                                u_color = "white", 
-                               u_size = 3, 
-                               white_around_sticker = TRUE)
+                               u_size = 3)
 sticker
 
 # Save sticker as .svg file
