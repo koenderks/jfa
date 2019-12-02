@@ -9,12 +9,24 @@ print.jfa <- function(x, ...){
 # Sample size:            ", x$sampleSize,"
 # Allowed sample errors:  ", x$expectedSampleError)
   } else if(x$jfaType == "evaluation"){
-    cat("# jfa results for evaluation with", x$method,"method
+    if(!is.null(x$materiality)){
+      cat("# jfa results for evaluation with", x$method,"method
+#   
+# Materiality:          ", paste0(round(x$materiality * 100, 2), "%"),"
+# Confidence:           ", paste0(round(x$confidence * 100, 2), "%"),"
+# Bound:                ", paste0(round(x$confBound * 100, 2), "%"),"
+# Sample size:          ", x$n,"
+# Sample errors:        ", x$k, "
+#
+# The conclusion with respect to the materiality is to", x$conclusion, "the population.")
+  } else {
+      cat("# jfa results for evaluation with", x$method,"method
 #      
 # Confidence:           ", paste0(round(x$confidence * 100, 2), "%"),"
 # Bound:                ", paste0(round(x$confBound * 100, 2), "%"),"
 # Sample size:          ", x$n,"
-# Sample errors: ", x$k)
+# Sample errors:        ", x$k)
+    }
   }
 }
 

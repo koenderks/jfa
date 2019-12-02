@@ -105,7 +105,7 @@ confidenceBound <- function(sample = NULL, bookValues = NULL, auditValues = NULL
   results[["method"]] <- method
   if(!is.null(materiality)){
     results[["materiality"]] <- materiality
-    results[["conclusion"]] <- ifelse(bound < materiality, yes = "approve", no = "do not approve")
+    results[["conclusion"]] <- ifelse(bound < materiality, yes = "approve", no = "not approve")
   }
   results[["jfaType"]] <- "evaluation"
   class(results) <- "jfa"
