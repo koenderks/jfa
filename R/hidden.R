@@ -14,7 +14,7 @@ print.jfa <- function(x, ...){
 #   
 # Materiality:          ", paste0(round(x$materiality * 100, 2), "%"),"
 # Confidence:           ", paste0(round(x$confidence * 100, 2), "%"),"
-# Bound:                ", paste0(round(x$confBound * 100, 2), "%"),"
+# Bound:                ", paste0(round(x$confBound * 100, 3), "%"),"
 # Sample size:          ", x$n,"
 # Sample errors:        ", x$k, "
 # Conclusion:           ", x$conclusion)
@@ -22,7 +22,7 @@ print.jfa <- function(x, ...){
       cat("# jfa results for evaluation with", x$method,"method
 #      
 # Confidence:           ", paste0(round(x$confidence * 100, 2), "%"),"
-# Bound:                ", paste0(round(x$confBound * 100, 2), "%"),"
+# Bound:                ", paste0(round(x$confBound * 100, 3), "%"),"
 # Sample size:          ", x$n,"
 # Sample errors:        ", x$k)
     }

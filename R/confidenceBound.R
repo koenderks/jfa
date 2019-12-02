@@ -5,7 +5,8 @@
 #'
 #' @usage confidenceBound(sample = NULL, bookValues = NULL, auditValues = NULL, confidence = 0.95,
 #'                        dataType = "sample", sampleSize = NULL, sumErrors = NULL,
-#'                        method = "binomial", materiality = NULL)
+#'                        method = "binomial", materiality = NULL, N = NULL, 
+#'                        rohrbachDelta = 2.7)
 #'
 #' @param sample a data frame containing at least a column of book values and a column of audit (true) values.
 #' @param bookValues the column name for the book values in the sample.
@@ -24,9 +25,9 @@
 #'  \item{\emph{stringer}         The Stringer bound (Stringer, 1963).}
 #'  \item{\emph{stringer-meikle}  Stringer bound with Meikle's correction (Meikle, 1972).}
 #'  \item{\emph{stringer-lta}     Stringer bound with LTA correction (Leslie, Teitlebaum, and Anderson, 1979).}
-#'  \item{\emph{stringer-pvz}     Stringer bound with Pap and van Zuijlen's correction.}
-#'  \item{\emph{rohrbach}         Rohrbach's augmented variance bound.}
-#'  \item{\emph{moment}           Modified moment bound.}
+#'  \item{\emph{stringer-pvz}     Stringer bound with Pap and van Zuijlen's correction (Pap and van Zuijlen, 1996).}
+#'  \item{\emph{rohrbach}         Rohrbach's augmented variance bound (Rohrbach, 1993).}
+#'  \item{\emph{moment}           Modified moment bound (Dworin and Grimlund, 1986).}
 #' }
 #' 
 #' @references Bickel, P. J. (1992). Inference and auditing: the Stringer bound.
@@ -34,6 +35,8 @@
 #' @references Clopper, C. J., & Pearson, E. S. (1934). The use of confidence or
 #' fiducial limits illustrated in the case of the binomial. Biometrika, 26(4),
 #' 404-413.
+#' @references Dworin, L., & Grimlund, R. A. (1986). Dollar-unit sampling: A
+#' comparison of the quasi-Bayesian and moment bounds. Accounting Review, 36-57.
 #' @references Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979).
 #' Dollar-unit sampling: a practical guide for auditors. Copp Clark Pitman;
 #' Belmont, Calif.: distributed by Fearon-Pitman.
@@ -41,6 +44,8 @@
 #' An Audit Technique. Canadian Institute of Chartered Accountants.
 #' @references Pap, G., & van Zuijlen, M. C. (1996). On the asymptotic behaviour
 #' of the Stringer bound 1. Statistica Neerlandica, 50(3), 367-389.
+#' @references Rohrbach, K. J. (1993). Variance augmentation to achieve nominal
+#' coverage probability in sampling from audit populations. Auditing, 12(2), 79.
 #' @references Stringer, K. W. (1963). Practical aspects of statistical sampling
 #' in auditing. In Proceedings of the Business and Economic Statistics Section
 #' (pp. 405-411). American Statistical Association.
@@ -57,16 +62,30 @@
 #'
 #' @examples
 #' 
-#' # Using the binomial distribution, calculates the upper confidence bound for a materiality of 5% 
-#' # when 3 mistakes are found in a sample of 234.
+#'# Generate some data (n = 1000)
+#'set.seed(1)
+#'data <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), 
+#'                   bookValue = runif(n = 1000, min = 1000, max = 10000))
 #'
-#' # Frequentist planning (n = 234)
-#' jfaRes <- jfa::sampleSize(materiality = 0.05, confidence = 0.95,
-#'                           expectedError = 0.025, likelihood = "binomial")
-#' 
-#' # Six errors are allowed in the sample. Three are found.
-#' 
-#' confidenceBound(sampleSize = jfaRes$sampleSize, sumErrors = 3, method = "binomial")
+#'# Using the binomial likelihood, calculates the upper 95% confidence bound for a 
+#'# materiality of 5% when 1% full errors are found in a sample (n = 93).
+#'jfaRes <- jfa::sampleSize(materiality = 0.05, confidence = 0.95,
+#'                          expectedError = 0.01, likelihood = "binomial")
+#'
+#'# Using monetary unit sampling, draw a random sample from the population.
+#'samp <- jfa::sampling(population = data, sampleSize = jfaRes$sampleSize, units = "mus", 
+#'                      bookValues = "bookValue", algorithm = "random")
+#'
+#'samp$trueValue <- samp$bookValue
+#'samp$trueValue[2] <- 1561.871 - 500 # One overstatement is found
+#'
+#'# Evaluate the sample using the stringer bound.
+#'confidenceBound(sample = samp, bookValues = "bookValue", auditValues = "trueValue", 
+#'                method = "stringer", materiality = 0.05)
+#'
+#'# Evaluate the sample using summary statistics.
+#'confidenceBound(sampleSize = nrow(samp), sumErrors = 1, dataType = "sumstats",
+#'                method = "binomial", materiality = 0.05)
 #' 
 #' @keywords confidence bound
 #'
@@ -74,12 +93,17 @@
 
 confidenceBound <- function(sample = NULL, bookValues = NULL, auditValues = NULL, confidence = 0.95,
                             dataType = "sample", sampleSize = NULL, sumErrors = NULL,
-                            method = "binomial", materiality = NULL){
+                            method = "binomial", materiality = NULL, N = NULL, 
+                            rohrbachDelta = 2.7, momentPoptype = "accounts"){
   
   if(!(dataType %in% c("sample", "sumstats")) || length(dataType) != 1)
       stop("Specify a valid data type")
-  if(!(method %in% c("binomial", "stringer", "stringer-meikle", "stringer-lta", "stringer-pvz")) || length(method) != 1)
+  if(!(method %in% c("binomial", "stringer", "stringer-meikle", "stringer-lta", "stringer-pvz",
+                     "rohrbach", "moment")) || length(method) != 1)
     stop("Specify a valid method for the confidence bound")
+  if(method %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz",
+                   "rohrbach", "moment") && dataType != "sample")
+    stop("The selected method requires raw observations, and does not accomodate dataType = sumstats")
   
   if(!is.null(materiality)){
     mat <- materiality
@@ -120,9 +144,42 @@ confidenceBound <- function(sample = NULL, bookValues = NULL, auditValues = NULL
   } else if(method == "stringer-pvz"){
     bound <- jfa::.stringerBound(taints, confidence, n, correction = "pvz")
   } else if(method == "rohrbach"){
-    
+    if(is.null(N))
+      stop("Rohrbach's bound requires that you specify the population size N")
+    w <- 1 - taints
+    mu <- mean(taints)
+    vars <- sum(w^2)/n - (2-(rohrbachDelta/n)) * ((1/2) * ((sum(w^2)/n) - var(w)))
+    bound <- mu + qnorm(p = confidence) * sqrt((1-(n/N)) * (vars/n))
   } else if(method == "moment"){
-    
+    if(!(momentPoptype %in% c("inventory", "accounts")))
+      stop("Specify a valid population type. Either inventory or accounts.")
+    tall <- subset(taints, taints != 0)
+    if(momentPoptype == "inventory" & length(tall) > 0){
+      tstar <- 0.81 * (1 - 0.667 * tanh(10 * abs(mean(tall))))
+    } else if(momentPoptype == "inventory" & length(tall) == 0){
+      tstar <- 0.81 * (1 - 0.667 * tanh(10 * 0))
+    }
+    if(momentPoptype == "accounts" & length(tall) > 0){
+      tstar <- 0.81 * (1 - 0.667 * tanh(10 * mean(tall))) * (1 + 0.667 * tanh(length(tall) / 10))
+    } else if(momentPoptype == "accounts" & length(tall) == 0){
+      tstar <- 0.81 * (1 - 0.667 * tanh(10 * 0)) * (1 + 0.667 * tanh(0 / 10))
+    }
+    ncm1_z <- (tstar^1 + sum(tall^1)) / (length(tall) + 1)
+    ncm2_z <- (tstar^2 + sum(tall^2)) / (length(tall) + 1)
+    ncm3_z <- (tstar^3 + sum(tall^3)) / (length(tall) + 1)
+    ncm1_e <- (length(tall) + 1) / (n + 2)
+    ncm2_e <- ((length(tall) + 2) / (n + 3)) * ncm1_e
+    ncm3_e <- ((length(tall) + 3) / (n + 4)) * ncm2_e
+    ncm1_t <- ncm1_e * ncm1_z
+    ncm2_t <- (ncm1_e * ncm2_z + ((n - 1) * ncm2_e * ncm1_z^2)) / n
+    ncm3_t <- ((ncm1_e * ncm3_z + (3 * (n - 1) * ncm2_e * ncm1_z * ncm2_z)) / 
+                 n^2) + (((n - 1) * (n - 2) * ncm3_e * ncm1_z^3)/(n^2))
+    cm2_t  <- ncm2_t - ncm1_t^2
+    cm3_t  <- ncm3_t - (3 * ncm1_t * ncm2_t) + (2 * ncm1_t^3)
+    A      <- (4 * cm2_t^3)/(cm3_t^2)
+    B      <- cm3_t / (2 * cm2_t)
+    G      <- ncm1_t - ((2 * cm2_t^2)/cm3_t)
+    bound  <- G + (A * B * (1 + (qnorm(confidence, mean = 0, sd = 1)/ sqrt(9 * A)) - (1 / (9 * A)))^3)
   }
   
   results <- list()

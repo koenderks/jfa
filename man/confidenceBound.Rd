@@ -6,7 +6,8 @@
 \usage{
 confidenceBound(sample = NULL, bookValues = NULL, auditValues = NULL, confidence = 0.95,
                        dataType = "sample", sampleSize = NULL, sumErrors = NULL,
-                       method = "binomial", materiality = NULL)
+                       method = "binomial", materiality = NULL, N = NULL, 
+                       rohrbachDelta = 2.7)
 }
 \arguments{
 \item{sample}{a data frame containing at least a column of book values and a column of audit (true) values.}
@@ -42,23 +43,37 @@ This section lists the available options for the \emph{methods} argument.
  \item{\emph{stringer}         The Stringer bound (Stringer, 1963).}
  \item{\emph{stringer-meikle}  Stringer bound with Meikle's correction (Meikle, 1972).}
  \item{\emph{stringer-lta}     Stringer bound with LTA correction (Leslie, Teitlebaum, and Anderson, 1979).}
- \item{\emph{stringer-pvz}     Stringer bound with Pap and van Zuijlen's correction.}
- \item{\emph{rohrbach}         Rohrbach's augmented variance bound.}
- \item{\emph{moment}           Modified moment bound.}
+ \item{\emph{stringer-pvz}     Stringer bound with Pap and van Zuijlen's correction (Pap and van Zuijlen, 1996).}
+ \item{\emph{rohrbach}         Rohrbach's augmented variance bound (Rohrbach, 1993).}
+ \item{\emph{moment}           Modified moment bound (Dworin and Grimlund, 1986).}
 }
 }
 \examples{
 
-# Using the binomial distribution, calculates the upper confidence bound for a materiality of 5\% 
-# when 3 mistakes are found in a sample of 234.
+# Generate some data (n = 1000)
+set.seed(1)
+data <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), 
+                  bookValue = runif(n = 1000, min = 1000, max = 10000))
 
-# Frequentist planning (n = 234)
+# Using the binomial likelihood, calculates the upper 95\% confidence bound for a 
+# materiality of 5\% when 1\% full errors are found in a sample (n = 93).
 jfaRes <- jfa::sampleSize(materiality = 0.05, confidence = 0.95,
-                          expectedError = 0.025, likelihood = "binomial")
+                         expectedError = 0.01, likelihood = "binomial")
 
-# Six errors are allowed in the sample. Three are found.
+# Using monetary unit sampling, draw a random sample from the population.
+samp <- jfa::sampling(population = data, sampleSize = jfaRes$sampleSize, units = "mus", 
+                     bookValues = "bookValue", algorithm = "random")
 
-confidenceBound(sampleSize = jfaRes$sampleSize, sumErrors = 3, method = "binomial")
+samp$trueValue <- samp$bookValue
+samp$trueValue[2] <- 1561.871 - 500 # One overstatement is found
+
+# Evaluate the sample using the stringer bound.
+confidenceBound(sample = samp, bookValues = "bookValue", auditValues = "trueValue", 
+               method = "stringer", materiality = 0.05)
+
+# Evaluate the sample using summary statistics.
+confidenceBound(sampleSize = nrow(samp), sumErrors = 1, dataType = "sumstats",
+               method = "binomial", materiality = 0.05)
 
 }
 \references{
@@ -69,6 +84,9 @@ Clopper, C. J., & Pearson, E. S. (1934). The use of confidence or
 fiducial limits illustrated in the case of the binomial. Biometrika, 26(4),
 404-413.
 
+Dworin, L., & Grimlund, R. A. (1986). Dollar-unit sampling: A
+comparison of the quasi-Bayesian and moment bounds. Accounting Review, 36-57.
+
 Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979).
 Dollar-unit sampling: a practical guide for auditors. Copp Clark Pitman;
 Belmont, Calif.: distributed by Fearon-Pitman.
@@ -78,6 +96,9 @@ An Audit Technique. Canadian Institute of Chartered Accountants.
 
 Pap, G., & van Zuijlen, M. C. (1996). On the asymptotic behaviour
 of the Stringer bound 1. Statistica Neerlandica, 50(3), 367-389.
+
+Rohrbach, K. J. (1993). Variance augmentation to achieve nominal
+coverage probability in sampling from audit populations. Auditing, 12(2), 79.
 
 Stringer, K. W. (1963). Practical aspects of statistical sampling
 in auditing. In Proceedings of the Business and Economic Statistics Section
