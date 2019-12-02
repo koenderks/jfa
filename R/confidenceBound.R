@@ -15,7 +15,34 @@
 #' @param sampleSize the number of observations in the sample. Only used when dataType = "sumstats".
 #' @param sumErrors the sum of the errors found in the sample. Only used when dataType = "sumstats".
 #' @param method can be either one of "binomial", "hypergeometric", "poisson", "stringer".
-#' @param materiality if specified, the function also returns the conclusion of the analysis with respect to the materiality.
+#' @param materiality if specified, the function also returns the conclusion of the analysis with respect to the materiality. This value be specified as a fraction of the total value of the population.
+#'
+#' @details This section lists the available methods for calculating confidence bounds.
+#' 
+#' \itemize{
+#'  \item{binomial: The}
+#'  \item{stringer: The Stringer bound is the most well-known and used bound in the accounting
+#' practice. Proposed by Stringer (1963), the bound estimates the mean taint per
+#'  dollar unit.
+#' It's formula is defined as:
+#' \deqn{p(0; 1 - \alpha) + \sum_{j=1}^{m_+} \left[ p(j; 1 - \alpha) -
+#' p(j-1; 1 - \alpha) \right] \cdot z_+_j}{p(0; 1 - \alpha) +
+#' \sum [ p(j; 1 - \alpha) - p(j-1; 1 - \alpha) ] x Z}
+#' where \eqn{p(j; 1 - \alpha)} equals the unique solution to:
+#' \deqn{\sum^n_{k = j + 1} {n \choose k} p^k (1-p)^{n-k} = 1- \alpha}{\sum
+#' (n choose k) p^k (1-p)^{n-k} = 1- \alpha}
+#' and is therefore the Clopper-Pearson confidence interval for a binomial
+#' parameter (Clopper-Pearson, 1934). The values \emph{Z} are the proportional
+#' taints defined as \eqn{\frac{bookValues - auditValues}{bookValues}}
+#' {(bookValues - auditValues) / bookValues}. Since the upper bound is only
+#' defined for integer values of \emph{k}, when partial taints are observed
+#' Stringer performs linear interpolation between the upper bounds that are
+#' properly defined. The Stringer bound is often used for its capacity to yield
+#' sensible results, even when zero errors are found. This comes with a
+#' downside, as the bounds that are given by the Stringer approach are highly
+#' conservative bounds due to the attribute sampling method. Additionally, the
+#' Stringer bound does not accommodate understatements.}
+#' }
 #'
 #' @return A list containing the confidence bound for the audit.
 #'
@@ -50,7 +77,7 @@ confidenceBound <- function(sample = NULL, bookValues = NULL, auditValues = NULL
   
   if(!(dataType %in% c("sample", "sumstats")) || length(dataType) != 1)
       stop("Specify a valid data type")
-  if(!(method %in% c("binomial", "stringer")) || length(method) != 1)
+  if(!(method %in% c("binomial", "stringer", "stringer-meikle", "stringer-lta", "stringer-pvz")) || length(method) != 1)
     stop("Specify a valid method for the confidence bound")
   
   if(!is.null(materiality)){
@@ -84,17 +111,17 @@ confidenceBound <- function(sample = NULL, bookValues = NULL, auditValues = NULL
   if(method == "binomial"){
     bound <- stats::binom.test(x = k, n = n, p = mat, alternative = "less", conf.level = confidence)$conf.int[2]
   } else if(method == "stringer"){
-    taints <- ifelse(taints < 0, yes = 0, no = taints)
-    taints <- ifelse(taints > 1, yes = 1, no = taints)
-    taints <- sort(subset(taints, taints > 0), decreasing = TRUE)
-    bound <- 1 - (1 - confidence)^(1 / n)
-    if(length(taints) > 0){
-      propSum <- 0
-      for(i in 1:length(taints)){
-        propSum <- propSum + (qbeta(p = confidence, shape1 = i + 1, shape2 = n - i) - qbeta(p = confidence, shape1 = (i - 1) + 1, shape2 = n - (i - 1)))  * taints[i]
-      }
-      bound <- bound + propSum
-    }
+    bound <- jfa::.stringerBound(taints, confidence, n)
+  } else if(method == "stringer-meikle"){
+    bound <- jfa::.stringerBound(taints, confidence, n, correction = "meikle")
+  } else if(method == "stringer-lta"){
+    bound <- jfa::.stringerBound(taints, confidence, n, correction = "lta")
+  } else if(method == "stringer-pvz"){
+    bound <- jfa::.stringerBound(taints, confidence, n, correction = "pvz")
+  } else if(method == "rohrbach"){
+    
+  } else if(method == "moment"){
+    
   }
   
   results <- list()
@@ -105,7 +132,7 @@ confidenceBound <- function(sample = NULL, bookValues = NULL, auditValues = NULL
   results[["method"]] <- method
   if(!is.null(materiality)){
     results[["materiality"]] <- materiality
-    results[["conclusion"]] <- ifelse(bound < materiality, yes = "approve", no = "not approve")
+    results[["conclusion"]] <- ifelse(bound < materiality, yes = "Approve population", no = "Do not approve population")
   }
   results[["jfaType"]] <- "evaluation"
   class(results) <- "jfa"

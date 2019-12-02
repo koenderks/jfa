@@ -25,7 +25,7 @@ confidenceBound(sample = NULL, bookValues = NULL, auditValues = NULL, confidence
 
 \item{method}{can be either one of "binomial", "hypergeometric", "poisson", "stringer".}
 
-\item{materiality}{if specified, the function also returns the conclusion of the analysis with respect to the materiality.}
+\item{materiality}{if specified, the function also returns the conclusion of the analysis with respect to the materiality. This value be specified as a fraction of the total value of the population.}
 }
 \value{
 A list containing the confidence bound for the audit.
@@ -33,6 +33,34 @@ A list containing the confidence bound for the audit.
 \description{
 This function takes summary statistics about an evaluated audit sample and calculates
 a confidence bound accordint to a specified method.
+}
+\details{
+This section lists the available methods for calculating confidence bounds.
+
+\itemize{
+ \item{binomial: The}
+ \item{stringer: The Stringer bound is the most well-known and used bound in the accounting
+practice. Proposed by Stringer (1963), the bound estimates the mean taint per
+ dollar unit.
+It's formula is defined as:
+\deqn{p(0; 1 - \alpha) + \sum_{j=1}^{m_+} \left[ p(j; 1 - \alpha) -
+p(j-1; 1 - \alpha) \right] \cdot z_+_j}{p(0; 1 - \alpha) +
+\sum [ p(j; 1 - \alpha) - p(j-1; 1 - \alpha) ] x Z}
+where \eqn{p(j; 1 - \alpha)} equals the unique solution to:
+\deqn{\sum^n_{k = j + 1} {n \choose k} p^k (1-p)^{n-k} = 1- \alpha}{\sum
+(n choose k) p^k (1-p)^{n-k} = 1- \alpha}
+and is therefore the Clopper-Pearson confidence interval for a binomial
+parameter (Clopper-Pearson, 1934). The values \emph{Z} are the proportional
+taints defined as \eqn{\frac{bookValues - auditValues}{bookValues}}
+{(bookValues - auditValues) / bookValues}. Since the upper bound is only
+defined for integer values of \emph{k}, when partial taints are observed
+Stringer performs linear interpolation between the upper bounds that are
+properly defined. The Stringer bound is often used for its capacity to yield
+sensible results, even when zero errors are found. This comes with a
+downside, as the bounds that are given by the Stringer approach are highly
+conservative bounds due to the attribute sampling method. Additionally, the
+Stringer bound does not accommodate understatements.}
+}
 }
 \examples{
 

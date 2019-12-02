@@ -17,8 +17,7 @@ print.jfa <- function(x, ...){
 # Bound:                ", paste0(round(x$confBound * 100, 2), "%"),"
 # Sample size:          ", x$n,"
 # Sample errors:        ", x$k, "
-#
-# The conclusion with respect to the materiality is to", x$conclusion, "the population.")
+# Conclusion:           ", x$conclusion)
   } else {
       cat("# jfa results for evaluation with", x$method,"method
 #      
@@ -39,4 +38,52 @@ print.jfa <- function(x, ...){
 .qBetaBinom <- function (p, N, shape1, shape2){
   pp <- cumsum(jfa:::.dBetaBinom(0:N, N, shape1, shape2))
   return(sapply(p, function(x) sum(pp < x)))
+}
+
+.stringerBound <- function(taints, confidence, n, correction = NULL){
+  t <- ifelse(taints < 0, yes = 0, no = taints)
+  t <- ifelse(taints > 1, yes = 1, no = taints)
+  t <- sort(subset(t, t > 0), decreasing = TRUE)
+  bound <- 1 - (1 - confidence)^(1 / n)
+  if(length(t) > 0){
+    propSum <- 0
+    for(i in 1:length(t)){
+      propSum <- propSum + (qbeta(p = confidence, shape1 = i + 1, shape2 = n - i) - qbeta(p = confidence, shape1 = (i - 1) + 1, shape2 = n - (i - 1)))  * t[i]
+    }
+    bound <- bound + propSum
+  }
+  if(correction == "meikle"){
+    tmin <- sort(subset(taints, taints < 0), decreasing = FALSE)
+    if(length(tmin) > 0){
+      prop.sum.min  <- qbeta(1 + 1, n - 1, p = confidence) * abs(tmin[1])
+      if(length(tmin) > 2){
+        prop.sum.min.2  <- 0
+        for(i in 2:length(tmin)){
+          prop.sum.min.2 <- prop.sum.min.2 + (qbeta(i + 1, n - 1, p = confidence) - qbeta((i-1) + 1, n - 1, p = confidence)) * abs(zmin[i])
+        }
+        prop.sum.min    <- prop.sum.min + prop.sum.min.2
+      }
+      bound             <- bound - prop.sum.min
+    }
+  } else if(correction == "lta"){
+    tmin <- subset(taints, taints < 0)
+    if(length(tmin) > 0){
+      ltaCorrection <- (1/n) * sum(abs(tmin))
+      bound <- bound - ltaCorrection
+    }
+  } else if(correction == "pvz"){
+    taints <- ifelse(taints < 0, 0, taints)
+    tmin <- sort(subset(taints, taints > 0))
+    if(length(tmin) > 0){
+      constant <- 0
+      for(i in 1:length(tmin)){
+        constant <- constant + (((n - 2 * i + 1)/(2 * sqrt(i*(n - i + 1)))) * rev(tmin)[i])
+      }
+      constant <- (1/n) * constant
+      sigma <- (1/n) * sum((tmin - mean(tmin))^2)
+      pvzCorrection <- (constatnt - sqrt(sigma)) / sqrt(n) * qnorm(p = confidence, lower.tail = TRUE)
+      bound <- bound - pvzCorrection
+    }
+  }
+  return(bound)
 }
