@@ -116,5 +116,11 @@ sampling <- function(population, sampleSize, bookValues = NULL,
   rowNumber <- index
   sample <- cbind(rowNumber, count, population[rowNumber, ])
   rownames(sample) <- 1:nrow(sample)
-  return(sample)
+  results <- list()
+  results[["population"]] <- population
+  results[["sample"]] <- sample
+  results[["bookValues"]] <- bookValues
+  results[["jfaType"]] <- "sampling"
+  class(results) <- "jfa"
+  return(results)
 }
