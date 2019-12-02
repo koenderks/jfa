@@ -136,13 +136,13 @@ confidenceBound <- function(sample = NULL, bookValues = NULL, auditValues = NULL
   if(method == "binomial"){
     bound <- stats::binom.test(x = k, n = n, p = mat, alternative = "less", conf.level = confidence)$conf.int[2]
   } else if(method == "stringer"){
-    bound <- jfa::.stringerBound(taints, confidence, n)
+    bound <- jfa:::.stringerBound(taints, confidence, n)
   } else if(method == "stringer-meikle"){
-    bound <- jfa::.stringerBound(taints, confidence, n, correction = "meikle")
+    bound <- jfa:::.stringerBound(taints, confidence, n, correction = "meikle")
   } else if(method == "stringer-lta"){
-    bound <- jfa::.stringerBound(taints, confidence, n, correction = "lta")
+    bound <- jfa:::.stringerBound(taints, confidence, n, correction = "lta")
   } else if(method == "stringer-pvz"){
-    bound <- jfa::.stringerBound(taints, confidence, n, correction = "pvz")
+    bound <- jfa:::.stringerBound(taints, confidence, n, correction = "pvz")
   } else if(method == "rohrbach"){
     if(is.null(N))
       stop("Rohrbach's bound requires that you specify the population size N")
