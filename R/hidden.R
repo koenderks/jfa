@@ -37,8 +37,9 @@ plot.jfa <- function(x, ...){
   if(x$jfaType == "planning"){
     stop("No plotting method for jfa class planning")
   } else if(x$jfaType == "sampling"){
-    hist(x$population[[x$bookValues]], breaks = 30, main = "Histogram of population and sample book values", xlab = "Book values", las = 1, col = "lightgray")
-    hist(x$sample[[x$bookValues]], breaks = 30, main = "Sample", xlab = "Book values", las = 1, add = TRUE, col = "darkgray")
+    name <- x$bookValues
+    hist(x$population[[name]], breaks = 30, main = "Histogram of population and sample book values", xlab = "Book values", las = 1, col = "lightgray")
+    hist(x$sample[[name]], breaks = 30, main = "Sample", xlab = "Book values", las = 1, add = TRUE, col = "darkgray")
     legend("topright", legend = c("Population", "Sample"), bty = "n", fill = c("lightgray", "darkgray"))
   } else if(x$jfaType == "evaluation"){
     stop("No plotting method for jfa class evaluation")
