@@ -9,57 +9,42 @@ confidenceBound(sample = NULL, bookValues = NULL, auditValues = NULL, confidence
                        method = "binomial", materiality = NULL)
 }
 \arguments{
-\item{sample}{a data frame containing a column of book values and a column of audit values.}
+\item{sample}{a data frame containing at least a column of book values and a column of audit (true) values.}
 
 \item{bookValues}{the column name for the book values in the sample.}
 
 \item{auditValues}{the column name for the audit (true) values in the sample.}
 
-\item{confidence}{the required confidence for the bound.}
+\item{confidence}{the required confidence level for the bound.}
 
-\item{dataType}{can be either "sample" for data input, or "sumstats" for input in the form of summary statistics.}
+\item{dataType}{can be either \emph{sample} for data input, or \emph{sumstats} for input in the form of summary statistics.}
 
-\item{sampleSize}{the number of observations in the sample. Only used when dataType = "sumstats".}
+\item{sampleSize}{the number of observations in the sample. Only used when \emph{dataType = "sumstats"}.}
 
-\item{sumErrors}{the sum of the errors found in the sample. Only used when dataType = "sumstats".}
+\item{sumErrors}{the sum of the errors found in the sample. Only used when \emph{dataType = "sumstats"}.}
 
-\item{method}{can be either one of "binomial", "hypergeometric", "poisson", "stringer".}
+\item{method}{can be either one of \emph{binomial, hypergeometric, poisson, stringer}.}
 
-\item{materiality}{if specified, the function also returns the conclusion of the analysis with respect to the materiality. This value be specified as a fraction of the total value of the population.}
+\item{materiality}{if specified, the function also returns the conclusion of the analysis with respect to the materiality. This value must be specified as a fraction of the total value of the population.}
 }
 \value{
 A list containing the confidence bound for the audit.
 }
 \description{
-This function takes summary statistics about an evaluated audit sample and calculates
+This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates
 a confidence bound accordint to a specified method.
 }
 \details{
-This section lists the available methods for calculating confidence bounds.
+This section lists the available options for the \emph{methods} argument.
 
 \itemize{
- \item{binomial: The}
- \item{stringer: The Stringer bound is the most well-known and used bound in the accounting
-practice. Proposed by Stringer (1963), the bound estimates the mean taint per
- dollar unit.
-It's formula is defined as:
-\deqn{p(0; 1 - \alpha) + \sum_{j=1}^{m_+} \left[ p(j; 1 - \alpha) -
-p(j-1; 1 - \alpha) \right] \cdot z_+_j}{p(0; 1 - \alpha) +
-\sum [ p(j; 1 - \alpha) - p(j-1; 1 - \alpha) ] x Z}
-where \eqn{p(j; 1 - \alpha)} equals the unique solution to:
-\deqn{\sum^n_{k = j + 1} {n \choose k} p^k (1-p)^{n-k} = 1- \alpha}{\sum
-(n choose k) p^k (1-p)^{n-k} = 1- \alpha}
-and is therefore the Clopper-Pearson confidence interval for a binomial
-parameter (Clopper-Pearson, 1934). The values \emph{Z} are the proportional
-taints defined as \eqn{\frac{bookValues - auditValues}{bookValues}}
-{(bookValues - auditValues) / bookValues}. Since the upper bound is only
-defined for integer values of \emph{k}, when partial taints are observed
-Stringer performs linear interpolation between the upper bounds that are
-properly defined. The Stringer bound is often used for its capacity to yield
-sensible results, even when zero errors are found. This comes with a
-downside, as the bounds that are given by the Stringer approach are highly
-conservative bounds due to the attribute sampling method. Additionally, the
-Stringer bound does not accommodate understatements.}
+ \item{\emph{binomial}         Clopper-Pearson confidence interval for a binomial rate parameter.}
+ \item{\emph{stringer}         The Stringer bound (Stringer, 1963).}
+ \item{\emph{stringer-meikle}  Stringer bound with Meikle's correction (Meikle, 1972).}
+ \item{\emph{stringer-lta}     Stringer bound with LTA correction (Leslie, Teitlebaum, and Anderson, 1979).}
+ \item{\emph{stringer-pvz}     Stringer bound with Pap and van Zuijlen's correction.}
+ \item{\emph{rohrbach}         Rohrbach's augmented variance bound.}
+ \item{\emph{moment}           Modified moment bound.}
 }
 }
 \examples{
@@ -77,6 +62,27 @@ confidenceBound(sampleSize = jfaRes$sampleSize, sumErrors = 3, method = "binomia
 
 }
 \references{
+Bickel, P. J. (1992). Inference and auditing: the Stringer bound.
+International Statistical Review, 197-209.
+
+Clopper, C. J., & Pearson, E. S. (1934). The use of confidence or
+fiducial limits illustrated in the case of the binomial. Biometrika, 26(4),
+404-413.
+
+Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979).
+Dollar-unit sampling: a practical guide for auditors. Copp Clark Pitman;
+Belmont, Calif.: distributed by Fearon-Pitman.
+
+Meikle, G. R. (1972). Statistical Sampling in an Audit Context:
+An Audit Technique. Canadian Institute of Chartered Accountants.
+
+Pap, G., & van Zuijlen, M. C. (1996). On the asymptotic behaviour
+of the Stringer bound 1. Statistica Neerlandica, 50(3), 367-389.
+
+Stringer, K. W. (1963). Practical aspects of statistical sampling
+in auditing. In Proceedings of the Business and Economic Statistics Section
+(pp. 405-411). American Statistical Association.
+
 
 }
 \seealso{

@@ -52,7 +52,7 @@ print.jfa <- function(x, ...){
     }
     bound <- bound + propSum
   }
-  if(correction == "meikle"){
+  if(!is.null(correction) && correction == "meikle"){
     tmin <- sort(subset(taints, taints < 0), decreasing = FALSE)
     if(length(tmin) > 0){
       prop.sum.min  <- qbeta(1 + 1, n - 1, p = confidence) * abs(tmin[1])
@@ -65,13 +65,13 @@ print.jfa <- function(x, ...){
       }
       bound             <- bound - prop.sum.min
     }
-  } else if(correction == "lta"){
+  } else if(!is.null(correction) && correction == "lta"){
     tmin <- subset(taints, taints < 0)
     if(length(tmin) > 0){
       ltaCorrection <- (1/n) * sum(abs(tmin))
       bound <- bound - ltaCorrection
     }
-  } else if(correction == "pvz"){
+  } else if(!is.null(correction) && correction == "pvz"){
     taints <- ifelse(taints < 0, 0, taints)
     tmin <- sort(subset(taints, taints > 0))
     if(length(tmin) > 0){
