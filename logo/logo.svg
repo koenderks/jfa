@@ -58,17 +58,7 @@
        id="stop943" /><stop
        offset="1"
        stop-color="#00adff"
-       id="stop945" /></linearGradient><filter
-     inkscape:collect="always"
-     style="color-interpolation-filters:sRGB"
-     id="filter1026"
-     x="-0.011746776"
-     width="1.0234936"
-     y="-0.012264382"
-     height="1.0245288"><feGaussianBlur
-       inkscape:collect="always"
-       stdDeviation="1.177709"
-       id="feGaussianBlur1028" /></filter><linearGradient
+       id="stop945" /></linearGradient><linearGradient
      inkscape:collect="always"
      xlink:href="#a"
      id="linearGradient1036"
@@ -100,7 +90,7 @@
    showgrid="false"
    inkscape:zoom="1.253975"
    inkscape:cx="342.05746"
-   inkscape:cy="481.58734"
+   inkscape:cy="513.4859"
    inkscape:window-x="-9"
    inkscape:window-y="-9"
    inkscape:window-maximized="1"
@@ -123,7 +113,7 @@
    class="st0"
    d="M714.3,226.4L366.9,23L20.7,226.4v400.4L367.5,827l346.8-200.2V226.4z"
    id="path931"
-   style="fill:#9070bb;fill-opacity:1" />
+   style="fill:#9060bb;fill-opacity:1" />
 <linearGradient
    id="SVGID_1_"
    gradientUnits="userSpaceOnUse"
@@ -153,7 +143,7 @@
    class="st2"
    d="M734.9,639.1V214.8l-29.3-16.9L427.8,37.5L367.5,2.7l-60.3,34.8L29.4,197.9L0.1,214.8V639l29.3,17l281.3,162.4  l56.9,32.8l56.9-32.8L705.6,656L734.9,639.1z M29.4,623.2V232.7l50-28.9L367.5,37.5l0,0l287.2,165.8l50.9,29.4v390.4L367.5,818.4  L29.4,623.2z"
    id="path942"
-   style="fill:#af0ba8;fill-opacity:1" />
+   style="fill:#800080;fill-opacity:1" />
 <path
    class="st3"
    d="M182.4,633.9c0.3-0.3,0.6-0.6,0.9-0.9h-0.2L182.4,633.9z"

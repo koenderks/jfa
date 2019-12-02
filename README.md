@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./logo/logo.png" align="middle" width="135.78" height="156.8">
+  <img src="./logo/logo.png" align="middle" width="271.56" height="313.6">
 </p>
 
 # R package jfa
