@@ -9,12 +9,13 @@ sticker <- hexSticker::sticker(subplot = subplot,
                                p_size = 25, 
                                p_x = 1, 
                                p_y = 0.6,
-                               h_size = 3, 
+                               h_size = 7, 
                                h_fill = "#223f87", 
                                h_color = "#152c52", 
                                url = "www.github.com/koenderks/jfa", 
                                u_color = "white", 
-                               u_size = 3)
+                               u_size = 3, 
+                               white_around_sticker = TRUE)
 sticker
 
 # Save sticker as .svg file
