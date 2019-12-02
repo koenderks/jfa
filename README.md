@@ -81,4 +81,38 @@ This function takes a data frame and performs sampling according to one of three
 
 - `confidenceBound()`
 
-`confidenceBound()`
+`confidenceBound(sample = NULL, bookValues = NULL, auditValues = NULL, confidence = 0.95, dataType = "sample", sampleSize = NULL, sumErrors = NULL, method = "binomial", materiality = NULL, N = NULL, rohrbachDelta = 2.7)`
+
+### The audit sampling workflow
+
+```
+# Generate some data (n = 1000)
+set.seed(1)
+data <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), 
+                  bookValue = runif(n = 1000, min = 1000, max = 10000))
+
+# Using the binomial likelihood, calculates the upper 95% confidence bound for a 
+# materiality of 5% when 1% full errors are found in a sample (n = 93).
+jfaRes <- jfa::sampleSize(materiality = 0.05, confidence = 0.95,
+                         expectedError = 0.01, likelihood = "binomial")
+
+# Using monetary unit sampling, draw a random sample from the population.
+samp <- jfa::sampling(population = data, sampleSize = jfaRes$sampleSize, units = "mus", 
+                     bookValues = "bookValue", algorithm = "random")
+
+samp$trueValue <- samp$bookValue
+samp$trueValue[2] <- 1561.871 - 500 # One overstatement is found
+
+# Evaluate the sample using the stringer bound.
+confidenceBound(sample = samp, bookValues = "bookValue", auditValues = "trueValue", 
+               method = "stringer", materiality = 0.05)
+               
+# jfa results for evaluation with stringer method
+#   
+# Materiality:           5% 
+# Confidence:            95% 
+# Bound:                 3.756% 
+# Sample size:           93 
+# Sample errors:         1 
+# Conclusion:            Approve population
+```
