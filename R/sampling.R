@@ -64,11 +64,11 @@ sampling <- function(population, sampleSize, bookValues = NULL,
   if(!is.null(bookValues) && !(bookValues %in% colnames(population)))
     stop("The book value column cannot be found in the population data")
   rownames(population) <- 1:nrow(population)
-  if(ordered)
-    population <- population[order(bv, decreasing = !ascending), ]
   bv <- NULL
   if(!is.null(bookValues))
-      bv <- population[, bookValues]
+    bv <- population[, bookValues]
+  if(ordered && !is.null(bv))
+    population <- population[order(bv, decreasing = !ascending), ]
   if(!is.null(bv) && any(bv < 0))
     stop("The book values contain negative values")
   set.seed(seed)

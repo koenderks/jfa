@@ -4,17 +4,28 @@
 \alias{confidenceBound}
 \title{Audit confidence / credible bounds}
 \usage{
-confidenceBound(sampleSize, sumErrors, confidence = 0.95, method = "binomial", 
-                       materiality = NULL)
+confidenceBound(sample = NULL, bookValues = NULL, auditValues = NULL, confidence = 0.95,
+                       dataType = "sample", sampleSize = NULL, sumErrors = NULL,
+                       method = "binomial", materiality = NULL)
 }
 \arguments{
-\item{sampleSize}{the number of observations in the sample.}
+\item{sample}{a data frame containing a column of book values and a column of audit values.}
 
-\item{sumErrors}{the sum of the errors found in the sample.}
+\item{bookValues}{the column name for the book values in the sample.}
+
+\item{auditValues}{the column name for the audit (true) values in the sample.}
 
 \item{confidence}{the required confidence for the bound.}
 
-\item{method}{can be either one of "binomial", "hypergeometric", "poisson".}
+\item{dataType}{can be either "sample" for data input, or "sumstats" for input in the form of summary statistics.}
+
+\item{sampleSize}{the number of observations in the sample. Only used when dataType = "sumstats".}
+
+\item{sumErrors}{the sum of the errors found in the sample. Only used when dataType = "sumstats".}
+
+\item{method}{can be either one of "binomial", "hypergeometric", "poisson", "stringer".}
+
+\item{materiality}{if specified, the function also returns the conclusion of the analysis with respect to the materiality.}
 }
 \value{
 A list containing the confidence bound for the audit.

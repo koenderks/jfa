@@ -14,7 +14,7 @@ print.jfa <- function(x, ...){
 # Confidence:           ", paste0(round(x$confidence * 100, 2), "%"),"
 # Bound:                ", paste0(round(x$confBound * 100, 2), "%"),"
 # Sample size:          ", x$n,"
-# Sum of sample errors: ", x$k)
+# Sample errors: ", x$k)
   }
 }
 

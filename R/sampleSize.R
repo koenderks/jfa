@@ -54,6 +54,7 @@
 sampleSize <- function(materiality, confidence = 0.95, expectedError = 0, likelihood = "poisson", 
                        errorType = "percentage", N = NULL, maxSize = 5000, 
                        prior = FALSE, priorK = NULL, priorN = NULL){
+  
   if(is.null(materiality))
     stop("Specify the materiality")
   if(errorType == "percentage" && expectedError >= materiality)
@@ -64,6 +65,7 @@ sampleSize <- function(materiality, confidence = 0.95, expectedError = 0, likeli
     stop("When you specify a prior, both priorK and priorN should be specified")
   if(prior && (priorK < 0 || priorN < 0))
     stop("When you specify a prior, both priorK and priorN should be specified")
+  
   alpha <- 1 - confidence
   ss <- NULL
   if(errorType == "integer"){
@@ -71,6 +73,7 @@ sampleSize <- function(materiality, confidence = 0.95, expectedError = 0, likeli
   } else {
     startN <- 1
   }
+  
   if(likelihood == "poisson"){
     for(i in startN:maxSize){
       if(errorType == "percentage"){
@@ -138,19 +141,23 @@ sampleSize <- function(materiality, confidence = 0.95, expectedError = 0, likeli
       }
     }
   }
+  
   if(is.null(ss))
     stop("Sample size could not be calculated, please increase the maxSize argument")
-  results <- list(materiality = as.numeric(materiality), 
-                  confidence = as.numeric(confidence), 
-                  sampleSize = as.numeric(ss), 
-                  expectedSampleError = as.numeric(implicitK), 
-                  expectedError = as.numeric(expectedError), 
-                  likelihood = as.character(likelihood))
+  
+  results <- list()
+  results[["materiality"]]          <- as.numeric(materiality)
+  results[["confidence"]]           <- as.numeric(confidence)
+  results[["sampleSize"]]           <- as.numeric(ss)
+  results[["expectedSampleError"]]  <- as.numeric(implicitK)
+  results[["expectedError"]]        <- as.numeric(expectedError)
+  results[["likelihood"]]           <- as.character(likelihood)
   if(prior){
-    results[["priorK"]] <- as.numeric(priorK)
-    results[["priorN"]] <- as.numeric(priorN)
+    results[["priorK"]]             <- as.numeric(priorK)
+    results[["priorN"]]             <- as.numeric(priorN)
   }
-  results[["jfaType"]] <- "planning"
-  class(results) <- "jfa"
+  results[["jfaType"]]              <- "planning"
+  class(results)                    <- "jfa"
+  
   return(results)
 }
