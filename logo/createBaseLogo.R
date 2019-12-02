@@ -2,13 +2,13 @@ require(hexSticker)
 require(ggplot2)
 require(svglite)
 
-subplot <- ggplot() + theme_void() + theme_transparent() + theme(plot.margin=unit(c(1,1,1.5,1.2),"cm"))
+subplot <- ggplot() + theme_void() + theme_transparent()
 sticker <- hexSticker::sticker(subplot = subplot, 
                                package = "jfa", 
                                p_color = "white", 
                                p_size = 25, 
                                p_x = 1, 
-                               p_y = 0.6,
+                               p_y = 0.5,
                                h_size = 3, 
                                h_fill = "#223f87", 
                                h_color = "#152c52", 
