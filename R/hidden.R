@@ -35,7 +35,34 @@ print.jfa <- function(x, ...){
 #' @export
 plot.jfa <- function(x, ...){
   if(x$jfaType == "planning"){
-    stop("No plotting method for jfa class planning")
+    limx <- length(0:x$sampleSize)
+    if(limx > 51){
+      limx <- 51
+    }
+    if(x$prior){
+      
+    } else {
+      if(x$likelihood == "poisson"){
+        barplot(dpois(x = 0:x$sampleSize, lambda = x$materiality * x$sampleSize)[1:limx], xlab = "Errors", col = "lightgray",
+                las = 1, main = paste0("Poisson distribution (lambda = ", round(x$materiality * x$sampleSize, 2), ")"), width = 1, space = 0)
+        axis(1, at = seq(0, limx, by = 10) + 0.5, labels = seq(0, limx, by = 10))
+        barplot(dpois(x = 0:x$expectedSampleError, lambda = x$materiality * x$sampleSize), col = "red", add = TRUE, 
+                las = 1, axes = FALSE, width = 1, space = 0)
+      } else if(x$likelihood == "binomial"){
+        barplot(dbinom(x = 0:x$sampleSize, size = x$sampleSize, prob = x$materiality)[1:limx], xlab = "Errors", col = "lightgray",
+                las = 1, main = paste0("Binomial distribution (n = ", x$sampleSize, ", p = ", x$materiality,")"), width = 1, space = 0)
+        axis(1, at = seq(0, limx, by = 10) + 0.5, labels = seq(0, limx, by = 10))
+        barplot(dbinom(x = 0:x$expectedSampleError, size = x$sampleSize, prob = x$materiality), col = "red", add = TRUE, 
+                las = 1, axes = FALSE, width = 1, space = 0)
+      } else if(x$likelihood == "hypergeometric"){
+        barplot(dhyper(x = 0:x$sampleSize, m = x$populationK, n = x$N - x$populationK, k = x$sampleSize)[1:limx], xlab = "Errors", 
+                col = "lightgray", las = 1, main = paste0("Hypergeometric distribution (N = ", x$N, ", n = ", x$sampleSize, ", K = ", 
+                                                          x$populationK, ", k = ", x$expectedSampleError,")"), width = 1, space = 0)
+        axis(1, at = seq(0, 50, by = 10) + 0.5, labels = seq(0, 50, by = 10))
+        barplot(dhyper(x = 0:x$expectedSampleError, m = x$populationK, n = x$N - x$populationK, k = x$sampleSize), col = "red", add = TRUE, 
+                las = 1, axes = FALSE, width = 1, space = 0)
+      }
+    }
   } else if(x$jfaType == "sampling"){
     name <- x$bookValues
     hist(x$population[[name]], breaks = 30, main = "Histogram of population and sample book values", xlab = "Book values", las = 1, col = "lightgray")

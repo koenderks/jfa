@@ -152,6 +152,11 @@ sampleSize <- function(materiality, confidence = 0.95, expectedError = 0, likeli
   results[["expectedSampleError"]]  <- as.numeric(implicitK)
   results[["expectedError"]]        <- as.numeric(expectedError)
   results[["likelihood"]]           <- as.character(likelihood)
+  if(likelihood == "hypergeometric"){
+    results[["N"]]                  <- as.numeric(N)
+    results[["populationK"]]        <- as.numeric(populationK)
+  }
+  results[["prior"]]                <- as.logical(prior)
   if(prior){
     results[["priorK"]]             <- as.numeric(priorK)
     results[["priorN"]]             <- as.numeric(priorN)
