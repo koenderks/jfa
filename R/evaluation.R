@@ -5,17 +5,20 @@
 #' @usage evaluation(sample = NULL, bookValues = NULL, auditValues = NULL, 
 #'                   confidence = 0.95, dataType = "sample", sampleSize = NULL, 
 #'                   sumErrors = NULL, method = "binomial", materiality = NULL, 
-#'                   N = NULL, rohrbachDelta = 2.7)
+#'                   N = NULL, rohrbachDelta = 2.7, momentPoptype = "accounts")
 #'
-#' @param sample a data frame containing at least a column of book values and a column of audit (true) values.
-#' @param bookValues the column name for the book values in the sample.
-#' @param auditValues the column name for the audit (true) values in the sample.
-#' @param confidence the required confidence level for the bound.
-#' @param dataType can be either \code{sample} for data input, or \code{sumstats} for input in the form of summary statistics.
-#' @param sampleSize the number of observations in the sample. Only used when \code{dataType = "sumstats"}.
-#' @param sumErrors the sum of the errors found in the sample. Only used when \code{dataType = "sumstats"}.
-#' @param method can be either one of \code{poisson}, \code{binomial}, \code{hypergeometric}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}}. 
-#' @param materiality if specified, the function also returns the conclusion of the analysis with respect to the materiality. This value must be specified as a fraction of the total value of the population.
+#' @param sample        a data frame containing at least a column of book values and a column of audit (true) values.
+#' @param bookValues    the column name for the book values in the sample.
+#' @param auditValues   the column name for the audit (true) values in the sample.
+#' @param confidence    the required confidence level for the bound.
+#' @param dataType      can be either \code{sample} for data input, or \code{sumstats} for input in the form of summary statistics.
+#' @param sampleSize    the number of observations in the sample. Only used when \code{dataType = "sumstats"}.
+#' @param sumErrors     the sum of the errors found in the sample. Only used when \code{dataType = "sumstats"}.
+#' @param method        can be either one of \code{poisson}, \code{binomial}, \code{hypergeometric}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}. 
+#' @param materiality   if specified, the function also returns the conclusion of the analysis with respect to the materiality. This value must be specified as a fraction of the total value of the population.
+#' @param N             the population size.
+#' @param rohrbachDelta the value of delta in Rohrbach's augmented variance bound.
+#' @param momentPoptype can be either one of \code{accounts} or \code{inventory}.
 #'
 #' @details This section lists the available options for the \code{methods} argument.
 #' 
@@ -104,7 +107,7 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL, con
     if(is.null(bookValues) || is.null(auditValues) || length(bookValues) != 1 || length(auditValues) != 1)
       stop("Specify a valid book value column and audit value column when using dataType = sample")
     
-    sample <- na.omit(sample)
+    sample <- stats::na.omit(sample)
     n <- nrow(sample)
     taints <- (sample[, bookValues] - sample[, auditValues]) / sample[, bookValues]
     k <- length(which(taints != 0))
@@ -124,20 +127,20 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL, con
   if(method == "binomial"){
     bound <- stats::binom.test(x = k, n = n, p = mat, alternative = "less", conf.level = confidence)$conf.int[2]
   } else if(method == "stringer"){
-    bound <- jfa:::.stringerBound(taints, confidence, n)
+    bound <- .stringerBound(taints, confidence, n)
   } else if(method == "stringer-meikle"){
-    bound <- jfa:::.stringerBound(taints, confidence, n, correction = "meikle")
+    bound <- .stringerBound(taints, confidence, n, correction = "meikle")
   } else if(method == "stringer-lta"){
-    bound <- jfa:::.stringerBound(taints, confidence, n, correction = "lta")
+    bound <- .stringerBound(taints, confidence, n, correction = "lta")
   } else if(method == "stringer-pvz"){
-    bound <- jfa:::.stringerBound(taints, confidence, n, correction = "pvz")
+    bound <- .stringerBound(taints, confidence, n, correction = "pvz")
   } else if(method == "rohrbach"){
     if(is.null(N))
       stop("Rohrbach's bound requires that you specify the population size N")
     w <- 1 - taints
     mu <- mean(taints)
-    vars <- sum(w^2)/n - (2-(rohrbachDelta/n)) * ((1/2) * ((sum(w^2)/n) - var(w)))
-    bound <- mu + qnorm(p = confidence) * sqrt((1-(n/N)) * (vars/n))
+    vars <- sum(w^2)/n - (2-(rohrbachDelta/n)) * ((1/2) * ((sum(w^2)/n) - stats::var(w)))
+    bound <- mu + stats::qnorm(p = confidence) * sqrt((1-(n/N)) * (vars/n))
   } else if(method == "moment"){
     if(!(momentPoptype %in% c("inventory", "accounts")))
       stop("Specify a valid population type. Either inventory or accounts.")
@@ -167,7 +170,7 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL, con
     A      <- (4 * cm2_t^3)/(cm3_t^2)
     B      <- cm3_t / (2 * cm2_t)
     G      <- ncm1_t - ((2 * cm2_t^2)/cm3_t)
-    bound  <- G + (A * B * (1 + (qnorm(confidence, mean = 0, sd = 1)/ sqrt(9 * A)) - (1 / (9 * A)))^3)
+    bound  <- G + (A * B * (1 + (stats::qnorm(confidence, mean = 0, sd = 1)/ sqrt(9 * A)) - (1 / (9 * A)))^3)
   }
   
   results <- list()

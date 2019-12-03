@@ -136,7 +136,7 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
         implicitK <- expectedError
       }
       if(prior){
-        bound <- jfa:::.qBetaBinom(p = confidence, N = N - i, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK) / N
+        bound <- .qBetaBinom(p = confidence, N = N - i, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK) / N
         if(bound < materiality){
           ss <- i
           break

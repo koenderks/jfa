@@ -7,7 +7,7 @@
 evaluation(sample = NULL, bookValues = NULL, auditValues = NULL, 
                   confidence = 0.95, dataType = "sample", sampleSize = NULL, 
                   sumErrors = NULL, method = "binomial", materiality = NULL, 
-                  N = NULL, rohrbachDelta = 2.7)
+                  N = NULL, rohrbachDelta = 2.7, momentPoptype = "accounts")
 }
 \arguments{
 \item{sample}{a data frame containing at least a column of book values and a column of audit (true) values.}
@@ -24,7 +24,15 @@ evaluation(sample = NULL, bookValues = NULL, auditValues = NULL,
 
 \item{sumErrors}{the sum of the errors found in the sample. Only used when \code{dataType = "sumstats"}.}
 
+\item{method}{can be either one of \code{poisson}, \code{binomial}, \code{hypergeometric}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}.}
+
 \item{materiality}{if specified, the function also returns the conclusion of the analysis with respect to the materiality. This value must be specified as a fraction of the total value of the population.}
+
+\item{N}{the population size.}
+
+\item{rohrbachDelta}{the value of delta in Rohrbach's augmented variance bound.}
+
+\item{momentPoptype}{can be either one of \code{accounts} or \code{inventory}.}
 }
 \value{
 An object of class \code{jfaEvaluation} containing:

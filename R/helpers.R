@@ -5,7 +5,7 @@
 }
 
 .qBetaBinom <- function(p, N, shape1, shape2){
-  pp <- cumsum(jfa:::.dBetaBinom(0:N, N, shape1, shape2))
+  pp <- cumsum(.dBetaBinom(0:N, N, shape1, shape2))
   return(sapply(p, function(x) sum(pp < x)))
 }
 
@@ -17,18 +17,18 @@
   if(length(t) > 0){
     propSum <- 0
     for(i in 1:length(t)){
-      propSum <- propSum + (qbeta(p = confidence, shape1 = i + 1, shape2 = n - i) - qbeta(p = confidence, shape1 = (i - 1) + 1, shape2 = n - (i - 1)))  * t[i]
+      propSum <- propSum + (stats::qbeta(p = confidence, shape1 = i + 1, shape2 = n - i) - stats::qbeta(p = confidence, shape1 = (i - 1) + 1, shape2 = n - (i - 1)))  * t[i]
     }
     bound <- bound + propSum
   }
   if(!is.null(correction) && correction == "meikle"){
     tmin <- sort(subset(taints, taints < 0), decreasing = FALSE)
     if(length(tmin) > 0){
-      prop.sum.min  <- qbeta(1 + 1, n - 1, p = confidence) * abs(tmin[1])
+      prop.sum.min  <- stats::qbeta(1 + 1, n - 1, p = confidence) * abs(tmin[1])
       if(length(tmin) > 2){
         prop.sum.min.2  <- 0
         for(i in 2:length(tmin)){
-          prop.sum.min.2 <- prop.sum.min.2 + (qbeta(i + 1, n - 1, p = confidence) - qbeta((i-1) + 1, n - 1, p = confidence)) * abs(zmin[i])
+          prop.sum.min.2 <- prop.sum.min.2 + (stats::qbeta(i + 1, n - 1, p = confidence) - stats::qbeta((i-1) + 1, n - 1, p = confidence)) * abs(tmin[i])
         }
         prop.sum.min    <- prop.sum.min + prop.sum.min.2
       }
@@ -50,7 +50,7 @@
       }
       constant <- (1/n) * constant
       sigma <- (1/n) * sum((tmin - mean(tmin))^2)
-      pvzCorrection <- (constatnt - sqrt(sigma)) / sqrt(n) * qnorm(p = confidence, lower.tail = TRUE)
+      pvzCorrection <- (constant - sqrt(sigma)) / sqrt(n) * stats::qnorm(p = confidence, lower.tail = TRUE)
       bound <- bound - pvzCorrection
     }
   }
