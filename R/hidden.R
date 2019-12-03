@@ -1,12 +1,23 @@
 #' @method print jfaPlanning
 #' @export
 print.jfaPlanning <- function(x, ...){
-    cat("# jfa results for sample size calculation with", x$likelihood,"likelihood
+  if(x[["prior"]]$prior){
+    cat("# jfa planning results for", x[["prior"]]$priorD,"prior with", x$likelihood, "likelihood:
+#      
+# Materiality:            ", paste0(round(x$materiality * 100, 2), "%"),"
+# Confidence:             ", paste0(round(x$confidence * 100, 2), "%"),"
+# Sample size:            ", x$sampleSize,"
+# Allowed sample errors:  ", x$expectedSampleError, "
+# Prior parameter alpha:  ", x[["prior"]]$aPrior, "
+# Prior parameter beta:   ", x[["prior"]]$bPrior)
+  } else {
+    cat("# jfa planning results for", x$likelihood,"likelihood:
 #      
 # Materiality:            ", paste0(round(x$materiality * 100, 2), "%"),"
 # Confidence:             ", paste0(round(x$confidence * 100, 2), "%"),"
 # Sample size:            ", x$sampleSize,"
 # Allowed sample errors:  ", x$expectedSampleError)
+  }
 }
 
 #' @method print jfaSampling
@@ -19,7 +30,7 @@ print.jfaSampling <- function(x, ...){
 #' @export
 print.jfaEvaluation <- function(x, ...){
   if(!is.null(x$materiality)){
-    cat("# jfa results for evaluation with", x$method,"method
+    cat("# jfa evaluation results for ", x$method,"method:
 #   
 # Materiality:          ", paste0(round(x$materiality * 100, 2), "%"),"
 # Confidence:           ", paste0(round(x$confidence * 100, 2), "%"),"
@@ -28,7 +39,7 @@ print.jfaEvaluation <- function(x, ...){
 # Sample errors:        ", x$k, "
 # Conclusion:           ", x$conclusion)
   } else {
-    cat("# jfa results for evaluation with", x$method,"method
+    cat("# jfa evaluation results for ", x$method,"method:
 #      
 # Confidence:           ", paste0(round(x$confidence * 100, 2), "%"),"
 # Upper bound:          ", paste0(round(x$confBound * 100, 3), "%"),"
@@ -44,24 +55,24 @@ plot.jfaPlanning <- function(x, ...){
   if(limx > 51){
     limx <- 51
   }
-  if(x$prior){
+  if(x[["prior"]]$prior){
     xlim <- x$materiality * 3
     xseq <- seq(0, xlim, 0.00001)
-    mainLab <- ifelse(x$kPrior == 0 && x$nPrior == 0, yes = "Uninformed", no = "Informed")
+    mainLab <- ifelse(x[["prior"]]$kPrior == 0 && x[["prior"]]$nPrior == 0, yes = "Uninformed", no = "Informed")
     if(x$likelihood == "poisson"){
-      d <- stats::dgamma(xseq, shape = 1 + x$kPrior, rate = x$nPrior)
-      d1 <- stats::dgamma(xseq, shape = 1 + x$kPrior + x$expectedSampleError, rate = x$nPrior + x$sampleSize)
-      bound <- stats::qgamma(x$confidence, shape = 1 + x$kPrior + x$expectedSampleError, rate = x$nPrior + x$sampleSize)
+      d <- stats::dgamma(xseq, shape = x[["prior"]]$aPrior, rate = x[["prior"]]$bPrior)
+      d1 <- stats::dgamma(xseq, shape = x[["prior"]]$aPrior + x$expectedSampleError, rate = x[["prior"]]$bPrior + x$sampleSize)
+      bound <- stats::qgamma(x$confidence, shape = x[["prior"]]$aPrior + x$expectedSampleError, rate = x[["prior"]]$bPrior + x$sampleSize)
     } else if(x$likelihood == "binomial"){
-      d <- stats::dbeta(xseq, shape1 = 1 + x$kPrior, shape2 = 1 + x$nPrior - x$kPrior)
-      d1 <- stats::dbeta(xseq, shape1 = 1 + x$kPrior + x$expectedSampleError, shape2 = 1 + x$nPrior - x$kPrior + x$sampleSize - x$expectedSampleError)
-      bound <- stats::qbeta(x$confidence, shape1 = 1 + x$kPrior + x$expectedSampleError, shape2 = 1 + x$nPrior - x$kPrior + x$sampleSize - x$expectedSampleError)
+      d <- stats::dbeta(xseq, shape1 = x[["prior"]]$aPrior, shape2 = x[["prior"]]$bPrior)
+      d1 <- stats::dbeta(xseq, shape1 = x[["prior"]]$aPrior + x$expectedSampleError, shape2 = x[["prior"]]$bPrior + x$sampleSize - x$expectedSampleError)
+      bound <- stats::qbeta(x$confidence, shape1 = x[["prior"]]$aPrior + x$expectedSampleError, shape2 = x[["prior"]]$bPrior + x$sampleSize - x$expectedSampleError)
     } else if(x$likelihood == "hypergeometric"){
       xlim <- ceiling(xlim * x$N)
       xseq <- seq(0, xlim, by = 1)
-      d <- jfa:::.dBetaBinom(x = xseq, N = x$N, shape1 = 1 + x$kPrior, shape2 = 1 + x$nPrior - x$kPrior)
-      d1 <- jfa:::.dBetaBinom(x = xseq, N = x$N, shape1 = 1 + x$kPrior + x$expectedSampleError, shape2 = 1 + x$nPrior - x$kPrior + x$sampleSize - x$expectedSampleError)
-      bound <- jfa:::.qBetaBinom(p = x$confidence, N = x$N - x$sampleSize, shape1 = 1 + x$kPrior + x$expectedSampleError, shape2 = 1 + x$nPrior - x$kPrior + x$sampleSize - x$expectedSampleError)
+      d <- jfa:::.dBetaBinom(x = xseq, N = x$N, shape1 = x[["prior"]]$aPrior, shape2 = x[["prior"]]$bPrior)
+      d1 <- jfa:::.dBetaBinom(x = xseq, N = x$N, shape1 = x[["prior"]]$aPrior + x$expectedSampleError, shape2 = x[["prior"]]$bPrior + x$sampleSize - x$expectedSampleError)
+      bound <- jfa:::.qBetaBinom(p = x$confidence, N = x$N - x$sampleSize, shape1 = x[["prior"]]$aPrior + x$expectedSampleError, shape2 = x[["prior"]]$bPrior + x$sampleSize - x$expectedSampleError)
     }
     if(x$likelihood == "poisson" || x$likelihood == "binomial"){
       if(x$likelihood == "poisson")

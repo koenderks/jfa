@@ -57,7 +57,7 @@ This project is licensed under the GPL-3 License.
 
 ### Available Functions
 
-Below is a list of the available functions in the current development version of `jfa`, sorted by purpose of use.
+Below is a list of the available functions in the current development version of `jfa`, sorted by their occurrence in the standard audit sampling workflow.
 
 **Planning: Calculating an audit sample size**
 
@@ -73,7 +73,7 @@ This function calculates the required sample size for an audit, based on the poi
 
 This function takes a data frame and performs sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. The returned `jfaSampling` object has a `print()` and a `plot()` method. The `sampleSize` argument can also be an object of class `jfaPlanning`.
 
-`sampling(population = NULL, sampleSize, bookValues = NULL, algorithm = "random", units = "record", intervalStartingPoint = 1, ordered = TRUE, ascending = TRUE, withReplacement = FALSE, seed = 1)`
+`sampling(population, sampleSize, bookValues = NULL, algorithm = "random", units = "record", intervalStartingPoint = 1, ordered = TRUE, ascending = TRUE, withReplacement = FALSE, seed = 1)`
 
 **Evaluation: Calculating confidence bounds for audit samples**
 
@@ -81,7 +81,7 @@ This function takes a sample data frame or summary statistics about an evaluated
 
 - `evaluation()`
 
-`confidenceBound(sample = NULL, bookValues = NULL, auditValues = NULL, confidence = 0.95, dataType = "sample", sampleSize = NULL, sumErrors = NULL, method = "binomial", materiality = NULL, N = NULL, rohrbachDelta = 2.7)`
+`evaluation(sample = NULL, bookValues = NULL, auditValues = NULL, confidence = 0.95, dataType = "sample", sampleSize = NULL, sumErrors = NULL, method = "binomial", materiality = NULL, N = NULL, rohrbachDelta = 2.7)`
 
 ### The audit sampling workflow
 

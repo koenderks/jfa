@@ -59,22 +59,16 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
   if(prior && (kPrior < 0 || nPrior < 0))
     stop("When you specify a prior, both kPrior and nPrior should be higher than zero")
   
-  alpha <- 1 - confidence
   ss <- NULL
   
   if(expectedError >= 0 && expectedError < 1){
     errorType <- "percentage"
+    if(expectedError >= materiality)
+      stop("The expected errors are higher than materiality")
+    startN <- 1
   } else {
     errorType <- "integer"
-  }
-  
-  if(errorType == "percentage" && expectedError >= materiality)
-    stop("The expected errors are higher than materiality")
-  
-  if(errorType == "integer"){
     startN <- expectedError
-  } else {
-    startN <- 1
   }
   
   if(likelihood == "poisson"){
@@ -92,7 +86,7 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
         }
       } else {
         prob <- stats::pgamma(materiality, shape = 1 + implicitK, rate = i)
-        if(prob > (1 - alpha)){
+        if(prob > confidence){
           ss <- i
           break
         }
@@ -106,14 +100,14 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
         implicitK <- expectedError
       }
       if(prior){
-        bound <- stats::qbeta(confidence, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - implicitK + i)
+        bound <- stats::qbeta(confidence, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK)
         if(bound < materiality){
           ss <- i
           break
         }
       } else {
         prob <- stats::dbinom(0:implicitK, size = i, prob = materiality)
-        if(sum(prob) < alpha){
+        if(sum(prob) < (1 - confidence)){
           ss <- i
           break
         }
@@ -130,14 +124,14 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
         implicitK <- expectedError
       }
       if(prior){
-        bound <- jfa:::.qBetaBinom(p = 1 - alpha, N = N - i, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK) / N
+        bound <- jfa:::.qBetaBinom(p = confidence, N = N - i, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK) / N
         if(bound < materiality){
           ss <- i
           break
         }
       } else {
         prob <- stats::dhyper(x = 0:implicitK, m = populationK, n = N - populationK, k = i)
-        if(sum(prob) < alpha){
+        if(sum(prob) < (1 - confidence)){
           ss <- i
           break
         }
@@ -160,10 +154,14 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
     results[["N"]]                  <- as.numeric(N)
     results[["populationK"]]        <- as.numeric(populationK)
   }
-  results[["prior"]]                <- as.logical(prior)
+  results[["prior"]]                <- list()
+  results[["prior"]]$prior          <- as.logical(prior)
   if(prior){
-    results[["kPrior"]]             <- as.numeric(kPrior)
-    results[["nPrior"]]             <- as.numeric(nPrior)
+    results[["prior"]]$priorD       <- switch(likelihood, "poisson" = "gamma", "binomial" = "beta", "hypergeometric" = "beta-binomial")
+    results[["prior"]]$kPrior       <- as.numeric(kPrior)
+    results[["prior"]]$nPrior       <- as.numeric(nPrior)
+    results[["prior"]]$aPrior       <- 1 + results[["prior"]]$kPrior
+    results[["prior"]]$bPrior       <- ifelse(likelihood == "poisson", yes = nPrior, no = 1 + nPrior - kPrior)
   }
   class(results)                    <- "jfaPlanning"
   return(results)
