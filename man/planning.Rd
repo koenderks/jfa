@@ -44,7 +44,7 @@ An object of class \code{jfaPlanning} containing:
 This function calculates the required sample size for an audit, based on the poisson, binomial, or hypergeometric likelihood. A prior can be specified to perform Bayesian planning. The returned object is of class \code{jfaPlanning} and can be used with associated \code{print()} and \code{plot()} methods.
 }
 \details{
-
+This section lists the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
 }
 \examples{
 
@@ -67,7 +67,7 @@ planning(materiality = 0.05, confidence = 0.95, expectedError = 0.025,
 
 }
 \references{
-
+Dyer, D. and Pierce, R.L. (1993). On the Choice of the Prior Distribution in Hypergeometric Sampling. Communications in Statistics - Theory and Methods, 22(8), 2125 - 2146.
 }
 \seealso{
 \code{\link{sampling}} \code{\link{evaluation}}

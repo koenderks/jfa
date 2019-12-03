@@ -38,6 +38,9 @@ An object of class \code{jfaSampling} containing:
 \description{
 This function takes a data frame and performs sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling, in combination with either record sampling or monetary unit sampling. The returned object is of class \code{jfaSampling} and can be used with associated \code{print()} and \code{plot()} methods.
 }
+\details{
+This section elaborates on the possible algorithms for the \code{algorithm} parameter.
+}
 \examples{
 
 library(jfa)
@@ -60,7 +63,7 @@ sampling(population = population, sampleSize = n, algorithm = "random",
 
 }
 \references{
-
+Wampler, B., & McEacharn, M. (2005). Monetary-unit sampling using Microsoft Excel. The CPA journal, 75(5), 36.
 }
 \seealso{
 \code{\link{planning}} \code{\link{evaluation}}
