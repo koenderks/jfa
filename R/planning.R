@@ -12,7 +12,7 @@
 #' @param likelihood can be one of \emph{binomial}, \emph{poisson}, or \emph{hypergeometric}.
 #' @param N the population size (required for hypergeometric calculations).
 #' @param maxSize the maximum sample size that is considered for calculations. Increase this value if the samle size cannot be found due to it being too large (e.g., for low materialities).
-#' @param prior Defaults to FALSE for frequentist planning. If TRUE, adds a prior distribution to be updated by the specified likelihood. Chooses a conjugate beta distribution for the binomial likelihood, a conjugate gamma distribution for the poisson likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.
+#' @param prior If TRUE, adds a prior distribution to be updated by the specified likelihood. Chooses a conjugate beta distribution for the binomial likelihood, a conjugate gamma distribution for the poisson likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood. Defaults to FALSE for frequentist planning.
 #' @param kPrior the prior parameter \eqn{\alpha} (errors in the assumed prior sample).
 #' @param nPrior the prior parameter \eqn{\beta} (sample size of assumed prior sample).
 #'
