@@ -7,7 +7,7 @@
 #'                 ordered = TRUE, ascending = TRUE, withReplacement = FALSE, seed = 1)
 #'
 #' @param population a data frame containing the population the auditor wishes to sample from.
-#' @param sampleSize the number of observations that need to be selected from the population.
+#' @param sampleSize the number of observations that need to be selected from the population. Can also be an object of class \emph{jfaPlanning}.
 #' @param bookValues the name of the column containing the book values (as in the population data).
 #' @param algorithm can be either one of \emph{random} (default) for random sampling, \emph{cell} for cell sampling, or \emph{interval} for fixed interval sampling. 
 #' @param units can be either \emph{records} for record (default) sampling, or \emph{mus} for monetary unit sampling.
@@ -52,6 +52,9 @@
 sampling <- function(population, sampleSize, bookValues = NULL, 
                      algorithm = "random", units = "record", intervalStartingPoint = 1,
                      ordered = TRUE, ascending = TRUE, withReplacement = FALSE, seed = 1){
+  if(class(sampleSize) == "jfaPlanning"){
+    sampleSize <- sampleSize$sampleSize 
+  }
   if(sampleSize > nrow(population))
     stop("Cannot take a sample larger than the population")
   if(!(algorithm %in% c("random", "cell", "interval")) || length(algorithm) != 1)

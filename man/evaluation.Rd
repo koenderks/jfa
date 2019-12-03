@@ -62,15 +62,15 @@ jfaRes <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0.01,
                    likelihood = "binomial")
 
 # Using monetary unit sampling, draw a random sample from the population.
-samp <- sampling(population = data, sampleSize = jfaRes$sampleSize, 
-                 units = "mus", bookValues = "bookValue", algorithm = "random")
+samp <- sampling(population = data, sampleSize = jfaRes, units = "mus", 
+                 bookValues = "bookValue", algorithm = "random")
 
 samp$sample$trueValue <- samp$sample$bookValue
 samp$sample$trueValue[2] <- 1561.871 - 500 # One overstatement is found
 
 # Evaluate the sample using the stringer bound.
-evaluation(sample = samp$sample, bookValues = "bookValue", 
-           auditValues = "trueValue", method = "stringer", materiality = 0.05)
+evaluation(sample = samp$sample, bookValues = "bookValue", auditValues = "trueValue", 
+           method = "stringer", materiality = 0.05)
 
 # Evaluate the sample using summary statistics.
 evaluation(sampleSize = nrow(samp$sample), sumErrors = 1, dataType = "sumstats",

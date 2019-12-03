@@ -11,7 +11,7 @@ sampling(population, sampleSize, bookValues = NULL,
 \arguments{
 \item{population}{a data frame containing the population the auditor wishes to sample from.}
 
-\item{sampleSize}{the number of observations that need to be selected from the population.}
+\item{sampleSize}{the number of observations that need to be selected from the population. Can also be an object of class \emph{jfaPlanning}.}
 
 \item{bookValues}{the name of the column containing the book values (as in the population data).}
 

@@ -151,7 +151,7 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
   results <- list()
   results[["materiality"]]          <- as.numeric(materiality)
   results[["confidence"]]           <- as.numeric(confidence)
-  results[["sampleSize"]]           <- as.numeric(ss)
+  results[["sampleSize"]]           <- as.numeric(ceiling(ss))
   results[["expectedSampleError"]]  <- as.numeric(implicitK)
   results[["expectedError"]]        <- as.numeric(expectedError)
   results[["likelihood"]]           <- as.character(likelihood)
