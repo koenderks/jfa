@@ -1,3 +1,7 @@
+<!-- badges: start -->
+  [![Travis build status](https://travis-ci.org/koenderks/jfa.svg?branch=master)](https://travis-ci.org/koenderks/jfa)
+  <!-- badges: end -->
+
 <p align="center">
   <img src="./logo/jfaLogo.svg" align="middle" width="271.56" height="313.6">
 </p>
