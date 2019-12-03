@@ -1,23 +1,26 @@
 #' Sampling from audit populations
 #'
-#' This function takes a data frame and performs sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. 
+#' @description This function takes a data frame and performs sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling, in combination with either record sampling or monetary unit sampling. The returned object is of class \code{jfaSampling} and can be used with associated \code{print()} and \code{plot()} methods. 
 #'
 #' @usage sampling(population, sampleSize, bookValues = NULL, 
 #'                 algorithm = "random", units = "record", intervalStartingPoint = 1,
 #'                 ordered = TRUE, ascending = TRUE, withReplacement = FALSE, seed = 1)
 #'
-#' @param population a data frame containing the population the auditor wishes to sample from.
-#' @param sampleSize the number of observations that need to be selected from the population. Can also be an object of class \emph{jfaPlanning}.
-#' @param bookValues the name of the column containing the book values (as in the population data).
-#' @param algorithm can be either one of \emph{random} (default) for random sampling, \emph{cell} for cell sampling, or \emph{interval} for fixed interval sampling. 
-#' @param units can be either \emph{records} for record (default) sampling, or \emph{mus} for monetary unit sampling.
-#' @param intervalStartingPoint The starting point in the interval (used only in fixed interval sampling)
-#' @param ordered if TRUE (default), the population is first ordered according to the value of their book values.
-#' @param ascending if TRUE (default), order the population in ascending order. 
-#' @param withReplacement whether sampling should be performed with replacement. Defaults to FALSE.
-#' @param seed seed to reproduce results. Default is 1.
+#' @param population            a data frame containing the population the auditor wishes to sample from.
+#' @param sampleSize            the number of observations that need to be selected from the population. Can also be an object of class \code{jfaPlanning}.
+#' @param bookValues            the name of the column containing the book values (as in the population data).
+#' @param algorithm             can be either one of \code{random} (default) for random sampling, \code{cell} for cell sampling, or \code{interval} for fixed interval sampling. 
+#' @param units                 can be either \code{records} for record (default) sampling, or \code{mus} for monetary unit sampling.
+#' @param intervalStartingPoint the starting point in the interval (used only in fixed interval sampling)
+#' @param ordered               if \code{TRUE} (default), the population is first ordered according to the value of their book values.
+#' @param ascending             if \code{TRUE} (default), order the population in ascending order. 
+#' @param withReplacement       whether sampling should be performed with replacement. Defaults to \code{FALSE}.
+#' @param seed                  seed to reproduce results. Default is 1.
 #'
-#' @return An object of class \emph{jfaSampling}
+#' @return An object of class \code{jfaSampling} containing:
+#' \item{population}{a data frame containing the input population.}
+#' \item{sample}{a data frame containing the selected observations.}
+#' \item{bookValues}{if specified, the name of the specified book value column.}
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
@@ -45,7 +48,7 @@
 #' sampling(population = population, sampleSize = n, algorithm = "random", 
 #'          units = "mus", bookValues = "bookValue", seed = 1)
 #'
-#' @keywords sampling
+#' @keywords sampling sample
 #'
 #' @export
 

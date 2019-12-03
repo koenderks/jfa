@@ -11,29 +11,32 @@ sampling(population, sampleSize, bookValues = NULL,
 \arguments{
 \item{population}{a data frame containing the population the auditor wishes to sample from.}
 
-\item{sampleSize}{the number of observations that need to be selected from the population. Can also be an object of class \emph{jfaPlanning}.}
+\item{sampleSize}{the number of observations that need to be selected from the population. Can also be an object of class \code{jfaPlanning}.}
 
 \item{bookValues}{the name of the column containing the book values (as in the population data).}
 
-\item{algorithm}{can be either one of \emph{random} (default) for random sampling, \emph{cell} for cell sampling, or \emph{interval} for fixed interval sampling.}
+\item{algorithm}{can be either one of \code{random} (default) for random sampling, \code{cell} for cell sampling, or \code{interval} for fixed interval sampling.}
 
-\item{units}{can be either \emph{records} for record (default) sampling, or \emph{mus} for monetary unit sampling.}
+\item{units}{can be either \code{records} for record (default) sampling, or \code{mus} for monetary unit sampling.}
 
-\item{intervalStartingPoint}{The starting point in the interval (used only in fixed interval sampling)}
+\item{intervalStartingPoint}{the starting point in the interval (used only in fixed interval sampling)}
 
-\item{ordered}{if TRUE (default), the population is first ordered according to the value of their book values.}
+\item{ordered}{if \code{TRUE} (default), the population is first ordered according to the value of their book values.}
 
-\item{ascending}{if TRUE (default), order the population in ascending order.}
+\item{ascending}{if \code{TRUE} (default), order the population in ascending order.}
 
-\item{withReplacement}{whether sampling should be performed with replacement. Defaults to FALSE.}
+\item{withReplacement}{whether sampling should be performed with replacement. Defaults to \code{FALSE}.}
 
 \item{seed}{seed to reproduce results. Default is 1.}
 }
 \value{
-An object of class \emph{jfaSampling}
+An object of class \code{jfaSampling} containing:
+\item{population}{a data frame containing the input population.}
+\item{sample}{a data frame containing the selected observations.}
+\item{bookValues}{if specified, the name of the specified book value column.}
 }
 \description{
-This function takes a data frame and performs sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling.
+This function takes a data frame and performs sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling, in combination with either record sampling or monetary unit sampling. The returned object is of class \code{jfaSampling} and can be used with associated \code{print()} and \code{plot()} methods.
 }
 \examples{
 
@@ -65,4 +68,5 @@ sampling(population = population, sampleSize = n, algorithm = "random",
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}
 }
+\keyword{sample}
 \keyword{sampling}

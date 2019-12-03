@@ -15,23 +15,36 @@ planning(materiality, confidence = 0.95, expectedError = 0,
 
 \item{expectedError}{a fraction representing the percentage of expected mistakes in the sample relative to the total size, or a number (> 1) that represents the number of expected mistakes.}
 
-\item{likelihood}{can be one of \emph{binomial}, \emph{poisson}, or \emph{hypergeometric}.}
+\item{likelihood}{can be one of \code{binomial}, \code{poisson}, or \code{hypergeometric}.}
 
 \item{N}{the population size (required for hypergeometric calculations).}
 
 \item{maxSize}{the maximum sample size that is considered for calculations. Increase this value if the samle size cannot be found due to it being too large (e.g., for low materialities).}
 
-\item{prior}{If TRUE, adds a prior distribution to be updated by the specified likelihood. Chooses a conjugate beta distribution for the binomial likelihood, a conjugate gamma distribution for the poisson likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood. Defaults to FALSE for frequentist planning.}
+\item{prior}{whether to use a prior distribution when planning. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, the prior distribution is updated by the specified likelihood. Chooses a conjugate beta distribution for the binomial likelihood, a conjugate gamma distribution for the poisson likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
 
 \item{kPrior}{the prior parameter \eqn{\alpha} (errors in the assumed prior sample).}
 
 \item{nPrior}{the prior parameter \eqn{\beta} (sample size of assumed prior sample).}
 }
 \value{
-An object of class \emph{jfaPlanning}.
+An object of class \emph{jfaPlanning} containing:
+\item{materiality}{the value of the specified materiality.}
+\item{confidence}{the confidence level for the desired population statement.}
+\item{sampleSize}{the resulting sample size.}
+\item{expectedSampleError}{the number of full errors that are allowed to occur in the sample.}
+\item{expectedError}{the specified number of errors as a fraction or as a number.}
+\item{likelihood}{the specified likelihood.}
+\item{errorType}{whether the expected errors where specified as a percentage or as an integer.}
+\item{N}{the population size (only returned in case of a hypergeometric likelihood).}
+\item{populationK}{the assumed population errors (only returned in case of a hypergeometric likelihood).}
+\item{prior}{a list containing information on the prior parameters.}
 }
 \description{
-This function calculates the required sample size for an audit, based on the poisson, binomial, or hypergeometric likelihood. A prior can be specified to perform Bayesian planning. The returned object has a print() and a plot() method.
+This function calculates the required sample size for an audit, based on the poisson, binomial, or hypergeometric likelihood. A prior can be specified to perform Bayesian planning. The returned object is of class \code{jfaPlanning} and can be used with associated \code{print()} and \code{plot()} methods.
+}
+\details{
+
 }
 \examples{
 
