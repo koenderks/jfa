@@ -120,7 +120,6 @@ sampling <- function(population, sampleSize, bookValues = NULL,
   results[["population"]] <- population
   results[["sample"]] <- sample
   results[["bookValues"]] <- bookValues
-  results[["jfaType"]] <- "sampling"
-  class(results) <- "jfa"
+  class(results) <- "jfaSampling"
   return(results)
 }

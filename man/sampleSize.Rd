@@ -18,8 +18,6 @@ sampleSize(materiality, confidence = 0.95, expectedError = 0,
 
 \item{likelihood}{can be one of "binomial", "poisson", or "hypergeometric".}
 
-\item{errorType}{whether the errors are a percentage ("percentage") of the total or an absolute value ("integer").}
-
 \item{N}{the population size (required for hypergeometric calculations).}
 
 \item{maxSize}{the maximum sample size that is considered for calculations (for efficiency). 

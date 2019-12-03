@@ -13,7 +13,6 @@
 #' (on a scale from 0 to 1). Defaults to 0.95, or 95\% confidence.
 #' @param expectedError a fraction representing the number of expected mistakes in the sample relative to the total size.
 #' @param likelihood can be one of "binomial", "poisson", or "hypergeometric".
-#' @param errorType whether the errors are a percentage ("percentage") of the total or an absolute value ("integer").
 #' @param N the population size (required for hypergeometric calculations).
 #' @param maxSize the maximum sample size that is considered for calculations (for efficiency). 
 #' For low materialities, increasing this parameter may be wise.
@@ -52,13 +51,10 @@
 #' @export
 
 sampleSize <- function(materiality, confidence = 0.95, expectedError = 0, likelihood = "poisson", 
-                       errorType = "percentage", N = NULL, maxSize = 5000, 
-                       prior = FALSE, priorK = 0, priorN = 0){
+                       N = NULL, maxSize = 5000, prior = FALSE, priorK = 0, priorN = 0){
   
   if(is.null(materiality))
     stop("Specify the materiality")
-  if(errorType == "percentage" && expectedError >= materiality)
-    stop("The expected errors are higher than materiality")
   if(!(likelihood %in% c("binomial", "hypergeometric", "poisson")))
     stop("Specify a valid distribution")
   # if(prior && is.null(priorK) && is.null(priorN))
@@ -68,6 +64,16 @@ sampleSize <- function(materiality, confidence = 0.95, expectedError = 0, likeli
   
   alpha <- 1 - confidence
   ss <- NULL
+  
+  if(expectedError >= 0 && expectedError < 1){
+    errorType <- "percentage"
+  } else {
+    errorType <- "integer"
+  }
+  
+  if(errorType == "percentage" && expectedError >= materiality)
+    stop("The expected errors are higher than materiality")
+  
   if(errorType == "integer"){
     startN <- expectedError
   } else {
@@ -127,7 +133,7 @@ sampleSize <- function(materiality, confidence = 0.95, expectedError = 0, likeli
         implicitK <- expectedError
       }
       if(prior){
-        bound <- jfa:::.qBetaBinom(p = 1 - alpha, N = N - i, shape1 = 1 + priorK + implicitK, shape2 = 1 + priorN - priorK + (i - implicitK)) / N
+        bound <- jfa:::.qBetaBinom(p = 1 - alpha, N = N - i, shape1 = 1 + priorK + implicitK, shape2 = 1 + priorN - priorK + i - implicitK) / N
         if(bound < materiality){
           ss <- i
           break
@@ -152,6 +158,7 @@ sampleSize <- function(materiality, confidence = 0.95, expectedError = 0, likeli
   results[["expectedSampleError"]]  <- as.numeric(implicitK)
   results[["expectedError"]]        <- as.numeric(expectedError)
   results[["likelihood"]]           <- as.character(likelihood)
+  results[["errorType"]]            <- as.character(errorType)
   if(likelihood == "hypergeometric"){
     results[["N"]]                  <- as.numeric(N)
     results[["populationK"]]        <- as.numeric(populationK)
@@ -161,8 +168,7 @@ sampleSize <- function(materiality, confidence = 0.95, expectedError = 0, likeli
     results[["priorK"]]             <- as.numeric(priorK)
     results[["priorN"]]             <- as.numeric(priorN)
   }
-  results[["jfaType"]]              <- "planning"
-  class(results)                    <- "jfa"
+  class(results)                    <- "jfaPlanning"
   
   return(results)
 }
