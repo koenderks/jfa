@@ -96,20 +96,16 @@ data <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE),
 jfaRes <- jfa::sampleSize(materiality = 0.05, confidence = 0.95,
                           expectedError = 0.01, likelihood = "binomial")
 
-# Using monetary unit sampling, draw a random sample from the population.
+# Using monetary unit sampling (MUS), draw a random sample from the population.
 samp <- jfa::sampling(population = data, sampleSize = jfaRes$sampleSize, units = "mus", 
                       bookValues = "bookValue", algorithm = "random")
 
 samp$sample$trueValue <- samp$sample$bookValue
 samp$sample$trueValue[2] <- 1561.871 - 500 # One overstatement is found
 
-# Evaluate the sample using the stringer bound.
+# Evaluate the sample using the Stringer bound.
 confidenceBound(sample = samp$sample, bookValues = "bookValue", auditValues = "trueValue", 
                 method = "stringer", materiality = 0.05)
-
-# Evaluate the sample using summary statistics.
-confidenceBound(sampleSize = nrow(samp$sample), sumErrors = 1, dataType = "sumstats",
-                method = "binomial", materiality = 0.05)
 
 # jfa results for evaluation with stringer method
 #   
