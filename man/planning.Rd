@@ -2,7 +2,7 @@
 % Please edit documentation in R/planning.R
 \name{planning}
 \alias{planning}
-\title{Frequentist and Bayesian planning for audit samples}
+\title{Frequentist and Bayesian Planning for Audit Samples}
 \usage{
 planning(materiality, confidence = 0.95, expectedError = 0, 
                 likelihood = "poisson", N = NULL, maxSize = 5000, 
@@ -28,7 +28,7 @@ planning(materiality, confidence = 0.95, expectedError = 0,
 \item{nPrior}{the prior parameter \eqn{\beta} (sample size of assumed prior sample).}
 }
 \value{
-An object of class \emph{jfaPlanning} containing:
+An object of class \code{jfaPlanning} containing:
 \item{materiality}{the value of the specified materiality.}
 \item{confidence}{the confidence level for the desired population statement.}
 \item{sampleSize}{the resulting sample size.}

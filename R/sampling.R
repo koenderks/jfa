@@ -1,4 +1,4 @@
-#' Sampling from audit populations
+#' Sampling from Audit Populations
 #'
 #' @description This function takes a data frame and performs sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling, in combination with either record sampling or monetary unit sampling. The returned object is of class \code{jfaSampling} and can be used with associated \code{print()} and \code{plot()} methods. 
 #'

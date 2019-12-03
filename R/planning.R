@@ -1,4 +1,4 @@
-#' Frequentist and Bayesian planning for audit samples
+#' Frequentist and Bayesian Planning for Audit Samples
 #'
 #' @description This function calculates the required sample size for an audit, based on the poisson, binomial, or hypergeometric likelihood. A prior can be specified to perform Bayesian planning. The returned object is of class \code{jfaPlanning} and can be used with associated \code{print()} and \code{plot()} methods.
 #'
@@ -18,7 +18,7 @@
 #' 
 #' @details 
 #'
-#' @return An object of class \emph{jfaPlanning} containing:
+#' @return An object of class \code{jfaPlanning} containing:
 #' \item{materiality}{the value of the specified materiality.}
 #' \item{confidence}{the confidence level for the desired population statement.}
 #' \item{sampleSize}{the resulting sample size.}

@@ -1,6 +1,6 @@
-#' Evaluation of audit samples using confidence / credible bounds
+#' Evaluation of Audit Samples using Confidence / Credible Bounds
 #'
-#' @description This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound accordint to a specified method.
+#' @description This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound accordint to a specified method. The returned object is of class \code{jfaEvaluation} and can be used with associated \code{print()} method.
 #'
 #' @usage evaluation(sample = NULL, bookValues = NULL, auditValues = NULL, 
 #'                   confidence = 0.95, dataType = "sample", sampleSize = NULL, 
@@ -11,45 +11,36 @@
 #' @param bookValues the column name for the book values in the sample.
 #' @param auditValues the column name for the audit (true) values in the sample.
 #' @param confidence the required confidence level for the bound.
-#' @param dataType can be either \emph{sample} for data input, or \emph{sumstats} for input in the form of summary statistics.
-#' @param sampleSize the number of observations in the sample. Only used when \emph{dataType = "sumstats"}.
-#' @param sumErrors the sum of the errors found in the sample. Only used when \emph{dataType = "sumstats"}.
-#' @param method can be either one of \emph{binomial, hypergeometric, poisson, stringer}. 
+#' @param dataType can be either \code{sample} for data input, or \code{sumstats} for input in the form of summary statistics.
+#' @param sampleSize the number of observations in the sample. Only used when \code{dataType = "sumstats"}.
+#' @param sumErrors the sum of the errors found in the sample. Only used when \code{dataType = "sumstats"}.
+#' @param method can be either one of \code{poisson}, \code{binomial}, \code{hypergeometric}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}}. 
 #' @param materiality if specified, the function also returns the conclusion of the analysis with respect to the materiality. This value must be specified as a fraction of the total value of the population.
 #'
-#' @details This section lists the available options for the \emph{methods} argument.
+#' @details This section lists the available options for the \code{methods} argument.
 #' 
 #' \itemize{
-#'  \item{\emph{binomial}         Clopper-Pearson confidence interval for a binomial rate parameter.}
-#'  \item{\emph{stringer}         The Stringer bound (Stringer, 1963).}
-#'  \item{\emph{stringer-meikle}  Stringer bound with Meikle's correction (Meikle, 1972).}
-#'  \item{\emph{stringer-lta}     Stringer bound with LTA correction (Leslie, Teitlebaum, and Anderson, 1979).}
-#'  \item{\emph{stringer-pvz}     Stringer bound with Pap and van Zuijlen's correction (Pap and van Zuijlen, 1996).}
-#'  \item{\emph{rohrbach}         Rohrbach's augmented variance bound (Rohrbach, 1993).}
-#'  \item{\emph{moment}           Modified moment bound (Dworin and Grimlund, 1986).}
+#'  \item{\code{poisson}:          }
+#'  \item{\code{binomial}:         Clopper-Pearson confidence interval for a binomial rate parameter.}
+#'  \item{\code{hypergeometric}:   }
+#'  \item{\code{stringer}:         The Stringer bound (Stringer, 1963).}
+#'  \item{\code{stringer-meikle}:  Stringer bound with Meikle's correction (Meikle, 1972).}
+#'  \item{\code{stringer-lta}:     Stringer bound with LTA correction (Leslie, Teitlebaum, and Anderson, 1979).}
+#'  \item{\code{stringer-pvz}:     Stringer bound with Pap and van Zuijlen's correction (Pap and van Zuijlen, 1996).}
+#'  \item{\code{rohrbach}:         Rohrbach's augmented variance bound (Rohrbach, 1993).}
+#'  \item{\code{moment}:           Modified moment bound (Dworin and Grimlund, 1986).}
 #' }
 #' 
-#' @references Bickel, P. J. (1992). Inference and auditing: the Stringer bound.
-#' International Statistical Review, 197-209.
-#' @references Clopper, C. J., & Pearson, E. S. (1934). The use of confidence or
-#' fiducial limits illustrated in the case of the binomial. Biometrika, 26(4),
-#' 404-413.
-#' @references Dworin, L., & Grimlund, R. A. (1986). Dollar-unit sampling: A
-#' comparison of the quasi-Bayesian and moment bounds. Accounting Review, 36-57.
-#' @references Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979).
-#' Dollar-unit sampling: a practical guide for auditors. Copp Clark Pitman;
-#' Belmont, Calif.: distributed by Fearon-Pitman.
-#' @references Meikle, G. R. (1972). Statistical Sampling in an Audit Context:
-#' An Audit Technique. Canadian Institute of Chartered Accountants.
-#' @references Pap, G., & van Zuijlen, M. C. (1996). On the asymptotic behaviour
-#' of the Stringer bound 1. Statistica Neerlandica, 50(3), 367-389.
-#' @references Rohrbach, K. J. (1993). Variance augmentation to achieve nominal
-#' coverage probability in sampling from audit populations. Auditing, 12(2), 79.
-#' @references Stringer, K. W. (1963). Practical aspects of statistical sampling
-#' in auditing. In Proceedings of the Business and Economic Statistics Section
-#' (pp. 405-411). American Statistical Association.
+#' @references Bickel, P. J. (1992). Inference and auditing: the Stringer bound. International Statistical Review, 197-209.
+#' @references Clopper, C. J., & Pearson, E. S. (1934). The use of confidence or fiducial limits illustrated in the case of the binomial. Biometrika, 26(4), 404-413.
+#' @references Dworin, L., & Grimlund, R. A. (1986). Dollar-unit sampling: A comparison of the quasi-Bayesian and moment bounds. Accounting Review, 36-57.
+#' @references Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). Dollar-unit sampling: a practical guide for auditors. Copp Clark Pitman; Belmont, Calif.: distributed by Fearon-Pitman.
+#' @references Meikle, G. R. (1972). Statistical Sampling in an Audit Context: An Audit Technique. Canadian Institute of Chartered Accountants.
+#' @references Pap, G., & van Zuijlen, M. C. (1996). On the asymptotic behaviour of the Stringer bound 1. Statistica Neerlandica, 50(3), 367-389.
+#' @references Rohrbach, K. J. (1993). Variance augmentation to achieve nominal coverage probability in sampling from audit populations. Auditing, 12(2), 79.
+#' @references Stringer, K. W. (1963). Practical aspects of statistical sampling in auditing. In Proceedings of the Business and Economic Statistics Section (pp. 405-411). American Statistical Association.
 #'
-#' @return An object of class \emph{jfaEvaluation}.
+#' @return An object of class \code{jfaEvaluation} containing:
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'

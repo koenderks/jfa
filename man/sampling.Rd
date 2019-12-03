@@ -2,7 +2,7 @@
 % Please edit documentation in R/sampling.R
 \name{sampling}
 \alias{sampling}
-\title{Sampling from audit populations}
+\title{Sampling from Audit Populations}
 \usage{
 sampling(population, sampleSize, bookValues = NULL, 
                 algorithm = "random", units = "record", intervalStartingPoint = 1,

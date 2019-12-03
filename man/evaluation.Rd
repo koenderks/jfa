@@ -2,7 +2,7 @@
 % Please edit documentation in R/evaluation.R
 \name{evaluation}
 \alias{evaluation}
-\title{Evaluation of audit samples using confidence / credible bounds}
+\title{Evaluation of Audit Samples using Confidence / Credible Bounds}
 \usage{
 evaluation(sample = NULL, bookValues = NULL, auditValues = NULL, 
                   confidence = 0.95, dataType = "sample", sampleSize = NULL, 
@@ -18,33 +18,33 @@ evaluation(sample = NULL, bookValues = NULL, auditValues = NULL,
 
 \item{confidence}{the required confidence level for the bound.}
 
-\item{dataType}{can be either \emph{sample} for data input, or \emph{sumstats} for input in the form of summary statistics.}
+\item{dataType}{can be either \code{sample} for data input, or \code{sumstats} for input in the form of summary statistics.}
 
-\item{sampleSize}{the number of observations in the sample. Only used when \emph{dataType = "sumstats"}.}
+\item{sampleSize}{the number of observations in the sample. Only used when \code{dataType = "sumstats"}.}
 
-\item{sumErrors}{the sum of the errors found in the sample. Only used when \emph{dataType = "sumstats"}.}
-
-\item{method}{can be either one of \emph{binomial, hypergeometric, poisson, stringer}.}
+\item{sumErrors}{the sum of the errors found in the sample. Only used when \code{dataType = "sumstats"}.}
 
 \item{materiality}{if specified, the function also returns the conclusion of the analysis with respect to the materiality. This value must be specified as a fraction of the total value of the population.}
 }
 \value{
-An object of class \emph{jfaEvaluation}.
+An object of class \code{jfaEvaluation} containing:
 }
 \description{
-This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound accordint to a specified method.
+This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound accordint to a specified method. The returned object is of class \code{jfaEvaluation} and can be used with associated \code{print()} method.
 }
 \details{
-This section lists the available options for the \emph{methods} argument.
+This section lists the available options for the \code{methods} argument.
 
 \itemize{
- \item{\emph{binomial}         Clopper-Pearson confidence interval for a binomial rate parameter.}
- \item{\emph{stringer}         The Stringer bound (Stringer, 1963).}
- \item{\emph{stringer-meikle}  Stringer bound with Meikle's correction (Meikle, 1972).}
- \item{\emph{stringer-lta}     Stringer bound with LTA correction (Leslie, Teitlebaum, and Anderson, 1979).}
- \item{\emph{stringer-pvz}     Stringer bound with Pap and van Zuijlen's correction (Pap and van Zuijlen, 1996).}
- \item{\emph{rohrbach}         Rohrbach's augmented variance bound (Rohrbach, 1993).}
- \item{\emph{moment}           Modified moment bound (Dworin and Grimlund, 1986).}
+ \item{\code{poisson}:          }
+ \item{\code{binomial}:         Clopper-Pearson confidence interval for a binomial rate parameter.}
+ \item{\code{hypergeometric}:   }
+ \item{\code{stringer}:         The Stringer bound (Stringer, 1963).}
+ \item{\code{stringer-meikle}:  Stringer bound with Meikle's correction (Meikle, 1972).}
+ \item{\code{stringer-lta}:     Stringer bound with LTA correction (Leslie, Teitlebaum, and Anderson, 1979).}
+ \item{\code{stringer-pvz}:     Stringer bound with Pap and van Zuijlen's correction (Pap and van Zuijlen, 1996).}
+ \item{\code{rohrbach}:         Rohrbach's augmented variance bound (Rohrbach, 1993).}
+ \item{\code{moment}:           Modified moment bound (Dworin and Grimlund, 1986).}
 }
 }
 \examples{
@@ -78,32 +78,21 @@ evaluation(sampleSize = nrow(samp$sample), sumErrors = 1, dataType = "sumstats",
 
 }
 \references{
-Bickel, P. J. (1992). Inference and auditing: the Stringer bound.
-International Statistical Review, 197-209.
+Bickel, P. J. (1992). Inference and auditing: the Stringer bound. International Statistical Review, 197-209.
 
-Clopper, C. J., & Pearson, E. S. (1934). The use of confidence or
-fiducial limits illustrated in the case of the binomial. Biometrika, 26(4),
-404-413.
+Clopper, C. J., & Pearson, E. S. (1934). The use of confidence or fiducial limits illustrated in the case of the binomial. Biometrika, 26(4), 404-413.
 
-Dworin, L., & Grimlund, R. A. (1986). Dollar-unit sampling: A
-comparison of the quasi-Bayesian and moment bounds. Accounting Review, 36-57.
+Dworin, L., & Grimlund, R. A. (1986). Dollar-unit sampling: A comparison of the quasi-Bayesian and moment bounds. Accounting Review, 36-57.
 
-Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979).
-Dollar-unit sampling: a practical guide for auditors. Copp Clark Pitman;
-Belmont, Calif.: distributed by Fearon-Pitman.
+Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). Dollar-unit sampling: a practical guide for auditors. Copp Clark Pitman; Belmont, Calif.: distributed by Fearon-Pitman.
 
-Meikle, G. R. (1972). Statistical Sampling in an Audit Context:
-An Audit Technique. Canadian Institute of Chartered Accountants.
+Meikle, G. R. (1972). Statistical Sampling in an Audit Context: An Audit Technique. Canadian Institute of Chartered Accountants.
 
-Pap, G., & van Zuijlen, M. C. (1996). On the asymptotic behaviour
-of the Stringer bound 1. Statistica Neerlandica, 50(3), 367-389.
+Pap, G., & van Zuijlen, M. C. (1996). On the asymptotic behaviour of the Stringer bound 1. Statistica Neerlandica, 50(3), 367-389.
 
-Rohrbach, K. J. (1993). Variance augmentation to achieve nominal
-coverage probability in sampling from audit populations. Auditing, 12(2), 79.
+Rohrbach, K. J. (1993). Variance augmentation to achieve nominal coverage probability in sampling from audit populations. Auditing, 12(2), 79.
 
-Stringer, K. W. (1963). Practical aspects of statistical sampling
-in auditing. In Proceedings of the Business and Economic Statistics Section
-(pp. 405-411). American Statistical Association.
+Stringer, K. W. (1963). Practical aspects of statistical sampling in auditing. In Proceedings of the Business and Economic Statistics Section (pp. 405-411). American Statistical Association.
 }
 \seealso{
 \code{\link{planning}} \code{\link{sampling}}
