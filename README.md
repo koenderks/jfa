@@ -1,6 +1,6 @@
 <!-- badges: start -->
   [![Travis build status](https://travis-ci.org/koenderks/jfa.svg?branch=master)](https://travis-ci.org/koenderks/jfa)
-  <!-- badges: end -->
+<!-- badges: end -->
 
 <p align="center">
   <img src="./man/figures/logo/jfaLogo.svg" align="middle" width="271.56" height="313.6">
@@ -69,7 +69,7 @@ Below is a list of the available functions in the current development version of
 
 This function calculates the required sample size for an audit, based on the poisson, binomial, or hypergeometric likelihood. A prior can be specified to combine with the specified likelihood in order to perform Bayesian planning. The returned `jfaPlanning` object has a `print()` and a `plot()` method.
 
-`planning(materiality = NULL, confidence = 0.95, expectedError = 0, distribution = "poisson" N = NULL, maxSize = 5000, prior = FALSE, priorK = 0, priorN = 0)`
+`planning(materiality = NULL, confidence = 0.95, expectedError = 0, distribution = "poisson" N = NULL, maxSize = 5000, prior = FALSE, kPrior = 0, nPrior = 0)`
 
 **Sampling: Selecting transactions from a population**
 

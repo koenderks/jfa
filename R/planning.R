@@ -81,6 +81,8 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
   } else {
     errorType <- "integer"
     startN <- expectedError
+    if(!is.integer(expectedError) && likelihood %in% c("binomial", "hypergeometric"))
+      stop("When expectedError > 1 and the likelihood is binomial or hypergeomtric, the value must be an integer.")
   }
   
   if(likelihood == "poisson"){
