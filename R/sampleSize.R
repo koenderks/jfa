@@ -6,7 +6,7 @@
 #'
 #' @usage sampleSize(materiality, confidence = 0.95, expectedError = 0, 
 #'                   likelihood = "poisson", errorType = "percentage", N = NULL, 
-#'                   maxSize = 5000, prior = FALSE, priorK = NULL, priorN = NULL)
+#'                   maxSize = 5000, prior = FALSE, priorK = 0, priorN = 0)
 #'
 #' @param materiality a value between 0 and 1 representing the materiality of the audit as a fraction of the total size or value.
 #' @param confidence the amount of confidence desired from the resulting confidence bound
@@ -53,7 +53,7 @@
 
 sampleSize <- function(materiality, confidence = 0.95, expectedError = 0, likelihood = "poisson", 
                        errorType = "percentage", N = NULL, maxSize = 5000, 
-                       prior = FALSE, priorK = NULL, priorN = NULL){
+                       prior = FALSE, priorK = 0, priorN = 0){
   
   if(is.null(materiality))
     stop("Specify the materiality")
@@ -61,10 +61,10 @@ sampleSize <- function(materiality, confidence = 0.95, expectedError = 0, likeli
     stop("The expected errors are higher than materiality")
   if(!(likelihood %in% c("binomial", "hypergeometric", "poisson")))
     stop("Specify a valid distribution")
-  if(prior && is.null(priorK) && is.null(priorN))
-    stop("When you specify a prior, both priorK and priorN should be specified")
+  # if(prior && is.null(priorK) && is.null(priorN))
+  #   stop("When you specify a prior, both priorK and priorN should be specified")
   if(prior && (priorK < 0 || priorN < 0))
-    stop("When you specify a prior, both priorK and priorN should be specified")
+    stop("When you specify a prior, both priorK and priorN should be higher than zero")
   
   alpha <- 1 - confidence
   ss <- NULL

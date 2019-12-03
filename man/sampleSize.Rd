@@ -6,7 +6,7 @@
 \usage{
 sampleSize(materiality, confidence = 0.95, expectedError = 0, 
                   likelihood = "poisson", errorType = "percentage", N = NULL, 
-                  maxSize = 5000, prior = FALSE, priorK = NULL, priorN = NULL)
+                  maxSize = 5000, prior = FALSE, priorK = 0, priorN = 0)
 }
 \arguments{
 \item{materiality}{a value between 0 and 1 representing the materiality of the audit as a fraction of the total size or value.}

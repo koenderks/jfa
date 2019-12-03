@@ -40,7 +40,34 @@ plot.jfa <- function(x, ...){
       limx <- 51
     }
     if(x$prior){
-      
+      xlim <- x$materiality * 3
+      xseq <- seq(0, xlim, 0.00001)
+      mainLab <- ifelse(x$priorK == 0 && x$priorN == 0, yes = "Uninformed", no = "Informed")
+      if(x$likelihood == "poisson"){
+        d <- dgamma(xseq, shape = 1 + x$priorK, rate = x$priorN)
+        d1 <- dgamma(xseq, shape = 1 + x$priorK + x$expectedSampleError, rate = x$priorN + x$sampleSize)
+        bound <- qgamma(x$confidence, shape = 1 + x$priorK + x$expectedSampleError, rate = x$priorN + x$sampleSize)
+        plot(x = xseq, y = d1, type = "l", lwd = 2, bty = "n", xlab = "Misstatement", ylab = "Density", las = 1, ylim = c(0, max(d1)),
+             main = paste0(mainLab, " Gamma prior and expected posterior"), axes = FALSE)
+        polygon(x = c(0, xseq[xseq<=bound], xseq[xseq<=bound][length(xseq[xseq<=bound])]), y = c(0, d1[xseq<=bound], 0), col="lightgray", border = NA)
+        lines(x = xseq, y = d, lwd = 2, lty = 2)
+        axis(1, at = pretty(seq(0, xlim, by = 0.01), min.n = 5), labels = paste0(round(pretty(seq(0, xlim, by = 0.01), min.n = 5) * 100, 2), "%"))
+        axis(2, at = c(0, max(d1)), labels = FALSE, las = 1, lwd.ticks = 0)
+        legend("topright", legend = c("Prior", "Expected posterior"), lty = c(2, 1), bty = "n", cex = 1.2, lwd = 2)
+      } else if(x$likelihood == "binomial"){
+        d <- dbeta(xseq, shape1 = 1 + x$priorK, shape2 = 1 + x$priorN - x$priorK)
+        d1 <- dbeta(xseq, shape1 = 1 + x$priorK + x$expectedSampleError, shape2 = 1 + x$priorN - x$priorK + x$sampleSize - x$expectedSampleError)
+        d1 <- qbeta(confidence, shape1 = 1 + x$priorK + x$expectedSampleError, shape2 = 1 + x$priorN - x$priorK + x$sampleSize - x$expectedSampleError)
+        plot(x = xseq, y = d1, type = "l", lwd = 2, bty = "n", xlab = "Misstatement", ylab = "Density", las = 1, ylim = c(0, max(d1)),
+             main = paste0(mainLab, " Beta prior and expected posterior"), axes = FALSE)
+        polygon(x = c(0, xseq[xseq<=bound], xseq[xseq<=bound][length(xseq[xseq<=bound])]), y = c(0, d1[xseq<=bound], 0), col="lightgray", border = NA)
+        lines(x = xseq, y = d, lwd = 2, lty = 2)
+        axis(1, at = pretty(seq(0, xlim, by = 0.01), min.n = 5), labels = paste0(round(pretty(seq(0, xlim, by = 0.01), min.n = 5) * 100, 2), "%"))
+        axis(2, at = c(0, max(d1)), labels = FALSE, las = 1, lwd.ticks = 0)
+        legend("topright", legend = c("Prior", "Expected posterior"), lty = c(2, 1), bty = "n", cex = 1.2, lwd = 2)
+      } else if(x$likelihood == "hypergeometric"){
+        
+      }
     } else {
       if(x$likelihood == "poisson"){
         barplot(dpois(x = 0:x$sampleSize, lambda = x$materiality * x$sampleSize)[1:limx], xlab = "Errors", col = "lightgray",
