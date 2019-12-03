@@ -57,56 +57,57 @@ This project is licensed under the GPL-3 License.
 
 ### Available Functions
 
-Below is a list of the available functions in the current development version of
-`jfa`, sorted by purpose of use.
+Below is a list of the available functions in the current development version of `jfa`, sorted by purpose of use.
 
-**Calculating a sample size**
+**Planning: Calculating an audit sample size**
 
-- `sampleSize()`
+- `planning()`
 
-This function calculates the required sample size for an audit, based on the poisson, binomial, or hypergeometric likelihood. A prior can be specified to combine with the specified likelihood in order to perform Bayesian planning. The returned `jfa planning` object has a `print()` and a `plot()` function.
+This function calculates the required sample size for an audit, based on the poisson, binomial, or hypergeometric likelihood. A prior can be specified to combine with the specified likelihood in order to perform Bayesian planning. The returned `jfaPlanning` object has a `print()` and a `plot()` method.
 
-`sampleSize(materiality = NULL, confidence = 0.95, expectedError = 0, distribution = "poisson", errorType = "percentage", N = NULL, maxSize = 5000, prior = FALSE, priorK = NULL, priorN = NULL)`
+`planning(materiality = NULL, confidence = 0.95, expectedError = 0, distribution = "poisson" N = NULL, maxSize = 5000, prior = FALSE, priorK = 0, priorN = 0)`
 
-**Sampling from a population**
+**Sampling: Selecting transactions from a population**
 
 - `sampling()`
 
-This function takes a data frame and performs sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. The returned `jfa sampling` object has a `print()` and a `plot()` function.
+This function takes a data frame and performs sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. The returned `jfaSampling` object has a `print()` and a `plot()` method.
 
 `sampling(population = NULL, sampleSize = NULL, bookValues = NULL, algorithm = "random", units = "record", intervalStartingPoint = 1, ordered = TRUE, ascending = TRUE, withReplacement = FALSE, seed = 1)`
 
-**Calculating confidence bounds**
+**Evaluation: Calculating confidence bounds for audit samples**
 
-This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound accordint to a specified method. The returned `jfa evalution` object has a `print()` function.
+This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound accordint to a specified method. The returned `jfaEvalution` object has a `print()` function.
 
-- `confidenceBound()`
+- `evaluation()`
 
 `confidenceBound(sample = NULL, bookValues = NULL, auditValues = NULL, confidence = 0.95, dataType = "sample", sampleSize = NULL, sumErrors = NULL, method = "binomial", materiality = NULL, N = NULL, rohrbachDelta = 2.7)`
 
 ### The audit sampling workflow
 
 ```
-# Generate some data (n = 1000)
+library(jfa)
+
+# Generate some audit data (N = 1000)
 set.seed(1)
 data <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), 
                    bookValue = runif(n = 1000, min = 1000, max = 10000))
 
 # Using the binomial likelihood, calculates the upper 95% confidence bound for a 
 # materiality of 5% when 1% full errors are found in a sample (n = 93).
-jfaRes <- jfa::sampleSize(materiality = 0.05, confidence = 0.95,
-                          expectedError = 0.01, likelihood = "binomial")
+jfaRes <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0.01, 
+                   likelihood = "binomial")
 
-# Using monetary unit sampling (MUS), draw a random sample from the population.
-samp <- jfa::sampling(population = data, sampleSize = jfaRes$sampleSize, units = "mus", 
-                      bookValues = "bookValue", algorithm = "random")
+# Using monetary unit sampling, draw a random sample from the population.
+samp <- sampling(population = data, sampleSize = jfaRes$sampleSize, 
+                 units = "mus", bookValues = "bookValue", algorithm = "random")
 
 samp$sample$trueValue <- samp$sample$bookValue
 samp$sample$trueValue[2] <- 1561.871 - 500 # One overstatement is found
 
-# Evaluate the sample using the Stringer bound.
-confidenceBound(sample = samp$sample, bookValues = "bookValue", auditValues = "trueValue", 
-                method = "stringer", materiality = 0.05)
+# Evaluate the sample using the stringer bound.
+evaluation(sample = samp$sample, bookValues = "bookValue", 
+           auditValues = "trueValue", method = "stringer", materiality = 0.05)
 
 # jfa results for evaluation with stringer method
 #   

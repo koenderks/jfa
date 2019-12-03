@@ -1,12 +1,11 @@
-#' Audit confidence / credible bounds
+#' Evaluation of audit samples with confidence / credible bounds
 #'
-#' This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates
-#' a confidence bound accordint to a specified method.
+#' This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound accordint to a specified method.
 #'
-#' @usage confidenceBound(sample = NULL, bookValues = NULL, auditValues = NULL, confidence = 0.95,
-#'                        dataType = "sample", sampleSize = NULL, sumErrors = NULL,
-#'                        method = "binomial", materiality = NULL, N = NULL, 
-#'                        rohrbachDelta = 2.7)
+#' @usage evaluation(sample = NULL, bookValues = NULL, auditValues = NULL, 
+#'                   confidence = 0.95, dataType = "sample", sampleSize = NULL, 
+#'                   sumErrors = NULL, method = "binomial", materiality = NULL, 
+#'                   N = NULL, rohrbachDelta = 2.7)
 #'
 #' @param sample a data frame containing at least a column of book values and a column of audit (true) values.
 #' @param bookValues the column name for the book values in the sample.
@@ -50,51 +49,49 @@
 #' in auditing. In Proceedings of the Business and Economic Statistics Section
 #' (pp. 405-411). American Statistical Association.
 #'
-#' @return A list containing the confidence bound for the audit.
+#' @return An object of class \emph{jfaEvaluation}.
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
 #' @seealso
 #'
-#' @references
-#' 
-#' @keywords confidence bound
-#'
 #' @examples
 #' 
-#'# Generate some data (n = 1000)
-#'set.seed(1)
-#'data <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), 
+#' library(jfa)
+#' 
+#' # Generate some audit data (N = 1000)
+#' set.seed(1)
+#' data <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), 
 #'                   bookValue = runif(n = 1000, min = 1000, max = 10000))
 #'
-#'# Using the binomial likelihood, calculates the upper 95% confidence bound for a 
-#'# materiality of 5% when 1% full errors are found in a sample (n = 93).
-#'jfaRes <- jfa::sampleSize(materiality = 0.05, confidence = 0.95,
-#'                          expectedError = 0.01, likelihood = "binomial")
+#' # Using the binomial likelihood, calculates the upper 95% confidence bound for a 
+#' # materiality of 5% when 1% full errors are found in a sample (n = 93).
+#' jfaRes <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0.01, 
+#'                    likelihood = "binomial")
 #'
-#'# Using monetary unit sampling, draw a random sample from the population.
-#'samp <- jfa::sampling(population = data, sampleSize = jfaRes$sampleSize, units = "mus", 
-#'                      bookValues = "bookValue", algorithm = "random")
+#' # Using monetary unit sampling, draw a random sample from the population.
+#' samp <- sampling(population = data, sampleSize = jfaRes$sampleSize, 
+#'                  units = "mus", bookValues = "bookValue", algorithm = "random")
 #'
-#'samp$sample$trueValue <- samp$sample$bookValue
-#'samp$sample$trueValue[2] <- 1561.871 - 500 # One overstatement is found
+#' samp$sample$trueValue <- samp$sample$bookValue
+#' samp$sample$trueValue[2] <- 1561.871 - 500 # One overstatement is found
 #'
-#'# Evaluate the sample using the stringer bound.
-#'confidenceBound(sample = samp$sample, bookValues = "bookValue", auditValues = "trueValue", 
-#'                method = "stringer", materiality = 0.05)
+#' # Evaluate the sample using the stringer bound.
+#' evaluation(sample = samp$sample, bookValues = "bookValue", 
+#'            auditValues = "trueValue", method = "stringer", materiality = 0.05)
 #'
-#'# Evaluate the sample using summary statistics.
-#'confidenceBound(sampleSize = nrow(samp$sample), sumErrors = 1, dataType = "sumstats",
-#'                method = "binomial", materiality = 0.05)
+#' # Evaluate the sample using summary statistics.
+#' evaluation(sampleSize = nrow(samp$sample), sumErrors = 1, dataType = "sumstats",
+#'            method = "binomial", materiality = 0.05)
 #' 
-#' @keywords confidence bound
+#' @keywords evaluation confidence bound
 #'
 #' @export 
 
-confidenceBound <- function(sample = NULL, bookValues = NULL, auditValues = NULL, confidence = 0.95,
-                            dataType = "sample", sampleSize = NULL, sumErrors = NULL,
-                            method = "binomial", materiality = NULL, N = NULL, 
-                            rohrbachDelta = 2.7, momentPoptype = "accounts"){
+evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL, confidence = 0.95,
+                       dataType = "sample", sampleSize = NULL, sumErrors = NULL,
+                       method = "binomial", materiality = NULL, N = NULL, 
+                       rohrbachDelta = 2.7, momentPoptype = "accounts"){
   
   if(!(dataType %in% c("sample", "sumstats")) || length(dataType) != 1)
       stop("Specify a valid data type")
@@ -193,6 +190,5 @@ confidenceBound <- function(sample = NULL, bookValues = NULL, auditValues = NULL
     results[["conclusion"]] <- ifelse(bound < materiality, yes = "Approve population", no = "Do not approve population")
   }
   class(results) <- "jfaEvaluation"
-  
   return(results)
 }

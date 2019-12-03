@@ -47,25 +47,29 @@ plot.jfaPlanning <- function(x, ...){
   if(x$prior){
     xlim <- x$materiality * 3
     xseq <- seq(0, xlim, 0.00001)
-    mainLab <- ifelse(x$priorK == 0 && x$priorN == 0, yes = "Uninformed", no = "Informed")
+    mainLab <- ifelse(x$kPrior == 0 && x$nPrior == 0, yes = "Uninformed", no = "Informed")
     if(x$likelihood == "poisson"){
-      d <- stats::dgamma(xseq, shape = 1 + x$priorK, rate = x$priorN)
-      d1 <- stats::dgamma(xseq, shape = 1 + x$priorK + x$expectedSampleError, rate = x$priorN + x$sampleSize)
-      bound <- stats::qgamma(x$confidence, shape = 1 + x$priorK + x$expectedSampleError, rate = x$priorN + x$sampleSize)
+      d <- stats::dgamma(xseq, shape = 1 + x$kPrior, rate = x$nPrior)
+      d1 <- stats::dgamma(xseq, shape = 1 + x$kPrior + x$expectedSampleError, rate = x$nPrior + x$sampleSize)
+      bound <- stats::qgamma(x$confidence, shape = 1 + x$kPrior + x$expectedSampleError, rate = x$nPrior + x$sampleSize)
     } else if(x$likelihood == "binomial"){
-      d <- stats::dbeta(xseq, shape1 = 1 + x$priorK, shape2 = 1 + x$priorN - x$priorK)
-      d1 <- stats::dbeta(xseq, shape1 = 1 + x$priorK + x$expectedSampleError, shape2 = 1 + x$priorN - x$priorK + x$sampleSize - x$expectedSampleError)
-      bound <- stats::qbeta(x$confidence, shape1 = 1 + x$priorK + x$expectedSampleError, shape2 = 1 + x$priorN - x$priorK + x$sampleSize - x$expectedSampleError)
+      d <- stats::dbeta(xseq, shape1 = 1 + x$kPrior, shape2 = 1 + x$nPrior - x$kPrior)
+      d1 <- stats::dbeta(xseq, shape1 = 1 + x$kPrior + x$expectedSampleError, shape2 = 1 + x$nPrior - x$kPrior + x$sampleSize - x$expectedSampleError)
+      bound <- stats::qbeta(x$confidence, shape1 = 1 + x$kPrior + x$expectedSampleError, shape2 = 1 + x$nPrior - x$kPrior + x$sampleSize - x$expectedSampleError)
     } else if(x$likelihood == "hypergeometric"){
       xlim <- ceiling(xlim * x$N)
       xseq <- seq(0, xlim, by = 1)
-      d <- jfa:::.dBetaBinom(x = xseq, N = x$N, shape1 = 1 + x$priorK, shape2 = 1 + x$priorN - x$priorK)
-      d1 <- jfa:::.dBetaBinom(x = xseq, N = x$N, shape1 = 1 + x$priorK + x$expectedSampleError, shape2 = 1 + x$priorN - x$priorK + x$sampleSize - x$expectedSampleError)
-      bound <- jfa:::.qBetaBinom(p = x$confidence, N = x$N - x$sampleSize, shape1 = 1 + x$priorK + x$expectedSampleError, shape2 = 1 + x$priorN - x$priorK + x$sampleSize - x$expectedSampleError)
+      d <- jfa:::.dBetaBinom(x = xseq, N = x$N, shape1 = 1 + x$kPrior, shape2 = 1 + x$nPrior - x$kPrior)
+      d1 <- jfa:::.dBetaBinom(x = xseq, N = x$N, shape1 = 1 + x$kPrior + x$expectedSampleError, shape2 = 1 + x$nPrior - x$kPrior + x$sampleSize - x$expectedSampleError)
+      bound <- jfa:::.qBetaBinom(p = x$confidence, N = x$N - x$sampleSize, shape1 = 1 + x$kPrior + x$expectedSampleError, shape2 = 1 + x$nPrior - x$kPrior + x$sampleSize - x$expectedSampleError)
     }
     if(x$likelihood == "poisson" || x$likelihood == "binomial"){
+      if(x$likelihood == "poisson")
+        mainLabPlus <- " gamma prior and expected posterior"
+      if(x$likelihood == "binomial")
+        mainLabPlus <- " beta prior and expected posterior"
       plot(x = xseq, y = d1, type = "l", lwd = 2, bty = "n", xlab = "Misstatement", ylab = "Probability density", las = 1, ylim = c(0, max(d1)),
-           main = paste0(mainLab, " gamma prior and expected posterior"), axes = FALSE)
+           main = paste0(mainLab, mainLabPlus), axes = FALSE)
       polygon(x = c(0, xseq[xseq<=bound], xseq[xseq<=bound][length(xseq[xseq<=bound])]), y = c(0, d1[xseq<=bound], 0), col="lightgray", border = NA)
       lines(x = xseq, y = d, lwd = 2, lty = 2)
       axis(1, at = pretty(seq(0, xlim, by = 0.01), min.n = 5), labels = paste0(round(pretty(seq(0, xlim, by = 0.01), min.n = 5) * 100, 2), "%"))

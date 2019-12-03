@@ -1,28 +1,22 @@
-#' Audit sample sizes
+#' Frequentist and Bayesian planning for audit samples
 #'
-#' This function calculates the required sample size for an audit, based on
-#' the poisson, binomial, or hypergeometric likelihood. A prior can be specified
-#' to perform Bayesian planning.
+#' This function calculates the required sample size for an audit, based on the poisson, binomial, or hypergeometric likelihood. A prior can be specified to perform Bayesian planning. The returned object has a print() and a plot() method.
 #'
-#' @usage sampleSize(materiality, confidence = 0.95, expectedError = 0, 
-#'                   likelihood = "poisson", errorType = "percentage", N = NULL, 
-#'                   maxSize = 5000, prior = FALSE, priorK = 0, priorN = 0)
+#' @usage planning(materiality, confidence = 0.95, expectedError = 0, 
+#'                likelihood = "poisson", N = NULL, maxSize = 5000, 
+#'                prior = FALSE, kPrior = 0, nPrior = 0)
 #'
 #' @param materiality a value between 0 and 1 representing the materiality of the audit as a fraction of the total size or value.
-#' @param confidence the amount of confidence desired from the resulting confidence bound
-#' (on a scale from 0 to 1). Defaults to 0.95, or 95\% confidence.
-#' @param expectedError a fraction representing the number of expected mistakes in the sample relative to the total size.
-#' @param likelihood can be one of "binomial", "poisson", or "hypergeometric".
+#' @param confidence the confidence level desired from the confidence bound (on a scale from 0 to 1). Defaults to 0.95, or 95\% confidence.
+#' @param expectedError a fraction representing the percentage of expected mistakes in the sample relative to the total size, or a number (> 1) that represents the number of expected mistakes.
+#' @param likelihood can be one of \emph{binomial}, \emph{poisson}, or \emph{hypergeometric}.
 #' @param N the population size (required for hypergeometric calculations).
-#' @param maxSize the maximum sample size that is considered for calculations (for efficiency). 
-#' For low materialities, increasing this parameter may be wise.
-#' @param prior if TRUE, add a prior distribution to be updated by the likelihood. Chooses a beta distribution
-#' for the binomial likelihood, a gamma distribution for the poisson likelihood, and a beta-binomial distribution for the 
-#' hypergeometric likelihood. Defaults to FALSE.
-#' @param priorK the prior parameter alpha (errors in the assumed prior sample).
-#' @param priorN the prior parameter beta (sample size of assumed prior sample).
+#' @param maxSize the maximum sample size that is considered for calculations. Increase this value if the samle size cannot be found due to it being too large (e.g., for low materialities).
+#' @param prior Defaults to FALSE for frequentist planning. If TRUE, adds a prior distribution to be updated by the specified likelihood. Chooses a conjugate beta distribution for the binomial likelihood, a conjugate gamma distribution for the poisson likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.
+#' @param kPrior the prior parameter \eqn{\alpha} (errors in the assumed prior sample).
+#' @param nPrior the prior parameter \eqn{\beta} (sample size of assumed prior sample).
 #'
-#' @return A list containing the required sample size for the audit.
+#' @return An object of class \emph{jfaPlanning}.
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
@@ -31,36 +25,39 @@
 #' @references
 #'
 #' @examples
-#' # Using the binomial distribution, calculates the required sample size for a materiality of 5% 
-#' # when 2.5% mistakes are expected to be found in the sample.
 #' 
-#' # Frequentist
-#' sampleSize(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
-#'            likelihood = "binomial")
+#' library(jfa)
 #' 
-#' # Bayesian (uninformative beta(1, 1) prior)
-#' sampleSize(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
-#'            likelihood = "binomial", prior = TRUE, priorK = 0, priorN = 0)
+#' # Using the binomial distribution, calculates the required sample size for a 
+#' # materiality of 5% when 2.5% mistakes are expected to be found in the sample.
 #' 
-#' # Bayesian (informative prior of 10 assumed correct observatiosn)
-#' sampleSize(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
-#'            likelihood = "binomial", prior = TRUE, priorK = 0, priorN = 10)
+#' # Frequentist planning with binomial likelihood.
+#' planning(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
+#'          likelihood = "binomial")
+#' 
+#' # Bayesian planning with uninformed prior.
+#' planning(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
+#'          likelihood = "binomial", prior = TRUE)
+#' 
+#' # Bayesian planning with informed prior (based on 10 correct observations).
+#' planning(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
+#'          likelihood = "binomial", prior = TRUE, kPrior = 0, nPrior = 10)
 #'
-#' @keywords sample size
+#' @keywords planning sample size
 #'
 #' @export
 
-sampleSize <- function(materiality, confidence = 0.95, expectedError = 0, likelihood = "poisson", 
-                       N = NULL, maxSize = 5000, prior = FALSE, priorK = 0, priorN = 0){
+planning <- function(materiality, confidence = 0.95, expectedError = 0, likelihood = "poisson", 
+                     N = NULL, maxSize = 5000, prior = FALSE, kPrior = 0, nPrior = 0){
   
   if(is.null(materiality))
     stop("Specify the materiality")
   if(!(likelihood %in% c("binomial", "hypergeometric", "poisson")))
     stop("Specify a valid distribution")
-  # if(prior && is.null(priorK) && is.null(priorN))
-  #   stop("When you specify a prior, both priorK and priorN should be specified")
-  if(prior && (priorK < 0 || priorN < 0))
-    stop("When you specify a prior, both priorK and priorN should be higher than zero")
+  # if(prior && is.null(kPrior) && is.null(nPrior))
+  #   stop("When you specify a prior, both kPrior and nPrior should be specified")
+  if(prior && (kPrior < 0 || nPrior < 0))
+    stop("When you specify a prior, both kPrior and nPrior should be higher than zero")
   
   alpha <- 1 - confidence
   ss <- NULL
@@ -88,7 +85,7 @@ sampleSize <- function(materiality, confidence = 0.95, expectedError = 0, likeli
         implicitK <- expectedError
       }
       if(prior){
-        bound <- stats::qgamma(confidence, shape = 1 + priorK + implicitK, rate = priorN + i)
+        bound <- stats::qgamma(confidence, shape = 1 + kPrior + implicitK, rate = nPrior + i)
         if(bound < materiality){
           ss <- i
           break
@@ -109,7 +106,7 @@ sampleSize <- function(materiality, confidence = 0.95, expectedError = 0, likeli
         implicitK <- expectedError
       }
       if(prior){
-        bound <- stats::qbeta(confidence, shape1 = 1 + priorK + implicitK, shape2 = 1 + priorN - implicitK + i)
+        bound <- stats::qbeta(confidence, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - implicitK + i)
         if(bound < materiality){
           ss <- i
           break
@@ -133,7 +130,7 @@ sampleSize <- function(materiality, confidence = 0.95, expectedError = 0, likeli
         implicitK <- expectedError
       }
       if(prior){
-        bound <- jfa:::.qBetaBinom(p = 1 - alpha, N = N - i, shape1 = 1 + priorK + implicitK, shape2 = 1 + priorN - priorK + i - implicitK) / N
+        bound <- jfa:::.qBetaBinom(p = 1 - alpha, N = N - i, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK) / N
         if(bound < materiality){
           ss <- i
           break
@@ -165,10 +162,9 @@ sampleSize <- function(materiality, confidence = 0.95, expectedError = 0, likeli
   }
   results[["prior"]]                <- as.logical(prior)
   if(prior){
-    results[["priorK"]]             <- as.numeric(priorK)
-    results[["priorN"]]             <- as.numeric(priorN)
+    results[["kPrior"]]             <- as.numeric(kPrior)
+    results[["nPrior"]]             <- as.numeric(nPrior)
   }
   class(results)                    <- "jfaPlanning"
-  
   return(results)
 }
