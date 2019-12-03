@@ -57,7 +57,7 @@ plot.jfa <- function(x, ...){
       } else if(x$likelihood == "binomial"){
         d <- dbeta(xseq, shape1 = 1 + x$priorK, shape2 = 1 + x$priorN - x$priorK)
         d1 <- dbeta(xseq, shape1 = 1 + x$priorK + x$expectedSampleError, shape2 = 1 + x$priorN - x$priorK + x$sampleSize - x$expectedSampleError)
-        d1 <- qbeta(x$confidence, shape1 = 1 + x$priorK + x$expectedSampleError, shape2 = 1 + x$priorN - x$priorK + x$sampleSize - x$expectedSampleError)
+        bound <- qbeta(x$confidence, shape1 = 1 + x$priorK + x$expectedSampleError, shape2 = 1 + x$priorN - x$priorK + x$sampleSize - x$expectedSampleError)
         plot(x = xseq, y = d1, type = "l", lwd = 2, bty = "n", xlab = "Misstatement", ylab = "Density", las = 1, ylim = c(0, max(d1)),
              main = paste0(mainLab, " Beta prior and expected posterior"), axes = FALSE)
         polygon(x = c(0, xseq[xseq<=bound], xseq[xseq<=bound][length(xseq[xseq<=bound])]), y = c(0, d1[xseq<=bound], 0), col="lightgray", border = NA)
