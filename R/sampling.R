@@ -1,4 +1,4 @@
-#' Audit sampling
+#' Sampling from audit populations
 #'
 #' This function takes a data frame and performs sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. 
 #'
@@ -21,7 +21,7 @@
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
-#' @seealso
+#' @seealso \code{\link{planning}} \code{\link{evaluation}}
 #'
 #' @references
 #'

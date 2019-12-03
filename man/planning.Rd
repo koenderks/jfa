@@ -5,8 +5,8 @@
 \title{Frequentist and Bayesian planning for audit samples}
 \usage{
 planning(materiality, confidence = 0.95, expectedError = 0, 
-               likelihood = "poisson", N = NULL, maxSize = 5000, 
-               prior = FALSE, kPrior = 0, nPrior = 0)
+                likelihood = "poisson", N = NULL, maxSize = 5000, 
+                prior = FALSE, kPrior = 0, nPrior = 0)
 }
 \arguments{
 \item{materiality}{a value between 0 and 1 representing the materiality of the audit as a fraction of the total size or value.}
@@ -21,7 +21,7 @@ planning(materiality, confidence = 0.95, expectedError = 0,
 
 \item{maxSize}{the maximum sample size that is considered for calculations. Increase this value if the samle size cannot be found due to it being too large (e.g., for low materialities).}
 
-\item{prior}{Defaults to FALSE for frequentist planning. If TRUE, adds a prior distribution to be updated by the specified likelihood. Chooses a conjugate beta distribution for the binomial likelihood, a conjugate gamma distribution for the poisson likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
+\item{prior}{If TRUE, adds a prior distribution to be updated by the specified likelihood. Chooses a conjugate beta distribution for the binomial likelihood, a conjugate gamma distribution for the poisson likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood. Defaults to FALSE for frequentist planning.}
 
 \item{kPrior}{the prior parameter \eqn{\alpha} (errors in the assumed prior sample).}
 
@@ -57,7 +57,7 @@ planning(materiality = 0.05, confidence = 0.95, expectedError = 0.025,
 
 }
 \seealso{
-
+\code{\link{sampling}} \code{\link{evaluation}}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/evaluation.R
 \name{evaluation}
 \alias{evaluation}
-\title{Evaluation of audit samples with confidence / credible bounds}
+\title{Evaluation of audit samples using confidence / credible bounds}
 \usage{
 evaluation(sample = NULL, bookValues = NULL, auditValues = NULL, 
                   confidence = 0.95, dataType = "sample", sampleSize = NULL, 
@@ -106,7 +106,7 @@ in auditing. In Proceedings of the Business and Economic Statistics Section
 (pp. 405-411). American Statistical Association.
 }
 \seealso{
-
+\code{\link{planning}} \code{\link{sampling}}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}

@@ -2,7 +2,7 @@
 % Please edit documentation in R/sampling.R
 \name{sampling}
 \alias{sampling}
-\title{Audit sampling}
+\title{Sampling from audit populations}
 \usage{
 sampling(population, sampleSize, bookValues = NULL, 
                 algorithm = "random", units = "record", intervalStartingPoint = 1,
@@ -60,7 +60,7 @@ sampling(population = population, sampleSize = n, algorithm = "random",
 
 }
 \seealso{
-
+\code{\link{planning}} \code{\link{evaluation}}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}

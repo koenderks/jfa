@@ -1,4 +1,4 @@
-#' Evaluation of audit samples with confidence / credible bounds
+#' Evaluation of audit samples using confidence / credible bounds
 #'
 #' This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound accordint to a specified method.
 #'
@@ -53,7 +53,7 @@
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
-#' @seealso
+#' @seealso \code{\link{planning}} \code{\link{sampling}}
 #'
 #' @examples
 #' 
