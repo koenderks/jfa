@@ -4,9 +4,8 @@
 \alias{planning}
 \title{Frequentist and Bayesian Planning for Audit Samples}
 \usage{
-planning(materiality, confidence = 0.95, expectedError = 0, 
-                likelihood = "poisson", N = NULL, maxSize = 5000, 
-                prior = FALSE, kPrior = 0, nPrior = 0)
+planning(materiality, confidence = 0.95, expectedError = 0, likelihood = "poisson", 
+         N = NULL, maxSize = 5000, prior = FALSE, kPrior = 0, nPrior = 0)
 }
 \arguments{
 \item{materiality}{a value between 0 and 1 representing the materiality of the audit as a fraction of the total size or value.}

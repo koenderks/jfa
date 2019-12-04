@@ -4,20 +4,20 @@
 \alias{sampling}
 \title{Sampling from Audit Populations}
 \usage{
-sampling(population, sampleSize, bookValues = NULL, 
-                algorithm = "random", units = "record", intervalStartingPoint = 1,
-                ordered = TRUE, ascending = TRUE, withReplacement = FALSE, seed = 1)
+sampling(population, sampleSize, bookValues = NULL, units = "records", 
+         algorithm = "random", intervalStartingPoint = 1, ordered = TRUE, 
+         ascending = TRUE, withReplacement = FALSE, seed = 1)
 }
 \arguments{
 \item{population}{a data frame containing the population the auditor wishes to sample from.}
 
 \item{sampleSize}{the number of observations that need to be selected from the population. Can also be an object of class \code{jfaPlanning}.}
 
-\item{bookValues}{the name of the column containing the book values (as in the population data).}
+\item{bookValues}{a character specifying the name of the column containing the book values (as in the population data).}
+
+\item{units}{can be either \code{records} (default) for record sampling, or \code{mus} for monetary unit sampling.}
 
 \item{algorithm}{can be either one of \code{random} (default) for random sampling, \code{cell} for cell sampling, or \code{interval} for fixed interval sampling.}
-
-\item{units}{can be either \code{records} for record (default) sampling, or \code{mus} for monetary unit sampling.}
 
 \item{intervalStartingPoint}{the starting point in the interval (used only in fixed interval sampling)}
 
@@ -31,15 +31,29 @@ sampling(population, sampleSize, bookValues = NULL,
 }
 \value{
 An object of class \code{jfaSampling} containing:
+
 \item{population}{a data frame containing the input population.}
 \item{sample}{a data frame containing the selected observations.}
 \item{bookValues}{if specified, the name of the specified book value column.}
 }
 \description{
-This function takes a data frame and performs sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling, in combination with either record sampling or monetary unit sampling. The returned object is of class \code{jfaSampling} and can be used with associated \code{print()} and \code{plot()} methods.
+This function takes a data frame and performs sampling according to one of three popular algorithms: random sampling, cell sampling, or fixed interval sampling. Sampling is done in combination with one of two sampling units: records or monetary units The returned object is of class \code{jfaSampling} and can be used with associated \code{print()} and \code{plot()} methods.
 }
 \details{
-This section elaborates on the possible algorithms for the \code{algorithm} parameter.
+This first part of this section elaborates on the possible options for the \code{units} argument:
+
+\itemize{
+ \item{\code{records}:     In record sampling, each observation in the population is seen as a sampling unit. An observation of $5000 is therefore equally likely to be selected as an observation of $500.}
+ \item{\code{mus}:         In monetary unit sampling, each monetary unit in the population is seen as a sampling unit. An observation of $5000 is therefore ten times more likely to be selected as an observation of $500.}
+}
+
+This second part of this section elaborates on the possible options for the \code{algorithm} argument:
+
+\itemize{
+ \item{\code{random}:      In random sampling, each sampling unit is drawn with equal probability.}
+ \item{\code{cell}:        }
+ \item{\code{interval}:    }
+}
 }
 \examples{
 
@@ -50,20 +64,20 @@ population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE),
                          bookValue = runif(n = 1000, min = 100, max = 500))
 
 # Calculate the sample size according to the binomial distribution with zero errors
-n <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0, 
-             likelihood = "binomial")$sampleSize
+jfaRes <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0, 
+                   likelihood = "binomial")
 
 # Draw sample using random record sampling
-sampling(population = population, sampleSize = n, algorithm = "random", 
+sampling(population = population, sampleSize = jfaRes, algorithm = "random", 
          units = "records", seed = 1)
 
 # Draw sample using random monetary unit sampling
-sampling(population = population, sampleSize = n, algorithm = "random", 
+sampling(population = population, sampleSize = jfaRes, algorithm = "random", 
          units = "mus", bookValues = "bookValue", seed = 1)
 
 }
 \references{
-Wampler, B., & McEacharn, M. (2005). Monetary-unit sampling using Microsoft Excel. The CPA journal, 75(5), 36.
+Wampler, B., & McEacharn, M. (2005). Monetary-unit sampling using Microsoft Excel. \emph{The CPA journal}, 75(5), 36.
 }
 \seealso{
 \code{\link{planning}} \code{\link{evaluation}}
