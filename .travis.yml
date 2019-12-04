@@ -11,6 +11,7 @@ r:
 
 # Test for multiple operating systems
 os:
+  - windows
   - linux
   - osx
   
