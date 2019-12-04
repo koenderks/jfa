@@ -5,10 +5,10 @@ language: r
 
 # Test for multiple R-versions, one from bioconductor
 r:
-  - oldrel
   - release
-  - devel
-  - bioc-devel
+  # - oldrel
+  # - devel
+  # - bioc-devel
 
 # Test for multiple operating systems
 os:
@@ -20,6 +20,7 @@ cache: packages
 # Include r packages
 r_packages:
   - covr
+  - testthat
 
 # Turn of email notifications
 notifications:
