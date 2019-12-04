@@ -184,6 +184,7 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
   results <- list()
   results[["n"]]              <- as.numeric(n)
   results[["k"]]              <- as.numeric(k)
+  results[["t"]]              <- as.numeric(t)
   results[["confidence"]]     <- as.numeric(confidence)
   if(method %in% c("direct", "difference", "quotient", "regression")){
     results[["popBookvalue"]] <- as.numeric(populationBookValue)
@@ -202,7 +203,16 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
       results[["conclusion"]]   <- ifelse(bound < materiality, yes = "Approve population", no = "Do not approve population")
     }
   }
+  if(method == "hypergeometric"){
+    results[["N"]]            <- N
+    if(!prior)
+      results[["populationK"]]  <- populationK
+  }
   results[["prior"]]          <- prior
+  if(prior){
+    results[["nPrior"]]       <- nPrior
+    results[["kPrior"]]       <- kPrior
+  }
   class(results)              <- "jfaEvaluation"
   return(results)
 }
