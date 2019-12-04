@@ -99,3 +99,81 @@
   bound  <- G + (A * B * (1 + (stats::qnorm(confidence, mean = 0, sd = 1)/ sqrt(9 * A)) - (1 / (9 * A)))^3)
   return(bound)
 }
+
+.directMethod <- function(bookValues, auditValues, confidence, N = NULL, n, populationBookValue = NULL){
+  if(is.null(N))
+    stop("The direct method requires that you specify the population size N")
+  if(is.null(populationBookValue))
+    stop("The direct method requires that you specify the total population book value")
+  w <- mean(auditValues)
+  s <- stats::sd(auditValues)
+  pointEstimate <- N * w
+  lowerBound <- pointEstimate + stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
+  upperBound <- pointEstimate - stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
+  result <- list()
+  result[["pointEstimate"]] <- pointEstimate
+  result[["lowerBound"]] <- lowerBound
+  result[["upperBound"]] <- upperBound
+  return(result)
+}
+
+.differenceMethod <- function(bookValues, auditValues, confidence, N = NULL, n, populationBookValue = NULL){
+  if(is.null(N))
+    stop("The difference method requires that you specify the population size N")
+  if(is.null(populationBookValue))
+    stop("The difference method requires that you specify the total population book value")
+  we <- mean(bookValues - auditValues)
+  e <- N * we
+  s <- stats::sd(bookValues - auditValues)
+  pointEstimate <- populationBookValue - e
+  lowerBound <- pointEstimate + stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
+  upperBound <- pointEstimate - stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
+  result <- list()
+  result[["pointEstimate"]] <- pointEstimate
+  result[["lowerBound"]] <- lowerBound
+  result[["upperBound"]] <- upperBound
+  return(result)
+}
+
+.quotientMethod <- function(bookValues, auditValues, confidence, N = NULL, n, populationBookValue = NULL){
+  if(is.null(N))
+    stop("The quotient method requires that you specify the population size N")
+  if(is.null(populationBookValue))
+    stop("The quotient method requires that you specify the total population book value")
+  w <- mean(auditValues)
+  sw <- stats::sd(auditValues)
+  b <- mean(bookValues)
+  sb <- stats::sd(bookValues)
+  r <- stats::cor(bookValues, auditValues)
+  q <- w / b
+  s <- sqrt( sw^2 - 2 * q * r * sb * sw + q^2 * sb^2 )
+  pointEstimate <- q * populationBookValue
+  lowerBound <- pointEstimate + stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
+  upperBound <- pointEstimate - stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
+  result <- list()
+  result[["pointEstimate"]] <- pointEstimate
+  result[["lowerBound"]] <- lowerBound
+  result[["upperBound"]] <- upperBound
+  return(result)
+}
+
+.regressionMethod <- function(bookValues, auditValues, confidence, N = NULL, n, populationBookValue = NULL){
+  if(is.null(N))
+    stop("The regression method requires that you specify the population size N")
+  if(is.null(populationBookValue))
+    stop("The regression method requires that you specify the total population book value")
+  w <- mean(auditValues)
+  sw <- stats::sd(auditValues)
+  b <- mean(bookValues)
+  r <- stats::cor(bookValues, auditValues)
+  b1 <- (sum(bookValues * auditValues) - n * b * w) / (sum(bookValues^2) - (sum(bookValues)^2) / n)
+  s <- sw * sqrt(1 - r^2)
+  pointEstimate <- N * w + b1 * (populationBookValue - N * b)
+  lowerBound <- pointEstimate + stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
+  upperBound <- pointEstimate - stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
+  result <- list()
+  result[["pointEstimate"]] <- pointEstimate
+  result[["lowerBound"]] <- lowerBound
+  result[["upperBound"]] <- upperBound
+  return(result)
+}

@@ -8,7 +8,8 @@ evaluation(sample = NULL, bookValues = NULL, auditValues = NULL,
                   confidence = 0.95, nSumstats = NULL, kSumstats = NULL,
                   method = "binomial", materiality = NULL, N = NULL, 
                   prior = FALSE, nPrior = 0, kPrior = 0, 
-                  rohrbachDelta = 2.7, momentPoptype = "accounts")
+                  rohrbachDelta = 2.7, momentPoptype = "accounts",
+                  populationBookValue = NULL)
 }
 \arguments{
 \item{sample}{a data frame containing at least a column of book values and a column of audit (true) values.}
@@ -19,13 +20,13 @@ evaluation(sample = NULL, bookValues = NULL, auditValues = NULL,
 
 \item{confidence}{the required confidence level for the bound.}
 
-\item{nSumstats}{the number of observations in the sample. If specified, overrides the \code{sample} and \code{bookValues} arguments and assumes that the data comes from summary statistics specified by \code{nSumstats} and \code{kSumstats}.}
+\item{nSumstats}{the number of observations in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data comes from summary statistics specified by \code{nSumstats} and \code{kSumstats}.}
 
-\item{kSumstats}{the sum of the errors found in the sample. If specified, overrides the \code{sample} and \code{bookValues} arguments and assumes that the data comes from summary statistics specified by \code{kSumstats} and \code{nSumstats}.}
+\item{kSumstats}{the sum of the errors found in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data comes from summary statistics specified by \code{kSumstats} and \code{nSumstats}.}
 
-\item{method}{can be either one of \code{poisson}, \code{binomial}, \code{hypergeometric}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}.}
+\item{method}{can be either one of \code{poisson}, \code{binomial}, \code{hypergeometric}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}.}
 
-\item{materiality}{if specified, the function also returns the conclusion of the analysis with respect to the materiality. This value must be specified as a fraction of the total value of the population (a value between 0 and 1).}
+\item{materiality}{if specified, the function also returns the conclusion of the analysis with respect to the materiality. This value must be specified as a fraction of the total value of the population (a value between 0 and 1). The value is discarded when \code{direct}, \code{difference}, \code{quotient}, or \code{regression} method is chosen.}
 
 \item{N}{the total population size.}
 
@@ -37,7 +38,9 @@ evaluation(sample = NULL, bookValues = NULL, auditValues = NULL,
 
 \item{rohrbachDelta}{the value of \eqn{\Delta} in Rohrbach's augmented variance bound.}
 
-\item{momentPoptype}{can be either one of \code{accounts} or \code{inventory}. Options result in different methods for calculating the central moments, for more information see Dworin and Grimlund (1986)}
+\item{momentPoptype}{can be either one of \code{accounts} or \code{inventory}. Options result in different methods for calculating the central moments, for more information see Dworin and Grimlund (1986).}
+
+\item{populationBookValue}{the total value of the audit population. Required when \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}.}
 }
 \value{
 An object of class \code{jfaEvaluation} containing:
@@ -58,6 +61,10 @@ This section lists the available options for the \code{methods} argument.
  \item{\code{stringer-pvz}:     Stringer bound with Pap and van Zuijlen's correction for understatements (Pap and van Zuijlen, 1996).}
  \item{\code{rohrbach}:         Rohrbach's augmented variance bound (Rohrbach, 1993).}
  \item{\code{moment}:           Modified moment bound (Dworin and Grimlund, 1986).}
+ \item{\code{direct}:           Confidence interval using the direct method (Touw and Hoogduin, 2011).}
+ \item{\code{difference}:       Confidence interval using the difference method (Touw and Hoogduin, 2011).}
+ \item{\code{quotient}:         Confidence interval using the quotient method (Touw and Hoogduin, 2011).}
+ \item{\code{regression}:       Confidence interval using the regression method (Touw and Hoogduin, 2011).}
 }
 }
 \examples{
@@ -101,6 +108,8 @@ Pap, G., & van Zuijlen, M. C. (1996). On the asymptotic behaviour of the Stringe
 Rohrbach, K. J. (1993). Variance augmentation to achieve nominal coverage probability in sampling from audit populations. \emph{Auditing}, 12(2), 79.
 
 Stringer, K. W. (1963). Practical aspects of statistical sampling in auditing. \emph{In Proceedings of the Business and Economic Statistics Section} (pp. 405-411). American Statistical Association.
+
+Touw, P., & Hoogduin, L. (2011). \emph{Statistiek voor Audit en Controlling}. Boom uitgevers Amsterdam.
 }
 \seealso{
 \code{\link{planning}} \code{\link{sampling}}

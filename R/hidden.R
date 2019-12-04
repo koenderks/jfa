@@ -29,8 +29,18 @@ print.jfaSampling <- function(x, ...){
 #' @method print jfaEvaluation
 #' @export
 print.jfaEvaluation <- function(x, ...){
-  if(!is.null(x$materiality)){
-    cat("# jfa evaluation results for ", x$method,"method:
+  if(x$method %in% c("direct", "difference", "quotient", "regression")){
+    cat("# jfa evaluation results for", x$method,"estimation method:
+#   
+# Confidence:           ", paste0(round(x$confidence * 100, 2), "%"),"
+# Population book value:", round(x$popBookvalue, 2), "
+# Point estimate:       ", round(x$pointEstimate, 2), "
+# Lower bound:          ", round(x$lowerBound, 2),"
+# Upper bound:          ", round(x$upperBound, 2),"
+# Conclusion:           ", x$conclusion)
+  } else {
+    if(!is.null(x$materiality)){
+      cat("# jfa evaluation results for", x$method,"method:
 #   
 # Materiality:          ", paste0(round(x$materiality * 100, 2), "%"),"
 # Confidence:           ", paste0(round(x$confidence * 100, 2), "%"),"
@@ -38,13 +48,14 @@ print.jfaEvaluation <- function(x, ...){
 # Sample size:          ", x$n,"
 # Sample errors:        ", x$k, "
 # Conclusion:           ", x$conclusion)
-  } else {
-    cat("# jfa evaluation results for ", x$method,"method:
+    } else {
+      cat("# jfa evaluation results for", x$method,"method:
 #      
 # Confidence:           ", paste0(round(x$confidence * 100, 2), "%"),"
 # Upper bound:          ", paste0(round(x$confBound * 100, 3), "%"),"
 # Sample size:          ", x$n,"
 # Sample errors:        ", x$k)
+    }
   }
 }
 

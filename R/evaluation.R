@@ -6,22 +6,24 @@
 #'                   confidence = 0.95, nSumstats = NULL, kSumstats = NULL,
 #'                   method = "binomial", materiality = NULL, N = NULL, 
 #'                   prior = FALSE, nPrior = 0, kPrior = 0, 
-#'                   rohrbachDelta = 2.7, momentPoptype = "accounts")
+#'                   rohrbachDelta = 2.7, momentPoptype = "accounts",
+#'                   populationBookValue = NULL)
 #'
 #' @param sample        a data frame containing at least a column of book values and a column of audit (true) values.
 #' @param bookValues    the column name for the book values in the sample.
 #' @param auditValues   the column name for the audit (true) values in the sample.
 #' @param confidence    the required confidence level for the bound.
-#' @param nSumstats     the number of observations in the sample. If specified, overrides the \code{sample} and \code{bookValues} arguments and assumes that the data comes from summary statistics specified by \code{nSumstats} and \code{kSumstats}.
-#' @param kSumstats     the sum of the errors found in the sample. If specified, overrides the \code{sample} and \code{bookValues} arguments and assumes that the data comes from summary statistics specified by \code{kSumstats} and \code{nSumstats}.
-#' @param method        can be either one of \code{poisson}, \code{binomial}, \code{hypergeometric}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}. 
-#' @param materiality   if specified, the function also returns the conclusion of the analysis with respect to the materiality. This value must be specified as a fraction of the total value of the population (a value between 0 and 1).
+#' @param nSumstats     the number of observations in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data comes from summary statistics specified by \code{nSumstats} and \code{kSumstats}.
+#' @param kSumstats     the sum of the errors found in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data comes from summary statistics specified by \code{kSumstats} and \code{nSumstats}.
+#' @param method        can be either one of \code{poisson}, \code{binomial}, \code{hypergeometric}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}. 
+#' @param materiality   if specified, the function also returns the conclusion of the analysis with respect to the materiality. This value must be specified as a fraction of the total value of the population (a value between 0 and 1). The value is discarded when \code{direct}, \code{difference}, \code{quotient}, or \code{regression} method is chosen.
 #' @param N             the total population size.
 #' @param prior         whether to use a prior distribution when evaluating. Defaults to \code{FALSE} for frequentist evaluation. If \code{TRUE}, the prior distribution is updated by the specified likelihood. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.
 #' @param nPrior        the prior parameter \eqn{\alpha} (number of errors in the assumed prior sample).
 #' @param kPrior        the prior parameter \eqn{\beta} (total number of observations in the assumed prior sample).
 #' @param rohrbachDelta the value of \eqn{\Delta} in Rohrbach's augmented variance bound.
-#' @param momentPoptype can be either one of \code{accounts} or \code{inventory}. Options result in different methods for calculating the central moments, for more information see Dworin and Grimlund (1986)
+#' @param momentPoptype can be either one of \code{accounts} or \code{inventory}. Options result in different methods for calculating the central moments, for more information see Dworin and Grimlund (1986).
+#' @param populationBookValue the total value of the audit population. Required when \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}.
 #'
 #' @details This section lists the available options for the \code{methods} argument.
 #' 
@@ -35,6 +37,10 @@
 #'  \item{\code{stringer-pvz}:     Stringer bound with Pap and van Zuijlen's correction for understatements (Pap and van Zuijlen, 1996).}
 #'  \item{\code{rohrbach}:         Rohrbach's augmented variance bound (Rohrbach, 1993).}
 #'  \item{\code{moment}:           Modified moment bound (Dworin and Grimlund, 1986).}
+#'  \item{\code{direct}:           Confidence interval using the direct method (Touw and Hoogduin, 2011).}
+#'  \item{\code{difference}:       Confidence interval using the difference method (Touw and Hoogduin, 2011).}
+#'  \item{\code{quotient}:         Confidence interval using the quotient method (Touw and Hoogduin, 2011).}
+#'  \item{\code{regression}:       Confidence interval using the regression method (Touw and Hoogduin, 2011).}
 #' }
 #' 
 #' @references Dworin, L., & Grimlund, R. A. (1986). Dollar-unit sampling: A comparison of the quasi-Bayesian and moment bounds. \emph{Accounting Review}, 36-57.
@@ -43,6 +49,7 @@
 #' @references Pap, G., & van Zuijlen, M. C. (1996). On the asymptotic behaviour of the Stringer bound 1. \emph{Statistica Neerlandica}, 50(3), 367-389.
 #' @references Rohrbach, K. J. (1993). Variance augmentation to achieve nominal coverage probability in sampling from audit populations. \emph{Auditing}, 12(2), 79.
 #' @references Stringer, K. W. (1963). Practical aspects of statistical sampling in auditing. \emph{In Proceedings of the Business and Economic Statistics Section} (pp. 405-411). American Statistical Association.
+#' @references Touw, P., & Hoogduin, L. (2011). \emph{Statistiek voor Audit en Controlling}. Boom uitgevers Amsterdam.
 #'
 #' @return An object of class \code{jfaEvaluation} containing:
 #'
@@ -86,10 +93,11 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
                        confidence = 0.95, nSumstats = NULL, kSumstats = NULL,
                        method = "binomial", materiality = NULL, N = NULL, 
                        prior = FALSE, nPrior = 0, kPrior = 0, 
-                       rohrbachDelta = 2.7, momentPoptype = "accounts"){
+                       rohrbachDelta = 2.7, momentPoptype = "accounts",
+                       populationBookValue = NULL){
   
   if(!(method %in% c("poisson", "binomial", "hypergeometric", "stringer", "stringer-meikle", "stringer-lta", "stringer-pvz",
-                     "rohrbach", "moment")) || length(method) != 1)
+                     "rohrbach", "moment", "direct", "difference", "quotient", "regression")) || length(method) != 1)
     stop("Specify a valid method for the confidence bound")
   
   if(!is.null(nSumstats) || !is.null(kSumstats)){
@@ -102,7 +110,7 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
     if(kSumstats > nSumstats)
       stop("The sum of the errors is higher than the sample size")
     if(method %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz",
-                     "rohrbach", "moment"))
+                     "rohrbach", "moment", "direct", "difference", "quotient", "regression"))
       stop("The selected method requires raw observations, and does not accomodate summary statistics")
     
     n <- nSumstats
@@ -115,7 +123,9 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
     
     sample <- stats::na.omit(sample)
     n <- nrow(sample)
-    taints <- (sample[, bookValues] - sample[, auditValues]) / sample[, bookValues]
+    bv <- sample[, bookValues]
+    av <- sample[, auditValues]
+    taints <- (bv - av) / bv
     k <- length(which(taints != 0))
     t <- sum(taints)
   }
@@ -161,17 +171,36 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
     bound <- .rohrbachBound(taints, confidence, n, N, rohrbachDelta = rohrbachDelta)
   } else if(method == "moment"){
     bound <- .momentBound(taints, confidence, n, momentPoptype = momentPoptype)
+  } else if(method == "direct"){
+    bound <- .directMethod(bv, av, confidence, N, n, populationBookValue)
+  } else if(method == "difference"){
+    bound <- .differenceMethod(bv, av, confidence, N, n, populationBookValue)
+  } else if(method == "quotient"){
+    bound <- .quotientMethod(bv, av, confidence, N, n, populationBookValue)
+  } else if(method == "regression"){
+    bound <- .regressionMethod(bv, av, confidence, N, n, populationBookValue)
   }
   
   results <- list()
   results[["n"]]              <- as.numeric(n)
   results[["k"]]              <- as.numeric(k)
   results[["confidence"]]     <- as.numeric(confidence)
-  results[["confBound"]]      <- as.numeric(bound)
+  if(method %in% c("direct", "difference", "quotient", "regression")){
+    results[["popBookvalue"]] <- as.numeric(populationBookValue)
+    results[["pointEstimate"]] <- as.numeric(bound$pointEstimate)
+    results[["lowerBound"]] <- as.numeric(bound$lowerBound)
+    results[["upperBound"]] <- as.numeric(bound$upperBound)
+  } else {
+    results[["confBound"]]      <- as.numeric(bound)
+  }
   results[["method"]]         <- as.character(method)
   if(!is.null(materiality)){
     results[["materiality"]]  <- as.numeric(materiality)
-    results[["conclusion"]]   <- ifelse(bound < materiality, yes = "Approve population", no = "Do not approve population")
+    if(method %in% c("direct", "difference", "quotient", "regression")){
+      results[["conclusion"]]   <- ifelse(populationBookValue <= results[["upperBound"]] && populationBookValue >= results[["lowerBound"]] , yes = "Approve population", no = "Do not approve population")
+    } else {
+      results[["conclusion"]]   <- ifelse(bound < materiality, yes = "Approve population", no = "Do not approve population")
+    }
   }
   class(results)              <- "jfaEvaluation"
   return(results)
