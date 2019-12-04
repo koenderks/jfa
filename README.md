@@ -103,7 +103,7 @@ jfaRes <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0.01,
                    likelihood = "binomial")
 
 # Using monetary unit sampling, draw a random sample from the population.
-samp <- sampling(population = data, sampleSize = jfaRes$sampleSize, 
+samp <- sampling(population = data, sampleSize = jfaRes, 
                  units = "mus", bookValues = "bookValue", algorithm = "random")
 
 samp$sample$trueValue <- samp$sample$bookValue
