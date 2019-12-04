@@ -27,9 +27,9 @@
 #' This second part of this section elaborates on the possible options for the \code{algorithm} argument:
 #' 
 #' \itemize{
-#'  \item{\code{random}:      In random sampling, each sampling unit is drawn with equal probability.}
-#'  \item{\code{cell}:        }
-#'  \item{\code{interval}:    }
+#'  \item{\code{random}:      In random sampling each sampling unit in the population is drawn with equal probability.}
+#'  \item{\code{cell}:        In cell sampling the sampling units in the population are divided into a number (equal to the sample size) of intervals. From each interval one sampling unit is selected with equal probability.}
+#'  \item{\code{interval}:    In fixed interval sampling the sampling units in the population are divided into a number (equal to the sample size) of intervals. From each interval one sampling unit is selected according to a fixed starting point (\code{intervalStartingPoint}).}
 #' }
 #'
 #' @return An object of class \code{jfaSampling} containing:
