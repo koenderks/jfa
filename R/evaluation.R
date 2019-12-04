@@ -75,9 +75,8 @@
 #' evaluation(sample = samp$sample, bookValues = "bookValue", auditValues = "trueValue", 
 #'            method = "stringer", materiality = 0.05)
 #'
-#' # Evaluate the sample using summary statistics.
-#' evaluation(sampleSize = nrow(samp$sample), sumErrors = 1, dataType = "sumstats",
-#'            method = "binomial", materiality = 0.05)
+#' # Evaluate the sample using summary statistics (n = 93, k = 1).
+#' evaluation(nSumstats = 93, kSumstats = 1, method = "binomial", materiality = 0.05)
 #' 
 #' @keywords evaluation confidence bound
 #'
