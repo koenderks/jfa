@@ -144,6 +144,8 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
         implicitK <- expectedError
       }
       if(prior){
+        if(is.null(N))
+          stop("The beta-binomial distribution requires that you specify the population size N")
         bound <- .qBetaBinom(p = confidence, N = N - i, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK) / N
         if(bound < materiality){
           ss <- i

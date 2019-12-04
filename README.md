@@ -86,7 +86,7 @@ This function takes a data frame and performs sampling according to one of three
 
 **Evaluation: Calculating confidence bounds for audit samples**
 
-This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound accordint to a specified method. The returned `jfaEvalution` object has a `print()` function.
+This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound accordint to a specified method. The returned `jfaEvalution` object has a `print()` and `plot()` functions.
 
 - `evaluation()`
 
@@ -114,7 +114,7 @@ samp <- sampling(population = data, sampleSize = jfaRes,
 samp$sample$trueValue <- samp$sample$bookValue
 samp$sample$trueValue[2] <- 1561.871 - 500 # One overstatement is found
 
-# Evaluate the sample using the stringer bound.
+# Evaluate the sample using the Stringer bound.
 evaluation(sample = samp$sample, bookValues = "bookValue", 
            auditValues = "trueValue", method = "stringer", materiality = 0.05)
 
