@@ -114,7 +114,7 @@ samp <- sampling(population = data, sampleSize = jfaRes,
 samp$sample$trueValue <- samp$sample$bookValue
 samp$sample$trueValue[2] <- 1561.871 - 500 # One overstatement is found
 
-# Evaluate the sample using the stringer bound.
+# Evaluate the sample using the Stringer bound.
 evaluation(sample = samp$sample, bookValues = "bookValue", 
            auditValues = "trueValue", method = "stringer", materiality = 0.05)
 
