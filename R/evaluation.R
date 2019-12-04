@@ -24,7 +24,7 @@
 #' 
 #' \itemize{
 #'  \item{\code{poisson}:          }
-#'  \item{\code{binomial}:         Clopper-Pearson confidence interval for a binomial rate parameter.}
+#'  \item{\code{binomial}:         Clopper-Pearson confidence interval for a binomial rate parameter (Clopper and Pearson, 1934).}
 #'  \item{\code{hypergeometric}:   }
 #'  \item{\code{stringer}:         The Stringer bound (Stringer, 1963).}
 #'  \item{\code{stringer-meikle}:  Stringer bound with Meikle's correction (Meikle, 1972).}
