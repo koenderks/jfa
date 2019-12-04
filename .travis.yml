@@ -24,8 +24,8 @@ r_packages:
 # Turn of email notifications
 notifications:
   email:
-    on_success: change
-    on_failure: change
+    on_success: false
+    on_failure: false
 
 # Only report coverage after build is successful
 after_success:
