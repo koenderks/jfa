@@ -87,9 +87,11 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
                        method = "binomial", materiality = NULL, N = NULL, 
                        prior = FALSE, nPrior = 0, kPrior = 0, 
                        rohrbachDelta = 2.7, momentPoptype = "accounts"){
+  
   if(!(method %in% c("poisson", "binomial", "hypergeometric", "stringer", "stringer-meikle", "stringer-lta", "stringer-pvz",
                      "rohrbach", "moment")) || length(method) != 1)
     stop("Specify a valid method for the confidence bound")
+  
   if(!is.null(nSumstats) || !is.null(kSumstats)){
      if(is.null(nSumstats) || is.null(kSumstats))
        stop("When using summary statistics, both nSumstats and kSumstats must be defined")
@@ -139,11 +141,11 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
   } else if(method == "hypergeometric"){
     if(prior){
       if(is.null(N))
-        stop("The beta-binomial distribution requires that you specify the population size N")
+        stop("Evaluation with beta-binomial distribution requires that you specify the population size N")
       bound <- .qBetaBinom(p = confidence, N = N - n, shape1 = 1 + kPrior + k, shape2 = 1 + nPrior - kPrior + n - k) / N
     } else {
       if(mat == 0)
-        stop("The hypergeometric distribution requires that you specify the materiality")
+        stop("Evaluation with the hypergeometric distribution requires that you specify the materiality")
       populationK <- materiality * N
       bound <- stats::phyper(q = k, m = populationK, n = N - populationK, k = n)
     }
@@ -162,15 +164,15 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
   }
   
   results <- list()
-  results[["n"]] <- n
-  results[["k"]] <- k
-  results[["confidence"]] <- confidence
-  results[["confBound"]] <- bound
-  results[["method"]] <- method
+  results[["n"]]              <- as.numeric(n)
+  results[["k"]]              <- as.numeric(k)
+  results[["confidence"]]     <- as.numeric(confidence)
+  results[["confBound"]]      <- as.numeric(bound)
+  results[["method"]]         <- as.character(method)
   if(!is.null(materiality)){
-    results[["materiality"]] <- materiality
-    results[["conclusion"]] <- ifelse(bound < materiality, yes = "Approve population", no = "Do not approve population")
+    results[["materiality"]]  <- as.numeric(materiality)
+    results[["conclusion"]]   <- ifelse(bound < materiality, yes = "Approve population", no = "Do not approve population")
   }
-  class(results) <- "jfaEvaluation"
+  class(results)              <- "jfaEvaluation"
   return(results)
 }
