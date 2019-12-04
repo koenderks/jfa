@@ -3,7 +3,6 @@
   [![Coverage](https://img.shields.io/codecov/c/github/koenderks/jfa)](https://codecov.io/gh/koenderks/jfa)
   [![Release](https://img.shields.io/github/v/release/koenderks/jfa)](https://github.com/koenderks/jfa/releases)
   ![Downloads](https://img.shields.io/github/downloads/koenderks/jfa/total)
-  [![Commit](https://img.shields.io/github/last-commit/koenderks/jfa)](https://github.com/koenderks/jfa/commits/master)
   [![Issues](https://img.shields.io/github/issues/koenderks/jfa)](https://github.com/koenderks/jfa/issues)
   ![Size](https://img.shields.io/github/repo-size/koenderks/jfa)
 <!-- badges: end -->
