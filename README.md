@@ -1,5 +1,6 @@
 <!-- badges: start -->
   [![Travis build status](https://travis-ci.org/koenderks/jfa.svg?branch=master)](https://travis-ci.org/koenderks/jfa)
+  [![Coverage](https://img.shields.io/codecov/c/github/koenderks/jfa)](https://codecov.io/gh/koenderks/jfa)
   [![Release](https://img.shields.io/github/v/release/koenderks/jfa)](https://github.com/koenderks/jfa/releases)
   ![Downloads](https://img.shields.io/github/downloads/koenderks/jfa/total)
   [![Commit](https://img.shields.io/github/last-commit/koenderks/jfa)](https://github.com/koenderks/jfa/commits/master)
