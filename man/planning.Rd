@@ -45,7 +45,13 @@ An object of class \code{jfaPlanning} containing:
 This function calculates the required sample size for an audit, based on the poisson, binomial, or hypergeometric likelihood. A prior can be specified to perform Bayesian planning. The returned object is of class \code{jfaPlanning} and can be used with associated \code{print()} and \code{plot()} methods.
 }
 \details{
-This section lists the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
+This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
+
+\itemize{
+ \item{\code{poisson}:          The Poisson likelihood is used as a likelihood for monetary unit sampling (MUS). Its likelihood function is defined as: \deqn{p(x) = \frac{\lambda^x e^{-\lambda}}{x!}} The conjugate \emph{gamma(\eqn{\alpha, \beta})} prior has probability density function: \deqn{f(x; \alpha, \beta) = \frac{\beta^\alpha x^{\alpha - 1} e^{-\beta x}}{\Gamma(\alpha)}}}
+ \item{\code{binomial}:         The binomial likelihood is used as a likelihood for record sampling \emph{with} replacement. Its likelihood function is defined as: \deqn{p(x) = {n \choose k} p^k (1 - p)^{n - k}} The conjugate \emph{beta(\eqn{\alpha, \beta})} prior has probability density function: \deqn{f(x; \alpha, \beta) = \frac{1}{\Beta(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}}}
+ \item{\code{hypergeometric}:   The hypergeometric likelihood is used as a likelihood for record sampling \emph{without} replacement. Its likelihood function is defined as: \deqn{p(x = k) = \frac{{K \choose k} {N - K \choose n - k}}{{N \choose n}}} The conjugate \emph{beta-binomial(\eqn{\alpha, \beta})} prior (Dyer and Pierce, 1993) has probability density function: \deqn{f(k | n, \alpha, \beta) = {n \choose k} \frac{\Beta(k + \alpha, n - k + \beta)}{\Beta(\alpha, \beta)}} }
+}
 }
 \examples{
 
@@ -68,7 +74,7 @@ planning(materiality = 0.05, confidence = 0.95, expectedError = 0.025,
 
 }
 \references{
-Dyer, D. and Pierce, R.L. (1993). On the Choice of the Prior Distribution in Hypergeometric Sampling. Communications in Statistics - Theory and Methods, 22(8), 2125 - 2146.
+Dyer, D. and Pierce, R.L. (1993). On the Choice of the Prior Distribution in Hypergeometric Sampling. \emph{Communications in Statistics - Theory and Methods}, 22(8), 2125 - 2146.
 }
 \seealso{
 \code{\link{sampling}} \code{\link{evaluation}}
