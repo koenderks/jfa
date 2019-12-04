@@ -135,3 +135,22 @@ plot.jfaSampling <- function(x, ...){
   graphics::hist(x$sample[[name]], breaks = 30, main = "Sample", xlab = "Book values", las = 1, add = TRUE, col = "darkgray")
   graphics::legend("topright", legend = c("Population", "Sample"), bty = "n", fill = c("lightgray", "darkgray"))
 }
+
+#' @method plot jfaEvaluation
+#' @export
+plot.jfaEvaluation <- function(x, ...){
+  if(x$method %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "rohrbach", "moment"))
+    stop("No plotting method available for a confidence bound from this method")
+  if(x$method %in% c("direct", "difference", "quotient", "regression")){
+    ymin <- x$lowerBound - (x$pointEstimate - x$lowerBound)
+    ymax <- x$upperBound + (x$upperBound - x$pointEstimate)
+    ticks <- pretty(ymin, ymax, min.n = 5)
+    graphics::plot(x = 0, y = x$pointEstimate, bty = "n", cex = 2, pch = 19, xlab = "Population book value", ylab = "", 
+                   ylim = c(min(ticks), max(ticks)), xlim = c(-0.1, 0.1), axes = FALSE)
+    graphics::arrows(x0 = 0, x1 = 0, y0 = x$lowerBound, y1 = x$upperBound, code = 3, lwd = 2, col = "black", angle = 90)
+    graphics::axis(2, at = ticks, las = 1)
+    graphics::abline(h = x$popBookvalue, lty = 2)
+  } else {
+  
+  }
+}

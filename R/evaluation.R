@@ -193,15 +193,16 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
   } else {
     results[["confBound"]]      <- as.numeric(bound)
   }
-  results[["method"]]         <- as.character(method)
+  results[["method"]]           <- as.character(method)
   if(!is.null(materiality)){
-    results[["materiality"]]  <- as.numeric(materiality)
+    results[["materiality"]]    <- as.numeric(materiality)
     if(method %in% c("direct", "difference", "quotient", "regression")){
       results[["conclusion"]]   <- ifelse(populationBookValue <= results[["upperBound"]] && populationBookValue >= results[["lowerBound"]] , yes = "Approve population", no = "Do not approve population")
     } else {
       results[["conclusion"]]   <- ifelse(bound < materiality, yes = "Approve population", no = "Do not approve population")
     }
   }
+  results[["prior"]]          <- prior
   class(results)              <- "jfaEvaluation"
   return(results)
 }
