@@ -8,17 +8,18 @@
 #'
 #' @param materiality   a value between 0 and 1 representing the materiality of the audit as a fraction of the total size or value.
 #' @param confidence    the confidence level desired from the confidence bound (on a scale from 0 to 1). Defaults to 0.95, or 95\% confidence.
-#' @param expectedError a fraction representing the percentage of expected mistakes in the sample relative to the total size, or a number (> 1) that represents the number of expected mistakes.
+#' @param expectedError a fraction representing the percentage of expected mistakes in the sample relative to the total size, or a number (>= 1) that represents the number of expected mistakes.
 #' @param likelihood    can be one of \code{binomial}, \code{poisson}, or \code{hypergeometric}.
 #' @param N             the population size (required for hypergeometric calculations).
-#' @param maxSize       the maximum sample size that is considered for calculations. Increase this value if the samle size cannot be found due to it being too large (e.g., for low materialities).
-#' @param prior         whether to use a prior distribution when planning. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, the prior distribution is updated by the specified likelihood. Chooses a conjugate beta distribution for the binomial likelihood, a conjugate gamma distribution for the poisson likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.
-#' @param kPrior        the prior parameter \eqn{\alpha} (errors in the assumed prior sample).
-#' @param nPrior        the prior parameter \eqn{\beta} (sample size of assumed prior sample).
+#' @param maxSize       the maximum sample size that is considered for calculations. Defaults to 5000 for efficiency. Increase this value if the samle size cannot be found due to it being too large (e.g., for low materialities).
+#' @param prior         whether to use a prior distribution when planning. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, the prior distribution is updated by the specified likelihood. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.
+#' @param kPrior        the prior parameter \eqn{\alpha} (number of errors in the assumed prior sample).
+#' @param nPrior        the prior parameter \eqn{\beta} (total number of observations in the assumed prior sample).
 #' 
 #' @details This section lists the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
 #'
 #' @return An object of class \code{jfaPlanning} containing:
+#' 
 #' \item{materiality}{the value of the specified materiality.}
 #' \item{confidence}{the confidence level for the desired population statement.}
 #' \item{sampleSize}{the resulting sample size.}
@@ -78,11 +79,11 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
     if(expectedError >= materiality)
       stop("The expected errors are higher than materiality")
     startN <- 1
-  } else {
+  } else if(expectedError >= 1){
     errorType <- "integer"
     startN <- expectedError
-    if(!is.integer(expectedError) && likelihood %in% c("binomial", "hypergeometric"))
-      stop("When expectedError > 1 and the likelihood is binomial or hypergeomtric, the value must be an integer.")
+    if(expectedError%%1 != 0 && likelihood %in% c("binomial", "hypergeometric"))
+      stop("When expectedError > 1 and the likelihood is binomial or hypergeometric, the value must be an integer.")
   }
   
   if(likelihood == "poisson"){
