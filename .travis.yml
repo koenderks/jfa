@@ -2,6 +2,7 @@
 
 # Use R language
 language: r
+
 # Test for multiple R-versions, one from bioconductor
 r:
   - oldrel
@@ -15,3 +16,17 @@ os:
   - osx
   
 cache: packages
+
+# Include r packages
+r_packages:
+  - covr
+
+# Turn of email notifications
+notifications:
+  email:
+    on_success: change
+    on_failure: change
+
+# Only report coverage after build is successful
+after_success:
+  - Rscript -e 'covr::codecov()'
