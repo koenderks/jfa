@@ -86,7 +86,7 @@ This function takes a data frame and performs sampling according to one of three
 
 **Evaluation: Calculating confidence bounds for audit samples**
 
-This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound accordint to a specified method. The returned `jfaEvalution` object has a `print()` function.
+This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound accordint to a specified method. The returned `jfaEvalution` object has a `print()` and `plot()` functions.
 
 - `evaluation()`
 

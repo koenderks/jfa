@@ -1,6 +1,6 @@
 #' Evaluation of Audit Samples using Confidence / Credible Bounds
 #'
-#' @description This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound accordint to a specified method. The returned object is of class \code{jfaEvaluation} and can be used with associated \code{print()} method.
+#' @description This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound accordint to a specified method. The returned object is of class \code{jfaEvaluation} and can be used with associated \code{print()} and \code{plot()} methods.
 #'
 #' @usage evaluation(sample = NULL, bookValues = NULL, auditValues = NULL, 
 #'                   confidence = 0.95, nSumstats = NULL, kSumstats = NULL,

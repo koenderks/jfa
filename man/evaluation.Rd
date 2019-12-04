@@ -46,7 +46,7 @@ evaluation(sample = NULL, bookValues = NULL, auditValues = NULL,
 An object of class \code{jfaEvaluation} containing:
 }
 \description{
-This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound accordint to a specified method. The returned object is of class \code{jfaEvaluation} and can be used with associated \code{print()} method.
+This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound accordint to a specified method. The returned object is of class \code{jfaEvaluation} and can be used with associated \code{print()} and \code{plot()} methods.
 }
 \details{
 This section lists the available options for the \code{methods} argument.
