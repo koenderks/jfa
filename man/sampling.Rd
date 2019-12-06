@@ -80,10 +80,11 @@ sampling(population = population, sampleSize = jfaRes, algorithm = "random",
 Wampler, B., & McEacharn, M. (2005). Monetary-unit sampling using Microsoft Excel. \emph{The CPA journal}, 75(5), 36.
 }
 \seealso{
-\code{\link{planning}} \code{\link{evaluation}}
+\code{\link{auditPrior}} \code{\link{planning}} \code{\link{evaluation}}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}
 }
+\keyword{audit}
 \keyword{sample}
 \keyword{sampling}

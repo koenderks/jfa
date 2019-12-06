@@ -38,7 +38,7 @@
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
-#' @seealso \code{\link{sampling}} \code{\link{evaluation}}
+#' @seealso \code{\link{auditPrior}} \code{\link{sampling}} \code{\link{evaluation}}
 #'
 #' @references Dyer, D. and Pierce, R.L. (1993). On the Choice of the Prior Distribution in Hypergeometric Sampling. \emph{Communications in Statistics - Theory and Methods}, 22(8), 2125 - 2146.
 #'
@@ -61,20 +61,24 @@
 #' planning(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
 #'          likelihood = "binomial", prior = TRUE, kPrior = 0, nPrior = 10)
 #'
-#' @keywords planning sample size
+#' @keywords planning sample size audit
 #'
 #' @export
 
 planning <- function(materiality, confidence = 0.95, expectedError = 0, likelihood = "poisson", 
                      N = NULL, maxSize = 5000, prior = FALSE, kPrior = 0, nPrior = 0){
   
+  if(class(prior) == "jfaPrior"){
+    nPrior <- prior$nPrior
+    kPrior <- prior$kPrior
+    likelihood <- prior$likelihood
+  }
+  
   if(is.null(materiality))
     stop("Specify the materiality")
   if(!(likelihood %in% c("binomial", "hypergeometric", "poisson")))
     stop("Specify a valid distribution")
-  # if(prior && is.null(kPrior) && is.null(nPrior))
-  #   stop("When you specify a prior, both kPrior and nPrior should be specified")
-  if(prior && (kPrior < 0 || nPrior < 0))
+  if((class(prior) == "logical" && prior == TRUE) && kPrior < 0 || nPrior < 0)
     stop("When you specify a prior, both kPrior and nPrior should be higher than zero")
   
   ss <- NULL
@@ -94,18 +98,18 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
   if(likelihood == "poisson"){
     for(i in startN:maxSize){
       if(errorType == "percentage"){
-        implicitK <- ceiling(expectedError * i)
+        implicitK <- expectedError * i
       } else if(errorType == "integer"){
         implicitK <- expectedError
       }
-      if(prior){
+      if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
         bound <- stats::qgamma(confidence, shape = 1 + kPrior + implicitK, rate = nPrior + i)
         if(bound < materiality){
           ss <- i
           break
         }
       } else {
-        prob <- stats::pgamma(materiality, shape = 1 + implicitK, rate = i)
+        prob <- stats::pgamma(materiality, shape = 1 + ceiling(implicitK), rate = i)
         if(prob > confidence){
           ss <- i
           break
@@ -115,18 +119,18 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
   } else if(likelihood == "binomial"){
     for(i in startN:maxSize){
       if(errorType == "percentage"){
-        implicitK <- ceiling(expectedError * i)
+        implicitK <- expectedError * i
       } else if(errorType == "integer"){
         implicitK <- expectedError
       }
-      if(prior){
+      if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
         bound <- stats::qbeta(confidence, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK)
         if(bound < materiality){
           ss <- i
           break
         }
       } else {
-        prob <- stats::dbinom(0:implicitK, size = i, prob = materiality)
+        prob <- stats::dbinom(0:ceiling(implicitK), size = i, prob = materiality)
         if(sum(prob) < (1 - confidence)){
           ss <- i
           break
@@ -143,7 +147,7 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
       } else if(errorType == "integer"){
         implicitK <- expectedError
       }
-      if(prior){
+      if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
         if(is.null(N))
           stop("The beta-binomial distribution requires that you specify the population size N")
         bound <- .qBetaBinom(p = confidence, N = N - i, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK) / N
@@ -168,7 +172,7 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
   results[["materiality"]]          <- as.numeric(materiality)
   results[["confidence"]]           <- as.numeric(confidence)
   results[["sampleSize"]]           <- as.numeric(ceiling(ss))
-  results[["expectedSampleError"]]  <- as.numeric(implicitK)
+  results[["expectedSampleError"]]  <- as.numeric(round(implicitK, 2))
   results[["expectedError"]]        <- as.numeric(expectedError)
   results[["likelihood"]]           <- as.character(likelihood)
   results[["errorType"]]            <- as.character(errorType)
@@ -177,13 +181,15 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
     results[["populationK"]]        <- as.numeric(populationK)
   }
   results[["prior"]]                <- list()
-  results[["prior"]]$prior          <- as.logical(prior)
-  if(prior){
+  if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
+    results[["prior"]]$prior        <- as.logical(TRUE)
     results[["prior"]]$priorD       <- switch(likelihood, "poisson" = "gamma", "binomial" = "beta", "hypergeometric" = "beta-binomial")
-    results[["prior"]]$kPrior       <- as.numeric(kPrior)
-    results[["prior"]]$nPrior       <- as.numeric(nPrior)
+    results[["prior"]]$kPrior       <- as.numeric(round(kPrior, 3))
+    results[["prior"]]$nPrior       <- as.numeric(round(nPrior, 3))
     results[["prior"]]$aPrior       <- 1 + results[["prior"]]$kPrior
     results[["prior"]]$bPrior       <- ifelse(likelihood == "poisson", yes = nPrior, no = 1 + nPrior - kPrior)
+  } else {
+    results[["prior"]]$prior          <- as.logical(FALSE)
   }
   class(results)                    <- "jfaPlanning"
   return(results)

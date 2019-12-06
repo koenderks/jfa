@@ -40,7 +40,7 @@
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
-#' @seealso \code{\link{planning}} \code{\link{evaluation}}
+#' @seealso \code{\link{auditPrior}} \code{\link{planning}} \code{\link{evaluation}}
 #'
 #' @references Wampler, B., & McEacharn, M. (2005). Monetary-unit sampling using Microsoft Excel. \emph{The CPA journal}, 75(5), 36.
 #'
@@ -64,7 +64,7 @@
 #' sampling(population = population, sampleSize = jfaRes, algorithm = "random", 
 #'          units = "mus", bookValues = "bookValue", seed = 1)
 #'
-#' @keywords sampling sample
+#' @keywords sampling sample audit
 #'
 #' @export
 
