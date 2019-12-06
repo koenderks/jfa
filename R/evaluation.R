@@ -55,7 +55,7 @@
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
-#' @seealso \code{\link{planning}} \code{\link{sampling}}
+#' @seealso \code{\link{auditPrior}} \code{\link{planning}} \code{\link{sampling}}
 #'
 #' @examples
 #' 
@@ -76,7 +76,7 @@
 #'                  bookValues = "bookValue", algorithm = "random")
 #'
 #' samp$sample$trueValue <- samp$sample$bookValue
-#' samp$sample$trueValue[2] <- 1561.871 - 500 # One overstatement is found
+#' samp$sample$trueValue[2] <- samp$sample$trueValue[2] - 500 # One overstatement is found
 #'
 #' # Evaluate the sample using the stringer bound.
 #' evaluation(sample = samp$sample, bookValues = "bookValue", auditValues = "trueValue", 
@@ -85,7 +85,7 @@
 #' # Evaluate the sample using summary statistics (n = 93, k = 1).
 #' evaluation(nSumstats = 93, kSumstats = 1, method = "binomial", materiality = 0.05)
 #' 
-#' @keywords evaluation confidence bound
+#' @keywords evaluation confidence bound audit
 #'
 #' @export 
 
@@ -95,6 +95,12 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
                        prior = FALSE, nPrior = 0, kPrior = 0, 
                        rohrbachDelta = 2.7, momentPoptype = "accounts",
                        populationBookValue = NULL){
+  
+  if(class(prior) == "jfaPrior"){
+    nPrior <- prior$nPrior
+    kPrior <- prior$kPrior
+    method <- prior$likelihood
+  }
   
   if(!(method %in% c("poisson", "binomial", "hypergeometric", "stringer", "stringer-meikle", "stringer-lta", "stringer-pvz",
                      "rohrbach", "moment", "direct", "difference", "quotient", "regression")) || length(method) != 1)
@@ -136,20 +142,23 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
     mat <- 0
   }
   
+  if((class(prior) == "logical" && prior == TRUE) && kPrior < 0 || nPrior < 0)
+    stop("When you specify a prior, both kPrior and nPrior should be higher than zero")
+  
   if(method == "poisson"){
-    if(prior){
+    if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
       bound <- stats::qgamma(p = confidence, shape = 1 + kPrior + t, rate = 1 + nPrior + n)
     } else {
       bound <- stats::poisson.test(x = k, T = n, r = mat, alternative = "less", conf.level = confidence)$conf.int[2]
     }
   } else if(method == "binomial"){
-    if(prior){
+    if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
       bound <- stats::qbeta(p = confidence, shape1 = 1 + kPrior + t, shape2 = 1 + nPrior - kPrior + n - t)
     } else {
       bound <- stats::binom.test(x = k, n = n, p = mat, alternative = "less", conf.level = confidence)$conf.int[2]
     }
   } else if(method == "hypergeometric"){
-    if(prior){
+    if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
       if(is.null(N))
         stop("Evaluation with beta-binomial distribution requires that you specify the population size N")
       bound <- .qBetaBinom(p = confidence, N = N - n, shape1 = 1 + kPrior + k, shape2 = 1 + nPrior - kPrior + n - k) / N
@@ -208,10 +217,12 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
     if(!prior)
       results[["populationK"]]  <- populationK
   }
-  results[["prior"]]          <- prior
-  if(prior){
+  if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
+    results[["prior"]]        <- as.logical(TRUE)
     results[["nPrior"]]       <- nPrior
     results[["kPrior"]]       <- kPrior
+  } else {
+    results[["prior"]]        <- as.logical(FALSE)
   }
   class(results)              <- "jfaEvaluation"
   return(results)

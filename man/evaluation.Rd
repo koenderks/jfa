@@ -86,7 +86,7 @@ samp <- sampling(population = data, sampleSize = jfaRes, units = "mus",
                  bookValues = "bookValue", algorithm = "random")
 
 samp$sample$trueValue <- samp$sample$bookValue
-samp$sample$trueValue[2] <- 1561.871 - 500 # One overstatement is found
+samp$sample$trueValue[2] <- samp$sample$trueValue[2] - 500 # One overstatement is found
 
 # Evaluate the sample using the stringer bound.
 evaluation(sample = samp$sample, bookValues = "bookValue", auditValues = "trueValue", 
@@ -112,11 +112,12 @@ Stringer, K. W. (1963). Practical aspects of statistical sampling in auditing. \
 Touw, P., & Hoogduin, L. (2011). \emph{Statistiek voor Audit en Controlling}. Boom uitgevers Amsterdam.
 }
 \seealso{
-\code{\link{planning}} \code{\link{sampling}}
+\code{\link{auditPrior}} \code{\link{planning}} \code{\link{sampling}}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}
 }
+\keyword{audit}
 \keyword{bound}
 \keyword{confidence}
 \keyword{evaluation}

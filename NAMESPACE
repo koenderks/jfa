@@ -2,10 +2,13 @@
 
 S3method(plot,jfaEvaluation)
 S3method(plot,jfaPlanning)
+S3method(plot,jfaPrior)
 S3method(plot,jfaSampling)
 S3method(print,jfaEvaluation)
 S3method(print,jfaPlanning)
+S3method(print,jfaPrior)
 S3method(print,jfaSampling)
+export(auditPrior)
 export(evaluation)
 export(planning)
 export(sampling)

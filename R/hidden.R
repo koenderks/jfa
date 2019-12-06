@@ -39,8 +39,9 @@ print.jfaEvaluation <- function(x, ...){
 # Upper bound:          ", round(x$upperBound, 2),"
 # Conclusion:           ", x$conclusion)
   } else {
-    if(!is.null(x$materiality)){
-      cat("# jfa evaluation results for", x$method,"method:
+    if(x$prior){
+      if(!is.null(x$materiality)){
+        cat("# jfa evaluation results for", x$method,"likelihood with prior:
 #   
 # Materiality:          ", paste0(round(x$materiality * 100, 2), "%"),"
 # Confidence:           ", paste0(round(x$confidence * 100, 2), "%"),"
@@ -48,15 +49,45 @@ print.jfaEvaluation <- function(x, ...){
 # Sample size:          ", x$n,"
 # Sample errors:        ", x$k, "
 # Conclusion:           ", x$conclusion)
-    } else {
-      cat("# jfa evaluation results for", x$method,"method:
+      } else {
+        cat("# jfa evaluation results for", x$method,"likelihood with prior:
 #      
 # Confidence:           ", paste0(round(x$confidence * 100, 2), "%"),"
 # Upper bound:          ", paste0(round(x$confBound * 100, 3), "%"),"
 # Sample size:          ", x$n,"
 # Sample errors:        ", x$k)
+      }
+    } else {
+      if(!is.null(x$materiality)){
+        cat("# jfa evaluation results for", x$method,"method:
+#   
+# Materiality:          ", paste0(round(x$materiality * 100, 2), "%"),"
+# Confidence:           ", paste0(round(x$confidence * 100, 2), "%"),"
+# Upper bound:          ", paste0(round(x$confBound * 100, 3), "%"),"
+# Sample size:          ", x$n,"
+# Sample errors:        ", x$k, "
+# Conclusion:           ", x$conclusion)
+      } else {
+        cat("# jfa evaluation results for", x$method,"method:
+#      
+# Confidence:           ", paste0(round(x$confidence * 100, 2), "%"),"
+# Upper bound:          ", paste0(round(x$confBound * 100, 3), "%"),"
+# Sample size:          ", x$n,"
+# Sample errors:        ", x$k)
+      }
     }
   }
+}
+
+#' @method print jfaPrior
+#' @export
+print.jfaPrior <- function(x, ...){
+  cat("# jfa prior distribution for", x$method,"method:
+#      
+# Prior sample size:    ", round(x$nPrior, 2), "
+# Prior errors:         ", round(x$kPrior, 2),"
+# Prior:                ", paste0(x$priorD, "(", x$aPrior, ", ", x$bPrior, ")")
+  )
 }
 
 #' @method plot jfaPlanning
@@ -218,5 +249,36 @@ plot.jfaEvaluation <- function(x, ...){
       graphics::barplot(d1, col = "darkgray", add = TRUE, las = 1, axes = FALSE, width = 1, space = 0)
       graphics::legend("topright", legend = c("Error free", "Errors"), fill = c("lightgray", "darkgray"), bty = "n", cex = 1.2) 
     }
+  }
+}
+
+#' @method plot jfaPrior
+#' @export
+plot.jfaPrior <- function(x, ...){
+  xlim <- x$materiality * 3
+  xseq <- seq(0, xlim, 0.00001)
+  mainLab <- ifelse(x$kPrior == 0 && x$nPrior == 0, yes = "Uninformed", no = "Informed")
+  if(x$priorD == "gamma"){
+    d <- stats::dgamma(xseq, shape = x$aPrior, rate = x$bPrior)
+  } else if(x$priorD == "beta"){
+    d <- stats::dbeta(xseq, shape1 = x$aPrior, shape2 = x$bPrior)
+  } else if(x$priorD == "beta-binomial"){
+    xlim <- ceiling(xlim * x$N)
+    xseq <- seq(0, xlim, by = 1)
+    d <- .dBetaBinom(x = xseq, N = x$N, shape1 = x$aPrior, shape2 = x$bPrior)
+  }
+  mainLab <- paste0(mainLab, " ", x$priorD, " prior")
+  if(x$priorD == "gamma" || x$priorD == "beta"){
+    graphics::plot(x = xseq, y = d, type = "l", lwd = 2, bty = "n", xlab = "Misstatement", ylab = "Probability density", las = 1, ylim = c(0, max(d)),
+                   main = mainLab, axes = FALSE, lty = 2)
+    graphics::axis(1, at = pretty(seq(0, xlim, by = 0.01), min.n = 5), labels = paste0(round(pretty(seq(0, xlim, by = 0.01), min.n = 5) * 100, 2), "%"))
+    graphics::axis(2, at = c(0, max(d)), labels = FALSE, las = 1, lwd.ticks = 0)
+    graphics::legend("topright", legend = "Prior", lty = 2, bty = "n", cex = 1.2, lwd = 2)
+  } else {
+    graphics::barplot(d, bty = "n", xlab = "Errors", ylab = "Probability", las = 1, ylim = c(0, max(d)), width = 1, space = 0,
+                      main = mainLab, axes = FALSE, col = "darkgray")
+    graphics::axis(1, at = seq(0, xlim, by = 10) + 0.5, labels = seq(0, xlim, by = 10))
+    graphics::axis(2, at = c(0, max(d)), labels = FALSE, las = 1, lwd.ticks = 0)
+    graphics::legend("topright", legend = "Prior", fill = "lightgray", bty = "n", cex = 1.2) 
   }
 }
