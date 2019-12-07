@@ -13,11 +13,21 @@
 
 # R package jfa
 
-`jfa` is a multifunctional R package for statistical auditing. The package provides the user with four generic functions for planning, 
-performing, and evaluating an audit and its results. Specifically, it contains functions for creating a Bayesian prior distribution, 
-calculating (Bayesian and frequentist) sample sizes for substantive testing, sampling from data according to standard auditing techniques, 
-and calculating various confidence bounds for the maximum error from data or summary statistics. The `jfa` package can be used to set up 
-the entire audit sampling workflow.
+`jfa` is a multifunctional R package for statistical auditing. The package provides the user with four generic functions for planning, performing, and evaluating an audit and its results. Specifically, it contains functions for calculating sample sizes for substantive testing, sampling from data according to standard auditing techniques, and calculating various confidence bounds for the maximum error from data or summary statistics. The package also allows the user to create a Bayesian prior distribution for use in these functions. The `jfa` package can be used to set up the entire audit sampling workflow.
+
+* [Installing](###Installing)  
+* [Functions](###Functions) 
+* [Example](###Example) 
+
+### Authors
+
+* **Koen Derks** - *Initial work* - [Website](https://koenderks.com)
+
+See also the list of [contributors](https://github.com/koenderks/auditR/graphs/contributors) who participated in this project.
+
+### License
+
+This project is licensed under the GPL-3 License.
 
 ## Getting Started
 
@@ -26,13 +36,11 @@ local machine for use in R and RStudio.
 
 ### Prerequisites
 
-* [R](https://cran.r-project.org/mirrors.html) - The programming language used for deploying the package
+* [R](https://cran.r-project.org/mirrors.html) - The programming language used for deploying the package.
 
 ### Installing
 
-R package `jfa` is simple to download and set-up. Untill there is a live version
-on [CRAN](https://cran.r-project.org/), the development version can be downloaded
-in the following manner:
+R package `jfa` is simple to download and set-up. Untill there is a live version on [CRAN](https://cran.r-project.org/), the development version can be downloaded in the following manner:
 
 The package you will need for this is the `devtools` package. You can obtain this package by running
 the following command in the R or RStudio console (provided you have a working internet connection):
@@ -53,17 +61,7 @@ The `jfa` package can then be loaded in RStudio by typing:
 library(jfa)
 ```
 
-### Authors
-
-* **Koen Derks** - *Initial work* - [Website](https://koenderks.com)
-
-See also the list of [contributors](https://github.com/koenderks/auditR/graphs/contributors) who participated in this project.
-
-### License
-
-This project is licensed under the GPL-3 License.
-
-### Available Functions
+### Functions
 
 Below is a list of the available functions in the current development version of `jfa`, sorted by their occurrence in the standard audit sampling workflow.
 
@@ -99,26 +97,28 @@ This function takes a sample data frame or summary statistics about an evaluated
 
 `evaluation(sample = NULL, bookValues = NULL, auditValues = NULL, confidence = 0.95, dataType = "sample", sampleSize = NULL, sumErrors = NULL, method = "binomial", materiality = NULL, N = NULL, rohrbachDelta = 2.7)`
 
-### The Audit Sampling Workflow
+### Example
+
+Below is an example of how `jfa` may be used to facilitate the audit sampling workflow. The objective of this audit is to give a statement that, when 2.5 percent errors are found in the population of N = 1000, the auditor can state with 95 percent confidence that the misstatement in the population is lower than the materiality of 5 percent. In addition, the auditor has used the audit risk model to identify the inherent risk as 100 percent and the control risk as 60 percent. The auditor captures this information in the prior distribution and evaluates the population using the posterior distribution.
 
 ```
 library(jfa)
-
 set.seed(1)
+
 # Generate some audit data (N = 1000).
 population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), 
                          bookValue = runif(n = 1000, min = 100, max = 500))
 
-# Specify materiality, confidence, and expected errors.
-materiality <- 0.05
-confidence <- 0.95
-expectedError <- 0.025
+# Specify the materiality, confidence, and expected errors.
+materiality   <- 0.05   # 5%
+confidence    <- 0.95   # 95%
+expectedError <- 0.025  # 2.5%
 
-# Create a prior on the assessments of inherent risk (100%) and control risk (60%).
-ir <- 1
-cr <- 0.6
+# Specify the inherent risk (ir) and control risk (cr).
+ir <- 1     # 100%
+cr <- 0.6   # 60%
 
-# Create a beta prior distribution according to the Audit Risk Model (arm).
+# Create a beta prior distribution according to the Audit Risk Model (arm) and a binomial likelihood.
 prior <- auditPrior(materiality = materiality, confidence = confidence, 
                     method = "arm", ir = ir, cr = cr, 
                     expectedError = expectedError, likelihood = "binomial")
@@ -130,7 +130,7 @@ print(prior)
 # Prior errors:          1.27 
 # Prior:                 beta(2.275, 50.725)
 
-# Calculate the sample size according to the binomial distribution with the specified prior
+# Calculate the sample size according to the binomial distribution with the specified prior.
 sampleSize <- planning(materiality = materiality, confidence = confidence, 
                       expectedError = expectedError, prior = prior, likelihood = "binomial")
 print(sampleSize)
@@ -144,15 +144,20 @@ print(sampleSize)
 # Prior parameter alpha:   2.275 
 # Prior parameter beta:    50.725
 
-# Draw sample using random record sampling
+# Draw sample using random monetary unit sampling.
 sampleResult <- sampling(population = population, sampleSize = sampleSize, 
-                         algorithm = "random", units = "records", seed = 1)
+                         algorithm = "random", units = "mus", seed = 1, bookValues = "bookValue")
 
+# Isolate the sample.
 sample <- sampleResult$sample
-sample$trueValue <- sample$bookValue
-sample$trueValue[2] <- sample$trueValue[2] - 500 # One overstatement is found
 
-# Evaluate the sample using the posterior distribution.
+# For this example, we use the book values as audit values. Implies zero errors at this point.
+sample$trueValue <- sample$bookValue
+
+# One overstatement is found.
+sample$trueValue[2] <- sample$trueValue[2] - 500
+
+# Evaluate the sample with one partial error using the posterior distribution.
 conclusion <- evaluation(sample = sample, bookValues = "bookValue", auditValues = "trueValue", 
                          prior = prior, materiality = 0.05)
 print(conclusion)
@@ -161,8 +166,11 @@ print(conclusion)
 #   
 # Materiality:           5% 
 # Confidence:            95% 
-# Upper bound:           3.785% 
+# Upper bound:           3.927% 
 # Sample size:           169 
 # Sample errors:         1 
 # Conclusion:            Approve population
+
+# If you are curious...
+plot(conclusion)
 ```
