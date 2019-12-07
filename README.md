@@ -15,9 +15,9 @@
 
 `jfa` is a multifunctional R package for statistical auditing. The package provides the user with four generic functions for planning, performing, and evaluating an audit and its results. Specifically, it contains functions for calculating sample sizes for substantive testing, sampling from data according to standard auditing techniques, and calculating various confidence bounds for the maximum error from data or summary statistics. The package also allows the user to create a Bayesian prior distribution for use in these functions. The `jfa` package can be used to set up the entire audit sampling workflow.
 
-* [Installing](###Installing)  
-* [Functions](###Functions) 
-* [Example](###Example) 
+* [Installing](##Installing)  
+* [Functions](##Functions) 
+* [Example](##Example) 
 
 ### Authors
 
@@ -29,7 +29,7 @@ See also the list of [contributors](https://github.com/koenderks/auditR/graphs/c
 
 This project is licensed under the GPL-3 License.
 
-## Getting Started
+## Installing
 
 These instructions will get you a copy of the `jfa` package up and running on your 
 local machine for use in R and RStudio. 
@@ -38,7 +38,7 @@ local machine for use in R and RStudio.
 
 * [R](https://cran.r-project.org/mirrors.html) - The programming language used for deploying the package.
 
-### Installing
+### Downloading
 
 R package `jfa` is simple to download and set-up. Untill there is a live version on [CRAN](https://cran.r-project.org/), the development version can be downloaded in the following manner:
 
@@ -61,7 +61,7 @@ The `jfa` package can then be loaded in RStudio by typing:
 library(jfa)
 ```
 
-### Functions
+## Functions
 
 Below is a list of the available functions in the current development version of `jfa`, sorted by their occurrence in the standard audit sampling workflow.
 
@@ -97,7 +97,7 @@ This function takes a sample data frame or summary statistics about an evaluated
 
 `evaluation(sample = NULL, bookValues = NULL, auditValues = NULL, confidence = 0.95, dataType = "sample", sampleSize = NULL, sumErrors = NULL, method = "binomial", materiality = NULL, N = NULL, rohrbachDelta = 2.7)`
 
-### Example
+## Example
 
 Below is an example of how `jfa` may be used to facilitate the audit sampling workflow. The objective of this audit is to give a statement that, when 2.5 percent errors are found in the population of N = 1000, the auditor can state with 95 percent confidence that the misstatement in the population is lower than the materiality of 5 percent. In addition, the auditor has used the audit risk model to identify the inherent risk as 100 percent and the control risk as 60 percent. The auditor captures this information in the prior distribution and evaluates the population using the posterior distribution.
 
