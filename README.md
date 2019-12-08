@@ -18,6 +18,7 @@
 * [Installing](##Installing)  
 * [Functions](##Functions) 
 * [Example](##Example) 
+* [Poster](##Poster) 
 
 ### Authors
 
@@ -107,7 +108,7 @@ set.seed(1)
 
 # Generate some audit data (N = 1000).
 population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), 
-                         bookValue = runif(n = 1000, min = 100, max = 500))
+                         bookValue = runif(n = 1000, min = 700, max = 1000))
 
 # Specify the materiality, confidence, and expected errors.
 materiality   <- 0.05   # 5%
@@ -147,6 +148,14 @@ print(sampleSize)
 # Draw sample using random monetary unit sampling.
 sampleResult <- sampling(population = population, sampleSize = sampleSize, 
                          algorithm = "random", units = "mus", seed = 1, bookValues = "bookValue")
+print(sampleResult)
+
+# jfa sampling results for random monetary unit sampling: 
+#      
+# Population size:         1000 
+# Sample size:             169 
+# Proportion n/N:          0.169 
+# Precentage of value:     16.84%
 
 # Isolate the sample.
 sample <- sampleResult$sample
@@ -166,7 +175,7 @@ print(conclusion)
 #   
 # Materiality:           5% 
 # Confidence:            95% 
-# Upper bound:           3.927% 
+# Upper bound:           2.729% 
 # Sample size:           169 
 # Sample errors:         1 
 # Conclusion:            Approve population
@@ -174,3 +183,9 @@ print(conclusion)
 # If you are curious...
 plot(conclusion)
 ```
+
+## Poster
+
+<p align="center">
+  <img src="./man/figures/poster/poster.png" align="middle">
+</p>

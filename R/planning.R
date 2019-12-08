@@ -43,7 +43,6 @@
 #' @references Dyer, D. and Pierce, R.L. (1993). On the Choice of the Prior Distribution in Hypergeometric Sampling. \emph{Communications in Statistics - Theory and Methods}, 22(8), 2125 - 2146.
 #'
 #' @examples
-#' 
 #' library(jfa)
 #' 
 #' # Using the binomial distribution, calculates the required sample size for a 
