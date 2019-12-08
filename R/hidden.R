@@ -23,7 +23,21 @@ print.jfaPlanning <- function(x, ...){
 #' @method print jfaSampling
 #' @export
 print.jfaSampling <- function(x, ...){
-  print(x$sample)
+  title <- paste0(x$algorithm, " ", ifelse(x$units == "mus", yes = "monetary unit sampling", no = "record sampling"), ":")
+  if(x$units == "mus"){
+    cat("# jfa sampling results for",title, "
+#      
+# Population size:        ", nrow(x$population),"
+# Sample size:            ", nrow(x$sample),"
+# Proportion n/N:         ", nrow(x$sample)/nrow(x$population), "
+# Percentage of value:    ", paste0(round(sum(x$sample[, x$bookValues]) / sum(x$population[, x$bookValues]) * 100, 2), "%")) 
+  } else {
+    cat("# jfa sampling results for", x$algorithm, title, "
+#      
+# Population size:        ", nrow(x$population),"
+# Sample size:            ", nrow(x$sample),"
+# Proportion n/N:         ", nrow(x$sample)/nrow(x$population)) 
+  }
 }
 
 #' @method print jfaEvaluation

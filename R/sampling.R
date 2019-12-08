@@ -49,8 +49,8 @@
 #' library(jfa)
 #' 
 #' # Generate some audit data (N = 1000).
-#' population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), 
-#'                          bookValue = runif(n = 1000, min = 100, max = 500))
+#'population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), 
+#'                         bookValue = runif(n = 1000, min = 700, max = 1000))
 #' 
 #' # Calculate the sample size according to the binomial distribution with zero errors
 #' jfaRes <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0, 
@@ -143,6 +143,8 @@ sampling <- function(population, sampleSize, bookValues = NULL, units = "records
   results[["population"]] <- population
   results[["sample"]] <- sample
   results[["bookValues"]] <- bookValues
+  results[["algorithm"]] <- algorithm
+  results[["units"]] <- units
   class(results) <- "jfaSampling"
   return(results)
 }
