@@ -35,6 +35,8 @@ An object of class \code{jfaSampling} containing:
 \item{population}{a data frame containing the input population.}
 \item{sample}{a data frame containing the selected observations.}
 \item{bookValues}{if specified, the name of the specified book value column.}
+\item{algorithm}{the algorithm that was used for sampling.}
+\item{units}{the sampling units that were used for sampling.}
 }
 \description{
 This function takes a data frame and performs sampling according to one of three popular algorithms: random sampling, cell sampling, or fixed interval sampling. Sampling is done in combination with one of two sampling units: records or monetary units The returned object is of class \code{jfaSampling} and can be used with associated \code{print()} and \code{plot()} methods.

@@ -24,6 +24,19 @@ auditPrior(materiality, confidence = 0.95, method = "arm", ir = 1, cr = 1,
 
 \item{N}{the population size (required for hypergeometric calculations).}
 }
+\value{
+An object of class \code{jfaPrior} containing:
+
+\item{method}{the method by which the prior distribution is constructed.}
+\item{likelihood}{the likelihood by which the prior distribution is updated.}
+\item{priorD}{the name of the probability density function of the prior distribution.}
+\item{nPrior}{the prior assumed sample size.}
+\item{kPrior}{the prior assumed sample errors}
+\item{aPrior}{the prior parameter alpha.}
+\item{bPrior}{the prior parameter beta.}
+\item{materiality}{the materiality that was used to construct the prior distribution.}
+\item{N}{if specified as input, the population size.}
+}
 \description{
 This function creates a prior distribution according to the audit risk model. The returned object is of class \code{jfaPrior} and can be used with associated \code{print()} and \code{plot()} methods. \code{jfaPrior} objects can be used as input argument for the \code{prior} argument in other functions.
 }

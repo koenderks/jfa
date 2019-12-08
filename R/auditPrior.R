@@ -20,6 +20,18 @@
 #' 
 #' @references Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., & Wetzels, R. (2019). JASP for audit: Bayesian tools for the auditing practice.
 #'
+#' @return An object of class \code{jfaPrior} containing:
+#' 
+#' \item{method}{the method by which the prior distribution is constructed.}
+#' \item{likelihood}{the likelihood by which the prior distribution is updated.}
+#' \item{priorD}{the name of the probability density function of the prior distribution.}
+#' \item{nPrior}{the prior assumed sample size.}
+#' \item{kPrior}{the prior assumed sample errors}
+#' \item{aPrior}{the prior parameter alpha.}
+#' \item{bPrior}{the prior parameter beta.}
+#' \item{materiality}{the materiality that was used to construct the prior distribution.}
+#' \item{N}{if specified as input, the population size.}
+#'
 #' @keywords prior distribution audit
 #'
 #' @examples 

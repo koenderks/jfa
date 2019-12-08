@@ -5,11 +5,11 @@
 \title{Evaluation of Audit Samples using Confidence / Credible Bounds}
 \usage{
 evaluation(sample = NULL, bookValues = NULL, auditValues = NULL, 
-                  confidence = 0.95, nSumstats = NULL, kSumstats = NULL,
-                  method = "binomial", materiality = NULL, N = NULL, 
-                  prior = FALSE, nPrior = 0, kPrior = 0, 
-                  rohrbachDelta = 2.7, momentPoptype = "accounts",
-                  populationBookValue = NULL)
+           confidence = 0.95, nSumstats = NULL, kSumstats = NULL,
+           method = "binomial", materiality = NULL, N = NULL, 
+           prior = FALSE, nPrior = 0, kPrior = 0, 
+           rohrbachDelta = 2.7, momentPoptype = "accounts",
+           populationBookValue = NULL)
 }
 \arguments{
 \item{sample}{a data frame containing at least a column of book values and a column of audit (true) values.}
@@ -44,6 +44,24 @@ evaluation(sample = NULL, bookValues = NULL, auditValues = NULL,
 }
 \value{
 An object of class \code{jfaEvaluation} containing:
+
+\item{n}{the sample size.}
+\item{k}{an integer specifyng the number of observed errors.}
+\item{t}{a number specifying the sum of observed taints.}
+\item{confidence}{the confidence level of the result.}
+\item{popBookvalue}{if specified as input, the total book value of the population.}
+\item{pointEstimate}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, the value of the point estimate.}
+\item{lowerBound}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, the value of the lower bound of the interval.}
+\item{upperBound}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, the value of the upper bound of the interval.}
+\item{confBound}{the upper confidence bound on the error percentage. }
+\item{method}{the evaluation method that was used.}
+\item{materiality}{the materiality.}
+\item{conclusion}{if \code{materiality} is specified, the conclusion about whether to approve or not approve the population.}
+\item{N}{if specified as input, the population size.}
+\item{populationK}{the assumed total errors in the population. Used for inferences with \code{hypergeometric} method.}
+\item{prior}{a logical, indicating whether a prior was used in the analysis.}
+\item{nPrior}{if a prior is specified, the prior assumed sample size.}
+\item{kPrior}{if a prior is specified, the prior assumed sample errors.}
 }
 \description{
 This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound accordint to a specified method. The returned object is of class \code{jfaEvaluation} and can be used with associated \code{print()} and \code{plot()} methods.

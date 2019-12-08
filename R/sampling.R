@@ -37,6 +37,8 @@
 #' \item{population}{a data frame containing the input population.}
 #' \item{sample}{a data frame containing the selected observations.}
 #' \item{bookValues}{if specified, the name of the specified book value column.}
+#' \item{algorithm}{the algorithm that was used for sampling.}
+#' \item{units}{the sampling units that were used for sampling.}
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
