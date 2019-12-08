@@ -175,6 +175,8 @@ plot.jfaPlanning <- function(x, ...){
 #' @method plot jfaSampling
 #' @export
 plot.jfaSampling <- function(x, ...){
+  if(x$units == "records")
+    stop("No plotting method available for record sampling")
   name <- x$bookValues
   graphics::hist(x$population[[name]], breaks = 30, main = "Histogram of population and sample book values", xlab = "Book values", las = 1, col = "lightgray")
   graphics::hist(x$sample[[name]], breaks = 30, main = "Sample", xlab = "Book values", las = 1, add = TRUE, col = "darkgray")

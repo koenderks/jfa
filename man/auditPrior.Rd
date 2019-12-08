@@ -28,24 +28,24 @@ auditPrior(materiality, confidence = 0.95, method = "arm", ir = 1, cr = 1,
 This function creates a prior distribution according to the audit risk model. The returned object is of class \code{jfaPrior} and can be used with associated \code{print()} and \code{plot()} methods. \code{jfaPrior} objects can be used as input argument for the \code{prior} argument in other functions.
 }
 \examples{
-
 library(jfa)
-
 set.seed(1)
+
 # Generate some audit data (N = 1000).
 population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), 
-                         bookValue = runif(n = 1000, min = 100, max = 500))
-                         
-# Specify materiality, confidence, and expected errors.
-materiality <- 0.05
-confidence <- 0.95
-expectedError <- 0.025
+                         bookValue = runif(n = 1000, min = 700, max = 1000))
 
-# Create a prior on the assessments of inherent risk (100\%) and control risk (60\%).
-ir <- 1
-cr <- 0.6
+# Specify the materiality, confidence, and expected errors.
+materiality   <- 0.05   # 5\%
+confidence    <- 0.95   # 95\%
+expectedError <- 0.025  # 2.5\%
 
-# Create a beta prior distribution according to the Audit Risk Model (arm).
+# Specify the inherent risk (ir) and control risk (cr).
+ir <- 1     # 100\%
+cr <- 0.6   # 60\%
+
+# Create a beta prior distribution according to the Audit Risk Model (arm) 
+# and a binomial likelihood.
 prior <- auditPrior(materiality = materiality, confidence = confidence, 
                     method = "arm", ir = ir, cr = cr, 
                     expectedError = expectedError, likelihood = "binomial")
@@ -57,7 +57,7 @@ print(prior)
 # Prior errors:          1.27 
 # Prior:                 beta(2.275, 50.725)
 
-# Calculate the sample size according to the binomial distribution with the specified prior
+# Calculate the sample size according to the binomial distribution with the specified prior.
 sampleSize <- planning(materiality = materiality, confidence = confidence, 
                        expectedError = expectedError, prior = prior, likelihood = "binomial")
 print(sampleSize)
@@ -71,15 +71,28 @@ print(sampleSize)
 # Prior parameter alpha:   2.275 
 # Prior parameter beta:    50.725
 
-# Draw sample using random record sampling
+# Draw sample using random monetary unit sampling.
 sampleResult <- sampling(population = population, sampleSize = sampleSize, 
-                         algorithm = "random", units = "records", seed = 1)
+                         algorithm = "random", units = "mus", seed = 1, bookValues = "bookValue")
+print(sampleResult)
 
+# jfa sampling results for random monetary unit sampling: 
+#      
+# Population size:         1000 
+# Sample size:             169 
+# Proportion n/N:          0.169 
+# Precentage of value:     16.84\%
+
+# Isolate the sample.
 sample <- sampleResult$sample
-sample$trueValue <- sample$bookValue
-sample$trueValue[2] <- sample$trueValue[2] - 500 # One overstatement is found
 
-# Evaluate the sample using the posterior distribution.
+# For this example, we use the book values as audit values. Implies zero errors at this point.
+sample$trueValue <- sample$bookValue
+
+# One overstatement is found.
+sample$trueValue[2] <- sample$trueValue[2] - 500
+
+# Evaluate the sample with one partial error using the posterior distribution.
 conclusion <- evaluation(sample = sample, bookValues = "bookValue", auditValues = "trueValue", 
                          prior = prior, materiality = 0.05)
 print(conclusion)
@@ -88,7 +101,7 @@ print(conclusion)
 #   
 # Materiality:           5\% 
 # Confidence:            95\% 
-# Upper bound:           3.785\% 
+# Upper bound:           2.729\% 
 # Sample size:           169 
 # Sample errors:         1 
 # Conclusion:            Approve population

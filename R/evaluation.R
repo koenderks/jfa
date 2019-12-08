@@ -58,13 +58,12 @@
 #' @seealso \code{\link{auditPrior}} \code{\link{planning}} \code{\link{sampling}}
 #'
 #' @examples
-#' 
 #' library(jfa)
 #' 
 #' # Generate some audit data (N = 1000)
 #' set.seed(1)
 #' data <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), 
-#'                   bookValue = runif(n = 1000, min = 1000, max = 10000))
+#'                   bookValue = runif(n = 1000, min = 700, max = 1000))
 #'
 #' # Using the binomial likelihood, calculates the upper 95% confidence bound for a 
 #' # materiality of 5% when 1% full errors are found in a sample (n = 93).
@@ -79,11 +78,32 @@
 #' samp$sample$trueValue[2] <- samp$sample$trueValue[2] - 500 # One overstatement is found
 #'
 #' # Evaluate the sample using the stringer bound.
-#' evaluation(sample = samp$sample, bookValues = "bookValue", auditValues = "trueValue", 
-#'            method = "stringer", materiality = 0.05)
+#' conclusion <- evaluation(sample = samp$sample, bookValues = "bookValue", 
+#'                          auditValues = "trueValue", method = "stringer", materiality = 0.05)
+#' print(conclusion)
+#' 
+#' # jfa evaluation results for stringer method:
+#' #   
+#' # Materiality:           5% 
+#' # Confidence:            95% 
+#' # Upper bound:           4.244% 
+#' # Sample size:           93 
+#' # Sample errors:         1 
+#' # Conclusion:            Approve population
 #'
 #' # Evaluate the sample using summary statistics (n = 93, k = 1).
-#' evaluation(nSumstats = 93, kSumstats = 1, method = "binomial", materiality = 0.05)
+#' conclusion <- evaluation(nSumstats = 93, kSumstats = 1, method = "binomial", 
+#'                          materiality = 0.05)
+#' print(conclusion)
+#' 
+#' # jfa evaluation results for binomial method:
+#' #   
+#' # Materiality:           5% 
+#' # Confidence:            95% 
+#' # Upper bound:           4.999% 
+#' # Sample size:           93 
+#' # Sample errors:         1 
+#' # Conclusion:            Approve population
 #' 
 #' @keywords evaluation confidence bound audit
 #'

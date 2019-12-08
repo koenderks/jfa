@@ -53,7 +53,6 @@ This section elaborates on the available likelihoods and corresponding prior dis
 }
 }
 \examples{
-
 library(jfa)
 
 # Using the binomial distribution, calculates the required sample size for a 
