@@ -55,7 +55,7 @@ print.jfaEvaluation <- function(x, ...){
   } else {
     if(x$prior){
       if(!is.null(x$materiality)){
-        cat("# jfa evaluation results for", x$method,"likelihood with prior:
+        cat("# jfa evaluation results for", x$method,"method with prior:
 #   
 # Materiality:          ", paste0(round(x$materiality * 100, 2), "%"),"
 # Confidence:           ", paste0(round(x$confidence * 100, 2), "%"),"
@@ -64,7 +64,7 @@ print.jfaEvaluation <- function(x, ...){
 # Sample errors:        ", x$k, "
 # Conclusion:           ", x$conclusion)
       } else {
-        cat("# jfa evaluation results for", x$method,"likelihood with prior:
+        cat("# jfa evaluation results for", x$method,"method with prior:
 #      
 # Confidence:           ", paste0(round(x$confidence * 100, 2), "%"),"
 # Upper bound:          ", paste0(round(x$confBound * 100, 3), "%"),"
@@ -214,20 +214,26 @@ plot.jfaEvaluation <- function(x, ...){
         bound <- stats::qgamma(x$confidence, shape = 1 + x$kPrior + x$t, rate = x$nPrior + x$n)
       } else if(x$method == "binomial"){
         d <- stats::dbeta(xseq, shape1 = 1 + x$kPrior, shape2 = 1 + x$nPrior - x$kPrior)
-        d1 <- stats::dbeta(xseq, shape1 = 1 + x$kPrior + x$t, shape2 = 1 + x$nPrior + x$n - x$t)
-        bound <- stats::qbeta(x$confidence, shape1 = x$kPrior + x$t, shape2 = 1 + x$nPrior + x$n - x$t)
+        d1 <- stats::dbeta(xseq, shape1 = 1 + x$kPrior + x$t, shape2 = 1 + x$nPrior - x$kPrior + x$n - x$t)
+        bound <- stats::qbeta(x$confidence, shape1 = 1 + x$kPrior + x$t, shape2 = 1 + x$nPrior - x$kPrior + x$n - x$t)
       } else if(x$method == "hypergeometric"){
         xlim <- ceiling(xlim * x$N)
         xseq <- seq(0, xlim, by = 1)
         d <- .dBetaBinom(x = xseq, N = x$N, shape1 = 1 + x$kPrior, shape2 = 1 + x$nPrior - x$kPrior)
-        d1 <- .dBetaBinom(x = xseq, N = x$N, shape1 = 1 + x$kPrior + x$k, shape2 = 1 + x$nPrior + x$n - x$k)
-        bound <- .qBetaBinom(p = x$confidence, N = x$N - x$n, shape1 = 1 + x$kPrior + x$k, shape2 = 1 + x$nPrior + x$n - x$k)
+        d1 <- .dBetaBinom(x = xseq, N = x$N, shape1 = 1 + x$kPrior + x$k, shape2 = 1 + x$nPrior - x$kPrior + x$n - x$k)
+        bound <- .qBetaBinom(p = x$confidence, N = x$N - x$n, shape1 = 1 + x$kPrior + x$k, shape2 = 1 + x$nPrior - x$kPrior + x$n - x$k)
+      } else if(x$method == "coxsnell"){
+        d <- stats::dbeta(xseq, shape1 = 1 + x$kPrior, shape2 = 1 + x$nPrior - x$kPrior)
+        d1 <- .dCoxAndSnellF(xseq, x$df1, x$df2, x$multiplicationFactor)
+        bound <- x$multiplicationFactor * stats::qf(p = x$confidence, df1 = x$df1, df2 = x$df2)
       }
-      if(x$method == "poisson" || x$method == "binomial"){
+      if(x$method == "poisson" || x$method == "binomial" || x$method == "coxsnell"){
         if(x$method == "poisson")
           mainLabPlus <- " gamma prior and posterior"
         if(x$method == "binomial")
           mainLabPlus <- " beta prior and posterior"
+        if(x$method == "coxsnell")
+          mainLabPlus <- " Cox and Snell prior and posterior"
         graphics::plot(x = xseq, y = d1, type = "l", lwd = 2, bty = "n", xlab = "Misstatement", ylab = "Probability density", las = 1, ylim = c(0, max(d1)),
                        main = paste0(mainLab, mainLabPlus), axes = FALSE)
         graphics::polygon(x = c(0, xseq[xseq<=bound], xseq[xseq<=bound][length(xseq[xseq<=bound])]), y = c(0, d1[xseq<=bound], 0), col="lightgray", border = NA)
