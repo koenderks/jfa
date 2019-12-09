@@ -7,7 +7,8 @@
 #'            method = "binomial", materiality = NULL, N = NULL, 
 #'            prior = FALSE, nPrior = 0, kPrior = 0, 
 #'            rohrbachDelta = 2.7, momentPoptype = "accounts",
-#'            populationBookValue = NULL) 
+#'            populationBookValue = NULL, 
+#'            csA = 1, csB = 3, csMu = 0.5) 
 #'
 #' @param sample        a data frame containing at least a column of book values and a column of audit (true) values.
 #' @param bookValues    the column name for the book values in the sample.
@@ -24,6 +25,9 @@
 #' @param rohrbachDelta the value of \eqn{\Delta} in Rohrbach's augmented variance bound.
 #' @param momentPoptype can be either one of \code{accounts} or \code{inventory}. Options result in different methods for calculating the central moments, for more information see Dworin and Grimlund (1986).
 #' @param populationBookValue the total value of the audit population. Required when \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}.
+#' @param csA           if \code{method = "coxsnell"}, the \eqn{\alpha} parameter of the prior distribution on the mean taint. Default is set to 1, as recommended by Cox and Snell (1979).
+#' @param csB           if \code{method = "coxsnell"}, the \eqn{\beta} parameter of the prior distribution on the mean taint. Default is set to 3, as recommended by Cox and Snell (1979).
+#' @param csMu          if \code{method = "coxsnell"}, the mean of the prior distribution on the mean taint. Default is set to 0.5, as recommended by Cox and Snell (1979).
 #'
 #' @details This section lists the available options for the \code{methods} argument.
 #' 
@@ -37,19 +41,21 @@
 #'  \item{\code{stringer-pvz}:     Stringer bound with Pap and van Zuijlen's correction for understatements (Pap and van Zuijlen, 1996).}
 #'  \item{\code{rohrbach}:         Rohrbach's augmented variance bound (Rohrbach, 1993).}
 #'  \item{\code{moment}:           Modified moment bound (Dworin and Grimlund, 1986).}
+#'  \item{\code{coxsnell}:         Cox and Snell bound (Cox and Snell, 1979).}
 #'  \item{\code{direct}:           Confidence interval using the direct method (Touw and Hoogduin, 2011).}
 #'  \item{\code{difference}:       Confidence interval using the difference method (Touw and Hoogduin, 2011).}
 #'  \item{\code{quotient}:         Confidence interval using the quotient method (Touw and Hoogduin, 2011).}
 #'  \item{\code{regression}:       Confidence interval using the regression method (Touw and Hoogduin, 2011).}
 #' }
 #' 
-#' @references Dworin, L., & Grimlund, R. A. (1986). Dollar-unit sampling: A comparison of the quasi-Bayesian and moment bounds. \emph{Accounting Review}, 36-57.
+#' @references Cox, D. and Snell, E. (1979). On sampling and the estimation of rare errors. \emph{Biometrika}, 66(1), 125-132. 
+#' @references Dworin, L., and Grimlund, R. A. (1986). Dollar-unit sampling: A comparison of the quasi-Bayesian and moment bounds. \emph{Accounting Review}, 36-57.
 #' @references Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). \emph{Dollar-unit sampling: a practical guide for auditors}. Copp Clark Pitman; Belmont, Calif.: distributed by Fearon-Pitman.
 #' @references Meikle, G. R. (1972). \emph{Statistical Sampling in an Audit Context: An Audit Technique}. Canadian Institute of Chartered Accountants.
-#' @references Pap, G., & van Zuijlen, M. C. (1996). On the asymptotic behaviour of the Stringer bound 1. \emph{Statistica Neerlandica}, 50(3), 367-389.
+#' @references Pap, G., and van Zuijlen, M. C. (1996). On the asymptotic behaviour of the Stringer bound 1. \emph{Statistica Neerlandica}, 50(3), 367-389.
 #' @references Rohrbach, K. J. (1993). Variance augmentation to achieve nominal coverage probability in sampling from audit populations. \emph{Auditing}, 12(2), 79.
 #' @references Stringer, K. W. (1963). Practical aspects of statistical sampling in auditing. \emph{In Proceedings of the Business and Economic Statistics Section} (pp. 405-411). American Statistical Association.
-#' @references Touw, P., & Hoogduin, L. (2011). \emph{Statistiek voor Audit en Controlling}. Boom uitgevers Amsterdam.
+#' @references Touw, P., and Hoogduin, L. (2011). \emph{Statistiek voor Audit en Controlling}. Boom uitgevers Amsterdam.
 #'
 #' @return An object of class \code{jfaEvaluation} containing:
 #' 
@@ -70,6 +76,9 @@
 #' \item{prior}{a logical, indicating whether a prior was used in the analysis.}
 #' \item{nPrior}{if a prior is specified, the prior assumed sample size.}
 #' \item{kPrior}{if a prior is specified, the prior assumed sample errors.}
+#' \item{multiplicationFactor}{if \code{method = "coxsnell"}, the multiplication factor for the \emph{F}-distribution.}
+#' \item{df1}{if \code{method = "coxsnell"}, the df1 for the \emph{F}-distribution.}
+#' \item{df2}{if \code{method = "coxsnell"}, the df2 for the \emph{F}-distribution.}
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
@@ -132,7 +141,10 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
                        method = "binomial", materiality = NULL, N = NULL, 
                        prior = FALSE, nPrior = 0, kPrior = 0, 
                        rohrbachDelta = 2.7, momentPoptype = "accounts",
-                       populationBookValue = NULL){
+                       populationBookValue = NULL, 
+                       csA = 1, csB = 3, csMu = 0.5){
+  
+  tmp_method <- method
   
   if(class(prior) == "jfaPrior"){
     nPrior <- prior$nPrior
@@ -140,8 +152,11 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
     method <- prior$likelihood
   }
   
+  if(tmp_method == "coxsnell")
+    method <- "coxsnell"
+  
   if(!(method %in% c("poisson", "binomial", "hypergeometric", "stringer", "stringer-meikle", "stringer-lta", "stringer-pvz",
-                     "rohrbach", "moment", "direct", "difference", "quotient", "regression")) || length(method) != 1)
+                     "rohrbach", "moment", "coxsnell", "direct", "difference", "quotient", "regression")) || length(method) != 1)
     stop("Specify a valid method for the confidence bound")
   
   if(!is.null(nSumstats) || !is.null(kSumstats)){
@@ -153,7 +168,7 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
       stop("Specify one value for nSumstat and kSumstat")
     if(kSumstats > nSumstats)
       stop("The sum of the errors is higher than the sample size")
-    if(method %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz",
+    if(method %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "coxsnell",
                      "rohrbach", "moment", "direct", "difference", "quotient", "regression"))
       stop("The selected method requires raw observations, and does not accomodate summary statistics")
     
@@ -218,6 +233,8 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
     bound <- .rohrbachBound(taints, confidence, n, N, rohrbachDelta = rohrbachDelta)
   } else if(method == "moment"){
     bound <- .momentBound(taints, confidence, n, momentPoptype = momentPoptype)
+  } else if(method == "coxsnell"){
+    bound <- .coxAndSnellBound(taints, confidence, n, csA, csB, csMu, aPrior = 1 + kPrior, bPrior = 1 + nPrior - kPrior)
   } else if(method == "direct"){
     bound <- .directMethod(bv, av, confidence, N, n, populationBookValue)
   } else if(method == "difference"){
@@ -233,35 +250,43 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
   results[["k"]]              <- as.numeric(k)
   results[["t"]]              <- as.numeric(t)
   results[["confidence"]]     <- as.numeric(confidence)
+  results[["method"]]         <- as.character(method)
+  
   if(method %in% c("direct", "difference", "quotient", "regression")){
-    results[["popBookvalue"]] <- as.numeric(populationBookValue)
-    results[["pointEstimate"]] <- as.numeric(bound$pointEstimate)
-    results[["lowerBound"]] <- as.numeric(bound$lowerBound)
-    results[["upperBound"]] <- as.numeric(bound$upperBound)
+    results[["popBookvalue"]]   <- as.numeric(populationBookValue)
+    results[["pointEstimate"]]  <- as.numeric(bound$pointEstimate)
+    results[["lowerBound"]]     <- as.numeric(bound$lowerBound)
+    results[["upperBound"]]     <- as.numeric(bound$upperBound)
   } else {
-    results[["confBound"]]      <- as.numeric(bound)
-  }
-  results[["method"]]           <- as.character(method)
-  if(!is.null(materiality)){
-    results[["materiality"]]    <- as.numeric(materiality)
-    if(method %in% c("direct", "difference", "quotient", "regression")){
-      results[["conclusion"]]   <- ifelse(populationBookValue <= results[["upperBound"]] && populationBookValue >= results[["lowerBound"]] , yes = "Approve population", no = "Do not approve population")
+    if(method == "coxsnell"){
+      results[["confBound"]]            <- as.numeric(bound$bound)
+      results[["multiplicationFactor"]] <- as.numeric(bound$multiplicationFactor)
+      results[["df1"]]                  <- as.numeric(bound$df1)
+      results[["df2"]]                  <- as.numeric(bound$df2)
     } else {
-      results[["conclusion"]]   <- ifelse(bound < materiality, yes = "Approve population", no = "Do not approve population")
+      results[["confBound"]]            <- as.numeric(bound) 
+    }
+  }
+  if(!is.null(materiality)){
+    results[["materiality"]]      <- as.numeric(materiality)
+    if(method %in% c("direct", "difference", "quotient", "regression")){
+      results[["conclusion"]]     <- ifelse(populationBookValue <= results[["upperBound"]] && populationBookValue >= results[["lowerBound"]] , yes = "Approve population", no = "Do not approve population")
+    } else {
+      results[["conclusion"]]     <- ifelse(results[["confBound"]] < materiality, yes = "Approve population", no = "Do not approve population")
     }
   }
   if(method == "hypergeometric"){
-    results[["N"]]            <- N
+    results[["N"]]                <- N
     if(!prior)
-      results[["populationK"]]  <- populationK
+      results[["populationK"]]    <- populationK
   }
-  if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
-    results[["prior"]]        <- as.logical(TRUE)
-    results[["nPrior"]]       <- nPrior
-    results[["kPrior"]]       <- kPrior
+  if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior" || method == "coxsnell"){
+    results[["prior"]]            <- as.logical(TRUE)
+    results[["nPrior"]]           <- nPrior
+    results[["kPrior"]]           <- kPrior
   } else {
-    results[["prior"]]        <- as.logical(FALSE)
+    results[["prior"]]            <- as.logical(FALSE) 
   }
-  class(results)              <- "jfaEvaluation"
+  class(results)                  <- "jfaEvaluation"
   return(results)
 }

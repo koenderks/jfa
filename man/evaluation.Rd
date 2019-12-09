@@ -9,7 +9,8 @@ evaluation(sample = NULL, bookValues = NULL, auditValues = NULL,
            method = "binomial", materiality = NULL, N = NULL, 
            prior = FALSE, nPrior = 0, kPrior = 0, 
            rohrbachDelta = 2.7, momentPoptype = "accounts",
-           populationBookValue = NULL)
+           populationBookValue = NULL, 
+           csA = 1, csB = 3, csMu = 0.5)
 }
 \arguments{
 \item{sample}{a data frame containing at least a column of book values and a column of audit (true) values.}
@@ -41,6 +42,12 @@ evaluation(sample = NULL, bookValues = NULL, auditValues = NULL,
 \item{momentPoptype}{can be either one of \code{accounts} or \code{inventory}. Options result in different methods for calculating the central moments, for more information see Dworin and Grimlund (1986).}
 
 \item{populationBookValue}{the total value of the audit population. Required when \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}.}
+
+\item{csA}{if \code{method = "coxsnell"}, the \eqn{\alpha} parameter of the prior distribution on the mean taint. Default is set to 1, as recommended by Cox and Snell (1979).}
+
+\item{csB}{if \code{method = "coxsnell"}, the \eqn{\beta} parameter of the prior distribution on the mean taint. Default is set to 3, as recommended by Cox and Snell (1979).}
+
+\item{csMu}{if \code{method = "coxsnell"}, the mean of the prior distribution on the mean taint. Default is set to 0.5, as recommended by Cox and Snell (1979).}
 }
 \value{
 An object of class \code{jfaEvaluation} containing:
@@ -62,6 +69,9 @@ An object of class \code{jfaEvaluation} containing:
 \item{prior}{a logical, indicating whether a prior was used in the analysis.}
 \item{nPrior}{if a prior is specified, the prior assumed sample size.}
 \item{kPrior}{if a prior is specified, the prior assumed sample errors.}
+\item{multiplicationFactor}{if \code{method = "coxsnell"}, the multiplication factor for the \emph{F}-distribution.}
+\item{df1}{if \code{method = "coxsnell"}, the df1 for the \emph{F}-distribution.}
+\item{df2}{if \code{method = "coxsnell"}, the df2 for the \emph{F}-distribution.}
 }
 \description{
 This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound accordint to a specified method. The returned object is of class \code{jfaEvaluation} and can be used with associated \code{print()} and \code{plot()} methods.
@@ -79,6 +89,7 @@ This section lists the available options for the \code{methods} argument.
  \item{\code{stringer-pvz}:     Stringer bound with Pap and van Zuijlen's correction for understatements (Pap and van Zuijlen, 1996).}
  \item{\code{rohrbach}:         Rohrbach's augmented variance bound (Rohrbach, 1993).}
  \item{\code{moment}:           Modified moment bound (Dworin and Grimlund, 1986).}
+ \item{\code{coxsnell}:         Cox and Snell bound (Cox and Snell, 1979).}
  \item{\code{direct}:           Confidence interval using the direct method (Touw and Hoogduin, 2011).}
  \item{\code{difference}:       Confidence interval using the difference method (Touw and Hoogduin, 2011).}
  \item{\code{quotient}:         Confidence interval using the quotient method (Touw and Hoogduin, 2011).}
@@ -135,19 +146,21 @@ print(conclusion)
 
 }
 \references{
-Dworin, L., & Grimlund, R. A. (1986). Dollar-unit sampling: A comparison of the quasi-Bayesian and moment bounds. \emph{Accounting Review}, 36-57.
+Cox, D. and Snell, E. (1979). On sampling and the estimation of rare errors. \emph{Biometrika}, 66(1), 125-132.
+
+Dworin, L., and Grimlund, R. A. (1986). Dollar-unit sampling: A comparison of the quasi-Bayesian and moment bounds. \emph{Accounting Review}, 36-57.
 
 Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). \emph{Dollar-unit sampling: a practical guide for auditors}. Copp Clark Pitman; Belmont, Calif.: distributed by Fearon-Pitman.
 
 Meikle, G. R. (1972). \emph{Statistical Sampling in an Audit Context: An Audit Technique}. Canadian Institute of Chartered Accountants.
 
-Pap, G., & van Zuijlen, M. C. (1996). On the asymptotic behaviour of the Stringer bound 1. \emph{Statistica Neerlandica}, 50(3), 367-389.
+Pap, G., and van Zuijlen, M. C. (1996). On the asymptotic behaviour of the Stringer bound 1. \emph{Statistica Neerlandica}, 50(3), 367-389.
 
 Rohrbach, K. J. (1993). Variance augmentation to achieve nominal coverage probability in sampling from audit populations. \emph{Auditing}, 12(2), 79.
 
 Stringer, K. W. (1963). Practical aspects of statistical sampling in auditing. \emph{In Proceedings of the Business and Economic Statistics Section} (pp. 405-411). American Statistical Association.
 
-Touw, P., & Hoogduin, L. (2011). \emph{Statistiek voor Audit en Controlling}. Boom uitgevers Amsterdam.
+Touw, P., and Hoogduin, L. (2011). \emph{Statistiek voor Audit en Controlling}. Boom uitgevers Amsterdam.
 }
 \seealso{
 \code{\link{auditPrior}} \code{\link{planning}} \code{\link{sampling}}

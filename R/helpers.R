@@ -177,3 +177,27 @@
   result[["upperBound"]] <- upperBound
   return(result)
 }
+
+.coxAndSnellBound <- function(taints, confidence, n, csA = 1, csB = 3, csMu = 0.5, aPrior = 1, bPrior = 1){
+  piPrior <- aPrior / (aPrior + bPrior)
+  taints <- subset(taints, taints > 0)
+  M <- length(taints)
+  t_bar <- mean(taints)
+  if(M == 0)
+    t_bar <- 0
+  multiplicationFactor <- ((M + csA) / (M + csB)) * ((csMu * (csB - 1)) + (M * t_bar)) / (n + (csA / piPrior))
+  df1 <- 2 * (M + csA)
+  df2 <- 2 * (M + csB)
+  bound <- multiplicationFactor * stats::qf(p = confidence, df1 = df1, df2 = df2)
+  result <- list()
+  result[["multiplicationFactor"]] <- multiplicationFactor
+  result[["df1"]] <- df1
+  result[["df2"]] <- df2
+  result[["bound"]] <- bound
+  return(result)
+}
+
+.dCoxAndSnellF <- function(x, df1, df2, multiplicationFactor){
+  # Rewritten using Wolfram Mathematica
+  (df1 ** (df1 / 2) * df2**(df2 / 2) * (x / multiplicationFactor) ** (- 1 + df1 / 2) * (df2 + (df1 * x) / multiplicationFactor)**(( -df1 - df2) / 2))/(abs(multiplicationFactor) * beta(df1/2, df2/2))
+}
