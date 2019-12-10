@@ -7,6 +7,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "k.derks@nyenrode.nl")
 Description: The jfa package provides functions for daily use in auditing, such as calculating sample sizes, sampling, and calculating confidence bounds.
+Language: en-US
 License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true

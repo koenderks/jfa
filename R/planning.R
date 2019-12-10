@@ -10,7 +10,7 @@
 #' @param expectedError a fraction representing the percentage of expected mistakes in the sample relative to the total size, or a number (>= 1) that represents the number of expected mistakes.
 #' @param likelihood    can be one of \code{binomial}, \code{poisson}, or \code{hypergeometric}.
 #' @param N             the population size (required for hypergeometric calculations).
-#' @param maxSize       the maximum sample size that is considered for calculations. Defaults to 5000 for efficiency. Increase this value if the samle size cannot be found due to it being too large (e.g., for low materialities).
+#' @param maxSize       the maximum sample size that is considered for calculations. Defaults to 5000 for efficiency. Increase this value if the sample size cannot be found due to it being too large (e.g., for a low materiality).
 #' @param prior         whether to use a prior distribution when planning. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, the prior distribution is updated by the specified likelihood. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.
 #' @param kPrior        the prior parameter \eqn{\alpha} (number of errors in the assumed prior sample).
 #' @param nPrior        the prior parameter \eqn{\beta} (total number of observations in the assumed prior sample).

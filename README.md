@@ -42,7 +42,7 @@ local machine for use in R and RStudio.
 
 ### Downloading
 
-R package `jfa` is simple to download and set-up. Untill there is a live version on [CRAN](https://cran.r-project.org/), the development version can be downloaded in the following manner:
+R package `jfa` is simple to download and set-up. Until there is a live version on [CRAN](https://cran.r-project.org/), the development version can be downloaded in the following manner:
 
 The package you will need for this is the `devtools` package. You can obtain this package by running
 the following command in the R or RStudio console (provided you have a working internet connection):
@@ -93,7 +93,7 @@ This function takes a data frame and performs sampling according to one of three
 
 **Evaluation: Calculating confidence bounds for audit samples**
 
-This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound accordint to a specified method. The returned `jfaEvalution` object has a `print()` and `plot()` functions.
+This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound according to a specified method. The returned `jfaEvalution` object has a `print()` and `plot()` functions.
 
 - `evaluation()`
 

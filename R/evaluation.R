@@ -1,6 +1,6 @@
 #' Evaluation of Audit Samples using Confidence / Credible Bounds
 #'
-#' @description This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound accordint to a specified method. The returned object is of class \code{jfaEvaluation} and can be used with associated \code{print()} and \code{plot()} methods.
+#' @description This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound according to a specified method. The returned object is of class \code{jfaEvaluation} and can be used with associated \code{print()} and \code{plot()} methods.
 #'
 #' @usage evaluation(sample = NULL, bookValues = NULL, auditValues = NULL, 
 #'            confidence = 0.95, nSumstats = NULL, kSumstats = NULL,
@@ -52,7 +52,7 @@
 #' @references Dworin, L., and Grimlund, R. A. (1986). Dollar-unit sampling: A comparison of the quasi-Bayesian and moment bounds. \emph{Accounting Review}, 36-57.
 #' @references Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). \emph{Dollar-unit sampling: a practical guide for auditors}. Copp Clark Pitman; Belmont, Calif.: distributed by Fearon-Pitman.
 #' @references Meikle, G. R. (1972). \emph{Statistical Sampling in an Audit Context: An Audit Technique}. Canadian Institute of Chartered Accountants.
-#' @references Pap, G., and van Zuijlen, M. C. (1996). On the asymptotic behaviour of the Stringer bound 1. \emph{Statistica Neerlandica}, 50(3), 367-389.
+#' @references Pap, G., and van Zuijlen, M. C. (1996). On the asymptotic behavior of the Stringer bound 1. \emph{Statistica Neerlandica}, 50(3), 367-389.
 #' @references Rohrbach, K. J. (1993). Variance augmentation to achieve nominal coverage probability in sampling from audit populations. \emph{Auditing}, 12(2), 79.
 #' @references Stringer, K. W. (1963). Practical aspects of statistical sampling in auditing. \emph{In Proceedings of the Business and Economic Statistics Section} (pp. 405-411). American Statistical Association.
 #' @references Touw, P., and Hoogduin, L. (2011). \emph{Statistiek voor Audit en Controlling}. Boom uitgevers Amsterdam.
@@ -60,7 +60,7 @@
 #' @return An object of class \code{jfaEvaluation} containing:
 #' 
 #' \item{n}{the sample size.}
-#' \item{k}{an integer specifyng the number of observed errors.}
+#' \item{k}{an integer specifying the number of observed errors.}
 #' \item{t}{a number specifying the sum of observed taints.}
 #' \item{confidence}{the confidence level of the result.}
 #' \item{popBookvalue}{if specified as input, the total book value of the population.}

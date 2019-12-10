@@ -53,7 +53,7 @@ evaluation(sample = NULL, bookValues = NULL, auditValues = NULL,
 An object of class \code{jfaEvaluation} containing:
 
 \item{n}{the sample size.}
-\item{k}{an integer specifyng the number of observed errors.}
+\item{k}{an integer specifying the number of observed errors.}
 \item{t}{a number specifying the sum of observed taints.}
 \item{confidence}{the confidence level of the result.}
 \item{popBookvalue}{if specified as input, the total book value of the population.}
@@ -74,7 +74,7 @@ An object of class \code{jfaEvaluation} containing:
 \item{df2}{if \code{method = "coxsnell"}, the df2 for the \emph{F}-distribution.}
 }
 \description{
-This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound accordint to a specified method. The returned object is of class \code{jfaEvaluation} and can be used with associated \code{print()} and \code{plot()} methods.
+This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound according to a specified method. The returned object is of class \code{jfaEvaluation} and can be used with associated \code{print()} and \code{plot()} methods.
 }
 \details{
 This section lists the available options for the \code{methods} argument.
@@ -154,7 +154,7 @@ Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). \emph{Dollar-unit sa
 
 Meikle, G. R. (1972). \emph{Statistical Sampling in an Audit Context: An Audit Technique}. Canadian Institute of Chartered Accountants.
 
-Pap, G., and van Zuijlen, M. C. (1996). On the asymptotic behaviour of the Stringer bound 1. \emph{Statistica Neerlandica}, 50(3), 367-389.
+Pap, G., and van Zuijlen, M. C. (1996). On the asymptotic behavior of the Stringer bound 1. \emph{Statistica Neerlandica}, 50(3), 367-389.
 
 Rohrbach, K. J. (1993). Variance augmentation to achieve nominal coverage probability in sampling from audit populations. \emph{Auditing}, 12(2), 79.
 
