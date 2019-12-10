@@ -1,6 +1,6 @@
 ## Test environments
-* OS X install (on travis-ci), R 3.6.1
-* Linux install (on travis-ci), R 3.6.1
+* OS X install (on travis-ci), R release
+* Linux install (on travis-ci), R release
 
 ## R CMD check results
 There were no ERRORs or WARNINGs or NOTEs. 
