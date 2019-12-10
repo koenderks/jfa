@@ -17,8 +17,9 @@
 
 * [Installing](##Installing)  
 * [Functions](##Functions) 
-* [Example](##Example) 
 * [Poster](##Poster) 
+
+For complete documentation, see the package [manual](./man/manual/jfa_0.0.1.pdf). For a complete example, see the package [vignette](./vignettes/jfaVignette.html).
 
 ### Authors
 
@@ -97,92 +98,6 @@ This function takes a sample data frame or summary statistics about an evaluated
 - `evaluation()`
 
 `evaluation(sample = NULL, bookValues = NULL, auditValues = NULL, confidence = 0.95, dataType = "sample", sampleSize = NULL, sumErrors = NULL, method = "binomial", materiality = NULL, N = NULL, rohrbachDelta = 2.7)`
-
-## Example
-
-Below is an example of how `jfa` may be used to facilitate the audit sampling workflow. The objective of this audit is to give a statement that, when 2.5 percent errors are found in the population of N = 1000, the auditor can state with 95 percent confidence that the misstatement in the population is lower than the materiality of 5 percent. In addition, the auditor has used the audit risk model to identify the inherent risk as 100 percent and the control risk as 60 percent. The auditor captures this information in the prior distribution and evaluates the population using the posterior distribution.
-
-```
-library(jfa)
-set.seed(1)
-
-# Generate some audit data (N = 1000).
-population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), 
-                         bookValue = runif(n = 1000, min = 700, max = 1000))
-
-# Specify the materiality, confidence, and expected errors.
-materiality   <- 0.05   # 5%
-confidence    <- 0.95   # 95%
-expectedError <- 0.025  # 2.5%
-
-# Specify the inherent risk (ir) and control risk (cr).
-ir <- 1     # 100%
-cr <- 0.6   # 60%
-
-# Create a beta prior distribution according to the Audit Risk Model (arm) and a binomial likelihood.
-prior <- auditPrior(materiality = materiality, confidence = confidence, 
-                    method = "arm", ir = ir, cr = cr, 
-                    expectedError = expectedError, likelihood = "binomial")
-print(prior)
-
-# jfa prior distribution for arm method:
-#      
-# Prior sample size:     51 
-# Prior errors:          1.27 
-# Prior:                 beta(2.275, 50.725)
-
-# Calculate the sample size according to the binomial distribution with the specified prior.
-sampleSize <- planning(materiality = materiality, confidence = confidence, 
-                      expectedError = expectedError, prior = prior, likelihood = "binomial")
-print(sampleSize)
-
-# jfa planning results for beta prior with binomial likelihood:
-#      
-# Materiality:             5% 
-# Confidence:              95% 
-# Sample size:             169 
-# Allowed sample errors:   4.23 
-# Prior parameter alpha:   2.275 
-# Prior parameter beta:    50.725
-
-# Draw sample using random monetary unit sampling.
-sampleResult <- sampling(population = population, sampleSize = sampleSize, 
-                         algorithm = "random", units = "mus", seed = 1, bookValues = "bookValue")
-print(sampleResult)
-
-# jfa sampling results for random monetary unit sampling: 
-#      
-# Population size:         1000 
-# Sample size:             169 
-# Proportion n/N:          0.169 
-# Precentage of value:     16.84%
-
-# Isolate the sample.
-sample <- sampleResult$sample
-
-# For this example, we use the book values as audit values. Implies zero errors at this point.
-sample$trueValue <- sample$bookValue
-
-# One overstatement is found.
-sample$trueValue[2] <- sample$trueValue[2] - 500
-
-# Evaluate the sample with one partial error using the posterior distribution.
-conclusion <- evaluation(sample = sample, bookValues = "bookValue", auditValues = "trueValue", 
-                         prior = prior, materiality = 0.05)
-print(conclusion)
-
-# jfa evaluation results for binomial likelihood with prior:
-#   
-# Materiality:           5% 
-# Confidence:            95% 
-# Upper bound:           2.729% 
-# Sample size:           169 
-# Sample errors:         1 
-# Conclusion:            Approve population
-
-# If you are curious...
-plot(conclusion)
-```
 
 ## Poster
 
