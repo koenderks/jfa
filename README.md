@@ -20,6 +20,8 @@
 * [Example](##Example) 
 * [Poster](##Poster) 
 
+For complete documentation, see the package [manual](.man/manual/jfa_0.0.1.pdf) or the package [vignette](./vignettes/jfaVignette.html).
+
 ### Authors
 
 * **Koen Derks** - *Initial work* - [Website](https://koenderks.com)
