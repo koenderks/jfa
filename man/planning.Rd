@@ -58,17 +58,51 @@ library(jfa)
 # Using the binomial distribution, calculates the required sample size for a 
 # materiality of 5\% when 2.5\% mistakes are expected to be found in the sample.
 
-# Frequentist planning with binomial likelihood.
-planning(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
-         likelihood = "binomial")
+# Frequentist planning with binomial likelihood:
 
-# Bayesian planning with uninformed prior.
-planning(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
-         likelihood = "binomial", prior = TRUE)
+p1 <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
+               likelihood = "binomial")
+print(p1)
 
-# Bayesian planning with informed prior (based on 10 correct observations).
-planning(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
-         likelihood = "binomial", prior = TRUE, kPrior = 0, nPrior = 10)
+# jfa planning results for binomial likelihood:
+#      
+# Materiality:             5\% 
+# Confidence:              95\% 
+# Sample size:             234 
+# Allowed sample errors:   6
+
+# Bayesian planning with uninformed prior:
+
+p2 <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
+               likelihood = "binomial", prior = TRUE)
+print(p2)
+
+# jfa planning results for beta prior with binomial likelihood:
+#      
+# Materiality:             5\% 
+# Confidence:              95\% 
+# Sample size:             220 
+# Allowed sample errors:   5.5 
+# Prior parameter alpha:   1 
+# Prior parameter beta:    1
+
+# Bayesian planning with informed prior:
+
+prior <- auditPrior(materiality = 0.05, confidence = 0.95, cr = 0.6, 
+                    expectedError = 0.025, likelihood = "binomial")
+
+p3 <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0.025,
+               prior = prior)
+print(p3)
+
+# jfa planning results for beta prior with binomial likelihood:
+#      
+# Materiality:             5\% 
+# Confidence:              95\% 
+# Sample size:             169 
+# Allowed sample errors:   4.23 
+# Prior parameter alpha:   2.275 
+# Prior parameter beta:    50.725
 
 }
 \references{

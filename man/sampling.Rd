@@ -59,22 +59,40 @@ This second part of this section elaborates on the possible options for the \cod
 }
 \examples{
 library(jfa)
+set.seed(1)
 
 # Generate some audit data (N = 1000).
 population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), 
                          bookValue = runif(n = 1000, min = 700, max = 1000))
 
-# Calculate the sample size according to the binomial distribution with zero errors
-jfaRes <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0, 
-                   likelihood = "binomial")
+# Draw a custom sample of 100 from the population (via random record sampling):
 
-# Draw sample using random record sampling
-sampling(population = population, sampleSize = jfaRes, algorithm = "random", 
-         units = "records", seed = 1)
+s1 <- sampling(population = population, sampleSize = 100, algorithm = "random", 
+               units = "records", seed = 1)
+print(s1)
 
-# Draw sample using random monetary unit sampling
-sampling(population = population, sampleSize = jfaRes, algorithm = "random", 
-         units = "mus", bookValues = "bookValue", seed = 1)
+# jfa sampling results for random random record sampling: 
+#      
+# Population size:         1000 
+# Sample size:             100 
+# Proportion n/N:          0.1
+
+# Use the result from the planning stage in the sampling stage:
+
+p1 <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
+               likelihood = "binomial")
+
+# Draw a sample via random monetary unit sampling:
+s2 <- sampling(population = population, sampleSize = p1, algorithm = "random", 
+               units = "mus", seed = 1, bookValues = "bookValue")
+print(s2)
+
+# jfa sampling results for random monetary unit sampling: 
+#      
+# Population size:         1000 
+# Sample size:             234 
+# Proportion n/N:          0.234 
+# Percentage of value:     23.3\%
 
 }
 \references{

@@ -36,7 +36,7 @@ print.jfaSampling <- function(x, ...){
 #      
 # Population size:        ", nrow(x$population),"
 # Sample size:            ", nrow(x$sample),"
-# Proportion n/N:         ", round(nrow(x$sample)/nrow(x$population)), 3) 
+# Proportion n/N:         ", round(nrow(x$sample)/nrow(x$population), 3)) 
   }
 }
 

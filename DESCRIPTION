@@ -1,17 +1,17 @@
 Package: jfa
 Title: A multi-functional R package for auditing
-Version: 1.0.0
+Version: 0.1.0
 Authors@R: 
     person(given = "Koen",
            family = "Derks",
            role = c("aut", "cre"),
            email = "k.derks@nyenrode.nl")
-Description: The jfa package provides functions for daily use in auditing, such as calculating sample sizes, sampling, and calculating confidence bounds.
+Description: Functions for daily use in auditing, such as calculating sample sizes, sampling, and evaluating samples by calculating confidence bounds.
 Language: en-US
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.0.1
+RoxygenNote: 7.0.2
 VignetteBuilder: knitr
 Suggests: 
     testthat, knitr, rmarkdown
