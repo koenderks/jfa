@@ -19,7 +19,7 @@
 * [Functions](##Functions) 
 * [Poster](##Poster) 
 
-For complete documentation, see the package [manual](./man/manual/jfa_1.0.0.pdf). For a complete example, see the package [vignette](./vignettes/jfaVignette.html).
+For complete documentation, see the package [manual](./man/manual/jfa_0.1.0.pdf). For a complete example, see the package [vignette](./vignettes/jfaVignette.html).
 
 ### Authors
 

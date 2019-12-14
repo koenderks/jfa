@@ -98,50 +98,50 @@ This section lists the available options for the \code{methods} argument.
 }
 \examples{
 library(jfa)
-
-# Generate some audit data (N = 1000)
 set.seed(1)
-data <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), 
-                  bookValue = runif(n = 1000, min = 700, max = 1000))
 
-# Using the binomial likelihood, calculates the upper 95\% confidence bound for a 
-# materiality of 5\% when 1\% full errors are found in a sample (n = 93).
-jfaRes <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0.01, 
-                   likelihood = "binomial")
+# Generate some audit data (N = 1000):
+data <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), 
+                   bookValue = runif(n = 1000, min = 700, max = 1000))
 
 # Using monetary unit sampling, draw a random sample from the population.
-samp <- sampling(population = data, sampleSize = jfaRes, units = "mus", 
-                 bookValues = "bookValue", algorithm = "random")
+s1 <- sampling(population = data, sampleSize = 100, units = "mus", 
+               bookValues = "bookValue", algorithm = "random")
+s1_sample <- s1$sample
+s1_sample$trueValue <- s1_sample$bookValue
+s1_sample$trueValue[2] <- s1_sample$trueValue[2] - 500 # One overstatement is found
 
-samp$sample$trueValue <- samp$sample$bookValue
-samp$sample$trueValue[2] <- samp$sample$trueValue[2] - 500 # One overstatement is found
+# Using summary statistics, calculate the upper confidence bound according
+# to the binomial distribution:
 
-# Evaluate the sample using the stringer bound.
-conclusion <- evaluation(sample = samp$sample, bookValues = "bookValue", 
-                         auditValues = "trueValue", method = "stringer", materiality = 0.05)
-print(conclusion)
-
-# jfa evaluation results for stringer method:
-#   
-# Materiality:           5\% 
-# Confidence:            95\% 
-# Upper bound:           4.244\% 
-# Sample size:           93 
-# Sample errors:         1 
-# Conclusion:            Approve population
-
-# Evaluate the sample using summary statistics (n = 93, k = 1).
-conclusion <- evaluation(nSumstats = 93, kSumstats = 1, method = "binomial", 
-                         materiality = 0.05)
-print(conclusion)
+e1 <- evaluation(nSumstats = 100, kSumstats = 1, method = "binomial", 
+                 materiality = 0.05)
+print(e1)
 
 # jfa evaluation results for binomial method:
 #   
 # Materiality:           5\% 
 # Confidence:            95\% 
-# Upper bound:           4.999\% 
-# Sample size:           93 
+# Upper bound:           4.656\% 
+# Sample size:           100 
 # Sample errors:         1 
+# Sum of taints:         1  
+# Conclusion:            Approve population
+
+# Evaluate the raw sample using the stringer bound:
+
+e2 <- evaluation(sample = s1_sample, bookValues = "bookValue", auditValues = "trueValue", 
+                 method = "stringer", materiality = 0.05)
+print(e2)
+
+# jfa evaluation results for stringer method:
+#   
+# Materiality:           5\% 
+# Confidence:            95\% 
+# Upper bound:           3.952\% 
+# Sample size:           100 
+# Sample errors:         1 
+# Sum of taints:         0.587  
 # Conclusion:            Approve population
 
 }

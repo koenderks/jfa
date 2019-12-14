@@ -69,7 +69,7 @@ test_that(desc = "Frequentist binomial 5% materiality 2.5% errors", {
   print(jfaRes)
   plot(jfaRes)
   expect_equal(jfaRes$sampleSize, 234)
-  expect_equal(jfaRes$expectedSampleError, 5.85)
+  expect_equal(jfaRes$expectedSampleError, 6)
 })
 
 test_that(desc = "Frequentist binomial 5% materiality 2 errors", {
