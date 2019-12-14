@@ -2,3 +2,4 @@
 cran-comments.md
 ^doc$
 ^Meta$
+^CRAN-RELEASE$
