@@ -19,13 +19,13 @@
 * [Functions](##Functions) 
 * [Poster](##Poster) 
 
-For complete documentation, see the package [manual](./man/manual/jfa_0.1.0.pdf). For a complete example, see the package [vignette](./vignettes/jfaVignette.html).
+For complete documentation, see the package [manual](./man/manual/jfa_0.1.0.pdf).
 
 ### Authors
 
 * **Koen Derks** - *Initial work* - [Website](https://koenderks.com)
 
-See also the list of [contributors](https://github.com/koenderks/auditR/graphs/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/koenderks/jfa/graphs/contributors) who participated in this project.
 
 ### License
 
