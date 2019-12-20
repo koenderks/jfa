@@ -6,7 +6,7 @@ Authors@R:
            family = "Derks",
            role = c("aut", "cre"),
            email = "k.derks@nyenrode.nl")
-Description: Implements functions to set up the audit sampling workflow as discussed in Derks et al. (2019) <doi:10.31234/osf.io/9f6ub>.
+Description: Implements the audit sampling workflow as discussed in Derks et al. (2019) <doi:10.31234/osf.io/9f6ub>. The package makes it easy for an auditor to plan an audit sample, sample from the population, and evaluating that sample using various confidence bounds according to the International Standards on Auditing. Furthermore, the package implements Bayesian equivalents of these methods. 
 Language: en-US
 License: GPL-3
 Encoding: UTF-8

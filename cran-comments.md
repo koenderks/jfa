@@ -1,9 +1,8 @@
 ## Resubmission
 This is a resubmission. In this version I have:
 
-* Changed the title from "Functions for daily use in audit sampling" to "Bayesian and Classical Audit Sampling"
-* Written the title in title case
-* Written the doi as <doi:10.31234/osf.io/9f6ub>
+* Removed the redundant "functions to implement" from the package description
+* Changed the package description so that it elaborates on what the package does and why it may be useful.
 
 ## Test environments
 * OS X install (on travis-ci), R release
