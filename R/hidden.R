@@ -130,9 +130,9 @@ plot.jfaPlanning <- function(x, ...){
     } else if(x$likelihood == "hypergeometric"){
       xlim <- ceiling(xlim * x$N)
       xseq <- seq(0, xlim, by = 1)
-      d <- .dBetaBinom(x = xseq, N = x$N, shape1 = x[["prior"]]$aPrior, shape2 = x[["prior"]]$bPrior)
-      d1 <- .dBetaBinom(x = xseq, N = x$N, shape1 = x[["prior"]]$aPrior + x$expectedSampleError, shape2 = x[["prior"]]$bPrior + x$sampleSize - x$expectedSampleError)
-      bound <- .qBetaBinom(p = x$confidence, N = x$N, shape1 = x[["prior"]]$aPrior + x$expectedSampleError, shape2 = x[["prior"]]$bPrior + x$sampleSize - x$expectedSampleError)
+      d <- .dBetaBinom(x = xseq, N = x$N - x$sampleSize, shape1 = x[["prior"]]$aPrior, shape2 = x[["prior"]]$bPrior)
+      d1 <- .dBetaBinom(x = xseq, N = x$N - x$sampleSize, shape1 = x[["prior"]]$aPrior + x$expectedSampleError, shape2 = x[["prior"]]$bPrior + x$sampleSize - x$expectedSampleError)
+      bound <- .qBetaBinom(p = x$confidence, N = x$N - x$sampleSize, shape1 = x[["prior"]]$aPrior + x$expectedSampleError, shape2 = x[["prior"]]$bPrior + x$sampleSize - x$expectedSampleError)
     }
     if(x$likelihood == "poisson" || x$likelihood == "binomial"){
       if(x$likelihood == "poisson")
@@ -223,9 +223,9 @@ plot.jfaEvaluation <- function(x, ...){
       } else if(x$method == "hypergeometric"){
         xlim <- ceiling(xlim * x$N)
         xseq <- seq(0, xlim, by = 1)
-        d <- .dBetaBinom(x = xseq, N = x$N, shape1 = 1 + x$kPrior, shape2 = 1 + x$nPrior - x$kPrior)
-        d1 <- .dBetaBinom(x = xseq, N = x$N, shape1 = 1 + x$kPrior + x$k, shape2 = 1 + x$nPrior - x$kPrior + x$n - x$k)
-        bound <- .qBetaBinom(p = x$confidence, N = x$N, shape1 = 1 + x$kPrior + x$k, shape2 = 1 + x$nPrior - x$kPrior + x$n - x$k)
+        d <- .dBetaBinom(x = xseq, N = x$N- x$n, shape1 = 1 + x$kPrior, shape2 = 1 + x$nPrior - x$kPrior)
+        d1 <- .dBetaBinom(x = xseq, N = x$N - x$n, shape1 = 1 + x$kPrior + x$k, shape2 = 1 + x$nPrior - x$kPrior + x$n - x$k)
+        bound <- .qBetaBinom(p = x$confidence, N = x$N - x$n, shape1 = 1 + x$kPrior + x$k, shape2 = 1 + x$nPrior - x$kPrior + x$n - x$k)
       } else if(x$method == "coxsnell"){
         d <- stats::dbeta(xseq, shape1 = 1 + x$kPrior, shape2 = 1 + x$nPrior - x$kPrior)
         d1 <- .dCoxAndSnellF(xseq, x$df1, x$df2, x$multiplicationFactor)
@@ -291,7 +291,7 @@ plot.jfaPrior <- function(x, ...){
   } else if(x$priorD == "beta-binomial"){
     xlim <- ceiling(xlim * x$N)
     xseq <- seq(0, xlim, by = 1)
-    d <- .dBetaBinom(x = xseq, N = x$N, shape1 = x$aPrior, shape2 = x$bPrior)
+    d <- .dBetaBinom(x = xseq, N = x$N - x$sampleSize, shape1 = x$aPrior, shape2 = x$bPrior)
   }
   mainLab <- paste0(mainLab, " ", x$priorD, " prior")
   if(x$priorD == "gamma" || x$priorD == "beta"){

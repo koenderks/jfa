@@ -69,7 +69,7 @@ test_that(desc = "Evaluation with hypergeometric method with prior", {
   jfaEval <- evaluation(sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "hypergeometric", N = 1000, prior = TRUE, materiality = 0.05)
   print(jfaEval)
   plot(jfaEval)
-  expect_equal(jfaEval$confBound, 0.049)
+  expect_equal(jfaEval$confBound, 0.046)
 })
 
 test_that(desc = "Evaluation with stringer method", {

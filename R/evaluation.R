@@ -214,7 +214,7 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
     if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
       if(is.null(N))
         stop("Evaluation with beta-binomial distribution requires that you specify the population size N")
-      bound <- .qBetaBinom(p = confidence, N = N, shape1 = 1 + kPrior + k, shape2 = 1 + nPrior - kPrior + n - k) / N
+      bound <- .qBetaBinom(p = confidence, N = N - n, shape1 = 1 + kPrior + k, shape2 = 1 + nPrior - kPrior + n - k) / N
     } else {
       if(mat == 0)
         stop("Evaluation with the hypergeometric distribution requires that you specify the materiality")
