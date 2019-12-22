@@ -132,7 +132,7 @@ test_that(desc = "Bayesian hypergeometric 5% materiality 2.5% errors", {
   jfaRes <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0.025, likelihood = "hypergeometric", N = 1000, prior = TRUE)
   print(jfaRes)
   plot(jfaRes)
-  expect_equal(jfaRes$sampleSize, 159)
+  expect_equal(jfaRes$sampleSize, 160)
   expect_equal(jfaRes$expectedSampleError, 4)
 })
 
@@ -140,6 +140,6 @@ test_that(desc = "Bayesian hypergeometric 5% materiality 2.5% errors custom prio
   jfaRes <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0.025, likelihood = "hypergeometric", N = 1000, prior = TRUE, kPrior = 1, nPrior = 7)
   print(jfaRes)
   plot(jfaRes)
-  expect_equal(jfaRes$sampleSize, 192)
+  expect_equal(jfaRes$sampleSize, 193)
   expect_equal(jfaRes$expectedSampleError, 5)
 })
