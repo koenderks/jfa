@@ -277,7 +277,7 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
   }
   if(method == "hypergeometric"){
     results[["N"]]                <- N
-    if(!prior)
+    if(class(prior) != "jfaPrior" && !prior)
       results[["populationK"]]    <- populationK
   }
   if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior" || method == "coxsnell"){
