@@ -142,8 +142,8 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
           break
         }
       } else {
-        prob <- stats::pgamma(materiality, shape = 1 + ceiling(implicitK), rate = i)
-        if(prob > confidence){
+        prob <- stats::pgamma(materiality, shape = 1 + implicitK, rate = i)
+        if(prob >= confidence){
           ss <- i
           break
         }

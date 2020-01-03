@@ -20,8 +20,8 @@ test_that(desc = "Frequentist Poisson 5% materiality 2.5% errors", {
   jfaRes <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0.025, likelihood = "poisson")
   print(jfaRes)
   plot(jfaRes)
-  expect_equal(jfaRes$sampleSize, 237)
-  expect_equal(jfaRes$expectedSampleError, 5.93)
+  expect_equal(jfaRes$sampleSize, 231)
+  expect_equal(jfaRes$expectedSampleError, 5.78)
 })
 
 test_that(desc = "Frequentist Poisson 5% materiality 2 errors", {
