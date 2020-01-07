@@ -93,7 +93,6 @@ test_that(desc = "Bayesian binomial 5% materiality 2.5% errors custom prior", {
   print(jfaRes)
   plot(jfaRes)
   expect_equal(jfaRes$sampleSize, 273)
-  expect_equal(jfaRes$expectedSampleError, 6.83)
 })
 
 test_that(desc = "Frequentist hypergeometric 1% materiality", {
