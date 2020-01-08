@@ -42,26 +42,18 @@ local machine for use in R and RStudio.
 
 ### Downloading
 
-R package `jfa` is simple to download and set-up. Until there is a live version on [CRAN](https://cran.r-project.org/), the development version can be downloaded in the following manner:
-
-The package you will need for this is the `devtools` package. You can obtain this package by running
-the following command in the R or RStudio console (provided you have a working internet connection):
+R package `jfa` is simple to download and set-up. The live version from [CRAN](https://cran.r-project.org/web/packages/jfa/index.html) can be downloaded by running the following command in R:
 
 ```
-install.packages("devtools")
-```
-
-Once the `devtools` package is installed, the only thing required to obtain `jfa` is 
-installing the source package from this github page with the following command:
-
-```
-devtools::install_github("koenderks/jfa", INSTALL_opts=c("--no-multiarch"))
+install.packages("jfa")
 ```
 
 The `jfa` package can then be loaded in RStudio by typing:
 ```
 library(jfa)
 ```
+
+Examples can be found in the package [vignette](https://cran.r-project.org/web/packages/jfa/vignettes/auditWorkflow.html).
 
 ## Functions
 
