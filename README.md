@@ -2,7 +2,7 @@
   [![Travis build status](https://travis-ci.org/koenderks/jfa.svg?branch=master)](https://travis-ci.org/koenderks/jfa)
   [![Coverage](https://img.shields.io/codecov/c/github/koenderks/jfa)](https://codecov.io/gh/koenderks/jfa)
   [![Release](https://img.shields.io/github/v/release/koenderks/jfa?include_prereleases)](https://github.com/koenderks/jfa/releases)
-  ![Downloads](https://img.shields.io/github/downloads/koenderks/jfa/total)
+  ![Downloads](https://cranlogs.r-pkg.org/badges/jfa)
   [![Issues](https://img.shields.io/github/issues/koenderks/jfa)](https://github.com/koenderks/jfa/issues)
   ![Size](https://img.shields.io/github/repo-size/koenderks/jfa)
 <!-- badges: end -->
