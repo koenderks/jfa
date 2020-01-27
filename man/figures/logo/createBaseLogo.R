@@ -12,7 +12,7 @@ sticker <- hexSticker::sticker(subplot = subplot,
                                h_size = 3, 
                                h_fill = "#223f87", 
                                h_color = "#152c52", 
-                               url = "www.github.com/koenderks/jfa", 
+                               url = "                 JASP for Audit", 
                                u_color = "white", 
                                u_size = 3)
 sticker
