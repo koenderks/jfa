@@ -98,8 +98,9 @@
 #'
 #' @export
 
-planning <- function(materiality, confidence = 0.95, expectedError = 0, likelihood = "poisson", 
-                     N = NULL, maxSize = 5000, prior = FALSE, kPrior = 0, nPrior = 0){
+planning <- function(materiality, confidence = 0.95, expectedError = 0, minPrecision = NULL,
+                     likelihood = "poisson", N = NULL, maxSize = 5000, 
+                     prior = FALSE, kPrior = 0, nPrior = 0){
   
   if(class(prior) == "jfaPrior"){
     nPrior <- prior$nPrior
@@ -113,12 +114,12 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
     stop("Specify a valid distribution")
   if((class(prior) == "logical" && prior == TRUE) && kPrior < 0 || nPrior < 0)
     stop("When you specify a prior, both kPrior and nPrior should be higher than zero")
-  
+
   ss <- NULL
   
   if(expectedError >= 0 && expectedError < 1){
     errorType <- "percentage"
-    if(expectedError >= materiality)
+    if(materiality != 0 && expectedError >= materiality)
       stop("The expected errors are higher than materiality")
     startN <- 1
   } else if(expectedError >= 1){
@@ -127,6 +128,9 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
     if(expectedError%%1 != 0 && likelihood %in% c("binomial", "hypergeometric"))
       stop("When expectedError > 1 and the likelihood is binomial or hypergeometric, the value must be an integer.")
   }
+
+  if(is.null(minPrecision))
+    minPrecision <- 1
   
   if(likelihood == "poisson"){
     for(i in startN:maxSize){
@@ -137,7 +141,8 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
       }
       if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
         bound <- stats::qgamma(confidence, shape = 1 + kPrior + implicitK, rate = nPrior + i)
-        if(bound < materiality){
+        mle <- (1 + kPrior + implicitK - 1) / (nPrior + i)
+        if(bound < materiality && (bound - mle) < minPrecision){
           ss <- i
           break
         }
@@ -158,7 +163,8 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
       }
       if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
         bound <- stats::qbeta(confidence, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK)
-        if(bound < materiality){
+        mle <- (1 + kPrior + implicitK - 1) / (1 + kPrior + implicitK + 1 + nPrior - kPrior + i - implicitK - 2)
+        if(bound < materiality && (bound - mle) < minPrecision){
           ss <- i
           break
         }
@@ -185,7 +191,8 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
         if(is.null(N))
           stop("The beta-binomial distribution requires that you specify the population size N")
         bound <- .qBetaBinom(p = confidence, N = N - i + implicitK, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK) / N
-        if(bound < materiality){
+        mle <- (1 + kPrior + implicitK - 1) / (1 + kPrior + implicitK + 1 + nPrior + i - implicitK - 2)
+        if(bound < materiality && (bound - mle) < minPrecision){
           ss <- i
           break
         }
@@ -210,6 +217,7 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
   results[["expectedError"]]        <- as.numeric(expectedError)
   results[["likelihood"]]           <- as.character(likelihood)
   results[["errorType"]]            <- as.character(errorType)
+  results[["minPrecision"]]         <- as.numeric(minPrecision)
   if(likelihood == "hypergeometric"){
     results[["N"]]                  <- as.numeric(N)
     results[["populationK"]]        <- as.numeric(populationK)

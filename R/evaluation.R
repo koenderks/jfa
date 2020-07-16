@@ -207,6 +207,8 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
   } else if(method == "binomial"){
     if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
       bound <- stats::qbeta(p = confidence, shape1 = 1 + kPrior + t, shape2 = 1 + nPrior - kPrior + n - t)
+      mle <- (1 + kPrior + t - 1) / (1 + kPrior + t + 1 + nPrior - kPrior + n - t)
+      precision <- bound - mle
     } else {
       bound <- stats::binom.test(x = k, n = n, p = mat, alternative = "less", conf.level = confidence)$conf.int[2]
     }
@@ -251,6 +253,8 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
   results[["t"]]              <- as.numeric(t)
   results[["confidence"]]     <- as.numeric(confidence)
   results[["method"]]         <- as.character(method)
+  results[["mle"]]            <- as.numeric(mle)
+  results[["precision"]]      <- as.numeric(precision)
   
   if(method %in% c("direct", "difference", "quotient", "regression")){
     results[["popBookvalue"]]   <- as.numeric(populationBookValue)
