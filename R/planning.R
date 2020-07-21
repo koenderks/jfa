@@ -99,7 +99,7 @@
 #' @export
 
 planning <- function(materiality, confidence = 0.95, expectedError = 0, minPrecision = NULL,
-                     likelihood = "poisson", N = NULL, maxSize = 5000, 
+                     likelihood = "poisson", N = NULL, maxSize = 5000, increase = 1,
                      prior = FALSE, kPrior = 0, nPrior = 0){
   
   if(class(prior) == "jfaPrior"){
@@ -108,32 +108,35 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, minPreci
     likelihood <- prior$likelihood
   }
   
-  if(is.null(materiality))
-    stop("Specify the materiality")
+  if(is.null(materiality) && is.null(minPrecision))
+    stop("Specify the materiality or the minimum precision")
   if(!(likelihood %in% c("binomial", "hypergeometric", "poisson")))
     stop("Specify a valid distribution")
   if((class(prior) == "logical" && prior == TRUE) && kPrior < 0 || nPrior < 0)
     stop("When you specify a prior, both kPrior and nPrior should be higher than zero")
 
   ss <- NULL
-  
+
   if(expectedError >= 0 && expectedError < 1){
     errorType <- "percentage"
-    if(materiality != 0 && expectedError >= materiality)
-      stop("The expected errors are higher than materiality")
-    startN <- 1
+    # if(!is.null(materiality) && expectedError >= materiality)
+    #   stop("The expected errors are higher than materiality")
   } else if(expectedError >= 1){
     errorType <- "integer"
-    startN <- expectedError
     if(expectedError%%1 != 0 && likelihood %in% c("binomial", "hypergeometric"))
       stop("When expectedError > 1 and the likelihood is binomial or hypergeometric, the value must be an integer.")
   }
 
   if(is.null(minPrecision))
     minPrecision <- 1
+  if(is.null(materiality))
+    materiality <- 1
+
+  samplingFrame <- seq(from = 0, to = maxSize, by = increase)
+  samplingFrame[1] <- 1
   
   if(likelihood == "poisson"){
-    for(i in startN:maxSize){
+    for(i in samplingFrame){
       if(errorType == "percentage"){
         implicitK <- expectedError * i
       } else if(errorType == "integer"){
@@ -155,7 +158,7 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, minPreci
       }
     }
   } else if(likelihood == "binomial"){
-    for(i in startN:maxSize){
+    for(i in samplingFrame){
       if(errorType == "percentage"){
         implicitK <- expectedError * i
       } else if(errorType == "integer"){
@@ -181,7 +184,7 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, minPreci
     if(is.null(N))
       stop("Specify a population size N")
     populationK <- ceiling(materiality * N)
-    for(i in startN:maxSize){
+    for(i in samplingFrame){
       if(errorType == "percentage"){
         implicitK <- ceiling(expectedError * i)
       } else if(errorType == "integer"){
