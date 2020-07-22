@@ -63,10 +63,13 @@
 auditPrior <- function(materiality, confidence = 0.95, method = "arm", ir = 1, cr = 1, 
                        expectedError = 0, likelihood = "binomial", N = NULL){
   
-  if(!(method %in% c("arm")))
-    stop("Currently only method = 'arm' is supported")
+  if(!(method %in% c("none", "arm")))
+    stop("Currently only method = 'arm' and 'none' is supported")
   
-  if(method == "arm"){
+  if(method == "none"){
+    nPrior <- 0
+    kPrior <- 0
+  } else if(method == "arm"){
     nPlus <- jfa::planning(materiality = materiality, confidence = confidence, expectedError = expectedError, likelihood = likelihood, prior = TRUE, N = N)$sampleSize
     alpha <- (1 - confidence) / (ir * cr)
     nMin <- planning(materiality = materiality, confidence = 1 - alpha, expectedError = expectedError, likelihood = likelihood, prior = TRUE, N = N)$sampleSize
@@ -88,7 +91,7 @@ auditPrior <- function(materiality, confidence = 0.95, method = "arm", ir = 1, c
   result$priorD       <- switch(likelihood, "poisson" = "gamma", "binomial" = "beta", "hypergeometric" = "beta-binomial")
   result$kPrior       <- as.numeric(round(kPrior, 3))
   result$nPrior       <- as.numeric(round(nPrior, 3))
-  result$aPrior       <- as.numeric(1 + result$kPrior)
+  result$aPrior       <- as.numeric(1 + kPrior)
   result$bPrior       <- ifelse(likelihood == "poisson", yes = nPrior, no = 1 + nPrior - kPrior)
   result$materiality  <- as.numeric(materiality)
   result$N            <- N

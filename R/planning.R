@@ -241,7 +241,7 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, minPreci
     results[["prior"]]$kPrior       <- as.numeric(round(kPrior, 3))
     results[["prior"]]$nPrior       <- as.numeric(round(nPrior, 3))
     results[["prior"]]$aPrior       <- 1 + results[["prior"]]$kPrior
-    results[["prior"]]$bPrior       <- ifelse(likelihood == "poisson", yes = nPrior, no = 1 + nPrior - kPrior)
+    results[["prior"]]$bPrior       <- ifelse(likelihood == "poisson", yes = results[["prior"]]$nPrior, no = 1 + results[["prior"]]$nPrior - results[["prior"]]$kPrior)
   } else {
     results[["prior"]]$prior          <- as.logical(FALSE)
   }
