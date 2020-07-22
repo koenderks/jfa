@@ -122,8 +122,8 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, minPreci
 
   if(expectedError >= 0 && expectedError < 1){
     errorType <- "percentage"
-    # if(!is.null(materiality) && expectedError >= materiality)
-    #   stop("The expected errors are higher than materiality")
+    if(!is.null(materiality) && expectedError >= materiality)
+      stop("The expected errors are higher than materiality")
   } else if(expectedError >= 1){
     errorType <- "integer"
     if(expectedError%%1 != 0 && likelihood %in% c("binomial", "hypergeometric"))
@@ -154,7 +154,9 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, minPreci
         }
       } else {
         prob <- stats::pgamma(materiality, shape = 1 + implicitK, rate = i)
-        if(prob >= confidence){
+        bound <- stats::poisson.test(x = implicitK, T = i, r = materiality, alternative = "less", conf.level = confidence)$conf.int[2]
+        mle <- implicitK / i
+        if(prob >= confidence && (bound - mle) < minPrecision){
           ss <- i
           break
         }
@@ -177,7 +179,9 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, minPreci
       } else {
         implicitK <- ceiling(implicitK)
         prob <- stats::dbinom(0:implicitK, size = i, prob = materiality)
-        if(sum(prob) < (1 - confidence)){
+        bound <- stats::binom.test(x = implicitK, n = i, p = materiality, alternative = "less", conf.level = confidence)$conf.int[2]
+        mle <- implicitK / i
+        if(sum(prob) < (1 - confidence) && (bound - mle) < minPrecision){
           ss <- i
           break
         }
@@ -204,7 +208,9 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, minPreci
         }
       } else {
         prob <- stats::dhyper(x = 0:implicitK, m = populationK, n = N - populationK, k = i)
-        if(sum(prob) < (1 - confidence)){
+        bound <- stats::phyper(q = implicitK, m = populationK, n = N - populationK, k = i)
+        mle <- (N * implicitK + implicitK) / i / N
+        if(sum(prob) < (1 - confidence) && (bound - mle) < minPrecision){
           ss <- i
           break
         }
