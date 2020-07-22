@@ -90,9 +90,10 @@
 sampling <- function(population, sampleSize, bookValues = NULL, units = "records", 
                      algorithm = "random", intervalStartingPoint = 1, ordered = TRUE, 
                      ascending = TRUE, withReplacement = FALSE, seed = 1){
-  if(class(sampleSize) == "jfaPlanning"){
+  # If the input for 'sampleSize' is of class 'jfaPlanning', extract the planned sample size
+  if(class(sampleSize) == "jfaPlanning")
     sampleSize <- sampleSize$sampleSize 
-  }
+  # Error handling for different scenarios
   if(sampleSize > nrow(population))
     stop("Cannot take a sample larger than the population")
   if(!(algorithm %in% c("random", "cell", "interval")) || length(algorithm) != 1)
@@ -105,6 +106,8 @@ sampling <- function(population, sampleSize, bookValues = NULL, units = "records
     stop("Specify one column for the book values")
   if(!is.null(bookValues) && !(bookValues %in% colnames(population)))
     stop("The book value column cannot be found in the population data")
+  # Convert the population to a data frame
+  population <- as.data.frame(population)
   rownames(population) <- 1:nrow(population)
   bv <- NULL
   if(!is.null(bookValues))
@@ -113,44 +116,49 @@ sampling <- function(population, sampleSize, bookValues = NULL, units = "records
     population <- population[order(bv, decreasing = !ascending), ]
   if(!is.null(bv) && any(bv < 0))
     stop("The book values contain negative values")
+  # Set a seed for reproducibility
   set.seed(seed)
+  # Sampling algorithms:
   if(algorithm == "random" && units == "records"){
+    # 1. Random record sampling
     index <- sample(rownames(population), size = sampleSize, replace = withReplacement)
   } else if(algorithm == "random" && units == "mus"){
+    # 2. Random monetary unit sampling
     index <- sample(rownames(population), size = sampleSize, replace = withReplacement, prob = bv)
   } else if(algorithm == "cell" && units == "records"){
-    interval <- ceiling(nrow(population) / sampleSize)
-    suppressWarnings({
-      mat <- matrix(as.numeric(rownames(population)), ncol = interval, byrow = TRUE, nrow = sampleSize)
-    })
-    colIndex <- sample(1:ncol(mat), size = sampleSize, replace = TRUE)
+    # 3. Cell record sampling
+    interval <- nrow(population) / sampleSize
+    intervals <- 0:sampleSize * interval
     index <- NULL
-    for(i in 1:length(colIndex)){
-      index <- c(index, mat[i, colIndex[i]])
+    for(i in 1:sampleSize){
+      intervalSelection <- stats::runif(min = intervals[i], max = intervals[i + 1], n = 1)
+      index <- c(index, as.numeric(rownames(population))[intervalSelection])
     }
   } else if(algorithm == "cell" && units == "mus"){
-    interval <- ceiling(sum(bv) / sampleSize)
-    suppressWarnings({
-      mat <- matrix(rep(as.numeric(rownames(population)), times = bv), ncol = interval, byrow = TRUE, nrow = sampleSize)
-    })
-    colIndex <- sample(1:ncol(mat), size = sampleSize, replace = TRUE)
+    # 4. Cell monetary unit sampling
+    interval <- sum(bv) / sampleSize
+    intervals <- 0:sampleSize * interval
     index <- NULL
-    for(i in 1:length(colIndex)){
-      index <- c(index, mat[i, colIndex[i]])
+    for(i in 1:sampleSize){
+      intervalSelection <- stats::runif(min = intervals[i], max = intervals[i + 1], n = 1)
+      index <- c(index, which(intervalSelection < cumsum(bv))[1])
     }
   } else if(algorithm == "interval" && units == "records"){
-    interval <- ceiling(nrow(population) / sampleSize)
-    suppressWarnings({
-      mat <- matrix(as.numeric(rownames(population)), ncol = interval, byrow = TRUE, nrow = sampleSize)
-    })
-    index <- mat[, intervalStartingPoint]
+    # 5. Fixed interval record sampling
+    interval <- nrow(population) / sampleSize
+    intervalSelection <- intervalStartingPoint + 0:(sampleSize - 1) * interval
+    mat <- as.numeric(rownames(population))
+    index <- mat[intervalSelection]
   } else if(algorithm == "interval" && units == "mus"){
-    interval <- ceiling(sum(bv) / sampleSize)
-    suppressWarnings({
-      mat <- matrix(rep(as.numeric(rownames(population)), times = bv), ncol = interval, byrow = TRUE, nrow = sampleSize)
-    })
-    index <- mat[, intervalStartingPoint]
+    # 6. Fixed interval monetary unit sampling
+    interval <- sum(bv) / sampleSize
+    intervalSelection <- intervalStartingPoint + 0:(sampleSize - 1) * interval
+    index <- NULL
+    for(i in 1:sampleSize){
+      index <- c(index, which(intervalSelection[i] < cumsum(bv))[1])
+    }
   }
+  # Gather output
   count <- as.numeric(table(index))
   index <- unique(index)
   if(length(index) < sampleSize)
