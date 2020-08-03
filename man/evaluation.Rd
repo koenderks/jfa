@@ -9,7 +9,7 @@ evaluation(sample = NULL, bookValues = NULL, auditValues = NULL,
            method = "binomial", materiality = NULL, N = NULL, 
            prior = FALSE, nPrior = 0, kPrior = 0, 
            rohrbachDelta = 2.7, momentPoptype = "accounts",
-           populationBookValue = NULL, 
+           populationBookValue = NULL, minPrecision = NULL,
            csA = 1, csB = 3, csMu = 0.5)
 }
 \arguments{
@@ -42,6 +42,8 @@ evaluation(sample = NULL, bookValues = NULL, auditValues = NULL,
 \item{momentPoptype}{can be either one of \code{accounts} or \code{inventory}. Options result in different methods for calculating the central moments, for more information see Dworin and Grimlund (1986).}
 
 \item{populationBookValue}{the total value of the audit population. Required when \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}.}
+
+\item{minPrecision}{if specified, the function also returns the conclusion of the analysis with respect to the minimum precision. This value must be specified as a fraction of the total value of the population (a value between 0 and 1).}
 
 \item{csA}{if \code{method = "coxsnell"}, the \eqn{\alpha} parameter of the prior distribution on the mean taint. Default is set to 1, as recommended by Cox and Snell (1979).}
 
@@ -120,15 +122,26 @@ e1 <- evaluation(nSumstats = 100, kSumstats = 1, method = "binomial",
                  materiality = 0.05)
 print(e1)
 
-# jfa evaluation results for binomial method:
-#   
-# Materiality:           5\% 
-# Confidence:            95\% 
-# Upper bound:           4.656\% 
-# Sample size:           100 
-# Sample errors:         1 
-# Sum of taints:         1  
-# Conclusion:            Approve population
+# ------------------------------------------------------------ 
+#             jfa Evaluation Summary (Frequentist)
+# ------------------------------------------------------------ 
+# Input: 
+#
+# Confidence:               95\%   
+# Materiality:              5\% 
+# Minium precision:         100\% 
+# Sample size:              100 
+# Sample errors:            1 
+# Sum of taints:            1 
+# Method:                   binomial 
+# ------------------------------------------------------------
+# Output:
+#
+# Most likely error:        1\% 
+# Upper bound:              4.656\% 
+# Precision:                3.656\% 
+# Conclusion:               Approve population
+# ------------------------------------------------------------
 
 # Evaluate the raw sample using the stringer bound:
 

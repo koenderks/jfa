@@ -100,6 +100,7 @@ print.jfaEvaluation <- function(x, ...){
 # Minium precision:        ", paste0(round(x$minPrecision * 100, 3), "%"),"
 # Sample size:             ", x$n,"
 # Sample errors:           ", x$k, "
+# Method:                  ", x$method, "
 # Population book value:   ", round(x$popBookvalue, 2), "
 # ------------------------------------------------------------
 # Output:
@@ -123,7 +124,7 @@ print.jfaEvaluation <- function(x, ...){
 # Sample size:             ", x$n,"
 # Sample errors:           ", x$k, "
 # Sum of taints:           ", round(x$t, 3), " 
-# Likelihood:              ", x$method, "
+# Method:                  ", x$method, "
 # Prior distribution:      ", x$priorString, "
 # ------------------------------------------------------------
 # Output:
@@ -146,7 +147,7 @@ print.jfaEvaluation <- function(x, ...){
 # Sample size:             ", x$n,"
 # Sample errors:           ", x$k, "
 # Sum of taints:           ", round(x$t, 3), "
-# Likelihood:              ", x$method, "
+# Method:                  ", x$method, "
 # ------------------------------------------------------------
 # Output:
 #
@@ -154,7 +155,7 @@ print.jfaEvaluation <- function(x, ...){
 # Upper bound:             ", paste0(round(x$confBound * 100, 3), "%"),"
 # Precision:               ", paste0(round(x$precision * 100, 3), "%"),"
 # Conclusion:              ", x$conclusion, "
-# ")
+# ------------------------------------------------------------ ")
     }
   }
 }

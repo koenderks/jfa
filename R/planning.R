@@ -1,9 +1,10 @@
 #' Frequentist and Bayesian Planning for Audit Samples
 #'
-#' @description This function calculates the required sample size for an audit, based on the poisson, binomial, or hypergeometric likelihood. A prior can be specified to perform Bayesian planning. The returned object is of class \code{jfaPlanning} and can be used with associated \code{print()} and \code{plot()} methods.
+#' @description This function calculates the required sample size for an audit, based on the poisson, binomial, or hypergeometric likelihood. A prior can be specified to perform Bayesian planning. The returned object is of class \code{jfaPlanning} and can be used with associated \code{print()}, \code{summary()} and \code{plot()} methods.
 #'
 #' @usage planning(materiality, confidence = 0.95, expectedError = 0, likelihood = "poisson", 
-#'          minPrecision = NULL, N = NULL, maxSize = 5000, increase = 1, prior = FALSE, kPrior = 0, nPrior = 0)
+#'          minPrecision = NULL, N = NULL, maxSize = 5000, increase = 1, 
+#'          prior = FALSE, kPrior = 0, nPrior = 0)
 #'
 #' @param materiality   a value between 0 and 1 representing the materiality of the audit as a fraction of the total size or value. Can be \code{NULL}, but \code{minPrecision} should be specified in that case.
 #' @param confidence    the confidence level desired from the confidence bound (on a scale from 0 to 1). Defaults to 0.95, or 95\% confidence.
@@ -57,12 +58,21 @@
 #'                likelihood = "binomial")
 #' print(p1)
 #' 
-#' # jfa planning results for binomial likelihood:
-#' #      
-#' # Materiality:             5% 
+#' # ------------------------------------------------------------
+#' #              jfa Planning Summary (Frequentist)
+#' # ------------------------------------------------------------     
+#' # Input:
+#' # 
 #' # Confidence:              95% 
+#' # Materiality:             5% 
+#' # Minimum precision:       100% 
+#' # Likelihood:              binomial 
+#' # Expected sample errors:  6 
+#' # ------------------------------------------------------------
+#' # Output:
+#' # 
 #' # Sample size:             234 
-#' # Allowed sample errors:   6
+#' # ------------------------------------------------------------
 #' 
 #' # Bayesian planning with uninformed prior:
 #' 
@@ -70,14 +80,22 @@
 #'                likelihood = "binomial", prior = TRUE)
 #' print(p2)
 #' 
-#' # jfa planning results for beta prior with binomial likelihood:
-#' #      
+#' # ------------------------------------------------------------
+#' #              jfa Planning Summary (Bayesian)
+#' # ------------------------------------------------------------
+#' # Input:
+#' # 
+#' # Confidence:              95%      
 #' # Materiality:             5% 
-#' # Confidence:              95% 
-#' # Sample size:             220 
-#' # Allowed sample errors:   5.5 
-#' # Prior parameter alpha:   1 
-#' # Prior parameter beta:    1
+#' # Minimum precision:       100% 
+#' # Likelihood:              binomial 
+#' # Prior:                   beta(1, 1)
+#' # Expected sample errors:  5.5
+#' # ------------------------------------------------------------
+#' # Output:
+#' #
+#' # Sample size:            220
+#' # ------------------------------------------------------------ 
 #' 
 #' # Bayesian planning with informed prior:
 #' 
@@ -88,14 +106,22 @@
 #'                prior = prior)
 #' print(p3)
 #' 
-#' # jfa planning results for beta prior with binomial likelihood:
-#' #      
+#' # ------------------------------------------------------------
+#' #              jfa Planning Summary (Bayesian)
+#' # ------------------------------------------------------------
+#' # Input:
+#' # 
+#' # Confidence:              95%      
 #' # Materiality:             5% 
-#' # Confidence:              95% 
-#' # Sample size:             169 
-#' # Allowed sample errors:   4.23 
-#' # Prior parameter alpha:   2.275 
-#' # Prior parameter beta:    50.725
+#' # Minimum precision:       100% 
+#' # Likelihood:              binomial 
+#' # Prior:                   beta(2.275, 50.725)
+#' # Expected sample errors:  4.23
+#' # ------------------------------------------------------------
+#' # Output:
+#' #
+#' # Sample size:            169
+#' # ------------------------------------------------------------
 #'
 #' @keywords planning sample size audit
 #'

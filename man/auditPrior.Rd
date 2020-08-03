@@ -53,7 +53,7 @@ An object of class \code{jfaPrior} containing:
 \item{sampleK}{For methods \code{sample} and \code{factor}, the number of transactions that were misstated in the earlier sample.}
 }
 \description{
-This function creates a prior distribution for Bayesian audit sampling according to several methods discussed in Derks et al. (2020). The returned object is of class \code{jfaPrior} and can be used with associated \code{print()} and \code{plot()} methods. \code{jfaPrior} objects can be used as input argument for the \code{prior} argument in other functions.
+This function creates a prior distribution for Bayesian audit sampling according to several methods discussed in Derks et al. (2020). The returned object is of class \code{jfaPrior} and can be used with associated \code{print()}, \code{summary()} and \code{plot()} methods. \code{jfaPrior} objects can be used as input for the \code{prior} argument in other functions.
 }
 \details{
 This section elaborates on the available methods for constructing a prior distribution.
@@ -94,11 +94,22 @@ prior <- auditPrior(materiality = materiality, confidence = confidence,
                     expectedError = expectedError, likelihood = "binomial")
 print(prior)
 
-# jfa prior distribution for arm method:
-#      
-# Prior sample size:     51 
-# Prior errors:          1.27 
-# Prior:                 beta(2.275, 50.725)
+# ------------------------------------------------------------
+#         jfa Prior Distribution Summary (Bayesian)
+# ------------------------------------------------------------
+# Input:
+# 
+# Confidence:              0.95    
+# Expected sample errors:  0.025       
+# Likelihood:              binomial 
+# Specifics:               Inherent risk = 1; Internal control risk = 0.6; Detection risk = 0.083 
+# ------------------------------------------------------------
+# Output: 
+# 
+# Prior distribution:      beta(2.275, 50.725) 
+# Implicit sample size:    51 
+# Implicit errors:         1.275 
+# ------------------------------------------------------------
 }
 \references{
 Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., & Wetzels, R. (2019). JASP for audit: Bayesian tools for the auditing practice.
