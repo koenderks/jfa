@@ -8,6 +8,8 @@
 
 - Implemented a more efficient monetary unit sampling algorithm.
 
+- Changed the x-axis labels in the default plot to theta instead of misstatement.
+
 # jfa 0.1.0
 
 - First version of the `jfa` package. The package provides four functions: `auditPrior()`, `planning()`, `sampling()`, and `evaluation()`.

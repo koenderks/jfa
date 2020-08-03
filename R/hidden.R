@@ -242,7 +242,7 @@ plot.jfaEvaluation <- function(x, ...){
           mainLabPlus <- " beta prior and posterior"
         if(x$method == "coxsnell")
           mainLabPlus <- " Cox and Snell prior and posterior"
-        graphics::plot(x = xseq, y = d1, type = "l", lwd = 2, bty = "n", xlab = "Misstatement", ylab = "Probability density", las = 1, ylim = c(0, max(d1)),
+        graphics::plot(x = xseq, y = d1, type = "l", lwd = 2, bty = "n", xlab = expression(theta), ylab = "Probability density", las = 1, ylim = c(0, max(d1)),
                        main = paste0(mainLab, mainLabPlus), axes = FALSE)
         graphics::polygon(x = c(0, xseq[xseq<=bound], xseq[xseq<=bound][length(xseq[xseq<=bound])]), y = c(0, d1[xseq<=bound], 0), col="lightgray", border = NA)
         graphics::lines(x = xseq, y = d, lwd = 2, lty = 2)
@@ -303,7 +303,7 @@ plot.jfaPrior <- function(x, ...){
   }
   mainLab <- paste0(mainLab, " ", x$priorD, " prior")
   if(x$priorD == "gamma" || x$priorD == "beta"){
-    graphics::plot(x = xseq, y = d, type = "l", lwd = 2, bty = "n", xlab = "Misstatement", ylab = "Probability density", las = 1, ylim = c(0, max(d)),
+    graphics::plot(x = xseq, y = d, type = "l", lwd = 2, bty = "n", xlab = expression(theta), ylab = "Probability density", las = 1, ylim = c(0, max(d)),
                    main = mainLab, axes = FALSE, lty = 2)
     graphics::axis(1, at = pretty(seq(0, xlim, by = 0.01), min.n = 5), labels = paste0(round(pretty(seq(0, xlim, by = 0.01), min.n = 5) * 100, 2), "%"))
     graphics::axis(2, at = c(0, max(d)), labels = FALSE, las = 1, lwd.ticks = 0)
