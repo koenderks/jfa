@@ -7,7 +7,7 @@
 #'            method = "binomial", materiality = NULL, N = NULL, 
 #'            prior = FALSE, nPrior = 0, kPrior = 0, 
 #'            rohrbachDelta = 2.7, momentPoptype = "accounts",
-#'            populationBookValue = NULL, 
+#'            populationBookValue = NULL, minPrecision = NULL,
 #'            csA = 1, csB = 3, csMu = 0.5) 
 #'
 #' @param sample        a data frame containing at least a column of book values and a column of audit (true) values.
@@ -25,6 +25,7 @@
 #' @param rohrbachDelta the value of \eqn{\Delta} in Rohrbach's augmented variance bound.
 #' @param momentPoptype can be either one of \code{accounts} or \code{inventory}. Options result in different methods for calculating the central moments, for more information see Dworin and Grimlund (1986).
 #' @param populationBookValue the total value of the audit population. Required when \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}.
+#' @param minPrecision  if specified, the function also returns the conclusion of the analysis with respect to the minimum precision. This value must be specified as a fraction of the total value of the population (a value between 0 and 1).
 #' @param csA           if \code{method = "coxsnell"}, the \eqn{\alpha} parameter of the prior distribution on the mean taint. Default is set to 1, as recommended by Cox and Snell (1979).
 #' @param csB           if \code{method = "coxsnell"}, the \eqn{\beta} parameter of the prior distribution on the mean taint. Default is set to 3, as recommended by Cox and Snell (1979).
 #' @param csMu          if \code{method = "coxsnell"}, the mean of the prior distribution on the mean taint. Default is set to 0.5, as recommended by Cox and Snell (1979).
@@ -143,7 +144,7 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
                        method = "binomial", materiality = NULL, N = NULL, 
                        prior = FALSE, nPrior = 0, kPrior = 0, 
                        rohrbachDelta = 2.7, momentPoptype = "accounts",
-                       populationBookValue = NULL, 
+                       populationBookValue = NULL, minPrecision = NULL,
                        csA = 1, csB = 3, csMu = 0.5){
   
   tmp_method <- method
@@ -194,8 +195,11 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
   if(!is.null(materiality)){
     mat <- materiality
   } else {
-    mat <- 0
+    mat <- 1
   }
+
+  if(is.null(minPrecision))
+    minPrecision <- 1
 
   mle <- NULL
   precision <- NULL
@@ -267,19 +271,19 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
   } else if(method == "direct"){
     bound <- .directMethod(bv, av, confidence, N, n, populationBookValue)
     mle <- bound$pointEstimate
-    precision <- bound$upperBound - mle
+    precision <- (bound$upperBound - mle) / populationBookValue
   } else if(method == "difference"){
     bound <- .differenceMethod(bv, av, confidence, N, n, populationBookValue)
     mle <- bound$pointEstimate
-    precision <- bound$upperBound - mle
+    precision <- (bound$upperBound - mle) / populationBookValue
   } else if(method == "quotient"){
     bound <- .quotientMethod(bv, av, confidence, N, n, populationBookValue)
     mle <- bound$pointEstimate
-    precision <- bound$upperBound - mle
+    precision <- (bound$upperBound - mle) / populationBookValue
   } else if(method == "regression"){
     bound <- .regressionMethod(bv, av, confidence, N, n, populationBookValue)
     mle <- bound$pointEstimate
-    precision <- bound$upperBound - mle
+    precision <- (bound$upperBound - mle) / populationBookValue
   }
   
   results <- list()
@@ -288,6 +292,7 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
   results[["t"]]              <- as.numeric(t)
   results[["confidence"]]     <- as.numeric(confidence)
   results[["method"]]         <- as.character(method)
+  results[["minPrecision"]]   <- as.numeric(minPrecision)
   if(!is.null(mle))
     results[["mle"]]            <- as.numeric(mle)
   if(!is.null(precision))
@@ -311,9 +316,16 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
   if(!is.null(materiality)){
     results[["materiality"]]      <- as.numeric(materiality)
     if(method %in% c("direct", "difference", "quotient", "regression")){
-      results[["conclusion"]]     <- ifelse(populationBookValue <= results[["upperBound"]] && populationBookValue >= results[["lowerBound"]] , yes = "Approve population", no = "Do not approve population")
+      results[["conclusion"]]     <- ifelse(populationBookValue <= results[["upperBound"]] && populationBookValue >= results[["lowerBound"]] && precision <= minPrecision, yes = "Approve population", no = "Do not approve population")
     } else {
-      results[["conclusion"]]     <- ifelse(results[["confBound"]] < materiality, yes = "Approve population", no = "Do not approve population")
+      results[["conclusion"]]     <- ifelse(results[["confBound"]] < materiality && precision <= minPrecision, yes = "Approve population", no = "Do not approve population")
+    }
+  } else {
+    results[["materiality"]] <- mat
+    if(method %in% c("direct", "difference", "quotient", "regression")){
+      results[["conclusion"]]     <- ifelse(precision <= minPrecision, yes = "Approve population", no = "Do not approve population")
+    } else {
+      results[["conclusion"]]     <- ifelse(precision <= minPrecision, yes = "Approve population", no = "Do not approve population")
     }
   }
   if(method == "hypergeometric"){
@@ -322,6 +334,14 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
       results[["populationK"]]    <- populationK
   }
   if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior" || method == "coxsnell"){
+    results[["priorString"]]       <- switch(method, 
+                              "poisson" = paste0("gamma(", round(1 + kPrior, 2), ", ", round(nPrior, 2), ")"), 
+                              "binomial" = paste0("beta(", round(1 + kPrior, 2), ", ", round(1 + nPrior - kPrior, 2), ")"),
+                              "hypergeometric" = paste0("beta-binomial(", round(1 + kPrior, 2), ", ", round(1 + nPrior - kPrior, 2), ")"))
+    results[["posteriorString"]]       <- switch(method, 
+                              "poisson" = paste0("gamma(", round(1 + kPrior + t, 2), ", ", round(nPrior + n, 2), ")"), 
+                              "binomial" = paste0("beta(", round(1 + kPrior + t, 2), ", ", round(1 + nPrior - kPrior + n - t, 2), ")"),
+                              "hypergeometric" = paste0("beta-binomial(", round(1 + kPrior + t, 2), ", ", round(1 + nPrior - kPrior + n - t, 2), ")"))
     results[["prior"]]            <- as.logical(TRUE)
     results[["nPrior"]]           <- nPrior
     results[["kPrior"]]           <- kPrior

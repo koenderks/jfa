@@ -6,10 +6,10 @@ print.jfaPlanning <- function(x, ...){
 #              jfa Planning Summary (Bayesian)
 # ------------------------------------------------------------
 # Input:
-#      
+# 
+# Confidence:             ", paste0(round(x$confidence * 100, 3), "%"),"     
 # Materiality:            ", paste0(round(x$materiality * 100, 3), "%"),"
 # Minimum precision:      ", paste0(round(x$minPrecision * 100, 3), "%"),"
-# Confidence:             ", paste0(round(x$confidence * 100, 3), "%"),"
 # Likelihood:             ", x$likelihood,"
 # Prior:                  ", paste0(x[["prior"]]$priorD, "(", x[["prior"]]$aPrior, ", ", x[["prior"]]$bPrior, ")
 # Expected sample errors:  ", x$expectedSampleError, "
@@ -24,9 +24,9 @@ print.jfaPlanning <- function(x, ...){
 # ------------------------------------------------------------     
 # Input:
 # 
+# Confidence:             ", paste0(round(x$confidence * 100, 3), "%"),"
 # Materiality:            ", paste0(round(x$materiality * 100, 3), "%"),"
 # Minimum precision:      ", paste0(round(x$minPrecision * 100, 3), "%"),"
-# Confidence:             ", paste0(round(x$confidence * 100, 3), "%"),"
 # Likelihood:             ", x$likelihood,"
 # Expected sample errors: ", x$expectedSampleError, "
 # ------------------------------------------------------------
@@ -90,65 +90,71 @@ ifelse(x$algorithm == "cell", no = "", yes = paste0("
 #' @export
 print.jfaEvaluation <- function(x, ...){
   if(x$method %in% c("direct", "difference", "quotient", "regression")){
-    cat("#
-# jfa evaluation results for", x$method,"estimation method:
+    cat("# ------------------------------------------------------------ 
+#             jfa Evaluation Summary (Frequentist)
+# ------------------------------------------------------------
+# Input:
 #   
-# Confidence:           ", paste0(round(x$confidence * 100, 3), "%"),"
-# Population book value:", round(x$popBookvalue, 2), "
-# Point estimate:       ", round(x$pointEstimate, 2), "
-# Lower bound:          ", round(x$lowerBound, 2),"
-# Upper bound:          ", round(x$upperBound, 2),"
-# Conclusion:           ", x$conclusion, "
-# ")
+# Confidence:              ", paste0(round(x$confidence * 100, 3), "%"),"
+# Materiality:             ", paste0(round(x$materiality * 100, 3), "%"),"
+# Minium precision:        ", paste0(round(x$minPrecision * 100, 3), "%"),"
+# Sample size:             ", x$n,"
+# Sample errors:           ", x$k, "
+# Population book value:   ", round(x$popBookvalue, 2), "
+# ------------------------------------------------------------
+# Output:
+#
+# Most likely error:       ", round(x$pointEstimate, 2), "
+# Lower bound:             ", round(x$lowerBound, 2),"
+# Upper bound:             ", round(x$upperBound, 2),"
+# Precision:               ", paste0(round(x$precision * 100, 3), "%"),"
+# Conclusion:              ", x$conclusion, "
+# ------------------------------------------------------------ ")
   } else {
     if(x$prior){
-      if(!is.null(x$materiality)){
-        cat("# 
-# jfa evaluation results for", x$method,"method with prior:
-#   
-# Materiality:          ", paste0(round(x$materiality * 100, 3), "%"),"
-# Confidence:           ", paste0(round(x$confidence * 100, 3), "%"),"
-# Upper bound:          ", paste0(round(x$confBound * 100, 3), "%"),"
-# Sample size:          ", x$n,"
-# Sample errors:        ", x$k, "
-# Sum of taints:        ", round(x$t, 3), " 
-# Conclusion:           ", x$conclusion, "
-# ")
-      } else {
-        cat("#
-# jfa evaluation results for", x$method,"method with prior:
-#      
-# Confidence:           ", paste0(round(x$confidence * 100, 3), "%"),"
-# Upper bound:          ", paste0(round(x$confBound * 100, 3), "%"),"
-# Sample size:          ", x$n,"
-# Sample errors:        ", x$k, "
-# Sum of taints:        ", round(x$t, 3), "
-# ")
-      }
+      cat("# ------------------------------------------------------------ 
+#             jfa Evaluation Summary (Bayesian)
+# ------------------------------------------------------------
+# Input: 
+#
+# Confidence:              ", paste0(round(x$confidence * 100, 3), "%"),"  
+# Materiality:             ", paste0(round(x$materiality * 100, 3), "%"),"
+# Minium precision:        ", paste0(round(x$minPrecision * 100, 3), "%"),"
+# Sample size:             ", x$n,"
+# Sample errors:           ", x$k, "
+# Sum of taints:           ", round(x$t, 3), " 
+# Likelihood:              ", x$method, "
+# Prior distribution:      ", x$priorString, "
+# ------------------------------------------------------------
+# Output:
+#
+# Posterior distribution:  ", x$posteriorString, "
+# Most likely error:       ", paste0(round(x$mle * 100, 3), "%"),"
+# Upper bound:             ", paste0(round(x$confBound * 100, 3), "%"),"
+# Precision:               ", paste0(round(x$precision * 100, 3), "%"),"
+# Conclusion:              ", x$conclusion, "
+# ------------------------------------------------------------ ")
     } else {
-      if(!is.null(x$materiality)){
-        cat("#
-# jfa evaluation results for", x$method,"method:
-#   
-# Materiality:          ", paste0(round(x$materiality * 100, 3), "%"),"
-# Confidence:           ", paste0(round(x$confidence * 100, 3), "%"),"
-# Upper bound:          ", paste0(round(x$confBound * 100, 3), "%"),"
-# Sample size:          ", x$n,"
-# Sample errors:        ", x$k, "
-# Sum of taints:        ", round(x$t, 3), " 
-# Conclusion:           ", x$conclusion, "
+      cat("# ------------------------------------------------------------ 
+#             jfa Evaluation Summary (Frequentist)
+# ------------------------------------------------------------ 
+# Input: 
+#
+# Confidence:              ", paste0(round(x$confidence * 100, 3), "%"),"  
+# Materiality:             ", paste0(round(x$materiality * 100, 3), "%"),"
+# Minium precision:        ", paste0(round(x$minPrecision * 100, 3), "%"),"
+# Sample size:             ", x$n,"
+# Sample errors:           ", x$k, "
+# Sum of taints:           ", round(x$t, 3), "
+# Likelihood:              ", x$method, "
+# ------------------------------------------------------------
+# Output:
+#
+# Most likely error:       ", paste0(round(x$mle * 100, 3), "%"),"
+# Upper bound:             ", paste0(round(x$confBound * 100, 3), "%"),"
+# Precision:               ", paste0(round(x$precision * 100, 3), "%"),"
+# Conclusion:              ", x$conclusion, "
 # ")
-      } else {
-        cat("#
-# jfa evaluation results for", x$method,"method:
-#      
-# Confidence:           ", paste0(round(x$confidence * 100, 3), "%"),"
-# Upper bound:          ", paste0(round(x$confBound * 100, 3), "%"),"
-# Sample size:          ", x$n,"
-# Sample errors:        ", x$k, "
-# Sum of taints:        ", round(x$t, 3), "
-# ")
-      }
     }
   }
 }
