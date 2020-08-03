@@ -110,13 +110,15 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, minPreci
     kPrior <- prior$kPrior
     likelihood <- prior$likelihood
   }
-  
+
   if(is.null(materiality) && is.null(minPrecision))
     stop("Specify the materiality or the minimum precision")
+  if(!is.null(minPrecision) && minPrecision == 0)
+    stop("The minimum required precision cannot be zero.")
   if(!(likelihood %in% c("binomial", "hypergeometric", "poisson")))
-    stop("Specify a valid distribution")
+    stop("Specify a valid likelihood.")
   if((class(prior) == "logical" && prior == TRUE) && kPrior < 0 || nPrior < 0)
-    stop("When you specify a prior, both kPrior and nPrior should be higher than zero")
+    stop("When you specify a prior, both kPrior and nPrior should be > 0.")
 
   ss <- NULL
 

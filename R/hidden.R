@@ -116,7 +116,11 @@ plot.jfaPlanning <- function(x, ...){
     limx <- 51
   }
   if(x[["prior"]]$prior){
-    xlim <- x$materiality * 3
+    if(x$materiality == 0){
+      xlim <- 1
+    } else {
+      xlim <- x$materiality * 3
+    }
     xseq <- seq(0, xlim, 0.00001)
     mainLab <- ifelse(x[["prior"]]$kPrior == 0 && x[["prior"]]$nPrior == 0, yes = "Uninformed", no = "Informed")
     if(x$likelihood == "poisson"){
@@ -139,7 +143,7 @@ plot.jfaPlanning <- function(x, ...){
         mainLabPlus <- " gamma prior and expected posterior"
       if(x$likelihood == "binomial")
         mainLabPlus <- " beta prior and expected posterior"
-      graphics::plot(x = xseq, y = d1, type = "l", lwd = 2, bty = "n", xlab = "Misstatement", ylab = "Probability density", las = 1, ylim = c(0, max(d1)),
+      graphics::plot(x = xseq, y = d1, type = "l", lwd = 2, bty = "n", xlab = expression(theta), ylab = "Probability density", las = 1, ylim = c(0, max(d1)),
            main = paste0(mainLab, mainLabPlus), axes = FALSE)
       graphics::polygon(x = c(0, xseq[xseq<=bound], xseq[xseq<=bound][length(xseq[xseq<=bound])]), y = c(0, d1[xseq<=bound], 0), col="lightgray", border = NA)
       graphics::lines(x = xseq, y = d, lwd = 2, lty = 2)
@@ -281,7 +285,11 @@ plot.jfaEvaluation <- function(x, ...){
 #' @method plot jfaPrior
 #' @export
 plot.jfaPrior <- function(x, ...){
-  xlim <- x$materiality * 3
+  if(x$materiality == 0){
+    xlim <- 1
+  } else {
+    xlim <- x$materiality * 3
+  }
   xseq <- seq(0, xlim, 0.00001)
   mainLab <- ifelse(x$kPrior == 0 && x$nPrior == 0, yes = "Uninformed", no = "Informed")
   if(x$priorD == "gamma"){

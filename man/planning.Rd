@@ -5,20 +5,24 @@
 \title{Frequentist and Bayesian Planning for Audit Samples}
 \usage{
 planning(materiality, confidence = 0.95, expectedError = 0, likelihood = "poisson", 
-         N = NULL, maxSize = 5000, prior = FALSE, kPrior = 0, nPrior = 0)
+         minPrecision = NULL, N = NULL, maxSize = 5000, increase = 1, prior = FALSE, kPrior = 0, nPrior = 0)
 }
 \arguments{
-\item{materiality}{a value between 0 and 1 representing the materiality of the audit as a fraction of the total size or value.}
+\item{materiality}{a value between 0 and 1 representing the materiality of the audit as a fraction of the total size or value. Can be \code{NULL}, but \code{minPrecision} should be specified in that case.}
 
 \item{confidence}{the confidence level desired from the confidence bound (on a scale from 0 to 1). Defaults to 0.95, or 95\% confidence.}
 
 \item{expectedError}{a fraction representing the percentage of expected mistakes in the sample relative to the total size, or a number (>= 1) that represents the number of expected mistakes.}
+
+\item{minPrecision}{The minimum precision to be obtained. Can be \code{NULL}, but \code{materiality} should be specified in that case.}
 
 \item{likelihood}{can be one of \code{binomial}, \code{poisson}, or \code{hypergeometric}.}
 
 \item{N}{the population size (required for hypergeometric calculations).}
 
 \item{maxSize}{the maximum sample size that is considered for calculations. Defaults to 5000 for efficiency. Increase this value if the sample size cannot be found due to it being too large (e.g., for a low materiality).}
+
+\item{increase}{the desired increase step for the sample size calculation.}
 
 \item{prior}{whether to use a prior distribution when planning. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, the prior distribution is updated by the specified likelihood. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
 
@@ -29,13 +33,14 @@ planning(materiality, confidence = 0.95, expectedError = 0, likelihood = "poisso
 \value{
 An object of class \code{jfaPlanning} containing:
 
-\item{materiality}{the value of the specified materiality.}
+\item{materiality}{the value of the specified materiality. Can be \code{NULL}.}
 \item{confidence}{the confidence level for the desired population statement.}
 \item{sampleSize}{the resulting sample size.}
 \item{expectedSampleError}{the number of full errors that are allowed to occur in the sample.}
 \item{expectedError}{the specified number of errors as a fraction or as a number.}
 \item{likelihood}{the specified likelihood.}
 \item{errorType}{whether the expected errors where specified as a percentage or as an integer.}
+\item{minPrecision}{The minimum precision to be obtained. Can be \code{NULL}.}
 \item{N}{the population size (only returned in case of a hypergeometric likelihood).}
 \item{populationK}{the assumed population errors (only returned in case of a hypergeometric likelihood).}
 \item{prior}{a list containing information on the prior parameters.}
