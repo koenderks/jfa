@@ -1,6 +1,6 @@
 #' Create a Prior Distribution with Audit Information
 #'
-#' @description This function creates a prior distribution for Bayesian audit sampling according to several methods discussed in Derks et al. (2020). The returned object is of class \code{jfaPrior} and can be used with associated \code{print()}, \code{summary()} and \code{plot()} methods. \code{jfaPrior} objects can be used as input for the \code{prior} argument in other functions.
+#' @description This function creates a prior distribution for Bayesian audit sampling according to several methods discussed in Derks et al. (2020). The returned object is of class \code{jfaPrior} and can be used with associated \code{print()} and \code{plot()} methods. \code{jfaPrior} objects can be used as input for the \code{prior} argument in other functions.
 #'
 #' @usage auditPrior(materiality = NULL, confidence = 0.95, method = "arm", ir = 1, 
 #'            cr = 1, expectedError = 0, likelihood = "binomial", N = NULL, 

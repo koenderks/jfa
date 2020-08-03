@@ -89,7 +89,7 @@ This function takes a sample data frame or summary statistics about an evaluated
 
 - `evaluation()`
 
-`evaluation(sample = NULL, bookValues = NULL, auditValues = NULL, confidence = 0.95, nSumstats = NULL, kSumstats = NULL, method = "binomial", materiality = NULL, N = NULL, prior = FALSE, nPrior = 0, kPrior = 0, rohrbachDelta = 2.7, momentPoptype = "accounts", populationBookValue = NULL, csA = 1, csB = 3, csMu = 0.5)`
+`evaluation(sample = NULL, bookValues = NULL, auditValues = NULL, confidence = 0.95, nSumstats = NULL, kSumstats = NULL, method = "binomial", materiality = NULL, N = NULL, prior = FALSE, nPrior = 0, kPrior = 0, rohrbachDelta = 2.7, momentPoptype = "accounts", populationBookValue = NULL, minPrecision = NULL, csA = 1, csB = 3, csMu = 0.5)`
 
 ## Poster
 

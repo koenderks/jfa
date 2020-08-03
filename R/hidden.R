@@ -396,27 +396,3 @@ plot.jfaPrior <- function(x, ...){
     graphics::legend("topright", legend = "Prior", fill = "lightgray", bty = "n", cex = 1.2) 
   }
 }
-
-#' @method summary jfaPrior
-#' @export
-summary.jfaPrior <- function(x, ...){
-  print.jfaPrior(x, ...)
-}
-
-#' @method summary jfaPlanning
-#' @export
-summary.jfaPlanning <- function(x, ...){
-  print.jfaPlanning(x, ...)
-}
-
-#' @method summary jfaSampling
-#' @export
-summary.jfaSampling <- function(x, ...){
-  print.jfaSampling(x, ...)
-}
-
-#' @method summary jfaEvaluation
-#' @export
-summary.jfaEvaluation <- function(x, ...){
-  print.jfaEvaluation(x, ...)
-}

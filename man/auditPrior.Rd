@@ -53,7 +53,7 @@ An object of class \code{jfaPrior} containing:
 \item{sampleK}{For methods \code{sample} and \code{factor}, the number of transactions that were misstated in the earlier sample.}
 }
 \description{
-This function creates a prior distribution for Bayesian audit sampling according to several methods discussed in Derks et al. (2020). The returned object is of class \code{jfaPrior} and can be used with associated \code{print()}, \code{summary()} and \code{plot()} methods. \code{jfaPrior} objects can be used as input for the \code{prior} argument in other functions.
+This function creates a prior distribution for Bayesian audit sampling according to several methods discussed in Derks et al. (2020). The returned object is of class \code{jfaPrior} and can be used with associated \code{print()} and \code{plot()} methods. \code{jfaPrior} objects can be used as input for the \code{prior} argument in other functions.
 }
 \details{
 This section elaborates on the available methods for constructing a prior distribution.

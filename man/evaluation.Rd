@@ -149,15 +149,26 @@ e2 <- evaluation(sample = s1_sample, bookValues = "bookValue", auditValues = "tr
                  method = "stringer", materiality = 0.05)
 print(e2)
 
-# jfa evaluation results for stringer method:
-#   
-# Materiality:           5\% 
-# Confidence:            95\% 
-# Upper bound:           3.952\% 
-# Sample size:           100 
-# Sample errors:         1 
-# Sum of taints:         0.587  
-# Conclusion:            Approve population
+# ------------------------------------------------------------ 
+#             jfa Evaluation Summary (Frequentist)
+# ------------------------------------------------------------ 
+# Input: 
+#
+# Confidence:               95\%   
+# Materiality:              5\% 
+# Minium precision:         100\% 
+# Sample size:              100 
+# Sample errors:            1 
+# Sum of taints:            0.587 
+# Method:                   stringer 
+# ------------------------------------------------------------
+# Output:
+#
+# Most likely error:        0.587\% 
+# Upper bound:              3.952\% 
+# Precision:                3.365\% 
+# Conclusion:               Approve population 
+# ------------------------------------------------------------
 
 }
 \references{

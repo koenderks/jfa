@@ -4,8 +4,8 @@
 \alias{planning}
 \title{Frequentist and Bayesian Planning for Audit Samples}
 \usage{
-planning(materiality, confidence = 0.95, expectedError = 0, likelihood = "poisson", 
-         minPrecision = NULL, N = NULL, maxSize = 5000, increase = 1, 
+planning(materiality = NULL, confidence = 0.95, expectedError = 0, minPrecision = NULL, 
+         likelihood = "poisson", N = NULL, maxSize = 5000, increase = 1, 
          prior = FALSE, kPrior = 0, nPrior = 0)
 }
 \arguments{
@@ -47,7 +47,7 @@ An object of class \code{jfaPlanning} containing:
 \item{prior}{a list containing information on the prior parameters.}
 }
 \description{
-This function calculates the required sample size for an audit, based on the poisson, binomial, or hypergeometric likelihood. A prior can be specified to perform Bayesian planning. The returned object is of class \code{jfaPlanning} and can be used with associated \code{print()}, \code{summary()} and \code{plot()} methods.
+This function calculates the required sample size for an audit, based on the poisson, binomial, or hypergeometric likelihood. A prior can be specified to perform Bayesian planning. The returned object is of class \code{jfaPlanning} and can be used with associated \code{print()} and \code{plot()} methods.
 }
 \details{
 This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
