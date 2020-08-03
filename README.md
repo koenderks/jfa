@@ -63,7 +63,7 @@ Below is a list of the available functions in the current version of `jfa`, sort
 
 - `auditPrior()`
 
-This function creates a prior distribution according to the audit risk model and assessments of the inherent and control risk. The returned object is of class `jfaPrior` and can be used with associated `print()` and `plot()` methods. `jfaPrior` results can also be used as input argument for the `prior` argument in other functions.
+This function creates a prior distribution according to one of several methods, including the audit risk model and assessments of the inherent and control risk. The returned object is of class `jfaPrior` and can be used with associated `print()` and `plot()` methods. `jfaPrior` results can also be used as input argument for the `prior` argument in other functions.
 
 `auditPrior(materiality = NULL, confidence = 0.95, method = "arm", ir = 1, cr = 1, expectedError = 0, likelihood = "binomial", N = NULL, pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)`
 

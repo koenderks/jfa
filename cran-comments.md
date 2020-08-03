@@ -1,8 +1,12 @@
-## Resubmission
-This is a resubmission. In this version I have:
+## Version 0.2.0
+This is jfa version 0.2.0. In this version I have:
 
-* Removed the redundant "functions to implement" from the package description
-* Changed the package description so that it elaborates on what the package does and why it may be useful.
+* Implemented prior construction methods `none`, `median`, `hypotheses`, `sample`, and `factor` in the `auditPrior()` function.  
+* Implemented `minPrecision` argument in the `planning()` function and the `Evaluation()` function.
+* Return the value `mle` and the value of the `precision` from the `Evaluation()` function.
+* Implemented `increase` argument in the `planning()` function.
+* Implemented more efficient versions of certain algorithms in the `sampling()` function.
+* Changed the x-axis labels in the default plot to theta instead of misstatement.
 
 ## Test environments
 * OS X install (on travis-ci), R release
