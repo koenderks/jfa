@@ -147,6 +147,8 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, minPreci
       } else if(errorType == "integer"){
         implicitK <- expectedError
       }
+      if(i <= implicitK)
+        next
       if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
         bound <- stats::qgamma(confidence, shape = 1 + kPrior + implicitK, rate = nPrior + i)
         mle <- (1 + kPrior + implicitK - 1) / (nPrior + i)
@@ -156,7 +158,7 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, minPreci
         }
       } else {
         prob <- stats::pgamma(materiality, shape = 1 + implicitK, rate = i)
-        bound <- stats::poisson.test(x = implicitK, T = i, r = materiality, alternative = "less", conf.level = confidence)$conf.int[2]
+        bound <- stats::qgamma(confidence, shape = 1 + implicitK, rate = i)
         mle <- implicitK / i
         if(prob >= confidence && (bound - mle) < minPrecision){
           ss <- i
@@ -171,6 +173,8 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, minPreci
       } else if(errorType == "integer"){
         implicitK <- expectedError
       }
+      if(i <= implicitK)
+        next
       if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
         bound <- stats::qbeta(confidence, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK)
         mle <- (1 + kPrior + implicitK - 1) / (1 + kPrior + implicitK + 1 + nPrior - kPrior + i - implicitK - 2)
@@ -199,6 +203,8 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, minPreci
       } else if(errorType == "integer"){
         implicitK <- expectedError
       }
+      if(i <= implicitK)
+        next
       if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
         if(is.null(N))
           stop("The beta-binomial distribution requires that you specify the population size N")

@@ -4,6 +4,8 @@
 
 - Implemented `minPrecision` argument in the `planning()` function that allows auditors to calculate a sample size so that the difference between the posterior upper confidence bound and the most likely error is lower than the set minimum precision.
 
+- Return the value `mle` from the `Evaluation()` function, which quantifies the most likely error.
+
 - Implemented `increase` argument in the `planning()` function that allows the user to increase the sample size with a set amount each step of the iterations.
 
 - Implemented a more efficient monetary unit sampling algorithm.

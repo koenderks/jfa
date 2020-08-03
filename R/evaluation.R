@@ -194,6 +194,9 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
   } else {
     mat <- 0
   }
+
+  mle <- NULL
+  precision <- NULL
   
   if((class(prior) == "logical" && prior == TRUE) && kPrior < 0 || nPrior < 0)
     stop("When you specify a prior, both kPrior and nPrior should be higher than zero")
@@ -201,8 +204,12 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
   if(method == "poisson"){
     if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
       bound <- stats::qgamma(p = confidence, shape = 1 + kPrior + t, rate = 1 + nPrior + n)
+      mle <- (1 + kPrior + t - 1) / (1 + nPrior + n)
+      precision <- bound - mle
     } else {
       bound <- stats::poisson.test(x = k, T = n, r = mat, alternative = "less", conf.level = confidence)$conf.int[2]
+      mle <- k / n
+      precision <- bound - mle
     }
   } else if(method == "binomial"){
     if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
@@ -211,17 +218,23 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
       precision <- bound - mle
     } else {
       bound <- stats::binom.test(x = k, n = n, p = mat, alternative = "less", conf.level = confidence)$conf.int[2]
+      mle <- k / n
+      precision <- bound - mle
     }
   } else if(method == "hypergeometric"){
     if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
       if(is.null(N))
         stop("Evaluation with beta-binomial distribution requires that you specify the population size N")
       bound <- .qBetaBinom(p = confidence, N = N - n + k, shape1 = 1 + kPrior + k, shape2 = 1 + nPrior - kPrior + n - k) / N
+      mle <- (which.max(.dBetaBinom(x = 0:(N - n + k), N = N - n + k, shape1 = 1 + kPrior + k, shape2 = 1 + nPrior - kPrior + n - k)) - 1) / N
+      precision <- bound - mle
     } else {
       if(mat == 0)
         stop("Evaluation with the hypergeometric distribution requires that you specify the materiality")
       populationK <- materiality * N
       bound <- stats::phyper(q = k, m = populationK, n = N - populationK, k = n)
+      mle <- k / n
+      precision <- bound - mle
     }
   } else if(method == "stringer"){
     bound <- .stringerBound(taints, confidence, n)
@@ -253,7 +266,9 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
   results[["t"]]              <- as.numeric(t)
   results[["confidence"]]     <- as.numeric(confidence)
   results[["method"]]         <- as.character(method)
-  results[["mle"]]            <- as.numeric(mle)
+  if(!is.null(mle))
+    results[["mle"]]            <- as.numeric(mle)
+  if(!is.null(precision))
   results[["precision"]]      <- as.numeric(precision)
   
   if(method %in% c("direct", "difference", "quotient", "regression")){
