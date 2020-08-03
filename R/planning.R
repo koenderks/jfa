@@ -101,7 +101,7 @@
 #'
 #' @export
 
-planning <- function(materiality, confidence = 0.95, expectedError = 0, minPrecision = NULL,
+planning <- function(materiality = NULL, confidence = 0.95, expectedError = 0, minPrecision = NULL,
                      likelihood = "poisson", N = NULL, maxSize = 5000, increase = 1,
                      prior = FALSE, kPrior = 0, nPrior = 0){
   
