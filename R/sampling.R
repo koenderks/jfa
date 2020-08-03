@@ -97,15 +97,16 @@ sampling <- function(population, sampleSize, bookValues = NULL, units = "records
   if(sampleSize > nrow(population))
     stop("Cannot take a sample larger than the population")
   if(!(algorithm %in% c("random", "cell", "interval")) || length(algorithm) != 1)
-    stop("Specify a valid algorithm")
+    stop("algorithm must be one of 'random', 'cell', or 'interval'.")
   if(!(units %in% c("records", "mus")) || length(units) != 1)
-    stop("Specify a valid sampling unit")
+    stop("units must be one of 'records' or 'mus'.")
   if(units == "mus" && is.null(bookValues))
-    stop("Book values must be specified if MUS is used")
+    stop("Book values must be specified if 'units = mus' is used.")
   if(!is.null(bookValues) && length(bookValues) != 1)
     stop("Specify one column for the book values")
   if(!is.null(bookValues) && !(bookValues %in% colnames(population)))
-    stop("The book value column cannot be found in the population data")
+    stop("The book value column cannot be located in the population data.")
+  interval <- NULL
   # Convert the population to a data frame
   population <- as.data.frame(population)
   rownames(population) <- 1:nrow(population)
@@ -114,8 +115,11 @@ sampling <- function(population, sampleSize, bookValues = NULL, units = "records
     bv <- population[, bookValues]
   if(ordered && !is.null(bv))
     population <- population[order(bv, decreasing = !ascending), ]
-  if(!is.null(bv) && any(bv < 0))
-    stop("The book values contain negative values")
+  if(!is.null(bv) && any(bv < 0)){
+    warning("The book values contain negative values, these are removed from the data")
+    negativeValues <- which(bv < 0)
+    population <- population[-negativeValues, ]
+  }
   # Set a seed for reproducibility
   set.seed(seed)
   # Sampling algorithms:
@@ -169,9 +173,16 @@ sampling <- function(population, sampleSize, bookValues = NULL, units = "records
   results <- list()
   results[["population"]] <- population
   results[["sample"]] <- sample
+  results[["populationSize"]] <- nrow(population)
+  results[["requestedSampleSize"]] <- sampleSize
+  results[["obtainedSampleSize"]] <- nrow(sample)
   results[["bookValues"]] <- bookValues
   results[["algorithm"]] <- algorithm
   results[["units"]] <- units
+  results[["intervalStartingPoint"]] <- intervalStartingPoint
+  if(!is.null(interval))
+    results[["interval"]] <- round(interval, 2)
+
   class(results) <- "jfaSampling"
   return(results)
 }

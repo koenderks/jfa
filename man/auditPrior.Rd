@@ -2,10 +2,10 @@
 % Please edit documentation in R/auditPrior.R
 \name{auditPrior}
 \alias{auditPrior}
-\title{Create a Prior Distribution}
+\title{Create a Prior Distribution with Audit Information}
 \usage{
-auditPrior(materiality = NULL, confidence = 0.95, method = "arm", ir = 1, cr = 1, 
-           expectedError = 0, likelihood = "binomial", N = NULL, 
+auditPrior(materiality = NULL, confidence = 0.95, method = "arm", ir = 1, 
+           cr = 1, expectedError = 0, likelihood = "binomial", N = NULL, 
            pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)
 }
 \arguments{

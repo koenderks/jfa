@@ -56,6 +56,8 @@ An object of class \code{jfaEvaluation} containing:
 \item{k}{an integer specifying the number of observed errors.}
 \item{t}{a number specifying the sum of observed taints.}
 \item{confidence}{the confidence level of the result.}
+\item{mle}{the most likely error in the population.}
+\item{precision}{the difference between the mle and the upper confidence bound.}
 \item{popBookvalue}{if specified as input, the total book value of the population.}
 \item{pointEstimate}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, the value of the point estimate.}
 \item{lowerBound}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, the value of the lower bound of the interval.}

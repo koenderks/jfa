@@ -175,6 +175,7 @@ auditPrior <- function(materiality = NULL, confidence = 0.95, method = "arm", ir
   result$method       <- as.character(method)
   result$confidence   <- as.numeric(confidence)
   result$likelihood   <- as.character(likelihood)
+  result$expectedError <- as.numeric(expectedError)
   result$priorD       <- switch(likelihood, 
                                 "poisson" = "gamma", 
                                 "binomial" = "beta",
