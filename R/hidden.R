@@ -100,11 +100,19 @@ print.jfaEvaluation <- function(x, ...){
 #' @method print jfaPrior
 #' @export
 print.jfaPrior <- function(x, ...){
-  cat("# jfa prior distribution for", x$method,"method:
+  cat("# jfa prior distribution for method = '",x$method,"':
 #      
-# Prior sample size:    ", round(x$nPrior, 3), "
-# Prior errors:         ", round(x$kPrior, 3),"
-# Prior:                ", paste0(x$priorD, "(", x$aPrior, ", ", x$bPrior, ")")
+# Implicit sample size: ", round(x$nPrior, 3), "
+# Implicit errors:      ", round(x$kPrior, 3),"
+# Likelihood:           ", x$likelihood,"
+# Prior:                ", paste0(x$priorD, "(", x$aPrior, ", ", x$bPrior, ")"),"
+# Specifics:            ", switch(x$method,
+                                  "none" = "None",
+                                  "median" = paste0("p(\u0398 < ",x$materiality,") = p(\u0398 > ",x$materiality,") = 0.5"),
+                                  "hypotheses" = paste0("p(\u0398 < ",x$materiality,") = ",x$pHmin,"; p(\u0398 > ",x$materiality,") = ", x$pHplus),
+                                  "arm" = paste0("Inherent risk = ", x$ir, "; Internal control risk = ", x$cr, "; Detection risk = ", round((1 - x$confidence) / (x$ir * x$cr), 3)),
+                                  "sample" = paste0("Earlier sample of ", x$sampleN, " transactions with ", x$sampleK, " errors"),
+                                  "factor" = paste0("Earlier sample of ", x$sampleN, " transactions with ", x$sampleK, " errors weighted by ", x$factor))
   )
 }
 

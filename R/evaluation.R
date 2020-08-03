@@ -63,6 +63,8 @@
 #' \item{k}{an integer specifying the number of observed errors.}
 #' \item{t}{a number specifying the sum of observed taints.}
 #' \item{confidence}{the confidence level of the result.}
+#' \item{mle}{the most likely error in the population.}
+#' \item{precision}{the difference between the mle and the upper confidence bound.}
 #' \item{popBookvalue}{if specified as input, the total book value of the population.}
 #' \item{pointEstimate}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, the value of the point estimate.}
 #' \item{lowerBound}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, the value of the lower bound of the interval.}
@@ -238,26 +240,46 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
     }
   } else if(method == "stringer"){
     bound <- .stringerBound(taints, confidence, n)
+    mle <- t / n
+    precision <- bound - mle
   } else if(method == "stringer-meikle"){
     bound <- .stringerBound(taints, confidence, n, correction = "meikle")
+    mle <- t / n
+    precision <- bound - mle
   } else if(method == "stringer-lta"){
     bound <- .stringerBound(taints, confidence, n, correction = "lta")
+    mle <- t / n
+    precision <- bound - mle
   } else if(method == "stringer-pvz"){
     bound <- .stringerBound(taints, confidence, n, correction = "pvz")
+    mle <- t / n
+    precision <- bound - mle
   } else if(method == "rohrbach"){
     bound <- .rohrbachBound(taints, confidence, n, N, rohrbachDelta = rohrbachDelta)
+    mle <- t / n
+    precision <- bound - mle
   } else if(method == "moment"){
     bound <- .momentBound(taints, confidence, n, momentPoptype = momentPoptype)
+    mle <- t / n
+    precision <- bound - mle
   } else if(method == "coxsnell"){
     bound <- .coxAndSnellBound(taints, confidence, n, csA, csB, csMu, aPrior = 1 + kPrior, bPrior = 1 + nPrior - kPrior)
   } else if(method == "direct"){
     bound <- .directMethod(bv, av, confidence, N, n, populationBookValue)
+    mle <- bound$pointEstimate
+    precision <- bound$upperBound - mle
   } else if(method == "difference"){
     bound <- .differenceMethod(bv, av, confidence, N, n, populationBookValue)
+    mle <- bound$pointEstimate
+    precision <- bound$upperBound - mle
   } else if(method == "quotient"){
     bound <- .quotientMethod(bv, av, confidence, N, n, populationBookValue)
+    mle <- bound$pointEstimate
+    precision <- bound$upperBound - mle
   } else if(method == "regression"){
     bound <- .regressionMethod(bv, av, confidence, N, n, populationBookValue)
+    mle <- bound$pointEstimate
+    precision <- bound$upperBound - mle
   }
   
   results <- list()

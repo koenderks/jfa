@@ -43,3 +43,95 @@ test_that(desc = "Audit workflow", {
   plot(conclusion)
   expect_equal(conclusion$confBound, 0.03784768)
 })
+
+test_that(desc = "None prior", {
+  
+  prior <- auditPrior(confidence = 0.95, method = "none", likelihood = "binomial")
+  expect_equal(prior$aPrior, 1)
+  expect_equal(prior$bPrior, 1)
+  
+  prior <- auditPrior(confidence = 0.95, method = "none", likelihood = "poisson")
+  expect_equal(prior$aPrior, 1)
+  expect_equal(prior$bPrior, 0)
+  
+  prior <- auditPrior(confidence = 0.95, method = "none", likelihood = "hypergeometric", N = 3500)
+  expect_equal(prior$aPrior, 1)
+  expect_equal(prior$bPrior, 1)
+  
+})
+
+test_that(desc = "median prior", {
+  
+  prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "binomial")
+  expect_equal(prior$aPrior, 1)
+  expect_equal(prior$bPrior, 13.513)
+  
+  prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "binomial", expectedError = 0.02)
+  expect_equal(prior$aPrior, 1.4)
+  expect_equal(prior$bPrior, 21.6)
+  
+  prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "poisson", ir = 0.6, cr = 0.6)
+  expect_equal(prior$aPrior, 1)
+  expect_equal(prior$bPrior, 13.863)
+  
+})
+
+test_that(desc = "hypotheses prior", {
+  
+  prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "hypotheses", likelihood = "binomial", pHmin = 0.3)
+  expect_equal(prior$aPrior, 1)
+  expect_equal(prior$bPrior, 6.954)
+  
+  prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "hypotheses", likelihood = "poisson", pHmin = 0.3)
+  expect_equal(prior$aPrior, 1)
+  expect_equal(prior$bPrior, 7.133)
+  
+})
+
+test_that(desc = "arm prior", {
+  
+  prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "arm", likelihood = "binomial", ir = 0.6, cr = 0.6)
+  expect_equal(prior$aPrior, 1)
+  expect_equal(prior$bPrior, 21)
+  
+  prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "arm", likelihood = "poisson", ir = 0.6, cr = 0.6)
+  expect_equal(prior$aPrior, 1)
+  expect_equal(prior$bPrior, 20)
+  
+  prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "arm", likelihood = "hypergeometric", ir = 0.6, cr = 0.6, N = 3500)
+  expect_equal(prior$aPrior, 1)
+  expect_equal(prior$bPrior, 20)
+  
+})
+
+test_that(desc = "sample prior", {
+  
+  prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "sample", likelihood = "binomial", sampleN = 30, sampleK = 1)
+  expect_equal(prior$aPrior, 2)
+  expect_equal(prior$bPrior, 31)
+  
+  prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "sample", likelihood = "poisson", sampleN = 30, sampleK = 1)
+  expect_equal(prior$aPrior, 2)
+  expect_equal(prior$bPrior, 31)
+  
+  prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "sample", likelihood = "hypergeometric", sampleN = 30, sampleK = 1, N = 3500)
+  expect_equal(prior$aPrior, 2)
+  expect_equal(prior$bPrior, 31)
+  
+})
+
+test_that(desc = "factor prior", {
+  
+  prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "factor", likelihood = "binomial", sampleN = 30, sampleK = 1, factor = 0.6)
+  expect_equal(prior$aPrior, 1.6)
+  expect_equal(prior$bPrior, 18.4)
+  
+  prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "factor", likelihood = "poisson", sampleN = 30, sampleK = 1, factor = 0.6)
+  expect_equal(prior$aPrior, 1.6)
+  expect_equal(prior$bPrior, 18)
+  
+  prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "factor", likelihood = "hypergeometric", sampleN = 30, sampleK = 1, N = 3500, factor = 0.6)
+  expect_equal(prior$aPrior, 1.6)
+  expect_equal(prior$bPrior, 18.4)
+  
+})

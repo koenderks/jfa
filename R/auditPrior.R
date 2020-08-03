@@ -1,9 +1,9 @@
-#' Create a Prior Distribution
+#' Create a Prior Distribution with Audit Information
 #'
 #' @description This function creates a prior distribution for Bayesian audit sampling according to several methods discussed in Derks et al. (2020). The returned object is of class \code{jfaPrior} and can be used with associated \code{print()} and \code{plot()} methods. \code{jfaPrior} objects can be used as input argument for the \code{prior} argument in other functions.
 #'
-#' @usage auditPrior(materiality = NULL, confidence = 0.95, method = "arm", ir = 1, cr = 1, 
-#'            expectedError = 0, likelihood = "binomial", N = NULL, 
+#' @usage auditPrior(materiality = NULL, confidence = 0.95, method = "arm", ir = 1, 
+#'            cr = 1, expectedError = 0, likelihood = "binomial", N = NULL, 
 #'            pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)
 #' 
 #' @param materiality     a value between 0 and 1 representing the materiality of the audit as a fraction of the total size or value. Can be \code{NULL} for some methods.
@@ -90,8 +90,8 @@
 #' # Prior:                 beta(2.275, 50.725)
 #' @export
 
-auditPrior <- function(materiality = NULL, confidence = 0.95, method = "arm", ir = 1, cr = 1, 
-                       expectedError = 0, likelihood = "binomial", N = NULL,
+auditPrior <- function(materiality = NULL, confidence = 0.95, method = "arm", ir = 1, 
+                       cr = 1, expectedError = 0, likelihood = "binomial", N = NULL,
                        pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0){
   
   if(!(method %in% c("none", "median", "hypotheses", "arm", "sample", "factor")))
@@ -173,6 +173,7 @@ auditPrior <- function(materiality = NULL, confidence = 0.95, method = "arm", ir
   result <- list()
   
   result$method       <- as.character(method)
+  result$confidence   <- as.numeric(confidence)
   result$likelihood   <- as.character(likelihood)
   result$priorD       <- switch(likelihood, 
                                 "poisson" = "gamma", 
@@ -194,8 +195,13 @@ auditPrior <- function(materiality = NULL, confidence = 0.95, method = "arm", ir
     result$pHplus       <- as.numeric(probH1)
   }
   if(method == "sample" || method == "factor"){
-    result$sampleN        <- as.numeric(sampleN)
-    result$sampleK       <- as.numeric(sampleK)    
+    result$sampleN       <- as.numeric(sampleN)
+    result$sampleK       <- as.numeric(sampleK)
+    result$factor        <- as.numeric(factor)    
+  }
+  if(method == "arm"){
+    result$ir           <- as.numeric(ir)
+    result$cr           <- as.numeric(cr)  
   }
   
   class(result)       <- "jfaPrior"

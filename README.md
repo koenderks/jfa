@@ -57,7 +57,7 @@ Examples can be found in the package [vignette](https://cran.r-project.org/web/p
 
 ## Functions
 
-Below is a list of the available functions in the current development version of `jfa`, sorted by their occurrence in the standard audit sampling workflow.
+Below is a list of the available functions in the current version of `jfa`, sorted by their occurrence in the standard audit sampling workflow.
 
 **auditPrior: Creating a prior distribution for substantive testing**
 
