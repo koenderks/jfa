@@ -1,7 +1,16 @@
 # R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
 
+# Select branches
+branches:
+  only:
+    - master
+    - development
+
 # Use R language
 language: r
+
+# Do not treat warnings as errors
+warnings_are_errors: false
 
 # Test for multiple R-versions, one from bioconductor
 r:

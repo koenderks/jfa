@@ -2,41 +2,87 @@
 #' @export
 print.jfaPlanning <- function(x, ...){
   if(x[["prior"]]$prior){
-    cat("# jfa planning results for", x[["prior"]]$priorD,"prior with", x$likelihood, "likelihood:
-#      
+    cat("# ------------------------------------------------------------
+#              jfa Planning Summary (Bayesian)
+# ------------------------------------------------------------
+# Input:
+# 
+# Confidence:             ", paste0(round(x$confidence * 100, 3), "%"),"     
 # Materiality:            ", paste0(round(x$materiality * 100, 3), "%"),"
-# Confidence:             ", paste0(round(x$confidence * 100, 3), "%"),"
+# Minimum precision:      ", paste0(round(x$minPrecision * 100, 3), "%"),"
+# Likelihood:             ", x$likelihood,"
+# Prior:                  ", paste0(x[["prior"]]$priorD, "(", x[["prior"]]$aPrior, ", ", x[["prior"]]$bPrior, ")
+# Expected sample errors:  ", x$expectedSampleError, "
+# ------------------------------------------------------------
+# Output:
+#
 # Sample size:            ", x$sampleSize,"
-# Allowed sample errors:  ", x$expectedSampleError, "
-# Prior parameter alpha:  ", x[["prior"]]$aPrior, "
-# Prior parameter beta:   ", x[["prior"]]$bPrior)
+# ------------------------------------------------------------ "))
   } else {
-    cat("# jfa planning results for", x$likelihood,"likelihood:
-#      
-# Materiality:            ", paste0(round(x$materiality * 100, 3), "%"),"
+    cat("# ------------------------------------------------------------
+#              jfa Planning Summary (Frequentist)
+# ------------------------------------------------------------     
+# Input:
+# 
 # Confidence:             ", paste0(round(x$confidence * 100, 3), "%"),"
+# Materiality:            ", paste0(round(x$materiality * 100, 3), "%"),"
+# Minimum precision:      ", paste0(round(x$minPrecision * 100, 3), "%"),"
+# Likelihood:             ", x$likelihood,"
+# Expected sample errors: ", x$expectedSampleError, "
+# ------------------------------------------------------------
+# Output:
+#
 # Sample size:            ", x$sampleSize,"
-# Allowed sample errors:  ", x$expectedSampleError)
+# ------------------------------------------------------------ ")
   }
 }
 
 #' @method print jfaSampling
 #' @export
 print.jfaSampling <- function(x, ...){
-  title <- paste0(x$algorithm, " ", ifelse(x$units == "mus", yes = "monetary unit sampling", no = "record sampling"), ":")
   if(x$units == "mus"){
-    cat("# jfa sampling results for",title, "
+    cat("# ------------------------------------------------------------
+#                  jfa Selection Summary
+# ------------------------------------------------------------
+# Input:
 #      
-# Population size:        ", nrow(x$population),"
-# Sample size:            ", nrow(x$sample),"
-# Proportion n/N:         ", round(nrow(x$sample)/nrow(x$population), 3), "
-# Percentage of value:    ", paste0(round(sum(x$sample[, x$bookValues]) / sum(x$population[, x$bookValues]) * 100, 3), "%")) 
+# Population size:        ", x$populationSize,"
+# Requested sample size:  ", x$requestedSampleSize,"
+# Sampling units:         ", "Monetary units","
+# Algorithm:              ", switch(x$algorithm, "random" = "Random sampling", "interval" = "Fixed interval sampling", "cell" = "Cell sampling"), 
+ifelse(x$algorithm == "interval", no = "", yes = paste0("
+# Interval:                ", x$interval,"
+# Starting point:          ", x$intervalStartingPoint)), 
+ifelse(x$algorithm == "cell", no = "", yes = paste0("
+# Interval:                ", x$interval)),"
+# ------------------------------------------------------------ 
+# Output:
+#
+# Obtained sample size:   ", x$obtainedSampleSize,"
+# Proportion n/N:         ", round(x$obtainedSampleSize / x$populationSize, 3), "
+# Percentage of value:    ", paste0(round(sum(x$sample[, x$bookValues]) / sum(x$population[, x$bookValues]) * 100, 3), "%"),"
+# ------------------------------------------------------------ ") 
   } else {
-    cat("# jfa sampling results for", x$algorithm, title, "
-#      
-# Population size:        ", nrow(x$population),"
-# Sample size:            ", nrow(x$sample),"
-# Proportion n/N:         ", round(nrow(x$sample)/nrow(x$population), 3)) 
+    cat("# ------------------------------------------------------------
+#                  jfa Selection Summary
+# ------------------------------------------------------------
+# Input:
+#       
+# Population size:        ", x$populationSize,"
+# Requested sample size:  ", x$requestedSampleSize,"
+# Sampling units:         ", "Records","
+# Algorithm:              ", switch(x$algorithm, "random" = "Random sampling", "interval" = "Fixed interval sampling", "cell" = "Cell sampling"), 
+ifelse(x$algorithm == "interval", no = "", yes = paste0("
+# Interval:                ", x$interval,"
+# Starting point:          ", x$intervalStartingPoint)), 
+ifelse(x$algorithm == "cell", no = "", yes = paste0("
+# Interval:                ", x$interval)),"
+# ------------------------------------------------------------ 
+# Output:
+# 
+# Obtained sample size:   ", x$obtainedSampleSize,"
+# Proportion n/N:         ", round(nrow(x$sample)/nrow(x$population), 3), "
+# ------------------------------------------------------------ ") 
   }
 }
 
@@ -44,55 +90,72 @@ print.jfaSampling <- function(x, ...){
 #' @export
 print.jfaEvaluation <- function(x, ...){
   if(x$method %in% c("direct", "difference", "quotient", "regression")){
-    cat("# jfa evaluation results for", x$method,"estimation method:
+    cat("# ------------------------------------------------------------ 
+#             jfa Evaluation Summary (Frequentist)
+# ------------------------------------------------------------
+# Input:
 #   
-# Confidence:           ", paste0(round(x$confidence * 100, 3), "%"),"
-# Population book value:", round(x$popBookvalue, 2), "
-# Point estimate:       ", round(x$pointEstimate, 2), "
-# Lower bound:          ", round(x$lowerBound, 2),"
-# Upper bound:          ", round(x$upperBound, 2),"
-# Conclusion:           ", x$conclusion)
+# Confidence:              ", paste0(round(x$confidence * 100, 3), "%"),"
+# Materiality:             ", paste0(round(x$materiality * 100, 3), "%"),"
+# Minium precision:        ", paste0(round(x$minPrecision * 100, 3), "%"),"
+# Sample size:             ", x$n,"
+# Sample errors:           ", x$k, "
+# Method:                  ", x$method, "
+# Population book value:   ", round(x$popBookvalue, 2), "
+# ------------------------------------------------------------
+# Output:
+#
+# Most likely error:       ", round(x$pointEstimate, 2), "
+# Lower bound:             ", round(x$lowerBound, 2),"
+# Upper bound:             ", round(x$upperBound, 2),"
+# Precision:               ", paste0(round(x$precision * 100, 3), "%"),"
+# Conclusion:              ", x$conclusion, "
+# ------------------------------------------------------------ ")
   } else {
     if(x$prior){
-      if(!is.null(x$materiality)){
-        cat("# jfa evaluation results for", x$method,"method with prior:
-#   
-# Materiality:          ", paste0(round(x$materiality * 100, 3), "%"),"
-# Confidence:           ", paste0(round(x$confidence * 100, 3), "%"),"
-# Upper bound:          ", paste0(round(x$confBound * 100, 3), "%"),"
-# Sample size:          ", x$n,"
-# Sample errors:        ", x$k, "
-# Sum of taints:        ", round(x$t, 3), " 
-# Conclusion:           ", x$conclusion)
-      } else {
-        cat("# jfa evaluation results for", x$method,"method with prior:
-#      
-# Confidence:           ", paste0(round(x$confidence * 100, 3), "%"),"
-# Upper bound:          ", paste0(round(x$confBound * 100, 3), "%"),"
-# Sample size:          ", x$n,"
-# Sample errors:        ", x$k, "
-# Sum of taints:        ", round(x$t, 3))
-      }
+      cat("# ------------------------------------------------------------ 
+#             jfa Evaluation Summary (Bayesian)
+# ------------------------------------------------------------
+# Input: 
+#
+# Confidence:              ", paste0(round(x$confidence * 100, 3), "%"),"  
+# Materiality:             ", paste0(round(x$materiality * 100, 3), "%"),"
+# Minium precision:        ", paste0(round(x$minPrecision * 100, 3), "%"),"
+# Sample size:             ", x$n,"
+# Sample errors:           ", x$k, "
+# Sum of taints:           ", round(x$t, 3), " 
+# Method:                  ", x$method, "
+# Prior distribution:      ", x$priorString, "
+# ------------------------------------------------------------
+# Output:
+#
+# Posterior distribution:  ", x$posteriorString, "
+# Most likely error:       ", paste0(round(x$mle * 100, 3), "%"),"
+# Upper bound:             ", paste0(round(x$confBound * 100, 3), "%"),"
+# Precision:               ", paste0(round(x$precision * 100, 3), "%"),"
+# Conclusion:              ", x$conclusion, "
+# ------------------------------------------------------------ ")
     } else {
-      if(!is.null(x$materiality)){
-        cat("# jfa evaluation results for", x$method,"method:
-#   
-# Materiality:          ", paste0(round(x$materiality * 100, 3), "%"),"
-# Confidence:           ", paste0(round(x$confidence * 100, 3), "%"),"
-# Upper bound:          ", paste0(round(x$confBound * 100, 3), "%"),"
-# Sample size:          ", x$n,"
-# Sample errors:        ", x$k, "
-# Sum of taints:        ", round(x$t, 3), " 
-# Conclusion:           ", x$conclusion)
-      } else {
-        cat("# jfa evaluation results for", x$method,"method:
-#      
-# Confidence:           ", paste0(round(x$confidence * 100, 3), "%"),"
-# Upper bound:          ", paste0(round(x$confBound * 100, 3), "%"),"
-# Sample size:          ", x$n,"
-# Sample errors:        ", x$k, "
-# Sum of taints:        ", round(x$t, 3))
-      }
+      cat("# ------------------------------------------------------------ 
+#             jfa Evaluation Summary (Frequentist)
+# ------------------------------------------------------------ 
+# Input: 
+#
+# Confidence:              ", paste0(round(x$confidence * 100, 3), "%"),"  
+# Materiality:             ", paste0(round(x$materiality * 100, 3), "%"),"
+# Minium precision:        ", paste0(round(x$minPrecision * 100, 3), "%"),"
+# Sample size:             ", x$n,"
+# Sample errors:           ", x$k, "
+# Sum of taints:           ", round(x$t, 3), "
+# Method:                  ", x$method, "
+# ------------------------------------------------------------
+# Output:
+#
+# Most likely error:       ", paste0(round(x$mle * 100, 3), "%"),"
+# Upper bound:             ", paste0(round(x$confBound * 100, 3), "%"),"
+# Precision:               ", paste0(round(x$precision * 100, 3), "%"),"
+# Conclusion:              ", x$conclusion, "
+# ------------------------------------------------------------ ")
     }
   }
 }
@@ -100,11 +163,28 @@ print.jfaEvaluation <- function(x, ...){
 #' @method print jfaPrior
 #' @export
 print.jfaPrior <- function(x, ...){
-  cat("# jfa prior distribution for", x$method,"method:
-#      
-# Prior sample size:    ", round(x$nPrior, 3), "
-# Prior errors:         ", round(x$kPrior, 3),"
-# Prior:                ", paste0(x$priorD, "(", x$aPrior, ", ", x$bPrior, ")")
+  cat("# ------------------------------------------------------------
+#         jfa Prior Distribution Summary (Bayesian)
+# ------------------------------------------------------------
+# Input:
+#
+# Confidence:             ", x$confidence,"   
+# Expected sample errors: ", x$expectedError,"      
+# Likelihood:             ", x$likelihood,"
+# Specifics:              ", switch(x$method,
+                                  "none" = "None",
+                                  "median" = paste0("p(\u0398 < ",x$materiality,") = p(\u0398 > ",x$materiality,") = 0.5"),
+                                  "hypotheses" = paste0("p(\u0398 < ",x$materiality,") = ",x$pHmin,"; p(\u0398 > ",x$materiality,") = ", x$pHplus),
+                                  "arm" = paste0("Inherent risk = ", x$ir, "; Internal control risk = ", x$cr, "; Detection risk = ", round((1 - x$confidence) / (x$ir * x$cr), 3)),
+                                  "sample" = paste0("Earlier sample of ", x$sampleN, " transactions with ", x$sampleK, " errors"),
+                                  "factor" = paste0("Earlier sample of ", x$sampleN, " transactions with ", x$sampleK, " errors weighted by ", x$factor)), "
+# ------------------------------------------------------------
+# Output: 
+#
+# Prior distribution:     ", paste0(x$priorD, "(", x$aPrior, ", ", x$bPrior, ")"),"
+# Implicit sample size:   ", round(x$nPrior, 3), "
+# Implicit errors:        ", round(x$kPrior, 3),"
+# ------------------------------------------------------------"
   )
 }
 
@@ -116,7 +196,11 @@ plot.jfaPlanning <- function(x, ...){
     limx <- 51
   }
   if(x[["prior"]]$prior){
-    xlim <- x$materiality * 3
+    if(x$materiality == 0){
+      xlim <- 1
+    } else {
+      xlim <- x$materiality * 3
+    }
     xseq <- seq(0, xlim, 0.00001)
     mainLab <- ifelse(x[["prior"]]$kPrior == 0 && x[["prior"]]$nPrior == 0, yes = "Uninformed", no = "Informed")
     if(x$likelihood == "poisson"){
@@ -139,7 +223,7 @@ plot.jfaPlanning <- function(x, ...){
         mainLabPlus <- " gamma prior and expected posterior"
       if(x$likelihood == "binomial")
         mainLabPlus <- " beta prior and expected posterior"
-      graphics::plot(x = xseq, y = d1, type = "l", lwd = 2, bty = "n", xlab = "Misstatement", ylab = "Probability density", las = 1, ylim = c(0, max(d1)),
+      graphics::plot(x = xseq, y = d1, type = "l", lwd = 2, bty = "n", xlab = expression(theta), ylab = "Probability density", las = 1, ylim = c(0, max(d1)),
            main = paste0(mainLab, mainLabPlus), axes = FALSE)
       graphics::polygon(x = c(0, xseq[xseq<=bound], xseq[xseq<=bound][length(xseq[xseq<=bound])]), y = c(0, d1[xseq<=bound], 0), col="lightgray", border = NA)
       graphics::lines(x = xseq, y = d, lwd = 2, lty = 2)
@@ -238,7 +322,7 @@ plot.jfaEvaluation <- function(x, ...){
           mainLabPlus <- " beta prior and posterior"
         if(x$method == "coxsnell")
           mainLabPlus <- " Cox and Snell prior and posterior"
-        graphics::plot(x = xseq, y = d1, type = "l", lwd = 2, bty = "n", xlab = "Misstatement", ylab = "Probability density", las = 1, ylim = c(0, max(d1)),
+        graphics::plot(x = xseq, y = d1, type = "l", lwd = 2, bty = "n", xlab = expression(theta), ylab = "Probability density", las = 1, ylim = c(0, max(d1)),
                        main = paste0(mainLab, mainLabPlus), axes = FALSE)
         graphics::polygon(x = c(0, xseq[xseq<=bound], xseq[xseq<=bound][length(xseq[xseq<=bound])]), y = c(0, d1[xseq<=bound], 0), col="lightgray", border = NA)
         graphics::lines(x = xseq, y = d, lwd = 2, lty = 2)
@@ -281,7 +365,11 @@ plot.jfaEvaluation <- function(x, ...){
 #' @method plot jfaPrior
 #' @export
 plot.jfaPrior <- function(x, ...){
-  xlim <- x$materiality * 3
+  if(x$materiality == 0){
+    xlim <- 1
+  } else {
+    xlim <- x$materiality * 3
+  }
   xseq <- seq(0, xlim, 0.00001)
   mainLab <- ifelse(x$kPrior == 0 && x$nPrior == 0, yes = "Uninformed", no = "Informed")
   if(x$priorD == "gamma"){
@@ -295,7 +383,7 @@ plot.jfaPrior <- function(x, ...){
   }
   mainLab <- paste0(mainLab, " ", x$priorD, " prior")
   if(x$priorD == "gamma" || x$priorD == "beta"){
-    graphics::plot(x = xseq, y = d, type = "l", lwd = 2, bty = "n", xlab = "Misstatement", ylab = "Probability density", las = 1, ylim = c(0, max(d)),
+    graphics::plot(x = xseq, y = d, type = "l", lwd = 2, bty = "n", xlab = expression(theta), ylab = "Probability density", las = 1, ylim = c(0, max(d)),
                    main = mainLab, axes = FALSE, lty = 2)
     graphics::axis(1, at = pretty(seq(0, xlim, by = 0.01), min.n = 5), labels = paste0(round(pretty(seq(0, xlim, by = 0.01), min.n = 5) * 100, 2), "%"))
     graphics::axis(2, at = c(0, max(d)), labels = FALSE, las = 1, lwd.ticks = 0)

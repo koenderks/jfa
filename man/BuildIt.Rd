@@ -4,12 +4,14 @@
 \name{BuildIt}
 \alias{BuildIt}
 \title{BuildIt Construction financial statements}
-\format{A data frame with 3500 rows and 3 variables.
+\format{
+A data frame with 3500 rows and 3 variables.
 \describe{
   \item{ID}{unique record identification number.}
   \item{bookValue}{book value in US dollars ($14.47--$2,224.40).}
   \item{auditValue}{true value in US dollars ($14.47--$2,224.40).}
-}}
+}
+}
 \usage{
 data(BuildIt)
 }

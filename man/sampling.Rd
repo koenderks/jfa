@@ -71,11 +71,21 @@ s1 <- sampling(population = population, sampleSize = 100, algorithm = "random",
                units = "records", seed = 1)
 print(s1)
 
-# jfa sampling results for random random record sampling: 
-#      
+# ------------------------------------------------------------
+#                  jfa Selection Summary
+# ------------------------------------------------------------
+# Input:
+#       
 # Population size:         1000 
-# Sample size:             100 
-# Proportion n/N:          0.1
+# Requested sample size:   100 
+# Sampling units:          Records 
+# Algorithm:               Random sampling   
+# ------------------------------------------------------------ 
+# Output:
+# 
+# Obtained sample size:    100 
+# Proportion n/N:          0.1 
+# ------------------------------------------------------------ 
 
 # Use the result from the planning stage in the sampling stage:
 
@@ -87,12 +97,22 @@ s2 <- sampling(population = population, sampleSize = p1, algorithm = "random",
                units = "mus", seed = 1, bookValues = "bookValue")
 print(s2)
 
-# jfa sampling results for random monetary unit sampling: 
+# ------------------------------------------------------------
+#                  jfa Selection Summary
+# ------------------------------------------------------------
+# Input:
 #      
 # Population size:         1000 
-# Sample size:             234 
+# Requested sample size:   234 
+# Sampling units:          Monetary units 
+# Algorithm:               Random sampling   
+# ------------------------------------------------------------ 
+# Output:
+#
+# Obtained sample size:    234 
 # Proportion n/N:          0.234 
-# Percentage of value:     23.3\%
+# Percentage of value:     23.3\% 
+# ------------------------------------------------------------
 
 }
 \references{

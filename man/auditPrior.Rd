@@ -2,17 +2,18 @@
 % Please edit documentation in R/auditPrior.R
 \name{auditPrior}
 \alias{auditPrior}
-\title{Create a Prior Distribution}
+\title{Create a Prior Distribution with Audit Information}
 \usage{
-auditPrior(materiality, confidence = 0.95, method = "arm", ir = 1, cr = 1, 
-           expectedError = 0, likelihood = "binomial", N = NULL)
+auditPrior(materiality = NULL, confidence = 0.95, method = "arm", ir = 1, 
+           cr = 1, expectedError = 0, likelihood = "binomial", N = NULL, 
+           pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)
 }
 \arguments{
-\item{materiality}{a value between 0 and 1 representing the materiality of the audit as a fraction of the total size or value.}
+\item{materiality}{a value between 0 and 1 representing the materiality of the audit as a fraction of the total size or value. Can be \code{NULL} for some methods.}
 
 \item{confidence}{the confidence level desired from the confidence bound (on a scale from 0 to 1). Defaults to 0.95, or 95\% confidence.}
 
-\item{method}{the method by which the prior distribution is constructed. Currently only supports the \code{arm} method, which uses the audit risk model (Derks et al., 2019).}
+\item{method}{the method by which the prior distribution is constructed. Defaults to the \code{arm} method, which uses the audit risk model (Derks et al., 2019). Can be one of \code{none}, \code{median}, \code{hypotheses}, \code{arm}, \code{sample} or \code{factor}. See the Details section for more information.}
 
 \item{ir}{the inherent risk probability from the audit risk model. Defaults to 1 for 100\% risk.}
 
@@ -20,9 +21,19 @@ auditPrior(materiality, confidence = 0.95, method = "arm", ir = 1, cr = 1,
 
 \item{expectedError}{a fraction representing the percentage of expected mistakes in the sample relative to the total size, or a number (>= 1) that represents the number of expected mistakes.}
 
-\item{likelihood}{can be one of \code{binomial}, \code{poisson}, or \code{hypergeometric}.}
+\item{likelihood}{can be one of \code{binomial}, \code{poisson}, or \code{hypergeometric}. See the Details section for more information.}
 
-\item{N}{the population size (required for hypergeometric calculations).}
+\item{N}{the population size (only required when \code{likelihood = 'hypergeometric'}).}
+
+\item{pHmin}{When using \code{method = 'hypotheses'}, the prior probability of the hypothesis \eqn{\theta <} materiality.}
+
+\item{pHplus}{When using \code{method = 'hypotheses'}, the prior probability of the hypothesis \eqn{\theta >} materiality.}
+
+\item{factor}{When using \code{method = 'factor'}, the value of the weighting factor for the results of the previous sample.}
+
+\item{sampleN}{When using method \code{sample} or \code{factor}, the number of transactions that were inspected in the previous sample.}
+
+\item{sampleK}{When using method \code{sample} or \code{factor}, the number of transactions that were misstated in the precious sample.}
 }
 \value{
 An object of class \code{jfaPrior} containing:
@@ -36,9 +47,33 @@ An object of class \code{jfaPrior} containing:
 \item{bPrior}{the prior parameter beta.}
 \item{materiality}{the materiality that was used to construct the prior distribution.}
 \item{N}{if specified as input, the population size.}
+\item{pHmin}{For methods \code{median} and \code{hypotheses}, the prior probability of the hypothesis \eqn{\theta <} materiality.}
+\item{pHmin}{For methods \code{median} and \code{hypotheses}, the prior probability of the hypothesis \eqn{\theta >} materiality.}
+\item{sampleN}{For methods \code{sample} and \code{factor}, the total number of transactions in the earlier sample.}
+\item{sampleK}{For methods \code{sample} and \code{factor}, the number of transactions that were misstated in the earlier sample.}
 }
 \description{
-This function creates a prior distribution according to the audit risk model. The returned object is of class \code{jfaPrior} and can be used with associated \code{print()} and \code{plot()} methods. \code{jfaPrior} objects can be used as input argument for the \code{prior} argument in other functions.
+This function creates a prior distribution for Bayesian audit sampling according to several methods discussed in Derks et al. (2020). The returned object is of class \code{jfaPrior} and can be used with associated \code{print()} and \code{plot()} methods. \code{jfaPrior} objects can be used as input for the \code{prior} argument in other functions.
+}
+\details{
+This section elaborates on the available methods for constructing a prior distribution.
+
+\itemize{
+ \item{\code{none}:              This method constructs a prior distribution according to the principle of minimum information.}
+ \item{\code{median}:            This method constructs a prior distribution so that the prior probabilities of tolerable and intolerable misstatement are equal.}
+ \item{\code{hypotheses}:        This method constructs a prior distribution with specified prior probabilities for the hypotheses of tolerable and intolerable misstatement. Requires specification of the \code{pHmin} and \code{pHplus} arguments.}
+ \item{\code{arm}:               This method constructs a prior distribution according to the assessed risks in the audit risk model. Requires specification of the \code{ir} and \code{cr} arguments.}
+ \item{\code{sample}:            This method constructs a prior distribution on the basis of an earlier sample. Requires specification of the \code{sampleN} and \code{sampleK} arguments.}
+ \item{\code{factor}:            This method constructs a prior distribution on the basis of last year's results and a weighting factor. Requires specification of the \code{factor}, \code{sampleN} and \code{sampleK} arguments.}
+}
+
+This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
+
+\itemize{
+ \item{\code{poisson}:          The Poisson likelihood is used as a likelihood for monetary unit sampling (MUS). Its likelihood function is defined as: \deqn{p(x) = \frac{\lambda^x e^{-\lambda}}{x!}} The conjugate \emph{gamma(\eqn{\alpha, \beta})} prior has probability density function: \deqn{f(x; \alpha, \beta) = \frac{\beta^\alpha x^{\alpha - 1} e^{-\beta x}}{\Gamma(\alpha)}}}
+ \item{\code{binomial}:         The binomial likelihood is used as a likelihood for record sampling \emph{with} replacement. Its likelihood function is defined as: \deqn{p(x) = {n \choose k} p^k (1 - p)^{n - k}} The conjugate \emph{beta(\eqn{\alpha, \beta})} prior has probability density function: \deqn{f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}}}
+ \item{\code{hypergeometric}:   The hypergeometric likelihood is used as a likelihood for record sampling \emph{without} replacement. Its likelihood function is defined as: \deqn{p(x = k) = \frac{{K \choose k} {N - K \choose n - k}}{{N \choose n}}} The conjugate \emph{beta-binomial(\eqn{\alpha, \beta})} prior (Dyer and Pierce, 1993) has probability density function: \deqn{f(k | n, \alpha, \beta) = {n \choose k} \frac{B(k + \alpha, n - k + \beta)}{B(\alpha, \beta)}} }
+}
 }
 \examples{
 library(jfa)
@@ -59,14 +94,27 @@ prior <- auditPrior(materiality = materiality, confidence = confidence,
                     expectedError = expectedError, likelihood = "binomial")
 print(prior)
 
-# jfa prior distribution for arm method:
-#      
-# Prior sample size:     51 
-# Prior errors:          1.27 
-# Prior:                 beta(2.275, 50.725)
+# ------------------------------------------------------------
+#         jfa Prior Distribution Summary (Bayesian)
+# ------------------------------------------------------------
+# Input:
+# 
+# Confidence:              0.95    
+# Expected sample errors:  0.025       
+# Likelihood:              binomial 
+# Specifics:               Inherent risk = 1; Internal control risk = 0.6; Detection risk = 0.083 
+# ------------------------------------------------------------
+# Output: 
+# 
+# Prior distribution:      beta(2.275, 50.725) 
+# Implicit sample size:    51 
+# Implicit errors:         1.275 
+# ------------------------------------------------------------
 }
 \references{
 Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., & Wetzels, R. (2019). JASP for audit: Bayesian tools for the auditing practice.
+
+Derks, K., de Swart, J., van Batenburg, P. Wagenmakers, E.-J., & Wetzels, R. (2020). Priors in a Bayesian Audit: How Integrating Information into the Prior Distribution can Improve Audit Transparency and Efficiency.
 }
 \seealso{
 \code{\link{planning}} \code{\link{sampling}} \code{\link{evaluation}}

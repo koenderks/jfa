@@ -2,15 +2,18 @@
 #'
 #' @description This function calculates the required sample size for an audit, based on the poisson, binomial, or hypergeometric likelihood. A prior can be specified to perform Bayesian planning. The returned object is of class \code{jfaPlanning} and can be used with associated \code{print()} and \code{plot()} methods.
 #'
-#' @usage planning(materiality, confidence = 0.95, expectedError = 0, likelihood = "poisson", 
-#'          N = NULL, maxSize = 5000, prior = FALSE, kPrior = 0, nPrior = 0)
+#' @usage planning(materiality = NULL, confidence = 0.95, expectedError = 0, minPrecision = NULL, 
+#'          likelihood = "poisson", N = NULL, maxSize = 5000, increase = 1, 
+#'          prior = FALSE, kPrior = 0, nPrior = 0)
 #'
-#' @param materiality   a value between 0 and 1 representing the materiality of the audit as a fraction of the total size or value.
+#' @param materiality   a value between 0 and 1 representing the materiality of the audit as a fraction of the total size or value. Can be \code{NULL}, but \code{minPrecision} should be specified in that case.
 #' @param confidence    the confidence level desired from the confidence bound (on a scale from 0 to 1). Defaults to 0.95, or 95\% confidence.
 #' @param expectedError a fraction representing the percentage of expected mistakes in the sample relative to the total size, or a number (>= 1) that represents the number of expected mistakes.
+#' @param minPrecision  The minimum precision to be obtained. Can be \code{NULL}, but \code{materiality} should be specified in that case.
 #' @param likelihood    can be one of \code{binomial}, \code{poisson}, or \code{hypergeometric}.
 #' @param N             the population size (required for hypergeometric calculations).
 #' @param maxSize       the maximum sample size that is considered for calculations. Defaults to 5000 for efficiency. Increase this value if the sample size cannot be found due to it being too large (e.g., for a low materiality).
+#' @param increase      the desired increase step for the sample size calculation.
 #' @param prior         whether to use a prior distribution when planning. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, the prior distribution is updated by the specified likelihood. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.
 #' @param kPrior        the prior parameter \eqn{\alpha} (number of errors in the assumed prior sample).
 #' @param nPrior        the prior parameter \eqn{\beta} (total number of observations in the assumed prior sample).
@@ -25,13 +28,14 @@
 #'
 #' @return An object of class \code{jfaPlanning} containing:
 #' 
-#' \item{materiality}{the value of the specified materiality.}
+#' \item{materiality}{the value of the specified materiality. Can be \code{NULL}.}
 #' \item{confidence}{the confidence level for the desired population statement.}
 #' \item{sampleSize}{the resulting sample size.}
 #' \item{expectedSampleError}{the number of full errors that are allowed to occur in the sample.}
 #' \item{expectedError}{the specified number of errors as a fraction or as a number.}
 #' \item{likelihood}{the specified likelihood.}
 #' \item{errorType}{whether the expected errors where specified as a percentage or as an integer.}
+#' \item{minPrecision}{The minimum precision to be obtained. Can be \code{NULL}.}
 #' \item{N}{the population size (only returned in case of a hypergeometric likelihood).}
 #' \item{populationK}{the assumed population errors (only returned in case of a hypergeometric likelihood).}
 #' \item{prior}{a list containing information on the prior parameters.}
@@ -54,12 +58,21 @@
 #'                likelihood = "binomial")
 #' print(p1)
 #' 
-#' # jfa planning results for binomial likelihood:
-#' #      
-#' # Materiality:             5% 
+#' # ------------------------------------------------------------
+#' #              jfa Planning Summary (Frequentist)
+#' # ------------------------------------------------------------     
+#' # Input:
+#' # 
 #' # Confidence:              95% 
+#' # Materiality:             5% 
+#' # Minimum precision:       100% 
+#' # Likelihood:              binomial 
+#' # Expected sample errors:  6 
+#' # ------------------------------------------------------------
+#' # Output:
+#' # 
 #' # Sample size:             234 
-#' # Allowed sample errors:   6
+#' # ------------------------------------------------------------
 #' 
 #' # Bayesian planning with uninformed prior:
 #' 
@@ -67,14 +80,22 @@
 #'                likelihood = "binomial", prior = TRUE)
 #' print(p2)
 #' 
-#' # jfa planning results for beta prior with binomial likelihood:
-#' #      
+#' # ------------------------------------------------------------
+#' #              jfa Planning Summary (Bayesian)
+#' # ------------------------------------------------------------
+#' # Input:
+#' # 
+#' # Confidence:              95%      
 #' # Materiality:             5% 
-#' # Confidence:              95% 
-#' # Sample size:             220 
-#' # Allowed sample errors:   5.5 
-#' # Prior parameter alpha:   1 
-#' # Prior parameter beta:    1
+#' # Minimum precision:       100% 
+#' # Likelihood:              binomial 
+#' # Prior:                   beta(1, 1)
+#' # Expected sample errors:  5.5
+#' # ------------------------------------------------------------
+#' # Output:
+#' #
+#' # Sample size:            220
+#' # ------------------------------------------------------------ 
 #' 
 #' # Bayesian planning with informed prior:
 #' 
@@ -85,87 +106,114 @@
 #'                prior = prior)
 #' print(p3)
 #' 
-#' # jfa planning results for beta prior with binomial likelihood:
-#' #      
+#' # ------------------------------------------------------------
+#' #              jfa Planning Summary (Bayesian)
+#' # ------------------------------------------------------------
+#' # Input:
+#' # 
+#' # Confidence:              95%      
 #' # Materiality:             5% 
-#' # Confidence:              95% 
-#' # Sample size:             169 
-#' # Allowed sample errors:   4.23 
-#' # Prior parameter alpha:   2.275 
-#' # Prior parameter beta:    50.725
+#' # Minimum precision:       100% 
+#' # Likelihood:              binomial 
+#' # Prior:                   beta(2.275, 50.725)
+#' # Expected sample errors:  4.23
+#' # ------------------------------------------------------------
+#' # Output:
+#' #
+#' # Sample size:            169
+#' # ------------------------------------------------------------
 #'
 #' @keywords planning sample size audit
 #'
 #' @export
 
-planning <- function(materiality, confidence = 0.95, expectedError = 0, likelihood = "poisson", 
-                     N = NULL, maxSize = 5000, prior = FALSE, kPrior = 0, nPrior = 0){
+planning <- function(materiality = NULL, confidence = 0.95, expectedError = 0, minPrecision = NULL,
+                     likelihood = "poisson", N = NULL, maxSize = 5000, increase = 1,
+                     prior = FALSE, kPrior = 0, nPrior = 0){
   
   if(class(prior) == "jfaPrior"){
     nPrior <- prior$nPrior
     kPrior <- prior$kPrior
     likelihood <- prior$likelihood
   }
-  
-  if(is.null(materiality))
-    stop("Specify the materiality")
+
+  if(is.null(materiality) && is.null(minPrecision))
+    stop("Specify the materiality or the minimum precision")
+  if(!is.null(minPrecision) && minPrecision == 0)
+    stop("The minimum required precision cannot be zero.")
   if(!(likelihood %in% c("binomial", "hypergeometric", "poisson")))
-    stop("Specify a valid distribution")
+    stop("Specify a valid likelihood.")
   if((class(prior) == "logical" && prior == TRUE) && kPrior < 0 || nPrior < 0)
-    stop("When you specify a prior, both kPrior and nPrior should be higher than zero")
-  
+    stop("When you specify a prior, both kPrior and nPrior should be > 0.")
+
   ss <- NULL
-  
+
   if(expectedError >= 0 && expectedError < 1){
     errorType <- "percentage"
-    if(expectedError >= materiality)
+    if(!is.null(materiality) && expectedError >= materiality)
       stop("The expected errors are higher than materiality")
-    startN <- 1
   } else if(expectedError >= 1){
     errorType <- "integer"
-    startN <- expectedError
     if(expectedError%%1 != 0 && likelihood %in% c("binomial", "hypergeometric"))
       stop("When expectedError > 1 and the likelihood is binomial or hypergeometric, the value must be an integer.")
   }
+
+  if(is.null(minPrecision))
+    minPrecision <- 1
+  if(is.null(materiality))
+    materiality <- 1
+
+  samplingFrame <- seq(from = 0, to = maxSize, by = increase)
+  samplingFrame[1] <- 1
   
   if(likelihood == "poisson"){
-    for(i in startN:maxSize){
+    for(i in samplingFrame){
       if(errorType == "percentage"){
         implicitK <- expectedError * i
       } else if(errorType == "integer"){
         implicitK <- expectedError
       }
+      if(i <= implicitK)
+        next
       if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
         bound <- stats::qgamma(confidence, shape = 1 + kPrior + implicitK, rate = nPrior + i)
-        if(bound < materiality){
+        mle <- (1 + kPrior + implicitK - 1) / (nPrior + i)
+        if(bound < materiality && (bound - mle) < minPrecision){
           ss <- i
           break
         }
       } else {
         prob <- stats::pgamma(materiality, shape = 1 + implicitK, rate = i)
-        if(prob >= confidence){
+        bound <- stats::qgamma(confidence, shape = 1 + implicitK, rate = i)
+        mle <- implicitK / i
+        if(prob >= confidence && (bound - mle) < minPrecision){
           ss <- i
           break
         }
       }
     }
   } else if(likelihood == "binomial"){
-    for(i in startN:maxSize){
+    for(i in samplingFrame){
       if(errorType == "percentage"){
         implicitK <- expectedError * i
       } else if(errorType == "integer"){
         implicitK <- expectedError
       }
+      if(i <= implicitK)
+        next
       if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
         bound <- stats::qbeta(confidence, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK)
-        if(bound < materiality){
+        mle <- (1 + kPrior + implicitK - 1) / (1 + kPrior + implicitK + 1 + nPrior - kPrior + i - implicitK - 2)
+        if(bound < materiality && (bound - mle) < minPrecision){
           ss <- i
           break
         }
       } else {
         implicitK <- ceiling(implicitK)
         prob <- stats::dbinom(0:implicitK, size = i, prob = materiality)
-        if(sum(prob) < (1 - confidence)){
+        bound <- stats::binom.test(x = implicitK, n = i, p = materiality, alternative = "less", conf.level = confidence)$conf.int[2]
+        mle <- implicitK / i
+        if(sum(prob) < (1 - confidence) && (bound - mle) < minPrecision){
           ss <- i
           break
         }
@@ -175,23 +223,28 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
     if(is.null(N))
       stop("Specify a population size N")
     populationK <- ceiling(materiality * N)
-    for(i in startN:maxSize){
+    for(i in samplingFrame){
       if(errorType == "percentage"){
         implicitK <- ceiling(expectedError * i)
       } else if(errorType == "integer"){
         implicitK <- expectedError
       }
+      if(i <= implicitK)
+        next
       if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
         if(is.null(N))
           stop("The beta-binomial distribution requires that you specify the population size N")
         bound <- .qBetaBinom(p = confidence, N = N - i + implicitK, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK) / N
-        if(bound < materiality){
+        mle <- (1 + kPrior + implicitK - 1) / (1 + kPrior + implicitK + 1 + nPrior + i - implicitK - 2)
+        if(bound < materiality && (bound - mle) < minPrecision){
           ss <- i
           break
         }
       } else {
         prob <- stats::dhyper(x = 0:implicitK, m = populationK, n = N - populationK, k = i)
-        if(sum(prob) < (1 - confidence)){
+        bound <- stats::phyper(q = implicitK, m = populationK, n = N - populationK, k = i)
+        mle <- (N * implicitK + implicitK) / i / N
+        if(sum(prob) < (1 - confidence) && (bound - mle) < minPrecision){
           ss <- i
           break
         }
@@ -210,6 +263,7 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
   results[["expectedError"]]        <- as.numeric(expectedError)
   results[["likelihood"]]           <- as.character(likelihood)
   results[["errorType"]]            <- as.character(errorType)
+  results[["minPrecision"]]         <- as.numeric(minPrecision)
   if(likelihood == "hypergeometric"){
     results[["N"]]                  <- as.numeric(N)
     results[["populationK"]]        <- as.numeric(populationK)
@@ -221,7 +275,7 @@ planning <- function(materiality, confidence = 0.95, expectedError = 0, likeliho
     results[["prior"]]$kPrior       <- as.numeric(round(kPrior, 3))
     results[["prior"]]$nPrior       <- as.numeric(round(nPrior, 3))
     results[["prior"]]$aPrior       <- 1 + results[["prior"]]$kPrior
-    results[["prior"]]$bPrior       <- ifelse(likelihood == "poisson", yes = nPrior, no = 1 + nPrior - kPrior)
+    results[["prior"]]$bPrior       <- ifelse(likelihood == "poisson", yes = results[["prior"]]$nPrior, no = 1 + results[["prior"]]$nPrior - results[["prior"]]$kPrior)
   } else {
     results[["prior"]]$prior          <- as.logical(FALSE)
   }
