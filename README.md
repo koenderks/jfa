@@ -19,7 +19,7 @@
 * [Functions](##Functions) 
 * [Poster](##Poster) 
 
-For complete documentation, see the package [manual](./man/manual/jfa_0.1.0.pdf).
+For complete documentation, see the package [manual](./man/manual/jfa_0.2.0.pdf).
 
 ### Authors
 
@@ -42,7 +42,7 @@ local machine for use in R and RStudio.
 
 ### Downloading
 
-R package `jfa` is simple to download and set-up. The live version from [CRAN](https://cran.r-project.org/web/packages/jfa/index.html) (0.2.0) can be downloaded by running the following command in R:
+R package `jfa` is simple to download and set-up. The live version from [CRAN](https://cran.r-project.org/package=jfa) (0.2.0) can be downloaded by running the following command in R:
 
 ```
 install.packages("jfa")
@@ -53,7 +53,7 @@ The `jfa` package can then be loaded in RStudio by typing:
 library(jfa)
 ```
 
-Examples can be found in the package [vignette](https://cran.r-project.org/web/packages/jfa/vignettes/auditWorkflow.html).
+Examples can be found in the package [vignette](./vignettes/auditWorkflow.html).
 
 ## Functions
 
