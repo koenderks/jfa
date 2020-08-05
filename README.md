@@ -53,7 +53,7 @@ The `jfa` package can then be loaded in RStudio by typing:
 library(jfa)
 ```
 
-Examples can be found in the package [vignette](./vignettes/auditWorkflow.html).
+Examples can be found in the package [vignette](https://cran.r-project.org/package=jfa/vignettes/auditWorkflow.html).
 
 ## Functions
 
