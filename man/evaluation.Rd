@@ -4,7 +4,7 @@
 \alias{evaluation}
 \title{Evaluation of Audit Samples using Confidence / Credible Bounds}
 \usage{
-evaluation(sample = NULL, bookValues = NULL, auditValues = NULL, 
+evaluation(sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL,
            confidence = 0.95, nSumstats = NULL, kSumstats = NULL,
            method = "binomial", materiality = NULL, N = NULL, 
            prior = FALSE, nPrior = 0, kPrior = 0, 
@@ -18,6 +18,8 @@ evaluation(sample = NULL, bookValues = NULL, auditValues = NULL,
 \item{bookValues}{the column name for the book values in the sample.}
 
 \item{auditValues}{the column name for the audit (true) values in the sample.}
+
+\item{counts}{a vector of the number of times each observation is selected for the sample.}
 
 \item{confidence}{the required confidence level for the bound.}
 

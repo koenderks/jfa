@@ -2,7 +2,7 @@
 #'
 #' @description This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound according to a specified method. The returned object is of class \code{jfaEvaluation} and can be used with associated \code{print()} and \code{plot()} methods.
 #'
-#' @usage evaluation(sample = NULL, bookValues = NULL, auditValues = NULL, 
+#' @usage evaluation(sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL,
 #'            confidence = 0.95, nSumstats = NULL, kSumstats = NULL,
 #'            method = "binomial", materiality = NULL, N = NULL, 
 #'            prior = FALSE, nPrior = 0, kPrior = 0, 
@@ -13,6 +13,7 @@
 #' @param sample        a data frame containing at least a column of book values and a column of audit (true) values.
 #' @param bookValues    the column name for the book values in the sample.
 #' @param auditValues   the column name for the audit (true) values in the sample.
+#' @param counts        a vector of the number of times each observation is selected for the sample.
 #' @param confidence    the required confidence level for the bound.
 #' @param nSumstats     the number of observations in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data comes from summary statistics specified by \code{nSumstats} and \code{kSumstats}.
 #' @param kSumstats     the sum of the errors found in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data comes from summary statistics specified by \code{kSumstats} and \code{nSumstats}.
@@ -161,7 +162,7 @@
 #'
 #' @export 
 
-evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL, 
+evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL,
                        confidence = 0.95, nSumstats = NULL, kSumstats = NULL,
                        method = "binomial", materiality = NULL, N = NULL, 
                        prior = FALSE, nPrior = 0, kPrior = 0, 
@@ -207,11 +208,17 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
     
     sample <- stats::na.omit(sample)
     n <- nrow(sample)
+    if(!is.null(counts))
+      n <- sum(counts)
     bv <- sample[, bookValues]
     av <- sample[, auditValues]
     taints <- (bv - av) / bv
     k <- length(which(taints != 0))
+    
     t <- sum(taints)
+    if(!is.null(counts))
+      t <- sum(taints * counts)
+    
   }
   
   if(!is.null(materiality)){
