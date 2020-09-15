@@ -1,5 +1,7 @@
 context("Prior")
 
+# jfa version 0.1.0
+
 test_that(desc = "Audit workflow", {
   set.seed(1)
   # Generate some audit data (N = 1000).
@@ -43,6 +45,8 @@ test_that(desc = "Audit workflow", {
   plot(conclusion)
   expect_equal(conclusion$confBound, 0.03784768)
 })
+
+# jfa version 0.2.0
 
 test_that(desc = "None prior", {
   
@@ -108,15 +112,15 @@ test_that(desc = "sample prior", {
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "sample", likelihood = "binomial", sampleN = 30, sampleK = 1)
   expect_equal(prior$aPrior, 2)
-  expect_equal(prior$bPrior, 31)
+  expect_equal(prior$bPrior, 30)
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "sample", likelihood = "poisson", sampleN = 30, sampleK = 1)
   expect_equal(prior$aPrior, 2)
-  expect_equal(prior$bPrior, 31)
+  expect_equal(prior$bPrior, 30)
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "sample", likelihood = "hypergeometric", sampleN = 30, sampleK = 1, N = 3500)
   expect_equal(prior$aPrior, 2)
-  expect_equal(prior$bPrior, 31)
+  expect_equal(prior$bPrior, 30)
   
 })
 
@@ -135,3 +139,6 @@ test_that(desc = "factor prior", {
   expect_equal(prior$bPrior, 18.4)
   
 })
+
+# jfa version 0.3.0
+# No changes to be tested

@@ -1,5 +1,7 @@
 context("Evaluation")
 
+# jfa version 0.1.0
+
 test_that(desc = "Evaluation with Poisson method", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
@@ -196,4 +198,21 @@ test_that(desc = "Evaluation with Cox and Snell method", {
   samp$auditValue[1:3] <- samp$bookValue[1:3] * 0.4
   jfaEval <- evaluation(sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "coxsnell", prior = p)
   expect_equal(jfaEval$confBound, 0.02765165)
+})
+
+# jfa version 0.2.0
+# No changes to be tested
+
+# jfa version 0.3.0
+
+test_that(desc = "Evaluation with counts and stringer method", {
+  set.seed(1)
+  population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
+  jfaRes <- planning(materiality = 0.05, expectedError = 0.025, confidence = 0.95)
+  samp <- sampling(population, sampleSize = jfaRes, units = "records", algorithm = "random", ordered = TRUE)$sample
+  samp$auditValue <- samp$bookValue
+  samp$auditValue[1:3] <- samp$bookValue[1:3] * 0.4
+  counts <- c(2, 2, 3, rep(1, nrow(samp) - 3))
+  jfaEval <- evaluation(sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "stringer", count = counts)
+  expect_equal(jfaEval$confBound, 0.0326619)
 })

@@ -18,7 +18,7 @@
 #' @param pHplus          When using \code{method = 'hypotheses'}, the prior probability of the hypothesis \eqn{\theta >} materiality.
 #' @param factor          When using \code{method = 'factor'}, the value of the weighting factor for the results of the previous sample.
 #' @param sampleN         When using method \code{sample} or \code{factor}, the number of transactions that were inspected in the previous sample.
-#' @param sampleK         When using method \code{sample} or \code{factor}, the number of transactions that were misstated in the precious sample.
+#' @param sampleK         When using method \code{sample} or \code{factor}, the total taint in the previous sample.
 #' 
 #' @details This section elaborates on the available methods for constructing a prior distribution.
 #' 
@@ -172,7 +172,7 @@ auditPrior <- function(materiality = NULL, confidence = 0.95, method = "arm", ir
   } else if(method == "sample"){
     if(is.null(sampleN) || is.null(sampleK))
       stop("Method = 'sample' requires non-null 'sampleN', and 'sampleK' arguments.")
-    nPrior <- sampleN + sampleK
+    nPrior <- sampleN
     kPrior <- sampleK
   } else if(method == "factor"){
     if(is.null(sampleN) || is.null(sampleK) || is.null(factor))

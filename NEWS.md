@@ -1,3 +1,7 @@
+# jfa 0.3.0
+
+- Implemented the argument `counts` in the `evaluation` function that quantifies how many times each observation should be evaluated due to being selected multiple times in the selection stage.
+
 # jfa 0.2.0
 
 - Implemented prior construction methods `none`, `median`, `hypotheses`, `sample`, and `factor` in the `auditPrior()` function. In addition to the already supported `arm` method, these methods allow the auditor to incorporate more sources of audit information into the prior distribution.  

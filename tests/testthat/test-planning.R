@@ -1,5 +1,7 @@
 context("Planning")
 
+# jfa version 0.1.0
+
 test_that(desc = "Frequentist Poisson 1% materiality", {
   jfaRes <- planning(materiality = 0.01, confidence = 0.95, expectedError = 0, likelihood = "poisson")
   print(jfaRes)
@@ -187,6 +189,8 @@ test_that(desc = "Frequentist poisson 3% materiality 1.3% errors 5% min precisio
   expect_equal(jfaRes$expectedSampleError, 4)
 })
 
+# jfa version 0.2.0
+
 test_that(desc = "Bayesian poisson 3% materiality 1.3% errors 5% min precision standard prior", {
   jfaRes <- planning(materiality = 0.03, confidence = 0.95, expectedError = 0.013, minPrecision = 0.05, likelihood = "binomial", N = 1000, prior = T)
   print(jfaRes)
@@ -210,3 +214,5 @@ test_that(desc = "Bayesian poisson 100% materiality 1% errors 2% min precision s
   expect_equal(jfaRes$sampleSize, 220)
   expect_equal(jfaRes$expectedSampleError, 2.2)
 })
+
+# jfa version 0.3.0

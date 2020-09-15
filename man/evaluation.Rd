@@ -5,7 +5,7 @@
 \title{Evaluation of Audit Samples using Confidence / Credible Bounds}
 \usage{
 evaluation(sample = NULL, bookValues = NULL, auditValues = NULL, 
-           confidence = 0.95, nSumstats = NULL, kSumstats = NULL,
+           counts = NULL, confidence = 0.95, nSumstats = NULL, kSumstats = NULL,
            method = "binomial", materiality = NULL, N = NULL, 
            prior = FALSE, nPrior = 0, kPrior = 0, 
            rohrbachDelta = 2.7, momentPoptype = "accounts",
@@ -13,37 +13,39 @@ evaluation(sample = NULL, bookValues = NULL, auditValues = NULL,
            csA = 1, csB = 3, csMu = 0.5)
 }
 \arguments{
-\item{sample}{a data frame containing at least a column of book values and a column of audit (true) values.}
+\item{sample}{a data frame containing at least a column of Ist values and a column of Soll (true) values.}
 
-\item{bookValues}{the column name for the book values in the sample.}
+\item{bookValues}{a character specifying the column name for the Ist values in the sample.}
 
-\item{auditValues}{the column name for the audit (true) values in the sample.}
+\item{auditValues}{a character specifying the column name for the Soll values in the sample.}
 
-\item{confidence}{the required confidence level for the bound.}
+\item{counts}{a integer vector of the number of times each transaction in the sample is to be evaluated (due to it being selected multiple times for the sample).}
 
-\item{nSumstats}{the number of observations in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data comes from summary statistics specified by \code{nSumstats} and \code{kSumstats}.}
+\item{confidence}{the required confidence level for the bound. Default is 0.95 for 95\% confidence.}
 
-\item{kSumstats}{the sum of the errors found in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data comes from summary statistics specified by \code{kSumstats} and \code{nSumstats}.}
+\item{nSumstats}{an integer specifying the number of transactions in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data come from summary statistics specified by both \code{nSumstats} and \code{kSumstats}.}
 
-\item{method}{can be either one of \code{poisson}, \code{binomial}, \code{hypergeometric}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}.}
+\item{kSumstats}{a value specifying the sum of taints (proportional errors) found in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data come from summary statistics specified by both \code{kSumstats} and \code{nSumstats}.}
 
-\item{materiality}{if specified, the function also returns the conclusion of the analysis with respect to the materiality. This value must be specified as a fraction of the total value of the population (a value between 0 and 1). The value is discarded when \code{direct}, \code{difference}, \code{quotient}, or \code{regression} method is chosen.}
+\item{method}{the method that is used to evaluate the sample. This can be either one of \code{poisson}, \code{binomial}, \code{hypergeometric}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}.}
 
-\item{N}{the total population size.}
+\item{materiality}{a value specifying the performance materiality as a fraction of the total value (or size) of the population (a value between 0 and 1). If specified, the function also returns the conclusion of the analysis with respect to the performance materiality. The value is discarded when \code{direct}, \code{difference}, \code{quotient}, or \code{regression} method is chosen.}
 
-\item{prior}{whether to use a prior distribution when evaluating. Defaults to \code{FALSE} for frequentist evaluation. If \code{TRUE}, the prior distribution is updated by the specified likelihood. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
+\item{N}{an integer specifying the total number of transactions in the population.}
 
-\item{nPrior}{the prior parameter \eqn{\alpha} (number of errors in the assumed prior sample).}
+\item{prior}{a logical indicating whether to use a prior distribution when evaluating. Defaults to \code{FALSE} for frequentist evaluation. If \code{TRUE}, the prior distribution is updated by the corresponding likelihood. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
 
-\item{kPrior}{the prior parameter \eqn{\beta} (total number of observations in the assumed prior sample).}
+\item{nPrior}{a value for the prior parameter \eqn{\beta} (number of transactions in the assumed prior sample).}
 
-\item{rohrbachDelta}{the value of \eqn{\Delta} in Rohrbach's augmented variance bound.}
+\item{kPrior}{a value for the prior parameter \eqn{\alpha} (total tainting in the assumed prior sample).}
 
-\item{momentPoptype}{can be either one of \code{accounts} or \code{inventory}. Options result in different methods for calculating the central moments, for more information see Dworin and Grimlund (1986).}
+\item{rohrbachDelta}{a value specifying \eqn{\Delta} in Rohrbach's augmented variance bound (Rohrbach, 1993).}
 
-\item{populationBookValue}{the total value of the audit population. Required when \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}.}
+\item{momentPoptype}{a character specifying the type of population for the modified moment method (Dworin and Grimlund, 1986). Can be either one of \code{accounts} or \code{inventory}. Options result in different methods for calculating the central moments.}
 
-\item{minPrecision}{if specified, the function also returns the conclusion of the analysis with respect to the minimum precision. This value must be specified as a fraction of the total value of the population (a value between 0 and 1).}
+\item{populationBookValue}{a value specifying the total value of the transactions in the population. Required when \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, but optional otherwise.}
+
+\item{minPrecision}{a value specifying the required minimum precision. If specified, the function also returns the conclusion of the analysis with respect to the required minimum precision. This value must be specified as a fraction of the total value of the population (a value between 0 and 1).}
 
 \item{csA}{if \code{method = "coxsnell"}, the \eqn{\alpha} parameter of the prior distribution on the mean taint. Default is set to 1, as recommended by Cox and Snell (1979).}
 
@@ -54,31 +56,31 @@ evaluation(sample = NULL, bookValues = NULL, auditValues = NULL,
 \value{
 An object of class \code{jfaEvaluation} containing:
 
-\item{n}{the sample size.}
-\item{k}{an integer specifying the number of observed errors.}
-\item{t}{a number specifying the sum of observed taints.}
-\item{confidence}{the confidence level of the result.}
-\item{mle}{the most likely error in the population.}
-\item{precision}{the difference between the mle and the upper confidence bound.}
-\item{popBookvalue}{if specified as input, the total book value of the population.}
+\item{n}{an integer specifying the sample size used in the evaluation.}
+\item{k}{an integer specifying the number of transactions that contained an error.}
+\item{t}{a value specifying the sum of observed taints.}
+\item{confidence}{a value specifying the confidence level of the result.}
+\item{mle}{a value specifying the most likely error in the population as a proportion.}
+\item{precision}{a value specifying the difference between the mle and the upper confidence bound as a proportion.}
+\item{popBookvalue}{if specified as input, the total Ist value of the population.}
 \item{pointEstimate}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, the value of the point estimate.}
 \item{lowerBound}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, the value of the lower bound of the interval.}
 \item{upperBound}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, the value of the upper bound of the interval.}
 \item{confBound}{the upper confidence bound on the error percentage. }
 \item{method}{the evaluation method that was used.}
-\item{materiality}{the materiality.}
+\item{materiality}{if \code{materiality} is specified, the performance materiality used.}
 \item{conclusion}{if \code{materiality} is specified, the conclusion about whether to approve or not approve the population.}
-\item{N}{if specified as input, the population size.}
-\item{populationK}{the assumed total errors in the population. Used for inferences with \code{hypergeometric} method.}
-\item{prior}{a logical, indicating whether a prior was used in the analysis.}
-\item{nPrior}{if a prior is specified, the prior assumed sample size.}
-\item{kPrior}{if a prior is specified, the prior assumed sample errors.}
+\item{N}{if \code{N} is specified, the population size that is used.}
+\item{populationK}{the assumed total errors in the population. Used in inferences with \code{hypergeometric} method.}
+\item{prior}{a logical indicating whether a prior was used in the analysis.}
+\item{nPrior}{if a prior is specified, the assumed prior sample size.}
+\item{kPrior}{if a prior is specified, the assumed prior total taint.}
 \item{multiplicationFactor}{if \code{method = "coxsnell"}, the multiplication factor for the \emph{F}-distribution.}
 \item{df1}{if \code{method = "coxsnell"}, the df1 for the \emph{F}-distribution.}
 \item{df2}{if \code{method = "coxsnell"}, the df2 for the \emph{F}-distribution.}
 }
 \description{
-This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound according to a specified method. The returned object is of class \code{jfaEvaluation} and can be used with associated \code{print()} and \code{plot()} methods.
+This function takes a data frame (using \code{sample}, \code{bookValue}, and \code{auditValues}) or summary statistics (using \code{nSumstats} and \code{kSumstats}) and evaluates the audit sample according to the specified method. The returned object is of class \code{jfaEvaluation} and can be used with associated \code{print()} and \code{plot()} methods.
 }
 \details{
 This section lists the available options for the \code{methods} argument.
@@ -143,10 +145,10 @@ print(e1)
 # Conclusion:               Approve population
 # ------------------------------------------------------------
 
-# Evaluate the raw sample using the stringer bound:
+# Evaluate the raw sample using the stringer bound and the sample counts:
 
 e2 <- evaluation(sample = s1_sample, bookValues = "bookValue", auditValues = "trueValue", 
-                 method = "stringer", materiality = 0.05)
+                 method = "stringer", materiality = 0.05, counts = s1_sample$counts)
 print(e2)
 
 # ------------------------------------------------------------ 
@@ -159,16 +161,16 @@ print(e2)
 # Minium precision:         100\% 
 # Sample size:              100 
 # Sample errors:            1 
-# Sum of taints:            0.587 
+# Sum of taints:            0.644 
 # Method:                   stringer 
 # ------------------------------------------------------------
 # Output:
 #
-# Most likely error:        0.587\% 
-# Upper bound:              3.952\% 
-# Precision:                3.365\% 
+# Most likely error:        0.644\% 
+# Upper bound:              4.049\% 
+# Precision:                3.405\% 
 # Conclusion:               Approve population 
-# ------------------------------------------------------------
+# ------------------------------------------------------------  
 
 }
 \references{
