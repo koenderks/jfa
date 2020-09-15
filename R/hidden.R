@@ -105,9 +105,9 @@ print.jfaEvaluation <- function(x, ...){
 # ------------------------------------------------------------
 # Output:
 #
-# Most likely error:       ", round(x$pointEstimate, 2), "
-# Lower bound:             ", round(x$lowerBound, 2),"
-# Upper bound:             ", round(x$upperBound, 2),"
+# Most likely error:       ", round(x$pointEstimate, 3), "
+# Lower bound:             ", round(x$lowerBound, 3),"
+# Upper bound:             ", round(x$upperBound, 3),"
 # Precision:               ", paste0(round(x$precision * 100, 3), "%"),"
 # Conclusion:              ", x$conclusion, "
 # ------------------------------------------------------------ ")

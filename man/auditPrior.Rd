@@ -33,7 +33,7 @@ auditPrior(materiality = NULL, confidence = 0.95, method = "arm", ir = 1,
 
 \item{sampleN}{When using method \code{sample} or \code{factor}, the number of transactions that were inspected in the previous sample.}
 
-\item{sampleK}{When using method \code{sample} or \code{factor}, the number of transactions that were misstated in the precious sample.}
+\item{sampleK}{When using method \code{sample} or \code{factor}, the total taint in the previous sample.}
 }
 \value{
 An object of class \code{jfaPrior} containing:

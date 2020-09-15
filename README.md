@@ -42,7 +42,7 @@ local machine for use in R and RStudio.
 
 ### Downloading
 
-R package `jfa` is simple to download and set-up. The live version from [CRAN](https://cran.r-project.org/package=jfa) (0.2.0) can be downloaded by running the following command in R:
+R package `jfa` is simple to download and set-up. The live version from [CRAN](https://cran.r-project.org/package=jfa) (0.3.0) can be downloaded by running the following command in R:
 
 ```
 install.packages("jfa")
@@ -65,7 +65,7 @@ Below is a list of the available functions in the current version of `jfa`, sort
 
 This function creates a prior distribution according to one of several methods, including the audit risk model and assessments of the inherent and control risk. The returned object is of class `jfaPrior` and can be used with associated `print()` and `plot()` methods. `jfaPrior` results can also be used as input argument for the `prior` argument in other functions.
 
-`auditPrior(materiality = NULL, confidence = 0.95, method = "arm", ir = 1, cr = 1, expectedError = 0, likelihood = "binomial", N = NULL, pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)`
+`auditPrior(materiality = NULL, confidence = 0.95, method = "none", ir = 1, cr = 1, expectedError = 0, likelihood = "binomial", N = NULL, pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)`
 
 **Planning: Calculating an audit sample size**
 
@@ -89,7 +89,7 @@ This function takes a sample data frame or summary statistics about an evaluated
 
 - `evaluation()`
 
-`evaluation(sample = NULL, bookValues = NULL, auditValues = NULL, confidence = 0.95, nSumstats = NULL, kSumstats = NULL, method = "binomial", materiality = NULL, N = NULL, prior = FALSE, nPrior = 0, kPrior = 0, rohrbachDelta = 2.7, momentPoptype = "accounts", populationBookValue = NULL, minPrecision = NULL, csA = 1, csB = 3, csMu = 0.5)`
+`evaluation(sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, confidence = 0.95, nSumstats = NULL, kSumstats = NULL, method = "binomial", materiality = NULL, N = NULL, prior = FALSE, nPrior = 0, kPrior = 0, rohrbachDelta = 2.7, momentPoptype = "accounts", populationBookValue = NULL, minPrecision = NULL, csA = 1, csB = 3, csMu = 0.5)`
 
 ## Poster
 

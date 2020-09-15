@@ -112,7 +112,7 @@ print(p2)
 # Bayesian planning with informed prior:
 
 prior <- auditPrior(materiality = 0.05, confidence = 0.95, cr = 0.6, 
-                    expectedError = 0.025, likelihood = "binomial")
+                    expectedError = 0.025, likelihood = "binomial", method = "arm")
 
 p3 <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0.025,
                prior = prior)

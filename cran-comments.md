@@ -1,7 +1,7 @@
 ## This is a resubmission for version 0.2.0
-This is jfa version 0.2.0 (resubmission). In this version I have:
+This is jfa version 0.3.0. In this version I have:
 
-* Removed the non-canonical URL's in the README file and changed them to canonical URL's.
+* Added one argument to the evaluation function that quantifies how many times each observation should be evaluated.
 
 ## Test environments
 * OS X install (on travis-ci), R release
