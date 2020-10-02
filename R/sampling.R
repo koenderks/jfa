@@ -150,6 +150,8 @@ sampling <- function(population, sampleSize, bookValues = NULL, units = "records
     index <- sample(rownames(population), size = sampleSize, replace = withReplacement)
   } else if(algorithm == "random" && units == "mus"){
     # 2. Random monetary unit sampling
+    if(sampleSize > nrow(population))
+      withReplacement <- TRUE
     index <- sample(rownames(population), size = sampleSize, replace = withReplacement, prob = bv)
   } else if(algorithm == "cell" && units == "records"){
     # 3. Cell record sampling
