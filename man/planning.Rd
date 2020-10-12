@@ -87,8 +87,8 @@ print(p1)
 # Output:
 # 
 # Sample size:             234 
-# Expected upper bound     5\% 
-# Expected precision       2.43\% 
+# Expected upper bound:    5\% 
+# Expected precision:      2.43\% 
 # ------------------------------------------------------------
 
 # Bayesian planning with uninformed prior:
@@ -112,9 +112,9 @@ print(p2)
 # Output:
 #
 # Sample size:             220
-# Expected upper bound     4.99\% 
-# Expected precision       2.49\% 
-# Expected Bayes factor    19.14
+# Expected upper bound:    4.99\% 
+# Expected precision:      2.49\% 
+# Expected Bayes factor-+: 363.75
 # ------------------------------------------------------------ 
 
 # Bayesian planning with informed prior:
@@ -141,9 +141,9 @@ print(p3)
 # Output:
 #
 # Sample size:             169
-# Expected upper bound     4.99\% 
-# Expected precision       2.49\% 
-# Expected Bayes factor    6.6 
+# Expected upper bound:    4.99\% 
+# Expected precision:      2.49\% 
+# Expected Bayes factor-+: 9.32 
 # ------------------------------------------------------------
 
 }

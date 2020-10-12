@@ -1,4 +1,4 @@
-context("Appendix C - AICPA 2017")
+context("Comparison to Appendix C - AICPA 2017")
 
 # Sample size tables can be retrieved from: https://onlinelibrary.wiley.com/doi/pdf/10.1002/9781119448617.app3
 

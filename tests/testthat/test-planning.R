@@ -1,4 +1,4 @@
-context("Planning")
+context("Function test for planning()")
 
 # jfa version 0.1.0
 
@@ -173,22 +173,32 @@ test_that(desc = "Bayesian poisson 100% materiality 1% errors 2% min precision s
 
 test_that(desc = "Expected Bayes factors for zero expected errors", {
   jfaRes <- planning(confidence = 0.95, materiality = 0.02, expectedError = 0, likelihood = "poisson", prior = T)
-  expect_equal(jfaRes$hypotheses$expectedBf, 20.08554, tolerance = 0.001)
+  expect_equal(jfaRes$hypotheses$expectedBf, 964.8514, tolerance = 0.001)
   
   jfaRes <- planning(confidence = 0.95, materiality = 0.02, expectedError = 0.01, likelihood = "binomial", prior = T)
-  expect_equal(jfaRes$hypotheses$expectedBf, 19.64692, tolerance = 0.001)
+  expect_equal(jfaRes$hypotheses$expectedBf, 933.3458, tolerance = 0.001)
   
   jfaRes <- planning(confidence = 0.95, materiality = 0.02, expectedError = 0.01, likelihood = "hypergeometric", prior = T, N = 1000)
-  expect_equal(jfaRes$hypotheses$expectedBf, 5.001883, tolerance = 0.001)
+  expect_equal(jfaRes$hypotheses$expectedBf, 191.7564, tolerance = 0.001)
 })
 
 test_that(desc = "Expected Bayes factors for expected errors > 0", {
   jfaRes <- planning(confidence = 0.95, materiality = 0.02, expectedError = 0.01, likelihood = "poisson", prior = T)
-  expect_equal(jfaRes$hypotheses$expectedBf, 19.8358, tolerance = 0.001)
+  expect_equal(jfaRes$hypotheses$expectedBf, 952.2395, tolerance = 0.001)
   
   jfaRes <- planning(confidence = 0.95, materiality = 0.02, expectedError = 0.01, likelihood = "binomial", prior = T)
-  expect_equal(jfaRes$hypotheses$expectedBf, 19.64692, tolerance = 0.001)
+  expect_equal(jfaRes$hypotheses$expectedBf, 933.3458, tolerance = 0.001)
   
   jfaRes <- planning(confidence = 0.95, materiality = 0.02, expectedError = 0.01, likelihood = "hypergeometric", prior = T, N = 1000)
-  expect_equal(jfaRes$hypotheses$expectedBf, 5.001883, tolerance = 0.001)
+  expect_equal(jfaRes$hypotheses$expectedBf, 191.7564, tolerance = 0.001)
+})
+
+test_that(desc = "Expected Bayes factors for median priors", {
+  prior <- auditPrior(materiality = 0.02, confidence = 0.95, method = "median", likelihood = "poisson")
+  jfaRes <- planning(confidence = 0.95, materiality = 0.02, prior = prior)
+  expect_equal(jfaRes$hypotheses$expectedBf, 18.99502, tolerance = 0.001)
+  
+  prior <- auditPrior(materiality = 0.02, confidence = 0.95, method = "median", likelihood = "binomial")
+  jfaRes <- planning(confidence = 0.95, materiality = 0.02, prior = prior)
+  expect_equal(jfaRes$hypotheses$expectedBf, 19.01047, tolerance = 0.001)
 })

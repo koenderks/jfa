@@ -45,9 +45,9 @@ print.jfaPlanning <- function(x, digits = 2, ...){
 # Output:
 #
 # Sample size:            ", x$sampleSize,"
-# Expected upper bound    ", paste0(round(x$expectedBound * 100, digits), "%"),"
-# Expected precision      ", paste0(round(x$expectedPrecision * 100, digits), "%"),"
-# Expected Bayes factor\u208B\u208A  ", ifelse(x$materiality == 1, yes = "Requires materiality", no = round(x$hypotheses$expectedBf, digits)),"
+# Expected upper bound:   ", paste0(round(x$expectedBound * 100, digits), "%"),"
+# Expected precision:     ", paste0(round(x$expectedPrecision * 100, digits), "%"),"
+# Expected Bayes factor-+:", ifelse(x$materiality == 1, yes = "Requires materiality", no = round(x$hypotheses$expectedBf, digits)),"
 # ------------------------------------------------------------ ")
   } else {
     cat("# ------------------------------------------------------------
@@ -64,8 +64,8 @@ print.jfaPlanning <- function(x, digits = 2, ...){
 # Output:
 #
 # Sample size:            ", x$sampleSize,"
-# Expected upper bound    ", paste0(round(x$expectedBound * 100, digits), "%"),"
-# Expected precision      ", paste0(round(x$expectedPrecision * 100, digits), "%"),"
+# Expected upper bound:   ", paste0(round(x$expectedBound * 100, digits), "%"),"
+# Expected precision:     ", paste0(round(x$expectedPrecision * 100, digits), "%"),"
 # ------------------------------------------------------------ ")
   }
 }
@@ -129,10 +129,10 @@ print.jfaEvaluation <- function(x, digits = 2, ...){
 # Input:
 #   
 # Confidence:              ", paste0(round(x$confidence * 100, digits), "%"),"
-# Materiality:             ", paste0(round(x$materiality * 100, digits), "%"),"
-# Minium precision:        ", paste0(round(x$minPrecision * 100, digits), "%"),"
-# Sample size:             ", x$n,"
-# Sample errors:           ", x$k, "
+# Materiality:             ", ifelse(x$materiality == 1, yes = "Not specified", no = paste0(round(x$materiality * 100, digits), "%")),"
+# Minium precision:        ", ifelse(x$minPrecision == 1, yes = "Not specified", no = paste0(round(x$minPrecision * 100, digits), "%")),"
+# Sample size:             ", round(x$n, digits),"
+# Sample errors:           ", round(x$k, digits), "
 # Method:                  ", x$method, "
 # Population book value:   ", round(x$popBookvalue, digits), "
 # ------------------------------------------------------------
@@ -152,10 +152,10 @@ print.jfaEvaluation <- function(x, digits = 2, ...){
 # Input: 
 #
 # Confidence:              ", paste0(round(x$confidence * 100, digits), "%"),"  
-# Materiality:             ", paste0(round(x$materiality * 100, digits), "%"),"
-# Minium precision:        ", paste0(round(x$minPrecision * 100, digits), "%"),"
-# Sample size:             ", x$n,"
-# Sample errors:           ", x$k, "
+# Materiality:             ", ifelse(x$materiality == 1, yes = "Not specified", no = paste0(round(x$materiality * 100, digits), "%")),"
+# Minium precision:        ", ifelse(x$minPrecision == 1, yes = "Not specified", no = paste0(round(x$minPrecision * 100, digits), "%")),"
+# Sample size:             ", round(x$n, digits),"
+# Sample errors:           ", round(x$k, digits), "
 # Sum of taints:           ", round(x$t, digits), " 
 # Method:                  ", x$method, "
 # Prior distribution:      ", x$priorString, "
@@ -166,6 +166,7 @@ print.jfaEvaluation <- function(x, digits = 2, ...){
 # Most likely error:       ", paste0(round(x$mle * 100, digits), "%"),"
 # Upper bound:             ", paste0(round(x$confBound * 100, digits), "%"),"
 # Precision:               ", paste0(round(x$precision * 100, digits), "%"),"
+# Bayes factor-+:          ", ifelse(x$materiality == 1 || !(x$method %in% c("poisson", "binomial", "hypergeometric")), yes = "Not available", no = round(x$hypotheses$bf, digits)),"
 # Conclusion:              ", x$conclusion, "
 # ------------------------------------------------------------ ")
     } else {
@@ -175,10 +176,10 @@ print.jfaEvaluation <- function(x, digits = 2, ...){
 # Input: 
 #
 # Confidence:              ", paste0(round(x$confidence * 100, digits), "%"),"  
-# Materiality:             ", paste0(round(x$materiality * 100, digits), "%"),"
-# Minium precision:        ", paste0(round(x$minPrecision * 100, digits), "%"),"
-# Sample size:             ", x$n,"
-# Sample errors:           ", x$k, "
+# Materiality:             ", ifelse(x$materiality == 1, yes = "Not specified", no = paste0(round(x$materiality * 100, digits), "%")),"
+# Minium precision:        ", ifelse(x$minPrecision == 1, yes = "Not specified", no = paste0(round(x$minPrecision * 100, digits), "%")),"
+# Sample size:             ", round(x$n, digits),"
+# Sample errors:           ", round(x$k, digits), "
 # Sum of taints:           ", round(x$t, digits), "
 # Method:                  ", x$method, "
 # ------------------------------------------------------------

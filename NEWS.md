@@ -1,6 +1,7 @@
 # jfa 0.4.0
 
-- Added Expected Bayes factors to the output of the `planning()` function.
+- Added Expected Bayes factors, expected upper bound, and expected precision to the output of the `planning()` function.
+- Added Bayes factors to the output of the `evaluation()` function.
 - Implemented calculation of prior parameters in the `auditPrior()` function for `method = median` when `expectedErrors > 0`.
 - Added `digits` argument in the internal `jfa:::print.jfaPrior()`, `jfa:::print.jfaPlanning()`, `jfa:::print.jfaSampling()`, and `jfa:::print.jfaEvaluation()` functions to control rounding.
 

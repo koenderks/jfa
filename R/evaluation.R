@@ -83,6 +83,7 @@
 #' \item{multiplicationFactor}{if \code{method = "coxsnell"}, the multiplication factor for the \emph{F}-distribution.}
 #' \item{df1}{if \code{method = "coxsnell"}, the df1 for the \emph{F}-distribution.}
 #' \item{df2}{if \code{method = "coxsnell"}, the df2 for the \emph{F}-distribution.}
+#' \item{hypotheses}{if method is one of \code{binomial}, \code{poisson}, or \code{hypergeometric}, and \code{prior} is not \code{FALSE}, then this list of information about the hypotheses is returned.}
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
@@ -117,7 +118,7 @@
 #' #
 #' # Confidence:               95%   
 #' # Materiality:              5% 
-#' # Minium precision:         100% 
+#' # Minium precision:         Not specified 
 #' # Sample size:              100 
 #' # Sample errors:            1 
 #' # Sum of taints:            1 
@@ -144,7 +145,7 @@
 #' #
 #' # Confidence:               95%   
 #' # Materiality:              5% 
-#' # Minium precision:         100% 
+#' # Minium precision:         Not specified 
 #' # Sample size:              100 
 #' # Sample errors:            1 
 #' # Sum of taints:            0.644 
@@ -170,7 +171,17 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
                        populationBookValue = NULL, minPrecision = NULL,
                        csA = 1, csB = 3, csMu = 0.5){
   
+  if(is.null(materiality) && is.null(minPrecision))
+    stop("Specify the materiality or the minimum precision")
+  if(!is.null(minPrecision) && minPrecision == 0)
+    stop("The minimum required precision cannot be zero.")
+  
   tmp_method <- method
+  
+  if(is.logical(prior) && prior == TRUE){
+    nPrior <- 0
+    kPrior <- 0
+  }
   
   if(class(prior) == "jfaPrior"){
     nPrior <- prior$nPrior
@@ -382,6 +393,21 @@ evaluation <- function(sample = NULL, bookValues = NULL, auditValues = NULL,
     results[["prior"]]            <- as.logical(TRUE)
     results[["nPrior"]]           <- nPrior
     results[["kPrior"]]           <- kPrior
+    if(method != "coxsnell" && mat != 1){
+      results[["hypotheses"]]           <- list()
+      results[["hypotheses"]]$priorHmin <- base::switch(method,
+                                                        "binomial" = stats::pbeta(q = materiality, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior),
+                                                        "poisson" = stats::pgamma(q = materiality, shape = 1 + kPrior, rate = 1 + nPrior),
+                                                        "hypergeometric" = .pBetaBinom(q = ceiling(materiality * N), N = N, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior))
+      results[["hypotheses"]]$priorHplus<- 1 - results[["hypotheses"]]$priorHmin
+      results[["hypotheses"]]$postHmin  <- base::switch(method,
+                                                        "binomial" = stats::pbeta(q = materiality, shape1 = 1 + kPrior + t, shape2 = 1 + nPrior - kPrior + n - t),
+                                                        "poisson" = stats::pgamma(q = materiality, shape = 1 + kPrior + t, rate = 1 + nPrior + n),
+                                                        "hypergeometric" = .pBetaBinom(q = ceiling(materiality * N), N = N, shape1 = 1 + kPrior + t, shape2 = 1 + nPrior - kPrior + n - t))
+      results[["hypotheses"]]$postHplus <- 1 - results[["hypotheses"]]$postHmin
+      results[["hypotheses"]]$bf <- (results[["hypotheses"]]$postHmin / results[["hypotheses"]]$postHplus) / 
+        (results[["hypotheses"]]$priorHmin / results[["hypotheses"]]$priorHplus)
+    }
   } else {
     results[["prior"]]            <- as.logical(FALSE) 
   }

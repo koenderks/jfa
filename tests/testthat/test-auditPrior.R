@@ -1,4 +1,4 @@
-context("Prior")
+context("Function test for auditPrior()")
 
 # jfa version 0.1.0
 

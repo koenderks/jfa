@@ -78,6 +78,7 @@ An object of class \code{jfaEvaluation} containing:
 \item{multiplicationFactor}{if \code{method = "coxsnell"}, the multiplication factor for the \emph{F}-distribution.}
 \item{df1}{if \code{method = "coxsnell"}, the df1 for the \emph{F}-distribution.}
 \item{df2}{if \code{method = "coxsnell"}, the df2 for the \emph{F}-distribution.}
+\item{hypotheses}{if method is one of \code{binomial}, \code{poisson}, or \code{hypergeometric}, and \code{prior} is not \code{FALSE}, then this list of information about the hypotheses is returned.}
 }
 \description{
 This function takes a data frame (using \code{sample}, \code{bookValue}, and \code{auditValues}) or summary statistics (using \code{nSumstats} and \code{kSumstats}) and evaluates the audit sample according to the specified method. The returned object is of class \code{jfaEvaluation} and can be used with associated \code{print()} and \code{plot()} methods.
@@ -131,7 +132,7 @@ print(e1)
 #
 # Confidence:               95\%   
 # Materiality:              5\% 
-# Minium precision:         100\% 
+# Minium precision:         Not specified 
 # Sample size:              100 
 # Sample errors:            1 
 # Sum of taints:            1 
@@ -158,7 +159,7 @@ print(e2)
 #
 # Confidence:               95\%   
 # Materiality:              5\% 
-# Minium precision:         100\% 
+# Minium precision:         Not specified 
 # Sample size:              100 
 # Sample errors:            1 
 # Sum of taints:            0.644 

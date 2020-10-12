@@ -75,8 +75,8 @@
 #' # Output:
 #' # 
 #' # Sample size:             234 
-#' # Expected upper bound     5% 
-#' # Expected precision       2.43% 
+#' # Expected upper bound:    5% 
+#' # Expected precision:      2.43% 
 #' # ------------------------------------------------------------
 #' 
 #' # Bayesian planning with uninformed prior:
@@ -100,9 +100,9 @@
 #' # Output:
 #' #
 #' # Sample size:             220
-#' # Expected upper bound     4.99% 
-#' # Expected precision       2.49% 
-#' # Expected Bayes factor    19.14
+#' # Expected upper bound:    4.99% 
+#' # Expected precision:      2.49% 
+#' # Expected Bayes factor-+: 363.75
 #' # ------------------------------------------------------------ 
 #' 
 #' # Bayesian planning with informed prior:
@@ -129,9 +129,9 @@
 #' # Output:
 #' #
 #' # Sample size:             169
-#' # Expected upper bound     4.99% 
-#' # Expected precision       2.49% 
-#' # Expected Bayes factor    6.6 
+#' # Expected upper bound:    4.99% 
+#' # Expected precision:      2.49% 
+#' # Expected Bayes factor-+: 9.32 
 #' # ------------------------------------------------------------
 #'
 #' @keywords planning sample size audit
@@ -303,7 +303,7 @@ planning <- function(materiality = NULL, confidence = 0.95, expectedError = 0, m
                                                       "hypergeometric" = .pBetaBinom(q = ceiling(materiality * N), N = N, shape1 = 1 + kPrior + results[["expectedSampleError"]], shape2 = 1 + nPrior - kPrior + results[["sampleSize"]] - results[["expectedSampleError"]]))
     results[["hypotheses"]]$postHplus <- 1 - results[["hypotheses"]]$postHmin
     results[["hypotheses"]]$expectedBf <- (results[["hypotheses"]]$postHmin / results[["hypotheses"]]$postHplus) / 
-      (results[["hypotheses"]]$postHmin / results[["hypotheses"]]$priorHplus)
+      (results[["hypotheses"]]$priorHmin / results[["hypotheses"]]$priorHplus)
     
   } else {
     results[["prior"]]$prior          <- as.logical(FALSE)

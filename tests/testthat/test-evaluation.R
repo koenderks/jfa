@@ -1,4 +1,4 @@
-context("Evaluation")
+context("Function test for evaluation()")
 
 # jfa version 0.1.0
 
@@ -68,7 +68,7 @@ test_that(desc = "Evaluation with stringer method", {
   jfaRes <- planning(materiality = 0.05, likelihood = "poisson")
   samp <- sampling(population, sampleSize = jfaRes, units = "records", algorithm = "random", ordered = TRUE)$sample
   samp$auditValue <- samp$bookValue
-  jfaEval <- evaluation(sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "stringer")
+  jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "stringer")
   expect_equal(jfaEval$confBound, 0.04870291, tolerance = 0.001)
 })
 
@@ -78,7 +78,7 @@ test_that(desc = "Evaluation with stringer-meikle method", {
   jfaRes <- planning(materiality = 0.05, likelihood = "poisson")
   samp <- sampling(population, sampleSize = jfaRes, units = "records", algorithm = "random", ordered = TRUE)$sample
   samp$auditValue <- samp$bookValue
-  jfaEval <- evaluation(sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "stringer-meikle")
+  jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "stringer-meikle")
   expect_equal(jfaEval$confBound, 0.04870291, tolerance = 0.001)
 })
 
@@ -88,7 +88,7 @@ test_that(desc = "Evaluation with stringer-lta method", {
   jfaRes <- planning(materiality = 0.05, likelihood = "poisson")
   samp <- sampling(population, sampleSize = jfaRes, units = "records", algorithm = "random", ordered = TRUE)$sample
   samp$auditValue <- samp$bookValue
-  jfaEval <- evaluation(sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "stringer-lta")
+  jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "stringer-lta")
   expect_equal(jfaEval$confBound, 0.04870291, tolerance = 0.001)
 })
 
@@ -98,7 +98,7 @@ test_that(desc = "Evaluation with stringer-pvz method", {
   jfaRes <- planning(materiality = 0.05, likelihood = "poisson")
   samp <- sampling(population, sampleSize = jfaRes, units = "records", algorithm = "random", ordered = TRUE)$sample
   samp$auditValue <- samp$bookValue
-  jfaEval <- evaluation(sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "stringer-pvz")
+  jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "stringer-pvz")
   expect_equal(jfaEval$confBound, 0.04870291, tolerance = 0.001)
 })
 
@@ -108,7 +108,7 @@ test_that(desc = "Evaluation with rohrbach method", {
   jfaRes <- planning(materiality = 0.05, likelihood = "poisson")
   samp <- sampling(population, sampleSize = jfaRes, units = "records", algorithm = "random", ordered = TRUE)$sample
   samp$auditValue <- samp$bookValue
-  jfaEval <- evaluation(sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "rohrbach", N = 1000)
+  jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "rohrbach", N = 1000)
   expect_equal(jfaEval$confBound, 0.0308821, tolerance = 0.001)
 })
 
@@ -118,7 +118,7 @@ test_that(desc = "Evaluation with moment method", {
   jfaRes <- planning(materiality = 0.05, likelihood = "poisson")
   samp <- sampling(population, sampleSize = jfaRes, units = "records", algorithm = "random", ordered = TRUE)$sample
   samp$auditValue <- samp$bookValue
-  jfaEval <- evaluation(sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "moment", N = 1000)
+  jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "moment", N = 1000)
   expect_equal(jfaEval$confBound, 0.04916021, tolerance = 0.001)
 })
 
@@ -128,7 +128,7 @@ test_that(desc = "Evaluation with direct method", {
   jfaRes <- planning(materiality = 0.05, likelihood = "poisson")
   samp <- sampling(population, sampleSize = jfaRes, units = "records", algorithm = "random", ordered = TRUE)$sample
   samp$auditValue <- samp$bookValue
-  jfaEval <- evaluation(sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "direct", N = 1000, populationBookValue = sum(population$bookValue))
+  jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "direct", N = 1000, populationBookValue = sum(population$bookValue))
   expect_equal(jfaEval$pointEstimate, 294231.508, tolerance = 0.001)
   expect_equal(jfaEval$lowerBound, 262653.9205, tolerance = 0.001)
   expect_equal(jfaEval$upperBound, 325809.1-0.00547, tolerance = 0.001)
@@ -140,7 +140,7 @@ test_that(desc = "Evaluation with difference method", {
   jfaRes <- planning(materiality = 0.05, likelihood = "poisson")
   samp <- sampling(population, sampleSize = jfaRes, units = "records", algorithm = "random", ordered = TRUE)$sample
   samp$auditValue <- samp$bookValue
-  jfaEval <- evaluation(sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "difference", N = 1000, populationBookValue = sum(population$bookValue))
+  jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "difference", N = 1000, populationBookValue = sum(population$bookValue))
   expect_equal(jfaEval$pointEstimate, 297454 - 0.0243, tolerance = 0.001)
   expect_equal(jfaEval$lowerBound, 297454 - 0.0243, tolerance = 0.001)
   expect_equal(jfaEval$upperBound, 297454 - 0.0243, tolerance = 0.001)
@@ -152,7 +152,7 @@ test_that(desc = "Evaluation with quotient method", {
   jfaRes <- planning(materiality = 0.05, likelihood = "poisson")
   samp <- sampling(population, sampleSize = jfaRes, units = "records", algorithm = "random", ordered = TRUE)$sample
   samp$auditValue <- samp$bookValue
-  jfaEval <- evaluation(sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "quotient", N = 1000, populationBookValue = sum(population$bookValue))
+  jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "quotient", N = 1000, populationBookValue = sum(population$bookValue))
   expect_equal(jfaEval$pointEstimate, 297454 - 0.0243, tolerance = 0.001)
   expect_equal(jfaEval$lowerBound, 297454 - 0.0243, tolerance = 0.001)
   expect_equal(jfaEval$upperBound, 297454 - 0.0243, tolerance = 0.001)
@@ -164,7 +164,7 @@ test_that(desc = "Evaluation with regression method", {
   jfaRes <- planning(materiality = 0.05, likelihood = "poisson")
   samp <- sampling(population, sampleSize = jfaRes, units = "records", algorithm = "random", ordered = TRUE)$sample
   samp$auditValue <- samp$bookValue
-  jfaEval <- evaluation(sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "regression", N = 1000, populationBookValue = sum(population$bookValue))
+  jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "regression", N = 1000, populationBookValue = sum(population$bookValue))
   expect_equal(jfaEval$pointEstimate, 297454 - 0.0243, tolerance = 0.001)
   expect_equal(jfaEval$lowerBound, 297454 - 0.0243, tolerance = 0.001)
   expect_equal(jfaEval$upperBound, 297454 - 0.0243, tolerance = 0.001)
@@ -178,7 +178,7 @@ test_that(desc = "Evaluation with Cox and Snell method", {
   samp <- sampling(population, sampleSize = jfaRes, units = "records", algorithm = "random", ordered = TRUE)$sample
   samp$auditValue <- samp$bookValue
   samp$auditValue[1:3] <- samp$bookValue[1:3] * 0.4
-  jfaEval <- evaluation(sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "coxsnell", prior = p)
+  jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "coxsnell", prior = p)
   expect_equal(jfaEval$confBound, 0.02765165, tolerance = 0.001)
 })
 
@@ -195,7 +195,7 @@ test_that(desc = "Evaluation with counts and stringer method", {
   samp$auditValue <- samp$bookValue
   samp$auditValue[1:3] <- samp$bookValue[1:3] * 0.4
   counts <- c(2, 2, 3, rep(1, nrow(samp) - 3))
-  jfaEval <- evaluation(sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "stringer", count = counts)
+  jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "stringer", count = counts)
   expect_equal(jfaEval$confBound, 0.0326619, tolerance = 0.001)
 })
 
@@ -203,4 +203,18 @@ test_that(desc = "Evaluation with counts and stringer method", {
 # No changes to be tested
 
 # jfa version 0.4.0
-# No changes to be tested
+test_that(desc = "Bayes factors", {
+  set.seed(1)
+  population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
+  jfaRes <- planning(materiality = 0.05, expectedError = 0.025, confidence = 0.95)
+  samp <- sampling(population, sampleSize = jfaRes, units = "records", algorithm = "random", ordered = TRUE)$sample
+  samp$auditValue <- samp$bookValue
+  samp$auditValue[1:3] <- samp$bookValue[1:3] * 0.4
+  counts <- c(2, 2, 3, rep(1, nrow(samp) - 3))
+  jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "binomial", count = counts, prior = TRUE)
+  expect_equal(jfaEval$hypotheses$bf, 1997.977, tolerance = 0.001)
+  jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "poisson", count = counts, prior = TRUE)
+  expect_equal(jfaEval$hypotheses$bf, 1791.101, tolerance = 0.001)
+  jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "hypergeometric", count = counts, prior = TRUE, N = 1000)
+  expect_equal(jfaEval$hypotheses$bf, 1308.123, tolerance = 0.001)
+})

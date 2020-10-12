@@ -1,4 +1,4 @@
-context("Appendix A - AICPA 2017")
+context("Comparison to Appendix A - AICPA 2017")
 
 # Sample size tables can be retrieved from: https://onlinelibrary.wiley.com/doi/pdf/10.1002/9781119448617.app1
 
@@ -130,7 +130,8 @@ test_that(desc = "Sample sizes for 10 percent risk of overreliance (AICPA 2017 -
   colnames(evaluationMatrix) <- numberOfDeviations
   for(i in 1:length(numberOfDeviations)){
     for(j in 1:length(sampleSize)){
-      jfaRes <- evaluation(confidence = 0.95, 
+      jfaRes <- evaluation(materiality = 0.05, # Negligible
+                           confidence = 0.95, 
                            method = "binomial", 
                            nSumstats = sampleSize[j], 
                            kSumstats = numberOfDeviations[i]) 
@@ -177,7 +178,8 @@ test_that(desc = "Sample sizes for 10 percent risk of overreliance (AICPA 2017 -
   colnames(evaluationMatrix) <- numberOfDeviations
   for(i in 1:length(numberOfDeviations)){
     for(j in 1:length(sampleSize)){
-      jfaRes <- evaluation(confidence = 0.90, 
+      jfaRes <- evaluation(materiality = 0.05, # Negligible
+                           confidence = 0.90, 
                            method = "binomial", 
                            nSumstats = sampleSize[j], 
                            kSumstats = numberOfDeviations[i]) 
