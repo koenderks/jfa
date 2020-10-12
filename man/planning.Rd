@@ -45,6 +45,9 @@ An object of class \code{jfaPlanning} containing:
 \item{N}{the population size (only returned in case of a hypergeometric likelihood).}
 \item{populationK}{the assumed population errors (only returned in case of a hypergeometric likelihood).}
 \item{prior}{a list containing information on the prior parameters.}
+\item{hypotheses}{a list containing information about the hypotheses. Relevant when testing against a materiality.}
+\item{expectedBound}{a value specifying the expected upper bound if the sample goes according to plan.}
+\item{expectedPrecision}{a value specifying the expected precision if the sample goes according to plan.}
 }
 \description{
 This function calculates the required sample size for an audit, based on the poisson, binomial, or hypergeometric likelihood. A prior can be specified to perform Bayesian planning. The returned object is of class \code{jfaPlanning} and can be used with associated \code{print()} and \code{plot()} methods.
@@ -77,13 +80,15 @@ print(p1)
 # 
 # Confidence:              95\% 
 # Materiality:             5\% 
-# Minimum precision:       100\% 
+# Minimum precision:       Not specified
 # Likelihood:              binomial 
 # Expected sample errors:  6 
 # ------------------------------------------------------------
 # Output:
 # 
 # Sample size:             234 
+# Expected upper bound     5\% 
+# Expected precision       2.43\% 
 # ------------------------------------------------------------
 
 # Bayesian planning with uninformed prior:
@@ -99,14 +104,17 @@ print(p2)
 # 
 # Confidence:              95\%      
 # Materiality:             5\% 
-# Minimum precision:       100\% 
+# Minimum precision:       Not specified 
 # Likelihood:              binomial 
-# Prior:                   beta(1, 1)
+# Prior distribution:      beta(1, 1)
 # Expected sample errors:  5.5
 # ------------------------------------------------------------
 # Output:
 #
-# Sample size:            220
+# Sample size:             220
+# Expected upper bound     4.99\% 
+# Expected precision       2.49\% 
+# Expected Bayes factor    19.14
 # ------------------------------------------------------------ 
 
 # Bayesian planning with informed prior:
@@ -125,14 +133,17 @@ print(p3)
 # 
 # Confidence:              95\%      
 # Materiality:             5\% 
-# Minimum precision:       100\% 
+# Minimum precision:       Not specified
 # Likelihood:              binomial 
-# Prior:                   beta(2.275, 50.725)
+# Prior distribution:      beta(2.27, 50.73)
 # Expected sample errors:  4.23
 # ------------------------------------------------------------
 # Output:
 #
-# Sample size:            169
+# Sample size:             169
+# Expected upper bound     4.99\% 
+# Expected precision       2.49\% 
+# Expected Bayes factor    6.6 
 # ------------------------------------------------------------
 
 }

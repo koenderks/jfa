@@ -198,13 +198,13 @@ auditPrior <- function(materiality = NULL, confidence = 0.95, method = "arm", ir
                                 "poisson" = "gamma", 
                                 "binomial" = "beta",
                                 "hypergeometric" = "beta-binomial")
-  result$kPrior       <- as.numeric(round(kPrior, 3))
-  result$nPrior       <- as.numeric(round(nPrior, 3))
-  result$aPrior       <- as.numeric(round(1 + kPrior, 3))
+  result$kPrior       <- as.numeric(kPrior)
+  result$nPrior       <- as.numeric(nPrior)
+  result$aPrior       <- as.numeric(1 + kPrior)
   result$bPrior       <- switch(likelihood, 
-                                "poisson" = round(nPrior, 3), 
-                                "binomial" = round(1 + nPrior - kPrior, 3),
-                                "hypergeometric" = round(1 + nPrior - kPrior, 3))
+                                "poisson" = nPrior, 
+                                "binomial" = 1 + nPrior - kPrior,
+                                "hypergeometric" = 1 + nPrior - kPrior)
   result$materiality  <- ifelse(is.null(materiality), 
                                 yes = 0, 
                                 no = as.numeric(materiality))

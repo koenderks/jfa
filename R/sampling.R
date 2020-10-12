@@ -205,7 +205,7 @@ sampling <- function(population, sampleSize, bookValues = NULL, units = "records
   results[["units"]] <- units
   results[["intervalStartingPoint"]] <- intervalStartingPoint
   if(!is.null(interval))
-    results[["interval"]] <- round(interval, 2)
+    results[["interval"]] <- interval
 
   class(results) <- "jfaSampling"
   return(results)

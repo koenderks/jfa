@@ -1,7 +1,9 @@
 ## This is a resubmission for version 0.2.0
 This is jfa version 0.4.0. In this version I have:
 
+* Added Expected Bayes factors to the output of the planning function.
 * Implemented the calculation of prior parameters for the median method when the user expects errors in the sample
+* Added digits argument in the print functions to control rounding
 
 ## Test environments
 * OS X install (on travis-ci), R release

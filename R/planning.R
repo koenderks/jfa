@@ -39,6 +39,9 @@
 #' \item{N}{the population size (only returned in case of a hypergeometric likelihood).}
 #' \item{populationK}{the assumed population errors (only returned in case of a hypergeometric likelihood).}
 #' \item{prior}{a list containing information on the prior parameters.}
+#' \item{hypotheses}{a list containing information about the hypotheses. Relevant when testing against a materiality.}
+#' \item{expectedBound}{a value specifying the expected upper bound if the sample goes according to plan.}
+#' \item{expectedPrecision}{a value specifying the expected precision if the sample goes according to plan.}
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
@@ -65,13 +68,15 @@
 #' # 
 #' # Confidence:              95% 
 #' # Materiality:             5% 
-#' # Minimum precision:       100% 
+#' # Minimum precision:       Not specified
 #' # Likelihood:              binomial 
 #' # Expected sample errors:  6 
 #' # ------------------------------------------------------------
 #' # Output:
 #' # 
 #' # Sample size:             234 
+#' # Expected upper bound     5% 
+#' # Expected precision       2.43% 
 #' # ------------------------------------------------------------
 #' 
 #' # Bayesian planning with uninformed prior:
@@ -87,14 +92,17 @@
 #' # 
 #' # Confidence:              95%      
 #' # Materiality:             5% 
-#' # Minimum precision:       100% 
+#' # Minimum precision:       Not specified 
 #' # Likelihood:              binomial 
-#' # Prior:                   beta(1, 1)
+#' # Prior distribution:      beta(1, 1)
 #' # Expected sample errors:  5.5
 #' # ------------------------------------------------------------
 #' # Output:
 #' #
-#' # Sample size:            220
+#' # Sample size:             220
+#' # Expected upper bound     4.99% 
+#' # Expected precision       2.49% 
+#' # Expected Bayes factor    19.14
 #' # ------------------------------------------------------------ 
 #' 
 #' # Bayesian planning with informed prior:
@@ -113,14 +121,17 @@
 #' # 
 #' # Confidence:              95%      
 #' # Materiality:             5% 
-#' # Minimum precision:       100% 
+#' # Minimum precision:       Not specified
 #' # Likelihood:              binomial 
-#' # Prior:                   beta(2.275, 50.725)
+#' # Prior distribution:      beta(2.27, 50.73)
 #' # Expected sample errors:  4.23
 #' # ------------------------------------------------------------
 #' # Output:
 #' #
-#' # Sample size:            169
+#' # Sample size:             169
+#' # Expected upper bound     4.99% 
+#' # Expected precision       2.49% 
+#' # Expected Bayes factor    6.6 
 #' # ------------------------------------------------------------
 #'
 #' @keywords planning sample size audit
@@ -259,23 +270,41 @@ planning <- function(materiality = NULL, confidence = 0.95, expectedError = 0, m
   results[["materiality"]]          <- as.numeric(materiality)
   results[["confidence"]]           <- as.numeric(confidence)
   results[["sampleSize"]]           <- as.numeric(ceiling(ss))
-  results[["expectedSampleError"]]  <- as.numeric(round(implicitK, 2))
+  results[["expectedSampleError"]]  <- as.numeric(implicitK)
   results[["expectedError"]]        <- as.numeric(expectedError)
   results[["likelihood"]]           <- as.character(likelihood)
   results[["errorType"]]            <- as.character(errorType)
   results[["minPrecision"]]         <- as.numeric(minPrecision)
+  results[["expectedBound"]]        <- as.numeric(bound)
+  results[["expectedPrecision"]]    <- as.numeric(bound - mle)
   if(likelihood == "hypergeometric"){
     results[["N"]]                  <- as.numeric(N)
     results[["populationK"]]        <- as.numeric(populationK)
   }
   results[["prior"]]                <- list()
   if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
+    
     results[["prior"]]$prior        <- as.logical(TRUE)
     results[["prior"]]$priorD       <- switch(likelihood, "poisson" = "gamma", "binomial" = "beta", "hypergeometric" = "beta-binomial")
-    results[["prior"]]$kPrior       <- as.numeric(round(kPrior, 3))
-    results[["prior"]]$nPrior       <- as.numeric(round(nPrior, 3))
+    results[["prior"]]$kPrior       <- as.numeric(kPrior)
+    results[["prior"]]$nPrior       <- as.numeric(nPrior)
     results[["prior"]]$aPrior       <- 1 + results[["prior"]]$kPrior
     results[["prior"]]$bPrior       <- ifelse(likelihood == "poisson", yes = results[["prior"]]$nPrior, no = 1 + results[["prior"]]$nPrior - results[["prior"]]$kPrior)
+  
+    results[["hypotheses"]]           <- list()
+    results[["hypotheses"]]$priorHmin <- base::switch(likelihood,
+                                                      "binomial" = stats::pbeta(q = materiality, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior),
+                                                      "poisson" = stats::pgamma(q = materiality, shape = 1 + kPrior, rate = 1 + nPrior),
+                                                      "hypergeometric" = .pBetaBinom(q = ceiling(materiality * N), N = N, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior))
+    results[["hypotheses"]]$priorHplus<- 1 - results[["hypotheses"]]$priorHmin
+    results[["hypotheses"]]$postHmin  <- base::switch(likelihood,
+                                                      "binomial" = stats::pbeta(q = materiality, shape1 = 1 + kPrior + results[["expectedSampleError"]], shape2 = 1 + nPrior - kPrior + results[["sampleSize"]] - results[["expectedSampleError"]]),
+                                                      "poisson" = stats::pgamma(q = materiality, shape = 1 + kPrior + results[["expectedSampleError"]], rate = 1 + nPrior + results[["sampleSize"]]),
+                                                      "hypergeometric" = .pBetaBinom(q = ceiling(materiality * N), N = N, shape1 = 1 + kPrior + results[["expectedSampleError"]], shape2 = 1 + nPrior - kPrior + results[["sampleSize"]] - results[["expectedSampleError"]]))
+    results[["hypotheses"]]$postHplus <- 1 - results[["hypotheses"]]$postHmin
+    results[["hypotheses"]]$expectedBf <- (results[["hypotheses"]]$postHmin / results[["hypotheses"]]$postHplus) / 
+      (results[["hypotheses"]]$postHmin / results[["hypotheses"]]$priorHplus)
+    
   } else {
     results[["prior"]]$prior          <- as.logical(FALSE)
   }

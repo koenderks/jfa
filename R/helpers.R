@@ -9,6 +9,11 @@
   return(sapply(p, function(x) sum(pp < x)))
 }
 
+.pBetaBinom <- function(q, N, shape1, shape2){
+  p <- sum(.dBetaBinom(0:q, N, shape1, shape2))
+  return(p)
+}
+
 .stringerBound <- function(taints, confidence, n, correction = NULL){
   t <- ifelse(taints < 0, yes = 0, no = taints)
   t <- ifelse(taints > 1, yes = 1, no = taints)

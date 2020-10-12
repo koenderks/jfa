@@ -21,14 +21,10 @@ test_that(desc = "Audit workflow", {
   prior <- auditPrior(materiality = materiality, confidence = confidence, 
                       method = "arm", ir = ir, cr = cr, 
                       expectedError = expectedError, likelihood = "binomial")
-  print(prior)
-  plot(prior)
   
   # Calculate the sample size according to the binomial distribution with the specified prior
   sampleSize <- planning(materiality = materiality, confidence = confidence, 
                          expectedError = expectedError, prior = prior, likelihood = "binomial")
-  print(sampleSize)
-  plot(sampleSize)
   
   # Draw sample using random record sampling
   sampleResult <- sampling(population = population, sampleSize = sampleSize, 
@@ -41,9 +37,7 @@ test_that(desc = "Audit workflow", {
   # Evaluate the sample using the posterior distribution.
   conclusion <- evaluation(sample = sample, bookValues = "bookValue", auditValues = "trueValue", 
                            prior = prior, materiality = 0.05)
-  print(conclusion)
-  plot(conclusion)
-  expect_equal(conclusion$confBound, 0.03784768)
+  expect_equal(conclusion$confBound, 0.03784768, tolerance = 0.001)
 })
 
 # jfa version 0.2.0
@@ -68,15 +62,15 @@ test_that(desc = "median prior", {
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "binomial")
   expect_equal(prior$aPrior, 1)
-  expect_equal(prior$bPrior, 13.513)
+  expect_equal(prior$bPrior, 13.513, tolerance = 0.001)
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "binomial", expectedError = 0.02)
-  expect_equal(prior$aPrior, 1.4)
-  expect_equal(prior$bPrior, 20.6)
+  expect_equal(prior$aPrior, 1.4, tolerance = 0.001)
+  expect_equal(prior$bPrior, 20.6, tolerance = 0.001)
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "poisson", ir = 0.6, cr = 0.6)
   expect_equal(prior$aPrior, 1)
-  expect_equal(prior$bPrior, 13.863)
+  expect_equal(prior$bPrior, 13.863, tolerance = 0.001)
   
 })
 
@@ -84,11 +78,11 @@ test_that(desc = "hypotheses prior", {
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "hypotheses", likelihood = "binomial", pHmin = 0.3)
   expect_equal(prior$aPrior, 1)
-  expect_equal(prior$bPrior, 6.954)
+  expect_equal(prior$bPrior, 6.954, tolerance = 0.001)
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "hypotheses", likelihood = "poisson", pHmin = 0.3)
   expect_equal(prior$aPrior, 1)
-  expect_equal(prior$bPrior, 7.133)
+  expect_equal(prior$bPrior, 7.133, tolerance = 0.001)
   
 })
 
@@ -96,15 +90,15 @@ test_that(desc = "arm prior", {
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "arm", likelihood = "binomial", ir = 0.6, cr = 0.6)
   expect_equal(prior$aPrior, 1)
-  expect_equal(prior$bPrior, 21)
+  expect_equal(prior$bPrior, 21, tolerance = 0.001)
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "arm", likelihood = "poisson", ir = 0.6, cr = 0.6)
   expect_equal(prior$aPrior, 1)
-  expect_equal(prior$bPrior, 20)
+  expect_equal(prior$bPrior, 20, tolerance = 0.001)
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "arm", likelihood = "hypergeometric", ir = 0.6, cr = 0.6, N = 3500)
   expect_equal(prior$aPrior, 1)
-  expect_equal(prior$bPrior, 20)
+  expect_equal(prior$bPrior, 20, tolerance = 0.001)
   
 })
 
@@ -127,16 +121,16 @@ test_that(desc = "sample prior", {
 test_that(desc = "factor prior", {
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "factor", likelihood = "binomial", sampleN = 30, sampleK = 1, factor = 0.6)
-  expect_equal(prior$aPrior, 1.6)
-  expect_equal(prior$bPrior, 18.4)
+  expect_equal(prior$aPrior, 1.6, tolerance = 0.001)
+  expect_equal(prior$bPrior, 18.4, tolerance = 0.001)
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "factor", likelihood = "poisson", sampleN = 30, sampleK = 1, factor = 0.6)
-  expect_equal(prior$aPrior, 1.6)
-  expect_equal(prior$bPrior, 18)
+  expect_equal(prior$aPrior, 1.6, tolerance = 0.001)
+  expect_equal(prior$bPrior, 18, tolerance = 0.001)
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "factor", likelihood = "hypergeometric", sampleN = 30, sampleK = 1, N = 3500, factor = 0.6)
-  expect_equal(prior$aPrior, 1.6)
-  expect_equal(prior$bPrior, 18.4)
+  expect_equal(prior$aPrior, 1.6, tolerance = 0.001)
+  expect_equal(prior$bPrior, 18.4, tolerance = 0.001)
   
 })
 
@@ -151,19 +145,19 @@ test_that(desc = "factor prior", {
 test_that(desc = "median priors with expected errors", {
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "binomial", expectedError = 0.01)
-  expect_equal(prior$aPrior, 1.15)
-  expect_equal(prior$bPrior, 15.85)
+  expect_equal(prior$aPrior, 1.15, tolerance = 0.001)
+  expect_equal(prior$bPrior, 15.85, tolerance = 0.001)
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "binomial", expectedError = 0.025)
-  expect_equal(prior$aPrior, 1.6)
-  expect_equal(prior$bPrior, 24.4)
+  expect_equal(prior$aPrior, 1.6, tolerance = 0.001)
+  expect_equal(prior$bPrior, 24.4, tolerance = 0.001)
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "poisson", expectedError = 0.01)
-  expect_equal(prior$aPrior, 1.171)
-  expect_equal(prior$bPrior, 17.1)
+  expect_equal(prior$aPrior, 1.171, tolerance = 0.001)
+  expect_equal(prior$bPrior, 17.1, tolerance = 0.001)
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "poisson", expectedError = 0.025)
-  expect_equal(prior$aPrior, 1.668)
-  expect_equal(prior$bPrior, 26.72)
+  expect_equal(prior$aPrior, 1.668, tolerance = 0.001)
+  expect_equal(prior$bPrior, 26.72, tolerance = 0.001)
   
 })
