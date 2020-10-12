@@ -154,7 +154,7 @@ planning <- function(materiality = NULL, confidence = 0.95, expectedError = 0, m
       stop("The expected errors are higher than materiality")
   } else if(expectedError >= 1){
     errorType <- "integer"
-    if(expectedError%%1 != 0 && likelihood %in% c("binomial", "hypergeometric"))
+    if(expectedError%%1 != 0 && likelihood %in% c("binomial", "hypergeometric") && !((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"))
       stop("When expectedError > 1 and the likelihood is binomial or hypergeometric, the value must be an integer.")
   }
 
@@ -241,8 +241,8 @@ planning <- function(materiality = NULL, confidence = 0.95, expectedError = 0, m
           break
         }
       } else {
-        prob <- stats::dhyper(x = 0:implicitK, m = populationK, n = N - populationK, k = i)
-        bound <- stats::phyper(q = implicitK, m = populationK, n = N - populationK, k = i)
+        prob <- stats::dhyper(x = 0:implicitK, m = ceiling(populationK), n = ceiling(N - populationK), k = i)
+        bound <- stats::phyper(q = implicitK, m = ceiling(populationK), n = ceiling(N - populationK), k = i)
         mle <- (N * implicitK + implicitK) / i / N
         if(sum(prob) < (1 - confidence) && (bound - mle) < minPrecision){
           ss <- i

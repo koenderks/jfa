@@ -114,8 +114,8 @@ sampling <- function(population, sampleSize, bookValues = NULL, units = "records
   if(class(sampleSize) == "jfaPlanning")
     sampleSize <- sampleSize$sampleSize 
   # Error handling for different scenarios
-  if(sampleSize > nrow(population))
-    stop("Cannot take a sample larger than the population")
+  if(units == "records" && sampleSize > nrow(population))
+    stop("Cannot take a sample larger than the population size")
   if(!(algorithm %in% c("random", "cell", "interval")) || length(algorithm) != 1)
     stop("algorithm must be one of 'random', 'cell', or 'interval'.")
   if(!(units %in% c("records", "mus")) || length(units) != 1)
@@ -133,6 +133,8 @@ sampling <- function(population, sampleSize, bookValues = NULL, units = "records
   bv <- NULL
   if(!is.null(bookValues))
     bv <- population[, bookValues]
+  if(units == "mus" && sampleSize > sum(bv))
+    stop("Cannot take a sample larger than the population value")
   if(ordered && !is.null(bv))
     population <- population[order(bv, decreasing = !ascending), ]
   if(!is.null(bv) && any(bv < 0)){
@@ -148,6 +150,8 @@ sampling <- function(population, sampleSize, bookValues = NULL, units = "records
     index <- sample(rownames(population), size = sampleSize, replace = withReplacement)
   } else if(algorithm == "random" && units == "mus"){
     # 2. Random monetary unit sampling
+    if(sampleSize > nrow(population))
+      withReplacement <- TRUE
     index <- sample(rownames(population), size = sampleSize, replace = withReplacement, prob = bv)
   } else if(algorithm == "cell" && units == "records"){
     # 3. Cell record sampling
