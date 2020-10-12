@@ -72,7 +72,7 @@ test_that(desc = "median prior", {
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "binomial", expectedError = 0.02)
   expect_equal(prior$aPrior, 1.4)
-  expect_equal(prior$bPrior, 21.6)
+  expect_equal(prior$bPrior, 20.6)
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "poisson", ir = 0.6, cr = 0.6)
   expect_equal(prior$aPrior, 1)
@@ -142,3 +142,28 @@ test_that(desc = "factor prior", {
 
 # jfa version 0.3.0
 # No changes to be tested
+
+# jfa version 0.3.1
+# No changes to be tested
+
+# jfa version 0.4.0
+
+test_that(desc = "median priors with expected errors", {
+  
+  prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "binomial", expectedError = 0.01)
+  expect_equal(prior$aPrior, 1.15)
+  expect_equal(prior$bPrior, 15.85)
+  
+  prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "binomial", expectedError = 0.025)
+  expect_equal(prior$aPrior, 1.6)
+  expect_equal(prior$bPrior, 24.4)
+  
+  prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "poisson", expectedError = 0.01)
+  expect_equal(prior$aPrior, 1.171)
+  expect_equal(prior$bPrior, 17.1)
+  
+  prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "poisson", expectedError = 0.025)
+  expect_equal(prior$aPrior, 1.668)
+  expect_equal(prior$bPrior, 26.72)
+  
+})

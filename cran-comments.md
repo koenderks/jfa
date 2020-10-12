@@ -1,9 +1,7 @@
 ## This is a resubmission for version 0.2.0
-This is jfa version 0.3.1. In this version I have:
+This is jfa version 0.4.0. In this version I have:
 
-* Added unit tests that compare results to existing audit guides.
-* Fixed a bug where the sample size was read in incorrectly.
-* Fixed a bug where the binomial and poisson analyses terminated when the user selected a prior with expected errors larger than one.
+* Implemented the calculation of prior parameters for the median method when the user expects errors in the sample
 
 ## Test environments
 * OS X install (on travis-ci), R release

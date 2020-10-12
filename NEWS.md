@@ -1,6 +1,10 @@
+# jfa 0.4.0
+
+- Implemented calculation of prior parameters in the `auditPrior()` function for `method = median` when `expectedErrors > 0`.
+
 # jfa 0.3.1
 
-- Added unit tests that regularly check results of the `planning()` and `evaluation()` functions
+- Added unit tests that regularly check results of the `planning()` and `evaluation()` functions.
 - Fixed two bugs in the `planning()` function. The first bug did not allow the user to plan for a monetary sample when their population size was too low. The second bug did not allow the user to select a non-integer number of expected errors when there was a prior involved.
 
 # jfa 0.3.0

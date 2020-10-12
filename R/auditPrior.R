@@ -139,16 +139,23 @@ auditPrior <- function(materiality = NULL, confidence = 0.95, method = "arm", ir
                        "binomial" = log(probH1) / log(1 - materiality) - 1)
       kPrior <- 0
     } else {
-      if(likelihood == "poisson")
-        stop("Expected errors method = 'median' in combination with likelihood = 'poisson' are not (yet) supported.")
-      alpha <- (4 * expectedError * materiality - 3 * materiality + expectedError) / (3 * expectedError - 3 * materiality)
-      beta <- (- expectedError * alpha + alpha + 2 * expectedError - 1) / (expectedError)
-      kPrior <- switch(likelihood, 
-                       "poisson" = NULL,
-                       "binomial" = alpha - 1)
-      nPrior <- switch(likelihood, 
-                       "poisson" = NULL,
-                       "binomial" = beta + alpha - 1)
+      if(likelihood == "binomial"){
+        alpha <- (-4 * materiality * expectedError + 3 * materiality - expectedError) / (3 * (materiality - expectedError))
+        beta <- (4 * materiality * expectedError - materiality - 5 * expectedError + 2) / (3 * (materiality - expectedError))
+        kPrior <- alpha - 1
+        nPrior <- beta + kPrior - 1
+      } else if(likelihood == "poisson"){
+          for(alpha in seq(1, 5, 0.001)){
+            beta <- (alpha - 1) / expectedError
+            median <- stats::qgamma(p = 0.5, shape = alpha, rate = beta)
+            mode <- (alpha - 1) / beta
+            if(round(median, 3) == materiality && round(mode, 3) == expectedError){
+              break
+            }
+          }
+        kPrior <- alpha - 1
+        nPrior <- beta
+      }
     }
   } else if(method == "hypotheses"){
     if(likelihood == "hypergeometric")

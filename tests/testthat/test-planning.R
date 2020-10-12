@@ -150,8 +150,8 @@ test_that(desc = "Bayesian binomial 2% precision 5% materiality 2.5% errors medi
   jfaRes <- planning(materiality = 0.05, minPrecision = 0.02, confidence = 0.95, expectedError = 0.025, likelihood = "binomial", N = 1000, prior = jfaPrior)
   print(jfaRes)
   plot(jfaRes)
-  expect_equal(jfaRes$sampleSize, 283)
-  expect_equal(jfaRes$expectedSampleError, 7.08)
+  expect_equal(jfaRes$sampleSize, 285)
+  expect_equal(jfaRes$expectedSampleError, 7.12)
 })
 
 test_that(desc = "Bayesian binomial 5% materiality 1% errors hypotheses prior", {
@@ -216,3 +216,10 @@ test_that(desc = "Bayesian poisson 100% materiality 1% errors 2% min precision s
 })
 
 # jfa version 0.3.0
+# No changes to be tested
+
+# jfa version 0.3.1
+# No changes to be tested
+
+# jfa version 0.4.0
+# No changes to be tested

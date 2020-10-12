@@ -64,3 +64,9 @@ test_that(desc = "Interval monetary unit sampling", {
 
 # jfa version 0.3.0
 # No changes to be tested
+
+# jfa version 0.3.1
+# No changes to be tested
+
+# jfa version 0.4.0
+# No changes to be tested

@@ -216,3 +216,9 @@ test_that(desc = "Evaluation with counts and stringer method", {
   jfaEval <- evaluation(sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "stringer", count = counts)
   expect_equal(jfaEval$confBound, 0.0326619)
 })
+
+# jfa version 0.3.1
+# No changes to be tested
+
+# jfa version 0.4.0
+# No changes to be tested
