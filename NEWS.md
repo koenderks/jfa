@@ -1,3 +1,7 @@
+# jfa 0.3.1
+
+- Fixed two bugs in the `planning` function. The first bug did not allow the user to plan for a monetary sample when their population size was too low. The second bug did not allow the user to select a non-integer number of expected errors when there was a prior involved.
+
 # jfa 0.3.0
 
 - Implemented the argument `counts` in the `evaluation` function that quantifies how many times each observation should be evaluated due to being selected multiple times in the selection stage.

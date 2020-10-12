@@ -1,6 +1,6 @@
 Package: jfa
 Title: Bayesian and Classical Audit Sampling
-Version: 0.3.0
+Version: 0.3.1
 Authors@R: 
     person(given = "Koen",
            family = "Derks",
