@@ -232,7 +232,9 @@ planning <- function(materiality = NULL, confidence = 0.95, expectedError = 0, m
     }
   } else if(likelihood == "hypergeometric"){
     if(is.null(N))
-      stop("Specify a population size N")
+      stop("The hypergeometric distribution requires that you specify a population size N.")
+    if(materiality == 1)
+      stop("The hypergeometric distribution requires that you specify a materiality.")
     populationK <- ceiling(materiality * N)
     for(i in samplingFrame){
       if(errorType == "percentage"){
@@ -242,19 +244,21 @@ planning <- function(materiality = NULL, confidence = 0.95, expectedError = 0, m
       }
       if(i <= implicitK)
         next
+      if(i > N)
+        stop("The resulting sample size is larger than the population size.")
       if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
         if(is.null(N))
-          stop("The beta-binomial distribution requires that you specify the population size N")
+          stop("The beta-binomial distribution requires that you specify a population size N")
         bound <- .qBetaBinom(p = confidence, N = N - i + implicitK, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK) / N
-        mle <- (1 + kPrior + implicitK - 1) / (1 + kPrior + implicitK + 1 + nPrior + i - implicitK - 2)
+        mle <- (which.max(.dBetaBinom(x = 0:N, N = N - i + implicitK,  shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK)) - 1) / N
         if(bound < materiality && (bound - mle) < minPrecision){
           ss <- i
           break
         }
       } else {
         prob <- stats::dhyper(x = 0:implicitK, m = ceiling(populationK), n = ceiling(N - populationK), k = i)
-        bound <- stats::phyper(q = implicitK, m = ceiling(populationK), n = ceiling(N - populationK), k = i)
-        mle <- (N * implicitK + implicitK) / i / N
+        bound <- stats::qhyper(p = confidence, m = ceiling(populationK), n = ceiling(N - populationK), k = i) / N
+        mle <- (which.max(stats::dhyper(x = 0:populationK, m = ceiling(populationK), n = ceiling(N - populationK), k = i)) - 1) / N
         if(sum(prob) < (1 - confidence) && (bound - mle) < minPrecision){
           ss <- i
           break

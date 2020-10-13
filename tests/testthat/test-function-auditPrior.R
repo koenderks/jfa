@@ -32,12 +32,12 @@ test_that(desc = "Audit workflow", {
   
   sample <- sampleResult$sample
   sample$trueValue <- sample$bookValue
-  sample$trueValue[2] <- sample$trueValue[2] - 500 # One overstatement is found
+  sample$trueValue[2] <- sample$trueValue[2] - 0.5 * sample$trueValue[2] # One overstatement is found
   
   # Evaluate the sample using the posterior distribution.
   conclusion <- evaluation(sample = sample, bookValues = "bookValue", auditValues = "trueValue", 
                            prior = prior, materiality = 0.05)
-  expect_equal(conclusion$confBound, 0.03784768, tolerance = 0.001)
+  expect_equal(conclusion$confBound, 0.02669982, tolerance = 0.001)
 })
 
 # jfa version 0.2.0

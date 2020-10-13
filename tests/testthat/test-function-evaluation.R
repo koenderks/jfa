@@ -123,51 +123,43 @@ test_that(desc = "Evaluation with moment method", {
 })
 
 test_that(desc = "Evaluation with direct method", {
-  set.seed(1)
-  population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
-  jfaRes <- planning(materiality = 0.05, likelihood = "poisson")
-  samp <- sampling(population, sampleSize = jfaRes, units = "records", algorithm = "random", ordered = TRUE)$sample
-  samp$auditValue <- samp$bookValue
-  jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "direct", N = 1000, populationBookValue = sum(population$bookValue))
-  expect_equal(jfaEval$pointEstimate, 294231.508, tolerance = 0.001)
-  expect_equal(jfaEval$lowerBound, 262653.9205, tolerance = 0.001)
-  expect_equal(jfaEval$upperBound, 325809.1-0.00547, tolerance = 0.001)
+  data("BuildIt")
+  BuildIt$inSample <- c(rep(1, 100), rep(0, 3400))
+  BuildIt_sample <- subset(BuildIt, BuildIt$inSample == 1)
+  jfaEval <- evaluation(materiality = 0.05, sample = BuildIt_sample, bookValues = "bookValue", auditValues = "auditValue", method = "direct", N = 3500, populationBookValue = sum(BuildIt$bookValue))
+  expect_equal(jfaEval$pointEstimate, 1343640, tolerance = 0.001)
+  expect_equal(jfaEval$lowerBound, 1226699, tolerance = 0.001)
+  expect_equal(jfaEval$upperBound, 1460581, tolerance = 0.001)
 })
 
 test_that(desc = "Evaluation with difference method", {
-  set.seed(1)
-  population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
-  jfaRes <- planning(materiality = 0.05, likelihood = "poisson")
-  samp <- sampling(population, sampleSize = jfaRes, units = "records", algorithm = "random", ordered = TRUE)$sample
-  samp$auditValue <- samp$bookValue
-  jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "difference", N = 1000, populationBookValue = sum(population$bookValue))
-  expect_equal(jfaEval$pointEstimate, 297454 - 0.0243, tolerance = 0.001)
-  expect_equal(jfaEval$lowerBound, 297454 - 0.0243, tolerance = 0.001)
-  expect_equal(jfaEval$upperBound, 297454 - 0.0243, tolerance = 0.001)
+  data("BuildIt")
+  BuildIt$inSample <- c(rep(1, 100), rep(0, 3400))
+  BuildIt_sample <- subset(BuildIt, BuildIt$inSample == 1)
+  jfaEval <- evaluation(materiality = 0.05, sample = BuildIt_sample, bookValues = "bookValue", auditValues = "auditValue", method = "difference", N = 3500, populationBookValue = sum(BuildIt$bookValue))
+  expect_equal(jfaEval$pointEstimate, 1368922, tolerance = 0.001)
+  expect_equal(jfaEval$lowerBound, 1338501, tolerance = 0.001)
+  expect_equal(jfaEval$upperBound, 1399344, tolerance = 0.001)
 })
 
 test_that(desc = "Evaluation with quotient method", {
-  set.seed(1)
-  population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
-  jfaRes <- planning(materiality = 0.05, likelihood = "poisson")
-  samp <- sampling(population, sampleSize = jfaRes, units = "records", algorithm = "random", ordered = TRUE)$sample
-  samp$auditValue <- samp$bookValue
-  jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "quotient", N = 1000, populationBookValue = sum(population$bookValue))
-  expect_equal(jfaEval$pointEstimate, 297454 - 0.0243, tolerance = 0.001)
-  expect_equal(jfaEval$lowerBound, 297454 - 0.0243, tolerance = 0.001)
-  expect_equal(jfaEval$upperBound, 297454 - 0.0243, tolerance = 0.001)
+  data("BuildIt")
+  BuildIt$inSample <- c(rep(1, 100), rep(0, 3400))
+  BuildIt_sample <- subset(BuildIt, BuildIt$inSample == 1)
+  jfaEval <- evaluation(materiality = 0.05, sample = BuildIt_sample, bookValues = "bookValue", auditValues = "auditValue", method = "quotient", N = 3500, populationBookValue = sum(BuildIt$bookValue))
+  expect_equal(jfaEval$pointEstimate, 1368293, tolerance = 0.001)
+  expect_equal(jfaEval$lowerBound, 1337577, tolerance = 0.001)
+  expect_equal(jfaEval$upperBound, 1399009, tolerance = 0.001)
 })
 
 test_that(desc = "Evaluation with regression method", {
-  set.seed(1)
-  population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
-  jfaRes <- planning(materiality = 0.05, likelihood = "poisson")
-  samp <- sampling(population, sampleSize = jfaRes, units = "records", algorithm = "random", ordered = TRUE)$sample
-  samp$auditValue <- samp$bookValue
-  jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "regression", N = 1000, populationBookValue = sum(population$bookValue))
-  expect_equal(jfaEval$pointEstimate, 297454 - 0.0243, tolerance = 0.001)
-  expect_equal(jfaEval$lowerBound, 297454 - 0.0243, tolerance = 0.001)
-  expect_equal(jfaEval$upperBound, 297454 - 0.0243, tolerance = 0.001)
+  data("BuildIt")
+  BuildIt$inSample <- c(rep(1, 100), rep(0, 3400))
+  BuildIt_sample <- subset(BuildIt, BuildIt$inSample == 1)
+  jfaEval <- evaluation(materiality = 0.05, sample = BuildIt_sample, bookValues = "bookValue", auditValues = "auditValue", method = "regression", N = 3500, populationBookValue = sum(BuildIt$bookValue))
+  expect_equal(jfaEval$pointEstimate, 1369349, tolerance = 0.001)
+  expect_equal(jfaEval$lowerBound, 1338985, tolerance = 0.001)
+  expect_equal(jfaEval$upperBound, 1399713, tolerance = 0.001)
 })
 
 test_that(desc = "Evaluation with Cox and Snell method", {
