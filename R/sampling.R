@@ -191,9 +191,11 @@ sampling <- function(population, sampleSize, bookValues = NULL, units = "records
   index <- unique(index)
   if(length(index) < sampleSize)
     warning("The sample contains fewer observations than the specified sample size")
-  rowNumber <- index
+  rowNumber <- as.numeric(index)
   sample <- cbind(rowNumber, count, population[rowNumber, ])
   rownames(sample) <- 1:nrow(sample)
+  colnames(sample) <- c("rowNumber", "count", colnames(population))
+  sample <- as.data.frame(sample)
   results <- list()
   results[["population"]] <- population
   results[["sample"]] <- sample
