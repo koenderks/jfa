@@ -2,7 +2,7 @@ context("Function test for auditPrior()")
 
 # jfa version 0.1.0
 
-test_that(desc = "Audit workflow", {
+test_that(desc = "(id: 1) Audit workflow", {
   set.seed(1)
   # Generate some audit data (N = 1000).
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), 
@@ -42,7 +42,7 @@ test_that(desc = "Audit workflow", {
 
 # jfa version 0.2.0
 
-test_that(desc = "None prior", {
+test_that(desc = "(id: 2) None prior", {
   
   prior <- auditPrior(confidence = 0.95, method = "none", likelihood = "binomial")
   expect_equal(prior$aPrior, 1)
@@ -58,7 +58,7 @@ test_that(desc = "None prior", {
   
 })
 
-test_that(desc = "median prior", {
+test_that(desc = "(id: 3) median prior", {
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "binomial")
   expect_equal(prior$aPrior, 1)
@@ -74,7 +74,7 @@ test_that(desc = "median prior", {
   
 })
 
-test_that(desc = "hypotheses prior", {
+test_that(desc = "(id: 4) hypotheses prior", {
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "hypotheses", likelihood = "binomial", pHmin = 0.3)
   expect_equal(prior$aPrior, 1)
@@ -86,7 +86,7 @@ test_that(desc = "hypotheses prior", {
   
 })
 
-test_that(desc = "arm prior", {
+test_that(desc = "(id: 5) arm prior", {
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "arm", likelihood = "binomial", ir = 0.6, cr = 0.6)
   expect_equal(prior$aPrior, 1)
@@ -102,7 +102,7 @@ test_that(desc = "arm prior", {
   
 })
 
-test_that(desc = "sample prior", {
+test_that(desc = "(id: 6) sample prior", {
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "sample", likelihood = "binomial", sampleN = 30, sampleK = 1)
   expect_equal(prior$aPrior, 2)
@@ -118,7 +118,7 @@ test_that(desc = "sample prior", {
   
 })
 
-test_that(desc = "factor prior", {
+test_that(desc = "(id: 7) factor prior", {
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "factor", likelihood = "binomial", sampleN = 30, sampleK = 1, factor = 0.6)
   expect_equal(prior$aPrior, 1.6, tolerance = 0.001)
@@ -142,22 +142,22 @@ test_that(desc = "factor prior", {
 
 # jfa version 0.4.0
 
-test_that(desc = "median priors with expected errors", {
+test_that(desc = "(id: 8) median priors with expected errors", {
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "binomial", expectedError = 0.01)
-  expect_equal(prior$aPrior, 1.15, tolerance = 0.001)
-  expect_equal(prior$bPrior, 15.85, tolerance = 0.001)
+  expect_equal(prior$description$alpha, 1.15, tolerance = 0.001)
+  expect_equal(prior$description$beta, 15.85, tolerance = 0.001)
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "binomial", expectedError = 0.025)
-  expect_equal(prior$aPrior, 1.6, tolerance = 0.001)
-  expect_equal(prior$bPrior, 24.4, tolerance = 0.001)
+  expect_equal(prior$description$alpha, 1.6, tolerance = 0.001)
+  expect_equal(prior$description$beta, 24.4, tolerance = 0.001)
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "poisson", expectedError = 0.01)
-  expect_equal(prior$aPrior, 1.171, tolerance = 0.001)
-  expect_equal(prior$bPrior, 17.1, tolerance = 0.001)
+  expect_equal(prior$description$alpha, 1.171, tolerance = 0.001)
+  expect_equal(prior$description$beta, 17.1, tolerance = 0.001)
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "poisson", expectedError = 0.025)
-  expect_equal(prior$aPrior, 1.668, tolerance = 0.001)
-  expect_equal(prior$bPrior, 26.72, tolerance = 0.001)
+  expect_equal(prior$description$alpha, 1.668, tolerance = 0.001)
+  expect_equal(prior$description$beta, 26.72, tolerance = 0.001)
   
 })

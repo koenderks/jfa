@@ -15,10 +15,10 @@
 
 `jfa` is a multi-functional R package for statistical auditing. The package provides the user with four generic functions for planning, performing, and evaluating an audit and its results. Specifically, it contains functions for calculating sample sizes for substantive testing, sampling from data according to standard auditing techniques, and calculating various confidence bounds for the maximum error from data or summary statistics. The package also allows the user to create a Bayesian prior distribution for use in these functions. The `jfa` package can be used to set up the entire audit sampling workflow.
 
-* [Installing](##Installing)
-* [Benchmarks](##Benchmarks)   
-* [Functions](##Functions) 
-* [Poster](##Poster) 
+* [Installing](#installing)
+* [Benchmarks](#benchmarks)   
+* [Functions](#functions) 
+* [Poster](#poster) 
 
 For complete documentation, see the package [manual](./man/manual/jfa_0.4.0.pdf).
 
@@ -74,7 +74,7 @@ Below is a list of the available functions in the current version of `jfa`, sort
 
 This function creates a prior distribution according to one of several methods, including the audit risk model and assessments of the inherent and control risk. The returned object is of class `jfaPrior` and can be used with associated `print()` and `plot()` methods. `jfaPrior` results can also be used as input argument for the `prior` argument in other functions.
 
-`auditPrior(materiality = NULL, confidence = 0.95, method = "none", ir = 1, cr = 1, expectedError = 0, likelihood = "binomial", N = NULL, pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)`
+`auditPrior(confidence = 0.95, likelihood = "binomial", method = "none", expectedError = 0, N = NULL, materiality = NULL, ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)`
 
 **Planning: Calculating an audit sample size**
 

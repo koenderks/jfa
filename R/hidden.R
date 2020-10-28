@@ -12,16 +12,16 @@ print.jfaPrior <- function(x, digits = 2, ...){
 # Specifics:              ", switch(x$method,
                                     "none" = "None",
                                     "median" = paste0("p(\u0398 < ",round(x$materiality, digits),") = p(\u0398 > ", round(x$materiality, digits),") = 0.5"),
-                                    "hypotheses" = paste0("p(\u0398 < ",round(x$materiality, digits),") = ",round(x$pHmin, digits),"; p(\u0398 > ", round(x$materiality, digits),") = ", round(x$pHplus, digits)),
-                                    "arm" = paste0("Inherent risk = ", round(x$ir, digits), "; Internal control risk = ", round(x$cr, digits), "; Detection risk = ", round((1 - x$confidence) / (x$ir * x$cr), digits)),
-                                    "sample" = paste0("Earlier sample of ", round(x$sampleN, digits), " transactions with ", round(x$sampleK, digits), " errors"),
-                                    "factor" = paste0("Earlier sample of ", round(x$sampleN, digits), " transactions with ", round(x$sampleK, digits), " errors weighted by ", round(x$factor, digits))), "
+                                    "hypotheses" = paste0("p(\u0398 < ",round(x$materiality, digits),") = ",round(x$specifics$pHmin, digits),"; p(\u0398 > ", round(x$materiality, digits),") = ", round(x$specifics$pHplus, digits)),
+                                    "arm" = paste0("Inherent risk = ", round(x$specifics$ir, digits), "; Internal control risk = ", round(x$specifics$cr, digits), "; Detection risk = ", round((1 - x$confidence) / (x$specifics$ir * x$specifics$cr), digits)),
+                                    "sample" = paste0("Earlier sample of ", round(x$specifics$sampleN, digits), " transactions with ", round(x$sspecifics$ampleK, digits), " errors"),
+                                    "factor" = paste0("Earlier sample of ", round(x$specifics$sampleN, digits), " transactions with ", round(x$specifics$sampleK, digits), " errors weighted by ", round(x$specifics$factor, digits))), "
 # ------------------------------------------------------------
 # Output: 
 #
-# Prior distribution:     ", paste0(x$priorD, "(", round(x$aPrior, digits), ", ", round(x$bPrior, digits), ")"),"
-# Implicit sample size:   ", round(x$nPrior, digits), "
-# Implicit errors:        ", round(x$kPrior, digits),"
+# Prior distribution:     ", x$prior,"
+# Implicit sample size:   ", round(x$description$implicitn, digits), "
+# Implicit errors:        ", round(x$description$implicitk, digits),"
 # ------------------------------------------------------------"
   )
 }
@@ -191,6 +191,41 @@ print.jfaEvaluation <- function(x, digits = 2, ...){
 # Conclusion:              ", x$conclusion, "
 # ------------------------------------------------------------ ")
     }
+  }
+}
+
+#' @method plot jfaPrior
+#' @export
+plot.jfaPrior <- function(x, ...){
+  if(is.null(x$materiality)){
+    xlim <- 1
+  } else {
+    xlim <- x$materiality * 3
+  }
+  xseq <- seq(0, xlim, 0.00001)
+  mainLab <- ifelse(x$description$implicitk == 0 && x$description$implicitn == 0, yes = "Uninformed", no = "Informed")
+  if(x$priorD == "gamma"){
+    d <- stats::dgamma(xseq, shape = x$description$alpha, rate = x$description$beta)
+  } else if(x$priorD == "beta"){
+    d <- stats::dbeta(xseq, shape1 = x$description$alpha, shape2 = x$description$beta)
+  } else if(x$priorD == "beta-binomial"){
+    xlim <- ceiling(xlim * x$N)
+    xseq <- seq(0, xlim, by = x$N/50)
+    d <- .dBetaBinom(x = xseq, N = x$N, shape1 = x$description$alpha, shape2 = x$description$beta)
+  }
+  mainLab <- paste0(mainLab, " ", x$description$density, " prior")
+  if(x$description$density == "gamma" || x$description$density == "beta"){
+    graphics::plot(x = xseq, y = d, type = "l", lwd = 2, bty = "n", xlab = expression(theta), ylab = "Probability density", las = 1, ylim = c(0, max(d)),
+                   main = mainLab, axes = FALSE, lty = 2)
+    graphics::axis(1, at = pretty(seq(0, xlim, by = 0.01), min.n = 5), labels = paste0(round(pretty(seq(0, xlim, by = 0.01), min.n = 5) * 100, 2), "%"))
+    graphics::axis(2, at = c(0, max(d)), labels = FALSE, las = 1, lwd.ticks = 0)
+    graphics::legend("topright", legend = "Prior", lty = 2, bty = "n", cex = 1.2, lwd = 2)
+  } else {
+    graphics::barplot(d, bty = "n", xlab = expression(theta), ylab = "Probability density", las = 1, ylim = c(0, max(d)), width = 1, space = 0,
+                      main = mainLab, axes = FALSE, col = "darkgray")
+    graphics::axis(1, at = seq(0, xlim, by = 10) + 0.5, labels = seq(0, xlim, by = 10))
+    graphics::axis(2, at = c(0, max(d)), labels = FALSE, las = 1, lwd.ticks = 0)
+    graphics::legend("topright", legend = "Prior", fill = "lightgray", bty = "n", cex = 1.2) 
   }
 }
 
@@ -365,40 +400,5 @@ plot.jfaEvaluation <- function(x, ...){
       graphics::barplot(d1, col = "darkgray", add = TRUE, las = 1, axes = FALSE, width = 1, space = 0)
       graphics::legend("topright", legend = c("Error free", "Errors"), fill = c("lightgray", "darkgray"), bty = "n", cex = 1.2) 
     }
-  }
-}
-
-#' @method plot jfaPrior
-#' @export
-plot.jfaPrior <- function(x, ...){
-  if(x$materiality == 0){
-    xlim <- 1
-  } else {
-    xlim <- x$materiality * 3
-  }
-  xseq <- seq(0, xlim, 0.00001)
-  mainLab <- ifelse(x$kPrior == 0 && x$nPrior == 0, yes = "Uninformed", no = "Informed")
-  if(x$priorD == "gamma"){
-    d <- stats::dgamma(xseq, shape = x$aPrior, rate = x$bPrior)
-  } else if(x$priorD == "beta"){
-    d <- stats::dbeta(xseq, shape1 = x$aPrior, shape2 = x$bPrior)
-  } else if(x$priorD == "beta-binomial"){
-    xlim <- ceiling(xlim * x$N)
-    xseq <- seq(0, xlim, by = 1)
-    d <- .dBetaBinom(x = xseq, N = x$N - x$sampleSize + x$expectedSampleError, shape1 = x$aPrior, shape2 = x$bPrior)
-  }
-  mainLab <- paste0(mainLab, " ", x$priorD, " prior")
-  if(x$priorD == "gamma" || x$priorD == "beta"){
-    graphics::plot(x = xseq, y = d, type = "l", lwd = 2, bty = "n", xlab = expression(theta), ylab = "Probability density", las = 1, ylim = c(0, max(d)),
-                   main = mainLab, axes = FALSE, lty = 2)
-    graphics::axis(1, at = pretty(seq(0, xlim, by = 0.01), min.n = 5), labels = paste0(round(pretty(seq(0, xlim, by = 0.01), min.n = 5) * 100, 2), "%"))
-    graphics::axis(2, at = c(0, max(d)), labels = FALSE, las = 1, lwd.ticks = 0)
-    graphics::legend("topright", legend = "Prior", lty = 2, bty = "n", cex = 1.2, lwd = 2)
-  } else {
-    graphics::barplot(d, bty = "n", xlab = "Errors", ylab = "Probability", las = 1, ylim = c(0, max(d)), width = 1, space = 0,
-                      main = mainLab, axes = FALSE, col = "darkgray")
-    graphics::axis(1, at = seq(0, xlim, by = 10) + 0.5, labels = seq(0, xlim, by = 10))
-    graphics::axis(2, at = c(0, max(d)), labels = FALSE, las = 1, lwd.ticks = 0)
-    graphics::legend("topright", legend = "Prior", fill = "lightgray", bty = "n", cex = 1.2) 
   }
 }
