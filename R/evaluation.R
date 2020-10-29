@@ -437,6 +437,7 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
 			result[["posterior"]][["hypotheses"]]$oddsHplus 	<- 1 / result[["posterior"]][["hypotheses"]]$oddsHmin
 			result[["posterior"]][["hypotheses"]]$bf			<- result[["posterior"]][["hypotheses"]]$oddsHmin / result[["prior"]][["hypotheses"]]$oddsHmin
 		}
+		result[["posterior"]][["N"]] <- result[["N"]]
 		class(result[["posterior"]]) <- "jfaPosterior"
 	}
 

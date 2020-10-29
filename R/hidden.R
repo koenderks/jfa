@@ -245,6 +245,32 @@ plot.jfaPrior <- function(x, ...){
 	}
 }
 
+#' @method plot jfaPosterior
+#' @export
+plot.jfaPosterior <- function(x, ...){
+	xlim <- 1
+	xseq <- seq(0, xlim, 0.00001)
+	if(x[["description"]]$density == "gamma"){
+		d <- stats::dgamma(xseq, shape = x[["description"]]$alpha, rate = x[["description"]]$beta)
+	} else if(x[["description"]]$density == "beta"){
+		d <- stats::dbeta(xseq, shape1 = x[["description"]]$alpha, shape2 = x[["description"]]$beta)
+	} else if(x[["description"]]$density == "beta-binomial"){
+		xlim <- ceiling(xlim * x[["N"]])
+		xseq <- seq(0, xlim, by = x[["N"]]/50)
+		d <- .dBetaBinom(x = xseq, N = x[["N"]], shape1 = x[["description"]]$alpha, shape2 = x[["description"]]$beta)
+	}
+	mainLab <- paste0(x[["description"]]$density, " posterior")
+	if(x[["description"]]$density == "gamma" || x[["description"]]$density == "beta"){
+		graphics::plot(x = xseq, y = d, type = "l", lwd = 2, bty = "n", xlab = expression(theta), ylab = "Probability density", las = 1, ylim = c(0, max(d)), main = mainLab, axes = FALSE, lty = 1)
+		graphics::axis(1, at = pretty(seq(0, xlim, by = 0.01), min.n = 5), labels = paste0(round(pretty(seq(0, xlim, by = 0.01), min.n = 5) * 100, 2), "%"))
+		graphics::axis(2, at = c(0, max(d)), labels = FALSE, las = 1, lwd.ticks = 0)
+	} else {
+		graphics::barplot(d, bty = "n", xlab = expression(theta), ylab = "Probability density", las = 1, ylim = c(0, max(d)), width = 1, space = 0, main = mainLab, axes = FALSE, col = "darkgray")
+		graphics::axis(1, at = seq(0, xlim, by = 10) + 0.5, labels = seq(0, xlim, by = 10))
+		graphics::axis(2, at = c(0, max(d)), labels = FALSE, las = 1, lwd.ticks = 0)
+	}
+}
+
 #' @method plot jfaPlanning
 #' @export
 plot.jfaPlanning <- function(x, ...){

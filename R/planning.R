@@ -371,6 +371,7 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
 			result[["expectedPosterior"]][["hypotheses"]]$oddsHplus 	<- 1 / result[["expectedPosterior"]][["hypotheses"]]$oddsHmin
 			result[["expectedPosterior"]][["hypotheses"]]$expectedBf	<- result[["expectedPosterior"]][["hypotheses"]]$oddsHmin / result[["prior"]][["hypotheses"]]$oddsHmin
 		}
+		result[["expectedPosterior"]][["N"]] <- result[["N"]]
 		class(result[["expectedPosterior"]]) <- "jfaPosterior"
 	}
 

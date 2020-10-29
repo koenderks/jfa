@@ -5,6 +5,9 @@
 - Implemented calculation of prior parameters in the `auditPrior()` function for `method = median` when `expectedErrors > 0`.
 - Added `digits` argument in the internal `jfa:::print.jfaPrior()`, `jfa:::print.jfaPlanning()`, `jfa:::print.jfaSampling()`, and `jfa:::print.jfaEvaluation()` functions to control rounding.
 - Added `description`, `statistics`, `specifics` and `hypotheses` to the output of the `auditPrior()` function.
+- Added `expectedPosterior` to the output of the `planning()` function.
+- Added `posterior` to the output of the `evaluation()` function.
+- Added class `jfaPosterior` with `print()` and `plot()` methods.
 
 # jfa 0.3.1
 
