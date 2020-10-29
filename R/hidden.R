@@ -6,8 +6,8 @@ print.jfaPrior <- function(x, digits = 2, ...){
 # ------------------------------------------------------------
 # Input:
 #
-# Confidence:             ", round(x[["confidence"]], digits),"   
-# Expected sample errors: ", round(x[["expectedError"]], digits),"      
+# Confidence:             ", paste0(round(x[["confidence"]] * 100, digits), "%"),"   
+# Expected sample errors: ", paste0(round(x[["expectedError"]] * 100, digits), "%"),"      
 # Likelihood:             ", x[["likelihood"]],"
 # Specifics:              ", switch(x[["method"]],
                                     "none" = "None",
@@ -26,7 +26,7 @@ print.jfaPrior <- function(x, digits = 2, ...){
 # Statistics: 
 #
 # Upper bound:            ", round(x[["statistics"]]$ub, digits),"
-# Precision:              ", paste0(round(x[["statistics"]]$precision * 100, digits), "%"),"
+# Precision:              ", round(x[["statistics"]]$precision, digits),"
 # Mode:                   ", round(x[["statistics"]]$mode, digits),"
 # Mean:                   ", round(x[["statistics"]]$mean, digits),"
 # Median:                 ", round(x[["statistics"]]$median, digits),"
@@ -47,7 +47,7 @@ print.jfaPosterior <- function(x, digits = 2, ...){
 # Statistics:
 #
 # Upper bound:             ", round(x[["statistics"]]$ub, digits),"
-# Precision:               ", paste0(round(x[["statistics"]]$precision * 100, digits), "%"),"
+# Precision:               ", round(x[["statistics"]]$precision, digits),"
 # Mode:                    ", round(x[["statistics"]]$mode, digits),"
 # Mean:                    ", round(x[["statistics"]]$mean, digits),"
 # Median:                  ", round(x[["statistics"]]$median, digits),"

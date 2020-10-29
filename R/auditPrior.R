@@ -126,6 +126,9 @@ auditPrior <- function(confidence = 0.95, likelihood = "binomial", method = "non
 	if(likelihood == "hypergeometric" && (is.null(N) || N <= 0))
 		stop("The hypergeometric likelihood requires that you specify a positive value for the populatin size N.")
 
+	if(expectedError >= 1)
+		stop("The expected errors must be entered as a proportion.")
+
 	# Create the prior based on the specified method.
 	if(method == "none"){
 		nPrior <- 0
@@ -270,28 +273,6 @@ auditPrior <- function(confidence = 0.95, likelihood = "binomial", method = "non
 								"poisson" = paste0("gamma(\u03B1 = ", round(result[["description"]]$alpha, 3), ", \u03B2 = ", round(result[["description"]]$beta, 3), ")"),
 								"binomial" = paste0("beta(\u03B1 = ", round(result[["description"]]$alpha, 3), ", \u03B2 = ", round(result[["description"]]$beta, 3), ")"),
 								"hypergeometric" = paste0("beta-binomial(N = ", result[["N"]], ", \u03B1 = ", round(result[["description"]]$alpha, 3), ", \u03B2 = ", round(result[["description"]]$beta, 3), ")"))
-
-
-	# Backwards compatibility (pre 0.4.0) ############
-	result$priorD       	<- switch(likelihood, "poisson" = "gamma", "binomial" = "beta", "hypergeometric" = "beta-binomial")
-	result$kPrior       	<- as.numeric(kPrior)
-	result$nPrior       	<- as.numeric(nPrior)
-	result$aPrior       	<- as.numeric(1 + kPrior)
-	result$bPrior       	<- switch(likelihood, "poisson" = nPrior, "binomial" = 1 + nPrior - kPrior, "hypergeometric" = 1 + nPrior - kPrior)
-	if(method == "median" || method == "hypotheses"){
-		result$pHmin        <- as.numeric(probH0)
-		result$pHplus       <- as.numeric(probH1)
-	}
-	if(method == "sample" || method == "factor"){
-		result$sampleN       <- as.numeric(sampleN)
-		result$sampleK       <- as.numeric(sampleK)
-		result$factor        <- as.numeric(factor)    
-	}
-	if(method == "arm"){
-		result$ir           <- as.numeric(ir)
-		result$cr           <- as.numeric(cr)  
-	}
-	##################################################
 	
 	# Add class 'jfaPrior' to the result.
 	class(result)       <- "jfaPrior"
