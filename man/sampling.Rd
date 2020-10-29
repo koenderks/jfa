@@ -4,8 +4,8 @@
 \alias{sampling}
 \title{Sampling from Audit Populations}
 \usage{
-sampling(population, sampleSize, bookValues = NULL, units = "records", 
-         algorithm = "random", intervalStartingPoint = 1, ordered = TRUE, 
+sampling(population, sampleSize, units = "records", algorithm = "random",
+         bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, 
          ascending = TRUE, withReplacement = FALSE, seed = 1)
 }
 \arguments{
@@ -13,11 +13,11 @@ sampling(population, sampleSize, bookValues = NULL, units = "records",
 
 \item{sampleSize}{the number of observations that need to be selected from the population. Can also be an object of class \code{jfaPlanning}.}
 
-\item{bookValues}{a character specifying the name of the column containing the book values (as in the population data).}
-
 \item{units}{can be either \code{records} (default) for record sampling, or \code{mus} for monetary unit sampling.}
 
 \item{algorithm}{can be either one of \code{random} (default) for random sampling, \code{cell} for cell sampling, or \code{interval} for fixed interval sampling.}
+
+\item{bookValues}{a character specifying the name of the column containing the book values (as in the population data).}
 
 \item{intervalStartingPoint}{the starting point in the interval (used only in fixed interval sampling)}
 
@@ -34,9 +34,9 @@ An object of class \code{jfaSampling} containing:
 
 \item{population}{a data frame containing the input population.}
 \item{sample}{a data frame containing the selected observations.}
-\item{bookValues}{if specified, the name of the specified book value column.}
-\item{algorithm}{the algorithm that was used for sampling.}
 \item{units}{the sampling units that were used for sampling.}
+\item{algorithm}{the algorithm that was used for sampling.}
+\item{bookValues}{if specified, the name of the specified book value column.}
 }
 \description{
 This function takes a data frame and performs sampling according to one of three popular algorithms: random sampling, cell sampling, or fixed interval sampling. Sampling is done in combination with one of two sampling units: records or monetary units The returned object is of class \code{jfaSampling} and can be used with associated \code{print()} and \code{plot()} methods.

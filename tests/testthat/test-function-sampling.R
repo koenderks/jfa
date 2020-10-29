@@ -2,7 +2,7 @@ context("Function test for sampling()")
 
 # jfa version 0.1.0
 
-test_that(desc = "Random record sampling", {
+test_that(desc = "(id: 7.1) Random record sampling", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- sampling(population, sampleSize = 100, units = "records", algorithm = "random", ordered = TRUE)
@@ -10,7 +10,7 @@ test_that(desc = "Random record sampling", {
   expect_equal(nrow(jfaRes$sample), 100)
 })
 
-test_that(desc = "Random monetary unit sampling", {
+test_that(desc = "(id: 7.2) Random monetary unit sampling", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- sampling(population, sampleSize = 100, units = "mus", algorithm = "random", bookValues = "bookValue")
@@ -18,7 +18,7 @@ test_that(desc = "Random monetary unit sampling", {
   expect_equal(nrow(jfaRes$sample), 100)
 })
 
-test_that(desc = "Cell record sampling", {
+test_that(desc = "(id: 7.3) Cell record sampling", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- sampling(population, sampleSize = 100, units = "records", algorithm = "cell")
@@ -26,7 +26,7 @@ test_that(desc = "Cell record sampling", {
   expect_equal(nrow(jfaRes$sample), 100)
 })
 
-test_that(desc = "Cell monetary unit sampling", {
+test_that(desc = "(id: 7.4) Cell monetary unit sampling", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- sampling(population, sampleSize = 100, units = "mus", algorithm = "cell", bookValues = "bookValue")
@@ -34,7 +34,7 @@ test_that(desc = "Cell monetary unit sampling", {
   expect_equal(nrow(jfaRes$sample), 100)
 })
 
-test_that(desc = "Interval record sampling", {
+test_that(desc = "(id: 7.5) Interval record sampling", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- sampling(population, sampleSize = 100, units = "records", algorithm = "interval", intervalStartingPoint = 3)
@@ -42,7 +42,7 @@ test_that(desc = "Interval record sampling", {
   expect_equal(nrow(jfaRes$sample), 100)
 })
 
-test_that(desc = "Interval monetary unit sampling", {
+test_that(desc = "(id: 7.6) Interval monetary unit sampling", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- sampling(population, sampleSize = 100, units = "mus", algorithm = "interval", bookValues = "bookValue", intervalStartingPoint = 3)

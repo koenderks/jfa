@@ -2,7 +2,7 @@
 % Please edit documentation in R/auditPrior.R
 \name{auditPrior}
 \alias{auditPrior}
-\title{Create a Prior Distribution with Audit Information}
+\title{Create a Prior Distribution with Existing Audit Information}
 \usage{
 auditPrior(confidence = 0.95, likelihood = "binomial", method = "none", 
 		  expectedError = 0, N = NULL, materiality = NULL, ir = 1, cr = 1,

@@ -2,52 +2,53 @@
 % Please edit documentation in R/planning.R
 \name{planning}
 \alias{planning}
-\title{Frequentist and Bayesian Planning for Audit Samples}
+\title{Frequentist and Bayesian Planning for Audit Sampling}
 \usage{
-planning(materiality = NULL, confidence = 0.95, expectedError = 0, minPrecision = NULL, 
-         likelihood = "poisson", N = NULL, maxSize = 5000, increase = 1, 
-         prior = FALSE, kPrior = 0, nPrior = 0)
+planning(confidence = 0.95, expectedError = 0, likelihood = "poisson", N = NULL, 
+		materiality = NULL, minPrecision = NULL, 
+         prior = FALSE, kPrior = 0, nPrior = 0,
+         increase = 1, maxSize = 5000)
 }
 \arguments{
-\item{materiality}{a value between 0 and 1 representing the materiality of the audit as a fraction of the total size or value. Can be \code{NULL}, but \code{minPrecision} should be specified in that case.}
-
 \item{confidence}{the confidence level desired from the confidence bound (on a scale from 0 to 1). Defaults to 0.95, or 95\% confidence.}
 
 \item{expectedError}{a fraction representing the percentage of expected mistakes in the sample relative to the total size, or a number (>= 1) that represents the number of expected mistakes.}
-
-\item{minPrecision}{The minimum precision to be obtained. Can be \code{NULL}, but \code{materiality} should be specified in that case.}
 
 \item{likelihood}{can be one of \code{binomial}, \code{poisson}, or \code{hypergeometric}.}
 
 \item{N}{the population size (required for hypergeometric calculations).}
 
-\item{maxSize}{the maximum sample size that is considered for calculations. Defaults to 5000 for efficiency. Increase this value if the sample size cannot be found due to it being too large (e.g., for a low materiality).}
+\item{materiality}{a value between 0 and 1 representing the materiality of the audit as a fraction of the total size or value. Can be \code{NULL}, but \code{minPrecision} should be specified in that case.}
 
-\item{increase}{the desired increase step for the sample size calculation.}
+\item{minPrecision}{The minimum precision to be obtained. Can be \code{NULL}, but \code{materiality} should be specified in that case.}
 
 \item{prior}{whether to use a prior distribution when planning. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, the prior distribution is updated by the specified likelihood. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
 
 \item{kPrior}{the prior parameter \eqn{\alpha} (number of errors in the assumed prior sample).}
 
 \item{nPrior}{the prior parameter \eqn{\beta} (total number of observations in the assumed prior sample).}
+
+\item{increase}{the desired increase step for the sample size calculation.}
+
+\item{maxSize}{the maximum sample size that is considered for calculations. Defaults to 5000 for efficiency. Increase this value if the sample size cannot be found due to it being too large (e.g., for a low materiality).}
 }
 \value{
 An object of class \code{jfaPlanning} containing:
 
-\item{materiality}{the value of the specified materiality. Can be \code{NULL}.}
 \item{confidence}{the confidence level for the desired population statement.}
-\item{sampleSize}{the resulting sample size.}
-\item{expectedSampleError}{the number of full errors that are allowed to occur in the sample.}
 \item{expectedError}{the specified number of errors as a fraction or as a number.}
 \item{likelihood}{the specified likelihood.}
-\item{errorType}{whether the expected errors where specified as a percentage or as an integer.}
-\item{minPrecision}{The minimum precision to be obtained. Can be \code{NULL}.}
 \item{N}{the population size (only returned in case of a hypergeometric likelihood).}
-\item{populationK}{the assumed population errors (only returned in case of a hypergeometric likelihood).}
-\item{prior}{a list containing information on the prior parameters.}
-\item{hypotheses}{a list containing information about the hypotheses. Relevant when testing against a materiality.}
+\item{materiality}{the value of the specified materiality. Can be \code{NULL}.}
+\item{minPrecision}{The minimum precision to be obtained. Can be \code{NULL}.}
+\item{sampleSize}{the resulting sample size.}
+\item{errorType}{whether the expected errors where specified as a percentage or as an integer.}
+\item{expectedSampleError}{the number of full errors that are allowed to occur in the sample.}
 \item{expectedBound}{a value specifying the expected upper bound if the sample goes according to plan.}
 \item{expectedPrecision}{a value specifying the expected precision if the sample goes according to plan.}
+\item{populationK}{the assumed population errors (only returned in case of a hypergeometric likelihood).}
+\item{prior}{an object of class \code{jfaPrior} that represents the prior distribution.}
+\item{expectedPosterior}{an object of class \code{jfaPosterior} that represents the expected posterior distribution.}
 }
 \description{
 This function calculates the required sample size for an audit, based on the poisson, binomial, or hypergeometric likelihood. A prior can be specified to perform Bayesian planning. The returned object is of class \code{jfaPlanning} and can be used with associated \code{print()} and \code{plot()} methods.
@@ -69,8 +70,8 @@ library(jfa)
 
 # Frequentist planning with binomial likelihood:
 
-p1 <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
-               likelihood = "binomial")
+p1 <- planning(confidence = 0.95, expectedError = 0.025, likelihood = "binomial",
+               materiality = 0.05)
 print(p1)
 
 # ------------------------------------------------------------
@@ -93,8 +94,8 @@ print(p1)
 
 # Bayesian planning with uninformed prior:
 
-p2 <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
-               likelihood = "binomial", prior = TRUE)
+p2 <- planning(confidence = 0.95, expectedError = 0.025, likelihood = "binomial",
+               materiality = 0.05, prior = TRUE)
 print(p2)
 
 # ------------------------------------------------------------
@@ -112,6 +113,7 @@ print(p2)
 # Output:
 #
 # Sample size:             220
+# Posterior distribution:  beta(6.5, 215.5) 
 # Expected upper bound:    4.99\% 
 # Expected precision:      2.49\% 
 # Expected Bayes factor-+: 363.75
@@ -119,10 +121,10 @@ print(p2)
 
 # Bayesian planning with informed prior:
 
-prior <- auditPrior(materiality = 0.05, confidence = 0.95, cr = 0.6, 
-                    expectedError = 0.025, likelihood = "binomial", method = "arm")
+prior <- auditPrior(confidence = 0.95, likelihood = "binomial", method = "arm", 
+                    expectedError = 0.025, materiality = 0.05, cr = 0.6)
 
-p3 <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0.025,
+p3 <- planning(confidence = 0.95, expectedError = 0.025, materiality = 0.05,
                prior = prior)
 print(p3)
 
@@ -135,12 +137,13 @@ print(p3)
 # Materiality:             5\% 
 # Minimum precision:       Not specified
 # Likelihood:              binomial 
-# Prior distribution:      beta(2.27, 50.73)
+# Prior distribution:      beta(2.275, 50.725)
 # Expected sample errors:  4.23
 # ------------------------------------------------------------
 # Output:
 #
 # Sample size:             169
+# Posterior distribution:  beta(6.5, 215.5) 
 # Expected upper bound:    4.99\% 
 # Expected precision:      2.49\% 
 # Expected Bayes factor-+: 9.32 
