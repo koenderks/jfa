@@ -73,8 +73,11 @@
 #' # Output:
 #' # 
 #' # Obtained sample size:    100 
+#' # ------------------------------------------------------------
+#' # Statistics:
+#' #
 #' # Proportion n/N:          0.1 
-#' # ------------------------------------------------------------ 
+#' # ------------------------------------------------------------  
 #' 
 #' # Use the result from the planning stage in the sampling stage:
 #' 
@@ -99,9 +102,12 @@
 #' # Output:
 #' #
 #' # Obtained sample size:    234 
-#' # Proportion n/N:          0.234 
-#' # Percentage of value:     23.3% 
 #' # ------------------------------------------------------------
+#' # Statistics:
+#' #
+#' # Proportion n/N:          0.23 
+#' # Percentage of value:     23.06% 
+#' # ------------------------------------------------------------ 
 #'
 #' @keywords sampling sample audit
 #'

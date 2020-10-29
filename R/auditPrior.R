@@ -84,17 +84,25 @@
 #' #         jfa Prior Distribution Summary (Bayesian)
 #' # ------------------------------------------------------------
 #' # Input:
-#' # 
+#' #
 #' # Confidence:              0.95    
-#' # Expected sample errors:  0.025       
+#' # Expected sample errors:  0.02       
 #' # Likelihood:              binomial 
-#' # Specifics:               Inherent risk = 1; Internal control risk = 0.6; Detection risk = 0.083 
+#' # Specifics:               Inherent risk = 1; Internal control risk = 0.6; Detection risk = 0.08 
 #' # ------------------------------------------------------------
 #' # Output: 
-#' # 
+#' #
 #' # Prior distribution:      beta(2.275, 50.725) 
 #' # Implicit sample size:    51 
-#' # Implicit errors:         1.275 
+#' # Implicit errors:         1.27 
+#' # ------------------------------------------------------------
+#' # Statistics: 
+#' #
+#' # Upper bound:             0.1 
+#' # Precision:               7.1% 
+#' # Mode:                    0.02 
+#' # Mean:                    0.04 
+#' # Median:                  0.04 
 #' # ------------------------------------------------------------
 #' @export
 

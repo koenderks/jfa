@@ -81,45 +81,21 @@ print(p1)
 # 
 # Confidence:              95\% 
 # Materiality:             5\% 
-# Minimum precision:       Not specified
+# Minimum precision:       Not specified 
 # Likelihood:              binomial 
 # Expected sample errors:  6 
 # ------------------------------------------------------------
 # Output:
-# 
+#
 # Sample size:             234 
+# ------------------------------------------------------------
+# Statistics:
+#
 # Expected upper bound:    5\% 
 # Expected precision:      2.43\% 
-# ------------------------------------------------------------
-
-# Bayesian planning with uninformed prior:
-
-p2 <- planning(confidence = 0.95, expectedError = 0.025, likelihood = "binomial",
-               materiality = 0.05, prior = TRUE)
-print(p2)
-
-# ------------------------------------------------------------
-#              jfa Planning Summary (Bayesian)
-# ------------------------------------------------------------
-# Input:
-# 
-# Confidence:              95\%      
-# Materiality:             5\% 
-# Minimum precision:       Not specified 
-# Likelihood:              binomial 
-# Prior distribution:      beta(1, 1)
-# Expected sample errors:  5.5
-# ------------------------------------------------------------
-# Output:
-#
-# Sample size:             220
-# Posterior distribution:  beta(6.5, 215.5) 
-# Expected upper bound:    4.99\% 
-# Expected precision:      2.49\% 
-# Expected Bayes factor-+: 363.75
 # ------------------------------------------------------------ 
 
-# Bayesian planning with informed prior:
+# Bayesian planning with prior:
 
 prior <- auditPrior(confidence = 0.95, likelihood = "binomial", method = "arm", 
                     expectedError = 0.025, materiality = 0.05, cr = 0.6)
@@ -135,19 +111,22 @@ print(p3)
 # 
 # Confidence:              95\%      
 # Materiality:             5\% 
-# Minimum precision:       Not specified
+# Minimum precision:       Not specified 
 # Likelihood:              binomial 
-# Prior distribution:      beta(2.275, 50.725)
-# Expected sample errors:  4.23
+# Prior distribution:      beta(2.275, 50.725) 
+# Expected sample errors:  4.23 
 # ------------------------------------------------------------
 # Output:
 #
-# Sample size:             169
+# Sample size:             169 
 # Posterior distribution:  beta(6.5, 215.5) 
+# ------------------------------------------------------------
+# Statistics:
+#
 # Expected upper bound:    4.99\% 
 # Expected precision:      2.49\% 
 # Expected Bayes factor-+: 9.32 
-# ------------------------------------------------------------
+# ------------------------------------------------------------ 
 
 }
 \references{

@@ -1,17 +1,15 @@
 # jfa 0.4.0
 
-- Added Expected Bayes factors, expected upper bound, and expected precision to the output of the `planning()` function.
-- Added Bayes factors to the output of the `evaluation()` function.
-- Implemented calculation of prior parameters in the `auditPrior()` function for `method = median` when `expectedErrors > 0`.
-- Added `digits` argument in the internal `jfa:::print.jfaPrior()`, `jfa:::print.jfaPlanning()`, `jfa:::print.jfaSampling()`, and `jfa:::print.jfaEvaluation()` functions to control rounding.
+- Implemented improved calculation of prior parameters in the `auditPrior()` function for `method = median` when `expectedErrors > 0`.
+- Added `digits` argument in the internal `jfa:::print.jfaPrior()`, `jfa:::print.jfaPlanning()`, `jfa:::print.jfaSampling()`, and `jfa:::print.jfaEvaluation()` functions to control rounding in printing.
 - Added `description`, `statistics`, `specifics` and `hypotheses` to the output of the `auditPrior()` function.
-- Added `expectedPosterior` to the output of the `planning()` function.
-- Added `posterior` to the output of the `evaluation()` function.
 - Added class `jfaPosterior` with `print()` and `plot()` methods.
+- Added `expectedPosterior` of class `jfaPosterior` to the output of the `planning()` function, includes `description`, `statistics`, `specifics` and `hypotheses`.
+- Added `posterior` of class `jfaPosterior` to the output of the `evaluation()` function, includes `description`, `statistics`, `specifics` and `hypotheses`.
 
 # jfa 0.3.1
 
-- Added unit tests that regularly check results of the `planning()` and `evaluation()` functions.
+- Added unit tests that regularly verify results of the `planning()` and `evaluation()` functions against benchmarks.
 - Fixed two bugs in the `planning()` function. The first bug did not allow the user to plan for a monetary sample when their population size was too low. The second bug did not allow the user to select a non-integer number of expected errors when there was a prior involved.
 
 # jfa 0.3.0

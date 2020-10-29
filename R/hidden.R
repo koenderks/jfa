@@ -22,6 +22,14 @@ print.jfaPrior <- function(x, digits = 2, ...){
 # Prior distribution:     ", x$prior,"
 # Implicit sample size:   ", round(x[["description"]]$implicitn, digits),"
 # Implicit errors:        ", round(x[["description"]]$implicitk, digits),"
+# ------------------------------------------------------------
+# Statistics: 
+#
+# Upper bound:            ", round(x[["statistics"]]$ub, digits),"
+# Precision:              ", paste0(round(x[["statistics"]]$precision * 100, digits), "%"),"
+# Mode:                   ", round(x[["statistics"]]$mode, digits),"
+# Mean:                   ", round(x[["statistics"]]$mean, digits),"
+# Median:                 ", round(x[["statistics"]]$median, digits),"
 # ------------------------------------------------------------"
   	)
 }
@@ -32,9 +40,13 @@ print.jfaPosterior <- function(x, digits = 2, ...){
   	cat("# ------------------------------------------------------------
 #             jfa Posterior Distribution (Bayesian)
 # ------------------------------------------------------------
+# Input: 
 #
 # Posterior distribution:  ", x[["posterior"]],"
-# Upper bound:             ", round(x[["statistics"]]$ub * 100, digits),"
+# ------------------------------------------------------------
+# Statistics:
+#
+# Upper bound:             ", round(x[["statistics"]]$ub, digits),"
 # Precision:               ", paste0(round(x[["statistics"]]$precision * 100, digits), "%"),"
 # Mode:                    ", round(x[["statistics"]]$mode, digits),"
 # Mean:                    ", round(x[["statistics"]]$mean, digits),"
@@ -63,6 +75,9 @@ print.jfaPlanning <- function(x, digits = 2, ...){
 #
 # Sample size:            ", x[["sampleSize"]],"
 # Posterior distribution: ", x[["expectedPosterior"]]$posterior,"
+# ------------------------------------------------------------
+# Statistics:
+#
 # Expected upper bound:   ", paste0(round(x[["expectedBound"]] * 100, digits), "%"),"
 # Expected precision:     ", paste0(round(x[["expectedPrecision"]] * 100, digits), "%"),"
 # Expected Bayes factor-+:", ifelse(x[["materiality"]] == 1, yes = "Requires materiality", no = round(x[["expectedPosterior"]][["hypotheses"]]$expectedBf, digits)),"
@@ -82,6 +97,9 @@ print.jfaPlanning <- function(x, digits = 2, ...){
 # Output:
 #
 # Sample size:            ", x[["sampleSize"]],"
+# ------------------------------------------------------------
+# Statistics:
+#
 # Expected upper bound:   ", paste0(round(x[["expectedBound"]] * 100, digits), "%"),"
 # Expected precision:     ", paste0(round(x[["expectedPrecision"]] * 100, digits), "%"),"
 # ------------------------------------------------------------ ")
@@ -110,6 +128,9 @@ ifelse(x$algorithm == "cell", no = "", yes = paste0("
 # Output:
 #
 # Obtained sample size:   ", x$obtainedSampleSize,"
+# ------------------------------------------------------------
+# Statistics:
+#
 # Proportion n/N:         ", round(x$obtainedSampleSize / x$populationSize, digits), "
 # Percentage of value:    ", paste0(round(sum(x$sample[, x$bookValues]) / sum(x$population[, x$bookValues]) * 100, digits), "%"),"
 # ------------------------------------------------------------ ") 
@@ -132,6 +153,9 @@ ifelse(x$algorithm == "cell", no = "", yes = paste0("
 # Output:
 # 
 # Obtained sample size:   ", x$obtainedSampleSize,"
+# ------------------------------------------------------------
+# Statistics:
+#
 # Proportion n/N:         ", round(nrow(x$sample)/nrow(x$population), digits), "
 # ------------------------------------------------------------ ") 
   	}
@@ -346,16 +370,16 @@ plot.jfaPlanning <- function(x, ...){
 plot.jfaSampling <- function(x, ...){
 	if(x$units == "records")
 		stop("No plotting method available for record sampling")
-	name <- x$bookValues
-	graphics::hist(x$population[[name]], breaks = 30, main = "Histogram of population and sample book values", xlab = "Book values", las = 1, col = "lightgray")
-	graphics::hist(x$sample[[name]], breaks = 30, main = "Sample", xlab = "Book values", las = 1, add = TRUE, col = "darkgray")
+	name <- x[["bookValues"]]
+	graphics::hist(x[["population"]][[name]], breaks = 30, main = "Histogram of population and sample book values", xlab = "Book values", las = 1, col = "lightgray")
+	graphics::hist(x[["sample"]][[name]], breaks = 30, main = "Sample", xlab = "Book values", las = 1, add = TRUE, col = "darkgray")
 	graphics::legend("topright", legend = c("Population", "Sample"), bty = "n", fill = c("lightgray", "darkgray"))
 }
 
 #' @method plot jfaEvaluation
 #' @export
 plot.jfaEvaluation <- function(x, ...){
-	if(x[["method"]] %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "rohrbach", "moment"))
+	if(x[["method"]] %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "rohrbach", "moment", "coxsnell"))
 		stop("No plotting method available for a confidence bound from this method.")
 	if(x[["method"]] %in% c("direct", "difference", "quotient", "regression")){
 		ymin <- x[["lowerBound"]] - (x[["pointEstimate"]] - x[["lowerBound"]])
@@ -420,6 +444,8 @@ plot.jfaEvaluation <- function(x, ...){
 		} else {
 			if(x[["materiality"]] == 1)
 				stop("Cannot plot a frequentist outcome when the materiality is unknown.")
+			if(!(x[["method"]] %in% c("poisson", "binomial", "hypergeometric")))
+				stop("Without a prior distribution, your method must either be 'poisson', 'binomial', or 'hypergeometric'.")
 			if(x[["method"]] == "poisson"){
 				mainLab <- paste0("Poisson distribution (lambda = ", round(x[["materiality"]] * x[["n"]], 2), ")")
 				d <- stats::dpois(x = 0:x[["n"]], lambda = x[["materiality"]] * x[["n"]])[1:limx]

@@ -137,8 +137,8 @@ print(e1)
 # Output:
 #
 # Most likely error:        1\% 
-# Upper bound:              4.656\% 
-# Precision:                3.656\% 
+# Upper bound:              4.66\% 
+# Precision:                3.66\% 
 # Conclusion:               Approve population
 # ------------------------------------------------------------
 
@@ -158,14 +158,14 @@ print(e2)
 # Minium precision:         Not specified 
 # Sample size:              100 
 # Sample errors:            1 
-# Sum of taints:            0.644 
+# Sum of taints:            1 
 # Method:                   stringer 
 # ------------------------------------------------------------
 # Output:
 #
-# Most likely error:        0.644\% 
-# Upper bound:              4.049\% 
-# Precision:                3.405\% 
+# Most likely error:        0.69\% 
+# Upper bound:              4.12\% 
+# Precision:                3.44\% 
 # Conclusion:               Approve population 
 # ------------------------------------------------------------  
 

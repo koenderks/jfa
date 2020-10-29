@@ -123,8 +123,8 @@
 #' # Output:
 #' #
 #' # Most likely error:        1% 
-#' # Upper bound:              4.656% 
-#' # Precision:                3.656% 
+#' # Upper bound:              4.66% 
+#' # Precision:                3.66% 
 #' # Conclusion:               Approve population
 #' # ------------------------------------------------------------
 #'
@@ -144,14 +144,14 @@
 #' # Minium precision:         Not specified 
 #' # Sample size:              100 
 #' # Sample errors:            1 
-#' # Sum of taints:            0.644 
+#' # Sum of taints:            1 
 #' # Method:                   stringer 
 #' # ------------------------------------------------------------
 #' # Output:
 #' #
-#' # Most likely error:        0.644% 
-#' # Upper bound:              4.049% 
-#' # Precision:                3.405% 
+#' # Most likely error:        0.69% 
+#' # Upper bound:              4.12% 
+#' # Precision:                3.44% 
 #' # Conclusion:               Approve population 
 #' # ------------------------------------------------------------  
 #' 
@@ -317,6 +317,7 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
 		mle <- bound$pointEstimate
 		precision <- (bound$upperBound - mle) / populationBookValue
 	}
+	# Add new methods here.
   
 	result <- list()
 	result[["confidence"]]    <- as.numeric(confidence)
@@ -344,6 +345,8 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
 			result[["multiplicationFactor"]] <- as.numeric(bound[["multiplicationFactor"]])
 			result[["df1"]]                  <- as.numeric(bound[["df1"]])
 			result[["df2"]]                  <- as.numeric(bound[["df2"]])
+			result[["mle"]]					 <- result[["multiplicationFactor"]] * (((result[["df1"]]-2)/result[["df1"]]) * (result[["df2"]] / (result[["df2"]] + 2)))
+			result[["precision"]]			 <- result[["confBound"]] - result[["mle"]]
 		} else {
 			result[["confBound"]]            <- as.numeric(bound) 
 		}
