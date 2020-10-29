@@ -82,7 +82,7 @@ This function creates a prior distribution according to one of several methods, 
 
 This function calculates the required sample size for an audit, based on the poisson, binomial, or hypergeometric likelihood. A prior can be specified to combine with the specified likelihood in order to perform Bayesian planning. The returned `jfaPlanning` object has a `print()` and a `plot()` method.
 
-`planning(materiality = NULL, confidence = 0.95, expectedError = 0, minPrecision = NULL, likelihood = "poisson", N = NULL, maxSize = 5000, increase = 1, prior = FALSE, kPrior = 0, nPrior = 0)`
+`planning(confidence = 0.95, expectedError = 0, likelihood = "poisson", N = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, kPrior = 0, nPrior = 0, increase = 1, maxSize = 5000)`
 
 **Sampling: Selecting transactions from a population**
 
@@ -90,7 +90,7 @@ This function calculates the required sample size for an audit, based on the poi
 
 This function takes a data frame and performs sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. The returned `jfaSampling` object has a `print()` and a `plot()` method. The `sampleSize` argument can also be an object of class `jfaPlanning`.
 
-`sampling(population, sampleSize, bookValues = NULL, units = "records", algorithm = "random", intervalStartingPoint = 1, ordered = TRUE, ascending = TRUE, withReplacement = FALSE, seed = 1)`
+`sampling(population, sampleSize, units = "records", algorithm = "random", bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, ascending = TRUE, withReplacement = FALSE, seed = 1)`
 
 **Evaluation: Calculating confidence bounds for audit samples**
 

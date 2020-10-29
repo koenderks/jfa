@@ -1,4 +1,4 @@
-context("Function test for auditPrior()")
+context("4. Function test for auditPrior()")
 
 # jfa version 0.1.0
 
@@ -37,89 +37,89 @@ test_that(desc = "(id: 4.1) Audit workflow", {
 	# Evaluate the sample using the posterior distribution.
 	conclusion <- evaluation(sample = sample, bookValues = "bookValue", auditValues = "trueValue", 
 							prior = prior, materiality = 0.05)
-	expect_equal(conclusion$confBound, 0.02669982, tolerance = 0.001)
+	expect_equal(conclusion[["confBound"]], 0.02669982, tolerance = 0.001)
 })
 
 # jfa version 0.2.0
 
 test_that(desc = "(id: 4.2) None prior", {
-	prior <- auditPrior(confidence = 0.95, method = "none", likelihood = "binomial")
-	expect_equal(prior$aPrior, 1)
-	expect_equal(prior$bPrior, 1)
+	prior <- auditPrior(confidence = 0.95, likelihood = "binomial", method = "none")
+	expect_equal(prior[["description"]]$alpha, 1)
+	expect_equal(prior[["description"]]$beta, 1)
 	
-	prior <- auditPrior(confidence = 0.95, method = "none", likelihood = "poisson")
-	expect_equal(prior$aPrior, 1)
-	expect_equal(prior$bPrior, 0)
+	prior <- auditPrior(confidence = 0.95, likelihood = "poisson", method = "none")
+	expect_equal(prior[["description"]]$alpha, 1)
+	expect_equal(prior[["description"]]$beta, 0)
 	
-	prior <- auditPrior(confidence = 0.95, method = "none", likelihood = "hypergeometric", N = 3500)
-	expect_equal(prior$aPrior, 1)
-	expect_equal(prior$bPrior, 1)
+	prior <- auditPrior(confidence = 0.95, likelihood = "hypergeometric", method = "none", N = 3500)
+	expect_equal(prior[["description"]]$alpha, 1)
+	expect_equal(prior[["description"]]$beta, 1)
 })
 
 test_that(desc = "(id: 4.3) median prior", {
-	prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "binomial")
-	expect_equal(prior$aPrior, 1)
-	expect_equal(prior$bPrior, 13.513, tolerance = 0.001)
+	prior <- auditPrior(confidence = 0.95, likelihood = "binomial", method = "median", materiality = 0.05)
+	expect_equal(prior[["description"]]$alpha, 1)
+	expect_equal(prior[["description"]]$beta, 13.513, tolerance = 0.001)
 	
-	prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "binomial", expectedError = 0.02)
-	expect_equal(prior$aPrior, 1.4, tolerance = 0.001)
-	expect_equal(prior$bPrior, 20.6, tolerance = 0.001)
+	prior <- auditPrior(confidence = 0.95, likelihood = "binomial", method = "median", expectedError = 0.02, materiality = 0.05)
+	expect_equal(prior[["description"]]$alpha, 1.4, tolerance = 0.001)
+	expect_equal(prior[["description"]]$beta, 20.6, tolerance = 0.001)
 	
-	prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "poisson", ir = 0.6, cr = 0.6)
-	expect_equal(prior$aPrior, 1)
-	expect_equal(prior$bPrior, 13.863, tolerance = 0.001)  
+	prior <- auditPrior(confidence = 0.95, likelihood = "poisson", method = "median", ir = 0.6, cr = 0.6, materiality = 0.05, )
+	expect_equal(prior[["description"]]$alpha, 1)
+	expect_equal(prior[["description"]]$beta, 13.863, tolerance = 0.001)  
 })
 
 test_that(desc = "(id: 4.4) hypotheses prior", {
 	prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "hypotheses", likelihood = "binomial", pHmin = 0.3)
-	expect_equal(prior$aPrior, 1)
-	expect_equal(prior$bPrior, 6.954, tolerance = 0.001)
+	expect_equal(prior[["description"]]$alpha, 1)
+	expect_equal(prior[["description"]]$beta, 6.954, tolerance = 0.001)
 	
 	prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "hypotheses", likelihood = "poisson", pHmin = 0.3)
-	expect_equal(prior$aPrior, 1)
-	expect_equal(prior$bPrior, 7.133, tolerance = 0.001) 
+	expect_equal(prior[["description"]]$alpha, 1)
+	expect_equal(prior[["description"]]$beta, 7.133, tolerance = 0.001) 
 })
 
 test_that(desc = "(id: 4.5) arm prior", {
 	prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "arm", likelihood = "binomial", ir = 0.6, cr = 0.6)
-	expect_equal(prior$aPrior, 1)
-	expect_equal(prior$bPrior, 21, tolerance = 0.001)
+	expect_equal(prior[["description"]]$alpha, 1)
+	expect_equal(prior[["description"]]$beta, 21, tolerance = 0.001)
 	
 	prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "arm", likelihood = "poisson", ir = 0.6, cr = 0.6)
-	expect_equal(prior$aPrior, 1)
-	expect_equal(prior$bPrior, 20, tolerance = 0.001)
+	expect_equal(prior[["description"]]$alpha, 1)
+	expect_equal(prior[["description"]]$beta, 20, tolerance = 0.001)
 	
 	prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "arm", likelihood = "hypergeometric", ir = 0.6, cr = 0.6, N = 3500)
-	expect_equal(prior$aPrior, 1)
-	expect_equal(prior$bPrior, 20, tolerance = 0.001)
+	expect_equal(prior[["description"]]$alpha, 1)
+	expect_equal(prior[["description"]]$beta, 20, tolerance = 0.001)
 })
 
 test_that(desc = "(id: 4.6) sample prior", {
 	prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "sample", likelihood = "binomial", sampleN = 30, sampleK = 1)
-	expect_equal(prior$aPrior, 2)
-	expect_equal(prior$bPrior, 30)
+	expect_equal(prior[["description"]]$alpha, 2)
+	expect_equal(prior[["description"]]$beta, 30)
 	
 	prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "sample", likelihood = "poisson", sampleN = 30, sampleK = 1)
-	expect_equal(prior$aPrior, 2)
-	expect_equal(prior$bPrior, 30)
+	expect_equal(prior[["description"]]$alpha, 2)
+	expect_equal(prior[["description"]]$beta, 30)
 	
 	prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "sample", likelihood = "hypergeometric", sampleN = 30, sampleK = 1, N = 3500)
-	expect_equal(prior$aPrior, 2)
-	expect_equal(prior$bPrior, 30)
+	expect_equal(prior[["description"]]$alpha, 2)
+	expect_equal(prior[["description"]]$beta, 30)
 })
 
 test_that(desc = "(id: 4.7) factor prior", {
 	prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "factor", likelihood = "binomial", sampleN = 30, sampleK = 1, factor = 0.6)
-	expect_equal(prior$aPrior, 1.6, tolerance = 0.001)
-	expect_equal(prior$bPrior, 18.4, tolerance = 0.001)
+	expect_equal(prior[["description"]]$alpha, 1.6, tolerance = 0.001)
+	expect_equal(prior[["description"]]$beta, 18.4, tolerance = 0.001)
 	
 	prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "factor", likelihood = "poisson", sampleN = 30, sampleK = 1, factor = 0.6)
-	expect_equal(prior$aPrior, 1.6, tolerance = 0.001)
-	expect_equal(prior$bPrior, 18, tolerance = 0.001)
+	expect_equal(prior[["description"]]$alpha, 1.6, tolerance = 0.001)
+	expect_equal(prior[["description"]]$beta, 18, tolerance = 0.001)
 	
 	prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "factor", likelihood = "hypergeometric", sampleN = 30, sampleK = 1, N = 3500, factor = 0.6)
-	expect_equal(prior$aPrior, 1.6, tolerance = 0.001)
-	expect_equal(prior$bPrior, 18.4, tolerance = 0.001)
+	expect_equal(prior[["description"]]$alpha, 1.6, tolerance = 0.001)
+	expect_equal(prior[["description"]]$beta, 18.4, tolerance = 0.001)
 })
 
 # jfa version 0.3.0
