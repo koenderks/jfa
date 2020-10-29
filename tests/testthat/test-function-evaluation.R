@@ -59,7 +59,7 @@ test_that(desc = "Evaluation with hypergeometric method with prior", {
   samp <- sampling(population, sampleSize = jfaRes, units = "records", algorithm = "random", ordered = TRUE)$sample
   samp$auditValue <- samp$bookValue
   jfaEval <- evaluation(sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "hypergeometric", N = 1000, prior = TRUE, materiality = 0.05)
-  expect_equal(jfaEval$confBound, 0.046, tolerance = 0.001)
+  expect_equal(jfaEval$confBound, 0.049, tolerance = 0.001)
 })
 
 test_that(desc = "Evaluation with stringer method", {
@@ -171,7 +171,7 @@ test_that(desc = "Evaluation with Cox and Snell method", {
   samp$auditValue <- samp$bookValue
   samp$auditValue[1:3] <- samp$bookValue[1:3] * 0.4
   jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "coxsnell", prior = p)
-  expect_equal(jfaEval$confBound, 0.02765165, tolerance = 0.001)
+  expect_equal(jfaEval$confBound, 0.03518384, tolerance = 0.001)
 })
 
 # jfa version 0.2.0
@@ -204,9 +204,9 @@ test_that(desc = "Bayes factors", {
   samp$auditValue[1:3] <- samp$bookValue[1:3] * 0.4
   counts <- c(2, 2, 3, rep(1, nrow(samp) - 3))
   jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "binomial", count = counts, prior = TRUE)
-  expect_equal(jfaEval$hypotheses$bf, 1997.977, tolerance = 0.001)
+  expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf, 1997.977, tolerance = 0.001)
   jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "poisson", count = counts, prior = TRUE)
-  expect_equal(jfaEval$hypotheses$bf, 1791.101, tolerance = 0.001)
+  expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf, Inf, tolerance = 0.001)
   jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "hypergeometric", count = counts, prior = TRUE, N = 1000)
-  expect_equal(jfaEval$hypotheses$bf, 1308.123, tolerance = 0.001)
+  expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf, 4766.862, tolerance = 0.001)
 })

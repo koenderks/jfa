@@ -5,8 +5,8 @@
 \title{Create a Prior Distribution with Existing Audit Information}
 \usage{
 auditPrior(confidence = 0.95, likelihood = "binomial", method = "none", 
-		  expectedError = 0, N = NULL, materiality = NULL, ir = 1, cr = 1,
-		  pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)
+           expectedError = 0, N = NULL, materiality = NULL, ir = 1, cr = 1,
+           pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)
 }
 \arguments{
 \item{confidence}{the confidence level desired from the confidence bound (on a scale from 0 to 1). Defaults to 0.95, or 95\% confidence.}

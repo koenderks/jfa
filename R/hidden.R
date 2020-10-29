@@ -34,8 +34,11 @@ print.jfaPosterior <- function(x, digits = 2, ...){
 # ------------------------------------------------------------
 #
 # Posterior distribution:  ", x[["posterior"]],"
-# Upper bound:             ", paste0(round(x[["statistics"]]$ub * 100, digits), "%"),"
+# Upper bound:             ", round(x[["statistics"]]$ub * 100, digits),"
 # Precision:               ", paste0(round(x[["statistics"]]$precision * 100, digits), "%"),"
+# Mode:                    ", round(x[["statistics"]]$mode, digits),"
+# Mean:                    ", round(x[["statistics"]]$mean, digits),"
+# Median:                  ", round(x[["statistics"]]$median, digits),"
 # ------------------------------------------------------------"
   	)
 }
@@ -137,52 +140,52 @@ ifelse(x$algorithm == "cell", no = "", yes = paste0("
 #' @method print jfaEvaluation
 #' @export
 print.jfaEvaluation <- function(x, digits = 2, ...){
-  	if(x$method %in% c("direct", "difference", "quotient", "regression")){
+  	if(x[["method"]] %in% c("direct", "difference", "quotient", "regression")){
     	cat("# ------------------------------------------------------------ 
 #             jfa Evaluation Summary (Frequentist)
 # ------------------------------------------------------------
 # Input:
 #   
-# Confidence:              ", paste0(round(x$confidence * 100, digits), "%"),"
-# Materiality:             ", ifelse(x$materiality == 1, yes = "Not specified", no = paste0(round(x$materiality * 100, digits), "%")),"
-# Minium precision:        ", ifelse(x$minPrecision == 1, yes = "Not specified", no = paste0(round(x$minPrecision * 100, digits), "%")),"
-# Sample size:             ", round(x$n, digits),"
-# Sample errors:           ", round(x$k, digits), "
-# Method:                  ", x$method, "
-# Population book value:   ", round(x$popBookvalue, digits), "
+# Confidence:              ", paste0(round(x[["confidence"]] * 100, digits), "%"),"
+# Materiality:             ", ifelse(x[["materiality"]] == 1, yes = "Not specified", no = paste0(round(x[["materiality"]] * 100, digits), "%")),"
+# Minium precision:        ", ifelse(x[["minPrecision"]] == 1, yes = "Not specified", no = paste0(round(x[["minPrecision"]] * 100, digits), "%")),"
+# Sample size:             ", round(x[["n"]], digits),"
+# Sample errors:           ", round(x[["k"]], digits), "
+# Method:                  ", x[["method"]], "
+# Population book value:   ", round(x[["popBookvalue"]], digits), "
 # ------------------------------------------------------------
 # Output:
 #
-# Most likely error:       ", round(x$pointEstimate, digits), "
-# Lower bound:             ", round(x$lowerBound, digits),"
-# Upper bound:             ", round(x$upperBound, digits),"
-# Precision:               ", paste0(round(x$precision * 100, digits), "%"),"
-# Conclusion:              ", x$conclusion, "
+# Most likely error:       ", round(x[["pointEstimate"]], digits), "
+# Lower bound:             ", round(x[["lowerBound"]], digits),"
+# Upper bound:             ", round(x[["upperBound"]], digits),"
+# Precision:               ", paste0(round(x[["precision"]] * 100, digits), "%"),"
+# Conclusion:              ", x[["conclusion"]], "
 # ------------------------------------------------------------ ")
   	} else {
-    	if(x$prior){
+    	if(!is.null(x[["prior"]])){
       		cat("# ------------------------------------------------------------ 
 #             jfa Evaluation Summary (Bayesian)
 # ------------------------------------------------------------
 # Input: 
 #
-# Confidence:              ", paste0(round(x$confidence * 100, digits), "%"),"  
-# Materiality:             ", ifelse(x$materiality == 1, yes = "Not specified", no = paste0(round(x$materiality * 100, digits), "%")),"
-# Minium precision:        ", ifelse(x$minPrecision == 1, yes = "Not specified", no = paste0(round(x$minPrecision * 100, digits), "%")),"
-# Sample size:             ", round(x$n, digits),"
-# Sample errors:           ", round(x$k, digits), "
-# Sum of taints:           ", round(x$t, digits), " 
-# Method:                  ", x$method, "
-# Prior distribution:      ", x$priorString, "
+# Confidence:              ", paste0(round(x[["confidence"]] * 100, digits), "%"),"  
+# Materiality:             ", ifelse(x[["materiality"]] == 1, yes = "Not specified", no = paste0(round(x[["materiality"]] * 100, digits), "%")),"
+# Minium precision:        ", ifelse(x[["minPrecision"]] == 1, yes = "Not specified", no = paste0(round(x[["minPrecision"]] * 100, digits), "%")),"
+# Sample size:             ", round(x[["n"]], digits),"
+# Sample errors:           ", round(x[["k"]], digits), "
+# Sum of taints:           ", round(x[["t"]], digits), " 
+# Method:                  ", x[["method"]], "
+# Prior distribution:      ", x[["prior"]][["prior"]], "
 # ------------------------------------------------------------
 # Output:
 #
-# Posterior distribution:  ", x$posteriorString, "
-# Most likely error:       ", paste0(round(x$mle * 100, digits), "%"),"
-# Upper bound:             ", paste0(round(x$confBound * 100, digits), "%"),"
-# Precision:               ", paste0(round(x$precision * 100, digits), "%"),"
-# Bayes factor-+:          ", ifelse(x$materiality == 1 || !(x$method %in% c("poisson", "binomial", "hypergeometric")), yes = "Not available", no = round(x$hypotheses$bf, digits)),"
-# Conclusion:              ", x$conclusion, "
+# Posterior distribution:  ", x[["posterior"]][["posterior"]], "
+# Most likely error:       ", paste0(round(x[["mle"]] * 100, digits), "%"),"
+# Upper bound:             ", paste0(round(x[["confBound"]] * 100, digits), "%"),"
+# Precision:               ", paste0(round(x[["precision"]] * 100, digits), "%"),"
+# Bayes factor-+:          ", ifelse(x[["materiality"]] == 1 || !(x[["method"]] %in% c("poisson", "binomial", "hypergeometric")), yes = "Not available", no = round(x[["posterior"]][["hypotheses"]]$bf, digits)),"
+# Conclusion:              ", x[["conclusion"]], "
 # ------------------------------------------------------------ ")
     	} else {
       		cat("# ------------------------------------------------------------ 
@@ -190,20 +193,20 @@ print.jfaEvaluation <- function(x, digits = 2, ...){
 # ------------------------------------------------------------ 
 # Input: 
 #
-# Confidence:              ", paste0(round(x$confidence * 100, digits), "%"),"  
-# Materiality:             ", ifelse(x$materiality == 1, yes = "Not specified", no = paste0(round(x$materiality * 100, digits), "%")),"
-# Minium precision:        ", ifelse(x$minPrecision == 1, yes = "Not specified", no = paste0(round(x$minPrecision * 100, digits), "%")),"
-# Sample size:             ", round(x$n, digits),"
-# Sample errors:           ", round(x$k, digits), "
-# Sum of taints:           ", round(x$t, digits), "
-# Method:                  ", x$method, "
+# Confidence:              ", paste0(round(x[["confidence"]] * 100, digits), "%"),"  
+# Materiality:             ", ifelse(x[["materiality"]] == 1, yes = "Not specified", no = paste0(round(x[["materiality"]] * 100, digits), "%")),"
+# Minium precision:        ", ifelse(x[["minPrecision"]] == 1, yes = "Not specified", no = paste0(round(x[["minPrecision"]] * 100, digits), "%")),"
+# Sample size:             ", round(x[["n"]], digits),"
+# Sample errors:           ", round(x[["k"]], digits), "
+# Sum of taints:           ", round(x[["k"]], digits), "
+# Method:                  ", x[["method"]], "
 # ------------------------------------------------------------
 # Output:
 #
-# Most likely error:       ", paste0(round(x$mle * 100, digits), "%"),"
-# Upper bound:             ", paste0(round(x$confBound * 100, digits), "%"),"
-# Precision:               ", paste0(round(x$precision * 100, digits), "%"),"
-# Conclusion:              ", x$conclusion, "
+# Most likely error:       ", paste0(round(x[["mle"]] * 100, digits), "%"),"
+# Upper bound:             ", paste0(round(x[["confBound"]] * 100, digits), "%"),"
+# Precision:               ", paste0(round(x[["precision"]] * 100, digits), "%"),"
+# Conclusion:              ", x[["conclusion"]], "
 # ------------------------------------------------------------ ")
     	}
   	}
@@ -326,52 +329,52 @@ plot.jfaSampling <- function(x, ...){
 #' @method plot jfaEvaluation
 #' @export
 plot.jfaEvaluation <- function(x, ...){
-	if(x$method %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "rohrbach", "moment"))
-		stop("No plotting method available for a confidence bound from this method")
-	if(x$method %in% c("direct", "difference", "quotient", "regression")){
-		ymin <- x$lowerBound - (x$pointEstimate - x$lowerBound)
-		ymax <- x$upperBound + (x$upperBound - x$pointEstimate)
+	if(x[["method"]] %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "rohrbach", "moment"))
+		stop("No plotting method available for a confidence bound from this method.")
+	if(x[["method"]] %in% c("direct", "difference", "quotient", "regression")){
+		ymin <- x[["lowerBound"]] - (x[["pointEstimate"]] - x[["lowerBound"]])
+		ymax <- x[["upperBound"]] + (x[["upperBound"]] - x[["pointEstimate"]])
 		ticks <- pretty(ymin, ymax, min.n = 5)
-		graphics::plot(x = 0, y = x$pointEstimate, bty = "n", cex = 2, pch = 19, xlab = "Population book value", ylab = "", ylim = c(min(ticks), max(ticks)), xlim = c(-0.1, 0.1), axes = FALSE)
-		graphics::arrows(x0 = 0, x1 = 0, y0 = x$lowerBound, y1 = x$upperBound, code = 3, lwd = 2, col = "black", angle = 90)
+		graphics::plot(x = 0, y = x[["pointEstimate"]], bty = "n", cex = 2, pch = 19, xlab = "Population book value", ylab = "", ylim = c(min(ticks), max(ticks)), xlim = c(-0.1, 0.1), axes = FALSE)
+		graphics::arrows(x0 = 0, x1 = 0, y0 = x[["lowerBound"]], y1 = x[["upperBound"]], code = 3, lwd = 2, col = "black", angle = 90)
 		graphics::axis(2, at = ticks, las = 1)
-		graphics::abline(h = x$popBookvalue, lty = 2)
+		graphics::abline(h = x[["popBookvalue"]], lty = 2)
 	} else {
-		limx <- length(0:x$n)
+		limx <- length(0:x[["n"]])
 		if(limx > 51){
 			limx <- 51
 		}
-		if(x$prior){
-			xlim <- x$materiality * 3
+		if(!is.null(x[["prior"]])){
+			xlim <- x[["materiality"]] * 3
 			if(length(xlim) == 0)
 				xlim <- 0.30
 			xseq <- seq(0, xlim, 0.00001)
-			mainLab <- ifelse(x$kPrior == 0 && x$nPrior == 0, yes = "Uninformed", no = "Informed")
-			if(x$method == "poisson"){
-				d <- stats::dgamma(xseq, shape = 1 + x$kPrior, rate = x$nPrior)
-				d1 <- stats::dgamma(xseq, shape = 1 + x$kPrior + x$t, rate = x$nPrior + x$n)
-				bound <- stats::qgamma(x$confidence, shape = 1 + x$kPrior + x$t, rate = x$nPrior + x$n)
-			} else if(x$method == "binomial"){
-				d <- stats::dbeta(xseq, shape1 = 1 + x$kPrior, shape2 = 1 + x$nPrior - x$kPrior)
-				d1 <- stats::dbeta(xseq, shape1 = 1 + x$kPrior + x$t, shape2 = 1 + x$nPrior - x$kPrior + x$n - x$t)
-				bound <- stats::qbeta(x$confidence, shape1 = 1 + x$kPrior + x$t, shape2 = 1 + x$nPrior - x$kPrior + x$n - x$t)
-			} else if(x$method == "hypergeometric"){
-				xlim <- ceiling(xlim * x$N)
+			mainLab <- ifelse(x[["prior"]][["description"]]$implicitk == 0 && x[["prior"]][["description"]]$implicitn == 0, yes = "Uninformed", no = "Informed")
+			if(x[["method"]] == "poisson"){
+				d <- stats::dgamma(xseq, shape = x[["prior"]][["description"]]$alpha, rate = x[["prior"]][["description"]]$beta)
+				d1 <- stats::dgamma(xseq, shape = x[["posterior"]][["description"]]$alpha, rate = x[["posterior"]][["description"]]$beta)
+				bound <- stats::qgamma(x$confidence, shape = x[["posterior"]][["description"]]$alpha, rate = x[["posterior"]][["description"]]$beta)
+			} else if(x[["method"]] == "binomial"){
+				d <- stats::dbeta(xseq, shape1 = x[["prior"]][["description"]]$alpha, shape2 = x[["prior"]][["description"]]$beta)
+				d1 <- stats::dbeta(xseq, shape1 = x[["posterior"]][["description"]]$alpha, shape2 = x[["posterior"]][["description"]]$beta)
+				bound <- stats::qbeta(x$confidence, shape1 = x[["posterior"]][["description"]]$alpha, shape2 = x[["posterior"]][["description"]]$beta)
+			} else if(x[["method"]] == "hypergeometric"){
+				xlim <- ceiling(xlim * x[["N"]])
 				xseq <- seq(0, xlim, by = 1)
-				d <- .dBetaBinom(x = xseq, N = x$N- x$n + x$k, shape1 = 1 + x$kPrior, shape2 = 1 + x$nPrior - x$kPrior)
-				d1 <- .dBetaBinom(x = xseq, N = x$N - x$n + x$k, shape1 = 1 + x$kPrior + x$k, shape2 = 1 + x$nPrior - x$kPrior + x$n - x$k)
-				bound <- .qBetaBinom(p = x$confidence, N = x$N - x$n + x$k, shape1 = 1 + x$kPrior + x$k, shape2 = 1 + x$nPrior - x$kPrior + x$n - x$k)
-			} else if(x$method == "coxsnell"){
-				d <- stats::dbeta(xseq, shape1 = 1 + x$kPrior, shape2 = 1 + x$nPrior - x$kPrior)
-				d1 <- .dCoxAndSnellF(xseq, x$df1, x$df2, x$multiplicationFactor)
-				bound <- x$multiplicationFactor * stats::qf(p = x$confidence, df1 = x$df1, df2 = x$df2)
+				d <- .dBetaBinom(x = xseq, N = x[["N"]], shape1 = x[["prior"]][["description"]]$alpha, shape2 = x[["prior"]][["description"]]$beta)
+				d1 <- .dBetaBinom(x = xseq, N = x[["N"]], shape1 = x[["posterior"]][["description"]]$alpha, shape2 = x[["posterior"]][["description"]]$beta)
+				bound <- .qBetaBinom(p = x[["confidence"]], N = x[["N"]], shape1 = x[["posterior"]][["description"]]$alpha, shape2 = x[["posterior"]][["description"]]$beta)
+			} else if(x[["method"]] == "coxsnell"){
+				d <- stats::dbeta(xseq, shape1 = x[["prior"]][["description"]]$alpha, shape2 =x[["prior"]][["description"]]$beta)
+				d1 <- .dCoxAndSnellF(xseq, x[["df1"]], x[["df2"]], x[["multiplicationFactor"]])
+				bound <- x[["multiplicationFactor"]] * stats::qf(p = x[["confidence"]], df1 = x[["df1"]], df2 = x[["df2"]])
 			}
-			if(x$method == "poisson" || x$method == "binomial" || x$method == "coxsnell"){
-				if(x$method == "poisson")
+			if(x[["method"]] == "poisson" || x[["method"]] == "binomial" || x[["method"]] == "coxsnell"){
+				if(x[["method"]] == "poisson")
 					mainLabPlus <- " gamma prior and posterior"
-				if(x$method == "binomial")
+				if(x[["method"]] == "binomial")
 					mainLabPlus <- " beta prior and posterior"
-				if(x$method == "coxsnell")
+				if(x[["method"]] == "coxsnell")
 					mainLabPlus <- " Cox and Snell prior and posterior"
 				graphics::plot(x = xseq, y = d1, type = "l", lwd = 2, bty = "n", xlab = expression(theta), ylab = "Probability density", las = 1, ylim = c(0, max(d1)),
 							main = paste0(mainLab, mainLabPlus), axes = FALSE)
@@ -389,25 +392,25 @@ plot.jfaEvaluation <- function(x, ...){
 				graphics::legend("topright", legend = c("Prior", "Posterior"), fill = c("lightgray", "darkgray"), bty = "n", cex = 1.2) 
 			}
 		} else {
-		if(is.null(x$materiality))
-			stop("Cannot plot a frequentist outcome when the materiality is unknown.")
-		if(x$method == "poisson"){
-			mainLab <- paste0("Poisson distribution (lambda = ", round(x$materiality * x$n, 2), ")")
-			d <- stats::dpois(x = 0:x$n, lambda = x$materiality * x$n)[1:limx]
-			d1 <- stats::dpois(x = 0:x$k, lambda = x$materiality * x$n)
-		} else if(x$method == "binomial"){
-			mainLab <- paste0("Binomial distribution (n = ", x$n, ", p = ", round(x$materiality, 2),")")
-			d <- stats::dbinom(x = 0:x$n, size = x$n, prob = x$materiality)[1:limx]
-			d1 <- stats::dbinom(x = 0:x$k, size = x$n, prob = x$materiality)
-		} else if(x$method == "hypergeometric"){
-			mainLab <- paste0("Hypergeometric distribution (N = ", x$N, ", n = ", x$n, ", K = ", x$populationK, ", k = ", x$k,")")
-			d <- stats::dhyper(x = 0:x$n, m = x$populationK, n = x$N - x$populationK, k = x$n)[1:limx]
-			d1 <- stats::dhyper(x = 0:x$k, m = x$populationK, n = x$N - x$populationK, k = x$n)
-		}
-		graphics::barplot(d, xlab = "Errors", col = "lightgray", ylab = "Probability", las = 1, main = mainLab, width = 1, space = 0)
-		graphics::axis(1, at = seq(0, limx, by = 10) + 0.5, labels = seq(0, limx, by = 10))
-		graphics::barplot(d1, col = "darkgray", add = TRUE, las = 1, axes = FALSE, width = 1, space = 0)
-		graphics::legend("topright", legend = c("Error free", "Errors"), fill = c("lightgray", "darkgray"), bty = "n", cex = 1.2) 
+			if(x[["materiality"]] == 1)
+				stop("Cannot plot a frequentist outcome when the materiality is unknown.")
+			if(x[["method"]] == "poisson"){
+				mainLab <- paste0("Poisson distribution (lambda = ", round(x[["materiality"]] * x[["n"]], 2), ")")
+				d <- stats::dpois(x = 0:x[["n"]], lambda = x[["materiality"]] * x[["n"]])[1:limx]
+				d1 <- stats::dpois(x = 0:x[["k"]], lambda = x[["materiality"]] * x[["n"]])
+			} else if(x[["method"]] == "binomial"){
+				mainLab <- paste0("Binomial distribution (n = ", x$n, ", p = ", round(x[["materiality"]], 2),")")
+				d <- stats::dbinom(x = 0:x[["n"]], size = x[["n"]], prob = x[["materiality"]])[1:limx]
+				d1 <- stats::dbinom(x = 0:x[["k"]], size = x[["n"]], prob = x[["materiality"]])
+			} else if(x[["method"]] == "hypergeometric"){
+				mainLab <- paste0("Hypergeometric distribution (N = ", x$N, ", n = ", x$n, ", K = ", x[["populationK"]], ", k = ", x$k,")")
+				d <- stats::dhyper(x = 0:x[["n"]], m = x[["populationK"]], n = x[["N"]] - x[["populationK"]], k = x[["n"]])[1:limx]
+				d1 <- stats::dhyper(x = 0:x[["n"]], m = x[["populationK"]], n = x[["N"]] - x[["populationK"]], k = x[["n"]])
+			}
+			graphics::barplot(d, xlab = "Errors", col = "lightgray", ylab = "Probability", las = 1, main = mainLab, width = 1, space = 0)
+			graphics::axis(1, at = seq(0, limx, by = 10) + 0.5, labels = seq(0, limx, by = 10))
+			graphics::barplot(d1, col = "darkgray", add = TRUE, las = 1, axes = FALSE, width = 1, space = 0)
+			graphics::legend("topright", legend = c("Error free", "Errors"), fill = c("lightgray", "darkgray"), bty = "n", cex = 1.2) 
 		}
 	}
 }

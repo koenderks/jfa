@@ -13,7 +13,7 @@
 
 # R package jfa
 
-`jfa` is a multi-functional R package for statistical auditing. The package provides the user with four generic functions for planning, performing, and evaluating an audit and its results. Specifically, it contains functions for calculating sample sizes for substantive testing, sampling from data according to standard auditing techniques, and calculating various confidence bounds for the maximum error from data or summary statistics. The package also allows the user to create a Bayesian prior distribution for use in these functions. The `jfa` package can be used to set up the entire audit sampling workflow.
+`jfa` is a multi-functional R package for statistical auditing. The package provides the user with four generic functions for planning, performing, and evaluating an audit and its results. Specifically, it contains functions for calculating sample sizes for audit sampling, selecting the transactions according to standard auditing techniques, and calculating various confidence bounds for the misstatement from the sample or from summary statistics. The package also allows the user to create a Bayesian prior probability distribution for use in these functions. The `jfa` package can be used to set up the entire audit sampling workflow.
 
 * [Installing](#installing)
 * [Benchmarks](#benchmarks)   
@@ -34,8 +34,7 @@ This project is licensed under the GPL-3 License.
 
 ## Installing
 
-These instructions will get you a copy of the `jfa` package up and running on your 
-local machine for use in R and RStudio. 
+These instructions will get you a copy of the `jfa` package up and running on your local machine for use in R and RStudio. 
 
 ### Prerequisites
 
@@ -68,7 +67,7 @@ If you are willing to contribute to the improvement of the package by adding a b
 
 Below is a list of the available functions in the current version of `jfa`, sorted by their occurrence in the standard audit sampling workflow.
 
-**auditPrior: Creating a prior distribution for substantive testing**
+**Creating a prior distribution:**
 
 - `auditPrior()`
 
@@ -76,7 +75,7 @@ This function creates a prior distribution according to one of several methods, 
 
 `auditPrior(confidence = 0.95, likelihood = "binomial", method = "none", expectedError = 0, N = NULL, materiality = NULL, ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)`
 
-**Planning: Calculating an audit sample size**
+**Planning an audit sample:**
 
 - `planning()`
 
@@ -84,7 +83,7 @@ This function calculates the required sample size for an audit, based on the poi
 
 `planning(confidence = 0.95, expectedError = 0, likelihood = "poisson", N = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, kPrior = 0, nPrior = 0, increase = 1, maxSize = 5000)`
 
-**Sampling: Selecting transactions from a population**
+**Selecting transactions from a population:**
 
 - `sampling()`
 
@@ -92,13 +91,13 @@ This function takes a data frame and performs sampling according to one of three
 
 `sampling(population, sampleSize, units = "records", algorithm = "random", bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, ascending = TRUE, withReplacement = FALSE, seed = 1)`
 
-**Evaluation: Calculating confidence bounds for audit samples**
+**Evaluating an audit sample:**
 
 This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound according to a specified method. The returned `jfaEvalution` object has a `print()` and `plot()` functions.
 
 - `evaluation()`
 
-`evaluation(sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, confidence = 0.95, nSumstats = NULL, kSumstats = NULL, method = "binomial", materiality = NULL, N = NULL, prior = FALSE, nPrior = 0, kPrior = 0, rohrbachDelta = 2.7, momentPoptype = "accounts", populationBookValue = NULL, minPrecision = NULL, csA = 1, csB = 3, csMu = 0.5)`
+`evaluation(confidence = 0.95, method = "binomial", N = NULL, sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, nSumstats = NULL, kSumstats = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, nPrior = 0, kPrior = 0, rohrbachDelta = 2.7, momentPoptype = "accounts", populationBookValue = NULL, csA = 1, csB = 3, csMu = 0.5)`
 
 ## Poster
 

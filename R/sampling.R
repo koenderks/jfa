@@ -194,21 +194,21 @@ sampling <- function(population, sampleSize, units = "records", algorithm = "ran
 	sample <- cbind(rowNumber, count, population[rowNumber, ])
 	rownames(sample) <- 1:nrow(sample)
 	colnames(sample) <- c("rowNumber", "count", colnames(population))
-	sample <- as.data.frame(sample)
-	results <- list()
-	results[["population"]] <- population
-	results[["sample"]] <- sample
-	results[["populationSize"]] <- nrow(population)
-	results[["requestedSampleSize"]] <- sampleSize
-	results[["obtainedSampleSize"]] <- nrow(sample)
-	results[["units"]] <- units
-	results[["algorithm"]] <- algorithm
-	results[["bookValues"]] <- bookValues
-	results[["intervalStartingPoint"]] <- intervalStartingPoint
+
+	result <- list()
+	result[["population"]] 				<- as.data.frame(population)
+	result[["sample"]] 					<- as.data.frame(sample)
+	result[["populationSize"]] 			<- as.numeric(nrow(population))
+	result[["requestedSampleSize"]] 	<- as.numeric(sampleSize)
+	result[["obtainedSampleSize"]] 		<- as.numeric(nrow(sample))
+	result[["units"]] 					<- as.character(units)
+	result[["algorithm"]] 				<- as.character(algorithm)
+	result[["bookValues"]] 				<- as.character(bookValues)
+	result[["intervalStartingPoint"]] 	<- as.numeric(intervalStartingPoint)
 	if(!is.null(interval))
-		results[["interval"]] <- interval
+		result[["interval"]] 			<- as.numeric(interval)
 	
 	# Add class 'jfaSampling' to the result.
-	class(results) <- "jfaSampling"
-	return(results)
+	class(result) <- "jfaSampling"
+	return(result)
 }

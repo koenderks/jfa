@@ -3,8 +3,8 @@
 #' @description This function creates a prior distribution for Bayesian audit sampling according to several methods discussed in Derks et al. (2020). The returned object is of class \code{jfaPrior} and can be used with associated \code{print()} and \code{plot()} methods. \code{jfaPrior} objects can be used as input for the \code{prior} argument in other functions.
 #'
 #' @usage auditPrior(confidence = 0.95, likelihood = "binomial", method = "none", 
-#'			  expectedError = 0, N = NULL, materiality = NULL, ir = 1, cr = 1,
-#'			  pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)
+#'            expectedError = 0, N = NULL, materiality = NULL, ir = 1, cr = 1,
+#'            pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)
 #' 
 #' @param confidence      the confidence level desired from the confidence bound (on a scale from 0 to 1). Defaults to 0.95, or 95\% confidence.
 #' @param likelihood      can be one of \code{binomial}, \code{poisson}, or \code{hypergeometric}. See the Details section for more information.

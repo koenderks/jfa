@@ -5,9 +5,9 @@
 \title{Frequentist and Bayesian Planning for Audit Sampling}
 \usage{
 planning(confidence = 0.95, expectedError = 0, likelihood = "poisson", N = NULL, 
-		materiality = NULL, minPrecision = NULL, 
-         prior = FALSE, kPrior = 0, nPrior = 0,
-         increase = 1, maxSize = 5000)
+          materiality = NULL, minPrecision = NULL, 
+          prior = FALSE, kPrior = 0, nPrior = 0,
+          increase = 1, maxSize = 5000)
 }
 \arguments{
 \item{confidence}{the confidence level desired from the confidence bound (on a scale from 0 to 1). Defaults to 0.95, or 95\% confidence.}

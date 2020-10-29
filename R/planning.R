@@ -3,9 +3,9 @@
 #' @description This function calculates the required sample size for an audit, based on the poisson, binomial, or hypergeometric likelihood. A prior can be specified to perform Bayesian planning. The returned object is of class \code{jfaPlanning} and can be used with associated \code{print()} and \code{plot()} methods.
 #'
 #' @usage planning(confidence = 0.95, expectedError = 0, likelihood = "poisson", N = NULL, 
-#'			materiality = NULL, minPrecision = NULL, 
-#'          prior = FALSE, kPrior = 0, nPrior = 0,
-#'          increase = 1, maxSize = 5000)
+#'           materiality = NULL, minPrecision = NULL, 
+#'           prior = FALSE, kPrior = 0, nPrior = 0,
+#'           increase = 1, maxSize = 5000)
 #'
 #' @param confidence    the confidence level desired from the confidence bound (on a scale from 0 to 1). Defaults to 0.95, or 95\% confidence.
 #' @param expectedError a fraction representing the percentage of expected mistakes in the sample relative to the total size, or a number (>= 1) that represents the number of expected mistakes.
@@ -331,7 +331,7 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
 		
 		result[["expectedPosterior"]][["description"]]			<- list()
 		result[["expectedPosterior"]][["description"]]$density 	<- switch(likelihood, "poisson" = "gamma", "binomial" = "beta", "hypergeometric" = "beta-binomial")
-		result[["expectedPosterior"]][["description"]]$alpha   	<- as.numeric(result[["prior"]]$description$alpha + result[["expectedSampleError"]])
+		result[["expectedPosterior"]][["description"]]$alpha   	<- result[["prior"]]$description$alpha + result[["expectedSampleError"]]
 		result[["expectedPosterior"]][["description"]]$beta   	<- switch(likelihood, 
 																			"poisson" = result[["prior"]]$description$beta + result[["sampleSize"]], 
 																			"binomial" = result[["prior"]]$description$beta + result[["sampleSize"]] - result[["expectedSampleError"]], 
@@ -340,32 +340,32 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
 		result[["expectedPosterior"]][["statistics"]] 			<- list()
 		result[["expectedPosterior"]][["statistics"]]$mode 	<- switch(likelihood, 
 																		"poisson" = (result[["expectedPosterior"]][["description"]]$alpha - 1) / result[["expectedPosterior"]][["description"]]$beta,
-																		"binomial" = ((result[["prior"]]$description$alpha + result[["expectedSampleError"]]) - 1) / ((result[["prior"]]$description$alpha + result[["expectedSampleError"]]) + (result[["prior"]]$description$beta + result[["sampleSize"]] - result[["expectedSampleError"]]) - 2),
-																		"hypergeometric" = which.max(.dBetaBinom(x = 0:result[["N"]], N = result[["N"]], shape1 = result[["prior"]]$description$alpha + result[["expectedSampleError"]], shape2 = result[["prior"]]$description$beta + result[["sampleSize"]] - result[["expectedSampleError"]])) - 1)
+																		"binomial" = (result[["expectedPosterior"]][["description"]]$alpha - 1) / (result[["expectedPosterior"]][["description"]]$alpha + result[["expectedPosterior"]][["description"]]$beta - 2),
+																		"hypergeometric" = which.max(.dBetaBinom(x = 0:result[["N"]], N = result[["N"]], shape1 = result[["expectedPosterior"]][["description"]]$alpha, shape2 = result[["expectedPosterior"]][["description"]]$beta)) - 1)
 		result[["expectedPosterior"]][["statistics"]]$mean 	<- switch(likelihood, 
-																		"poisson" = result[["prior"]]$description$alpha + result[["expectedSampleError"]] / (result[["prior"]]$description$beta + result[["sampleSize"]]),
-																		"binomial" = (result[["prior"]]$description$alpha + result[["expectedSampleError"]]) / ((result[["prior"]]$description$alpha + result[["expectedSampleError"]]) + (result[["prior"]]$description$beta + result[["sampleSize"]] - result[["expectedSampleError"]])),
-																		"hypergeometric" = (result[["prior"]]$description$alpha + result[["expectedSampleError"]]) / ((result[["prior"]]$description$alpha + result[["expectedSampleError"]]) + (result[["prior"]]$description$beta + result[["sampleSize"]] - result[["expectedSampleError"]])) * result[["N"]])
+																		"poisson" = result[["expectedPosterior"]][["description"]]$alpha / result[["expectedPosterior"]][["description"]]$beta,
+																		"binomial" = result[["expectedPosterior"]][["description"]]$alpha / (result[["expectedPosterior"]][["description"]]$alpha + result[["expectedPosterior"]][["description"]]$beta),
+																		"hypergeometric" = result[["expectedPosterior"]][["description"]]$alpha / (result[["expectedPosterior"]][["description"]]$alpha + result[["expectedPosterior"]][["description"]]$beta) * result[["N"]])
 		result[["expectedPosterior"]][["statistics"]]$median 	<- switch(likelihood, 
-																			"poisson" = stats::qgamma(0.5, shape = result[["prior"]]$description$alpha + result[["expectedSampleError"]], rate = result[["prior"]]$description$beta + result[["sampleSize"]]),
-																			"binomial" = stats::qbeta(0.5, shape1 = result[["prior"]]$description$alpha, shape2 = (result[["prior"]]$description$beta + result[["sampleSize"]] - result[["expectedSampleError"]])),
-																			"hypergeometric" = .qBetaBinom(0.5, N = result[["N"]], shape1 = result[["prior"]]$description$alpha, shape2 = (result[["prior"]]$description$beta + result[["sampleSize"]] - result[["expectedSampleError"]])))
+																			"poisson" = stats::qgamma(0.5, shape = result[["expectedPosterior"]][["description"]]$alpha, rate = result[["expectedPosterior"]][["description"]]$beta),
+																			"binomial" = stats::qbeta(0.5, shape1 = result[["expectedPosterior"]][["description"]]$alpha, shape2 = result[["expectedPosterior"]][["description"]]$beta),
+																			"hypergeometric" = .qBetaBinom(0.5, N = result[["N"]], shape1 = result[["expectedPosterior"]][["description"]]$alpha, shape2 = result[["expectedPosterior"]][["description"]]$beta))
 		result[["expectedPosterior"]][["statistics"]]$ub 	<- switch(likelihood, 
-																		"poisson" = stats::qgamma(confidence, shape = result[["prior"]]$description$alpha + result[["expectedSampleError"]], rate = result[["prior"]]$description$beta + result[["sampleSize"]]),
-																		"binomial" = stats::qbeta(confidence, shape1 = result[["prior"]]$description$alpha + result[["expectedSampleError"]], shape2 = (result[["prior"]]$description$beta + result[["sampleSize"]] - result[["expectedSampleError"]])),
-																		"hypergeometric" = .qBetaBinom(confidence, N = result[["N"]], shape1 = result[["prior"]]$description$alpha + result[["expectedSampleError"]], shape2 = (result[["prior"]]$description$beta + result[["sampleSize"]] - result[["expectedSampleError"]])))									
+																		"poisson" = stats::qgamma(confidence, shape = result[["expectedPosterior"]][["description"]]$alpha, rate = result[["expectedPosterior"]][["description"]]$beta),
+																		"binomial" = stats::qbeta(confidence, shape1 = result[["expectedPosterior"]][["description"]]$alpha, shape2 = result[["expectedPosterior"]][["description"]]$beta),
+																		"hypergeometric" = .qBetaBinom(confidence, N = result[["N"]], shape1 = result[["expectedPosterior"]][["description"]]$alpha, shape2 = result[["expectedPosterior"]][["description"]]$beta))									
 		result[["expectedPosterior"]][["statistics"]]$precision <- ifelse(likelihood == "hypergeometric", 
 																			yes = (result[["expectedPosterior"]][["statistics"]]$ub - result[["expectedPosterior"]][["statistics"]]$mode) / result[["N"]],
 																			no = result[["expectedPosterior"]][["statistics"]]$ub - result[["expectedPosterior"]][["statistics"]]$mode)
-		if(result$materiality != 1){
+		if(result[["materiality"]] != 1){
 			result[["expectedPosterior"]][["hypotheses"]] 			<- list()
 			result[["expectedPosterior"]][["hypotheses"]]$pHmin 	<- switch(likelihood, 
 																				"poisson" = stats::pgamma(materiality, shape = result[["expectedPosterior"]][["description"]]$alpha, rate = result[["expectedPosterior"]][["description"]]$beta),
 																				"binomial" = stats::pbeta(materiality, shape1 = result[["expectedPosterior"]][["description"]]$alpha, shape2 = result[["expectedPosterior"]][["description"]]$beta),
 																				"hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N"]]), N = result[["N"]], shape1 = result[["expectedPosterior"]][["description"]]$alpha, shape2 = result[["expectedPosterior"]][["description"]]$beta))
 			result[["expectedPosterior"]][["hypotheses"]]$pHplus 	<- switch(likelihood, 
-																				"poisson" = stats::pgamma(materiality, shape = result[["expectedPosterior"]]$description$alpha, rate = result[["expectedPosterior"]]$description$beta, lower.tail = FALSE),
-																				"binomial" = stats::pbeta(materiality, shape1 = result[["expectedPosterior"]]$description$alpha, shape2 = result[["expectedPosterior"]]$description$beta, lower.tail = FALSE),
+																				"poisson" = stats::pgamma(materiality, shape = result[["expectedPosterior"]][["description"]]$alpha, rate = result[["expectedPosterior"]][["description"]]$beta, lower.tail = FALSE),
+																				"binomial" = stats::pbeta(materiality, shape1 = result[["expectedPosterior"]][["description"]]$alpha, shape2 = result[["expectedPosterior"]][["description"]]$beta, lower.tail = FALSE),
 																				"hypergeometric" = 1 - result[["expectedPosterior"]][["hypotheses"]]$pHmin)
 			result[["expectedPosterior"]][["hypotheses"]]$oddsHmin 		<- result[["expectedPosterior"]][["hypotheses"]]$pHmin / result[["expectedPosterior"]][["hypotheses"]]$pHplus
 			result[["expectedPosterior"]][["hypotheses"]]$oddsHplus 	<- 1 / result[["expectedPosterior"]][["hypotheses"]]$oddsHmin
