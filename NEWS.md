@@ -1,6 +1,17 @@
+# jfa 0.4.0
+
+- Implemented improved calculation of prior parameters in the `auditPrior()` function for `method = median` when `expectedErrors > 0`.
+- Added `digits` argument in the internal `jfa:::print.jfaPrior()`, `jfa:::print.jfaPlanning()`, `jfa:::print.jfaSelection()`, and `jfa:::print.jfaEvaluation()` functions to control rounding in printing.
+- Added `description`, `statistics`, `specifics` and `hypotheses` to the output of the `auditPrior()` function.
+- Added class `jfaPosterior` with `print()` and `plot()` methods.
+- Added `expectedPosterior` of class `jfaPosterior` to the output of the `planning()` function, includes `description`, `statistics`, `specifics` and `hypotheses`.
+- Added `posterior` of class `jfaPosterior` to the output of the `evaluation()` function, includes `description`, `statistics`, `specifics` and `hypotheses`.
+- Add a warning message to the `sampling()` function that it will be deprecated from 0.5.0 onwards. You can use `selection()` instead, since `sampling()` causes namespace issues with other packages.
+- Changed the class `jfaSampling` to `jfaSelection`. This should not have any consequences. 
+
 # jfa 0.3.1
 
-- Added unit tests that regularly check results of the `planning()` and `evaluation()` functions
+- Added unit tests that regularly verify results of the `planning()` and `evaluation()` functions against benchmarks.
 - Fixed two bugs in the `planning()` function. The first bug did not allow the user to plan for a monetary sample when their population size was too low. The second bug did not allow the user to select a non-integer number of expected errors when there was a prior involved.
 
 # jfa 0.3.0

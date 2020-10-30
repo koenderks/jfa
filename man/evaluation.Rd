@@ -4,15 +4,21 @@
 \alias{evaluation}
 \title{Evaluation of Audit Samples using Confidence / Credible Bounds}
 \usage{
-evaluation(sample = NULL, bookValues = NULL, auditValues = NULL, 
-           counts = NULL, confidence = 0.95, nSumstats = NULL, kSumstats = NULL,
-           method = "binomial", materiality = NULL, N = NULL, 
-           prior = FALSE, nPrior = 0, kPrior = 0, 
-           rohrbachDelta = 2.7, momentPoptype = "accounts",
-           populationBookValue = NULL, minPrecision = NULL,
-           csA = 1, csB = 3, csMu = 0.5)
+evaluation(confidence = 0.95, method = "binomial", N = NULL,
+            sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, 
+            nSumstats = NULL, kSumstats = NULL, 
+            materiality = NULL, minPrecision = NULL,
+            prior = FALSE, nPrior = 0, kPrior = 0, 
+            rohrbachDelta = 2.7, momentPoptype = "accounts", populationBookValue = NULL,
+            csA = 1, csB = 3, csMu = 0.5)
 }
 \arguments{
+\item{confidence}{the required confidence level for the bound. Default is 0.95 for 95\% confidence.}
+
+\item{method}{the method that is used to evaluate the sample. This can be either one of \code{poisson}, \code{binomial}, \code{hypergeometric}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}.}
+
+\item{N}{an integer specifying the total number of units (transactions or monetary units) in the population.}
+
 \item{sample}{a data frame containing at least a column of Ist values and a column of Soll (true) values.}
 
 \item{bookValues}{a character specifying the column name for the Ist values in the sample.}
@@ -21,17 +27,13 @@ evaluation(sample = NULL, bookValues = NULL, auditValues = NULL,
 
 \item{counts}{a integer vector of the number of times each transaction in the sample is to be evaluated (due to it being selected multiple times for the sample).}
 
-\item{confidence}{the required confidence level for the bound. Default is 0.95 for 95\% confidence.}
-
 \item{nSumstats}{an integer specifying the number of transactions in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data come from summary statistics specified by both \code{nSumstats} and \code{kSumstats}.}
 
 \item{kSumstats}{a value specifying the sum of taints (proportional errors) found in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data come from summary statistics specified by both \code{kSumstats} and \code{nSumstats}.}
 
-\item{method}{the method that is used to evaluate the sample. This can be either one of \code{poisson}, \code{binomial}, \code{hypergeometric}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}.}
-
 \item{materiality}{a value specifying the performance materiality as a fraction of the total value (or size) of the population (a value between 0 and 1). If specified, the function also returns the conclusion of the analysis with respect to the performance materiality. The value is discarded when \code{direct}, \code{difference}, \code{quotient}, or \code{regression} method is chosen.}
 
-\item{N}{an integer specifying the total number of transactions in the population.}
+\item{minPrecision}{a value specifying the required minimum precision. If specified, the function also returns the conclusion of the analysis with respect to the required minimum precision. This value must be specified as a fraction of the total value of the population (a value between 0 and 1).}
 
 \item{prior}{a logical indicating whether to use a prior distribution when evaluating. Defaults to \code{FALSE} for frequentist evaluation. If \code{TRUE}, the prior distribution is updated by the corresponding likelihood. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
 
@@ -45,8 +47,6 @@ evaluation(sample = NULL, bookValues = NULL, auditValues = NULL,
 
 \item{populationBookValue}{a value specifying the total value of the transactions in the population. Required when \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, but optional otherwise.}
 
-\item{minPrecision}{a value specifying the required minimum precision. If specified, the function also returns the conclusion of the analysis with respect to the required minimum precision. This value must be specified as a fraction of the total value of the population (a value between 0 and 1).}
-
 \item{csA}{if \code{method = "coxsnell"}, the \eqn{\alpha} parameter of the prior distribution on the mean taint. Default is set to 1, as recommended by Cox and Snell (1979).}
 
 \item{csB}{if \code{method = "coxsnell"}, the \eqn{\beta} parameter of the prior distribution on the mean taint. Default is set to 3, as recommended by Cox and Snell (1979).}
@@ -56,10 +56,14 @@ evaluation(sample = NULL, bookValues = NULL, auditValues = NULL,
 \value{
 An object of class \code{jfaEvaluation} containing:
 
+\item{confidence}{a value specifying the confidence level of the result.}
+\item{method}{the evaluation method that was used.}
+\item{N}{if \code{N} is specified, the population size that is used.}
 \item{n}{an integer specifying the sample size used in the evaluation.}
 \item{k}{an integer specifying the number of transactions that contained an error.}
 \item{t}{a value specifying the sum of observed taints.}
-\item{confidence}{a value specifying the confidence level of the result.}
+\item{materiality}{if \code{materiality} is specified, the performance materiality used.}
+\item{minPrecision}{if \code{minPrecision} is specified, the minimum required precision used.}
 \item{mle}{a value specifying the most likely error in the population as a proportion.}
 \item{precision}{a value specifying the difference between the mle and the upper confidence bound as a proportion.}
 \item{popBookvalue}{if specified as input, the total Ist value of the population.}
@@ -67,17 +71,10 @@ An object of class \code{jfaEvaluation} containing:
 \item{lowerBound}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, the value of the lower bound of the interval.}
 \item{upperBound}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, the value of the upper bound of the interval.}
 \item{confBound}{the upper confidence bound on the error percentage. }
-\item{method}{the evaluation method that was used.}
-\item{materiality}{if \code{materiality} is specified, the performance materiality used.}
 \item{conclusion}{if \code{materiality} is specified, the conclusion about whether to approve or not approve the population.}
-\item{N}{if \code{N} is specified, the population size that is used.}
 \item{populationK}{the assumed total errors in the population. Used in inferences with \code{hypergeometric} method.}
-\item{prior}{a logical indicating whether a prior was used in the analysis.}
-\item{nPrior}{if a prior is specified, the assumed prior sample size.}
-\item{kPrior}{if a prior is specified, the assumed prior total taint.}
-\item{multiplicationFactor}{if \code{method = "coxsnell"}, the multiplication factor for the \emph{F}-distribution.}
-\item{df1}{if \code{method = "coxsnell"}, the df1 for the \emph{F}-distribution.}
-\item{df2}{if \code{method = "coxsnell"}, the df2 for the \emph{F}-distribution.}
+\item{prior}{an object of class 'jfaPrior' to represents the prior distribution.}
+\item{posterior}{an object of class 'jfaPosterior' to represents the posterior distribution.}
 }
 \description{
 This function takes a data frame (using \code{sample}, \code{bookValue}, and \code{auditValues}) or summary statistics (using \code{nSumstats} and \code{kSumstats}) and evaluates the audit sample according to the specified method. The returned object is of class \code{jfaEvaluation} and can be used with associated \code{print()} and \code{plot()} methods.
@@ -111,8 +108,8 @@ data <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE),
                    bookValue = runif(n = 1000, min = 700, max = 1000))
 
 # Using monetary unit sampling, draw a random sample from the population.
-s1 <- sampling(population = data, sampleSize = 100, units = "mus", 
-               bookValues = "bookValue", algorithm = "random")
+s1 <- selection(population = data, sampleSize = 100, units = "mus", 
+                 bookValues = "bookValue", algorithm = "random")
 s1_sample <- s1$sample
 s1_sample$trueValue <- s1_sample$bookValue
 s1_sample$trueValue[2] <- s1_sample$trueValue[2] - 500 # One overstatement is found
@@ -131,7 +128,7 @@ print(e1)
 #
 # Confidence:               95\%   
 # Materiality:              5\% 
-# Minium precision:         100\% 
+# Minium precision:         Not specified 
 # Sample size:              100 
 # Sample errors:            1 
 # Sum of taints:            1 
@@ -140,8 +137,8 @@ print(e1)
 # Output:
 #
 # Most likely error:        1\% 
-# Upper bound:              4.656\% 
-# Precision:                3.656\% 
+# Upper bound:              4.66\% 
+# Precision:                3.66\% 
 # Conclusion:               Approve population
 # ------------------------------------------------------------
 
@@ -158,17 +155,17 @@ print(e2)
 #
 # Confidence:               95\%   
 # Materiality:              5\% 
-# Minium precision:         100\% 
+# Minium precision:         Not specified 
 # Sample size:              100 
 # Sample errors:            1 
-# Sum of taints:            0.644 
+# Sum of taints:            1 
 # Method:                   stringer 
 # ------------------------------------------------------------
 # Output:
 #
-# Most likely error:        0.644\% 
-# Upper bound:              4.049\% 
-# Precision:                3.405\% 
+# Most likely error:        0.69\% 
+# Upper bound:              4.12\% 
+# Precision:                3.44\% 
 # Conclusion:               Approve population 
 # ------------------------------------------------------------  
 
@@ -191,7 +188,7 @@ Stringer, K. W. (1963). Practical aspects of statistical sampling in auditing. \
 Touw, P., and Hoogduin, L. (2011). \emph{Statistiek voor Audit en Controlling}. Boom uitgevers Amsterdam.
 }
 \seealso{
-\code{\link{auditPrior}} \code{\link{planning}} \code{\link{sampling}}
+\code{\link{auditPrior}} \code{\link{planning}} \code{\link{selection}}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}

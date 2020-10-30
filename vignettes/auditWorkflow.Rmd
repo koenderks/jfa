@@ -12,7 +12,7 @@ author: Koen Derks
 
 ## Introduction and scenario
 
-This vignette accompanies the `jfa` R package and aims to show how the it facilitates auditors in their standard audit sampling workflow (hereafter "audit workflow"). In this example of the audit workflow, we will consider the case of BuildIt. BuildIt is a fictional construction company in the United States that is being audited by Laura, an external auditor for a fictional audit firm. Throughout the year, BuildIt has recorded every transaction they have made in their financial statements. Laura's job as an auditor is to make a judgment about the fairness of these financial statements. In other words, Laura needs to either approve or not approve BuildIt's financial statements. To not approve the financial statements would mean that, as a whole, the financial statements contain errors that are considered *material*. This means that the errors in the financial statements are large enough that they might influence the decision of someone relying on the financial statements. Since BuildIt is a small company, their financial statements only consist of 3500 transactions that each have a corresponding recorded book value. Before assessing the details in the financial statements, Laura already tested BuildIt's computer systems that processed these transactions and found that they were quite reliable. 
+This vignette accompanies the `jfa` R package and aims to show how it facilitates auditors in their standard audit sampling workflow (hereafter "audit workflow"). In this example of the audit workflow, we will consider the case of BuildIt. BuildIt is a fictional construction company in the United States that is being audited by Laura, an external auditor for a fictional audit firm. Throughout the year, BuildIt has recorded every transaction they have made in their financial statements. Laura's job as an auditor is to make a judgment about the fairness of these financial statements. In other words, Laura needs to either approve or not approve BuildIt's financial statements. To not approve the financial statements would mean that, as a whole, the financial statements contain errors that are considered *material*. This means that the errors in the financial statements are large enough that they might influence the decision of someone relying on the financial statements. Since BuildIt is a small company, their financial statements only consist of 3500 transactions that each have a corresponding recorded book value. Before assessing the details in the financial statements, Laura already tested BuildIt's computer systems that processed these transactions and found that they were quite reliable. 
 
 In order to draw a conclusion about the fairness of BuildIt's recorded transactions, Laura separates her audit workflow into four stages. First, she will plan the size of the subset she needs to inspect from the financial statements to make a well-substantiated inference about them as a whole. Second, she will select the required subset from the financial statements. Third, she will inspect the selected subset and determines the audit value (true value) of the transactions it contains. Fourth, she will use the information from her inspected subset to make an inference about the financial statements as a whole. To start off this workflow, Laura first loads BuildIt's financial statements in R.
 
@@ -57,8 +57,7 @@ In a Bayesian audit, Laura starts at step 0 by defining the prior distribution t
 
 ```{r}
 # Step 0: Create a prior distribution according to the audit risk model.
-priorResult <- auditPrior(materiality = materiality, confidence = confidence, expectedError = expectedError,
-                          method = "arm", ir = ir, cr = cr, likelihood = "binomial")
+priorResult <- auditPrior(confidence = confidence, likelihood = "binomial", method = "arm", expectedError = expectedError, materiality = materiality, ir = ir, cr = cr)
 ```
 
 Laura can inspect the resulting prior distribution with the `print()` function.
@@ -77,8 +76,7 @@ Now that the prior distribution is specified, Laura can calculate the required s
 
 ```{r}
 # Step 1: Calculate the required sample size.
-planningResult <- planning(materiality = materiality, confidence = confidence, expectedError = expectedError, 
-                          prior = priorResult)
+planningResult <- planning(confidence = confidence, expectedError = expectedError, materiality = materiality, prior = priorResult)
 ```
 
 Laura can then inspect the result from her planning procedure by using the `print()` function. Her result tells her that, given her prior distribution she needs to audit a sample of 169 transactions so that, when at most 4.23 errors are found, she can conclude with 95% confidence that the maximum error in BuildIt's financial statements is lower the materiality of 5%. 
@@ -97,12 +95,11 @@ plot(planningResult)
 
 Laura is now ready to select the required 169 transactions from the financial statements. She can choose to do this according to one of two statistical methods. In *record sampling* (`units = "records"`), inclusion probabilities are assigned on the transaction level, treating transactions with a high value and a low value the same, a transaction of $5,000 is equally likely to be selected as a transaction of $1,000. In *monetary unit sampling* (`units = "mus"`), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the transaction that includes that dollar is selected. This favors higher transactions, as a transaction of \$5,000 is five times more likely to be selected than a transaction of \$1,000. 
 
-Laura chooses to use *monetary unit sampling*, as she wants to include more high-valued transactions. The `sampling()` function allows her to sample from the financial statements. She uses the `planningResult` object as an input for the `sampling()` function.
+Laura chooses to use *monetary unit sampling*, as she wants to include more high-valued transactions. The `selection()` function allows her to sample from the financial statements. She uses the `planningResult` object as an input for the `selection()` function.
 
 ```{r}
 # Step 2: Draw a sample from the financial statements.
-samplingResult <- sampling(population = BuildIt, sampleSize = planningResult, units = "mus", bookValues = "bookValue",
-                           seed = 999)
+samplingResult <- selection(population = BuildIt, sampleSize = planningResult, units = "mus", bookValues = "bookValue", seed = 999)
 ```
 
 Laura can inspect the outcomes of her sampling procedure by using the `print()` function.
@@ -134,8 +131,7 @@ Using her annotated sample, Laura can perform her inference with the `evaluation
 
 ```{r}
 # Step 4: Evaluate the sample.
-evaluationResult <- evaluation(sample = sample, materiality = materiality, prior = priorResult, 
-                               bookValues = "bookValue", auditValues = "auditValue")
+evaluationResult <- evaluation(sample = sample, materiality = materiality, prior = priorResult, bookValues = "bookValue", auditValues = "auditValue")
 ```
 
 Laura can inspect the outcomes of her inference by using the `print()` function. Her resulting upper bound is 3.518%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.
