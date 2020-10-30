@@ -125,7 +125,7 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
 						prior = FALSE, kPrior = 0, nPrior = 0,
                      	increase = 1, maxSize = 5000){
 
-	# Import existing prior distribution from class 'jfaPrior'.
+	# Import an existing prior distribution with class 'jfaPrior'.
 	if(class(prior) == "jfaPrior"){
 		if(kPrior != 0 || nPrior != 0)
 			warning("When the prior is of class 'jfaPrior', the arguments 'kPrior' and 'nPrior' will not be used.")
@@ -134,7 +134,7 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
 		likelihood 	<- prior$likelihood
 	}
 
-	# Error handling for input options.
+	# Perform error handling with respect to incompatible input options
 	if(confidence >= 1 || confidence <= 0 || is.null(confidence))
 		stop("Specify a value for the confidence likelihood. Possible values lie within the range of 0 to 1.")
 
@@ -150,10 +150,10 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
 	if((class(prior) == "logical" && prior == TRUE) && kPrior < 0 || nPrior < 0)
 		stop("When you specify a prior, both kPrior and nPrior should be > 0.")
 
-	# Define empty sample size. 
+	# Define a placeholder for the sample size 
 	ss <- NULL
 
-	# Define the type of expected errors.
+	# Find out the type of expected errors (percentage vs. number)
 	if(expectedError >= 0 && expectedError < 1){
 		errorType <- "percentage"
 		if(!is.null(materiality) && expectedError >= materiality)
@@ -164,17 +164,17 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
 			stop("When expectedError > 1 and the likelihood is binomial or hypergeometric, the value must be an integer.")
 	}
 
-	# Set minprecision and materiality to 1 if they are not given.
-	if(is.null(minPrecision))
-		minPrecision <- 1
+	# Set the materiality and the minimium precision to 1 if they are NULL
 	if(is.null(materiality))
 		materiality <- 1
+	if(is.null(minPrecision))
+		minPrecision <- 1
 
-	# Define the sampling frame.
+	# Define the sampling frame (the possible sample sizes)
 	samplingFrame <- seq(from = 0, to = maxSize, by = increase)
 	samplingFrame[1] <- 1
   
-	# Calculate the sample size.
+	# Calculate the sample size depending on the probability distribution
 	if(likelihood == "poisson"){
 		for(i in samplingFrame){
 			if(errorType == "percentage"){
@@ -265,11 +265,11 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
 		}
 	}
   
-	# No sample size could be calculated, throw an error.
+	# No sample size could be calculated, throw an error
 	if(is.null(ss))
 		stop("Sample size could not be calculated, you may want to increase the maxSize argument.")
 
-	# Create the results object.
+	# Create the main results object
 	result <- list()
 	result[["confidence"]]				<- as.numeric(confidence)
 	result[["expectedError"]]			<- as.numeric(expectedError)
@@ -277,7 +277,6 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
 	result[["N"]]						<- as.numeric(N)
 	result[["materiality"]]  			<- as.numeric(materiality)
 	result[["minPrecision"]]			<- as.numeric(minPrecision)
-	
 	result[["sampleSize"]]          	<- as.numeric(ceiling(ss))
 	result[["errorType"]]				<- as.character(errorType)
 	result[["expectedSampleError"]]  	<- as.numeric(implicitK)
@@ -285,7 +284,7 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
 	result[["expectedPrecision"]]    	<- as.numeric(bound - mle)
 	if(likelihood == "hypergeometric")
 		result[["populationK"]]        	<- as.numeric(populationK)
-	
+	# Create the prior distribution object	
 	if(((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior")){
 		if(class(prior) == "jfaPrior"){
 			result[["prior"]] 			<- prior
@@ -300,14 +299,15 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
 														sampleK = kPrior)
 		}
 	}
-	
+	# Create the expected posterior distribution object
 	if(!is.null(result[["prior"]])){
 		result[["expectedPosterior"]] <- list()
+		# Functional form of the expected posterior
 		result[["expectedPosterior"]]$posterior <- switch(likelihood, 
 													"poisson" = paste0("gamma(\u03B1 = ", round(result[["prior"]]$description$alpha + result[["expectedSampleError"]], 3), ", \u03B2 = ", round(result[["prior"]]$description$beta + result[["sampleSize"]], 3), ")"),
 													"binomial" = paste0("beta(\u03B1 = ", round(result[["prior"]]$description$alpha + result[["expectedSampleError"]], 3), ", \u03B2 = ", round(result[["prior"]]$description$beta + result[["sampleSize"]] - result[["expectedSampleError"]], 3), ")"),
 													"hypergeometric" = paste0("beta-binomial(N = ", result[["N"]], ", \u03B1 = ", round(result[["prior"]]$description$alpha + result[["expectedSampleError"]], 3), ", \u03B2 = ", round(result[["prior"]]$description$beta + result[["sampleSize"]] - result[["expectedSampleError"]], 3), ")"))
-		
+		# Create the description section
 		result[["expectedPosterior"]][["description"]]			<- list()
 		result[["expectedPosterior"]][["description"]]$density 	<- switch(likelihood, "poisson" = "gamma", "binomial" = "beta", "hypergeometric" = "beta-binomial")
 		result[["expectedPosterior"]][["description"]]$alpha   	<- result[["prior"]]$description$alpha + result[["expectedSampleError"]]
@@ -315,7 +315,7 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
 																			"poisson" = result[["prior"]]$description$beta + result[["sampleSize"]], 
 																			"binomial" = result[["prior"]]$description$beta + result[["sampleSize"]] - result[["expectedSampleError"]], 
 																			"hypergeometric" = result[["prior"]]$description$beta + result[["sampleSize"]] - result[["expectedSampleError"]])
-
+		# Create the statistics section
 		result[["expectedPosterior"]][["statistics"]] 			<- list()
 		result[["expectedPosterior"]][["statistics"]]$mode 	<- switch(likelihood, 
 																		"poisson" = (result[["expectedPosterior"]][["description"]]$alpha - 1) / result[["expectedPosterior"]][["description"]]$beta,
@@ -336,24 +336,26 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
 		result[["expectedPosterior"]][["statistics"]]$precision <- ifelse(likelihood == "hypergeometric", 
 																			yes = (result[["expectedPosterior"]][["statistics"]]$ub - result[["expectedPosterior"]][["statistics"]]$mode) / result[["N"]],
 																			no = result[["expectedPosterior"]][["statistics"]]$ub - result[["expectedPosterior"]][["statistics"]]$mode)
+		# Create the hypotheses section
 		if(result[["materiality"]] != 1){
-			result[["expectedPosterior"]][["hypotheses"]] 			<- list()
-			result[["expectedPosterior"]][["hypotheses"]]$pHmin 	<- switch(likelihood, 
-																				"poisson" = stats::pgamma(materiality, shape = result[["expectedPosterior"]][["description"]]$alpha, rate = result[["expectedPosterior"]][["description"]]$beta),
-																				"binomial" = stats::pbeta(materiality, shape1 = result[["expectedPosterior"]][["description"]]$alpha, shape2 = result[["expectedPosterior"]][["description"]]$beta),
-																				"hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N"]]), N = result[["N"]], shape1 = result[["expectedPosterior"]][["description"]]$alpha, shape2 = result[["expectedPosterior"]][["description"]]$beta))
-			result[["expectedPosterior"]][["hypotheses"]]$pHplus 	<- switch(likelihood, 
-																				"poisson" = stats::pgamma(materiality, shape = result[["expectedPosterior"]][["description"]]$alpha, rate = result[["expectedPosterior"]][["description"]]$beta, lower.tail = FALSE),
-																				"binomial" = stats::pbeta(materiality, shape1 = result[["expectedPosterior"]][["description"]]$alpha, shape2 = result[["expectedPosterior"]][["description"]]$beta, lower.tail = FALSE),
-																				"hypergeometric" = 1 - result[["expectedPosterior"]][["hypotheses"]]$pHmin)
+			result[["expectedPosterior"]][["hypotheses"]] 				<- list()
+			result[["expectedPosterior"]][["hypotheses"]]$hypotheses 	<- c(paste0("H-: \u0398 < ", materiality), paste0("H+: \u0398 > ", materiality))
+			result[["expectedPosterior"]][["hypotheses"]]$pHmin 		<- switch(likelihood, 
+																					"poisson" = stats::pgamma(materiality, shape = result[["expectedPosterior"]][["description"]]$alpha, rate = result[["expectedPosterior"]][["description"]]$beta),
+																					"binomial" = stats::pbeta(materiality, shape1 = result[["expectedPosterior"]][["description"]]$alpha, shape2 = result[["expectedPosterior"]][["description"]]$beta),
+																					"hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N"]]), N = result[["N"]], shape1 = result[["expectedPosterior"]][["description"]]$alpha, shape2 = result[["expectedPosterior"]][["description"]]$beta))
+			result[["expectedPosterior"]][["hypotheses"]]$pHplus 		<- switch(likelihood, 
+																					"poisson" = stats::pgamma(materiality, shape = result[["expectedPosterior"]][["description"]]$alpha, rate = result[["expectedPosterior"]][["description"]]$beta, lower.tail = FALSE),
+																					"binomial" = stats::pbeta(materiality, shape1 = result[["expectedPosterior"]][["description"]]$alpha, shape2 = result[["expectedPosterior"]][["description"]]$beta, lower.tail = FALSE),
+																					"hypergeometric" = 1 - result[["expectedPosterior"]][["hypotheses"]]$pHmin)
 			result[["expectedPosterior"]][["hypotheses"]]$oddsHmin 		<- result[["expectedPosterior"]][["hypotheses"]]$pHmin / result[["expectedPosterior"]][["hypotheses"]]$pHplus
 			result[["expectedPosterior"]][["hypotheses"]]$oddsHplus 	<- 1 / result[["expectedPosterior"]][["hypotheses"]]$oddsHmin
 			result[["expectedPosterior"]][["hypotheses"]]$expectedBf	<- result[["expectedPosterior"]][["hypotheses"]]$oddsHmin / result[["prior"]][["hypotheses"]]$oddsHmin
 		}
 		result[["expectedPosterior"]][["N"]] <- result[["N"]]
+		# Add class 'jfaPosterior' to the expected posterior distribution object.
 		class(result[["expectedPosterior"]]) <- "jfaPosterior"
 	}
-
 	# Add class 'jfaPlanning' to the result.
 	class(result) <- "jfaPlanning"
 	return(result)

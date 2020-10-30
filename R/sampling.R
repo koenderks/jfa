@@ -119,7 +119,7 @@ sampling <- function(population, sampleSize, units = "records", algorithm = "ran
 	# If the input for 'sampleSize' is of class 'jfaPlanning', extract the planned sample size
 	if(class(sampleSize) == "jfaPlanning")
 		sampleSize <- sampleSize$sampleSize 
-	# Error handling for different scenarios
+	# Perform error handling with respect to incompatible input options
 	if(units == "records" && sampleSize > nrow(population))
 		stop("Cannot take a sample larger than the population size")
 	if(!(algorithm %in% c("random", "cell", "interval")) || length(algorithm) != 1)
@@ -200,7 +200,7 @@ sampling <- function(population, sampleSize, units = "records", algorithm = "ran
 	sample <- cbind(rowNumber, count, population[rowNumber, ])
 	rownames(sample) <- 1:nrow(sample)
 	colnames(sample) <- c("rowNumber", "count", colnames(population))
-
+	# Create the main results object.
 	result <- list()
 	result[["population"]] 				<- as.data.frame(population)
 	result[["sample"]] 					<- as.data.frame(sample)
@@ -213,7 +213,6 @@ sampling <- function(population, sampleSize, units = "records", algorithm = "ran
 	result[["intervalStartingPoint"]] 	<- as.numeric(intervalStartingPoint)
 	if(!is.null(interval))
 		result[["interval"]] 			<- as.numeric(interval)
-	
 	# Add class 'jfaSampling' to the result.
 	class(result) <- "jfaSampling"
 	return(result)

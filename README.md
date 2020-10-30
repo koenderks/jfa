@@ -16,6 +16,7 @@
 `jfa` is a multi-functional R package for statistical auditing. The package provides the user with four generic functions for planning, performing, and evaluating an audit and its results. Specifically, it contains functions for calculating sample sizes for audit sampling, selecting the transactions according to standard auditing techniques, and calculating various confidence bounds for the misstatement from the sample or from summary statistics. The package also allows the user to create a Bayesian prior probability distribution for use in these functions. The `jfa` package can be used to set up the entire audit sampling workflow.
 
 * [Installing](#installing)
+* [Contributing](#contributing) 
 * [Benchmarks](#benchmarks)   
 * [Functions and features](#functions-and-features) 
 * [Poster](#poster) 
@@ -27,8 +28,6 @@ For complete documentation, see the package [manual](./man/manual/jfa_0.4.0.pdf)
 * **Koen Derks** - *Initial work* - [Website](https://koenderks.com)
 
 See also the list of [contributors](https://github.com/koenderks/jfa/graphs/contributors) who participated in this project.
-
-If you are willing to contribute to the improvement of the package by adding a method, please check the Wiki on [how to contribute a new method to jfa](https://github.com/koenderks/jfa/wiki/Methods). 
 
 ### License
 
@@ -57,13 +56,15 @@ library(jfa)
 
 Examples can be found in the package [vignette](https://cran.r-project.org/package=jfa/vignettes/auditWorkflow.html).
 
+## Contributing
+
+`jfa` is an open-source project that aims to be useful for the audit community. Your help in benchmarking and extending `jfa` is therefore greatly appreciate. Contributing to `jfa` does not have to take much time or knowledge, and there is extensive information available on the Wiki page of this repository. If you are willing to contribute to the improvement of the package by adding a benchmark, please check out the Wiki page on [how to contribute a benchmark to jfa](https://github.com/koenderks/jfa/wiki/Benchmarks). If you are willing to contribute to the improvement of the package by adding a new statistical method, please check the Wiki page on [how to contribute a new method to jfa](https://github.com/koenderks/jfa/wiki/Methods). 
+
 ## Benchmarks
 
 `jfa` is verified against the following benchmarks:
 
 - [Audit Sampling: Audit Guide](https://future.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL)
-
-If you are willing to contribute to the improvement of the package by adding a benchmark, please check out the Wiki on [how to contribute a benchmark to jfa](https://github.com/koenderks/jfa/wiki/Benchmarks). 
 
 ## Functions and features
 
