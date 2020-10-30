@@ -1,20 +1,5 @@
-.dBetaBinom <- function(x, N, shape1, shape2){
-	logval <- lbeta(x + shape1, N - x + shape2) - lbeta(shape1, shape2) + lchoose(N, x)
-	ret <- exp(logval)
-	return(ret)
-}
-
-.qBetaBinom <- function(p, N, shape1, shape2){
-	pp <- cumsum(.dBetaBinom(0:N, N, shape1, shape2))
-	return(sapply(p, function(x) sum(pp < x)))
-}
-
-.pBetaBinom <- function(q, N, shape1, shape2){
-	p <- sum(.dBetaBinom(0:q, N, shape1, shape2))
-	return(p)
-}
-
 .stringerBound <- function(taints, confidence, n, correction = NULL){
+	mle <- sum(taints) / n
 	t <- ifelse(taints < 0, yes = 0, no = taints)
 	t <- ifelse(taints > 1, yes = 1, no = taints)
 	t <- sort(subset(t, t > 0), decreasing = TRUE)
@@ -59,17 +44,24 @@
 			bound <- bound - pvzCorrection
 		}
 	}
-	return(bound)
+	result 					<- list()
+	result[["confBound"]] 	<- bound
+	result[["mle"]] 		<- mle
+	result[["precision"]] 	<- result[["confBound"]] - result[["mle"]]
+	return(result)
 }
 
 .rohrbachBound <- function(taints, confidence, n, N = NULL, rohrbachDelta){
 	if(is.null(N))
 		stop("Rohrbach's bound requires that you specify the population size N")
-	w <- 1 - taints
-	mu <- mean(taints)
-	vars <- sum(w^2)/n - (2-(rohrbachDelta/n)) * ((1/2) * ((sum(w^2)/n) - stats::var(w)))
-	bound <- mu + stats::qnorm(p = confidence) * sqrt((1-(n/N)) * (vars/n))
-	return(bound)
+	w 						<- 1 - taints
+	mu 						<- mean(taints)
+	vars 					<- sum(w^2)/n - (2-(rohrbachDelta/n)) * ((1/2) * ((sum(w^2)/n) - stats::var(w)))
+	result 					<- list()
+	result[["confBound"]] 	<- mu + stats::qnorm(p = confidence) * sqrt((1-(n/N)) * (vars/n))
+	result[["mle"]] 		<- sum(taints) / n
+	result[["precision"]] 	<- result[["confBound"]] - result[["mle"]]
+	return(result)
 }
 
 .momentBound <- function(taints, confidence, n, momentPoptype){
@@ -100,8 +92,28 @@
 	A      <- (4 * cm2_t^3)/(cm3_t^2)
 	B      <- cm3_t / (2 * cm2_t)
 	G      <- ncm1_t - ((2 * cm2_t^2)/cm3_t)
-	bound  <- G + (A * B * (1 + (stats::qnorm(confidence, mean = 0, sd = 1)/ sqrt(9 * A)) - (1 / (9 * A)))^3)
-	return(bound)
+	result 					<- list()
+	result[["confBound"]] 	<- G + (A * B * (1 + (stats::qnorm(confidence, mean = 0, sd = 1)/ sqrt(9 * A)) - (1 / (9 * A)))^3)
+	result[["mle"]] 		<- sum(taints) / n
+	result[["precision"]] 	<- result[["confBound"]] - result[["mle"]]
+	return(result)
+}
+
+.coxAndSnellBound <- function(taints, confidence, n, csA = 1, csB = 3, csMu = 0.5, aPrior = 1, bPrior = 1){
+	piPrior <- aPrior / (aPrior + bPrior)
+	taints 	<- subset(taints, taints > 0)
+	M 		<- length(taints)
+	t_bar 	<- mean(taints)
+	if(M == 0)
+		t_bar <- 0
+	result 								<- list()
+	result[["multiplicationFactor"]] 	<- ((M + csA) / (M + csB)) * ((csMu * (csB - 1)) + (M * t_bar)) / (n + (csA / piPrior))
+	result[["df1"]] 					<-  2 * (M + csA)
+	result[["df2"]] 					<- 2 * (M + csB)
+	result[["confBound"]] 				<- result[["multiplicationFactor"]] * stats::qf(p = confidence, df1 = result[["df1"]], df2 = result[["df2"]])
+	result[["mle"]] 					<- result[["multiplicationFactor"]] * (((result[["df1"]]-2)/result[["df1"]]) * (result[["df2"]] / (result[["df2"]] + 2)))
+	result[["precision"]] 				<- result[["confBound"]] - result[["mle"]]
+	return(result)
 }
 
 .directMethod <- function(bookValues, auditValues, confidence, N = NULL, n, populationBookValue = NULL){
@@ -109,15 +121,13 @@
 		stop("The direct method requires that you specify the population size N")
 	if(is.null(populationBookValue))
 		stop("The direct method requires that you specify the total population book value")
-	w <- mean(auditValues)
-	s <- stats::sd(auditValues)
-	pointEstimate <- N * w
-	lowerBound <- pointEstimate + stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
-	upperBound <- pointEstimate - stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
+	w 							<- mean(auditValues)
+	s 							<- stats::sd(auditValues)
 	result <- list()
-	result[["pointEstimate"]] <- pointEstimate
-	result[["lowerBound"]] <- lowerBound
-	result[["upperBound"]] <- upperBound
+	result[["pointEstimate"]] 	<- N * w
+	result[["lowerBound"]] 		<- result[["pointEstimate"]] + stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
+	result[["upperBound"]] 		<- result[["pointEstimate"]] - stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
+	result[["precision"]] 		<- (result[["upperBound"]] - result[["pointEstimate"]]) / populationBookValue
 	return(result)
 }
 
@@ -126,16 +136,14 @@
 		stop("The difference method requires that you specify the population size N")
 	if(is.null(populationBookValue))
 		stop("The difference method requires that you specify the total population book value")
-	we <- mean(bookValues - auditValues)
-	e <- N * we
-	s <- stats::sd(bookValues - auditValues)
-	pointEstimate <- populationBookValue - e
-	lowerBound <- pointEstimate + stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
-	upperBound <- pointEstimate - stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
-	result <- list()
-	result[["pointEstimate"]] <- pointEstimate
-	result[["lowerBound"]] <- lowerBound
-	result[["upperBound"]] <- upperBound
+	we 							<- mean(bookValues - auditValues)
+	e 							<- N * we
+	s 							<- stats::sd(bookValues - auditValues)
+	result 						<- list()
+	result[["pointEstimate"]] 	<- populationBookValue - e
+	result[["lowerBound"]] 		<- result[["pointEstimate"]] + stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
+	result[["upperBound"]] 		<- result[["pointEstimate"]] - stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
+	result[["precision"]] 		<- (result[["upperBound"]] - result[["pointEstimate"]]) / populationBookValue
 	return(result)
 }
 
@@ -150,14 +158,12 @@
 	sb <- stats::sd(bookValues)
 	r <- stats::cor(bookValues, auditValues)
 	q <- w / b
-	s <- sqrt( sw^2 - 2 * q * r * sb * sw + q^2 * sb^2 )
-	pointEstimate <- q * populationBookValue
-	lowerBound <- pointEstimate + stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
-	upperBound <- pointEstimate - stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
-	result <- list()
-	result[["pointEstimate"]] <- pointEstimate
-	result[["lowerBound"]] <- lowerBound
-	result[["upperBound"]] <- upperBound
+	s 							<- sqrt( sw^2 - 2 * q * r * sb * sw + q^2 * sb^2 )
+	result	 					<- list()
+	result[["pointEstimate"]] 	<- q * populationBookValue
+	result[["lowerBound"]] 		<- result[["pointEstimate"]] + stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
+	result[["upperBound"]] 		<- result[["pointEstimate"]] - stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
+	result[["precision"]] 		<- (result[["upperBound"]] - result[["pointEstimate"]]) / populationBookValue
 	return(result)
 }
 
@@ -166,42 +172,16 @@
 		stop("The regression method requires that you specify the population size N")
 	if(is.null(populationBookValue))
 		stop("The regression method requires that you specify the total population book value")
-	w <- mean(auditValues)
-	sw <- stats::sd(auditValues)
-	b <- mean(bookValues)
-	r <- stats::cor(bookValues, auditValues)
-	b1 <- (sum(bookValues * auditValues) - n * b * w) / (sum(bookValues^2) - (sum(bookValues)^2) / n)
-	s <- sw * sqrt(1 - r^2)
-	pointEstimate <- N * w + b1 * (populationBookValue - N * b)
-	lowerBound <- pointEstimate + stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
-	upperBound <- pointEstimate - stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
-	result <- list()
-	result[["pointEstimate"]] <- pointEstimate
-	result[["lowerBound"]] <- lowerBound
-	result[["upperBound"]] <- upperBound
+	w 							<- mean(auditValues)
+	sw 							<- stats::sd(auditValues)
+	b 							<- mean(bookValues)
+	r 							<- stats::cor(bookValues, auditValues)
+	b1 							<- (sum(bookValues * auditValues) - n * b * w) / (sum(bookValues^2) - (sum(bookValues)^2) / n)
+	s 							<- sw * sqrt(1 - r^2)
+	result 						<- list()
+	result[["pointEstimate"]] 	<- N * w + b1 * (populationBookValue - N * b)
+	result[["lowerBound"]] 		<- result[["pointEstimate"]] + stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
+	result[["upperBound"]] 		<- result[["pointEstimate"]] - stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
+	result[["precision"]] 		<- (result[["upperBound"]] - result[["pointEstimate"]]) / populationBookValue
 	return(result)
-}
-
-.coxAndSnellBound <- function(taints, confidence, n, csA = 1, csB = 3, csMu = 0.5, aPrior = 1, bPrior = 1){
-	piPrior <- aPrior / (aPrior + bPrior)
-	taints <- subset(taints, taints > 0)
-	M <- length(taints)
-	t_bar <- mean(taints)
-	if(M == 0)
-		t_bar <- 0
-	multiplicationFactor <- ((M + csA) / (M + csB)) * ((csMu * (csB - 1)) + (M * t_bar)) / (n + (csA / piPrior))
-	df1 <- 2 * (M + csA)
-	df2 <- 2 * (M + csB)
-	bound <- multiplicationFactor * stats::qf(p = confidence, df1 = df1, df2 = df2)
-	result <- list()
-	result[["multiplicationFactor"]] <- multiplicationFactor
-	result[["df1"]] <- df1
-	result[["df2"]] <- df2
-	result[["bound"]] <- bound
-	return(result)
-}
-
-.dCoxAndSnellF <- function(x, df1, df2, multiplicationFactor){
-	# Rewritten using Wolfram Mathematica
-	(df1 ** (df1 / 2) * df2**(df2 / 2) * (x / multiplicationFactor) ** (- 1 + df1 / 2) * (df2 + (df1 * x) / multiplicationFactor)**(( -df1 - df2) / 2))/(abs(multiplicationFactor) * beta(df1/2, df2/2))
 }

@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="./man/figures/logo/jfaLogo.svg" align="middle" width="500.56" height="313.6">
+</p>
+
 <!-- badges: start -->
   [![Travis build status](https://travis-ci.org/koenderks/jfa.svg?branch=master)](https://travis-ci.org/koenderks/jfa)
   [![Coverage](https://img.shields.io/codecov/c/github/koenderks/jfa)](https://codecov.io/gh/koenderks/jfa)
@@ -6,10 +10,6 @@
   ![DownloadsTotal](https://cranlogs.r-pkg.org/badges/grand-total/jfa)
   [![Issues](https://img.shields.io/github/issues/koenderks/jfa)](https://github.com/koenderks/jfa/issues)
 <!-- badges: end -->
-
-<p align="center">
-  <img src="./man/figures/logo/jfaLogo.svg" align="middle" width="500.56" height="313.6">
-</p>
 
 # R package jfa
 

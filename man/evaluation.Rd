@@ -73,8 +73,8 @@ An object of class \code{jfaEvaluation} containing:
 \item{confBound}{the upper confidence bound on the error percentage. }
 \item{conclusion}{if \code{materiality} is specified, the conclusion about whether to approve or not approve the population.}
 \item{populationK}{the assumed total errors in the population. Used in inferences with \code{hypergeometric} method.}
-\item{prior}{an ofject of class 'jfaPrior' to represents the prior distribution.}
-\item{posterior}{an ofject of class 'jfaPosterior' to represents the posterior distribution.}
+\item{prior}{an object of class 'jfaPrior' to represents the prior distribution.}
+\item{posterior}{an object of class 'jfaPosterior' to represents the posterior distribution.}
 }
 \description{
 This function takes a data frame (using \code{sample}, \code{bookValue}, and \code{auditValues}) or summary statistics (using \code{nSumstats} and \code{kSumstats}) and evaluates the audit sample according to the specified method. The returned object is of class \code{jfaEvaluation} and can be used with associated \code{print()} and \code{plot()} methods.

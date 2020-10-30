@@ -78,8 +78,8 @@
 #' \item{confBound}{the upper confidence bound on the error percentage. }
 #' \item{conclusion}{if \code{materiality} is specified, the conclusion about whether to approve or not approve the population.}
 #' \item{populationK}{the assumed total errors in the population. Used in inferences with \code{hypergeometric} method.}
-#' \item{prior}{an ofject of class 'jfaPrior' to represents the prior distribution.}
-#' \item{posterior}{an ofject of class 'jfaPosterior' to represents the posterior distribution.}
+#' \item{prior}{an object of class 'jfaPrior' to represents the prior distribution.}
+#' \item{posterior}{an object of class 'jfaPosterior' to represents the posterior distribution.}
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
@@ -279,49 +279,64 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
 			precision <- bound - mle
 		}
 	} else if(method == "stringer"){
-		bound <- .stringerBound(taints, confidence, n)
-		mle <- t / n
-		precision <- bound - mle
+		out 		<- .stringerBound(taints, confidence, n)
+		bound 		<- out[["confBound"]]
+		mle 		<- out[["mle"]]
+		precision 	<- out[["precision"]]
 	} else if(method == "stringer-meikle"){
-		bound <- .stringerBound(taints, confidence, n, correction = "meikle")
-		mle <- t / n
-		precision <- bound - mle
+		out 		<- .stringerBound(taints, confidence, n, correction = "meikle")
+		bound 		<- out[["confBound"]]
+		mle 		<- out[["mle"]]
+		precision 	<- out[["precision"]]
 	} else if(method == "stringer-lta"){
-		bound <- .stringerBound(taints, confidence, n, correction = "lta")
-		mle <- t / n
-		precision <- bound - mle
+		out 		<- .stringerBound(taints, confidence, n, correction = "lta")
+		bound 		<- out[["confBound"]]
+		mle 		<- out[["mle"]]
+		precision 	<- out[["precision"]]
 	} else if(method == "stringer-pvz"){
-		bound <- .stringerBound(taints, confidence, n, correction = "pvz")
-		mle <- t / n
-		precision <- bound - mle
+		out 		<- .stringerBound(taints, confidence, n, correction = "pvz")
+		bound 		<- out[["confBound"]]
+		mle 		<- out[["mle"]]
+		precision 	<- out[["precision"]]
 	} else if(method == "rohrbach"){
-		bound <- .rohrbachBound(taints, confidence, n, N, rohrbachDelta = rohrbachDelta)
-		mle <- t / n
-		precision <- bound - mle
+		out 		<- .rohrbachBound(taints, confidence, n, N, rohrbachDelta = rohrbachDelta)
+		bound 		<- out[["confBound"]]
+		mle 		<- out[["mle"]]
+		precision 	<- out[["precision"]]
 	} else if(method == "moment"){
-		bound <- .momentBound(taints, confidence, n, momentPoptype = momentPoptype)
-		mle <- t / n
-		precision <- bound - mle
+		out 		<- .momentBound(taints, confidence, n, momentPoptype = momentPoptype)
+		bound 		<- out[["confBound"]]
+		mle 		<- out[["mle"]]
+		precision 	<- out[["precision"]]
 	} else if(method == "coxsnell"){
-		bound <- .coxAndSnellBound(taints, confidence, n, csA, csB, csMu, aPrior = 1 + kPrior, bPrior = 1 + nPrior - kPrior)
+		out 		<- .coxAndSnellBound(taints, confidence, n, csA, csB, csMu, aPrior = 1 + kPrior, bPrior = 1 + nPrior - kPrior)
+		bound 		<- out[["confBound"]]
+		mle 		<- out[["mle"]]
+		precision 	<- out[["precision"]]
 	} else if(method == "direct"){
-		bound <- .directMethod(bv, av, confidence, N, n, populationBookValue)
-		mle <- bound$pointEstimate
-		precision <- (bound$upperBound - mle) / populationBookValue
+		out 		<- .directMethod(bv, av, confidence, N, n, populationBookValue)
+		mle 		<- out[["pointEstimate"]]
+		precision 	<- out[["precision"]]
 	} else if(method == "difference"){
-		bound <- .differenceMethod(bv, av, confidence, N, n, populationBookValue)
-		mle <- bound$pointEstimate
-		precision <- (bound$upperBound - mle) / populationBookValue
+		out 		<- .differenceMethod(bv, av, confidence, N, n, populationBookValue)
+		mle 		<- out[["pointEstimate"]]
+		precision 	<- out[["precision"]]
 	} else if(method == "quotient"){
-		bound <- .quotientMethod(bv, av, confidence, N, n, populationBookValue)
-		mle <- bound$pointEstimate
-		precision <- (bound$upperBound - mle) / populationBookValue
+		out 		<- .quotientMethod(bv, av, confidence, N, n, populationBookValue)
+		mle 		<- out[["pointEstimate"]]
+		precision 	<- out[["precision"]]
 	} else if(method == "regression"){
-		bound <- .regressionMethod(bv, av, confidence, N, n, populationBookValue)
-		mle <- bound$pointEstimate
-		precision <- (bound$upperBound - mle) / populationBookValue
+		out 		<- .regressionMethod(bv, av, confidence, N, n, populationBookValue)
+		mle 		<- out[["pointEstimate"]]
+		precision 	<- out[["precision"]]
+	} else if(method == "newmethod"){
+		# Add new methods here
+		#
+		# out 		<- .functionFromMethodsFile()
+		# bound 	<- out[["confBound"]]
+		# mle 		<- out[["mle"]]
+		# precision <- out[["precision"]]
 	}
-	# Add new methods here.
   
 	# Create the main results object
 	result <- list()
@@ -338,20 +353,19 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
 	if(!is.null(precision))
 		result[["precision"]]	<- as.numeric(precision)
 	if(method %in% c("direct", "difference", "quotient", "regression")){
+		# These methods yield an interval instead of a bound
 		result[["popBookvalue"]]   <- as.numeric(populationBookValue)
-		result[["pointEstimate"]]  <- as.numeric(bound[["pointEstimate"]])
-		result[["lowerBound"]]     <- as.numeric(bound[["lowerBound"]])
-		result[["upperBound"]]     <- as.numeric(bound[["upperBound"]])
+		result[["pointEstimate"]]  <- as.numeric(out[["pointEstimate"]])
+		result[["lowerBound"]]     <- as.numeric(out[["lowerBound"]])
+		result[["upperBound"]]     <- as.numeric(out[["upperBound"]])
 	} else {
+		# These methods yield an upper bound
+		result[["confBound"]] <- as.numeric(bound) 
 		if(method == "coxsnell"){
-			result[["confBound"]]            <- as.numeric(bound[["bound"]])
-			result[["multiplicationFactor"]] <- as.numeric(bound[["multiplicationFactor"]])
-			result[["df1"]]                  <- as.numeric(bound[["df1"]])
-			result[["df2"]]                  <- as.numeric(bound[["df2"]])
-			result[["mle"]]					 <- result[["multiplicationFactor"]] * (((result[["df1"]]-2)/result[["df1"]]) * (result[["df2"]] / (result[["df2"]] + 2)))
-			result[["precision"]]			 <- result[["confBound"]] - result[["mle"]]
-		} else {
-			result[["confBound"]]            <- as.numeric(bound) 
+			# This method yields extra statistics
+			result[["multiplicationFactor"]] <- as.numeric(out[["multiplicationFactor"]])
+			result[["df1"]]                  <- as.numeric(out[["df1"]])
+			result[["df2"]]                  <- as.numeric(out[["df2"]])
 		}
 	}
 	if(method == "hypergeometric" && is.logical(prior) && prior == FALSE)
