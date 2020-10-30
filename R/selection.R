@@ -1,10 +1,10 @@
-#' Sampling from Audit Populations
+#' Selecting a Sample from an Audit Populations
 #'
-#' @description WARNING: This function will be deprecated from 0.5.0 onwards. Use selection(). This function takes a data frame and performs sampling according to one of three popular algorithms: random sampling, cell sampling, or fixed interval sampling. Sampling is done in combination with one of two sampling units: records or monetary units The returned object is of class \code{jfaSelection} and can be used with associated \code{print()} and \code{plot()} methods. 
+#' @description This function takes a data frame and performs sampling according to one of three popular algorithms: random sampling, cell sampling, or fixed interval sampling. Sampling is done in combination with one of two sampling units: records or monetary units The returned object is of class \code{jfaSelection} and can be used with associated \code{print()} and \code{plot()} methods. 
 #'
-#' @usage sampling(population, sampleSize, units = "records", algorithm = "random",
-#'          bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, 
-#'          ascending = TRUE, withReplacement = FALSE, seed = 1)
+#' @usage selection(population, sampleSize, units = "records", algorithm = "random",
+#'           bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, 
+#'           ascending = TRUE, withReplacement = FALSE, seed = 1)
 #'
 #' @param population            a data frame containing the population the auditor wishes to sample from.
 #' @param sampleSize            the number of observations that need to be selected from the population. Can also be an object of class \code{jfaPlanning}.
@@ -56,8 +56,8 @@
 #' 
 #' # Draw a custom sample of 100 from the population (via random record sampling):
 #' 
-#' s1 <- sampling(population = population, sampleSize = 100, algorithm = "random", 
-#'                units = "records", seed = 1)
+#' s1 <- selection(population = population, sampleSize = 100, algorithm = "random", 
+#'                 units = "records", seed = 1)
 #' print(s1)
 #' 
 #' # ------------------------------------------------------------
@@ -85,8 +85,8 @@
 #'                likelihood = "binomial")
 #' 
 #' # Draw a sample via random monetary unit sampling:
-#' s2 <- sampling(population = population, sampleSize = p1, algorithm = "random", 
-#'                units = "mus", seed = 1, bookValues = "bookValue")
+#' s2 <- selection(population = population, sampleSize = p1, algorithm = "random", 
+#'                 units = "mus", seed = 1, bookValues = "bookValue")
 #' print(s2)
 #' 
 #' # ------------------------------------------------------------
@@ -109,15 +109,13 @@
 #' # Percentage of value:     23.06% 
 #' # ------------------------------------------------------------ 
 #'
-#' @keywords sampling sample audit
+#' @keywords selection sample audit
 #'
 #' @export
 
-sampling <- function(population, sampleSize, units = "records", algorithm = "random", 
-					 bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, 
-                     ascending = TRUE, withReplacement = FALSE, seed = 1){
-	## WARNING: THIS FUNCTION WILL BE DEPRECATED FROM 0.5.0 ONWARDS
-	warning("This function will be deprecated from 0.5.0 onwards. Use selection().")
+selection <- function(population, sampleSize, units = "records", algorithm = "random", 
+					 	bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, 
+                     	ascending = TRUE, withReplacement = FALSE, seed = 1){
 	# If the input for 'sampleSize' is of class 'jfaPlanning', extract the planned sample size
 	if(class(sampleSize) == "jfaPlanning")
 		sampleSize <- sampleSize$sampleSize 

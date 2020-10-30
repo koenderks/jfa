@@ -54,7 +54,7 @@
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #' 
-#' @seealso \code{\link{planning}} \code{\link{sampling}} \code{\link{evaluation}}
+#' @seealso \code{\link{planning}} \code{\link{selection}} \code{\link{evaluation}}
 #' 
 #' @references Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., & Wetzels, R. (2019). JASP for audit: Bayesian tools for the auditing practice.
 #' @references Derks, K., de Swart, J., van Batenburg, P. Wagenmakers, E.-J., & Wetzels, R. (2020). Priors in a Bayesian Audit: How Integrating Information into the Prior Distribution can Improve Audit Transparency and Efficiency.

@@ -46,7 +46,7 @@
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
-#' @seealso \code{\link{auditPrior}} \code{\link{sampling}} \code{\link{evaluation}}
+#' @seealso \code{\link{auditPrior}} \code{\link{selection}} \code{\link{evaluation}}
 #'
 #' @references Dyer, D. and Pierce, R.L. (1993). On the Choice of the Prior Distribution in Hypergeometric Sampling. \emph{Communications in Statistics - Theory and Methods}, 22(8), 2125 - 2146.
 #'

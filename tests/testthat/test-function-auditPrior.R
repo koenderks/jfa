@@ -27,7 +27,7 @@ test_that(desc = "(id: 4.1) Audit workflow", {
 							expectedError = expectedError, prior = prior, likelihood = "binomial")
 	
 	# Draw sample using random record sampling
-	sampleResult <- sampling(population = population, sampleSize = sampleSize, 
+	sampleResult <- selection(population = population, sampleSize = sampleSize, 
 							algorithm = "random", units = "records", seed = 1)
 	
 	sample <- sampleResult$sample

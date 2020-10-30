@@ -113,11 +113,11 @@ Supported features:
 
 **Selecting transactions from a population:**
 
-- Function: `sampling()`
+- Function: `selection()`
 
-This function takes a data frame and performs sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. The returned `jfaSampling` object has a `print()` and a `plot()` method. The `sampleSize` argument can also be an object of class `jfaPlanning`.
+This function takes a data frame and performs sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. The returned `jfaSelection` object has a `print()` and a `plot()` method. The `sampleSize` argument can also be an object of class `jfaPlanning`.
 
-`sampling(population, sampleSize, units = "records", algorithm = "random", bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, ascending = TRUE, withReplacement = FALSE, seed = 1)`
+`selection(population, sampleSize, units = "records", algorithm = "random", bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, ascending = TRUE, withReplacement = FALSE, seed = 1)`
 
 Supported features:
 

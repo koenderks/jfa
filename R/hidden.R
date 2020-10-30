@@ -106,9 +106,9 @@ print.jfaPlanning <- function(x, digits = 2, ...){
   	}
 }
 
-#' @method print jfaSampling
+#' @method print jfaSelection
 #' @export
-print.jfaSampling <- function(x, digits = 2, ...){
+print.jfaSelection <- function(x, digits = 2, ...){
   	if(x$units == "mus"){
     	cat("# ------------------------------------------------------------
 #                  jfa Selection Summary
@@ -365,9 +365,9 @@ plot.jfaPlanning <- function(x, ...){
 	}
 }
 
-#' @method plot jfaSampling
+#' @method plot jfaSelection
 #' @export
-plot.jfaSampling <- function(x, ...){
+plot.jfaSelection <- function(x, ...){
 	if(x$units == "records")
 		stop("No plotting method available for record sampling")
 	name <- x[["bookValues"]]

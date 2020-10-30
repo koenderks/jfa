@@ -108,8 +108,8 @@ data <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE),
                    bookValue = runif(n = 1000, min = 700, max = 1000))
 
 # Using monetary unit sampling, draw a random sample from the population.
-s1 <- sampling(population = data, sampleSize = 100, units = "mus", 
-               bookValues = "bookValue", algorithm = "random")
+s1 <- selection(population = data, sampleSize = 100, units = "mus", 
+                 bookValues = "bookValue", algorithm = "random")
 s1_sample <- s1$sample
 s1_sample$trueValue <- s1_sample$bookValue
 s1_sample$trueValue[2] <- s1_sample$trueValue[2] - 500 # One overstatement is found
@@ -188,7 +188,7 @@ Stringer, K. W. (1963). Practical aspects of statistical sampling in auditing. \
 Touw, P., and Hoogduin, L. (2011). \emph{Statistiek voor Audit en Controlling}. Boom uitgevers Amsterdam.
 }
 \seealso{
-\code{\link{auditPrior}} \code{\link{planning}} \code{\link{sampling}}
+\code{\link{auditPrior}} \code{\link{planning}} \code{\link{selection}}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}
