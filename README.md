@@ -21,7 +21,7 @@
 * [Functions and features](#functions-and-features) 
 * [Poster](#poster) 
 
-For complete documentation, see the package [manual](./man/manual/jfa_0.4.0.pdf).
+For complete documentation, see the package [manual](./man/manual/jfa_0.5.0.pdf).
 
 ### Authors
 
@@ -43,7 +43,7 @@ These instructions will get you a copy of the `jfa` package up and running on yo
 
 ### Downloading
 
-R package `jfa` is simple to download and set-up. The live version from [CRAN](https://cran.r-project.org/package=jfa) (0.4.0) can be downloaded by running the following command in R:
+R package `jfa` is simple to download and set-up. The live version from [CRAN](https://cran.r-project.org/package=jfa) (0.5.0) can be downloaded by running the following command in R:
 
 ```
 install.packages("jfa")
