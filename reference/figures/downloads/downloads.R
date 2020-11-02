@@ -24,7 +24,7 @@ p <- ggplot(plotData, aes(x = date, y = count)) +
       scale_x_date(name = "", breaks = xBreaks, labels = scales::date_format("%m-%Y")) +
       scale_y_continuous(name = "Monthly downloads", breaks = yBreaks, labels = yBreaks, limits = range(yBreaks)) +
       bbc_style() +
-      labs(title="CRAN downloads since January 2020") +
+      labs(title="Monthly CRAN downloads since January 2020") +
       geom_text(mapping = aes(x = date, y = count + 50), label = plotData$count) +
       theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 10),
             axis.text.y = element_text(size = 12), 
