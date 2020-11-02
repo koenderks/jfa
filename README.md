@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./man/figures/logo/jfaLogo.svg" align="middle" width="500.56" height="313.6">
+  <img src="./man/figures/logo/jfaLogo.png" align="middle">
 </p>
 
 <!-- badges: start -->
