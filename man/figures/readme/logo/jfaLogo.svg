@@ -12,7 +12,10 @@
    version="1.1"
    id="svg286"
    sodipodi:docname="jfaLogo.svg"
-   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   inkscape:export-filename="C:\Users\derksk\OneDrive - NBU\Desktop\jfa\man\figures\logo\jfaLogo.png"
+   inkscape:export-xdpi="70"
+   inkscape:export-ydpi="70">
   <metadata
      id="metadata290">
     <rdf:RDF>
@@ -21,7 +24,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -39,9 +42,9 @@
      id="namedview288"
      showgrid="false"
      inkscape:zoom="1.7469907"
-     inkscape:cx="271.125"
+     inkscape:cx="34.146067"
      inkscape:cy="184.125"
-     inkscape:window-x="-9"
+     inkscape:window-x="1791"
      inkscape:window-y="-9"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg286" />

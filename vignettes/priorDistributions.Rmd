@@ -1,0 +1,165 @@
+---
+title: "jfa: Constructing a prior distribution"
+author: Koen Derks
+date: "last modified: 07-11-2020"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{jfa: Constructing a prior distribution}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteDepends{jfa}
+  %\VignetteKeywords{audit, evaluation, jfa, planning, prior}
+  %\VignettePackage{jfa}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.height=4, fig.width=6)
+library(jfa)
+```
+
+## Bayesian statistics
+
+Bayesian statistics allows you to incorporate existing information into the statistical analysis and revise this information using the information from the sample, possibly increasing your efficiency in the sampling procedure. For example, when you have information that indicates a low-risk profile for your client, you may require less evidence from the audit sampling procedures. Be aware that all information that you incorporate into the statistical analysis should be justified.
+
+### Prior probability distributions
+
+Bayesian statistics incorporates existing information into the sampling procedure using a prior probability distribution that reflects your current knowledge about the misstatement in the population. The prior distribution is created using existing information, and is therefore generally created before the planning stage in the procedure. 
+
+## Prior construction methods
+
+An important question is how to incorporate various kinds of existing information into the prior distribution. `jfa` offers six methods to create a prior distribution. These methods are explained below. 
+
+First, let's set some default options for the confidence, performance materiality, the likelihood, and the expected errors.
+
+```{r}
+confidence <- 0.95        # 95% confidence
+likelihood <- "binomial"  # Binomial likelihood
+materiality <- 0.05       # Performance materiality of 5%
+expectedError <- 0        # Zero errors expected in sample
+```
+
+
+### [Default] No explicit information (`method = "none"`)
+
+You can refrain from incorporating explicit information in the prior distribution, and still use Bayesian statistics, using `method = none`. As an example, the code below incorporates no explicit information into a prior distribution
+
+```{r}
+prior1 <- auditPrior(confidence = confidence, likelihood = likelihood, expectedError = expectedError,
+                     materiality = materiality, method = "none")
+prior1
+```
+
+You can visually inspect the prior distribution using the `plot()` function.
+
+```{r}
+plot(prior1)
+```
+
+### Audit Risk Model (`method = "arm"`)
+
+You can incorporate the risk assessments from the Audit Risk Model (inherent risk and internal control risk) using `method = "arm` in combination with the `ir` and `cr` arguments. As an example, the code below incorporates the information that the inherent risk is equal to 90% and that the internal control risk is equal to 60% into a prior distribution. 
+
+```{r}
+prior2 <- auditPrior(confidence = confidence, likelihood = likelihood, expectedError = expectedError,
+                     materiality = materiality, method = "arm", ir = 0.9, cr = 0.6)
+prior2
+```
+
+You can visually inspect the prior distribution using the `plot()` function.
+
+```{r}
+plot(prior2)
+```
+
+### Equal prior probabilities (`method = "median"`)
+
+You can incorporate the assumption that tolerable misstatement is equally likely as intolerable misstatement using `method = "median"`. As an example, the code below incorporates this assumption into a prior distribution.
+
+*Note: This method requires that you specify a value for the `materiality`.*
+
+```{r}
+prior3 <- auditPrior(confidence = confidence, likelihood = likelihood, expectedError = expectedError,
+                     materiality = materiality, method = "median")
+prior3
+```
+
+You can visually inspect the prior distribution using the `plot()` function.
+
+```{r}
+plot(prior3)
+```
+
+### Custom prior probabilities (`method = "hypotheses"`)
+
+You can assign custom probabilities to the hypothesis of tolerable misstatement (using `pHmin`) and/or the hypotheses of intolerable misstatement (using `pHplus`) in combination with `method = "hypotheses`. As an example, the code below incorporates the information that the hypothesis of tolerable misstatement has a probability of 60% into a prior distribution.
+
+*Note: This method requires that you specify a value for the `materiality` and that the expected errors are zero.*
+
+```{r}
+prior4 <- auditPrior(confidence = confidence, likelihood = likelihood, expectedError = expectedError,
+                     materiality = materiality, method = "hypotheses", pHmin = 0.6)
+prior4
+```
+
+You can visually inspect the prior distribution using the `plot()` function.
+
+```{r}
+plot(prior4)
+```
+
+### Earlier sample (`method = "sample"`)
+
+You can incorporate information from an earlier sample into the prior distribution using `method = "sample` in combination with `sampleN` and `sampleK`. As an example, the code below incorporates the information from an earlier sample of 30 transactions, in which 0 misstatements were found, into a prior distribution.
+
+```{r}
+prior5 <- auditPrior(confidence = confidence, likelihood = likelihood, expectedError = expectedError,
+                     materiality = materiality, method = "sample", sampleN = 30, sampleK = 0)
+prior5
+```
+
+You can visually inspect the prior distribution using the `plot()` function.
+
+```{r}
+plot(prior5)
+```
+
+### Weighted earlier sample (`method = "factor"`)
+
+You can incorporate information from last years results, weighted by a factor, into the prior distribution using `method = "factor` in combination with `sampleN` and `sampleK`. As an example, the code below incorporates the information from a last years results (a sample of 58 transactions in which 0 misstatements were found), weighted by a factor 0.7, into a prior distribution.
+
+```{r}
+prior6 <- auditPrior(confidence = confidence, likelihood = likelihood, expectedError = expectedError,
+                     materiality = materiality, method = "factor", sampleN = 58, sampleK = 0, factor = 0.7)
+prior6
+```
+
+You can visually inspect the prior distribution using the `plot()` function.
+
+```{r}
+plot(prior6)
+```
+
+## Comparing efficiency through required sample sizes
+
+To illustrate how the prior distribution can facilitate a more efficient audit, the table below lists the required sample sizes for the created priors after calling `planning(confidence = confidence, expectedError = expectedError, likelihood = likelihood, materiality = materiality, prior = X)`, where `X` is the object returned by the `auditPrior()` function.
+
+```{r, collapse = TRUE, echo = FALSE}
+s1 <- planning(confidence = confidence, expectedError = expectedError, likelihood = likelihood, 
+               materiality = materiality, prior = prior1)$sampleSize
+s2 <- planning(confidence = confidence, expectedError = expectedError, likelihood = likelihood, 
+               materiality = materiality, prior = prior2)$sampleSize
+s3 <- planning(confidence = confidence, expectedError = expectedError, likelihood = likelihood, 
+               materiality = materiality, prior = prior3)$sampleSize
+s4 <- planning(confidence = confidence, expectedError = expectedError, likelihood = likelihood, 
+               materiality = materiality, prior = prior4)$sampleSize
+s5 <- planning(confidence = confidence, expectedError = expectedError, likelihood = likelihood, 
+               materiality = materiality, prior = prior5)$sampleSize
+s6 <- planning(confidence = confidence, expectedError = expectedError, likelihood = likelihood, 
+               materiality = materiality, prior = prior6)$sampleSize
+
+knitr::kable(data.frame("none" = s1, "arm" = s2, "median" = s3, "hypotheses" = s4, 
+                  "sample" = s5, "factor" = s6, row.names = "Required sample size"))
+```
+

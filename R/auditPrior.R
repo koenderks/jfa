@@ -8,7 +8,7 @@
 #' 
 #' @param confidence      the confidence level desired from the confidence bound (on a scale from 0 to 1). Defaults to 0.95, or 95\% confidence.
 #' @param likelihood      can be one of \code{binomial}, \code{poisson}, or \code{hypergeometric}. See the Details section for more information.
-#' @param method          the method by which the prior distribution is constructed. Defaults to the \code{arm} method, which uses the audit risk model (Derks et al., 2019). Can be one of \code{none}, \code{median}, \code{hypotheses}, \code{arm}, \code{sample} or \code{factor}. See the Details section for more information.
+#' @param method          the method by which the prior distribution is constructed. Defaults to the \code{none} method, which incorporates no prior information. Can be one of \code{none}, \code{median}, \code{hypotheses}, \code{arm}, \code{sample} or \code{factor}. See the Details section for more information.
 #' @param expectedError   a fraction representing the percentage of expected mistakes in the sample relative to the total size, or a number (>= 1) that represents the number of expected mistakes.
 #' @param N               the population size (only required when \code{likelihood = 'hypergeometric'}).
 #' @param materiality     a value between 0 and 1 representing the materiality of the audit as a fraction of the total size or value. Can be \code{NULL} for some methods.
@@ -20,8 +20,6 @@
 #' @param sampleN         When using method \code{sample} or \code{factor}, the number of transactions that were inspected in the previous sample.
 #' @param sampleK         When using method \code{sample} or \code{factor}, the total taint in the previous sample.
 #' 
-#' @details This section elaborates on the available methods for constructing a prior distribution.
-#' 
 #' @details This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
 #' 
 #' \itemize{
@@ -29,6 +27,8 @@
 #'  \item{\code{binomial}:         The binomial likelihood is used as a likelihood for record sampling \emph{with} replacement. Its likelihood function is defined as: \deqn{p(x) = {n \choose k} p^k (1 - p)^{n - k}} The conjugate \emph{beta(\eqn{\alpha, \beta})} prior has probability density function: \deqn{f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}}}
 #'  \item{\code{hypergeometric}:   The hypergeometric likelihood is used as a likelihood for record sampling \emph{without} replacement. Its likelihood function is defined as: \deqn{p(x = k) = \frac{{K \choose k} {N - K \choose n - k}}{{N \choose n}}} The conjugate \emph{beta-binomial(\eqn{\alpha, \beta})} prior (Dyer and Pierce, 1993) has probability density function: \deqn{f(k | n, \alpha, \beta) = {n \choose k} \frac{B(k + \alpha, n - k + \beta)}{B(\alpha, \beta)}} }
 #' }
+#'
+#' @details This section elaborates on the available methods for constructing a prior distribution.
 #'
 #' \itemize{
 #'  \item{\code{none}:              This method constructs a prior distribution according to the principle of minimum information.}
@@ -126,7 +126,7 @@ auditPrior <- function(confidence = 0.95, likelihood = "binomial", method = "non
 	if(likelihood == "hypergeometric" && (is.null(N) || N <= 0))
 		stop("The hypergeometric likelihood requires that you specify a positive value for the populatin size N.")
 
-	if(expectedError >= 1)
+	if(expectedError >= 1 || expectedError < 0)
 		stop("The expected errors must be entered as a proportion.")
 
 	# Create the prior distribution depending on the specified method
@@ -139,13 +139,8 @@ auditPrior <- function(confidence = 0.95, likelihood = "binomial", method = "non
 		nPlus <- planning(confidence = confidence, likelihood = likelihood, expectedError = expectedError, N = N, materiality = materiality, prior = TRUE)$sampleSize
 		alpha <- (1 - confidence) / (ir * cr)
 		nMin <- planning(confidence = 1 - alpha, likelihood = likelihood, expectedError = expectedError, N = N, materiality = materiality, prior = TRUE)$sampleSize
-		if(expectedError >= 0 && expectedError < 1){
-			kPlus <- nPlus * expectedError
-			kMin <-  nMin * expectedError
-		} else {
-			kPlus <- expectedError
-			kMin <- expectedError
-		}
+		kPlus <- nPlus * expectedError
+		kMin <-  nMin * expectedError
 		nPrior <- nPlus - nMin
 		kPrior <- kPlus - kMin
 	} else if(method == "median"){
@@ -183,10 +178,10 @@ auditPrior <- function(confidence = 0.95, likelihood = "binomial", method = "non
 			stop("The values for 'pHplus' and 'pHmin' should sum to one.")  
 		if(is.null(pHplus) && !is.null(pHmin)){
 			probH1 <- 1 - pHmin
-		} else{
+		} else {
 			probH1 <- pHplus
 		}
-			probH0 <- 1 - probH1
+		probH0 <- 1 - probH1
 		if(expectedError != 0)
 			stop("Expected errors are not supported for method = 'hypotheses'.")
 		nPrior <- switch(likelihood, "poisson" = -(log(probH1) / materiality), "binomial" = log(probH1) / log(1 - materiality) - 1)

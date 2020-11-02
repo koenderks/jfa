@@ -1,0 +1,145 @@
+---
+title: "jfa: Bayesian and Classical Audit Sampling"
+author: Koen Derks
+date: "last modified: 07-11-2020"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{jfa: Bayesian and Classical Audit Sampling}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteDepends{jfa}
+  %\VignetteKeywords{audit, evaluation, jfa, planning, sampling}
+  %\VignettePackage{jfa}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Overview
+
+The `jfa` package allows you to plan, select, and evaluate an audit sample using classical and Bayesian statistics. 
+
+Below it is explained how to install and use the `jfa` package.
+
+## Installation
+
+Install `jfa` from CRAN
+
+```{r, eval=FALSE}
+install.packages("jfa")
+```
+
+or from GitHub
+
+```{r, eval=FALSE}
+devtools::install_github("koenderks/jfa")
+```
+
+## Load data
+
+We can try out some examples with the `BuildIt` data set that is included in the package. It includes a population of 3500 transactions from a fictional construction company BuildIt, which we can use to illustrate statistical audit sampling using the `jfa` package (for more info, see ?BuildIt).
+
+```{r}
+library(jfa)
+
+data("BuildIt")
+BuildIt <- BuildIt[, c("ID", "bookValue")] # Let's remove the auditValue column for this example
+head(BuildIt, n = 10)
+```
+
+Because this data set contains the *Ist* values of the transactions, we need to consider each monetary unit in the population as a possible unit of inference.
+
+## Using `planning()`: The basics
+
+Planning a sample using the `planning()` function requires that you have knowledge of the goal of the analysis and the statistical distribution of your data (`poisson`, `binomial`, or `hypergeometric`). 
+
+### Testing against a performance materiality
+
+Let's take the goal of testing against a performance materiality with the `poisson` distribution as an example.
+
+Analysis goal: *Plan a sample such that, when zero misstatements are found in the sample, you can be 95% confident that the total misstatement in the population is lower than 5% of its total value.*
+
+Planning a sample with this goal can be done using the code below (specifically using the `materiality` argument). As you can see, the required sample size for this goal is 60 monetary units.
+
+```{r}
+planning(confidence = 0.95, expectedError = 0, likelihood = "poisson", N = 3500, materiality = 0.05)
+```
+
+### Obtaining a minimum required precision
+
+The goal of the analysis can also involve obtaining a minimum precision about the estimate of the misstatement. 
+
+Analysis goal: *Plan a sample such that, when zero misstatements are found in the sample, you can be 95% confident that the inaccuracy of your estimate is at most 2%.*
+
+Planning a sample with this goal can be done using the code below (specifically using the `minPrecision` argument). As you can see, the required sample size for this goal is 150 monetary units.
+
+```{r}
+planning(confidence = 0.95, expectedError = 0, likelihood = "poisson", N = 3500, minPrecision = 0.02)
+```
+
+## Using `selection()`: The basics
+
+Selecting a sample using the `selection()` function requires that you have knowledge of the sampling units. Transactions can be selected using *record sampling* (also called attribute sampling) with `units = "records"`, or using *monetary unit sampling* with `units = "mus"`. 
+
+It also requires knowledge of the sampling algorithm. Transactions can be selected using *random sampling* with `algorithm = "random"`, using *cell sampling* with `algorithm = "cell"`, or using fixed interval sampling (also known as systematic sampling) with `algorithm = "interval"`. 
+
+### Record sampling
+
+For example, the code below samples 60 monetary units from the `BuildIt` data set using a *random record sampling* scheme.
+
+```{r}
+selection(population = BuildIt, sampleSize = 150, units = "records", algorithm = "random")
+```
+
+### Monetary unit sampling
+
+As another example, the code below samples 150 monetary units from the `BuildIt` data set using a *fixed interval monetary unit sampling* scheme.
+
+```{r}
+selection(population = BuildIt, sampleSize = 150, units = "mus", algorithm = "interval", 
+          bookValues = "bookValue")
+```
+
+### Extracting the sample
+
+The selected sample is saved in the object that is returned by the `selection()` function and can be extracted via `$sample`.  
+
+```{r}
+result <- selection(population = BuildIt, sampleSize = 150, units = "mus", algorithm = "interval", 
+                    bookValues = "bookValue")
+
+sample <- result$sample
+head(sample, n = 10)
+```
+
+## Using `evaluation()`: The basics
+
+After executing the audit and annotating the transactions in the sample with their *Soll* values, you can evaluate whether you have achieved your analysis goal via the `evaluation()` function. The function can be used with summary statistics from the sample, or with an annotated sample as input. 
+
+### Summary statistics from the sample
+
+Suppose that in 60 transactions, you have found 1 misstatement. Using `nSumstats = 60` and `kSumstats = 1` you can specify the outcomes of the sample in the `evaluation()` function. Do not forget to specify your analysis goal using the `materiality` or `minPrecision` arguments.
+
+```{r}
+evaluation(confidence = 0.95, method = "binomial", N = 3500, nSumstats = 60, kSumstats = 1, materiality = 0.05)
+```
+
+### Annotated sample
+
+Suppose that you have audited the transactions in the sample and have found no deviations from the *ist* values. 
+
+```{r}
+sample$auditValue <- sample$bookValue
+```
+
+You can evaluate the annotated sample using the `sample`, `bookValues`, `auditValues`, and `counts` arguments. The code below evaluates the analysis goal using the popular Stringer bound. You can find more information about which methods are implemented on the [home page](https://koenderks.github.io/jfa).
+
+```{r}
+evaluation(confidence = 0.95, method = "stringer", N = 3500, materiality = 0.05,
+           sample = sample, bookValues = "bookValue", auditValues = "auditValue", counts = sample$count)
+```
+
+## Using `auditPrior()`: Prior probability distributions
+
+The `auditPrior()` function allows you to perform the workflow as discussed above in a Bayesian fashion. Using a prior distribution is fairly simple, you only have to insert the returned object from the `auditPrior()` function as an argument for the `prior` argument in the `planning()` and `evaluation()` functions. 
+
+For more information about how to create a prior distribution, see the vignettes [jfa: Constructing a prior distribution](https://koenderks.github.io/jfa/articles/priorDistributions.html) and [jfa: The audit workflow](https://koenderks.github.io/jfa/articles/auditWorkflow.html). 

@@ -1,13 +1,17 @@
 ---
 title: "jfa: The audit sampling workflow"
+author: Koen Derks
+date: "last modified: 07-11-2020"
 output: 
   rmarkdown::html_vignette:
     toc: true
 vignette: >
   %\VignetteIndexEntry{jfa: The audit sampling workflow}
   %\VignetteEngine{knitr::rmarkdown}
-  \usepackage[utf8]{inputenc}
-author: Koen Derks
+  %\VignetteDepends{jfa}
+  %\VignetteKeywords{audit, workflow, sampling}
+  %\VignettePackage{jfa}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ## Introduction and scenario
@@ -91,7 +95,7 @@ Laura can inspect how the prior distribution compares to the expected posterior 
 plot(planningResult)
 ```
 
-## Stage 2: Sampling from the financial statements
+## Stage 2: Selecting a sample
 
 Laura is now ready to select the required 169 transactions from the financial statements. She can choose to do this according to one of two statistical methods. In *record sampling* (`units = "records"`), inclusion probabilities are assigned on the transaction level, treating transactions with a high value and a low value the same, a transaction of $5,000 is equally likely to be selected as a transaction of $1,000. In *monetary unit sampling* (`units = "mus"`), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the transaction that includes that dollar is selected. This favors higher transactions, as a transaction of \$5,000 is five times more likely to be selected than a transaction of \$1,000. 
 
