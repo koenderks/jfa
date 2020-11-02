@@ -2,6 +2,7 @@ on:
   push:
     branches:
       - master
+      - development
   release:
     types: [published]
 
