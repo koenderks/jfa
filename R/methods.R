@@ -116,72 +116,100 @@
 	return(result)
 }
 
-.directMethod <- function(bookValues, auditValues, confidence, N = NULL, n, populationBookValue = NULL){
+.directMethod <- function(bookValues, auditValues, confidence, N = NULL, n, populationBookValue = NULL, correction = FALSE){
 	if(is.null(N))
 		stop("The direct method requires that you specify the population size N")
 	if(is.null(populationBookValue))
 		stop("The direct method requires that you specify the total population book value")
-	w 							<- mean(auditValues)
-	s 							<- stats::sd(auditValues)
+	w 								<- mean(auditValues)
+	s 								<- stats::sd(auditValues)
+	tVal 							<- stats::qt(p = confidence + ((1 - confidence) / 2), df = n - 1)
+	errorMargin 					<- tVal * (s / sqrt(n))
 	result <- list()
-	result[["pointEstimate"]] 	<- N * w
-	result[["lowerBound"]] 		<- result[["pointEstimate"]] + stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
-	result[["upperBound"]] 		<- result[["pointEstimate"]] - stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
-	result[["precision"]] 		<- (result[["upperBound"]] - result[["pointEstimate"]]) / populationBookValue
+	result[["pointEstimate"]] 		<- populationBookValue - N * w
+	if(correction){
+		result[["lowerBound"]] 		<- populationBookValue - N * (w + errorMargin * sqrt((N-n)/(N-1)))
+		result[["upperBound"]] 		<- populationBookValue - N * (w - errorMargin * sqrt((N-n)/(N-1)))
+	} else {
+		result[["lowerBound"]] 		<- populationBookValue - N * (w + errorMargin)
+		result[["upperBound"]] 		<- populationBookValue - N * (w - errorMargin)
+	}
+	result[["precision"]] 			<- N * errorMargin
 	return(result)
 }
 
-.differenceMethod <- function(bookValues, auditValues, confidence, N = NULL, n, populationBookValue = NULL){
+.differenceMethod <- function(bookValues, auditValues, confidence, N = NULL, n, populationBookValue = NULL, correction = FALSE){
 	if(is.null(N))
 		stop("The difference method requires that you specify the population size N")
 	if(is.null(populationBookValue))
 		stop("The difference method requires that you specify the total population book value")
-	we 							<- mean(bookValues - auditValues)
-	e 							<- N * we
-	s 							<- stats::sd(bookValues - auditValues)
-	result 						<- list()
-	result[["pointEstimate"]] 	<- populationBookValue - e
-	result[["lowerBound"]] 		<- result[["pointEstimate"]] + stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
-	result[["upperBound"]] 		<- result[["pointEstimate"]] - stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
-	result[["precision"]] 		<- (result[["upperBound"]] - result[["pointEstimate"]]) / populationBookValue
+	we 								<- mean(bookValues - auditValues)
+	s 								<- stats::sd(bookValues - auditValues)
+	tVal 							<- stats::qt(p = confidence + ((1 - confidence) / 2), df = n - 1)
+	errorMargin 					<- tVal * (s / sqrt(n))
+	result 							<- list()
+	result[["pointEstimate"]] 		<- N * we
+	if(correction){
+		result[["lowerBound"]] 		<- N * (we - errorMargin * sqrt((N-n)/(N-1)))
+		result[["upperBound"]] 		<- N * (we + errorMargin * sqrt((N-n)/(N-1)))
+	} else {
+		result[["lowerBound"]] 		<- N * (we - errorMargin)
+		result[["upperBound"]] 		<- N * (we + errorMargin)
+	}
+	result[["precision"]] 			<- N * errorMargin
 	return(result)
 }
 
-.quotientMethod <- function(bookValues, auditValues, confidence, N = NULL, n, populationBookValue = NULL){
+.quotientMethod <- function(bookValues, auditValues, confidence, N = NULL, n, populationBookValue = NULL, correction = FALSE){
 	if(is.null(N))
 		stop("The quotient method requires that you specify the population size N")
 	if(is.null(populationBookValue))
 		stop("The quotient method requires that you specify the total population book value")
-	w <- mean(auditValues)
-	sw <- stats::sd(auditValues)
-	b <- mean(bookValues)
-	sb <- stats::sd(bookValues)
-	r <- stats::cor(bookValues, auditValues)
-	q <- w / b
-	s 							<- sqrt( sw^2 - 2 * q * r * sb * sw + q^2 * sb^2 )
-	result	 					<- list()
-	result[["pointEstimate"]] 	<- q * populationBookValue
-	result[["lowerBound"]] 		<- result[["pointEstimate"]] + stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
-	result[["upperBound"]] 		<- result[["pointEstimate"]] - stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
-	result[["precision"]] 		<- (result[["upperBound"]] - result[["pointEstimate"]]) / populationBookValue
+	w 								<- mean(auditValues)
+	sw 								<- stats::sd(auditValues)
+	b 								<- mean(bookValues)
+	sb 								<- stats::sd(bookValues)
+	r 								<- stats::cor(bookValues, auditValues)
+	q 								<- w / b
+	s 								<- sqrt( sw^2 - 2 * q * r * sb * sw + q^2 * sb^2 )
+	tVal 							<- stats::qt(p = confidence + ((1 - confidence) / 2), df = n - 1)
+	errorMargin 					<- tVal * (s / sqrt(n))
+	result	 						<- list()
+	result[["pointEstimate"]] 		<- N * ((1 - q) * b)
+	if(correction){
+		result[["lowerBound"]] 		<- N * ((1 - q) * b - errorMargin * sqrt((N-n)/(N-1)))
+		result[["upperBound"]] 		<- N * ((1 - q) * b + errorMargin * sqrt((N-n)/(N-1)))
+	} else {
+		result[["lowerBound"]] 		<- N * ((1 - q) * b - errorMargin)
+		result[["upperBound"]] 		<- N * ((1 - q) * b + errorMargin)
+	}
+	result[["precision"]] 			<- N * errorMargin
 	return(result)
 }
 
-.regressionMethod <- function(bookValues, auditValues, confidence, N = NULL, n, populationBookValue = NULL){
+.regressionMethod <- function(bookValues, auditValues, confidence, N = NULL, n, populationBookValue = NULL, correction = FALSE){
 	if(is.null(N))
 		stop("The regression method requires that you specify the population size N")
 	if(is.null(populationBookValue))
 		stop("The regression method requires that you specify the total population book value")
-	w 							<- mean(auditValues)
-	sw 							<- stats::sd(auditValues)
-	b 							<- mean(bookValues)
-	r 							<- stats::cor(bookValues, auditValues)
-	b1 							<- (sum(bookValues * auditValues) - n * b * w) / (sum(bookValues^2) - (sum(bookValues)^2) / n)
-	s 							<- sw * sqrt(1 - r^2)
-	result 						<- list()
-	result[["pointEstimate"]] 	<- N * w + b1 * (populationBookValue - N * b)
-	result[["lowerBound"]] 		<- result[["pointEstimate"]] + stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
-	result[["upperBound"]] 		<- result[["pointEstimate"]] - stats::qt(p = (1 - confidence) / 2, df = n - 1) * s * (N / sqrt(n)) * sqrt((N-n)/(N-1))
-	result[["precision"]] 		<- (result[["upperBound"]] - result[["pointEstimate"]]) / populationBookValue
+	w 								<- mean(auditValues)
+	sw 								<- stats::sd(auditValues)
+	b 								<- mean(bookValues)
+	r 								<- stats::cor(bookValues, auditValues)
+	coefs 							<- stats::coef(stats::lm(auditValues ~ bookValues))
+	b1 								<- as.numeric(coefs[2])
+	s 								<- sw * sqrt(1 - r^2)
+	tVal 							<- stats::qt(p = confidence + ((1 - confidence) / 2), df = n - 1)
+	errorMargin 					<- tVal * (s / sqrt(n))
+	result 							<- list()
+	result[["pointEstimate"]] 		<- populationBookValue - (N * w + b1 * (populationBookValue - N * b))
+	if(correction){
+		result[["lowerBound"]] 		<- result[["pointEstimate"]] - N * errorMargin * sqrt((N-n)/(N-1))
+		result[["upperBound"]] 		<- result[["pointEstimate"]] + N * errorMargin * sqrt((N-n)/(N-1))
+	} else {
+		result[["lowerBound"]] 		<- result[["pointEstimate"]] - N * errorMargin
+		result[["upperBound"]] 		<- result[["pointEstimate"]] + N * errorMargin
+	}
+	result[["precision"]] 			<- N * errorMargin
 	return(result)
 }

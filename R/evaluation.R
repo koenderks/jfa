@@ -2,6 +2,9 @@
 #'
 #' @description This function takes a data frame (using \code{sample}, \code{bookValue}, and \code{auditValues}) or summary statistics (using \code{nSumstats} and \code{kSumstats}) and evaluates the audit sample according to the specified method. The returned object is of class \code{jfaEvaluation} and can be used with associated \code{print()} and \code{plot()} methods.
 #'
+#' For more details on how to use this function see the package vignette:
+#' \code{vignette("jfa", package = "jfa")}
+#'
 #' @usage evaluation(confidence = 0.95, method = "binomial", N = NULL,
 #'             sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, 
 #'             nSumstats = NULL, kSumstats = NULL, 
@@ -25,7 +28,7 @@
 #' @param nPrior        a value for the prior parameter \eqn{\beta} (number of transactions in the assumed prior sample).
 #' @param kPrior        a value for the prior parameter \eqn{\alpha} (total tainting in the assumed prior sample).
 #' @param rohrbachDelta a value specifying \eqn{\Delta} in Rohrbach's augmented variance bound (Rohrbach, 1993).
-#' @param momentPoptype a character specifying the type of population for the modified moment method (Dworin and Grimlund, 1986). Can be either one of \code{accounts} or \code{inventory}. Options result in different methods for calculating the central moments.
+#' @param momentPoptype a character specifying the type of population for the modified moment method (Dworin and Grimlund, 1984). Can be either one of \code{accounts} or \code{inventory}. Options result in different methods for calculating the central moments.
 #' @param populationBookValue a value specifying the total value of the transactions in the population. Required when \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, but optional otherwise.
 #' @param csA           if \code{method = "coxsnell"}, the \eqn{\alpha} parameter of the prior distribution on the mean taint. Default is set to 1, as recommended by Cox and Snell (1979).
 #' @param csB           if \code{method = "coxsnell"}, the \eqn{\beta} parameter of the prior distribution on the mean taint. Default is set to 3, as recommended by Cox and Snell (1979).
@@ -42,7 +45,7 @@
 #'  \item{\code{stringer-lta}:     Stringer bound with LTA correction for understatements (Leslie, Teitlebaum, and Anderson, 1979).}
 #'  \item{\code{stringer-pvz}:     Stringer bound with Pap and van Zuijlen's correction for understatements (Pap and van Zuijlen, 1996).}
 #'  \item{\code{rohrbach}:         Rohrbach's augmented variance bound (Rohrbach, 1993).}
-#'  \item{\code{moment}:           Modified moment bound (Dworin and Grimlund, 1986).}
+#'  \item{\code{moment}:           Modified moment bound (Dworin and Grimlund, 1984).}
 #'  \item{\code{coxsnell}:         Cox and Snell bound (Cox and Snell, 1979).}
 #'  \item{\code{direct}:           Confidence interval using the direct method (Touw and Hoogduin, 2011).}
 #'  \item{\code{difference}:       Confidence interval using the difference method (Touw and Hoogduin, 2011).}
@@ -51,7 +54,7 @@
 #' }
 #' 
 #' @references Cox, D. and Snell, E. (1979). On sampling and the estimation of rare errors. \emph{Biometrika}, 66(1), 125-132. 
-#' @references Dworin, L., and Grimlund, R. A. (1986). Dollar-unit sampling: A comparison of the quasi-Bayesian and moment bounds. \emph{Accounting Review}, 36-57.
+#' @references Dworin, L. D. and Grimlund, R. A. (1984). Dollar-unit Sampling for accounts receivable and inventory. \emph{The Accounting Review}, 59(2), 218–241
 #' @references Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). \emph{Dollar-unit sampling: a practical guide for auditors}. Copp Clark Pitman; Belmont, Calif.: distributed by Fearon-Pitman.
 #' @references Meikle, G. R. (1972). \emph{Statistical Sampling in an Audit Context: An Audit Technique}. Canadian Institute of Chartered Accountants.
 #' @references Pap, G., and van Zuijlen, M. C. (1996). On the asymptotic behavior of the Stringer bound 1. \emph{Statistica Neerlandica}, 50(3), 367-389.
@@ -218,6 +221,8 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
 		
     	sample <- stats::na.omit(sample)
 		n <- nrow(sample)
+		if(n == 0)
+			stop("Your sample has 0 rows after removing missing values.")
 		if(!is.null(counts))
 			n <- sum(counts)
 		bv <- sample[, bookValues]

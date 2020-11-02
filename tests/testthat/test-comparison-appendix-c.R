@@ -2,8 +2,7 @@ context("2. Comparison to Appendix C - AICPA 2017")
 
 # Sample size tables can be retrieved from: https://onlinelibrary.wiley.com/doi/pdf/10.1002/9781119448617.app3
 
-# Planning for a 5 percent risk over overreliance
-test_that(desc = "(id 2.1) Monetary Unit Sample Size Determination Tables (AICPA 2017 - Appendix C: Table C-1)", {
+test_that(desc = "(id f2-v0.4.0-t1) Test Monetary Unit Sample Sizes for 5 percent risk of overreliance (AICPA 2017 - Appendix C: Table C-1)", {
 	riskOfIncorrectAcceptance <- c(rep(5, 6), rep(10, 5), rep(15, 5), rep(20, 5), rep(25, 5), rep(30, 4), rep(35, 4), rep(50, 4)) / 100
 	ratioOfExpectedToTolerableMisstatement <- c(seq(0, 0.5, 0.1), 0, seq(0.2, 0.5, 0.1), 0, seq(0.2, 0.5, 0.1), 0, seq(0.2, 0.5, 0.1), 0, seq(0.2, 0.5, 0.1), 0, seq(0.2, 0.6, 0.2), 0, seq(0.2, 0.6, 0.2), 0, seq(0.2, 0.6, 0.2))
 	tolerableMisstatement <- c(0.5, 0.3, 0.1, 0.08, 0.06, 0.05, 0.04, 0.03, 0.02, 0.01, 0.005)

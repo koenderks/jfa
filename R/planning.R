@@ -2,6 +2,9 @@
 #'
 #' @description This function calculates the required sample size for an audit, based on the poisson, binomial, or hypergeometric likelihood. A prior can be specified to perform Bayesian planning. The returned object is of class \code{jfaPlanning} and can be used with associated \code{print()} and \code{plot()} methods.
 #'
+#' For more details on how to use this function see the package vignette:
+#' \code{vignette("jfa", package = "jfa")}
+#'
 #' @usage planning(confidence = 0.95, expectedError = 0, likelihood = "poisson", N = NULL, 
 #'           materiality = NULL, minPrecision = NULL, 
 #'           prior = FALSE, kPrior = 0, nPrior = 0,

@@ -2,6 +2,9 @@
 #'
 #' @description This function takes a data frame and performs sampling according to one of three popular algorithms: random sampling, cell sampling, or fixed interval sampling. Sampling is done in combination with one of two sampling units: records or monetary units The returned object is of class \code{jfaSelection} and can be used with associated \code{print()} and \code{plot()} methods. 
 #'
+#' For more details on how to use this function see the package vignette:
+#' \code{vignette("jfa", package = "jfa")}
+#'
 #' @usage selection(population, sampleSize, units = "records", algorithm = "random",
 #'           bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, 
 #'           ascending = TRUE, withReplacement = FALSE, seed = 1)

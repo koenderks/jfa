@@ -52,6 +52,9 @@ An object of class \code{jfaPlanning} containing:
 }
 \description{
 This function calculates the required sample size for an audit, based on the poisson, binomial, or hypergeometric likelihood. A prior can be specified to perform Bayesian planning. The returned object is of class \code{jfaPlanning} and can be used with associated \code{print()} and \code{plot()} methods.
+
+For more details on how to use this function see the package vignette:
+\code{vignette("jfa", package = "jfa")}
 }
 \details{
 This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.

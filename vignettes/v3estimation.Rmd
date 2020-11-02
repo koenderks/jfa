@@ -1,0 +1,28 @@
+---
+title: "Estimating the misstatement"
+author: Koen Derks
+date: "last modified: 19-11-2020"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Estimating the misstatement}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteDepends{jfa}
+  %\VignetteKeywords{audit, evaluation, jfa, planning, prior}
+  %\VignettePackage{jfa}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.height=4, fig.width=6)
+library(jfa)
+```
+
+## Estimation in an audit context
+
+In audit sampling estimation the auditor tries to determine the unknown quantity of the misstatement $\theta$ in the population as best as possible. 
+
+## Frequentist estimation using the likelihood
+
+## Bayesian estimation using the posterior distribution

@@ -39,7 +39,10 @@ An object of class \code{jfaSelection} containing:
 \item{bookValues}{if specified, the name of the specified book value column.}
 }
 \description{
-This function takes a data frame and performs sampling according to one of three popular algorithms: random sampling, cell sampling, or fixed interval sampling. Sampling is done in combination with one of two sampling units: records or monetary units The returned object is of class \code{jfaSelection} and can be used with associated \code{print()} and \code{plot()} methods.
+This function takes a data frame and performs sampling according to one of three popular algorithms: random sampling, cell sampling, or fixed interval sampling. Sampling is done in combination with one of two sampling units: records or monetary units The returned object is of class \code{jfaSelection} and can be used with associated \code{print()} and \code{plot()} methods. 
+
+For more details on how to use this function see the package vignette:
+\code{vignette("jfa", package = "jfa")}
 }
 \details{
 This first part of this section elaborates on the possible options for the \code{units} argument:

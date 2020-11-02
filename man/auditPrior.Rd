@@ -13,7 +13,7 @@ auditPrior(confidence = 0.95, likelihood = "binomial", method = "none",
 
 \item{likelihood}{can be one of \code{binomial}, \code{poisson}, or \code{hypergeometric}. See the Details section for more information.}
 
-\item{method}{the method by which the prior distribution is constructed. Defaults to the \code{arm} method, which uses the audit risk model (Derks et al., 2019). Can be one of \code{none}, \code{median}, \code{hypotheses}, \code{arm}, \code{sample} or \code{factor}. See the Details section for more information.}
+\item{method}{the method by which the prior distribution is constructed. Defaults to the \code{none} method, which incorporates no prior information. Can be one of \code{none}, \code{median}, \code{hypotheses}, \code{arm}, \code{sample} or \code{factor}. See the Details section for more information.}
 
 \item{expectedError}{a fraction representing the percentage of expected mistakes in the sample relative to the total size, or a number (>= 1) that represents the number of expected mistakes.}
 
@@ -51,10 +51,11 @@ An object of class \code{jfaPrior} containing:
 }
 \description{
 This function creates a prior distribution for Bayesian audit sampling according to several methods discussed in Derks et al. (2020). The returned object is of class \code{jfaPrior} and can be used with associated \code{print()} and \code{plot()} methods. \code{jfaPrior} objects can be used as input for the \code{prior} argument in other functions.
+
+For more details on how to use this function see the package vignette:
+\code{vignette("jfa", package = "jfa")}
 }
 \details{
-This section elaborates on the available methods for constructing a prior distribution.
-
 This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
 
 \itemize{
@@ -62,6 +63,8 @@ This section elaborates on the available likelihoods and corresponding prior dis
  \item{\code{binomial}:         The binomial likelihood is used as a likelihood for record sampling \emph{with} replacement. Its likelihood function is defined as: \deqn{p(x) = {n \choose k} p^k (1 - p)^{n - k}} The conjugate \emph{beta(\eqn{\alpha, \beta})} prior has probability density function: \deqn{f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}}}
  \item{\code{hypergeometric}:   The hypergeometric likelihood is used as a likelihood for record sampling \emph{without} replacement. Its likelihood function is defined as: \deqn{p(x = k) = \frac{{K \choose k} {N - K \choose n - k}}{{N \choose n}}} The conjugate \emph{beta-binomial(\eqn{\alpha, \beta})} prior (Dyer and Pierce, 1993) has probability density function: \deqn{f(k | n, \alpha, \beta) = {n \choose k} \frac{B(k + \alpha, n - k + \beta)}{B(\alpha, \beta)}} }
 }
+
+This section elaborates on the available methods for constructing a prior distribution.
 
 \itemize{
  \item{\code{none}:              This method constructs a prior distribution according to the principle of minimum information.}

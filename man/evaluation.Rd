@@ -43,7 +43,7 @@ evaluation(confidence = 0.95, method = "binomial", N = NULL,
 
 \item{rohrbachDelta}{a value specifying \eqn{\Delta} in Rohrbach's augmented variance bound (Rohrbach, 1993).}
 
-\item{momentPoptype}{a character specifying the type of population for the modified moment method (Dworin and Grimlund, 1986). Can be either one of \code{accounts} or \code{inventory}. Options result in different methods for calculating the central moments.}
+\item{momentPoptype}{a character specifying the type of population for the modified moment method (Dworin and Grimlund, 1984). Can be either one of \code{accounts} or \code{inventory}. Options result in different methods for calculating the central moments.}
 
 \item{populationBookValue}{a value specifying the total value of the transactions in the population. Required when \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, but optional otherwise.}
 
@@ -78,6 +78,9 @@ An object of class \code{jfaEvaluation} containing:
 }
 \description{
 This function takes a data frame (using \code{sample}, \code{bookValue}, and \code{auditValues}) or summary statistics (using \code{nSumstats} and \code{kSumstats}) and evaluates the audit sample according to the specified method. The returned object is of class \code{jfaEvaluation} and can be used with associated \code{print()} and \code{plot()} methods.
+
+For more details on how to use this function see the package vignette:
+\code{vignette("jfa", package = "jfa")}
 }
 \details{
 This section lists the available options for the \code{methods} argument.
@@ -91,7 +94,7 @@ This section lists the available options for the \code{methods} argument.
  \item{\code{stringer-lta}:     Stringer bound with LTA correction for understatements (Leslie, Teitlebaum, and Anderson, 1979).}
  \item{\code{stringer-pvz}:     Stringer bound with Pap and van Zuijlen's correction for understatements (Pap and van Zuijlen, 1996).}
  \item{\code{rohrbach}:         Rohrbach's augmented variance bound (Rohrbach, 1993).}
- \item{\code{moment}:           Modified moment bound (Dworin and Grimlund, 1986).}
+ \item{\code{moment}:           Modified moment bound (Dworin and Grimlund, 1984).}
  \item{\code{coxsnell}:         Cox and Snell bound (Cox and Snell, 1979).}
  \item{\code{direct}:           Confidence interval using the direct method (Touw and Hoogduin, 2011).}
  \item{\code{difference}:       Confidence interval using the difference method (Touw and Hoogduin, 2011).}
@@ -173,7 +176,7 @@ print(e2)
 \references{
 Cox, D. and Snell, E. (1979). On sampling and the estimation of rare errors. \emph{Biometrika}, 66(1), 125-132.
 
-Dworin, L., and Grimlund, R. A. (1986). Dollar-unit sampling: A comparison of the quasi-Bayesian and moment bounds. \emph{Accounting Review}, 36-57.
+Dworin, L. D. and Grimlund, R. A. (1984). Dollar-unit Sampling for accounts receivable and inventory. \emph{The Accounting Review}, 59(2), 218–241
 
 Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). \emph{Dollar-unit sampling: a practical guide for auditors}. Copp Clark Pitman; Belmont, Calif.: distributed by Fearon-Pitman.
 
