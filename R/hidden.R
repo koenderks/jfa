@@ -302,10 +302,10 @@ plot.jfaPlanning <- function(x, ...){
 	if(limx > 51)
 		limx <- 51
 	if(!is.null(x[["prior"]])){
-		if(x$materiality == 0){
+		if(x[["materiality"]] == 1){
 			xlim <- 1
 		} else {
-			xlim <- x$materiality * 3
+			xlim <- x[["materiality"]] * 3
 		}
 		xseq <- seq(0, xlim, 0.00001)
 		mainLab <- ifelse(x[["prior"]][["description"]]$implicitk == 0 && x[["prior"]][["description"]]$implicitn == 0, yes = "Uninformed", no = "Informed")
@@ -414,18 +414,12 @@ plot.jfaEvaluation <- function(x, ...){
 				d <- .dBetaBinom(x = xseq, N = x[["N"]], shape1 = x[["prior"]][["description"]]$alpha, shape2 = x[["prior"]][["description"]]$beta)
 				d1 <- .dBetaBinom(x = xseq, N = x[["N"]], shape1 = x[["posterior"]][["description"]]$alpha, shape2 = x[["posterior"]][["description"]]$beta)
 				bound <- .qBetaBinom(p = x[["confidence"]], N = x[["N"]], shape1 = x[["posterior"]][["description"]]$alpha, shape2 = x[["posterior"]][["description"]]$beta)
-			} else if(x[["method"]] == "coxsnell"){
-				d <- stats::dbeta(xseq, shape1 = x[["prior"]][["description"]]$alpha, shape2 =x[["prior"]][["description"]]$beta)
-				d1 <- .dCoxAndSnellF(xseq, x[["df1"]], x[["df2"]], x[["multiplicationFactor"]])
-				bound <- x[["multiplicationFactor"]] * stats::qf(p = x[["confidence"]], df1 = x[["df1"]], df2 = x[["df2"]])
 			}
-			if(x[["method"]] == "poisson" || x[["method"]] == "binomial" || x[["method"]] == "coxsnell"){
+			if(x[["method"]] == "poisson" || x[["method"]] == "binomial"){
 				if(x[["method"]] == "poisson")
 					mainLabPlus <- " gamma prior and posterior"
 				if(x[["method"]] == "binomial")
 					mainLabPlus <- " beta prior and posterior"
-				if(x[["method"]] == "coxsnell")
-					mainLabPlus <- " Cox and Snell prior and posterior"
 				graphics::plot(x = xseq, y = d1, type = "l", lwd = 2, bty = "n", xlab = expression(theta), ylab = "Probability density", las = 1, ylim = c(0, max(d1)),
 							main = paste0(mainLab, mainLabPlus), axes = FALSE)
 				graphics::polygon(x = c(0, xseq[xseq<=bound], xseq[xseq<=bound][length(xseq[xseq<=bound])]), y = c(0, d1[xseq<=bound], 0), col="lightgray", border = NA)

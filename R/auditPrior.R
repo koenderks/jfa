@@ -126,7 +126,7 @@ auditPrior <- function(confidence = 0.95, likelihood = "binomial", method = "non
 	if(likelihood == "hypergeometric" && (is.null(N) || N <= 0))
 		stop("The hypergeometric likelihood requires that you specify a positive value for the populatin size N.")
 
-	if(expectedError >= 1)
+	if(expectedError >= 1 || expectedError < 0)
 		stop("The expected errors must be entered as a proportion.")
 
 	# Create the prior distribution depending on the specified method
@@ -139,13 +139,8 @@ auditPrior <- function(confidence = 0.95, likelihood = "binomial", method = "non
 		nPlus <- planning(confidence = confidence, likelihood = likelihood, expectedError = expectedError, N = N, materiality = materiality, prior = TRUE)$sampleSize
 		alpha <- (1 - confidence) / (ir * cr)
 		nMin <- planning(confidence = 1 - alpha, likelihood = likelihood, expectedError = expectedError, N = N, materiality = materiality, prior = TRUE)$sampleSize
-		if(expectedError >= 0 && expectedError < 1){
-			kPlus <- nPlus * expectedError
-			kMin <-  nMin * expectedError
-		} else {
-			kPlus <- expectedError
-			kMin <- expectedError
-		}
+		kPlus <- nPlus * expectedError
+		kMin <-  nMin * expectedError
 		nPrior <- nPlus - nMin
 		kPrior <- kPlus - kMin
 	} else if(method == "median"){
@@ -183,10 +178,10 @@ auditPrior <- function(confidence = 0.95, likelihood = "binomial", method = "non
 			stop("The values for 'pHplus' and 'pHmin' should sum to one.")  
 		if(is.null(pHplus) && !is.null(pHmin)){
 			probH1 <- 1 - pHmin
-		} else{
+		} else {
 			probH1 <- pHplus
 		}
-			probH0 <- 1 - probH1
+		probH0 <- 1 - probH1
 		if(expectedError != 0)
 			stop("Expected errors are not supported for method = 'hypotheses'.")
 		nPrior <- switch(likelihood, "poisson" = -(log(probH1) / materiality), "binomial" = log(probH1) / log(1 - materiality) - 1)

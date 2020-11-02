@@ -14,7 +14,7 @@
 	return(p)
 }
 
-.dCoxAndSnellF <- function(x, df1, df2, multiplicationFactor){
-	# Rewritten using Wolfram Mathematica
-	(df1 ** (df1 / 2) * df2**(df2 / 2) * (x / multiplicationFactor) ** (- 1 + df1 / 2) * (df2 + (df1 * x) / multiplicationFactor)**(( -df1 - df2) / 2))/(abs(multiplicationFactor) * beta(df1/2, df2/2))
-}
+# .dCoxAndSnellF <- function(x, df1, df2, multiplicationFactor){
+# 	# Rewritten using Wolfram Mathematica
+# 	(df1 ** (df1 / 2) * df2**(df2 / 2) * (x / multiplicationFactor) ** (- 1 + df1 / 2) * (df2 + (df1 * x) / multiplicationFactor)**(( -df1 - df2) / 2))/(abs(multiplicationFactor) * beta(df1/2, df2/2))
+# }
