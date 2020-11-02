@@ -1,5 +1,9 @@
 ^\.travis\.yml$
-cran-comments.md
+^cran-comments.md$
+^codecov.yml$
+^.github$
 ^doc$
 ^Meta$
 ^CRAN-RELEASE$
+^docs$
+^pkgdown$

@@ -1,27 +1,31 @@
 <p align="center">
-  <img src="./man/figures/logo/jfaLogo.svg" align="middle" width="500.56" height="313.6">
+  <img src="man/figures/logo/jfaLogo.png" align="middle">
 </p>
 
 <!-- badges: start -->
-  [![Travis build status](https://travis-ci.org/koenderks/jfa.svg?branch=master)](https://travis-ci.org/koenderks/jfa)
-  [![Coverage](https://img.shields.io/codecov/c/github/koenderks/jfa)](https://codecov.io/gh/koenderks/jfa)
-  [![Release](https://img.shields.io/github/v/release/koenderks/jfa?include_prereleases)](https://github.com/koenderks/jfa/releases)
-  ![DownloadsMonthly](https://cranlogs.r-pkg.org/badges/jfa)
-  ![DownloadsTotal](https://cranlogs.r-pkg.org/badges/grand-total/jfa)
-  [![Issues](https://img.shields.io/github/issues/koenderks/jfa)](https://github.com/koenderks/jfa/issues)
+[![CRAN Status](https://www.r-pkg.org/badges/version-ago/jfa)](https://cran.r-project.org/package=jfa)
+[![codecov](https://codecov.io/gh/koenderks/jfa/branch/master/graph/badge.svg?token=ZoxIB8p8PW)](https://codecov.io/gh/koenderks/jfa)
+[![R build status](https://github.com/koenderks/jfa/workflows/R-CMD/badge.svg)](https://github.com/koenderks/jfa/actions)
+[![Build status](https://travis-ci.com/koenderks/jfa.svg?branch=master)](https://travis-ci.com/koenderks/jfa)
+![](https://cranlogs.r-pkg.org/badges/grand-total/jfa)
+![](https://cranlogs.r-pkg.org/badges/jfa)
 <!-- badges: end -->
 
 # R package jfa
 
-`jfa` is a multi-functional R package for statistical auditing. The package provides the user with four generic functions for planning, performing, and evaluating an audit and its results. Specifically, it contains functions for calculating sample sizes for audit sampling, selecting the transactions according to standard auditing techniques, and calculating various confidence bounds for the misstatement from the sample or from summary statistics. The package also allows the user to create a Bayesian prior probability distribution for use in these functions. The `jfa` package can be used to set up the entire audit sampling workflow.
+`jfa` is a multi-functional R package for statistical auditing. The package provides the user with four generic functions for planning, performing, and evaluating an audit and its results. Specifically, it contains functions for calculating sample sizes for audit sampling, selecting the transactions according to standard auditing techniques, and calculating various confidence bounds for the misstatement from the sample or from summary statistics. The package also allows the user to create a Bayesian prior probability distribution for use in these functions.
 
 * [Installing](#installing)
 * [Contributing](#contributing) 
 * [Benchmarks](#benchmarks)   
-* [Functions and features](#functions-and-features) 
-* [Poster](#poster) 
+* [Functions](#functions)
+* [Monthly downloads](#monthly-downloads) 
 
-For complete documentation, see the package [manual](./man/manual/jfa_0.4.0.pdf).
+The `jfa` package can be used to set up the entire audit sampling workflow. For the complete documentation, see the [package website](https://koenderks.github.io/jfa/) or the [package manual](./man/manual/jfa_0.5.0.pdf).
+
+<p align="center">
+  <img src="man/figures/banner/jfaBanner.png" align="middle">
+</p>
 
 ### Authors
 
@@ -35,7 +39,7 @@ This project is licensed under the GPL-3 License.
 
 ## Installing
 
-These instructions will get you a copy of the `jfa` package up and running on your local machine for use in R and RStudio. 
+The following instructions will get you a copy of the `jfa` package up and running on your local machine for use in R and RStudio. 
 
 ### Prerequisites
 
@@ -43,18 +47,18 @@ These instructions will get you a copy of the `jfa` package up and running on yo
 
 ### Downloading
 
-R package `jfa` is simple to download and set-up. The live version from [CRAN](https://cran.r-project.org/package=jfa) (0.4.0) can be downloaded by running the following command in R:
+The R package `jfa` is simple to download and set-up. The most recent version from [CRAN](https://cran.r-project.org/package=jfa) (0.4.0) can be downloaded by running the following command in R or RStudio:
 
 ```
 install.packages("jfa")
 ```
 
-The `jfa` package can then be loaded in RStudio by typing:
+The `jfa` package can then be loaded in R or RStudio by typing:
 ```
 library(jfa)
 ```
 
-Examples can be found in the package [vignette](https://cran.r-project.org/package=jfa/vignettes/auditWorkflow.html).
+A simple example can be found in the package [vignette](https://cran.r-project.org/package=jfa/vignettes/auditWorkflow.html).
 
 ## Contributing
 
@@ -66,7 +70,7 @@ Examples can be found in the package [vignette](https://cran.r-project.org/packa
 
 - [Audit Sampling: Audit Guide](https://future.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL)
 
-## Functions and features
+## Functions
 
 Below is a list of the available functions in the current version of `jfa`, sorted by their occurrence in the standard audit sampling workflow.
 
@@ -158,8 +162,8 @@ Supported features:
 | `quotient` | The quotient estimator |
 | `regression` | The regression estimator |
 
-## Poster
+## Monthly downloads
 
 <p align="center">
-  <img src="./man/figures/poster/poster.png" align="middle">
+  <img src="man/figures/downloads/downloads.png" align="middle" height="350" width="640">
 </p>
