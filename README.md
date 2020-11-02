@@ -3,13 +3,12 @@
 </p>
 
 <!-- badges: start -->
-  [![Travis build status](https://travis-ci.org/koenderks/jfa.svg?branch=master)](https://travis-ci.org/koenderks/jfa)
-  [![R build status](https://github.com/koenderks/jfa/workflows/R-CMD/badge.svg)](https://github.com/koenderks/jfa/actions)
-  [![Coverage](https://img.shields.io/codecov/c/github/koenderks/jfa)](https://codecov.io/gh/koenderks/jfa)
-  [![Release](https://img.shields.io/github/v/release/koenderks/jfa?include_prereleases)](https://github.com/koenderks/jfa/releases)
-  ![DownloadsMonthly](https://cranlogs.r-pkg.org/badges/jfa)
-  ![DownloadsTotal](https://cranlogs.r-pkg.org/badges/grand-total/jfa)
-  [![Issues](https://img.shields.io/github/issues/koenderks/jfa)](https://github.com/koenderks/jfa/issues)
+[![CRAN Status](https://www.r-pkg.org/badges/version-ago/jfa)](https://cran.r-project.org/package=jfa)
+[![codecov](https://codecov.io/gh/koenderks/jfa/branch/master/graph/badge.svg?token=ZoxIB8p8PW)](https://codecov.io/gh/koenderks/jfa)
+[![R build status](https://github.com/koenderks/jfa/workflows/R-CMD/badge.svg)](https://github.com/koenderks/jfa/actions)
+[![Build status](https://travis-ci.org/koenderks/jfa.svg?branch=master)](https://travis-ci.org/koenderks/jfa)
+![](https://cranlogs.r-pkg.org/badges/jfa)
+![](https://cranlogs.r-pkg.org/badges/grand-total/jfa)
 <!-- badges: end -->
 
 # R package jfa
