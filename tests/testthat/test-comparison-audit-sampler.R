@@ -2,7 +2,7 @@ context("3. Comparison to AuditSampler package")
 
 # Sample size tables can be retrieved from: https://cplusglobal.wordpress.com/2015/11/13/attributes-sample-size-using-the-hypergeometric-distribution/
 
-test_that(desc = "(id: 3.1) Sample size tables for Hypergeometric distribution", {
+test_that(desc = "(id: f3-v0.4.0-t1) Test Sample sizes for Hypergeometric distribution", {
 	populationSize <- c(rep(500, 12), rep(5000, 3), 15000, 36000)
 	expectedErrorRate <- c(rep(1, 3), 2, rep(1, 3), 2, 3, 4, 5, 6, rep(1, 5)) / 100
 	tolerableErrorRate <- c(8, 6, 4, 5, 8, 6, 4, 5, 6, 7, 8, 9, 8, 6, 4, 6, 4) / 100
