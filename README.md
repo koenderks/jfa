@@ -7,8 +7,8 @@
 [![codecov](https://codecov.io/gh/koenderks/jfa/branch/master/graph/badge.svg?token=ZoxIB8p8PW)](https://codecov.io/gh/koenderks/jfa)
 [![R build status](https://github.com/koenderks/jfa/workflows/R-CMD/badge.svg)](https://github.com/koenderks/jfa/actions)
 [![Build status](https://travis-ci.org/koenderks/jfa.svg?branch=master)](https://travis-ci.org/koenderks/jfa)
-![](https://cranlogs.r-pkg.org/badges/jfa)
 ![](https://cranlogs.r-pkg.org/badges/grand-total/jfa)
+![](https://cranlogs.r-pkg.org/badges/jfa)
 <!-- badges: end -->
 
 # R package jfa
@@ -43,7 +43,7 @@ These instructions will get you a copy of the `jfa` package up and running on yo
 
 ### Downloading
 
-R package `jfa` is simple to download and set-up. The live version from [CRAN](https://cran.r-project.org/package=jfa) (0.5.0) can be downloaded by running the following command in R:
+R package `jfa` is simple to download and set-up. The most recent version from [CRAN](https://cran.r-project.org/package=jfa) (0.4.0) can be downloaded by running the following command in R:
 
 ```
 install.packages("jfa")
