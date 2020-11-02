@@ -210,3 +210,6 @@ test_that(desc = "Bayes factors", {
   jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "hypergeometric", count = counts, prior = TRUE, N = 1000)
   expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf, 4766.862, tolerance = 0.001)
 })
+
+# jfa version 0.5.0
+# No changes to be tested

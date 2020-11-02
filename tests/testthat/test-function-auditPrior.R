@@ -147,3 +147,6 @@ test_that(desc = "(id: 4.8) median priors with expected errors", {
 	expect_equal(prior[["description"]]$alpha, 1.668, tolerance = 0.001)
 	expect_equal(prior[["description"]]$beta, 26.72, tolerance = 0.001)
 })
+
+# jfa version 0.5.0
+# No changes to be tested

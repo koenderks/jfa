@@ -202,3 +202,6 @@ test_that(desc = "(id: 6.29) Expected Bayes factors for median priors", {
 	jfaRes <- planning(confidence = 0.95, materiality = 0.02, prior = prior)
 	expect_equal(jfaRes[["expectedPosterior"]][["hypotheses"]]$expectedBf, 19.01047, tolerance = 0.001)
 })
+
+# jfa version 0.5.0
+# No changes to be tested

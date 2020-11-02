@@ -50,6 +50,15 @@ test_that(desc = "(id: 7.6) Interval monetary unit sampling", {
   expect_equal(nrow(jfaRes[["sample"]]), 100)
 })
 
+test_that(desc = "(id: 7.6) Interval monetary unit sampling using also negative values", {
+  set.seed(1)
+  population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = c(-100, runif(n = 999, min = 100, max = 500)))
+  jfaRes <- expect_warning(selection(population, sampleSize = 100, units = "mus", algorithm = "interval", bookValues = "bookValue", intervalStartingPoint = 3))
+  expect_equal(ncol(jfaRes[["sample"]]), 4)
+  expect_equal(nrow(jfaRes[["sample"]]), 100)
+})
+
+
 # jfa version 0.2.0
 # No changes to be tested
 
@@ -60,4 +69,7 @@ test_that(desc = "(id: 7.6) Interval monetary unit sampling", {
 # No changes to be tested
 
 # jfa version 0.4.0
+# No changes to be tested
+
+# jfa version 0.5.0
 # No changes to be tested
