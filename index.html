@@ -150,12 +150,8 @@
 <h2 class="hasAnchor">
 <a href="#functions" class="anchor"></a>Functions</h2>
 <p>Below is a list of the available functions in the current version of <code>jfa</code>, sorted by their occurrence in the standard audit sampling workflow.</p>
-<p><strong>Creating a prior distribution:</strong></p>
-<ul>
-<li>Function: <code><a href="reference/auditPrior.html">auditPrior()</a></code>
-</li>
-</ul>
-<p>This function creates a prior distribution according to one of several methods, including the audit risk model and assessments of the inherent and control risk. The returned object is of class <code>jfaPrior</code> and can be used with associated <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. <code>jfaPrior</code> results can also be used as input argument for the <code>prior</code> argument in other functions.</p>
+<p><strong>Create a prior distribution with the <code><a href="reference/auditPrior.html">auditPrior()</a></code> function:</strong></p>
+<p>The <code><a href="reference/auditPrior.html">auditPrior()</a></code> function creates a prior distribution according to one of several methods, including the audit risk model and assessments of the inherent and control risk. The returned object is of class <code>jfaPrior</code> and can be used with associated <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. <code>jfaPrior</code> results can also be used as input argument for the <code>prior</code> argument in other functions.</p>
 <p><code><a href="reference/auditPrior.html">auditPrior(confidence = 0.95, likelihood = "binomial", method = "none", expectedError = 0, N = NULL, materiality = NULL, ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)</a></code></p>
 <p>Supported features:</p>
 <table class="table">
@@ -224,12 +220,8 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Planning an audit sample:</strong></p>
-<ul>
-<li>Function: <code><a href="reference/planning.html">planning()</a></code>
-</li>
-</ul>
-<p>This function calculates the required sample size for an audit, based on the poisson, binomial, or hypergeometric likelihood. A prior can be specified to combine with the specified likelihood in order to perform Bayesian planning. The returned <code>jfaPlanning</code> object has a <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and a <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method.</p>
+<p><strong>Plan the sample with the <code><a href="reference/planning.html">planning()</a></code> function:</strong></p>
+<p>The <code><a href="reference/planning.html">planning()</a></code> function calculates the required sample size for a statistical audit sample, based on the poisson, binomial, or hypergeometric likelihood. A prior can be specified to combine with the specified likelihood in order to perform Bayesian planning. The returned <code>jfaPlanning</code> object has a <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and a <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method.</p>
 <p><code><a href="reference/planning.html">planning(confidence = 0.95, expectedError = 0, likelihood = "poisson", N = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, kPrior = 0, nPrior = 0, increase = 1, maxSize = 5000)</a></code></p>
 <p>Supported features:</p>
 <table class="table">
@@ -257,12 +249,8 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Selecting transactions from a population:</strong></p>
-<ul>
-<li>Function: <code><a href="reference/selection.html">selection()</a></code>
-</li>
-</ul>
-<p>This function takes a data frame and performs sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. The returned <code>jfaSelection</code> object has a <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and a <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method. The <code>sampleSize</code> argument can also be an object of class <code>jfaPlanning</code>.</p>
+<p><strong>Select transactions with the <code><a href="reference/selection.html">selection()</a></code> function:</strong></p>
+<p>The <code><a href="reference/selection.html">selection()</a></code> function takes a data frame and performs sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. The returned <code>jfaSelection</code> object has a <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and a <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method. The <code>sampleSize</code> argument can also be an object of class <code>jfaPlanning</code>.</p>
 <p><code><a href="reference/selection.html">selection(population, sampleSize, units = "records", algorithm = "random", bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, ascending = TRUE, withReplacement = FALSE, seed = 1)</a></code></p>
 <p>Supported features:</p>
 <table class="table">
@@ -303,12 +291,8 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Evaluating an audit sample:</strong></p>
-<p>This function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound according to a specified method. The returned <code>jfaEvalution</code> object has a <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method.</p>
-<ul>
-<li>Function: <code><a href="reference/evaluation.html">evaluation()</a></code>
-</li>
-</ul>
+<p><strong>Evaluate the sample with the <code><a href="reference/evaluation.html">evaluation()</a></code> function:</strong></p>
+<p>The <code><a href="reference/evaluation.html">evaluation()</a></code> function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound according to a specified method. The returned <code>jfaEvalution</code> object has a <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method.</p>
 <p><code><a href="reference/evaluation.html">evaluation(confidence = 0.95, method = "binomial", N = NULL, sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, nSumstats = NULL, kSumstats = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, nPrior = 0, kPrior = 0, rohrbachDelta = 2.7, momentPoptype = "accounts", populationBookValue = NULL, csA = 1, csB = 3, csMu = 0.5)</a></code></p>
 <p>Supported features:</p>
 <table class="table">
@@ -356,7 +340,7 @@
 </tr>
 <tr class="odd">
 <td><code>coxsnell</code></td>
-<td>Cox and Snell posterior bound</td>
+<td>Cox and Snell bound</td>
 </tr>
 <tr class="even">
 <td><code>direct</code></td>
