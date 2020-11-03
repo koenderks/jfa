@@ -143,7 +143,7 @@
     </tr>
     <tr>
       <th>method</th>
-      <td><p>the method by which the prior distribution is constructed. Defaults to the <code>arm</code> method, which uses the audit risk model (Derks et al., 2019). Can be one of <code>none</code>, <code>median</code>, <code>hypotheses</code>, <code>arm</code>, <code>sample</code> or <code>factor</code>. See the Details section for more information.</p></td>
+      <td><p>the method by which the prior distribution is constructed. Defaults to the <code>none</code> method, which incorporates no prior information. Can be one of <code>none</code>, <code>median</code>, <code>hypotheses</code>, <code>arm</code>, <code>sample</code> or <code>factor</code>. See the Details section for more information.</p></td>
     </tr>
     <tr>
       <th>expectedError</th>
@@ -203,14 +203,14 @@
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This section elaborates on the available methods for constructing a prior distribution.</p>
-<p>This section elaborates on the available likelihoods and corresponding prior distributions for the <code>likelihood</code> argument.</p>
+    <p>This section elaborates on the available likelihoods and corresponding prior distributions for the <code>likelihood</code> argument.</p>
 <ul>
 <li><p><code>poisson</code>:          The Poisson likelihood is used as a likelihood for monetary unit sampling (MUS). Its likelihood function is defined as: $$p(x) = \frac{\lambda^x e^{-\lambda}}{x!}$$ The conjugate <em>gamma(\(\alpha, \beta\))</em> prior has probability density function: $$f(x; \alpha, \beta) = \frac{\beta^\alpha x^{\alpha - 1} e^{-\beta x}}{\Gamma(\alpha)}$$</p></li>
 <li><p><code>binomial</code>:         The binomial likelihood is used as a likelihood for record sampling <em>with</em> replacement. Its likelihood function is defined as: $$p(x) = {n \choose k} p^k (1 - p)^{n - k}$$ The conjugate <em>beta(\(\alpha, \beta\))</em> prior has probability density function: $$f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}$$</p></li>
 <li><p><code>hypergeometric</code>:   The hypergeometric likelihood is used as a likelihood for record sampling <em>without</em> replacement. Its likelihood function is defined as: $$p(x = k) = \frac{{K \choose k} {N - K \choose n - k}}{{N \choose n}}$$ The conjugate <em>beta-binomial(\(\alpha, \beta\))</em> prior (Dyer and Pierce, 1993) has probability density function: $$f(k | n, \alpha, \beta) = {n \choose k} \frac{B(k + \alpha, n - k + \beta)}{B(\alpha, \beta)}$$</p></li>
 </ul>
 
+<p>This section elaborates on the available methods for constructing a prior distribution.</p>
 <ul>
 <li><p><code>none</code>:              This method constructs a prior distribution according to the principle of minimum information.</p></li>
 <li><p><code>median</code>:            This method constructs a prior distribution so that the prior probabilities of tolerable and intolerable misstatement are equal.</p></li>
