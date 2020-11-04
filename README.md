@@ -13,7 +13,7 @@ status](https://travis-ci.com/koenderks/jfa.svg?branch=master)](https://travis-c
 
 # jfa: Bayesian and Classical Audit Sampling
 
-<img src="man/figures/logo/jfaLogo.png" width="166" height="192" alt="logo" align="right" margin-left="10"/>
+<img src="man/figures/readme/logo/jfaLogo.png" width="166" height="192" alt="logo" align="right" margin-left="10"/>
 
 `jfa` is a multi-functional R package for statistical audit sampling.
 The package provides the user with four generic functions for planning,
@@ -34,11 +34,11 @@ functions.
 The `jfa` package can be used to set up the entire audit sampling
 workflow. For the complete documentation, see the [package
 website](https://koenderks.github.io/jfa/) or the [package
-manual](./man/manual/jfa_0.5.0.pdf).
+manual](https://cran.r-project.org/web/packages/jfa/jfa.pdf).
 
 <p align="center">
 
-<img src="man/figures/banner/jfaBanner.png" alt="banner"/>
+<img src="man/figures/readme/banner/jfaBanner.png" alt="banner"/>
 
 </p>
 
@@ -52,7 +52,8 @@ participated in this project.
 
 ### License
 
-This project is licensed under the GPL-3 License.
+This project is licensed under the open-source
+[GPL-3](https://www.r-project.org/Licenses/GPL-3) License.
 
 ## Installing
 
@@ -61,8 +62,8 @@ and running on your local machine for use in R and RStudio.
 
 ### Prerequisites
 
-  - [R](https://cran.r-project.org/mirrors.html) - The programming
-    language used for deploying the package.
+  - [R](https://cran.r-project.org) - The programming language used for
+    deploying the package.
 
 ### Downloading
 
@@ -85,13 +86,14 @@ A simple example can be found in the package
 community. Your help in benchmarking and extending `jfa` is therefore
 greatly appreciate. Contributing to `jfa` does not have to take much
 time or knowledge, and there is extensive information available on the
-Wiki page of this repository. If you are willing to contribute to the
-improvement of the package by adding a benchmark, please check out the
-Wiki page on [how to contribute a benchmark to
-jfa](https://github.com/koenderks/jfa/wiki/Benchmarks). If you are
-willing to contribute to the improvement of the package by adding a new
-statistical method, please check the Wiki page on [how to contribute a
-new method to jfa](https://github.com/koenderks/jfa/wiki/Methods).
+[Wiki](https://github.com/koenderks/jfa/wiki) of this repository. If you
+are willing to contribute to the improvement of the package by adding a
+benchmark, please check out the Wiki page on [how to contribute a
+benchmark to jfa](https://github.com/koenderks/jfa/wiki/Benchmarks). If
+you are willing to contribute to the improvement of the package by
+adding a new statistical method, please check the Wiki page on [how to
+contribute a new method to
+jfa](https://github.com/koenderks/jfa/wiki/Methods).
 
 ## Benchmarks
 
@@ -217,6 +219,6 @@ Supported features:
 
 <p align="center">
 
-<img src="man/figures/README-downloads-1.png" alt="downloads"/>
+<img src="man/figures/readme/README-downloads-1.png" alt="downloads"/>
 
 </p>

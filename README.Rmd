@@ -7,7 +7,7 @@ knitr::opts_chunk$set(
   fig.align = 'center',
   collapse = TRUE,
   comment = "#>",
-  fig.path = "man/figures/README-")
+  fig.path = "man/figures/readme/README-")
 ```
 
 <!-- badges: start -->
@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 
 # jfa: Bayesian and Classical Audit Sampling
 
-<img src="man/figures/logo/jfaLogo.png" width="166" height="192" alt="logo" align="right" margin-left="10"/>
+<img src="man/figures/readme/logo/jfaLogo.png" width="166" height="192" alt="logo" align="right" margin-left="10"/>
 
 `jfa` is a multi-functional R package for statistical audit sampling. The package provides the user with four generic functions for planning, performing, and evaluating an audit sample and its results. Specifically, it contains functions for calculating sample sizes, selecting the transactions according to standard auditing techniques, and calculating various upper limits for the misstatement from the sample or from summary statistics. The package also allows the user to create a Bayesian prior probability distribution for use in these functions.
 
@@ -31,10 +31,10 @@ knitr::opts_chunk$set(
 * [Functions](#functions)
 * [Monthly downloads](#monthly-downloads) 
 
-The `jfa` package can be used to set up the entire audit sampling workflow. For the complete documentation, see the [package website](https://koenderks.github.io/jfa/) or the [package manual](./man/manual/jfa_0.5.0.pdf).
+The `jfa` package can be used to set up the entire audit sampling workflow. For the complete documentation, see the [package website](https://koenderks.github.io/jfa/) or the [package manual](https://cran.r-project.org/web/packages/jfa/jfa.pdf).
 
 <p align="center">
-  <img src="man/figures/banner/jfaBanner.png" alt="banner"/>
+  <img src="man/figures/readme/banner/jfaBanner.png" alt="banner"/>
 </p>
 
 ### Authors
@@ -45,7 +45,7 @@ See also the list of [contributors](https://github.com/koenderks/jfa/graphs/cont
 
 ### License
 
-This project is licensed under the GPL-3 License.
+This project is licensed under the open-source [GPL-3](https://www.r-project.org/Licenses/GPL-3) License.
 
 ## Installing
 
@@ -53,7 +53,7 @@ The following instructions will get you a copy of the `jfa` package up and runni
 
 ### Prerequisites
 
-* [R](https://cran.r-project.org/mirrors.html) - The programming language used for deploying the package.
+* [R](https://cran.r-project.org) - The programming language used for deploying the package.
 
 ### Downloading
 
@@ -72,7 +72,7 @@ A simple example can be found in the package [vignette](https://cran.r-project.o
 
 ## Contributing
 
-`jfa` is an open-source project that aims to be useful for the audit community. Your help in benchmarking and extending `jfa` is therefore greatly appreciate. Contributing to `jfa` does not have to take much time or knowledge, and there is extensive information available on the Wiki page of this repository. If you are willing to contribute to the improvement of the package by adding a benchmark, please check out the Wiki page on [how to contribute a benchmark to jfa](https://github.com/koenderks/jfa/wiki/Benchmarks). If you are willing to contribute to the improvement of the package by adding a new statistical method, please check the Wiki page on [how to contribute a new method to jfa](https://github.com/koenderks/jfa/wiki/Methods). 
+`jfa` is an open-source project that aims to be useful for the audit community. Your help in benchmarking and extending `jfa` is therefore greatly appreciate. Contributing to `jfa` does not have to take much time or knowledge, and there is extensive information available on the [Wiki](https://github.com/koenderks/jfa/wiki) of this repository. If you are willing to contribute to the improvement of the package by adding a benchmark, please check out the Wiki page on [how to contribute a benchmark to jfa](https://github.com/koenderks/jfa/wiki/Benchmarks). If you are willing to contribute to the improvement of the package by adding a new statistical method, please check the Wiki page on [how to contribute a new method to jfa](https://github.com/koenderks/jfa/wiki/Methods). 
 
 ## Benchmarks
 
@@ -180,30 +180,32 @@ releases          <- c("2020-01-01", "2020-08-01", "2020-09-01", "2020-11-01")
 releaseLabs       <- c("v0.1.0", "v0.2.0", "v0.3.0", "v0.4.0")
 
 p <- ggplot2::ggplot(plotData, ggplot2::aes(x = date, y = count)) +
-      ggplot2::geom_bar(stat = "identity", fill = rgb(65, 104, 195, maxColorValue = 255), col = "black", size = 1) +
-      ggplot2::scale_x_date(name = "", breaks = xBreaks, labels = scales::date_format("%m-%Y")) +
-      ggplot2::scale_y_continuous(name = "Monthly downloads", breaks = yBreaks, labels = yBreaks, 
-                                  limits = c(0, max(yBreaks))) +
-      bbplot::bbc_style() +
-      ggplot2::labs(title="Monthly CRAN downloads since January 2020") +
-      ggplot2::geom_text(mapping = ggplot2::aes(x = date, y = count + 50), label = plotData[["count"]]) +
-      ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10),
-                    axis.text.y = ggplot2::element_text(size = 12), 
-                    plot.title = ggplot2::element_text(size = 15)) +
-      ggplot2::geom_curve(data = data.frame(x = as.Date(releases), y = rep(max(yBreaks) - 25, 
-                          length(releases)), xend = as.Date(releases), yend = rep(max(yBreaks) - 100, length(releases))), 
-                 ggplot2::aes(x = x, y = y, xend = xend, yend = yend), colour = "#555555", size=1, curvature = 0, 
-                              arrow = ggplot2::arrow(length = ggplot2::unit(0.025, "npc"))) +
-      ggplot2::annotate(geom = "text", x = as.Date(releases), y = rep(max(yBreaks), length(releases)), 
-                        label = releaseLabs, vjust = -0.25)
+      	ggplot2::geom_bar(stat = "identity", fill = rgb(65, 104, 195, maxColorValue = 255), col = "black", size = 1) +
+		ggplot2::scale_x_date(name = "", breaks = xBreaks, labels = scales::date_format("%m-%Y")) +
+		ggplot2::scale_y_continuous(name = "Monthly downloads", breaks = yBreaks, 
+										labels = yBreaks, limits = c(0, max(yBreaks))) +
+		ggplot2::labs(title = "Monthly CRAN downloads since January 2020") +
+      	ggplot2::geom_text(mapping = ggplot2::aes(x = date, y = count + 50), label = plotData[["count"]]) +
+		bbplot::bbc_style() +
+		ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10),
+						axis.text.y = ggplot2::element_text(size = 12), 
+						plot.title = ggplot2::element_text(size = 15)) +
+		ggplot2::geom_curve(data = data.frame(x = as.Date(releases), 
+												y = rep(max(yBreaks) - 25, length(releases)), 
+												xend = as.Date(releases), 
+												yend = rep(max(yBreaks) - 100, length(releases))), 
+							mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend), colour = "#555555", size=1, curvature = 0, 
+													arrow = ggplot2::arrow(length = ggplot2::unit(0.025, "npc"))) +
+		ggplot2::annotate(geom = "text", x = as.Date(releases), y = rep(max(yBreaks), length(releases)), 
+							label = releaseLabs, vjust = -0.25)
 
 bbplot::finalise_plot(plot_name = p, source = "Source: https://cran-logs.rstudio.com", 
-                      save_filepath = paste0(dirname(getwd()), "/jfa/man/figures/downloads/downloads.png"),
-                      width_pixels = 640, height_pixels = 350, 
-                      logo_image_path = paste0(dirname(getwd()), "/jfa/man/figures/logo/jfaLogo.png"))
+						save_filepath = paste0(dirname(getwd()), "/jfa/man/figures/readme/downloads/downloads.png"),
+						width_pixels = 640, height_pixels = 350, 
+						logo_image_path = paste0(dirname(getwd()), "/jfa/man/figures/readme/logo/jfaLogo.png"))
 
 ```
 
 <p align="center">
-  <img src="man/figures/README-downloads-1.png" alt="downloads"/>
+  <img src="man/figures/readme/README-downloads-1.png" alt="downloads"/>
 </p>
