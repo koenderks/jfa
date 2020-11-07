@@ -123,13 +123,14 @@
 ## 4 71769    431.87     431.87
 ## 5 55080    620.88     620.88
 ## 6 93224    501.76     501.76</code></pre>
+<p>Because this data set contains the <em>Ist</em> values of the transactions, we need to consider each monetary unit in the population as a possible unit of inference.</p>
 </div>
 <div id="using-planning-the-basics" class="section level3">
 <h3 class="hasAnchor">
 <a href="#using-planning-the-basics" class="anchor"></a>Using <code>planning()</code>: The basics</h3>
-<p>Planning a sample using <code>jfa</code> is simple and requires that you have knowledge of the goal of the analysis. Let’s take the goal of testing against a performance materiality as an example.</p>
+<p>Planning a sample using the <code><a href="../reference/planning.html">planning()</a></code> function requires that you have knowledge of the goal of the analysis and the statistical distribution of your data (<code>poisson</code>, <code>binomial</code>, or <code>hypergeometric</code>). Let’s take the goal of testing against a performance materiality with the <code>poisson</code> distribution as an example.</p>
 <p>Analysis goal: <em>Plan a sample such that, when zero misstatements are found in the sample, you can be 95% confident that the total misstatement in the population is lower than 5% of its total value.</em></p>
-<p>Planning a sample with this goal can be done using the code below (specifically using the <code>materiality</code> argument). As you can see, the required sample size for this goal is 60.</p>
+<p>Planning a sample with this goal can be done using the code below (specifically using the <code>materiality</code> argument). As you can see, the required sample size for this goal is 60 monetary units.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>confidence <span class="op">=</span> <span class="fl">0.95</span>, expectedError <span class="op">=</span> <span class="fl">0</span>, likelihood <span class="op">=</span> <span class="st">"poisson"</span>, N <span class="op">=</span> <span class="fl">3500</span>, materiality <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
@@ -154,7 +155,7 @@
 ## # ------------------------------------------------------------</code></pre>
 <p>The goal of the analysis can also involve obtaining a minimum precision about the estimate of the misstatement.</p>
 <p>Analysis goal: <em>Plan a sample such that, when zero misstatements are found in the sample, you can be 95% confident that the inaccuracy of your estimate is at most 2%.</em></p>
-<p>Planning a sample with this goal can be done using the code below (specifically using the <code>minPrecision</code> argument). As you can see, the required sample size for this goal is 150.</p>
+<p>Planning a sample with this goal can be done using the code below (specifically using the <code>minPrecision</code> argument). As you can see, the required sample size for this goal is 150 monetary units.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>confidence <span class="op">=</span> <span class="fl">0.95</span>, expectedError <span class="op">=</span> <span class="fl">0</span>, likelihood <span class="op">=</span> <span class="st">"poisson"</span>, N <span class="op">=</span> <span class="fl">3500</span>, minPrecision <span class="op">=</span> <span class="fl">0.02</span><span class="op">)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
@@ -181,6 +182,32 @@
 <div id="using-selection-the-basics" class="section level3">
 <h3 class="hasAnchor">
 <a href="#using-selection-the-basics" class="anchor"></a>Using <code>selection()</code>: The basics</h3>
+<p>Selecting a sample using the <code><a href="../reference/selection.html">selection()</a></code> function requires that you have knowledge of the sampling units. Transactions can be selected using <em>record sampling</em> (also called attribute sampling) with <code>units = "records"</code>, or using <em>monetary unit sampling</em> with <code>units = "mus"</code>.</p>
+<p>It also requires knowledge of the sampling algorithm. Transactions can be selected using <em>random sampling</em> with <code>algorithm = "random"</code>, using <em>cell sampling</em> with <code>algorithm = "cell"</code>, or using fixed interval sampling (also known as systematic sampling) with <code>algorithm = "interval"</code>.</p>
+<p>For example, the code below samples 150 monetary units from the <code>BuildIt</code> data set using a <em>fixed interval monetary unit sampling</em> scheme.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="fl">150</span>, units <span class="op">=</span> <span class="st">"mus"</span>, bookValues <span class="op">=</span> <span class="st">"bookValue"</span>, algorithm <span class="op">=</span> <span class="st">"interval"</span><span class="op">)</span></code></pre></div>
+<pre><code>## # ------------------------------------------------------------
+## #                  jfa Selection Summary
+## # ------------------------------------------------------------
+## # Input:
+## #      
+## # Population size:         3500 
+## # Requested sample size:   150 
+## # Sampling units:          Monetary units 
+## # Algorithm:               Fixed interval sampling 
+## # Interval:                9354.81
+## # Starting point:          1  
+## # ------------------------------------------------------------ 
+## # Output:
+## #
+## # Obtained sample size:    150 
+## # ------------------------------------------------------------
+## # Statistics:
+## #
+## # Proportion n/N:          0.04 
+## # Percentage of value:     4.25% 
+## # ------------------------------------------------------------</code></pre>
 </div>
 <div id="using-evaluation-the-basics" class="section level3">
 <h3 class="hasAnchor">
