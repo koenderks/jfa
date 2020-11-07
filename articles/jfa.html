@@ -82,6 +82,7 @@
       <h1 data-toc-skip>jfa: Bayesian and Classical Audit Sampling</h1>
                         <h4 class="author">Koen Derks</h4>
             
+            <h4 class="date">last modified: 07-11-2020</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/master/vignettes/jfa.Rmd"><code>vignettes/jfa.Rmd</code></a></small>
       <div class="hidden name"><code>jfa.Rmd</code></div>
@@ -90,9 +91,51 @@
 
     
     
-<div id="introduction-and-scenario" class="section level2">
+<div id="overview" class="section level2">
 <h2 class="hasAnchor">
-<a href="#introduction-and-scenario" class="anchor"></a>Introduction and scenario</h2>
+<a href="#overview" class="anchor"></a>Overview</h2>
+<p>The <code>jfa</code> package allows you to plan, select, and evaluate an audit sample using classical and Bayesian statistics.</p>
+<p>Below it is explained how to install and use the <code>jfa</code> package.</p>
+</div>
+<div id="installation" class="section level2">
+<h2 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h2>
+<p>Install <code>jfa</code> from CRAN</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"jfa"</span><span class="op">)</span></code></pre></div>
+<p>or from GitHub</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"koenderks/jfa"</span><span class="op">)</span></code></pre></div>
+</div>
+<div id="load-data" class="section level2">
+<h2 class="hasAnchor">
+<a href="#load-data" class="anchor"></a>Load data</h2>
+<p>We can try out some examples with the <code>BuildIt</code> data set that is included in the package. It includes a population of transactions from a fictional company BuildIt, which we can use to illustrate statistical audit sampling (for more info, see ?BuildIt).</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/koenderks/jfa">jfa</a></span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"BuildIt"</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">BuildIt</span><span class="op">)</span></code></pre></div>
+<pre><code>##      ID bookValue auditValue
+## 1 82884    242.61     242.61
+## 2 25064    642.99     642.99
+## 3 81235    628.53     628.53
+## 4 71769    431.87     431.87
+## 5 55080    620.88     620.88
+## 6 93224    501.76     501.76</code></pre>
+</div>
+<div id="using-planning-the-basics" class="section level2">
+<h2 class="hasAnchor">
+<a href="#using-planning-the-basics" class="anchor"></a>Using <code>planning()</code>: The basics</h2>
+</div>
+<div id="using-selection-the-basics" class="section level2">
+<h2 class="hasAnchor">
+<a href="#using-selection-the-basics" class="anchor"></a>Using <code>selection()</code>: The basics</h2>
+</div>
+<div id="using-evaluation-the-basics" class="section level2">
+<h2 class="hasAnchor">
+<a href="#using-evaluation-the-basics" class="anchor"></a>Using <code>evaluation()</code>: The basics</h2>
 </div>
   </div>
 
