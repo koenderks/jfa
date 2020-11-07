@@ -91,15 +91,15 @@
 
     
     
-<div id="overview" class="section level2">
-<h2 class="hasAnchor">
-<a href="#overview" class="anchor"></a>Overview</h2>
+<div id="overview" class="section level3">
+<h3 class="hasAnchor">
+<a href="#overview" class="anchor"></a>Overview</h3>
 <p>The <code>jfa</code> package allows you to plan, select, and evaluate an audit sample using classical and Bayesian statistics.</p>
 <p>Below it is explained how to install and use the <code>jfa</code> package.</p>
 </div>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<div id="installation" class="section level3">
+<h3 class="hasAnchor">
+<a href="#installation" class="anchor"></a>Installation</h3>
 <p>Install <code>jfa</code> from CRAN</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"jfa"</span><span class="op">)</span></code></pre></div>
@@ -107,15 +107,14 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"koenderks/jfa"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="load-data" class="section level2">
-<h2 class="hasAnchor">
-<a href="#load-data" class="anchor"></a>Load data</h2>
-<p>We can try out some examples with the <code>BuildIt</code> data set that is included in the package. It includes a population of transactions from a fictional company BuildIt, which we can use to illustrate statistical audit sampling (for more info, see ?BuildIt).</p>
+<div id="load-data" class="section level3">
+<h3 class="hasAnchor">
+<a href="#load-data" class="anchor"></a>Load data</h3>
+<p>We can try out some examples with the <code>BuildIt</code> data set that is included in the package. It includes a population of 3500 transactions from a fictional construction company BuildIt, which we can use to illustrate statistical audit sampling using the <code>jfa</code> package (for more info, see ?BuildIt).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/koenderks/jfa">jfa</a></span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"BuildIt"</span><span class="op">)</span>
-
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">BuildIt</span><span class="op">)</span></code></pre></div>
 <pre><code>##      ID bookValue auditValue
 ## 1 82884    242.61     242.61
@@ -125,25 +124,73 @@
 ## 5 55080    620.88     620.88
 ## 6 93224    501.76     501.76</code></pre>
 </div>
-<div id="using-planning-the-basics" class="section level2">
-<h2 class="hasAnchor">
-<a href="#using-planning-the-basics" class="anchor"></a>Using <code>planning()</code>: The basics</h2>
+<div id="using-planning-the-basics" class="section level3">
+<h3 class="hasAnchor">
+<a href="#using-planning-the-basics" class="anchor"></a>Using <code>planning()</code>: The basics</h3>
+<p>Planning a sample using <code>jfa</code> is simple and requires that you have knowledge of the goal of the analysis. Let’s take the goal of testing against a performance materiality as an example.</p>
+<p>Analysis goal: <em>Plan a sample such that, when zero misstatements are found in the sample, you can be 95% confident that the total misstatement in the population is lower than 5% of its total value.</em></p>
+<p>Planning a sample with this goal can be done using the code below (specifically using the <code>materiality</code> argument). As you can see, the required sample size for this goal is 60.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>confidence <span class="op">=</span> <span class="fl">0.95</span>, expectedError <span class="op">=</span> <span class="fl">0</span>, likelihood <span class="op">=</span> <span class="st">"poisson"</span>, N <span class="op">=</span> <span class="fl">3500</span>, materiality <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></code></pre></div>
+<pre><code>## # ------------------------------------------------------------
+## #              jfa Planning Summary (Frequentist)
+## # ------------------------------------------------------------     
+## # Input:
+## # 
+## # Confidence:              95% 
+## # Materiality:             5% 
+## # Minimum precision:       Not specified 
+## # Likelihood:              poisson 
+## # Expected sample errors:  0 
+## # ------------------------------------------------------------
+## # Output:
+## #
+## # Sample size:             60 
+## # ------------------------------------------------------------
+## # Statistics:
+## #
+## # Expected upper bound:    4.99% 
+## # Expected precision:      4.99% 
+## # ------------------------------------------------------------</code></pre>
+<p>The goal of the analysis can also involve obtaining a minimum precision about the estimate of the misstatement.</p>
+<p>Analysis goal: <em>Plan a sample such that, when zero misstatements are found in the sample, you can be 95% confident that the inaccuracy of your estimate is at most 2%.</em></p>
+<p>Planning a sample with this goal can be done using the code below (specifically using the <code>minPrecision</code> argument). As you can see, the required sample size for this goal is 150.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>confidence <span class="op">=</span> <span class="fl">0.95</span>, expectedError <span class="op">=</span> <span class="fl">0</span>, likelihood <span class="op">=</span> <span class="st">"poisson"</span>, N <span class="op">=</span> <span class="fl">3500</span>, minPrecision <span class="op">=</span> <span class="fl">0.02</span><span class="op">)</span></code></pre></div>
+<pre><code>## # ------------------------------------------------------------
+## #              jfa Planning Summary (Frequentist)
+## # ------------------------------------------------------------     
+## # Input:
+## # 
+## # Confidence:              95% 
+## # Materiality:             Not specified 
+## # Minimum precision:       2% 
+## # Likelihood:              poisson 
+## # Expected sample errors:  0 
+## # ------------------------------------------------------------
+## # Output:
+## #
+## # Sample size:             150 
+## # ------------------------------------------------------------
+## # Statistics:
+## #
+## # Expected upper bound:    2% 
+## # Expected precision:      2% 
+## # ------------------------------------------------------------</code></pre>
 </div>
-<div id="using-selection-the-basics" class="section level2">
-<h2 class="hasAnchor">
-<a href="#using-selection-the-basics" class="anchor"></a>Using <code>selection()</code>: The basics</h2>
+<div id="using-selection-the-basics" class="section level3">
+<h3 class="hasAnchor">
+<a href="#using-selection-the-basics" class="anchor"></a>Using <code>selection()</code>: The basics</h3>
 </div>
-<div id="using-evaluation-the-basics" class="section level2">
-<h2 class="hasAnchor">
-<a href="#using-evaluation-the-basics" class="anchor"></a>Using <code>evaluation()</code>: The basics</h2>
+<div id="using-evaluation-the-basics" class="section level3">
+<h3 class="hasAnchor">
+<a href="#using-evaluation-the-basics" class="anchor"></a>Using <code>evaluation()</code>: The basics</h3>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
+      </div>
 
 </div>
 
