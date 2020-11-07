@@ -94,9 +94,44 @@
 
     
     
-<div id="prior-probability-distributions" class="section level2">
+<div id="bayesian-statistics" class="section level2">
 <h2 class="hasAnchor">
-<a href="#prior-probability-distributions" class="anchor"></a>Prior probability distributions</h2>
+<a href="#bayesian-statistics" class="anchor"></a>Bayesian statistics</h2>
+<p>Bayesian statistics allows you to incorporate existing information into the statistical analysis and revise this information using the information from the sample, possibly increasing your efficiency in the sampling procedure. For example, when you have information that indicates a low-risk profile for your client, you may require less evidence from the audit sampling procedures. Be aware that all information that you incorporate into the statistical analysis should be justified.</p>
+<div id="prior-probability-distributions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#prior-probability-distributions" class="anchor"></a>Prior probability distributions</h3>
+<p>Bayesian statistics incorporates existing information into the sampling procedure using a prior probability distribution that reflects your current knowledge about the misstatement in the population. The prior distribution is created using existing information, and is therefore generally created before the planning stage in the procedure.</p>
+</div>
+</div>
+<div id="prior-construction-methods" class="section level2">
+<h2 class="hasAnchor">
+<a href="#prior-construction-methods" class="anchor"></a>Prior construction methods</h2>
+<p>An important question is how to incorporate various kinds of existing information into the prior distribution. <code>jfa</code> offers five methods to create a prior distribution. These methods are explained below.</p>
+<div id="no-explicit-information-method-none-default" class="section level3">
+<h3 class="hasAnchor">
+<a href="#no-explicit-information-method-none-default" class="anchor"></a>No explicit information (<code>method = "none"</code>; default)</h3>
+</div>
+<div id="audit-risk-model-method-arm" class="section level3">
+<h3 class="hasAnchor">
+<a href="#audit-risk-model-method-arm" class="anchor"></a>Audit Risk Model (<code>method = "arm"</code>)</h3>
+</div>
+<div id="equal-prior-probabilities-method-median" class="section level3">
+<h3 class="hasAnchor">
+<a href="#equal-prior-probabilities-method-median" class="anchor"></a>Equal prior probabilities (<code>method = "median"</code>)</h3>
+</div>
+<div id="custom-prior-probabilities-method-hypotheses" class="section level3">
+<h3 class="hasAnchor">
+<a href="#custom-prior-probabilities-method-hypotheses" class="anchor"></a>Custom prior probabilities (<code>method = "hypotheses"</code>)</h3>
+</div>
+<div id="earlier-sample-method-sample" class="section level3">
+<h3 class="hasAnchor">
+<a href="#earlier-sample-method-sample" class="anchor"></a>Earlier sample (<code>method = "sample"</code>)</h3>
+</div>
+<div id="weighted-earlier-sample-method-factor" class="section level3">
+<h3 class="hasAnchor">
+<a href="#weighted-earlier-sample-method-factor" class="anchor"></a>Weighted earlier sample (<code>method = "factor"</code>)</h3>
+</div>
 </div>
   </div>
 
