@@ -343,10 +343,28 @@
 <span class="va">s6</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>confidence <span class="op">=</span> <span class="va">confidence</span>, expectedError <span class="op">=</span> <span class="va">expectedError</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, 
                materiality <span class="op">=</span> <span class="va">materiality</span>, prior <span class="op">=</span> <span class="va">prior6</span><span class="op">)</span><span class="op">$</span><span class="va">sampleSize</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="st">"Prior1"</span> <span class="op">=</span> <span class="va">s1</span>, <span class="st">"Prior2"</span> <span class="op">=</span> <span class="va">s2</span>, <span class="st">"Prior3"</span> <span class="op">=</span> <span class="va">s3</span>, <span class="st">"Prior4"</span> <span class="op">=</span> <span class="va">s4</span>, 
-                  <span class="st">"Prior5"</span> <span class="op">=</span> <span class="va">s5</span>, <span class="st">"Prior6"</span> <span class="op">=</span> <span class="va">s6</span>, row.names <span class="op">=</span> <span class="st">"Required sample size"</span><span class="op">)</span><span class="op">)</span>
-<span class="co">##                      Prior1 Prior2 Prior3 Prior4 Prior5 Prior6</span>
-<span class="co">## Required sample size     58     48     45     52     28     28</span></code></pre></div>
+<span class="fu">knitr</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span><span class="st">"Prior1"</span> <span class="op">=</span> <span class="va">s1</span>, <span class="st">"Prior2"</span> <span class="op">=</span> <span class="va">s2</span>, <span class="st">"Prior3"</span> <span class="op">=</span> <span class="va">s3</span>, <span class="st">"Prior4"</span> <span class="op">=</span> <span class="va">s4</span>, 
+                  <span class="st">"Prior5"</span> <span class="op">=</span> <span class="va">s5</span>, <span class="st">"Prior6"</span> <span class="op">=</span> <span class="va">s6</span>, row.names <span class="op">=</span> <span class="st">"Required sample size"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<table class="table">
+<thead><tr class="header">
+<th align="left"></th>
+<th align="right">Prior1</th>
+<th align="right">Prior2</th>
+<th align="right">Prior3</th>
+<th align="right">Prior4</th>
+<th align="right">Prior5</th>
+<th align="right">Prior6</th>
+</tr></thead>
+<tbody><tr class="odd">
+<td align="left">Required sample size</td>
+<td align="right">58</td>
+<td align="right">48</td>
+<td align="right">45</td>
+<td align="right">52</td>
+<td align="right">28</td>
+<td align="right">28</td>
+</tr></tbody>
+</table>
 </div>
   </div>
 
