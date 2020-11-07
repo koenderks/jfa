@@ -53,6 +53,9 @@
 <li>
       <a href="../articles/auditWorkflow.html">jfa: The audit sampling workflow</a>
     </li>
+    <li>
+      <a href="../articles/priorDistributions.html">jfa: Constructing a prior distribution</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -194,9 +197,9 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">planningResult</span><span class="op">)</span></code></pre></div>
 <p><img src="auditWorkflow_files/figure-html/unnamed-chunk-10-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
-<div id="stage-2-sampling-from-the-population" class="section level2">
+<div id="stage-2-selecting-a-sample" class="section level2">
 <h2 class="hasAnchor">
-<a href="#stage-2-sampling-from-the-population" class="anchor"></a>Stage 2: Sampling from the population</h2>
+<a href="#stage-2-selecting-a-sample" class="anchor"></a>Stage 2: Selecting a sample</h2>
 <p>Laura is now ready to select the required 169 transactions from the financial statements. She can choose to do this according to one of two statistical methods. In <em>record sampling</em> (<code>units = "records"</code>), inclusion probabilities are assigned on the transaction level, treating transactions with a high value and a low value the same, a transaction of $5,000 is equally likely to be selected as a transaction of $1,000. In <em>monetary unit sampling</em> (<code>units = "mus"</code>), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the transaction that includes that dollar is selected. This favors higher transactions, as a transaction of $5,000 is five times more likely to be selected than a transaction of $1,000.</p>
 <p>Laura chooses to use <em>monetary unit sampling</em>, as she wants to include more high-valued transactions. The <code><a href="../reference/selection.html">selection()</a></code> function allows her to sample from the financial statements. She uses the <code>planningResult</code> object as an input for the <code><a href="../reference/selection.html">selection()</a></code> function.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
