@@ -208,10 +208,22 @@
 ## # Proportion n/N:          0.04 
 ## # Percentage of value:     4.25% 
 ## # ------------------------------------------------------------</code></pre>
+<p>The selected sample is saved in the object that is returned by the <code><a href="../reference/selection.html">selection()</a></code> function and can be extracted via <code>$sample</code>.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="fl">150</span>, units <span class="op">=</span> <span class="st">"mus"</span>, bookValues <span class="op">=</span> <span class="st">"bookValue"</span>, algorithm <span class="op">=</span> <span class="st">"interval"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">x</span><span class="op">$</span><span class="va">sample</span><span class="op">)</span></code></pre></div>
+<pre><code>##   rowNumber count    ID bookValue auditValue
+## 1         1     1 30568     14.47      14.47
+## 2        24     1  1469     72.57      72.57
+## 3        50     1 58378     94.17      94.17
+## 4        73     1 64917    103.37     103.37
+## 5        96     1 50703    110.76     110.76
+## 6       123     1 91342    118.20     118.20</code></pre>
 </div>
 <div id="using-evaluation-the-basics" class="section level2">
 <h2 class="hasAnchor">
 <a href="#using-evaluation-the-basics" class="anchor"></a>Using <code>evaluation()</code>: The basics</h2>
+<p>After executing the audit and annotating the transactions in the sample with their <em>Soll</em> values, you can evaluate whether you have achieved your analysis goal via the <code><a href="../reference/evaluation.html">evaluation()</a></code> function.</p>
 </div>
   </div>
 
