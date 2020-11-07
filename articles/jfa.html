@@ -312,7 +312,7 @@
 <p>Suppose that you have audited the transactions in the sample and have found no deviations from the <em>ist</em> values.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sample</span><span class="op">$</span><span class="va">auditValue</span> <span class="op">&lt;-</span> <span class="va">sample</span><span class="op">$</span><span class="va">bookValue</span></code></pre></div>
-<p>You can evaluate the annotated sample using the <code>sample</code>, <code>bookValues</code>, <code>auditValues</code>, and <code>counts</code> arguments. The code below evaluates the analysis goal using the popular Stringer bound.</p>
+<p>You can evaluate the annotated sample using the <code>sample</code>, <code>bookValues</code>, <code>auditValues</code>, and <code>counts</code> arguments. The code below evaluates the analysis goal using the popular Stringer bound. You can find more information about which methods are implemented on the <a href="https://koenderks.github.io/jfa">home page</a>.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>confidence <span class="op">=</span> <span class="fl">0.95</span>, method <span class="op">=</span> <span class="st">"stringer"</span>, N <span class="op">=</span> <span class="fl">3500</span>, materiality <span class="op">=</span> <span class="fl">0.05</span>,
            sample <span class="op">=</span> <span class="va">sample</span>, bookValues <span class="op">=</span> <span class="st">"bookValue"</span>, auditValues <span class="op">=</span> <span class="st">"auditValue"</span>, counts <span class="op">=</span> <span class="va">sample</span><span class="op">$</span><span class="va">count</span><span class="op">)</span></code></pre></div>
@@ -337,6 +337,12 @@
 ## # Conclusion:               Approve population 
 ## # ------------------------------------------------------------</code></pre>
 </div>
+</div>
+<div id="using-auditprior-prior-probability-distributions" class="section level2">
+<h2 class="hasAnchor">
+<a href="#using-auditprior-prior-probability-distributions" class="anchor"></a>Using <code>auditPrior</code>: Prior probability distributions</h2>
+<p>The <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function allows you to perform the workflow as discussed above in a Bayesian fashion. Using a prior distribution is fairly simple, you only have to insert the returned object from the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function as an argument for the <code>prior</code> argument in the <code><a href="../reference/planning.html">planning()</a></code> and <code><a href="../reference/evaluation.html">evaluation()</a></code> functions.</p>
+<p>For more information about how to create a prior distribution, see the vignettes <a href="https://koenderks.github.io/jfa/articles/auditWorkflow.html">jfa: Constructing a prior distribution</a> and <a href="https://koenderks.github.io/jfa/articles/auditWorkflow.html">jfa: The audit workflow</a>.</p>
 </div>
   </div>
 
