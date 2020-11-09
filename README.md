@@ -28,7 +28,7 @@ prior probability distribution for use in these functions.
   - [Contributing](#contributing)
   - [Benchmarks](#benchmarks)  
   - [Functions](#functions)
-  - [Monthly downloads](#monthly-downloads)
+  - [Package statistics](#package-statistics)
 
 The `jfa` package can be used to set up the entire audit sampling
 workflow. For the complete documentation, see the [package
@@ -218,10 +218,16 @@ Supported features:
 | `quotient`           | The quotient estimator                                                        |
 | `regression`         | The regression estimator                                                      |
 
-## Monthly downloads
+## Package statistics
 
 <p align="center">
 
-<img src="man/figures/readme/downloads/downloads.png" alt="downloads"/>
+<img src="man/figures/readme/downloads/downloads.svg" alt="downloads" width="900" height="400"/>
+
+</p>
+
+<p align="center">
+
+<img src="man/figures/readme/worldmap/worldmap.svg" alt="worldmap" width="900" height="500"/>
 
 </p>
