@@ -88,6 +88,9 @@
 <a href="#jfa-bayesian-and-classical-audit-sampling" class="anchor"></a>jfa: Bayesian and Classical Audit Sampling</h1></div>
 <p><img src="reference/figures/readme/logo/jfaLogo.png" width="166" height="192" alt="logo" align="right" margin-left="20" margin-right="20"></p>
 <p><code>jfa</code> is a multi-functional R package for statistical audit sampling. The package provides the user with four generic functions for planning, performing, and evaluating an audit sample. Specifically, it contains functions for calculating sample sizes, selecting the transactions according to standard audit sampling techniques, and calculating various upper limits for the misstatement from the sample or from summary statistics. The <code>jfa</code> package also allows the user to create a Bayesian prior probability distribution for use in these functions.</p>
+<div id="overview" class="section level2">
+<h2 class="hasAnchor">
+<a href="#overview" class="anchor"></a>Overview</h2>
 <ul>
 <li><a href="#installing">Installing</a></li>
 <li><a href="#contributing">Contributing</a></li>
@@ -98,11 +101,12 @@
 <li><a href="#references">References</a></li>
 <li><a href="#package-statistics">Package statistics</a></li>
 </ul>
-<p>The <code>jfa</code> package can be used to set up the entire audit sampling workflow. For the complete documentation, see the <a href="https://koenderks.github.io/jfa/">package website</a> or the <a href="https://cran.r-project.org/web/packages/jfa/jfa.pdf">package manual</a>.</p>
+<p>The <code>jfa</code> package can be used to set up the entire audit sampling workflow.</p>
 <p align="center">
 </p>
 <p><img src="reference/figures/readme/banner/jfaBanner.png" alt="banner"></p>
 
+<p>For complete documentation of the package, see the <a href="https://koenderks.github.io/jfa/">package website</a> or the <a href="https://cran.r-project.org/web/packages/jfa/jfa.pdf">package manual</a>.</p>
 <div id="authors" class="section level3">
 <h3 class="hasAnchor">
 <a href="#authors" class="anchor"></a>Authors</h3>
@@ -117,6 +121,7 @@
 <h3 class="hasAnchor">
 <a href="#license" class="anchor"></a>License</h3>
 <p>This project is licensed under the open-source <a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a> License.</p>
+</div>
 </div>
 <div id="installing" class="section level2">
 <h2 class="hasAnchor">
@@ -238,7 +243,7 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Plan the sample with the <code><a href="reference/planning.html">planning()</a></code> function:</strong></p>
+<p><strong>Plan a sample with the <code><a href="reference/planning.html">planning()</a></code> function:</strong></p>
 <p>The <code><a href="reference/planning.html">planning()</a></code> function calculates the required sample size for a statistical audit sample, based on the poisson, binomial, or hypergeometric likelihood. A prior can be specified to combine with the specified likelihood in order to perform Bayesian planning. The returned <code>jfaPlanning</code> object has a <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and a <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method.</p>
 <p><em>Full function:</em></p>
 <p><code><a href="reference/planning.html">planning(confidence = 0.95, expectedError = 0, likelihood = "poisson", N = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, kPrior = 0, nPrior = 0, increase = 1, maxSize = 5000)</a></code></p>
@@ -324,7 +329,7 @@
 </tr>
 </tbody>
 </table>
-<p><strong>Evaluate the sample with the <code><a href="reference/evaluation.html">evaluation()</a></code> function:</strong></p>
+<p><strong>Evaluate a sample with the <code><a href="reference/evaluation.html">evaluation()</a></code> function:</strong></p>
 <p>The <code><a href="reference/evaluation.html">evaluation()</a></code> function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound according to a specified method. The returned <code>jfaEvalution</code> object has a <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method.</p>
 <p><em>Full function:</em></p>
 <p><code><a href="reference/evaluation.html">evaluation(confidence = 0.95, method = "binomial", N = NULL, sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, nSumstats = NULL, kSumstats = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, nPrior = 0, kPrior = 0, rohrbachDelta = 2.7, momentPoptype = "accounts", populationBookValue = NULL, csA = 1, csB = 3, csMu = 0.5)</a></code></p>
