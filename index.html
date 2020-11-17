@@ -164,12 +164,19 @@
 <h2 class="hasAnchor">
 <a href="#functions" class="anchor"></a>Functions</h2>
 <p>Below is a list of the available functions in the current version of <code>jfa</code>, sorted by their occurrence in the standard audit sampling workflow.</p>
-<p><strong>Create a prior distribution with the <code><a href="reference/auditPrior.html">auditPrior()</a></code> function:</strong></p>
+<div id="create-a-prior-distribution-with-the-auditprior-function" class="section level3">
+<h3 class="hasAnchor">
+<a href="#create-a-prior-distribution-with-the-auditprior-function" class="anchor"></a>Create a prior distribution with the <code>auditPrior()</code> function:</h3>
 <p>The <code><a href="reference/auditPrior.html">auditPrior()</a></code> function creates a prior distribution according to one of several methods, including the audit risk model and assessments of the inherent and control risk. The returned object is of class <code>jfaPrior</code> and can be used with associated <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. <code>jfaPrior</code> results can also be used as input argument for the <code>prior</code> argument in other functions.</p>
-<p><em>Full function:</em></p>
+<p><em>Full function with default arguments:</em></p>
 <p><code><a href="reference/auditPrior.html">auditPrior(confidence = 0.95, likelihood = "binomial", method = "none", expectedError = 0, N = NULL, materiality = NULL, ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)</a></code></p>
 <p><em>Supported options for the <code>likelihood</code> argument:</em></p>
 <table class="table">
+<colgroup>
+<col width="16%">
+<col width="22%">
+<col width="62%">
+</colgroup>
 <thead><tr class="header">
 <th><code>likelihood</code></th>
 <th>Reference</th>
@@ -177,84 +184,92 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>
-<code>binomial</code> (default)</td>
-<td></td>
-<td>The beta prior for the binomial likelihood</td>
+<td><code>binomial</code></td>
+<td>Steele (1992)</td>
+<td>Beta prior distribution (+ binomial likelihood)</td>
 </tr>
 <tr class="even">
 <td><code>poisson</code></td>
-<td></td>
-<td>The gamma prior for the Poisson likelihood</td>
+<td>Stewart (2013)</td>
+<td>Gamma prior distribution (+ Poisson likelihood)</td>
 </tr>
 <tr class="odd">
 <td><code>hypergeometric</code></td>
-<td></td>
-<td>The beta-binomial prior for the hypergeometric likelihood</td>
+<td>Dyer and Pierce (1991)</td>
+<td>Beta-binomial prior distribution (+ hypergeometric likelihood)</td>
 </tr>
 </tbody>
 </table>
 <p><em>Supported options for the <code>method</code> argument:</em></p>
 <table class="table">
 <colgroup>
-<col width="15%">
 <col width="11%">
-<col width="73%">
+<col width="17%">
+<col width="41%">
+<col width="30%">
 </colgroup>
 <thead><tr class="header">
 <th><code>method</code></th>
 <th>Reference</th>
 <th>Description</th>
+<th>Additional arguments</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>
-<code>none</code> (default)</td>
-<td>Derks (2020)</td>
-<td>No prior information incorporated</td>
+<td><code>none</code></td>
+<td>Derks et al. (2020)</td>
+<td>No prior information</td>
+<td></td>
 </tr>
 <tr class="even">
 <td><code>arm</code></td>
-<td>Derks (2020)</td>
-<td>Risk assessments from the Audit Risk Model using <code>ir</code> and <code>cr</code>
+<td>Derks et al. (2020)</td>
+<td>Inherent risk and internal control risk (ARM)</td>
+<td>
+<code>ir</code> and <code>cr</code>
 </td>
 </tr>
 <tr class="odd">
 <td><code>median</code></td>
-<td>Derks (2020)</td>
-<td>Equal prior probabilities for (in)tolerable misstatement</td>
+<td>Derks et al. (2020)</td>
+<td>Equal prior probabilities for hypotheses</td>
+<td></td>
 </tr>
 <tr class="even">
 <td><code>hypotheses</code></td>
-<td>Derks (2020)</td>
-<td>Prior probabilities for (in)tolerable misstatement using <code>pHmin</code> or <code>pHplus</code>
+<td>Derks et al. (2020)</td>
+<td>Custom prior probabilities for hypotheses</td>
+<td>
+<code>pHmin</code> or <code>pHplus</code>
 </td>
 </tr>
 <tr class="odd">
 <td><code>sample</code></td>
-<td>Derks (2020)</td>
-<td>Earlier sample using <code>sampleN</code> and <code>sampleK</code>
+<td>Derks et al. (2020)</td>
+<td>Earlier sample</td>
+<td>
+<code>sampleN</code> and <code>sampleK</code>
 </td>
 </tr>
 <tr class="even">
 <td><code>factor</code></td>
-<td>Derks (2020)</td>
-<td>Weighted earlier sample using <code>factor</code>, <code>sampleN</code> and <code>sampleK</code>
+<td>Derks et al. (2020)</td>
+<td>Weighted earlier sample</td>
+<td>
+<code>factor</code>, <code>sampleN</code> and <code>sampleK</code>
 </td>
 </tr>
 </tbody>
 </table>
-<p><strong>Plan a sample with the <code><a href="reference/planning.html">planning()</a></code> function:</strong></p>
-<p>The <code><a href="reference/planning.html">planning()</a></code> function calculates the required sample size for a statistical audit sample, based on the poisson, binomial, or hypergeometric likelihood. A prior can be specified to combine with the specified likelihood in order to perform Bayesian planning. The returned <code>jfaPlanning</code> object has a <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and a <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method.</p>
-<p><em>Full function:</em></p>
+</div>
+<div id="plan-a-sample-with-the-planning-function" class="section level3">
+<h3 class="hasAnchor">
+<a href="#plan-a-sample-with-the-planning-function" class="anchor"></a>Plan a sample with the <code>planning()</code> function:</h3>
+<p>The <code><a href="reference/planning.html">planning()</a></code> function calculates the required sample size for a statistical audit sample, based on the Poisson, binomial, or hypergeometric likelihood. A prior can be specified to combine with the specified likelihood in order to perform Bayesian planning. The returned <code>jfaPlanning</code> object has a <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and a <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method. In the <code><a href="reference/planning.html">planning()</a></code> function, the <code>prior</code> argument can be an object of class <code>jfaPrior</code> as returned by the <code><a href="reference/auditPrior.html">auditPrior()</a></code> function.</p>
+<p><em>Full function with default arguments:</em></p>
 <p><code><a href="reference/planning.html">planning(confidence = 0.95, expectedError = 0, likelihood = "poisson", N = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, kPrior = 0, nPrior = 0, increase = 1, maxSize = 5000)</a></code></p>
 <p><em>Supported options for the <code>likelihood</code> argument:</em></p>
 <table class="table">
-<colgroup>
-<col width="20%">
-<col width="14%">
-<col width="66%">
-</colgroup>
 <thead><tr class="header">
 <th><code>likelihood</code></th>
 <th>Reference</th>
@@ -262,159 +277,204 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>
-<code>binomial</code> (default)</td>
+<td><code>binomial</code></td>
 <td>Stewart (2012)</td>
-<td>The binomial likelihood (optionally the beta prior)</td>
+<td>Binomial likelihood</td>
 </tr>
 <tr class="even">
 <td><code>poisson</code></td>
 <td>Stewart (2012)</td>
-<td>The Poisson likelihood (optionally the gamma prior)</td>
+<td>Poisson likelihood</td>
 </tr>
 <tr class="odd">
 <td><code>hypergeometric</code></td>
 <td>Stewart (2012)</td>
-<td>The hypergeometric likelihood (optionally the beta-binomial prior)</td>
+<td>Hypergeometric likelihood</td>
 </tr>
 </tbody>
 </table>
-<p><strong>Select transactions with the <code><a href="reference/selection.html">selection()</a></code> function:</strong></p>
-<p>The <code><a href="reference/selection.html">selection()</a></code> function takes a data frame and performs sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. The returned <code>jfaSelection</code> object has a <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and a <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method. The <code>sampleSize</code> argument can also be an object of class <code>jfaPlanning</code>.</p>
-<p><em>Full function:</em></p>
+</div>
+<div id="select-transactions-with-the-selection-function" class="section level3">
+<h3 class="hasAnchor">
+<a href="#select-transactions-with-the-selection-function" class="anchor"></a>Select transactions with the <code>selection()</code> function:</h3>
+<p>The <code><a href="reference/selection.html">selection()</a></code> function takes a data frame and performs sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. The returned <code>jfaSelection</code> object has a <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and a <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method. In the <code><a href="reference/selection.html">selection()</a></code> function, the <code>sampleSize</code> argument can be an object of class <code>jfaPlanning</code> as returned by the <code><a href="reference/planning.html">planning()</a></code> function.</p>
+<p><em>Full function with default arguments:</em></p>
 <p><code><a href="reference/selection.html">selection(population, sampleSize, units = "records", algorithm = "random", bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, ascending = TRUE, withReplacement = FALSE, seed = 1)</a></code></p>
 <p><em>Supported options for the <code>units</code> argument:</em></p>
 <table class="table">
+<colgroup>
+<col width="8%">
+<col width="38%">
+<col width="32%">
+<col width="19%">
+</colgroup>
 <thead><tr class="header">
 <th><code>units</code></th>
 <th>Reference</th>
 <th>Description</th>
+<th>Additional arguments</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>
-<code>records</code> (default)</td>
+<td><code>records</code></td>
+<td>Leslie, Teitlebaum, and Anderson (1979)</td>
+<td>Sampling units are transactions</td>
 <td></td>
-<td>Record sampling; sampling units are transactions</td>
 </tr>
 <tr class="even">
 <td><code>mus</code></td>
-<td></td>
-<td>Monetary unit sampling; sampling units are monetary units</td>
+<td>Leslie, Teitlebaum, and Anderson (1979)</td>
+<td>Sampling units are monetary units</td>
+<td><code>bookValues</code></td>
 </tr>
 </tbody>
 </table>
 <p><em>Supported options for the <code>algorithm</code> argument:</em></p>
 <table class="table">
+<colgroup>
+<col width="12%">
+<col width="10%">
+<col width="51%">
+<col width="26%">
+</colgroup>
 <thead><tr class="header">
 <th><code>algorithm</code></th>
 <th>Reference</th>
 <th>Description</th>
+<th>Additional arguments</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>
-<code>random</code> (default)</td>
+<td><code>random</code></td>
 <td></td>
 <td>Random sampling</td>
+<td></td>
 </tr>
 <tr class="even">
 <td><code>cell</code></td>
 <td></td>
 <td>Cell sampling</td>
+<td></td>
 </tr>
 <tr class="odd">
 <td><code>interval</code></td>
 <td></td>
 <td>Systematic sampling / Fixed interval sampling</td>
+<td><code>intervalStartingPoint</code></td>
 </tr>
 </tbody>
 </table>
-<p><strong>Evaluate a sample with the <code><a href="reference/evaluation.html">evaluation()</a></code> function:</strong></p>
-<p>The <code><a href="reference/evaluation.html">evaluation()</a></code> function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound according to a specified method. The returned <code>jfaEvalution</code> object has a <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method.</p>
-<p><em>Full function:</em></p>
+</div>
+<div id="evaluate-a-sample-with-the-evaluation-function" class="section level3">
+<h3 class="hasAnchor">
+<a href="#evaluate-a-sample-with-the-evaluation-function" class="anchor"></a>Evaluate a sample with the <code>evaluation()</code> function:</h3>
+<p>The <code><a href="reference/evaluation.html">evaluation()</a></code> function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound according to a specified method. The returned <code>jfaEvalution</code> object has a <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method. In the <code><a href="reference/evaluation.html">evaluation()</a></code> function, the <code>prior</code> argument can be an object of class <code>jfaPrior</code> as returned by the <code><a href="reference/auditPrior.html">auditPrior()</a></code> function.</p>
+<p><em>Full function with default arguments:</em></p>
 <p><code><a href="reference/evaluation.html">evaluation(confidence = 0.95, method = "binomial", N = NULL, sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, nSumstats = NULL, kSumstats = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, nPrior = 0, kPrior = 0, rohrbachDelta = 2.7, momentPoptype = "accounts", populationBookValue = NULL, csA = 1, csB = 3, csMu = 0.5)</a></code></p>
 <p><em>Supported options for the <code>method</code> argument:</em></p>
 <table class="table">
 <colgroup>
-<col width="17%">
-<col width="21%">
-<col width="61%">
+<col width="14%">
+<col width="31%">
+<col width="33%">
+<col width="20%">
 </colgroup>
 <thead><tr class="header">
 <th><code>method</code></th>
 <th>Reference</th>
 <th>Description</th>
+<th>Additional arguments</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td>
-<code>binomial</code> (default)</td>
+<td><code>binomial</code></td>
 <td>Stewart (2012)</td>
-<td>The binomial likelihood (optionally the beta posterior)</td>
+<td>Binomial likelihood</td>
+<td></td>
 </tr>
 <tr class="even">
 <td><code>poisson</code></td>
 <td>Stewart (2012)</td>
-<td>The Poisson likelihood (optionally the gamma posterior)</td>
+<td>Poisson likelihood</td>
+<td></td>
 </tr>
 <tr class="odd">
 <td><code>hypergeometric</code></td>
 <td>Stewart (2012)</td>
-<td>The hypergeometric likelihood (optionally the beta-binomial posterior)</td>
+<td>Hypergeometric likelihood</td>
+<td></td>
 </tr>
 <tr class="even">
 <td><code>stringer</code></td>
 <td>Bickel (1992)</td>
-<td>The Stringer bound</td>
+<td>Classical Stringer bound</td>
+<td></td>
 </tr>
 <tr class="odd">
 <td><code>stringer-meikle</code></td>
+<td>Meikle (1972)</td>
+<td>Stringer bound with Meikle’s correction</td>
 <td></td>
-<td>The Stringer bound with Meikle’s correction (for understatements)</td>
 </tr>
 <tr class="even">
 <td><code>stringer-lta</code></td>
+<td>Leslie, Teitlebaum, &amp; Anderson (1979)</td>
+<td>Stringer bound with LTA correction</td>
 <td></td>
-<td>The Stringer bound with LTA correction (for understatements)</td>
 </tr>
 <tr class="odd">
+<td><code>stringer-pvz</code></td>
+<td>Pap and van Zuijlen (1996)</td>
+<td>Modified Stringer bound</td>
+<td></td>
+</tr>
+<tr class="even">
 <td><code>rohrbach</code></td>
 <td>Rohrbach (1993)</td>
 <td>Rohrbach’s augmented variance estimator</td>
+<td><code>rohrbachDelta</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>moment</code></td>
-<td>Dworin &amp; Grimlund (1984)</td>
-<td>The modified moment bound</td>
+<td>Dworin and Grimlund (1984)</td>
+<td>Modified moment bound</td>
+<td><code>momentPoptype</code></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>coxsnell</code></td>
-<td>Cox &amp; Snell (1979)</td>
-<td>The Cox and Snell bound</td>
+<td>Cox and Snell (1979)</td>
+<td>Cox and Snell bound</td>
+<td>
+<code>csA</code>, <code>csB</code>, and <code>csMu</code>
+</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>direct</code></td>
-<td></td>
-<td>The direct estimator</td>
-</tr>
-<tr class="odd">
-<td><code>difference</code></td>
-<td></td>
-<td>The difference estimator</td>
+<td>Touw and Hoogduin (2011)</td>
+<td>Direct estimator</td>
+<td><code>populationBookValue</code></td>
 </tr>
 <tr class="even">
-<td><code>quotient</code></td>
-<td></td>
-<td>The quotient estimator</td>
+<td><code>difference</code></td>
+<td>Touw and Hoogduin (2011)</td>
+<td>Difference estimator</td>
+<td><code>populationBookValue</code></td>
 </tr>
 <tr class="odd">
+<td><code>quotient</code></td>
+<td>Touw and Hoogduin (2011)</td>
+<td>Quotient estimator</td>
+<td><code>populationBookValue</code></td>
+</tr>
+<tr class="even">
 <td><code>regression</code></td>
-<td></td>
-<td>The regression estimator</td>
+<td>Touw and Hoogduin (2011)</td>
+<td>Regression estimator</td>
+<td><code>populationBookValue</code></td>
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 <div id="references" class="section level2">
 <h2 class="hasAnchor">
@@ -430,9 +490,19 @@
 </li>
 <li>Dworin, L. D. and Grimlund, R. A. (1984). Dollar-unit sampling for accounts receivable and inventory. <em>The Accounting Review</em>, 59(2), 218–241. - <a href="https://www.jstor.org/stable/247296">View online</a>
 </li>
-<li>Rohrbach, K. J. (1993). Variance augmentation to achieve nominal coverage probability in sampling from audit populations. <em>Auditing: A Journal of Practice &amp; Theory</em>, 12(2), 79-97.</li>
-<li>Stewart, T. (2012). <em>Technical notes on the AICPA audit guide Audit Sampling</em>. American Institute of Certified Public Accountants, New York, 5-8. - <a href="https://www.aicpa.org/content/dam/aicpa/publications/accountingauditing/keytopics/downloadabledocuments/sampling-guide-technical-notes.pdf">View online</a>
+<li>Dyer, D., &amp; Pierce, R. L. (1993). On the choice of the prior distribution in hypergeometric sampling. <em>Communications in Statistics - Theory and Methods</em>, 22(8), 2125-2146. - <a href="https://www.tandfonline.com/doi/abs/10.1080/03610929308831139">View online</a>
 </li>
+<li>Meikle, G. R. (1972). <em>Statistical Sampling in an Audit Context</em>. Canadian Institute of Chartered Accountants.</li>
+<li>Leslie, D. A., Teitlebaum, A. D., &amp; Anderson, R. J. (1979). <em>Dollar-unit sampling: A practical guide for auditors</em>. London: Pitman.</li>
+<li>Pap, G., &amp; van Zuijlen, M. C. (1996). On the asymptotic behaviour of the Stringer bound. <em>Statistica Neerlandica</em>, 50(3), 367-389. - <a href="https://doi.org/10.1111/j.1467-9574.1996.tb01503.x">View online</a>
+</li>
+<li>Rohrbach, K. J. (1993). Variance augmentation to achieve nominal coverage probability in sampling from audit populations. <em>Auditing: A Journal of Practice &amp; Theory</em>, 12(2), 79-97.</li>
+<li>Steele, A. (1992). <em>Audit risk and audit evidence: The Bayesian approach to statistical auditing</em>. San Diego: Academic Press.</li>
+<li>Stewart, T. R. (2012). <em>Technical notes on the AICPA audit guide audit sampling</em>. American Institute of Certified Public Accountants, New York. - <a href="https://www.aicpa.org/content/dam/aicpa/publications/accountingauditing/keytopics/downloadabledocuments/sampling-guide-technical-notes.pdf">View online</a>
+</li>
+<li>Stewart, T. R. (2013). <em>A Bayesian audit assurance model with application to the component materiality problem in group audits.</em> VU University, Amsterdam. - <a href="https://research.vu.nl/en/publications/a-bayesian-audit-assurance-model-with-application-to-the-componen">View online</a>
+</li>
+<li>Touw, P., and Hoogduin, L. (2011). <em>Statistiek voor audit en controlling</em>. Boom uitgevers, Amsterdam.</li>
 </ul>
 </div>
 <div id="package-statistics" class="section level2">
