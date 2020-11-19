@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • jfa</title>
+<title>Create an Audit Trail after Evaluation — report • jfa</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,10 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="Create an Audit Trail after Evaluation — report" />
+<meta property="og:description" content="This function takes an object of class jfaEvaluation and creates a report containing the results.
+For more details on how to use this function see the package vignette:
+vignette(&quot;jfa&quot;, package = &quot;jfa&quot;)" />
 
 
 
@@ -58,7 +61,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -126,72 +129,53 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>Create an Audit Trail after Evaluation</h1>
+    <small class="dont-index">Source: <a href='https://github.com/koenderks/jfa/blob/master/R/report.R'><code>R/report.R</code></a></small>
+    <div class="hidden name"><code>report.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>This function takes an object of class <code>jfaEvaluation</code> and creates a report containing the results.</p>
+<p>For more details on how to use this function see the package vignette:
+<code><a href='../articles/jfa.html'>vignette("jfa", package = "jfa")</a></code></p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>report</span><span class='op'>(</span>object <span class='op'>=</span> <span class='cn'>NULL</span>, file <span class='op'>=</span> <span class='cn'>NULL</span>, format <span class='op'>=</span> <span class='st'>"html_document"</span><span class='op'>)</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="BuildIt.html">BuildIt</a></code> </p>
-        </td>
-        <td><p>BuildIt Construction financial statements</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="auditPrior.html">auditPrior()</a></code> </p>
-        </td>
-        <td><p>Create a Prior Distribution with Existing Audit Information</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="evaluation.html">evaluation()</a></code> </p>
-        </td>
-        <td><p>Evaluation of Audit Samples using Confidence / Credible Bounds</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="planning.html">planning()</a></code> </p>
-        </td>
-        <td><p>Frequentist and Bayesian Planning for Audit Sampling</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="report.html">report()</a></code> </p>
-        </td>
-        <td><p>Create an Audit Trail after Evaluation</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="selection.html">selection()</a></code> </p>
-        </td>
-        <td><p>Selecting a Sample from an Audit Population</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>object</th>
+      <td><p>an object of class 'jfaEvaluation' as returned by the <code><a href='evaluation.html'>evaluation()</a></code> function.</p></td>
+    </tr>
+    <tr>
+      <th>file</th>
+      <td><p>a string that gives the desired name of the file (e.g. <code>"report.html"</code>).</p></td>
+    </tr>
+    <tr>
+      <th>format</th>
+      <td><p>can be either one of <code>"html_document"</code> or <code>"pdf_document"</code> (required MikTex).</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A html or pdf report of the results.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p><code><a href='evaluation.html'>evaluation</a></code></p></div>
+    <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
+
+    <p>Koen Derks, <a href='mailto:k.derks@nyenrode.nl'>k.derks@nyenrode.nl</a></p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/koenderks/jfa'>jfa</a></span><span class='op'>)</span>
+
+</div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
