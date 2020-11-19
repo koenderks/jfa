@@ -98,11 +98,9 @@
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
 <ul>
-<li><a href="#installing">Installing</a></li>
+<li><a href="#getting-started">Getting started</a></li>
+<li><a href="#benchmarks">Benchmarks</a></li>
 <li><a href="#contributing">Contributing</a></li>
-<li>
-<a href="#benchmarks">Benchmarks</a><br>
-</li>
 <li><a href="#functions">Functions</a></li>
 <li><a href="#references">References</a></li>
 <li><a href="#package-statistics">Package statistics</a></li>
@@ -129,9 +127,9 @@
 <p>This project is licensed under the open-source <a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a> License.</p>
 </div>
 </div>
-<div id="installing" class="section level2">
+<div id="getting-started" class="section level2">
 <h2 class="hasAnchor">
-<a href="#installing" class="anchor"></a>Installing</h2>
+<a href="#getting-started" class="anchor"></a>Getting started</h2>
 <p>The following instructions will get you a copy of the <code>jfa</code> package up and running on your local machine for use in R and RStudio.</p>
 <div id="prerequisites" class="section level3">
 <h3 class="hasAnchor">
@@ -141,13 +139,15 @@
 <a href="https://cran.r-project.org">R</a> - The programming language used for deploying the package.</li>
 </ul>
 </div>
-<div id="downloading" class="section level3">
+<div id="installing" class="section level3">
 <h3 class="hasAnchor">
-<a href="#downloading" class="anchor"></a>Downloading</h3>
+<a href="#installing" class="anchor"></a>Installing</h3>
 <p>The <code>jfa</code> package is simple to download and set-up. The most recent version from <a href="https://cran.r-project.org/package=jfa">CRAN</a> (0.4.0) can be downloaded by running the following command in R or RStudio:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">"jfa"</span>)</span></code></pre></div>
+<p>Or from GitHub using:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>devtools<span class="op">::</span><span class="kw">install.github</span>(<span class="st">"koenderks/jfa"</span>)</span></code></pre></div>
 <p>The <code>jfa</code> package can then be loaded in R or RStudio by typing:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(jfa)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">library</span>(jfa)</span></code></pre></div>
 </div>
 <div id="vignettes" class="section level3">
 <h3 class="hasAnchor">
@@ -161,20 +161,20 @@
 </ul>
 </div>
 </div>
+<div id="benchmarks" class="section level2">
+<h2 class="hasAnchor">
+<a href="#benchmarks" class="anchor"></a>Benchmarks</h2>
+<p><code>jfa</code>’s results are currently being verified against the following benchmarks:</p>
+<ul>
+<li>
+<a href="https://future.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL">Audit Sampling: Audit Guide</a> (Appendix A and Appendix C)</li>
+</ul>
+</div>
 <div id="contributing" class="section level2">
 <h2 class="hasAnchor">
 <a href="#contributing" class="anchor"></a>Contributing</h2>
 <p><code>jfa</code> is an open-source project that aims to be useful for the audit community. Your help in benchmarking and extending <code>jfa</code> is therefore greatly appreciated. Contributing to <code>jfa</code> does not have to take much time or knowledge, and there is extensive information available about it on the <a href="https://github.com/koenderks/jfa/wiki">Wiki</a> of this repository.</p>
 <p>If you are willing to contribute to the improvement of the package by adding a benchmark, please check out the Wiki page on <a href="https://github.com/koenderks/jfa/wiki/Benchmarks">how to contribute a benchmark to jfa</a>. If you are willing to contribute to the improvement of the package by adding a new statistical method, please check the Wiki page on <a href="https://github.com/koenderks/jfa/wiki/Methods">how to contribute a new method to jfa</a>.</p>
-</div>
-<div id="benchmarks" class="section level2">
-<h2 class="hasAnchor">
-<a href="#benchmarks" class="anchor"></a>Benchmarks</h2>
-<p><code>jfa</code> is currently being verified against the following benchmarks:</p>
-<ul>
-<li>
-<a href="https://future.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL">Audit Sampling: Audit Guide</a> (Appendix A and Appendix C)</li>
-</ul>
 </div>
 <div id="functions" class="section level2">
 <h2 class="hasAnchor">
