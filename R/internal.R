@@ -18,3 +18,12 @@
 # 	# Rewritten using Wolfram Mathematica
 # 	(df1 ** (df1 / 2) * df2**(df2 / 2) * (x / multiplicationFactor) ** (- 1 + df1 / 2) * (df2 + (df1 * x) / multiplicationFactor)**(( -df1 - df2) / 2))/(abs(multiplicationFactor) * beta(df1/2, df2/2))
 # }
+
+.getfun<-function(x) {
+  if(length(grep("::", x))>0) {
+    parts<-strsplit(x, "::")[[1]]
+    getExportedValue(parts[1], parts[2])
+  } else {
+    x
+  }
+}

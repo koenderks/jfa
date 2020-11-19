@@ -11,7 +11,7 @@ Authors@R:
 Description: Implements the audit sampling workflow as discussed in Derks et al. (2019) <doi:10.31234/osf.io/9f6ub>. The package makes it easy for an auditor to plan an audit sample, sample from the population, and evaluating that sample using various confidence bounds according to the International Standards on Auditing. Furthermore, the package implements Bayesian equivalents of these methods. 
 BugReports: https://github.com/koenderks/jfa/issues
 URL: https://github.com/koenderks/jfa, https://koenderks.github.io/jfa/
-Suggests: testthat, knitr, rmarkdown
+Suggests: testthat, knitr, rmarkdown, kableExtra
 Language: en-US
 License: GPL-3
 Encoding: UTF-8

@@ -1,0 +1,223 @@
+---
+title: "Audit sampling report"
+output: 
+  html_document:
+    theme: journal
+---
+
+```{r, include = FALSE}
+colorize <- function(x, color) {
+  if (knitr::is_latex_output()) {
+    sprintf("\\textcolor{%s}{%s}", color, x)
+  } else if (knitr::is_html_output()) {
+    sprintf("<span style='color: %s;'>%s</span>", color, 
+      x)
+  } else x
+}
+```
+
+```{css, echo=FALSE}
+.math {
+  font-size: small;
+}
+```
+
+---
+
+<img src="jfaLogo.png" width="133" height="154" alt="logo" align="right" margin-left="20" margin-right="20"/>
+
+This report was created by `r version$version.string` and its package `jfa` (version `r utils::packageVersion("jfa")`)^[`jfa`'s source code can be found on its [GitHub page](https://github.com/koenderks/jfa)]. `jfa` provides Bayesian and classical audit sampling analyses and is available on CRAN. 
+
+`jfa` is free software and you can redistribute it and or modify it under the terms of the GNU GPL-3 as published by the Free Software Foundation. The package is distributed in the hope that it will be useful, but without any warranty; without even the implied warranty of merchantability of fitness for a particular purpose. 
+
+Visit the [package website](https://koenderks.github.io/jfa) to learn more!
+
+### Summary
+
+---
+
+<!-- State goal of analysis -->
+`r if(object[["materiality"]] != 1 & object[["minPrecision"]] != 1){ paste0("The objective of this sampling procedure is to determine with a confidence of ", round(object[["confidence"]] * 100, 3), "% whether the percentage of misstatement in the population is lower than the performance materiality of ", round(object[["materiality"]] * 100, 3), "% ",if(!is.null(object[["popBookvalue"]])){paste0("( = $", format(round(object[["popBookvalue"]] * object[["materiality"]], 3), scientific = FALSE, big.mark = ","),")")} else {}," with a required minimum precision of ", round(object[["minPrecision"]] * 100, 3), "% ",if(!is.null(object[["popBookvalue"]])){paste0("( = $", format(round(object[["popBookvalue"]] * object[["minPrecision"]], 3), scientific = FALSE, big.mark = ","),")")} else {},".") } else if(object[["materiality"]] != 1 && object[["minPrecision"]] == 1){ paste0("The objective of this sampling procedure is to determine with a confidence of ", round(object[["confidence"]] * 100, 3), "% whether the percentage of misstatement in the population is lower than the performance materiality of ", round(object[["materiality"]] * 100, 3), "% ",if(!is.null(object[["popBookvalue"]])){paste0("( = $", format(round(object[["popBookvalue"]] * object[["materiality"]], 3), scientific = FALSE, big.mark = ","),")")} else {}) } else if(object[["materiality"]] == 1 && object[["minPrecision"]] != 1){ paste0("The objective of this sampling procedure is to determine the misstatement in the population with a confidence of ", round(object[["confidence"]] * 100, 3), "% and a minimum required precision of ", round(object[["minPrecision"]] * 100, 3), "% ",if(!is.null(object[["popBookvalue"]])){paste0("( = $", format(round(object[["popBookvalue"]] * object[["minPrecision"]], 3), scientific = FALSE, big.mark = ","),")")} else {},".") }`
+
+```{r echo=FALSE}
+df <- data.frame("n" = object[["n"]], "k" = object[["k"]], "t" = object[["t"]])
+colnames(df) <- c("Sample size", "Deviations", "Total taint")
+tab <- knitr::kable(df, digits = 2, caption = "Table 1: Summary of the sampling results.", format = "html",
+                    row.names = FALSE, format.args = list(big.mark = ",", scientific = FALSE),
+                    table.attr = "style='width:40%;'", align = "c")
+if(is.nan(object[["t"]]))
+  tab <- kableExtra::footnote(tab, 
+                              alphabet = "The total taint could not be calculated because 
+                              some ist values are zero.", fixed_small_size = TRUE)
+kableExtra::kable_classic(tab, position="float_left", html_font = "Cambria")
+```
+
+<div class = "row" align="center">
+<br>
+```{r, echo = FALSE}
+if(object[["materiality"]] != 1){
+  if(object[["method"]] %in% c("direct", "difference", "quotient", "regression")){
+    if(object[["upperBound"]] < object[["materiality"]] * object[["popBookvalue"]]){
+      knitr::include_graphics("./materiality_succeeded.png")  
+    } else {
+      knitr::include_graphics("./materiality_failed.png") 
+    }    
+  } else {
+    if(object[["confBound"]] < object[["materiality"]]){
+      knitr::include_graphics("./materiality_succeeded.png")  
+    } else {
+      knitr::include_graphics("./materiality_failed.png") 
+    }
+  }
+}
+
+if(object[["materiality"]] != 1 & object[["minPrecision"]] != 1)
+  knitr::include_graphics("./empty.png")
+
+if(object[["minPrecision"]] != 1){
+  if(object[["method"]] %in% c("direct", "difference", "quotient", "regression")){
+    if(object[["precision"]] < object[["minPrecision"]] * object[["popBookvalue"]]){
+      knitr::include_graphics("./precision_succeeded.png")  
+    } else {
+      knitr::include_graphics("./precision_failed.png") 
+    }    
+  } else {
+    if(object[["precision"]] < object[["minPrecision"]]){
+      knitr::include_graphics("./precision_succeeded.png")  
+    } else {
+      knitr::include_graphics("./precision_failed.png") 
+    }
+  }
+}
+```
+</div>
+
+The table below summarizes the estimated misstatement in the population, including the most likely error, the `r round(object[["confidence"]] * 100, 3)`% upper bound, and the obtained precision. As a justification of these results, appendix A contains the derivations upon which they are based. Appendix B lists the input data.
+
+```{r, echo = FALSE}
+if(object[["method"]] %in% c("direct", "difference", "quotient", "regression")){
+   df <- data.frame("type" = c("x 100 = %", "$"),
+                    "mle" = c(object[["mle"]]/object[["popBookvalue"]], object[["mle"]]),
+                    "lb" = c(object[["lowerBound"]]/object[["popBookvalue"]], object[["lowerBound"]]),
+                    "ub" = c(object[["upperBound"]]/object[["popBookvalue"]], object[["upperBound"]]),
+                    "precision" = c(object[["precision"]]/object[["popBookvalue"]], object[["precision"]]))
+ colnames(df) <- c("", "Most likely error", "Lower bound", "Upper bound", "Precision") 
+} else {
+  if(!is.null(object[["popBookvalue"]])){
+      df <- data.frame("type" = c("% = x 100", "$"),
+                       "mle" = c(object[["mle"]], object[["mle"]] * object[["popBookvalue"]]),
+                        "ub" = c(object[["confBound"]], object[["confBound"]] * object[["popBookvalue"]]),
+                        "precision" = c(object[["precision"]], 
+                                        object[["precision"]] * object[["popBookvalue"]])) 
+  } else {
+    df <- data.frame("type" = c("% = x 100"),
+                     "mle" = object[["mle"]],
+                     "ub" = object[["confBound"]],
+                     "precision" = object[["precision"]]) 
+  }
+ colnames(df) <- c("", "Most likely error", "Upper bound", "Precision") 
+}
+tab <- knitr::kable(df, digits = 3, caption = "Table 2: Summary of the inferential results.", format = "html", 
+                    row.names = FALSE, format.args = list(big.mark = ",", scientific = FALSE),
+                    table.attr = "style='width:70%;'", align = "r")
+tab <- kableExtra::footnote(tab, 
+                            alphabet = "The top row shows the misstatement as a fraction of the total value.", fixed_small_size = TRUE)
+kableExtra::kable_classic(tab, position="left", html_font = "Cambria")
+```
+
+```{r echo=FALSE, fig.height=3.4, fig.align='center'}
+if(!(object[["method"]]%in%c("stringer"))){
+  plot(object) 
+}
+```
+
+\newpage
+
+### Appendix A: Derivations
+
+---
+
+These results have been calculated using `r switch(object[["method"]], "poisson" = "the Poisson distribution", "binomial" = "the binomial distribution", "the hypergeometric" = "hypergeometric distribution", "stringer" = "the Stringer bound (Bickel, 1992)", "stringer-meikle" = "the Stringer bound with Meikle's correction", "stringer-lta" = "the Stringer bound with LTA correction", "stringer-pvz" = "the modified Stringer bound", "rohrbach" = "Rohrbach's augmented variance bound", "moment" = "the modified moment bound", "coxsnell" = "the Cox and Snell bound", "direct" = "the direct (mean per unit) estimator (Touw & Hoogduin, 2011)", "difference" = "the difference estimator (Touw & Hoogduin, 2011)", "quotient" = "the quotient estimator (Touw & Hoogduin, 2011)", "regression" = "the regression estimator (Touw & Hoogduin, 2011)")`. `r if(object[["method"]] %in% c("difference", "quotient", "direct", "regression")){"The units of inference are individual transactions"} else {"The units of inference are individual monetary units"}`.
+
+*Notation:*
+
+<!-- Notation for direct and regression estimators -->
+`r if (object[["method"]] %in% c("direct", "regression")){ paste0("\\begin{equation}\\begin{split}\\text{Ist position:    }& ist = \\text{", colnames(object[["data"]])[2], "} \\\\ \\text{Soll position:    }& soll = \\text{", colnames(object[["data"]])[3], "} \\\\ \\text{Sample size:    }& n = ", object[["n"]], " \\\\ \\text{Population size:    }& N = ", format(object[["N"]], big.mark=","), "\\\\ \\text{Population value:    }& B = ", format(object[["popBookvalue"]], digits = 3, scientific = FALSE, big.mark = ","), " \\\\ \\text{Sampling risk:    }& \\alpha = ", round(1 - object[["confidence"]], 3), "\\end{split} \\hspace{4cm} \\begin{split} \\text{Estimated population misstatement:     }& \\hat{E} \\\\ \\text{Lower bound population misstatement:     }& E_{",round(1 - (object[["confidence"]] + ((1 - object[["confidence"]])/2)), 3),"} \\\\ \\text{Upper bound population misstatement:     }& E_{",round(object[["confidence"]] + ((1 - object[["confidence"]])/2), 3),"} \\\\ \\text{Estimated unit true value:     }& \\hat{\\theta} \\end{split}\\end{equation}") }`
+
+<!-- Notation for difference and quotient estimators -->
+`r if (object[["method"]] %in% c("difference", "quotient")){ paste0("\\begin{equation}\\begin{split}\\text{Ist position:    }& ist = \\text{", colnames(object[["data"]])[2], "} \\\\ \\text{Soll position:    }& soll = \\text{", colnames(object[["data"]])[3], "} \\\\ \\text{Sample size:    }& n = ", object[["n"]], " \\\\ \\text{Population size:    }& N = ", format(object[["N"]], big.mark=","), "\\\\ \\text{Population value:    }& B = ", format(object[["popBookvalue"]], digits = 3, scientific = FALSE, big.mark = ","), " \\\\ \\text{Sampling risk:    }& \\alpha = ", round(1 - object[["confidence"]], 3), "\\end{split} \\hspace{4cm} \\begin{split} \\text{Estimated population misstatement:     }& \\hat{E} \\\\ \\text{Lower bound population misstatement:     }& E_{",round(1 - (object[["confidence"]] + ((1 - object[["confidence"]])/2)), 3),"} \\\\ \\text{Upper bound population misstatement:     }& E_{",round(object[["confidence"]] + ((1 - object[["confidence"]])/2), 3),"} \\\\ \\text{Estimated unit misstatement:     }& \\hat{\\theta} \\end{split}\\end{equation}") }`
+
+<!-- Notation for methods that return unit estimates -->
+`r if (object[["method"]] %in% c("binomial", "stringer")){ paste0("\\begin{equation}\\begin{split}\\text{Ist position:    }& ist = \\text{", colnames(object[["data"]])[2], "} \\\\ \\text{Soll position:    }& soll = \\text{", colnames(object[["data"]])[3], "} \\\\ \\text{Sample size:    }& n = ", object[["n"]], " \\\\ \\text{Misstatements:    }& k = ", object[["k"]], "\\\\ \\text{Population value:    }& B = ", format(object[["popBookvalue"]], digits = 3, scientific = FALSE, big.mark = ","), " \\\\ \\text{Sampling risk:    }& \\alpha = ", round(1 - object[["confidence"]], 3), "\\end{split} \\hspace{4cm} \\begin{split} \\text{Estimated population misstatement:     }& \\hat{E} \\\\ \\text{Upper bound population misstatement:     }& E_{",round(object[["confidence"]], 3),"} \\\\ \\text{Estimated unit misstatement:     }& \\hat{\\theta} \\\\ \\text{Upper bound unit misstatement:     }& \\theta_{", round(object[["confidence"]], 3),"} \\end{split}\\end{equation}") }`
+
+*Calculation:*
+
+`r if (!(object[["method"]] %in% c("difference", "direct", "quotient", "regression", "binomial", "stringer"))){ "**No calculations are available for this method yet. Check back soon!**" }`
+
+<!-- Calculations direct estimator -->
+`r if (object[["method"]] == "direct"){ paste0("$\\begin{aligned} \\text{The estimated population misstatemen}&\\text{t } \\hat{E}\\text{ is a generalization of the estimated unit true value }\\hat{\\theta}\\text{:} \\\\ \\\\ \\hat{E} &= B - N \\times \\hat{\\theta} \\\\ &= ", format(object[["popBookvalue"]], digits = 3, scientific = F, big.mark=","), " - ", format(object[["N"]], scientific = F, big.mark=",")," \\times ", format(mean(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=",")," = ", format(object[["mle"]], nsmall = 2, scientific = F, big.mark=",")," \\\\ \\\\ \\text{The confidence interval for the populat}&\\text{ion misstatement } [E_{",round(1 - (object[["confidence"]] + ((1 - object[["confidence"]])/2)), 3),"}; E_{",round(object[["confidence"]] + ((1 - object[["confidence"]])/2), 3),"}] \\text{ is a generalization of the unit upper and lower bounds:} \\\\ \\\\ [E_{",round(1 - (object[["confidence"]] + ((1 - object[["confidence"]])/2)), 3),"}; E_{",round(object[["confidence"]] + ((1 - object[["confidence"]])/2), 3),"}] &= B - N \\times \\left( \\hat{\\theta} \\pm t_{1 - \\frac{\\alpha}{2}} \\times \\frac{s_{soll}}{\\sqrt{n}}\\right) \\\\ &= ", format(object[["popBookvalue"]], digits = 3, scientific = F, big.mark=","), " - ", format(object[["N"]], scientific = F, big.mark=","), "\\times \\left(", format(mean(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=",") ," \\pm ", format(stats::qt(p = object[["confidence"]] + ((1 - object[["confidence"]]) / 2), df = object[["n"]] - 1) * (stats::sd(object[["data"]][, 3])/sqrt(object[["n"]])), nsmall = 2, scientific = F, big.mark=","),"\\right) = [", format(object[["lowerBound"]], nsmall = 2, scientific = F, big.mark=","),";",format(object[["upperBound"]], nsmall = 2, scientific = F, big.mark=",")," ] \\\\ \\\\ \\text{The other relevant quantities can be de}&\\text{rived using the following formulas:} \\\\ \\\\ \\hat{\\theta} &= \\bar{soll} = \\frac{\\sum_{i=1}^n soll_i}{n} = \\frac{", format(sum(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=","),"}{", object[["n"]] ,"} = ", format(mean(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=","), "\\\\ t_{1 - \\frac{\\alpha}{2}} &= t_{", round(object[["confidence"]] + ((1 - object[["confidence"]]) / 2), 3) ,"} = ", round(stats::qt(p = object[["confidence"]] + ((1 - object[["confidence"]]) / 2), df = object[["n"]] - 1), 3) ,"\\\\ s_{soll} &= \\sqrt{\\frac{\\sum_{i=1}^n (soll_i - \\bar{soll})^2}{n - 1}} = \\sqrt{\\frac{", format(sum((object[["data"]][, 3] - mean(object[["data"]][, 3]))^2), nsmall = 2, scientific = F, big.mark=","),"}{", object[["n"]] - 1,"}} =", format(stats::sd(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=",") ,"\\\\ t_{", round(object[["confidence"]] + ((1 - object[["confidence"]]) / 2), 3) ,"} \\times \\frac{s_{soll}}{\\sqrt{n}} &= ", round(stats::qt(p = object[["confidence"]] + ((1 - object[["confidence"]]) / 2), df = object[["n"]] - 1), 3)," \\times \\frac{", format(stats::sd(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=",") ,"}{\\sqrt{", object[["n"]],"}} = ",format(stats::qt(p = object[["confidence"]] + ((1 - object[["confidence"]]) / 2), df = object[["n"]] - 1) * (stats::sd(object[["data"]][, 3])/sqrt(object[["n"]])), nsmall = 2, scientific = F, big.mark=",") ,"\\end{aligned}$") }`
+
+<!-- Calculations difference estimator -->
+`r if (object[["method"]] == "difference"){ paste0("$\\begin{aligned} \\text{The estimated population misstatemen}&\\text{t } \\hat{E}\\text{ is a generalization of the estimated unit misstatement }\\hat{\\theta}\\text{:} \\\\ \\\\ \\hat{E} &= N \\times \\hat{\\theta} \\\\ &= ", format(object[["N"]], scientific = F, big.mark=",")," \\times ", format(mean(object[["data"]][, 4]), nsmall = 2, scientific = F, big.mark=",")," = ", format(object[["N"]] * mean(object[["data"]][, 4]), nsmall = 2, scientific = F, big.mark=",") ," \\\\ \\\\ \\text{The confidence interval for the populat}&\\text{ion misstatement } [E_{",round(1 - (object[["confidence"]] + ((1 - object[["confidence"]])/2)), 3),"}; E_{",round(object[["confidence"]] + ((1 - object[["confidence"]])/2), 3),"}] \\text{ is a generalization of the unit upper and lower bounds:} \\\\ \\\\ [E_{",round(1 - (object[["confidence"]] + ((1 - object[["confidence"]])/2)), 3),"}; E_{",round(object[["confidence"]] + ((1 - object[["confidence"]])/2), 3),"}] &= N \\times \\left( \\hat{\\theta} \\pm  t_{1 - \\frac{\\alpha}{2}} \\times \\frac{s_e}{\\sqrt{n}} \\right) \\\\ &= ", format(object[["N"]], scientific = F, big.mark=","), " \\times \\left(", format(mean(object[["data"]][, 4]), nsmall = 2, scientific = F, big.mark=",") ," \\pm ", format(stats::qt(p = object[["confidence"]] + ((1 - object[["confidence"]]) / 2), df = object[["n"]] - 1) * (stats::sd(object[["data"]][, 4])/sqrt(object[["n"]])), nsmall = 2, scientific = F, big.mark=","),"\\right) = [", format(object[["lowerBound"]], nsmall = 2, scientific = F, big.mark=","),";",format(object[["upperBound"]], nsmall = 2, scientific = F, big.mark=",")," ] \\\\ \\\\ \\text{The other relevant quantities can be de}&\\text{rived using the following formulas:} \\\\ \\\\ \\hat{\\theta} &= \\frac{\\sum_{i=1}^n ist_i - soll_i}{n} = \\frac{", format(sum(object[["data"]][, 4]), nsmall = 2, scientific = F, big.mark=","),"}{", object[["n"]] ,"} = ", format(mean(object[["data"]][, 4]), nsmall = 2, scientific = F, big.mark=","), "\\\\ t_{1 - \\frac{\\alpha}{2}} &= t_{", round(object[["confidence"]] + ((1 - object[["confidence"]]) / 2), 3) ,"} = ", round(stats::qt(p = object[["confidence"]] + ((1 - object[["confidence"]]) / 2), df = object[["n"]] - 1), 3) ,"\\\\ s_e &= \\sqrt{\\frac{\\sum_{i=1}^n ([ist_i - soll_i] - \\hat{\\theta})^2}{n - 1}} = \\sqrt{\\frac{", format(sum((object[["data"]][, 4] - mean(object[["data"]][, 4]))^2), nsmall = 2, scientific = F, big.mark=","),"}{", object[["n"]] - 1,"}} =", format(stats::sd(object[["data"]][, 4]), nsmall = 2, scientific = F, big.mark=","),"\\\\ t_{", round(object[["confidence"]] + ((1 - object[["confidence"]]) / 2), 3) ,"} \\times \\frac{s_e}{\\sqrt{n}} &= ", round(stats::qt(p = object[["confidence"]] + ((1 - object[["confidence"]]) / 2), df = object[["n"]] - 1), 3)," \\times \\frac{", format(stats::sd(object[["data"]][, 4]), nsmall = 2, scientific = F, big.mark=","),"}{\\sqrt{", object[["n"]],"}} = ",format(stats::qt(p = object[["confidence"]] + ((1 - object[["confidence"]]) / 2), df = object[["n"]] - 1) * (stats::sd(object[["data"]][, 4])/sqrt(object[["n"]])), nsmall = 2, scientific = F, big.mark=",") ,"\\end{aligned}$") }`
+
+<!-- Calculations quotient estimator -->
+`r if (object[["method"]] == "quotient"){ paste0("$\\begin{aligned} \\text{The estimated population misstatemen}&\\text{t } \\hat{E}\\text{ is a generalization of the estimated unit misstatement }\\hat{\\theta}\\text{:} \\\\ \\\\ \\hat{E} &= N \\times \\hat{\\theta} \\\\ &= ", format(object[["N"]], scientific = F, big.mark=",")," \\times ", format(((1 - (mean(object[["data"]][, 3]) / mean(object[["data"]][, 2]))) * mean(object[["data"]][, 2])), nsmall = 2, scientific = F, big.mark=",") ," = ", format(object[["N"]] * ((1 - (mean(object[["data"]][, 3]) / mean(object[["data"]][, 2]))) * mean(object[["data"]][, 2])), nsmall = 2, scientific = F, big.mark=",")," \\\\ \\\\ \\text{The confidence interval for the populat}&\\text{ion misstatement } [E_{",round(1 - (object[["confidence"]] + ((1 - object[["confidence"]])/2)), 3),"}; E_{",round(object[["confidence"]] + ((1 - object[["confidence"]])/2), 3),"}] \\text{ is a generalization of the unit upper and lower bounds:} \\\\ \\\\ [E_{",round(1 - (object[["confidence"]] + ((1 - object[["confidence"]])/2)), 3),"}; E_{",round(object[["confidence"]] + ((1 - object[["confidence"]])/2), 3),"}] &= N \\times \\left( \\hat{\\theta} \\pm  t_{1 - \\frac{\\alpha}{2}} \\times \\frac{s_q}{\\sqrt{n}} \\right) \\\\ &= ", format(object[["N"]], scientific = F, big.mark=","), "\\times \\left(", format(((1 - (mean(object[["data"]][, 3]) / mean(object[["data"]][, 2]))) * mean(object[["data"]][, 2])), nsmall = 2, scientific = F, big.mark=",")," \\pm ", format(object[["precision"]]/object[["N"]], nsmall = 2, scientific = F, big.mark=","),"\\right) = [", format(object[["lowerBound"]], nsmall = 2, scientific = F, big.mark=","),";",format(object[["upperBound"]], nsmall = 2, scientific = F, big.mark=",")," ]\\\\ \\\\ \\text{The other relevant quantities can be de}&\\text{rived using the following formulas:} \\\\ \\\\ \\hat{\\theta} &= (1 - q) \\times \\bar{ist} = (1 - ", format(mean(object[["data"]][, 3]) / mean(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=",") ,") \\times ",format(mean(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=",")," = ",format(((1 - (mean(object[["data"]][, 3]) / mean(object[["data"]][, 2]))) * mean(object[["data"]][, 2])), nsmall = 2, scientific = F, big.mark=","),"\\\\ q &= \\frac{\\bar{soll}}{\\bar{ist}} = \\frac{", format(mean(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=",") ,"}{", format(mean(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=",") ,"} = ", format(mean(object[["data"]][, 3]) / mean(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=",")," \\\\ \\bar{ist} &= \\frac{\\sum_{i=1}^n ist_i}{n} = \\frac{", format(sum(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=","),"}{", object[["n"]] ,"} = ", format(mean(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=","), "\\\\ \\bar{soll} &= \\frac{\\sum_{i=1}^n soll_i}{n} = \\frac{", format(sum(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=","),"}{", object[["n"]] ,"} = ", format(mean(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=","), "\\\\ t_{1 - \\frac{\\alpha}{2}} &= t_{", round(object[["confidence"]] + ((1 - object[["confidence"]]) / 2), 3) ,"} = ", round(stats::qt(p = object[["confidence"]] + ((1 - object[["confidence"]]) / 2), df = object[["n"]] - 1), 3),"\\\\ r_{soll \\sim ist} &= Cor(ist, soll) = ", format(stats::cor(object[["data"]][, 2], object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=",")," \\\\ s_q &= \\sqrt{s_{soll}^2 - 2 \\times q \\times r_{soll \\sim ist} \\times s_{ist} \\times s_{soll} + q^2 \\times s_{ist}^2} \\\\ &= \\sqrt{", format(stats::var(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=",")," - 2 \\times ", format(mean(object[["data"]][, 3]) / mean(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=","), "\\times ", format(stats::cor(object[["data"]][, 2], object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=",")," \\times ", format(stats::sd(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=",")," \\times ", format(stats::sd(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=",")," + ", format(mean(object[["data"]][, 3]) / mean(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=","),"^2 \\times ",format(stats::sd(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=",")," } = ", format(sqrt(stats::var(object[["data"]][, 3]) - 2 * (mean(object[["data"]][, 3]) / mean(object[["data"]][, 2])) * stats::cor(object[["data"]][, 2], object[["data"]][, 3]) * stats::sd(object[["data"]][, 2]) * stats::sd(object[["data"]][, 3]) + (mean(object[["data"]][, 3]) / mean(object[["data"]][, 2]))^2 * stats::var(object[["data"]][, 2])), nsmall = 2, scientific = F, big.mark=","), " \\\\ s^2_{ist} &= \\frac{\\sum_{i=1}^n (ist_i - \\bar{ist})^2}{n - 1} = \\frac{", format(sum((object[["data"]][, 2] - mean(object[["data"]][, 2]))^2), nsmall = 2, scientific = F, big.mark=",") ,"}{", object[["n"]] - 1,"} =", format(stats::var(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=","),"\\\\ s_{ist} &= \\sqrt{s^2_{ist}} = ", format(stats::sd(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=",")," \\\\ s^2_{soll} &= \\frac{\\sum_{i=1}^n (soll_i - \\bar{soll})^2}{n - 1} = \\frac{", format(sum((object[["data"]][, 3] - mean(object[["data"]][, 3]))^2), nsmall = 2, scientific = F, big.mark=","),"}{", object[["n"]] - 1,"} =", format(stats::var(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=","),"\\\\ s_{soll} &= \\sqrt{s^2_{soll}} = ", format(stats::sd(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=",")," \\\\ t_{", round(object[["confidence"]] + ((1 - object[["confidence"]]) / 2), 3) ,"} \\times \\frac{s_q}{\\sqrt{n}} &= ", round(stats::qt(p = object[["confidence"]] + ((1 - object[["confidence"]]) / 2), df = object[["n"]] - 1), 3)," \\times \\frac{", format(sqrt(stats::var(object[["data"]][, 3]) - 2 * (mean(object[["data"]][, 3]) / mean(object[["data"]][, 2])) * stats::cor(object[["data"]][, 2], object[["data"]][, 3]) * stats::sd(object[["data"]][, 2]) * stats::sd(object[["data"]][, 3]) + (mean(object[["data"]][, 3]) / mean(object[["data"]][, 2]))^2 * stats::var(object[["data"]][, 2])), nsmall = 2, scientific = F, big.mark=","),"}{\\sqrt{", object[["n"]],"}} = ", format(object[["precision"]]/object[["N"]], nsmall = 2, scientific = F, big.mark=",")," \\end{aligned}$") }`
+
+<!-- Calculations regression estimator -->
+`r if (object[["method"]] == "regression"){ paste0("$\\begin{aligned} \\text{The estimated population misstatemen}&\\text{t } \\hat{E}\\text{ is a generalization of the estimated unit true value }\\hat{\\theta}\\text{:} \\\\ \\\\ \\hat{E} &= B - N \\times \\hat{\\theta} \\\\ &= ", format(object[["popBookvalue"]], scientific = F, big.mark=",")," - ", format(object[["N"]], scientific = F, big.mark=",")," \\times ", format((object[["N"]] * mean(object[["data"]][, 3]) + as.numeric(stats::coef(stats::lm(object[["data"]][, 3] ~ object[["data"]][, 2]))[2]) * (object[["popBookvalue"]] - object[["N"]] * mean(object[["data"]][, 2]))) / object[["N"]], nsmall = 2, scientific = F, big.mark=","),"= ", format(object[["mle"]], nsmall = 2, scientific = F, big.mark=",")," \\\\ \\\\ \\text{The confidence interval for the populat}&\\text{ion misstatement } [E_{",round(1 - (object[["confidence"]] + ((1 - object[["confidence"]])/2)), 3),"}; E_{",round(object[["confidence"]] + ((1 - object[["confidence"]])/2), 3),"}] \\text{ is a generalization of the unit upper and lower bounds:} \\\\ \\\\ [E_{",round(1 - (object[["confidence"]] + ((1 - object[["confidence"]])/2)), 3),"}; E_{",round(object[["confidence"]] + ((1 - object[["confidence"]])/2), 3),"}] &= B - N \\times \\left( \\hat{\\theta} \\pm t_{1 - \\frac{\\alpha}{2}} \\times \\frac{s_r}{\\sqrt{n}} \\right) \\\\ &= ", format(object[["popBookvalue"]], scientific = F, big.mark=",")," - ", format(object[["N"]], scientific = F, big.mark=",")," \\times \\left(",format((object[["N"]] * mean(object[["data"]][, 3]) + as.numeric(stats::coef(stats::lm(object[["data"]][, 3] ~ object[["data"]][, 2]))[2]) * (object[["popBookvalue"]] - object[["N"]] * mean(object[["data"]][, 2]))) / object[["N"]], nsmall = 2, scientific = F, big.mark=",")," \\pm ", format(stats::qt(p = object[["confidence"]] + ((1 - object[["confidence"]]) / 2), df = object[["n"]] - 1) * ((stats::sd(object[["data"]][, 3]) * sqrt(1 - stats::cor(object[["data"]][, 2], object[["data"]][, 3])^2))/sqrt(object[["n"]])), nsmall = 2, scientific = F, big.mark=",")," \\right) = [", format(object[["lowerBound"]], nsmall = 2, scientific = F, big.mark=","),";", format(object[["upperBound"]], nsmall = 2, scientific = F, big.mark=","),"] \\\\ \\\\ \\text{The other relevant quantities can be de}&\\text{rived using the following formulas:} \\\\ \\\\ \\hat{\\theta} &= \\frac{N \\times \\bar{soll} + \\beta_{1_{soll \\sim ist}} \\times (B - N \\times \\bar{ist})}{N} \\\\ &= \\frac{", format(object[["N"]], scientific = F, big.mark=","), " \\times ", format(mean(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=",")," + ", format(as.numeric(stats::coef(stats::lm(object[["data"]][, 3] ~ object[["data"]][, 2]))[2]), nsmall = 2, scientific = F, big.mark=",")," \\times (", format(object[["popBookvalue"]], scientific = F, big.mark=","), " - ", format(object[["N"]], scientific = F, big.mark=",")," \\times ", format(mean(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=","),")}{", format(object[["N"]], scientific = F, big.mark=","),"} = ",format((object[["N"]] * mean(object[["data"]][, 3]) + as.numeric(stats::coef(stats::lm(object[["data"]][, 3] ~ object[["data"]][, 2]))[2]) * (object[["popBookvalue"]] - object[["N"]] * mean(object[["data"]][, 2]))) / object[["N"]], nsmall = 2, scientific = F, big.mark=",")," \\\\ \\beta_{1_{soll \\sim ist}} &= ", format(as.numeric(stats::coef(stats::lm(object[["data"]][, 3] ~ object[["data"]][, 2]))[2]), nsmall = 2, scientific = F, big.mark=",")," \\\\ \\bar{ist} &= \\frac{\\sum_{i=1}^n ist_i}{n} = \\frac{", format(sum(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=","),"}{", object[["n"]] ,"} = ", format(mean(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=","), "\\\\ \\bar{soll} &= \\frac{\\sum_{i=1}^n soll_i}{n} = \\frac{", format(sum(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=","),"}{", object[["n"]] ,"} = ", format(mean(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=","), "\\\\ t_{1 - \\frac{\\alpha}{2}} &= t_{", round(object[["confidence"]] + ((1 - object[["confidence"]]) / 2), 3) ,"} = ", round(stats::qt(p = object[["confidence"]] + ((1 - object[["confidence"]]) / 2), df = object[["n"]] - 1), 3),"\\\\ s_r &= s_{soll} \\times \\sqrt{1 - r^2_{soll \\sim ist}} = ", format(stats::sd(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=",")," \\times \\sqrt{1 - ", format(stats::cor(object[["data"]][, 2], object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=","),"^2} = ", format(stats::sd(object[["data"]][, 3]) * sqrt(1 - stats::cor(object[["data"]][, 2], object[["data"]][, 3])^2), nsmall = 2, scientific = F, big.mark=","),"\\\\ s_{soll} &= \\sqrt{\\frac{\\sum_{i=1}^n (soll_i - \\bar{soll})^2}{n - 1}} = \\sqrt{\\frac{", format(sum((object[["data"]][, 3] - mean(object[["data"]][, 3]))^2), nsmall = 2, scientific = F, big.mark=",") ,"}{", object[["n"]] - 1,"}} =", format(stats::sd(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=","),"\\\\ r_{soll \\sim ist} &= Cor(ist, soll) = ", format(stats::cor(object[["data"]][, 2], object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=",")," \\\\ t_{", round(object[["confidence"]] + ((1 - object[["confidence"]]) / 2), 3) ,"} \\times \\frac{s_r}{\\sqrt{n}} &= ", round(stats::qt(p = object[["confidence"]] + ((1 - object[["confidence"]]) / 2), df = object[["n"]] - 1), 3)," \\times \\frac{", format(stats::sd(object[["data"]][, 3]) * sqrt(1 - stats::cor(object[["data"]][, 2], object[["data"]][, 3])^2), nsmall = 2, scientific = F, big.mark=","),"}{\\sqrt{", object[["n"]],"}} = ", format(stats::qt(p = object[["confidence"]] + ((1 - object[["confidence"]]) / 2), df = object[["n"]] - 1) * ((stats::sd(object[["data"]][, 3]) * sqrt(1 - stats::cor(object[["data"]][, 2], object[["data"]][, 3])^2))/sqrt(object[["n"]])), nsmall = 2, scientific = F, big.mark=",")," \\end{aligned}$") }`
+
+<!-- Calculations classical binomial method -->
+`r if (object[["method"]] == "binomial" & is.null(object[["prior"]])){ paste0("$\\begin{aligned} \\text{The estimated population misstatemen}&\\text{t } \\hat{E}\\text{ is a generalization of the estimated unit misstatement }\\hat{\\theta}\\text{:} \\\\ \\\\ \\hat{E} &= B \\times \\hat{\\theta} ",if(!is.null(object[["popBookvalue"]])){ paste0("\\\\ &= ", format(object[["popBookvalue"]], scientific = F, big.mark=",")," \\times ", format(object[["mle"]], nsmall = 2, scientific = F, big.mark = ",")," = ",format(object[["popBookvalue"]] * object[["mle"]], nsmall = 2, scientific = F, big.mark=","))} else { }," \\\\ \\\\ \\text{The upper bound for the population mi}&\\text{sstatement } E_{",round(object[["confidence"]], 3),"} \\text{ is a generalization of the unit upper bound } \\theta_{",round(object[["confidence"]], 3),"} \\text{:} \\\\ \\\\ E_{", round(object[["confidence"]], 3),"} &= B \\times \\theta_{", round(object[["confidence"]], 3),"} ",if(!is.null(object[["popBookvalue"]])){ paste0("\\\\ &= ", format(object[["popBookvalue"]], scientific = F, big.mark=",")," \\times ", format(object[["confBound"]], nsmall = 2, scientific = F, big.mark = ",")," = ",format(object[["popBookvalue"]] * object[["confBound"]], nsmall = 2, scientific = F, big.mark=","))} else { }," \\\\ \\\\ \\text{The other relevant quantities can be de}&\\text{rived using the following formulas:} \\\\ \\\\ \\hat{\\theta} &= \\frac{k}{n} = \\frac{", object[["k"]],"}{", object[["n"]],"} = ",format(object[["k"]]/object[["n"]], nsmall = 2, scientific = F, big.mark=",")," \\\\ \\theta_{", round(object[["confidence"]], 3),"} &= \\text{Beta}(1 - \\alpha; 1 + k, n - k) = \\text{Beta}(",round(object[["confidence"]], 3),"; ", object[["k"]] + 1,", ", object[["n"]] - object[["k"]],") = ",format(object[["confBound"]], nsmall = 2, scientific = F, big.mark=",")," \\end{aligned}$") }`
+
+<!-- Calculations Bayesian binomial method -->
+`r if (object[["method"]] == "binomial" & !is.null(object[["prior"]])){ paste0("$\\begin{aligned} \\text{The estimated population misstatemen}&\\text{t } \\hat{E}\\text{ is a generalization of the estimated unit misstatement }\\hat{\\theta}\\text{:} \\\\ \\\\ \\hat{E} &= B \\times \\hat{\\theta} ",if(!is.null(object[["popBookvalue"]])){ paste0("\\\\ &= ", format(object[["popBookvalue"]], scientific = F, big.mark=",")," \\times ", format(object[["mle"]], nsmall = 2, scientific = F, big.mark = ",")," = ",format(object[["popBookvalue"]] * object[["mle"]], nsmall = 2, scientific = F, big.mark=","))} else { }," \\\\ \\\\ \\text{The upper bound for the population mi}&\\text{sstatement } E_{",round(object[["confidence"]], 3),"} \\text{ is a generalization of the unit upper bound } \\theta_{",round(object[["confidence"]], 3),"} \\text{:} \\\\ \\\\ E_{", round(object[["confidence"]], 3),"} &= B \\times \\theta_{", round(object[["confidence"]], 3),"} ",if(!is.null(object[["popBookvalue"]])){ paste0("\\\\ &= ", format(object[["popBookvalue"]], scientific = F, big.mark=",")," \\times ", format(object[["confBound"]], nsmall = 2, scientific = F, big.mark = ",")," = ",format(object[["popBookvalue"]] * object[["confBound"]], nsmall = 2, scientific = F, big.mark=","))} else { }," \\\\ \\\\ \\text{The other relevant quantities can be de}&\\text{rived using the following formulas:} \\\\ \\\\ \\alpha_0 &= ", format(object[["prior"]][["description"]]$alpha, nsmall = 2, scientific = F, big.mark = ","),"\\\\ \\beta_0 &= ", format(object[["prior"]][["description"]]$beta, nsmall = 2, scientific = F, big.mark = ",")," \\\\ \\alpha_1 &= \\alpha_0 + t =", format(object[["posterior"]][["description"]]$alpha, nsmall = 2, scientific = F, big.mark = ","),"\\\\ \\beta_1 &= \\beta_0 + n - t =", format(object[["posterior"]][["description"]]$beta, nsmall = 2, scientific = F, big.mark = ",")," \\\\ \\hat{\\theta} &= \\frac{\\alpha_1 - 1}{\\alpha_1 + \\beta_1 - 2} = \\frac{", format(object[["posterior"]][["description"]]$alpha, nsmall = 2, scientific = F, big.mark = ",")," - 1}{", format(object[["posterior"]][["description"]]$alpha, nsmall = 2, scientific = F, big.mark = ","), "+ ", format(object[["posterior"]][["description"]]$beta, nsmall = 2, scientific = F, big.mark = ",")," - 2} = ",format(object[["mle"]], nsmall = 2, scientific = F, big.mark = ",")," \\\\ \\theta_{", round(object[["confidence"]], 3),"} &= \\text{Beta}(1 - \\alpha; \\alpha_0 + t, \\beta_0 + n - t) = \\text{Beta}(",round(object[["confidence"]], 3),"; ", format(object[["posterior"]][["description"]]$alpha, nsmall = 2, scientific = F, big.mark = ","),", ", format(object[["posterior"]][["description"]]$beta, nsmall = 2, scientific = F, big.mark = ","),") = ", format(object[["confBound"]], nsmall = 2, scientific = F, big.mark = ",")," \\\\ t &= \\sum_{i=1}^n \\frac{ist_i - soll_i}{ist_i} = ", format(object[["t"]], nsmall = 2, scientific = F, big.mark = ",")," \\end{aligned}$") }`
+
+<!-- Calculations stringer method -->
+`r if (object[["method"]] == "stringer"){ paste0("$\\begin{aligned} \\text{The estimated population misstatemen}&\\text{t } \\hat{E}\\text{ is a generalization of the estimated unit misstatement }\\hat{\\theta}\\text{:} \\\\ \\\\ \\hat{E} &= B \\times \\hat{\\theta} ",if(!is.null(object[["popBookvalue"]])){ paste0("\\\\ &= ", format(object[["popBookvalue"]], scientific = F, big.mark=",")," \\times ", format(object[["mle"]], nsmall = 2, scientific = F, big.mark = ",")," = ",format(object[["popBookvalue"]] * object[["mle"]], nsmall = 2, scientific = F, big.mark=","))} else { }," \\\\ \\\\ \\text{The upper bound for the population mi}&\\text{sstatement } E_{",round(object[["confidence"]], 3),"} \\text{ is a generalization of the unit upper bound } \\theta_{",round(object[["confidence"]], 3),"} \\text{:} \\\\ \\\\ E_{", round(object[["confidence"]], 3),"} &= B \\times \\theta_{", round(object[["confidence"]], 3),"} ",if(!is.null(object[["popBookvalue"]])){ paste0("\\\\ &= ", format(object[["popBookvalue"]], scientific = F, big.mark=",")," \\times ", format(object[["confBound"]], nsmall = 2, scientific = F, big.mark = ",")," = ",format(object[["popBookvalue"]] * object[["confBound"]], nsmall = 2, scientific = F, big.mark=","))} else { }," \\\\ \\\\ \\text{The other relevant quantities can be de}&\\text{rived using the following formulas:} \\\\ \\\\ \\hat{\\theta} &= \\frac{t}{n} = \\frac{", format(object[["t"]], nsmall = 2, scientific = F, big.mark = ","),"}{", object[["n"]],"} = ",format(object[["t"]]/object[["n"]], nsmall = 2, scientific = F, big.mark = ",")," \\\\ \\theta_{", round(object[["confidence"]], 3),"} &= \\text{Beta}(1 - \\alpha; 1 + t, n - t) = \\text{Beta}(",round(object[["confidence"]], 3),"; ", format(object[["t"]] + 1, nsmall = 2, scientific = F, big.mark = ","),", ", format(object[["n"]] - object[["t"]], nsmall = 2, scientific = F, big.mark = ","),") = ",format(object[["confBound"]], nsmall = 2, scientific = F, big.mark = ",")," \\\\ t &= \\sum_{i=1}^n \\frac{ist_i - soll_i}{ist_i} = ", format(object[["t"]], nsmall = 2, scientific = F, big.mark = ","),"\\end{aligned}$") }`
+
+*Evaluation:*
+
+<!-- Sampling objective materiality for methods that return monetary estimates -->
+`r if(object[["method"]] %in% c("difference", "direct", "quotient", "regression") & object[["materiality"]] != 1){ paste0(ifelse(object[["upperBound"]] < (object[["materiality"]] * object[["popBookvalue"]]), yes = "&#10004;&#65039;", no = "&#10060;"), "$\\hspace{0.5cm} \\text{Upper bound lower than performance materiality} \\rightarrow E_{",round(object[["confidence"]] + ((1 - object[["confidence"]])/2), 3),"} < E_{max} \\rightarrow ", format(object[["upperBound"]], nsmall = 2, scientific = F, big.mark=","),"<", format(object[["materiality"]] * object[["popBookvalue"]], digits = 3, scientific = F, big.mark = ","), "$") }`
+
+<!-- Sampling objective materiality for methods that return percentual estimates -->
+`r if(!(object[["method"]] %in% c("difference", "direct", "quotient", "regression")) & object[["materiality"]] != 1){ paste0(ifelse(object[["confBound"]] < object[["materiality"]], yes = "&#10004;&#65039;", no = "&#10060;"), "$\\hspace{0.5cm} \\text{Upper bound lower than performance materiality} \\rightarrow  \\theta_{", round(object[["confidence"]], 3),"} < \\theta_{max} \\rightarrow ", format(object[["confBound"]], nsmall = 2, scientific = F, big.mark = ","),"<", format(object[["materiality"]], nsmall = 2, scientific = F, big.mark = ","), "$") }`
+
+<!-- Sampling objective minimum precision for methods that return monetary estimates -->
+`r if(object[["method"]] %in% c("difference", "direct", "quotient", "regression") & object[["minPrecision"]] != 1){ paste0(ifelse(object[["precision"]] < (object[["minPrecision"]] * object[["popBookvalue"]]), yes = "&#10004;&#65039;", no = "&#10060;"), "$\\hspace{0.5cm} \\text{Precision is at least the minimum required precision} \\rightarrow E_{",round(object[["confidence"]] + ((1 - object[["confidence"]])/2), 3),"} - \\hat{E} < \\theta_{",round(object[["confidence"]] + ((1 - object[["confidence"]])/2), 3),"} - \\hat{\\theta} \\rightarrow ", format(object[["precision"]], nsmall = 2, scientific = F, big.mark=","),"<", format(object[["minPrecision"]] * object[["popBookvalue"]], digits = 3, scientific = F, big.mark=","), "$") }`
+
+<!-- Sampling objective minimum precision for methods that return percentual estimates -->
+`r if(!(object[["method"]] %in% c("difference", "direct", "quotient", "regression")) & object[["minPrecision"]] != 1){ paste0(ifelse(object[["precision"]] < object[["minPrecision"]], yes = "&#10004;&#65039;", no = "&#10060;"), "$\\hspace{0.5cm} \\text{Precision is at least the minimum required precision} \\rightarrow \\theta_{", round(object[["confidence"]], 3),"} - \\hat{\\theta} < \\theta_{", round(object[["confidence"]], 3),"} - \\hat{\\theta} \\rightarrow ", format(object[["precision"]], nsmall = 2, scientific = F, big.mark = ","),"<", format(object[["minPrecision"]], nsmall = 2, scientific = F, big.mark = ","), "$") }`
+
+*References:*
+
+<!-- References for methods that return monetary estimates -->
+`r if (object[["method"]] %in% c("direct", "difference", "quotient", "regression")){ "* Touw, P. & Hoogduin, L. (2011). *Statistiek voor audit en controlling*. Boom uitgevers, Amsterdam." }`
+
+`r if (object[["method"]] %in% c("stringer")){ "* Bickel, P. J. (1992). Inference and auditing: The Stringer bound. *International Statistical Review*, 60(2), 197–209." }`
+
+`r if (object[["method"]] %in% c("binomial") & is.null(object[["prior"]])){ "* Stewart, T. R. (2012). *Technical notes on the AICPA audit guide audit sampling*. American Institute of Certified Public Accountants, New York." }`
+
+`r if (object[["method"]] %in% c("binomial") & !is.null(object[["prior"]])){ "* Steele, A. (1992). *Audit risk and audit evidence: The Bayesian approach to statistical auditing*. San Diego: Academic Press.\n* Stewart, T. R. (2013). *A Bayesian audit assurance model with application to the component materiality problem in group audits*. VU University, Amsterdam." }`
+
+<!-- Appendix B -->
+`r if (!is.null(object[["data"]])){ "\\newpage" }`
+`r if (!is.null(object[["data"]])){ "### Appendix B: Data" }`
+`r if (!is.null(object[["data"]])){ "\n---" }`
+
+```{r, echo = FALSE}
+if(!is.null(object[["data"]])){
+  tab <- knitr::kable(object[["data"]], 
+                       digits = 3, 
+                       caption = "Table 3: Relevant data obtained from the input sample.", 
+                       align = "c", 
+                       format = "html", 
+                       row.names = FALSE, 
+                       format.args = list(big.mark = ",", scientific = FALSE),
+                       table.attr = "style='width:70%;'")
+  kableExtra::kable_classic(tab, position="center", html_font = "Cambria")
+} else {
+  
+}
+```
+

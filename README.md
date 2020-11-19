@@ -88,6 +88,9 @@ The `jfa` package can then be loaded in R or RStudio by typing:
 
 ### Vignettes
 
+The package vignettes contain explanations about the functionality of
+`jfa` illustated using simple examples.
+
   - [Get started](https://koenderks.github.io/jfa/articles/jfa.html)
   - [The audit sampling
     workflow](https://koenderks.github.io/jfa/articles/v1auditWorkflow.html)
@@ -128,6 +131,12 @@ jfa](https://github.com/koenderks/jfa/wiki/Methods).
 Below is a list of the available functions in the current version of
 `jfa`, sorted by their occurrence in the standard audit sampling
 workflow.
+
+  - [`auditPrior()`](#create-a-prior-distribution-with-the-auditprior-function)
+  - [`planning()`](#plan-a-sample-with-the-planning-function)
+  - [`selection()`](#select-transactions-with-the-selection-function)
+  - [`evaluation()`](#evaluate-a-sample-with-the-evaluation-function)
+  - [`report()`](#generate-a-report-with-the-report-function)
 
 ### Create a prior distribution with the `auditPrior()` function:
 
@@ -254,9 +263,23 @@ FALSE, nPrior = 0, kPrior = 0, rohrbachDelta = 2.7, momentPoptype =
 | `quotient`        | Touw and Hoogduin (2011)              | Quotient estimator                      | `populationBookValue`    |
 | `regression`      | Touw and Hoogduin (2011)              | Regression estimator                    | `populationBookValue`    |
 
+### Generate a report with the `report()` function:
+
+The `report()` function takes an object of class `jfaEvaluation` as
+returned by the `evaluation()` function, automatically generates a
+`html` or `pdf` report containing the analysis results and their
+interpretation, and saves the report to your local computer.
+
+*Full function with default arguments:*
+
+`report(object = NULL, file = NULL, format = "html_document")`
+
+For an example report, see the following
+[link](https://github.com/koenderks/jfa/tree/master/man/figures/readme/report/report.pdf).
+
 ## References
 
-  - Bickel, P. J. (1992). Inference and auditing: The Stringer Bound.
+  - Bickel, P. J. (1992). Inference and auditing: The Stringer bound.
     *International Statistical Review*, 60(2), 197–209. - [View
     online](https://www.jstor.org/stable/1403650)
   - Cox, D. R., & Snell, E. J. (1979). On sampling and the estimation of

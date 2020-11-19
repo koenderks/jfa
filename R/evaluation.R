@@ -83,6 +83,7 @@
 #' \item{populationK}{the assumed total errors in the population. Used in inferences with \code{hypergeometric} method.}
 #' \item{prior}{an object of class 'jfaPrior' to represents the prior distribution.}
 #' \item{posterior}{an object of class 'jfaPosterior' to represents the posterior distribution.}
+#' \item{data}{a data frame containing the relevant columns from the \code{sample} input.}
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
@@ -357,10 +358,10 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
 		result[["mle"]]			<- as.numeric(mle)
 	if(!is.null(precision))
 		result[["precision"]]	<- as.numeric(precision)
+	if(!is.null(populationBookValue))
+		result[["popBookvalue"]]   <- as.numeric(populationBookValue)
 	if(method %in% c("direct", "difference", "quotient", "regression")){
 		# These methods yield an interval instead of a bound
-		result[["popBookvalue"]]   <- as.numeric(populationBookValue)
-		result[["pointEstimate"]]  <- as.numeric(out[["pointEstimate"]])
 		result[["lowerBound"]]     <- as.numeric(out[["lowerBound"]])
 		result[["upperBound"]]     <- as.numeric(out[["upperBound"]])
 	} else {
@@ -377,12 +378,17 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
 		result[["populationK"]]        		 <- as.numeric(populationK)
 	# Produce relevant conclusions conditional on the analysis result
 	approvePrecision <- TRUE
-	if(minPrecision != 1)
-		approvePrecision <- result[["precision"]] <= minPrecision
+	if(minPrecision != 1){
+		if(method %in% c("direct", "difference", "quotient", "regression")){
+			approvePrecision <- (result[["precision"]] / populationBookValue) < minPrecision
+		} else {
+			approvePrecision <- result[["precision"]] < minPrecision
+		}
+	}
 	approveMateriality <- TRUE
 	if(materiality != 1){
 		if(method %in% c("direct", "difference", "quotient", "regression")){
-			approveMateriality <- populationBookValue <= result[["upperBound"]] && populationBookValue >= result[["lowerBound"]]
+			approveMateriality <- (result[["upperBound"]] / populationBookValue) < materiality
 		} else {
 			approveMateriality <- result[["confBound"]] < materiality
 		}
@@ -465,6 +471,16 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
 		result[["posterior"]][["N"]] <- result[["N"]]
 		# Add class 'jfaPosterior' to the posterior distribution object.
 		class(result[["posterior"]]) <- "jfaPosterior"
+	}
+	if(!is.null(sample)){
+		indexa <- which(colnames(sample) == auditValues)
+		indexb <- which(colnames(sample) == bookValues)
+		frame <- as.data.frame(sample[, c(indexb, indexa)])
+		frame <- cbind(as.numeric(rownames(frame)), frame)
+		frame[["difference"]] <- frame[, 2] - frame[, 3]
+		frame[["taint"]] <- frame[, 4] / frame[, 2]
+		colnames(frame) <- c("Row", bookValues, auditValues, "Difference", "Taint")
+		result[["data"]] <- frame
 	}
 	# Add class 'jfaEvaluation' to the result.
 	class(result) <- "jfaEvaluation"

@@ -75,6 +75,7 @@ An object of class \code{jfaEvaluation} containing:
 \item{populationK}{the assumed total errors in the population. Used in inferences with \code{hypergeometric} method.}
 \item{prior}{an object of class 'jfaPrior' to represents the prior distribution.}
 \item{posterior}{an object of class 'jfaPosterior' to represents the posterior distribution.}
+\item{data}{a data frame containing the relevant columns from the \code{sample} input.}
 }
 \description{
 This function takes a data frame (using \code{sample}, \code{bookValue}, and \code{auditValues}) or summary statistics (using \code{nSumstats} and \code{kSumstats}) and evaluates the audit sample according to the specified method. The returned object is of class \code{jfaEvaluation} and can be used with associated \code{print()} and \code{plot()} methods.

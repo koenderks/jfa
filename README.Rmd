@@ -82,6 +82,8 @@ library(jfa)
 
 ### Vignettes
 
+The package vignettes contain explanations about the functionality of `jfa` illustated using simple examples.
+
 * [Get started](https://koenderks.github.io/jfa/articles/jfa.html) 
 * [The audit sampling workflow](https://koenderks.github.io/jfa/articles/v1auditWorkflow.html)
 * [Constructing a prior distribution](https://koenderks.github.io/jfa/articles/v2priorDistributions.html)
@@ -103,6 +105,12 @@ If you are willing to contribute to the improvement of the package by adding a b
 ## Functions
 
 Below is a list of the available functions in the current version of `jfa`, sorted by their occurrence in the standard audit sampling workflow.
+
+* [`auditPrior()`](#create-a-prior-distribution-with-the-auditprior-function)
+* [`planning()`](#plan-a-sample-with-the-planning-function)
+* [`selection()`](#select-transactions-with-the-selection-function)
+* [`evaluation()`](#evaluate-a-sample-with-the-evaluation-function)
+* [`report()`](#generate-a-report-with-the-report-function)
 
 ### Create a prior distribution with the `auditPrior()` function:
 
@@ -197,9 +205,19 @@ The `evaluation()` function takes a sample data frame or summary statistics abou
 | `quotient` | Touw and Hoogduin (2011) | Quotient estimator | `populationBookValue` |
 | `regression` | Touw and Hoogduin (2011) | Regression estimator | `populationBookValue` |
 
+### Generate a report with the `report()` function:
+
+The `report()` function takes an object of class `jfaEvaluation` as returned by the `evaluation()` function, automatically generates a `html` or `pdf` report containing the analysis results and their interpretation, and saves the report to your local computer. 
+
+*Full function with default arguments:*
+
+`report(object = NULL, file = NULL, format = "html_document")`
+
+For an example report, see the following [link](https://github.com/koenderks/jfa/tree/master/man/figures/readme/report/report.pdf).
+
 ## References
 
-- Bickel, P. J. (1992). Inference and auditing: The Stringer Bound. *International Statistical Review*, 60(2), 197–209. - [View online](https://www.jstor.org/stable/1403650)
+- Bickel, P. J. (1992). Inference and auditing: The Stringer bound. *International Statistical Review*, 60(2), 197–209. - [View online](https://www.jstor.org/stable/1403650)
 - Cox, D. R., & Snell, E. J. (1979). On sampling and the estimation of rare errors. *Biometrika*, 66(1), 125-132. - [View online](https://doi.org/10.1093/biomet/66.1.125)
 - Derks, K. (2020). jfa: Bayesian and classical audit sampling. R package version 0.4.0. - [View online](https://cran.r-project.org/package=jfa)
 - Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., & Wetzels, R. (2020). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. *Under review*. - [View online](https://psyarxiv.com/8fhkp/)
