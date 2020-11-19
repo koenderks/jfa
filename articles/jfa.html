@@ -138,6 +138,7 @@
 ## 9  14608    216.48
 ## 10 79064    243.43</code></pre>
 <p>Because this data set contains the <em>Ist</em> values of the transactions, we need to consider each monetary unit in the population as a possible unit of inference.</p>
+<p>For an example of the <code>jfa</code>’s audit sampling workflow see <a href="https://koenderks.github.io/jfa/articles/v1auditWorkflow.html">The audit workflow</a>.</p>
 </div>
 <div id="using-planning-the-basics" class="section level2">
 <h2 class="hasAnchor">
@@ -288,6 +289,7 @@
 <h2 class="hasAnchor">
 <a href="#using-evaluation-the-basics" class="anchor"></a>Using <code>evaluation()</code>: The basics</h2>
 <p>After executing the audit and annotating the transactions in the sample with their <em>Soll</em> values, you can evaluate whether you have achieved your analysis goal via the <code><a href="../reference/evaluation.html">evaluation()</a></code> function. The function can be used with summary statistics from the sample, or with an annotated sample as input.</p>
+<p>For more details on how to use this function see the package vignettes: <a href="https://koenderks.github.io/jfa/articles/v3estimation.html">jfa: Estimating the misstatement</a> and <a href="https://koenderks.github.io/jfa/articles/v4testing.html">jfa: Testing the misstatement</a></p>
 <div id="summary-statistics-from-the-sample" class="section level3">
 <h3 class="hasAnchor">
 <a href="#summary-statistics-from-the-sample" class="anchor"></a>Summary statistics from the sample</h3>
@@ -351,7 +353,7 @@
 <h2 class="hasAnchor">
 <a href="#using-auditprior-prior-probability-distributions" class="anchor"></a>Using <code>auditPrior()</code>: Prior probability distributions</h2>
 <p>The <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function allows you to perform the workflow as discussed above in a Bayesian fashion. Using a prior distribution is fairly simple, you only have to insert the returned object from the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function as an argument for the <code>prior</code> argument in the <code><a href="../reference/planning.html">planning()</a></code> and <code><a href="../reference/evaluation.html">evaluation()</a></code> functions.</p>
-<p>For more information about how to create a prior distribution, see the vignettes <a href="https://koenderks.github.io/jfa/articles/priorDistributions.html">jfa: Constructing a prior distribution</a> and <a href="https://koenderks.github.io/jfa/articles/auditWorkflow.html">jfa: The audit workflow</a>.</p>
+<p>For more information about how to create a prior distribution, see the vignettes <a href="https://koenderks.github.io/jfa/articles/v2priorDistributions.html">Constructing a prior distribution</a>.</p>
 </div>
   </div>
 
