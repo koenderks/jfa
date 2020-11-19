@@ -110,6 +110,7 @@
 <div id="frequentist-hypothesis-testing-using-the-p-value" class="section level2">
 <h2 class="hasAnchor">
 <a href="#frequentist-hypothesis-testing-using-the-p-value" class="anchor"></a>Frequentist hypothesis testing using the <em>p</em>-value</h2>
+<p>This will be added in a future version of <code>jfa</code>.</p>
 </div>
 <div id="bayesian-hypothesis-testing-using-the-bayes-factor" class="section level2">
 <h2 class="hasAnchor">
@@ -182,7 +183,7 @@
 <div id="sensitivity-to-the-prior-distribution" class="section level3">
 <h3 class="hasAnchor">
 <a href="#sensitivity-to-the-prior-distribution" class="anchor"></a>Sensitivity to the prior distribution</h3>
-<p>In audit sampling, the Bayes factor is dependent on the prior distribution for <span class="math inline">\(\theta\)</span>. You can mitigate this dependency using <code>method = "median"</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function, which constructs a prior distribution that is impartial with respect to the hypotheses <span class="math inline">\(H_-\)</span> and <span class="math inline">\(H_+\)</span>.</p>
+<p>In audit sampling, the Bayes factor is dependent on the prior distribution for <span class="math inline">\(\theta\)</span>. As a rule of thumb, when the prior distribution is very uninformative with respect to the misstatement parameter <span class="math inline">\(\theta\)</span>, the Bayes factor overestimates the evidence in favor of <span class="math inline">\(H_-\)</span>. You can mitigate this dependency using <code>method = "median"</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function, which constructs a prior distribution that is impartial with respect to the hypotheses <span class="math inline">\(H_-\)</span> and <span class="math inline">\(H_+\)</span>.</p>
 </div>
 </div>
   </div>
