@@ -114,7 +114,7 @@
 <div id="bayesian-hypothesis-testing-using-the-bayes-factor" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bayesian-hypothesis-testing-using-the-bayes-factor" class="anchor"></a>Bayesian hypothesis testing using the Bayes factor</h2>
-<p>Bayesian hypothesis testing uses the Bayes factor, <span class="math inline">\(BF_{-+}\)</span> or <span class="math inline">\(BF_{+-}\)</span>, to make a statement about the evidence provided by the sample in support for one of the two hypotheses <span class="math inline">\(H_-\)</span> or <span class="math inline">\(H_+\)</span>. The subscript The Bayes factor denotes which hypothesis it favors. By default, the <code><a href="../reference/evaluation.html">evaluation()</a></code> function returns <span class="math inline">\(Bf_{-+}\)</span>.</p>
+<p>Bayesian hypothesis testing uses the Bayes factor, <span class="math inline">\(BF_{-+}\)</span> or <span class="math inline">\(BF_{+-}\)</span>, to make a statement about the evidence provided by the sample in support for one of the two hypotheses <span class="math inline">\(H_-\)</span> or <span class="math inline">\(H_+\)</span>. The subscript The Bayes factor denotes which hypothesis it favors. By default, the <code><a href="../reference/evaluation.html">evaluation()</a></code> function returns the value for <span class="math inline">\(BF_{-+}\)</span>.</p>
 <p>As an example of how to interpret the Bayes factor, the value of <span class="math inline">\(BF_{-+} = 10\)</span> (provided by the <code>evluation()</code> function) can be interpreted as: <em>the data are 10 times more likely to have occurred under the hypothesis <span class="math inline">\(H_-:\theta&lt;\theta_{max}\)</span> than under the hypothesis <span class="math inline">\(H_+:\theta\geq\theta_{max}\)</span></em>. <span class="math inline">\(BF_{-+} &gt; 1\)</span> indicates evidence for <span class="math inline">\(H_-\)</span>, while <span class="math inline">\(BF_{-+} &lt; 1\)</span> indicates evidence for <span class="math inline">\(H_+\)</span>.</p>
 <table class="table">
 <thead><tr class="header">
@@ -123,30 +123,65 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
+<td><span class="math inline">\(&lt; 0.01\)</span></td>
+<td>Extreme evidence for <span class="math inline">\(H_+\)</span>
+</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(0.01 - 0.033\)</span></td>
+<td>Very strong evidence for <span class="math inline">\(H_+\)</span>
+</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(0.033 - 0.10\)</span></td>
+<td>Strong evidence for <span class="math inline">\(H_+\)</span>
+</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(0.10 - 0.33\)</span></td>
+<td>Moderate evidence for <span class="math inline">\(H_+\)</span>
+</td>
+</tr>
+<tr class="odd">
+<td>$ 0.33 - 1$</td>
+<td>Anecdotal evidence for <span class="math inline">\(H_+\)</span>
+</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(1\)</span></td>
+<td>No evidence for <span class="math inline">\(H_-\)</span> or <span class="math inline">\(H_+\)</span>
+</td>
+</tr>
+<tr class="odd">
 <td><span class="math inline">\(1 - 3\)</span></td>
-<td>Anecdotal</td>
+<td>Anecdotal evidence for <span class="math inline">\(H_-\)</span>
+</td>
 </tr>
 <tr class="even">
 <td><span class="math inline">\(3 - 10\)</span></td>
-<td>Moderate</td>
+<td>Moderate evidence for <span class="math inline">\(H_-\)</span>
+</td>
 </tr>
 <tr class="odd">
 <td><span class="math inline">\(10 - 30\)</span></td>
-<td>Strong</td>
+<td>Strong evidence for <span class="math inline">\(H_-\)</span>
+</td>
 </tr>
 <tr class="even">
 <td><span class="math inline">\(30 - 100\)</span></td>
-<td>Very strong</td>
+<td>Very strong evidence for <span class="math inline">\(H_-\)</span>
+</td>
 </tr>
 <tr class="odd">
 <td><span class="math inline">\(&gt; 100\)</span></td>
-<td>Extreme</td>
+<td>Extreme evidence for <span class="math inline">\(H_-\)</span>
+</td>
 </tr>
 </tbody>
 </table>
-<div id="the-prior-influences-the-bayes-factor" class="section level3">
+<div id="sensitivity-to-the-prior-distribution" class="section level3">
 <h3 class="hasAnchor">
-<a href="#the-prior-influences-the-bayes-factor" class="anchor"></a>The prior influences the Bayes factor</h3>
+<a href="#sensitivity-to-the-prior-distribution" class="anchor"></a>Sensitivity to the prior distribution</h3>
 <p>In audit sampling, the Bayes factor is dependent on the prior distribution for <span class="math inline">\(\theta\)</span>. You can mitigate this dependency using <code>method = "median"</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function, which constructs a prior distribution that is impartial with respect to the hypotheses <span class="math inline">\(H_-\)</span> and <span class="math inline">\(H_+\)</span>.</p>
 </div>
 </div>
