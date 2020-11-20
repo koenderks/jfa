@@ -21,7 +21,7 @@
    xml:space="preserve"
    sodipodi:docname="jfaBanner.svg"
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
-   inkscape:export-filename="C:\Users\derksk\OneDrive - NBU\Desktop\jfa\man\figures\banner\jfaBanner.png"
+   inkscape:export-filename="C:\Users\derksk\OneDrive - NBU\Desktop\jfa\man\figures\readme\banner\jfaBanner.png"
    inkscape:export-xdpi="116.90842"
    inkscape:export-ydpi="116.90842"><metadata
    id="metadata2713"><rdf:RDF><cc:Work
@@ -70,9 +70,9 @@
    id="namedview2709"
    showgrid="false"
    inkscape:zoom="2.49"
-   inkscape:cx="101.41951"
+   inkscape:cx="339.90837"
    inkscape:cy="41.847289"
-   inkscape:window-x="-9"
+   inkscape:window-x="1791"
    inkscape:window-y="-9"
    inkscape:window-maximized="1"
    inkscape:current-layer="029---Peice-of-the-puzzle" />
@@ -91,7 +91,13 @@
    id="Page-1"><g
      style="fill-rule:nonzero"
      id="029---Peice-of-the-puzzle"
-     transform="translate(0,-1)"><path
+     transform="translate(0,-1)"><rect
+   style="fill:#ffffff;fill-opacity:0.10869565;stroke:#380000;stroke-width:0;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
+   id="rect1120"
+   width="754.47845"
+   height="99.24939"
+   x="-277.20923"
+   y="-8.7971869" /><path
    inkscape:connector-curvature="0"
    style="fill:#fb8c00;fill-opacity:1;stroke:none;stroke-width:1.1337775;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
    d="m 23.265058,51.578765 c -0.146467,0.512219 -0.225329,1.057378 -0.225329,1.62202 0,3.041035 2.295218,5.506662 5.127472,5.506662 2.831622,0 5.127471,-2.465627 5.127471,-5.506662 0,-3.041029 -2.295849,-5.506657 -5.127471,-5.506657 -0.524512,0 -1.030876,0.08404 -1.507822,0.241991 l 7.917163,-8.501978 -7.917163,-8.501982 c 0.147715,0.511542 0.225955,1.055353 0.225955,1.618655 0,3.04103 -2.295851,5.506659 -5.127471,5.506659 -2.832256,0 -5.127475,-2.465629 -5.127475,-5.506659 0,-3.04103 2.295219,-5.506657 5.127475,-5.506657 0.525138,0 1.032754,0.08537 1.510947,0.244007 l -0.0012,0.0016 L 15.34859,18.784363 -3.8794324,39.434334 15.34859,60.084303 Z m 0,0"
@@ -155,7 +161,7 @@
      id="rect4518-0-9-4"
      style="fill:#006df0;fill-opacity:1;stroke:#f9883c;stroke-width:0;stroke-linecap:butt;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:normal" /></g><g
    id="g877"
-   transform="matrix(0.91880096,0,0,1.1004439,383.09744,0.42708931)"><path
+   transform="matrix(0.91880096,0,0,1.1004439,254.46544,0.42708931)"><path
      inkscape:connector-curvature="0"
      style="fill:#fb8c00;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.12385821"
      d="M 19.10563,46.718352 9.4297834,47.825804 20.425065,31.580086 34.005582,37.88617 22.81721,54.424768 Z"
@@ -177,7 +183,7 @@
      d="m 47.522809,17.28758 -5.354226,4.252818 1.274815,5.993501 -6.616901,-2.828618 -6.604756,2.828618 1.250529,-5.993501 -5.342087,-4.252818 7.393936,-0.870347 3.302378,-5.459425 3.302384,5.459425 z"
      id="path825" /></g><g
    id="g896"
-   transform="matrix(0.91880096,0,0,1.1004439,252.33382,-0.27817259)"><path
+   transform="matrix(0.91880096,0,0,1.1004439,391.80707,2.3823384)"><path
      inkscape:connector-curvature="0"
      style="fill:#717171;fill-opacity:1;stroke-width:0.75590551;stroke-miterlimit:4;stroke-dasharray:none"
      id="path829"
@@ -315,13 +321,7 @@
      id="g965-0-5"
      style="fill:#000000;fill-opacity:1" /><g
      id="g967-9-9"
-     style="fill:#000000;fill-opacity:1" /></g><rect
-   style="fill:#ffffff;fill-opacity:0.10869565;stroke:#380000;stroke-width:0;stroke-linecap:round;stroke-linejoin:bevel;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;paint-order:normal"
-   id="rect1120"
-   width="754.47845"
-   height="99.24939"
-   x="-277.20923"
-   y="-8.7971869" /><text
+     style="fill:#000000;fill-opacity:1" /></g><text
    xml:space="preserve"
    style="font-style:normal;font-weight:normal;font-size:40.22116852px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.00552917"
    x="-304.30865"
@@ -333,6 +333,7 @@
      x="-304.30865"
      y="2.4947495"
      style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:16.08846664px;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';stroke-width:1.00552917">jfa's workflow:</tspan></text>
+
 
 
 <text
@@ -349,6 +350,7 @@
      style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.40705585px;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';stroke-width:1.00552917">planning()</tspan></text>
 
 
+
 <text
    xml:space="preserve"
    style="font-style:normal;font-weight:normal;font-size:40.22116852px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.00552917"
@@ -363,18 +365,20 @@
      style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.40705585px;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';stroke-width:1.00552917">selection()</tspan></text>
 
 
+
 <text
    xml:space="preserve"
    style="font-style:normal;font-weight:normal;font-size:40.22116852px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.00552917"
-   x="415.94128"
+   x="275.16797"
    y="73.103729"
    id="text1128-1-1"
    transform="scale(0.9137487,1.0943928)"><tspan
      sodipodi:role="line"
      id="tspan1126-3-7"
-     x="415.94128"
+     x="275.16797"
      y="73.103729"
      style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.40705585px;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';stroke-width:1.00552917">evaluation()</tspan></text>
+
 
 
 <text
@@ -391,18 +395,20 @@
      style="stroke-width:1.00552917" /></text>
 
 
+
 <text
    xml:space="preserve"
    style="font-style:normal;font-weight:normal;font-size:40.22116852px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:1.00552917"
-   x="276.78629"
+   x="437.67007"
    y="73.480919"
    id="text1128-1-1-2"
    transform="scale(0.9137487,1.0943928)"><tspan
      sodipodi:role="line"
      id="tspan1126-3-7-0"
-     x="276.78629"
+     x="437.67007"
      y="73.480919"
-     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.40705585px;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';stroke-width:1.00552917">inspection</tspan></text>
+     style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.40705585px;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';stroke-width:1.00552917">report()</tspan></text>
+
 
 
 <path
@@ -462,6 +468,7 @@
      x="-165.30013"
      y="73.343857"
      style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:13.40705585px;font-family:'Courier New';-inkscape-font-specification:'Courier New Bold';stroke-width:1.00552917">auditPrior()</tspan></text>
+
 
 
 </g></g></svg>
