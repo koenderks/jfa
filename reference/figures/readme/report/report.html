@@ -675,16 +675,16 @@ Precision
 <tbody>
 <tr>
 <td style="text-align:right;">
-0.00
+0.000
 </td>
 <td style="text-align:right;">
--0.01
+-0.012
 </td>
 <td style="text-align:right;">
-0.01
+0.012
 </td>
 <td style="text-align:right;">
-0.01
+0.012
 </td>
 <td style="text-align:left;">
 x 100 = %
@@ -692,16 +692,16 @@ x 100 = %
 </tr>
 <tr>
 <td style="text-align:right;">
--1,383.04
+-1,383.038
 </td>
 <td style="text-align:right;">
--142,457.84
+-142,457.836
 </td>
 <td style="text-align:right;">
-139,691.76
+139,691.760
 </td>
 <td style="text-align:right;">
-141,074.80
+141,074.798
 </td>
 <td style="text-align:left;">
 $
@@ -720,12 +720,15 @@ $
 <!-- Notation for direct estimator -->
 <!-- Notation for methods that return monetary estimates (without direct) -->
 <p><span class="math display">\[\begin{equation}\begin{split}\text{Ist position:    }&amp; ist = \text{ist_euro} \\ \text{Soll position:    }&amp; soll = \text{soll_euro} \\ \text{Sample size:    }&amp; n = 130 \\ \text{Population size:    }&amp; N = 50152\\ \text{Population value:    }&amp; B = 11477820 \\ \text{Sampling risk:    }&amp; \alpha = 0.05\end{split} \hspace{4cm} \begin{split} \text{Estimated population misstatement:     }&amp; \hat{E} \\ \text{Lower bound population misstatement:     }&amp; E_{lb} \\ \text{Upper bound population misstatement:     }&amp; E_{ub} \\ \text{Estimated unit misstatement:     }&amp; \hat{\theta} \end{split}\end{equation}\]</span></p>
+<!-- Notation for methods that return unit estimates -->
 <p><em>Formulas:</em></p>
 <!-- Calculations direct estimator -->
 <!-- Calculations difference estimator -->
-<p><span class="math display">\[\begin{align} \hat{E} &amp;= N \times \hat{\theta} \\ &amp;= 50152 \times -0.028 = -1383.038 \\ \\ [E_{lb}; E_{ub}] &amp;= N \times \left( \hat{\theta} \pm  t_{1 - \frac{\alpha}{2}} \times \frac{s_e}{\sqrt{n}} \right) \\ &amp;= 50152 \times \left(-0.028 \pm 2.813\right) = [-142457.836;139691.76 ] \\ \\ \\ \hat{\theta} &amp;= \bar{e} = \frac{\sum_{i=1}^n ist_i - soll_i}{n} = \frac{-3.585}{130} = -0.028\\ t_{1 - \frac{\alpha}{2}} &amp;= t_{0.975} = 1.979\\ s_e &amp;= \sqrt{\frac{\sum_{i=1}^n ([ist_i - soll_i] - \bar{e})^2}{n - 1}} = \sqrt{\frac{33897.88}{129}} =16.21\\ t_{0.975} \times \frac{s_e}{\sqrt{n}} &amp;= 1.979 \times \frac{16.21}{\sqrt{130}} = 2.813\end{align}\]</span></p>
+<p><span class="math display">\[\begin{align} \hat{E} &amp;= N \times \hat{\theta} \\ &amp;= 50152 \times -0.028 = -1383.038 \\ \\ [E_{lb}; E_{ub}] &amp;= N \times \left( \hat{\theta} \pm  t_{1 - \frac{\alpha}{2}} \times \frac{s_e}{\sqrt{n}} \right) \\ &amp;= 50152 \times \left(-0.028 \pm 2.813\right) = [-142457.836;139691.76 ] \\ \\ \\ \hat{\theta} &amp;= \frac{\sum_{i=1}^n ist_i - soll_i}{n} = \frac{-3.585}{130} = -0.028\\ t_{1 - \frac{\alpha}{2}} &amp;= t_{0.975} = 1.979\\ s_e &amp;= \sqrt{\frac{\sum_{i=1}^n ([ist_i - soll_i] - \hat{\theta})^2}{n - 1}} = \sqrt{\frac{33897.88}{129}} =16.21\\ t_{0.975} \times \frac{s_e}{\sqrt{n}} &amp;= 1.979 \times \frac{16.21}{\sqrt{130}} = 2.813\end{align}\]</span></p>
 <!-- Calculations quotient estimator -->
 <!-- Calculations regression estimator -->
+<!-- Calculations binomial method -->
+<!-- Calculations stringer method -->
 <p><em>Evaluation:</em></p>
 <!-- Sampling objective materiality for methods that return monetary estimates -->
 <p>✔️<span class="math inline">\(\hspace{0.5cm} \text{Upper bound lower than performance materiality} \rightarrow E_{ub} &lt; E_{max} \rightarrow 139691.8&lt;2000000\)</span></p>
