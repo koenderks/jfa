@@ -29,6 +29,7 @@ prior probability distribution for use in these functions.
   - [Getting started](#getting-started)
   - [Benchmarks](#benchmarks)
   - [Contributing](#contributing)
+  - [Cheatsheet](#cheatsheet)
   - [Functions](#functions)
   - [References](#references)
   - [Package statistics](#package-statistics)
@@ -44,7 +45,7 @@ workflow.
 
 For complete documentation of the package, see the [package
 website](https://koenderks.github.io/jfa/) or the [package
-manual](https://cran.r-project.org/web/packages/jfa/jfa.pdf).
+manual](https://cran.r-project.org/package=jfa/jfa.pdf).
 
 ### Authors
 
@@ -125,6 +126,18 @@ If you are willing to contribute to the improvement of the package by
 adding a new statistical method, please check the Wiki page on [how to
 contribute a new method to
 jfa](https://github.com/koenderks/jfa/wiki/Methods).
+
+## Cheatsheet
+
+The cheatsheet can help you get started with the `jfa` package and its
+workflow. You can download a pdf version
+[here](https://github.com/koenderks/jfa/raw/master/man/figures/cheatsheet/cheatsheet.pdf).
+
+<p align="center">
+
+<img src="man/figures/cheatsheet/cheatsheet.png" alt="cheatsheet"/>
+
+</p>
 
 ## Functions
 
@@ -275,7 +288,7 @@ interpretation, and saves the report to your local computer.
 `report(object = NULL, file = NULL, format = "html_document")`
 
 For an example report, see the following
-[link](https://github.com/koenderks/jfa/tree/master/man/figures/readme/report/report.pdf).
+[link](https://github.com/koenderks/jfa/raw/master/man/figures/readme/report/report.pdf).
 
 ## References
 

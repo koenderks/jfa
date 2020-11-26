@@ -1,6 +1,6 @@
 #' Evaluation of Audit Samples using Confidence / Credible Bounds
 #'
-#' @description This function takes a data frame (using \code{sample}, \code{bookValue}, and \code{auditValues}) or summary statistics (using \code{nSumstats} and \code{kSumstats}) and evaluates the audit sample according to the specified method. The returned object is of class \code{jfaEvaluation} and can be used with associated \code{print()} and \code{plot()} methods.
+#' @description This function takes a data frame (using \code{sample}, \code{bookValues}, and \code{auditValues}) or summary statistics (using \code{nSumstats} and \code{kSumstats}) and evaluates the audit sample according to the specified method. The returned object is of class \code{jfaEvaluation} and can be used with associated \code{print()} and \code{plot()} methods.
 #'
 #' For more details on how to use this function see the package vignette:
 #' \code{vignette("jfa", package = "jfa")}
@@ -14,7 +14,7 @@
 #'             csA = 1, csB = 3, csMu = 0.5) 
 #'
 #' @param confidence    the required confidence level for the bound. Default is 0.95 for 95\% confidence.
-#' @param method        the method that is used to evaluate the sample. This can be either one of \code{poisson}, \code{binomial}, \code{hypergeometric}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}. 
+#' @param method        the method that is used to evaluate the sample. This can be either one of \code{poisson}, \code{binomial}, \code{hypergeometric}, \code{mpus}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}. 
 #' @param N             an integer specifying the total number of units (transactions or monetary units) in the population.
 #' @param sample        a data frame containing at least a column of Ist values and a column of Soll (true) values.
 #' @param bookValues    a character specifying the column name for the Ist values in the sample.
@@ -40,6 +40,7 @@
 #'  \item{\code{poisson}:          The confidence bound taken from the Poisson distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{gamma} prior and posterior.}
 #'  \item{\code{binomial}:         The confidence bound taken from the binomial distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{beta} prior and posterior.}
 #'  \item{\code{hypergeometric}:   The confidence bound taken from the hypergeometric distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{beta-binomial} prior and posterior.}
+#'	\item{\code{mpu}}:			   Mean per unit estimator using the observed sample taints.
 #'  \item{\code{stringer}:         The Stringer bound (Stringer, 1963).}
 #'  \item{\code{stringer-meikle}:  Stringer bound with Meikle's correction for understatements (Meikle, 1972).}
 #'  \item{\code{stringer-lta}:     Stringer bound with LTA correction for understatements (Leslie, Teitlebaum, and Anderson, 1979).}
@@ -187,13 +188,13 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
 	if(!is.null(minPrecision) && minPrecision == 0)
 		stop("The minimum required precision cannot be zero.")
 	
-	if(!(method %in% c("poisson", "binomial", "hypergeometric", "stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "rohrbach", "moment", "coxsnell", "direct", "difference", "quotient", "regression")) || length(method) != 1)
+	if(!(method %in% c("poisson", "binomial", "hypergeometric", "stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "rohrbach", "moment", "coxsnell", "direct", "difference", "quotient", "regression", "mpu")) || length(method) != 1)
 		stop("Specify a valid method for the evaluation.")
 
 	if(!is.null(counts) && any(counts < 1))
 		stop("When specified, your 'counts' must all be equal to, or larger than, 1.")          
 
-	if(((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior") && method %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "rohrbach", "moment", "direct", "difference", "quotient", "regression"))
+	if(((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior") && method %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
 		stop("To use a prior distribution, you must use either the poisson, the binomial, or the hypergeometric method.")  
 
  	if((class(prior) == "logical" && prior == TRUE) && kPrior < 0 || nPrior < 0)
@@ -208,7 +209,7 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
       		stop("Specify one value for nSumstat and kSumstat")
     	if(kSumstats > nSumstats)
       		stop("The sum of the errors is higher than the sample size")
-    	if(method %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "coxsnell", "rohrbach", "moment", "direct", "difference", "quotient", "regression"))
+    	if(method %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "coxsnell", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
       		stop("The selected method requires raw observations, and does not accomodate summary statistics")
     
 		n <- nSumstats
@@ -220,10 +221,11 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
 		if(is.null(bookValues) || is.null(auditValues) || length(bookValues) != 1 || length(auditValues) != 1)
 			stop("Specify a valid book value column name and a valid audit value column name when using a sample")
 		
-    	sample <- stats::na.omit(sample)
-		n <- nrow(sample)
-		if(n == 0)
+		missingValues <- unique(c(which(is.na(sample[, bookValues])), which(is.na(sample[, auditValues]))))
+		if(length(missingValues) == nrow(sample))
 			stop("Your sample has 0 rows after removing missing values.")
+		sample <- stats::na.omit(sample)
+		n <- nrow(sample)
 		if(!is.null(counts))
 			n <- sum(counts)
 		bv <- sample[, bookValues]
@@ -319,6 +321,11 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
 		bound 		<- out[["confBound"]]
 		mle 		<- out[["mle"]]
 		precision 	<- out[["precision"]]
+	} else if(method == "mpu"){
+		out 		<- .mpuMethod(taints, confidence, n)
+		bound 		<- out[["confBound"]]
+		mle 		<- out[["mle"]]
+		precision 	<- out[["precision"]]		
 	} else if(method == "direct"){
 		out 		<- .directMethod(bv, av, confidence, N, n, populationBookValue)
 		mle 		<- out[["pointEstimate"]]

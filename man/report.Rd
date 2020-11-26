@@ -11,7 +11,7 @@ report(object = NULL, file = NULL, format = "html_document")
 
 \item{file}{a string that gives the desired name of the file (e.g. \code{"report.html"}). The report is created in your current working directory.}
 
-\item{format}{can be either one of \code{"html_document"} or \code{"pdf_document"} (required MikTex).}
+\item{format}{can be either one of \code{"html_document"} or \code{"pdf_document"} (compiling to pdf requires MikTex).}
 }
 \value{
 A html or pdf report containing the results of the evaluation.

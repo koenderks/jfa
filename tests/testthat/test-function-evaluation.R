@@ -240,6 +240,18 @@ test_that(desc = "(id: f5-v0.4.0-t1) Bayes factors", {
 
 # jfa version 0.5.0
 
+test_that(desc = "(id: f5-v0.5.0-t1) Test for mpu estimator", {
+	
+	sample <- data.frame(ID = 1:100, ist = rnorm(mean = 1000, n = 100))
+	sample$soll <- sample$ist
+	sample$ist[1] <- 120
+	sample$soll[1] <- 100
+	sample$ist[2] <- 100
+	sample$soll[2] <- 120
+	jfaEval <- jfa::evaluation(confidence = 0.95, method = "mpu", sample = sample, materiality = 0.1, bookValues = "ist", auditValues = "soll")
+	expect_equal(jfaEval[["confBound"]], 0.003970126, tolerance = 0.001)
+})
+
 test_that(desc = "(id: f5-v0.5.0-t1) Test for frequentist print function", {
 	set.seed(1)
 	population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))

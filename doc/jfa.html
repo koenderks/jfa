@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Koen Derks" />
+
+
+<title>Get started</title>
+
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
+<style type="text/css">
+a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
+a.anchor-section::before {content: '#';}
+.hasAnchor:hover a.anchor-section {visibility: visible;}
+</style>
+<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
+document.addEventListener('DOMContentLoaded', function() {
+  // Do nothing if AnchorJS is used
+  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
+    return;
+  }
+
+  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+  // Do nothing if sections are already anchored
+  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
+    return null;
+  }
+
+  // Use section id when pandoc runs with --section-divs
+  const section_id = function(x) {
+    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
+            ? x.id : '');
+  };
+
+  // Add anchors
+  h.forEach(function(x) {
+    const id = x.id || section_id(x.parentElement);
+    if (id === '') {
+      return null;
+    }
+    let anchor = document.createElement('a');
+    anchor.href = '#' + id;
+    anchor.classList = ['anchor-section'];
+    x.classList.add('hasAnchor');
+    x.appendChild(anchor);
+  });
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Get started</h1>
+<h4 class="author">Koen Derks</h4>
+<h4 class="date">last modified: 07-11-2020</h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#overview">Overview</a></li>
+<li><a href="#installation">Installation</a></li>
+<li><a href="#load-data">Load data</a></li>
+<li><a href="#using-planning-the-basics">Using <code>planning()</code>: The basics</a>
+<ul>
+<li><a href="#testing-against-a-performance-materiality">Testing against a performance materiality</a></li>
+<li><a href="#obtaining-a-minimum-required-precision">Obtaining a minimum required precision</a></li>
+</ul></li>
+<li><a href="#using-selection-the-basics">Using <code>selection()</code>: The basics</a>
+<ul>
+<li><a href="#record-sampling">Record sampling</a></li>
+<li><a href="#monetary-unit-sampling">Monetary unit sampling</a></li>
+<li><a href="#extracting-the-sample">Extracting the sample</a></li>
+</ul></li>
+<li><a href="#using-evaluation-the-basics">Using <code>evaluation()</code>: The basics</a>
+<ul>
+<li><a href="#summary-statistics-from-the-sample">Summary statistics from the sample</a></li>
+<li><a href="#annotated-sample">Annotated sample</a></li>
+</ul></li>
+<li><a href="#using-auditprior-prior-probability-distributions">Using <code>auditPrior()</code>: Prior probability distributions</a></li>
+</ul>
+</div>
+
+<div id="overview" class="section level2">
+<h2>Overview</h2>
+<p>The <code>jfa</code> package allows you to plan, select, and evaluate an audit sample using classical and Bayesian statistics.</p>
+<p>Below it is explained how to install and use the <code>jfa</code> package.</p>
+</div>
+<div id="installation" class="section level2">
+<h2>Installation</h2>
+<p>Install <code>jfa</code> from CRAN</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">&quot;jfa&quot;</span>)</span></code></pre></div>
+<p>or from GitHub</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>devtools<span class="op">::</span><span class="kw">install_github</span>(<span class="st">&quot;koenderks/jfa&quot;</span>)</span></code></pre></div>
+</div>
+<div id="load-data" class="section level2">
+<h2>Load data</h2>
+<p>We can try out some examples with the <code>BuildIt</code> data set that is included in the package. It includes a population of 3500 transactions from a fictional construction company BuildIt, which we can use to illustrate statistical audit sampling using the <code>jfa</code> package (for more info, see ?BuildIt).</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">library</span>(jfa)</span>
+<span id="cb3-2"><a href="#cb3-2"></a></span>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="kw">data</span>(<span class="st">&quot;BuildIt&quot;</span>)</span>
+<span id="cb3-4"><a href="#cb3-4"></a>BuildIt &lt;-<span class="st"> </span>BuildIt[, <span class="kw">c</span>(<span class="st">&quot;ID&quot;</span>, <span class="st">&quot;bookValue&quot;</span>)] <span class="co"># Let&#39;s remove the auditValue column for this example</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a><span class="kw">head</span>(BuildIt, <span class="dt">n =</span> <span class="dv">10</span>)</span></code></pre></div>
+<pre><code>##       ID bookValue
+## 1  82884    242.61
+## 2  25064    642.99
+## 3  81235    628.53
+## 4  71769    431.87
+## 5  55080    620.88
+## 6  93224    501.76
+## 7  24331    466.01
+## 8  81460    295.20
+## 9  14608    216.48
+## 10 79064    243.43</code></pre>
+<p>Because this data set contains the <em>Ist</em> values of the transactions, we need to consider each monetary unit in the population as a possible unit of inference.</p>
+<p>For an example of the <code>jfa</code>’s audit sampling workflow see <a href="https://koenderks.github.io/jfa/articles/v1auditWorkflow.html">The audit sampling workflow</a>.</p>
+</div>
+<div id="using-planning-the-basics" class="section level2">
+<h2>Using <code>planning()</code>: The basics</h2>
+<p>Planning a sample using the <code>planning()</code> function requires that you have knowledge of the goal of the analysis and the statistical distribution of your data (<code>poisson</code>, <code>binomial</code>, or <code>hypergeometric</code>).</p>
+<div id="testing-against-a-performance-materiality" class="section level3">
+<h3>Testing against a performance materiality</h3>
+<p>Let’s take the goal of testing against a performance materiality with the <code>poisson</code> distribution as an example.</p>
+<p>Analysis goal: <em>Plan a sample such that, when zero misstatements are found in the sample, you can be 95% confident that the total misstatement in the population is lower than 5% of its total value.</em></p>
+<p>Planning a sample with this goal can be done using the code below (specifically using the <code>materiality</code> argument). As you can see, the required sample size for this goal is 60 monetary units.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">planning</span>(<span class="dt">confidence =</span> <span class="fl">0.95</span>, <span class="dt">expectedError =</span> <span class="dv">0</span>, <span class="dt">likelihood =</span> <span class="st">&quot;poisson&quot;</span>, <span class="dt">N =</span> <span class="dv">3500</span>, <span class="dt">materiality =</span> <span class="fl">0.05</span>)</span></code></pre></div>
+<pre><code>## # ------------------------------------------------------------
+## #              jfa Planning Summary (Frequentist)
+## # ------------------------------------------------------------     
+## # Input:
+## # 
+## # Confidence:              95% 
+## # Materiality:             5% 
+## # Minimum precision:       Not specified 
+## # Likelihood:              poisson 
+## # Expected sample errors:  0 
+## # ------------------------------------------------------------
+## # Output:
+## #
+## # Sample size:             60 
+## # ------------------------------------------------------------
+## # Statistics:
+## #
+## # Expected upper bound:    4.99% 
+## # Expected precision:      4.99% 
+## # ------------------------------------------------------------</code></pre>
+</div>
+<div id="obtaining-a-minimum-required-precision" class="section level3">
+<h3>Obtaining a minimum required precision</h3>
+<p>The goal of the analysis can also involve obtaining a minimum precision about the estimate of the misstatement.</p>
+<p>Analysis goal: <em>Plan a sample such that, when zero misstatements are found in the sample, you can be 95% confident that the inaccuracy of your estimate is at most 2%.</em></p>
+<p>Planning a sample with this goal can be done using the code below (specifically using the <code>minPrecision</code> argument). As you can see, the required sample size for this goal is 150 monetary units.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="kw">planning</span>(<span class="dt">confidence =</span> <span class="fl">0.95</span>, <span class="dt">expectedError =</span> <span class="dv">0</span>, <span class="dt">likelihood =</span> <span class="st">&quot;poisson&quot;</span>, <span class="dt">N =</span> <span class="dv">3500</span>, <span class="dt">minPrecision =</span> <span class="fl">0.02</span>)</span></code></pre></div>
+<pre><code>## # ------------------------------------------------------------
+## #              jfa Planning Summary (Frequentist)
+## # ------------------------------------------------------------     
+## # Input:
+## # 
+## # Confidence:              95% 
+## # Materiality:             Not specified 
+## # Minimum precision:       2% 
+## # Likelihood:              poisson 
+## # Expected sample errors:  0 
+## # ------------------------------------------------------------
+## # Output:
+## #
+## # Sample size:             150 
+## # ------------------------------------------------------------
+## # Statistics:
+## #
+## # Expected upper bound:    2% 
+## # Expected precision:      2% 
+## # ------------------------------------------------------------</code></pre>
+</div>
+</div>
+<div id="using-selection-the-basics" class="section level2">
+<h2>Using <code>selection()</code>: The basics</h2>
+<p>Selecting a sample using the <code>selection()</code> function requires that you have knowledge of the sampling units. Transactions can be selected using <em>record sampling</em> (also called attribute sampling) with <code>units = &quot;records&quot;</code>, or using <em>monetary unit sampling</em> with <code>units = &quot;mus&quot;</code>.</p>
+<p>It also requires knowledge of the sampling algorithm. Transactions can be selected using <em>random sampling</em> with <code>algorithm = &quot;random&quot;</code>, using <em>cell sampling</em> with <code>algorithm = &quot;cell&quot;</code>, or using fixed interval sampling (also known as systematic sampling) with <code>algorithm = &quot;interval&quot;</code>.</p>
+<div id="record-sampling" class="section level3">
+<h3>Record sampling</h3>
+<p>For example, the code below samples 60 monetary units from the <code>BuildIt</code> data set using a <em>random record sampling</em> scheme.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">selection</span>(<span class="dt">population =</span> BuildIt, <span class="dt">sampleSize =</span> <span class="dv">150</span>, <span class="dt">units =</span> <span class="st">&quot;records&quot;</span>, <span class="dt">algorithm =</span> <span class="st">&quot;random&quot;</span>)</span></code></pre></div>
+<pre><code>## # ------------------------------------------------------------
+## #                  jfa Selection Summary
+## # ------------------------------------------------------------
+## # Input:
+## #       
+## # Population size:         3500 
+## # Requested sample size:   150 
+## # Sampling units:          Records 
+## # Algorithm:               Random sampling   
+## # ------------------------------------------------------------ 
+## # Output:
+## # 
+## # Obtained sample size:    150 
+## # ------------------------------------------------------------
+## # Statistics:
+## #
+## # Proportion n/N:          0.04 
+## # ------------------------------------------------------------</code></pre>
+</div>
+<div id="monetary-unit-sampling" class="section level3">
+<h3>Monetary unit sampling</h3>
+<p>As another example, the code below samples 150 monetary units from the <code>BuildIt</code> data set using a <em>fixed interval monetary unit sampling</em> scheme.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="kw">selection</span>(<span class="dt">population =</span> BuildIt, <span class="dt">sampleSize =</span> <span class="dv">150</span>, <span class="dt">units =</span> <span class="st">&quot;mus&quot;</span>, <span class="dt">algorithm =</span> <span class="st">&quot;interval&quot;</span>, </span>
+<span id="cb11-2"><a href="#cb11-2"></a>          <span class="dt">bookValues =</span> <span class="st">&quot;bookValue&quot;</span>)</span></code></pre></div>
+<pre><code>## # ------------------------------------------------------------
+## #                  jfa Selection Summary
+## # ------------------------------------------------------------
+## # Input:
+## #      
+## # Population size:         3500 
+## # Requested sample size:   150 
+## # Sampling units:          Monetary units 
+## # Algorithm:               Fixed interval sampling 
+## # Interval:                9354.81
+## # Starting point:          1  
+## # ------------------------------------------------------------ 
+## # Output:
+## #
+## # Obtained sample size:    150 
+## # ------------------------------------------------------------
+## # Statistics:
+## #
+## # Proportion n/N:          0.04 
+## # Percentage of value:     4.25% 
+## # ------------------------------------------------------------</code></pre>
+</div>
+<div id="extracting-the-sample" class="section level3">
+<h3>Extracting the sample</h3>
+<p>The selected sample is saved in the object that is returned by the <code>selection()</code> function and can be extracted via <code>$sample</code>.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>result &lt;-<span class="st"> </span><span class="kw">selection</span>(<span class="dt">population =</span> BuildIt, <span class="dt">sampleSize =</span> <span class="dv">150</span>, <span class="dt">units =</span> <span class="st">&quot;mus&quot;</span>, <span class="dt">algorithm =</span> <span class="st">&quot;interval&quot;</span>, </span>
+<span id="cb13-2"><a href="#cb13-2"></a>                    <span class="dt">bookValues =</span> <span class="st">&quot;bookValue&quot;</span>)</span>
+<span id="cb13-3"><a href="#cb13-3"></a></span>
+<span id="cb13-4"><a href="#cb13-4"></a>sample &lt;-<span class="st"> </span>result<span class="op">$</span>sample</span>
+<span id="cb13-5"><a href="#cb13-5"></a><span class="kw">head</span>(sample, <span class="dt">n =</span> <span class="dv">10</span>)</span></code></pre></div>
+<pre><code>##    rowNumber count    ID bookValue
+## 1          1     1 30568     14.47
+## 2         24     1  1469     72.57
+## 3         50     1 58378     94.17
+## 4         73     1 64917    103.37
+## 5         96     1 50703    110.76
+## 6        123     1 91342    118.20
+## 7        146     1 63567    125.21
+## 8        167     1 10883    132.14
+## 9        195     1 94854    141.08
+## 10       218     1 66118    147.14</code></pre>
+</div>
+</div>
+<div id="using-evaluation-the-basics" class="section level2">
+<h2>Using <code>evaluation()</code>: The basics</h2>
+<p>After executing the audit and annotating the transactions in the sample with their <em>Soll</em> values, you can evaluate whether you have achieved your analysis goal via the <code>evaluation()</code> function. The function can be used with summary statistics from the sample, or with an annotated sample as input.</p>
+<p>For more details on how to use this function see the package vignettes: <a href="https://koenderks.github.io/jfa/articles/v3estimation.html">Estimating the misstatement</a> and <a href="https://koenderks.github.io/jfa/articles/v4testing.html">Testing the misstatement</a></p>
+<div id="summary-statistics-from-the-sample" class="section level3">
+<h3>Summary statistics from the sample</h3>
+<p>Suppose that in 60 transactions, you have found 1 misstatement. Using <code>nSumstats = 60</code> and <code>kSumstats = 1</code> you can specify the outcomes of the sample in the <code>evaluation()</code> function. Do not forget to specify your analysis goal using the <code>materiality</code> or <code>minPrecision</code> arguments.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="kw">evaluation</span>(<span class="dt">confidence =</span> <span class="fl">0.95</span>, <span class="dt">method =</span> <span class="st">&quot;binomial&quot;</span>, <span class="dt">N =</span> <span class="dv">3500</span>, <span class="dt">nSumstats =</span> <span class="dv">60</span>, <span class="dt">kSumstats =</span> <span class="dv">1</span>, <span class="dt">materiality =</span> <span class="fl">0.05</span>)</span></code></pre></div>
+<pre><code>## # ------------------------------------------------------------ 
+## #             jfa Evaluation Summary (Frequentist)
+## # ------------------------------------------------------------ 
+## # Input: 
+## #
+## # Confidence:               95%   
+## # Materiality:              5% 
+## # Minium precision:         Not specified 
+## # Sample size:              60 
+## # Sample errors:            1 
+## # Sum of taints:            1 
+## # Method:                   binomial 
+## # ------------------------------------------------------------
+## # Output:
+## #
+## # Most likely error:        1.67% 
+## # Upper bound:              7.66% 
+## # Precision:                6% 
+## # Conclusion:               Do not approve population 
+## # ------------------------------------------------------------</code></pre>
+</div>
+<div id="annotated-sample" class="section level3">
+<h3>Annotated sample</h3>
+<p>Suppose that you have audited the transactions in the sample and have found no deviations from the <em>ist</em> values.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>sample<span class="op">$</span>auditValue &lt;-<span class="st"> </span>sample<span class="op">$</span>bookValue</span></code></pre></div>
+<p>You can evaluate the annotated sample using the <code>sample</code>, <code>bookValues</code>, <code>auditValues</code>, and <code>counts</code> arguments. The code below evaluates the analysis goal using the popular Stringer bound. You can find more information about which methods are implemented on the <a href="https://koenderks.github.io/jfa/">home page</a>.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="kw">evaluation</span>(<span class="dt">confidence =</span> <span class="fl">0.95</span>, <span class="dt">method =</span> <span class="st">&quot;stringer&quot;</span>, <span class="dt">N =</span> <span class="dv">3500</span>, <span class="dt">materiality =</span> <span class="fl">0.05</span>,</span>
+<span id="cb18-2"><a href="#cb18-2"></a>           <span class="dt">sample =</span> sample, <span class="dt">bookValues =</span> <span class="st">&quot;bookValue&quot;</span>, <span class="dt">auditValues =</span> <span class="st">&quot;auditValue&quot;</span>, <span class="dt">counts =</span> sample<span class="op">$</span>count)</span></code></pre></div>
+<pre><code>## # ------------------------------------------------------------ 
+## #             jfa Evaluation Summary (Frequentist)
+## # ------------------------------------------------------------ 
+## # Input: 
+## #
+## # Confidence:               95%   
+## # Materiality:              5% 
+## # Minium precision:         Not specified 
+## # Sample size:              150 
+## # Sample errors:            0 
+## # Sum of taints:            0 
+## # Method:                   stringer 
+## # ------------------------------------------------------------
+## # Output:
+## #
+## # Most likely error:        0% 
+## # Upper bound:              1.98% 
+## # Precision:                1.98% 
+## # Conclusion:               Approve population 
+## # ------------------------------------------------------------</code></pre>
+</div>
+</div>
+<div id="using-auditprior-prior-probability-distributions" class="section level2">
+<h2>Using <code>auditPrior()</code>: Prior probability distributions</h2>
+<p>The <code>auditPrior()</code> function allows you to perform the workflow as discussed above in a Bayesian fashion. Using a prior distribution is fairly simple, you only have to insert the returned object from the <code>auditPrior()</code> function as an argument for the <code>prior</code> argument in the <code>planning()</code> and <code>evaluation()</code> functions.</p>
+<p>For more information about how to create a prior distribution, see the vignettes <a href="https://koenderks.github.io/jfa/articles/v2priorDistributions.html">Constructing a prior distribution</a>.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

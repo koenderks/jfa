@@ -116,6 +116,14 @@
 	return(result)
 }
 
+.mpuMethod <- function(taints, confidence, n){
+	result 					<- list()
+	result[["confBound"]] 	<- mean(taints) + stats::qnorm(p = confidence) * (stats::sd(taints) / sqrt(n))
+	result[["mle"]] 		<- sum(taints) / n
+	result[["precision"]] 	<- result[["confBound"]] - result[["mle"]]
+	return(result)	
+}
+
 .directMethod <- function(bookValues, auditValues, confidence, N = NULL, n, populationBookValue = NULL, correction = FALSE){
 	if(is.null(N))
 		stop("The direct method requires that you specify the population size N")

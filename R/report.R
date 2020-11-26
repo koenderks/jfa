@@ -9,7 +9,7 @@
 #'
 #' @param object an object of class 'jfaEvaluation' as returned by the \code{evaluation()} function.
 #' @param file a string that gives the desired name of the file (e.g. \code{"report.html"}). The report is created in your current working directory.          
-#' @param format can be either one of \code{"html_document"} or \code{"pdf_document"} (required MikTex).
+#' @param format can be either one of \code{"html_document"} or \code{"pdf_document"} (compiling to pdf requires MikTex).
 #'
 #' @return A html or pdf report containing the results of the evaluation.
 #'

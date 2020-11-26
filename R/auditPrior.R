@@ -129,8 +129,11 @@ auditPrior <- function(confidence = 0.95, likelihood = "binomial", method = "non
 	if(likelihood == "hypergeometric" && (is.null(N) || N <= 0))
 		stop("The hypergeometric likelihood requires that you specify a positive value for the populatin size N.")
 
-	if(expectedError >= 1 || expectedError < 0)
-		stop("The expected errors must be entered as a proportion.")
+	if(expectedError < 0)
+		stop("The expected errors must be zero or larger than zero.")
+
+	if(expectedError >= 1 && method != "none")
+		stop("The expected errors must be entered as a proportion to use this prior construction method.")
 
 	# Create the prior distribution depending on the specified method
 	if(method == "none"){

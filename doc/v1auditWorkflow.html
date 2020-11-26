@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Koen Derks" />
+
+
+<title>The audit sampling workflow</title>
+
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
+<style type="text/css">
+a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
+a.anchor-section::before {content: '#';}
+.hasAnchor:hover a.anchor-section {visibility: visible;}
+</style>
+<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
+document.addEventListener('DOMContentLoaded', function() {
+  // Do nothing if AnchorJS is used
+  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
+    return;
+  }
+
+  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+  // Do nothing if sections are already anchored
+  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
+    return null;
+  }
+
+  // Use section id when pandoc runs with --section-divs
+  const section_id = function(x) {
+    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
+            ? x.id : '');
+  };
+
+  // Add anchors
+  h.forEach(function(x) {
+    const id = x.id || section_id(x.parentElement);
+    if (id === '') {
+      return null;
+    }
+    let anchor = document.createElement('a');
+    anchor.href = '#' + id;
+    anchor.classList = ['anchor-section'];
+    x.classList.add('hasAnchor');
+    x.appendChild(anchor);
+  });
+});
+</script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">The audit sampling workflow</h1>
+<h4 class="author">Koen Derks</h4>
+<h4 class="date">last modified: 07-11-2020</h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction-and-scenario">Introduction and scenario</a></li>
+<li><a href="#setting-up-the-audit">Setting up the audit</a></li>
+<li><a href="#stage-1-planning-an-audit-sample">Stage 1: Planning an audit sample</a></li>
+<li><a href="#stage-2-selecting-a-sample">Stage 2: Selecting a sample</a></li>
+<li><a href="#stage-3-executing-the-audit">Stage 3: Executing the audit</a></li>
+<li><a href="#stage-4-evaluating-the-sample">Stage 4: Evaluating the sample</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul>
+</div>
+
+<div id="introduction-and-scenario" class="section level2">
+<h2>Introduction and scenario</h2>
+<p>This vignette accompanies the <code>jfa</code> R package and aims to show how it facilitates auditors in their standard audit sampling workflow (hereafter “audit workflow”). In this example of the audit workflow, we will consider the case of BuildIt. BuildIt is a fictional construction company in the United States that is being audited by Laura, an external auditor for a fictional audit firm. Throughout the year, BuildIt has recorded every transaction they have made in their financial statements. Laura’s job as an auditor is to make a judgment about the fairness of these financial statements. In other words, Laura needs to either approve or not approve BuildIt’s financial statements. To not approve the financial statements would mean that, as a whole, the financial statements contain errors that are considered <em>material</em>. This means that the errors in the financial statements are large enough that they might influence the decision of someone relying on the financial statements. Since BuildIt is a small company, their financial statements only consist of 3500 transactions that each have a corresponding recorded book value. Before assessing the details in the financial statements, Laura already tested BuildIt’s computer systems that processed these transactions and found that they were quite reliable.</p>
+<p>In order to draw a conclusion about the fairness of BuildIt’s recorded transactions, Laura separates her audit workflow into four stages. First, she will plan the size of the subset she needs to inspect from the financial statements to make a well-substantiated inference about them as a whole. Second, she will select the required subset from the financial statements. Third, she will inspect the selected subset and determines the audit value (true value) of the transactions it contains. Fourth, she will use the information from her inspected subset to make an inference about the financial statements as a whole. To start off this workflow, Laura first loads BuildIt’s financial statements in R.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(jfa)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">data</span>(<span class="st">&quot;BuildIt&quot;</span>)</span></code></pre></div>
+</div>
+<div id="setting-up-the-audit" class="section level2">
+<h2>Setting up the audit</h2>
+<p>In statistical terms, Laura wants to make a statement that, with 95% confidence, the maximum error in the financial statements is lower than what is considered <em>material</em>. She therefore determines that <em>materiality</em>, the maximum tolerable error in the financial statements, as 5%. Based on last year’s audit at BuildIt, where the maximum error turned out to be 2.5%, she expects at most 2.5% errors in the sample that she will inspect. Laura can therefore re-formulate her statistical statement as that she wants to conclude that, when 2.5% errors are found in her sample, she can conclude with 95% confidence, that the misstatement in the population is lower than the materiality of 5%. Below, Laura defines the materiality, confidence, and expected errors.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Specify the materiality, confidence, and expected errors.</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>materiality   &lt;-<span class="st"> </span><span class="fl">0.05</span>   <span class="co"># 5%</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>confidence    &lt;-<span class="st"> </span><span class="fl">0.95</span>   <span class="co"># 95%</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a>expectedError &lt;-<span class="st"> </span><span class="fl">0.025</span>  <span class="co"># 2.5%</span></span></code></pre></div>
+<p>Many audits are performed according to the <em>audit risk model (ARM)</em>, which determines that the uncertainty about Laura’s statement as a whole (1 - her confidence) is a factor of three terms: the inherent risk, the control risk, and the detection risk. Inherent risk is the risk posed by an error in BuildIt’s financial statement that could be material, before consideration of any related control systems (e.g., computer systems). Control risk is the risk that a material misstatement is not prevented or detected by BuildIt’s internal control systems. Detection risk is the risk that Laura will fail to find material misstatements that exist in an BuildIt’s financial statements. The <em>ARM</em> is practically useful because for a given level of audit risk, the tolerable detection risk bears an inverse relation to the other two risks. The <em>ARM</em> is useful for Laura because it enables her to incorporate prior knowledge on BuildIt’s organization to increase the required risk that she will fail to find material misstatements. According to the <em>ARM</em>, the audit risk will then be retained.</p>
+<p><span class="math display">\[ \text{Audit risk} = \text{Inherent risk} \,\times\, \text{Control risk} \,\times\, \text{Detection risk}\]</span></p>
+<p>Usually the auditor judges inherent risk and control risk on a three-point scale consisting of low, medium, and high. Different audit firms handle different standard percentages for these categories. Laura’s firm defines the probabilities of low, medium, and high respectively as 50%, 60%, and 100%. Because Laura performed testing of BuildIt’s computer systems, she assesses the control risk as medium (60%).</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Specify the inherent risk (ir) and control risk (cr).</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>ir &lt;-<span class="st"> </span><span class="dv">1</span>     <span class="co"># 100%</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>cr &lt;-<span class="st"> </span><span class="fl">0.6</span>   <span class="co"># 60%</span></span></code></pre></div>
+</div>
+<div id="stage-1-planning-an-audit-sample" class="section level2">
+<h2>Stage 1: Planning an audit sample</h2>
+<p>Laura can choose to either perform a frequentist analysis, where she uses the increased detection risk as her level of uncertainty, or perform a Bayesian analysis, where she captures the information in the control risk in a prior distribution. For this example, we will show how Laura performs a Bayesian analysis. A frequentist analysis can easily be done through the following functions by setting <code>prior = FALSE</code>. In a frequentist audit, Laura immediately starts at step 1 and uses the value <code>adjustedConfidence</code> as her new value for <code>confidence</code>.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># Adjust the required confidence for a frequentist analysis.</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>adjustedConfidence &lt;-<span class="st"> </span><span class="dv">1</span> <span class="op">-</span><span class="st"> </span>((<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>confidence) <span class="op">/</span><span class="st"> </span>(ir <span class="op">*</span><span class="st"> </span>cr))</span></code></pre></div>
+<p>In a Bayesian audit, Laura starts at step 0 by defining the prior distribution that corresponds to her assessment of the control risk. She assumes the likelihood for a sample of <span class="math inline">\(n\)</span> observations, in which <span class="math inline">\(k\)</span> were in error, to be <span class="math inline">\(\text{binomial}(n, k)\)</span>. Using the <code>auditPrior()</code> function, she can create a prior distribution that incorporates the information in the risk assessments from the <em>ARM</em>. For more information on how this is done, see Derks et al. (2019).</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># Step 0: Create a prior distribution according to the audit risk model.</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>priorResult &lt;-<span class="st"> </span><span class="kw">auditPrior</span>(<span class="dt">confidence =</span> confidence, <span class="dt">likelihood =</span> <span class="st">&quot;binomial&quot;</span>, <span class="dt">method =</span> <span class="st">&quot;arm&quot;</span>, <span class="dt">expectedError =</span> expectedError, <span class="dt">materiality =</span> materiality, <span class="dt">ir =</span> ir, <span class="dt">cr =</span> cr)</span></code></pre></div>
+<p>Laura can inspect the resulting prior distribution with the <code>print()</code> function.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="kw">print</span>(priorResult)</span></code></pre></div>
+<pre><code>## # ------------------------------------------------------------
+## #         jfa Prior Distribution Summary (Bayesian)
+## # ------------------------------------------------------------
+## # Input:
+## #
+## # Confidence:              95%    
+## # Expected sample errors:  2.5%       
+## # Likelihood:              binomial 
+## # Specifics:               Inherent risk = 1; Internal control risk = 0.6; Detection risk = 0.08 
+## # ------------------------------------------------------------
+## # Output: 
+## #
+## # Prior distribution:      beta(a = 2.275, ß = 50.725) 
+## # Implicit sample size:    51 
+## # Implicit errors:         1.27 
+## # ------------------------------------------------------------
+## # Statistics: 
+## #
+## # Upper bound:             0.1 
+## # Precision:               0.07 
+## # Mode:                    0.02 
+## # Mean:                    0.04 
+## # Median:                  0.04 
+## # ------------------------------------------------------------</code></pre>
+<p>The prior distribution can be shown by using the <code>plot()</code> function.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="kw">plot</span>(priorResult)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" style="display: block; margin: auto;" /></p>
+<p>Now that the prior distribution is specified, Laura can calculate the required sample size for her desired statement by using the <code>planning()</code> function. She uses the <code>priorResult</code> object as input for the <code>planning()</code> function to use her prior distribution.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># Step 1: Calculate the required sample size.</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>planningResult &lt;-<span class="st"> </span><span class="kw">planning</span>(<span class="dt">confidence =</span> confidence, <span class="dt">expectedError =</span> expectedError, <span class="dt">materiality =</span> materiality, <span class="dt">prior =</span> priorResult)</span></code></pre></div>
+<p>Laura can then inspect the result from her planning procedure by using the <code>print()</code> function. Her result tells her that, given her prior distribution she needs to audit a sample of 169 transactions so that, when at most 4.23 errors are found, she can conclude with 95% confidence that the maximum error in BuildIt’s financial statements is lower the materiality of 5%.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="kw">print</span>(planningResult)</span></code></pre></div>
+<pre><code>## # ------------------------------------------------------------
+## #              jfa Planning Summary (Bayesian)
+## # ------------------------------------------------------------
+## # Input:
+## # 
+## # Confidence:              95%      
+## # Materiality:             5% 
+## # Minimum precision:       Not specified 
+## # Likelihood:              binomial 
+## # Prior distribution:      beta(a = 2.275, ß = 50.725) 
+## # Expected sample errors:  4.23 
+## # ------------------------------------------------------------
+## # Output:
+## #
+## # Sample size:             169 
+## # Posterior distribution:  beta(a = 6.5, ß = 215.5) 
+## # ------------------------------------------------------------
+## # Statistics:
+## #
+## # Expected upper bound:    4.99% 
+## # Expected precision:      2.49% 
+## # Expected Bayes factor-+: 9.32 
+## # ------------------------------------------------------------</code></pre>
+<p>Laura can inspect how the prior distribution compares to the expected posterior distribution by using the <code>plot()</code> function. The expected posterior distribution is the posterior distribution that would occur if Laura actually observed a sample of 169 transactions, from which 4.223 were in error.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="kw">plot</span>(planningResult)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" style="display: block; margin: auto;" /></p>
+</div>
+<div id="stage-2-selecting-a-sample" class="section level2">
+<h2>Stage 2: Selecting a sample</h2>
+<p>Laura is now ready to select the required 169 transactions from the financial statements. She can choose to do this according to one of two statistical methods. In <em>record sampling</em> (<code>units = &quot;records&quot;</code>), inclusion probabilities are assigned on the transaction level, treating transactions with a high value and a low value the same, a transaction of $5,000 is equally likely to be selected as a transaction of $1,000. In <em>monetary unit sampling</em> (<code>units = &quot;mus&quot;</code>), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the transaction that includes that dollar is selected. This favors higher transactions, as a transaction of $5,000 is five times more likely to be selected than a transaction of $1,000.</p>
+<p>Laura chooses to use <em>monetary unit sampling</em>, as she wants to include more high-valued transactions. The <code>selection()</code> function allows her to sample from the financial statements. She uses the <code>planningResult</code> object as an input for the <code>selection()</code> function.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># Step 2: Draw a sample from the financial statements.</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>samplingResult &lt;-<span class="st"> </span><span class="kw">selection</span>(<span class="dt">population =</span> BuildIt, <span class="dt">sampleSize =</span> planningResult, <span class="dt">units =</span> <span class="st">&quot;mus&quot;</span>, <span class="dt">bookValues =</span> <span class="st">&quot;bookValue&quot;</span>, <span class="dt">seed =</span> <span class="dv">999</span>)</span></code></pre></div>
+<p>Laura can inspect the outcomes of her sampling procedure by using the <code>print()</code> function.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="kw">print</span>(samplingResult)</span></code></pre></div>
+<pre><code>## # ------------------------------------------------------------
+## #                  jfa Selection Summary
+## # ------------------------------------------------------------
+## # Input:
+## #      
+## # Population size:         3500 
+## # Requested sample size:   169 
+## # Sampling units:          Monetary units 
+## # Algorithm:               Random sampling   
+## # ------------------------------------------------------------ 
+## # Output:
+## #
+## # Obtained sample size:    169 
+## # ------------------------------------------------------------
+## # Statistics:
+## #
+## # Proportion n/N:          0.05 
+## # Percentage of value:     4.65% 
+## # ------------------------------------------------------------</code></pre>
+</div>
+<div id="stage-3-executing-the-audit" class="section level2">
+<h2>Stage 3: Executing the audit</h2>
+<p>The selected sample can be isolated by indexing the <code>sample</code> object from the sampling result. Now Laura can execute her audit by annotating the sample with their audit value (for exampling by writing the sample to a <em>.csv</em> file using <code>write.csv()</code>. She can then load her annotated sample back into R for further evaluation.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="co"># Step 3: Isolate the sample for execution of the audit.</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>sample &lt;-<span class="st"> </span>samplingResult<span class="op">$</span>sample</span>
+<span id="cb16-3"><a href="#cb16-3"></a></span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="co"># To write the sample to a .csv file:</span></span>
+<span id="cb16-5"><a href="#cb16-5"></a><span class="co"># write.csv(x = sample, file = &quot;auditSample.csv&quot;, row.names = FALSE)</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a></span>
+<span id="cb16-7"><a href="#cb16-7"></a><span class="co"># To load annotated sample back into R:</span></span>
+<span id="cb16-8"><a href="#cb16-8"></a><span class="co"># sample &lt;- read.csv(file = &quot;auditSample.csv&quot;)</span></span></code></pre></div>
+<p>For this example, the audit values of the sample are already included in the <code>auditValue</code> column of the dataset .</p>
+</div>
+<div id="stage-4-evaluating-the-sample" class="section level2">
+<h2>Stage 4: Evaluating the sample</h2>
+<p>Using her annotated sample, Laura can perform her inference with the <code>evaluation()</code> function. By passing the <code>priorResult</code> object to the function, she automatically sets <code>method = &quot;binomial&quot;</code> to be consistent with her prior distribution.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="co"># Step 4: Evaluate the sample.</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>evaluationResult &lt;-<span class="st"> </span><span class="kw">evaluation</span>(<span class="dt">sample =</span> sample, <span class="dt">materiality =</span> materiality, <span class="dt">prior =</span> priorResult, <span class="dt">bookValues =</span> <span class="st">&quot;bookValue&quot;</span>, <span class="dt">auditValues =</span> <span class="st">&quot;auditValue&quot;</span>)</span></code></pre></div>
+<p>Laura can inspect the outcomes of her inference by using the <code>print()</code> function. Her resulting upper bound is 3.518%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="kw">print</span>(evaluationResult)</span></code></pre></div>
+<pre><code>## # ------------------------------------------------------------ 
+## #             jfa Evaluation Summary (Bayesian)
+## # ------------------------------------------------------------
+## # Input: 
+## #
+## # Confidence:               95%   
+## # Materiality:              5% 
+## # Minium precision:         Not specified 
+## # Sample size:              169 
+## # Sample errors:            3 
+## # Sum of taints:            1.8  
+## # Method:                   binomial 
+## # Prior distribution:       beta(a = 2.275, ß = 50.725) 
+## # ------------------------------------------------------------
+## # Output:
+## #
+## # Posterior distribution:   beta(a = 4.075, ß = 217.925) 
+## # Most likely error:        1.39% 
+## # Upper bound:              3.52% 
+## # Precision:                2.13% 
+## # Bayes factor-+:           108.94 
+## # Conclusion:               Approve population 
+## # ------------------------------------------------------------</code></pre>
+<p>She can inspect the prior and posterior distribution by using the <code>plot()</code> function. The shaded area quantifies the area under the posterior distribution that contains 95% of the probability, which ends at 3.518%. Therefore, Laura can state that there is a 95% probability that the misstatement in BuildIt’s statements is lower than 3.518%.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="kw">plot</span>(evaluationResult)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" style="display: block; margin: auto;" /></p>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>Since the 95% upper confidence bound on the misstatement in BuildIt’s financial statements is lower than the materiality, Laura can conclude that the financial statements as a whole do not contain material misstatement. Therefore, she can approve BuildIt’s financial statements.</p>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
