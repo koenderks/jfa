@@ -159,7 +159,7 @@ vignette(&quot;jfa&quot;, package = &quot;jfa&quot;)" />
     </tr>
     <tr>
       <th>method</th>
-      <td><p>the method that is used to evaluate the sample. This can be either one of <code>poisson</code>, <code>binomial</code>, <code>hypergeometric</code>, <code>stringer</code>, <code>stringer-meikle</code>, <code>stringer-lta</code>, <code>stringer-pvz</code>, <code>rohrbach</code>, <code>moment</code>, <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code>.</p></td>
+      <td><p>the method that is used to evaluate the sample. This can be either one of <code>poisson</code>, <code>binomial</code>, <code>hypergeometric</code>, <code>mpus</code>, <code>stringer</code>, <code>stringer-meikle</code>, <code>stringer-lta</code>, <code>stringer-pvz</code>, <code>rohrbach</code>, <code>moment</code>, <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code>.</p></td>
     </tr>
     <tr>
       <th>N</th>
@@ -266,6 +266,7 @@ vignette(&quot;jfa&quot;, package = &quot;jfa&quot;)" />
 <li><p><code>poisson</code>:          The confidence bound taken from the Poisson distribution. If combined with <code>prior = TRUE</code>, performs Bayesian evaluation using a <em>gamma</em> prior and posterior.</p></li>
 <li><p><code>binomial</code>:         The confidence bound taken from the binomial distribution. If combined with <code>prior = TRUE</code>, performs Bayesian evaluation using a <em>beta</em> prior and posterior.</p></li>
 <li><p><code>hypergeometric</code>:   The confidence bound taken from the hypergeometric distribution. If combined with <code>prior = TRUE</code>, performs Bayesian evaluation using a <em>beta-binomial</em> prior and posterior.</p></li>
+<li><p><code>mpu</code>:			   Mean per unit estimator using the observed sample taints.</p></li>
 <li><p><code>stringer</code>:         The Stringer bound (Stringer, 1963).</p></li>
 <li><p><code>stringer-meikle</code>:  Stringer bound with Meikle's correction for understatements (Meikle, 1972).</p></li>
 <li><p><code>stringer-lta</code>:     Stringer bound with LTA correction for understatements (Leslie, Teitlebaum, and Anderson, 1979).</p></li>
