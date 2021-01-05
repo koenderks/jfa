@@ -15,14 +15,19 @@ status](https://travis-ci.com/koenderks/jfa.svg?branch=master)](https://travis-c
 
 <img src="man/figures/readme/logo/jfaLogo.png" width="166" height="192" alt="logo" align="right" margin-left="20" margin-right="20"/>
 
-`jfa` is a multi-functional R package for statistical audit sampling.
-The package provides the user with four generic functions for planning,
-performing, and evaluating an audit sample. Specifically, it contains
+`jfa` is an R package for statistical audit sampling. The package
+provides the user with five functions for planning, performing,
+evaluating, and reporting an audit sample. Specifically, it contains
 functions for calculating sample sizes, selecting the transactions
 according to standard audit sampling techniques, and calculating various
 upper limits for the misstatement from the sample or from summary
-statistics. The `jfa` package also allows the user to create a Bayesian
-prior probability distribution for use in these functions.
+statistics. The `jfa` package also allows the user to create a prior
+probability distribution to perform Bayesian audit sampling using these
+functions.
+
+For complete documentation of the package, see the [package
+manual](https://cran.r-project.org/package=jfa/jfa.pdf) or visit the
+[website](https://koenderks.github.io/jfa/).
 
 ## Overview
 
@@ -33,19 +38,6 @@ prior probability distribution for use in these functions.
   - [Functions](#functions)
   - [References](#references)
   - [Package statistics](#package-statistics)
-
-The `jfa` package can be used to set up the entire audit sampling
-workflow.
-
-<p align="center">
-
-<img src="man/figures/readme/banner/jfaBanner.png" alt="banner"/>
-
-</p>
-
-For complete documentation of the package, see the [package
-website](https://koenderks.github.io/jfa/) or the [package
-manual](https://cran.r-project.org/package=jfa/jfa.pdf).
 
 ### Authors
 
@@ -62,8 +54,8 @@ This project is licensed under the open-source
 
 ## Getting started
 
-The following instructions will get you a copy of the `jfa` package up
-and running on your local machine for use in R and RStudio.
+The following instructions will get the `jfa` package up and running on
+your local machine for use in R and RStudio.
 
 ### Prerequisites
 
@@ -73,13 +65,13 @@ and running on your local machine for use in R and RStudio.
 ### Installing
 
 The `jfa` package is simple to download and set-up. The most recent
-version from [CRAN](https://cran.r-project.org/package=jfa) (0.4.0) can
+version from [CRAN](https://cran.r-project.org/package=jfa) (0.5.0) can
 be downloaded by running the following command in R or RStudio:
 
     install.packages("jfa")
 
-Or you can download the most recent (development) version from GitHub
-using:
+Alternatively, you can download the most recent (development) version
+from GitHub using:
 
     devtools::install.github("koenderks/jfa")
 
@@ -89,8 +81,8 @@ The `jfa` package can then be loaded in R or RStudio by typing:
 
 ### Vignettes
 
-The package vignettes contain explanations about the functionality of
-`jfa` illustated using simple examples.
+The package vignettes show how to use the `jfa` package using simple
+examples.
 
   - [Get started](https://koenderks.github.io/jfa/articles/jfa.html)
   - [The audit sampling
@@ -104,8 +96,8 @@ The package vignettes contain explanations about the functionality of
 
 ## Benchmarks
 
-`jfa`’s results are currently being verified against the following
-benchmarks:
+To validate the output, `jfa`’s results are currently being verified
+against the following benchmark(s):
 
   - [Audit Sampling: Audit
     Guide](https://future.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL)
@@ -135,14 +127,14 @@ workflow. You can download a pdf version
 
 <p align="center">
 
-<img src="man/figures/cheatsheet/cheatsheet.png" alt="cheatsheet"/>
+<img src="man/figures/cheatsheet/cheatsheet.png" alt="cheatsheet" width="1000">
 
 </p>
 
 ## Functions
 
-Below is a list of the available functions in the current version of
-`jfa`, sorted by their occurrence in the standard audit sampling
+Below you can find a list of the functions in the current version of
+`jfa` sorted by their occurrence in the standard audit sampling
 workflow.
 
   - [`auditPrior()`](#create-a-prior-distribution-with-the-auditprior-function)
@@ -150,6 +142,12 @@ workflow.
   - [`selection()`](#select-transactions-with-the-selection-function)
   - [`evaluation()`](#evaluate-a-sample-with-the-evaluation-function)
   - [`report()`](#generate-a-report-with-the-report-function)
+
+<p align="center">
+
+<img src="man/figures/readme/banner/jfaBanner.png" alt="banner"/>
+
+</p>
 
 ### Create a prior distribution with the `auditPrior()` function:
 
@@ -299,7 +297,7 @@ For an example report, see the following
     rare errors. *Biometrika*, 66(1), 125-132. - [View
     online](https://doi.org/10.1093/biomet/66.1.125)
   - Derks, K. (2020). jfa: Bayesian and classical audit sampling. R
-    package version 0.4.0. - [View
+    package version 0.5.0. - [View
     online](https://cran.r-project.org/package=jfa)
   - Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., &
     Wetzels, R. (2020). Priors in a Bayesian audit: How integration of

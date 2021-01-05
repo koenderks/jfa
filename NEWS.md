@@ -1,3 +1,7 @@
+# jfa 0.5.1
+
+- Reduced the size of the tarball by adding files to the .Rbuildignore
+
 # jfa 0.5.0
 
 - Add a function `report()` that automatically generates an audit report.

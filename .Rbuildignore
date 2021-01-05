@@ -3,6 +3,8 @@
 ^codecov.yml$
 ^.github$
 ^doc$
+^man/figures$
+^man/manual$
 ^Meta$
 ^CRAN-RELEASE$
 ^README.Rmd$

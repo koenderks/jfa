@@ -1,9 +1,7 @@
-## This is a submission for version 0.5.0
-This is jfa version 0.5.0. In this version I have:
+## This is a submission for version 0.5.1
+This is jfa version 0.5.1. In this version I have:
 
-* Added a report function.
-* Deprecated the sampling function.
-* Extended unit tests.
+* Reduced the size of the tarball submitted in 0.5.0
 
 ## Test environments
 * OS X install (on travis-ci), R release

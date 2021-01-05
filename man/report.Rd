@@ -7,7 +7,7 @@
 report(object = NULL, file = NULL, format = "html_document")
 }
 \arguments{
-\item{object}{an object of class 'jfaEvaluation' as returned by the \code{evaluation()} function.}
+\item{object}{an object of class \code{jfaEvaluation} as returned by the \code{evaluation()} function.}
 
 \item{file}{a string that gives the desired name of the file (e.g. \code{"report.html"}). The report is created in your current working directory.}
 
