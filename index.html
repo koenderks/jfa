@@ -93,7 +93,8 @@
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#jfa-bayesian-and-classical-audit-sampling" class="anchor"></a>jfa: Bayesian and Classical Audit Sampling</h1></div>
 <p><img src="reference/figures/readme/logo/jfaLogo.png" width="166" height="192" alt="logo" align="right" margin-left="20" margin-right="20"></p>
-<p><code>jfa</code> is a multi-functional R package for statistical audit sampling. The package provides the user with four generic functions for planning, performing, and evaluating an audit sample. Specifically, it contains functions for calculating sample sizes, selecting the transactions according to standard audit sampling techniques, and calculating various upper limits for the misstatement from the sample or from summary statistics. The <code>jfa</code> package also allows the user to create a Bayesian prior probability distribution for use in these functions.</p>
+<p><code>jfa</code> is an R package for statistical audit sampling. The package provides the user with five functions for planning, performing, evaluating, and reporting an audit sample. Specifically, it contains functions for calculating sample sizes, selecting the transactions according to standard audit sampling techniques, and calculating various upper limits for the misstatement from the sample or from summary statistics. The <code>jfa</code> package also allows the user to create a prior probability distribution to perform Bayesian audit sampling using these functions.</p>
+<p>For complete documentation of the package, see the <a href="https://cran.r-project.org/package=jfa/jfa.pdf">package manual</a> or visit the <a href="https://koenderks.github.io/jfa/">website</a>.</p>
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
@@ -106,12 +107,6 @@
 <li><a href="#references">References</a></li>
 <li><a href="#package-statistics">Package statistics</a></li>
 </ul>
-<p>The <code>jfa</code> package can be used to set up the entire audit sampling workflow.</p>
-<p align="center">
-</p>
-<p><img src="reference/figures/readme/banner/jfaBanner.png" alt="banner"></p>
-
-<p>For complete documentation of the package, see the <a href="https://koenderks.github.io/jfa/">package website</a> or the <a href="https://cran.r-project.org/package=jfa/jfa.pdf">package manual</a>.</p>
 <div id="authors" class="section level3">
 <h3 class="hasAnchor">
 <a href="#authors" class="anchor"></a>Authors</h3>
@@ -131,7 +126,7 @@
 <div id="getting-started" class="section level2">
 <h2 class="hasAnchor">
 <a href="#getting-started" class="anchor"></a>Getting started</h2>
-<p>The following instructions will get you a copy of the <code>jfa</code> package up and running on your local machine for use in R and RStudio.</p>
+<p>The following instructions will get the <code>jfa</code> package up and running on your local machine for use in R and RStudio.</p>
 <div id="prerequisites" class="section level3">
 <h3 class="hasAnchor">
 <a href="#prerequisites" class="anchor"></a>Prerequisites</h3>
@@ -145,7 +140,7 @@
 <a href="#installing" class="anchor"></a>Installing</h3>
 <p>The <code>jfa</code> package is simple to download and set-up. The most recent version from <a href="https://cran.r-project.org/package=jfa">CRAN</a> (0.5.0) can be downloaded by running the following command in R or RStudio:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">"jfa"</span>)</span></code></pre></div>
-<p>Or you can download the most recent (development) version from GitHub using:</p>
+<p>Alternatively, you can download the most recent (development) version from GitHub using:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>devtools<span class="op">::</span><span class="kw">install.github</span>(<span class="st">"koenderks/jfa"</span>)</span></code></pre></div>
 <p>The <code>jfa</code> package can then be loaded in R or RStudio by typing:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">library</span>(jfa)</span></code></pre></div>
@@ -153,7 +148,7 @@
 <div id="vignettes" class="section level3">
 <h3 class="hasAnchor">
 <a href="#vignettes" class="anchor"></a>Vignettes</h3>
-<p>The package vignettes contain explanations about the functionality of <code>jfa</code> illustated using simple examples.</p>
+<p>The package vignettes show how to use the <code>jfa</code> package using simple examples.</p>
 <ul>
 <li><a href="https://koenderks.github.io/jfa/articles/jfa.html">Get started</a></li>
 <li><a href="https://koenderks.github.io/jfa/articles/v1auditWorkflow.html">The audit sampling workflow</a></li>
@@ -166,7 +161,7 @@
 <div id="benchmarks" class="section level2">
 <h2 class="hasAnchor">
 <a href="#benchmarks" class="anchor"></a>Benchmarks</h2>
-<p><code>jfa</code>’s results are currently being verified against the following benchmarks:</p>
+<p>To validate the output, <code>jfa</code>’s results are currently being verified against the following benchmark(s):</p>
 <ul>
 <li>
 <a href="https://future.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL">Audit Sampling: Audit Guide</a> (Appendix A and Appendix C)</li>
@@ -184,13 +179,13 @@
 <p>The cheatsheet can help you get started with the <code>jfa</code> package and its workflow. You can download a pdf version <a href="https://github.com/koenderks/jfa/raw/master/man/figures/cheatsheet/cheatsheet.pdf">here</a>.</p>
 <p align="center">
 </p>
-<p><img src="reference/figures/cheatsheet/cheatsheet.png" alt="cheatsheet"></p>
+<p><img src="reference/figures/cheatsheet/cheatsheet.png" alt="cheatsheet" width="1000"></p>
 
 </div>
 <div id="functions" class="section level2">
 <h2 class="hasAnchor">
 <a href="#functions" class="anchor"></a>Functions</h2>
-<p>Below is a list of the available functions in the current version of <code>jfa</code>, sorted by their occurrence in the standard audit sampling workflow.</p>
+<p>Below you can find a list of the functions in the current version of <code>jfa</code> sorted by their occurrence in the standard audit sampling workflow.</p>
 <ul>
 <li><a href="#create-a-prior-distribution-with-the-auditprior-function"><code>auditPrior()</code></a></li>
 <li><a href="#plan-a-sample-with-the-planning-function"><code>planning()</code></a></li>
@@ -198,6 +193,10 @@
 <li><a href="#evaluate-a-sample-with-the-evaluation-function"><code>evaluation()</code></a></li>
 <li><a href="#generate-a-report-with-the-report-function"><code>report()</code></a></li>
 </ul>
+<p align="center">
+</p>
+<p><img src="reference/figures/readme/banner/jfaBanner.png" alt="banner"></p>
+
 <div id="create-a-prior-distribution-with-the-auditprior-function" class="section level3">
 <h3 class="hasAnchor">
 <a href="#create-a-prior-distribution-with-the-auditprior-function" class="anchor"></a>Create a prior distribution with the <code>auditPrior()</code> function:</h3>
