@@ -72,7 +72,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/koenderks/jfa/">
+  <a href="https://github.com/koenderks/jfa/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -95,7 +95,7 @@
             
             <h4 data-toc-skip class="date">last modified: 07-11-2020</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/master/vignettes/v1auditWorkflow.Rmd"><code>vignettes/v1auditWorkflow.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/master/vignettes/v1auditWorkflow.Rmd" class="external-link"><code>vignettes/v1auditWorkflow.Rmd</code></a></small>
       <div class="hidden name"><code>v1auditWorkflow.Rmd</code></div>
 
     </div>
@@ -108,8 +108,8 @@
 <p>This vignette accompanies the <code>jfa</code> R package and aims to show how it facilitates auditors in their standard audit sampling workflow (hereafter “audit workflow”). In this example of the audit workflow, we will consider the case of BuildIt. BuildIt is a fictional construction company in the United States that is being audited by Laura, an external auditor for a fictional audit firm. Throughout the year, BuildIt has recorded every transaction they have made in their financial statements. Laura’s job as an auditor is to make a judgment about the fairness of these financial statements. In other words, Laura needs to either approve or not approve BuildIt’s financial statements. To not approve the financial statements would mean that, as a whole, the financial statements contain errors that are considered <em>material</em>. This means that the errors in the financial statements are large enough that they might influence the decision of someone relying on the financial statements. Since BuildIt is a small company, their financial statements only consist of 3500 transactions that each have a corresponding recorded book value. Before assessing the details in the financial statements, Laura already tested BuildIt’s computer systems that processed these transactions and found that they were quite reliable.</p>
 <p>In order to draw a conclusion about the fairness of BuildIt’s recorded transactions, Laura separates her audit workflow into four stages. First, she will plan the size of the subset she needs to inspect from the financial statements to make a well-substantiated inference about them as a whole. Second, she will select the required subset from the financial statements. Third, she will inspect the selected subset and determines the audit value (true value) of the transactions it contains. Fourth, she will use the information from her inspected subset to make an inference about the financial statements as a whole. To start off this workflow, Laura first loads BuildIt’s financial statements in R.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/koenderks/jfa">jfa</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"BuildIt"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/koenderks/jfa" class="external-link">jfa</a></span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"BuildIt"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="setting-up-the-audit" class="section level2">
 <h2 class="hasAnchor">
@@ -139,9 +139,9 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Step 0: Create a prior distribution according to the audit risk model.</span>
 <span class="va">priorResult</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>confidence <span class="op">=</span> <span class="va">confidence</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, method <span class="op">=</span> <span class="st">"arm"</span>, expectedError <span class="op">=</span> <span class="va">expectedError</span>, materiality <span class="op">=</span> <span class="va">materiality</span>, ir <span class="op">=</span> <span class="va">ir</span>, cr <span class="op">=</span> <span class="va">cr</span><span class="op">)</span></code></pre></div>
-<p>Laura can inspect the resulting prior distribution with the <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> function.</p>
+<p>Laura can inspect the resulting prior distribution with the <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> function.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">priorResult</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">priorResult</span><span class="op">)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
 ## # ------------------------------------------------------------
@@ -166,17 +166,17 @@
 ## # Mean:                    0.04 
 ## # Median:                  0.04 
 ## # ------------------------------------------------------------</code></pre>
-<p>The prior distribution can be shown by using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function.</p>
+<p>The prior distribution can be shown by using the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">priorResult</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">priorResult</span><span class="op">)</span></code></pre></div>
 <p><img src="v1auditWorkflow_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>Now that the prior distribution is specified, Laura can calculate the required sample size for her desired statement by using the <code><a href="../reference/planning.html">planning()</a></code> function. She uses the <code>priorResult</code> object as input for the <code><a href="../reference/planning.html">planning()</a></code> function to use her prior distribution.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Step 1: Calculate the required sample size.</span>
 <span class="va">planningResult</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>confidence <span class="op">=</span> <span class="va">confidence</span>, expectedError <span class="op">=</span> <span class="va">expectedError</span>, materiality <span class="op">=</span> <span class="va">materiality</span>, prior <span class="op">=</span> <span class="va">priorResult</span><span class="op">)</span></code></pre></div>
-<p>Laura can then inspect the result from her planning procedure by using the <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> function. Her result tells her that, given her prior distribution she needs to audit a sample of 169 transactions so that, when at most 4.23 errors are found, she can conclude with 95% confidence that the maximum error in BuildIt’s financial statements is lower the materiality of 5%.</p>
+<p>Laura can then inspect the result from her planning procedure by using the <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> function. Her result tells her that, given her prior distribution she needs to audit a sample of 169 transactions so that, when at most 4.23 errors are found, she can conclude with 95% confidence that the maximum error in BuildIt’s financial statements is lower the materiality of 5%.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">planningResult</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">planningResult</span><span class="op">)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #              jfa Planning Summary (Bayesian)
 ## # ------------------------------------------------------------
@@ -200,9 +200,9 @@
 ## # Expected precision:      2.49% 
 ## # Expected Bayes factor-+: 9.32 
 ## # ------------------------------------------------------------</code></pre>
-<p>Laura can inspect how the prior distribution compares to the expected posterior distribution by using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function. The expected posterior distribution is the posterior distribution that would occur if Laura actually observed a sample of 169 transactions, from which 4.223 were in error.</p>
+<p>Laura can inspect how the prior distribution compares to the expected posterior distribution by using the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function. The expected posterior distribution is the posterior distribution that would occur if Laura actually observed a sample of 169 transactions, from which 4.223 were in error.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">planningResult</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">planningResult</span><span class="op">)</span></code></pre></div>
 <p><img src="v1auditWorkflow_files/figure-html/unnamed-chunk-10-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div id="stage-2-selecting-a-sample" class="section level2">
@@ -213,9 +213,9 @@
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Step 2: Draw a sample from the financial statements.</span>
 <span class="va">samplingResult</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="va">planningResult</span>, units <span class="op">=</span> <span class="st">"mus"</span>, bookValues <span class="op">=</span> <span class="st">"bookValue"</span>, seed <span class="op">=</span> <span class="fl">999</span><span class="op">)</span></code></pre></div>
-<p>Laura can inspect the outcomes of her sampling procedure by using the <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> function.</p>
+<p>Laura can inspect the outcomes of her sampling procedure by using the <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> function.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">samplingResult</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">samplingResult</span><span class="op">)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #                  jfa Selection Summary
 ## # ------------------------------------------------------------
@@ -239,7 +239,7 @@
 <div id="stage-3-executing-the-audit" class="section level2">
 <h2 class="hasAnchor">
 <a href="#stage-3-executing-the-audit" class="anchor"></a>Stage 3: Executing the audit</h2>
-<p>The selected sample can be isolated by indexing the <code>sample</code> object from the sampling result. Now Laura can execute her audit by annotating the sample with their audit value (for exampling by writing the sample to a <em>.csv</em> file using <code><a href="https://rdrr.io/r/utils/write.table.html">write.csv()</a></code>. She can then load her annotated sample back into R for further evaluation.</p>
+<p>The selected sample can be isolated by indexing the <code>sample</code> object from the sampling result. Now Laura can execute her audit by annotating the sample with their audit value (for exampling by writing the sample to a <em>.csv</em> file using <code><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv()</a></code>. She can then load her annotated sample back into R for further evaluation.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Step 3: Isolate the sample for execution of the audit.</span>
 <span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">samplingResult</span><span class="op">$</span><span class="va">sample</span>
@@ -258,9 +258,9 @@
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Step 4: Evaluate the sample.</span>
 <span class="va">evaluationResult</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="va">sample</span>, materiality <span class="op">=</span> <span class="va">materiality</span>, prior <span class="op">=</span> <span class="va">priorResult</span>, bookValues <span class="op">=</span> <span class="st">"bookValue"</span>, auditValues <span class="op">=</span> <span class="st">"auditValue"</span><span class="op">)</span></code></pre></div>
-<p>Laura can inspect the outcomes of her inference by using the <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> function. Her resulting upper bound is 3.518%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.</p>
+<p>Laura can inspect the outcomes of her inference by using the <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> function. Her resulting upper bound is 3.518%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">evaluationResult</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">evaluationResult</span><span class="op">)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------ 
 ## #             jfa Evaluation Summary (Bayesian)
 ## # ------------------------------------------------------------
@@ -284,9 +284,9 @@
 ## # Bayes factor-+:           108.94 
 ## # Conclusion:               Approve population 
 ## # ------------------------------------------------------------</code></pre>
-<p>She can inspect the prior and posterior distribution by using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function. The shaded area quantifies the area under the posterior distribution that contains 95% of the probability, which ends at 3.518%. Therefore, Laura can state that there is a 95% probability that the misstatement in BuildIt’s statements is lower than 3.518%.</p>
+<p>She can inspect the prior and posterior distribution by using the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function. The shaded area quantifies the area under the posterior distribution that contains 95% of the probability, which ends at 3.518%. Therefore, Laura can state that there is a 95% probability that the misstatement in BuildIt’s statements is lower than 3.518%.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">evaluationResult</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">evaluationResult</span><span class="op">)</span></code></pre></div>
 <p><img src="v1auditWorkflow_files/figure-html/unnamed-chunk-16-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div id="conclusion" class="section level2">
@@ -311,7 +311,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p>
 </div>
 
       </footer>
