@@ -144,12 +144,15 @@ selection <- function(population, sampleSize, units = "records", algorithm = "ra
 		bv <- population[, bookValues]
 	if(units == "mus" && sampleSize > sum(bv))
 		stop("Cannot take a sample larger than the population value")
-	if(ordered && !is.null(bv))
+	if(ordered && !is.null(bv)) {
 		population <- population[order(bv, decreasing = !ascending), ]
+		bv <- population[, bookValues]
+	}
 	if(!is.null(bv) && any(bv < 0)){
 		warning("The book values contain negative values, these are removed from the data")
 		negativeValues <- which(bv < 0)
 		population <- population[-negativeValues, ]
+		bv <- population[, bookValues]
 	}
   	# Set a seed for reproducibility
   	set.seed(seed)
