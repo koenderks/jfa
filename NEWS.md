@@ -1,6 +1,7 @@
 # jfa 0.5.1
 
 - Reduced the size of the tarball by adding files to the .Rbuildignore
+- Fixed a bug in `selection()` where if `population` is sorted or modified, `bv` still retained the old ordering and data. The resulting sample was overweighted towards small values and/or still contained negative values (Thanks to @alvanson).
 
 # jfa 0.5.0
 
