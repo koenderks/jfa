@@ -146,6 +146,7 @@
 </h1>
 <ul>
 <li>Reduced the size of the tarball by adding files to the .Rbuildignore</li>
+<li>Fixed a bug in <code><a href="../reference/selection.html">selection()</a></code> where if <code>population</code> is sorted or modified, <code>bv</code> still retained the old ordering and data. The resulting sample was overweighted towards small values and/or still contained negative values (Thanks to <a href='https://github.com/alvanson'>@alvanson</a>).</li>
 </ul>
 </div>
     <div id="jfa-050" class="section level1">
