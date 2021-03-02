@@ -65,7 +65,7 @@ your local machine for use in R and RStudio.
 ### Installing
 
 The `jfa` package is simple to download and set-up. The most recent
-version from [CRAN](https://cran.r-project.org/package=jfa) (0.5.0) can
+version from [CRAN](https://cran.r-project.org/package=jfa) (0.5.1) can
 be downloaded by running the following command in R or RStudio:
 
     install.packages("jfa")

@@ -57,7 +57,7 @@ The following instructions will get the `jfa` package up and running on your loc
 
 ### Installing
 
-The `jfa` package is simple to download and set-up. The most recent version from [CRAN](https://cran.r-project.org/package=jfa) (0.5.0) can be downloaded by running the following command in R or RStudio:
+The `jfa` package is simple to download and set-up. The most recent version from [CRAN](https://cran.r-project.org/package=jfa) (0.5.1) can be downloaded by running the following command in R or RStudio:
 
 ```
 install.packages("jfa")
@@ -251,8 +251,8 @@ xBreaks           <- plotData[["date"]]
 yBreaks           <- pretty(c(0, plotData[["count"]], max(plotData[["count"]]) + 200), n = 6)
 
 # Releases 
-releases          <- c("2020-01-01", "2020-08-01", "2020-09-01", "2020-11-01", "2021-01-01")
-releaseLabs       <- c("v0.1.0", "v0.2.0", "v0.3.0", "v0.4.0", "v0.5.0")
+releases          <- c("2020-01-01", "2020-08-01", "2020-09-01", "2020-11-01", "2021-01-01", "2021-03-01")
+releaseLabs       <- c("v0.1.0", "v0.2.0", "v0.3.0", "v0.4.0", "v0.5.0", "v0.5.1")
 
 p <- ggplot2::ggplot(plotData, ggplot2::aes(x = date, y = count)) +
       	ggplot2::geom_bar(stat = "identity", fill = rgb(65, 104, 195, maxColorValue = 255), 
