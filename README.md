@@ -296,8 +296,8 @@ For an example report, see the following
   - Cox, D. R., & Snell, E. J. (1979). On sampling and the estimation of
     rare errors. *Biometrika*, 66(1), 125-132. - [View
     online](https://doi.org/10.1093/biomet/66.1.125)
-  - Derks, K. (2020). jfa: Bayesian and classical audit sampling. R
-    package version 0.5.0. - [View
+  - Derks, K. (2021). jfa: Bayesian and classical audit sampling. R
+    package version 0.5.1. - [View
     online](https://cran.r-project.org/package=jfa)
   - Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., &
     Wetzels, R. (2020). Priors in a Bayesian audit: How integration of
