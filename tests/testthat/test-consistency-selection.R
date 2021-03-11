@@ -1,4 +1,4 @@
-context("7. Function test for selection()")
+context("5. Consistency test for function selection()")
 
 # jfa version 0.1.0
 
@@ -60,16 +60,16 @@ test_that(desc = "(id: f7-v0.1.0-t7) Test for units = 'mus' and algorithm = 'int
 
 
 # jfa version 0.2.0
-# No changes to be tested
+# No changes to be benchmarked
 
 # jfa version 0.3.0
-# No changes to be tested
+# No changes to be benchmarked
 
 # jfa version 0.3.1
-# No changes to be tested
+# No changes to be benchmarked
 
 # jfa version 0.4.0
-# No changes to be tested
+# No changes to be benchmarked
 
 # jfa version 0.5.0
 
@@ -95,3 +95,9 @@ test_that(desc = "(id: f7-v0.5.0-t1) Test for print function", {
 	expect_equal(ncol(jfaRes[["sample"]]), 4)
 	expect_equal(nrow(jfaRes[["sample"]]), 100)
 })
+
+# jfa version 0.5.1
+# No changes to be benchmarked
+
+# jfa version 0.5.2
+# No changes to be benchmarked

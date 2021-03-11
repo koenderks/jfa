@@ -1,4 +1,4 @@
-context("4. Function test for auditPrior()")
+context("1. Consistency test for function auditPrior()")
 
 # jfa version 0.2.0
 
@@ -87,10 +87,10 @@ test_that(desc = "(id: f4-v0.1.0-t6) Test for method = 'factor'", {
 })
 
 # jfa version 0.3.0
-# No changes to be tested
+# No changes to be benchmarked
 
 # jfa version 0.3.1
-# No changes to be tested
+# No changes to be benchmarked
 
 # jfa version 0.4.0
 
@@ -134,3 +134,9 @@ test_that(desc = "(id: f4-v0.5.0-t2) Test for plot function", {
 	invisible(capture.output(plot(prior)))
 	expect_equal(prior[["description"]]$alpha, 1)
 })
+
+# jfa version 0.5.1
+# No changes to be benchmarked
+
+# jfa version 0.5.2
+# No changes to be benchmarked

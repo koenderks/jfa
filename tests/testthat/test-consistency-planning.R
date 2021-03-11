@@ -1,4 +1,4 @@
-context("6. Function test for planning()")
+context("4. Consistency test for function planning()")
 
 # jfa version 0.1.0
 
@@ -164,10 +164,10 @@ test_that(desc = "(id: f6-v0.2.0-t3) Bayesian poisson 100% materiality 1% errors
 })
 
 # jfa version 0.3.0
-# No changes to be tested
+# No changes to be benchmarked
 
 # jfa version 0.3.1
-# No changes to be tested
+# No changes to be benchmarked
 
 # jfa version 0.4.0
 
@@ -250,3 +250,9 @@ test_that(desc = "(id: 6.33) Test for Bayesian plot function", {
 	invisible(capture.output(plot(jfaRes[["expectedPosterior"]])))
 	expect_equal(jfaRes[["expectedSampleError"]], 0)
 })
+
+# jfa version 0.5.1
+# No changes to be benchmarked
+
+# jfa version 0.5.2
+# No changes to be benchmarked

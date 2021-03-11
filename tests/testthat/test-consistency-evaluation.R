@@ -1,4 +1,4 @@
-context("5. Function test for evaluation()")
+context("2. Consistency test for function evaluation()")
 
 # jfa version 0.1.0
 
@@ -202,7 +202,7 @@ test_that(desc = "(id: f5-v0.1.0-t17) Evaluation with Cox and Snell method", {
 })
 
 # jfa version 0.2.0
-# No changes to be tested
+# No changes to be benchmarked
 
 # jfa version 0.3.0
 
@@ -219,7 +219,7 @@ test_that(desc = "(id: f5-v0.3.0-t1) Evaluation with counts and stringer method"
 })
 
 # jfa version 0.3.1
-# No changes to be tested
+# No changes to be benchmarked
 
 # jfa version 0.4.0
 test_that(desc = "(id: f5-v0.4.0-t1) Bayes factors", {
@@ -322,3 +322,9 @@ test_that(desc = "(id: f5-v0.2.0-t4) Test for Bayesian plot function", {
 
 	expect_equal(jfaEval[["confBound"]], 0.03, tolerance = 0.001)
 })
+
+# jfa version 0.5.1
+# No changes to be benchmarked
+
+# jfa version 0.5.2
+# No changes to be benchmarked

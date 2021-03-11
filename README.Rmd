@@ -31,12 +31,12 @@ For complete documentation of the package, see the [package manual](https://cran
 
 * [Getting started](#getting-started)
 * [Benchmarks](#benchmarks)
-* [Contributing](#contributing) 
-* [Cheat sheets](#cheat-sheets)
 * [Statistical tables](#statistical-tables)
-* [Functions](#functions)
+* [Cheat sheet](#cheat-sheet)
+* [Available functions](#available-functions)
 * [References](#references)
 * [Package statistics](#package-statistics) 
+* [Contributing](#contributing) 
 
 ### Authors
 
@@ -70,7 +70,7 @@ Alternatively, you can download the most recent (development) version from GitHu
 devtools::install.github("koenderks/jfa")
 ```
 
-The `jfa` package can then be loaded in R or RStudio by typing:
+After installation the `jfa` package can be loaded in R or RStudio by typing:
 
 ```
 library(jfa)
@@ -88,15 +88,29 @@ The package vignettes show how to use the `jfa` package using simple examples.
 
 ## Benchmarks
 
-To validate the output, `jfa`'s results are currently being verified against the following benchmark(s):
+To validate the statistical output, `jfa`'s results are currently being verified against the following benchmark(s):
 
 - [Audit Sampling: Audit Guide](https://future.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL) (Appendix A and Appendix C)
+- Touw, P., and Hoogduin, L. (2011). *Statistiek voor audit en controlling*. Boom uitgevers, Amsterdam.
 
-## Contributing
+## Statistical tables
 
-`jfa` is an open-source project that aims to be useful for the audit community. Your help in benchmarking and extending `jfa` is therefore greatly appreciated. Contributing to `jfa` does not have to take much time or knowledge, and there is extensive information available about it on the [Wiki](https://github.com/koenderks/jfa/wiki) of this repository. 
+There are several informative tables available that contain statistical sample sizes, upper limits, and Bayes factors. These tables are generated using the available functions in the `jfa` package.
 
-If you are willing to contribute to the improvement of the package by adding a benchmark, please check out the Wiki page on [how to contribute a benchmark to jfa](https://github.com/koenderks/jfa/wiki/Benchmarks). If you are willing to contribute to the improvement of the package by adding a new statistical method, please check the Wiki page on [how to contribute a new method to jfa](https://github.com/koenderks/jfa/wiki/Methods). 
+*Sample sizes*
+
+- [Sample sizes based on the binomial distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaBinomialSampleSizes.pdf)
+- [Sample sizes based on the Poisson distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaPoissonSampleSizes.pdf)
+
+*Upper limits*
+
+- [Upper limits based on the binomial distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaBinomialUpperBounds.pdf)
+- [Upper limits based on the Poisson distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaBinomialUpperBounds.pdf)
+
+*Bayes factors*
+
+- [Bayes factors based on the beta distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaBinomialBayesFactors.pdf)
+- [Bayes factors based on the gamma distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaPoissonBayesFactors.pdf)
 
 ## Cheat sheet
 
@@ -106,26 +120,19 @@ The cheat sheet below can help you get started with the `jfa` package and its wo
   <img src="man/figures/cheatsheet/cheatsheet.png" alt="cheatsheet" width="1000">
 </p>
 
-## Statistical tables
+## Available functions
 
-Additionally, there are several informative tables available that contain statistical sample sizes. These tables are generated using `jfa`.
+<p align="center">
+  <img src="man/figures/readme/banner/jfaBanner.png" alt="banner"/>
+</p>
 
-- [Statistical Sample Sizes based on the Binomial Distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaBinomialSampleSizes.pdf)
-- [Statistical Sample Sizes based on the Poisson Distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaPoissonSampleSizes.pdf)
-
-## Functions
-
-Below you can find a list of the functions in the current version of `jfa` sorted by their occurrence in the standard audit sampling workflow.
+Below you can find a explanation of the functions in the current version of `jfa`, sorted by their occurrence in the standard audit sampling workflow.
 
 * [`auditPrior()`](#create-a-prior-distribution-with-the-auditprior-function)
 * [`planning()`](#plan-a-sample-with-the-planning-function)
 * [`selection()`](#select-transactions-with-the-selection-function)
 * [`evaluation()`](#evaluate-a-sample-with-the-evaluation-function)
 * [`report()`](#generate-a-report-with-the-report-function)
-
-<p align="center">
-  <img src="man/figures/readme/banner/jfaBanner.png" alt="banner"/>
-</p>
 
 ### Create a prior distribution with the `auditPrior()` function:
 
@@ -364,3 +371,9 @@ ggplot2::ggsave(plot = world.map, filename = "man/figures/readme/worldmap/worldm
 ```
 
 <img src="man/figures/readme/downloads/downloads.svg" width="50%" /><img src="man/figures/readme/worldmap/worldmap.svg" width="50%" />
+
+## Contributing
+
+`jfa` is an open-source project that aims to be useful for the audit community. Your help in benchmarking and extending `jfa` is therefore greatly appreciated. Contributing to `jfa` does not have to take much time or knowledge, and there is extensive information available about it on the [Wiki](https://github.com/koenderks/jfa/wiki) of this repository. 
+
+If you are willing to contribute to the improvement of the package by adding a benchmark, please check out the Wiki page on [how to contribute a benchmark to jfa](https://github.com/koenderks/jfa/wiki/Benchmarks). If you are willing to contribute to the improvement of the package by adding a new statistical method, please check the Wiki page on [how to contribute a new method to jfa](https://github.com/koenderks/jfa/wiki/Methods). 
