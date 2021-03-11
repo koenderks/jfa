@@ -34,7 +34,7 @@ manual](https://cran.r-project.org/package=jfa/jfa.pdf) or visit the
   - [Getting started](#getting-started)
   - [Benchmarks](#benchmarks)
   - [Contributing](#contributing)
-  - [Cheatsheet](#cheatsheet)
+  - [Cheat sheets](#cheat-sheets)
   - [Functions](#functions)
   - [References](#references)
   - [Package statistics](#package-statistics)
@@ -119,10 +119,10 @@ adding a new statistical method, please check the Wiki page on [how to
 contribute a new method to
 jfa](https://github.com/koenderks/jfa/wiki/Methods).
 
-## Cheatsheet
+## Cheat sheets
 
-The cheatsheet can help you get started with the `jfa` package and its
-workflow. You can download a pdf version
+The cheat sheet below can help you get started with the `jfa` package
+and its workflow. You can download a pdf version
 [here](https://github.com/koenderks/jfa/raw/master/man/figures/cheatsheet/cheatsheet.pdf).
 
 <p align="center">
@@ -130,6 +130,15 @@ workflow. You can download a pdf version
 <img src="man/figures/cheatsheet/cheatsheet.png" alt="cheatsheet" width="1000">
 
 </p>
+
+Additionally, there are several cheat sheets available that contain
+tables with statistical sample sizes. These tables are generated using
+`jfa`.
+
+  - [Statistical Sample Sizes based on the Binomial
+    Distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaBinomialSampleSizes.pdf)
+  - [Statistical Sample Sizes based on the Poisson
+    Distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaPoissonSampleSizes.pdf)
 
 ## Functions
 
