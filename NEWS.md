@@ -1,3 +1,7 @@
+# jfa 0.5.2
+
+- Add statistical tables with output (sample sizes, upper limits, Bayes factors) to the GitHub repository in pdf format.
+
 # jfa 0.5.1
 
 - Reduced the size of the tarball by adding files to the .Rbuildignore

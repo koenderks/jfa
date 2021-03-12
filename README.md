@@ -98,8 +98,8 @@ examples.
 
 ## Benchmarks
 
-To validate the statistical output, `jfa`’s results are currently being
-verified against the following benchmark(s):
+To validate the statistical results, `jfa`’s output is currently being
+verified against the following benchmarks:
 
   - [Audit Sampling: Audit
     Guide](https://future.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL)
@@ -109,7 +109,7 @@ verified against the following benchmark(s):
 
 ## Statistical tables
 
-There are several informative tables available that contain statistical
+Below you can find several informative tables that contain statistical
 sample sizes, upper limits, and Bayes factors. These tables are
 generated using the available functions in the `jfa` package.
 
@@ -125,7 +125,7 @@ generated using the available functions in the `jfa` package.
   - [Upper limits based on the binomial
     distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaBinomialUpperBounds.pdf)
   - [Upper limits based on the Poisson
-    distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaBinomialUpperBounds.pdf)
+    distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaPoissonUpperBounds.pdf)
 
 *Bayes factors*
 
