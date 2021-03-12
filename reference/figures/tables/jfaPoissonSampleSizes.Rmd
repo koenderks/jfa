@@ -1,0 +1,229 @@
+---
+title: "Statistical Sample Sizes"
+output: 
+  html_document:
+    theme: journal
+---
+
+<p align="center">
+  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+</p>
+
+```{r, include = FALSE}
+colorize <- function(x, color) {
+  if (knitr::is_latex_output()) {
+    sprintf("\\textcolor{%s}{%s}", color, x)
+  } else if (knitr::is_html_output()) {
+    sprintf("<span style='color: %s;'>%s</span>", color, 
+      x)
+  } else x
+}
+library(jfa)
+```
+
+```{css, echo=FALSE}
+.math {
+  font-size: small;
+}
+.author,.title{
+    display: none;
+}
+```
+
+```{r, include = F}
+
+confidence <- 0.90
+m <- c(seq(0.01, 0.10, 0.01), 0.15, 0.20)
+expected <- seq(0, 0.1, 0.0025)
+
+tab <- matrix(NA, nrow = length(expected), ncol = length(m))
+for(rows in 1:length(expected)){
+  for(columns in 1:length(m)){
+    if(expected[rows] >= m[columns]){
+      next
+    } else {
+      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expected[rows], likelihood = "poisson", materiality = m[columns])) })
+      if(class(p) == "try-error"){
+        next 
+      }
+      tab[rows, columns] <- paste0(ss$sampleSize, " (", round(ss$expectedSampleError, 2), ")")
+    }
+  }
+}
+
+table <- as.data.frame(tab, stringsAsFactors = F)
+table <- cbind(expected = paste0(round(expected * 100, 2), "%"), table)
+colnames(table) <- c('Expected Deviation Rate', paste0(round(m * 100, 2), "%"))
+table[is.na(table)] <- ""
+
+```
+
+```{r, echo = FALSE}
+ktable <- knitr::kable(table, 
+                       digits = 0, 
+                       caption = "<center>Table 1: Statistical Sample Sizes based on the Poisson Distribution — <br>10 Percent Risk of Overreliance (with expected sum of taints in parentheses)</center>",
+                       align = "l", 
+                       format = "html", 
+                       row.names = FALSE, 
+                       format.args = list(big.mark = ",", scientific = FALSE),
+                       table.attr = "style='width:150%;'")
+ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
+ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Performance Materiality" = 12))
+ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown.")
+ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
+ktable <- kableExtra::kable_styling(ktable, font_size = 10)
+kableExtra::kable_paper(ktable, "striped") 
+```
+
+\newpage
+
+<p align="center">
+  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+</p>
+
+```{r, include = F}
+
+confidence <- 0.95
+m <- c(seq(0.01, 0.10, 0.01), 0.15, 0.20)
+expected <- seq(0, 0.10, 0.0025)
+
+tab <- matrix(NA, nrow = length(expected), ncol = length(m))
+for(rows in 1:length(expected)){
+  for(columns in 1:length(m)){
+    if(expected[rows] >= m[columns]){
+      next
+    } else {
+      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expected[rows], likelihood = "poisson", materiality = m[columns])) })
+      if(class(p) == "try-error"){
+        next 
+      }
+      tab[rows, columns] <- paste0(ss$sampleSize, " (", round(ss$expectedSampleError, 2), ")")
+    }
+  }
+}
+
+table <- as.data.frame(tab, stringsAsFactors = F)
+table <- cbind(expected = paste0(round(expected * 100, 2), "%"), table)
+colnames(table) <- c('Expected Deviation Rate', paste0(round(m * 100, 2), "%"))
+table[is.na(table)] <- ""
+
+```
+
+```{r, echo = FALSE}
+ktable <- knitr::kable(table, 
+                       digits = 0, 
+                       caption = "<center>Table 2: Statistical Sample Sizes based on the Poisson Distribution — <br>5 Percent Risk of Overreliance (with expected sum of taints in parentheses)</center>",
+                       align = "l", 
+                       format = "html", 
+                       row.names = FALSE, 
+                       format.args = list(big.mark = ",", scientific = FALSE),
+                       table.attr = "style='width:150%;'")
+ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
+ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Performance Materiality" = 12))
+ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown.")
+ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
+ktable <- kableExtra::kable_styling(ktable, font_size = 10)
+kableExtra::kable_paper(ktable, "striped") 
+```
+
+\newpage
+
+<p align="center">
+  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+</p>
+
+```{r, include = F}
+
+confidence <- 0.975
+m <- c(seq(0.01, 0.10, 0.01), 0.15, 0.20)
+expected <- seq(0, 0.1, 0.0025)
+
+tab <- matrix(NA, nrow = length(expected), ncol = length(m))
+for(rows in 1:length(expected)){
+  for(columns in 1:length(m)){
+    if(expected[rows] >= m[columns]){
+      next
+    } else {
+      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expected[rows], likelihood = "poisson", materiality = m[columns])) })
+      if(class(p) == "try-error"){
+        next 
+      }
+      tab[rows, columns] <- paste0(ss$sampleSize, " (", round(ss$expectedSampleError, 2), ")")
+    }
+  }
+}
+
+table <- as.data.frame(tab, stringsAsFactors = F)
+table <- cbind(expected = paste0(round(expected * 100, 2), "%"), table)
+colnames(table) <- c('Expected Deviation Rate', paste0(round(m * 100, 2), "%"))
+table[is.na(table)] <- ""
+
+```
+
+```{r, echo = FALSE}
+ktable <- knitr::kable(table, 
+                       digits = 0, 
+                       caption = "<center>Table 3: Statistical Sample Sizes based on the Poisson Distribution — <br>2.5 Percent Risk of Overreliance (with expected sum of taints in parentheses)</center>",
+                       align = "l", 
+                       format = "html", 
+                       row.names = FALSE, 
+                       format.args = list(big.mark = ",", scientific = FALSE),
+                       table.attr = "style='width:150%;'")
+ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
+ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Performance Materiality" = 12))
+ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown.")
+ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
+ktable <- kableExtra::kable_styling(ktable, font_size = 10)
+kableExtra::kable_paper(ktable, "striped") 
+```
+
+\newpage
+
+<p align="center">
+  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+</p>
+
+```{r, include = F}
+
+confidence <- 0.99
+m <- c(seq(0.01, 0.10, 0.01), 0.15, 0.20)
+expected <- seq(0, 0.1, 0.0025)
+
+tab <- matrix(NA, nrow = length(expected), ncol = length(m))
+for(rows in 1:length(expected)){
+  for(columns in 1:length(m)){
+    if(expected[rows] >= m[columns]){
+      next
+    } else {
+      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expected[rows], likelihood = "poisson", materiality = m[columns])) })
+      if(class(p) == "try-error"){
+        next 
+      }
+      tab[rows, columns] <- paste0(ss$sampleSize, " (", round(ss$expectedSampleError, 2), ")")
+    }
+  }
+}
+
+table <- as.data.frame(tab, stringsAsFactors = F)
+table <- cbind(expected = paste0(round(expected * 100, 2), "%"), table)
+colnames(table) <- c('Expected Deviation Rate', paste0(round(m * 100, 2), "%"))
+table[is.na(table)] <- ""
+
+```
+
+```{r, echo = FALSE}
+ktable <- knitr::kable(table, 
+                       digits = 0, 
+                       caption = "<center>Table 4: Statistical Sample Sizes based on the Poisson Distribution — <br>1 Percent Risk of Overreliance (with expected sum of taints in parentheses)</center>",
+                       align = "l", 
+                       format = "html", 
+                       row.names = FALSE, 
+                       format.args = list(big.mark = ",", scientific = FALSE),
+                       table.attr = "style='width:150%;'")
+ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
+ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Performance Materiality" = 12))
+ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown.")
+ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
+ktable <- kableExtra::kable_styling(ktable, font_size = 10)
+kableExtra::kable_paper(ktable, "striped") 
+```

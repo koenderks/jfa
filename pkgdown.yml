@@ -1,11 +1,11 @@
 pandoc: 2.7.3
-pkgdown: 1.6.1.9000
-pkgdown_sha: dd94073575aaee2fd480892d24dfe0be85f81a03
+pkgdown: 1.6.1
+pkgdown_sha: ~
 articles:
   jfa: jfa.html
   v1auditWorkflow: v1auditWorkflow.html
   v2priorDistributions: v2priorDistributions.html
   v3estimation: v3estimation.html
   v4testing: v4testing.html
-last_built: 2021-03-10T08:03Z
+last_built: 2021-03-12T06:57Z
 
