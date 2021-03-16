@@ -103,9 +103,9 @@ print(p1)
 prior <- auditPrior(confidence = 0.95, likelihood = "binomial", method = "arm", 
                     expectedError = 0.025, materiality = 0.05, cr = 0.6)
 
-p3 <- planning(confidence = 0.95, expectedError = 0.025, materiality = 0.05,
+p2 <- planning(confidence = 0.95, expectedError = 0.025, materiality = 0.05,
                prior = prior)
-print(p3)
+print(p2)
 
 # ------------------------------------------------------------
 #              jfa Planning Summary (Bayesian)

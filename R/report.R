@@ -44,7 +44,7 @@
 
 report <- function(object = NULL, file = NULL, format = "html_document"){
   
-  if(!class(object) == "jfaEvaluation")
+  if (!class(object) == "jfaEvaluation")
     stop("Object must be of class 'jfaEvaluation'.")
   
   #Determine the template

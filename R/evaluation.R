@@ -170,11 +170,11 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
                        materiality = NULL, minPrecision = NULL,
                        prior = FALSE, nPrior = 0, kPrior = 0, 
                        rohrbachDelta = 2.7, momentPoptype = "accounts", populationBookValue = NULL,
-                       csA = 1, csB = 3, csMu = 0.5){
+                       csA = 1, csB = 3, csMu = 0.5) {
   
   # Import existing prior distribution from class 'jfaPrior'.
-  if(class(prior) == "jfaPrior"){
-    if(kPrior != 0 || nPrior != 0)
+  if (class(prior) == "jfaPrior") {
+    if (kPrior != 0 || nPrior != 0)
       warning("When the prior is of class 'jfaPrior', the arguments 'kPrior' and 'nPrior' will not be used.")
     nPrior 		<- prior$description$implicitn
     kPrior 		<- prior$description$implicitk
@@ -182,58 +182,58 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
   }
   
   # Perform error handling with respect to incompatible input options
-  if(is.null(materiality) && is.null(minPrecision))
+  if (is.null(materiality) && is.null(minPrecision))
     stop("Specify the materiality or the minimum precision")
   
-  if(!is.null(minPrecision) && minPrecision == 0)
+  if (!is.null(minPrecision) && minPrecision == 0)
     stop("The minimum required precision cannot be zero.")
   
-  if(!(method %in% c("poisson", "binomial", "hypergeometric", "stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "rohrbach", "moment", "coxsnell", "direct", "difference", "quotient", "regression", "mpu")) || length(method) != 1)
+  if (!(method %in% c("poisson", "binomial", "hypergeometric", "stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "rohrbach", "moment", "coxsnell", "direct", "difference", "quotient", "regression", "mpu")) || length(method) != 1)
     stop("Specify a valid method for the evaluation.")
   
-  if(!is.null(counts) && any(counts < 1))
+  if (!is.null(counts) && any(counts < 1))
     stop("When specified, your 'counts' must all be equal to, or larger than, 1.")          
   
-  if(((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior") && method %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
+  if (((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior") && method %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
     stop("To use a prior distribution, you must use either the poisson, the binomial, or the hypergeometric method.")  
   
-  if((class(prior) == "logical" && prior == TRUE) && kPrior < 0 || nPrior < 0)
+  if ((class(prior) == "logical" && prior == TRUE) && kPrior < 0 || nPrior < 0)
     stop("When you specify a prior, both kPrior and nPrior should be higher than zero")
   
-  if(!is.null(nSumstats) || !is.null(kSumstats)){
-    if(is.null(nSumstats) || is.null(kSumstats))
+  if (!is.null(nSumstats) || !is.null(kSumstats)) {
+    if (is.null(nSumstats) || is.null(kSumstats))
       stop("When using summary statistics, both nSumstats and kSumstats must be defined")
-    if(nSumstats <= 0 || kSumstats < 0)
+    if (nSumstats <= 0 || kSumstats < 0)
       stop("When using summary statistics, both nSumstats and kSumstats must be positive")
-    if(length(nSumstats) != 1 || length(kSumstats) != 1)
+    if (length(nSumstats) != 1 || length(kSumstats) != 1)
       stop("Specify one value for nSumstat and kSumstat")
-    if(kSumstats > nSumstats)
+    if (kSumstats > nSumstats)
       stop("The sum of the errors is higher than the sample size")
-    if(method %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "coxsnell", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
+    if (method %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "coxsnell", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
       stop("The selected method requires raw observations, and does not accomodate summary statistics")
     
     n <- nSumstats
     k <- kSumstats
     t <- kSumstats
     
-  } else if(!is.null(sample)){
+  } else if (!is.null(sample)) {
     
-    if(is.null(bookValues) || is.null(auditValues) || length(bookValues) != 1 || length(auditValues) != 1)
+    if (is.null(bookValues) || is.null(auditValues) || length(bookValues) != 1 || length(auditValues) != 1)
       stop("Specify a valid book value column name and a valid audit value column name when using a sample")
     
     missingValues <- unique(c(which(is.na(sample[, bookValues])), which(is.na(sample[, auditValues]))))
-    if(length(missingValues) == nrow(sample))
+    if (length(missingValues) == nrow(sample))
       stop("Your sample has 0 rows after removing missing values.")
     sample <- stats::na.omit(sample)
     n <- nrow(sample)
-    if(!is.null(counts))
+    if (!is.null(counts))
       n <- sum(counts)
     bv <- sample[, bookValues]
     av <- sample[, auditValues]
     taints <- (bv - av) / bv
     k <- length(which(taints != 0))
     
-    if(!is.null(counts))
+    if (!is.null(counts))
       taints <- taints * counts
     
     t <- sum(taints)
@@ -241,9 +241,9 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
   }
   
   # Set the materiality and the minimium precision to 1 if they are NULL
-  if(is.null(materiality))
+  if (is.null(materiality))
     materiality <- 1
-  if(is.null(minPrecision))
+  if (is.null(minPrecision))
     minPrecision <- 1
   
   # Define placeholders for the most likely error and the precision  
@@ -251,8 +251,8 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
   precision <- NULL
   
   # Calculate the results depending on the specified method
-  if(method == "poisson"){
-    if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
+  if (method == "poisson") {
+    if ((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior") {
       bound <- stats::qgamma(p = confidence, shape = 1 + kPrior + t, rate = 1 + nPrior + n)
       mle <- (1 + kPrior + t - 1) / (1 + nPrior + n)
       precision <- bound - mle
@@ -261,8 +261,8 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
       mle <- k / n
       precision <- bound - mle
     }
-  } else if(method == "binomial"){
-    if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
+  } else if (method == "binomial") {
+    if ((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior") {
       bound <- stats::qbeta(p = confidence, shape1 = 1 + kPrior + t, shape2 = 1 + nPrior - kPrior + n - t)
       mle <- (1 + kPrior + t - 1) / (1 + kPrior + t + 1 + nPrior - kPrior + n - t)
       precision <- bound - mle
@@ -271,78 +271,78 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
       mle <- k / n
       precision <- bound - mle
     }
-  } else if(method == "hypergeometric"){
-    if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
-      if(is.null(N))
+  } else if (method == "hypergeometric") {
+    if ((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior") {
+      if (is.null(N))
         stop("Evaluation with beta-binomial distribution requires that you specify the population size N")
       bound <- .qBetaBinom(p = confidence, N = N, shape1 = 1 + kPrior + k, shape2 = 1 + nPrior - kPrior + n - k) / N
       mle <- (which.max(.dBetaBinom(x = 0:N, N = N, shape1 = 1 + kPrior + k, shape2 = 1 + nPrior - kPrior + n - k)) - 1) / N
       precision <- bound - mle
     } else {
-      if(materiality == 1)
+      if (materiality == 1)
         stop("Evaluation with the hypergeometric distribution requires that you specify the materiality")
       populationK <- materiality * N
       bound <- stats::phyper(q = k, m = populationK, n = N - populationK, k = n)
       mle <- k / n
       precision <- bound - mle
     }
-  } else if(method == "stringer"){
+  } else if (method == "stringer") {
     out 		<- .stringerBound(taints, confidence, n)
     bound 		<- out[["confBound"]]
     mle 		<- out[["mle"]]
     precision 	<- out[["precision"]]
-  } else if(method == "stringer-meikle"){
+  } else if (method == "stringer-meikle") {
     out 		<- .stringerBound(taints, confidence, n, correction = "meikle")
     bound 		<- out[["confBound"]]
     mle 		<- out[["mle"]]
     precision 	<- out[["precision"]]
-  } else if(method == "stringer-lta"){
+  } else if (method == "stringer-lta") {
     out 		<- .stringerBound(taints, confidence, n, correction = "lta")
     bound 		<- out[["confBound"]]
     mle 		<- out[["mle"]]
     precision 	<- out[["precision"]]
-  } else if(method == "stringer-pvz"){
+  } else if (method == "stringer-pvz") {
     out 		<- .stringerBound(taints, confidence, n, correction = "pvz")
     bound 		<- out[["confBound"]]
     mle 		<- out[["mle"]]
     precision 	<- out[["precision"]]
-  } else if(method == "rohrbach"){
+  } else if (method == "rohrbach") {
     out 		<- .rohrbachBound(taints, confidence, n, N, rohrbachDelta = rohrbachDelta)
     bound 		<- out[["confBound"]]
     mle 		<- out[["mle"]]
     precision 	<- out[["precision"]]
-  } else if(method == "moment"){
+  } else if (method == "moment") {
     out 		<- .momentBound(taints, confidence, n, momentPoptype = momentPoptype)
     bound 		<- out[["confBound"]]
     mle 		<- out[["mle"]]
     precision 	<- out[["precision"]]
-  } else if(method == "coxsnell"){
+  } else if (method == "coxsnell") {
     out 		<- .coxAndSnellBound(taints, confidence, n, csA, csB, csMu, aPrior = 1 + kPrior, bPrior = 1 + nPrior - kPrior)
     bound 		<- out[["confBound"]]
     mle 		<- out[["mle"]]
     precision 	<- out[["precision"]]
-  } else if(method == "mpu"){
+  } else if (method == "mpu") {
     out 		<- .mpuMethod(taints, confidence, n)
     bound 		<- out[["confBound"]]
     mle 		<- out[["mle"]]
     precision 	<- out[["precision"]]		
-  } else if(method == "direct"){
+  } else if (method == "direct") {
     out 		<- .directMethod(bv, av, confidence, N, n, populationBookValue)
     mle 		<- out[["pointEstimate"]]
     precision 	<- out[["precision"]]
-  } else if(method == "difference"){
+  } else if (method == "difference") {
     out 		<- .differenceMethod(bv, av, confidence, N, n, populationBookValue)
     mle 		<- out[["pointEstimate"]]
     precision 	<- out[["precision"]]
-  } else if(method == "quotient"){
+  } else if (method == "quotient") {
     out 		<- .quotientMethod(bv, av, confidence, N, n, populationBookValue)
     mle 		<- out[["pointEstimate"]]
     precision 	<- out[["precision"]]
-  } else if(method == "regression"){
+  } else if (method == "regression") {
     out 		<- .regressionMethod(bv, av, confidence, N, n, populationBookValue)
     mle 		<- out[["pointEstimate"]]
     precision 	<- out[["precision"]]
-  } else if(method == "newmethod"){
+  } else if (method == "newmethod") {
     # Add new methods here
     #
     # out 		<- .functionFromMethodsFile()
@@ -361,40 +361,40 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
   result[["t"]]             <- as.numeric(t)
   result[["materiality"]]   <- as.numeric(materiality)
   result[["minPrecision"]]  <- as.numeric(minPrecision)
-  if(!is.null(mle))
+  if (!is.null(mle))
     result[["mle"]]			<- as.numeric(mle)
-  if(!is.null(precision))
+  if (!is.null(precision))
     result[["precision"]]	<- as.numeric(precision)
-  if(!is.null(populationBookValue))
+  if (!is.null(populationBookValue))
     result[["popBookvalue"]]   <- as.numeric(populationBookValue)
-  if(method %in% c("direct", "difference", "quotient", "regression")){
+  if (method %in% c("direct", "difference", "quotient", "regression")) {
     # These methods yield an interval instead of a bound
     result[["lowerBound"]]     <- as.numeric(out[["lowerBound"]])
     result[["upperBound"]]     <- as.numeric(out[["upperBound"]])
   } else {
     # These methods yield an upper bound
     result[["confBound"]] <- as.numeric(bound) 
-    if(method == "coxsnell"){
+    if (method == "coxsnell") {
       # This method yields extra statistics
       result[["multiplicationFactor"]] <- as.numeric(out[["multiplicationFactor"]])
       result[["df1"]]                  <- as.numeric(out[["df1"]])
       result[["df2"]]                  <- as.numeric(out[["df2"]])
     }
   }
-  if(method == "hypergeometric" && is.logical(prior) && prior == FALSE)
+  if (method == "hypergeometric" && is.logical(prior) && prior == FALSE)
     result[["populationK"]]        		 <- as.numeric(populationK)
   # Produce relevant conclusions conditional on the analysis result
   approvePrecision <- TRUE
-  if(minPrecision != 1){
-    if(method %in% c("direct", "difference", "quotient", "regression")){
+  if (minPrecision != 1) {
+    if (method %in% c("direct", "difference", "quotient", "regression")) {
       approvePrecision <- (result[["precision"]] / populationBookValue) < minPrecision
     } else {
       approvePrecision <- result[["precision"]] < minPrecision
     }
   }
   approveMateriality <- TRUE
-  if(materiality != 1){
-    if(method %in% c("direct", "difference", "quotient", "regression")){
+  if (materiality != 1) {
+    if (method %in% c("direct", "difference", "quotient", "regression")) {
       approveMateriality <- (result[["upperBound"]] / populationBookValue) < materiality
     } else {
       approveMateriality <- result[["confBound"]] < materiality
@@ -405,8 +405,8 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
                                    yes = "Approve population",
                                    no = "Do not approve population")
   # Create the prior distribution object	
-  if(((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior")){
-    if(class(prior) == "jfaPrior"){
+  if (((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior")) {
+    if (class(prior) == "jfaPrior") {
       result[["prior"]] 			<- prior
     } else {
       result[["prior"]]           <- auditPrior(confidence = confidence, 
@@ -420,7 +420,7 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
     }
   }
   # Create the posterior distribution object
-  if(!is.null(result[["prior"]])){
+  if (!is.null(result[["prior"]])) {
     result[["posterior"]] <- list()
     # Functional form of the posterior distribution
     result[["posterior"]]$posterior <- switch(method, 
@@ -460,7 +460,7 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
                                                               yes = (result[["posterior"]][["statistics"]]$ub - result[["posterior"]][["statistics"]]$mode) / result[["N"]],
                                                               no = result[["posterior"]][["statistics"]]$ub - result[["posterior"]][["statistics"]]$mode)
     # Create the hypotheses section
-    if(result[["materiality"]] != 1){
+    if (result[["materiality"]] != 1) {
       result[["posterior"]][["hypotheses"]] 				<- list()
       result[["posterior"]][["hypotheses"]]$hypotheses 	<- c(paste0("H-: \u0398 < ", materiality), paste0("H+: \u0398 > ", materiality))
       result[["posterior"]][["hypotheses"]]$pHmin 		<- switch(method, 
@@ -479,7 +479,7 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
     # Add class 'jfaPosterior' to the posterior distribution object.
     class(result[["posterior"]]) <- "jfaPosterior"
   }
-  if(!is.null(sample)){
+  if (!is.null(sample)) {
     indexa <- which(colnames(sample) == auditValues)
     indexb <- which(colnames(sample) == bookValues)
     frame <- as.data.frame(sample[, c(indexb, indexa)])

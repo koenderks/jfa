@@ -1,41 +1,41 @@
-.stringerBound <- function(taints, confidence, n, correction = NULL){
+.stringerBound <- function(taints, confidence, n, correction = NULL) {
   mle <- sum(taints) / n
   t <- ifelse(taints < 0, yes = 0, no = taints)
   t <- ifelse(taints > 1, yes = 1, no = taints)
   t <- sort(subset(t, t > 0), decreasing = TRUE)
   bound <- 1 - (1 - confidence)^(1 / n)
-  if(length(t) > 0){
+  if (length(t) > 0) {
     propSum <- 0
-    for(i in 1:length(t)){
+    for (i in 1:length(t)) {
       propSum <- propSum + (stats::qbeta(p = confidence, shape1 = i + 1, shape2 = n - i) - stats::qbeta(p = confidence, shape1 = (i - 1) + 1, shape2 = n - (i - 1)))  * t[i]
     }
     bound <- bound + propSum
   }
-  if(!is.null(correction) && correction == "meikle"){
+  if (!is.null(correction) && correction == "meikle") {
     tmin <- sort(subset(taints, taints < 0), decreasing = FALSE)
-    if(length(tmin) > 0){
+    if (length(tmin) > 0) {
       prop.sum.min  <- stats::qbeta(1 + 1, n - 1, p = confidence) * abs(tmin[1])
-      if(length(tmin) > 2){
+      if (length(tmin) > 2) {
         prop.sum.min.2  <- 0
-        for(i in 2:length(tmin)){
+        for (i in 2:length(tmin)) {
           prop.sum.min.2 <- prop.sum.min.2 + (stats::qbeta(i + 1, n - 1, p = confidence) - stats::qbeta((i-1) + 1, n - 1, p = confidence)) * abs(tmin[i])
         }
         prop.sum.min <- prop.sum.min + prop.sum.min.2
       }
       bound <- bound - prop.sum.min
     }
-  } else if(!is.null(correction) && correction == "lta"){
+  } else if (!is.null(correction) && correction == "lta") {
     tmin <- subset(taints, taints < 0)
-    if(length(tmin) > 0){
+    if (length(tmin) > 0) {
       ltaCorrection <- (1/n) * sum(abs(tmin))
       bound <- bound - ltaCorrection
     }
-  } else if(!is.null(correction) && correction == "pvz"){
+  } else if (!is.null(correction) && correction == "pvz") {
     taints <- ifelse(taints < 0, 0, taints)
     tmin <- sort(subset(taints, taints > 0))
-    if(length(tmin) > 0){
+    if (length(tmin) > 0) {
       constant <- 0
-      for(i in 1:length(tmin)){
+      for (i in 1:length(tmin)) {
         constant <- constant + (((n - 2 * i + 1)/(2 * sqrt(i*(n - i + 1)))) * rev(tmin)[i])
       }
       constant <- (1/n) * constant
@@ -51,8 +51,8 @@
   return(result)
 }
 
-.rohrbachBound <- function(taints, confidence, n, N = NULL, rohrbachDelta){
-  if(is.null(N))
+.rohrbachBound <- function(taints, confidence, n, N = NULL, rohrbachDelta) {
+  if (is.null(N))
     stop("Rohrbach's bound requires that you specify the population size N")
   w 					<- 1 - taints
   mu 					<- mean(taints)
@@ -64,18 +64,18 @@
   return(result)
 }
 
-.momentBound <- function(taints, confidence, n, momentPoptype){
-  if(!(momentPoptype %in% c("inventory", "accounts")))
+.momentBound <- function(taints, confidence, n, momentPoptype) {
+  if (!(momentPoptype %in% c("inventory", "accounts")))
     stop("Specify a valid population type. Either inventory or accounts.")
   tall <- subset(taints, taints != 0)
-  if(momentPoptype == "inventory" & length(tall) > 0){
+  if (momentPoptype == "inventory" & length(tall) > 0) {
     tstar <- 0.81 * (1 - 0.667 * tanh(10 * abs(mean(tall))))
-  } else if(momentPoptype == "inventory" & length(tall) == 0){
+  } else if (momentPoptype == "inventory" & length(tall) == 0) {
     tstar <- 0.81 * (1 - 0.667 * tanh(10 * 0))
   }
-  if(momentPoptype == "accounts" & length(tall) > 0){
+  if (momentPoptype == "accounts" & length(tall) > 0) {
     tstar <- 0.81 * (1 - 0.667 * tanh(10 * mean(tall))) * (1 + 0.667 * tanh(length(tall) / 10))
-  } else if(momentPoptype == "accounts" & length(tall) == 0){
+  } else if (momentPoptype == "accounts" & length(tall) == 0) {
     tstar <- 0.81 * (1 - 0.667 * tanh(10 * 0)) * (1 + 0.667 * tanh(0 / 10))
   }
   ncm1_z <- (tstar^1 + sum(tall^1)) / (length(tall) + 1)
@@ -99,12 +99,12 @@
   return(result)
 }
 
-.coxAndSnellBound <- function(taints, confidence, n, csA = 1, csB = 3, csMu = 0.5, aPrior = 1, bPrior = 1){
+.coxAndSnellBound <- function(taints, confidence, n, csA = 1, csB = 3, csMu = 0.5, aPrior = 1, bPrior = 1) {
   piPrior 	<- aPrior / (aPrior + bPrior)
   taints 	<- subset(taints, taints > 0)
   M 		<- length(taints)
   t_bar 	<- mean(taints)
-  if(M == 0)
+  if (M == 0)
     t_bar <- 0
   result 							<- list()
   result[["multiplicationFactor"]] 	<- ((M + csA) / (M + csB)) * ((csMu * (csB - 1)) + (M * t_bar)) / (n + (csA / piPrior))
@@ -116,7 +116,7 @@
   return(result)
 }
 
-.mpuMethod <- function(taints, confidence, n){
+.mpuMethod <- function(taints, confidence, n) {
   result 				<- list()
   result[["confBound"]] <- mean(taints) + stats::qnorm(p = confidence) * (stats::sd(taints) / sqrt(n))
   result[["mle"]] 		<- sum(taints) / n
@@ -124,10 +124,10 @@
   return(result)	
 }
 
-.directMethod <- function(bookValues, auditValues, confidence, N = NULL, n, populationBookValue = NULL, correction = FALSE){
-  if(is.null(N))
+.directMethod <- function(bookValues, auditValues, confidence, N = NULL, n, populationBookValue = NULL, correction = FALSE) {
+  if (is.null(N))
     stop("The direct method requires that you specify the population size N")
-  if(is.null(populationBookValue))
+  if (is.null(populationBookValue))
     stop("The direct method requires that you specify the total population book value")
   w 						<- mean(auditValues)
   s 						<- stats::sd(auditValues)
@@ -135,7 +135,7 @@
   errorMargin 				<- tVal * (s / sqrt(n))
   result 					<- list()
   result[["pointEstimate"]] <- populationBookValue - N * w
-  if(correction){
+  if (correction) {
     result[["lowerBound"]] 	<- populationBookValue - N * (w + errorMargin * sqrt((N-n)/(N-1)))
     result[["upperBound"]] 	<- populationBookValue - N * (w - errorMargin * sqrt((N-n)/(N-1)))
   } else {
@@ -146,10 +146,10 @@
   return(result)
 }
 
-.differenceMethod <- function(bookValues, auditValues, confidence, N = NULL, n, populationBookValue = NULL, correction = FALSE){
-  if(is.null(N))
+.differenceMethod <- function(bookValues, auditValues, confidence, N = NULL, n, populationBookValue = NULL, correction = FALSE) {
+  if (is.null(N))
     stop("The difference method requires that you specify the population size N")
-  if(is.null(populationBookValue))
+  if (is.null(populationBookValue))
     stop("The difference method requires that you specify the total population book value")
   we 						<- mean(bookValues - auditValues)
   s 						<- stats::sd(bookValues - auditValues)
@@ -157,7 +157,7 @@
   errorMargin 				<- tVal * (s / sqrt(n))
   result 					<- list()
   result[["pointEstimate"]] <- N * we
-  if(correction){
+  if (correction) {
     result[["lowerBound"]] 	<- N * (we - errorMargin * sqrt((N-n)/(N-1)))
     result[["upperBound"]] 	<- N * (we + errorMargin * sqrt((N-n)/(N-1)))
   } else {
@@ -168,10 +168,10 @@
   return(result)
 }
 
-.quotientMethod <- function(bookValues, auditValues, confidence, N = NULL, n, populationBookValue = NULL, correction = FALSE){
-  if(is.null(N))
+.quotientMethod <- function(bookValues, auditValues, confidence, N = NULL, n, populationBookValue = NULL, correction = FALSE) {
+  if (is.null(N))
     stop("The quotient method requires that you specify the population size N")
-  if(is.null(populationBookValue))
+  if (is.null(populationBookValue))
     stop("The quotient method requires that you specify the total population book value")
   w 							<- mean(auditValues)
   sw 							<- stats::sd(auditValues)
@@ -184,7 +184,7 @@
   errorMargin 					<- tVal * (s / sqrt(n))
   result	 					<- list()
   result[["pointEstimate"]] 	<- N * ((1 - q) * b)
-  if(correction){
+  if (correction) {
     result[["lowerBound"]] 		<- N * ((1 - q) * b - errorMargin * sqrt((N-n)/(N-1)))
     result[["upperBound"]] 		<- N * ((1 - q) * b + errorMargin * sqrt((N-n)/(N-1)))
   } else {
@@ -195,10 +195,10 @@
   return(result)
 }
 
-.regressionMethod <- function(bookValues, auditValues, confidence, N = NULL, n, populationBookValue = NULL, correction = FALSE){
-  if(is.null(N))
+.regressionMethod <- function(bookValues, auditValues, confidence, N = NULL, n, populationBookValue = NULL, correction = FALSE) {
+  if (is.null(N))
     stop("The regression method requires that you specify the population size N")
-  if(is.null(populationBookValue))
+  if (is.null(populationBookValue))
     stop("The regression method requires that you specify the total population book value")
   w 							<- mean(auditValues)
   sw 							<- stats::sd(auditValues)
@@ -211,7 +211,7 @@
   errorMargin 					<- tVal * (s / sqrt(n))
   result 						<- list()
   result[["pointEstimate"]] 	<- populationBookValue - (N * w + b1 * (populationBookValue - N * b))
-  if(correction){
+  if (correction) {
     result[["lowerBound"]] 		<- result[["pointEstimate"]] - N * errorMargin * sqrt((N-n)/(N-1))
     result[["upperBound"]] 		<- result[["pointEstimate"]] + N * errorMargin * sqrt((N-n)/(N-1))
   } else {

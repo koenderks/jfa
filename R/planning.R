@@ -91,9 +91,9 @@
 #' prior <- auditPrior(confidence = 0.95, likelihood = "binomial", method = "arm", 
 #'                     expectedError = 0.025, materiality = 0.05, cr = 0.6)
 #' 
-#' p3 <- planning(confidence = 0.95, expectedError = 0.025, materiality = 0.05,
+#' p2 <- planning(confidence = 0.95, expectedError = 0.025, materiality = 0.05,
 #'                prior = prior)
-#' print(p3)
+#' print(p2)
 #' 
 #' # ------------------------------------------------------------
 #' #              jfa Planning Summary (Bayesian)
@@ -126,11 +126,11 @@
 planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson", N = NULL, 
                      materiality = NULL, minPrecision = NULL, 
                      prior = FALSE, kPrior = 0, nPrior = 0,
-                     increase = 1, maxSize = 5000){
+                     increase = 1, maxSize = 5000) {
   
   # Import an existing prior distribution with class 'jfaPrior'.
-  if(class(prior) == "jfaPrior"){
-    if(kPrior != 0 || nPrior != 0)
+  if (class(prior) == "jfaPrior") {
+    if (kPrior != 0 || nPrior != 0)
       warning("When the prior is of class 'jfaPrior', the arguments 'kPrior' and 'nPrior' will not be used.")
     nPrior 		<- prior$description$implicitn
     kPrior 		<- prior$description$implicitk
@@ -138,47 +138,47 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
   }
   
   # Perform error handling with respect to incompatible input options
-  if(confidence >= 1 || confidence <= 0 || is.null(confidence))
+  if (confidence >= 1 || confidence <= 0 || is.null(confidence))
     stop("Specify a value for the confidence likelihood. Possible values lie within the range of 0 to 1.")
   
-  if(!(likelihood %in% c("poisson", "binomial", "hypergeometric")))
+  if (!(likelihood %in% c("poisson", "binomial", "hypergeometric")))
     stop("Specify a valid likelihood. Possible options are 'poisson', 'binomial', and 'hypergeometric'.")
   
-  if(is.null(materiality) && is.null(minPrecision))
+  if (is.null(materiality) && is.null(minPrecision))
     stop("Specify the materiality or the minimum precision")
   
-  if(!is.null(minPrecision) && (minPrecision <= 0 || minPrecision >= 1))
+  if (!is.null(minPrecision) && (minPrecision <= 0 || minPrecision >= 1))
     stop("The minimum required precision must be a positive value lower than 1.")
   
-  if((class(prior) == "logical" && prior == TRUE) && kPrior < 0 || nPrior < 0)
+  if ((class(prior) == "logical" && prior == TRUE) && kPrior < 0 || nPrior < 0)
     stop("When you specify a prior, both kPrior and nPrior should be > 0.")
   
   # Define a placeholder for the sample size 
   ss <- NULL
   
   # Find out the type of expected errors (percentage vs. number)
-  if(expectedError >= 0 && expectedError < 1){
+  if (expectedError >= 0 && expectedError < 1) {
     errorType <- "percentage"
-    if(!is.null(materiality) && expectedError >= materiality)
+    if (!is.null(materiality) && expectedError >= materiality)
       stop("This analysis is not possible: the expected errors are higher than materiality.")
-  } else if(expectedError >= 1){
+  } else if (expectedError >= 1) {
     errorType <- "integer"
-    if(expectedError%%1 != 0 && likelihood %in% c("binomial", "hypergeometric") && !((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"))
+    if (expectedError%%1 != 0 && likelihood %in% c("binomial", "hypergeometric") && !((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"))
       stop("When expectedError > 1 and the likelihood is binomial or hypergeometric, its value must be an integer.")
   }
   
   # Set the materiality and the minimium precision to 1 if they are NULL
-  if(is.null(materiality))
+  if (is.null(materiality))
     materiality <- 1
-  if(is.null(minPrecision))
+  if (is.null(minPrecision))
     minPrecision <- 1
   
   # Calculate the sample size depending on the probability distribution
   
-  if(likelihood == "hypergeometric"){
-    if(is.null(N) || N <= 0)
+  if (likelihood == "hypergeometric") {
+    if (is.null(N) || N <= 0)
       stop("The hypergeometric likelihood requires that you specify a population size N.")
-    if(materiality == 1)
+    if (materiality == 1)
       stop("The hypergeometric likelihood requires that you specify a materiality.")
     populationK <- ceiling(materiality * N)
   }
@@ -192,24 +192,24 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
   sufficient <- FALSE
   
   # Start iterations
-  while(!sufficient){
+  while (!sufficient) {
     
     i <- samplingFrame[iter]
     
     # Find the expected errors in the sample
     implicitK <- switch(errorType, "percentage" = expectedError * i, "integer" = expectedError)
-    if(likelihood == "hypergeometric")
+    if (likelihood == "hypergeometric")
       implicitK <- ceiling(implicitK)
     
-    while(i <= implicitK){ # Remove the number from the sampling frame and take the next one
+    while (i <= implicitK) { # Remove the number from the sampling frame and take the next one
       samplingFrame <- samplingFrame[-iter]
       i <- samplingFrame[iter]
     }
     
-    if(!is.null(N) && i > N) # The sample size is too large
+    if (!is.null(N) && i > N) # The sample size is too large
       stop("The resulting sample size is larger than the population size.")
     
-    if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){ # Bayesian planning
+    if ((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior") { # Bayesian planning
       
       bound <- switch(likelihood, 
                       "poisson" = stats::qgamma(confidence, shape = 1 + kPrior + implicitK, rate = nPrior + i),
@@ -223,7 +223,7 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
       
     } else { # Classical planning
       
-      if(likelihood == "binomial") 
+      if (likelihood == "binomial") 
         implicitK <- ceiling(implicitK)
       prob <- switch(likelihood, 
                      "poisson" = stats::pgamma(materiality, shape = 1 + implicitK, rate = i),
@@ -243,13 +243,13 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
                            "hypergeometric" = sum(prob) < (1 - confidence) && (bound - mle) < minPrecision)
     }
     
-    if(sufficient) # Sufficient work done
+    if (sufficient) # Sufficient work done
       ss <- i
     iter <- iter + 1
   }
   
   # No sample size could be calculated, throw an error
-  if(is.null(ss))
+  if (is.null(ss))
     stop("Sample size could not be calculated, you may want to increase the maxSize argument.")
   
   # Create the main results object
@@ -265,11 +265,11 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
   result[["expectedSampleError"]]  	<- as.numeric(implicitK)
   result[["expectedBound"]]        	<- as.numeric(bound)
   result[["expectedPrecision"]]    	<- as.numeric(bound - mle)
-  if(likelihood == "hypergeometric")
+  if (likelihood == "hypergeometric")
     result[["populationK"]]        	<- as.numeric(populationK)
   # Create the prior distribution object	
-  if(((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior")){
-    if(class(prior) == "jfaPrior"){
+  if (((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior")) {
+    if (class(prior) == "jfaPrior") {
       result[["prior"]] 		  <- prior
     } else {
       result[["prior"]]           <- auditPrior(confidence = confidence, 
@@ -283,7 +283,7 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
     }
   }
   # Create the expected posterior distribution object
-  if(!is.null(result[["prior"]])){
+  if (!is.null(result[["prior"]])) {
     result[["expectedPosterior"]] <- list()
     # Functional form of the expected posterior
     result[["expectedPosterior"]]$posterior <- switch(likelihood, 
@@ -303,7 +303,7 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
     result[["expectedPosterior"]][["statistics"]]$mode 		<- switch(likelihood, 
                                                                    "poisson" = (result[["expectedPosterior"]][["description"]]$alpha - 1) / result[["expectedPosterior"]][["description"]]$beta,
                                                                    "binomial" = (result[["expectedPosterior"]][["description"]]$alpha - 1) / (result[["expectedPosterior"]][["description"]]$alpha + result[["expectedPosterior"]][["description"]]$beta - 2),
-                                                                   "hypergeometric" = which.max(.dBetaBinom(x = 0:result[["N"]], N = result[["N"]], shape1 = result[["expectedPosterior"]][["description"]]$alpha, shape2 = result[["expectedPosterior"]][["description"]]$beta)) - 1)
+                                                                   "hypergeometric" = .modeBetaBinom(N = result[["N"]], shape1 = result[["expectedPosterior"]][["description"]]$alpha, shape2 = result[["expectedPosterior"]][["description"]]$beta))
     result[["expectedPosterior"]][["statistics"]]$mean 		<- switch(likelihood, 
                                                                    "poisson" = result[["expectedPosterior"]][["description"]]$alpha / result[["expectedPosterior"]][["description"]]$beta,
                                                                    "binomial" = result[["expectedPosterior"]][["description"]]$alpha / (result[["expectedPosterior"]][["description"]]$alpha + result[["expectedPosterior"]][["description"]]$beta),
@@ -320,7 +320,7 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
                                                                       yes = (result[["expectedPosterior"]][["statistics"]]$ub - result[["expectedPosterior"]][["statistics"]]$mode) / result[["N"]],
                                                                       no = result[["expectedPosterior"]][["statistics"]]$ub - result[["expectedPosterior"]][["statistics"]]$mode)
     # Create the hypotheses section
-    if(result[["materiality"]] != 1){
+    if (result[["materiality"]] != 1) {
       result[["expectedPosterior"]][["hypotheses"]] 			<- list()
       result[["expectedPosterior"]][["hypotheses"]]$hypotheses 	<- c(paste0("H-: \u0398 < ", materiality), paste0("H+: \u0398 > ", materiality))
       result[["expectedPosterior"]][["hypotheses"]]$pHmin 		<- switch(likelihood, 
