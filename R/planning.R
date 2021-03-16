@@ -160,11 +160,11 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
 	if(expectedError >= 0 && expectedError < 1){
 		errorType <- "percentage"
 		if(!is.null(materiality) && expectedError >= materiality)
-			stop("The expected errors are higher than materiality")
+			stop("This analysis is not possible: the expected errors are higher than materiality.")
 	} else if(expectedError >= 1){
 		errorType <- "integer"
 		if(expectedError%%1 != 0 && likelihood %in% c("binomial", "hypergeometric") && !((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"))
-			stop("When expectedError > 1 and the likelihood is binomial or hypergeometric, the value must be an integer.")
+			stop("When expectedError > 1 and the likelihood is binomial or hypergeometric, its value must be an integer.")
 	}
 
 	# Set the materiality and the minimium precision to 1 if they are NULL
@@ -194,15 +194,19 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
 	# Start iterations
 	while(!sufficient){
 
-		i <- samplingFrame[iter] 
+		i <- samplingFrame[iter]
 
-		implicitK <- switch(errorType, "percentage" = expectedError * i,"integer" = expectedError)
+		# Find the expected errors in the sample
+		implicitK <- switch(errorType, "percentage" = expectedError * i, "integer" = expectedError)
 		if(likelihood == "hypergeometric")
 			implicitK <- ceiling(implicitK)
 
-		if(i <= implicitK)
-			next
-		if(!is.null(N) && i > N)
+		while(i <= implicitK){ # Remove the number from the sampling frame and take the next one
+			samplingFrame <- samplingFrame[-iter]
+			i <- samplingFrame[iter]
+		}
+
+		if(!is.null(N) && i > N) # The sample size is too large
 			stop("The resulting sample size is larger than the population size.")
 			
 		if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){ # Bayesian planning
@@ -216,9 +220,9 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
 							"binomial" = (1 + kPrior + implicitK - 1) / (1 + kPrior + implicitK + 1 + nPrior - kPrior + i - implicitK - 2),
 							"hypergeometric" = .modeBetaBinom(N = N - i + implicitK, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK))
 			sufficient <- bound < materiality && (bound - mle) < minPrecision
-			if(sufficient)
-				ss <- i
-		} else { # Frequentist planning
+
+		} else { # Classical planning
+
 			if(likelihood == "binomial") 
 				implicitK <- ceiling(implicitK)
 			prob <- switch(likelihood, 
@@ -236,11 +240,11 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
 			sufficient <- switch(likelihood, 
 							"poisson" = prob >= confidence && (bound - mle) < minPrecision,
 							"binomial" = sum(prob) < (1 - confidence) && (bound - mle) < minPrecision,
-							"hypergeometric" = sum(prob) < (1 - confidence) && (bound - mle) < minPrecision)			
-			if(sufficient)
-				ss <- i
+							"hypergeometric" = sum(prob) < (1 - confidence) && (bound - mle) < minPrecision)
 		}
 
+		if(sufficient) # Sufficient work done
+			ss <- i
 		iter <- iter + 1
 	}
   
