@@ -14,6 +14,17 @@
 	return(p)
 }
 
+.modeBetaBinom <- function(N, shape1, shape2){
+  index <- pcount <- pnextcount <- -1
+  # Use the fact that the mode has the highest density in a while-loop
+  while(pnextcount >= pcount){
+    index <- index + 1
+    pcount <- .dBetaBinom(x = index, N = N, shape1 = shape1, shape2 = shape2)
+    pnextcount <- .dBetaBinom(x = index + 1, N = N, shape1 = shape1, shape2 = shape2)
+  }
+  return(index / N)
+}
+
 # .dCoxAndSnellF <- function(x, df1, df2, multiplicationFactor){
 # 	# Rewritten using Wolfram Mathematica
 # 	(df1 ** (df1 / 2) * df2**(df2 / 2) * (x / multiplicationFactor) ** (- 1 + df1 / 2) * (df2 + (df1 * x) / multiplicationFactor)**(( -df1 - df2) / 2))/(abs(multiplicationFactor) * beta(df1/2, df2/2))
