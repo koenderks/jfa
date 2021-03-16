@@ -172,100 +172,76 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
 		materiality <- 1
 	if(is.null(minPrecision))
 		minPrecision <- 1
+  
+	# Calculate the sample size depending on the probability distribution
+
+	if(likelihood == "hypergeometric"){
+		if(is.null(N) || N <= 0)
+			stop("The hypergeometric likelihood requires that you specify a population size N.")
+		if(materiality == 1)
+			stop("The hypergeometric likelihood requires that you specify a materiality.")
+		populationK <- ceiling(materiality * N)
+	}
 
 	# Define the sampling frame (the possible sample sizes)
 	samplingFrame <- seq(from = 0, to = maxSize, by = increase)
 	samplingFrame[1] <- 1
-  
-	# Calculate the sample size depending on the probability distribution
-	if(likelihood == "poisson"){
-		for(i in samplingFrame){
-			if(errorType == "percentage"){
-				implicitK <- expectedError * i
-			} else if(errorType == "integer"){
-				implicitK <- expectedError
-			}
-			if(i <= implicitK)
-				next
-			if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
-				bound <- stats::qgamma(confidence, shape = 1 + kPrior + implicitK, rate = nPrior + i)
-				mle <- (1 + kPrior + implicitK - 1) / (nPrior + i)
-				if(bound < materiality && (bound - mle) < minPrecision){
-					ss <- i
-					break
-				}
-			} else {
-				prob <- stats::pgamma(materiality, shape = 1 + implicitK, rate = i)
-				bound <- stats::qgamma(confidence, shape = 1 + implicitK, rate = i)
-				mle <- implicitK / i
-				if(prob >= confidence && (bound - mle) < minPrecision){
-					ss <- i
-					break
-				}
-			}
-		}
-	} else if(likelihood == "binomial"){
-		for(i in samplingFrame){
-			if(errorType == "percentage"){
-				implicitK <- expectedError * i
-			} else if(errorType == "integer"){
-				implicitK <- expectedError
-			}
-			if(i <= implicitK)
-				next
-			if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
-				bound <- stats::qbeta(confidence, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK)
-				mle <- (1 + kPrior + implicitK - 1) / (1 + kPrior + implicitK + 1 + nPrior - kPrior + i - implicitK - 2)
-				if(bound < materiality && (bound - mle) < minPrecision){
-					ss <- i
-					break
-				}
-			} else {
+	
+	# Set up iterations
+	iter <- 1
+	sufficient <- FALSE
+
+	# Start iterations
+	while(!sufficient){
+
+		i <- samplingFrame[iter] 
+
+		implicitK <- switch(errorType, "percentage" = expectedError * i,"integer" = expectedError)
+		if(likelihood == "hypergeometric")
+			implicitK <- ceiling(implicitK)
+
+		if(i <= implicitK)
+			next
+		if(!is.null(N) && i > N)
+			stop("The resulting sample size is larger than the population size.")
+			
+		if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){ # Bayesian planning
+			
+			bound <- switch(likelihood, 
+							"poisson" = stats::qgamma(confidence, shape = 1 + kPrior + implicitK, rate = nPrior + i),
+							"binomial" = stats::qbeta(confidence, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK),
+							"hypergeometric" = .qBetaBinom(p = confidence, N = N - i + implicitK, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK) / N)
+			mle <- switch(likelihood,
+							"poisson" = (1 + kPrior + implicitK - 1) / (nPrior + i),
+							"binomial" = (1 + kPrior + implicitK - 1) / (1 + kPrior + implicitK + 1 + nPrior - kPrior + i - implicitK - 2),
+							"hypergeometric" = .modeBetaBinom(N = N - i + implicitK, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK))
+			sufficient <- bound < materiality && (bound - mle) < minPrecision
+			if(sufficient)
+				ss <- i
+		} else { # Frequentist planning
+			if(likelihood == "binomial") 
 				implicitK <- ceiling(implicitK)
-				prob <- stats::dbinom(0:implicitK, size = i, prob = materiality)
-				bound <- stats::binom.test(x = implicitK, n = i, p = materiality, alternative = "less", conf.level = confidence)$conf.int[2]
-				mle <- implicitK / i
-				if(sum(prob) < (1 - confidence) && (bound - mle) < minPrecision){
-					ss <- i
-					break
-				}
-			}
+			prob <- switch(likelihood, 
+							"poisson" = stats::pgamma(materiality, shape = 1 + implicitK, rate = i),
+							"binomial" = stats::dbinom(0:implicitK, size = i, prob = materiality),
+							"hypergeometric" = stats::dhyper(x = 0:implicitK, m = populationK, n = ceiling(N - populationK), k = i))
+			bound <- switch(likelihood, 
+							"poisson" = stats::qgamma(confidence, shape = 1 + implicitK, rate = i),
+							"binomial" = stats::binom.test(x = implicitK, n = i, p = materiality, alternative = "less", conf.level = confidence)$conf.int[2],
+							"hypergeometric" = stats::qhyper(p = confidence, m = populationK, n = ceiling(N - populationK), k = i) / N)
+			mle <- switch(likelihood, 
+							"poisson" = implicitK / i,
+							"binomial" = implicitK / i,
+							"hypergeometric" = floor( ((i + 1) * (populationK + 1)) / (N + 2) ) / N) # = ceiling((((i + 1) * (ceiling(populationK) + 1)) / (N + 2)) - 1) / N
+			sufficient <- switch(likelihood, 
+							"poisson" = prob >= confidence && (bound - mle) < minPrecision,
+							"binomial" = sum(prob) < (1 - confidence) && (bound - mle) < minPrecision,
+							"hypergeometric" = sum(prob) < (1 - confidence) && (bound - mle) < minPrecision)			
+			if(sufficient)
+				ss <- i
 		}
-	} else if(likelihood == "hypergeometric"){
-		if(is.null(N))
-			stop("The hypergeometric distribution requires that you specify a population size N.")
-		if(materiality == 1)
-			stop("The hypergeometric distribution requires that you specify a materiality.")
-		populationK <- ceiling(materiality * N)
-		for(i in samplingFrame){
-			if(errorType == "percentage"){
-				implicitK <- ceiling(expectedError * i)
-			} else if(errorType == "integer"){
-				implicitK <- expectedError
-			}
-			if(i <= implicitK)
-				next
-			if(i > N)
-				stop("The resulting sample size is larger than the population size.")
-			if((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"){
-				if(is.null(N) || N <= 0)
-					stop("The beta-binomial distribution requires that you specify a population size N")
-				bound <- .qBetaBinom(p = confidence, N = N - i + implicitK, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK) / N
-				mle <- .modeBetaBinom(N = N - i + implicitK, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK)
-				if(bound < materiality && (bound - mle) < minPrecision){
-					ss <- i
-					break
-				}
-			} else {
-				prob <- stats::dhyper(x = 0:implicitK, m = ceiling(populationK), n = ceiling(N - populationK), k = i)
-				bound <- stats::qhyper(p = confidence, m = ceiling(populationK), n = ceiling(N - populationK), k = i) / N
-				mle <- floor( ((i + 1) * (ceiling(populationK) + 1)) / (N + 2) ) / N # = ceiling((((i + 1) * (ceiling(populationK) + 1)) / (N + 2)) - 1) / N
-				if(sum(prob) < (1 - confidence) && (bound - mle) < minPrecision){
-					ss <- i
-					break
-				}
-			}
-		}
+
+		iter <- iter + 1
 	}
   
 	# No sample size could be calculated, throw an error
