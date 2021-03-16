@@ -43,20 +43,20 @@
 #' @export
 
 report <- function(object = NULL, file = NULL, format = "html_document"){
-
+  
   if(!class(object) == "jfaEvaluation")
     stop("Object must be of class 'jfaEvaluation'.")
-
+  
   #Determine the template
   theFile <- system.file("rmd/report.Rmd", package = "jfa")
-
+  
   #Process the Arguments
   args               <- list()
   args$input         <- theFile
   args$output_dir    <- getwd()
   args$output_format <- format
   args$output_file   <- file
-
+  
   #Run the render
   outputFileName <- do.call(.getfun('rmarkdown::render'), args = args)
   invisible(outputFileName)
