@@ -225,7 +225,7 @@ auditPrior <- function(confidence = 0.95, likelihood = "binomial", method = "non
 	result[["statistics"]]$mode 		<- switch(likelihood, 
 													"poisson" = (result[["description"]]$alpha - 1) / result[["description"]]$beta,
 													"binomial" = (result[["description"]]$alpha - 1) / (result[["description"]]$alpha + result[["description"]]$beta - 2),
-													"hypergeometric" = which.max(.dBetaBinom(x = 0:result[["N"]], N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta)) - 1)
+													"hypergeometric" = .modeBetaBinom(N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta) * result[["N"]])
 	result[["statistics"]]$mean 		<- switch(likelihood, 
 													"poisson" = result[["description"]]$alpha / result[["description"]]$beta,
 													"binomial" = result[["description"]]$alpha / (result[["description"]]$alpha + result[["description"]]$beta),
