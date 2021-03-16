@@ -251,7 +251,7 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
 				if(is.null(N) || N <= 0)
 					stop("The beta-binomial distribution requires that you specify a population size N")
 				bound <- .qBetaBinom(p = confidence, N = N - i + implicitK, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK) / N
-				mle <- (which.max(.dBetaBinom(x = 0:(N - i + implicitK), N = N - i + implicitK,  shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK)) - 1) / N
+				mle <- .modeBetaBinom(N = N - i + implicitK, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK)
 				if(bound < materiality && (bound - mle) < minPrecision){
 					ss <- i
 					break
@@ -259,7 +259,7 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
 			} else {
 				prob <- stats::dhyper(x = 0:implicitK, m = ceiling(populationK), n = ceiling(N - populationK), k = i)
 				bound <- stats::qhyper(p = confidence, m = ceiling(populationK), n = ceiling(N - populationK), k = i) / N
-				mle <- (which.max(stats::dhyper(x = 0:populationK, m = ceiling(populationK), n = ceiling(N - populationK), k = i)) - 1) / N
+				mle <- floor( ((i + 1) * (ceiling(populationK) + 1)) / (N + 2) ) / N # = ceiling((((i + 1) * (ceiling(populationK) + 1)) / (N + 2)) - 1) / N
 				if(sum(prob) < (1 - confidence) && (bound - mle) < minPrecision){
 					ss <- i
 					break

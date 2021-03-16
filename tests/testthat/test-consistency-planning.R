@@ -220,7 +220,7 @@ test_that(desc = "(id: f6-v0.5.0-t2) Test for Bayesian print function", {
 	expect_equal(jfaRes[["expectedSampleError"]], 0)
 })
 
-test_that(desc = "(id: 6.32) Test for frequentist plot function", {
+test_that(desc = "(id: f6-v0.5.0-t3) Test for frequentist plot function", {
 	jfaRes <- planning(materiality = 0.01, confidence = 0.95, expectedError = 0, likelihood = "poisson")
 	invisible(capture.output(plot(jfaRes)))
 	expect_equal(jfaRes[["expectedSampleError"]], 0)
@@ -234,7 +234,7 @@ test_that(desc = "(id: 6.32) Test for frequentist plot function", {
 	expect_equal(jfaRes[["expectedSampleError"]], 0)
 })
 
-test_that(desc = "(id: 6.33) Test for Bayesian plot function", {
+test_that(desc = "(id: f6-v0.5.0-t4) Test for Bayesian plot function", {
 	jfaRes <- planning(minPrecision = 0.02, confidence = 0.95, expectedError = 0, likelihood = "poisson", prior = TRUE)
 	invisible(capture.output(plot(jfaRes)))
 	invisible(capture.output(plot(jfaRes[["expectedPosterior"]])))
@@ -255,4 +255,17 @@ test_that(desc = "(id: 6.33) Test for Bayesian plot function", {
 # No changes to be benchmarked
 
 # jfa version 0.5.2
-# No changes to be benchmarked
+
+test_that(desc = "(id: f6-v0.5.2-t1) Test for change in Hypergeometric mode calculation", {
+	jfaRes <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0, likelihood = "hypergeometric", N = 10000)
+	modeDist <- ceiling((jfaRes[["expectedBound"]] - jfaRes[["expectedPrecision"]]) * 10000)
+	expect_equal(jfaRes[["sampleSize"]], 59)
+	expect_equal(modeDist, 3)
+})
+
+test_that(desc = "(id: f6-v0.5.2-t1) Test for change in beta-binomial mode calculation", {
+	jfaRes <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0, likelihood = "hypergeometric", N = 10000, prior = T)
+	modeDist <- ceiling((jfaRes[["expectedBound"]] - jfaRes[["expectedPrecision"]]) * 10000)
+	expect_equal(jfaRes[["sampleSize"]], 58)
+	expect_equal(modeDist, 0)
+})

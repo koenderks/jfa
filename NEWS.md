@@ -1,6 +1,7 @@
 # jfa 0.5.2
 
 - Add statistical tables with output (sample sizes, upper limits, Bayes factors) to the GitHub repository in pdf format.
+- Changed the computation method of the sample sizes for hypergeometric and beta-binomial distributions so that they are faster.
 
 # jfa 0.5.1
 
