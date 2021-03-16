@@ -98,9 +98,10 @@ examples.
 
 ## Benchmarks
 
-To validate the statistical results, `jfa`’s output is currently being
-verified against the following benchmarks:
+To validate the statistical results, `jfa`’s main output is currently
+being verified against the following benchmarks:
 
+  - [AuditSampler](https://cplusglobal.wordpress.com/solutions/auditsampler-statistical-sampling-software)
   - [Audit Sampling: Audit
     Guide](https://future.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL)
     (Appendix A and Appendix C)
