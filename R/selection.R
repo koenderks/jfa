@@ -117,109 +117,109 @@
 #' @export
 
 selection <- function(population, sampleSize, units = "records", algorithm = "random", 
-					 	bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, 
-                     	ascending = TRUE, withReplacement = FALSE, seed = 1){
-	# If the input for 'sampleSize' is of class 'jfaPlanning', extract the planned sample size
-	if(class(sampleSize) == "jfaPlanning")
-		sampleSize <- sampleSize$sampleSize 
-	# Perform error handling with respect to incompatible input options
-	if(units == "records" && sampleSize > nrow(population))
-		stop("Cannot take a sample larger than the population size")
-	if(!(algorithm %in% c("random", "cell", "interval")) || length(algorithm) != 1)
-		stop("algorithm must be one of 'random', 'cell', or 'interval'.")
-	if(!(units %in% c("records", "mus")) || length(units) != 1)
-		stop("units must be one of 'records' or 'mus'.")
-	if(units == "mus" && is.null(bookValues))
-		stop("Book values must be specified if 'units = mus' is used.")
-	if(!is.null(bookValues) && length(bookValues) != 1)
-		stop("Specify one column for the book values")
-	if(!is.null(bookValues) && !(bookValues %in% colnames(population)))
-		stop("The book value column cannot be located in the population data.")
-	interval <- NULL
-	# Convert the population to a data frame
-	population <- as.data.frame(population)
-	rownames(population) <- 1:nrow(population)
-	bv <- NULL
-	if(!is.null(bookValues))
-		bv <- population[, bookValues]
-	if(units == "mus" && sampleSize > sum(bv))
-		stop("Cannot take a sample larger than the population value")
-	if(ordered && !is.null(bv)) {
-		population <- population[order(bv, decreasing = !ascending), ]
-		bv <- population[, bookValues]
-	}
-	if(!is.null(bv) && any(bv < 0)){
-		warning("The book values contain negative values, these are removed from the data")
-		negativeValues <- which(bv < 0)
-		population <- population[-negativeValues, ]
-		bv <- population[, bookValues]
-	}
-  	# Set a seed for reproducibility
-  	set.seed(seed)
-  	# Sampling algorithms:
-  	if(algorithm == "random" && units == "records"){
-    	# 1. Random record sampling
-    	index <- sample(rownames(population), size = sampleSize, replace = withReplacement)
-  	} else if(algorithm == "random" && units == "mus"){
-    	# 2. Random monetary unit sampling
-    	if(sampleSize > nrow(population))
-      		withReplacement <- TRUE
-    	index <- sample(rownames(population), size = sampleSize, replace = withReplacement, prob = bv)
-  	} else if(algorithm == "cell" && units == "records"){
-		# 3. Cell record sampling
-		interval <- nrow(population) / sampleSize
-		intervals <- 0:sampleSize * interval
-		index <- NULL
-		for(i in 1:sampleSize){
-		intervalSelection <- stats::runif(min = intervals[i], max = intervals[i + 1], n = 1)
-		index <- c(index, as.numeric(rownames(population))[intervalSelection])
-		}
-	} else if(algorithm == "cell" && units == "mus"){
-		# 4. Cell monetary unit sampling
-		interval <- sum(bv) / sampleSize
-		intervals <- 0:sampleSize * interval
-		index <- NULL
-		for(i in 1:sampleSize){
-			intervalSelection <- stats::runif(min = intervals[i], max = intervals[i + 1], n = 1)
-			index <- c(index, which(intervalSelection < cumsum(bv))[1])
-		}
-	} else if(algorithm == "interval" && units == "records"){
-		# 5. Fixed interval record sampling
-		interval <- nrow(population) / sampleSize
-		intervalSelection <- intervalStartingPoint + 0:(sampleSize - 1) * interval
-		mat <- as.numeric(rownames(population))
-		index <- mat[intervalSelection]
-	} else if(algorithm == "interval" && units == "mus"){
-		# 6. Fixed interval monetary unit sampling
-		interval <- sum(bv) / sampleSize
-		intervalSelection <- intervalStartingPoint + 0:(sampleSize - 1) * interval
-		index <- NULL
-		for(i in 1:sampleSize){
-			index <- c(index, which(intervalSelection[i] < cumsum(bv))[1])
-		}
-	}
-	# Gather output
-	count <- as.numeric(table(index))
-	rowNumber <- as.numeric(unique(index))
-	if(length(rowNumber) < sampleSize)
-		warning("The sample contains fewer observations than the specified sample size")
-	sample <- cbind(rowNumber, count, population[rowNumber, ])
-	rownames(sample) <- 1:nrow(sample)
-	colnames(sample) <- c("rowNumber", "count", colnames(population))
-	# Create the main results object.
-	result <- list()
-	result[["population"]] 				<- as.data.frame(population)
-	result[["sample"]] 					<- as.data.frame(sample)
-	result[["populationSize"]] 			<- as.numeric(nrow(population))
-	result[["requestedSampleSize"]] 	<- as.numeric(sampleSize)
-	result[["obtainedSampleSize"]] 		<- as.numeric(nrow(sample))
-	result[["units"]] 					<- as.character(units)
-	result[["algorithm"]] 				<- as.character(algorithm)
-	result[["bookValues"]] 				<- as.character(bookValues)
-	result[["intervalStartingPoint"]] 	<- as.numeric(intervalStartingPoint)
-	if(!is.null(interval))
-		result[["interval"]] 			<- as.numeric(interval)
-	# Add class 'jfaSelection' to the result.
-	class(result) <- "jfaSelection"
-	return(result)
+                      bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, 
+                      ascending = TRUE, withReplacement = FALSE, seed = 1) {
+  # If the input for 'sampleSize' is of class 'jfaPlanning', extract the planned sample size
+  if (class(sampleSize) == "jfaPlanning")
+    sampleSize <- sampleSize$sampleSize 
+  # Perform error handling with respect to incompatible input options
+  if (units == "records" && sampleSize > nrow(population))
+    stop("Cannot take a sample larger than the population size")
+  if (!(algorithm %in% c("random", "cell", "interval")) || length(algorithm) != 1)
+    stop("algorithm must be one of 'random', 'cell', or 'interval'.")
+  if (!(units %in% c("records", "mus")) || length(units) != 1)
+    stop("units must be one of 'records' or 'mus'.")
+  if (units == "mus" && is.null(bookValues))
+    stop("Book values must be specified if 'units = mus' is used.")
+  if (!is.null(bookValues) && length(bookValues) != 1)
+    stop("Specify one column for the book values")
+  if (!is.null(bookValues) && !(bookValues %in% colnames(population)))
+    stop("The book value column cannot be located in the population data.")
+  interval <- NULL
+  # Convert the population to a data frame
+  population <- as.data.frame(population)
+  rownames(population) <- 1:nrow(population)
+  bv <- NULL
+  if (!is.null(bookValues))
+    bv <- population[, bookValues]
+  if (units == "mus" && sampleSize > sum(bv))
+    stop("Cannot take a sample larger than the population value")
+  if (ordered && !is.null(bv)) {
+    population <- population[order(bv, decreasing = !ascending), ]
+    bv <- population[, bookValues]
+  }
+  if (!is.null(bv) && any(bv < 0)) {
+    warning("The book values contain negative values, these are removed from the data")
+    negativeValues <- which(bv < 0)
+    population <- population[-negativeValues, ]
+    bv <- population[, bookValues]
+  }
+  # Set a seed for reproducibility
+  set.seed(seed)
+  # Sampling algorithms:
+  if (algorithm == "random" && units == "records") {
+    # 1. Random record sampling
+    index <- sample(rownames(population), size = sampleSize, replace = withReplacement)
+  } else if (algorithm == "random" && units == "mus") {
+    # 2. Random monetary unit sampling
+    if (sampleSize > nrow(population))
+      withReplacement <- TRUE
+    index <- sample(rownames(population), size = sampleSize, replace = withReplacement, prob = bv)
+  } else if (algorithm == "cell" && units == "records") {
+    # 3. Cell record sampling
+    interval <- nrow(population) / sampleSize
+    intervals <- 0:sampleSize * interval
+    index <- NULL
+    for (i in 1:sampleSize) {
+      intervalSelection <- stats::runif(min = intervals[i], max = intervals[i + 1], n = 1)
+      index <- c(index, as.numeric(rownames(population))[intervalSelection])
+    }
+  } else if (algorithm == "cell" && units == "mus") {
+    # 4. Cell monetary unit sampling
+    interval <- sum(bv) / sampleSize
+    intervals <- 0:sampleSize * interval
+    index <- NULL
+    for (i in 1:sampleSize) {
+      intervalSelection <- stats::runif(min = intervals[i], max = intervals[i + 1], n = 1)
+      index <- c(index, which(intervalSelection < cumsum(bv))[1])
+    }
+  } else if (algorithm == "interval" && units == "records") {
+    # 5. Fixed interval record sampling
+    interval <- nrow(population) / sampleSize
+    intervalSelection <- intervalStartingPoint + 0:(sampleSize - 1) * interval
+    mat <- as.numeric(rownames(population))
+    index <- mat[intervalSelection]
+  } else if (algorithm == "interval" && units == "mus") {
+    # 6. Fixed interval monetary unit sampling
+    interval <- sum(bv) / sampleSize
+    intervalSelection <- intervalStartingPoint + 0:(sampleSize - 1) * interval
+    index <- NULL
+    for (i in 1:sampleSize) {
+      index <- c(index, which(intervalSelection[i] < cumsum(bv))[1])
+    }
+  }
+  # Gather output
+  count <- as.numeric(table(index))
+  rowNumber <- as.numeric(unique(index))
+  if (length(rowNumber) < sampleSize)
+    warning("The sample contains fewer observations than the specified sample size")
+  sample <- cbind(rowNumber, count, population[rowNumber, ])
+  rownames(sample) <- 1:nrow(sample)
+  colnames(sample) <- c("rowNumber", "count", colnames(population))
+  # Create the main results object.
+  result <- list()
+  result[["population"]] 			<- as.data.frame(population)
+  result[["sample"]] 				<- as.data.frame(sample)
+  result[["populationSize"]] 		<- as.numeric(nrow(population))
+  result[["requestedSampleSize"]] 	<- as.numeric(sampleSize)
+  result[["obtainedSampleSize"]] 	<- as.numeric(nrow(sample))
+  result[["units"]] 				<- as.character(units)
+  result[["algorithm"]] 			<- as.character(algorithm)
+  result[["bookValues"]] 			<- as.character(bookValues)
+  result[["intervalStartingPoint"]] <- as.numeric(intervalStartingPoint)
+  if (!is.null(interval))
+    result[["interval"]] 			<- as.numeric(interval)
+  # Add class 'jfaSelection' to the result.
+  class(result) <- "jfaSelection"
+  return(result)
 }

@@ -110,172 +110,172 @@
 #' @export
 
 auditPrior <- function(confidence = 0.95, likelihood = "binomial", method = "none", expectedError = 0, 
-						N = NULL, materiality = NULL, ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, 
-						factor = 1, sampleN = 0, sampleK = 0){
-
-	# Perform error handling with respect to incompatible input options
-	if(confidence >= 1 || confidence <= 0 || is.null(confidence))
-		stop("Specify a value for the confidence likelihood. Possible values lie within the range of 0 to 1.")
-	
-	if(!(likelihood %in% c("poisson", "binomial", "hypergeometric")))
-		stop("Specify a valid likelihood. Possible options are 'poisson', 'binomial', and 'hypergeometric'.")
-	
-	if(!(method %in% c("none", "median", "hypotheses", "arm", "sample", "factor")))
-		stop("Currently only method = 'none', 'median', 'hypotheses', 'arm', 'sample', and 'factor' are supported")
-		
-	if(is.null(materiality) && method %in% c("median", "hypotheses", "arm"))
-		stop("The methods 'arm', 'median', and 'hypotheses' require that you specify a value for the materiality.")
-
-	if(likelihood == "hypergeometric" && (is.null(N) || N <= 0))
-		stop("The hypergeometric likelihood requires that you specify a positive value for the populatin size N.")
-
-	if(expectedError < 0)
-		stop("The expected errors must be zero or larger than zero.")
-
-	if(expectedError >= 1 && method != "none")
-		stop("The expected errors must be entered as a proportion to use this prior construction method.")
-
-	# Create the prior distribution depending on the specified method
-	if(method == "none"){
-		nPrior <- 0
-		kPrior <- 0
-	} else if(method == "arm"){
-		if(is.null(ir) || is.null(cr) || is.null(materiality))
-			stop("Method = 'arm' requires non-null 'materiality', 'ir', and 'cr' arguments.")
-		nPlus <- planning(confidence = confidence, likelihood = likelihood, expectedError = expectedError, N = N, materiality = materiality, prior = TRUE)$sampleSize
-		alpha <- (1 - confidence) / (ir * cr)
-		nMin <- planning(confidence = 1 - alpha, likelihood = likelihood, expectedError = expectedError, N = N, materiality = materiality, prior = TRUE)$sampleSize
-		kPlus <- nPlus * expectedError
-		kMin <-  nMin * expectedError
-		nPrior <- nPlus - nMin
-		kPrior <- kPlus - kMin
-	} else if(method == "median"){
-		if(likelihood == "hypergeometric")
-			stop("Method = 'median' is not supported for the hypergeometric likelihood.")
-		probH1 <- probH0 <- 0.5
-		if(expectedError == 0){
-			nPrior <- switch(likelihood, "poisson" = -(log(probH1) / materiality), "binomial" = log(probH1) / log(1 - materiality) - 1)
-			kPrior <- 0
-		} else {
-			if(likelihood == "binomial"){
-				alpha <- (-4 * materiality * expectedError + 3 * materiality - expectedError) / (3 * (materiality - expectedError))
-				beta <- (4 * materiality * expectedError - materiality - 5 * expectedError + 2) / (3 * (materiality - expectedError))
-				kPrior <- alpha - 1
-				nPrior <- beta + kPrior - 1
-			} else if(likelihood == "poisson"){
-				for(alpha in seq(1, 5, 0.001)){
-					beta <- (alpha - 1) / expectedError
-					median <- stats::qgamma(p = 0.5, shape = alpha, rate = beta)
-					mode <- (alpha - 1) / beta
-					if(round(median, 3) == materiality && round(mode, 3) == expectedError){
-						break
-					}
-				}
-				kPrior <- alpha - 1
-				nPrior <- beta
-			}
-		}
-	} else if(method == "hypotheses"){
-		if(likelihood == "hypergeometric")
-			stop("Method = 'hypotheses' is not supported for the hypergeometric likelihood.")
-		if(is.null(pHplus) && is.null(pHmin))
-			stop("Method = 'hypotheses' requires non-null 'materiality' and 'pHplus' or 'pHplus' arguments.")
-		if((!is.null(pHplus) && !is.null(pHmin)) && pHplus + pHmin != 1)
-			stop("The values for 'pHplus' and 'pHmin' should sum to one.")  
-		if(is.null(pHplus) && !is.null(pHmin)){
-			probH1 <- 1 - pHmin
-		} else {
-			probH1 <- pHplus
-		}
-		probH0 <- 1 - probH1
-		if(expectedError != 0)
-			stop("Expected errors are not supported for method = 'hypotheses'.")
-		nPrior <- switch(likelihood, "poisson" = -(log(probH1) / materiality), "binomial" = log(probH1) / log(1 - materiality) - 1)
-		kPrior <- 0
-	} else if(method == "sample"){
-		if(is.null(sampleN) || is.null(sampleK))
-			stop("Method = 'sample' requires non-null 'sampleN', and 'sampleK' arguments.")
-		nPrior <- sampleN
-		kPrior <- sampleK
-	} else if(method == "factor"){
-		if(is.null(sampleN) || is.null(sampleK) || is.null(factor))
-			stop("Method = 'factor' requires non-null 'factor', 'sampleN', and 'sampleN=K' arguments.")  
-		nPrior <- sampleN * factor
-		kPrior <- sampleK * factor 
-	}
-
-	# Create the main results object	
-	result <- list()
-	result[["confidence"]]   	<- as.numeric(confidence)
-	result[["likelihood"]]   	<- as.character(likelihood)
-	result[["method"]]       	<- as.character(method)
-	result[["expectedError"]] 	<- as.numeric(expectedError)
-	result[["N"]]            	<- as.numeric(N)
-	if(!is.null(materiality))
-		result[["materiality"]]  <- as.numeric(materiality)
-	# Create the description section
-	result[["description"]]				<- list()
-	result[["description"]]$density  	<- switch(likelihood, "poisson" = "gamma", "binomial" = "beta", "hypergeometric" = "beta-binomial")
-	result[["description"]]$implicitk  	<- as.numeric(kPrior)
-	result[["description"]]$implicitn	<- as.numeric(nPrior)
-	result[["description"]]$alpha   	<- as.numeric(1 + kPrior)
-	result[["description"]]$beta   		<- switch(likelihood, "poisson" = nPrior, "binomial" = 1 + nPrior - kPrior, "hypergeometric" = 1 + nPrior - kPrior)
-	# Create the statistics section
-	result[["statistics"]] 				<- list()
-	result[["statistics"]]$mode 		<- switch(likelihood, 
-													"poisson" = (result[["description"]]$alpha - 1) / result[["description"]]$beta,
-													"binomial" = (result[["description"]]$alpha - 1) / (result[["description"]]$alpha + result[["description"]]$beta - 2),
-													"hypergeometric" = which.max(.dBetaBinom(x = 0:result[["N"]], N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta)) - 1)
-	result[["statistics"]]$mean 		<- switch(likelihood, 
-													"poisson" = result[["description"]]$alpha / result[["description"]]$beta,
-													"binomial" = result[["description"]]$alpha / (result[["description"]]$alpha + result[["description"]]$beta),
-													"hypergeometric" = result[["description"]]$alpha / (result[["description"]]$alpha + result[["description"]]$beta) * result[["N"]])
-	result[["statistics"]]$median 		<- switch(likelihood, 
-													"poisson" = stats::qgamma(0.5, shape = result[["description"]]$alpha, rate = result[["description"]]$beta),
-													"binomial" = stats::qbeta(0.5, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta),
-													"hypergeometric" = .qBetaBinom(0.5, N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta))
-	result[["statistics"]]$ub 			<- switch(likelihood, 
-													"poisson" = stats::qgamma(confidence, shape = result[["description"]]$alpha, rate = result[["description"]]$beta),
-													"binomial" = stats::qbeta(confidence, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta),
-													"hypergeometric" = .qBetaBinom(confidence, N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta))									
-	result[["statistics"]]$precision 	<- ifelse(likelihood == "hypergeometric", 
-													yes = (result[["statistics"]]$ub - result[["statistics"]]$mode) / result[["N"]],
-													no = result[["statistics"]]$ub - result[["statistics"]]$mode)
-	# Create the specifics section
-	if(method != "none")
-		result[["specifics"]] 			<- list()
-	if(method == "median" || method == "hypotheses"){
-		result[["specifics"]]$pHmin   	<- as.numeric(probH0)
-		result[["specifics"]]$pHplus  	<- as.numeric(probH1)
-	} else if(method == "sample" || method == "factor"){
-		result[["specifics"]]$sampleN   <- as.numeric(sampleN)
-		result[["specifics"]]$sampleK   <- as.numeric(sampleK)
-		result[["specifics"]]$factor   	<- as.numeric(factor)    
-	} else if(method == "arm"){
-		result[["specifics"]]$ir       	<- as.numeric(ir)
-		result[["specifics"]]$cr       	<- as.numeric(cr)  
-	}
-	# Create the hypotheses section
-	if(!is.null(result$materiality)){
-		result[["hypotheses"]] 				<- list()
-		result[["hypotheses"]]$hypotheses 	<- c(paste0("H-: \u0398 < ", materiality), paste0("H+: \u0398 > ", materiality))
-		result[["hypotheses"]]$pHmin 		<- switch(likelihood, 
-														"poisson" = stats::pgamma(materiality, shape = result[["description"]]$alpha, rate = result[["description"]]$beta),
-														"binomial" = stats::pbeta(materiality, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta),
-														"hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N"]]), N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta))
-		result[["hypotheses"]]$pHplus 		<- switch(likelihood, 
-														"poisson" = stats::pgamma(materiality, shape = result[["description"]]$alpha, rate = result[["description"]]$beta, lower.tail = FALSE),
-														"binomial" = stats::pbeta(materiality, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta, lower.tail = FALSE),
-														"hypergeometric" = 1 - result[["hypotheses"]]$pHmin)
-		result[["hypotheses"]]$oddsHmin 	<- result[["hypotheses"]]$pHmin / result[["hypotheses"]]$pHplus
-		result[["hypotheses"]]$oddsHplus 	<- 1 / result[["hypotheses"]]$oddsHmin
-	}
-	# Functional form of the prior distribution.
-	result[["prior"]] <- switch(likelihood, 
-								"poisson" = paste0("gamma(\u03B1 = ", round(result[["description"]]$alpha, 3), ", \u03B2 = ", round(result[["description"]]$beta, 3), ")"),
-								"binomial" = paste0("beta(\u03B1 = ", round(result[["description"]]$alpha, 3), ", \u03B2 = ", round(result[["description"]]$beta, 3), ")"),
-								"hypergeometric" = paste0("beta-binomial(N = ", result[["N"]], ", \u03B1 = ", round(result[["description"]]$alpha, 3), ", \u03B2 = ", round(result[["description"]]$beta, 3), ")"))	
-	# Add class 'jfaPrior' to the result.
-	class(result)       <- "jfaPrior"
-	return(result)
+                       N = NULL, materiality = NULL, ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, 
+                       factor = 1, sampleN = 0, sampleK = 0) {
+  
+  # Perform error handling with respect to incompatible input options
+  if (confidence >= 1 || confidence <= 0 || is.null(confidence))
+    stop("Specify a value for the confidence likelihood. Possible values lie within the range of 0 to 1.")
+  
+  if (!(likelihood %in% c("poisson", "binomial", "hypergeometric")))
+    stop("Specify a valid likelihood. Possible options are 'poisson', 'binomial', and 'hypergeometric'.")
+  
+  if (!(method %in% c("none", "median", "hypotheses", "arm", "sample", "factor")))
+    stop("Currently only method = 'none', 'median', 'hypotheses', 'arm', 'sample', and 'factor' are supported")
+  
+  if (is.null(materiality) && method %in% c("median", "hypotheses", "arm"))
+    stop("The methods 'arm', 'median', and 'hypotheses' require that you specify a value for the materiality.")
+  
+  if (likelihood == "hypergeometric" && (is.null(N) || N <= 0))
+    stop("The hypergeometric likelihood requires that you specify a positive value for the populatin size N.")
+  
+  if (expectedError < 0)
+    stop("The expected errors must be zero or larger than zero.")
+  
+  if (expectedError >= 1 && method != "none")
+    stop("The expected errors must be entered as a proportion to use this prior construction method.")
+  
+  # Create the prior distribution depending on the specified method
+  if (method == "none") {
+    nPrior <- 0
+    kPrior <- 0
+  } else if (method == "arm") {
+    if (is.null(ir) || is.null(cr) || is.null(materiality))
+      stop("Method = 'arm' requires non-null 'materiality', 'ir', and 'cr' arguments.")
+    nPlus 	<- planning(confidence = confidence, likelihood = likelihood, expectedError = expectedError, N = N, materiality = materiality, prior = TRUE)$sampleSize
+    alpha 	<- (1 - confidence) / (ir * cr)
+    nMin 	<- planning(confidence = 1 - alpha, likelihood = likelihood, expectedError = expectedError, N = N, materiality = materiality, prior = TRUE)$sampleSize
+    kPlus 	<- nPlus * expectedError
+    kMin 	<- nMin * expectedError
+    nPrior 	<- nPlus - nMin
+    kPrior 	<- kPlus - kMin
+  } else if (method == "median") {
+    if (likelihood == "hypergeometric")
+      stop("Method = 'median' is not supported for the hypergeometric likelihood.")
+    probH1 <- probH0 <- 0.5
+    if (expectedError == 0) {
+      nPrior <- switch(likelihood, "poisson" = -(log(probH1) / materiality), "binomial" = log(probH1) / log(1 - materiality) - 1)
+      kPrior <- 0
+    } else {
+      if (likelihood == "binomial") {
+        alpha <- (-4 * materiality * expectedError + 3 * materiality - expectedError) / (3 * (materiality - expectedError))
+        beta <- (4 * materiality * expectedError - materiality - 5 * expectedError + 2) / (3 * (materiality - expectedError))
+        kPrior <- alpha - 1
+        nPrior <- beta + kPrior - 1
+      } else if (likelihood == "poisson") {
+        for (alpha in seq(1, 5, 0.001)) {
+          beta <- (alpha - 1) / expectedError
+          median <- stats::qgamma(p = 0.5, shape = alpha, rate = beta)
+          mode <- (alpha - 1) / beta
+          if (round(median, 3) == materiality && round(mode, 3) == expectedError) {
+            break
+          }
+        }
+        kPrior <- alpha - 1
+        nPrior <- beta
+      }
+    }
+  } else if (method == "hypotheses") {
+    if (likelihood == "hypergeometric")
+      stop("Method = 'hypotheses' is not supported for the hypergeometric likelihood.")
+    if (is.null(pHplus) && is.null(pHmin))
+      stop("Method = 'hypotheses' requires non-null 'materiality' and 'pHplus' or 'pHplus' arguments.")
+    if ((!is.null(pHplus) && !is.null(pHmin)) && pHplus + pHmin != 1)
+      stop("The values for 'pHplus' and 'pHmin' should sum to one.")  
+    if (is.null(pHplus) && !is.null(pHmin)) {
+      probH1 <- 1 - pHmin
+    } else {
+      probH1 <- pHplus
+    }
+    probH0 <- 1 - probH1
+    if (expectedError != 0)
+      stop("Expected errors are not supported for method = 'hypotheses'.")
+    nPrior <- switch(likelihood, "poisson" = -(log(probH1) / materiality), "binomial" = log(probH1) / log(1 - materiality) - 1)
+    kPrior <- 0
+  } else if (method == "sample") {
+    if (is.null(sampleN) || is.null(sampleK))
+      stop("Method = 'sample' requires non-null 'sampleN', and 'sampleK' arguments.")
+    nPrior <- sampleN
+    kPrior <- sampleK
+  } else if (method == "factor") {
+    if (is.null(sampleN) || is.null(sampleK) || is.null(factor))
+      stop("Method = 'factor' requires non-null 'factor', 'sampleN', and 'sampleN=K' arguments.")  
+    nPrior <- sampleN * factor
+    kPrior <- sampleK * factor 
+  }
+  
+  # Create the main results object	
+  result <- list()
+  result[["confidence"]]   	<- as.numeric(confidence)
+  result[["likelihood"]]   	<- as.character(likelihood)
+  result[["method"]]       	<- as.character(method)
+  result[["expectedError"]] <- as.numeric(expectedError)
+  result[["N"]]            	<- as.numeric(N)
+  if (!is.null(materiality))
+    result[["materiality"]]  <- as.numeric(materiality)
+  # Create the description section
+  result[["description"]]			<- list()
+  result[["description"]]$density  	<- switch(likelihood, "poisson" = "gamma", "binomial" = "beta", "hypergeometric" = "beta-binomial")
+  result[["description"]]$implicitk <- as.numeric(kPrior)
+  result[["description"]]$implicitn	<- as.numeric(nPrior)
+  result[["description"]]$alpha   	<- as.numeric(1 + kPrior)
+  result[["description"]]$beta   	<- switch(likelihood, "poisson" = nPrior, "binomial" = 1 + nPrior - kPrior, "hypergeometric" = 1 + nPrior - kPrior)
+  # Create the statistics section
+  result[["statistics"]] 			<- list()
+  result[["statistics"]]$mode 		<- switch(likelihood, 
+                                          "poisson" = (result[["description"]]$alpha - 1) / result[["description"]]$beta,
+                                          "binomial" = (result[["description"]]$alpha - 1) / (result[["description"]]$alpha + result[["description"]]$beta - 2),
+                                          "hypergeometric" = .modeBetaBinom(N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta) * result[["N"]])
+  result[["statistics"]]$mean 		<- switch(likelihood, 
+                                          "poisson" = result[["description"]]$alpha / result[["description"]]$beta,
+                                          "binomial" = result[["description"]]$alpha / (result[["description"]]$alpha + result[["description"]]$beta),
+                                          "hypergeometric" = result[["description"]]$alpha / (result[["description"]]$alpha + result[["description"]]$beta) * result[["N"]])
+  result[["statistics"]]$median 	<- switch(likelihood, 
+                                           "poisson" = stats::qgamma(0.5, shape = result[["description"]]$alpha, rate = result[["description"]]$beta),
+                                           "binomial" = stats::qbeta(0.5, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta),
+                                           "hypergeometric" = .qBetaBinom(0.5, N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta))
+  result[["statistics"]]$ub 		<- switch(likelihood, 
+                                        "poisson" = stats::qgamma(confidence, shape = result[["description"]]$alpha, rate = result[["description"]]$beta),
+                                        "binomial" = stats::qbeta(confidence, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta),
+                                        "hypergeometric" = .qBetaBinom(confidence, N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta))									
+  result[["statistics"]]$precision 	<- ifelse(likelihood == "hypergeometric", 
+                                              yes = (result[["statistics"]]$ub - result[["statistics"]]$mode) / result[["N"]],
+                                              no = result[["statistics"]]$ub - result[["statistics"]]$mode)
+  # Create the specifics section
+  if (method != "none")
+    result[["specifics"]] 			<- list()
+  if (method == "median" || method == "hypotheses") {
+    result[["specifics"]]$pHmin   	<- as.numeric(probH0)
+    result[["specifics"]]$pHplus  	<- as.numeric(probH1)
+  } else if (method == "sample" || method == "factor") {
+    result[["specifics"]]$sampleN   <- as.numeric(sampleN)
+    result[["specifics"]]$sampleK   <- as.numeric(sampleK)
+    result[["specifics"]]$factor   	<- as.numeric(factor)    
+  } else if (method == "arm") {
+    result[["specifics"]]$ir       	<- as.numeric(ir)
+    result[["specifics"]]$cr       	<- as.numeric(cr)  
+  }
+  # Create the hypotheses section
+  if (!is.null(result$materiality)) {
+    result[["hypotheses"]] 				<- list()
+    result[["hypotheses"]]$hypotheses 	<- c(paste0("H-: \u0398 < ", materiality), paste0("H+: \u0398 > ", materiality))
+    result[["hypotheses"]]$pHmin 		<- switch(likelihood, 
+                                             "poisson" = stats::pgamma(materiality, shape = result[["description"]]$alpha, rate = result[["description"]]$beta),
+                                             "binomial" = stats::pbeta(materiality, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta),
+                                             "hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N"]]), N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta))
+    result[["hypotheses"]]$pHplus 		<- switch(likelihood, 
+                                              "poisson" = stats::pgamma(materiality, shape = result[["description"]]$alpha, rate = result[["description"]]$beta, lower.tail = FALSE),
+                                              "binomial" = stats::pbeta(materiality, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta, lower.tail = FALSE),
+                                              "hypergeometric" = 1 - result[["hypotheses"]]$pHmin)
+    result[["hypotheses"]]$oddsHmin 	<- result[["hypotheses"]]$pHmin / result[["hypotheses"]]$pHplus
+    result[["hypotheses"]]$oddsHplus 	<- 1 / result[["hypotheses"]]$oddsHmin
+  }
+  # Functional form of the prior distribution.
+  result[["prior"]] <- switch(likelihood, 
+                              "poisson" = paste0("gamma(\u03B1 = ", round(result[["description"]]$alpha, 3), ", \u03B2 = ", round(result[["description"]]$beta, 3), ")"),
+                              "binomial" = paste0("beta(\u03B1 = ", round(result[["description"]]$alpha, 3), ", \u03B2 = ", round(result[["description"]]$beta, 3), ")"),
+                              "hypergeometric" = paste0("beta-binomial(N = ", result[["N"]], ", \u03B1 = ", round(result[["description"]]$alpha, 3), ", \u03B2 = ", round(result[["description"]]$beta, 3), ")"))	
+  # Add class 'jfaPrior' to the result.
+  class(result) <- "jfaPrior"
+  return(result)
 }
