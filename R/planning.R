@@ -204,7 +204,7 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
     if (likelihood == "hypergeometric")
       implicitK <- ceiling(implicitK)
     
-    while (i <= implicitK) { # Remove the number from the sampling frame and take the next one
+    while (i <= implicitK) { # Remove these numbers from the sampling frame for more efficient sampling
       samplingFrame <- samplingFrame[-iter]
       i <- samplingFrame[iter]
     }
