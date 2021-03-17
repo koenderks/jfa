@@ -12,7 +12,7 @@
 
 - Add a function `report()` that automatically generates an audit report.
 - Removed the `sampling()` function, which is now replaced entirely with the `selection()` function.
-- Changed the output of the `evaluation()` function when an estimator is used.
+- Changed the output of the `evaluation()` function when an estimator is used.hoi
 
 # jfa 0.4.0
 
