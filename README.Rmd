@@ -268,14 +268,14 @@ yBreaks           <- pretty(c(0, plotData[["count"]], max(plotData[["count"]]) +
 
 # Releases 
 releases          <- c("2020-01-01", "2020-08-01", "2020-09-01", "2020-11-01", "2021-01-01", "2021-03-01")
-releaseLabs       <- c("v0.1.0", "v0.2.0", "v0.3.0", "v0.4.0", "v0.5.0", "v0.5.1")
+releaseLabs       <- c("0.1.0", "0.2.0", "0.3.0", "0.4.0", "0.5.0", "0.5.1")
 
 p <- ggplot2::ggplot(plotData, ggplot2::aes(x = date, y = count)) +
       	ggplot2::geom_bar(stat = "identity", fill = rgb(65, 104, 195, maxColorValue = 255), 
       	                  col = "black", size = 1) +
 		    ggplot2::scale_x_date(name = "", breaks = xBreaks, labels = scales::date_format("%m-%Y")) +
 	    	ggplot2::scale_y_continuous(name = "", breaks = yBreaks, 
-										                labels = yBreaks, limits = c(0, max(yBreaks))) +
+										                labels = yBreaks, limits = c(0, (max(yBreaks) + 0.1 * max(yBreaks)))) +
 		    ggplot2::labs(title = "Monthly CRAN downloads since January 2020",
 		                  subtitle = "Source: http://cran-logs.rstudio.com") +
       	ggplot2::geom_text(mapping = ggplot2::aes(x = date, y = count + 50), label = plotData[["count"]]) +
@@ -284,10 +284,10 @@ p <- ggplot2::ggplot(plotData, ggplot2::aes(x = date, y = count)) +
 												    xend = as.Date(releases), 
 												    yend = rep(max(yBreaks) - 100, length(releases))), 
 						      	        mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend), 
-												    colour = "#555555", size=1, curvature = 0, 
+												    colour = "#555555", size = 1, curvature = 0, 
 													  arrow = ggplot2::arrow(length = ggplot2::unit(0.025, "npc"))) +
 		    ggplot2::annotate(geom = "text", x = as.Date(releases), y = rep(max(yBreaks), length(releases)), 
-							              label = releaseLabs, vjust = -0.25) +
+							              label = releaseLabs, vjust = -0.25, angle = 45, size = 4) +
 		    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10, 
 	                                                       margin = ggplot2::margin(5, b = 10)),
 					            axis.text.y = ggplot2::element_text(size = 12),
@@ -352,10 +352,10 @@ world.map <-  ggplot2::ggplot(data=world.points) +
                 ggplot2::scale_fill_gradient2(low = "white", 
                                               mid = rgb(107, 146, 237, maxColorValue = 255), 
                                               high = rgb(48, 68, 115, maxColorValue = 255), 
-                                              midpoint = 2500,
+                                              midpoint = 5000,
                                               na.value = "white",
                                               name = "", 
-                                              limits = c(0, 5000)) +
+                                              limits = c(0, 10000)) +
                 ggplot2::theme(axis.line = ggplot2::element_blank(),
                                axis.text = ggplot2::element_blank(),
                                axis.ticks = ggplot2::element_blank(),
