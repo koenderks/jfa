@@ -1,12 +1,7 @@
-on:
-  push:
-    branches:
-      - '*'
-  pull_request:
-    branches:
-      - master
+on: 
+  create
 
-name: R-CMD
+name: R-CMD-newbranch
 
 jobs:
   R-CMD-check:
