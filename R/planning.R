@@ -182,6 +182,9 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = "poisson
       stop("The hypergeometric likelihood requires that you specify a materiality.")
     populationK <- ceiling(materiality * N)
   }
+
+  if (!is.null(N) && N < maxSize)
+    maxSize <- N
   
   # Define the sampling frame (the possible sample sizes)
   samplingFrame <- seq(from = 0, to = maxSize, by = increase)
