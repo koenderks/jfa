@@ -145,6 +145,7 @@
 <ul>
 <li>Add statistical tables with output (sample sizes, upper limits, Bayes factors) to the GitHub repository in pdf format.</li>
 <li>Changed the computation method of the sample sizes for hypergeometric and beta-binomial distributions so that they are faster.</li>
+<li>Fixed an error in the hypergeometric upper bound calculation, which was accidentally based on the <code><a href="https://rdrr.io/r/stats/Hypergeometric.html">phyper()</a></code> function instead of the <code><a href="https://rdrr.io/r/stats/Hypergeometric.html">qhyper()</a></code> function.</li>
 </ul>
 </div>
     <div id="jfa-051" class="section level1">
