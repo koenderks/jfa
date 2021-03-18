@@ -1,7 +1,9 @@
 # jfa 0.5.2
 
+- Update the poisson evaluation calculation so that it allows for fractional errors.
 - Add statistical tables with output (sample sizes, upper limits, Bayes factors) to the GitHub repository in pdf format.
 - Changed the computation method of the sample sizes for hypergeometric and beta-binomial distributions so that they are faster.
+- Fixed an error in the hypergeometric upper bound calculation that was accidentally based on the `phyper()` function instead of the `qhyper()` function, which resulted in lower bounds than usual.
 
 # jfa 0.5.1
 

@@ -11,7 +11,7 @@
 #'           increase = 1, maxSize = 5000)
 #'
 #' @param confidence    the confidence level desired from the confidence bound (on a scale from 0 to 1). Defaults to 0.95, or 95\% confidence.
-#' @param expectedError a fraction representing the percentage of expected mistakes in the sample relative to the total size, or a number (>= 1) that represents the number of expected mistakes.
+#' @param expectedError a fraction representing the percentage of expected mistakes in the sample relative to the total size, or a number (>= 1) that represents the number of expected mistakes. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done.
 #' @param likelihood    can be one of \code{binomial}, \code{poisson}, or \code{hypergeometric}.
 #' @param N             the population size (required for hypergeometric calculations).
 #' @param materiality   a value between 0 and 1 representing the materiality of the audit as a fraction of the total size or value. Can be \code{NULL}, but \code{minPrecision} should be specified in that case.

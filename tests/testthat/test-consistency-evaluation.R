@@ -45,11 +45,11 @@ test_that(desc = "(id: f5-v0.1.0-t4) Evaluation with binomial method with prior"
 test_that(desc = "(id: f5-v0.1.0-t5) Evaluation with hypergeometric method", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
-  jfaRes <- planning(materiality = 0.05, likelihood = "poisson")
+  jfaRes <- planning(materiality = 0.05, likelihood = "hypergeometric", N = nrow(population))
   samp <- selection(population, sampleSize = jfaRes, units = "records", algorithm = "random", ordered = TRUE)$sample
   samp$auditValue <- samp[["bookValue"]]
   jfaEval <- evaluation(sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "hypergeometric", N = 1000, materiality = 0.05)
-  expect_equal(jfaEval[["confBound"]], 0.04180536, tolerance = 0.001)
+  expect_equal(jfaEval[["confBound"]], 0.006, tolerance = 0.001)
 })
 
 test_that(desc = "(id: f5-v0.1.0-t6) Evaluation with hypergeometric method with prior", {

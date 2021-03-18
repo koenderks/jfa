@@ -12,7 +12,7 @@ planning(confidence = 0.95, expectedError = 0, likelihood = "poisson", N = NULL,
 \arguments{
 \item{confidence}{the confidence level desired from the confidence bound (on a scale from 0 to 1). Defaults to 0.95, or 95\% confidence.}
 
-\item{expectedError}{a fraction representing the percentage of expected mistakes in the sample relative to the total size, or a number (>= 1) that represents the number of expected mistakes.}
+\item{expectedError}{a fraction representing the percentage of expected mistakes in the sample relative to the total size, or a number (>= 1) that represents the number of expected mistakes. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done.}
 
 \item{likelihood}{can be one of \code{binomial}, \code{poisson}, or \code{hypergeometric}.}
 

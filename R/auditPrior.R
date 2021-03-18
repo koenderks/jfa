@@ -12,16 +12,16 @@
 #' @param confidence      the confidence level desired from the confidence bound (on a scale from 0 to 1). Defaults to 0.95, or 95\% confidence.
 #' @param likelihood      can be one of \code{binomial}, \code{poisson}, or \code{hypergeometric}. See the Details section for more information.
 #' @param method          the method by which the prior distribution is constructed. Defaults to the \code{none} method, which incorporates no prior information. Can be one of \code{none}, \code{median}, \code{hypotheses}, \code{arm}, \code{sample} or \code{factor}. See the Details section for more information.
-#' @param expectedError   a fraction representing the percentage of expected mistakes in the sample relative to the total size, or a number (>= 1) that represents the number of expected mistakes.
+#' @param expectedError   a fraction representing the percentage of expected mistakes in the sample relative to the total size, or a number (>= 1) that represents the number of expected mistakes. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done.
 #' @param N               the population size (only required when \code{likelihood = 'hypergeometric'}).
 #' @param materiality     a value between 0 and 1 representing the materiality of the audit as a fraction of the total size or value. Can be \code{NULL} for some methods.
 #' @param ir              the inherent risk probability from the audit risk model. Defaults to 1 for 100\% risk.
 #' @param cr              the inherent risk probability from the audit risk model. Defaults to 1 for 100\% risk.
-#' @param pHmin           When using \code{method = 'hypotheses'}, the prior probability of the hypothesis \eqn{\theta <} materiality.
-#' @param pHplus          When using \code{method = 'hypotheses'}, the prior probability of the hypothesis \eqn{\theta >} materiality.
-#' @param factor          When using \code{method = 'factor'}, the value of the weighting factor for the results of the previous sample.
-#' @param sampleN         When using method \code{sample} or \code{factor}, the number of transactions that were inspected in the previous sample.
-#' @param sampleK         When using method \code{sample} or \code{factor}, the total taint in the previous sample.
+#' @param pHmin           when using \code{method = 'hypotheses'}, the prior probability of the hypothesis \eqn{\theta <} materiality.
+#' @param pHplus          when using \code{method = 'hypotheses'}, the prior probability of the hypothesis \eqn{\theta >} materiality.
+#' @param factor          when using \code{method = 'factor'}, the value of the weighting factor for the results of the previous sample.
+#' @param sampleN         when using method \code{sample} or \code{factor}, the number of transactions that were inspected in the previous sample.
+#' @param sampleK         when using method \code{sample} or \code{factor}, the total taint in the previous sample.
 #' 
 #' @details This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
 #' 

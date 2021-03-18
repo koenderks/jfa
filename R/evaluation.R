@@ -253,97 +253,115 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
   # Calculate the results depending on the specified method
   if (method == "poisson") {
     if ((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior") {
-      bound <- stats::qgamma(p = confidence, shape = 1 + kPrior + t, rate = 1 + nPrior + n)
+      # Bayesian evaluation using gamma distribution
+      bound <- stats::qgamma(p = confidence, shape = 1 + kPrior + t, rate = nPrior + n)
       mle <- (1 + kPrior + t - 1) / (1 + nPrior + n)
       precision <- bound - mle
     } else {
-      bound <- stats::poisson.test(x = k, T = n, r = materiality, alternative = "less", conf.level = confidence)$conf.int[2]
+      # Classical evaluation using Poisson distribution
+      bound <- stats::qgamma(p = confidence, shape = 1 + t, rate = n)
       mle <- k / n
       precision <- bound - mle
     }
-  } else if (method == "binomial") {
+  } else if (method == "binomial") { 
+    # Bayesian evaluation using beta distribution
     if ((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior") {
       bound <- stats::qbeta(p = confidence, shape1 = 1 + kPrior + t, shape2 = 1 + nPrior - kPrior + n - t)
       mle <- (1 + kPrior + t - 1) / (1 + kPrior + t + 1 + nPrior - kPrior + n - t)
       precision <- bound - mle
     } else {
+      # Classical evaluation using binomial distribution
       bound <- stats::binom.test(x = k, n = n, p = materiality, alternative = "less", conf.level = confidence)$conf.int[2]
       mle <- k / n
       precision <- bound - mle
     }
   } else if (method == "hypergeometric") {
-    if ((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior") {
       if (is.null(N))
-        stop("Evaluation with beta-binomial distribution requires that you specify the population size N")
+        stop("Evaluation with hypergeometric likelihood requires that you specify the population size N")
+    # Hypergeometric evaluation using beta-binomial distribution
+    if ((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior") {
       bound <- .qBetaBinom(p = confidence, N = N, shape1 = 1 + kPrior + k, shape2 = 1 + nPrior - kPrior + n - k) / N
-      mle <- (which.max(.dBetaBinom(x = 0:N, N = N, shape1 = 1 + kPrior + k, shape2 = 1 + nPrior - kPrior + n - k)) - 1) / N
+      mle <- .modeBetaBinom(N = N, shape1 = 1 + kPrior + k, shape2 = 1 + nPrior - kPrior + n - k)
       precision <- bound - mle
     } else {
+      # Classical evaluation using hypergeometric distribution
       if (materiality == 1)
         stop("Evaluation with the hypergeometric distribution requires that you specify the materiality")
       populationK <- materiality * N
-      bound <- stats::phyper(q = k, m = populationK, n = N - populationK, k = n)
-      mle <- k / n
+      bound <- stats::qhyper(p = confidence, m = populationK, n = ceiling(N - populationK), k = n) / N
+      mle <- floor( ((n + 1) * (populationK + 1)) / (N + 2) ) / N
       precision <- bound - mle
     }
   } else if (method == "stringer") {
+    # Classical evaluation using the Stringer bound
     out 		<- .stringerBound(taints, confidence, n)
     bound 		<- out[["confBound"]]
     mle 		<- out[["mle"]]
     precision 	<- out[["precision"]]
   } else if (method == "stringer-meikle") {
+    # Classical evaluation using the Stringer bound with Meikle's adjustment
     out 		<- .stringerBound(taints, confidence, n, correction = "meikle")
     bound 		<- out[["confBound"]]
     mle 		<- out[["mle"]]
     precision 	<- out[["precision"]]
   } else if (method == "stringer-lta") {
+    # Classical evaluation using the Stringer bound with the LTA adjustment
     out 		<- .stringerBound(taints, confidence, n, correction = "lta")
     bound 		<- out[["confBound"]]
     mle 		<- out[["mle"]]
     precision 	<- out[["precision"]]
   } else if (method == "stringer-pvz") {
+    # Classical evaluation using the Stringer bound with PvZ adjustment
     out 		<- .stringerBound(taints, confidence, n, correction = "pvz")
     bound 		<- out[["confBound"]]
     mle 		<- out[["mle"]]
     precision 	<- out[["precision"]]
   } else if (method == "rohrbach") {
+    # Classical evaluation using Rohrbachs augmented variance bound
     out 		<- .rohrbachBound(taints, confidence, n, N, rohrbachDelta = rohrbachDelta)
     bound 		<- out[["confBound"]]
     mle 		<- out[["mle"]]
     precision 	<- out[["precision"]]
   } else if (method == "moment") {
+    # Classical evaluation using the Modified Moment bound
     out 		<- .momentBound(taints, confidence, n, momentPoptype = momentPoptype)
     bound 		<- out[["confBound"]]
     mle 		<- out[["mle"]]
     precision 	<- out[["precision"]]
   } else if (method == "coxsnell") {
+    # Bayesian evaluation using the Cox and Snell bound 
     out 		<- .coxAndSnellBound(taints, confidence, n, csA, csB, csMu, aPrior = 1 + kPrior, bPrior = 1 + nPrior - kPrior)
     bound 		<- out[["confBound"]]
     mle 		<- out[["mle"]]
     precision 	<- out[["precision"]]
   } else if (method == "mpu") {
+    # Classical evaluation using the Mean-per-unit estimator
     out 		<- .mpuMethod(taints, confidence, n)
     bound 		<- out[["confBound"]]
     mle 		<- out[["mle"]]
     precision 	<- out[["precision"]]		
   } else if (method == "direct") {
+    # Classical evaluation using the Direct estimator
     out 		<- .directMethod(bv, av, confidence, N, n, populationBookValue)
     mle 		<- out[["pointEstimate"]]
     precision 	<- out[["precision"]]
   } else if (method == "difference") {
+    # Classical evaluation using the Difference estimator
     out 		<- .differenceMethod(bv, av, confidence, N, n, populationBookValue)
     mle 		<- out[["pointEstimate"]]
     precision 	<- out[["precision"]]
   } else if (method == "quotient") {
+    # Classical evaluation using the Quotient estimator
     out 		<- .quotientMethod(bv, av, confidence, N, n, populationBookValue)
     mle 		<- out[["pointEstimate"]]
     precision 	<- out[["precision"]]
   } else if (method == "regression") {
+    # Classical evaluation using the Regression estimator
     out 		<- .regressionMethod(bv, av, confidence, N, n, populationBookValue)
     mle 		<- out[["pointEstimate"]]
     precision 	<- out[["precision"]]
   } else if (method == "newmethod") {
-    # Add new methods here
+    # Evaluation using a new (to be added) method
     #
     # out 		<- .functionFromMethodsFile()
     # bound 	<- out[["confBound"]]
@@ -443,7 +461,7 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
     result[["posterior"]][["statistics"]]$mode 		<- switch(method, 
                                                            "poisson" = (result[["posterior"]][["description"]]$alpha - 1) / result[["posterior"]][["description"]]$beta,
                                                            "binomial" = (result[["posterior"]][["description"]]$alpha - 1) / (result[["posterior"]][["description"]]$alpha + result[["posterior"]][["description"]]$beta - 2),
-                                                           "hypergeometric" = which.max(.dBetaBinom(x = 0:result[["N"]], N = result[["N"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta)) - 1)
+                                                           "hypergeometric" = .modeBetaBinom(N = result[["N"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta))
     result[["posterior"]][["statistics"]]$mean 		<- switch(method, 
                                                            "poisson" = result[["posterior"]][["description"]]$alpha / result[["posterior"]][["description"]]$beta,
                                                            "binomial" = result[["posterior"]][["description"]]$alpha / (result[["posterior"]][["description"]]$alpha + result[["posterior"]][["description"]]$beta),

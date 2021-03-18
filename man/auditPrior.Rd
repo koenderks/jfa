@@ -15,7 +15,7 @@ auditPrior(confidence = 0.95, likelihood = "binomial", method = "none",
 
 \item{method}{the method by which the prior distribution is constructed. Defaults to the \code{none} method, which incorporates no prior information. Can be one of \code{none}, \code{median}, \code{hypotheses}, \code{arm}, \code{sample} or \code{factor}. See the Details section for more information.}
 
-\item{expectedError}{a fraction representing the percentage of expected mistakes in the sample relative to the total size, or a number (>= 1) that represents the number of expected mistakes.}
+\item{expectedError}{a fraction representing the percentage of expected mistakes in the sample relative to the total size, or a number (>= 1) that represents the number of expected mistakes. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done.}
 
 \item{N}{the population size (only required when \code{likelihood = 'hypergeometric'}).}
 
@@ -25,15 +25,15 @@ auditPrior(confidence = 0.95, likelihood = "binomial", method = "none",
 
 \item{cr}{the inherent risk probability from the audit risk model. Defaults to 1 for 100\% risk.}
 
-\item{pHmin}{When using \code{method = 'hypotheses'}, the prior probability of the hypothesis \eqn{\theta <} materiality.}
+\item{pHmin}{when using \code{method = 'hypotheses'}, the prior probability of the hypothesis \eqn{\theta <} materiality.}
 
-\item{pHplus}{When using \code{method = 'hypotheses'}, the prior probability of the hypothesis \eqn{\theta >} materiality.}
+\item{pHplus}{when using \code{method = 'hypotheses'}, the prior probability of the hypothesis \eqn{\theta >} materiality.}
 
-\item{factor}{When using \code{method = 'factor'}, the value of the weighting factor for the results of the previous sample.}
+\item{factor}{when using \code{method = 'factor'}, the value of the weighting factor for the results of the previous sample.}
 
-\item{sampleN}{When using method \code{sample} or \code{factor}, the number of transactions that were inspected in the previous sample.}
+\item{sampleN}{when using method \code{sample} or \code{factor}, the number of transactions that were inspected in the previous sample.}
 
-\item{sampleK}{When using method \code{sample} or \code{factor}, the total taint in the previous sample.}
+\item{sampleK}{when using method \code{sample} or \code{factor}, the total taint in the previous sample.}
 }
 \value{
 An object of class \code{jfaPrior} containing:
