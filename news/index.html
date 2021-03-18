@@ -143,9 +143,10 @@
 <a href="#jfa-052" class="anchor"></a>jfa 0.5.2<small> Unreleased </small>
 </h1>
 <ul>
+<li>Update the poisson evaluation calculation so that it allows for fractional errors.</li>
 <li>Add statistical tables with output (sample sizes, upper limits, Bayes factors) to the GitHub repository in pdf format.</li>
 <li>Changed the computation method of the sample sizes for hypergeometric and beta-binomial distributions so that they are faster.</li>
-<li>Fixed an error in the hypergeometric upper bound calculation, which was accidentally based on the <code><a href="https://rdrr.io/r/stats/Hypergeometric.html">phyper()</a></code> function instead of the <code><a href="https://rdrr.io/r/stats/Hypergeometric.html">qhyper()</a></code> function.</li>
+<li>Fixed an error in the hypergeometric upper bound calculation that was accidentally based on the <code><a href="https://rdrr.io/r/stats/Hypergeometric.html">phyper()</a></code> function instead of the <code><a href="https://rdrr.io/r/stats/Hypergeometric.html">qhyper()</a></code> function, which resulted in lower bounds than usual.</li>
 </ul>
 </div>
     <div id="jfa-051" class="section level1">
