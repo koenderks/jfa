@@ -169,7 +169,7 @@ vignette(&quot;jfa&quot;, package = &quot;jfa&quot;)" />
     </tr>
     <tr>
       <th>expectedError</th>
-      <td><p>a fraction representing the percentage of expected mistakes in the sample relative to the total size, or a number (&gt;= 1) that represents the number of expected mistakes.</p></td>
+      <td><p>a fraction representing the percentage of expected mistakes in the sample relative to the total size, or a number (&gt;= 1) that represents the number of expected mistakes. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done.</p></td>
     </tr>
     <tr>
       <th>N</th>
@@ -189,23 +189,23 @@ vignette(&quot;jfa&quot;, package = &quot;jfa&quot;)" />
     </tr>
     <tr>
       <th>pHmin</th>
-      <td><p>When using <code>method = 'hypotheses'</code>, the prior probability of the hypothesis \(\theta &lt;\) materiality.</p></td>
+      <td><p>when using <code>method = 'hypotheses'</code>, the prior probability of the hypothesis \(\theta &lt;\) materiality.</p></td>
     </tr>
     <tr>
       <th>pHplus</th>
-      <td><p>When using <code>method = 'hypotheses'</code>, the prior probability of the hypothesis \(\theta &gt;\) materiality.</p></td>
+      <td><p>when using <code>method = 'hypotheses'</code>, the prior probability of the hypothesis \(\theta &gt;\) materiality.</p></td>
     </tr>
     <tr>
       <th>factor</th>
-      <td><p>When using <code>method = 'factor'</code>, the value of the weighting factor for the results of the previous sample.</p></td>
+      <td><p>when using <code>method = 'factor'</code>, the value of the weighting factor for the results of the previous sample.</p></td>
     </tr>
     <tr>
       <th>sampleN</th>
-      <td><p>When using method <code>sample</code> or <code>factor</code>, the number of transactions that were inspected in the previous sample.</p></td>
+      <td><p>when using method <code>sample</code> or <code>factor</code>, the number of transactions that were inspected in the previous sample.</p></td>
     </tr>
     <tr>
       <th>sampleK</th>
-      <td><p>When using method <code>sample</code> or <code>factor</code>, the total taint in the previous sample.</p></td>
+      <td><p>when using method <code>sample</code> or <code>factor</code>, the total taint in the previous sample.</p></td>
     </tr>
     </table>
 
