@@ -4,56 +4,56 @@
 \alias{auditPrior}
 \title{Create a Prior Distribution with Existing Audit Information}
 \usage{
-auditPrior(confidence = 0.95, likelihood = "binomial", method = "none", 
+auditPrior(confidence = 0.95, likelihood = 'binomial', method = 'none', 
            expectedError = 0, N = NULL, materiality = NULL, ir = 1, cr = 1,
            pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)
 }
 \arguments{
-\item{confidence}{the confidence level desired from the confidence bound (on a scale from 0 to 1). Defaults to 0.95, or 95\% confidence.}
+\item{confidence}{a value between 0 and 1 specifying the confidence level desired for the sample planning. Defaults to 0.95 for 95\% confidence.}
 
-\item{likelihood}{can be one of \code{binomial}, \code{poisson}, or \code{hypergeometric}. See the Details section for more information.}
+\item{likelihood}{a character specifying the likelihood assumed when updating the prior distribution. This can be either \code{binomial} for the binomial likelihood and beta prior distribution, \code{poisson} for the Poisson likelihood and gamma prior distribution, or \code{hypergeometric} for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.}
 
-\item{method}{the method by which the prior distribution is constructed. Defaults to the \code{none} method, which incorporates no prior information. Can be one of \code{none}, \code{median}, \code{hypotheses}, \code{arm}, \code{sample} or \code{factor}. See the Details section for more information.}
+\item{method}{a character specifying the method by which the prior distribution is constructed. Defaults to the \code{none} method, which incorporates no existing information. Other options are \code{median}, \code{hypotheses}, \code{arm}, \code{sample} or \code{factor}. See the details section for more information about these methods.}
 
-\item{expectedError}{a fraction representing the percentage of expected mistakes in the sample relative to the total size, or a number (>= 1) that represents the number of expected mistakes. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done.}
+\item{expectedError}{a value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a number (>= 1) that represents the number of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.}
 
-\item{N}{the population size (only required when \code{likelihood = 'hypergeometric'}).}
+\item{N}{an integer (or value) specifying the total population size (or value). Only required when \code{likelihood = 'hypergeometric'}.}
 
-\item{materiality}{a value between 0 and 1 representing the materiality of the audit as a fraction of the total size or value. Can be \code{NULL} for some methods.}
+\item{materiality}{a value between 0 and 1 specifying the performance materiality (i.e., maximum upper limit) of the audit as a fraction of the total size (or value). Can be \code{NULL} for some methods.}
 
-\item{ir}{the inherent risk probability from the audit risk model. Defaults to 1 for 100\% risk.}
+\item{ir}{if \code{method = 'arm'}, a value between 0 and 1 specifying the inherent risk probability from the audit risk model. Defaults to 1 for 100\% risk.}
 
-\item{cr}{the inherent risk probability from the audit risk model. Defaults to 1 for 100\% risk.}
+\item{cr}{if \code{method = 'arm'}, a value between 0 and 1 specifying the internal control risk probability from the audit risk model. Defaults to 1 for 100\% risk.}
 
-\item{pHmin}{when using \code{method = 'hypotheses'}, the prior probability of the hypothesis \eqn{\theta <} materiality.}
+\item{pHmin}{if \code{method = 'hypotheses'}, a value between 0 and 1 specifying the prior probability of the hypothesis \eqn{\theta <} materiality.}
 
-\item{pHplus}{when using \code{method = 'hypotheses'}, the prior probability of the hypothesis \eqn{\theta >} materiality.}
+\item{pHplus}{if \code{method = 'hypotheses'}, a value between 0 and 1 specifying the prior probability of the hypothesis \eqn{\theta >} materiality.}
 
-\item{factor}{when using \code{method = 'factor'}, the value of the weighting factor for the results of the previous sample.}
+\item{factor}{if \code{method = 'factor'}, a value between 0 and 1 specifying the weighting factor for the results of the earlier sample.}
 
-\item{sampleN}{when using method \code{sample} or \code{factor}, the number of transactions that were inspected in the previous sample.}
+\item{sampleN}{if \code{method = 'sample'} or \code{method = 'factor'}, an integer specifying the number of transactions that were inspected in the previous sample.}
 
-\item{sampleK}{when using method \code{sample} or \code{factor}, the total taint in the previous sample.}
+\item{sampleK}{if \code{sample} or \code{factor}, a value specifying the sum of errors in the previous sample.}
 }
 \value{
 An object of class \code{jfaPrior} containing:
 
-\item{confidence}{the method by which the prior distribution is constructed.}
-\item{likelihood}{the likelihood by which the prior distribution is updated.}
-\item{method}{the method by which the prior distribution is constructed.}
-\item{expectedError}{the expected error input.}
-\item{N}{if specified as input, the population size.}
-\item{materiality}{if specified, the materiality that was used to construct the prior distribution.}
-\item{description}{a description of the prior distribution, including parameters and the implicit sample.}
-\item{statistics}{a list of statistics of the prior distribution, including the mean, mode, median, and upper bound.}
-\item{specifics}{a list of optional specifications of the prior distribution, these depend on the method used.}
-\item{hypotheses}{if a materiality is specified, a list of statistics about the hypotheses including prior probabilities and odds.}
+\item{confidence}{a fraction indicating the confidence level for the desired population statement.}
+\item{likelihood}{a character indicating the specified likelihood.}
+\item{method}{a character indicating the method by which the prior distribution is constructed.}
+\item{expectedError}{a value indicating the input for the number of expected errors.}
+\item{N}{if \code{N} is specified, an integer indicating the population size.}
+\item{materiality}{if \code{materiality} is specified, a value between 0 and 1 indicating the materiality that was used to construct the prior distribution.}
+\item{description}{a list containing a description of the prior distribution, including parameters and the implicit sample.}
+\item{statistics}{a list containing statistics of the prior distribution, including the mean, mode, median, and upper bound.}
+\item{specifics}{a list containing optional specifications of the prior distribution that vary depending on the \code{method} used.}
+\item{hypotheses}{if \code{materiality} is specified, a list containing information about the hypotheses, including prior probabilities and odds.}
 }
 \description{
-This function creates a prior distribution for Bayesian audit sampling according to several methods discussed in Derks et al. (2020). The returned object is of class \code{jfaPrior} and can be used with associated \code{print()} and \code{plot()} methods. \code{jfaPrior} objects can be used as input for the \code{prior} argument in other functions.
+This function creates a prior distribution with audit information to be used in the \code{planning()} and \code{evaluation()} functions via their \code{prior} argument. The returned object is of class \code{jfaPrior} and has a \code{print()} and \code{plot()} method.
 
 For more details on how to use this function see the package vignette:
-\code{vignette("jfa", package = "jfa")}
+\code{vignette('jfa', package = 'jfa')}
 }
 \details{
 This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
@@ -89,8 +89,8 @@ cr <- 0.6   # 60\%
 
 # Create a beta prior distribution according to the Audit Risk Model (arm) 
 # and a binomial likelihood:
-prior <- auditPrior(confidence = confidence, likelihood = "binomial", 
-                    method = "arm", expectedError = expectedError, materiality = materiality, 
+prior <- auditPrior(confidence = confidence, likelihood = 'binomial', 
+                    method = 'arm', expectedError = expectedError, materiality = materiality, 
                     ir = ir, cr = cr)
 print(prior)
 
@@ -120,12 +120,12 @@ print(prior)
 # ------------------------------------------------------------
 }
 \references{
-Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., & Wetzels, R. (2019). JASP for audit: Bayesian tools for the auditing practice.
+Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., & Wetzels, R. (2019). JASP for audit: Bayesian Tools for the Auditing Practice.
 
 Derks, K., de Swart, J., van Batenburg, P. Wagenmakers, E.-J., & Wetzels, R. (2020). Priors in a Bayesian Audit: How Integrating Information into the Prior Distribution can Improve Audit Transparency and Efficiency.
 }
 \seealso{
-\code{\link{planning}} \code{\link{selection}} \code{\link{evaluation}}
+\code{\link{planning}} \code{\link{selection}} \code{\link{evaluation}} \code{\link{report}}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}
