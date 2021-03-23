@@ -42,7 +42,7 @@
 <meta property="og:title" content="Frequentist and Bayesian Planning for Audit Sampling — planning" />
 <meta property="og:description" content="This function calculates the required sample size for an audit, based on the Poisson, binomial or hypergeometric likelihood. A prior distribution can be specified to perform Bayesian planning. The returned object is of class jfaPlanning and has a print() and plot() method.
 For more details on how to use this function see the package vignette:
-vignette(&quot;jfa&quot;, package = &quot;jfa&quot;)" />
+vignette('jfa', package = 'jfa')" />
 
 
 
@@ -145,10 +145,10 @@ vignette(&quot;jfa&quot;, package = &quot;jfa&quot;)" />
     <div class="ref-description">
     <p>This function calculates the required sample size for an audit, based on the Poisson, binomial or hypergeometric likelihood. A prior distribution can be specified to perform Bayesian planning. The returned object is of class <code>jfaPlanning</code> and has a <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code> and <code><a href='https://rdrr.io/r/graphics/plot.default.html'>plot()</a></code> method.</p>
 <p>For more details on how to use this function see the package vignette:
-<code><a href='../articles/jfa.html'>vignette("jfa", package = "jfa")</a></code></p>
+<code><a href='../articles/jfa.html'>vignette('jfa', package = 'jfa')</a></code></p>
     </div>
 
-    <pre class="usage"><span class='fu'>planning</span><span class='op'>(</span>confidence <span class='op'>=</span> <span class='fl'>0.95</span>, expectedError <span class='op'>=</span> <span class='fl'>0</span>, likelihood <span class='op'>=</span> <span class='st'>"poisson"</span>, N <span class='op'>=</span> <span class='cn'>NULL</span>, 
+    <pre class="usage"><span class='fu'>planning</span><span class='op'>(</span>confidence <span class='op'>=</span> <span class='fl'>0.95</span>, expectedError <span class='op'>=</span> <span class='fl'>0</span>, likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, N <span class='op'>=</span> <span class='cn'>NULL</span>, 
           materiality <span class='op'>=</span> <span class='cn'>NULL</span>, minPrecision <span class='op'>=</span> <span class='cn'>NULL</span>, 
           prior <span class='op'>=</span> <span class='cn'>FALSE</span>, kPrior <span class='op'>=</span> <span class='fl'>0</span>, nPrior <span class='op'>=</span> <span class='fl'>0</span>,
           increase <span class='op'>=</span> <span class='fl'>1</span>, maxSize <span class='op'>=</span> <span class='fl'>5000</span><span class='op'>)</span></pre>
@@ -166,11 +166,11 @@ vignette(&quot;jfa&quot;, package = &quot;jfa&quot;)" />
     </tr>
     <tr>
       <th>likelihood</th>
-      <td><p>the likelihood assumed in the calculation. This can be either <code>binomial</code> for the binomial likelihood, <code>poisson</code> for the Poisson likelihood, or <code>hypergeometric</code> for the hypergeometric likelihood. See the details section for more information about the available likelihoods.</p></td>
+      <td><p>a character specifying the likelihood assumed in the calculation. This can be either <code>binomial</code> for the binomial likelihood, <code>poisson</code> for the Poisson likelihood, or <code>hypergeometric</code> for the hypergeometric likelihood. See the details section for more information about the available likelihoods.</p></td>
     </tr>
     <tr>
       <th>N</th>
-      <td><p>an integer (or value) specifying the total population size (or value). Only required for hypergeometric calculations.</p></td>
+      <td><p>an integer (or value) specifying the total population size (or value). Only required when <code>likelihood = 'hypergeometric'</code>.</p></td>
     </tr>
     <tr>
       <th>materiality</th>
@@ -186,7 +186,7 @@ vignette(&quot;jfa&quot;, package = &quot;jfa&quot;)" />
     </tr>
     <tr>
       <th>kPrior</th>
-      <td><p>if <code>prior = TRUE</code>, a value specifying the number of assumed errors in the implicit sample on which the prior distribution is based.</p></td>
+      <td><p>if <code>prior = TRUE</code>, a value specifying the assumed sum of errors in the implicit sample on which the prior distribution is based.</p></td>
     </tr>
     <tr>
       <th>nPrior</th>
@@ -207,7 +207,7 @@ vignette(&quot;jfa&quot;, package = &quot;jfa&quot;)" />
     <p>An object of class <code>jfaPlanning</code> containing:</p>
 <dt>confidence</dt><dd><p>a fraction indicating the confidence level for the desired population statement.</p></dd>
 <dt>expectedError</dt><dd><p>the specified number of errors as a fraction or as a number.</p></dd>
-<dt>likelihood</dt><dd><p>the specified likelihood.</p></dd>
+<dt>likelihood</dt><dd><p>a character indicating the specified likelihood.</p></dd>
 <dt>N</dt><dd><p>an integer indicating the population size (only returned if it is specified).</p></dd>
 <dt>materiality</dt><dd><p>a fraction indicating the specified materiality. Can be <code>NULL</code>.</p></dd>
 <dt>minPrecision</dt><dd><p>a fraction indicating the minimum precision to be obtained. Can be <code>NULL</code>.</p></dd>
@@ -216,7 +216,7 @@ vignette(&quot;jfa&quot;, package = &quot;jfa&quot;)" />
 <dt>expectedSampleError</dt><dd><p>a value indicating the number of errors that are allowed in the sample.</p></dd>
 <dt>expectedBound</dt><dd><p>a value indicating the expected upper bound if the sample goes according to plan.</p></dd>
 <dt>expectedPrecision</dt><dd><p>a value indicating the expected precision if the sample goes according to plan.</p></dd>
-<dt>populationK</dt><dd><p>an integer indicating the assumed population errors (only returned in case of a hypergeometric calculation).</p></dd>
+<dt>populationK</dt><dd><p>if <code>likelihood = 'hypergeometric'</code>, an integer indicating the assumed population errors.</p></dd>
 <dt>prior</dt><dd><p>if a prior distribution is specified, an object of class <code>jfaPrior</code> that contains the prior distribution.</p></dd>
 <dt>expectedPosterior</dt><dd><p>if a prior distribution is specified, an object of class <code>jfaPosterior</code> that contains the expected posterior distribution.</p></dd>
 
@@ -247,7 +247,7 @@ vignette(&quot;jfa&quot;, package = &quot;jfa&quot;)" />
 
 <span class='co'># Frequentist planning with binomial likelihood:</span>
 
-<span class='va'>p1</span> <span class='op'>&lt;-</span> <span class='fu'>planning</span><span class='op'>(</span>confidence <span class='op'>=</span> <span class='fl'>0.95</span>, expectedError <span class='op'>=</span> <span class='fl'>0.025</span>, likelihood <span class='op'>=</span> <span class='st'>"binomial"</span>,
+<span class='va'>p1</span> <span class='op'>&lt;-</span> <span class='fu'>planning</span><span class='op'>(</span>confidence <span class='op'>=</span> <span class='fl'>0.95</span>, expectedError <span class='op'>=</span> <span class='fl'>0.025</span>, likelihood <span class='op'>=</span> <span class='st'>'binomial'</span>,
                materiality <span class='op'>=</span> <span class='fl'>0.05</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>p1</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; # ------------------------------------------------------------
@@ -293,7 +293,7 @@ vignette(&quot;jfa&quot;, package = &quot;jfa&quot;)" />
 
 <span class='co'># Bayesian planning with prior:</span>
 
-<span class='va'>prior</span> <span class='op'>&lt;-</span> <span class='fu'><a href='auditPrior.html'>auditPrior</a></span><span class='op'>(</span>confidence <span class='op'>=</span> <span class='fl'>0.95</span>, likelihood <span class='op'>=</span> <span class='st'>"binomial"</span>, method <span class='op'>=</span> <span class='st'>"arm"</span>, 
+<span class='va'>prior</span> <span class='op'>&lt;-</span> <span class='fu'><a href='auditPrior.html'>auditPrior</a></span><span class='op'>(</span>confidence <span class='op'>=</span> <span class='fl'>0.95</span>, likelihood <span class='op'>=</span> <span class='st'>'binomial'</span>, method <span class='op'>=</span> <span class='st'>'arm'</span>, 
                     expectedError <span class='op'>=</span> <span class='fl'>0.025</span>, materiality <span class='op'>=</span> <span class='fl'>0.05</span>, cr <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span>
 
 <span class='va'>p2</span> <span class='op'>&lt;-</span> <span class='fu'>planning</span><span class='op'>(</span>confidence <span class='op'>=</span> <span class='fl'>0.95</span>, expectedError <span class='op'>=</span> <span class='fl'>0.025</span>, materiality <span class='op'>=</span> <span class='fl'>0.05</span>,
