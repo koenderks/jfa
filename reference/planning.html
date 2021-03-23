@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Frequentist and Bayesian Planning for Audit Sampling — planning" />
-<meta property="og:description" content="This function calculates the required sample size for an audit, based on the Poisson, binomial, or hypergeometric likelihood. A prior can be specified to perform Bayesian planning. The returned object is of class jfaPlanning and can be used with associated print() and plot() methods.
+<meta property="og:description" content="This function calculates the required sample size for an audit, based on the Poisson, binomial or hypergeometric likelihood. A prior distribution can be specified to perform Bayesian planning. The returned object is of class jfaPlanning and has a print() and plot() method.
 For more details on how to use this function see the package vignette:
 vignette(&quot;jfa&quot;, package = &quot;jfa&quot;)" />
 
@@ -143,7 +143,7 @@ vignette(&quot;jfa&quot;, package = &quot;jfa&quot;)" />
     </div>
 
     <div class="ref-description">
-    <p>This function calculates the required sample size for an audit, based on the Poisson, binomial, or hypergeometric likelihood. A prior can be specified to perform Bayesian planning. The returned object is of class <code>jfaPlanning</code> and can be used with associated <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code> and <code><a href='https://rdrr.io/r/graphics/plot.default.html'>plot()</a></code> methods.</p>
+    <p>This function calculates the required sample size for an audit, based on the Poisson, binomial or hypergeometric likelihood. A prior distribution can be specified to perform Bayesian planning. The returned object is of class <code>jfaPlanning</code> and has a <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code> and <code><a href='https://rdrr.io/r/graphics/plot.default.html'>plot()</a></code> method.</p>
 <p>For more details on how to use this function see the package vignette:
 <code><a href='../articles/jfa.html'>vignette("jfa", package = "jfa")</a></code></p>
     </div>
@@ -158,67 +158,67 @@ vignette(&quot;jfa&quot;, package = &quot;jfa&quot;)" />
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>confidence</th>
-      <td><p>the confidence level desired from the confidence bound (on a scale from 0 to 1). Defaults to 0.95, or 95% confidence.</p></td>
+      <td><p>a value between 0 and 1 specifying the confidence level desired for the sample planning. Defaults to 0.95 for 95% confidence.</p></td>
     </tr>
     <tr>
       <th>expectedError</th>
-      <td><p>a fraction representing the percentage of expected mistakes in the sample relative to the total size, or a number (&gt;= 1) that represents the number of expected mistakes. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done.</p></td>
+      <td><p>a value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a number (&gt;= 1) that represents the number of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.</p></td>
     </tr>
     <tr>
       <th>likelihood</th>
-      <td><p>can be one of <code>binomial</code>, <code>poisson</code>, or <code>hypergeometric</code>.</p></td>
+      <td><p>the likelihood assumed in the calculation. This can be either <code>binomial</code> for the binomial likelihood, <code>poisson</code> for the Poisson likelihood, or <code>hypergeometric</code> for the hypergeometric likelihood. See the details section for more information about the available likelihoods.</p></td>
     </tr>
     <tr>
       <th>N</th>
-      <td><p>the population size (required for hypergeometric calculations).</p></td>
+      <td><p>an integer (or value) specifying the total population size (or value). Only required for hypergeometric calculations.</p></td>
     </tr>
     <tr>
       <th>materiality</th>
-      <td><p>a value between 0 and 1 representing the materiality of the audit as a fraction of the total size or value. Can be <code>NULL</code>, but <code>minPrecision</code> should be specified in that case.</p></td>
+      <td><p>a value between 0 and 1 specifying the performance materiality (i.e., maximum upper limit) of the audit as a fraction of the total size (or value). Can be <code>NULL</code>, but <code>minPrecision</code> should be specified in that case.</p></td>
     </tr>
     <tr>
       <th>minPrecision</th>
-      <td><p>The minimum precision to be obtained. Can be <code>NULL</code>, but <code>materiality</code> should be specified in that case.</p></td>
+      <td><p>a value between 0 and 1 specifying the minimum precision (i.e., upper bound minus most likely error) to be obtained. Can be <code>NULL</code>, but <code>materiality</code> should be specified in that case.</p></td>
     </tr>
     <tr>
       <th>prior</th>
-      <td><p>whether to use a prior distribution when planning. Defaults to <code>FALSE</code> for frequentist planning. If <code>TRUE</code>, the prior distribution is updated by the specified likelihood. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.</p></td>
+      <td><p>a logical specifying whether to use a prior distribution when planning, or an object of class `jfaPrior` containing the prior distribution. Defaults to <code>FALSE</code> for frequentist planning. If <code>TRUE</code>, a negligible prior distribution is chosen by default, but can be adjusted using the `kPrior` and `nPrior` arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.</p></td>
     </tr>
     <tr>
       <th>kPrior</th>
-      <td><p>the prior parameter \(\alpha\) (number of errors in the assumed prior sample).</p></td>
+      <td><p>if <code>prior = TRUE</code>, a value specifying the number of assumed errors in the implicit sample on which the prior distribution is based.</p></td>
     </tr>
     <tr>
       <th>nPrior</th>
-      <td><p>the prior parameter \(\beta\) (total number of observations in the assumed prior sample).</p></td>
+      <td><p>if <code>prior = TRUE</code>, a value specifying the number of observations in the implicit sample on which the prior distribution is based.</p></td>
     </tr>
     <tr>
       <th>increase</th>
-      <td><p>the desired increase step for the sample size calculation.</p></td>
+      <td><p>an integer specifying the desired increase step for the sample size calculation.</p></td>
     </tr>
     <tr>
       <th>maxSize</th>
-      <td><p>the maximum sample size that is considered for calculations. Defaults to 5000 for efficiency. Increase this value if the sample size cannot be found due to it being too large (e.g., for a low materiality).</p></td>
+      <td><p>an integer specifying the maximum sample size that is considered in the calculation. Defaults to 5000 for efficiency. Increase this value if the sample size cannot be found due to it being too large (e.g., for a low materiality).</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An object of class <code>jfaPlanning</code> containing:</p>
-<dt>confidence</dt><dd><p>the confidence level for the desired population statement.</p></dd>
+<dt>confidence</dt><dd><p>a fraction indicating the confidence level for the desired population statement.</p></dd>
 <dt>expectedError</dt><dd><p>the specified number of errors as a fraction or as a number.</p></dd>
 <dt>likelihood</dt><dd><p>the specified likelihood.</p></dd>
-<dt>N</dt><dd><p>the population size (only returned in case of a hypergeometric likelihood).</p></dd>
-<dt>materiality</dt><dd><p>the value of the specified materiality. Can be <code>NULL</code>.</p></dd>
-<dt>minPrecision</dt><dd><p>The minimum precision to be obtained. Can be <code>NULL</code>.</p></dd>
-<dt>sampleSize</dt><dd><p>the resulting sample size.</p></dd>
-<dt>errorType</dt><dd><p>whether the expected errors where specified as a percentage or as an integer.</p></dd>
-<dt>expectedSampleError</dt><dd><p>the number of full errors that are allowed to occur in the sample.</p></dd>
-<dt>expectedBound</dt><dd><p>a value specifying the expected upper bound if the sample goes according to plan.</p></dd>
-<dt>expectedPrecision</dt><dd><p>a value specifying the expected precision if the sample goes according to plan.</p></dd>
-<dt>populationK</dt><dd><p>the assumed population errors (only returned in case of a hypergeometric likelihood).</p></dd>
-<dt>prior</dt><dd><p>an object of class <code>jfaPrior</code> that represents the prior distribution.</p></dd>
-<dt>expectedPosterior</dt><dd><p>an object of class <code>jfaPosterior</code> that represents the expected posterior distribution.</p></dd>
+<dt>N</dt><dd><p>an integer indicating the population size (only returned if it is specified).</p></dd>
+<dt>materiality</dt><dd><p>a fraction indicating the specified materiality. Can be <code>NULL</code>.</p></dd>
+<dt>minPrecision</dt><dd><p>a fraction indicating the minimum precision to be obtained. Can be <code>NULL</code>.</p></dd>
+<dt>sampleSize</dt><dd><p>an integer indicating the required sample size.</p></dd>
+<dt>errorType</dt><dd><p>a character indicating whether the expected errors where specified as a percentage or as an integer.</p></dd>
+<dt>expectedSampleError</dt><dd><p>a value indicating the number of errors that are allowed in the sample.</p></dd>
+<dt>expectedBound</dt><dd><p>a value indicating the expected upper bound if the sample goes according to plan.</p></dd>
+<dt>expectedPrecision</dt><dd><p>a value indicating the expected precision if the sample goes according to plan.</p></dd>
+<dt>populationK</dt><dd><p>an integer indicating the assumed population errors (only returned in case of a hypergeometric calculation).</p></dd>
+<dt>prior</dt><dd><p>if a prior distribution is specified, an object of class <code>jfaPrior</code> that contains the prior distribution.</p></dd>
+<dt>expectedPosterior</dt><dd><p>if a prior distribution is specified, an object of class <code>jfaPosterior</code> that contains the expected posterior distribution.</p></dd>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -234,7 +234,7 @@ vignette(&quot;jfa&quot;, package = &quot;jfa&quot;)" />
     <p>Dyer, D. and Pierce, R.L. (1993). On the Choice of the Prior Distribution in Hypergeometric Sampling. <em>Communications in Statistics - Theory and Methods</em>, 22(8), 2125 - 2146.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='auditPrior.html'>auditPrior</a></code> <code><a href='selection.html'>selection</a></code> <code><a href='evaluation.html'>evaluation</a></code></p></div>
+    <div class='dont-index'><p><code><a href='auditPrior.html'>auditPrior</a></code> <code><a href='selection.html'>selection</a></code> <code><a href='evaluation.html'>evaluation</a></code> <code><a href='report.html'>report</a></code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Koen Derks, <a href='mailto:k.derks@nyenrode.nl'>k.derks@nyenrode.nl</a></p>
