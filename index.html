@@ -145,10 +145,10 @@
 <div id="installing" class="section level3">
 <h3 class="hasAnchor">
 <a href="#installing" class="anchor"></a>Installing</h3>
-<p>The <code>jfa</code> package is simple to download and set-up. The most recent version from <a href="https://cran.r-project.org/package=jfa">CRAN</a> (0.5.1) can be downloaded by running the following command in R or RStudio:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">"jfa"</span>)</span></code></pre></div>
+<p>The <code>jfa</code> package is simple to download and set up. The most recent version from <a href="https://cran.r-project.org/package=jfa">CRAN</a> (0.5.1) can be downloaded by running the following command in R or RStudio:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">install.packages</span>(<span class="st">'jfa'</span>)</span></code></pre></div>
 <p>Alternatively, you can download the most recent (development) version from GitHub using:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>devtools<span class="op">::</span><span class="kw">install.github</span>(<span class="st">"koenderks/jfa"</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>devtools<span class="op">::</span><span class="kw">install.github</span>(<span class="st">'koenderks/jfa'</span>)</span></code></pre></div>
 <p>After installation the <code>jfa</code> package can be loaded in R or RStudio by typing:</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">library</span>(jfa)</span></code></pre></div>
 </div>
@@ -225,7 +225,7 @@
 <a href="#create-a-prior-distribution-with-the-auditprior-function" class="anchor"></a>Create a prior distribution with the <code>auditPrior()</code> function:</h3>
 <p>The <code><a href="reference/auditPrior.html">auditPrior()</a></code> function creates a prior distribution according to one of several methods, including the audit risk model and assessments of the inherent and control risk. The returned object is of class <code>jfaPrior</code> and can be used with associated <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. <code>jfaPrior</code> results can also be used as input argument for the <code>prior</code> argument in other functions.</p>
 <p><em>Full function with default arguments:</em></p>
-<p><code><a href="reference/auditPrior.html">auditPrior(confidence = 0.95, likelihood = "binomial", method = "none", expectedError = 0, N = NULL, materiality = NULL, ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)</a></code></p>
+<p><code><a href="reference/auditPrior.html">auditPrior(confidence = 0.95, likelihood = 'binomial', method = 'none', expectedError = 0, N = NULL, materiality = NULL, ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)</a></code></p>
 <p><em>Supported options for the <code>likelihood</code> argument:</em></p>
 <table class="table">
 <colgroup>
@@ -323,7 +323,7 @@
 <a href="#plan-a-sample-with-the-planning-function" class="anchor"></a>Plan a sample with the <code>planning()</code> function:</h3>
 <p>The <code><a href="reference/planning.html">planning()</a></code> function calculates the required sample size for a statistical audit sample, based on the Poisson, binomial, or hypergeometric likelihood. A prior can be specified to combine with the specified likelihood in order to perform Bayesian planning. The returned <code>jfaPlanning</code> object has a <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and a <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method. In the <code><a href="reference/planning.html">planning()</a></code> function, the <code>prior</code> argument can be an object of class <code>jfaPrior</code> as returned by the <code><a href="reference/auditPrior.html">auditPrior()</a></code> function.</p>
 <p><em>Full function with default arguments:</em></p>
-<p><code><a href="reference/planning.html">planning(confidence = 0.95, expectedError = 0, likelihood = "poisson", N = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, kPrior = 0, nPrior = 0, increase = 1, maxSize = 5000)</a></code></p>
+<p><code><a href="reference/planning.html">planning(confidence = 0.95, expectedError = 0, likelihood = 'poisson', N = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, kPrior = 0, nPrior = 0, increase = 1, maxSize = 5000)</a></code></p>
 <p><em>Supported options for the <code>likelihood</code> argument:</em></p>
 <table class="table">
 <thead><tr class="header">
@@ -355,7 +355,7 @@
 <a href="#select-transactions-with-the-selection-function" class="anchor"></a>Select transactions with the <code>selection()</code> function:</h3>
 <p>The <code><a href="reference/selection.html">selection()</a></code> function takes a data frame and performs sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. The returned <code>jfaSelection</code> object has a <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and a <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method. In the <code><a href="reference/selection.html">selection()</a></code> function, the <code>sampleSize</code> argument can be an object of class <code>jfaPlanning</code> as returned by the <code><a href="reference/planning.html">planning()</a></code> function.</p>
 <p><em>Full function with default arguments:</em></p>
-<p><code><a href="reference/selection.html">selection(population, sampleSize, units = "records", algorithm = "random", bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, ascending = TRUE, withReplacement = FALSE, seed = 1)</a></code></p>
+<p><code><a href="reference/selection.html">selection(population, sampleSize, units = 'records', algorithm = 'random', bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, ascending = TRUE, withReplacement = FALSE, seed = 1)</a></code></p>
 <p><em>Supported options for the <code>units</code> argument:</em></p>
 <table class="table">
 <colgroup>
@@ -426,7 +426,7 @@
 <a href="#evaluate-a-sample-with-the-evaluation-function" class="anchor"></a>Evaluate a sample with the <code>evaluation()</code> function:</h3>
 <p>The <code><a href="reference/evaluation.html">evaluation()</a></code> function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound according to a specified method. The returned <code>jfaEvalution</code> object has a <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method. In the <code><a href="reference/evaluation.html">evaluation()</a></code> function, the <code>prior</code> argument can be an object of class <code>jfaPrior</code> as returned by the <code><a href="reference/auditPrior.html">auditPrior()</a></code> function.</p>
 <p><em>Full function with default arguments:</em></p>
-<p><code><a href="reference/evaluation.html">evaluation(confidence = 0.95, method = "binomial", N = NULL, sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, nSumstats = NULL, kSumstats = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, nPrior = 0, kPrior = 0, rohrbachDelta = 2.7, momentPoptype = "accounts", populationBookValue = NULL, csA = 1, csB = 3, csMu = 0.5)</a></code></p>
+<p><code><a href="reference/evaluation.html">evaluation(confidence = 0.95, method = 'binomial', N = NULL, sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, nSumstats = NULL, kSumstats = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, nPrior = 0, kPrior = 0, rohrbachDelta = 2.7, momentPoptype = 'accounts', populationBookValue = NULL, csA = 1, csB = 3, csMu = 0.5)</a></code></p>
 <p><em>Supported options for the <code>method</code> argument:</em></p>
 <table class="table">
 <colgroup>
@@ -536,7 +536,7 @@
 <a href="#generate-a-report-with-the-report-function" class="anchor"></a>Generate a report with the <code>report()</code> function:</h3>
 <p>The <code><a href="reference/report.html">report()</a></code> function takes an object of class <code>jfaEvaluation</code> as returned by the <code><a href="reference/evaluation.html">evaluation()</a></code> function, automatically generates a <code>html</code> or <code>pdf</code> report containing the analysis results and their interpretation, and saves the report to your local computer.</p>
 <p><em>Full function with default arguments:</em></p>
-<p><code><a href="reference/report.html">report(object = NULL, file = NULL, format = "html_document")</a></code></p>
+<p><code><a href="reference/report.html">report(object = NULL, file = NULL, format = 'html_document')</a></code></p>
 <p>For an example report, see the following <a href="https://github.com/koenderks/jfa/raw/master/man/figures/readme/report/report.pdf">link</a>.</p>
 </div>
 </div>
