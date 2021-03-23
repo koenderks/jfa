@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Evaluation of Audit Samples using Confidence / Credible Bounds — evaluation • jfa</title>
+<title>Frequentist and Bayesian Evaluation of Audit Samples — evaluation • jfa</title>
 
 
 <!-- jquery -->
@@ -39,10 +39,10 @@
 
 
 
-<meta property="og:title" content="Evaluation of Audit Samples using Confidence / Credible Bounds — evaluation" />
-<meta property="og:description" content="This function takes a data frame (using sample, bookValues, and auditValues) or summary statistics (using nSumstats and kSumstats) and evaluates the audit sample according to the specified method. The returned object is of class jfaEvaluation and can be used with associated print() and plot() methods.
+<meta property="og:title" content="Frequentist and Bayesian Evaluation of Audit Samples — evaluation" />
+<meta property="og:description" content="This function takes a data frame (using sample, bookValues, and auditValues) or summary statistics (using nSumstats and kSumstats) and evaluates the audit sample using one of several methods. The returned object is of class jfaEvaluation and has a print() and plot() method.
 For more details on how to use this function see the package vignette:
-vignette(&quot;jfa&quot;, package = &quot;jfa&quot;)" />
+vignette('jfa', package = 'jfa')" />
 
 
 
@@ -137,23 +137,23 @@ vignette(&quot;jfa&quot;, package = &quot;jfa&quot;)" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Evaluation of Audit Samples using Confidence / Credible Bounds</h1>
+    <h1>Frequentist and Bayesian Evaluation of Audit Samples</h1>
     <small class="dont-index">Source: <a href='https://github.com/koenderks/jfa/blob/master/R/evaluation.R'><code>R/evaluation.R</code></a></small>
     <div class="hidden name"><code>evaluation.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function takes a data frame (using <code>sample</code>, <code>bookValues</code>, and <code>auditValues</code>) or summary statistics (using <code>nSumstats</code> and <code>kSumstats</code>) and evaluates the audit sample according to the specified method. The returned object is of class <code>jfaEvaluation</code> and can be used with associated <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code> and <code><a href='https://rdrr.io/r/graphics/plot.default.html'>plot()</a></code> methods.</p>
+    <p>This function takes a data frame (using <code>sample</code>, <code>bookValues</code>, and <code>auditValues</code>) or summary statistics (using <code>nSumstats</code> and <code>kSumstats</code>) and evaluates the audit sample using one of several methods. The returned object is of class <code>jfaEvaluation</code> and has a <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code> and <code><a href='https://rdrr.io/r/graphics/plot.default.html'>plot()</a></code> method.</p>
 <p>For more details on how to use this function see the package vignette:
-<code><a href='../articles/jfa.html'>vignette("jfa", package = "jfa")</a></code></p>
+<code><a href='../articles/jfa.html'>vignette('jfa', package = 'jfa')</a></code></p>
     </div>
 
-    <pre class="usage"><span class='fu'>evaluation</span><span class='op'>(</span>confidence <span class='op'>=</span> <span class='fl'>0.95</span>, method <span class='op'>=</span> <span class='st'>"binomial"</span>, N <span class='op'>=</span> <span class='cn'>NULL</span>,
+    <pre class="usage"><span class='fu'>evaluation</span><span class='op'>(</span>confidence <span class='op'>=</span> <span class='fl'>0.95</span>, method <span class='op'>=</span> <span class='st'>'binomial'</span>, N <span class='op'>=</span> <span class='cn'>NULL</span>,
             sample <span class='op'>=</span> <span class='cn'>NULL</span>, bookValues <span class='op'>=</span> <span class='cn'>NULL</span>, auditValues <span class='op'>=</span> <span class='cn'>NULL</span>, counts <span class='op'>=</span> <span class='cn'>NULL</span>, 
             nSumstats <span class='op'>=</span> <span class='cn'>NULL</span>, kSumstats <span class='op'>=</span> <span class='cn'>NULL</span>, 
             materiality <span class='op'>=</span> <span class='cn'>NULL</span>, minPrecision <span class='op'>=</span> <span class='cn'>NULL</span>,
             prior <span class='op'>=</span> <span class='cn'>FALSE</span>, nPrior <span class='op'>=</span> <span class='fl'>0</span>, kPrior <span class='op'>=</span> <span class='fl'>0</span>, 
-            rohrbachDelta <span class='op'>=</span> <span class='fl'>2.7</span>, momentPoptype <span class='op'>=</span> <span class='st'>"accounts"</span>, populationBookValue <span class='op'>=</span> <span class='cn'>NULL</span>,
+            rohrbachDelta <span class='op'>=</span> <span class='fl'>2.7</span>, momentPoptype <span class='op'>=</span> <span class='st'>'accounts'</span>, populationBookValue <span class='op'>=</span> <span class='cn'>NULL</span>,
             csA <span class='op'>=</span> <span class='fl'>1</span>, csB <span class='op'>=</span> <span class='fl'>3</span>, csMu <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -161,11 +161,11 @@ vignette(&quot;jfa&quot;, package = &quot;jfa&quot;)" />
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>confidence</th>
-      <td><p>the required confidence level for the bound. Default is 0.95 for 95% confidence.</p></td>
+      <td><p>a value between 0 and 1 specifying the confidence level desired for the sample evaluation. Defaults to 0.95 for 95% confidence.</p></td>
     </tr>
     <tr>
       <th>method</th>
-      <td><p>the method that is used to evaluate the sample. This can be either one of <code>poisson</code>, <code>binomial</code>, <code>hypergeometric</code>, <code>mpus</code>, <code>stringer</code>, <code>stringer-meikle</code>, <code>stringer-lta</code>, <code>stringer-pvz</code>, <code>rohrbach</code>, <code>moment</code>, <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code>.</p></td>
+      <td><p>a character specifying the the method that is used to evaluate the sample. Possible options are <code>poisson</code>, <code>binomial</code> (default), <code>hypergeometric</code>, <code>mpus</code>, <code>stringer</code>, <code>stringer-meikle</code>, <code>stringer-lta</code>, <code>stringer-pvz</code>, <code>rohrbach</code>, <code>moment</code>, <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code>. See the details section for more information about these methods.</p></td>
     </tr>
     <tr>
       <th>N</th>
