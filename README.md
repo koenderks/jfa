@@ -13,7 +13,7 @@ status](https://travis-ci.com/koenderks/jfa.svg?branch=master)](https://travis-c
 
 # jfa: Bayesian and Classical Audit Sampling
 
-<img src="man/figures/readme/logo/jfaLogo.png" width="166" height="192" alt="logo" align="right" margin-left="20" margin-right="20"/>
+<img src='man/figures/readme/logo/jfaLogo.png' width='166' height='192' alt='logo' align='right' margin-left='20' margin-right='20'/>
 
 `jfa` is an R package for statistical audit sampling. The package
 provides the user with five functions for planning, performing,
@@ -65,16 +65,16 @@ your local machine for use in R and RStudio.
 
 ### Installing
 
-The `jfa` package is simple to download and set-up. The most recent
+The `jfa` package is simple to download and set up. The most recent
 version from [CRAN](https://cran.r-project.org/package=jfa) (0.5.1) can
 be downloaded by running the following command in R or RStudio:
 
-    install.packages("jfa")
+    install.packages('jfa')
 
 Alternatively, you can download the most recent (development) version
 from GitHub using:
 
-    devtools::install.github("koenderks/jfa")
+    devtools::install.github('koenderks/jfa')
 
 After installation the `jfa` package can be loaded in R or RStudio by
 typing:
@@ -112,7 +112,8 @@ being verified against the following benchmarks:
 
 Below you can find several informative tables that contain statistical
 sample sizes, upper limits, and Bayes factors. These tables are
-generated using the available functions in the `jfa` package.
+generated using the `planning()` and `evaluation()` functions provided
+by the package.
 
 *Sample sizes*
 
@@ -143,7 +144,7 @@ and its workflow. You can download a pdf version
 
 <p align="center">
 
-<img src="man/figures/cheatsheet/cheatsheet.png" alt="cheatsheet" width="1000">
+<img src='man/figures/cheatsheet/cheatsheet.png' alt='cheatsheet' width='1000'>
 
 </p>
 
@@ -151,7 +152,7 @@ and its workflow. You can download a pdf version
 
 <p align="center">
 
-<img src="man/figures/readme/banner/jfaBanner.png" alt="banner"/>
+<img src='man/figures/readme/banner/jfaBanner.png' alt='banner'/>
 
 </p>
 
@@ -176,7 +177,7 @@ methods. `jfaPrior` results can also be used as input argument for the
 
 *Full function with default arguments:*
 
-`auditPrior(confidence = 0.95, likelihood = "binomial", method = "none",
+`auditPrior(confidence = 0.95, likelihood = 'binomial', method = 'none',
 expectedError = 0, N = NULL, materiality = NULL, ir = 1, cr = 1, pHmin =
 NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)`
 
@@ -211,7 +212,7 @@ specified likelihood in order to perform Bayesian planning. The returned
 
 *Full function with default arguments:*
 
-`planning(confidence = 0.95, expectedError = 0, likelihood = "poisson",
+`planning(confidence = 0.95, expectedError = 0, likelihood = 'poisson',
 N = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, kPrior
 = 0, nPrior = 0, increase = 1, maxSize = 5000)`
 
@@ -235,8 +236,8 @@ returned by the `planning()` function.
 
 *Full function with default arguments:*
 
-`selection(population, sampleSize, units = "records", algorithm =
-"random", bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE,
+`selection(population, sampleSize, units = 'records', algorithm =
+'random', bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE,
 ascending = TRUE, withReplacement = FALSE, seed = 1)`
 
 *Supported options for the `units` argument:*
@@ -265,11 +266,11 @@ returned by the `auditPrior()` function.
 
 *Full function with default arguments:*
 
-`evaluation(confidence = 0.95, method = "binomial", N = NULL, sample =
+`evaluation(confidence = 0.95, method = 'binomial', N = NULL, sample =
 NULL, bookValues = NULL, auditValues = NULL, counts = NULL, nSumstats =
 NULL, kSumstats = NULL, materiality = NULL, minPrecision = NULL, prior =
 FALSE, nPrior = 0, kPrior = 0, rohrbachDelta = 2.7, momentPoptype =
-"accounts", populationBookValue = NULL, csA = 1, csB = 3, csMu = 0.5)`
+'accounts', populationBookValue = NULL, csA = 1, csB = 3, csMu = 0.5)`
 
 *Supported options for the `method` argument:*
 
@@ -299,7 +300,7 @@ interpretation, and saves the report to your local computer.
 
 *Full function with default arguments:*
 
-`report(object = NULL, file = NULL, format = "html_document")`
+`report(object = NULL, file = NULL, format = 'html_document')`
 
 For an example report, see the following
 [link](https://github.com/koenderks/jfa/raw/master/man/figures/readme/report/report.pdf).
@@ -353,7 +354,7 @@ For an example report, see the following
 
 ## Package statistics
 
-<img src="man/figures/readme/downloads/downloads.svg" width="50%" /><img src="man/figures/readme/worldmap/worldmap.svg" width="50%" />
+<img src='man/figures/readme/downloads/downloads.svg' width='50%' /><img src='man/figures/readme/worldmap/worldmap.svg' width='50%' />
 
 ## Contributing
 

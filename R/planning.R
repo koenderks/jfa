@@ -18,7 +18,7 @@
 #' @param minPrecision  a value between 0 and 1 specifying the minimum precision (i.e., upper bound minus most likely error) to be obtained. Can be \code{NULL}, but \code{materiality} should be specified in that case.
 #' @param prior         a logical specifying whether to use a prior distribution when planning, or an object of class `jfaPrior` containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a negligible prior distribution is chosen by default, but can be adjusted using the `kPrior` and `nPrior` arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.
 #' @param kPrior        if \code{prior = TRUE}, a value specifying the assumed sum of errors in the implicit sample on which the prior distribution is based.
-#' @param nPrior        if \code{prior = TRUE}, a value specifying the number of observations in the implicit sample on which the prior distribution is based.
+#' @param nPrior        if \code{prior = TRUE}, a value specifying the number of sampling units in the implicit sample on which the prior distribution is based.
 #' @param increase      an integer specifying the desired increase step for the sample size calculation.
 #' @param maxSize       an integer specifying the maximum sample size that is considered in the calculation. Defaults to 5000 for efficiency. Increase this value if the sample size cannot be found due to it being too large (e.g., for a low materiality).
 #' 

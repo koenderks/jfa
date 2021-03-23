@@ -31,7 +31,7 @@ auditPrior(confidence = 0.95, likelihood = 'binomial', method = 'none',
 
 \item{factor}{if \code{method = 'factor'}, a value between 0 and 1 specifying the weighting factor for the results of the earlier sample.}
 
-\item{sampleN}{if \code{method = 'sample'} or \code{method = 'factor'}, an integer specifying the number of transactions that were inspected in the previous sample.}
+\item{sampleN}{if \code{method = 'sample'} or \code{method = 'factor'}, an integer specifying the number of sampling units that were inspected in the earlier sample.}
 
 \item{sampleK}{if \code{sample} or \code{factor}, a value specifying the sum of errors in the previous sample.}
 }

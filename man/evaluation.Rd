@@ -2,20 +2,20 @@
 % Please edit documentation in R/evaluation.R
 \name{evaluation}
 \alias{evaluation}
-\title{Evaluation of Audit Samples using Confidence / Credible Bounds}
+\title{Frequentist and Bayesian Evaluation of Audit Samples}
 \usage{
-evaluation(confidence = 0.95, method = "binomial", N = NULL,
+evaluation(confidence = 0.95, method = 'binomial', N = NULL,
             sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, 
             nSumstats = NULL, kSumstats = NULL, 
             materiality = NULL, minPrecision = NULL,
             prior = FALSE, nPrior = 0, kPrior = 0, 
-            rohrbachDelta = 2.7, momentPoptype = "accounts", populationBookValue = NULL,
+            rohrbachDelta = 2.7, momentPoptype = 'accounts', populationBookValue = NULL,
             csA = 1, csB = 3, csMu = 0.5)
 }
 \arguments{
-\item{confidence}{the required confidence level for the bound. Default is 0.95 for 95\% confidence.}
+\item{confidence}{a value between 0 and 1 specifying the confidence level desired for the sample evaluation. Defaults to 0.95 for 95\% confidence.}
 
-\item{method}{the method that is used to evaluate the sample. This can be either one of \code{poisson}, \code{binomial}, \code{hypergeometric}, \code{mpus}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}.}
+\item{method}{a character specifying the the method that is used to evaluate the sample. Possible options are \code{poisson}, \code{binomial} (default), \code{hypergeometric}, \code{mpus}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}. See the details section for more information about these methods.}
 
 \item{N}{an integer specifying the total number of units (transactions or monetary units) in the population.}
 
@@ -78,10 +78,10 @@ An object of class \code{jfaEvaluation} containing:
 \item{data}{a data frame containing the relevant columns from the \code{sample} input.}
 }
 \description{
-This function takes a data frame (using \code{sample}, \code{bookValues}, and \code{auditValues}) or summary statistics (using \code{nSumstats} and \code{kSumstats}) and evaluates the audit sample according to the specified method. The returned object is of class \code{jfaEvaluation} and can be used with associated \code{print()} and \code{plot()} methods.
+This function takes a data frame (using \code{sample}, \code{bookValues}, and \code{auditValues}) or summary statistics (using \code{nSumstats} and \code{kSumstats}) and evaluates the audit sample using one of several methods. The returned object is of class \code{jfaEvaluation} and has a \code{print()} and \code{plot()} method.
 
 For more details on how to use this function see the package vignette:
-\code{vignette("jfa", package = "jfa")}
+\code{vignette('jfa', package = 'jfa')}
 }
 \details{
 This section lists the available options for the \code{methods} argument.

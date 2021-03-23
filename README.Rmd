@@ -6,8 +6,8 @@ output: github_document
 knitr::opts_chunk$set(
   fig.align = 'center',
   collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/readme/downloads/README-")
+  comment = '#>',
+  fig.path = 'man/figures/readme/downloads/README-')
 ```
 
 <!-- badges: start -->
@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 
 # jfa: Bayesian and Classical Audit Sampling
 
-<img src="man/figures/readme/logo/jfaLogo.png" width="166" height="192" alt="logo" align="right" margin-left="20" margin-right="20"/>
+<img src='man/figures/readme/logo/jfaLogo.png' width='166' height='192' alt='logo' align='right' margin-left='20' margin-right='20'/>
 
 `jfa` is an R package for statistical audit sampling. The package provides the user with five functions for planning, performing, evaluating, and reporting an audit sample. Specifically, it contains functions for calculating sample sizes, selecting the transactions according to standard audit sampling techniques, and calculating various upper limits for the misstatement from the sample or from summary statistics. The `jfa` package also allows the user to create a prior probability distribution to perform Bayesian audit sampling using these functions.
 
@@ -58,16 +58,16 @@ The following instructions will get the `jfa` package up and running on your loc
 
 ### Installing
 
-The `jfa` package is simple to download and set-up. The most recent version from [CRAN](https://cran.r-project.org/package=jfa) (0.5.1) can be downloaded by running the following command in R or RStudio:
+The `jfa` package is simple to download and set up. The most recent version from [CRAN](https://cran.r-project.org/package=jfa) (0.5.1) can be downloaded by running the following command in R or RStudio:
 
 ```
-install.packages("jfa")
+install.packages('jfa')
 ```
 
 Alternatively, you can download the most recent (development) version from GitHub using:
 
 ```
-devtools::install.github("koenderks/jfa")
+devtools::install.github('koenderks/jfa')
 ```
 
 After installation the `jfa` package can be loaded in R or RStudio by typing:
@@ -96,7 +96,7 @@ To validate the statistical results, `jfa`'s main output is currently being veri
 
 ## Statistical tables
 
-Below you can find several informative tables that contain statistical sample sizes, upper limits, and Bayes factors. These tables are generated using the available functions in the `jfa` package.
+Below you can find several informative tables that contain statistical sample sizes, upper limits, and Bayes factors. These tables are generated using the `planning()` and `evaluation()` functions provided by the package.
 
 *Sample sizes*
 
@@ -117,14 +117,14 @@ Below you can find several informative tables that contain statistical sample si
 
 The cheat sheet below can help you get started with the `jfa` package and its workflow. You can download a pdf version [here](https://github.com/koenderks/jfa/raw/master/man/figures/cheatsheet/cheatsheet.pdf).
 
-<p align="center">
-  <img src="man/figures/cheatsheet/cheatsheet.png" alt="cheatsheet" width="1000">
+<p align='center'>
+  <img src='man/figures/cheatsheet/cheatsheet.png' alt='cheatsheet' width='1000'>
 </p>
 
 ## Available functions
 
-<p align="center">
-  <img src="man/figures/readme/banner/jfaBanner.png" alt="banner"/>
+<p align='center'>
+  <img src='man/figures/readme/banner/jfaBanner.png' alt='banner'/>
 </p>
 
 Below you can find a explanation of the functions in the current version of `jfa`, sorted by their occurrence in the standard audit sampling workflow.
@@ -141,7 +141,7 @@ The `auditPrior()` function creates a prior distribution according to one of sev
 
 *Full function with default arguments:*
 
-`auditPrior(confidence = 0.95, likelihood = "binomial", method = "none", expectedError = 0, N = NULL, materiality = NULL, ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)`
+`auditPrior(confidence = 0.95, likelihood = 'binomial', method = 'none', expectedError = 0, N = NULL, materiality = NULL, ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)`
 
 *Supported options for the `likelihood` argument:*
 
@@ -168,7 +168,7 @@ The `planning()` function calculates the required sample size for a statistical 
 
 *Full function with default arguments:*
 
-`planning(confidence = 0.95, expectedError = 0, likelihood = "poisson", N = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, kPrior = 0, nPrior = 0, increase = 1, maxSize = 5000)`
+`planning(confidence = 0.95, expectedError = 0, likelihood = 'poisson', N = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, kPrior = 0, nPrior = 0, increase = 1, maxSize = 5000)`
 
 *Supported options for the `likelihood` argument:*
 
@@ -184,7 +184,7 @@ The `selection()` function takes a data frame and performs sampling according to
 
 *Full function with default arguments:*
 
-`selection(population, sampleSize, units = "records", algorithm = "random", bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, ascending = TRUE, withReplacement = FALSE, seed = 1)`
+`selection(population, sampleSize, units = 'records', algorithm = 'random', bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, ascending = TRUE, withReplacement = FALSE, seed = 1)`
 
 *Supported options for the `units` argument:*
 
@@ -207,7 +207,7 @@ The `evaluation()` function takes a sample data frame or summary statistics abou
 
 *Full function with default arguments:*
 
-`evaluation(confidence = 0.95, method = "binomial", N = NULL, sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, nSumstats = NULL, kSumstats = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, nPrior = 0, kPrior = 0, rohrbachDelta = 2.7, momentPoptype = "accounts", populationBookValue = NULL, csA = 1, csB = 3, csMu = 0.5)`
+`evaluation(confidence = 0.95, method = 'binomial', N = NULL, sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, nSumstats = NULL, kSumstats = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, nPrior = 0, kPrior = 0, rohrbachDelta = 2.7, momentPoptype = 'accounts', populationBookValue = NULL, csA = 1, csB = 3, csMu = 0.5)`
 
 *Supported options for the `method` argument:*
 
@@ -234,7 +234,7 @@ The `report()` function takes an object of class `jfaEvaluation` as returned by 
 
 *Full function with default arguments:*
 
-`report(object = NULL, file = NULL, format = "html_document")`
+`report(object = NULL, file = NULL, format = 'html_document')`
 
 For an example report, see the following [link](https://github.com/koenderks/jfa/raw/master/man/figures/readme/report/report.pdf).
 
@@ -259,34 +259,34 @@ For an example report, see the following [link](https://github.com/koenderks/jfa
 
 ```{r downloads, echo = FALSE, message = FALSE, warning=FALSE, include = FALSE}
 
-jfaData           <- cranlogs::cran_downloads(packages = "jfa", from = "2020-01-01")[, -3]
-jfaData[["date"]] <- lubridate::floor_date(jfaData[["date"]], "month")
-plotData          <- plyr::ddply(jfaData, "date", plyr::summarise, count = sum(count))
+jfaData           <- cranlogs::cran_downloads(packages = 'jfa', from = '2020-01-01')[, -3]
+jfaData[['date']] <- lubridate::floor_date(jfaData[['date']], 'month')
+plotData          <- plyr::ddply(jfaData, 'date', plyr::summarise, count = sum(count))
 
-xBreaks           <- plotData[["date"]]
-yBreaks           <- pretty(c(0, plotData[["count"]], max(plotData[["count"]]) + 200), n = 6)
+xBreaks           <- plotData[['date']]
+yBreaks           <- pretty(c(0, plotData[['count']], max(plotData[['count']]) + 200), n = 6)
 
 # Releases 
-releases          <- c("2020-01-01", "2020-08-01", "2020-09-01", "2020-11-01", "2021-01-01", "2021-03-01")
-releaseLabs       <- c("0.1.0", "0.2.0", "0.3.0", "0.4.0", "0.5.0", "0.5.1")
+releases          <- c('2020-01-01', '2020-08-01', '2020-09-01', '2020-11-01', '2021-01-01', '2021-03-01')
+releaseLabs       <- c('0.1.0', '0.2.0', '0.3.0', '0.4.0', '0.5.0', '0.5.1')
 
 p <- ggplot2::ggplot(plotData, ggplot2::aes(x = date, y = count)) +
-      	ggplot2::geom_bar(stat = "identity", fill = rgb(65, 104, 195, maxColorValue = 255), 
-      	                  col = "black", size = 1) +
-		    ggplot2::scale_x_date(name = "", breaks = xBreaks, labels = scales::date_format("%m-%Y")) +
-	    	ggplot2::scale_y_continuous(name = "", breaks = yBreaks, 
+      	ggplot2::geom_bar(stat = 'identity', fill = rgb(65, 104, 195, maxColorValue = 255), 
+      	                  col = 'black', size = 1) +
+		    ggplot2::scale_x_date(name = '', breaks = xBreaks, labels = scales::date_format('%m-%Y')) +
+	    	ggplot2::scale_y_continuous(name = '', breaks = yBreaks, 
 										                labels = yBreaks, limits = c(0, (max(yBreaks) + 0.1 * max(yBreaks)))) +
-		    ggplot2::labs(title = "Monthly CRAN downloads since January 2020",
-		                  subtitle = "Source: http://cran-logs.rstudio.com") +
-      	ggplot2::geom_text(mapping = ggplot2::aes(x = date, y = count + 50), label = plotData[["count"]]) +
+		    ggplot2::labs(title = 'Monthly CRAN downloads since January 2020',
+		                  subtitle = 'Source: http://cran-logs.rstudio.com') +
+      	ggplot2::geom_text(mapping = ggplot2::aes(x = date, y = count + 50), label = plotData[['count']]) +
 		    ggplot2::geom_curve(data = data.frame(x = as.Date(releases), 
 												    y = rep(max(yBreaks) - 25, length(releases)), 
 												    xend = as.Date(releases), 
 												    yend = rep(max(yBreaks) - 100, length(releases))), 
 						      	        mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend), 
-												    colour = "#555555", size = 1, curvature = 0, 
-													  arrow = ggplot2::arrow(length = ggplot2::unit(0.025, "npc"))) +
-		    ggplot2::annotate(geom = "text", x = as.Date(releases), y = rep(max(yBreaks), length(releases)), 
+												    colour = '#555555', size = 1, curvature = 0, 
+													  arrow = ggplot2::arrow(length = ggplot2::unit(0.025, 'npc'))) +
+		    ggplot2::annotate(geom = 'text', x = as.Date(releases), y = rep(max(yBreaks), length(releases)), 
 							              label = releaseLabs, vjust = -0.25, angle = 45, size = 4) +
 		    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10, 
 	                                                       margin = ggplot2::margin(5, b = 10)),
@@ -297,81 +297,81 @@ p <- ggplot2::ggplot(plotData, ggplot2::aes(x = date, y = count)) +
 					            axis.ticks.y = ggplot2::element_blank(),
 					            axis.ticks.x = ggplot2::element_blank())
 
-ggplot2::ggsave(plot = p, filename = "man/figures/readme/downloads/downloads.svg")
+ggplot2::ggsave(plot = p, filename = 'man/figures/readme/downloads/downloads.svg')
 
 ```
 
 ```{r worldmap, echo = FALSE, message = FALSE, warning=FALSE, include = FALSE}
 
 # Load previously downloaded data
-prevData <- read.csv(paste0(dirname(getwd()), "/jfa/man/figures/readme/worldmap/downloads.csv"))
+prevData <- read.csv(paste0(dirname(getwd()), '/jfa/man/figures/readme/worldmap/downloads.csv'))
 
 # Download daily data
 dnldata_folder <- installr::download_RStudio_CRAN_data(START = Sys.Date() - 2, END = Sys.Date() - 2)
-dnldata <- installr::read_RStudio_CRAN_data(dnldata_folder, packages = "jfa", use_data_table = TRUE)
+dnldata <- installr::read_RStudio_CRAN_data(dnldata_folder, packages = 'jfa', use_data_table = TRUE)
 
 # Merge daily data with previously downloaded data and write
 data <- rbind(prevData, dnldata)
 
 write.csv(x = data,
-          file = paste0(dirname(getwd()), "/jfa/man/figures/readme/worldmap/downloads.csv"),
+          file = paste0(dirname(getwd()), '/jfa/man/figures/readme/worldmap/downloads.csv'),
           row.names = FALSE)
 
 # Make plot data
 counts <- cbind.data.frame(table(data$country))
-names(counts) <- c("country", "count")
+names(counts) <- c('country', 'count')
 
 # Read world map into R
 world<-maptools::readShapePoly(fn = paste0(dirname(getwd()), 
-                                           "/jfa/man/figures/readme/worldmap/ne_110m_admin_0_countries"))
+                                           '/jfa/man/figures/readme/worldmap/ne_110m_admin_0_countries'))
 
 ISO_full <- as.character(world@data$ISO_A2)
-ISO_full[146] <- "SOM"  # The iso identifier for the Republic of Somaliland is missing
-ISO_full[89]  <- "KV" # as for the Republic of Kosovo
-ISO_full[39]  <- "CYP" # as for Cyprus
+ISO_full[146] <- 'SOM'  # The iso identifier for the Republic of Somaliland is missing
+ISO_full[89]  <- 'KV' # as for the Republic of Kosovo
+ISO_full[39]  <- 'CYP' # as for Cyprus
 
 # Create color codes for countires  
 colcode <- numeric(length(ISO_full))
 names(colcode) <- ISO_full
 dnl_places <- names(colcode[which(names(colcode) %in% as.character(counts$country))])
 rownames(counts) <- counts$country
-colcode[dnl_places] <- counts[dnl_places, "count"]
+colcode[dnl_places] <- counts[dnl_places, 'count']
 
 world@data$id <- rownames(world@data)
-world.points <- ggplot2::fortify(world, by="id")
+world.points <- ggplot2::fortify(world, by='id')
 names(colcode) <- rownames(world@data)
 world.points$Downloads <- colcode[world.points$id]
 
 world.map <-  ggplot2::ggplot(data=world.points) +
                 ggplot2::geom_polygon(ggplot2::aes(x = long, y = lat, group=group, fill=Downloads), 
-                                      color="black") +
+                                      color='black') +
                 ggplot2::coord_equal() + 
                 ggplot2::theme_classic() +
-                ggplot2::labs(title = "Total CRAN downloads since January 2020", 
-                              subtitle = "Source: http://cran-logs.rstudio.com") + 
-                ggplot2::scale_fill_gradient2(low = "white", 
+                ggplot2::labs(title = 'Total CRAN downloads since January 2020', 
+                              subtitle = 'Source: http://cran-logs.rstudio.com') + 
+                ggplot2::scale_fill_gradient2(low = 'white', 
                                               mid = rgb(107, 146, 237, maxColorValue = 255), 
                                               high = rgb(48, 68, 115, maxColorValue = 255), 
                                               midpoint = 5000,
-                                              na.value = "white",
-                                              name = "", 
+                                              na.value = 'white',
+                                              name = '', 
                                               limits = c(0, 10000)) +
                 ggplot2::theme(axis.line = ggplot2::element_blank(),
                                axis.text = ggplot2::element_blank(),
                                axis.ticks = ggplot2::element_blank(),
                                axis.title = ggplot2::element_blank(),
                                plot.title = ggplot2::element_text(size = 15),
-                               legend.position = "bottom",
-                               legend.key.width = ggplot2::unit(3, "cm"),
-                               legend.key.height = ggplot2::unit(0.25, "cm"),
+                               legend.position = 'bottom',
+                               legend.key.width = ggplot2::unit(3, 'cm'),
+                               legend.key.height = ggplot2::unit(0.25, 'cm'),
                                plot.subtitle = ggplot2::element_text(size = 8), 
-                               legend.text = ggplot2::element_text(color = "#222222"))
+                               legend.text = ggplot2::element_text(color = '#222222'))
 
-ggplot2::ggsave(plot = world.map, filename = "man/figures/readme/worldmap/worldmap.svg")
+ggplot2::ggsave(plot = world.map, filename = 'man/figures/readme/worldmap/worldmap.svg')
 
 ```
 
-<img src="man/figures/readme/downloads/downloads.svg" width="50%" /><img src="man/figures/readme/worldmap/worldmap.svg" width="50%" />
+<img src='man/figures/readme/downloads/downloads.svg' width='50%' /><img src='man/figures/readme/worldmap/worldmap.svg' width='50%' />
 
 ## Contributing
 

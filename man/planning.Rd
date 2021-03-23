@@ -26,7 +26,7 @@ planning(confidence = 0.95, expectedError = 0, likelihood = 'poisson', N = NULL,
 
 \item{kPrior}{if \code{prior = TRUE}, a value specifying the assumed sum of errors in the implicit sample on which the prior distribution is based.}
 
-\item{nPrior}{if \code{prior = TRUE}, a value specifying the number of observations in the implicit sample on which the prior distribution is based.}
+\item{nPrior}{if \code{prior = TRUE}, a value specifying the number of sampling units in the implicit sample on which the prior distribution is based.}
 
 \item{increase}{an integer specifying the desired increase step for the sample size calculation.}
 

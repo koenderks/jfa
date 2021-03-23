@@ -20,7 +20,7 @@
 #' @param pHmin           if \code{method = 'hypotheses'}, a value between 0 and 1 specifying the prior probability of the hypothesis \eqn{\theta <} materiality.
 #' @param pHplus          if \code{method = 'hypotheses'}, a value between 0 and 1 specifying the prior probability of the hypothesis \eqn{\theta >} materiality.
 #' @param factor          if \code{method = 'factor'}, a value between 0 and 1 specifying the weighting factor for the results of the earlier sample.
-#' @param sampleN         if \code{method = 'sample'} or \code{method = 'factor'}, an integer specifying the number of transactions that were inspected in the previous sample.
+#' @param sampleN         if \code{method = 'sample'} or \code{method = 'factor'}, an integer specifying the number of sampling units that were inspected in the earlier sample.
 #' @param sampleK         if \code{sample} or \code{factor}, a value specifying the sum of errors in the previous sample.
 #' 
 #' @details This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
