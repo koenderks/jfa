@@ -45,7 +45,7 @@ e2 <- evaluation(sample = s1_sample, bookValues = 'bookValue', auditValues = 'tr
 
 }
 \seealso{
-\code{\link{auditPrior}} \code{\link{selection}} \code{\link{evaluation}} \code{\link{report}}
+\code{\link{auditPrior}} \code{\link{planning}} \code{\link{selection}} \code{\link{evaluation}}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}

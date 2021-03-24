@@ -12,16 +12,16 @@
 #' @param confidence      a value between 0 and 1 specifying the confidence level desired for the sample planning. Defaults to 0.95 for 95\% confidence.
 #' @param likelihood      a character specifying the likelihood assumed when updating the prior distribution. This can be either \code{binomial} for the binomial likelihood and beta prior distribution, \code{poisson} for the Poisson likelihood and gamma prior distribution, or \code{hypergeometric} for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.
 #' @param method          a character specifying the method by which the prior distribution is constructed. Defaults to the \code{none} method, which incorporates no existing information. Other options are \code{median}, \code{hypotheses}, \code{arm}, \code{sample} or \code{factor}. See the details section for more information about these methods.
-#' @param expectedError   a value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a number (>= 1) that represents the number of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.
-#' @param N               an integer (or value) specifying the total population size (or value). Only required when \code{likelihood = 'hypergeometric'}.
+#' @param expectedError   a value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a value (>= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.
+#' @param N               an integer (or value) larger than 0 specifying the total population size (or value). Only required when \code{likelihood = 'hypergeometric'}.
 #' @param materiality     a value between 0 and 1 specifying the performance materiality (i.e., maximum upper limit) of the audit as a fraction of the total size (or value). Can be \code{NULL} for some methods.
-#' @param ir              if \code{method = 'arm'}, a value between 0 and 1 specifying the inherent risk probability from the audit risk model. Defaults to 1 for 100\% risk.
-#' @param cr              if \code{method = 'arm'}, a value between 0 and 1 specifying the internal control risk probability from the audit risk model. Defaults to 1 for 100\% risk.
+#' @param ir              if \code{method = 'arm'}, a value between 0 and 1 specifying the inherent risk in the audit risk model. Defaults to 1 for 100\% risk.
+#' @param cr              if \code{method = 'arm'}, a value between 0 and 1 specifying the internal control risk in the audit risk model. Defaults to 1 for 100\% risk.
 #' @param pHmin           if \code{method = 'hypotheses'}, a value between 0 and 1 specifying the prior probability of the hypothesis \eqn{\theta <} materiality.
 #' @param pHplus          if \code{method = 'hypotheses'}, a value between 0 and 1 specifying the prior probability of the hypothesis \eqn{\theta >} materiality.
 #' @param factor          if \code{method = 'factor'}, a value between 0 and 1 specifying the weighting factor for the results of the earlier sample.
-#' @param sampleN         if \code{method = 'sample'} or \code{method = 'factor'}, an integer specifying the number of sampling units that were inspected in the earlier sample.
-#' @param sampleK         if \code{sample} or \code{factor}, a value specifying the sum of errors in the previous sample.
+#' @param sampleN         if \code{method = 'sample'} or \code{method = 'factor'}, an integer larger than, or equal to, 0 specifying the number of sampling units that were inspected in the earlier sample.
+#' @param sampleK         if \code{sample} or \code{factor}, a value larger than, or equal to, 0 specifying the sum of errors in the previous sample.
 #' 
 #' @details This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
 #' 
@@ -37,30 +37,30 @@
 #'  \item{\code{none}:              This method constructs a prior distribution according to the principle of minimum information.}
 #'  \item{\code{median}:            This method constructs a prior distribution so that the prior probabilities of tolerable and intolerable misstatement are equal.}
 #'  \item{\code{hypotheses}:        This method constructs a prior distribution with specified prior probabilities for the hypotheses of tolerable and intolerable misstatement. Requires specification of the \code{pHmin} and \code{pHplus} arguments.}
-#'  \item{\code{arm}:               This method constructs a prior distribution according to the assessed risks in the audit risk model. Requires specification of the \code{ir} and \code{cr} arguments.}
+#'  \item{\code{arm}:               This method constructs a prior distribution by translating the risks of material misstatement (inherent risk and internal control risk) from the audit risk model. The method requires specification of the \code{ir} (inherent risk) and \code{cr} (internal control risk) arguments.}
 #'  \item{\code{sample}:            This method constructs a prior distribution on the basis of an earlier sample. Requires specification of the \code{sampleN} and \code{sampleK} arguments.}
-#'  \item{\code{factor}:            This method constructs a prior distribution on the basis of last year's results and a weighting factor. Requires specification of the \code{factor}, \code{sampleN} and \code{sampleK} arguments.}
+#'  \item{\code{factor}:            This method constructs a prior distribution on the basis of an earlier sample in combination with a weighting factor. Requires specification of the \code{factor}, \code{sampleN} and \code{sampleK} arguments.}
 #' }
 #'
 #' @return An object of class \code{jfaPrior} containing:
 #' 
-#' \item{confidence}{a fraction indicating the confidence level for the desired population statement.}
+#' \item{confidence}{a value between 0 and 1 indicating the confidence level.}
 #' \item{likelihood}{a character indicating the specified likelihood.}
 #' \item{method}{a character indicating the method by which the prior distribution is constructed.}
-#' \item{expectedError}{a value indicating the input for the number of expected errors.}
-#' \item{N}{if \code{N} is specified, an integer indicating the population size.}
-#' \item{materiality}{if \code{materiality} is specified, a value between 0 and 1 indicating the materiality that was used to construct the prior distribution.}
+#' \item{expectedError}{a value larger than 0 indicating the input for the number of expected errors.}
+#' \item{N}{if \code{N} is specified, an integer larger than 0 indicating the population size.}
+#' \item{materiality}{if \code{materiality} is specified, a value between 0 and 1 indicating the materiality used to construct the prior distribution.}
 #' \item{description}{a list containing a description of the prior distribution, including parameters and the implicit sample.}
 #' \item{statistics}{a list containing statistics of the prior distribution, including the mean, mode, median, and upper bound.}
-#' \item{specifics}{a list containing optional specifications of the prior distribution that vary depending on the \code{method} used.}
+#' \item{specifics}{a list containing optional specifications of the prior distribution that vary depending on the \code{method}.}
 #' \item{hypotheses}{if \code{materiality} is specified, a list containing information about the hypotheses, including prior probabilities and odds.}
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #' 
 #' @seealso \code{\link{planning}} \code{\link{selection}} \code{\link{evaluation}} \code{\link{report}}
 #' 
-#' @references Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., & Wetzels, R. (2019). JASP for audit: Bayesian Tools for the Auditing Practice.
-#' @references Derks, K., de Swart, J., van Batenburg, P. Wagenmakers, E.-J., & Wetzels, R. (2020). Priors in a Bayesian Audit: How Integrating Information into the Prior Distribution can Improve Audit Transparency and Efficiency.
+#' @references Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., & Wetzels, R. (2019). JASP for audit: Bayesian tools for the auditing practice.
+#' @references Derks, K., de Swart, J., van Batenburg, P. Wagenmakers, E.-J., & Wetzels, R. (2020). Priors in a Bayesian audit: How integrating information into the prior distribution can improve audit transparency and efficiency.
 #'
 #' @keywords prior distribution audit
 #'
@@ -76,8 +76,8 @@
 #' ir <- 1     # 100%
 #' cr <- 0.6   # 60%
 #' 
-#' # Create a beta prior distribution according to the Audit Risk Model (arm) 
-#' # and a binomial likelihood:
+#' # Create a beta prior distribution by translating the risks from
+#' # the Audit Risk Model (arm) to a beta prior:
 #' prior <- auditPrior(confidence = confidence, likelihood = 'binomial', 
 #'                     method = 'arm', expectedError = expectedError, materiality = materiality, 
 #'                     ir = ir, cr = cr)

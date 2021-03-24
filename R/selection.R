@@ -10,15 +10,15 @@
 #'           ascending = TRUE, withReplacement = FALSE, seed = 1)
 #'
 #' @param population            a data frame containing the population of items the auditor wishes to sample from.
-#' @param sampleSize            an integer specifying the number of sampling units that need to be selected from the population. Can also be an object of class \code{jfaPlanning}.
+#' @param sampleSize            an integer larger than 0 specifying the number of sampling units that need to be selected from the population. Can also be an object of class \code{jfaPlanning}.
 #' @param algorithm             a character specifying the sampling algorithm used. Possible options are \code{random} (default) for random sampling, \code{cell} for cell sampling, or \code{interval} for fixed interval sampling. 
 #' @param units                 a character specifying the sampling units used. Possible options are \code{records} (default) for selection on the level of items or \code{mus} for selection on the level of monetary units.
 #' @param bookValues            a character specifying the name of the column in the \code{population} that contains the book values of the items.
-#' @param intervalStartingPoint if \code{algorithm = 'interval'}, an integer specifying the starting point of the algorithm.
+#' @param intervalStartingPoint if \code{algorithm = 'interval'}, an integer larger than 0 specifying the starting point of the algorithm.
 #' @param ordered               a logical specifying whether to first order the items in the \code{population} according to the value of their \code{bookValues}. Defaults to \code{TRUE}.
 #' @param ascending             if \code{ordered = TRUE}, a logical specifying whether to order the population \code{bookValues} from smallest to largest. Defaults to \code{TRUE}.
 #' @param withReplacement       if \code{algorithm = 'random'}, a logical specifying whether sampling should be performed with replacement. Defaults to \code{FALSE}.
-#' @param seed                  an integer specifying a seed to reproduce results. Defaults to 1.
+#' @param seed                  if \code{algorithm = 'random'} or \code{algorithm = 'cell'}, an integer specifying a seed to reproduce results. Defaults to 1.
 #' 
 #' @details The first part of this section elaborates on the possible options for the \code{units} argument:
 #' 
@@ -47,6 +47,7 @@
 #'
 #' @seealso \code{\link{auditPrior}} \code{\link{planning}} \code{\link{evaluation}} \code{\link{report}}
 #'
+#' @references Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). \emph{Dollar-unit Sampling: A Practical Guide for Auditors}. Copp Clark Pitman; Belmont, Calif.: distributed by Fearon-Pitman.
 #' @references Wampler, B., & McEacharn, M. (2005). Monetary-unit sampling using Microsoft Excel. \emph{The CPA journal}, 75(5), 36.
 #'
 #' @examples

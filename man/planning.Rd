@@ -6,7 +6,7 @@
 \usage{
 planning(confidence = 0.95, expectedError = 0, likelihood = 'poisson', N = NULL, 
           materiality = NULL, minPrecision = NULL, 
-          prior = FALSE, kPrior = 0, nPrior = 0,
+          prior = FALSE, nPrior = 0, kPrior = 0,
           increase = 1, maxSize = 5000)
 }
 \arguments{
@@ -16,7 +16,7 @@ planning(confidence = 0.95, expectedError = 0, likelihood = 'poisson', N = NULL,
 
 \item{likelihood}{a character specifying the likelihood assumed in the calculation. This can be either \code{binomial} for the binomial likelihood, \code{poisson} for the Poisson likelihood, or \code{hypergeometric} for the hypergeometric likelihood. See the details section for more information about the available likelihoods.}
 
-\item{N}{an integer (or value) specifying the total population size (or value). Only required when \code{likelihood = 'hypergeometric'}.}
+\item{N}{an integer (or value) larger than 0 specifying the total population size (or value). Only required when \code{likelihood = 'hypergeometric'}.}
 
 \item{materiality}{a value between 0 and 1 specifying the performance materiality (i.e., maximum upper limit) of the audit as a fraction of the total size (or value). Can be \code{NULL}, but \code{minPrecision} should be specified in that case.}
 
@@ -24,29 +24,29 @@ planning(confidence = 0.95, expectedError = 0, likelihood = 'poisson', N = NULL,
 
 \item{prior}{a logical specifying whether to use a prior distribution when planning, or an object of class `jfaPrior` containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a negligible prior distribution is chosen by default, but can be adjusted using the `kPrior` and `nPrior` arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
 
-\item{kPrior}{if \code{prior = TRUE}, a value specifying the assumed sum of errors in the implicit sample on which the prior distribution is based.}
+\item{nPrior}{if \code{prior = TRUE}, a value larger than, or equal to, 0 specifying the number of sampling units in the implicit sample on which the prior distribution is based.}
 
-\item{nPrior}{if \code{prior = TRUE}, a value specifying the number of sampling units in the implicit sample on which the prior distribution is based.}
+\item{kPrior}{if \code{prior = TRUE}, a value larger than, or equal to, 0 specifying the assumed sum of errors in the implicit sample on which the prior distribution is based.}
 
-\item{increase}{an integer specifying the desired increase step for the sample size calculation.}
+\item{increase}{an integer larger than 0 specifying the desired increase step for the sample size calculation.}
 
-\item{maxSize}{an integer specifying the maximum sample size that is considered in the calculation. Defaults to 5000 for efficiency. Increase this value if the sample size cannot be found due to it being too large (e.g., for a low materiality).}
+\item{maxSize}{an integer larger than 0 specifying the maximum sample size that is considered in the calculation. Defaults to 5000 for efficiency. Increase this value if the sample size cannot be found due to it being too large (e.g., for a low materiality).}
 }
 \value{
 An object of class \code{jfaPlanning} containing:
 
-\item{confidence}{a fraction indicating the confidence level for the desired population statement.}
-\item{expectedError}{the specified number of errors as a fraction or as a number.}
+\item{confidence}{a value between 0 and 1 indicating the confidence level.}
+\item{expectedError}{a value larger than, or equal to, 0 indicating the expected errors input.}
 \item{likelihood}{a character indicating the specified likelihood.}
-\item{N}{an integer indicating the population size (only returned if it is specified).}
-\item{materiality}{a fraction indicating the specified materiality. Can be \code{NULL}.}
-\item{minPrecision}{a fraction indicating the minimum precision to be obtained. Can be \code{NULL}.}
-\item{sampleSize}{an integer indicating the required sample size.}
+\item{N}{an integer larger than 0 indicating the population size (only returned if \code{N} is specified).}
+\item{materiality}{a value between 0 and 1 indicating the specified materiality. Can be \code{NULL}.}
+\item{minPrecision}{a value between 0 and 1 indicating the minimum precision to be obtained. Can be \code{NULL}.}
+\item{sampleSize}{an integer larger than 0 indicating the required sample size.}
 \item{errorType}{a character indicating whether the expected errors where specified as a percentage or as an integer.}
-\item{expectedSampleError}{a value indicating the number of errors that are allowed in the sample.}
-\item{expectedBound}{a value indicating the expected upper bound if the sample goes according to plan.}
-\item{expectedPrecision}{a value indicating the expected precision if the sample goes according to plan.}
-\item{populationK}{if \code{likelihood = 'hypergeometric'}, an integer indicating the assumed population errors.}
+\item{expectedSampleError}{a value larger than, or equal to, 0 indicating the number of errors that are allowed in the sample.}
+\item{expectedBound}{a value between 0 and 1 indicating the expected upper bound if the sample goes according to plan.}
+\item{expectedPrecision}{a value between 0 and 1 indicating the expected precision if the sample goes according to plan.}
+\item{populationK}{if \code{likelihood = 'hypergeometric'}, an integer larger than 0 indicating the assumed population errors.}
 \item{prior}{if a prior distribution is specified, an object of class \code{jfaPrior} that contains the prior distribution.}
 \item{expectedPosterior}{if a prior distribution is specified, an object of class \code{jfaPosterior} that contains the expected posterior distribution.}
 }
@@ -133,7 +133,7 @@ print(p2)
 
 }
 \references{
-Dyer, D. and Pierce, R.L. (1993). On the Choice of the Prior Distribution in Hypergeometric Sampling. \emph{Communications in Statistics - Theory and Methods}, 22(8), 2125 - 2146.
+Dyer, D. and Pierce, R.L. (1993). On the choice of the prior distribution in hypergeometric sampling. \emph{Communications in Statistics - Theory and Methods}, 22(8), 2125 - 2146.
 }
 \seealso{
 \code{\link{auditPrior}} \code{\link{selection}} \code{\link{evaluation}} \code{\link{report}}

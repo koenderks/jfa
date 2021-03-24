@@ -137,7 +137,7 @@ Below you can find a explanation of the functions in the current version of `jfa
 
 ### Create a prior distribution with the `auditPrior()` function:
 
-The `auditPrior()` function creates a prior distribution according to one of several methods, including the audit risk model and assessments of the inherent and control risk. The returned object is of class `jfaPrior` and can be used with associated `print()` and `plot()` methods. `jfaPrior` results can also be used as input argument for the `prior` argument in other functions.
+The `auditPrior()` function creates a prior distribution according to one of several methods, including a translation of the assessments of the inherent risk and control risk in the audit risk model. The returned object is of class `jfaPrior` and can be used with associated `print()` and `plot()` methods. `jfaPrior` results can also be used as input argument for the `prior` argument in other functions.
 
 *Full function with default arguments:*
 
@@ -156,7 +156,7 @@ The `auditPrior()` function creates a prior distribution according to one of sev
 | `method` | Reference | Description | Additional arguments |
 |---------|-------|-----|----|
 | `none` | Derks et al. (2020) | No prior information | |
-| `arm` | Derks et al. (2020) | Inherent risk and internal control risk (ARM) | `ir` and `cr` | 
+| `arm` | Derks et al. (2020) | Translates risk assessments (ARM) | `ir` and `cr` | 
 | `median` | Derks et al. (2020) | Equal prior probabilities for hypotheses | |
 | `hypotheses` | Derks et al. (2020) | Custom prior probabilities for hypotheses | `pHmin` or `pHplus` |
 | `sample` | Derks et al. (2020) | Earlier sample | `sampleN` and `sampleK` |
@@ -168,7 +168,7 @@ The `planning()` function calculates the required sample size for a statistical 
 
 *Full function with default arguments:*
 
-`planning(confidence = 0.95, expectedError = 0, likelihood = 'poisson', N = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, kPrior = 0, nPrior = 0, increase = 1, maxSize = 5000)`
+`planning(confidence = 0.95, expectedError = 0, likelihood = 'poisson', N = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, nPrior = 0, kPrior = 0, increase = 1, maxSize = 5000)`
 
 *Supported options for the `likelihood` argument:*
 
@@ -247,13 +247,13 @@ For an example report, see the following [link](https://github.com/koenderks/jfa
 - Dworin, L. D. and Grimlund, R. A. (1984). Dollar-unit sampling for accounts receivable and inventory. *The Accounting Review*, 59(2), 218–241. - [View online](https://www.jstor.org/stable/247296)
 - Dyer, D., & Pierce, R. L. (1993). On the choice of the prior distribution in hypergeometric sampling. *Communications in Statistics - Theory and Methods*, 22(8), 2125-2146. - [View online](https://www.tandfonline.com/doi/abs/10.1080/03610929308831139)
 - Meikle, G. R. (1972). *Statistical Sampling in an Audit Context*. Canadian Institute of Chartered Accountants.
-- Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). *Dollar-unit sampling: A practical guide for auditors*. London: Pitman.
+- Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). *Dollar-unit Sampling: A Practical Guide for Auditors*. London: Pitman.
 - Pap, G., & van Zuijlen, M. C. (1996). On the asymptotic behaviour of the Stringer bound. *Statistica Neerlandica*, 50(3), 367-389. - [View online](https://doi.org/10.1111/j.1467-9574.1996.tb01503.x)
 - Rohrbach, K. J. (1993). Variance augmentation to achieve nominal coverage probability in sampling from audit populations. *Auditing: A Journal of Practice & Theory*, 12(2), 79-97.
-- Steele, A. (1992). *Audit risk and audit evidence: The Bayesian approach to statistical auditing*. San Diego: Academic Press.
-- Stewart, T. R. (2012). *Technical notes on the AICPA audit guide audit sampling*. American Institute of Certified Public Accountants, New York. - [View online](https://www.aicpa.org/content/dam/aicpa/publications/accountingauditing/keytopics/downloadabledocuments/sampling-guide-technical-notes.pdf)
-- Stewart, T. R. (2013). *A Bayesian audit assurance model with application to the component materiality problem in group audits.* VU University, Amsterdam. - [View online](https://research.vu.nl/en/publications/a-bayesian-audit-assurance-model-with-application-to-the-componen)
-- Touw, P., and Hoogduin, L. (2011). *Statistiek voor audit en controlling*. Boom uitgevers, Amsterdam.
+- Steele, A. (1992). *Audit Risk and Audit Evidence: The Bayesian Approach to Statistical Auditing*. San Diego: Academic Press.
+- Stewart, T. R. (2012). *Technical Notes on the AICPA Audit Guide Audit Sampling*. American Institute of Certified Public Accountants, New York. - [View online](https://www.aicpa.org/content/dam/aicpa/publications/accountingauditing/keytopics/downloadabledocuments/sampling-guide-technical-notes.pdf)
+- Stewart, T. R. (2013). *A Bayesian Audit Assurance Model with Application to the Component Materiality problem in Group Audits.* VU University, Amsterdam. - [View online](https://research.vu.nl/en/publications/a-bayesian-audit-assurance-model-with-application-to-the-componen)
+- Touw, P., and Hoogduin, L. (2011). *Statistiek voor Audit en Controlling*. Boom uitgevers, Amsterdam.
 
 ## Package statistics
 

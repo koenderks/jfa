@@ -17,64 +17,64 @@ evaluation(confidence = 0.95, method = 'binomial', N = NULL,
 
 \item{method}{a character specifying the the method that is used to evaluate the sample. Possible options are \code{poisson}, \code{binomial} (default), \code{hypergeometric}, \code{mpus}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}. See the details section for more information about these methods.}
 
-\item{N}{an integer specifying the total number of units (transactions or monetary units) in the population.}
+\item{N}{an integer larger than 0 specifying the total number of units (items) or total value (monetary units) in the population.}
 
-\item{sample}{a data frame containing at least a column of Ist values and a column of Soll (true) values.}
+\item{sample}{a data frame containing the sample to be evaluated. The sample must at least contain a column of book values and a column of audit (true) values.}
 
-\item{bookValues}{a character specifying the column name for the Ist values in the sample.}
+\item{bookValues}{a character specifying the column name for the book values in the \code{sample}.}
 
-\item{auditValues}{a character specifying the column name for the Soll values in the sample.}
+\item{auditValues}{a character specifying the column name for the audit values in the \code{sample}.}
 
-\item{counts}{a integer vector of the number of times each transaction in the sample is to be evaluated (due to it being selected multiple times for the sample).}
+\item{counts}{a integer vector specifying the number of times each transaction in the sample is to be counted in the evaluation (due to it being selected multiple times for the sample).}
 
-\item{nSumstats}{an integer specifying the number of transactions in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data come from summary statistics specified by both \code{nSumstats} and \code{kSumstats}.}
+\item{nSumstats}{an integer larger than 0 specifying the number of items in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data come from summary statistics specified by both \code{nSumstats} and \code{kSumstats}.}
 
-\item{kSumstats}{a value specifying the sum of taints (proportional errors) found in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data come from summary statistics specified by both \code{kSumstats} and \code{nSumstats}.}
+\item{kSumstats}{a value larger than 0 specifying the sum of errors found in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data come from summary statistics specified by both \code{kSumstats} and \code{nSumstats}.}
 
-\item{materiality}{a value specifying the performance materiality as a fraction of the total value (or size) of the population (a value between 0 and 1). If specified, the function also returns the conclusion of the analysis with respect to the performance materiality. The value is discarded when \code{direct}, \code{difference}, \code{quotient}, or \code{regression} method is chosen.}
+\item{materiality}{a value between 0 and 1 specifying the performance materiality as a fraction of the total value (or size) of the population (a value between 0 and 1). If specified, the function also returns the conclusion of the analysis with respect to the performance materiality. The value is discarded when \code{direct}, \code{difference}, \code{quotient}, or \code{regression} method is chosen.}
 
-\item{minPrecision}{a value specifying the required minimum precision. If specified, the function also returns the conclusion of the analysis with respect to the required minimum precision. This value must be specified as a fraction of the total value of the population (a value between 0 and 1).}
+\item{minPrecision}{a value between 0 and 1 specifying the required minimum precision (upper bound minus most likely error). If specified, the function also returns the conclusion of the analysis with respect to the required minimum precision. This value must be specified as a fraction of the total value of the population (a value between 0 and 1).}
 
-\item{prior}{a logical indicating whether to use a prior distribution when evaluating. Defaults to \code{FALSE} for frequentist evaluation. If \code{TRUE}, the prior distribution is updated by the corresponding likelihood. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
+\item{prior}{a logical specifying whether to use a prior distribution when planning, or an object of class `jfaPrior` containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a negligible prior distribution is chosen by default, but can be adjusted using the `kPrior` and `nPrior` arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
 
-\item{nPrior}{a value for the prior parameter \eqn{\beta} (number of transactions in the assumed prior sample).}
+\item{nPrior}{if \code{prior = TRUE}, a value specifying the number of sampling units in the implicit sample on which the prior distribution is based.}
 
-\item{kPrior}{a value for the prior parameter \eqn{\alpha} (total tainting in the assumed prior sample).}
+\item{kPrior}{if \code{prior = TRUE}, a value specifying the assumed sum of errors in the implicit sample on which the prior distribution is based.}
 
-\item{rohrbachDelta}{a value specifying \eqn{\Delta} in Rohrbach's augmented variance bound (Rohrbach, 1993).}
+\item{rohrbachDelta}{if \code{method = 'rohrbach'}, a value specifying \eqn{\Delta} in Rohrbach's augmented variance bound (Rohrbach, 1993).}
 
-\item{momentPoptype}{a character specifying the type of population for the modified moment method (Dworin and Grimlund, 1984). Can be either one of \code{accounts} or \code{inventory}. Options result in different methods for calculating the central moments.}
+\item{momentPoptype}{if \code{method = 'moment'}, a character specifying the type of population (Dworin and Grimlund, 1984). Possible options are \code{accounts} and \code{inventory}. This argument affects the calculation of the central moments in the bound.}
 
-\item{populationBookValue}{a value specifying the total value of the transactions in the population. Required when \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, but optional otherwise.}
+\item{populationBookValue}{if \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a value specifying the total value of the transactions in the population. This argument is optional otherwise.}
 
-\item{csA}{if \code{method = "coxsnell"}, the \eqn{\alpha} parameter of the prior distribution on the mean taint. Default is set to 1, as recommended by Cox and Snell (1979).}
+\item{csA}{if \code{method = "coxsnell"}, a value specifying the \eqn{\alpha} parameter of the prior distribution on the mean taint. Defaults to 1 as recommended by Cox and Snell (1979).}
 
-\item{csB}{if \code{method = "coxsnell"}, the \eqn{\beta} parameter of the prior distribution on the mean taint. Default is set to 3, as recommended by Cox and Snell (1979).}
+\item{csB}{if \code{method = "coxsnell"}, a value specifying the \eqn{\beta} parameter of the prior distribution on the mean taint. Defaults to 3 as recommended by Cox and Snell (1979).}
 
-\item{csMu}{if \code{method = "coxsnell"}, the mean of the prior distribution on the mean taint. Default is set to 0.5, as recommended by Cox and Snell (1979).}
+\item{csMu}{if \code{method = "coxsnell"}, a value between 0 and 1 specifying the mean of the prior distribution on the mean taint. Defaults to 0.5 as recommended by Cox and Snell (1979).}
 }
 \value{
 An object of class \code{jfaEvaluation} containing:
 
-\item{confidence}{a value specifying the confidence level of the result.}
-\item{method}{the evaluation method that was used.}
-\item{N}{if \code{N} is specified, the population size that is used.}
-\item{n}{an integer specifying the sample size used in the evaluation.}
-\item{k}{an integer specifying the number of transactions that contained an error.}
-\item{t}{a value specifying the sum of observed taints.}
-\item{materiality}{if \code{materiality} is specified, the performance materiality used.}
-\item{minPrecision}{if \code{minPrecision} is specified, the minimum required precision used.}
-\item{mle}{a value specifying the most likely error in the population as a proportion.}
-\item{precision}{a value specifying the difference between the mle and the upper confidence bound as a proportion.}
-\item{popBookvalue}{if specified as input, the total Ist value of the population.}
-\item{pointEstimate}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, the value of the point estimate.}
-\item{lowerBound}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, the value of the lower bound of the interval.}
-\item{upperBound}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, the value of the upper bound of the interval.}
-\item{confBound}{the upper confidence bound on the error percentage. }
-\item{conclusion}{if \code{materiality} is specified, the conclusion about whether to approve or not approve the population.}
-\item{populationK}{the assumed total errors in the population. Used in inferences with \code{hypergeometric} method.}
-\item{prior}{an object of class 'jfaPrior' to represents the prior distribution.}
-\item{posterior}{an object of class 'jfaPosterior' to represents the posterior distribution.}
+\item{confidence}{a value between 0 and 1 indicating the confidence level.}
+\item{method}{a character indicating the evaluation method.}
+\item{N}{if \code{N} is specified, in integer larger than 0 indicating the population size.}
+\item{n}{an integer larger than 0 indicating the sample size.}
+\item{k}{an integer larger than, or equal to, 0 indicating the number of items in the sample that contained an error.}
+\item{t}{a value larger than, or equal to, 0, indicating the sum of observed taints.}
+\item{materiality}{if \code{materiality} is specified, a value between 0 and 1 indicating the performance materiality as a fraction of the total population size or value.}
+\item{minPrecision}{if \code{minPrecision} is specified, a value between 0 and 1 indicating the minimum required precision as a fraction of the total population size or value.}
+\item{mle}{a value between 0 and 1 indicating the most likely error in the population as a fraction of its total size or value.}
+\item{precision}{a value between 0 and 1 indicating the difference between the most likely error and the upper bound in the population as a fraction of its total size or value.}
+\item{popBookvalue}{if \code{populationBookValue} is specified, a value larger than 0 indicating the total value of the population.}
+\item{pointEstimate}{if \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a value indicating point estimate of the population error as a fraction its total size or value.}
+\item{lowerBound}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a value indicating the lower bound of the interval around the population error as a fraction its total size or value.}
+\item{upperBound}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a value indicating the upper bound of the interval around the population error as a fraction its total size or value.}
+\item{confBound}{a value indicating the upper bound on the population error as a fraction its total size or value.}
+\item{conclusion}{if \code{materiality} is specified, a character indicating the conclusion about whether to approve or not approve the population with respect to the performance materiality.}
+\item{populationK}{if \code{method = 'hypergeometric'}, an integer indicating the assumed total errors in the population.}
+\item{prior}{an object of class 'jfaPrior' that contains the prior distribution.}
+\item{posterior}{an object of class 'jfaPosterior' that contains the posterior distribution.}
 \item{data}{a data frame containing the relevant columns from the \code{sample} input.}
 }
 \description{
@@ -87,21 +87,21 @@ For more details on how to use this function see the package vignette:
 This section lists the available options for the \code{methods} argument.
 
 \itemize{
- \item{\code{poisson}:          The confidence bound taken from the Poisson distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{gamma} prior and posterior.}
- \item{\code{binomial}:         The confidence bound taken from the binomial distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{beta} prior and posterior.}
- \item{\code{hypergeometric}:   The confidence bound taken from the hypergeometric distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{beta-binomial} prior and posterior.}
-\item{\code{mpu}}:			   Mean per unit estimator using the observed sample taints.
- \item{\code{stringer}:         The Stringer bound (Stringer, 1963).}
- \item{\code{stringer-meikle}:  Stringer bound with Meikle's correction for understatements (Meikle, 1972).}
- \item{\code{stringer-lta}:     Stringer bound with LTA correction for understatements (Leslie, Teitlebaum, and Anderson, 1979).}
- \item{\code{stringer-pvz}:     Stringer bound with Pap and van Zuijlen's correction for understatements (Pap and van Zuijlen, 1996).}
- \item{\code{rohrbach}:         Rohrbach's augmented variance bound (Rohrbach, 1993).}
- \item{\code{moment}:           Modified moment bound (Dworin and Grimlund, 1984).}
- \item{\code{coxsnell}:         Cox and Snell bound (Cox and Snell, 1979).}
- \item{\code{direct}:           Confidence interval using the direct method (Touw and Hoogduin, 2011).}
- \item{\code{difference}:       Confidence interval using the difference method (Touw and Hoogduin, 2011).}
- \item{\code{quotient}:         Confidence interval using the quotient method (Touw and Hoogduin, 2011).}
- \item{\code{regression}:       Confidence interval using the regression method (Touw and Hoogduin, 2011).}
+ \item{\code{poisson}:          Evaluates the sample with the Poisson distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{gamma} prior and posterior.}
+ \item{\code{binomial}:         Evaluates the sample with the binomial distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{beta} prior and posterior.}
+ \item{\code{hypergeometric}:   Evaluates the sample with the hypergeometric distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{beta-binomial} prior and posterior.}
+\item{\code{mpu}}:			   Evaluates the sample with the mean-per-unit estimator.
+ \item{\code{stringer}:         Evaluates the sample with the Stringer bound (Stringer, 1963).}
+ \item{\code{stringer-meikle}:  Evaluates the sample with the Stringer bound with Meikle's correction for understatements (Meikle, 1972).}
+ \item{\code{stringer-lta}:     Evaluates the sample with the Stringer bound with LTA correction for understatements (Leslie, Teitlebaum, and Anderson, 1979).}
+ \item{\code{stringer-pvz}:     Evaluates the sample with the Stringer bound with Pap and van Zuijlen's correction for understatements (Pap and van Zuijlen, 1996).}
+ \item{\code{rohrbach}:         Evaluates the sample with Rohrbach's augmented variance bound (Rohrbach, 1993).}
+ \item{\code{moment}:           Evaluates the sample with the modified moment bound (Dworin and Grimlund, 1984).}
+ \item{\code{coxsnell}:         Evaluates the sample with the Cox and Snell bound (Cox and Snell, 1979).}
+ \item{\code{direct}:           Evaluates the sample with the direct estimator (Touw and Hoogduin, 2011).}
+ \item{\code{difference}:       Evaluates the sample with the difference estimator (Touw and Hoogduin, 2011).}
+ \item{\code{quotient}:         Evaluates the sample with the quotient estimator (Touw and Hoogduin, 2011).}
+ \item{\code{regression}:       Evaluates the sample with the regression estimator (Touw and Hoogduin, 2011).}
 }
 }
 \examples{
@@ -178,13 +178,13 @@ print(e2)
 \references{
 Cox, D. and Snell, E. (1979). On sampling and the estimation of rare errors. \emph{Biometrika}, 66(1), 125-132.
 
-Dworin, L. D. and Grimlund, R. A. (1984). Dollar-unit Sampling for accounts receivable and inventory. \emph{The Accounting Review}, 59(2), 218–241
+Dworin, L. D. and Grimlund, R. A. (1984). Dollar-unit sampling for accounts receivable and inventory. \emph{The Accounting Review}, 59(2), 218–241
 
-Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). \emph{Dollar-unit sampling: a practical guide for auditors}. Copp Clark Pitman; Belmont, Calif.: distributed by Fearon-Pitman.
+Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). \emph{Dollar-unit Sampling: A Practical Guide for Auditors}. Copp Clark Pitman; Belmont, Calif.: distributed by Fearon-Pitman.
 
 Meikle, G. R. (1972). \emph{Statistical Sampling in an Audit Context: An Audit Technique}. Canadian Institute of Chartered Accountants.
 
-Pap, G., and van Zuijlen, M. C. (1996). On the asymptotic behavior of the Stringer bound 1. \emph{Statistica Neerlandica}, 50(3), 367-389.
+Pap, G., and van Zuijlen, M. C. (1996). On the asymptotic behavior of the Stringer bound. \emph{Statistica Neerlandica}, 50(3), 367-389.
 
 Rohrbach, K. J. (1993). Variance augmentation to achieve nominal coverage probability in sampling from audit populations. \emph{Auditing}, 12(2), 79.
 
@@ -193,7 +193,7 @@ Stringer, K. W. (1963). Practical aspects of statistical sampling in auditing. \
 Touw, P., and Hoogduin, L. (2011). \emph{Statistiek voor Audit en Controlling}. Boom uitgevers Amsterdam.
 }
 \seealso{
-\code{\link{auditPrior}} \code{\link{planning}} \code{\link{selection}}
+\code{\link{auditPrior}} \code{\link{planning}} \code{\link{selection}} \code{\link{report}}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}

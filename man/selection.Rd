@@ -11,7 +11,7 @@ selection(population, sampleSize, units = 'records', algorithm = 'random',
 \arguments{
 \item{population}{a data frame containing the population of items the auditor wishes to sample from.}
 
-\item{sampleSize}{an integer specifying the number of sampling units that need to be selected from the population. Can also be an object of class \code{jfaPlanning}.}
+\item{sampleSize}{an integer larger than 0 specifying the number of sampling units that need to be selected from the population. Can also be an object of class \code{jfaPlanning}.}
 
 \item{units}{a character specifying the sampling units used. Possible options are \code{records} (default) for selection on the level of items or \code{mus} for selection on the level of monetary units.}
 
@@ -19,7 +19,7 @@ selection(population, sampleSize, units = 'records', algorithm = 'random',
 
 \item{bookValues}{a character specifying the name of the column in the \code{population} that contains the book values of the items.}
 
-\item{intervalStartingPoint}{if \code{algorithm = 'interval'}, an integer specifying the starting point of the algorithm.}
+\item{intervalStartingPoint}{if \code{algorithm = 'interval'}, an integer larger than 0 specifying the starting point of the algorithm.}
 
 \item{ordered}{a logical specifying whether to first order the items in the \code{population} according to the value of their \code{bookValues}. Defaults to \code{TRUE}.}
 
@@ -27,7 +27,7 @@ selection(population, sampleSize, units = 'records', algorithm = 'random',
 
 \item{withReplacement}{if \code{algorithm = 'random'}, a logical specifying whether sampling should be performed with replacement. Defaults to \code{FALSE}.}
 
-\item{seed}{an integer specifying a seed to reproduce results. Defaults to 1.}
+\item{seed}{if \code{algorithm = 'random'} or \code{algorithm = 'cell'}, an integer specifying a seed to reproduce results. Defaults to 1.}
 }
 \value{
 An object of class \code{jfaSelection} containing:
@@ -125,6 +125,8 @@ print(s2)
 
 }
 \references{
+Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). \emph{Dollar-unit Sampling: A Practical Guide for Auditors}. Copp Clark Pitman; Belmont, Calif.: distributed by Fearon-Pitman.
+
 Wampler, B., & McEacharn, M. (2005). Monetary-unit sampling using Microsoft Excel. \emph{The CPA journal}, 75(5), 36.
 }
 \seealso{
