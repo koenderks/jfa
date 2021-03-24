@@ -161,7 +161,7 @@ vignette('jfa', package = 'jfa')" />
     </tr>
     <tr>
       <th>sampleSize</th>
-      <td><p>an integer specifying the number of sampling units that need to be selected from the population. Can also be an object of class <code>jfaPlanning</code>.</p></td>
+      <td><p>an integer larger than 0 specifying the number of sampling units that need to be selected from the population. Can also be an object of class <code>jfaPlanning</code>.</p></td>
     </tr>
     <tr>
       <th>units</th>
@@ -177,7 +177,7 @@ vignette('jfa', package = 'jfa')" />
     </tr>
     <tr>
       <th>intervalStartingPoint</th>
-      <td><p>if <code>algorithm = 'interval'</code>, an integer specifying the starting point of the algorithm.</p></td>
+      <td><p>if <code>algorithm = 'interval'</code>, an integer larger than 0 specifying the starting point of the algorithm.</p></td>
     </tr>
     <tr>
       <th>ordered</th>
@@ -193,7 +193,7 @@ vignette('jfa', package = 'jfa')" />
     </tr>
     <tr>
       <th>seed</th>
-      <td><p>an integer specifying a seed to reproduce results. Defaults to 1.</p></td>
+      <td><p>if <code>algorithm = 'random'</code> or <code>algorithm = 'cell'</code>, an integer specifying a seed to reproduce results. Defaults to 1.</p></td>
     </tr>
     </table>
 
@@ -223,7 +223,8 @@ vignette('jfa', package = 'jfa')" />
 
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Wampler, B., &amp; McEacharn, M. (2005). Monetary-unit sampling using Microsoft Excel. <em>The CPA journal</em>, 75(5), 36.</p>
+    <p>Leslie, D. A., Teitlebaum, A. D., &amp; Anderson, R. J. (1979). <em>Dollar-unit Sampling: A Practical Guide for Auditors</em>. Copp Clark Pitman; Belmont, Calif.: distributed by Fearon-Pitman.</p>
+<p>Wampler, B., &amp; McEacharn, M. (2005). Monetary-unit sampling using Microsoft Excel. <em>The CPA journal</em>, 75(5), 36.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='auditPrior.html'>auditPrior</a></code> <code><a href='planning.html'>planning</a></code> <code><a href='evaluation.html'>evaluation</a></code> <code><a href='report.html'>report</a></code></p></div>

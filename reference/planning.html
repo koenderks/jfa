@@ -150,7 +150,7 @@ vignette('jfa', package = 'jfa')" />
 
     <pre class="usage"><span class='fu'>planning</span><span class='op'>(</span>confidence <span class='op'>=</span> <span class='fl'>0.95</span>, expectedError <span class='op'>=</span> <span class='fl'>0</span>, likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, N <span class='op'>=</span> <span class='cn'>NULL</span>, 
           materiality <span class='op'>=</span> <span class='cn'>NULL</span>, minPrecision <span class='op'>=</span> <span class='cn'>NULL</span>, 
-          prior <span class='op'>=</span> <span class='cn'>FALSE</span>, kPrior <span class='op'>=</span> <span class='fl'>0</span>, nPrior <span class='op'>=</span> <span class='fl'>0</span>,
+          prior <span class='op'>=</span> <span class='cn'>FALSE</span>, nPrior <span class='op'>=</span> <span class='fl'>0</span>, kPrior <span class='op'>=</span> <span class='fl'>0</span>,
           increase <span class='op'>=</span> <span class='fl'>1</span>, maxSize <span class='op'>=</span> <span class='fl'>5000</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -170,7 +170,7 @@ vignette('jfa', package = 'jfa')" />
     </tr>
     <tr>
       <th>N</th>
-      <td><p>an integer (or value) specifying the total population size (or value). Only required when <code>likelihood = 'hypergeometric'</code>.</p></td>
+      <td><p>an integer (or value) larger than 0 specifying the total population size (or value). Only required when <code>likelihood = 'hypergeometric'</code>.</p></td>
     </tr>
     <tr>
       <th>materiality</th>
@@ -185,38 +185,38 @@ vignette('jfa', package = 'jfa')" />
       <td><p>a logical specifying whether to use a prior distribution when planning, or an object of class `jfaPrior` containing the prior distribution. Defaults to <code>FALSE</code> for frequentist planning. If <code>TRUE</code>, a negligible prior distribution is chosen by default, but can be adjusted using the `kPrior` and `nPrior` arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.</p></td>
     </tr>
     <tr>
-      <th>kPrior</th>
-      <td><p>if <code>prior = TRUE</code>, a value specifying the assumed sum of errors in the implicit sample on which the prior distribution is based.</p></td>
+      <th>nPrior</th>
+      <td><p>if <code>prior = TRUE</code>, a value larger than, or equal to, 0 specifying the number of sampling units in the implicit sample on which the prior distribution is based.</p></td>
     </tr>
     <tr>
-      <th>nPrior</th>
-      <td><p>if <code>prior = TRUE</code>, a value specifying the number of sampling units in the implicit sample on which the prior distribution is based.</p></td>
+      <th>kPrior</th>
+      <td><p>if <code>prior = TRUE</code>, a value larger than, or equal to, 0 specifying the assumed sum of errors in the implicit sample on which the prior distribution is based.</p></td>
     </tr>
     <tr>
       <th>increase</th>
-      <td><p>an integer specifying the desired increase step for the sample size calculation.</p></td>
+      <td><p>an integer larger than 0 specifying the desired increase step for the sample size calculation.</p></td>
     </tr>
     <tr>
       <th>maxSize</th>
-      <td><p>an integer specifying the maximum sample size that is considered in the calculation. Defaults to 5000 for efficiency. Increase this value if the sample size cannot be found due to it being too large (e.g., for a low materiality).</p></td>
+      <td><p>an integer larger than 0 specifying the maximum sample size that is considered in the calculation. Defaults to 5000 for efficiency. Increase this value if the sample size cannot be found due to it being too large (e.g., for a low materiality).</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An object of class <code>jfaPlanning</code> containing:</p>
-<dt>confidence</dt><dd><p>a fraction indicating the confidence level for the desired population statement.</p></dd>
-<dt>expectedError</dt><dd><p>the specified number of errors as a fraction or as a number.</p></dd>
+<dt>confidence</dt><dd><p>a value between 0 and 1 indicating the confidence level.</p></dd>
+<dt>expectedError</dt><dd><p>a value larger than, or equal to, 0 indicating the expected errors input.</p></dd>
 <dt>likelihood</dt><dd><p>a character indicating the specified likelihood.</p></dd>
-<dt>N</dt><dd><p>an integer indicating the population size (only returned if it is specified).</p></dd>
-<dt>materiality</dt><dd><p>a fraction indicating the specified materiality. Can be <code>NULL</code>.</p></dd>
-<dt>minPrecision</dt><dd><p>a fraction indicating the minimum precision to be obtained. Can be <code>NULL</code>.</p></dd>
-<dt>sampleSize</dt><dd><p>an integer indicating the required sample size.</p></dd>
+<dt>N</dt><dd><p>an integer larger than 0 indicating the population size (only returned if <code>N</code> is specified).</p></dd>
+<dt>materiality</dt><dd><p>a value between 0 and 1 indicating the specified materiality. Can be <code>NULL</code>.</p></dd>
+<dt>minPrecision</dt><dd><p>a value between 0 and 1 indicating the minimum precision to be obtained. Can be <code>NULL</code>.</p></dd>
+<dt>sampleSize</dt><dd><p>an integer larger than 0 indicating the required sample size.</p></dd>
 <dt>errorType</dt><dd><p>a character indicating whether the expected errors where specified as a percentage or as an integer.</p></dd>
-<dt>expectedSampleError</dt><dd><p>a value indicating the number of errors that are allowed in the sample.</p></dd>
-<dt>expectedBound</dt><dd><p>a value indicating the expected upper bound if the sample goes according to plan.</p></dd>
-<dt>expectedPrecision</dt><dd><p>a value indicating the expected precision if the sample goes according to plan.</p></dd>
-<dt>populationK</dt><dd><p>if <code>likelihood = 'hypergeometric'</code>, an integer indicating the assumed population errors.</p></dd>
+<dt>expectedSampleError</dt><dd><p>a value larger than, or equal to, 0 indicating the number of errors that are allowed in the sample.</p></dd>
+<dt>expectedBound</dt><dd><p>a value between 0 and 1 indicating the expected upper bound if the sample goes according to plan.</p></dd>
+<dt>expectedPrecision</dt><dd><p>a value between 0 and 1 indicating the expected precision if the sample goes according to plan.</p></dd>
+<dt>populationK</dt><dd><p>if <code>likelihood = 'hypergeometric'</code>, an integer larger than 0 indicating the assumed population errors.</p></dd>
 <dt>prior</dt><dd><p>if a prior distribution is specified, an object of class <code>jfaPrior</code> that contains the prior distribution.</p></dd>
 <dt>expectedPosterior</dt><dd><p>if a prior distribution is specified, an object of class <code>jfaPosterior</code> that contains the expected posterior distribution.</p></dd>
 
@@ -231,7 +231,7 @@ vignette('jfa', package = 'jfa')" />
 
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Dyer, D. and Pierce, R.L. (1993). On the Choice of the Prior Distribution in Hypergeometric Sampling. <em>Communications in Statistics - Theory and Methods</em>, 22(8), 2125 - 2146.</p>
+    <p>Dyer, D. and Pierce, R.L. (1993). On the choice of the prior distribution in hypergeometric sampling. <em>Communications in Statistics - Theory and Methods</em>, 22(8), 2125 - 2146.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='auditPrior.html'>auditPrior</a></code> <code><a href='selection.html'>selection</a></code> <code><a href='evaluation.html'>evaluation</a></code> <code><a href='report.html'>report</a></code></p></div>

@@ -223,7 +223,7 @@
 <div id="create-a-prior-distribution-with-the-auditprior-function" class="section level3">
 <h3 class="hasAnchor">
 <a href="#create-a-prior-distribution-with-the-auditprior-function" class="anchor"></a>Create a prior distribution with the <code>auditPrior()</code> function:</h3>
-<p>The <code><a href="reference/auditPrior.html">auditPrior()</a></code> function creates a prior distribution according to one of several methods, including the audit risk model and assessments of the inherent and control risk. The returned object is of class <code>jfaPrior</code> and can be used with associated <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. <code>jfaPrior</code> results can also be used as input argument for the <code>prior</code> argument in other functions.</p>
+<p>The <code><a href="reference/auditPrior.html">auditPrior()</a></code> function creates a prior distribution according to one of several methods, including a translation of the assessments of the inherent risk and control risk in the audit risk model. The returned object is of class <code>jfaPrior</code> and can be used with associated <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. <code>jfaPrior</code> results can also be used as input argument for the <code>prior</code> argument in other functions.</p>
 <p><em>Full function with default arguments:</em></p>
 <p><code><a href="reference/auditPrior.html">auditPrior(confidence = 0.95, likelihood = 'binomial', method = 'none', expectedError = 0, N = NULL, materiality = NULL, ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)</a></code></p>
 <p><em>Supported options for the <code>likelihood</code> argument:</em></p>
@@ -260,9 +260,9 @@
 <table class="table">
 <colgroup>
 <col width="11%">
-<col width="17%">
-<col width="41%">
-<col width="30%">
+<col width="18%">
+<col width="39%">
+<col width="31%">
 </colgroup>
 <thead><tr class="header">
 <th><code>method</code></th>
@@ -280,7 +280,7 @@
 <tr class="even">
 <td><code>arm</code></td>
 <td>Derks et al. (2020)</td>
-<td>Inherent risk and internal control risk (ARM)</td>
+<td>Translates risk assessments (ARM)</td>
 <td>
 <code>ir</code> and <code>cr</code>
 </td>
@@ -323,7 +323,7 @@
 <a href="#plan-a-sample-with-the-planning-function" class="anchor"></a>Plan a sample with the <code>planning()</code> function:</h3>
 <p>The <code><a href="reference/planning.html">planning()</a></code> function calculates the required sample size for a statistical audit sample, based on the Poisson, binomial, or hypergeometric likelihood. A prior can be specified to combine with the specified likelihood in order to perform Bayesian planning. The returned <code>jfaPlanning</code> object has a <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and a <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method. In the <code><a href="reference/planning.html">planning()</a></code> function, the <code>prior</code> argument can be an object of class <code>jfaPrior</code> as returned by the <code><a href="reference/auditPrior.html">auditPrior()</a></code> function.</p>
 <p><em>Full function with default arguments:</em></p>
-<p><code><a href="reference/planning.html">planning(confidence = 0.95, expectedError = 0, likelihood = 'poisson', N = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, kPrior = 0, nPrior = 0, increase = 1, maxSize = 5000)</a></code></p>
+<p><code><a href="reference/planning.html">planning(confidence = 0.95, expectedError = 0, likelihood = 'poisson', N = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, nPrior = 0, kPrior = 0, increase = 1, maxSize = 5000)</a></code></p>
 <p><em>Supported options for the <code>likelihood</code> argument:</em></p>
 <table class="table">
 <thead><tr class="header">
@@ -557,16 +557,16 @@
 <li>Dyer, D., &amp; Pierce, R. L. (1993). On the choice of the prior distribution in hypergeometric sampling. <em>Communications in Statistics - Theory and Methods</em>, 22(8), 2125-2146. - <a href="https://www.tandfonline.com/doi/abs/10.1080/03610929308831139">View online</a>
 </li>
 <li>Meikle, G. R. (1972). <em>Statistical Sampling in an Audit Context</em>. Canadian Institute of Chartered Accountants.</li>
-<li>Leslie, D. A., Teitlebaum, A. D., &amp; Anderson, R. J. (1979). <em>Dollar-unit sampling: A practical guide for auditors</em>. London: Pitman.</li>
+<li>Leslie, D. A., Teitlebaum, A. D., &amp; Anderson, R. J. (1979). <em>Dollar-unit Sampling: A Practical Guide for Auditors</em>. London: Pitman.</li>
 <li>Pap, G., &amp; van Zuijlen, M. C. (1996). On the asymptotic behaviour of the Stringer bound. <em>Statistica Neerlandica</em>, 50(3), 367-389. - <a href="https://doi.org/10.1111/j.1467-9574.1996.tb01503.x">View online</a>
 </li>
 <li>Rohrbach, K. J. (1993). Variance augmentation to achieve nominal coverage probability in sampling from audit populations. <em>Auditing: A Journal of Practice &amp; Theory</em>, 12(2), 79-97.</li>
-<li>Steele, A. (1992). <em>Audit risk and audit evidence: The Bayesian approach to statistical auditing</em>. San Diego: Academic Press.</li>
-<li>Stewart, T. R. (2012). <em>Technical notes on the AICPA audit guide audit sampling</em>. American Institute of Certified Public Accountants, New York. - <a href="https://www.aicpa.org/content/dam/aicpa/publications/accountingauditing/keytopics/downloadabledocuments/sampling-guide-technical-notes.pdf">View online</a>
+<li>Steele, A. (1992). <em>Audit Risk and Audit Evidence: The Bayesian Approach to Statistical Auditing</em>. San Diego: Academic Press.</li>
+<li>Stewart, T. R. (2012). <em>Technical Notes on the AICPA Audit Guide Audit Sampling</em>. American Institute of Certified Public Accountants, New York. - <a href="https://www.aicpa.org/content/dam/aicpa/publications/accountingauditing/keytopics/downloadabledocuments/sampling-guide-technical-notes.pdf">View online</a>
 </li>
-<li>Stewart, T. R. (2013). <em>A Bayesian audit assurance model with application to the component materiality problem in group audits.</em> VU University, Amsterdam. - <a href="https://research.vu.nl/en/publications/a-bayesian-audit-assurance-model-with-application-to-the-componen">View online</a>
+<li>Stewart, T. R. (2013). <em>A Bayesian Audit Assurance Model with Application to the Component Materiality problem in Group Audits.</em> VU University, Amsterdam. - <a href="https://research.vu.nl/en/publications/a-bayesian-audit-assurance-model-with-application-to-the-componen">View online</a>
 </li>
-<li>Touw, P., and Hoogduin, L. (2011). <em>Statistiek voor audit en controlling</em>. Boom uitgevers, Amsterdam.</li>
+<li>Touw, P., and Hoogduin, L. (2011). <em>Statistiek voor Audit en Controlling</em>. Boom uitgevers, Amsterdam.</li>
 </ul>
 </div>
 <div id="package-statistics" class="section level2">

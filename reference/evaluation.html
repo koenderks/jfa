@@ -169,136 +169,136 @@ vignette('jfa', package = 'jfa')" />
     </tr>
     <tr>
       <th>N</th>
-      <td><p>an integer specifying the total number of units (transactions or monetary units) in the population.</p></td>
+      <td><p>an integer larger than 0 specifying the total number of units (items) or total value (monetary units) in the population.</p></td>
     </tr>
     <tr>
       <th>sample</th>
-      <td><p>a data frame containing at least a column of Ist values and a column of Soll (true) values.</p></td>
+      <td><p>a data frame containing the sample to be evaluated. The sample must at least contain a column of book values and a column of audit (true) values.</p></td>
     </tr>
     <tr>
       <th>bookValues</th>
-      <td><p>a character specifying the column name for the Ist values in the sample.</p></td>
+      <td><p>a character specifying the column name for the book values in the <code>sample</code>.</p></td>
     </tr>
     <tr>
       <th>auditValues</th>
-      <td><p>a character specifying the column name for the Soll values in the sample.</p></td>
+      <td><p>a character specifying the column name for the audit values in the <code>sample</code>.</p></td>
     </tr>
     <tr>
       <th>counts</th>
-      <td><p>a integer vector of the number of times each transaction in the sample is to be evaluated (due to it being selected multiple times for the sample).</p></td>
+      <td><p>a integer vector specifying the number of times each transaction in the sample is to be counted in the evaluation (due to it being selected multiple times for the sample).</p></td>
     </tr>
     <tr>
       <th>nSumstats</th>
-      <td><p>an integer specifying the number of transactions in the sample. If specified, overrides the <code>sample</code>, <code>bookValues</code> and <code>auditValues</code> arguments and assumes that the data come from summary statistics specified by both <code>nSumstats</code> and <code>kSumstats</code>.</p></td>
+      <td><p>an integer larger than 0 specifying the number of items in the sample. If specified, overrides the <code>sample</code>, <code>bookValues</code> and <code>auditValues</code> arguments and assumes that the data come from summary statistics specified by both <code>nSumstats</code> and <code>kSumstats</code>.</p></td>
     </tr>
     <tr>
       <th>kSumstats</th>
-      <td><p>a value specifying the sum of taints (proportional errors) found in the sample. If specified, overrides the <code>sample</code>, <code>bookValues</code> and <code>auditValues</code> arguments and assumes that the data come from summary statistics specified by both <code>kSumstats</code> and <code>nSumstats</code>.</p></td>
+      <td><p>a value larger than 0 specifying the sum of errors found in the sample. If specified, overrides the <code>sample</code>, <code>bookValues</code> and <code>auditValues</code> arguments and assumes that the data come from summary statistics specified by both <code>kSumstats</code> and <code>nSumstats</code>.</p></td>
     </tr>
     <tr>
       <th>materiality</th>
-      <td><p>a value specifying the performance materiality as a fraction of the total value (or size) of the population (a value between 0 and 1). If specified, the function also returns the conclusion of the analysis with respect to the performance materiality. The value is discarded when <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code> method is chosen.</p></td>
+      <td><p>a value between 0 and 1 specifying the performance materiality as a fraction of the total value (or size) of the population (a value between 0 and 1). If specified, the function also returns the conclusion of the analysis with respect to the performance materiality. The value is discarded when <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code> method is chosen.</p></td>
     </tr>
     <tr>
       <th>minPrecision</th>
-      <td><p>a value specifying the required minimum precision. If specified, the function also returns the conclusion of the analysis with respect to the required minimum precision. This value must be specified as a fraction of the total value of the population (a value between 0 and 1).</p></td>
+      <td><p>a value between 0 and 1 specifying the required minimum precision (upper bound minus most likely error). If specified, the function also returns the conclusion of the analysis with respect to the required minimum precision. This value must be specified as a fraction of the total value of the population (a value between 0 and 1).</p></td>
     </tr>
     <tr>
       <th>prior</th>
-      <td><p>a logical indicating whether to use a prior distribution when evaluating. Defaults to <code>FALSE</code> for frequentist evaluation. If <code>TRUE</code>, the prior distribution is updated by the corresponding likelihood. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.</p></td>
+      <td><p>a logical specifying whether to use a prior distribution when planning, or an object of class `jfaPrior` containing the prior distribution. Defaults to <code>FALSE</code> for frequentist planning. If <code>TRUE</code>, a negligible prior distribution is chosen by default, but can be adjusted using the `kPrior` and `nPrior` arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.</p></td>
     </tr>
     <tr>
       <th>nPrior</th>
-      <td><p>a value for the prior parameter \(\beta\) (number of transactions in the assumed prior sample).</p></td>
+      <td><p>if <code>prior = TRUE</code>, a value specifying the number of sampling units in the implicit sample on which the prior distribution is based.</p></td>
     </tr>
     <tr>
       <th>kPrior</th>
-      <td><p>a value for the prior parameter \(\alpha\) (total tainting in the assumed prior sample).</p></td>
+      <td><p>if <code>prior = TRUE</code>, a value specifying the assumed sum of errors in the implicit sample on which the prior distribution is based.</p></td>
     </tr>
     <tr>
       <th>rohrbachDelta</th>
-      <td><p>a value specifying \(\Delta\) in Rohrbach's augmented variance bound (Rohrbach, 1993).</p></td>
+      <td><p>if <code>method = 'rohrbach'</code>, a value specifying \(\Delta\) in Rohrbach's augmented variance bound (Rohrbach, 1993).</p></td>
     </tr>
     <tr>
       <th>momentPoptype</th>
-      <td><p>a character specifying the type of population for the modified moment method (Dworin and Grimlund, 1984). Can be either one of <code>accounts</code> or <code>inventory</code>. Options result in different methods for calculating the central moments.</p></td>
+      <td><p>if <code>method = 'moment'</code>, a character specifying the type of population (Dworin and Grimlund, 1984). Possible options are <code>accounts</code> and <code>inventory</code>. This argument affects the calculation of the central moments in the bound.</p></td>
     </tr>
     <tr>
       <th>populationBookValue</th>
-      <td><p>a value specifying the total value of the transactions in the population. Required when <code>method</code> is one of <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code>, but optional otherwise.</p></td>
+      <td><p>if <code>method</code> is one of <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code>, a value specifying the total value of the transactions in the population. This argument is optional otherwise.</p></td>
     </tr>
     <tr>
       <th>csA</th>
-      <td><p>if <code>method = "coxsnell"</code>, the \(\alpha\) parameter of the prior distribution on the mean taint. Default is set to 1, as recommended by Cox and Snell (1979).</p></td>
+      <td><p>if <code>method = "coxsnell"</code>, a value specifying the \(\alpha\) parameter of the prior distribution on the mean taint. Defaults to 1 as recommended by Cox and Snell (1979).</p></td>
     </tr>
     <tr>
       <th>csB</th>
-      <td><p>if <code>method = "coxsnell"</code>, the \(\beta\) parameter of the prior distribution on the mean taint. Default is set to 3, as recommended by Cox and Snell (1979).</p></td>
+      <td><p>if <code>method = "coxsnell"</code>, a value specifying the \(\beta\) parameter of the prior distribution on the mean taint. Defaults to 3 as recommended by Cox and Snell (1979).</p></td>
     </tr>
     <tr>
       <th>csMu</th>
-      <td><p>if <code>method = "coxsnell"</code>, the mean of the prior distribution on the mean taint. Default is set to 0.5, as recommended by Cox and Snell (1979).</p></td>
+      <td><p>if <code>method = "coxsnell"</code>, a value between 0 and 1 specifying the mean of the prior distribution on the mean taint. Defaults to 0.5 as recommended by Cox and Snell (1979).</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An object of class <code>jfaEvaluation</code> containing:</p>
-<dt>confidence</dt><dd><p>a value specifying the confidence level of the result.</p></dd>
-<dt>method</dt><dd><p>the evaluation method that was used.</p></dd>
-<dt>N</dt><dd><p>if <code>N</code> is specified, the population size that is used.</p></dd>
-<dt>n</dt><dd><p>an integer specifying the sample size used in the evaluation.</p></dd>
-<dt>k</dt><dd><p>an integer specifying the number of transactions that contained an error.</p></dd>
-<dt>t</dt><dd><p>a value specifying the sum of observed taints.</p></dd>
-<dt>materiality</dt><dd><p>if <code>materiality</code> is specified, the performance materiality used.</p></dd>
-<dt>minPrecision</dt><dd><p>if <code>minPrecision</code> is specified, the minimum required precision used.</p></dd>
-<dt>mle</dt><dd><p>a value specifying the most likely error in the population as a proportion.</p></dd>
-<dt>precision</dt><dd><p>a value specifying the difference between the mle and the upper confidence bound as a proportion.</p></dd>
-<dt>popBookvalue</dt><dd><p>if specified as input, the total Ist value of the population.</p></dd>
-<dt>pointEstimate</dt><dd><p>if method is one of <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code>, the value of the point estimate.</p></dd>
-<dt>lowerBound</dt><dd><p>if method is one of <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code>, the value of the lower bound of the interval.</p></dd>
-<dt>upperBound</dt><dd><p>if method is one of <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code>, the value of the upper bound of the interval.</p></dd>
-<dt>confBound</dt><dd><p>the upper confidence bound on the error percentage.</p></dd>
-<dt>conclusion</dt><dd><p>if <code>materiality</code> is specified, the conclusion about whether to approve or not approve the population.</p></dd>
-<dt>populationK</dt><dd><p>the assumed total errors in the population. Used in inferences with <code>hypergeometric</code> method.</p></dd>
-<dt>prior</dt><dd><p>an object of class 'jfaPrior' to represents the prior distribution.</p></dd>
-<dt>posterior</dt><dd><p>an object of class 'jfaPosterior' to represents the posterior distribution.</p></dd>
+<dt>confidence</dt><dd><p>a value between 0 and 1 indicating the confidence level.</p></dd>
+<dt>method</dt><dd><p>a character indicating the evaluation method.</p></dd>
+<dt>N</dt><dd><p>if <code>N</code> is specified, in integer larger than 0 indicating the population size.</p></dd>
+<dt>n</dt><dd><p>an integer larger than 0 indicating the sample size.</p></dd>
+<dt>k</dt><dd><p>an integer larger than, or equal to, 0 indicating the number of items in the sample that contained an error.</p></dd>
+<dt>t</dt><dd><p>a value larger than, or equal to, 0, indicating the sum of observed taints.</p></dd>
+<dt>materiality</dt><dd><p>if <code>materiality</code> is specified, a value between 0 and 1 indicating the performance materiality as a fraction of the total population size or value.</p></dd>
+<dt>minPrecision</dt><dd><p>if <code>minPrecision</code> is specified, a value between 0 and 1 indicating the minimum required precision as a fraction of the total population size or value.</p></dd>
+<dt>mle</dt><dd><p>a value between 0 and 1 indicating the most likely error in the population as a fraction of its total size or value.</p></dd>
+<dt>precision</dt><dd><p>a value between 0 and 1 indicating the difference between the most likely error and the upper bound in the population as a fraction of its total size or value.</p></dd>
+<dt>popBookvalue</dt><dd><p>if <code>populationBookValue</code> is specified, a value larger than 0 indicating the total value of the population.</p></dd>
+<dt>pointEstimate</dt><dd><p>if <code>method</code> is one of <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code>, a value indicating point estimate of the population error as a fraction its total size or value.</p></dd>
+<dt>lowerBound</dt><dd><p>if method is one of <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code>, a value indicating the lower bound of the interval around the population error as a fraction its total size or value.</p></dd>
+<dt>upperBound</dt><dd><p>if method is one of <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code>, a value indicating the upper bound of the interval around the population error as a fraction its total size or value.</p></dd>
+<dt>confBound</dt><dd><p>a value indicating the upper bound on the population error as a fraction its total size or value.</p></dd>
+<dt>conclusion</dt><dd><p>if <code>materiality</code> is specified, a character indicating the conclusion about whether to approve or not approve the population with respect to the performance materiality.</p></dd>
+<dt>populationK</dt><dd><p>if <code>method = 'hypergeometric'</code>, an integer indicating the assumed total errors in the population.</p></dd>
+<dt>prior</dt><dd><p>an object of class 'jfaPrior' that contains the prior distribution.</p></dd>
+<dt>posterior</dt><dd><p>an object of class 'jfaPosterior' that contains the posterior distribution.</p></dd>
 <dt>data</dt><dd><p>a data frame containing the relevant columns from the <code>sample</code> input.</p></dd>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This section lists the available options for the <code>methods</code> argument.</p>
 <ul>
-<li><p><code>poisson</code>:          The confidence bound taken from the Poisson distribution. If combined with <code>prior = TRUE</code>, performs Bayesian evaluation using a <em>gamma</em> prior and posterior.</p></li>
-<li><p><code>binomial</code>:         The confidence bound taken from the binomial distribution. If combined with <code>prior = TRUE</code>, performs Bayesian evaluation using a <em>beta</em> prior and posterior.</p></li>
-<li><p><code>hypergeometric</code>:   The confidence bound taken from the hypergeometric distribution. If combined with <code>prior = TRUE</code>, performs Bayesian evaluation using a <em>beta-binomial</em> prior and posterior.</p></li>
-<li><p><code>mpu</code>:			   Mean per unit estimator using the observed sample taints.</p></li>
-<li><p><code>stringer</code>:         The Stringer bound (Stringer, 1963).</p></li>
-<li><p><code>stringer-meikle</code>:  Stringer bound with Meikle's correction for understatements (Meikle, 1972).</p></li>
-<li><p><code>stringer-lta</code>:     Stringer bound with LTA correction for understatements (Leslie, Teitlebaum, and Anderson, 1979).</p></li>
-<li><p><code>stringer-pvz</code>:     Stringer bound with Pap and van Zuijlen's correction for understatements (Pap and van Zuijlen, 1996).</p></li>
-<li><p><code>rohrbach</code>:         Rohrbach's augmented variance bound (Rohrbach, 1993).</p></li>
-<li><p><code>moment</code>:           Modified moment bound (Dworin and Grimlund, 1984).</p></li>
-<li><p><code>coxsnell</code>:         Cox and Snell bound (Cox and Snell, 1979).</p></li>
-<li><p><code>direct</code>:           Confidence interval using the direct method (Touw and Hoogduin, 2011).</p></li>
-<li><p><code>difference</code>:       Confidence interval using the difference method (Touw and Hoogduin, 2011).</p></li>
-<li><p><code>quotient</code>:         Confidence interval using the quotient method (Touw and Hoogduin, 2011).</p></li>
-<li><p><code>regression</code>:       Confidence interval using the regression method (Touw and Hoogduin, 2011).</p></li>
+<li><p><code>poisson</code>:          Evaluates the sample with the Poisson distribution. If combined with <code>prior = TRUE</code>, performs Bayesian evaluation using a <em>gamma</em> prior and posterior.</p></li>
+<li><p><code>binomial</code>:         Evaluates the sample with the binomial distribution. If combined with <code>prior = TRUE</code>, performs Bayesian evaluation using a <em>beta</em> prior and posterior.</p></li>
+<li><p><code>hypergeometric</code>:   Evaluates the sample with the hypergeometric distribution. If combined with <code>prior = TRUE</code>, performs Bayesian evaluation using a <em>beta-binomial</em> prior and posterior.</p></li>
+<li><p><code>mpu</code>:			   Evaluates the sample with the mean-per-unit estimator.</p></li>
+<li><p><code>stringer</code>:         Evaluates the sample with the Stringer bound (Stringer, 1963).</p></li>
+<li><p><code>stringer-meikle</code>:  Evaluates the sample with the Stringer bound with Meikle's correction for understatements (Meikle, 1972).</p></li>
+<li><p><code>stringer-lta</code>:     Evaluates the sample with the Stringer bound with LTA correction for understatements (Leslie, Teitlebaum, and Anderson, 1979).</p></li>
+<li><p><code>stringer-pvz</code>:     Evaluates the sample with the Stringer bound with Pap and van Zuijlen's correction for understatements (Pap and van Zuijlen, 1996).</p></li>
+<li><p><code>rohrbach</code>:         Evaluates the sample with Rohrbach's augmented variance bound (Rohrbach, 1993).</p></li>
+<li><p><code>moment</code>:           Evaluates the sample with the modified moment bound (Dworin and Grimlund, 1984).</p></li>
+<li><p><code>coxsnell</code>:         Evaluates the sample with the Cox and Snell bound (Cox and Snell, 1979).</p></li>
+<li><p><code>direct</code>:           Evaluates the sample with the direct estimator (Touw and Hoogduin, 2011).</p></li>
+<li><p><code>difference</code>:       Evaluates the sample with the difference estimator (Touw and Hoogduin, 2011).</p></li>
+<li><p><code>quotient</code>:         Evaluates the sample with the quotient estimator (Touw and Hoogduin, 2011).</p></li>
+<li><p><code>regression</code>:       Evaluates the sample with the regression estimator (Touw and Hoogduin, 2011).</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Cox, D. and Snell, E. (1979). On sampling and the estimation of rare errors. <em>Biometrika</em>, 66(1), 125-132.</p>
-<p>Dworin, L. D. and Grimlund, R. A. (1984). Dollar-unit Sampling for accounts receivable and inventory. <em>The Accounting Review</em>, 59(2), 218–241</p>
-<p>Leslie, D. A., Teitlebaum, A. D., &amp; Anderson, R. J. (1979). <em>Dollar-unit sampling: a practical guide for auditors</em>. Copp Clark Pitman; Belmont, Calif.: distributed by Fearon-Pitman.</p>
+<p>Dworin, L. D. and Grimlund, R. A. (1984). Dollar-unit sampling for accounts receivable and inventory. <em>The Accounting Review</em>, 59(2), 218–241</p>
+<p>Leslie, D. A., Teitlebaum, A. D., &amp; Anderson, R. J. (1979). <em>Dollar-unit Sampling: A Practical Guide for Auditors</em>. Copp Clark Pitman; Belmont, Calif.: distributed by Fearon-Pitman.</p>
 <p>Meikle, G. R. (1972). <em>Statistical Sampling in an Audit Context: An Audit Technique</em>. Canadian Institute of Chartered Accountants.</p>
-<p>Pap, G., and van Zuijlen, M. C. (1996). On the asymptotic behavior of the Stringer bound 1. <em>Statistica Neerlandica</em>, 50(3), 367-389.</p>
+<p>Pap, G., and van Zuijlen, M. C. (1996). On the asymptotic behavior of the Stringer bound. <em>Statistica Neerlandica</em>, 50(3), 367-389.</p>
 <p>Rohrbach, K. J. (1993). Variance augmentation to achieve nominal coverage probability in sampling from audit populations. <em>Auditing</em>, 12(2), 79.</p>
 <p>Stringer, K. W. (1963). Practical aspects of statistical sampling in auditing. <em>In Proceedings of the Business and Economic Statistics Section</em> (pp. 405-411). American Statistical Association.</p>
 <p>Touw, P., and Hoogduin, L. (2011). <em>Statistiek voor Audit en Controlling</em>. Boom uitgevers Amsterdam.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='auditPrior.html'>auditPrior</a></code> <code><a href='planning.html'>planning</a></code> <code><a href='selection.html'>selection</a></code></p></div>
+    <div class='dont-index'><p><code><a href='auditPrior.html'>auditPrior</a></code> <code><a href='planning.html'>planning</a></code> <code><a href='selection.html'>selection</a></code> <code><a href='report.html'>report</a></code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Koen Derks, <a href='mailto:k.derks@nyenrode.nl'>k.derks@nyenrode.nl</a></p>

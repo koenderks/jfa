@@ -169,11 +169,11 @@ vignette('jfa', package = 'jfa')" />
     </tr>
     <tr>
       <th>expectedError</th>
-      <td><p>a value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a number (&gt;= 1) that represents the number of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.</p></td>
+      <td><p>a value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a value (&gt;= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.</p></td>
     </tr>
     <tr>
       <th>N</th>
-      <td><p>an integer (or value) specifying the total population size (or value). Only required when <code>likelihood = 'hypergeometric'</code>.</p></td>
+      <td><p>an integer (or value) larger than 0 specifying the total population size (or value). Only required when <code>likelihood = 'hypergeometric'</code>.</p></td>
     </tr>
     <tr>
       <th>materiality</th>
@@ -181,11 +181,11 @@ vignette('jfa', package = 'jfa')" />
     </tr>
     <tr>
       <th>ir</th>
-      <td><p>if <code>method = 'arm'</code>, a value between 0 and 1 specifying the inherent risk probability from the audit risk model. Defaults to 1 for 100% risk.</p></td>
+      <td><p>if <code>method = 'arm'</code>, a value between 0 and 1 specifying the inherent risk in the audit risk model. Defaults to 1 for 100% risk.</p></td>
     </tr>
     <tr>
       <th>cr</th>
-      <td><p>if <code>method = 'arm'</code>, a value between 0 and 1 specifying the internal control risk probability from the audit risk model. Defaults to 1 for 100% risk.</p></td>
+      <td><p>if <code>method = 'arm'</code>, a value between 0 and 1 specifying the internal control risk in the audit risk model. Defaults to 1 for 100% risk.</p></td>
     </tr>
     <tr>
       <th>pHmin</th>
@@ -201,26 +201,26 @@ vignette('jfa', package = 'jfa')" />
     </tr>
     <tr>
       <th>sampleN</th>
-      <td><p>if <code>method = 'sample'</code> or <code>method = 'factor'</code>, an integer specifying the number of sampling units that were inspected in the earlier sample.</p></td>
+      <td><p>if <code>method = 'sample'</code> or <code>method = 'factor'</code>, an integer larger than, or equal to, 0 specifying the number of sampling units that were inspected in the earlier sample.</p></td>
     </tr>
     <tr>
       <th>sampleK</th>
-      <td><p>if <code>sample</code> or <code>factor</code>, a value specifying the sum of errors in the previous sample.</p></td>
+      <td><p>if <code>sample</code> or <code>factor</code>, a value larger than, or equal to, 0 specifying the sum of errors in the previous sample.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An object of class <code>jfaPrior</code> containing:</p>
-<dt>confidence</dt><dd><p>a fraction indicating the confidence level for the desired population statement.</p></dd>
+<dt>confidence</dt><dd><p>a value between 0 and 1 indicating the confidence level.</p></dd>
 <dt>likelihood</dt><dd><p>a character indicating the specified likelihood.</p></dd>
 <dt>method</dt><dd><p>a character indicating the method by which the prior distribution is constructed.</p></dd>
-<dt>expectedError</dt><dd><p>a value indicating the input for the number of expected errors.</p></dd>
-<dt>N</dt><dd><p>if <code>N</code> is specified, an integer indicating the population size.</p></dd>
-<dt>materiality</dt><dd><p>if <code>materiality</code> is specified, a value between 0 and 1 indicating the materiality that was used to construct the prior distribution.</p></dd>
+<dt>expectedError</dt><dd><p>a value larger than 0 indicating the input for the number of expected errors.</p></dd>
+<dt>N</dt><dd><p>if <code>N</code> is specified, an integer larger than 0 indicating the population size.</p></dd>
+<dt>materiality</dt><dd><p>if <code>materiality</code> is specified, a value between 0 and 1 indicating the materiality used to construct the prior distribution.</p></dd>
 <dt>description</dt><dd><p>a list containing a description of the prior distribution, including parameters and the implicit sample.</p></dd>
 <dt>statistics</dt><dd><p>a list containing statistics of the prior distribution, including the mean, mode, median, and upper bound.</p></dd>
-<dt>specifics</dt><dd><p>a list containing optional specifications of the prior distribution that vary depending on the <code>method</code> used.</p></dd>
+<dt>specifics</dt><dd><p>a list containing optional specifications of the prior distribution that vary depending on the <code>method</code>.</p></dd>
 <dt>hypotheses</dt><dd><p>if <code>materiality</code> is specified, a list containing information about the hypotheses, including prior probabilities and odds.</p></dd>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -237,15 +237,15 @@ vignette('jfa', package = 'jfa')" />
 <li><p><code>none</code>:              This method constructs a prior distribution according to the principle of minimum information.</p></li>
 <li><p><code>median</code>:            This method constructs a prior distribution so that the prior probabilities of tolerable and intolerable misstatement are equal.</p></li>
 <li><p><code>hypotheses</code>:        This method constructs a prior distribution with specified prior probabilities for the hypotheses of tolerable and intolerable misstatement. Requires specification of the <code>pHmin</code> and <code>pHplus</code> arguments.</p></li>
-<li><p><code>arm</code>:               This method constructs a prior distribution according to the assessed risks in the audit risk model. Requires specification of the <code>ir</code> and <code>cr</code> arguments.</p></li>
+<li><p><code>arm</code>:               This method constructs a prior distribution by translating the risks of material misstatement (inherent risk and internal control risk) from the audit risk model. The method requires specification of the <code>ir</code> (inherent risk) and <code>cr</code> (internal control risk) arguments.</p></li>
 <li><p><code>sample</code>:            This method constructs a prior distribution on the basis of an earlier sample. Requires specification of the <code>sampleN</code> and <code>sampleK</code> arguments.</p></li>
-<li><p><code>factor</code>:            This method constructs a prior distribution on the basis of last year's results and a weighting factor. Requires specification of the <code>factor</code>, <code>sampleN</code> and <code>sampleK</code> arguments.</p></li>
+<li><p><code>factor</code>:            This method constructs a prior distribution on the basis of an earlier sample in combination with a weighting factor. Requires specification of the <code>factor</code>, <code>sampleN</code> and <code>sampleK</code> arguments.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
-    <p>Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., &amp; Wetzels, R. (2019). JASP for audit: Bayesian Tools for the Auditing Practice.</p>
-<p>Derks, K., de Swart, J., van Batenburg, P. Wagenmakers, E.-J., &amp; Wetzels, R. (2020). Priors in a Bayesian Audit: How Integrating Information into the Prior Distribution can Improve Audit Transparency and Efficiency.</p>
+    <p>Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., &amp; Wetzels, R. (2019). JASP for audit: Bayesian tools for the auditing practice.</p>
+<p>Derks, K., de Swart, J., van Batenburg, P. Wagenmakers, E.-J., &amp; Wetzels, R. (2020). Priors in a Bayesian audit: How integrating information into the prior distribution can improve audit transparency and efficiency.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='planning.html'>planning</a></code> <code><a href='selection.html'>selection</a></code> <code><a href='evaluation.html'>evaluation</a></code> <code><a href='report.html'>report</a></code></p></div>
@@ -265,8 +265,8 @@ vignette('jfa', package = 'jfa')" />
 <span class='va'>ir</span> <span class='op'>&lt;-</span> <span class='fl'>1</span>     <span class='co'># 100%</span>
 <span class='va'>cr</span> <span class='op'>&lt;-</span> <span class='fl'>0.6</span>   <span class='co'># 60%</span>
 
-<span class='co'># Create a beta prior distribution according to the Audit Risk Model (arm) </span>
-<span class='co'># and a binomial likelihood:</span>
+<span class='co'># Create a beta prior distribution by translating the risks from</span>
+<span class='co'># the Audit Risk Model (arm) to a beta prior:</span>
 <span class='va'>prior</span> <span class='op'>&lt;-</span> <span class='fu'>auditPrior</span><span class='op'>(</span>confidence <span class='op'>=</span> <span class='va'>confidence</span>, likelihood <span class='op'>=</span> <span class='st'>'binomial'</span>, 
                     method <span class='op'>=</span> <span class='st'>'arm'</span>, expectedError <span class='op'>=</span> <span class='va'>expectedError</span>, materiality <span class='op'>=</span> <span class='va'>materiality</span>, 
                     ir <span class='op'>=</span> <span class='va'>ir</span>, cr <span class='op'>=</span> <span class='va'>cr</span><span class='op'>)</span>
