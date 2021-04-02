@@ -23,42 +23,24 @@ knitr::opts_chunk$set(
 
 <img src='https://github.com/koenderks/jfa/raw/master/man/figures/readme/logo/jfaLogo.png' width='166' height='192' alt='logo' align='right' margin-left='20' margin-right='20'/>
 
-`jfa` is an R package for statistical audit sampling. The package provides the user with five functions for planning, performing, evaluating, and reporting an audit sample. Specifically, it contains functions for calculating sample sizes, selecting the transactions according to standard audit sampling techniques, and calculating various upper limits for the misstatement from the sample or from summary statistics. The `jfa` package also allows the user to create a prior probability distribution to perform Bayesian audit sampling using these functions.
+`jfa` is an R package for statistical audit sampling. The package provides five functions for planning, performing, evaluating, and reporting an audit sample. Specifically, it contains functions for calculating sample sizes, selecting items from a population according to standard audit sampling techniques, and calculating upper limits for the misstatement using a data sample or summary statistics. The `jfa` package also allows the user to create a prior probability distribution to perform Bayesian audit sampling using these functions.
 
-For complete documentation of the package, see the [package manual](https://cran.r-project.org/package=jfa/jfa.pdf) or visit the [website](https://koenderks.github.io/jfa/).
+For complete documentation of `jfa`, visit the [package website](https://koenderks.github.io/jfa/) or download the [package manual](https://cran.r-project.org/package=jfa/jfa.pdf).
 
 ## Overview
 
-* [Getting started](#getting-started)
+* [Installation](#installation)
+* [Cheat sheet](#cheat-sheet)
 * [Benchmarks](#benchmarks)
 * [Statistical tables](#statistical-tables)
-* [Cheat sheet](#cheat-sheet)
 * [Available functions](#available-functions)
 * [References](#references)
 * [Package statistics](#package-statistics) 
 * [Contributing](#contributing) 
 
-### Authors
+## Installation
 
-* **Koen Derks** - *Initial work* - [Website](https://koenderks.com)
-
-See also the list of [contributors](https://github.com/koenderks/jfa/graphs/contributors) who participated in this project.
-
-### License
-
-This project is licensed under the open-source [GPL-3](https://www.r-project.org/Licenses/GPL-3) License.
-
-## Getting started
-
-The following instructions will get the `jfa` package up and running on your local machine for use in R and RStudio. 
-
-### Prerequisites
-
-* [R](https://cran.r-project.org) - The programming language used for deploying the package.
-
-### Installing
-
-The `jfa` package is simple to download and set up. The most recent version from [CRAN](https://cran.r-project.org/package=jfa) (0.5.1) can be downloaded by running the following command in R or RStudio:
+The most recent version of `jfa` (0.5.1) can be download from [CRAN](https://cran.r-project.org/package=jfa) by running the following command in R or RStudio:
 
 ```
 install.packages('jfa')
@@ -76,15 +58,13 @@ After installation the `jfa` package can be loaded in R or RStudio by typing:
 library(jfa)
 ```
 
-### Vignettes
+## Cheat sheet
 
-The package vignettes show how to use the `jfa` package using simple examples.
+The cheat sheet below can help you get started with the `jfa` package and its workflow. You can download a `pdf` version of the cheat sheet [here](https://github.com/koenderks/jfa/raw/master/man/figures/cheatsheet/cheatsheet.pdf).
 
-* [Get started](https://koenderks.github.io/jfa/articles/jfa.html) 
-* [The audit sampling workflow](https://koenderks.github.io/jfa/articles/v1auditWorkflow.html)
-* [Constructing a prior distribution](https://koenderks.github.io/jfa/articles/v2priorDistributions.html)
-* [Estimating the misstatement](https://koenderks.github.io/jfa/articles/v3estimation.html)
-* [Testing the misstatement](https://koenderks.github.io/jfa/articles/v4testing.html)
+<p align='center'>
+  <img src='https://github.com/koenderks/jfa/raw/master/man/figures/cheatsheet/cheatsheet.png' alt='cheatsheet' width='1000'>
+</p>
 
 ## Benchmarks
 
@@ -113,21 +93,13 @@ Below you can find several informative tables that contain statistical sample si
 - [Bayes factors based on the beta distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaBinomialBayesFactors.pdf)
 - [Bayes factors based on the gamma distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaPoissonBayesFactors.pdf)
 
-## Cheat sheet
-
-The cheat sheet below can help you get started with the `jfa` package and its workflow. You can download a pdf version [here](https://github.com/koenderks/jfa/raw/master/man/figures/cheatsheet/cheatsheet.pdf).
-
-<p align='center'>
-  <img src='https://github.com/koenderks/jfa/raw/master/man/figures/cheatsheet/cheatsheet.png' alt='cheatsheet' width='1000'>
-</p>
-
 ## Available functions
 
 <p align='center'>
   <img src='https://github.com/koenderks/jfa/raw/master/man/figures/readme/banner/jfaBanner.png' alt='banner'/>
 </p>
 
-Below you can find a explanation of the functions in the current version of `jfa`, sorted by their occurrence in the standard audit sampling workflow.
+Below you can find a enumeration and explanation of the functions in `jfa`, sorted by their occurrence in the standard audit sampling workflow.
 
 * [`auditPrior()`](#create-a-prior-distribution-with-the-auditprior-function)
 * [`planning()`](#plan-a-sample-with-the-planning-function)
