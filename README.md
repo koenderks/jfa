@@ -13,7 +13,7 @@ status](https://travis-ci.com/koenderks/jfa.svg?branch=master)](https://travis-c
 
 # jfa: Bayesian and Classical Audit Sampling
 
-<img src='man/figures/readme/logo/jfaLogo.png' width='166' height='192' alt='logo' align='right' margin-left='20' margin-right='20'/>
+<img src='https://github.com/koenderks/jfa/raw/master/man/figures/readme/logo/jfaLogo.png' width='166' height='192' alt='logo' align='right' margin-left='20' margin-right='20'/>
 
 `jfa` is an R package for statistical audit sampling. The package
 provides the user with five functions for planning, performing,
@@ -144,7 +144,7 @@ and its workflow. You can download a pdf version
 
 <p align="center">
 
-<img src='man/figures/cheatsheet/cheatsheet.png' alt='cheatsheet' width='1000'>
+<img src='https://github.com/koenderks/jfa/raw/master/man/figures/cheatsheet/cheatsheet.png' alt='cheatsheet' width='1000'>
 
 </p>
 
@@ -152,7 +152,7 @@ and its workflow. You can download a pdf version
 
 <p align="center">
 
-<img src='man/figures/readme/banner/jfaBanner.png' alt='banner'/>
+<img src='https://github.com/koenderks/jfa/raw/master/man/figures/readme/banner/jfaBanner.png' alt='banner'/>
 
 </p>
 
@@ -354,7 +354,7 @@ For an example report, see the following
 
 ## Package statistics
 
-<img src='man/figures/readme/downloads/downloads.svg' width='50%' /><img src='man/figures/readme/worldmap/worldmap.svg' width='50%' />
+<img src='https://github.com/koenderks/jfa/raw/master/man/figures/readme/downloads/downloads.svg' width='50%' /><img src='https://github.com/koenderks/jfa/raw/master/man/figures/readme/worldmap/worldmap.svg' width='50%' />
 
 ## Contributing
 
