@@ -41,7 +41,7 @@ manual](https://cran.r-project.org/package=jfa/jfa.pdf).
 
 ## Installation
 
-The most recent version of `jfa` (0.5.1) can be download from
+The most recent version of `jfa` can be download from
 [CRAN](https://cran.r-project.org/package=jfa) by running the following
 command in R or RStudio:
 
@@ -275,7 +275,7 @@ For an example report, see the following
     rare errors. *Biometrika*, 66(1), 125-132. - [View
     online](https://doi.org/10.1093/biomet/66.1.125)
   - Derks, K. (2021). jfa: Bayesian and classical audit sampling. R
-    package version 0.5.1. - [View
+    package version 0.5.2. - [View
     online](https://cran.r-project.org/package=jfa)
   - Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., &
     Wetzels, R. (2020). Priors in a Bayesian audit: How integration of

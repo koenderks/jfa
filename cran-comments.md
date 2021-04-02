@@ -1,8 +1,7 @@
-## This is a submission for version 0.5.2
-This is jfa version 0.5.1. In this version I have:
+## This is a submission for version 0.5.3
+This is jfa version 0.5.3. In this version I have:
 
-* Added more resources to the package.
-* Changed some internal computations to make them faster.
+* ...
 
 ## Test environments
 * OS X install (on travis-ci), R release
