@@ -13,22 +13,22 @@ status](https://travis-ci.com/koenderks/jfa.svg?branch=master)](https://travis-c
 
 # jfa: Bayesian and Classical Audit Sampling
 
-<img src='https://github.com/koenderks/jfa/raw/master/man/figures/readme/logo/jfaLogo.png' width='166' height='192' alt='logo' align='right' margin-left='20' margin-right='20'/>
+<img src='https://github.com/koenderks/jfa/raw/master/man/figures/readme/logo/jfaLogo.png' width='149' height='173' alt='logo' align='right' margin-left='20' margin-right='20'/>
 
 `jfa` is an R package for statistical audit sampling. The package
 provides five functions for planning, performing, evaluating, and
-reporting an audit sample. Specifically, it contains functions for
-calculating sample sizes, selecting items from a population according to
-standard audit sampling techniques, and calculating upper limits for the
-misstatement using a data sample or summary statistics. The `jfa`
-package also allows the user to create a prior probability distribution
-to perform Bayesian audit sampling using these functions.
+reporting an audit sample. Specifically, these functions implement
+standard audit sampling techniques for calculating sample sizes,
+selecting items from a population, and evaluating the misstatement from
+a data sample or summary statistics. Additionally, the `jfa` package
+allows the user to create a prior probability distribution to perform
+Bayesian audit sampling using these functions.
+
+## Overview
 
 For complete documentation of `jfa`, visit the [package
 website](https://koenderks.github.io/jfa/) or download the [package
 manual](https://cran.r-project.org/package=jfa/jfa.pdf).
-
-## Overview
 
   - [Installation](#installation)
   - [Cheat sheet](#cheat-sheet)
@@ -41,7 +41,7 @@ manual](https://cran.r-project.org/package=jfa/jfa.pdf).
 
 ## Installation
 
-The most recent version of `jfa` can be download from
+The most recent version of `jfa` can be downloaded from
 [CRAN](https://cran.r-project.org/package=jfa) by running the following
 command in R or RStudio:
 
