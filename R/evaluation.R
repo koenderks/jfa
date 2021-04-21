@@ -14,7 +14,7 @@
 #'             csA = 1, csB = 3, csMu = 0.5) 
 #'
 #' @param confidence   	a value between 0 and 1 specifying the confidence level desired for the sample evaluation. Defaults to 0.95 for 95\% confidence.
-#' @param method        a character specifying the the method that is used to evaluate the sample. Possible options are \code{poisson}, \code{binomial} (default), \code{hypergeometric}, \code{mpus}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}. See the details section for more information about these methods.
+#' @param method        a character specifying the the method that is used to evaluate the sample. Possible options are \code{poisson}, \code{binomial} (default), \code{hypergeometric}, \code{mpu}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}. See the details section for more information about these methods.
 #' @param N             an integer larger than 0 specifying the total number of units (items) or total value (monetary units) in the population.
 #' @param sample        a data frame containing the sample to be evaluated. The sample must at least contain a column of book values and a column of audit (true) values.
 #' @param bookValues    a character specifying the column name for the book values in the \code{sample}.
