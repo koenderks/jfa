@@ -148,7 +148,7 @@ vignette('jfa', package = 'jfa')" />
 <code><a href='../articles/jfa.html'>vignette('jfa', package = 'jfa')</a></code></p>
     </div>
 
-    <pre class="usage"><span class='fu'>report</span><span class='op'>(</span>object <span class='op'>=</span> <span class='cn'>NULL</span>, file <span class='op'>=</span> <span class='cn'>NULL</span>, format <span class='op'>=</span> <span class='st'>'html_document'</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>report</span><span class='op'>(</span><span class='va'>object</span>, file <span class='op'>=</span> <span class='st'>'report.html'</span>, format <span class='op'>=</span> <span class='st'>'html_document'</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -183,15 +183,15 @@ vignette('jfa', package = 'jfa')" />
 <span class='co'># Draw a sample of 100 monetary units from the population using</span>
 <span class='co'># fixed interval monetary unit sampling</span>
 <span class='va'>sample</span> <span class='op'>&lt;-</span> <span class='fu'><a href='selection.html'>selection</a></span><span class='op'>(</span>population <span class='op'>=</span> <span class='va'>BuildIt</span>, sampleSize <span class='op'>=</span> <span class='fl'>100</span>, 
-          algorithm <span class='op'>=</span> <span class='st'>"interval"</span>, units <span class='op'>=</span> <span class='st'>"mus"</span>, bookValues <span class='op'>=</span> <span class='st'>'bookValue'</span><span class='op'>)</span><span class='op'>$</span><span class='va'>sample</span>
+          algorithm <span class='op'>=</span> <span class='st'>'interval'</span>, units <span class='op'>=</span> <span class='st'>'mus'</span>, bookValues <span class='op'>=</span> <span class='st'>'bookValue'</span><span class='op'>)</span><span class='op'>$</span><span class='va'>sample</span>
 
 <span class='co'># Evaluate using the Stringer bound</span>
 <span class='va'>result</span> <span class='op'>&lt;-</span> <span class='fu'><a href='evaluation.html'>evaluation</a></span><span class='op'>(</span>confidence <span class='op'>=</span> <span class='fl'>0.95</span>, materiality <span class='op'>=</span> <span class='fl'>0.05</span>, 
-                     method <span class='op'>=</span> <span class='st'>"stringer"</span>, sample <span class='op'>=</span> <span class='va'>sample</span>, 
-                     bookValues <span class='op'>=</span> <span class='st'>"bookValue"</span>, auditValues <span class='op'>=</span> <span class='st'>'auditValue'</span><span class='op'>)</span>
+                     method <span class='op'>=</span> <span class='st'>'stringer'</span>, sample <span class='op'>=</span> <span class='va'>sample</span>, 
+                     bookValues <span class='op'>=</span> <span class='st'>'bookValue'</span>, auditValues <span class='op'>=</span> <span class='st'>'auditValue'</span><span class='op'>)</span>
 
 <span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span> 
- <span class='fu'>report</span><span class='op'>(</span><span class='va'>result</span>, file <span class='op'>=</span> <span class='st'>'myFile.html'</span><span class='op'>)</span> <span class='op'>}</span>
+ <span class='fu'>report</span><span class='op'>(</span><span class='va'>result</span><span class='op'>)</span> <span class='op'>}</span>
 
 </div></pre>
   </div>
