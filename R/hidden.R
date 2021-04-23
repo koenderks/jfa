@@ -1,6 +1,6 @@
 #' @method print jfaPrior
 #' @export
-print.jfaPrior <- function(x, digits = 2, ...) {
+print.jfaPrior <- function(x, digits = 3, ...) {
   cat("# ------------------------------------------------------------
 #         jfa Prior Distribution Summary (Bayesian)
 # ------------------------------------------------------------
@@ -36,7 +36,7 @@ print.jfaPrior <- function(x, digits = 2, ...) {
 
 #' @method print jfaPosterior
 #' @export 
-print.jfaPosterior <- function(x, digits = 2, ...) {
+print.jfaPosterior <- function(x, digits = 3, ...) {
   cat("# ------------------------------------------------------------
 #             jfa Posterior Distribution (Bayesian)
 # ------------------------------------------------------------
@@ -57,7 +57,7 @@ print.jfaPosterior <- function(x, digits = 2, ...) {
 
 #' @method print jfaPlanning
 #' @export
-print.jfaPlanning <- function(x, digits = 2, ...) {
+print.jfaPlanning <- function(x, digits = 3, ...) {
   if (class(x[["prior"]]) == "jfaPrior") {
     cat("# ------------------------------------------------------------
 #              jfa Planning Summary (Bayesian)
@@ -108,7 +108,7 @@ print.jfaPlanning <- function(x, digits = 2, ...) {
 
 #' @method print jfaSelection
 #' @export
-print.jfaSelection <- function(x, digits = 2, ...) {
+print.jfaSelection <- function(x, digits = 3, ...) {
   if (x$units == "mus") {
     cat("# ------------------------------------------------------------
 #                  jfa Selection Summary
@@ -163,7 +163,7 @@ print.jfaSelection <- function(x, digits = 2, ...) {
 
 #' @method print jfaEvaluation
 #' @export
-print.jfaEvaluation <- function(x, digits = 2, ...) {
+print.jfaEvaluation <- function(x, digits = 3, ...) {
   if (x[["method"]] %in% c("direct", "difference", "quotient", "regression")) {
     cat("# ------------------------------------------------------------ 
 #             jfa Evaluation Summary (Frequentist)
