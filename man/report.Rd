@@ -2,7 +2,7 @@
 % Please edit documentation in R/report.R
 \name{report}
 \alias{report}
-\title{Generate an Audit Report}
+\title{Create a statistical audit sampling report}
 \usage{
 report(object, file = 'report.html', format = 'html_document')
 }

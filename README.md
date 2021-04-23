@@ -119,11 +119,11 @@ workflow.
 
 -   [`auditPrior()`](#create-a-prior-distribution-with-the-auditprior-function)
 -   [`planning()`](#plan-a-sample-with-the-planning-function)
--   [`selection()`](#select-transactions-with-the-selection-function)
+-   [`selection()`](#select-items-with-the-selection-function)
 -   [`evaluation()`](#evaluate-a-sample-with-the-evaluation-function)
 -   [`report()`](#generate-a-report-with-the-report-function)
 
-### Create a prior distribution with the `auditPrior()` function:
+### Create a prior distribution with the `auditPrior()` function
 
 The `auditPrior()` function creates a prior distribution according to
 one of several methods, including a translation of the assessments of
@@ -155,7 +155,7 @@ be used as input for the `prior` argument in other functions.
 | `sample`     | Derks et al. (2020) | Earlier sample                            | `sampleN` and `sampleK`           |
 | `factor`     | Derks et al. (2020) | Weighted earlier sample                   | `factor`, `sampleN` and `sampleK` |
 
-### Plan a sample with the `planning()` function:
+### Plan a sample with the `planning()` function
 
 The `planning()` function calculates the required sample size for a
 statistical audit sample based on the Poisson, binomial, or
@@ -177,7 +177,7 @@ Bayesian planning.
 | `poisson`        | Stewart (2012) | Poisson likelihood        |
 | `hypergeometric` | Stewart (2012) | Hypergeometric likelihood |
 
-### Select transactions with the `selection()` function:
+### Select items with the `selection()` function
 
 The `selection()` function takes a data frame and performs statistical
 sampling according to one of three algorithms: random sampling, cell
@@ -195,7 +195,7 @@ object of class `jfaPlanning` as returned by the `planning()` function.
 
 | `units`   | Reference                               | Description                       | Additional arguments |
 |-----------|-----------------------------------------|-----------------------------------|----------------------|
-| `records` | Leslie, Teitlebaum, and Anderson (1979) | Sampling units are transactions   |                      |
+| `records` | Leslie, Teitlebaum, and Anderson (1979) | Sampling units are items          |                      |
 | `mus`     | Leslie, Teitlebaum, and Anderson (1979) | Sampling units are monetary units | `bookValues`         |
 
 *Supported options for the `algorithm` argument:*
@@ -206,7 +206,7 @@ object of class `jfaPlanning` as returned by the `planning()` function.
 | `cell`      |           | Cell sampling                                 |                         |
 | `interval`  |           | Systematic sampling / Fixed interval sampling | `intervalStartingPoint` |
 
-### Evaluate a sample with the `evaluation()` function:
+### Evaluate a sample with the `evaluation()` function
 
 The `evaluation()` function takes a sample or summary statistics of the
 sample and performs evaluation according to the specified method and
@@ -238,7 +238,7 @@ methods. The input for the `prior` argument can be an object of class
 | `quotient`        | Touw and Hoogduin (2011)              | Quotient estimator                      | `populationBookValue`    |
 | `regression`      | Touw and Hoogduin (2011)              | Regression estimator                    | `populationBookValue`    |
 
-### Generate a report with the `report()` function:
+### Create a report with the `report()` function
 
 The `report()` function takes an object of class `jfaEvaluation` as
 returned by the `evaluation()` function and automatically generates a

@@ -2,7 +2,7 @@
 % Please edit documentation in R/evaluation.R
 \name{evaluation}
 \alias{evaluation}
-\title{Frequentist and Bayesian Evaluation of Audit Samples}
+\title{Evaluate a statistical audit sample}
 \usage{
 evaluation(confidence = 0.95, method = 'binomial', N = NULL,
             sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, 
@@ -105,74 +105,17 @@ This section lists the available options for the \code{methods} argument.
 }
 }
 \examples{
-library(jfa)
-set.seed(1)
+data('BuildIt')
 
-# Generate some audit data (N = 1000):
-data <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), 
-                   bookValue = runif(n = 1000, min = 700, max = 1000))
+# Draw a sample of 100 monetary units from the population using
+# fixed interval monetary unit sampling
+sample <- selection(population = BuildIt, sampleSize = 100, 
+          algorithm = 'interval', units = 'mus', bookValues = 'bookValue')$sample
 
-# Using monetary unit sampling, draw a random sample from the population.
-s1 <- selection(population = data, sampleSize = 100, units = "mus", 
-                 bookValues = "bookValue", algorithm = "random")
-s1_sample <- s1$sample
-s1_sample$trueValue <- s1_sample$bookValue
-s1_sample$trueValue[2] <- s1_sample$trueValue[2] - 500 # One overstatement is found
-
-# Using summary statistics, calculate the upper confidence bound according
-# to the binomial distribution:
-
-e1 <- evaluation(nSumstats = 100, kSumstats = 1, method = "binomial", 
-                 materiality = 0.05)
-print(e1)
-
-# ------------------------------------------------------------ 
-#             jfa Evaluation Summary (Frequentist)
-# ------------------------------------------------------------ 
-# Input: 
-#
-# Confidence:               95\%   
-# Materiality:              5\% 
-# Minium precision:         Not specified 
-# Sample size:              100 
-# Sample errors:            1 
-# Sum of taints:            1 
-# Method:                   binomial 
-# ------------------------------------------------------------
-# Output:
-#
-# Most likely error:        1\% 
-# Upper bound:              4.66\% 
-# Precision:                3.66\% 
-# Conclusion:               Approve population
-# ------------------------------------------------------------
-
-# Evaluate the raw sample using the stringer bound and the sample counts:
-
-e2 <- evaluation(sample = s1_sample, bookValues = "bookValue", auditValues = "trueValue", 
-                 method = "stringer", materiality = 0.05, counts = s1_sample$counts)
-print(e2)
-
-# ------------------------------------------------------------ 
-#             jfa Evaluation Summary (Frequentist)
-# ------------------------------------------------------------ 
-# Input: 
-#
-# Confidence:               95\%   
-# Materiality:              5\% 
-# Minium precision:         Not specified 
-# Sample size:              100 
-# Sample errors:            1 
-# Sum of taints:            1 
-# Method:                   stringer 
-# ------------------------------------------------------------
-# Output:
-#
-# Most likely error:        0.69\% 
-# Upper bound:              4.12\% 
-# Precision:                3.44\% 
-# Conclusion:               Approve population 
-# ------------------------------------------------------------  
+# Evaluate using the Stringer bound
+evaluation(confidence = 0.95, materiality = 0.05, 
+           method = 'stringer', sample = sample, 
+           bookValues = 'bookValue', auditValues = 'auditValue')
 
 }
 \references{

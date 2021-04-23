@@ -1,4 +1,4 @@
-#' Selecting a Sample from an Audit Population
+#' Select a statistical audit sample
 #'
 #' @description This function takes a data frame and performs statistical sampling according to one of three algorithms: random sampling, cell sampling, and fixed interval sampling. Sampling is done on the level of two possible sampling units: records or monetary units. The function returns an object of class \code{jfaSelection} which can be used with associated \code{print()} and a \code{plot()} methods.
 #'

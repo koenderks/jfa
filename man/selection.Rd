@@ -2,7 +2,7 @@
 % Please edit documentation in R/selection.R
 \name{selection}
 \alias{selection}
-\title{Selecting a Sample from an Audit Population}
+\title{Select a statistical audit sample}
 \usage{
 selection(population, sampleSize, units = 'records', algorithm = 'random',
           bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, 

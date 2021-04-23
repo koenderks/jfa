@@ -1,4 +1,4 @@
-#' Generate an Audit Report
+#' Create a statistical audit sampling report
 #'
 #' @description This function takes an object of class \code{jfaEvaluation} as returned by the \code{evaluation()} function automatically generates a \code{html} or \code{pdf} report containing the analysis results and their interpretation.
 #'
@@ -17,6 +17,8 @@
 #'
 #' @seealso \code{\link{auditPrior}} \code{\link{planning}} \code{\link{selection}} \code{\link{evaluation}}
 #'
+#' @keywords evaluation report audit
+#'
 #' @examples
 #' data('BuildIt')
 #'
@@ -33,8 +35,6 @@
 #' \dontrun{ 
 #'  report(result) 
 #' }
-#'
-#' @keywords evaluation report audit
 #'
 #' @export
 

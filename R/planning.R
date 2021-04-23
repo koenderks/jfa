@@ -1,4 +1,4 @@
-#' Frequentist and Bayesian Planning for Audit Sampling
+#' Plan a statistical audit sample
 #'
 #' @description This function calculates the required sample size for a statistical audit sample based on the Poisson, binomial or hypergeometric likelihood. The function returns an object of class \code{jfaPlanning} which can be used with associated \code{print()} and \code{plot()} methods.
 #'

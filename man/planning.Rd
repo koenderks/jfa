@@ -2,7 +2,7 @@
 % Please edit documentation in R/planning.R
 \name{planning}
 \alias{planning}
-\title{Frequentist and Bayesian Planning for Audit Sampling}
+\title{Plan a statistical audit sample}
 \usage{
 planning(confidence = 0.95, expectedError = 0, likelihood = 'poisson', N = NULL, 
           materiality = NULL, minPrecision = NULL, 
