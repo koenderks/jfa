@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Generate an Audit Report — report" />
-<meta property="og:description" content="This function takes an object of class jfaEvaluation, creates a report containing the results, and saves the report to a file in your working directory.
+<meta property="og:description" content="This function takes an object of class jfaEvaluation as returned by the evaluation() function automatically generates a html or pdf report containing the analysis results and their interpretation.
 For more details on how to use this function see the package vignette:
 vignette('jfa', package = 'jfa')" />
 
@@ -143,7 +143,7 @@ vignette('jfa', package = 'jfa')" />
     </div>
 
     <div class="ref-description">
-    <p>This function takes an object of class <code>jfaEvaluation</code>, creates a report containing the results, and saves the report to a file in your working directory.</p>
+    <p>This function takes an object of class <code>jfaEvaluation</code> as returned by the <code><a href='evaluation.html'>evaluation()</a></code> function automatically generates a <code>html</code> or <code>pdf</code> report containing the analysis results and their interpretation.</p>
 <p>For more details on how to use this function see the package vignette:
 <code><a href='../articles/jfa.html'>vignette('jfa', package = 'jfa')</a></code></p>
     </div>
@@ -159,17 +159,17 @@ vignette('jfa', package = 'jfa')" />
     </tr>
     <tr>
       <th>file</th>
-      <td><p>a character specifying the name of the report (e.g. <code>report.html</code>). The report is created in your current working directory.</p></td>
+      <td><p>a character specifying the name of the report (e.g. <code>report.html</code>). By default, the report is created in your current working directory.</p></td>
     </tr>
     <tr>
       <th>format</th>
-      <td><p>a character specifying the output format of the report. Possible options are <code>html_document</code> (default) and <code>pdf_document</code>, but compiling to <code>.pdf</code> format requires a local version of MikTex.</p></td>
+      <td><p>a character specifying the output format of the report. Possible options are <code>html_document</code> (default) and <code>pdf_document</code>, but compiling to <code>pdf</code> format requires a local version of MikTex.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A <code>.html</code> or <code>.pdf</code> file containing a report of the sample evaluation.</p>
+    <p>A <code>html</code> or <code>pdf</code> file containing a report of the evaluation.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='auditPrior.html'>auditPrior</a></code> <code><a href='planning.html'>planning</a></code> <code><a href='selection.html'>selection</a></code> <code><a href='evaluation.html'>evaluation</a></code></p></div>
@@ -178,25 +178,20 @@ vignette('jfa', package = 'jfa')" />
     <p>Koen Derks, <a href='mailto:k.derks@nyenrode.nl'>k.derks@nyenrode.nl</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/koenderks/jfa'>jfa</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>'BuildIt'</span><span class='op'>)</span>
 
-<span class='co'># Generate some audit data (N = 1000):</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>ID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1000</span><span class='op'>:</span><span class='fl'>100000</span>, size <span class='op'>=</span> <span class='fl'>1000</span>, replace <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>, 
-                   bookValue <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>1000</span>, min <span class='op'>=</span> <span class='fl'>700</span>, max <span class='op'>=</span> <span class='fl'>1000</span><span class='op'>)</span><span class='op'>)</span>
+<span class='co'># Draw a sample of 100 monetary units from the population using</span>
+<span class='co'># fixed interval monetary unit sampling</span>
+<span class='va'>sample</span> <span class='op'>&lt;-</span> <span class='fu'><a href='selection.html'>selection</a></span><span class='op'>(</span>population <span class='op'>=</span> <span class='va'>BuildIt</span>, sampleSize <span class='op'>=</span> <span class='fl'>100</span>, 
+          algorithm <span class='op'>=</span> <span class='st'>"interval"</span>, units <span class='op'>=</span> <span class='st'>"mus"</span>, bookValues <span class='op'>=</span> <span class='st'>'bookValue'</span><span class='op'>)</span><span class='op'>$</span><span class='va'>sample</span>
 
-<span class='co'># Using monetary unit sampling, draw a random sample from the population.</span>
-<span class='va'>s1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='selection.html'>selection</a></span><span class='op'>(</span>population <span class='op'>=</span> <span class='va'>data</span>, sampleSize <span class='op'>=</span> <span class='fl'>100</span>, units <span class='op'>=</span> <span class='st'>'mus'</span>, 
-                 bookValues <span class='op'>=</span> <span class='st'>'bookValue'</span>, algorithm <span class='op'>=</span> <span class='st'>'random'</span><span class='op'>)</span>
-<span class='va'>s1_sample</span> <span class='op'>&lt;-</span> <span class='va'>s1</span><span class='op'>$</span><span class='va'>sample</span>
-<span class='va'>s1_sample</span><span class='op'>$</span><span class='va'>trueValue</span> <span class='op'>&lt;-</span> <span class='va'>s1_sample</span><span class='op'>$</span><span class='va'>bookValue</span>
-<span class='va'>s1_sample</span><span class='op'>$</span><span class='va'>trueValue</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='va'>s1_sample</span><span class='op'>$</span><span class='va'>trueValue</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span> <span class='op'>-</span> <span class='fl'>500</span> <span class='co'># One overstatement is found</span>
+<span class='co'># Evaluate using the Stringer bound</span>
+<span class='va'>result</span> <span class='op'>&lt;-</span> <span class='fu'><a href='evaluation.html'>evaluation</a></span><span class='op'>(</span>confidence <span class='op'>=</span> <span class='fl'>0.95</span>, materiality <span class='op'>=</span> <span class='fl'>0.05</span>, 
+                     method <span class='op'>=</span> <span class='st'>"stringer"</span>, sample <span class='op'>=</span> <span class='va'>sample</span>, 
+                     bookValues <span class='op'>=</span> <span class='st'>"bookValue"</span>, auditValues <span class='op'>=</span> <span class='st'>'auditValue'</span><span class='op'>)</span>
 
-<span class='va'>e2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='evaluation.html'>evaluation</a></span><span class='op'>(</span>sample <span class='op'>=</span> <span class='va'>s1_sample</span>, bookValues <span class='op'>=</span> <span class='st'>'bookValue'</span>, auditValues <span class='op'>=</span> <span class='st'>'trueValue'</span>, 
-                 method <span class='op'>=</span> <span class='st'>'stringer'</span>, materiality <span class='op'>=</span> <span class='fl'>0.05</span>, counts <span class='op'>=</span> <span class='va'>s1_sample</span><span class='op'>$</span><span class='va'>count</span><span class='op'>)</span>
-
-<span class='co'># Generate report</span>
-<span class='co'># report(e2, file = 'myFile.html')</span>
+<span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span> 
+ <span class='fu'>report</span><span class='op'>(</span><span class='va'>result</span>, file <span class='op'>=</span> <span class='st'>'myFile.html'</span><span class='op'>)</span> <span class='op'>}</span>
 
 </div></pre>
   </div>
