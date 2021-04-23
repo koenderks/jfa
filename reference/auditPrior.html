@@ -157,7 +157,7 @@ vignette('jfa', package = 'jfa')" />
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>confidence</th>
-      <td><p>a value between 0 and 1 specifying the confidence level desired for the sample planning. Defaults to 0.95 for 95% confidence.</p></td>
+      <td><p>a numeric value between 0 and 1 specifying the confidence level desired for the sample planning. Defaults to 0.95 for 95% confidence.</p></td>
     </tr>
     <tr>
       <th>likelihood</th>
@@ -169,35 +169,35 @@ vignette('jfa', package = 'jfa')" />
     </tr>
     <tr>
       <th>expectedError</th>
-      <td><p>a value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a value (&gt;= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.</p></td>
+      <td><p>a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a value (&gt;= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.</p></td>
     </tr>
     <tr>
       <th>N</th>
-      <td><p>an integer (or value) larger than 0 specifying the total population size (or value). Only required when <code>likelihood = 'hypergeometric'</code>.</p></td>
+      <td><p>an integer (or numeric value) larger than 0 specifying the total population size (or value). Only required when <code>likelihood = 'hypergeometric'</code>.</p></td>
     </tr>
     <tr>
       <th>materiality</th>
-      <td><p>a value between 0 and 1 specifying the performance materiality (i.e., maximum upper limit) of the audit as a fraction of the total size (or value). Can be <code>NULL</code> for some methods.</p></td>
+      <td><p>a numeric value between 0 and 1 specifying the performance materiality (i.e., maximum upper limit) of the audit as a fraction of the total size (or value). Can be <code>NULL</code> for some methods.</p></td>
     </tr>
     <tr>
       <th>ir</th>
-      <td><p>if <code>method = 'arm'</code>, a value between 0 and 1 specifying the inherent risk in the audit risk model. Defaults to 1 for 100% risk.</p></td>
+      <td><p>if <code>method = 'arm'</code>, a numeric value between 0 and 1 specifying the inherent risk in the audit risk model. Defaults to 1 for 100% risk.</p></td>
     </tr>
     <tr>
       <th>cr</th>
-      <td><p>if <code>method = 'arm'</code>, a value between 0 and 1 specifying the internal control risk in the audit risk model. Defaults to 1 for 100% risk.</p></td>
+      <td><p>if <code>method = 'arm'</code>, a numeric value between 0 and 1 specifying the internal control risk in the audit risk model. Defaults to 1 for 100% risk.</p></td>
     </tr>
     <tr>
       <th>pHmin</th>
-      <td><p>if <code>method = 'hypotheses'</code>, a value between 0 and 1 specifying the prior probability of the hypothesis \(\theta &lt;\) materiality.</p></td>
+      <td><p>if <code>method = 'hypotheses'</code>, a numeric value between 0 and 1 specifying the prior probability of the hypothesis \(\theta &lt;\) materiality.</p></td>
     </tr>
     <tr>
       <th>pHplus</th>
-      <td><p>if <code>method = 'hypotheses'</code>, a value between 0 and 1 specifying the prior probability of the hypothesis \(\theta &gt;\) materiality.</p></td>
+      <td><p>if <code>method = 'hypotheses'</code>, a numeric value between 0 and 1 specifying the prior probability of the hypothesis \(\theta &gt;\) materiality.</p></td>
     </tr>
     <tr>
       <th>factor</th>
-      <td><p>if <code>method = 'factor'</code>, a value between 0 and 1 specifying the weighting factor for the results of the earlier sample.</p></td>
+      <td><p>if <code>method = 'factor'</code>, a numeric value between 0 and 1 specifying the weighting factor for the results of the earlier sample.</p></td>
     </tr>
     <tr>
       <th>sampleN</th>
@@ -205,41 +205,41 @@ vignette('jfa', package = 'jfa')" />
     </tr>
     <tr>
       <th>sampleK</th>
-      <td><p>if <code>sample</code> or <code>factor</code>, a value larger than, or equal to, 0 specifying the sum of errors in the previous sample.</p></td>
+      <td><p>if <code>sample</code> or <code>factor</code>, a numeric value larger than, or equal to, 0 specifying the sum of errors in the previous sample.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An object of class <code>jfaPrior</code> containing:</p>
-<dt>confidence</dt><dd><p>a value between 0 and 1 indicating the confidence level.</p></dd>
+<dt>confidence</dt><dd><p>a numeric value between 0 and 1 indicating the confidence level.</p></dd>
 <dt>likelihood</dt><dd><p>a character indicating the specified likelihood.</p></dd>
 <dt>method</dt><dd><p>a character indicating the method by which the prior distribution is constructed.</p></dd>
-<dt>expectedError</dt><dd><p>a value larger than 0 indicating the input for the number of expected errors.</p></dd>
+<dt>expectedError</dt><dd><p>a numeric value larger than 0 indicating the input for the number of expected errors.</p></dd>
 <dt>N</dt><dd><p>if <code>N</code> is specified, an integer larger than 0 indicating the population size.</p></dd>
-<dt>materiality</dt><dd><p>if <code>materiality</code> is specified, a value between 0 and 1 indicating the materiality used to construct the prior distribution.</p></dd>
-<dt>description</dt><dd><p>a list containing a description of the prior distribution, including parameters and the implicit sample.</p></dd>
-<dt>statistics</dt><dd><p>a list containing statistics of the prior distribution, including the mean, mode, median, and upper bound.</p></dd>
-<dt>specifics</dt><dd><p>a list containing optional specifications of the prior distribution that vary depending on the <code>method</code>.</p></dd>
-<dt>hypotheses</dt><dd><p>if <code>materiality</code> is specified, a list containing information about the hypotheses, including prior probabilities and odds.</p></dd>
+<dt>materiality</dt><dd><p>if <code>materiality</code> is specified, a numeric value between 0 and 1 indicating the materiality used to construct the prior distribution.</p></dd>
+<dt>description</dt><dd><p>a list containing a description of the prior distribution, including the parameters of the prior distribution and the implicit sample on which the prior distribution is based.</p></dd>
+<dt>statistics</dt><dd><p>a list containing statistics of the prior distribution, including the mean, mode, median, and upper bound of the prior distribution.</p></dd>
+<dt>specifics</dt><dd><p>a list containing specifics of the prior distribution that vary depending on the <code>method</code>.</p></dd>
+<dt>hypotheses</dt><dd><p>if <code>materiality</code> is specified, a list containing information about the hypotheses, including prior probabilities and odds for the hypothesis of tolerable misstatement (H-) and the hypothesis of intolerable misstatement (H+).</p></dd>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This section elaborates on the available likelihoods and corresponding prior distributions for the <code>likelihood</code> argument.</p>
 <ul>
-<li><p><code>poisson</code>:          The Poisson likelihood is used as a likelihood for monetary unit sampling (MUS). Its likelihood function is defined as: $$p(x) = \frac{\lambda^x e^{-\lambda}}{x!}$$ The conjugate <em>gamma(\(\alpha, \beta\))</em> prior has probability density function: $$f(x; \alpha, \beta) = \frac{\beta^\alpha x^{\alpha - 1} e^{-\beta x}}{\Gamma(\alpha)}$$</p></li>
-<li><p><code>binomial</code>:         The binomial likelihood is used as a likelihood for record sampling <em>with</em> replacement. Its likelihood function is defined as: $$p(x) = {n \choose k} p^k (1 - p)^{n - k}$$ The conjugate <em>beta(\(\alpha, \beta\))</em> prior has probability density function: $$f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}$$</p></li>
-<li><p><code>hypergeometric</code>:   The hypergeometric likelihood is used as a likelihood for record sampling <em>without</em> replacement. Its likelihood function is defined as: $$p(x = k) = \frac{{K \choose k} {N - K \choose n - k}}{{N \choose n}}$$ The conjugate <em>beta-binomial(\(\alpha, \beta\))</em> prior (Dyer and Pierce, 1993) has probability density function: $$f(k | n, \alpha, \beta) = {n \choose k} \frac{B(k + \alpha, n - k + \beta)}{B(\alpha, \beta)}$$</p></li>
+<li><p><code>poisson</code>:          The Poisson likelihood is often used as a likelihood for monetary unit sampling (MUS). Its likelihood function is defined as: $$p(x) = \frac{\lambda^x e^{-\lambda}}{x!}$$ The conjugate <em>gamma(\(\alpha, \beta\))</em> prior has probability density function: $$f(x; \alpha, \beta) = \frac{\beta^\alpha x^{\alpha - 1} e^{-\beta x}}{\Gamma(\alpha)}$$</p></li>
+<li><p><code>binomial</code>:         The binomial likelihood is often used as a likelihood for attributes sampling <em>with</em> replacement. Its likelihood function is defined as: $$p(x) = {n \choose k} p^k (1 - p)^{n - k}$$ The conjugate <em>beta(\(\alpha, \beta\))</em> prior has probability density function: $$f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}$$</p></li>
+<li><p><code>hypergeometric</code>:   The hypergeometric likelihood is used as a likelihood for sampling <em>without</em> replacement. Its likelihood function is defined as: $$p(x = k) = \frac{{K \choose k} {N - K \choose n - k}}{{N \choose n}}$$ The conjugate <em>beta-binomial(\(\alpha, \beta\))</em> prior (Dyer and Pierce, 1993) has probability density function: $$f(k | n, \alpha, \beta) = {n \choose k} \frac{B(k + \alpha, n - k + \beta)}{B(\alpha, \beta)}$$</p></li>
 </ul>
 
 <p>This section elaborates on the available methods for constructing a prior distribution.</p>
 <ul>
-<li><p><code>none</code>:              This method constructs a prior distribution according to the principle of minimum information.</p></li>
-<li><p><code>median</code>:            This method constructs a prior distribution so that the prior probabilities of tolerable and intolerable misstatement are equal.</p></li>
-<li><p><code>hypotheses</code>:        This method constructs a prior distribution with specified prior probabilities for the hypotheses of tolerable and intolerable misstatement. Requires specification of the <code>pHmin</code> and <code>pHplus</code> arguments.</p></li>
-<li><p><code>arm</code>:               This method constructs a prior distribution by translating the risks of material misstatement (inherent risk and internal control risk) from the audit risk model. The method requires specification of the <code>ir</code> (inherent risk) and <code>cr</code> (internal control risk) arguments.</p></li>
-<li><p><code>sample</code>:            This method constructs a prior distribution on the basis of an earlier sample. Requires specification of the <code>sampleN</code> and <code>sampleK</code> arguments.</p></li>
-<li><p><code>factor</code>:            This method constructs a prior distribution on the basis of an earlier sample in combination with a weighting factor. Requires specification of the <code>factor</code>, <code>sampleN</code> and <code>sampleK</code> arguments.</p></li>
+<li><p><code>none</code>:              This method constructs a prior distribution that incorporates negligible information about the values of the misstatement.</p></li>
+<li><p><code>median</code>:            This method constructs a prior distribution so that the prior probability of tolerable misstatement (H-) is equal to the prior probability of intolerable misstatement (H+).</p></li>
+<li><p><code>hypotheses</code>:        This method constructs a prior distribution with custom prior probabilities for the hypotheses of tolerable misstatement (H-) and intolerable misstatement (H+). This method requires specification of the <code>pHmin</code> and <code>pHplus</code> arguments.</p></li>
+<li><p><code>arm</code>:               This method constructs a prior distribution by translating the risks of material misstatement (inherent risk and internal control risk) from the audit risk model to an implicit sample. The method requires specification of the <code>ir</code> (inherent risk) and <code>cr</code> (internal control risk) arguments.</p></li>
+<li><p><code>sample</code>:            This method constructs a prior distribution on the basis of an earlier sample. This method requires specification of the <code>sampleN</code> and <code>sampleK</code> arguments.</p></li>
+<li><p><code>factor</code>:            This method constructs a prior distribution on the basis of an earlier sample in combination with a weighting factor. This method requires specification of the <code>factor</code>, <code>sampleN</code> and <code>sampleK</code> arguments.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
@@ -254,23 +254,18 @@ vignette('jfa', package = 'jfa')" />
     <p>Koen Derks, <a href='mailto:k.derks@nyenrode.nl'>k.derks@nyenrode.nl</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/koenderks/jfa'>jfa</a></span><span class='op'>)</span>
-
-<span class='co'># Specify the materiality, confidence, and expected errors:</span>
+    <pre class="examples"><div class='input'><span class='co'># Specify materiality, confidence, and expected errors</span>
 <span class='va'>materiality</span>   <span class='op'>&lt;-</span> <span class='fl'>0.05</span>   <span class='co'># 5%</span>
 <span class='va'>confidence</span>    <span class='op'>&lt;-</span> <span class='fl'>0.95</span>   <span class='co'># 95%</span>
 <span class='va'>expectedError</span> <span class='op'>&lt;-</span> <span class='fl'>0.025</span>  <span class='co'># 2.5%</span>
 
-<span class='co'># Specify the inherent risk (ir) and control risk (cr):</span>
+<span class='co'># Specify inherent risk (ir) and control risk (cr)</span>
 <span class='va'>ir</span> <span class='op'>&lt;-</span> <span class='fl'>1</span>     <span class='co'># 100%</span>
 <span class='va'>cr</span> <span class='op'>&lt;-</span> <span class='fl'>0.6</span>   <span class='co'># 60%</span>
 
-<span class='co'># Create a beta prior distribution by translating the risks from</span>
-<span class='co'># the Audit Risk Model (arm) to a beta prior:</span>
-<span class='va'>prior</span> <span class='op'>&lt;-</span> <span class='fu'>auditPrior</span><span class='op'>(</span>confidence <span class='op'>=</span> <span class='va'>confidence</span>, likelihood <span class='op'>=</span> <span class='st'>'binomial'</span>, 
-                    method <span class='op'>=</span> <span class='st'>'arm'</span>, expectedError <span class='op'>=</span> <span class='va'>expectedError</span>, materiality <span class='op'>=</span> <span class='va'>materiality</span>, 
-                    ir <span class='op'>=</span> <span class='va'>ir</span>, cr <span class='op'>=</span> <span class='va'>cr</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>prior</span><span class='op'>)</span>
+<span class='co'># Create the prior distribution</span>
+<span class='fu'>auditPrior</span><span class='op'>(</span><span class='va'>confidence</span>, <span class='st'>'binomial'</span>, <span class='st'>'arm'</span>, <span class='va'>expectedError</span>,
+           materiality <span class='op'>=</span> <span class='va'>materiality</span>, ir <span class='op'>=</span> <span class='va'>ir</span>, cr <span class='op'>=</span> <span class='va'>cr</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; # ------------------------------------------------------------
 #&gt; #         jfa Prior Distribution Summary (Bayesian)
 #&gt; # ------------------------------------------------------------
@@ -279,46 +274,22 @@ vignette('jfa', package = 'jfa')" />
 #&gt; # Confidence:              95%    
 #&gt; # Expected sample errors:  2.5%       
 #&gt; # Likelihood:              binomial 
-#&gt; # Specifics:               Inherent risk = 1; Internal control risk = 0.6; Detection risk = 0.08 
+#&gt; # Specifics:               Inherent risk = 1; Internal control risk = 0.6; Detection risk = 0.083 
 #&gt; # ------------------------------------------------------------
 #&gt; # Output: 
 #&gt; #
 #&gt; # Prior distribution:      beta(α = 2.275, β = 50.725) 
 #&gt; # Implicit sample size:    51 
-#&gt; # Implicit errors:         1.27 
+#&gt; # Implicit errors:         1.275 
 #&gt; # ------------------------------------------------------------
 #&gt; # Statistics: 
 #&gt; #
-#&gt; # Upper bound:             0.1 
-#&gt; # Precision:               0.07 
-#&gt; # Mode:                    0.02 
-#&gt; # Mean:                    0.04 
-#&gt; # Median:                  0.04 
+#&gt; # Upper bound:             0.096 
+#&gt; # Precision:               0.071 
+#&gt; # Mode:                    0.025 
+#&gt; # Mean:                    0.043 
+#&gt; # Median:                  0.037 
 #&gt; # ------------------------------------------------------------</div><div class='input'>
-<span class='co'># ------------------------------------------------------------</span>
-<span class='co'>#         jfa Prior Distribution Summary (Bayesian)</span>
-<span class='co'># ------------------------------------------------------------</span>
-<span class='co'># Input:</span>
-<span class='co'>#</span>
-<span class='co'># Confidence:              0.95    </span>
-<span class='co'># Expected sample errors:  0.02       </span>
-<span class='co'># Likelihood:              binomial </span>
-<span class='co'># Specifics:               Inherent risk = 1; Internal control risk = 0.6; Detection risk = 0.08 </span>
-<span class='co'># ------------------------------------------------------------</span>
-<span class='co'># Output: </span>
-<span class='co'>#</span>
-<span class='co'># Prior distribution:      beta(2.275, 50.725) </span>
-<span class='co'># Implicit sample size:    51 </span>
-<span class='co'># Implicit errors:         1.27 </span>
-<span class='co'># ------------------------------------------------------------</span>
-<span class='co'># Statistics: </span>
-<span class='co'>#</span>
-<span class='co'># Upper bound:             0.1 </span>
-<span class='co'># Precision:               7.1% </span>
-<span class='co'># Mode:                    0.02 </span>
-<span class='co'># Mean:                    0.04 </span>
-<span class='co'># Median:                  0.04 </span>
-<span class='co'># ------------------------------------------------------------</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

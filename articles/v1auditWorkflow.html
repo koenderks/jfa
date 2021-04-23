@@ -154,21 +154,21 @@
 ## # Confidence:              95%    
 ## # Expected sample errors:  2.5%       
 ## # Likelihood:              binomial 
-## # Specifics:               Inherent risk = 1; Internal control risk = 0.6; Detection risk = 0.08 
+## # Specifics:               Inherent risk = 1; Internal control risk = 0.6; Detection risk = 0.083 
 ## # ------------------------------------------------------------
 ## # Output: 
 ## #
 ## # Prior distribution:      beta(α = 2.275, β = 50.725) 
 ## # Implicit sample size:    51 
-## # Implicit errors:         1.27 
+## # Implicit errors:         1.275 
 ## # ------------------------------------------------------------
 ## # Statistics: 
 ## #
-## # Upper bound:             0.1 
-## # Precision:               0.07 
-## # Mode:                    0.02 
-## # Mean:                    0.04 
-## # Median:                  0.04 
+## # Upper bound:             0.096 
+## # Precision:               0.071 
+## # Mode:                    0.025 
+## # Mean:                    0.043 
+## # Median:                  0.037 
 ## # ------------------------------------------------------------</code></pre>
 <p>The prior distribution can be shown by using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -191,7 +191,7 @@
 ## # Minimum precision:       Not specified 
 ## # Likelihood:              binomial 
 ## # Prior distribution:      beta(α = 2.275, β = 50.725) 
-## # Expected sample errors:  4.23 
+## # Expected sample errors:  4.225 
 ## # ------------------------------------------------------------
 ## # Output:
 ## #
@@ -200,9 +200,9 @@
 ## # ------------------------------------------------------------
 ## # Statistics:
 ## #
-## # Expected upper bound:    4.99% 
-## # Expected precision:      2.49% 
-## # Expected Bayes factor-+: 9.32 
+## # Expected upper bound:    4.994% 
+## # Expected precision:      2.494% 
+## # Expected Bayes factor-+: 9.323 
 ## # ------------------------------------------------------------</code></pre>
 <p>Laura can inspect how the prior distribution compares to the expected posterior distribution by using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function. The expected posterior distribution is the posterior distribution that would occur if Laura actually observed a sample of 169 transactions, from which 4.223 were in error.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
@@ -236,7 +236,7 @@
 ## # ------------------------------------------------------------
 ## # Statistics:
 ## #
-## # Proportion n/N:          0.05 
+## # Proportion n/N:          0.048 
 ## # Percentage of value:     4.86% 
 ## # ------------------------------------------------------------</code></pre>
 </div>
@@ -282,10 +282,10 @@
 ## # Output:
 ## #
 ## # Posterior distribution:   beta(α = 4.075, β = 217.925) 
-## # Most likely error:        1.39% 
-## # Upper bound:              3.52% 
-## # Precision:                2.13% 
-## # Bayes factor-+:           108.94 
+## # Most likely error:        1.385% 
+## # Upper bound:              3.518% 
+## # Precision:                2.133% 
+## # Bayes factor-+:           108.942 
 ## # Conclusion:               Approve population 
 ## # ------------------------------------------------------------</code></pre>
 <p>She can inspect the prior and posterior distribution by using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function. The shaded area quantifies the area under the posterior distribution that contains 95% of the probability, which ends at 3.518%. Therefore, Laura can state that there is a 95% probability that the misstatement in BuildIt’s statements is lower than 3.518%.</p>
