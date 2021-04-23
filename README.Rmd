@@ -109,7 +109,7 @@ Below you can find a enumeration and explanation of the functions in `jfa`, sort
 
 ### Create a prior distribution with the `auditPrior()` function:
 
-The `auditPrior()` function creates a prior distribution according to one of several methods, including a translation of the assessments of the inherent risk and control risk in the audit risk model. The returned object is of class `jfaPrior` and can be used with associated `print()` and `plot()` methods. `jfaPrior` results can also be used as input argument for the `prior` argument in other functions.
+The `auditPrior()` function creates a prior distribution according to one of several methods, including a translation of the assessments of the inherent risk and control risk from the audit risk model. The function returns an object of class `jfaPrior` which can be used with associated `print()` and `plot()` methods. `jfaPrior` objects can also be used as input for the `prior` argument in other functions.
 
 *Full function with default arguments:*
 
@@ -136,7 +136,7 @@ The `auditPrior()` function creates a prior distribution according to one of sev
 
 ### Plan a sample with the `planning()` function:
 
-The `planning()` function calculates the required sample size for a statistical audit sample, based on the Poisson, binomial, or hypergeometric likelihood. A prior can be specified to combine with the specified likelihood in order to perform Bayesian planning. The returned `jfaPlanning` object has a `print()` and a `plot()` method. In the `planning()` function, the `prior` argument can be an object of class `jfaPrior` as returned by the `auditPrior()` function.
+The `planning()` function calculates the required sample size for a statistical audit sample based on the Poisson, binomial, or hypergeometric likelihood. The function returns an object of class `jfaPlanning` which can be used with associated `print()` and a `plot()` methods. The input for the `prior` argument can be an object of class `jfaPrior` as returned by the `auditPrior()` function to perform Bayesian planning.
 
 *Full function with default arguments:*
 
@@ -152,7 +152,7 @@ The `planning()` function calculates the required sample size for a statistical 
 
 ### Select transactions with the `selection()` function:
 
-The `selection()` function takes a data frame and performs sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. The returned `jfaSelection` object has a `print()` and a `plot()` method. In the `selection()` function, the `sampleSize` argument can be an object of class `jfaPlanning` as returned by the `planning()` function.
+The `selection()` function takes a data frame and performs sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. The function returns an object of class `jfaSelection` which can be used with associated `print()` and a `plot()` methods. The input for the `sampleSize` argument can be an object of class `jfaPlanning` as returned by the `planning()` function.
 
 *Full function with default arguments:*
 
@@ -175,7 +175,7 @@ The `selection()` function takes a data frame and performs sampling according to
 
 ### Evaluate a sample with the `evaluation()` function:
 
-The `evaluation()` function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound according to a specified method. The returned `jfaEvalution` object has a `print()` and `plot()` method. In the `evaluation()` function, the `prior` argument can be an object of class `jfaPrior` as returned by the `auditPrior()` function.
+The `evaluation()` function takes a sample or summary statistics of the sample and performs evaluation according to the specified method and sampling objectives. The function returns an object of class `jfaEvalution` which can be used with associated `print()` and `plot()` methods. The input for the `prior` argument can be an object of class `jfaPrior` to perform Bayesian evaluation.
 
 *Full function with default arguments:*
 
@@ -202,7 +202,7 @@ The `evaluation()` function takes a sample data frame or summary statistics abou
 
 ### Generate a report with the `report()` function:
 
-The `report()` function takes an object of class `jfaEvaluation` as returned by the `evaluation()` function, automatically generates a `html` or `pdf` report containing the analysis results and their interpretation, and saves the report to your local computer. 
+The `report()` function takes an object of class `jfaEvaluation` as returned by the `evaluation()` function and automatically generates a `html` or `pdf` report containing the analysis results and their interpretation.
 
 *Full function with default arguments:*
 

@@ -1,7 +1,7 @@
 ## This is a submission for version 0.5.3
 This is jfa version 0.5.3. In this version I have:
 
-* ...
+* Fixed an error in the evaluation function.
 
 ## Test environments
 * OS X install (on travis-ci), R release

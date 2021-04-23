@@ -1,5 +1,7 @@
 # jfa 0.5.3
 
+- Fixed an error in the mode of the gamma posterior distribution from the `evaluation()` function in which `+1` was added to the beta parameter, resulting in slighly lower modes than the correct ones.
+
 # jfa 0.5.2
 
 - Update the poisson evaluation calculation so that it allows for fractional errors.

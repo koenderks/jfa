@@ -255,7 +255,7 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
     if ((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior") {
       # Bayesian evaluation using gamma distribution
       bound <- stats::qgamma(p = confidence, shape = 1 + kPrior + t, rate = nPrior + n)
-      mle <- (1 + kPrior + t - 1) / (1 + nPrior + n)
+      mle <- (1 + kPrior + t - 1) / (nPrior + n)
       precision <- bound - mle
     } else {
       # Classical evaluation using Poisson distribution
