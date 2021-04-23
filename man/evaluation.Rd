@@ -13,7 +13,7 @@ evaluation(confidence = 0.95, method = 'binomial', N = NULL,
             csA = 1, csB = 3, csMu = 0.5)
 }
 \arguments{
-\item{confidence}{a value between 0 and 1 specifying the confidence level desired for the sample evaluation. Defaults to 0.95 for 95\% confidence.}
+\item{confidence}{a numeric value between 0 and 1 specifying the confidence level desired for the sample evaluation. Defaults to 0.95 for 95\% confidence.}
 
 \item{method}{a character specifying the the method that is used to evaluate the sample. Possible options are \code{poisson}, \code{binomial} (default), \code{hypergeometric}, \code{mpu}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}. See the details section for more information about these methods.}
 
@@ -29,29 +29,29 @@ evaluation(confidence = 0.95, method = 'binomial', N = NULL,
 
 \item{nSumstats}{an integer larger than 0 specifying the number of items in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data come from summary statistics specified by both \code{nSumstats} and \code{kSumstats}.}
 
-\item{kSumstats}{a value larger than 0 specifying the sum of errors found in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data come from summary statistics specified by both \code{kSumstats} and \code{nSumstats}.}
+\item{kSumstats}{a numeric value larger than 0 specifying the sum of errors found in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data come from summary statistics specified by both \code{kSumstats} and \code{nSumstats}.}
 
-\item{materiality}{a value between 0 and 1 specifying the performance materiality as a fraction of the total value (or size) of the population (a value between 0 and 1). If specified, the function also returns the conclusion of the analysis with respect to the performance materiality. The value is discarded when \code{direct}, \code{difference}, \code{quotient}, or \code{regression} method is chosen.}
+\item{materiality}{a numeric value between 0 and 1 specifying the performance materiality as a fraction of the total value (or size) of the population (a value between 0 and 1). If specified, the function also returns the conclusion of the analysis with respect to the performance materiality. The value is discarded when \code{direct}, \code{difference}, \code{quotient}, or \code{regression} method is chosen.}
 
-\item{minPrecision}{a value between 0 and 1 specifying the required minimum precision (upper bound minus most likely error). If specified, the function also returns the conclusion of the analysis with respect to the required minimum precision. This value must be specified as a fraction of the total value of the population (a value between 0 and 1).}
+\item{minPrecision}{a numeric value between 0 and 1 specifying the required minimum precision (upper bound minus most likely error). If specified, the function also returns the conclusion of the analysis with respect to the required minimum precision. This value must be specified as a fraction of the total value of the population (a value between 0 and 1).}
 
 \item{prior}{a logical specifying whether to use a prior distribution when planning, or an object of class `jfaPrior` containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a negligible prior distribution is chosen by default, but can be adjusted using the `kPrior` and `nPrior` arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
 
-\item{nPrior}{if \code{prior = TRUE}, a value specifying the number of sampling units in the implicit sample on which the prior distribution is based.}
+\item{nPrior}{if \code{prior = TRUE}, a numeric value specifying the number of sampling units in the implicit sample on which the prior distribution is based.}
 
-\item{kPrior}{if \code{prior = TRUE}, a value specifying the assumed sum of errors in the implicit sample on which the prior distribution is based.}
+\item{kPrior}{if \code{prior = TRUE}, a numeric value specifying the assumed sum of errors in the implicit sample on which the prior distribution is based.}
 
-\item{rohrbachDelta}{if \code{method = 'rohrbach'}, a value specifying \eqn{\Delta} in Rohrbach's augmented variance bound (Rohrbach, 1993).}
+\item{rohrbachDelta}{if \code{method = 'rohrbach'}, a numeric value specifying \eqn{\Delta} in Rohrbach's augmented variance bound (Rohrbach, 1993).}
 
 \item{momentPoptype}{if \code{method = 'moment'}, a character specifying the type of population (Dworin and Grimlund, 1984). Possible options are \code{accounts} and \code{inventory}. This argument affects the calculation of the central moments in the bound.}
 
-\item{populationBookValue}{if \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a value specifying the total value of the transactions in the population. This argument is optional otherwise.}
+\item{populationBookValue}{if \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value specifying the total value of the transactions in the population. This argument is optional otherwise.}
 
-\item{csA}{if \code{method = "coxsnell"}, a value specifying the \eqn{\alpha} parameter of the prior distribution on the mean taint. Defaults to 1 as recommended by Cox and Snell (1979).}
+\item{csA}{if \code{method = "coxsnell"}, a numeric value specifying the \eqn{\alpha} parameter of the prior distribution on the mean taint. Defaults to 1 as recommended by Cox and Snell (1979).}
 
-\item{csB}{if \code{method = "coxsnell"}, a value specifying the \eqn{\beta} parameter of the prior distribution on the mean taint. Defaults to 3 as recommended by Cox and Snell (1979).}
+\item{csB}{if \code{method = "coxsnell"}, a numeric value specifying the \eqn{\beta} parameter of the prior distribution on the mean taint. Defaults to 3 as recommended by Cox and Snell (1979).}
 
-\item{csMu}{if \code{method = "coxsnell"}, a value between 0 and 1 specifying the mean of the prior distribution on the mean taint. Defaults to 0.5 as recommended by Cox and Snell (1979).}
+\item{csMu}{if \code{method = "coxsnell"}, a numeric value between 0 and 1 specifying the mean of the prior distribution on the mean taint. Defaults to 0.5 as recommended by Cox and Snell (1979).}
 }
 \value{
 An object of class \code{jfaEvaluation} containing:
