@@ -1,48 +1,44 @@
 #' Generate an Audit Report
 #'
-#' @description This function takes an object of class \code{jfaEvaluation}, creates a report containing the results, and saves the report to a file in your working directory.
+#' @description This function takes an object of class \code{jfaEvaluation} as returned by the \code{evaluation()} function automatically generates a \code{html} or \code{pdf} report containing the analysis results and their interpretation.
 #'
 #' For more details on how to use this function see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
-#' @usage report(object = NULL, file = NULL, format = 'html_document')
+#' @usage report(object, file = 'report.html', format = 'html_document')
 #'
 #' @param object an object of class \code{jfaEvaluation} as returned by the \code{evaluation()} function.
-#' @param file a character specifying the name of the report (e.g. \code{report.html}). The report is created in your current working directory.          
-#' @param format a character specifying the output format of the report. Possible options are \code{html_document} (default) and \code{pdf_document}, but compiling to \code{.pdf} format requires a local version of MikTex.
+#' @param file a character specifying the name of the report (e.g. \code{report.html}). By default, the report is created in your current working directory.          
+#' @param format a character specifying the output format of the report. Possible options are \code{html_document} (default) and \code{pdf_document}, but compiling to \code{pdf} format requires a local version of MikTex.
 #'
-#' @return A \code{.html} or \code{.pdf} file containing a report of the sample evaluation.
+#' @return A \code{html} or \code{pdf} file containing a report of the evaluation.
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
 #' @seealso \code{\link{auditPrior}} \code{\link{planning}} \code{\link{selection}} \code{\link{evaluation}}
 #'
 #' @examples
-#' library(jfa)
-#' set.seed(1)
-#' 
-#' # Generate some audit data (N = 1000):
-#' data <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), 
-#'                    bookValue = runif(n = 1000, min = 700, max = 1000))
-#' 
-#' # Using monetary unit sampling, draw a random sample from the population.
-#' s1 <- selection(population = data, sampleSize = 100, units = 'mus', 
-#'                  bookValues = 'bookValue', algorithm = 'random')
-#' s1_sample <- s1$sample
-#' s1_sample$trueValue <- s1_sample$bookValue
-#' s1_sample$trueValue[2] <- s1_sample$trueValue[2] - 500 # One overstatement is found
+#' data('BuildIt')
 #'
-#' e2 <- evaluation(sample = s1_sample, bookValues = 'bookValue', auditValues = 'trueValue', 
-#'                  method = 'stringer', materiality = 0.05, counts = s1_sample$count)
+#' # Draw a sample of 100 monetary units from the population using
+#' # fixed interval monetary unit sampling
+#' sample <- selection(population = BuildIt, sampleSize = 100, 
+#'           algorithm = 'interval', units = 'mus', bookValues = 'bookValue')$sample
+#' 
+#' # Evaluate using the Stringer bound
+#' result <- evaluation(confidence = 0.95, materiality = 0.05, 
+#'                      method = 'stringer', sample = sample, 
+#'                      bookValues = 'bookValue', auditValues = 'auditValue')
 #'
-#' # Generate report
-#' # report(e2, file = 'myFile.html')
+#' \dontrun{ 
+#'  report(result) 
+#' }
 #'
 #' @keywords evaluation report audit
 #'
 #' @export
 
-report <- function(object = NULL, file = NULL, format = 'html_document'){
+report <- function(object, file = 'report.html', format = 'html_document'){
   
   if (!class(object) == "jfaEvaluation")
     stop("Object must be of class 'jfaEvaluation'.")

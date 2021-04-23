@@ -1,6 +1,6 @@
 #' Create a Prior Distribution with Existing Audit Information
 #'
-#' @description This function creates a prior distribution with audit information to be used in the \code{planning()} and \code{evaluation()} functions via their \code{prior} argument. The returned object is of class \code{jfaPrior} and has a \code{print()} and \code{plot()} method.
+#' @description This function creates a prior distribution with audit information to be used in the \code{planning()} and \code{evaluation()} functions via their \code{prior} argument. The function returns an object of class \code{jfaPrior} which can be used with associated \code{print()} and \code{plot()} methods.
 #'
 #' For more details on how to use this function see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
@@ -26,9 +26,9 @@
 #' @details This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
 #' 
 #' \itemize{
-#'  \item{\code{poisson}:          The Poisson likelihood is often used as a likelihood for monetary unit sampling (MUS). Its likelihood function is defined as: \deqn{p(x) = \frac{\lambda^x e^{-\lambda}}{x!}} The conjugate \emph{gamma(\eqn{\alpha, \beta})} prior has probability density function: \deqn{f(x; \alpha, \beta) = \frac{\beta^\alpha x^{\alpha - 1} e^{-\beta x}}{\Gamma(\alpha)}}}
-#'  \item{\code{binomial}:         The binomial likelihood is often used as a likelihood for attributes sampling \emph{with} replacement. Its likelihood function is defined as: \deqn{p(x) = {n \choose k} p^k (1 - p)^{n - k}} The conjugate \emph{beta(\eqn{\alpha, \beta})} prior has probability density function: \deqn{f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}}}
-#'  \item{\code{hypergeometric}:   The hypergeometric likelihood is used as a likelihood for sampling \emph{without} replacement. Its likelihood function is defined as: \deqn{p(x = k) = \frac{{K \choose k} {N - K \choose n - k}}{{N \choose n}}} The conjugate \emph{beta-binomial(\eqn{\alpha, \beta})} prior (Dyer and Pierce, 1993) has probability density function: \deqn{f(k | n, \alpha, \beta) = {n \choose k} \frac{B(k + \alpha, n - k + \beta)}{B(\alpha, \beta)}} }
+#'  \item{\code{poisson}:          The Poisson likelihood is often used as a likelihood for monetary unit sampling (MUS). The likelihood function is defined as: \deqn{p(x) = \frac{\lambda^x e^{-\lambda}}{x!}} The conjugate \emph{gamma(\eqn{\alpha, \beta})} prior has probability density function: \deqn{f(x; \alpha, \beta) = \frac{\beta^\alpha x^{\alpha - 1} e^{-\beta x}}{\Gamma(\alpha)}}}
+#'  \item{\code{binomial}:         The binomial likelihood is often used as a likelihood for attributes sampling \emph{with} replacement. The likelihood function is defined as: \deqn{p(x) = {n \choose k} p^k (1 - p)^{n - k}} The conjugate \emph{beta(\eqn{\alpha, \beta})} prior has probability density function: \deqn{f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}}}
+#'  \item{\code{hypergeometric}:   The hypergeometric likelihood is used as a likelihood for sampling \emph{without} replacement. The likelihood function is defined as: \deqn{p(x = k) = \frac{{K \choose k} {N - K \choose n - k}}{{N \choose n}}} The conjugate \emph{beta-binomial(\eqn{\alpha, \beta})} prior (Dyer and Pierce, 1993) has probability density function: \deqn{f(k | n, \alpha, \beta) = {n \choose k} \frac{B(k + \alpha, n - k + \beta)}{B(\alpha, \beta)}} }
 #' }
 #'
 #' @details This section elaborates on the available methods for constructing a prior distribution.
@@ -64,33 +64,27 @@
 #'
 #' @keywords prior distribution audit
 #'
-#' @examples 
-#' # Specify materiality, confidence, and expected errors
-#' materiality   <- 0.05   # 5%
-#' confidence    <- 0.95   # 95%
-#' expectedError <- 0.025  # 2.5%
-#' 
+#' @examples  
 #' # Specify inherent risk (ir) and control risk (cr)
 #' ir <- 1     # 100%
 #' cr <- 0.6   # 60%
 #' 
 #' # Create the prior distribution
-#' auditPrior(confidence, 'binomial', 'arm', expectedError,
-#'            materiality = materiality, ir = ir, cr = cr)
-#'
+#' auditPrior(confidence = 0.95, likelihood = 'binomial', method = 'arm',
+#'            expectedError = 0.025, materiality = 0.05, ir = ir, cr = cr)
 #' @export
 
 auditPrior <- function(confidence = 0.95, likelihood = 'binomial', method = 'none', expectedError = 0, 
                        N = NULL, materiality = NULL, ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, 
                        factor = 1, sampleN = 0, sampleK = 0) {
   
-  if (confidence >= 1 || confidence <= 0 || is.null(confidence)) # Check if confidence is valid
+  if (confidence >= 1 || confidence <= 0 || is.null(confidence)) # Check if the confidence has a valid input
     stop("Specify a value for the confidence likelihood. Possible values lie within the range of 0 to 1.")
   
-  if (!(likelihood %in% c("poisson", "binomial", "hypergeometric"))) # Check if likelihood is valid
+  if (!(likelihood %in% c("poisson", "binomial", "hypergeometric"))) # Check if the likelihood has a valid input
     stop("Specify a valid likelihood. Possible options are 'poisson', 'binomial', and 'hypergeometric'.")
   
-  if (!(method %in% c("none", "median", "hypotheses", "arm", "sample", "factor"))) # Check if method is valid
+  if (!(method %in% c("none", "median", "hypotheses", "arm", "sample", "factor"))) # Check if the method has a valid input
     stop("Currently only method = 'none', 'median', 'hypotheses', 'arm', 'sample', and 'factor' are supported")
   
   if (is.null(materiality) && method %in% c("median", "hypotheses", "arm")) # Materiality is required for these methods
@@ -99,10 +93,10 @@ auditPrior <- function(confidence = 0.95, likelihood = 'binomial', method = 'non
   if (likelihood == "hypergeometric" && (is.null(N) || N <= 0)) # Check if N is specified if hypergeometric is specified
     stop("The hypergeometric likelihood requires that you specify a positive value for the populatin size N.")
   
-  if (expectedError < 0) # Check if the expected errors are valid
+  if (expectedError < 0) # Check if the expected errors has a valid input
     stop("The expected errors must be zero or larger than zero.")
   
-  if (expectedError >= 1 && method != "none") # Check if the expected errors are valid.
+  if (expectedError >= 1 && method != "none") # Check if the expected errors are consistent with the method
     stop("The expected errors must be entered as a proportion to use this prior construction method.")
   
   if (method == "none") { # Method 1: Negligible prior information
@@ -171,7 +165,7 @@ auditPrior <- function(confidence = 0.95, likelihood = 'binomial', method = 'non
     kPrior <- sampleK * factor # Earlier errors
   }
   
-  # Create the result object	
+  # Create the main result object	
   result <- list()
   result[["confidence"]]   	<- as.numeric(confidence)
   result[["likelihood"]]   	<- as.character(likelihood)
@@ -237,12 +231,12 @@ auditPrior <- function(confidence = 0.95, likelihood = 'binomial', method = 'non
     result[["hypotheses"]]$oddsHmin 	<- result[["hypotheses"]]$pHmin / result[["hypotheses"]]$pHplus
     result[["hypotheses"]]$oddsHplus 	<- 1 / result[["hypotheses"]]$oddsHmin
   }
-  # Functional form of the prior distribution.
+  # Functional form of the prior distribution
   result[["prior"]] <- switch(likelihood, 
                               "poisson" = paste0("gamma(\u03B1 = ", round(result[["description"]]$alpha, 3), ", \u03B2 = ", round(result[["description"]]$beta, 3), ")"),
                               "binomial" = paste0("beta(\u03B1 = ", round(result[["description"]]$alpha, 3), ", \u03B2 = ", round(result[["description"]]$beta, 3), ")"),
                               "hypergeometric" = paste0("beta-binomial(N = ", result[["N"]], ", \u03B1 = ", round(result[["description"]]$alpha, 3), ", \u03B2 = ", round(result[["description"]]$beta, 3), ")"))	
-  # Add class 'jfaPrior' to the result.
+  # Add class 'jfaPrior' to the result
   class(result) <- "jfaPrior"
   return(result)
 }

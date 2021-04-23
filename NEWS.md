@@ -1,5 +1,6 @@
 # jfa 0.5.3
 
+- Updated the documentation for the functions with simpler examples.
 - Fixed an error in the mode of the gamma posterior distribution from the `evaluation()` function in which `+1` was added to the beta parameter, resulting in slighly lower modes than the correct ones.
 
 # jfa 0.5.2
@@ -28,7 +29,7 @@
 - Added class `jfaPosterior` with `print()` and `plot()` methods.
 - Added `expectedPosterior` of class `jfaPosterior` to the output of the `planning()` function, includes `description`, `statistics` and `hypotheses`.
 - Added `posterior` of class `jfaPosterior` to the output of the `evaluation()` function, includes `description`, `statistics` and `hypotheses`.
-- Add a warning message to the `sampling()` function that it will be deprecated from 0.5.0 onwards. You can use `selection()` instead, since `sampling()` causes namespace issues with other packages.
+- Add a warning message to the `sampling()` function that it will be deprecated from 0.5.0 onward. You can use `selection()` instead, since `sampling()` causes namespace issues with other packages.
 - Changed the class `jfaSampling` to `jfaSelection`. This should not have any consequences. 
 
 # jfa 0.3.1

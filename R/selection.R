@@ -1,6 +1,6 @@
 #' Selecting a Sample from an Audit Population
 #'
-#' @description This function takes a data frame and performs statistical sampling according to one of three algorithms: random sampling, cell sampling, and fixed interval sampling. Sampling is done on the level of two possible sampling units: records or monetary units. The returned object is of class \code{jfaSelection} and has a \code{print()} and \code{plot()} method. 
+#' @description This function takes a data frame and performs statistical sampling according to one of three algorithms: random sampling, cell sampling, and fixed interval sampling. Sampling is done on the level of two possible sampling units: records or monetary units. The function returns an object of class \code{jfaSelection} which can be used with associated \code{print()} and a \code{plot()} methods.
 #'
 #' For more details on how to use this function see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
@@ -20,14 +20,14 @@
 #' @param withReplacement       if \code{algorithm = 'random'}, a logical specifying whether sampling should be performed with replacement. Defaults to \code{FALSE}.
 #' @param seed                  if \code{algorithm = 'random'} or \code{algorithm = 'cell'}, an integer specifying a seed to reproduce results. Defaults to 1.
 #' 
-#' @details The first part of this section elaborates on the possible options for the \code{units} argument:
+#' @details The first part of this section elaborates on the two possible options for the \code{units} argument:
 #' 
 #' \itemize{
 #'  \item{\code{records}:     In record sampling each item in the population is seen as a sampling unit. An item of $5000 is therefore equally likely to be selected as an item of $500.}
 #'  \item{\code{mus}:         In monetary unit sampling each monetary unit in the population is seen as a sampling unit. An item of $5000 is therefore ten times more likely to be selected as an item of $500.}
 #' }
 #' 
-#' The second part of this section elaborates on the possible options for the \code{algorithm} argument:
+#' The second part of this section elaborates on the three possible options for the \code{algorithm} argument:
 #' 
 #' \itemize{
 #'  \item{\code{random}:      In random sampling each sampling unit in the population is drawn with equal probability.}
@@ -38,7 +38,7 @@
 #' @return An object of class \code{jfaSelection} containing:
 #' 
 #' \item{population}{a data frame containing the input population.}
-#' \item{sample}{a data frame containing the selection of items.}
+#' \item{sample}{a data frame containing the selected sample of items.}
 #' \item{units}{a character indicating the sampling units that were used to create the selection.}
 #' \item{algorithm}{a character indicating the the algorithm that was used to create the selection.}
 #' \item{bookValues}{if \code{bookValues} is specified, a character indicating the name of the book value column.}
@@ -50,106 +50,48 @@
 #' @references Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). \emph{Dollar-unit Sampling: A Practical Guide for Auditors}. Copp Clark Pitman; Belmont, Calif.: distributed by Fearon-Pitman.
 #' @references Wampler, B., & McEacharn, M. (2005). Monetary-unit sampling using Microsoft Excel. \emph{The CPA journal}, 75(5), 36.
 #'
-#' @examples
-#' library(jfa)
-#' set.seed(1)
-#' 
-#' # Generate some audit data (N = 1000).
-#' population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), 
-#'                          bookValue = runif(n = 1000, min = 700, max = 1000))
-#' 
-#' # Draw a custom sample of 100 from the population (via random record sampling):
-#' 
-#' s1 <- selection(population = population, sampleSize = 100, algorithm = "random", 
-#'                 units = "records", seed = 1)
-#' print(s1)
-#' 
-#' # ------------------------------------------------------------
-#' #                  jfa Selection Summary
-#' # ------------------------------------------------------------
-#' # Input:
-#' #       
-#' # Population size:         1000 
-#' # Requested sample size:   100 
-#' # Sampling units:          Records 
-#' # Algorithm:               Random sampling   
-#' # ------------------------------------------------------------ 
-#' # Output:
-#' # 
-#' # Obtained sample size:    100 
-#' # ------------------------------------------------------------
-#' # Statistics:
-#' #
-#' # Proportion n/N:          0.1 
-#' # ------------------------------------------------------------  
-#' 
-#' # Use the result from the planning stage in the sampling stage:
-#' 
-#' p1 <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
-#'                likelihood = "binomial")
-#' 
-#' # Draw a sample via random monetary unit sampling:
-#' s2 <- selection(population = population, sampleSize = p1, algorithm = "random", 
-#'                 units = "mus", seed = 1, bookValues = "bookValue")
-#' print(s2)
-#' 
-#' # ------------------------------------------------------------
-#' #                  jfa Selection Summary
-#' # ------------------------------------------------------------
-#' # Input:
-#' #      
-#' # Population size:         1000 
-#' # Requested sample size:   234 
-#' # Sampling units:          Monetary units 
-#' # Algorithm:               Random sampling   
-#' # ------------------------------------------------------------ 
-#' # Output:
-#' #
-#' # Obtained sample size:    234 
-#' # ------------------------------------------------------------
-#' # Statistics:
-#' #
-#' # Proportion n/N:          0.23 
-#' # Percentage of value:     23.06% 
-#' # ------------------------------------------------------------ 
-#'
 #' @keywords selection sample audit
+#'
+#' @examples
+#' data('BuildIt')
+#' 
+#' # Draw a sample of 100 monetary units from the population using
+#' # fixed interval monetary unit sampling
+#' selection(population = BuildIt, sampleSize = 100, 
+#'           algorithm = 'interval', units = 'mus', bookValues = 'bookValue')
 #'
 #' @export
 
 selection <- function(population, sampleSize, units = 'records', algorithm = 'random', 
                       bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, 
                       ascending = TRUE, withReplacement = FALSE, seed = 1) {
-  # If the input for 'sampleSize' is of class 'jfaPlanning', extract the planned sample size
-  if (class(sampleSize) == "jfaPlanning")
+  if (class(sampleSize) == "jfaPlanning") # If the input for 'sampleSize' is of class 'jfaPlanning', extract the planned sample size
     sampleSize <- sampleSize$sampleSize 
-  # Perform error handling with respect to incompatible input options
-  if (units == "records" && sampleSize > nrow(population))
+  if (units == "records" && sampleSize > nrow(population)) # Check if the sample size is valid (< N)
     stop("Cannot take a sample larger than the population size")
-  if (!(algorithm %in% c("random", "cell", "interval")) || length(algorithm) != 1)
+  if (!(algorithm %in% c("random", "cell", "interval")) || length(algorithm) != 1) # Check if the algorithm has a valid input
     stop("algorithm must be one of 'random', 'cell', or 'interval'.")
-  if (!(units %in% c("records", "mus")) || length(units) != 1)
+  if (!(units %in% c("records", "mus")) || length(units) != 1) # Check if the units have a valid input
     stop("units must be one of 'records' or 'mus'.")
-  if (units == "mus" && is.null(bookValues))
+  if (units == "mus" && is.null(bookValues)) # Check if the book values have a valid input
     stop("Book values must be specified if 'units = mus' is used.")
-  if (!is.null(bookValues) && length(bookValues) != 1)
+  if (!is.null(bookValues) && length(bookValues) != 1) # Check if the book values have a valid input
     stop("Specify one column for the book values")
-  if (!is.null(bookValues) && !(bookValues %in% colnames(population)))
+  if (!is.null(bookValues) && !(bookValues %in% colnames(population))) # Check if the book values column can be found in the population
     stop("The book value column cannot be located in the population data.")
-  interval <- NULL
-  # Convert the population to a data frame
-  population <- as.data.frame(population)
+  interval <- NULL # Placeholder for interval
+  bv <- NULL # Placeholder for book values
+  population <- as.data.frame(population) # Convert the population to a data frame
   rownames(population) <- 1:nrow(population)
-  bv <- NULL
-  if (!is.null(bookValues))
+  if (!is.null(bookValues)) # Take the book values from the population
     bv <- population[, bookValues]
-  if (units == "mus" && sampleSize > sum(bv))
+  if (units == "mus" && sampleSize > sum(bv)) # Check if the sample size is valid
     stop("Cannot take a sample larger than the population value")
-  if (ordered && !is.null(bv)) {
+  if (ordered && !is.null(bv)) { # Order the population
     population <- population[order(bv, decreasing = !ascending), ]
     bv <- population[, bookValues]
   }
-  if (!is.null(bv) && any(bv < 0)) {
+  if (!is.null(bv) && any(bv < 0)) { # Remove the negative book values from the population
     warning("The book values contain negative values, these are removed from the data")
     negativeValues <- which(bv < 0)
     population <- population[-negativeValues, ]
@@ -202,12 +144,12 @@ selection <- function(population, sampleSize, units = 'records', algorithm = 'ra
   # Gather output
   count <- as.numeric(table(index))
   rowNumber <- as.numeric(unique(index))
-  if (length(rowNumber) < sampleSize)
+  if (length(rowNumber) < sampleSize) # The sample size was larger than the population
     warning("The sample contains fewer items than the specified sample size")
   sample <- cbind(rowNumber, count, population[rowNumber, ])
   rownames(sample) <- 1:nrow(sample)
   colnames(sample) <- c("rowNumber", "count", colnames(population))
-  # Create the main results object.
+  # Create the main results object
   result <- list()
   result[["population"]] 			<- as.data.frame(population)
   result[["sample"]] 				<- as.data.frame(sample)
@@ -220,7 +162,7 @@ selection <- function(population, sampleSize, units = 'records', algorithm = 'ra
   result[["intervalStartingPoint"]] <- as.numeric(intervalStartingPoint)
   if (!is.null(interval))
     result[["interval"]] 			<- as.numeric(interval)
-  # Add class 'jfaSelection' to the result.
+  # Add class 'jfaSelection' to the result
   class(result) <- "jfaSelection"
   return(result)
 }

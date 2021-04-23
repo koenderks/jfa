@@ -10,23 +10,23 @@ planning(confidence = 0.95, expectedError = 0, likelihood = 'poisson', N = NULL,
           increase = 1, maxSize = 5000)
 }
 \arguments{
-\item{confidence}{a value between 0 and 1 specifying the confidence level desired for the sample planning. Defaults to 0.95 for 95\% confidence.}
+\item{confidence}{a numeric value between 0 and 1 specifying the confidence level desired for the sample planning. Defaults to 0.95 for 95\% confidence.}
 
-\item{expectedError}{a value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a number (>= 1) that represents the number of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.}
+\item{expectedError}{a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a number (>= 1) that represents the number of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.}
 
 \item{likelihood}{a character specifying the likelihood assumed in the calculation. This can be either \code{binomial} for the binomial likelihood, \code{poisson} for the Poisson likelihood, or \code{hypergeometric} for the hypergeometric likelihood. See the details section for more information about the available likelihoods.}
 
 \item{N}{an integer (or value) larger than 0 specifying the total population size (or value). Only required when \code{likelihood = 'hypergeometric'}.}
 
-\item{materiality}{a value between 0 and 1 specifying the performance materiality (i.e., maximum upper limit) of the audit as a fraction of the total size (or value). Can be \code{NULL}, but \code{minPrecision} should be specified in that case.}
+\item{materiality}{a numeric value between 0 and 1 specifying the performance materiality (i.e., maximum upper limit) of the audit as a fraction of the total size (or value). Can be \code{NULL}, but \code{minPrecision} should be specified in that case.}
 
-\item{minPrecision}{a value between 0 and 1 specifying the minimum precision (i.e., upper bound minus most likely error) to be obtained. Can be \code{NULL}, but \code{materiality} should be specified in that case.}
+\item{minPrecision}{a numeric value between 0 and 1 specifying the minimum precision (i.e., upper bound minus most likely error) to be obtained. Can be \code{NULL}, but \code{materiality} should be specified in that case.}
 
-\item{prior}{a logical specifying whether to use a prior distribution when planning, or an object of class `jfaPrior` containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a negligible prior distribution is chosen by default, but can be adjusted using the `kPrior` and `nPrior` arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
+\item{prior}{a logical specifying whether to use a prior distribution when planning, or an object of class \code{jfaPrior} containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a negligible prior distribution is chosen by default, but can be adjusted using the \code{kPrior} and \code{nPrior} arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
 
-\item{nPrior}{if \code{prior = TRUE}, a value larger than, or equal to, 0 specifying the number of sampling units in the implicit sample on which the prior distribution is based.}
+\item{nPrior}{if \code{prior = TRUE}, a numeric value larger than, or equal to, 0 specifying the number of sampling units in the implicit sample on which the prior distribution is based.}
 
-\item{kPrior}{if \code{prior = TRUE}, a value larger than, or equal to, 0 specifying the assumed sum of errors in the implicit sample on which the prior distribution is based.}
+\item{kPrior}{if \code{prior = TRUE}, a numeric value larger than, or equal to, 0 specifying the assumed sum of errors in the implicit sample on which the prior distribution is based.}
 
 \item{increase}{an integer larger than 0 specifying the desired increase step for the sample size calculation.}
 
@@ -35,23 +35,23 @@ planning(confidence = 0.95, expectedError = 0, likelihood = 'poisson', N = NULL,
 \value{
 An object of class \code{jfaPlanning} containing:
 
-\item{confidence}{a value between 0 and 1 indicating the confidence level.}
-\item{expectedError}{a value larger than, or equal to, 0 indicating the expected errors input.}
+\item{confidence}{a numeric value between 0 and 1 indicating the confidence level.}
+\item{expectedError}{a numeric value larger than, or equal to, 0 indicating the expected errors input.}
 \item{likelihood}{a character indicating the specified likelihood.}
 \item{N}{an integer larger than 0 indicating the population size (only returned if \code{N} is specified).}
-\item{materiality}{a value between 0 and 1 indicating the specified materiality. Can be \code{NULL}.}
-\item{minPrecision}{a value between 0 and 1 indicating the minimum precision to be obtained. Can be \code{NULL}.}
+\item{materiality}{a numeric value between 0 and 1 indicating the specified materiality. Can be \code{NULL}.}
+\item{minPrecision}{a numeric value between 0 and 1 indicating the minimum precision to be obtained. Can be \code{NULL}.}
 \item{sampleSize}{an integer larger than 0 indicating the required sample size.}
 \item{errorType}{a character indicating whether the expected errors where specified as a percentage or as an integer.}
-\item{expectedSampleError}{a value larger than, or equal to, 0 indicating the number of errors that are allowed in the sample.}
-\item{expectedBound}{a value between 0 and 1 indicating the expected upper bound if the sample goes according to plan.}
-\item{expectedPrecision}{a value between 0 and 1 indicating the expected precision if the sample goes according to plan.}
+\item{expectedSampleError}{a numeric value larger than, or equal to, 0 indicating the number of errors that are allowed in the sample.}
+\item{expectedBound}{a numeric value between 0 and 1 indicating the expected upper bound if the sample goes according to plan.}
+\item{expectedPrecision}{a numeric value between 0 and 1 indicating the expected precision if the sample goes according to plan.}
 \item{populationK}{if \code{likelihood = 'hypergeometric'}, an integer larger than 0 indicating the assumed population errors.}
-\item{prior}{if a prior distribution is specified, an object of class \code{jfaPrior} that contains the prior distribution.}
-\item{expectedPosterior}{if a prior distribution is specified, an object of class \code{jfaPosterior} that contains the expected posterior distribution.}
+\item{prior}{if a prior distribution is specified, an object of class \code{jfaPrior} that contains information about the prior distribution.}
+\item{expectedPosterior}{if a prior distribution is specified, an object of class \code{jfaPosterior} that contains information about the expected posterior distribution.}
 }
 \description{
-This function calculates the required sample size for an audit, based on the Poisson, binomial or hypergeometric likelihood. A prior distribution can be specified to perform Bayesian planning. The returned object is of class \code{jfaPlanning} and has a \code{print()} and \code{plot()} method.
+This function calculates the required sample size for a statistical audit sample based on the Poisson, binomial or hypergeometric likelihood. The function returns an object of class \code{jfaPlanning} which can be used with associated \code{print()} and \code{plot()} methods.
 
 For more details on how to use this function see the package vignette:
 \code{vignette('jfa', package = 'jfa')}
@@ -60,76 +60,19 @@ For more details on how to use this function see the package vignette:
 This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
 
 \itemize{
- \item{\code{poisson}:          The Poisson likelihood is used as a likelihood for monetary unit sampling (MUS). Its likelihood function is defined as: \deqn{p(x) = \frac{\lambda^x e^{-\lambda}}{x!}} The conjugate \emph{gamma(\eqn{\alpha, \beta})} prior has probability density function: \deqn{f(x; \alpha, \beta) = \frac{\beta^\alpha x^{\alpha - 1} e^{-\beta x}}{\Gamma(\alpha)}}}
- \item{\code{binomial}:         The binomial likelihood is used as a likelihood for record sampling \emph{with} replacement. Its likelihood function is defined as: \deqn{p(x) = {n \choose k} p^k (1 - p)^{n - k}} The conjugate \emph{beta(\eqn{\alpha, \beta})} prior has probability density function: \deqn{f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}}}
- \item{\code{hypergeometric}:   The hypergeometric likelihood is used as a likelihood for record sampling \emph{without} replacement. Its likelihood function is defined as: \deqn{p(x = k) = \frac{{K \choose k} {N - K \choose n - k}}{{N \choose n}}} The conjugate \emph{beta-binomial(\eqn{\alpha, \beta})} prior (Dyer and Pierce, 1993) has probability density function: \deqn{f(k | n, \alpha, \beta) = {n \choose k} \frac{B(k + \alpha, n - k + \beta)}{B(\alpha, \beta)}} }
+ \item{\code{poisson}:          The Poisson likelihood is often used as a likelihood for monetary unit sampling (MUS). The likelihood function is defined as: \deqn{p(x) = \frac{\lambda^x e^{-\lambda}}{x!}} The conjugate \emph{gamma(\eqn{\alpha, \beta})} prior has probability density function: \deqn{f(x; \alpha, \beta) = \frac{\beta^\alpha x^{\alpha - 1} e^{-\beta x}}{\Gamma(\alpha)}}}
+ \item{\code{binomial}:         The binomial likelihood is often used as a likelihood for attributes sampling \emph{with} replacement. The likelihood function is defined as: \deqn{p(x) = {n \choose k} p^k (1 - p)^{n - k}} The conjugate \emph{beta(\eqn{\alpha, \beta})} prior has probability density function: \deqn{f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}}}
+ \item{\code{hypergeometric}:   The hypergeometric likelihood is used as a likelihood for sampling \emph{without} replacement. The likelihood function is defined as: \deqn{p(x = k) = \frac{{K \choose k} {N - K \choose n - k}}{{N \choose n}}} The conjugate \emph{beta-binomial(\eqn{\alpha, \beta})} prior (Dyer and Pierce, 1993) has probability density function: \deqn{f(k | n, \alpha, \beta) = {n \choose k} \frac{B(k + \alpha, n - k + \beta)}{B(\alpha, \beta)}} }
 }
 }
 \examples{
-library(jfa)
+# Frequentist planning using a binomial likelihood
+planning(confidence = 0.95, expectedError = 0.025, likelihood = 'binomial',
+         materiality = 0.05)
 
-# Using the binomial distribution, calculates the required sample size for a 
-# materiality of 5\% when 2.5\% mistakes are expected to be found in the sample.
-
-# Frequentist planning with binomial likelihood:
-
-p1 <- planning(confidence = 0.95, expectedError = 0.025, likelihood = 'binomial',
-               materiality = 0.05)
-print(p1)
-
-# ------------------------------------------------------------
-#              jfa Planning Summary (Frequentist)
-# ------------------------------------------------------------     
-# Input:
-# 
-# Confidence:              95\% 
-# Materiality:             5\% 
-# Minimum precision:       Not specified 
-# Likelihood:              binomial 
-# Expected sample errors:  6 
-# ------------------------------------------------------------
-# Output:
-#
-# Sample size:             234 
-# ------------------------------------------------------------
-# Statistics:
-#
-# Expected upper bound:    5\% 
-# Expected precision:      2.43\% 
-# ------------------------------------------------------------ 
-
-# Bayesian planning with prior:
-
-prior <- auditPrior(confidence = 0.95, likelihood = 'binomial', method = 'arm', 
-                    expectedError = 0.025, materiality = 0.05, cr = 0.6)
-
-p2 <- planning(confidence = 0.95, expectedError = 0.025, materiality = 0.05,
-               prior = prior)
-print(p2)
-
-# ------------------------------------------------------------
-#              jfa Planning Summary (Bayesian)
-# ------------------------------------------------------------
-# Input:
-# 
-# Confidence:              95\%      
-# Materiality:             5\% 
-# Minimum precision:       Not specified 
-# Likelihood:              binomial 
-# Prior distribution:      beta(2.275, 50.725) 
-# Expected sample errors:  4.23 
-# ------------------------------------------------------------
-# Output:
-#
-# Sample size:             169 
-# Posterior distribution:  beta(6.5, 215.5) 
-# ------------------------------------------------------------
-# Statistics:
-#
-# Expected upper bound:    4.99\% 
-# Expected precision:      2.49\% 
-# Expected Bayes factor-+: 9.32 
-# ------------------------------------------------------------ 
+# Bayesian planning using a negligible beta prior
+planning(confidence = 0.95, expectedError = 0.025, likelihood = 'binomial',
+         materiality = 0.05, prior = TRUE)
 
 }
 \references{

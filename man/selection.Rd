@@ -33,26 +33,26 @@ selection(population, sampleSize, units = 'records', algorithm = 'random',
 An object of class \code{jfaSelection} containing:
 
 \item{population}{a data frame containing the input population.}
-\item{sample}{a data frame containing the selection of items.}
+\item{sample}{a data frame containing the selected sample of items.}
 \item{units}{a character indicating the sampling units that were used to create the selection.}
 \item{algorithm}{a character indicating the the algorithm that was used to create the selection.}
 \item{bookValues}{if \code{bookValues} is specified, a character indicating the name of the book value column.}
 }
 \description{
-This function takes a data frame and performs statistical sampling according to one of three algorithms: random sampling, cell sampling, and fixed interval sampling. Sampling is done on the level of two possible sampling units: records or monetary units. The returned object is of class \code{jfaSelection} and has a \code{print()} and \code{plot()} method. 
+This function takes a data frame and performs statistical sampling according to one of three algorithms: random sampling, cell sampling, and fixed interval sampling. Sampling is done on the level of two possible sampling units: records or monetary units. The function returns an object of class \code{jfaSelection} which can be used with associated \code{print()} and a \code{plot()} methods.
 
 For more details on how to use this function see the package vignette:
 \code{vignette('jfa', package = 'jfa')}
 }
 \details{
-The first part of this section elaborates on the possible options for the \code{units} argument:
+The first part of this section elaborates on the two possible options for the \code{units} argument:
 
 \itemize{
  \item{\code{records}:     In record sampling each item in the population is seen as a sampling unit. An item of $5000 is therefore equally likely to be selected as an item of $500.}
  \item{\code{mus}:         In monetary unit sampling each monetary unit in the population is seen as a sampling unit. An item of $5000 is therefore ten times more likely to be selected as an item of $500.}
 }
 
-The second part of this section elaborates on the possible options for the \code{algorithm} argument:
+The second part of this section elaborates on the three possible options for the \code{algorithm} argument:
 
 \itemize{
  \item{\code{random}:      In random sampling each sampling unit in the population is drawn with equal probability.}
@@ -61,67 +61,12 @@ The second part of this section elaborates on the possible options for the \code
 }
 }
 \examples{
-library(jfa)
-set.seed(1)
+data('BuildIt')
 
-# Generate some audit data (N = 1000).
-population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), 
-                         bookValue = runif(n = 1000, min = 700, max = 1000))
-
-# Draw a custom sample of 100 from the population (via random record sampling):
-
-s1 <- selection(population = population, sampleSize = 100, algorithm = "random", 
-                units = "records", seed = 1)
-print(s1)
-
-# ------------------------------------------------------------
-#                  jfa Selection Summary
-# ------------------------------------------------------------
-# Input:
-#       
-# Population size:         1000 
-# Requested sample size:   100 
-# Sampling units:          Records 
-# Algorithm:               Random sampling   
-# ------------------------------------------------------------ 
-# Output:
-# 
-# Obtained sample size:    100 
-# ------------------------------------------------------------
-# Statistics:
-#
-# Proportion n/N:          0.1 
-# ------------------------------------------------------------  
-
-# Use the result from the planning stage in the sampling stage:
-
-p1 <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0.025, 
-               likelihood = "binomial")
-
-# Draw a sample via random monetary unit sampling:
-s2 <- selection(population = population, sampleSize = p1, algorithm = "random", 
-                units = "mus", seed = 1, bookValues = "bookValue")
-print(s2)
-
-# ------------------------------------------------------------
-#                  jfa Selection Summary
-# ------------------------------------------------------------
-# Input:
-#      
-# Population size:         1000 
-# Requested sample size:   234 
-# Sampling units:          Monetary units 
-# Algorithm:               Random sampling   
-# ------------------------------------------------------------ 
-# Output:
-#
-# Obtained sample size:    234 
-# ------------------------------------------------------------
-# Statistics:
-#
-# Proportion n/N:          0.23 
-# Percentage of value:     23.06\% 
-# ------------------------------------------------------------ 
+# Draw a sample of 100 monetary units from the population using
+# fixed interval monetary unit sampling
+selection(population = BuildIt, sampleSize = 100, 
+          algorithm = 'interval', units = 'mus', bookValues = 'bookValue')
 
 }
 \references{

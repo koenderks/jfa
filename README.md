@@ -179,11 +179,11 @@ Bayesian planning.
 
 ### Select transactions with the `selection()` function:
 
-The `selection()` function takes a data frame and performs sampling
-according to one of three algorithms: random sampling, cell sampling, or
-fixed interval sampling in combination with either record sampling or
-monetary unit sampling. The function returns an object of class
-`jfaSelection` which can be used with associated `print()` and a
+The `selection()` function takes a data frame and performs statistical
+sampling according to one of three algorithms: random sampling, cell
+sampling, or fixed interval sampling in combination with either record
+sampling or monetary unit sampling. The function returns an object of
+class `jfaSelection` which can be used with associated `print()` and a
 `plot()` methods. The input for the `sampleSize` argument can be an
 object of class `jfaPlanning` as returned by the `planning()` function.
 
@@ -247,7 +247,7 @@ interpretation.
 
 *Full function with default arguments:*
 
-`report(object = NULL, file = NULL, format = 'html_document')`
+`report(object, file = 'report.html', format = 'html_document')`
 
 For an example report, see the following
 [link](https://github.com/koenderks/jfa/raw/master/man/figures/readme/report/report.pdf).

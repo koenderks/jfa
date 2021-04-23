@@ -4,44 +4,40 @@
 \alias{report}
 \title{Generate an Audit Report}
 \usage{
-report(object = NULL, file = NULL, format = 'html_document')
+report(object, file = 'report.html', format = 'html_document')
 }
 \arguments{
 \item{object}{an object of class \code{jfaEvaluation} as returned by the \code{evaluation()} function.}
 
-\item{file}{a character specifying the name of the report (e.g. \code{report.html}). The report is created in your current working directory.}
+\item{file}{a character specifying the name of the report (e.g. \code{report.html}). By default, the report is created in your current working directory.}
 
-\item{format}{a character specifying the output format of the report. Possible options are \code{html_document} (default) and \code{pdf_document}, but compiling to \code{.pdf} format requires a local version of MikTex.}
+\item{format}{a character specifying the output format of the report. Possible options are \code{html_document} (default) and \code{pdf_document}, but compiling to \code{pdf} format requires a local version of MikTex.}
 }
 \value{
-A \code{.html} or \code{.pdf} file containing a report of the sample evaluation.
+A \code{html} or \code{pdf} file containing a report of the evaluation.
 }
 \description{
-This function takes an object of class \code{jfaEvaluation}, creates a report containing the results, and saves the report to a file in your working directory.
+This function takes an object of class \code{jfaEvaluation} as returned by the \code{evaluation()} function automatically generates a \code{html} or \code{pdf} report containing the analysis results and their interpretation.
 
 For more details on how to use this function see the package vignette:
 \code{vignette('jfa', package = 'jfa')}
 }
 \examples{
-library(jfa)
-set.seed(1)
+data('BuildIt')
 
-# Generate some audit data (N = 1000):
-data <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), 
-                   bookValue = runif(n = 1000, min = 700, max = 1000))
+# Draw a sample of 100 monetary units from the population using
+# fixed interval monetary unit sampling
+sample <- selection(population = BuildIt, sampleSize = 100, 
+          algorithm = 'interval', units = 'mus', bookValues = 'bookValue')$sample
 
-# Using monetary unit sampling, draw a random sample from the population.
-s1 <- selection(population = data, sampleSize = 100, units = 'mus', 
-                 bookValues = 'bookValue', algorithm = 'random')
-s1_sample <- s1$sample
-s1_sample$trueValue <- s1_sample$bookValue
-s1_sample$trueValue[2] <- s1_sample$trueValue[2] - 500 # One overstatement is found
+# Evaluate using the Stringer bound
+result <- evaluation(confidence = 0.95, materiality = 0.05, 
+                     method = 'stringer', sample = sample, 
+                     bookValues = 'bookValue', auditValues = 'auditValue')
 
-e2 <- evaluation(sample = s1_sample, bookValues = 'bookValue', auditValues = 'trueValue', 
-                 method = 'stringer', materiality = 0.05, counts = s1_sample$count)
-
-# Generate report
-# report(e2, file = 'myFile.html')
+\dontrun{ 
+ report(result) 
+}
 
 }
 \seealso{
