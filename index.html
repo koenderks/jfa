@@ -130,9 +130,7 @@
 <a href="#cheat-sheet" class="anchor"></a>Cheat sheet</h2>
 <p>The cheat sheet below can help you get started with the <code>jfa</code> package and its workflow. You can download a <code>pdf</code> version of the cheat sheet <a href="https://github.com/koenderks/jfa/raw/master/man/figures/cheatsheet/cheatsheet.pdf">here</a>.</p>
 <p align="center">
-</p>
-<p><img src="https://github.com/koenderks/jfa/raw/master/man/figures/cheatsheet/cheatsheet.png" alt="cheatsheet" width="1000"></p>
-
+<img src="https://github.com/koenderks/jfa/raw/master/man/figures/cheatsheet/cheatsheet.png" alt="cheatsheet" width="1000"></p>
 </div>
 <div id="benchmarks" class="section level2">
 <h2 class="hasAnchor">
@@ -169,9 +167,7 @@
 <h2 class="hasAnchor">
 <a href="#available-functions" class="anchor"></a>Available functions</h2>
 <p align="center">
-</p>
-<p><img src="https://github.com/koenderks/jfa/raw/master/man/figures/readme/banner/jfaBanner.png" alt="banner"></p>
-
+<img src="https://github.com/koenderks/jfa/raw/master/man/figures/readme/banner/jfaBanner.png" alt="banner"></p>
 <p>Below you can find a enumeration and explanation of the functions in <code>jfa</code>, sorted by their occurrence in the standard audit sampling workflow.</p>
 <ul>
 <li><a href="#create-a-prior-distribution-with-the-auditprior-function"><code>auditPrior()</code></a></li>
@@ -183,7 +179,7 @@
 <div id="create-a-prior-distribution-with-the-auditprior-function" class="section level3">
 <h3 class="hasAnchor">
 <a href="#create-a-prior-distribution-with-the-auditprior-function" class="anchor"></a>Create a prior distribution with the <code>auditPrior()</code> function:</h3>
-<p>The <code><a href="reference/auditPrior.html">auditPrior()</a></code> function creates a prior distribution according to one of several methods, including a translation of the assessments of the inherent risk and control risk in the audit risk model. The returned object is of class <code>jfaPrior</code> and can be used with associated <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. <code>jfaPrior</code> results can also be used as input argument for the <code>prior</code> argument in other functions.</p>
+<p>The <code><a href="reference/auditPrior.html">auditPrior()</a></code> function creates a prior distribution according to one of several methods, including a translation of the assessments of the inherent risk and control risk from the audit risk model. The function returns an object of class <code>jfaPrior</code> which can be used with associated <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. <code>jfaPrior</code> objects can also be used as input for the <code>prior</code> argument in other functions.</p>
 <p><em>Full function with default arguments:</em></p>
 <p><code><a href="reference/auditPrior.html">auditPrior(confidence = 0.95, likelihood = 'binomial', method = 'none', expectedError = 0, N = NULL, materiality = NULL, ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)</a></code></p>
 <p><em>Supported options for the <code>likelihood</code> argument:</em></p>
@@ -191,7 +187,7 @@
 <colgroup>
 <col width="16%">
 <col width="22%">
-<col width="62%">
+<col width="60%">
 </colgroup>
 <thead><tr class="header">
 <th><code>likelihood</code></th>
@@ -219,10 +215,10 @@
 <p><em>Supported options for the <code>method</code> argument:</em></p>
 <table class="table">
 <colgroup>
-<col width="11%">
+<col width="12%">
 <col width="18%">
-<col width="39%">
-<col width="31%">
+<col width="38%">
+<col width="30%">
 </colgroup>
 <thead><tr class="header">
 <th><code>method</code></th>
@@ -281,7 +277,7 @@
 <div id="plan-a-sample-with-the-planning-function" class="section level3">
 <h3 class="hasAnchor">
 <a href="#plan-a-sample-with-the-planning-function" class="anchor"></a>Plan a sample with the <code>planning()</code> function:</h3>
-<p>The <code><a href="reference/planning.html">planning()</a></code> function calculates the required sample size for a statistical audit sample, based on the Poisson, binomial, or hypergeometric likelihood. A prior can be specified to combine with the specified likelihood in order to perform Bayesian planning. The returned <code>jfaPlanning</code> object has a <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and a <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method. In the <code><a href="reference/planning.html">planning()</a></code> function, the <code>prior</code> argument can be an object of class <code>jfaPrior</code> as returned by the <code><a href="reference/auditPrior.html">auditPrior()</a></code> function.</p>
+<p>The <code><a href="reference/planning.html">planning()</a></code> function calculates the required sample size for a statistical audit sample based on the Poisson, binomial, or hypergeometric likelihood. The function returns an object of class <code>jfaPlanning</code> which can be used with associated <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and a <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. The input for the <code>prior</code> argument can be an object of class <code>jfaPrior</code> as returned by the <code><a href="reference/auditPrior.html">auditPrior()</a></code> function to perform Bayesian planning.</p>
 <p><em>Full function with default arguments:</em></p>
 <p><code><a href="reference/planning.html">planning(confidence = 0.95, expectedError = 0, likelihood = 'poisson', N = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, nPrior = 0, kPrior = 0, increase = 1, maxSize = 5000)</a></code></p>
 <p><em>Supported options for the <code>likelihood</code> argument:</em></p>
@@ -313,16 +309,16 @@
 <div id="select-transactions-with-the-selection-function" class="section level3">
 <h3 class="hasAnchor">
 <a href="#select-transactions-with-the-selection-function" class="anchor"></a>Select transactions with the <code>selection()</code> function:</h3>
-<p>The <code><a href="reference/selection.html">selection()</a></code> function takes a data frame and performs sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. The returned <code>jfaSelection</code> object has a <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and a <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method. In the <code><a href="reference/selection.html">selection()</a></code> function, the <code>sampleSize</code> argument can be an object of class <code>jfaPlanning</code> as returned by the <code><a href="reference/planning.html">planning()</a></code> function.</p>
+<p>The <code><a href="reference/selection.html">selection()</a></code> function takes a data frame and performs sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. The function returns an object of class <code>jfaSelection</code> which can be used with associated <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and a <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. The input for the <code>sampleSize</code> argument can be an object of class <code>jfaPlanning</code> as returned by the <code><a href="reference/planning.html">planning()</a></code> function.</p>
 <p><em>Full function with default arguments:</em></p>
 <p><code><a href="reference/selection.html">selection(population, sampleSize, units = 'records', algorithm = 'random', bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, ascending = TRUE, withReplacement = FALSE, seed = 1)</a></code></p>
 <p><em>Supported options for the <code>units</code> argument:</em></p>
 <table class="table">
 <colgroup>
-<col width="8%">
-<col width="38%">
+<col width="10%">
+<col width="37%">
 <col width="32%">
-<col width="19%">
+<col width="20%">
 </colgroup>
 <thead><tr class="header">
 <th><code>units</code></th>
@@ -348,9 +344,9 @@
 <p><em>Supported options for the <code>algorithm</code> argument:</em></p>
 <table class="table">
 <colgroup>
-<col width="12%">
-<col width="10%">
-<col width="51%">
+<col width="13%">
+<col width="11%">
+<col width="48%">
 <col width="26%">
 </colgroup>
 <thead><tr class="header">
@@ -384,15 +380,15 @@
 <div id="evaluate-a-sample-with-the-evaluation-function" class="section level3">
 <h3 class="hasAnchor">
 <a href="#evaluate-a-sample-with-the-evaluation-function" class="anchor"></a>Evaluate a sample with the <code>evaluation()</code> function:</h3>
-<p>The <code><a href="reference/evaluation.html">evaluation()</a></code> function takes a sample data frame or summary statistics about an evaluated audit sample and calculates a confidence bound according to a specified method. The returned <code>jfaEvalution</code> object has a <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> method. In the <code><a href="reference/evaluation.html">evaluation()</a></code> function, the <code>prior</code> argument can be an object of class <code>jfaPrior</code> as returned by the <code><a href="reference/auditPrior.html">auditPrior()</a></code> function.</p>
+<p>The <code><a href="reference/evaluation.html">evaluation()</a></code> function takes a sample or summary statistics of the sample and performs evaluation according to the specified method and sampling objectives. The function returns an object of class <code>jfaEvalution</code> which can be used with associated <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. The input for the <code>prior</code> argument can be an object of class <code>jfaPrior</code> to perform Bayesian evaluation.</p>
 <p><em>Full function with default arguments:</em></p>
 <p><code><a href="reference/evaluation.html">evaluation(confidence = 0.95, method = 'binomial', N = NULL, sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, nSumstats = NULL, kSumstats = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, nPrior = 0, kPrior = 0, rohrbachDelta = 2.7, momentPoptype = 'accounts', populationBookValue = NULL, csA = 1, csB = 3, csMu = 0.5)</a></code></p>
 <p><em>Supported options for the <code>method</code> argument:</em></p>
 <table class="table">
 <colgroup>
-<col width="14%">
+<col width="15%">
 <col width="31%">
-<col width="33%">
+<col width="32%">
 <col width="20%">
 </colgroup>
 <thead><tr class="header">
@@ -494,7 +490,7 @@
 <div id="generate-a-report-with-the-report-function" class="section level3">
 <h3 class="hasAnchor">
 <a href="#generate-a-report-with-the-report-function" class="anchor"></a>Generate a report with the <code>report()</code> function:</h3>
-<p>The <code><a href="reference/report.html">report()</a></code> function takes an object of class <code>jfaEvaluation</code> as returned by the <code><a href="reference/evaluation.html">evaluation()</a></code> function, automatically generates a <code>html</code> or <code>pdf</code> report containing the analysis results and their interpretation, and saves the report to your local computer.</p>
+<p>The <code><a href="reference/report.html">report()</a></code> function takes an object of class <code>jfaEvaluation</code> as returned by the <code><a href="reference/evaluation.html">evaluation()</a></code> function and automatically generates a <code>html</code> or <code>pdf</code> report containing the analysis results and their interpretation.</p>
 <p><em>Full function with default arguments:</em></p>
 <p><code><a href="reference/report.html">report(object = NULL, file = NULL, format = 'html_document')</a></code></p>
 <p>For an example report, see the following <a href="https://github.com/koenderks/jfa/raw/master/man/figures/readme/report/report.pdf">link</a>.</p>
