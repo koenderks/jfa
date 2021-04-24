@@ -30,16 +30,16 @@ For complete documentation of `jfa`, visit the [package
 website](https://koenderks.github.io/jfa/) or download the [package
 manual](https://cran.r-project.org/package=jfa/jfa.pdf).
 
--   [Installation](#installation)
--   [Cheat sheet](#cheat-sheet)
--   [Benchmarks](#benchmarks)
--   [Statistical tables](#statistical-tables)
--   [Available functions](#available-functions)
--   [References](#references)
--   [Package statistics](#package-statistics)
--   [Contributing](#contributing)
+1.  [Installation](#1-installation)
+2.  [Cheat sheet](#2-cheat-sheet)
+3.  [Benchmarks](#3-benchmarks)
+4.  [Statistical tables](#4-statistical-tables)
+5.  [Available functions](#5-available-functions)
+6.  [References](#6-references)
+7.  [Package statistics](#7-package-statistics)
+8.  [Contributing](#8-contributing)
 
-## Installation
+## 1. Installation
 
 The most recent version of `jfa` can be downloaded from
 [CRAN](https://cran.r-project.org/package=jfa) by running the following
@@ -57,7 +57,7 @@ typing:
 
     library(jfa)
 
-## Cheat sheet
+## 2. Cheat sheet
 
 The cheat sheet below can help you get started with the `jfa` package
 and its workflow. You can download a `pdf` version of the cheat sheet
@@ -67,7 +67,7 @@ and its workflow. You can download a `pdf` version of the cheat sheet
 <img src='https://github.com/koenderks/jfa/raw/master/man/figures/cheatsheet/cheatsheet.png' alt='cheatsheet' width='1000'>
 </p>
 
-## Benchmarks
+## 3. Benchmarks
 
 To validate the statistical results, `jfa`’s main output is currently
 being verified against the following benchmarks:
@@ -79,7 +79,7 @@ being verified against the following benchmarks:
 -   Touw, P., and Hoogduin, L. (2011). *Statistiek voor audit en
     controlling*. Boom uitgevers, Amsterdam.
 
-## Statistical tables
+## 4. Statistical tables
 
 Below you can find several informative tables that contain statistical
 sample sizes, upper limits, and Bayes factors. These tables are
@@ -107,7 +107,7 @@ by the package.
 -   [Bayes factors based on the gamma
     distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaPoissonBayesFactors.pdf)
 
-## Available functions
+## 5. Available functions
 
 <p align="center">
 <img src='https://github.com/koenderks/jfa/raw/master/man/figures/readme/banner/jfaBanner.png' alt='banner'/>
@@ -252,7 +252,7 @@ interpretation.
 For an example report, see the following
 [link](https://github.com/koenderks/jfa/raw/master/man/figures/readme/report/report.pdf).
 
-## References
+## 6. References
 
 -   Bickel, P. J. (1992). Inference and auditing: The Stringer bound.
     *International Statistical Review*, 60(2), 197–209. - [View
@@ -299,11 +299,11 @@ For an example report, see the following
 -   Touw, P., and Hoogduin, L. (2011). *Statistiek voor Audit en
     Controlling*. Boom uitgevers, Amsterdam.
 
-## Package statistics
+## 7. Package statistics
 
 <img src='https://github.com/koenderks/jfa/raw/master/man/figures/readme/downloads/downloads.svg' width='50%' /><img src='https://github.com/koenderks/jfa/raw/master/man/figures/readme/worldmap/worldmap.svg' width='50%' />
 
-## Contributing
+## 8. Contributing
 
 `jfa` is an open-source project that aims to be useful for the audit
 community. Your help in benchmarking and extending `jfa` is therefore
