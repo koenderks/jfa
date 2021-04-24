@@ -7,7 +7,6 @@
 ^man/manual$
 ^Meta$
 ^CRAN-RELEASE$
-^README.Rmd$
 ^docs$
 ^pkgdown$
 jfaRelease.R
