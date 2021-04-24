@@ -1,14 +1,14 @@
 Package: jfa
 Title: Bayesian and Classical Audit Sampling
 Version: 0.5.3
-Date: 2021-04-23
+Date: 2021-04-25
 Authors@R: 
     person(given = "Koen",
            family = "Derks",
            role = c("aut", "cre"),
            email = "k.derks@nyenrode.nl",
 		   comment = c(ORCID = '0000-0002-5533-9349'))
-Description: Implements the audit sampling workflow as discussed in Derks et al. (2019) <doi:10.31234/osf.io/9f6ub>. The package makes it easy for an auditor to plan an audit sample, sample from the population, and evaluating that sample using various confidence bounds according to the International Standards on Auditing. Furthermore, the package implements Bayesian equivalents of these methods. 
+Description: Implements the audit sampling workflow as discussed in Derks et al. (2019) <doi:10.31234/osf.io/9f6ub>. The package makes it easy for an auditor to plan a statistical sample, select the sample from the population, and evaluate the sample using various methods according to the International Standards on Auditing. Furthermore, the package implements Bayesian equivalents of these methods. 
 BugReports: https://github.com/koenderks/jfa/issues
 URL: https://github.com/koenderks/jfa, https://koenderks.github.io/jfa/
 Suggests: testthat, knitr, rmarkdown, kableExtra

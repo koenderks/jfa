@@ -1,15 +1,9 @@
 
-<!-- badges: start -->
-
-[![CRAN
-Status](https://www.r-pkg.org/badges/version-ago/jfa)](https://cran.r-project.org/package=jfa)
+[![CRAN](https://www.r-pkg.org/badges/version-ago/jfa)](https://cran.r-project.org/package=jfa)
 [![codecov](https://codecov.io/gh/koenderks/jfa/branch/master/graph/badge.svg?token=ZoxIB8p8PW)](https://codecov.io/gh/koenderks/jfa)
-[![R build
-status](https://github.com/koenderks/jfa/workflows/R-CMD/badge.svg)](https://github.com/koenderks/jfa/actions)
-[![Build
-status](https://travis-ci.com/koenderks/jfa.svg?branch=master)](https://travis-ci.com/koenderks/jfa)
+[![R\_build\_status](https://github.com/koenderks/jfa/workflows/R-CMD/badge.svg)](https://github.com/koenderks/jfa/actions)
 ![](https://cranlogs.r-pkg.org/badges/grand-total/jfa)
-![](https://cranlogs.r-pkg.org/badges/jfa) <!-- badges: end -->
+![](https://cranlogs.r-pkg.org/badges/jfa)
 
 # jfa: Bayesian and Classical Audit Sampling
 
@@ -30,16 +24,16 @@ For complete documentation of `jfa`, visit the [package
 website](https://koenderks.github.io/jfa/) or download the [package
 manual](https://cran.r-project.org/package=jfa/jfa.pdf).
 
--   [Installation](#installation)
--   [Cheat sheet](#cheat-sheet)
--   [Benchmarks](#benchmarks)
--   [Statistical tables](#statistical-tables)
--   [Available functions](#available-functions)
--   [References](#references)
--   [Package statistics](#package-statistics)
--   [Contributing](#contributing)
+1.  [Installation](#1-installation)
+2.  [Cheat sheet](#2-cheat-sheet)
+3.  [Benchmarks](#3-benchmarks)
+4.  [Statistical tables](#4-statistical-tables)
+5.  [Available functions](#5-available-functions)
+6.  [References](#6-references)
+7.  [Package statistics](#7-package-statistics)
+8.  [Contributing](#8-contributing)
 
-## Installation
+## 1. Installation
 
 The most recent version of `jfa` can be downloaded from
 [CRAN](https://cran.r-project.org/package=jfa) by running the following
@@ -57,7 +51,7 @@ typing:
 
     library(jfa)
 
-## Cheat sheet
+## 2. Cheat sheet
 
 The cheat sheet below can help you get started with the `jfa` package
 and its workflow. You can download a `pdf` version of the cheat sheet
@@ -67,7 +61,7 @@ and its workflow. You can download a `pdf` version of the cheat sheet
 <img src='https://github.com/koenderks/jfa/raw/master/man/figures/cheatsheet/cheatsheet.png' alt='cheatsheet' width='1000'>
 </p>
 
-## Benchmarks
+## 3. Benchmarks
 
 To validate the statistical results, `jfa`’s main output is currently
 being verified against the following benchmarks:
@@ -79,12 +73,12 @@ being verified against the following benchmarks:
 -   Touw, P., and Hoogduin, L. (2011). *Statistiek voor audit en
     controlling*. Boom uitgevers, Amsterdam.
 
-## Statistical tables
+## 4. Statistical tables
 
 Below you can find several informative tables that contain statistical
-sample sizes, upper limits, and Bayes factors. These tables are
-generated using the `planning()` and `evaluation()` functions provided
-by the package.
+sample sizes, upper limits, and Bayes factors. These tables are created
+using the `planning()` and `evaluation()` functions provided by the
+package.
 
 *Sample sizes*
 
@@ -107,7 +101,7 @@ by the package.
 -   [Bayes factors based on the gamma
     distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaPoissonBayesFactors.pdf)
 
-## Available functions
+## 5. Available functions
 
 <p align="center">
 <img src='https://github.com/koenderks/jfa/raw/master/man/figures/readme/banner/jfaBanner.png' alt='banner'/>
@@ -125,12 +119,15 @@ workflow.
 
 ### Create a prior distribution with the `auditPrior()` function
 
+[![Lifecycle:
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+
 The `auditPrior()` function creates a prior distribution according to
 one of several methods, including a translation of the assessments of
 the inherent risk and control risk from the audit risk model. The
 function returns an object of class `jfaPrior` which can be used with
-associated `print()` and `plot()` methods. `jfaPrior` objects can also
-be used as input for the `prior` argument in other functions.
+associated `print()` and `plot()` methods. Objects with class `jfaPrior`
+can also be used as input for the `prior` argument in other functions.
 
 *Full function with default arguments:*
 
@@ -138,24 +135,27 @@ be used as input for the `prior` argument in other functions.
 
 *Supported options for the `likelihood` argument:*
 
-| `likelihood`     | Reference              | Description                                                    |
-|------------------|------------------------|----------------------------------------------------------------|
-| `binomial`       | Steele (1992)          | Beta prior distribution (+ binomial likelihood)                |
-| `poisson`        | Stewart (2013)         | Gamma prior distribution (+ Poisson likelihood)                |
-| `hypergeometric` | Dyer and Pierce (1991) | Beta-binomial prior distribution (+ hypergeometric likelihood) |
+| `likelihood`     | Description                                                    | Reference              |
+|:-----------------|:---------------------------------------------------------------|:-----------------------|
+| `binomial`       | Beta prior distribution (+ binomial likelihood)                | Steele (1992)          |
+| `poisson`        | Gamma prior distribution (+ Poisson likelihood)                | Stewart (2013)         |
+| `hypergeometric` | Beta-binomial prior distribution (+ hypergeometric likelihood) | Dyer and Pierce (1991) |
 
 *Supported options for the `method` argument:*
 
-| `method`     | Reference           | Description                               | Additional arguments              |
-|--------------|---------------------|-------------------------------------------|-----------------------------------|
-| `none`       | Derks et al. (2020) | No prior information                      |                                   |
-| `arm`        | Derks et al. (2020) | Translates risk assessments (ARM)         | `ir` and `cr`                     |
-| `median`     | Derks et al. (2020) | Equal prior probabilities for hypotheses  |                                   |
-| `hypotheses` | Derks et al. (2020) | Custom prior probabilities for hypotheses | `pHmin` or `pHplus`               |
-| `sample`     | Derks et al. (2020) | Earlier sample                            | `sampleN` and `sampleK`           |
-| `factor`     | Derks et al. (2020) | Weighted earlier sample                   | `factor`, `sampleN` and `sampleK` |
+| `method`     | Description                               | Required arguments                | Reference           |
+|:-------------|:------------------------------------------|:----------------------------------|:--------------------|
+| `none`       | No prior information                      |                                   | Derks et al. (2020) |
+| `arm`        | Translates risk assessments (ARM)         | `ir` and `cr`                     | Derks et al. (2020) |
+| `median`     | Equal prior probabilities for hypotheses  |                                   | Derks et al. (2020) |
+| `hypotheses` | Custom prior probabilities for hypotheses | `pHmin` or `pHplus`               | Derks et al. (2020) |
+| `sample`     | Earlier sample                            | `sampleN` and `sampleK`           | Derks et al. (2020) |
+| `factor`     | Weighted earlier sample                   | `factor`, `sampleN` and `sampleK` | Derks et al. (2020) |
 
 ### Plan a sample with the `planning()` function
+
+[![Lifecycle:
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
 The `planning()` function calculates the required sample size for a
 statistical audit sample based on the Poisson, binomial, or
@@ -171,13 +171,16 @@ Bayesian planning.
 
 *Supported options for the `likelihood` argument:*
 
-| `likelihood`     | Reference      | Description               |
-|------------------|----------------|---------------------------|
-| `binomial`       | Stewart (2012) | Binomial likelihood       |
-| `poisson`        | Stewart (2012) | Poisson likelihood        |
-| `hypergeometric` | Stewart (2012) | Hypergeometric likelihood |
+| `likelihood`     | Description               | Reference      |
+|:-----------------|:--------------------------|:---------------|
+| `binomial`       | Binomial likelihood       | Stewart (2012) |
+| `poisson`        | Poisson likelihood        | Stewart (2012) |
+| `hypergeometric` | Hypergeometric likelihood | Stewart (2012) |
 
 ### Select items with the `selection()` function
+
+[![Lifecycle:
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
 The `selection()` function takes a data frame and performs statistical
 sampling according to one of three algorithms: random sampling, cell
@@ -193,20 +196,23 @@ object of class `jfaPlanning` as returned by the `planning()` function.
 
 *Supported options for the `units` argument:*
 
-| `units`   | Reference                               | Description                       | Additional arguments |
-|-----------|-----------------------------------------|-----------------------------------|----------------------|
-| `records` | Leslie, Teitlebaum, and Anderson (1979) | Sampling units are items          |                      |
-| `mus`     | Leslie, Teitlebaum, and Anderson (1979) | Sampling units are monetary units | `bookValues`         |
+| `units`   | Description                       | Required arguments | Reference                               |
+|:----------|:----------------------------------|:-------------------|:----------------------------------------|
+| `records` | Sampling units are items          |                    | Leslie, Teitlebaum, and Anderson (1979) |
+| `mus`     | Sampling units are monetary units | `bookValues`       | Leslie, Teitlebaum, and Anderson (1979) |
 
 *Supported options for the `algorithm` argument:*
 
-| `algorithm` | Reference | Description                                   | Additional arguments    |
-|-------------|-----------|-----------------------------------------------|-------------------------|
-| `random`    |           | Random sampling                               |                         |
-| `cell`      |           | Cell sampling                                 |                         |
-| `interval`  |           | Systematic sampling / Fixed interval sampling | `intervalStartingPoint` |
+| `algorithm` | Description                                        | Required arguments      |
+|:------------|:---------------------------------------------------|:------------------------|
+| `random`    | Select random units without the use of an interval |                         |
+| `cell`      | Select a random unit from every interval           |                         |
+| `interval`  | Select a fixed unit from every interval            | `intervalStartingPoint` |
 
 ### Evaluate a sample with the `evaluation()` function
+
+[![Lifecycle:
+stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
 The `evaluation()` function takes a sample or summary statistics of the
 sample and performs evaluation according to the specified method and
@@ -221,24 +227,27 @@ methods. The input for the `prior` argument can be an object of class
 
 *Supported options for the `method` argument:*
 
-| `method`          | Reference                             | Description                             | Additional arguments     |
-|-------------------|---------------------------------------|-----------------------------------------|--------------------------|
-| `binomial`        | Stewart (2012)                        | Binomial likelihood                     |                          |
-| `poisson`         | Stewart (2012)                        | Poisson likelihood                      |                          |
-| `hypergeometric`  | Stewart (2012)                        | Hypergeometric likelihood               |                          |
-| `stringer`        | Bickel (1992)                         | Classical Stringer bound                |                          |
-| `stringer-meikle` | Meikle (1972)                         | Stringer bound with Meikle’s correction |                          |
-| `stringer-lta`    | Leslie, Teitlebaum, & Anderson (1979) | Stringer bound with LTA correction      |                          |
-| `stringer-pvz`    | Pap and van Zuijlen (1996)            | Modified Stringer bound                 |                          |
-| `rohrbach`        | Rohrbach (1993)                       | Rohrbach’s augmented variance estimator | `rohrbachDelta`          |
-| `moment`          | Dworin and Grimlund (1984)            | Modified moment bound                   | `momentPoptype`          |
-| `coxsnell`        | Cox and Snell (1979)                  | Cox and Snell bound                     | `csA`, `csB`, and `csMu` |
-| `direct`          | Touw and Hoogduin (2011)              | Direct estimator                        | `populationBookValue`    |
-| `difference`      | Touw and Hoogduin (2011)              | Difference estimator                    | `populationBookValue`    |
-| `quotient`        | Touw and Hoogduin (2011)              | Quotient estimator                      | `populationBookValue`    |
-| `regression`      | Touw and Hoogduin (2011)              | Regression estimator                    | `populationBookValue`    |
+| `method`          | Description                             | Required arguments       | Reference                             |
+|:------------------|:----------------------------------------|:-------------------------|:--------------------------------------|
+| `binomial`        | Binomial likelihood                     |                          | Stewart (2012)                        |
+| `poisson`         | Poisson likelihood                      |                          | Stewart (2012)                        |
+| `hypergeometric`  | Hypergeometric likelihood               |                          | Stewart (2012)                        |
+| `stringer`        | Classical Stringer bound                |                          | Bickel (1992)                         |
+| `stringer-meikle` | Stringer bound with Meikle’s correction |                          | Meikle (1972)                         |
+| `stringer-lta`    | Stringer bound with LTA correction      |                          | Leslie, Teitlebaum, & Anderson (1979) |
+| `stringer-pvz`    | Modified Stringer bound                 |                          | Pap and van Zuijlen (1996)            |
+| `rohrbach`        | Rohrbach’s augmented variance estimator | `rohrbachDelta`          | Rohrbach (1993)                       |
+| `moment`          | Modified moment bound                   | `momentPoptype`          | Dworin and Grimlund (1984)            |
+| `coxsnell`        | Cox and Snell bound                     | `csA`, `csB`, and `csMu` | Cox and Snell (1979)                  |
+| `direct`          | Direct estimator                        | `populationBookValue`    | Touw and Hoogduin (2011)              |
+| `difference`      | Difference estimator                    | `populationBookValue`    | Touw and Hoogduin (2011)              |
+| `quotient`        | Quotient estimator                      | `populationBookValue`    | Touw and Hoogduin (2011)              |
+| `regression`      | Regression estimator                    | `populationBookValue`    | Touw and Hoogduin (2011)              |
 
 ### Create a report with the `report()` function
+
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
 The `report()` function takes an object of class `jfaEvaluation` as
 returned by the `evaluation()` function and automatically generates a
@@ -252,7 +261,7 @@ interpretation.
 For an example report, see the following
 [link](https://github.com/koenderks/jfa/raw/master/man/figures/readme/report/report.pdf).
 
-## References
+## 6. References
 
 -   Bickel, P. J. (1992). Inference and auditing: The Stringer bound.
     *International Statistical Review*, 60(2), 197–209. - [View
@@ -299,11 +308,11 @@ For an example report, see the following
 -   Touw, P., and Hoogduin, L. (2011). *Statistiek voor Audit en
     Controlling*. Boom uitgevers, Amsterdam.
 
-## Package statistics
+## 7. Package statistics
 
 <img src='https://github.com/koenderks/jfa/raw/master/man/figures/readme/downloads/downloads.svg' width='50%' /><img src='https://github.com/koenderks/jfa/raw/master/man/figures/readme/worldmap/worldmap.svg' width='50%' />
 
-## Contributing
+## 8. Contributing
 
 `jfa` is an open-source project that aims to be useful for the audit
 community. Your help in benchmarking and extending `jfa` is therefore
