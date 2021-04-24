@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Frequentist and Bayesian Evaluation of Audit Samples — evaluation • jfa</title>
+<title>Evaluate a statistical audit sample — evaluation • jfa</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Frequentist and Bayesian Evaluation of Audit Samples — evaluation" />
+<meta property="og:title" content="Evaluate a statistical audit sample — evaluation" />
 <meta property="og:description" content="This function takes a data frame (using sample, bookValues, and auditValues) or summary statistics (using nSumstats and kSumstats) and evaluates the audit sample using one of several methods. The returned object is of class jfaEvaluation and has a print() and plot() method.
 For more details on how to use this function see the package vignette:
 vignette('jfa', package = 'jfa')" />
@@ -137,7 +137,7 @@ vignette('jfa', package = 'jfa')" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Frequentist and Bayesian Evaluation of Audit Samples</h1>
+    <h1>Evaluate a statistical audit sample</h1>
     <small class="dont-index">Source: <a href='https://github.com/koenderks/jfa/blob/master/R/evaluation.R'><code>R/evaluation.R</code></a></small>
     <div class="hidden name"><code>evaluation.Rd</code></div>
     </div>
@@ -161,7 +161,7 @@ vignette('jfa', package = 'jfa')" />
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>confidence</th>
-      <td><p>a value between 0 and 1 specifying the confidence level desired for the sample evaluation. Defaults to 0.95 for 95% confidence.</p></td>
+      <td><p>a numeric value between 0 and 1 specifying the confidence level desired for the sample evaluation. Defaults to 0.95 for 95% confidence.</p></td>
     </tr>
     <tr>
       <th>method</th>
@@ -193,15 +193,15 @@ vignette('jfa', package = 'jfa')" />
     </tr>
     <tr>
       <th>kSumstats</th>
-      <td><p>a value larger than 0 specifying the sum of errors found in the sample. If specified, overrides the <code>sample</code>, <code>bookValues</code> and <code>auditValues</code> arguments and assumes that the data come from summary statistics specified by both <code>kSumstats</code> and <code>nSumstats</code>.</p></td>
+      <td><p>a numeric value larger than 0 specifying the sum of errors found in the sample. If specified, overrides the <code>sample</code>, <code>bookValues</code> and <code>auditValues</code> arguments and assumes that the data come from summary statistics specified by both <code>kSumstats</code> and <code>nSumstats</code>.</p></td>
     </tr>
     <tr>
       <th>materiality</th>
-      <td><p>a value between 0 and 1 specifying the performance materiality as a fraction of the total value (or size) of the population (a value between 0 and 1). If specified, the function also returns the conclusion of the analysis with respect to the performance materiality. The value is discarded when <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code> method is chosen.</p></td>
+      <td><p>a numeric value between 0 and 1 specifying the performance materiality as a fraction of the total value (or size) of the population (a value between 0 and 1). If specified, the function also returns the conclusion of the analysis with respect to the performance materiality. The value is discarded when <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code> method is chosen.</p></td>
     </tr>
     <tr>
       <th>minPrecision</th>
-      <td><p>a value between 0 and 1 specifying the required minimum precision (upper bound minus most likely error). If specified, the function also returns the conclusion of the analysis with respect to the required minimum precision. This value must be specified as a fraction of the total value of the population (a value between 0 and 1).</p></td>
+      <td><p>a numeric value between 0 and 1 specifying the required minimum precision (upper bound minus most likely error). If specified, the function also returns the conclusion of the analysis with respect to the required minimum precision. This value must be specified as a fraction of the total value of the population (a value between 0 and 1).</p></td>
     </tr>
     <tr>
       <th>prior</th>
@@ -209,15 +209,15 @@ vignette('jfa', package = 'jfa')" />
     </tr>
     <tr>
       <th>nPrior</th>
-      <td><p>if <code>prior = TRUE</code>, a value specifying the number of sampling units in the implicit sample on which the prior distribution is based.</p></td>
+      <td><p>if <code>prior = TRUE</code>, a numeric value specifying the number of sampling units in the implicit sample on which the prior distribution is based.</p></td>
     </tr>
     <tr>
       <th>kPrior</th>
-      <td><p>if <code>prior = TRUE</code>, a value specifying the assumed sum of errors in the implicit sample on which the prior distribution is based.</p></td>
+      <td><p>if <code>prior = TRUE</code>, a numeric value specifying the assumed sum of errors in the implicit sample on which the prior distribution is based.</p></td>
     </tr>
     <tr>
       <th>rohrbachDelta</th>
-      <td><p>if <code>method = 'rohrbach'</code>, a value specifying \(\Delta\) in Rohrbach's augmented variance bound (Rohrbach, 1993).</p></td>
+      <td><p>if <code>method = 'rohrbach'</code>, a numeric value specifying \(\Delta\) in Rohrbach's augmented variance bound (Rohrbach, 1993).</p></td>
     </tr>
     <tr>
       <th>momentPoptype</th>
@@ -225,19 +225,19 @@ vignette('jfa', package = 'jfa')" />
     </tr>
     <tr>
       <th>populationBookValue</th>
-      <td><p>if <code>method</code> is one of <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code>, a value specifying the total value of the transactions in the population. This argument is optional otherwise.</p></td>
+      <td><p>if <code>method</code> is one of <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code>, a numeric value specifying the total value of the transactions in the population. This argument is optional otherwise.</p></td>
     </tr>
     <tr>
       <th>csA</th>
-      <td><p>if <code>method = "coxsnell"</code>, a value specifying the \(\alpha\) parameter of the prior distribution on the mean taint. Defaults to 1 as recommended by Cox and Snell (1979).</p></td>
+      <td><p>if <code>method = "coxsnell"</code>, a numeric value specifying the \(\alpha\) parameter of the prior distribution on the mean taint. Defaults to 1 as recommended by Cox and Snell (1979).</p></td>
     </tr>
     <tr>
       <th>csB</th>
-      <td><p>if <code>method = "coxsnell"</code>, a value specifying the \(\beta\) parameter of the prior distribution on the mean taint. Defaults to 3 as recommended by Cox and Snell (1979).</p></td>
+      <td><p>if <code>method = "coxsnell"</code>, a numeric value specifying the \(\beta\) parameter of the prior distribution on the mean taint. Defaults to 3 as recommended by Cox and Snell (1979).</p></td>
     </tr>
     <tr>
       <th>csMu</th>
-      <td><p>if <code>method = "coxsnell"</code>, a value between 0 and 1 specifying the mean of the prior distribution on the mean taint. Defaults to 0.5 as recommended by Cox and Snell (1979).</p></td>
+      <td><p>if <code>method = "coxsnell"</code>, a numeric value between 0 and 1 specifying the mean of the prior distribution on the mean taint. Defaults to 0.5 as recommended by Cox and Snell (1979).</p></td>
     </tr>
     </table>
 
@@ -304,26 +304,17 @@ vignette('jfa', package = 'jfa')" />
     <p>Koen Derks, <a href='mailto:k.derks@nyenrode.nl'>k.derks@nyenrode.nl</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/koenderks/jfa'>jfa</a></span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>'BuildIt'</span><span class='op'>)</span>
 
-<span class='co'># Generate some audit data (N = 1000):</span>
-<span class='va'>data</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>ID <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sample.html'>sample</a></span><span class='op'>(</span><span class='fl'>1000</span><span class='op'>:</span><span class='fl'>100000</span>, size <span class='op'>=</span> <span class='fl'>1000</span>, replace <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>, 
-                   bookValue <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span>n <span class='op'>=</span> <span class='fl'>1000</span>, min <span class='op'>=</span> <span class='fl'>700</span>, max <span class='op'>=</span> <span class='fl'>1000</span><span class='op'>)</span><span class='op'>)</span>
+<span class='co'># Draw a sample of 100 monetary units from the population using</span>
+<span class='co'># fixed interval monetary unit sampling</span>
+<span class='va'>sample</span> <span class='op'>&lt;-</span> <span class='fu'><a href='selection.html'>selection</a></span><span class='op'>(</span>population <span class='op'>=</span> <span class='va'>BuildIt</span>, sampleSize <span class='op'>=</span> <span class='fl'>100</span>, 
+          algorithm <span class='op'>=</span> <span class='st'>'interval'</span>, units <span class='op'>=</span> <span class='st'>'mus'</span>, bookValues <span class='op'>=</span> <span class='st'>'bookValue'</span><span class='op'>)</span><span class='op'>$</span><span class='va'>sample</span>
 
-<span class='co'># Using monetary unit sampling, draw a random sample from the population.</span>
-<span class='va'>s1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='selection.html'>selection</a></span><span class='op'>(</span>population <span class='op'>=</span> <span class='va'>data</span>, sampleSize <span class='op'>=</span> <span class='fl'>100</span>, units <span class='op'>=</span> <span class='st'>"mus"</span>, 
-                 bookValues <span class='op'>=</span> <span class='st'>"bookValue"</span>, algorithm <span class='op'>=</span> <span class='st'>"random"</span><span class='op'>)</span>
-<span class='va'>s1_sample</span> <span class='op'>&lt;-</span> <span class='va'>s1</span><span class='op'>$</span><span class='va'>sample</span>
-<span class='va'>s1_sample</span><span class='op'>$</span><span class='va'>trueValue</span> <span class='op'>&lt;-</span> <span class='va'>s1_sample</span><span class='op'>$</span><span class='va'>bookValue</span>
-<span class='va'>s1_sample</span><span class='op'>$</span><span class='va'>trueValue</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='va'>s1_sample</span><span class='op'>$</span><span class='va'>trueValue</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span> <span class='op'>-</span> <span class='fl'>500</span> <span class='co'># One overstatement is found</span>
-
-<span class='co'># Using summary statistics, calculate the upper confidence bound according</span>
-<span class='co'># to the binomial distribution:</span>
-
-<span class='va'>e1</span> <span class='op'>&lt;-</span> <span class='fu'>evaluation</span><span class='op'>(</span>nSumstats <span class='op'>=</span> <span class='fl'>100</span>, kSumstats <span class='op'>=</span> <span class='fl'>1</span>, method <span class='op'>=</span> <span class='st'>"binomial"</span>, 
-                 materiality <span class='op'>=</span> <span class='fl'>0.05</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>e1</span><span class='op'>)</span>
+<span class='co'># Evaluate using the Stringer bound</span>
+<span class='fu'>evaluation</span><span class='op'>(</span>confidence <span class='op'>=</span> <span class='fl'>0.95</span>, materiality <span class='op'>=</span> <span class='fl'>0.05</span>, 
+           method <span class='op'>=</span> <span class='st'>'stringer'</span>, sample <span class='op'>=</span> <span class='va'>sample</span>, 
+           bookValues <span class='op'>=</span> <span class='st'>'bookValue'</span>, auditValues <span class='op'>=</span> <span class='st'>'auditValue'</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; # ------------------------------------------------------------ 
 #&gt; #             jfa Evaluation Summary (Frequentist)
 #&gt; # ------------------------------------------------------------ 
@@ -333,84 +324,17 @@ vignette('jfa', package = 'jfa')" />
 #&gt; # Materiality:              5% 
 #&gt; # Minium precision:         Not specified 
 #&gt; # Sample size:              100 
-#&gt; # Sample errors:            1 
-#&gt; # Sum of taints:            1 
-#&gt; # Method:                   binomial 
-#&gt; # ------------------------------------------------------------
-#&gt; # Output:
-#&gt; #
-#&gt; # Most likely error:        1% 
-#&gt; # Upper bound:              4.656% 
-#&gt; # Precision:                3.656% 
-#&gt; # Conclusion:               Approve population 
-#&gt; # ------------------------------------------------------------ </div><div class='input'>
-<span class='co'># ------------------------------------------------------------ </span>
-<span class='co'>#             jfa Evaluation Summary (Frequentist)</span>
-<span class='co'># ------------------------------------------------------------ </span>
-<span class='co'># Input: </span>
-<span class='co'>#</span>
-<span class='co'># Confidence:               95%   </span>
-<span class='co'># Materiality:              5% </span>
-<span class='co'># Minium precision:         Not specified </span>
-<span class='co'># Sample size:              100 </span>
-<span class='co'># Sample errors:            1 </span>
-<span class='co'># Sum of taints:            1 </span>
-<span class='co'># Method:                   binomial </span>
-<span class='co'># ------------------------------------------------------------</span>
-<span class='co'># Output:</span>
-<span class='co'>#</span>
-<span class='co'># Most likely error:        1% </span>
-<span class='co'># Upper bound:              4.66% </span>
-<span class='co'># Precision:                3.66% </span>
-<span class='co'># Conclusion:               Approve population</span>
-<span class='co'># ------------------------------------------------------------</span>
-
-<span class='co'># Evaluate the raw sample using the stringer bound and the sample counts:</span>
-
-<span class='va'>e2</span> <span class='op'>&lt;-</span> <span class='fu'>evaluation</span><span class='op'>(</span>sample <span class='op'>=</span> <span class='va'>s1_sample</span>, bookValues <span class='op'>=</span> <span class='st'>"bookValue"</span>, auditValues <span class='op'>=</span> <span class='st'>"trueValue"</span>, 
-                 method <span class='op'>=</span> <span class='st'>"stringer"</span>, materiality <span class='op'>=</span> <span class='fl'>0.05</span>, counts <span class='op'>=</span> <span class='va'>s1_sample</span><span class='op'>$</span><span class='va'>counts</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span><span class='op'>(</span><span class='va'>e2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; # ------------------------------------------------------------ 
-#&gt; #             jfa Evaluation Summary (Frequentist)
-#&gt; # ------------------------------------------------------------ 
-#&gt; # Input: 
-#&gt; #
-#&gt; # Confidence:               95%   
-#&gt; # Materiality:              5% 
-#&gt; # Minium precision:         Not specified 
-#&gt; # Sample size:              100 
-#&gt; # Sample errors:            1 
-#&gt; # Sum of taints:            1 
+#&gt; # Sample errors:            0 
+#&gt; # Sum of taints:            0 
 #&gt; # Method:                   stringer 
 #&gt; # ------------------------------------------------------------
 #&gt; # Output:
 #&gt; #
-#&gt; # Most likely error:        0.587% 
-#&gt; # Upper bound:              3.952% 
-#&gt; # Precision:                3.365% 
+#&gt; # Most likely error:        0% 
+#&gt; # Upper bound:              2.951% 
+#&gt; # Precision:                2.951% 
 #&gt; # Conclusion:               Approve population 
 #&gt; # ------------------------------------------------------------ </div><div class='input'>
-<span class='co'># ------------------------------------------------------------ </span>
-<span class='co'>#             jfa Evaluation Summary (Frequentist)</span>
-<span class='co'># ------------------------------------------------------------ </span>
-<span class='co'># Input: </span>
-<span class='co'>#</span>
-<span class='co'># Confidence:               95%   </span>
-<span class='co'># Materiality:              5% </span>
-<span class='co'># Minium precision:         Not specified </span>
-<span class='co'># Sample size:              100 </span>
-<span class='co'># Sample errors:            1 </span>
-<span class='co'># Sum of taints:            1 </span>
-<span class='co'># Method:                   stringer </span>
-<span class='co'># ------------------------------------------------------------</span>
-<span class='co'># Output:</span>
-<span class='co'>#</span>
-<span class='co'># Most likely error:        0.69% </span>
-<span class='co'># Upper bound:              4.12% </span>
-<span class='co'># Precision:                3.44% </span>
-<span class='co'># Conclusion:               Approve population </span>
-<span class='co'># ------------------------------------------------------------  </span>
-
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
