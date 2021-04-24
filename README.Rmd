@@ -10,14 +10,12 @@ knitr::opts_chunk$set(
   fig.path = 'man/figures/readme/downloads/README-')
 ```
 
-<!-- badges: start -->
 [![CRAN Status](https://www.r-pkg.org/badges/version-ago/jfa)](https://cran.r-project.org/package=jfa)
 [![codecov](https://codecov.io/gh/koenderks/jfa/branch/master/graph/badge.svg?token=ZoxIB8p8PW)](https://codecov.io/gh/koenderks/jfa)
 [![R build status](https://github.com/koenderks/jfa/workflows/R-CMD/badge.svg)](https://github.com/koenderks/jfa/actions)
 [![Build status](https://travis-ci.com/koenderks/jfa.svg?branch=master)](https://travis-ci.com/koenderks/jfa)
 ![](https://cranlogs.r-pkg.org/badges/grand-total/jfa)
 ![](https://cranlogs.r-pkg.org/badges/jfa)
-<!-- badges: end -->
 
 # jfa: Bayesian and Classical Audit Sampling
 
@@ -29,16 +27,16 @@ knitr::opts_chunk$set(
 
 For complete documentation of `jfa`, visit the [package website](https://koenderks.github.io/jfa/) or download the [package manual](https://cran.r-project.org/package=jfa/jfa.pdf).
 
-* [Installation](#installation)
-* [Cheat sheet](#cheat-sheet)
-* [Benchmarks](#benchmarks)
-* [Statistical tables](#statistical-tables)
-* [Available functions](#available-functions)
-* [References](#references)
-* [Package statistics](#package-statistics) 
-* [Contributing](#contributing) 
+1. [Installation](#1-installation)
+2. [Cheat sheet](#2-cheat-sheet)
+3. [Benchmarks](#3-benchmarks)
+4. [Statistical tables](#4-statistical-tables)
+5. [Available functions](#5-available-functions)
+6. [References](#6-references)
+7. [Package statistics](#7-package-statistics) 
+8. [Contributing](#8-contributing) 
 
-## Installation
+## 1. Installation
 
 The most recent version of `jfa` can be downloaded from [CRAN](https://cran.r-project.org/package=jfa) by running the following command in R or RStudio:
 
@@ -58,15 +56,15 @@ After installation the `jfa` package can be loaded in R or RStudio by typing:
 library(jfa)
 ```
 
-## Cheat sheet
+## 2. Cheat sheet
 
 The cheat sheet below can help you get started with the `jfa` package and its workflow. You can download a `pdf` version of the cheat sheet [here](https://github.com/koenderks/jfa/raw/master/man/figures/cheatsheet/cheatsheet.pdf).
 
 <p align='center'>
-  <img src='https://github.com/koenderks/jfa/raw/master/man/figures/cheatsheet/cheatsheet.png' alt='cheatsheet' width='1000'>
+<img src='https://github.com/koenderks/jfa/raw/master/man/figures/cheatsheet/cheatsheet.png' alt='cheatsheet' width='1000'>
 </p>
 
-## Benchmarks
+## 3. Benchmarks
 
 To validate the statistical results, `jfa`'s main output is currently being verified against the following benchmarks:
 
@@ -74,9 +72,9 @@ To validate the statistical results, `jfa`'s main output is currently being veri
 - [Audit Sampling: Audit Guide](https://future.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL) (Appendix A and Appendix C)
 - Touw, P., and Hoogduin, L. (2011). *Statistiek voor audit en controlling*. Boom uitgevers, Amsterdam.
 
-## Statistical tables
+## 4. Statistical tables
 
-Below you can find several informative tables that contain statistical sample sizes, upper limits, and Bayes factors. These tables are generated using the `planning()` and `evaluation()` functions provided by the package.
+Below you can find several informative tables that contain statistical sample sizes, upper limits, and Bayes factors. These tables are created using the `planning()` and `evaluation()` functions provided by the package.
 
 *Sample sizes*
 
@@ -93,10 +91,10 @@ Below you can find several informative tables that contain statistical sample si
 - [Bayes factors based on the beta distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaBinomialBayesFactors.pdf)
 - [Bayes factors based on the gamma distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaPoissonBayesFactors.pdf)
 
-## Available functions
+## 5. Available functions
 
 <p align='center'>
-  <img src='https://github.com/koenderks/jfa/raw/master/man/figures/readme/banner/jfaBanner.png' alt='banner'/>
+<img src='https://github.com/koenderks/jfa/raw/master/man/figures/readme/banner/jfaBanner.png' alt='banner'/>
 </p>
 
 Below you can find a enumeration and explanation of the functions in `jfa`, sorted by their occurrence in the standard audit sampling workflow.
@@ -109,7 +107,9 @@ Below you can find a enumeration and explanation of the functions in `jfa`, sort
 
 ### Create a prior distribution with the `auditPrior()` function
 
-The `auditPrior()` function creates a prior distribution according to one of several methods, including a translation of the assessments of the inherent risk and control risk from the audit risk model. The function returns an object of class `jfaPrior` which can be used with associated `print()` and `plot()` methods. `jfaPrior` objects can also be used as input for the `prior` argument in other functions.
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+
+The `auditPrior()` function creates a prior distribution according to one of several methods, including a translation of the assessments of the inherent risk and control risk from the audit risk model. The function returns an object of class `jfaPrior` which can be used with associated `print()` and `plot()` methods. Objects with class `jfaPrior` can also be used as input for the `prior` argument in other functions.
 
 *Full function with default arguments:*
 
@@ -117,24 +117,26 @@ The `auditPrior()` function creates a prior distribution according to one of sev
 
 *Supported options for the `likelihood` argument:*
 
-| `likelihood` | Reference | Description |
-|---------|-------|-----|
-| `binomial` | Steele (1992) | Beta prior distribution (+ binomial likelihood) |
-| `poisson` | Stewart (2013) | Gamma prior distribution (+ Poisson likelihood) |
-| `hypergeometric` | Dyer and Pierce (1991) | Beta-binomial prior distribution (+ hypergeometric likelihood) |
+| `likelihood` | Description | Reference |
+| ----------- | ----------- | ----------- |
+| `binomial` | Beta prior distribution (+ binomial likelihood) | Steele (1992) |
+| `poisson` | Gamma prior distribution (+ Poisson likelihood) | Stewart (2013) |
+| `hypergeometric` | Beta-binomial prior distribution (+ hypergeometric likelihood) | Dyer and Pierce (1991) |
 
 *Supported options for the `method` argument:*
 
-| `method` | Reference | Description | Additional arguments |
-|---------|-------|-----|----|
-| `none` | Derks et al. (2020) | No prior information | |
-| `arm` | Derks et al. (2020) | Translates risk assessments (ARM) | `ir` and `cr` | 
-| `median` | Derks et al. (2020) | Equal prior probabilities for hypotheses | |
-| `hypotheses` | Derks et al. (2020) | Custom prior probabilities for hypotheses | `pHmin` or `pHplus` |
-| `sample` | Derks et al. (2020) | Earlier sample | `sampleN` and `sampleK` |
-| `factor` | Derks et al. (2020) | Weighted earlier sample | `factor`, `sampleN` and `sampleK` |
+| `method` | Description | Required arguments | Reference |
+| ----------- | ----------- | ----------- | ----------- |
+| `none` | No prior information | | Derks et al. (2020) |
+| `arm` | Translates risk assessments (ARM) | `ir` and `cr` | Derks et al. (2020) |
+| `median` | Equal prior probabilities for hypotheses | | Derks et al. (2020) |
+| `hypotheses` | Custom prior probabilities for hypotheses | `pHmin` or `pHplus` |  Derks et al. (2020) |
+| `sample` | Earlier sample | `sampleN` and `sampleK` | Derks et al. (2020) |
+| `factor` | Weighted earlier sample | `factor`, `sampleN` and `sampleK` | Derks et al. (2020) |
 
 ### Plan a sample with the `planning()` function
+
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
 The `planning()` function calculates the required sample size for a statistical audit sample based on the Poisson, binomial, or hypergeometric likelihood. The function returns an object of class `jfaPlanning` which can be used with associated `print()` and a `plot()` methods. The input for the `prior` argument can be an object of class `jfaPrior` as returned by the `auditPrior()` function to perform Bayesian planning.
 
@@ -144,13 +146,15 @@ The `planning()` function calculates the required sample size for a statistical 
 
 *Supported options for the `likelihood` argument:*
 
-| `likelihood` | Reference | Description |
-|---------|-------|-----|
-| `binomial` | Stewart (2012) | Binomial likelihood |
-| `poisson` | Stewart (2012) | Poisson likelihood |
-| `hypergeometric` | Stewart (2012) | Hypergeometric likelihood |
+| `likelihood` | Description | Reference |
+| ----------- | ----------- | ----------- |
+| `binomial` | Binomial likelihood | Stewart (2012) |
+| `poisson` | Poisson likelihood | Stewart (2012) |
+| `hypergeometric` | Hypergeometric likelihood | Stewart (2012) |
 
 ### Select items with the `selection()` function
+
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
 The `selection()` function takes a data frame and performs statistical sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. The function returns an object of class `jfaSelection` which can be used with associated `print()` and a `plot()` methods. The input for the `sampleSize` argument can be an object of class `jfaPlanning` as returned by the `planning()` function.
 
@@ -160,20 +164,22 @@ The `selection()` function takes a data frame and performs statistical sampling 
 
 *Supported options for the `units` argument:*
 
-| `units` | Reference | Description | Additional arguments |
-|---------|-------|-----|----|
-| `records` | Leslie, Teitlebaum, and Anderson (1979) | Sampling units are items | |
-| `mus` | Leslie, Teitlebaum, and Anderson (1979) | Sampling units are monetary units | `bookValues` |
+| `units` | Description | Required arguments |  Reference |
+| ----------- | ----------- | ----------- | ----------- |
+| `records` | Sampling units are items | |Leslie, Teitlebaum, and Anderson (1979) |
+| `mus` | Sampling units are monetary units | `bookValues` | Leslie, Teitlebaum, and Anderson (1979) |
 
 *Supported options for the `algorithm` argument:*
 
-| `algorithm` | Reference | Description | Additional arguments |
-|---------|-------|-----|----|
-| `random` | | Random sampling | |
-| `cell` | | Cell sampling | |
-| `interval` | | Systematic sampling / Fixed interval sampling | `intervalStartingPoint` |
+| `algorithm` | Description | Required arguments |
+| ----------- | ----------- | ----------- |
+| `random` | Select random units without the use of an interval | |
+| `cell` | Select a random unit from every interval | |
+| `interval` | Select a fixed unit from every interval | `intervalStartingPoint` |
 
 ### Evaluate a sample with the `evaluation()` function
+
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
 The `evaluation()` function takes a sample or summary statistics of the sample and performs evaluation according to the specified method and sampling objectives. The function returns an object of class `jfaEvalution` which can be used with associated `print()` and `plot()` methods. The input for the `prior` argument can be an object of class `jfaPrior` to perform Bayesian evaluation.
 
@@ -183,24 +189,26 @@ The `evaluation()` function takes a sample or summary statistics of the sample a
 
 *Supported options for the `method` argument:*
 
-| `method` | Reference | Description | Additional arguments |
-|---------|-------|-----|----|
-| `binomial` | Stewart (2012) | Binomial likelihood | |
-| `poisson` | Stewart (2012) | Poisson likelihood | |
-| `hypergeometric` | Stewart (2012) | Hypergeometric likelihood | |
-| `stringer` | Bickel (1992) | Classical Stringer bound | |
-| `stringer-meikle` | Meikle (1972) | Stringer bound with Meikle's correction | |
-| `stringer-lta` | Leslie, Teitlebaum, & Anderson (1979) | Stringer bound with LTA correction | |
-| `stringer-pvz` | Pap and van Zuijlen (1996) | Modified Stringer bound | |
-| `rohrbach` | Rohrbach (1993) | Rohrbach's augmented variance estimator | `rohrbachDelta` |
-| `moment` | Dworin and Grimlund (1984) | Modified moment bound | `momentPoptype` |
-| `coxsnell` | Cox and Snell (1979) | Cox and Snell bound | `csA`, `csB`, and `csMu` |
-| `direct` | Touw and Hoogduin (2011)  | Direct estimator | `populationBookValue` |
-| `difference` | Touw and Hoogduin (2011) | Difference estimator | `populationBookValue` |
-| `quotient` | Touw and Hoogduin (2011) | Quotient estimator | `populationBookValue` |
-| `regression` | Touw and Hoogduin (2011) | Regression estimator | `populationBookValue` |
+| `method` | Description | Required arguments | Reference |
+| ----------- | ----------- | ----------- | ----------- |
+| `binomial` | Binomial likelihood | | Stewart (2012) |
+| `poisson` | Poisson likelihood | | Stewart (2012) |
+| `hypergeometric` | Hypergeometric likelihood | | Stewart (2012) |
+| `stringer` | Classical Stringer bound | | Bickel (1992) |
+| `stringer-meikle` | Stringer bound with Meikle's correction | | Meikle (1972) |
+| `stringer-lta` | Stringer bound with LTA correction | | Leslie, Teitlebaum, & Anderson (1979) |
+| `stringer-pvz` | Modified Stringer bound | | Pap and van Zuijlen (1996) |
+| `rohrbach` | Rohrbach's augmented variance estimator | `rohrbachDelta` | Rohrbach (1993) |
+| `moment` | Modified moment bound | `momentPoptype` | Dworin and Grimlund (1984) |
+| `coxsnell` | Cox and Snell bound | `csA`, `csB`, and `csMu` | Cox and Snell (1979) |
+| `direct` | Direct estimator | `populationBookValue` | Touw and Hoogduin (2011) |
+| `difference` | Difference estimator | `populationBookValue` | Touw and Hoogduin (2011) |
+| `quotient` | Quotient estimator | `populationBookValue` | Touw and Hoogduin (2011) |
+| `regression` | Regression estimator | `populationBookValue` | Touw and Hoogduin (2011) |
 
 ### Create a report with the `report()` function
+
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
 The `report()` function takes an object of class `jfaEvaluation` as returned by the `evaluation()` function and automatically generates a `html` or `pdf` report containing the analysis results and their interpretation.
 
@@ -210,7 +218,7 @@ The `report()` function takes an object of class `jfaEvaluation` as returned by 
 
 For an example report, see the following [link](https://github.com/koenderks/jfa/raw/master/man/figures/readme/report/report.pdf).
 
-## References
+## 6. References
 
 - Bickel, P. J. (1992). Inference and auditing: The Stringer bound. *International Statistical Review*, 60(2), 197–209. - [View online](https://www.jstor.org/stable/1403650)
 - Cox, D. R., & Snell, E. J. (1979). On sampling and the estimation of rare errors. *Biometrika*, 66(1), 125-132. - [View online](https://doi.org/10.1093/biomet/66.1.125)
@@ -227,7 +235,7 @@ For an example report, see the following [link](https://github.com/koenderks/jfa
 - Stewart, T. R. (2013). *A Bayesian Audit Assurance Model with Application to the Component Materiality problem in Group Audits.* VU University, Amsterdam. - [View online](https://research.vu.nl/en/publications/a-bayesian-audit-assurance-model-with-application-to-the-componen)
 - Touw, P., and Hoogduin, L. (2011). *Statistiek voor Audit en Controlling*. Boom uitgevers, Amsterdam.
 
-## Package statistics
+## 7. Package statistics
 
 ```{r downloads, echo = FALSE, message = FALSE, warning=FALSE, include = FALSE}
 
@@ -238,29 +246,29 @@ plotData          <- plyr::ddply(jfaData, 'date', plyr::summarise, count = sum(c
 xBreaks           <- plotData[['date']]
 yBreaks           <- pretty(c(0, plotData[['count']], max(plotData[['count']]) + 200), n = 6)
 
-# Releases 
+# Releases
 releases          <- c('2020-01-01', '2020-08-01', '2020-09-01', '2020-11-01', '2021-01-01', '2021-03-01', '2021-04-01')
 releaseLabs       <- c('0.1.0', '0.2.0', '0.3.0', '0.4.0', '0.5.0', '0.5.1', '0.5.2')
 
 p <- ggplot2::ggplot(plotData, ggplot2::aes(x = date, y = count)) +
-      	ggplot2::geom_bar(stat = 'identity', fill = rgb(65, 104, 195, maxColorValue = 255), 
+      	ggplot2::geom_bar(stat = 'identity', fill = rgb(65, 104, 195, maxColorValue = 255),
       	                  col = 'black', size = 1) +
 		    ggplot2::scale_x_date(name = '', breaks = xBreaks, labels = scales::date_format('%m-%Y')) +
-	    	ggplot2::scale_y_continuous(name = '', breaks = yBreaks, 
+	    	ggplot2::scale_y_continuous(name = '', breaks = yBreaks,
 										                labels = yBreaks, limits = c(0, (max(yBreaks) + 0.1 * max(yBreaks)))) +
 		    ggplot2::labs(title = 'Monthly CRAN downloads since January 2020',
 		                  subtitle = 'Source: http://cran-logs.rstudio.com') +
       	ggplot2::geom_text(mapping = ggplot2::aes(x = date, y = count + 50), label = plotData[['count']]) +
-		    ggplot2::geom_curve(data = data.frame(x = as.Date(releases), 
-												    y = rep(max(yBreaks) - 25, length(releases)), 
-												    xend = as.Date(releases), 
-												    yend = rep(max(yBreaks) - 100, length(releases))), 
-						      	        mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend), 
-												    colour = '#555555', size = 1, curvature = 0, 
+		    ggplot2::geom_curve(data = data.frame(x = as.Date(releases),
+												    y = rep(max(yBreaks) - 25, length(releases)),
+												    xend = as.Date(releases),
+												    yend = rep(max(yBreaks) - 100, length(releases))),
+						      	        mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend),
+												    colour = '#555555', size = 1, curvature = 0,
 													  arrow = ggplot2::arrow(length = ggplot2::unit(0.025, 'npc'))) +
-		    ggplot2::annotate(geom = 'text', x = as.Date(releases), y = rep(max(yBreaks), length(releases)), 
+		    ggplot2::annotate(geom = 'text', x = as.Date(releases), y = rep(max(yBreaks), length(releases)),
 							              label = releaseLabs, vjust = -0.25, angle = 45, size = 4) +
-		    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10, 
+		    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1, size = 10,
 	                                                       margin = ggplot2::margin(5, b = 10)),
 					            axis.text.y = ggplot2::element_text(size = 12),
 					            plot.title = ggplot2::element_text(size = 15),
@@ -294,7 +302,7 @@ counts <- cbind.data.frame(table(data$country))
 names(counts) <- c('country', 'count')
 
 # Read world map into R
-world<-maptools::readShapePoly(fn = paste0(dirname(getwd()), 
+world<-maptools::readShapePoly(fn = paste0(dirname(getwd()),
                                            '/jfa/man/figures/readme/worldmap/ne_110m_admin_0_countries'))
 
 ISO_full <- as.character(world@data$ISO_A2)
@@ -302,7 +310,7 @@ ISO_full[146] <- 'SOM'  # The iso identifier for the Republic of Somaliland is m
 ISO_full[89]  <- 'KV' # as for the Republic of Kosovo
 ISO_full[39]  <- 'CYP' # as for Cyprus
 
-# Create color codes for countires  
+# Create color codes for countires
 colcode <- numeric(length(ISO_full))
 names(colcode) <- ISO_full
 dnl_places <- names(colcode[which(names(colcode) %in% as.character(counts$country))])
@@ -315,18 +323,18 @@ names(colcode) <- rownames(world@data)
 world.points$Downloads <- colcode[world.points$id]
 
 world.map <-  ggplot2::ggplot(data=world.points) +
-                ggplot2::geom_polygon(ggplot2::aes(x = long, y = lat, group=group, fill=Downloads), 
+                ggplot2::geom_polygon(ggplot2::aes(x = long, y = lat, group=group, fill=Downloads),
                                       color='black') +
-                ggplot2::coord_equal() + 
+                ggplot2::coord_equal() +
                 ggplot2::theme_classic() +
-                ggplot2::labs(title = 'Total CRAN downloads since January 2020', 
-                              subtitle = 'Source: http://cran-logs.rstudio.com') + 
-                ggplot2::scale_fill_gradient2(low = 'white', 
-                                              mid = rgb(107, 146, 237, maxColorValue = 255), 
-                                              high = rgb(48, 68, 115, maxColorValue = 255), 
+                ggplot2::labs(title = 'Total CRAN downloads since January 2020',
+                              subtitle = 'Source: http://cran-logs.rstudio.com') +
+                ggplot2::scale_fill_gradient2(low = 'white',
+                                              mid = rgb(107, 146, 237, maxColorValue = 255),
+                                              high = rgb(48, 68, 115, maxColorValue = 255),
                                               midpoint = 5000,
                                               na.value = 'white',
-                                              name = '', 
+                                              name = '',
                                               limits = c(0, 10000)) +
                 ggplot2::theme(axis.line = ggplot2::element_blank(),
                                axis.text = ggplot2::element_blank(),
@@ -336,7 +344,7 @@ world.map <-  ggplot2::ggplot(data=world.points) +
                                legend.position = 'bottom',
                                legend.key.width = ggplot2::unit(3, 'cm'),
                                legend.key.height = ggplot2::unit(0.25, 'cm'),
-                               plot.subtitle = ggplot2::element_text(size = 8), 
+                               plot.subtitle = ggplot2::element_text(size = 8),
                                legend.text = ggplot2::element_text(color = '#222222'))
 
 ggplot2::ggsave(plot = world.map, filename = 'man/figures/readme/worldmap/worldmap.svg')
@@ -345,7 +353,7 @@ ggplot2::ggsave(plot = world.map, filename = 'man/figures/readme/worldmap/worldm
 
 <img src='https://github.com/koenderks/jfa/raw/master/man/figures/readme/downloads/downloads.svg' width='50%' /><img src='https://github.com/koenderks/jfa/raw/master/man/figures/readme/worldmap/worldmap.svg' width='50%' />
 
-## Contributing
+## 8. Contributing
 
 `jfa` is an open-source project that aims to be useful for the audit community. Your help in benchmarking and extending `jfa` is therefore greatly appreciated. Contributing to `jfa` does not have to take much time or knowledge, and there is extensive information available about it on the [Wiki](https://github.com/koenderks/jfa/wiki) of this repository. 
 
