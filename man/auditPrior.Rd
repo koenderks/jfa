@@ -17,9 +17,9 @@ auditPrior(confidence = 0.95, likelihood = 'binomial', method = 'none',
 
 \item{expectedError}{a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a value (>= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.}
 
-\item{N}{an integer (or numeric value) larger than 0 specifying the total population size (or value). Only required when \code{likelihood = 'hypergeometric'}.}
+\item{N}{an numeric value larger than 0 specifying the total population size. Only required when \code{likelihood = 'hypergeometric'}.}
 
-\item{materiality}{a numeric value between 0 and 1 specifying the performance materiality (i.e., maximum upper limit) of the audit as a fraction of the total size (or value). Can be \code{NULL} for some methods.}
+\item{materiality}{a numeric value between 0 and 1 specifying the performance materiality (i.e., maximum upper limit) of the audit as a fraction of the total population size. Can be \code{NULL} for some methods.}
 
 \item{ir}{if \code{method = 'arm'}, a numeric value between 0 and 1 specifying the inherent risk in the audit risk model. Defaults to 1 for 100\% risk.}
 

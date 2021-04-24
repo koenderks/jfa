@@ -9,15 +9,16 @@ evaluation(confidence = 0.95, method = 'binomial', N = NULL,
             nSumstats = NULL, kSumstats = NULL, 
             materiality = NULL, minPrecision = NULL,
             prior = FALSE, nPrior = 0, kPrior = 0, 
-            rohrbachDelta = 2.7, momentPoptype = 'accounts', populationBookValue = NULL,
+            rohrbachDelta = 2.7, momentPoptype = 'accounts',
+            populationBookValue = NULL,
             csA = 1, csB = 3, csMu = 0.5)
 }
 \arguments{
-\item{confidence}{a numeric value between 0 and 1 specifying the confidence level desired for the sample evaluation. Defaults to 0.95 for 95\% confidence.}
+\item{confidence}{a numeric value between 0 and 1 specifying the confidence level used in the evaluation. Defaults to 0.95 for 95\% confidence.}
 
-\item{method}{a character specifying the the method that is used to evaluate the sample. Possible options are \code{poisson}, \code{binomial} (default), \code{hypergeometric}, \code{mpu}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}. See the details section for more information about these methods.}
+\item{method}{a character specifying the method to be used in the evaluation. Possible options are \code{poisson}, \code{binomial} (default), \code{hypergeometric}, \code{mpu}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}. See the details section for more information.}
 
-\item{N}{an integer larger than 0 specifying the total number of units (items) or total value (monetary units) in the population.}
+\item{N}{an integer larger than 0 specifying the total number of items in the population.}
 
 \item{sample}{a data frame containing the sample to be evaluated. The sample must at least contain a column of book values and a column of audit (true) values.}
 
@@ -25,17 +26,17 @@ evaluation(confidence = 0.95, method = 'binomial', N = NULL,
 
 \item{auditValues}{a character specifying the column name for the audit values in the \code{sample}.}
 
-\item{counts}{a integer vector specifying the number of times each transaction in the sample is to be counted in the evaluation (due to it being selected multiple times for the sample).}
+\item{counts}{a integer vector specifying the number of times each transaction in the sample should be counted in the evaluation (due to it being selected multiple times for the sample).}
 
 \item{nSumstats}{an integer larger than 0 specifying the number of items in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data come from summary statistics specified by both \code{nSumstats} and \code{kSumstats}.}
 
 \item{kSumstats}{a numeric value larger than 0 specifying the sum of errors found in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data come from summary statistics specified by both \code{kSumstats} and \code{nSumstats}.}
 
-\item{materiality}{a numeric value between 0 and 1 specifying the performance materiality as a fraction of the total value (or size) of the population (a value between 0 and 1). If specified, the function also returns the conclusion of the analysis with respect to the performance materiality. The value is discarded when \code{direct}, \code{difference}, \code{quotient}, or \code{regression} method is chosen.}
+\item{materiality}{a numeric value between 0 and 1 specifying the performance materiality (maximum tolerable error) as a fraction of the total size of the population. If specified, the function also returns the conclusion of the analysis with respect to the performance materiality. The value is discarded when \code{direct}, \code{difference}, \code{quotient}, or \code{regression} method is chosen.}
 
-\item{minPrecision}{a numeric value between 0 and 1 specifying the required minimum precision (upper bound minus most likely error). If specified, the function also returns the conclusion of the analysis with respect to the required minimum precision. This value must be specified as a fraction of the total value of the population (a value between 0 and 1).}
+\item{minPrecision}{a numeric value between 0 and 1 specifying the required minimum precision (upper bound minus most likely error) as a fraction of the total size of the population. If specified, the function also returns the conclusion of the analysis with respect to the required minimum precision.}
 
-\item{prior}{a logical specifying whether to use a prior distribution when planning, or an object of class `jfaPrior` containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a negligible prior distribution is chosen by default, but can be adjusted using the `kPrior` and `nPrior` arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
+\item{prior}{a logical specifying if a prior distribution must be used, or an object of class `jfaPrior` containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a negligible prior distribution is chosen by default, but can be adjusted using the `kPrior` and `nPrior` arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
 
 \item{nPrior}{if \code{prior = TRUE}, a numeric value specifying the number of sampling units in the implicit sample on which the prior distribution is based.}
 
@@ -56,29 +57,29 @@ evaluation(confidence = 0.95, method = 'binomial', N = NULL,
 \value{
 An object of class \code{jfaEvaluation} containing:
 
-\item{confidence}{a value between 0 and 1 indicating the confidence level.}
+\item{confidence}{a numeric value between 0 and 1 indicating the confidence level.}
 \item{method}{a character indicating the evaluation method.}
 \item{N}{if \code{N} is specified, in integer larger than 0 indicating the population size.}
 \item{n}{an integer larger than 0 indicating the sample size.}
 \item{k}{an integer larger than, or equal to, 0 indicating the number of items in the sample that contained an error.}
 \item{t}{a value larger than, or equal to, 0, indicating the sum of observed taints.}
-\item{materiality}{if \code{materiality} is specified, a value between 0 and 1 indicating the performance materiality as a fraction of the total population size or value.}
-\item{minPrecision}{if \code{minPrecision} is specified, a value between 0 and 1 indicating the minimum required precision as a fraction of the total population size or value.}
-\item{mle}{a value between 0 and 1 indicating the most likely error in the population as a fraction of its total size or value.}
-\item{precision}{a value between 0 and 1 indicating the difference between the most likely error and the upper bound in the population as a fraction of its total size or value.}
-\item{popBookvalue}{if \code{populationBookValue} is specified, a value larger than 0 indicating the total value of the population.}
-\item{pointEstimate}{if \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a value indicating point estimate of the population error as a fraction its total size or value.}
-\item{lowerBound}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a value indicating the lower bound of the interval around the population error as a fraction its total size or value.}
-\item{upperBound}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a value indicating the upper bound of the interval around the population error as a fraction its total size or value.}
-\item{confBound}{a value indicating the upper bound on the population error as a fraction its total size or value.}
+\item{materiality}{if \code{materiality} is specified, a numeric value between 0 and 1 indicating the performance materiality as a fraction of the total population size.}
+\item{minPrecision}{if \code{minPrecision} is specified, a numeric value between 0 and 1 indicating the minimum required precision as a fraction of the total population size.}
+\item{mle}{a numeric value between 0 and 1 indicating the most likely error in the population as a fraction of its total size.}
+\item{precision}{a numeric value between 0 and 1 indicating the difference between the most likely error and the upper bound in the population as a fraction of the total population size.}
+\item{popBookvalue}{if \code{populationBookValue} is specified, a numeric value larger than 0 indicating the total value of the population.}
+\item{pointEstimate}{if \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value indicating the point estimate of the population misstatement as a fraction the total population size.}
+\item{lowerBound}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value indicating the lower bound of the interval around the population misstatement as a fraction the total population size.}
+\item{upperBound}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value indicating the upper bound of the interval around the population misstatement as a fraction the total population size.}
+\item{confBound}{a numeric value indicating the upper bound on the population misstatement as a fraction the total population size.}
 \item{conclusion}{if \code{materiality} is specified, a character indicating the conclusion about whether to approve or not approve the population with respect to the performance materiality.}
 \item{populationK}{if \code{method = 'hypergeometric'}, an integer indicating the assumed total errors in the population.}
 \item{prior}{an object of class 'jfaPrior' that contains the prior distribution.}
 \item{posterior}{an object of class 'jfaPosterior' that contains the posterior distribution.}
-\item{data}{a data frame containing the relevant columns from the \code{sample} input.}
+\item{data}{a data frame containing the relevant columns from the \code{sample}.}
 }
 \description{
-This function takes a data frame (using \code{sample}, \code{bookValues}, and \code{auditValues}) or summary statistics (using \code{nSumstats} and \code{kSumstats}) and evaluates the audit sample using one of several methods. The returned object is of class \code{jfaEvaluation} and has a \code{print()} and \code{plot()} method.
+This function takes a data frame (using \code{sample}, \code{bookValues}, and \code{auditValues}) or summary statistics (using \code{nSumstats} and \code{kSumstats}) and performs inference on the misstatement in the sample. The function returns an object of class \code{jfaEvaluation} which can be used with associated \code{print()} and \code{plot()} methods.
 
 For more details on how to use this function see the package vignette:
 \code{vignette('jfa', package = 'jfa')}
@@ -90,7 +91,7 @@ This section lists the available options for the \code{methods} argument.
  \item{\code{poisson}:          Evaluates the sample with the Poisson distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{gamma} prior and posterior.}
  \item{\code{binomial}:         Evaluates the sample with the binomial distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{beta} prior and posterior.}
  \item{\code{hypergeometric}:   Evaluates the sample with the hypergeometric distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{beta-binomial} prior and posterior.}
-\item{\code{mpu}}:			   Evaluates the sample with the mean-per-unit estimator.
+\item{\code{mpu}:			   Evaluates the sample with the mean-per-unit estimator.}
  \item{\code{stringer}:         Evaluates the sample with the Stringer bound (Stringer, 1963).}
  \item{\code{stringer-meikle}:  Evaluates the sample with the Stringer bound with Meikle's correction for understatements (Meikle, 1972).}
  \item{\code{stringer-lta}:     Evaluates the sample with the Stringer bound with LTA correction for understatements (Leslie, Teitlebaum, and Anderson, 1979).}
