@@ -16,15 +16,9 @@ jobs:
       # Install required packages and update README
       - name: Install required packages and render README
         run: |
-          install.packages(c("rmarkdown", "cranlogs", "lubridate", "plyr", "ggplot2", "scales", "maptools", "installr", "data.table", "svglite"))
-          rmarkdown::render("README.Rmd")
+          install.packages(c("cranlogs", "lubridate", "plyr", "ggplot2", "scales", "maptools", "installr", "data.table", "svglite"))
+          source("man/figures/render-figures.R")
         shell: Rscript {0}
-
-      # Make sure only the images and data set are committed
-      - name: Remove README.html
-        run: |
-          git add .
-          git rm -f README.html
       
       # Get the current date for the pull request
       - name: Get current date
