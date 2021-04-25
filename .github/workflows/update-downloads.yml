@@ -8,24 +8,29 @@ jobs:
     runs-on: windows-latest
     steps:
       
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      # Step 1: Checks-out the jfa repository under $GITHUB_WORKSPACE, so the job can access it
       - uses: actions/checkout@v2
       - uses: r-lib/actions/setup-r@v1
       - uses: r-lib/actions/setup-pandoc@v1
 
-      # Install required packages and update README
-      - name: Install required packages and render README
-        run: |
-          install.packages(c("cranlogs", "lubridate", "plyr", "ggplot2", "scales", "maptools", "installr", "data.table", "svglite"))
-          source("man/figures/render-figures.R")
-        shell: Rscript {0}
-      
-      # Get the current date for the pull request
+      # Step 2: Get the current date for the PR name
       - name: Get current date
         id: date
         run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
 
-      # Create a pull request with changes to master
+      # Step 3: Install required packages
+      - name: Install required packages and render README
+        run: |
+          install.packages(c("cranlogs", "lubridate", "plyr", "ggplot2", "scales", "maptools", "installr", "data.table", "svglite"))
+        shell: Rscript {0}
+
+      # Step 4: Render relevant data and figures
+      - name: Install required packages and render README
+        run: |
+          source("man/figures/render-figures.R")
+        shell: Rscript {0}
+
+      # Step 5: Create a pull request with the updated data and figures to master
       - name: Create pull request
         id: cpr
         uses: peter-evans/create-pull-request@v3
@@ -47,7 +52,7 @@ jobs:
           reviewers: koenderks
           draft: false
 
-      # Check outputs of workflow
+      # Step 6: Check the output of the workflow
       - name: Check outputs
         run: |
           echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
