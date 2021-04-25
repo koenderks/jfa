@@ -3,7 +3,7 @@
 # It uses the cranlogs package to extract data for the downloads per country.
 ########################################################################################
 
-width <- 10
+width <- 9
 height <- 6
 
 #########################################################
@@ -47,11 +47,11 @@ p <- ggplot2::ggplot(plotData, ggplot2::aes(x = date, y = count)) +
                  axis.text.y = ggplot2::element_text(size = 12),
                  plot.title = ggplot2::element_text(size = 15),
                  plot.subtitle = ggplot2::element_text(size = 8),
-                 panel.background = ggplot2::element_blank(),
+                 panel.background = ggplot2::element_rect(fill = NA),
                  axis.ticks.y = ggplot2::element_blank(),
                  axis.ticks.x = ggplot2::element_blank(),
-                 panel.grid.major.y = ggplot2::element_line(colour = '#e4e4e4', linetype = 1),
-                 panel.grid.minor.y = ggplot2::element_line(colour = '#e4e4e4', linetype = 1))
+                 panel.grid.major.y = ggplot2::element_line(colour = '#dbdbdb', linetype = 'solid'),
+                 panel.grid.minor.y = ggplot2::element_line(colour = '#dbdbdb', linetype = 'solid'))
 
 # Save the figure
 ggplot2::ggsave(plot = p, filename = 'man/figures/readme/downloads/downloads.svg', width = width, height = height, dpi = 300)
