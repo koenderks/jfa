@@ -49,7 +49,9 @@ p <- ggplot2::ggplot(plotData, ggplot2::aes(x = date, y = count)) +
                  plot.subtitle = ggplot2::element_text(size = 8),
                  panel.background = ggplot2::element_blank(),
                  axis.ticks.y = ggplot2::element_blank(),
-                 axis.ticks.x = ggplot2::element_blank())
+                 axis.ticks.x = ggplot2::element_blank(),
+                 panel.grid.major.y = ggplot2::element_line(colour = '#e4e4e4', linetype = 1),
+                 panel.grid.minor.y = ggplot2::element_line(colour = '#e4e4e4', linetype = 1))
 
 # Save the figure
 ggplot2::ggsave(plot = p, filename = 'man/figures/readme/downloads/downloads.svg', width = width, height = height, dpi = 300)
