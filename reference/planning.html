@@ -158,7 +158,7 @@ vignette('jfa', package = 'jfa')" />
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>confidence</th>
-      <td><p>a numeric value between 0 and 1 specifying the confidence level desired for the sample planning. Defaults to 0.95 for 95% confidence.</p></td>
+      <td><p>a numeric value between 0 and 1 specifying the confidence level used in the planning. Defaults to 0.95 for 95% confidence.</p></td>
     </tr>
     <tr>
       <th>expectedError</th>
@@ -170,15 +170,15 @@ vignette('jfa', package = 'jfa')" />
     </tr>
     <tr>
       <th>N</th>
-      <td><p>an integer (or value) larger than 0 specifying the total population size (or value). Only required when <code>likelihood = 'hypergeometric'</code>.</p></td>
+      <td><p>an integer larger than 0 specifying the total population size. Only required when <code>likelihood = 'hypergeometric'</code>.</p></td>
     </tr>
     <tr>
       <th>materiality</th>
-      <td><p>a numeric value between 0 and 1 specifying the performance materiality (i.e., maximum upper limit) of the audit as a fraction of the total size (or value). Can be <code>NULL</code>, but <code>minPrecision</code> should be specified in that case.</p></td>
+      <td><p>a numeric value between 0 and 1 specifying the performance materiality (i.e., maximum upper limit) as a fraction of the total population size. Can be <code>NULL</code>, but <code>minPrecision</code> should be specified in that case.</p></td>
     </tr>
     <tr>
       <th>minPrecision</th>
-      <td><p>a numeric value between 0 and 1 specifying the minimum precision (i.e., upper bound minus most likely error) to be obtained. Can be <code>NULL</code>, but <code>materiality</code> should be specified in that case.</p></td>
+      <td><p>a numeric value between 0 and 1 specifying the minimum precision (i.e., upper bound minus most likely error) as a fraction of the total population size. Can be <code>NULL</code>, but <code>materiality</code> should be specified in that case.</p></td>
     </tr>
     <tr>
       <th>prior</th>
