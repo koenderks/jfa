@@ -187,29 +187,29 @@
 <table class="table">
 <colgroup>
 <col width="16%">
-<col width="22%">
 <col width="60%">
+<col width="22%">
 </colgroup>
 <thead><tr class="header">
 <th><code>likelihood</code></th>
-<th>Reference</th>
 <th>Description</th>
+<th>Reference</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td><code>binomial</code></td>
-<td>Steele (1992)</td>
 <td>Beta prior distribution (+ binomial likelihood)</td>
+<td>Steele (1992)</td>
 </tr>
 <tr class="even">
 <td><code>poisson</code></td>
-<td>Stewart (2013)</td>
 <td>Gamma prior distribution (+ Poisson likelihood)</td>
+<td>Stewart (2013)</td>
 </tr>
 <tr class="odd">
 <td><code>hypergeometric</code></td>
-<td>Dyer and Pierce (1991)</td>
 <td>Beta-binomial prior distribution (+ hypergeometric likelihood)</td>
+<td>Dyer and Pierce (1991)</td>
 </tr>
 </tbody>
 </table>
@@ -217,60 +217,60 @@
 <table class="table">
 <colgroup>
 <col width="12%">
-<col width="18%">
 <col width="38%">
 <col width="30%">
+<col width="18%">
 </colgroup>
 <thead><tr class="header">
 <th><code>method</code></th>
-<th>Reference</th>
 <th>Description</th>
 <th>Additional arguments</th>
+<th>Reference</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td><code>none</code></td>
-<td>Derks et al. (2020)</td>
 <td>No prior information</td>
 <td></td>
+<td>Derks et al. (2020)</td>
 </tr>
 <tr class="even">
 <td><code>arm</code></td>
-<td>Derks et al. (2020)</td>
 <td>Translates risk assessments (ARM)</td>
 <td>
 <code>ir</code> and <code>cr</code>
 </td>
+<td>Derks et al. (2020)</td>
 </tr>
 <tr class="odd">
 <td><code>median</code></td>
-<td>Derks et al. (2020)</td>
 <td>Equal prior probabilities for hypotheses</td>
 <td></td>
+<td>Derks et al. (2020)</td>
 </tr>
 <tr class="even">
 <td><code>hypotheses</code></td>
-<td>Derks et al. (2020)</td>
 <td>Custom prior probabilities for hypotheses</td>
 <td>
 <code>pHmin</code> or <code>pHplus</code>
 </td>
+<td>Derks et al. (2020)</td>
 </tr>
 <tr class="odd">
 <td><code>sample</code></td>
-<td>Derks et al. (2020)</td>
 <td>Earlier sample</td>
 <td>
 <code>sampleN</code> and <code>sampleK</code>
 </td>
+<td>Derks et al. (2020)</td>
 </tr>
 <tr class="even">
 <td><code>factor</code></td>
-<td>Derks et al. (2020)</td>
 <td>Weighted earlier sample</td>
 <td>
 <code>factor</code>, <code>sampleN</code> and <code>sampleK</code>
 </td>
+<td>Derks et al. (2020)</td>
 </tr>
 </tbody>
 </table>
@@ -286,24 +286,24 @@
 <table class="table">
 <thead><tr class="header">
 <th><code>likelihood</code></th>
-<th>Reference</th>
 <th>Description</th>
+<th>Reference</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td><code>binomial</code></td>
-<td>Stewart (2012)</td>
 <td>Binomial likelihood</td>
+<td>Stewart (2012)</td>
 </tr>
 <tr class="even">
 <td><code>poisson</code></td>
-<td>Stewart (2012)</td>
 <td>Poisson likelihood</td>
+<td>Stewart (2012)</td>
 </tr>
 <tr class="odd">
 <td><code>hypergeometric</code></td>
-<td>Stewart (2012)</td>
 <td>Hypergeometric likelihood</td>
+<td>Stewart (2012)</td>
 </tr>
 </tbody>
 </table>
@@ -319,62 +319,52 @@
 <table class="table">
 <colgroup>
 <col width="10%">
-<col width="37%">
 <col width="32%">
 <col width="20%">
+<col width="37%">
 </colgroup>
 <thead><tr class="header">
 <th><code>units</code></th>
-<th>Reference</th>
 <th>Description</th>
 <th>Additional arguments</th>
+<th>Reference</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td><code>records</code></td>
-<td>Leslie, Teitlebaum, and Anderson (1979)</td>
 <td>Sampling units are items</td>
 <td></td>
+<td>Leslie, Teitlebaum, and Anderson (1979)</td>
 </tr>
 <tr class="even">
 <td><code>mus</code></td>
-<td>Leslie, Teitlebaum, and Anderson (1979)</td>
 <td>Sampling units are monetary units</td>
 <td><code>bookValues</code></td>
+<td>Leslie, Teitlebaum, and Anderson (1979)</td>
 </tr>
 </tbody>
 </table>
 <p><em>Supported options for the <code>algorithm</code> argument:</em></p>
 <table class="table">
-<colgroup>
-<col width="13%">
-<col width="11%">
-<col width="48%">
-<col width="26%">
-</colgroup>
 <thead><tr class="header">
 <th><code>algorithm</code></th>
-<th>Reference</th>
 <th>Description</th>
 <th>Additional arguments</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td><code>random</code></td>
-<td></td>
-<td>Random sampling</td>
+<td>Select random units without the use of an interval</td>
 <td></td>
 </tr>
 <tr class="even">
 <td><code>cell</code></td>
-<td></td>
-<td>Cell sampling</td>
+<td>Select a random unit from every interval</td>
 <td></td>
 </tr>
 <tr class="odd">
 <td><code>interval</code></td>
-<td></td>
-<td>Systematic sampling / Fixed interval sampling</td>
+<td>Select a fixed unit from every interval</td>
 <td><code>intervalStartingPoint</code></td>
 </tr>
 </tbody>
@@ -391,102 +381,102 @@
 <table class="table">
 <colgroup>
 <col width="15%">
-<col width="31%">
 <col width="32%">
 <col width="20%">
+<col width="31%">
 </colgroup>
 <thead><tr class="header">
 <th><code>method</code></th>
-<th>Reference</th>
 <th>Description</th>
 <th>Additional arguments</th>
+<th>Reference</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td><code>binomial</code></td>
-<td>Stewart (2012)</td>
 <td>Binomial likelihood</td>
 <td></td>
+<td>Stewart (2012)</td>
 </tr>
 <tr class="even">
 <td><code>poisson</code></td>
-<td>Stewart (2012)</td>
 <td>Poisson likelihood</td>
 <td></td>
+<td>Stewart (2012)</td>
 </tr>
 <tr class="odd">
 <td><code>hypergeometric</code></td>
-<td>Stewart (2012)</td>
 <td>Hypergeometric likelihood</td>
 <td></td>
+<td>Stewart (2012)</td>
 </tr>
 <tr class="even">
 <td><code>stringer</code></td>
-<td>Bickel (1992)</td>
 <td>Classical Stringer bound</td>
 <td></td>
+<td>Bickel (1992)</td>
 </tr>
 <tr class="odd">
 <td><code>stringer-meikle</code></td>
-<td>Meikle (1972)</td>
 <td>Stringer bound with Meikle’s correction</td>
 <td></td>
+<td>Meikle (1972)</td>
 </tr>
 <tr class="even">
 <td><code>stringer-lta</code></td>
-<td>Leslie, Teitlebaum, &amp; Anderson (1979)</td>
 <td>Stringer bound with LTA correction</td>
 <td></td>
+<td>Leslie, Teitlebaum, &amp; Anderson (1979)</td>
 </tr>
 <tr class="odd">
 <td><code>stringer-pvz</code></td>
-<td>Pap and van Zuijlen (1996)</td>
 <td>Modified Stringer bound</td>
 <td></td>
+<td>Pap and van Zuijlen (1996)</td>
 </tr>
 <tr class="even">
 <td><code>rohrbach</code></td>
-<td>Rohrbach (1993)</td>
 <td>Rohrbach’s augmented variance estimator</td>
 <td><code>rohrbachDelta</code></td>
+<td>Rohrbach (1993)</td>
 </tr>
 <tr class="odd">
 <td><code>moment</code></td>
-<td>Dworin and Grimlund (1984)</td>
 <td>Modified moment bound</td>
 <td><code>momentPoptype</code></td>
+<td>Dworin and Grimlund (1984)</td>
 </tr>
 <tr class="even">
 <td><code>coxsnell</code></td>
-<td>Cox and Snell (1979)</td>
 <td>Cox and Snell bound</td>
 <td>
 <code>csA</code>, <code>csB</code>, and <code>csMu</code>
 </td>
+<td>Cox and Snell (1979)</td>
 </tr>
 <tr class="odd">
 <td><code>direct</code></td>
-<td>Touw and Hoogduin (2011)</td>
 <td>Direct estimator</td>
 <td><code>populationBookValue</code></td>
+<td>Touw and Hoogduin (2011)</td>
 </tr>
 <tr class="even">
 <td><code>difference</code></td>
-<td>Touw and Hoogduin (2011)</td>
 <td>Difference estimator</td>
 <td><code>populationBookValue</code></td>
+<td>Touw and Hoogduin (2011)</td>
 </tr>
 <tr class="odd">
 <td><code>quotient</code></td>
-<td>Touw and Hoogduin (2011)</td>
 <td>Quotient estimator</td>
 <td><code>populationBookValue</code></td>
+<td>Touw and Hoogduin (2011)</td>
 </tr>
 <tr class="even">
 <td><code>regression</code></td>
-<td>Touw and Hoogduin (2011)</td>
 <td>Regression estimator</td>
 <td><code>populationBookValue</code></td>
+<td>Touw and Hoogduin (2011)</td>
 </tr>
 </tbody>
 </table>
