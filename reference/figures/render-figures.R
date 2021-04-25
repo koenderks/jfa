@@ -1,3 +1,8 @@
+## Render figures for jfa README
+
+width <- 10
+height <- 6
+
 jfaData           <- cranlogs::cran_downloads(packages = 'jfa', from = '2020-01-01')[, -3]
 jfaData[['date']] <- lubridate::floor_date(jfaData[['date']], 'month')
 plotData          <- plyr::ddply(jfaData, 'date', plyr::summarise, count = sum(count))
@@ -36,7 +41,7 @@ p <- ggplot2::ggplot(plotData, ggplot2::aes(x = date, y = count)) +
                  axis.ticks.y = ggplot2::element_blank(),
                  axis.ticks.x = ggplot2::element_blank())
 
-ggplot2::ggsave(plot = p, filename = 'man/figures/readme/downloads/downloads.svg')
+ggplot2::ggsave(plot = p, filename = 'man/figures/readme/downloads/downloads.svg', width = width, height = height, dpi = 300)
 
 # Load previously downloaded data
 prevData <- read.csv(paste0(dirname(getwd()), '/jfa/man/figures/readme/worldmap/downloads.csv'))
@@ -102,4 +107,4 @@ world.map <-  ggplot2::ggplot(data=world.points) +
                  plot.subtitle = ggplot2::element_text(size = 8),
                  legend.text = ggplot2::element_text(color = '#222222'))
 
-ggplot2::ggsave(plot = world.map, filename = 'man/figures/readme/worldmap/worldmap.svg')
+ggplot2::ggsave(plot = world.map, filename = 'man/figures/readme/worldmap/worldmap.svg', width = width, height = height, dpi = 300)
