@@ -1,5 +1,6 @@
 # jfa 0.5.3
 
+- Changed the order of most function arguments so that `materiality` and `minPrecision` are among the first ones.
 - Removed the default value of `confidence = 0.95` in all applicable functions, it currently has no default so that the user is required to give an input.
 - Made an correction to the calculation of the beta-binomial prior and posterior so that the posterior parameter `N` has the correct value of `N = N - n` (current) instead of `N - n + k` (before).
 - Updated the documentation for the functions with simpler examples.
