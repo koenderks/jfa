@@ -35,7 +35,7 @@ test_that(desc = "(id: f8-v0.1.0-t1) Test for workflow elements", {
   sample$trueValue[2] <- sample$trueValue[2] - 0.5 * sample$trueValue[2] # One overstatement is found
   
   # Evaluate the sample using the posterior distribution.
-  conclusion <- evaluation(sample = sample, bookValues = "bookValue", auditValues = "trueValue", 
+  conclusion <- evaluation(confidence = confidence, sample = sample, bookValues = "bookValue", auditValues = "trueValue", 
                            prior = prior, materiality = 0.05)
   expect_equal(conclusion[["confBound"]], 0.02669982, tolerance = 0.001)
 })
