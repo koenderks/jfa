@@ -186,7 +186,7 @@ auditPrior <- function(confidence = 0.95, likelihood = 'binomial', method = 'non
   result[["statistics"]]$mode 		<- switch(likelihood, 
                                           "poisson" = (result[["description"]]$alpha - 1) / result[["description"]]$beta,
                                           "binomial" = (result[["description"]]$alpha - 1) / (result[["description"]]$alpha + result[["description"]]$beta - 2),
-                                          "hypergeometric" = .modeBetaBinom(N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta) * result[["N"]])
+                                          "hypergeometric" = .modeBetaBinom(N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta))
   result[["statistics"]]$mean 		<- switch(likelihood, 
                                           "poisson" = result[["description"]]$alpha / result[["description"]]$beta,
                                           "binomial" = result[["description"]]$alpha / (result[["description"]]$alpha + result[["description"]]$beta),
@@ -199,9 +199,7 @@ auditPrior <- function(confidence = 0.95, likelihood = 'binomial', method = 'non
                                         "poisson" = stats::qgamma(confidence, shape = result[["description"]]$alpha, rate = result[["description"]]$beta),
                                         "binomial" = stats::qbeta(confidence, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta),
                                         "hypergeometric" = .qBetaBinom(confidence, N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta))									
-  result[["statistics"]]$precision 	<- ifelse(likelihood == "hypergeometric", 
-                                              yes = (result[["statistics"]]$ub - result[["statistics"]]$mode) / result[["N"]],
-                                              no = result[["statistics"]]$ub - result[["statistics"]]$mode)
+  result[["statistics"]]$precision 	<- result[["statistics"]]$ub - result[["statistics"]]$mode
   # Create the specifics section
   if (method != "none")
     result[["specifics"]] 			<- list()
@@ -227,7 +225,7 @@ auditPrior <- function(confidence = 0.95, likelihood = 'binomial', method = 'non
     result[["hypotheses"]]$pHplus 		<- switch(likelihood, 
                                               "poisson" = stats::pgamma(materiality, shape = result[["description"]]$alpha, rate = result[["description"]]$beta, lower.tail = FALSE),
                                               "binomial" = stats::pbeta(materiality, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta, lower.tail = FALSE),
-                                              "hypergeometric" = 1 - result[["hypotheses"]]$pHmin)
+                                              "hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N"]]), N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta, lower.tail = FALSE))
     result[["hypotheses"]]$oddsHmin 	<- result[["hypotheses"]]$pHmin / result[["hypotheses"]]$pHplus
     result[["hypotheses"]]$oddsHplus 	<- 1 / result[["hypotheses"]]$oddsHmin
   }

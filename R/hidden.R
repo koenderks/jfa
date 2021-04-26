@@ -281,7 +281,7 @@ plot.jfaPosterior <- function(x, ...) {
   } else if (x[["description"]]$density == "beta-binomial") {
     xlim <- ceiling(xlim * x[["N"]])
     xseq <- seq(0, xlim, by = x[["N"]]/50)
-    d <- .dBetaBinom(x = xseq, N = x[["N"]], shape1 = x[["description"]]$alpha, shape2 = x[["description"]]$beta)
+    d <- .dBetaBinom(x = xseq, N = x[["N"]], shape1 = x[["description"]]$alpha, shape2 = x[["description"]]$beta) # x[["N"]] must be x[["N"]] - x[["n"]]
   }
   mainLab <- paste0(x[["description"]]$density, " posterior")
   if (x[["description"]]$density == "gamma" || x[["description"]]$density == "beta") {
@@ -320,9 +320,9 @@ plot.jfaPlanning <- function(x, ...) {
     } else if (x[["likelihood"]] == "hypergeometric") {
       xlim <- ceiling(xlim * x[["N"]])
       xseq <- seq(0, xlim, by = 1)
-      d <- .dBetaBinom(x = xseq, N = x[["N"]] - x[["sampleSize"]] + x[["expectedSampleError"]], shape1 = x[["prior"]][["description"]]$alpha, shape2 = x[["prior"]][["description"]]$beta)
-      d1 <- .dBetaBinom(x = xseq, N = x[["N"]] - x[["sampleSize"]] + x[["expectedSampleError"]], shape1 = x[["expectedPosterior"]][["description"]]$alpha, shape2 = x[["expectedPosterior"]][["description"]]$beta)
-      bound <- .qBetaBinom(p = x[["confidence"]], N = x[["N"]] - x[["sampleSize"]] + x[["expectedSampleError"]], shape1 = x[["expectedPosterior"]][["description"]]$alpha, shape2 = x[["expectedPosterior"]][["description"]]$beta)
+      d <- .dBetaBinom(x = xseq, N = x[["N"]] - x[["sampleSize"]], shape1 = x[["prior"]][["description"]]$alpha, shape2 = x[["prior"]][["description"]]$beta)
+      d1 <- .dBetaBinom(x = xseq, N = x[["N"]] - x[["sampleSize"]], shape1 = x[["expectedPosterior"]][["description"]]$alpha, shape2 = x[["expectedPosterior"]][["description"]]$beta)
+      bound <- .qBetaBinom(p = x[["confidence"]], N = x[["N"]] - x[["sampleSize"]], shape1 = x[["expectedPosterior"]][["description"]]$alpha, shape2 = x[["expectedPosterior"]][["description"]]$beta)
     }
     if (x$likelihood == "poisson" || x$likelihood == "binomial") {
       if (x$likelihood == "poisson")
@@ -422,8 +422,8 @@ plot.jfaEvaluation <- function(x, ...) {
         xlim <- ceiling(xlim * x[["N"]])
         xseq <- seq(0, xlim, by = 1)
         d <- .dBetaBinom(x = xseq, N = x[["N"]], shape1 = x[["prior"]][["description"]]$alpha, shape2 = x[["prior"]][["description"]]$beta)
-        d1 <- .dBetaBinom(x = xseq, N = x[["N"]], shape1 = x[["posterior"]][["description"]]$alpha, shape2 = x[["posterior"]][["description"]]$beta)
-        bound <- .qBetaBinom(p = x[["confidence"]], N = x[["N"]], shape1 = x[["posterior"]][["description"]]$alpha, shape2 = x[["posterior"]][["description"]]$beta)
+        d1 <- .dBetaBinom(x = xseq, N = x[["N"]] - x[["n"]], shape1 = x[["posterior"]][["description"]]$alpha, shape2 = x[["posterior"]][["description"]]$beta)
+        bound <- .qBetaBinom(p = x[["confidence"]], N = x[["N"]] - x[["n"]], shape1 = x[["posterior"]][["description"]]$alpha, shape2 = x[["posterior"]][["description"]]$beta)
       }
       if (x[["method"]] == "poisson" || x[["method"]] == "binomial") {
         if (x[["method"]] == "poisson")

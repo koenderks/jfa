@@ -59,7 +59,7 @@ test_that(desc = "(id: f5-v0.1.0-t6) Evaluation with hypergeometric method with 
   samp <- selection(population, sampleSize = jfaRes, units = "records", algorithm = "random", ordered = TRUE)$sample
   samp$auditValue <- samp[["bookValue"]]
   jfaEval <- evaluation(sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "hypergeometric", N = 1000, prior = TRUE, materiality = 0.05)
-  expect_equal(jfaEval[["confBound"]], 0.049, tolerance = 0.001)
+  expect_equal(jfaEval[["confBound"]], 0.047, tolerance = 0.001)
 })
 
 test_that(desc = "(id: f5-v0.1.0-t7) Evaluation with stringer method", {
@@ -235,7 +235,7 @@ test_that(desc = "(id: f5-v0.4.0-t1) Bayes factors", {
   jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "poisson", count = counts, prior = TRUE)
   expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf, Inf, tolerance = 0.001)
   jfaEval <- evaluation(materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "hypergeometric", count = counts, prior = TRUE, N = 1000)
-  expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf, 4766.862, tolerance = 0.001)
+  expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf, 12279.96, tolerance = 0.001)
 })
 
 # jfa version 0.5.0
@@ -320,7 +320,7 @@ test_that(desc = "(id: f5-v0.2.0-t4) Test for Bayesian plot function", {
   jfaEval <- evaluation(sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "hypergeometric", prior = TRUE, materiality = 0.05, N = nrow(population))
   invisible(capture.output(plot(jfaEval)))
   
-  expect_equal(jfaEval[["confBound"]], 0.03, tolerance = 0.001)
+  expect_equal(jfaEval[["confBound"]], 0.028, tolerance = 0.001)
 })
 
 # jfa version 0.5.1
