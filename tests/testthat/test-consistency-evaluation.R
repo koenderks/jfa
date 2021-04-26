@@ -223,19 +223,15 @@ test_that(desc = "(id: f5-v0.3.0-t1) Evaluation with counts and stringer method"
 
 # jfa version 0.4.0
 test_that(desc = "(id: f5-v0.4.0-t1) Bayes factors", {
-  set.seed(1)
-  population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
-  jfaRes <- planning(confidence = 0.95, materiality = 0.05, expectedError = 0.025)
-  samp <- selection(population, sampleSize = jfaRes, units = "records", algorithm = "random", ordered = TRUE)$sample
-  samp$auditValue <- samp[["bookValue"]]
-  samp$auditValue[1:3] <- samp$bookValue[1:3] * 0.4
-  counts <- c(2, 2, 3, rep(1, nrow(samp) - 3))
-  jfaEval <- evaluation(confidence = 0.95, materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "binomial", count = counts, prior = TRUE)
-  expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf, 1997.977, tolerance = 0.001)
-  jfaEval <- evaluation(confidence = 0.95, materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "poisson", count = counts, prior = TRUE)
+  data("BuildIt")
+  jfaRes <- planning(confidence = 0.95, materiality = 0.05, expectedError = 0.025, likelihood = 'poisson')
+  samp <- selection(BuildIt, sampleSize = jfaRes, units = "records", algorithm = "interval", ordered = TRUE)$sample
+  jfaEval <- evaluation(confidence = 0.95, materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "binomial", count = samp$count, prior = TRUE)
+  expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf, 44957.32, tolerance = 0.001)
+  jfaEval <- evaluation(confidence = 0.95, materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "poisson", count = samp$count, prior = TRUE)
   expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf, Inf, tolerance = 0.001)
-  jfaEval <- evaluation(confidence = 0.95, materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "hypergeometric", count = counts, prior = TRUE, N = 1000)
-  expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf, 12279.96, tolerance = 0.001)
+  jfaEval <- evaluation(confidence = 0.95, materiality = 0.05, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "hypergeometric", count = samp$count, prior = TRUE, N = 1000)
+  expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf, 295149, tolerance = 0.001)
 })
 
 # jfa version 0.5.0

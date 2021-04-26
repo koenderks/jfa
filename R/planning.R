@@ -6,7 +6,7 @@
 #' \code{vignette('jfa', package = 'jfa')}
 #'
 #' @usage planning(confidence, materiality = NULL, minPrecision = NULL,
-#'          expectedError = 0, likelihood = 'poisson', N = NULL,
+#'          expectedError = 0, likelihood = 'binomial', N = NULL,
 #'          prior = FALSE, nPrior = 0, kPrior = 0,
 #'          increase = 1, maxSize = 5000)
 #'
@@ -67,7 +67,7 @@
 #' @export
 
 planning <- function(confidence, materiality = NULL, minPrecision = NULL,
-                     expectedError = 0, likelihood = 'poisson', N = NULL,  
+                     expectedError = 0, likelihood = 'binomial', N = NULL,  
                      prior = FALSE, nPrior = 0, kPrior = 0,
                      increase = 1, maxSize = 5000) {
   
