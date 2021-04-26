@@ -38,9 +38,9 @@ evaluation(confidence, method = 'binomial', N = NULL,
 
 \item{prior}{a logical specifying if a prior distribution must be used, or an object of class `jfaPrior` containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a negligible prior distribution is chosen by default, but can be adjusted using the `kPrior` and `nPrior` arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
 
-\item{nPrior}{if \code{prior = TRUE}, a numeric value specifying the number of sampling units in the implicit sample on which the prior distribution is based.}
+\item{nPrior}{if \code{prior = TRUE}, a numeric value larger than, or equal to, 0 specifying the sample size of of the sample equivalent to the prior information.}
 
-\item{kPrior}{if \code{prior = TRUE}, a numeric value specifying the assumed sum of errors in the implicit sample on which the prior distribution is based.}
+\item{kPrior}{if \code{prior = TRUE}, a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.}
 
 \item{rohrbachDelta}{if \code{method = 'rohrbach'}, a numeric value specifying \eqn{\Delta} in Rohrbach's augmented variance bound (Rohrbach, 1993).}
 

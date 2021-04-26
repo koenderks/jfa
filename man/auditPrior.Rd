@@ -4,8 +4,8 @@
 \alias{auditPrior}
 \title{Create a prior distribution for audit sampling}
 \usage{
-auditPrior(confidence, materiality = NULL, method = 'none', 
-           likelihood = 'binomial', expectedError = 0, N = NULL, 
+auditPrior(confidence, materiality = NULL, expectedError = 0, 
+           method = 'none', likelihood = 'binomial', N = NULL, 
            ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, 
            sampleN = 0, sampleK = 0, factor = 1)
 }
@@ -16,9 +16,9 @@ auditPrior(confidence, materiality = NULL, method = 'none',
 
 \item{method}{a character specifying the method by which the prior distribution is constructed. Defaults to \code{none} which incorporates no existing information. Other options are \code{median}, \code{hypotheses}, \code{arm}, \code{sample}, and \code{factor}. See the details section for more information about the available methods.}
 
-\item{likelihood}{a character specifying the likelihood assumed when updating the prior distribution. This can be either \code{binomial} for the binomial likelihood and beta prior distribution, \code{poisson} for the Poisson likelihood and gamma prior distribution, or \code{hypergeometric} for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.}
-
 \item{expectedError}{a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a numeric value (>= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.}
+
+\item{likelihood}{a character specifying the likelihood assumed when updating the prior distribution. This can be either \code{binomial} for the binomial likelihood and beta prior distribution, \code{poisson} for the Poisson likelihood and gamma prior distribution, or \code{hypergeometric} for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.}
 
 \item{N}{an numeric value larger than 0 specifying the total population size. Optional unless \code{likelihood = 'hypergeometric'}.}
 
@@ -40,11 +40,11 @@ auditPrior(confidence, materiality = NULL, method = 'none',
 An object of class \code{jfaPrior} containing:
 
 \item{confidence}{a numeric value between 0 and 1 indicating the confidence level used.}
-\item{likelihood}{a character indicating the assumed likelihood.}
-\item{method}{a character indicating the method by which the prior distribution is constructed.}
-\item{expectedError}{a numeric value larger than, or equal to, 0 indicating the input for the number of expected errors.}
-\item{N}{if \code{N} is specified, an integer larger than 0 indicating the population size.}
 \item{materiality}{if \code{materiality} is specified, a numeric value between 0 and 1 indicating the materiality used to construct the prior distribution.}
+\item{expectedError}{a numeric value larger than, or equal to, 0 indicating the input for the number of expected errors.}
+\item{method}{a character indicating the method by which the prior distribution is constructed.}
+\item{likelihood}{a character indicating the assumed likelihood.}
+\item{N}{if \code{N} is specified, an integer larger than 0 indicating the population size.}
 \item{description}{a list containing a description of the prior distribution, including the parameters of the prior distribution and the implicit sample on which the prior distribution is based.}
 \item{statistics}{a list containing statistics of the prior distribution, including the mean, mode, median, and upper bound of the prior distribution.}
 \item{specifics}{a list containing specifics of the prior distribution that vary depending on the \code{method}.}
@@ -79,8 +79,8 @@ This section elaborates on the available likelihoods and corresponding prior dis
 \examples{
  
 # Prior distribution on the basis of inherent risk (ir) and control risk (cr)
-auditPrior(confidence = 0.95, materiality = 0.05, method = 'arm',
-           likelihood = 'binomial', expectedError = 0.025, ir = 1, cr = 0.6)
+auditPrior(confidence = 0.95, materiality = 0.05, expectedError = 0.025,
+           method = 'arm', likelihood = 'binomial', ir = 1, cr = 0.6)
 }
 \references{
 Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., & Wetzels, R. (2019). JASP for audit: Bayesian tools for the auditing practice.

@@ -4,13 +4,17 @@
 \alias{planning}
 \title{Plan a statistical audit sample}
 \usage{
-planning(confidence, expectedError = 0, likelihood = 'poisson', N = NULL, 
-          materiality = NULL, minPrecision = NULL, 
-          prior = FALSE, nPrior = 0, kPrior = 0,
-          increase = 1, maxSize = 5000)
+planning(confidence, materiality = NULL, minPrecision = NULL,
+         expectedError = 0, likelihood = 'poisson', N = NULL,
+         prior = FALSE, nPrior = 0, kPrior = 0,
+         increase = 1, maxSize = 5000)
 }
 \arguments{
 \item{confidence}{a numeric value between 0 and 1 specifying the confidence level used in the planning.}
+
+\item{materiality}{a numeric value between 0 and 1 specifying the performance materiality (i.e., maximum upper limit) as a fraction of the total population size. Can be \code{NULL}, but \code{minPrecision} should be specified in that case.}
+
+\item{minPrecision}{a numeric value between 0 and 1 specifying the minimum precision (i.e., upper bound minus most likely error) as a fraction of the total population size. Can be \code{NULL}, but \code{materiality} should be specified in that case.}
 
 \item{expectedError}{a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a number (>= 1) that represents the number of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.}
 
@@ -18,15 +22,11 @@ planning(confidence, expectedError = 0, likelihood = 'poisson', N = NULL,
 
 \item{N}{an integer larger than 0 specifying the total population size. Only required when \code{likelihood = 'hypergeometric'}.}
 
-\item{materiality}{a numeric value between 0 and 1 specifying the performance materiality (i.e., maximum upper limit) as a fraction of the total population size. Can be \code{NULL}, but \code{minPrecision} should be specified in that case.}
-
-\item{minPrecision}{a numeric value between 0 and 1 specifying the minimum precision (i.e., upper bound minus most likely error) as a fraction of the total population size. Can be \code{NULL}, but \code{materiality} should be specified in that case.}
-
 \item{prior}{a logical specifying whether to use a prior distribution when planning, or an object of class \code{jfaPrior} containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a negligible prior distribution is chosen by default, but can be adjusted using the \code{kPrior} and \code{nPrior} arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
 
-\item{nPrior}{if \code{prior = TRUE}, a numeric value larger than, or equal to, 0 specifying the number of sampling units in the implicit sample on which the prior distribution is based.}
+\item{nPrior}{if \code{prior = TRUE}, a numeric value larger than, or equal to, 0 specifying the sample size of of the sample equivalent to the prior information.}
 
-\item{kPrior}{if \code{prior = TRUE}, a numeric value larger than, or equal to, 0 specifying the assumed sum of errors in the implicit sample on which the prior distribution is based.}
+\item{kPrior}{if \code{prior = TRUE}, a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.}
 
 \item{increase}{an integer larger than 0 specifying the desired increase step for the sample size calculation.}
 
@@ -36,11 +36,11 @@ planning(confidence, expectedError = 0, likelihood = 'poisson', N = NULL,
 An object of class \code{jfaPlanning} containing:
 
 \item{confidence}{a numeric value between 0 and 1 indicating the confidence level.}
+\item{materiality}{a numeric value between 0 and 1 indicating the specified materiality. Can be \code{NULL}.}
+\item{minPrecision}{a numeric value between 0 and 1 indicating the minimum precision to be obtained. Can be \code{NULL}.}
 \item{expectedError}{a numeric value larger than, or equal to, 0 indicating the expected errors input.}
 \item{likelihood}{a character indicating the specified likelihood.}
 \item{N}{an integer larger than 0 indicating the population size (only returned if \code{N} is specified).}
-\item{materiality}{a numeric value between 0 and 1 indicating the specified materiality. Can be \code{NULL}.}
-\item{minPrecision}{a numeric value between 0 and 1 indicating the minimum precision to be obtained. Can be \code{NULL}.}
 \item{sampleSize}{an integer larger than 0 indicating the required sample size.}
 \item{errorType}{a character indicating whether the expected errors where specified as a percentage or as an integer.}
 \item{expectedSampleError}{a numeric value larger than, or equal to, 0 indicating the number of errors that are allowed in the sample.}
@@ -67,12 +67,12 @@ This section elaborates on the available likelihoods and corresponding prior dis
 }
 \examples{
 # Frequentist planning using a binomial likelihood
-planning(confidence = 0.95, expectedError = 0.025, likelihood = 'binomial',
-         materiality = 0.05)
+planning(confidence = 0.95, materiality = 0.05, expectedError = 0.025,
+         likelihood = 'binomial')
 
 # Bayesian planning using a negligible beta prior
-planning(confidence = 0.95, expectedError = 0.025, likelihood = 'binomial',
-         materiality = 0.05, prior = TRUE)
+planning(confidence = 0.95, materiality = 0.05, expectedError = 0.025,
+         likelihood = 'binomial', prior = TRUE)
 
 }
 \references{

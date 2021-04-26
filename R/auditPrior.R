@@ -5,16 +5,16 @@
 #' For more details on how to use this function see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
-#' @usage auditPrior(confidence, materiality = NULL, method = 'none', 
-#'            likelihood = 'binomial', expectedError = 0, N = NULL, 
+#' @usage auditPrior(confidence, materiality = NULL, expectedError = 0, 
+#'            method = 'none', likelihood = 'binomial', N = NULL, 
 #'            ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, 
 #'            sampleN = 0, sampleK = 0, factor = 1)
 #' 
 #' @param confidence      a numeric value between 0 and 1 specifying the confidence level to be used in the planning.
 #' @param materiality     a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum upper limit) as a fraction of the total population size. Can be \code{NULL} for some methods.
+#' @param expectedError   a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a numeric value (>= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.
 #' @param method          a character specifying the method by which the prior distribution is constructed. Defaults to \code{none} which incorporates no existing information. Other options are \code{median}, \code{hypotheses}, \code{arm}, \code{sample}, and \code{factor}. See the details section for more information about the available methods.
 #' @param likelihood      a character specifying the likelihood assumed when updating the prior distribution. This can be either \code{binomial} for the binomial likelihood and beta prior distribution, \code{poisson} for the Poisson likelihood and gamma prior distribution, or \code{hypergeometric} for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.
-#' @param expectedError   a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a numeric value (>= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.
 #' @param N               an numeric value larger than 0 specifying the total population size. Optional unless \code{likelihood = 'hypergeometric'}.
 #' @param ir              if \code{method = 'arm'}, a numeric value between 0 and 1 specifying the inherent risk in the audit risk model. Defaults to 1 for 100\% risk.
 #' @param cr              if \code{method = 'arm'}, a numeric value between 0 and 1 specifying the internal control risk in the audit risk model. Defaults to 1 for 100\% risk.
@@ -46,11 +46,11 @@
 #' @return An object of class \code{jfaPrior} containing:
 #' 
 #' \item{confidence}{a numeric value between 0 and 1 indicating the confidence level used.}
-#' \item{likelihood}{a character indicating the assumed likelihood.}
-#' \item{method}{a character indicating the method by which the prior distribution is constructed.}
-#' \item{expectedError}{a numeric value larger than, or equal to, 0 indicating the input for the number of expected errors.}
-#' \item{N}{if \code{N} is specified, an integer larger than 0 indicating the population size.}
 #' \item{materiality}{if \code{materiality} is specified, a numeric value between 0 and 1 indicating the materiality used to construct the prior distribution.}
+#' \item{expectedError}{a numeric value larger than, or equal to, 0 indicating the input for the number of expected errors.}
+#' \item{method}{a character indicating the method by which the prior distribution is constructed.}
+#' \item{likelihood}{a character indicating the assumed likelihood.}
+#' \item{N}{if \code{N} is specified, an integer larger than 0 indicating the population size.}
 #' \item{description}{a list containing a description of the prior distribution, including the parameters of the prior distribution and the implicit sample on which the prior distribution is based.}
 #' \item{statistics}{a list containing statistics of the prior distribution, including the mean, mode, median, and upper bound of the prior distribution.}
 #' \item{specifics}{a list containing specifics of the prior distribution that vary depending on the \code{method}.}
@@ -67,12 +67,12 @@
 #'
 #' @examples  
 #' # Prior distribution on the basis of inherent risk (ir) and control risk (cr)
-#' auditPrior(confidence = 0.95, materiality = 0.05, method = 'arm',
-#'            likelihood = 'binomial', expectedError = 0.025, ir = 1, cr = 0.6)
+#' auditPrior(confidence = 0.95, materiality = 0.05, expectedError = 0.025,
+#'            method = 'arm', likelihood = 'binomial', ir = 1, cr = 0.6)
 #' @export
 
 auditPrior <- function(confidence, materiality = NULL, method = 'none', 
-                       likelihood = 'binomial', expectedError = 0, N = NULL, 
+                       expectedError = 0, likelihood = 'binomial', N = NULL, 
                        ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, 
                        sampleN = 0, sampleK = 0, factor = 1) {
   
@@ -166,12 +166,12 @@ auditPrior <- function(confidence, materiality = NULL, method = 'none',
   # Create the main result object	
   result <- list()
   result[["confidence"]]   	<- as.numeric(confidence)
-  result[["likelihood"]]   	<- as.character(likelihood)
-  result[["method"]]       	<- as.character(method)
-  result[["expectedError"]] <- as.numeric(expectedError)
-  result[["N"]]            	<- as.numeric(N)
   if (!is.null(materiality))
     result[["materiality"]]  <- as.numeric(materiality)
+  result[["expectedError"]] <- as.numeric(expectedError)
+  result[["method"]]       	<- as.character(method)
+  result[["likelihood"]]   	<- as.character(likelihood)
+  result[["N"]]            	<- as.numeric(N)
   # Create the description section
   result[["description"]]			<- list()
   result[["description"]]$density  	<- switch(likelihood, "poisson" = "gamma", "binomial" = "beta", "hypergeometric" = "beta-binomial")
