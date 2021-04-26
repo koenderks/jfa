@@ -96,15 +96,7 @@ The `auditPrior()` function creates a prior distribution according to one of sev
 
 *Full function with default arguments:*
 
-`auditPrior(confidence = 0.95, likelihood = 'binomial', method = 'none', expectedError = 0, N = NULL, materiality = NULL, ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)`
-
-*Supported options for the `likelihood` argument:*
-
-| `likelihood` | Description | Reference |
-| :----------- | :----------- | :----------- |
-| `binomial` | Beta prior distribution (+ binomial likelihood) | Steele (1992) |
-| `poisson` | Gamma prior distribution (+ Poisson likelihood) | Stewart (2013) |
-| `hypergeometric` | Beta-binomial prior distribution (+ hypergeometric likelihood) | Dyer and Pierce (1991) |
+`auditPrior(confidence, materiality = NULL, expectedError = 0, method = 'none', likelihood = 'binomial', N = NULL, ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, sampleN = 0, sampleK = 0, factor = 1)`
 
 *Supported options for the `method` argument:*
 
@@ -115,17 +107,25 @@ The `auditPrior()` function creates a prior distribution according to one of sev
 | `median` | Equal prior probabilities for hypotheses | | Derks et al. (2020) |
 | `hypotheses` | Custom prior probabilities for hypotheses | `pHmin` or `pHplus` |  Derks et al. (2020) |
 | `sample` | Earlier sample | `sampleN` and `sampleK` | Derks et al. (2020) |
-| `factor` | Weighted earlier sample | `factor`, `sampleN` and `sampleK` | Derks et al. (2020) |
+| `factor` | Weighted earlier sample | `sampleN`, `sampleK`, and `factor` | Derks et al. (2020) |
+
+*Supported options for the `likelihood` argument:*
+
+| `likelihood` | Description | Reference |
+| :----------- | :----------- | :----------- |
+| `binomial` | Beta prior distribution (+ binomial likelihood) | Steele (1992) |
+| `poisson` | Gamma prior distribution (+ Poisson likelihood) | Stewart (2013) |
+| `hypergeometric` | Beta-binomial prior distribution (+ hypergeometric likelihood) | Dyer and Pierce (1991) |
 
 ### Plan a sample with the `planning()` function
 
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
-The `planning()` function calculates the required sample size for a statistical audit sample based on the Poisson, binomial, or hypergeometric likelihood. The function returns an object of class `jfaPlanning` which can be used with associated `print()` and a `plot()` methods. The input for the `prior` argument can be an object of class `jfaPrior` as returned by the `auditPrior()` function to perform Bayesian planning.
+The `planning()` function calculates the minimum sample size for a statistical audit sample based on the Poisson, binomial, or hypergeometric likelihood. The function returns an object of class `jfaPlanning` which can be used with associated `print()` and a `plot()` methods. The input for the `prior` argument can be an object of class `jfaPrior` as returned by the `auditPrior()` function to perform Bayesian planning.
 
 *Full function with default arguments:*
 
-`planning(confidence = 0.95, expectedError = 0, likelihood = 'poisson', N = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, nPrior = 0, kPrior = 0, increase = 1, maxSize = 5000)`
+`planning(confidence, materiality = NULL, minPrecision = NULL, expectedError = 0, likelihood = 'binomial', N = NULL, prior = FALSE, nPrior = 0, kPrior = 0, increase = 1, maxSize = 5000)`
 
 *Supported options for the `likelihood` argument:*
 
@@ -168,7 +168,7 @@ The `evaluation()` function takes a sample or summary statistics of the sample a
 
 *Full function with default arguments:*
 
-`evaluation(confidence = 0.95, method = 'binomial', N = NULL, sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, nSumstats = NULL, kSumstats = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, nPrior = 0, kPrior = 0, rohrbachDelta = 2.7, momentPoptype = 'accounts', populationBookValue = NULL, csA = 1, csB = 3, csMu = 0.5)`
+`evaluation(confidence, materiality = NULL, minPrecision = NULL, method = 'binomial', sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, nSumstats = NULL, kSumstats = NULL, N = NULL, populationBookValue = NULL, prior = FALSE, nPrior = 0, kPrior = 0, rohrbachDelta = 2.7, momentPoptype = 'accounts', csA = 1, csB = 3, csMu = 0.5)`
 
 *Supported options for the `method` argument:*
 

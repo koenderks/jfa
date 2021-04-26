@@ -5,24 +5,36 @@
 #' For more details on how to use this function see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
-#' @usage auditPrior(confidence = 0.95, likelihood = 'binomial', method = 'none', 
-#'            expectedError = 0, N = NULL, materiality = NULL, ir = 1, cr = 1,
-#'            pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)
+#' @usage auditPrior(confidence, materiality = NULL, expectedError = 0, 
+#'            method = 'none', likelihood = 'binomial', N = NULL, 
+#'            ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, 
+#'            sampleN = 0, sampleK = 0, factor = 1)
 #' 
-#' @param confidence      a numeric value between 0 and 1 specifying the confidence level desired for the sample planning. Defaults to 0.95 for 95\% confidence.
+#' @param confidence      a numeric value between 0 and 1 specifying the confidence level to be used in the planning.
+#' @param materiality     a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum upper limit) as a fraction of the total population size. Can be \code{NULL} for some methods.
+#' @param expectedError   a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a numeric value (>= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.
+#' @param method          a character specifying the method by which the prior distribution is constructed. Defaults to \code{none} which incorporates no existing information. Other options are \code{median}, \code{hypotheses}, \code{arm}, \code{sample}, and \code{factor}. See the details section for more information about the available methods.
 #' @param likelihood      a character specifying the likelihood assumed when updating the prior distribution. This can be either \code{binomial} for the binomial likelihood and beta prior distribution, \code{poisson} for the Poisson likelihood and gamma prior distribution, or \code{hypergeometric} for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.
-#' @param method          a character specifying the method by which the prior distribution is constructed. Defaults to the \code{none} method, which incorporates no existing information. Other options are \code{median}, \code{hypotheses}, \code{arm}, \code{sample} or \code{factor}. See the details section for more information about these methods.
-#' @param expectedError   a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a value (>= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.
-#' @param N               an numeric value larger than 0 specifying the total population size. Only required when \code{likelihood = 'hypergeometric'}.
-#' @param materiality     a numeric value between 0 and 1 specifying the performance materiality (i.e., maximum upper limit) of the audit as a fraction of the total population size. Can be \code{NULL} for some methods.
+#' @param N               an numeric value larger than 0 specifying the total population size. Optional unless \code{likelihood = 'hypergeometric'}.
 #' @param ir              if \code{method = 'arm'}, a numeric value between 0 and 1 specifying the inherent risk in the audit risk model. Defaults to 1 for 100\% risk.
 #' @param cr              if \code{method = 'arm'}, a numeric value between 0 and 1 specifying the internal control risk in the audit risk model. Defaults to 1 for 100\% risk.
 #' @param pHmin           if \code{method = 'hypotheses'}, a numeric value between 0 and 1 specifying the prior probability of the hypothesis \eqn{\theta <} materiality.
 #' @param pHplus          if \code{method = 'hypotheses'}, a numeric value between 0 and 1 specifying the prior probability of the hypothesis \eqn{\theta >} materiality.
-#' @param factor          if \code{method = 'factor'}, a numeric value between 0 and 1 specifying the weighting factor for the results of the earlier sample.
-#' @param sampleN         if \code{method = 'sample'} or \code{method = 'factor'}, an integer larger than, or equal to, 0 specifying the number of sampling units that were inspected in the earlier sample.
-#' @param sampleK         if \code{sample} or \code{factor}, a numeric value larger than, or equal to, 0 specifying the sum of errors in the previous sample.
+#' @param sampleN         if \code{method = 'sample'} or \code{method = 'factor'}, an integer larger than, or equal to, 0 specifying the sample size of the sample equivalent to the prior information.
+#' @param sampleK         if \code{sample} or \code{factor}, a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.
+#' @param factor          if \code{method = 'factor'}, a numeric value between 0 and 1 specifying the weighting factor for the results of the sample equivalent to the prior information.
 #' 
+#' @details This section elaborates on the available options for the \code{method} argument.
+#'
+#' \itemize{
+#'  \item{\code{none}:              This method constructs a prior distribution that incorporates negligible information about the possible values of the misstatement.}
+#'  \item{\code{median}:            This method constructs a prior distribution so that the prior probability of tolerable misstatement (\eqn{\theta <} materiality) is equal to the prior probability of intolerable misstatement (\eqn{\theta >} materiality).}
+#'  \item{\code{hypotheses}:        This method constructs a prior distribution with custom prior probabilities for the hypotheses of tolerable misstatement (\eqn{\theta <} materiality) and intolerable misstatement (\eqn{\theta >} materiality). This method requires specification of the \code{pHmin} and \code{pHplus} arguments.}
+#'  \item{\code{arm}:               This method constructs a prior distribution by translating the risks of material misstatement (inherent risk and internal control risk) from the audit risk model to an implicit sample. The method requires specification of the \code{ir} (inherent risk) and \code{cr} (internal control risk) arguments.}
+#'  \item{\code{sample}:            This method constructs a prior distribution on the basis of an earlier sample. This method requires specification of the \code{sampleN} and \code{sampleK} arguments.}
+#'  \item{\code{factor}:            This method constructs a prior distribution on the basis of an earlier sample in combination with a weighting factor. This method requires specification of the \code{sampleN}, \code{sampleK}, and \code{factor} arguments.}
+#' }
+#'
 #' @details This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
 #' 
 #' \itemize{
@@ -31,25 +43,14 @@
 #'  \item{\code{hypergeometric}:   The hypergeometric likelihood is used as a likelihood for sampling \emph{without} replacement. The likelihood function is defined as: \deqn{p(x = k) = \frac{{K \choose k} {N - K \choose n - k}}{{N \choose n}}} The conjugate \emph{beta-binomial(\eqn{\alpha, \beta})} prior (Dyer and Pierce, 1993) has probability density function: \deqn{f(k | n, \alpha, \beta) = {n \choose k} \frac{B(k + \alpha, n - k + \beta)}{B(\alpha, \beta)}} }
 #' }
 #'
-#' @details This section elaborates on the available methods for constructing a prior distribution.
-#'
-#' \itemize{
-#'  \item{\code{none}:              This method constructs a prior distribution that incorporates negligible information about the values of the misstatement.}
-#'  \item{\code{median}:            This method constructs a prior distribution so that the prior probability of tolerable misstatement (H-) is equal to the prior probability of intolerable misstatement (H+).}
-#'  \item{\code{hypotheses}:        This method constructs a prior distribution with custom prior probabilities for the hypotheses of tolerable misstatement (H-) and intolerable misstatement (H+). This method requires specification of the \code{pHmin} and \code{pHplus} arguments.}
-#'  \item{\code{arm}:               This method constructs a prior distribution by translating the risks of material misstatement (inherent risk and internal control risk) from the audit risk model to an implicit sample. The method requires specification of the \code{ir} (inherent risk) and \code{cr} (internal control risk) arguments.}
-#'  \item{\code{sample}:            This method constructs a prior distribution on the basis of an earlier sample. This method requires specification of the \code{sampleN} and \code{sampleK} arguments.}
-#'  \item{\code{factor}:            This method constructs a prior distribution on the basis of an earlier sample in combination with a weighting factor. This method requires specification of the \code{factor}, \code{sampleN} and \code{sampleK} arguments.}
-#' }
-#'
 #' @return An object of class \code{jfaPrior} containing:
 #' 
-#' \item{confidence}{a numeric value between 0 and 1 indicating the confidence level.}
-#' \item{likelihood}{a character indicating the specified likelihood.}
-#' \item{method}{a character indicating the method by which the prior distribution is constructed.}
-#' \item{expectedError}{a numeric value larger than 0 indicating the input for the number of expected errors.}
-#' \item{N}{if \code{N} is specified, an integer larger than 0 indicating the population size.}
+#' \item{confidence}{a numeric value between 0 and 1 indicating the confidence level used.}
 #' \item{materiality}{if \code{materiality} is specified, a numeric value between 0 and 1 indicating the materiality used to construct the prior distribution.}
+#' \item{expectedError}{a numeric value larger than, or equal to, 0 indicating the input for the number of expected errors.}
+#' \item{method}{a character indicating the method by which the prior distribution is constructed.}
+#' \item{likelihood}{a character indicating the assumed likelihood.}
+#' \item{N}{if \code{N} is specified, an integer larger than 0 indicating the population size.}
 #' \item{description}{a list containing a description of the prior distribution, including the parameters of the prior distribution and the implicit sample on which the prior distribution is based.}
 #' \item{statistics}{a list containing statistics of the prior distribution, including the mean, mode, median, and upper bound of the prior distribution.}
 #' \item{specifics}{a list containing specifics of the prior distribution that vary depending on the \code{method}.}
@@ -65,18 +66,15 @@
 #' @keywords prior distribution audit
 #'
 #' @examples  
-#' # Specify inherent risk (ir) and control risk (cr)
-#' ir <- 1     # 100%
-#' cr <- 0.6   # 60%
-#' 
-#' # Create the prior distribution
-#' auditPrior(confidence = 0.95, likelihood = 'binomial', method = 'arm',
-#'            expectedError = 0.025, materiality = 0.05, ir = ir, cr = cr)
+#' # Prior distribution on the basis of inherent risk (ir) and control risk (cr)
+#' auditPrior(confidence = 0.95, materiality = 0.05, expectedError = 0.025,
+#'            method = 'arm', likelihood = 'binomial', ir = 1, cr = 0.6)
 #' @export
 
-auditPrior <- function(confidence = 0.95, likelihood = 'binomial', method = 'none', expectedError = 0, 
-                       N = NULL, materiality = NULL, ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, 
-                       factor = 1, sampleN = 0, sampleK = 0) {
+auditPrior <- function(confidence, materiality = NULL, expectedError = 0, 
+                       method = 'none', likelihood = 'binomial', N = NULL, 
+                       ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, 
+                       sampleN = 0, sampleK = 0, factor = 1) {
   
   if (confidence >= 1 || confidence <= 0 || is.null(confidence)) # Check if the confidence has a valid input
     stop("Specify a value for the confidence likelihood. Possible values lie within the range of 0 to 1.")
@@ -168,12 +166,12 @@ auditPrior <- function(confidence = 0.95, likelihood = 'binomial', method = 'non
   # Create the main result object	
   result <- list()
   result[["confidence"]]   	<- as.numeric(confidence)
-  result[["likelihood"]]   	<- as.character(likelihood)
-  result[["method"]]       	<- as.character(method)
-  result[["expectedError"]] <- as.numeric(expectedError)
-  result[["N"]]            	<- as.numeric(N)
   if (!is.null(materiality))
     result[["materiality"]]  <- as.numeric(materiality)
+  result[["expectedError"]] <- as.numeric(expectedError)
+  result[["method"]]       	<- as.character(method)
+  result[["likelihood"]]   	<- as.character(likelihood)
+  result[["N"]]            	<- as.numeric(N)
   # Create the description section
   result[["description"]]			<- list()
   result[["description"]]$density  	<- switch(likelihood, "poisson" = "gamma", "binomial" = "beta", "hypergeometric" = "beta-binomial")

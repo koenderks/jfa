@@ -5,32 +5,31 @@
 #' For more details on how to use this function see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
-#' @usage evaluation(confidence = 0.95, method = 'binomial', N = NULL,
-#'             sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, 
-#'             nSumstats = NULL, kSumstats = NULL, 
-#'             materiality = NULL, minPrecision = NULL,
-#'             prior = FALSE, nPrior = 0, kPrior = 0, 
-#'             rohrbachDelta = 2.7, momentPoptype = 'accounts',
-#'             populationBookValue = NULL,
-#'             csA = 1, csB = 3, csMu = 0.5) 
+#' @usage evaluation(confidence, materiality = NULL, minPrecision = NULL, method = 'binomial',
+#'            sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, 
+#'            nSumstats = NULL, kSumstats = NULL,
+#'            N = NULL, populationBookValue = NULL,
+#'            prior = FALSE, nPrior = 0, kPrior = 0, 
+#'            rohrbachDelta = 2.7, momentPoptype = 'accounts',
+#'            csA = 1, csB = 3, csMu = 0.5) 
 #'
 #' @param confidence   	a numeric value between 0 and 1 specifying the confidence level used in the evaluation. Defaults to 0.95 for 95\% confidence.
+#' @param materiality   a numeric value between 0 and 1 specifying the performance materiality (maximum tolerable error) as a fraction of the total size of the population. If specified, the function also returns the conclusion of the analysis with respect to the performance materiality. The value is discarded when \code{direct}, \code{difference}, \code{quotient}, or \code{regression} method is chosen.
+#' @param minPrecision  a numeric value between 0 and 1 specifying the required minimum precision (upper bound minus most likely error) as a fraction of the total size of the population. If specified, the function also returns the conclusion of the analysis with respect to the required minimum precision.
 #' @param method        a character specifying the method to be used in the evaluation. Possible options are \code{poisson}, \code{binomial} (default), \code{hypergeometric}, \code{mpu}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}. See the details section for more information.
-#' @param N             an integer larger than 0 specifying the total number of items in the population.
 #' @param sample        a data frame containing the sample to be evaluated. The sample must at least contain a column of book values and a column of audit (true) values.
 #' @param bookValues    a character specifying the column name for the book values in the \code{sample}.
 #' @param auditValues   a character specifying the column name for the audit values in the \code{sample}.
 #' @param counts        a integer vector specifying the number of times each transaction in the sample should be counted in the evaluation (due to it being selected multiple times for the sample).
 #' @param nSumstats     an integer larger than 0 specifying the number of items in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data come from summary statistics specified by both \code{nSumstats} and \code{kSumstats}.
 #' @param kSumstats     a numeric value larger than 0 specifying the sum of errors found in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data come from summary statistics specified by both \code{kSumstats} and \code{nSumstats}.
-#' @param materiality   a numeric value between 0 and 1 specifying the performance materiality (maximum tolerable error) as a fraction of the total size of the population. If specified, the function also returns the conclusion of the analysis with respect to the performance materiality. The value is discarded when \code{direct}, \code{difference}, \code{quotient}, or \code{regression} method is chosen.
-#' @param minPrecision  a numeric value between 0 and 1 specifying the required minimum precision (upper bound minus most likely error) as a fraction of the total size of the population. If specified, the function also returns the conclusion of the analysis with respect to the required minimum precision.
+#' @param N             an integer larger than 0 specifying the total number of items in the population.
+#' @param populationBookValue if \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value specifying the total value of the transactions in the population. This argument is optional otherwise.
 #' @param prior         a logical specifying if a prior distribution must be used, or an object of class `jfaPrior` containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a negligible prior distribution is chosen by default, but can be adjusted using the `kPrior` and `nPrior` arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.
-#' @param nPrior        if \code{prior = TRUE}, a numeric value specifying the number of sampling units in the implicit sample on which the prior distribution is based.
-#' @param kPrior        if \code{prior = TRUE}, a numeric value specifying the assumed sum of errors in the implicit sample on which the prior distribution is based.
+#' @param nPrior        if \code{prior = TRUE}, a numeric value larger than, or equal to, 0 specifying the sample size of the sample equivalent to the prior information.
+#' @param kPrior        if \code{prior = TRUE}, a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.
 #' @param rohrbachDelta if \code{method = 'rohrbach'}, a numeric value specifying \eqn{\Delta} in Rohrbach's augmented variance bound (Rohrbach, 1993).
 #' @param momentPoptype if \code{method = 'moment'}, a character specifying the type of population (Dworin and Grimlund, 1984). Possible options are \code{accounts} and \code{inventory}. This argument affects the calculation of the central moments in the bound.
-#' @param populationBookValue if \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value specifying the total value of the transactions in the population. This argument is optional otherwise.
 #' @param csA           if \code{method = "coxsnell"}, a numeric value specifying the \eqn{\alpha} parameter of the prior distribution on the mean taint. Defaults to 1 as recommended by Cox and Snell (1979).
 #' @param csB           if \code{method = "coxsnell"}, a numeric value specifying the \eqn{\beta} parameter of the prior distribution on the mean taint. Defaults to 3 as recommended by Cox and Snell (1979).
 #' @param csMu          if \code{method = "coxsnell"}, a numeric value between 0 and 1 specifying the mean of the prior distribution on the mean taint. Defaults to 0.5 as recommended by Cox and Snell (1979).
@@ -67,13 +66,13 @@
 #' @return An object of class \code{jfaEvaluation} containing:
 #' 
 #' \item{confidence}{a numeric value between 0 and 1 indicating the confidence level.}
+#' \item{materiality}{if \code{materiality} is specified, a numeric value between 0 and 1 indicating the performance materiality as a fraction of the total population size.}
+#' \item{minPrecision}{if \code{minPrecision} is specified, a numeric value between 0 and 1 indicating the minimum required precision as a fraction of the total population size.}
 #' \item{method}{a character indicating the evaluation method.}
 #' \item{N}{if \code{N} is specified, in integer larger than 0 indicating the population size.}
 #' \item{n}{an integer larger than 0 indicating the sample size.}
 #' \item{k}{an integer larger than, or equal to, 0 indicating the number of items in the sample that contained an error.}
 #' \item{t}{a value larger than, or equal to, 0, indicating the sum of observed taints.}
-#' \item{materiality}{if \code{materiality} is specified, a numeric value between 0 and 1 indicating the performance materiality as a fraction of the total population size.}
-#' \item{minPrecision}{if \code{minPrecision} is specified, a numeric value between 0 and 1 indicating the minimum required precision as a fraction of the total population size.}
 #' \item{mle}{a numeric value between 0 and 1 indicating the most likely error in the population as a fraction of its total size.}
 #' \item{precision}{a numeric value between 0 and 1 indicating the difference between the most likely error and the upper bound in the population as a fraction of the total population size.}
 #' \item{popBookvalue}{if \code{populationBookValue} is specified, a numeric value larger than 0 indicating the total value of the population.}
@@ -102,19 +101,17 @@
 #'           algorithm = 'interval', units = 'mus', bookValues = 'bookValue')$sample
 #' 
 #' # Evaluate using the Stringer bound
-#' evaluation(confidence = 0.95, materiality = 0.05, 
-#'            method = 'stringer', sample = sample, 
-#'            bookValues = 'bookValue', auditValues = 'auditValue')
+#' evaluation(confidence = 0.95, materiality = 0.05, method = 'stringer',
+#'            sample = sample, bookValues = 'bookValue', auditValues = 'auditValue')
 #'
 #' @export 
 
-evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
-                       sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, 
-                       nSumstats = NULL, kSumstats = NULL, 
-                       materiality = NULL, minPrecision = NULL,
+evaluation <- function(confidence, materiality = NULL, minPrecision = NULL, method = 'binomial',
+                       sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL,
+                       nSumstats = NULL, kSumstats = NULL,
+                       N = NULL, populationBookValue = NULL,
                        prior = FALSE, nPrior = 0, kPrior = 0, 
-                       rohrbachDelta = 2.7, momentPoptype = "accounts", 
-					   populationBookValue = NULL,
+                       rohrbachDelta = 2.7, momentPoptype = 'accounts',
                        csA = 1, csB = 3, csMu = 0.5) {
   
   # Import existing prior distribution from class 'jfaPrior'.
@@ -221,8 +218,8 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
       precision <- bound - mle
     }
   } else if (method == "hypergeometric") {
-      if (is.null(N))
-        stop("Evaluation with hypergeometric likelihood requires that you specify the population size N")
+    if (is.null(N))
+      stop("Evaluation with hypergeometric likelihood requires that you specify the population size N")
     # Hypergeometric evaluation using beta-binomial distribution
     if ((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior") {
       bound <- .qBetaBinom(p = confidence, N = N - n, shape1 = 1 + kPrior + t, shape2 = 1 + nPrior - kPrior + n - t) / N
@@ -317,13 +314,13 @@ evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
   # Create the main results object
   result <- list()
   result[["confidence"]]    <- as.numeric(confidence)
+  result[["materiality"]]   <- as.numeric(materiality)
+  result[["minPrecision"]]  <- as.numeric(minPrecision)
   result[["method"]]        <- as.character(method)
   result[["N"]]             <- as.numeric(N)
   result[["n"]]             <- as.numeric(n)
   result[["k"]]             <- as.numeric(k)
   result[["t"]]             <- as.numeric(t)
-  result[["materiality"]]   <- as.numeric(materiality)
-  result[["minPrecision"]]  <- as.numeric(minPrecision)
   if (!is.null(mle))
     result[["mle"]]			<- as.numeric(mle)
   if (!is.null(precision))

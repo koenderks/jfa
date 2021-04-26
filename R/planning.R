@@ -1,24 +1,24 @@
 #' Plan a statistical audit sample
 #'
-#' @description This function calculates the required sample size for a statistical audit sample based on the Poisson, binomial or hypergeometric likelihood. The function returns an object of class \code{jfaPlanning} which can be used with associated \code{print()} and \code{plot()} methods.
+#' @description This function calculates the minimum sample size for a statistical audit sample based on the Poisson, binomial or hypergeometric likelihood. The function returns an object of class \code{jfaPlanning} which can be used with associated \code{print()} and \code{plot()} methods.
 #'
 #' For more details on how to use this function see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
-#' @usage planning(confidence = 0.95, expectedError = 0, likelihood = 'poisson', N = NULL, 
-#'           materiality = NULL, minPrecision = NULL, 
-#'           prior = FALSE, nPrior = 0, kPrior = 0,
-#'           increase = 1, maxSize = 5000)
+#' @usage planning(confidence, materiality = NULL, minPrecision = NULL,
+#'          expectedError = 0, likelihood = 'binomial', N = NULL,
+#'          prior = FALSE, nPrior = 0, kPrior = 0,
+#'          increase = 1, maxSize = 5000)
 #'
-#' @param confidence    a numeric value between 0 and 1 specifying the confidence level used in the planning. Defaults to 0.95 for 95\% confidence.
+#' @param confidence    a numeric value between 0 and 1 specifying the confidence level used in the planning.
+#' @param materiality   a numeric value between 0 and 1 specifying the performance materiality (i.e., maximum upper limit) as a fraction of the total population size. Can be \code{NULL}, but \code{minPrecision} should be specified in that case.
+#' @param minPrecision  a numeric value between 0 and 1 specifying the minimum precision (i.e., upper bound minus most likely error) as a fraction of the total population size. Can be \code{NULL}, but \code{materiality} should be specified in that case.
 #' @param expectedError a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a number (>= 1) that represents the number of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.
 #' @param likelihood    a character specifying the likelihood assumed in the calculation. This can be either \code{binomial} for the binomial likelihood, \code{poisson} for the Poisson likelihood, or \code{hypergeometric} for the hypergeometric likelihood. See the details section for more information about the available likelihoods.
 #' @param N             an integer larger than 0 specifying the total population size. Only required when \code{likelihood = 'hypergeometric'}.
-#' @param materiality   a numeric value between 0 and 1 specifying the performance materiality (i.e., maximum upper limit) as a fraction of the total population size. Can be \code{NULL}, but \code{minPrecision} should be specified in that case.
-#' @param minPrecision  a numeric value between 0 and 1 specifying the minimum precision (i.e., upper bound minus most likely error) as a fraction of the total population size. Can be \code{NULL}, but \code{materiality} should be specified in that case.
 #' @param prior         a logical specifying whether to use a prior distribution when planning, or an object of class \code{jfaPrior} containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a negligible prior distribution is chosen by default, but can be adjusted using the \code{kPrior} and \code{nPrior} arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.
-#' @param nPrior        if \code{prior = TRUE}, a numeric value larger than, or equal to, 0 specifying the number of sampling units in the implicit sample on which the prior distribution is based.
-#' @param kPrior        if \code{prior = TRUE}, a numeric value larger than, or equal to, 0 specifying the assumed sum of errors in the implicit sample on which the prior distribution is based.
+#' @param nPrior        if \code{prior = TRUE}, a numeric value larger than, or equal to, 0 specifying the sample size of the sample equivalent to the prior information.
+#' @param kPrior        if \code{prior = TRUE}, a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.
 #' @param increase      an integer larger than 0 specifying the desired increase step for the sample size calculation.
 #' @param maxSize       an integer larger than 0 specifying the maximum sample size that is considered in the calculation. Defaults to 5000 for efficiency. Increase this value if the sample size cannot be found due to it being too large (e.g., for a low materiality).
 #' 
@@ -33,11 +33,11 @@
 #' @return An object of class \code{jfaPlanning} containing:
 #' 
 #' \item{confidence}{a numeric value between 0 and 1 indicating the confidence level.}
+#' \item{materiality}{a numeric value between 0 and 1 indicating the specified materiality. Can be \code{NULL}.}
+#' \item{minPrecision}{a numeric value between 0 and 1 indicating the minimum precision to be obtained. Can be \code{NULL}.}
 #' \item{expectedError}{a numeric value larger than, or equal to, 0 indicating the expected errors input.}
 #' \item{likelihood}{a character indicating the specified likelihood.}
 #' \item{N}{an integer larger than 0 indicating the population size (only returned if \code{N} is specified).}
-#' \item{materiality}{a numeric value between 0 and 1 indicating the specified materiality. Can be \code{NULL}.}
-#' \item{minPrecision}{a numeric value between 0 and 1 indicating the minimum precision to be obtained. Can be \code{NULL}.}
 #' \item{sampleSize}{an integer larger than 0 indicating the required sample size.}
 #' \item{errorType}{a character indicating whether the expected errors where specified as a percentage or as an integer.}
 #' \item{expectedSampleError}{a numeric value larger than, or equal to, 0 indicating the number of errors that are allowed in the sample.}
@@ -57,17 +57,17 @@
 #'
 #' @examples
 #' # Frequentist planning using a binomial likelihood
-#' planning(confidence = 0.95, expectedError = 0.025, likelihood = 'binomial',
-#'          materiality = 0.05)
+#' planning(confidence = 0.95, materiality = 0.05, expectedError = 0.025,
+#'          likelihood = 'binomial')
 #' 
 #' # Bayesian planning using a negligible beta prior
-#' planning(confidence = 0.95, expectedError = 0.025, likelihood = 'binomial',
-#'          materiality = 0.05, prior = TRUE)
+#' planning(confidence = 0.95, materiality = 0.05, expectedError = 0.025,
+#'          likelihood = 'binomial', prior = TRUE)
 #'
 #' @export
 
-planning <- function(confidence = 0.95, expectedError = 0, likelihood = 'poisson', N = NULL, 
-                     materiality = NULL, minPrecision = NULL, 
+planning <- function(confidence, materiality = NULL, minPrecision = NULL,
+                     expectedError = 0, likelihood = 'binomial', N = NULL,  
                      prior = FALSE, nPrior = 0, kPrior = 0,
                      increase = 1, maxSize = 5000) {
   
@@ -125,7 +125,7 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = 'poisson
       stop("The hypergeometric likelihood requires that you specify a materiality.")
     populationK <- ceiling(materiality * N)
   }
-
+  
   if (!is.null(N) && N < maxSize)
     maxSize <- N
   
@@ -201,11 +201,11 @@ planning <- function(confidence = 0.95, expectedError = 0, likelihood = 'poisson
   # Create the main results object
   result <- list()
   result[["confidence"]]			<- as.numeric(confidence)
+  result[["materiality"]]  			<- as.numeric(materiality)
+  result[["minPrecision"]]			<- as.numeric(minPrecision)
   result[["expectedError"]]			<- as.numeric(expectedError)
   result[["likelihood"]]   			<- as.character(likelihood)
   result[["N"]]						<- as.numeric(N)
-  result[["materiality"]]  			<- as.numeric(materiality)
-  result[["minPrecision"]]			<- as.numeric(minPrecision)
   result[["sampleSize"]]          	<- as.numeric(ceiling(ss))
   result[["errorType"]]				<- as.character(errorType)
   result[["expectedSampleError"]]  	<- as.numeric(implicitK)

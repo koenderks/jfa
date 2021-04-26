@@ -196,9 +196,9 @@ These results have been calculated using `r switch(object[["method"]], "poisson"
 
 `r if (object[["method"]] %in% c("stringer")){ "* Bickel, P. J. (1992). Inference and auditing: The Stringer bound. *International Statistical Review*, 60(2), 197–209." }`
 
-`r if (object[["method"]] %in% c("binomial") & is.null(object[["prior"]])){ "* Stewart, T. R. (2012). *Technical notes on the AICPA audit guide audit sampling*. American Institute of Certified Public Accountants, New York." }`
+`r if (object[["method"]] %in% c("binomial") & is.null(object[["prior"]])){ "* Stewart, T. R. (2012). *Technical Notes on the AICPA Audit Guide Audit Sampling*. American Institute of Certified Public Accountants, New York." }`
 
-`r if (object[["method"]] %in% c("binomial") & !is.null(object[["prior"]])){ "* Steele, A. (1992). *Audit risk and audit evidence: The Bayesian approach to statistical auditing*. San Diego: Academic Press.\n* Stewart, T. R. (2013). *A Bayesian audit assurance model with application to the component materiality problem in group audits*. VU University, Amsterdam." }`
+`r if (object[["method"]] %in% c("binomial") & !is.null(object[["prior"]])){ "* Steele, A. (1992). *Audit Risk and Audit Evidence: The Bayesian Approach to Statistical Auditing*. San Diego: Academic Press.\n* Stewart, T. R. (2013). *A Bayesian Audit Assurance Model with Application to the Component Materiality Problem in Group Audits*. VU University, Amsterdam." }`
 
 <!-- Appendix B -->
 `r if (!is.null(object[["data"]])){ "\\newpage" }`

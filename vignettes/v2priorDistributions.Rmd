@@ -46,8 +46,7 @@ expectedError <- 0        # Zero errors expected in sample
 You can refrain from incorporating explicit information in the prior distribution, and still use Bayesian statistics, using `method = none`. As an example, the code below incorporates no explicit information into a prior distribution
 
 ```{r}
-prior1 <- auditPrior(confidence = confidence, likelihood = likelihood, expectedError = expectedError,
-                     materiality = materiality, method = "none")
+prior1 <- auditPrior(confidence, materiality, expectedError, likelihood, method = "none")
 prior1
 ```
 
@@ -62,8 +61,7 @@ plot(prior1)
 You can incorporate the risk assessments from the Audit Risk Model (inherent risk and internal control risk) using `method = "arm` in combination with the `ir` and `cr` arguments. As an example, the code below incorporates the information that the inherent risk is equal to 90% and that the internal control risk is equal to 60% into a prior distribution. 
 
 ```{r}
-prior2 <- auditPrior(confidence = confidence, likelihood = likelihood, expectedError = expectedError,
-                     materiality = materiality, method = "arm", ir = 0.9, cr = 0.6)
+prior2 <- auditPrior(confidence, materiality, expectedError, method = "arm", likelihood = likelihood, ir = 0.9, cr = 0.6)
 prior2
 ```
 
@@ -80,8 +78,7 @@ You can incorporate the assumption that tolerable misstatement is equally likely
 *Note: This method requires that you specify a value for the `materiality`.*
 
 ```{r}
-prior3 <- auditPrior(confidence = confidence, likelihood = likelihood, expectedError = expectedError,
-                     materiality = materiality, method = "median")
+prior3 <- auditPrior(confidence, materiality, expectedError, method = "median", likelihood = likelihood)
 prior3
 ```
 
@@ -98,8 +95,7 @@ You can assign custom probabilities to the hypothesis of tolerable misstatement 
 *Note: This method requires that you specify a value for the `materiality` and that the expected errors are zero.*
 
 ```{r}
-prior4 <- auditPrior(confidence = confidence, likelihood = likelihood, expectedError = expectedError,
-                     materiality = materiality, method = "hypotheses", pHmin = 0.6)
+prior4 <- auditPrior(confidence, materiality, expectedError, method = "hypotheses", likelihood = likelihood, pHmin = 0.6)
 prior4
 ```
 
@@ -114,8 +110,7 @@ plot(prior4)
 You can incorporate information from an earlier sample into the prior distribution using `method = "sample` in combination with `sampleN` and `sampleK`. As an example, the code below incorporates the information from an earlier sample of 30 transactions, in which 0 misstatements were found, into a prior distribution.
 
 ```{r}
-prior5 <- auditPrior(confidence = confidence, likelihood = likelihood, expectedError = expectedError,
-                     materiality = materiality, method = "sample", sampleN = 30, sampleK = 0)
+prior5 <- auditPrior(confidence, materiality, expectedError, likelihood = likelihood, method = "sample", sampleN = 30, sampleK = 0)
 prior5
 ```
 
@@ -130,8 +125,7 @@ plot(prior5)
 You can incorporate information from last years results, weighted by a factor, into the prior distribution using `method = "factor` in combination with `sampleN` and `sampleK`. As an example, the code below incorporates the information from a last years results (a sample of 58 transactions in which 0 misstatements were found), weighted by a factor 0.7, into a prior distribution.
 
 ```{r}
-prior6 <- auditPrior(confidence = confidence, likelihood = likelihood, expectedError = expectedError,
-                     materiality = materiality, method = "factor", sampleN = 58, sampleK = 0, factor = 0.7)
+prior6 <- auditPrior(confidence, materiality, expectedError, method = "factor", likelihood = likelihood, sampleN = 58, sampleK = 0, factor = 0.7)
 prior6
 ```
 
@@ -146,18 +140,12 @@ plot(prior6)
 To illustrate how the prior distribution can facilitate a more efficient audit, the table below lists the required sample sizes for the created priors after calling `planning(confidence = confidence, expectedError = expectedError, likelihood = likelihood, materiality = materiality, prior = X)`, where `X` is the object returned by the `auditPrior()` function.
 
 ```{r, collapse = TRUE, echo = FALSE}
-s1 <- planning(confidence = confidence, expectedError = expectedError, likelihood = likelihood, 
-               materiality = materiality, prior = prior1)$sampleSize
-s2 <- planning(confidence = confidence, expectedError = expectedError, likelihood = likelihood, 
-               materiality = materiality, prior = prior2)$sampleSize
-s3 <- planning(confidence = confidence, expectedError = expectedError, likelihood = likelihood, 
-               materiality = materiality, prior = prior3)$sampleSize
-s4 <- planning(confidence = confidence, expectedError = expectedError, likelihood = likelihood, 
-               materiality = materiality, prior = prior4)$sampleSize
-s5 <- planning(confidence = confidence, expectedError = expectedError, likelihood = likelihood, 
-               materiality = materiality, prior = prior5)$sampleSize
-s6 <- planning(confidence = confidence, expectedError = expectedError, likelihood = likelihood, 
-               materiality = materiality, prior = prior6)$sampleSize
+s1 <- planning(confidence, materiality, expectedError = expectedError, likelihood = likelihood, prior = prior1)$sampleSize
+s2 <- planning(confidence, materiality, expectedError = expectedError, likelihood = likelihood, prior = prior2)$sampleSize
+s3 <- planning(confidence, materiality, expectedError = expectedError, likelihood = likelihood, prior = prior3)$sampleSize
+s4 <- planning(confidence, materiality, expectedError = expectedError, likelihood = likelihood, prior = prior4)$sampleSize
+s5 <- planning(confidence, materiality, expectedError = expectedError, likelihood = likelihood, prior = prior5)$sampleSize
+s6 <- planning(confidence, materiality, expectedError = expectedError, likelihood = likelihood, prior = prior6)$sampleSize
 
 knitr::kable(data.frame("none" = s1, "arm" = s2, "median" = s3, "hypotheses" = s4, 
                   "sample" = s5, "factor" = s6, row.names = "Required sample size"))

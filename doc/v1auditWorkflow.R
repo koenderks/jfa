@@ -3,9 +3,9 @@ library(jfa)
 data("BuildIt")
 
 ## -----------------------------------------------------------------------------
-# Specify the materiality, confidence, and expected errors.
-materiality   <- 0.05   # 5%
+# Specify the confidence, materiality, and expected errors.
 confidence    <- 0.95   # 95%
+materiality   <- 0.05   # 5%
 expectedError <- 0.025  # 2.5%
 
 ## -----------------------------------------------------------------------------
@@ -19,17 +19,17 @@ adjustedConfidence <- 1 - ((1 - confidence) / (ir * cr))
 
 ## -----------------------------------------------------------------------------
 # Step 0: Create a prior distribution according to the audit risk model.
-priorResult <- auditPrior(confidence = confidence, likelihood = "binomial", method = "arm", expectedError = expectedError, materiality = materiality, ir = ir, cr = cr)
+prior <- auditPrior(confidence, materiality, expectedError, method = "arm", likelihood = "binomial", ir = ir, cr = cr)
 
 ## -----------------------------------------------------------------------------
-print(priorResult)
+print(prior)
 
 ## ----fig.align="center", fig.height=4, fig.width=6----------------------------
-plot(priorResult)
+plot(prior)
 
 ## -----------------------------------------------------------------------------
 # Step 1: Calculate the required sample size.
-planningResult <- planning(confidence = confidence, expectedError = expectedError, materiality = materiality, prior = priorResult)
+planningResult <- planning(confidence, materiality, expectedError = expectedError, prior = prior)
 
 ## -----------------------------------------------------------------------------
 print(planningResult)
@@ -39,7 +39,7 @@ plot(planningResult)
 
 ## -----------------------------------------------------------------------------
 # Step 2: Draw a sample from the financial statements.
-samplingResult <- selection(population = BuildIt, sampleSize = planningResult, units = "mus", bookValues = "bookValue", seed = 999)
+samplingResult <- selection(BuildIt, sampleSize = 164, units = "mus", bookValues = "bookValue")
 
 ## -----------------------------------------------------------------------------
 print(samplingResult)
@@ -56,7 +56,7 @@ sample <- samplingResult$sample
 
 ## -----------------------------------------------------------------------------
 # Step 4: Evaluate the sample.
-evaluationResult <- evaluation(sample = sample, materiality = materiality, prior = priorResult, bookValues = "bookValue", auditValues = "auditValue")
+evaluationResult <- evaluation(confidence, materiality, sample = sample, bookValues = "bookValue", auditValues = "auditValue", prior = prior)
 
 ## -----------------------------------------------------------------------------
 print(evaluationResult)

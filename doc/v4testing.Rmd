@@ -58,7 +58,7 @@ As an example, consider that an auditor wants to verify whether the population c
 The output below shows that $BF_{-+}=30.28$, implying that there is very strong evidence for $H_-$, the hypothesis that the population contains misstatements lower than 5 percent of the population. 
 
 ```{r}
-prior <- auditPrior(confidence = 0.95, likelihood = "binomial", method = "none", materiality = 0.05)
+prior <- auditPrior(confidence = 0.95, materiality = 0.05, method = "none", likelihood = "binomial")
 evaluation(confidence = 0.95, materiality = 0.05, nSumstats = 40, kSumstats = 1, prior = prior)
 ```
 
@@ -69,6 +69,6 @@ In audit sampling, the Bayes factor is dependent on the prior distribution for $
 The output below shows that $BF_{-+}=3.08$, implying that there is anecdotal evidence for $H_-$, the hypothesis that the population contains misstatements lower than 5 percent of the population. 
 
 ```{r}
-prior <- auditPrior(confidence = 0.95, likelihood = "binomial", method = "median", materiality = 0.05)
+prior <- auditPrior(confidence = 0.95, materiality = 0.05, method = "median", likelihood = "binomial")
 evaluation(confidence = 0.95, materiality = 0.05, nSumstats = 40, kSumstats = 1, prior = prior)
 ```
