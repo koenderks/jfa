@@ -5,14 +5,13 @@
 #' For more details on how to use this function see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
-#' @usage evaluation(confidence, method = 'binomial', N = NULL,
-#'             sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, 
-#'             nSumstats = NULL, kSumstats = NULL, 
-#'             materiality = NULL, minPrecision = NULL,
-#'             prior = FALSE, nPrior = 0, kPrior = 0, 
-#'             rohrbachDelta = 2.7, momentPoptype = 'accounts',
-#'             populationBookValue = NULL,
-#'             csA = 1, csB = 3, csMu = 0.5) 
+#' @usage evaluation(confidence, materiality = NULL, minPrecision = NULL, method = 'binomial',
+#'            sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, 
+#'            nSumstats = NULL, kSumstats = NULL,
+#'            N = NULL, populationBookValue = NULL,
+#'            prior = FALSE, nPrior = 0, kPrior = 0, 
+#'            rohrbachDelta = 2.7, momentPoptype = 'accounts',
+#'            csA = 1, csB = 3, csMu = 0.5) 
 #'
 #' @param confidence   	a numeric value between 0 and 1 specifying the confidence level used in the evaluation. Defaults to 0.95 for 95\% confidence.
 #' @param method        a character specifying the method to be used in the evaluation. Possible options are \code{poisson}, \code{binomial} (default), \code{hypergeometric}, \code{mpu}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}. See the details section for more information.
@@ -102,19 +101,17 @@
 #'           algorithm = 'interval', units = 'mus', bookValues = 'bookValue')$sample
 #' 
 #' # Evaluate using the Stringer bound
-#' evaluation(confidence = 0.95, materiality = 0.05, 
-#'            method = 'stringer', sample = sample, 
-#'            bookValues = 'bookValue', auditValues = 'auditValue')
+#' evaluation(confidence = 0.95, materiality = 0.05, method = 'stringer',
+#'            sample = sample, bookValues = 'bookValue', auditValues = 'auditValue')
 #'
 #' @export 
 
-evaluation <- function(confidence, method = "binomial", N = NULL,
-                       sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, 
-                       nSumstats = NULL, kSumstats = NULL, 
-                       materiality = NULL, minPrecision = NULL,
+evaluation <- function(confidence, materiality = NULL, minPrecision = NULL, method = 'binomial',
+                       sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL,
+                       nSumstats = NULL, kSumstats = NULL,
+                       N = NULL, populationBookValue = NULL,
                        prior = FALSE, nPrior = 0, kPrior = 0, 
-                       rohrbachDelta = 2.7, momentPoptype = "accounts", 
-					   populationBookValue = NULL,
+                       rohrbachDelta = 2.7, momentPoptype = 'accounts',
                        csA = 1, csB = 3, csMu = 0.5) {
   
   # Import existing prior distribution from class 'jfaPrior'.
@@ -221,8 +218,8 @@ evaluation <- function(confidence, method = "binomial", N = NULL,
       precision <- bound - mle
     }
   } else if (method == "hypergeometric") {
-      if (is.null(N))
-        stop("Evaluation with hypergeometric likelihood requires that you specify the population size N")
+    if (is.null(N))
+      stop("Evaluation with hypergeometric likelihood requires that you specify the population size N")
     # Hypergeometric evaluation using beta-binomial distribution
     if ((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior") {
       bound <- .qBetaBinom(p = confidence, N = N - n, shape1 = 1 + kPrior + t, shape2 = 1 + nPrior - kPrior + n - t) / N

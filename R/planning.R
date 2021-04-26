@@ -125,7 +125,7 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
       stop("The hypergeometric likelihood requires that you specify a materiality.")
     populationK <- ceiling(materiality * N)
   }
-
+  
   if (!is.null(N) && N < maxSize)
     maxSize <- N
   

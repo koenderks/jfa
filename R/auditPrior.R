@@ -71,8 +71,8 @@
 #'            method = 'arm', likelihood = 'binomial', ir = 1, cr = 0.6)
 #' @export
 
-auditPrior <- function(confidence, materiality = NULL, method = 'none', 
-                       expectedError = 0, likelihood = 'binomial', N = NULL, 
+auditPrior <- function(confidence, materiality = NULL, expectedError = 0, 
+                       method = 'none', likelihood = 'binomial', N = NULL, 
                        ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, 
                        sampleN = 0, sampleK = 0, factor = 1) {
   

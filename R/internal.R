@@ -41,7 +41,7 @@
 
 .modeBetaBinom <- function(N, shape1, shape2) {
   if(shape1 == 1 && shape2 == 1)
-	return(NA)
+    return(NA)
   index <- pcount <- pnextcount <- -1
   # Use the fact that the mode has the highest density to iteratively find it
   while (pnextcount >= pcount) {
