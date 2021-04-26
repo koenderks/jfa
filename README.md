@@ -96,7 +96,7 @@ The `auditPrior()` function creates a prior distribution according to one of sev
 
 *Full function with default arguments:*
 
-`auditPrior(confidence, likelihood = 'binomial', method = 'none', expectedError = 0, N = NULL, materiality = NULL, ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)`
+`auditPrior(confidence, materiality = NULL, expectedError = 0, method = 'none', likelihood = 'binomial', N = NULL, ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, sampleN = 0, sampleK = 0, factor = 1)`
 
 *Supported options for the `likelihood` argument:*
 
@@ -125,7 +125,7 @@ The `planning()` function calculates the required sample size for a statistical 
 
 *Full function with default arguments:*
 
-`planning(confidence, expectedError = 0, likelihood = 'poisson', N = NULL, materiality = NULL, minPrecision = NULL, prior = FALSE, nPrior = 0, kPrior = 0, increase = 1, maxSize = 5000)`
+`planning(confidence, materiality = NULL, minPrecision = NULL, expectedError = 0, likelihood = 'poisson', N = NULL, prior = FALSE, nPrior = 0, kPrior = 0, increase = 1, maxSize = 5000)`
 
 *Supported options for the `likelihood` argument:*
 
