@@ -4,7 +4,7 @@
 \alias{evaluation}
 \title{Evaluate a statistical audit sample}
 \usage{
-evaluation(confidence = 0.95, method = 'binomial', N = NULL,
+evaluation(confidence, method = 'binomial', N = NULL,
             sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, 
             nSumstats = NULL, kSumstats = NULL, 
             materiality = NULL, minPrecision = NULL,

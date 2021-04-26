@@ -4,12 +4,12 @@
 \alias{auditPrior}
 \title{Create a prior distribution for audit sampling}
 \usage{
-auditPrior(confidence = 0.95, likelihood = 'binomial', method = 'none', 
+auditPrior(confidence, likelihood = 'binomial', method = 'none', 
            expectedError = 0, N = NULL, materiality = NULL, ir = 1, cr = 1,
            pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)
 }
 \arguments{
-\item{confidence}{a numeric value between 0 and 1 specifying the confidence level desired for the sample planning. Defaults to 0.95 for 95\% confidence.}
+\item{confidence}{a numeric value between 0 and 1 specifying the confidence level desired for the sample planning.}
 
 \item{likelihood}{a character specifying the likelihood assumed when updating the prior distribution. This can be either \code{binomial} for the binomial likelihood and beta prior distribution, \code{poisson} for the Poisson likelihood and gamma prior distribution, or \code{hypergeometric} for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.}
 

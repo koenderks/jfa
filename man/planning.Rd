@@ -4,13 +4,13 @@
 \alias{planning}
 \title{Plan a statistical audit sample}
 \usage{
-planning(confidence = 0.95, expectedError = 0, likelihood = 'poisson', N = NULL, 
+planning(confidence, expectedError = 0, likelihood = 'poisson', N = NULL, 
           materiality = NULL, minPrecision = NULL, 
           prior = FALSE, nPrior = 0, kPrior = 0,
           increase = 1, maxSize = 5000)
 }
 \arguments{
-\item{confidence}{a numeric value between 0 and 1 specifying the confidence level used in the planning. Defaults to 0.95 for 95\% confidence.}
+\item{confidence}{a numeric value between 0 and 1 specifying the confidence level used in the planning.}
 
 \item{expectedError}{a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a number (>= 1) that represents the number of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.}
 
