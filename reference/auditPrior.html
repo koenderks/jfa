@@ -148,36 +148,37 @@ vignette('jfa', package = 'jfa')" />
 <code><a href='../articles/jfa.html'>vignette('jfa', package = 'jfa')</a></code></p>
     </div>
 
-    <pre class="usage"><span class='fu'>auditPrior</span><span class='op'>(</span>confidence <span class='op'>=</span> <span class='fl'>0.95</span>, likelihood <span class='op'>=</span> <span class='st'>'binomial'</span>, method <span class='op'>=</span> <span class='st'>'none'</span>, 
-           expectedError <span class='op'>=</span> <span class='fl'>0</span>, N <span class='op'>=</span> <span class='cn'>NULL</span>, materiality <span class='op'>=</span> <span class='cn'>NULL</span>, ir <span class='op'>=</span> <span class='fl'>1</span>, cr <span class='op'>=</span> <span class='fl'>1</span>,
-           pHmin <span class='op'>=</span> <span class='cn'>NULL</span>, pHplus <span class='op'>=</span> <span class='cn'>NULL</span>, factor <span class='op'>=</span> <span class='fl'>1</span>, sampleN <span class='op'>=</span> <span class='fl'>0</span>, sampleK <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>auditPrior</span><span class='op'>(</span><span class='va'>confidence</span>, materiality <span class='op'>=</span> <span class='cn'>NULL</span>, expectedError <span class='op'>=</span> <span class='fl'>0</span>, 
+           method <span class='op'>=</span> <span class='st'>'none'</span>, likelihood <span class='op'>=</span> <span class='st'>'binomial'</span>, N <span class='op'>=</span> <span class='cn'>NULL</span>, 
+           ir <span class='op'>=</span> <span class='fl'>1</span>, cr <span class='op'>=</span> <span class='fl'>1</span>, pHmin <span class='op'>=</span> <span class='cn'>NULL</span>, pHplus <span class='op'>=</span> <span class='cn'>NULL</span>, 
+           sampleN <span class='op'>=</span> <span class='fl'>0</span>, sampleK <span class='op'>=</span> <span class='fl'>0</span>, factor <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>confidence</th>
-      <td><p>a numeric value between 0 and 1 specifying the confidence level desired for the sample planning. Defaults to 0.95 for 95% confidence.</p></td>
+      <td><p>a numeric value between 0 and 1 specifying the confidence level to be used in the planning.</p></td>
+    </tr>
+    <tr>
+      <th>materiality</th>
+      <td><p>a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum upper limit) as a fraction of the total population size. Can be <code>NULL</code> for some methods.</p></td>
+    </tr>
+    <tr>
+      <th>expectedError</th>
+      <td><p>a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a numeric value (&gt;= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.</p></td>
+    </tr>
+    <tr>
+      <th>method</th>
+      <td><p>a character specifying the method by which the prior distribution is constructed. Defaults to <code>none</code> which incorporates no existing information. Other options are <code>median</code>, <code>hypotheses</code>, <code>arm</code>, <code>sample</code>, and <code>factor</code>. See the details section for more information about the available methods.</p></td>
     </tr>
     <tr>
       <th>likelihood</th>
       <td><p>a character specifying the likelihood assumed when updating the prior distribution. This can be either <code>binomial</code> for the binomial likelihood and beta prior distribution, <code>poisson</code> for the Poisson likelihood and gamma prior distribution, or <code>hypergeometric</code> for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.</p></td>
     </tr>
     <tr>
-      <th>method</th>
-      <td><p>a character specifying the method by which the prior distribution is constructed. Defaults to the <code>none</code> method, which incorporates no existing information. Other options are <code>median</code>, <code>hypotheses</code>, <code>arm</code>, <code>sample</code> or <code>factor</code>. See the details section for more information about these methods.</p></td>
-    </tr>
-    <tr>
-      <th>expectedError</th>
-      <td><p>a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a value (&gt;= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.</p></td>
-    </tr>
-    <tr>
       <th>N</th>
-      <td><p>an numeric value larger than 0 specifying the total population size. Only required when <code>likelihood = 'hypergeometric'</code>.</p></td>
-    </tr>
-    <tr>
-      <th>materiality</th>
-      <td><p>a numeric value between 0 and 1 specifying the performance materiality (i.e., maximum upper limit) of the audit as a fraction of the total population size. Can be <code>NULL</code> for some methods.</p></td>
+      <td><p>an numeric value larger than 0 specifying the total population size. Optional unless <code>likelihood = 'hypergeometric'</code>.</p></td>
     </tr>
     <tr>
       <th>ir</th>
@@ -196,28 +197,28 @@ vignette('jfa', package = 'jfa')" />
       <td><p>if <code>method = 'hypotheses'</code>, a numeric value between 0 and 1 specifying the prior probability of the hypothesis \(\theta &gt;\) materiality.</p></td>
     </tr>
     <tr>
-      <th>factor</th>
-      <td><p>if <code>method = 'factor'</code>, a numeric value between 0 and 1 specifying the weighting factor for the results of the earlier sample.</p></td>
-    </tr>
-    <tr>
       <th>sampleN</th>
-      <td><p>if <code>method = 'sample'</code> or <code>method = 'factor'</code>, an integer larger than, or equal to, 0 specifying the number of sampling units that were inspected in the earlier sample.</p></td>
+      <td><p>if <code>method = 'sample'</code> or <code>method = 'factor'</code>, an integer larger than, or equal to, 0 specifying the sample size of the sample equivalent to the prior information.</p></td>
     </tr>
     <tr>
       <th>sampleK</th>
-      <td><p>if <code>sample</code> or <code>factor</code>, a numeric value larger than, or equal to, 0 specifying the sum of errors in the previous sample.</p></td>
+      <td><p>if <code>sample</code> or <code>factor</code>, a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.</p></td>
+    </tr>
+    <tr>
+      <th>factor</th>
+      <td><p>if <code>method = 'factor'</code>, a numeric value between 0 and 1 specifying the weighting factor for the results of the sample equivalent to the prior information.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An object of class <code>jfaPrior</code> containing:</p>
-<dt>confidence</dt><dd><p>a numeric value between 0 and 1 indicating the confidence level.</p></dd>
-<dt>likelihood</dt><dd><p>a character indicating the specified likelihood.</p></dd>
-<dt>method</dt><dd><p>a character indicating the method by which the prior distribution is constructed.</p></dd>
-<dt>expectedError</dt><dd><p>a numeric value larger than 0 indicating the input for the number of expected errors.</p></dd>
-<dt>N</dt><dd><p>if <code>N</code> is specified, an integer larger than 0 indicating the population size.</p></dd>
+<dt>confidence</dt><dd><p>a numeric value between 0 and 1 indicating the confidence level used.</p></dd>
 <dt>materiality</dt><dd><p>if <code>materiality</code> is specified, a numeric value between 0 and 1 indicating the materiality used to construct the prior distribution.</p></dd>
+<dt>expectedError</dt><dd><p>a numeric value larger than, or equal to, 0 indicating the input for the number of expected errors.</p></dd>
+<dt>method</dt><dd><p>a character indicating the method by which the prior distribution is constructed.</p></dd>
+<dt>likelihood</dt><dd><p>a character indicating the assumed likelihood.</p></dd>
+<dt>N</dt><dd><p>if <code>N</code> is specified, an integer larger than 0 indicating the population size.</p></dd>
 <dt>description</dt><dd><p>a list containing a description of the prior distribution, including the parameters of the prior distribution and the implicit sample on which the prior distribution is based.</p></dd>
 <dt>statistics</dt><dd><p>a list containing statistics of the prior distribution, including the mean, mode, median, and upper bound of the prior distribution.</p></dd>
 <dt>specifics</dt><dd><p>a list containing specifics of the prior distribution that vary depending on the <code>method</code>.</p></dd>
@@ -225,21 +226,21 @@ vignette('jfa', package = 'jfa')" />
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This section elaborates on the available likelihoods and corresponding prior distributions for the <code>likelihood</code> argument.</p>
+    <p>This section elaborates on the available options for the <code>method</code> argument.</p>
+<ul>
+<li><p><code>none</code>:              This method constructs a prior distribution that incorporates negligible information about the possible values of the misstatement.</p></li>
+<li><p><code>median</code>:            This method constructs a prior distribution so that the prior probability of tolerable misstatement (\(\theta &lt;\) materiality) is equal to the prior probability of intolerable misstatement (\(\theta &gt;\) materiality).</p></li>
+<li><p><code>hypotheses</code>:        This method constructs a prior distribution with custom prior probabilities for the hypotheses of tolerable misstatement (\(\theta &lt;\) materiality) and intolerable misstatement (\(\theta &gt;\) materiality). This method requires specification of the <code>pHmin</code> and <code>pHplus</code> arguments.</p></li>
+<li><p><code>arm</code>:               This method constructs a prior distribution by translating the risks of material misstatement (inherent risk and internal control risk) from the audit risk model to an implicit sample. The method requires specification of the <code>ir</code> (inherent risk) and <code>cr</code> (internal control risk) arguments.</p></li>
+<li><p><code>sample</code>:            This method constructs a prior distribution on the basis of an earlier sample. This method requires specification of the <code>sampleN</code> and <code>sampleK</code> arguments.</p></li>
+<li><p><code>factor</code>:            This method constructs a prior distribution on the basis of an earlier sample in combination with a weighting factor. This method requires specification of the <code>sampleN</code>, <code>sampleK</code>, and <code>factor</code> arguments.</p></li>
+</ul>
+
+<p>This section elaborates on the available likelihoods and corresponding prior distributions for the <code>likelihood</code> argument.</p>
 <ul>
 <li><p><code>poisson</code>:          The Poisson likelihood is often used as a likelihood for monetary unit sampling (MUS). The likelihood function is defined as: $$p(x) = \frac{\lambda^x e^{-\lambda}}{x!}$$ The conjugate <em>gamma(\(\alpha, \beta\))</em> prior has probability density function: $$f(x; \alpha, \beta) = \frac{\beta^\alpha x^{\alpha - 1} e^{-\beta x}}{\Gamma(\alpha)}$$</p></li>
 <li><p><code>binomial</code>:         The binomial likelihood is often used as a likelihood for attributes sampling <em>with</em> replacement. The likelihood function is defined as: $$p(x) = {n \choose k} p^k (1 - p)^{n - k}$$ The conjugate <em>beta(\(\alpha, \beta\))</em> prior has probability density function: $$f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}$$</p></li>
 <li><p><code>hypergeometric</code>:   The hypergeometric likelihood is used as a likelihood for sampling <em>without</em> replacement. The likelihood function is defined as: $$p(x = k) = \frac{{K \choose k} {N - K \choose n - k}}{{N \choose n}}$$ The conjugate <em>beta-binomial(\(\alpha, \beta\))</em> prior (Dyer and Pierce, 1993) has probability density function: $$f(k | n, \alpha, \beta) = {n \choose k} \frac{B(k + \alpha, n - k + \beta)}{B(\alpha, \beta)}$$</p></li>
-</ul>
-
-<p>This section elaborates on the available methods for constructing a prior distribution.</p>
-<ul>
-<li><p><code>none</code>:              This method constructs a prior distribution that incorporates negligible information about the values of the misstatement.</p></li>
-<li><p><code>median</code>:            This method constructs a prior distribution so that the prior probability of tolerable misstatement (H-) is equal to the prior probability of intolerable misstatement (H+).</p></li>
-<li><p><code>hypotheses</code>:        This method constructs a prior distribution with custom prior probabilities for the hypotheses of tolerable misstatement (H-) and intolerable misstatement (H+). This method requires specification of the <code>pHmin</code> and <code>pHplus</code> arguments.</p></li>
-<li><p><code>arm</code>:               This method constructs a prior distribution by translating the risks of material misstatement (inherent risk and internal control risk) from the audit risk model to an implicit sample. The method requires specification of the <code>ir</code> (inherent risk) and <code>cr</code> (internal control risk) arguments.</p></li>
-<li><p><code>sample</code>:            This method constructs a prior distribution on the basis of an earlier sample. This method requires specification of the <code>sampleN</code> and <code>sampleK</code> arguments.</p></li>
-<li><p><code>factor</code>:            This method constructs a prior distribution on the basis of an earlier sample in combination with a weighting factor. This method requires specification of the <code>factor</code>, <code>sampleN</code> and <code>sampleK</code> arguments.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
@@ -255,13 +256,9 @@ vignette('jfa', package = 'jfa')" />
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'> 
-<span class='co'># Specify inherent risk (ir) and control risk (cr)</span>
-<span class='va'>ir</span> <span class='op'>&lt;-</span> <span class='fl'>1</span>     <span class='co'># 100%</span>
-<span class='va'>cr</span> <span class='op'>&lt;-</span> <span class='fl'>0.6</span>   <span class='co'># 60%</span>
-
-<span class='co'># Create the prior distribution</span>
-<span class='fu'>auditPrior</span><span class='op'>(</span>confidence <span class='op'>=</span> <span class='fl'>0.95</span>, likelihood <span class='op'>=</span> <span class='st'>'binomial'</span>, method <span class='op'>=</span> <span class='st'>'arm'</span>,
-           expectedError <span class='op'>=</span> <span class='fl'>0.025</span>, materiality <span class='op'>=</span> <span class='fl'>0.05</span>, ir <span class='op'>=</span> <span class='va'>ir</span>, cr <span class='op'>=</span> <span class='va'>cr</span><span class='op'>)</span>
+<span class='co'># Prior distribution on the basis of inherent risk (ir) and control risk (cr)</span>
+<span class='fu'>auditPrior</span><span class='op'>(</span>confidence <span class='op'>=</span> <span class='fl'>0.95</span>, materiality <span class='op'>=</span> <span class='fl'>0.05</span>, expectedError <span class='op'>=</span> <span class='fl'>0.025</span>,
+           method <span class='op'>=</span> <span class='st'>'arm'</span>, likelihood <span class='op'>=</span> <span class='st'>'binomial'</span>, ir <span class='op'>=</span> <span class='fl'>1</span>, cr <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; # ------------------------------------------------------------
 #&gt; #         jfa Prior Distribution Summary (Bayesian)
 #&gt; # ------------------------------------------------------------

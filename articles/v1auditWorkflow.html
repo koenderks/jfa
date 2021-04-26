@@ -120,9 +120,9 @@
 <a href="#setting-up-the-audit" class="anchor"></a>Setting up the audit</h2>
 <p>In statistical terms, Laura wants to make a statement that, with 95% confidence, the maximum error in the financial statements is lower than what is considered <em>material</em>. She therefore determines that <em>materiality</em>, the maximum tolerable error in the financial statements, as 5%. Based on last year’s audit at BuildIt, where the maximum error turned out to be 2.5%, she expects at most 2.5% errors in the sample that she will inspect. Laura can therefore re-formulate her statistical statement as that she wants to conclude that, when 2.5% errors are found in her sample, she can conclude with 95% confidence, that the misstatement in the population is lower than the materiality of 5%. Below, Laura defines the materiality, confidence, and expected errors.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Specify the materiality, confidence, and expected errors.</span>
-<span class="va">materiality</span>   <span class="op">&lt;-</span> <span class="fl">0.05</span>   <span class="co"># 5%</span>
+<code class="sourceCode R"><span class="co"># Specify the confidence, materiality, and expected errors.</span>
 <span class="va">confidence</span>    <span class="op">&lt;-</span> <span class="fl">0.95</span>   <span class="co"># 95%</span>
+<span class="va">materiality</span>   <span class="op">&lt;-</span> <span class="fl">0.05</span>   <span class="co"># 5%</span>
 <span class="va">expectedError</span> <span class="op">&lt;-</span> <span class="fl">0.025</span>  <span class="co"># 2.5%</span></code></pre></div>
 <p>Many audits are performed according to the <em>audit risk model (ARM)</em>, which determines that the uncertainty about Laura’s statement as a whole (1 - her confidence) is a factor of three terms: the inherent risk, the control risk, and the detection risk. Inherent risk is the risk posed by an error in BuildIt’s financial statement that could be material, before consideration of any related control systems (e.g., computer systems). Control risk is the risk that a material misstatement is not prevented or detected by BuildIt’s internal control systems. Detection risk is the risk that Laura will fail to find material misstatements that exist in an BuildIt’s financial statements. The <em>ARM</em> is practically useful because for a given level of audit risk, the tolerable detection risk bears an inverse relation to the other two risks. The <em>ARM</em> is useful for Laura because it enables her to incorporate prior knowledge on BuildIt’s organization to increase the required risk that she will fail to find material misstatements. According to the <em>ARM</em>, the audit risk will then be retained.</p>
 <p><span class="math display">\[ \text{Audit risk} = \text{Inherent risk} \,\times\, \text{Control risk} \,\times\, \text{Detection risk}\]</span></p>
@@ -142,10 +142,10 @@
 <p>In a Bayesian audit, Laura starts at step 0 by defining the prior distribution that corresponds to her assessment of the control risk. She assumes the likelihood for a sample of <span class="math inline">\(n\)</span> observations, in which <span class="math inline">\(k\)</span> were in error, to be <span class="math inline">\(\text{binomial}(n, k)\)</span>. Using the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function, she can create a prior distribution that incorporates the information in the risk assessments from the <em>ARM</em>. For more information on how this is done, see Derks et al. (2019).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Step 0: Create a prior distribution according to the audit risk model.</span>
-<span class="va">priorResult</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>confidence <span class="op">=</span> <span class="va">confidence</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, method <span class="op">=</span> <span class="st">"arm"</span>, expectedError <span class="op">=</span> <span class="va">expectedError</span>, materiality <span class="op">=</span> <span class="va">materiality</span>, ir <span class="op">=</span> <span class="va">ir</span>, cr <span class="op">=</span> <span class="va">cr</span><span class="op">)</span></code></pre></div>
+<span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, method <span class="op">=</span> <span class="st">"arm"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, ir <span class="op">=</span> <span class="va">ir</span>, cr <span class="op">=</span> <span class="va">cr</span><span class="op">)</span></code></pre></div>
 <p>Laura can inspect the resulting prior distribution with the <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> function.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">priorResult</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">prior</span><span class="op">)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
 ## # ------------------------------------------------------------
@@ -172,13 +172,13 @@
 ## # ------------------------------------------------------------</code></pre>
 <p>The prior distribution can be shown by using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">priorResult</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior</span><span class="op">)</span></code></pre></div>
 <p><img src="v1auditWorkflow_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>Now that the prior distribution is specified, Laura can calculate the required sample size for her desired statement by using the <code><a href="../reference/planning.html">planning()</a></code> function. She uses the <code>priorResult</code> object as input for the <code><a href="../reference/planning.html">planning()</a></code> function to use her prior distribution.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Step 1: Calculate the required sample size.</span>
-<span class="va">planningResult</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>confidence <span class="op">=</span> <span class="va">confidence</span>, expectedError <span class="op">=</span> <span class="va">expectedError</span>, materiality <span class="op">=</span> <span class="va">materiality</span>, prior <span class="op">=</span> <span class="va">priorResult</span><span class="op">)</span></code></pre></div>
-<p>Laura can then inspect the result from her planning procedure by using the <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> function. Her result tells her that, given her prior distribution she needs to audit a sample of 169 transactions so that, when at most 4.23 errors are found, she can conclude with 95% confidence that the maximum error in BuildIt’s financial statements is lower the materiality of 5%.</p>
+<span class="va">planningResult</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, expectedError <span class="op">=</span> <span class="va">expectedError</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></code></pre></div>
+<p>Laura can then inspect the result from her planning procedure by using the <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> function. Her result tells her that, given her prior distribution she needs to audit a sample of 169 transactions so that, when at most 4.225 errors are found, she can conclude with 95% confidence that the maximum error in BuildIt’s financial statements is lower the materiality of 5%.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">planningResult</span><span class="op">)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
@@ -204,7 +204,7 @@
 ## # Expected precision:      2.494% 
 ## # Expected Bayes factor-+: 9.323 
 ## # ------------------------------------------------------------</code></pre>
-<p>Laura can inspect how the prior distribution compares to the expected posterior distribution by using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function. The expected posterior distribution is the posterior distribution that would occur if Laura actually observed a sample of 169 transactions, from which 4.223 were in error.</p>
+<p>Laura can inspect how the prior distribution compares to the expected posterior distribution by using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function. The expected posterior distribution is the posterior distribution that would occur if Laura actually observed a sample of 169 transactions, from which 4.225 were in error.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">planningResult</span><span class="op">)</span></code></pre></div>
 <p><img src="v1auditWorkflow_files/figure-html/unnamed-chunk-10-1.png" width="576" style="display: block; margin: auto;"></p>
@@ -216,7 +216,7 @@
 <p>Laura chooses to use <em>monetary unit sampling</em>, as she wants to include more high-valued transactions. The <code><a href="../reference/selection.html">selection()</a></code> function allows her to sample from the financial statements. She uses the <code>planningResult</code> object as an input for the <code><a href="../reference/selection.html">selection()</a></code> function.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Step 2: Draw a sample from the financial statements.</span>
-<span class="va">samplingResult</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="va">planningResult</span>, units <span class="op">=</span> <span class="st">"mus"</span>, bookValues <span class="op">=</span> <span class="st">"bookValue"</span>, seed <span class="op">=</span> <span class="fl">999</span><span class="op">)</span></code></pre></div>
+<span class="va">samplingResult</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span><span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="fl">164</span>, units <span class="op">=</span> <span class="st">"mus"</span>, bookValues <span class="op">=</span> <span class="st">"bookValue"</span><span class="op">)</span></code></pre></div>
 <p>Laura can inspect the outcomes of her sampling procedure by using the <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> function.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">samplingResult</span><span class="op">)</span></code></pre></div>
@@ -226,18 +226,18 @@
 ## # Input:
 ## #      
 ## # Population size:         3500 
-## # Requested sample size:   169 
+## # Requested sample size:   164 
 ## # Sampling units:          Monetary units 
 ## # Algorithm:               Random sampling   
 ## # ------------------------------------------------------------ 
 ## # Output:
 ## #
-## # Obtained sample size:    169 
+## # Obtained sample size:    164 
 ## # ------------------------------------------------------------
 ## # Statistics:
 ## #
-## # Proportion n/N:          0.048 
-## # Percentage of value:     4.86% 
+## # Proportion n/N:          0.047 
+## # Percentage of value:     4.987% 
 ## # ------------------------------------------------------------</code></pre>
 </div>
 <div id="stage-3-executing-the-audit" class="section level2">
@@ -261,8 +261,8 @@
 <p>Using her annotated sample, Laura can perform her inference with the <code><a href="../reference/evaluation.html">evaluation()</a></code> function. By passing the <code>priorResult</code> object to the function, she automatically sets <code>method = "binomial"</code> to be consistent with her prior distribution.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Step 4: Evaluate the sample.</span>
-<span class="va">evaluationResult</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>sample <span class="op">=</span> <span class="va">sample</span>, materiality <span class="op">=</span> <span class="va">materiality</span>, prior <span class="op">=</span> <span class="va">priorResult</span>, bookValues <span class="op">=</span> <span class="st">"bookValue"</span>, auditValues <span class="op">=</span> <span class="st">"auditValue"</span><span class="op">)</span></code></pre></div>
-<p>Laura can inspect the outcomes of her inference by using the <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> function. Her resulting upper bound is 3.518%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.</p>
+<span class="va">evaluationResult</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, sample <span class="op">=</span> <span class="va">sample</span>, bookValues <span class="op">=</span> <span class="st">"bookValue"</span>, auditValues <span class="op">=</span> <span class="st">"auditValue"</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></code></pre></div>
+<p>Laura can inspect the outcomes of her inference by using the <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> function. Her resulting upper bound is 2.378%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="va">evaluationResult</span><span class="op">)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------ 
@@ -273,22 +273,22 @@
 ## # Confidence:               95%   
 ## # Materiality:              5% 
 ## # Minium precision:         Not specified 
-## # Sample size:              169 
-## # Sample errors:            3 
-## # Sum of taints:            1.8  
+## # Sample size:              164 
+## # Sample errors:            0 
+## # Sum of taints:            0  
 ## # Method:                   binomial 
 ## # Prior distribution:       beta(α = 2.275, β = 50.725) 
 ## # ------------------------------------------------------------
 ## # Output:
 ## #
-## # Posterior distribution:   beta(α = 4.075, β = 217.925) 
-## # Most likely error:        1.385% 
-## # Upper bound:              3.518% 
-## # Precision:                2.133% 
-## # Bayes factor-+:           108.942 
+## # Posterior distribution:   beta(α = 2.275, β = 214.725) 
+## # Most likely error:        0.588% 
+## # Upper bound:              2.378% 
+## # Precision:                1.791% 
+## # Bayes factor-+:           1467.851 
 ## # Conclusion:               Approve population 
 ## # ------------------------------------------------------------</code></pre>
-<p>She can inspect the prior and posterior distribution by using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function. The shaded area quantifies the area under the posterior distribution that contains 95% of the probability, which ends at 3.518%. Therefore, Laura can state that there is a 95% probability that the misstatement in BuildIt’s statements is lower than 3.518%.</p>
+<p>She can inspect the prior and posterior distribution by using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function. The shaded area quantifies the area under the posterior distribution that contains 95% of the probability, which ends at 2.378%. Therefore, Laura can state that there is a 95% probability that the misstatement in BuildIt’s statements is lower than 2.378%.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">evaluationResult</span><span class="op">)</span></code></pre></div>
 <p><img src="v1auditWorkflow_files/figure-html/unnamed-chunk-16-1.png" width="576" style="display: block; margin: auto;"></p>
@@ -296,7 +296,7 @@
 <div id="conclusion" class="section level2">
 <h2 class="hasAnchor">
 <a href="#conclusion" class="anchor"></a>Conclusion</h2>
-<p>Since the 95% upper confidence bound on the misstatement in BuildIt’s financial statements is lower than the materiality, Laura can conclude that the financial statements as a whole do not contain material misstatement. Therefore, she can approve BuildIt’s financial statements.</p>
+<p>Since the 95% upper confidence bound on the misstatement in population is lower than the performance materiality Laura can conclude that there is less than 5% risk that the population contains material misstatement.</p>
 </div>
   </div>
 
