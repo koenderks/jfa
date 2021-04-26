@@ -98,14 +98,6 @@ The `auditPrior()` function creates a prior distribution according to one of sev
 
 `auditPrior(confidence, materiality = NULL, expectedError = 0, method = 'none', likelihood = 'binomial', N = NULL, ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, sampleN = 0, sampleK = 0, factor = 1)`
 
-*Supported options for the `likelihood` argument:*
-
-| `likelihood` | Description | Reference |
-| :----------- | :----------- | :----------- |
-| `binomial` | Beta prior distribution (+ binomial likelihood) | Steele (1992) |
-| `poisson` | Gamma prior distribution (+ Poisson likelihood) | Stewart (2013) |
-| `hypergeometric` | Beta-binomial prior distribution (+ hypergeometric likelihood) | Dyer and Pierce (1991) |
-
 *Supported options for the `method` argument:*
 
 | `method` | Description | Required arguments | Reference |
@@ -116,6 +108,14 @@ The `auditPrior()` function creates a prior distribution according to one of sev
 | `hypotheses` | Custom prior probabilities for hypotheses | `pHmin` or `pHplus` |  Derks et al. (2020) |
 | `sample` | Earlier sample | `sampleN` and `sampleK` | Derks et al. (2020) |
 | `factor` | Weighted earlier sample | `factor`, `sampleN` and `sampleK` | Derks et al. (2020) |
+
+*Supported options for the `likelihood` argument:*
+
+| `likelihood` | Description | Reference |
+| :----------- | :----------- | :----------- |
+| `binomial` | Beta prior distribution (+ binomial likelihood) | Steele (1992) |
+| `poisson` | Gamma prior distribution (+ Poisson likelihood) | Stewart (2013) |
+| `hypergeometric` | Beta-binomial prior distribution (+ hypergeometric likelihood) | Dyer and Pierce (1991) |
 
 ### Plan a sample with the `planning()` function
 
