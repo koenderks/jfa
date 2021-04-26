@@ -57,13 +57,13 @@ evaluation(confidence, materiality = NULL, minPrecision = NULL, method = 'binomi
 An object of class \code{jfaEvaluation} containing:
 
 \item{confidence}{a numeric value between 0 and 1 indicating the confidence level.}
+\item{materiality}{if \code{materiality} is specified, a numeric value between 0 and 1 indicating the performance materiality as a fraction of the total population size.}
+\item{minPrecision}{if \code{minPrecision} is specified, a numeric value between 0 and 1 indicating the minimum required precision as a fraction of the total population size.}
 \item{method}{a character indicating the evaluation method.}
 \item{N}{if \code{N} is specified, in integer larger than 0 indicating the population size.}
 \item{n}{an integer larger than 0 indicating the sample size.}
 \item{k}{an integer larger than, or equal to, 0 indicating the number of items in the sample that contained an error.}
 \item{t}{a value larger than, or equal to, 0, indicating the sum of observed taints.}
-\item{materiality}{if \code{materiality} is specified, a numeric value between 0 and 1 indicating the performance materiality as a fraction of the total population size.}
-\item{minPrecision}{if \code{minPrecision} is specified, a numeric value between 0 and 1 indicating the minimum required precision as a fraction of the total population size.}
 \item{mle}{a numeric value between 0 and 1 indicating the most likely error in the population as a fraction of its total size.}
 \item{precision}{a numeric value between 0 and 1 indicating the difference between the most likely error and the upper bound in the population as a fraction of the total population size.}
 \item{popBookvalue}{if \code{populationBookValue} is specified, a numeric value larger than 0 indicating the total value of the population.}
