@@ -217,26 +217,26 @@
 <div id="record-sampling" class="section level3">
 <h3 class="hasAnchor">
 <a href="#record-sampling" class="anchor"></a>Record sampling</h3>
-<p>For example, the code below samples 60 monetary units from the <code>BuildIt</code> data set using a <em>random record sampling</em> scheme.</p>
+<p>For example, the code below samples 60 items from the <code>BuildIt</code> data set using a <em>random record sampling</em> scheme.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="fl">150</span>, units <span class="op">=</span> <span class="st">"records"</span>, algorithm <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="fl">60</span>, units <span class="op">=</span> <span class="st">"records"</span>, algorithm <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #                  jfa Selection Summary
 ## # ------------------------------------------------------------
 ## # Input:
 ## #       
 ## # Population size:         3500 
-## # Requested sample size:   150 
+## # Requested sample size:   60 
 ## # Sampling units:          Records 
 ## # Algorithm:               Random sampling   
 ## # ------------------------------------------------------------ 
 ## # Output:
 ## # 
-## # Obtained sample size:    150 
+## # Obtained sample size:    60 
 ## # ------------------------------------------------------------
 ## # Statistics:
 ## #
-## # Proportion n/N:          0.043 
+## # Proportion n/N:          0.017 
 ## # ------------------------------------------------------------</code></pre>
 </div>
 <div id="monetary-unit-sampling" class="section level3">
