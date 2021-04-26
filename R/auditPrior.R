@@ -5,11 +5,11 @@
 #' For more details on how to use this function see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
-#' @usage auditPrior(confidence = 0.95, likelihood = 'binomial', method = 'none', 
+#' @usage auditPrior(confidence, likelihood = 'binomial', method = 'none', 
 #'            expectedError = 0, N = NULL, materiality = NULL, ir = 1, cr = 1,
 #'            pHmin = NULL, pHplus = NULL, factor = 1, sampleN = 0, sampleK = 0)
 #' 
-#' @param confidence      a numeric value between 0 and 1 specifying the confidence level desired for the sample planning. Defaults to 0.95 for 95\% confidence.
+#' @param confidence      a numeric value between 0 and 1 specifying the confidence level desired for the sample planning.
 #' @param likelihood      a character specifying the likelihood assumed when updating the prior distribution. This can be either \code{binomial} for the binomial likelihood and beta prior distribution, \code{poisson} for the Poisson likelihood and gamma prior distribution, or \code{hypergeometric} for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.
 #' @param method          a character specifying the method by which the prior distribution is constructed. Defaults to the \code{none} method, which incorporates no existing information. Other options are \code{median}, \code{hypotheses}, \code{arm}, \code{sample} or \code{factor}. See the details section for more information about these methods.
 #' @param expectedError   a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a value (>= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.

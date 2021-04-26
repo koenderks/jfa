@@ -1,5 +1,6 @@
 # jfa 0.5.3
 
+- Removed the default value of `confidence = 0.95` in all applicable functions, it currently has no default so that the user is required to give an input.
 - Made an correction to the calculation of the beta-binomial prior and posterior so that the posterior parameter `N` has the correct value of `N = N - n` (current) instead of `N - n + k` (before).
 - Updated the documentation for the functions with simpler examples.
 - Fixed an error in the mode of the gamma posterior distribution from the `evaluation()` function in which `+1` was added to the beta parameter, resulting in slighly lower modes than the correct ones.

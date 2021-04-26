@@ -5,7 +5,7 @@
 #' For more details on how to use this function see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
-#' @usage evaluation(confidence = 0.95, method = 'binomial', N = NULL,
+#' @usage evaluation(confidence, method = 'binomial', N = NULL,
 #'             sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, 
 #'             nSumstats = NULL, kSumstats = NULL, 
 #'             materiality = NULL, minPrecision = NULL,
@@ -108,7 +108,7 @@
 #'
 #' @export 
 
-evaluation <- function(confidence = 0.95, method = "binomial", N = NULL,
+evaluation <- function(confidence, method = "binomial", N = NULL,
                        sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, 
                        nSumstats = NULL, kSumstats = NULL, 
                        materiality = NULL, minPrecision = NULL,

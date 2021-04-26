@@ -5,12 +5,12 @@
 #' For more details on how to use this function see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
-#' @usage planning(confidence = 0.95, expectedError = 0, likelihood = 'poisson', N = NULL, 
+#' @usage planning(confidence, expectedError = 0, likelihood = 'poisson', N = NULL, 
 #'           materiality = NULL, minPrecision = NULL, 
 #'           prior = FALSE, nPrior = 0, kPrior = 0,
 #'           increase = 1, maxSize = 5000)
 #'
-#' @param confidence    a numeric value between 0 and 1 specifying the confidence level used in the planning. Defaults to 0.95 for 95\% confidence.
+#' @param confidence    a numeric value between 0 and 1 specifying the confidence level used in the planning.
 #' @param expectedError a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a number (>= 1) that represents the number of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.
 #' @param likelihood    a character specifying the likelihood assumed in the calculation. This can be either \code{binomial} for the binomial likelihood, \code{poisson} for the Poisson likelihood, or \code{hypergeometric} for the hypergeometric likelihood. See the details section for more information about the available likelihoods.
 #' @param N             an integer larger than 0 specifying the total population size. Only required when \code{likelihood = 'hypergeometric'}.
@@ -66,7 +66,7 @@
 #'
 #' @export
 
-planning <- function(confidence = 0.95, expectedError = 0, likelihood = 'poisson', N = NULL, 
+planning <- function(confidence, expectedError = 0, likelihood = 'poisson', N = NULL, 
                      materiality = NULL, minPrecision = NULL, 
                      prior = FALSE, nPrior = 0, kPrior = 0,
                      increase = 1, maxSize = 5000) {

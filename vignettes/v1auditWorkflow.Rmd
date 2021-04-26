@@ -135,7 +135,7 @@ Using her annotated sample, Laura can perform her inference with the `evaluation
 
 ```{r}
 # Step 4: Evaluate the sample.
-evaluationResult <- evaluation(sample = sample, materiality = materiality, prior = priorResult, bookValues = "bookValue", auditValues = "auditValue")
+evaluationResult <- evaluation(confidence = confidence, sample = sample, materiality = materiality, prior = priorResult, bookValues = "bookValue", auditValues = "auditValue")
 ```
 
 Laura can inspect the outcomes of her inference by using the `print()` function. Her resulting upper bound is 3.518%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.
