@@ -135,12 +135,13 @@
 <div id="3-benchmarks" class="section level2">
 <h2 class="hasAnchor">
 <a href="#3-benchmarks" class="anchor"></a>3. Benchmarks</h2>
-<p>To validate the statistical results, <code>jfa</code>’s main output is currently being verified against the following benchmarks:</p>
+<p>To validate the statistical results, <code>jfa</code>’s automatic <a href="https://github.com/koenderks/jfa/tree/master/tests/testthat">unit tests</a> regularly verify the main output from the package against the following benchmarks:</p>
 <ul>
-<li><a href="https://cplusglobal.wordpress.com/solutions/auditsampler-statistical-sampling-software/">AuditSampler</a></li>
 <li>
 <a href="https://future.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL">Audit Sampling: Audit Guide</a> (Appendix A and Appendix C)</li>
+<li><a href="https://cplusglobal.wordpress.com/solutions/auditsampler-statistical-sampling-software/">AuditSampler</a></li>
 <li>Touw, P., and Hoogduin, L. (2011). <em>Statistiek voor audit en controlling</em>. Boom uitgevers, Amsterdam.</li>
+<li><a href="https://steekproeven.eu/">SMASH21</a></li>
 </ul>
 </div>
 <div id="4-statistical-tables" class="section level2">
@@ -182,7 +183,7 @@
 <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
 <p>The <code><a href="reference/auditPrior.html">auditPrior()</a></code> function creates a prior distribution according to one of several methods, including a translation of the assessments of the inherent risk and control risk from the audit risk model. The function returns an object of class <code>jfaPrior</code> which can be used with associated <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. Objects with class <code>jfaPrior</code> can also be used as input for the <code>prior</code> argument in other functions.</p>
 <p><em>Full function with default arguments:</em></p>
-<p><code><a href="reference/auditPrior.html">auditPrior(confidence, materiality = NULL, expectedError = 0, method = 'none', likelihood = 'binomial', N = NULL, ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, sampleN = 0, sampleK = 0, factor = 1)</a></code></p>
+<p><code><a href="reference/auditPrior.html">auditPrior(confidence, materiality = NULL, expectedError = 0, method = 'none', likelihood = 'binomial', N = NULL, ir = 1, cr = 1, ub = NULL, pHmin = NULL, pHplus = NULL, sampleN = 0, sampleK = 0, factor = 1)</a></code></p>
 <p><em>Supported options for the <code>method</code> argument:</em></p>
 <table class="table">
 <colgroup>
@@ -213,20 +214,26 @@
 <td align="left">Derks et al. (2020)</td>
 </tr>
 <tr class="odd">
+<td align="left"><code>bram</code></td>
+<td align="left">Provide upper bound of prior</td>
+<td align="left"><code>ub</code></td>
+<td align="left">Touw and Hoogduin (2011)</td>
+</tr>
+<tr class="even">
 <td align="left"><code>median</code></td>
-<td align="left">Equal prior probabilities for hypotheses</td>
+<td align="left">Equal prior probabilities for (in)tolerable misstatement</td>
 <td align="left"></td>
 <td align="left">Derks et al. (2020)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>hypotheses</code></td>
-<td align="left">Custom prior probabilities for hypotheses</td>
+<td align="left">Custom prior probabilities for (in)tolerable misstatement</td>
 <td align="left">
 <code>pHmin</code> or <code>pHplus</code>
 </td>
 <td align="left">Derks et al. (2020)</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left"><code>sample</code></td>
 <td align="left">Earlier sample</td>
 <td align="left">
@@ -234,7 +241,7 @@
 </td>
 <td align="left">Derks et al. (2020)</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left"><code>factor</code></td>
 <td align="left">Weighted earlier sample</td>
 <td align="left">
@@ -485,7 +492,7 @@
 <h3 class="hasAnchor">
 <a href="#create-a-report-with-the-report-function" class="anchor"></a>Create a report with the <code>report()</code> function</h3>
 <p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></p>
-<p>The <code><a href="reference/report.html">report()</a></code> function takes an object of class <code>jfaEvaluation</code> as returned by the <code><a href="reference/evaluation.html">evaluation()</a></code> function and automatically generates a <code>html</code> or <code>pdf</code> report containing the analysis results and their interpretation.</p>
+<p>The <code><a href="reference/report.html">report()</a></code> function takes an object of class <code>jfaEvaluation</code> as returned by the <code><a href="reference/evaluation.html">evaluation()</a></code> function and automatically creates a <code>html</code> or <code>pdf</code> report containing the analysis results and their interpretation.</p>
 <p><em>Full function with default arguments:</em></p>
 <p><code><a href="reference/report.html">report(object, file = 'report.html', format = 'html_document')</a></code></p>
 <p>For an example report, see the following <a href="https://github.com/koenderks/jfa/raw/master/man/figures/readme/report/report.pdf">link</a>.</p>
@@ -499,7 +506,7 @@
 </li>
 <li>Cox, D. R., &amp; Snell, E. J. (1979). On sampling and the estimation of rare errors. <em>Biometrika</em>, 66(1), 125-132. - <a href="https://doi.org/10.1093/biomet/66.1.125">View online</a>
 </li>
-<li>Derks, K. (2021). jfa: Bayesian and classical audit sampling. R package version 0.5.2. - <a href="https://cran.r-project.org/package=jfa">View online</a>
+<li>Derks, K. (2021). jfa: Bayesian and classical audit sampling. R package version 0.5.3. - <a href="https://cran.r-project.org/package=jfa">View online</a>
 </li>
 <li>Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., &amp; Wetzels, R. (2020). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. <em>Under review</em>. - <a href="https://psyarxiv.com/8fhkp/">View online</a>
 </li>
