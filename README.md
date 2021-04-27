@@ -195,7 +195,7 @@ The `evaluation()` function takes a sample or summary statistics of the sample a
 
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
-The `report()` function takes an object of class `jfaEvaluation` as returned by the `evaluation()` function and automatically generates a `html` or `pdf` report containing the analysis results and their interpretation.
+The `report()` function takes an object of class `jfaEvaluation` as returned by the `evaluation()` function and automatically creates a `html` or `pdf` report containing the analysis results and their interpretation.
 
 *Full function with default arguments:*
 
