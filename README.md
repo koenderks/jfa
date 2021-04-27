@@ -105,7 +105,7 @@ The `auditPrior()` function creates a prior distribution according to one of sev
 | :----------- | :----------- | :----------- | :----------- |
 | `none` | No prior information | | Derks et al. (2020) |
 | `arm` | Translates risk assessments (ARM) | `ir` and `cr` | Derks et al. (2020) |
-| `bram` | Assess upper bound of prior | `ub` | steekproeven.eu |
+| `bram` | Assess upper bound of prior | `ub` | Touw and Hoogduin (2011) |
 | `median` | Equal prior probabilities for hypotheses | | Derks et al. (2020) |
 | `hypotheses` | Custom prior probabilities for hypotheses | `pHmin` or `pHplus` |  Derks et al. (2020) |
 | `sample` | Earlier sample | `sampleN` and `sampleK` | Derks et al. (2020) |
