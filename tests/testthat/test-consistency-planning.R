@@ -269,3 +269,6 @@ test_that(desc = "(id: f6-v0.5.2-t1) Test for change in beta-binomial mode calcu
   expect_equal(jfaRes[["sampleSize"]], 58)
   expect_equal(modeDist, 0)
 })
+
+# jfa version 0.5.3
+# No changes to be benchmarked
