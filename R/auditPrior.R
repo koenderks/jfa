@@ -111,8 +111,8 @@ auditPrior <- function(confidence, materiality = NULL, expectedError = 0,
     nPrior 	<- nPlus - nMin # Calculate the sample size equivalent to the increase in detection risk
     kPrior 	<- (nPlus * expectedError) - (nMin * expectedError) # Calculate errors equivalent 
   } else if (method == 'bram') {
-	if(is.null(ub)) # Check if the value for the upper bound is present
-	  stop("You must specify a value for 'ub'.")
+    if(is.null(ub)) # Check if the value for the upper bound is present
+      stop("You must specify a value for 'ub'.")
     if(ub <= 0 || ub >= 1) # Check if the value for the upper bound is valid
       stop("The value of 'ub' must be between 0 and 1.")
     bound <- Inf
