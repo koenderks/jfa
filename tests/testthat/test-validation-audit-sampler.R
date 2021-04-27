@@ -1,4 +1,4 @@
-context("9. Validation of AuditSampler package")
+context("9. Benchmark against AuditSampler package")
 
 # Sample size tables can be retrieved from: https://cplusglobal.wordpress.com/2015/11/13/attributes-sample-size-using-the-hypergeometric-distribution/
 

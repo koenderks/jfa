@@ -1,4 +1,4 @@
-context("1. Consistency test for function auditPrior()")
+context("1. Test consistency of function auditPrior()")
 
 # jfa version 0.2.0
 
