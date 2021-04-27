@@ -51,11 +51,12 @@ The cheat sheet below can help you get started with the `jfa` package and its wo
 
 ## 3. Benchmarks
 
-To validate the statistical results, `jfa`'s main output is currently being verified against the following benchmarks:
+To validate the statistical results, `jfa`'s automatic [unit tests](https://github.com/koenderks/jfa/tree/master/tests/testthat) regularly verify the main output from the package against the following benchmarks:
 
-- [AuditSampler](https://cplusglobal.wordpress.com/solutions/auditsampler-statistical-sampling-software/) 
 - [Audit Sampling: Audit Guide](https://future.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL) (Appendix A and Appendix C)
 - Touw, P., and Hoogduin, L. (2011). *Statistiek voor audit en controlling*. Boom uitgevers, Amsterdam.
+- [AuditSampler](https://cplusglobal.wordpress.com/solutions/auditsampler-statistical-sampling-software/) 
+- [SMASH21](https://steekproeven.eu/)
 
 ## 4. Statistical tables
 
@@ -104,6 +105,7 @@ The `auditPrior()` function creates a prior distribution according to one of sev
 | :----------- | :----------- | :----------- | :----------- |
 | `none` | No prior information | | Derks et al. (2020) |
 | `arm` | Translates risk assessments (ARM) | `ir` and `cr` | Derks et al. (2020) |
+| `bram` | Assess upper bound of prior | `ub` | steekproeven.eu |
 | `median` | Equal prior probabilities for hypotheses | | Derks et al. (2020) |
 | `hypotheses` | Custom prior probabilities for hypotheses | `pHmin` or `pHplus` |  Derks et al. (2020) |
 | `sample` | Earlier sample | `sampleN` and `sampleK` | Derks et al. (2020) |

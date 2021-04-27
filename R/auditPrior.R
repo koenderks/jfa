@@ -8,7 +8,7 @@
 #' @usage auditPrior(confidence, materiality = NULL, expectedError = 0, 
 #'            method = 'none', likelihood = 'binomial', N = NULL, 
 #'            ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, 
-#'            sampleN = 0, sampleK = 0, factor = 1)
+#'            sampleN = 0, sampleK = 0, factor = 1, ub = NULL)
 #' 
 #' @param confidence      a numeric value between 0 and 1 specifying the confidence level to be used in the planning.
 #' @param materiality     a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum upper limit) as a fraction of the total population size. Can be \code{NULL} for some methods.
@@ -23,6 +23,7 @@
 #' @param sampleN         if \code{method = 'sample'} or \code{method = 'factor'}, an integer larger than, or equal to, 0 specifying the sample size of the sample equivalent to the prior information.
 #' @param sampleK         if \code{sample} or \code{factor}, a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.
 #' @param factor          if \code{method = 'factor'}, a numeric value between 0 and 1 specifying the weighting factor for the results of the sample equivalent to the prior information.
+#' @param ub              if \code{method = 'bram'}, a numeric value between 0 and 1 specifying the upper bound for the prior distribution as a fraction of the population size.
 #' 
 #' @details This section elaborates on the available options for the \code{method} argument.
 #'
@@ -31,6 +32,7 @@
 #'  \item{\code{median}:            This method constructs a prior distribution so that the prior probability of tolerable misstatement (\eqn{\theta <} materiality) is equal to the prior probability of intolerable misstatement (\eqn{\theta >} materiality).}
 #'  \item{\code{hypotheses}:        This method constructs a prior distribution with custom prior probabilities for the hypotheses of tolerable misstatement (\eqn{\theta <} materiality) and intolerable misstatement (\eqn{\theta >} materiality). This method requires specification of the \code{pHmin} and \code{pHplus} arguments.}
 #'  \item{\code{arm}:               This method constructs a prior distribution by translating the risks of material misstatement (inherent risk and internal control risk) from the audit risk model to an implicit sample. The method requires specification of the \code{ir} (inherent risk) and \code{cr} (internal control risk) arguments.}
+#'  \item{\code{bram}:              This method constructs a prior distribution using the Bayesian audit risk assessment model (BRAM) in which the expected most likely error and expected upper bound of the misstatement must be specified. The method requires specification of the \code{ub} argument.}
 #'  \item{\code{sample}:            This method constructs a prior distribution on the basis of an earlier sample. This method requires specification of the \code{sampleN} and \code{sampleK} arguments.}
 #'  \item{\code{factor}:            This method constructs a prior distribution on the basis of an earlier sample in combination with a weighting factor. This method requires specification of the \code{sampleN}, \code{sampleK}, and \code{factor} arguments.}
 #' }
@@ -74,7 +76,7 @@
 auditPrior <- function(confidence, materiality = NULL, expectedError = 0, 
                        method = 'none', likelihood = 'binomial', N = NULL, 
                        ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, 
-                       sampleN = 0, sampleK = 0, factor = 1) {
+                       sampleN = 0, sampleK = 0, factor = 1, ub = NULL) {
   
   if (confidence >= 1 || confidence <= 0 || is.null(confidence)) # Check if the confidence has a valid input
     stop("Specify a value for the confidence likelihood. Possible values lie within the range of 0 to 1.")
@@ -82,10 +84,10 @@ auditPrior <- function(confidence, materiality = NULL, expectedError = 0,
   if (!(likelihood %in% c("poisson", "binomial", "hypergeometric"))) # Check if the likelihood has a valid input
     stop("Specify a valid likelihood. Possible options are 'poisson', 'binomial', and 'hypergeometric'.")
   
-  if (!(method %in% c("none", "median", "hypotheses", "arm", "sample", "factor"))) # Check if the method has a valid input
-    stop("Currently only method = 'none', 'median', 'hypotheses', 'arm', 'sample', and 'factor' are supported")
+  if (!(method %in% c("none", "median", "hypotheses", "arm", "bram", "sample", "factor"))) # Check if the method has a valid input
+    stop("Currently only method = 'none', 'median', 'hypotheses', 'arm', 'bram', 'sample', and 'factor' are supported")
   
-  if (is.null(materiality) && method %in% c("median", "hypotheses", "arm")) # Materiality is required for these methods
+  if (is.null(materiality) && method %in% c("median", "hypotheses", "arm", "bram")) # Materiality is required for these methods
     stop("The methods 'arm', 'median', and 'hypotheses' require that you specify a value for the materiality.")
   
   if (likelihood == "hypergeometric" && (is.null(N) || N <= 0)) # Check if N is specified if hypergeometric is specified
@@ -94,7 +96,7 @@ auditPrior <- function(confidence, materiality = NULL, expectedError = 0,
   if (expectedError < 0) # Check if the expected errors has a valid input
     stop("The expected errors must be zero or larger than zero.")
   
-  if (expectedError >= 1 && method != "none") # Check if the expected errors are consistent with the method
+  if (expectedError >= 1 && method != 'none') # Check if the expected errors are consistent with the method
     stop("The expected errors must be entered as a proportion to use this prior construction method.")
   
   if (method == "none") { # Method 1: Negligible prior information
@@ -108,6 +110,19 @@ auditPrior <- function(confidence, materiality = NULL, expectedError = 0,
     nMin 	<- planning(confidence = 1 - alpha, likelihood = likelihood, expectedError = expectedError, N = N, materiality = materiality, prior = TRUE)$sampleSize # Calculated the sample size for the adjusted detection risk
     nPrior 	<- nPlus - nMin # Calculate the sample size equivalent to the increase in detection risk
     kPrior 	<- (nPlus * expectedError) - (nMin * expectedError) # Calculate errors equivalent 
+  } else if (method == 'bram') {
+    if(is.null(ub) || ub < 0 || ub > 1) # Check if the value for the upper bound is valid
+      stop("The value of 'ub' must be between 0 and 1.")
+    bound <- Inf
+    nPrior <- 0
+    while (bound > ub) {
+      nPrior <- nPrior + 0.01
+      kPrior <- nPrior * expectedError
+      bound <- switch(likelihood, 
+                      "binomial" = stats::qbeta(p = confidence, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior),
+                      "poisson" = stats::qgamma(p = confidence, shape = 1 + kPrior, rate = nPrior),
+                      "hypergeometric" = .qBetaBinom(p = confidence, N = N, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior) / N)
+    }
   } else if (method == "median") { # Method 3: Equal prior probabilities
     if (likelihood == "hypergeometric") # Cannot use this method with the hypergeometric likelihood
       stop("Method = 'median' is not supported for the hypergeometric likelihood.")
@@ -211,6 +226,9 @@ auditPrior <- function(confidence, materiality = NULL, expectedError = 0,
   } else if (method == "arm") {
     result[["specifics"]]$ir       	<- as.numeric(ir)
     result[["specifics"]]$cr       	<- as.numeric(cr)  
+  } else if (method == "bram") {
+    result[["specifics"]]$mode      <- result[["expectedError"]]
+    result[["specifics"]]$ub       	<- as.numeric(ub)
   }
   # Create the hypotheses section
   if (!is.null(result[["materiality"]])) {

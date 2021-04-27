@@ -7,7 +7,7 @@
 auditPrior(confidence, materiality = NULL, expectedError = 0, 
            method = 'none', likelihood = 'binomial', N = NULL, 
            ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, 
-           sampleN = 0, sampleK = 0, factor = 1)
+           sampleN = 0, sampleK = 0, factor = 1, ub = NULL)
 }
 \arguments{
 \item{confidence}{a numeric value between 0 and 1 specifying the confidence level to be used in the planning.}
@@ -35,6 +35,8 @@ auditPrior(confidence, materiality = NULL, expectedError = 0,
 \item{sampleK}{if \code{sample} or \code{factor}, a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.}
 
 \item{factor}{if \code{method = 'factor'}, a numeric value between 0 and 1 specifying the weighting factor for the results of the sample equivalent to the prior information.}
+
+\item{ub}{if \code{method = 'bram'}, a numeric value between 0 and 1 specifying the upper bound for the prior distribution as a fraction of the population size.}
 }
 \value{
 An object of class \code{jfaPrior} containing:
@@ -64,6 +66,7 @@ This section elaborates on the available options for the \code{method} argument.
  \item{\code{median}:            This method constructs a prior distribution so that the prior probability of tolerable misstatement (\eqn{\theta <} materiality) is equal to the prior probability of intolerable misstatement (\eqn{\theta >} materiality).}
  \item{\code{hypotheses}:        This method constructs a prior distribution with custom prior probabilities for the hypotheses of tolerable misstatement (\eqn{\theta <} materiality) and intolerable misstatement (\eqn{\theta >} materiality). This method requires specification of the \code{pHmin} and \code{pHplus} arguments.}
  \item{\code{arm}:               This method constructs a prior distribution by translating the risks of material misstatement (inherent risk and internal control risk) from the audit risk model to an implicit sample. The method requires specification of the \code{ir} (inherent risk) and \code{cr} (internal control risk) arguments.}
+ \item{\code{bram}:              This method constructs a prior distribution using the Bayesian audit risk assessment model (BRAM) in which the expected most likely error and expected upper bound of the misstatement must be specified. The method requires specification of the \code{ub} argument.}
  \item{\code{sample}:            This method constructs a prior distribution on the basis of an earlier sample. This method requires specification of the \code{sampleN} and \code{sampleK} arguments.}
  \item{\code{factor}:            This method constructs a prior distribution on the basis of an earlier sample in combination with a weighting factor. This method requires specification of the \code{sampleN}, \code{sampleK}, and \code{factor} arguments.}
 }
