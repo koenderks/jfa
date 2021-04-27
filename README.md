@@ -54,8 +54,8 @@ The cheat sheet below can help you get started with the `jfa` package and its wo
 To validate the statistical results, `jfa`'s automatic [unit tests](https://github.com/koenderks/jfa/tree/master/tests/testthat) regularly verify the main output from the package against the following benchmarks:
 
 - [Audit Sampling: Audit Guide](https://future.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL) (Appendix A and Appendix C)
-- Touw, P., and Hoogduin, L. (2011). *Statistiek voor audit en controlling*. Boom uitgevers, Amsterdam.
-- [AuditSampler](https://cplusglobal.wordpress.com/solutions/auditsampler-statistical-sampling-software/) 
+- [AuditSampler](https://cplusglobal.wordpress.com/solutions/auditsampler-statistical-sampling-software/)
+- Touw, P., and Hoogduin, L. (2011). *Statistiek voor audit en controlling*. Boom uitgevers, Amsterdam. 
 - [SMASH21](https://steekproeven.eu/)
 
 ## 4. Statistical tables
