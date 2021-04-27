@@ -144,6 +144,7 @@ test_that(desc = "(id: f4-v0.5.0-t2) Test for plot function", {
 # jfa version 0.5.3
 
 test_that(desc = "(id: f4-v0.5.3-t1) Test for bram method", {
+  # SMASH21-Bayes [www.steekproeven.eu]
   N <- 20000
   materiality <- 2000
   expectedMisstatement <- 300
