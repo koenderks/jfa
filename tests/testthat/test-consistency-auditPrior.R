@@ -1,4 +1,4 @@
-context("1. Consistency test for function auditPrior()")
+context("1. Test consistency of function auditPrior()")
 
 # jfa version 0.2.0
 
@@ -140,3 +140,22 @@ test_that(desc = "(id: f4-v0.5.0-t2) Test for plot function", {
 
 # jfa version 0.5.2
 # No changes to be benchmarked
+
+# jfa version 0.5.3
+
+test_that(desc = "(id: f4-v0.5.3-t1) Test for bram method", {
+  # SMASH21-Bayes [www.steekproeven.eu]
+  N <- 20000
+  materiality <- 2000
+  expectedMisstatement <- 300
+  expectedUpperBound <- 5000
+  ub <- expectedUpperBound / N
+  theta <- materiality / N
+  expectedError <- expectedMisstatement / N
+  prior <- auditPrior(confidence = 0.95, materiality = theta, likelihood = "binomial", method = "bram", expectedError = expectedError, ub = ub)
+  expect_equal(prior[["description"]]$alpha, 1.1581)
+  expect_equal(prior[["description"]]$beta, 11.3819)
+  prior <- auditPrior(confidence = 0.95, materiality = theta, likelihood = "poisson", method = "bram", expectedError = expectedError, ub = ub)
+  expect_equal(prior[["description"]]$alpha, 1.2028)
+  expect_equal(prior[["description"]]$beta, 13.52)
+})

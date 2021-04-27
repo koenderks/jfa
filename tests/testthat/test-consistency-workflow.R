@@ -1,4 +1,4 @@
-context("6. Consistency test for workflow functionality")
+context("6. Test consistency of workflow functionality")
 
 # jfa version 0.1.0
 

@@ -14,6 +14,7 @@ print.jfaPrior <- function(x, digits = 3, ...) {
                                     "median" = paste0("p(\u0398 < ",round(x[["materiality"]], digits),") = p(\u0398 > ", round(x[["materiality"]], digits),") = 0.5"),
                                     "hypotheses" = paste0("p(\u0398 < ",round(x[["materiality"]], digits),") = ",round(x[["specifics"]]$pHmin, digits),"; p(\u0398 > ", round(x[["materiality"]], digits),") = ", round(x[["specifics"]]$pHplus, digits)),
                                     "arm" = paste0("Inherent risk = ", round(x[["specifics"]]$ir, digits), "; Internal control risk = ", round(x[["specifics"]]$cr, digits), "; Detection risk = ", round((1 - x[["confidence"]]) / (x[["specifics"]]$ir * x[["specifics"]]$cr), digits)),
+                                    "bram" = paste0("Mode = ", round(x[["specifics"]]$mode, digits), "; Upper bound = ", round(x[["specifics"]]$ub, digits)),
                                     "sample" = paste0("Earlier sample of ", round(x[["specifics"]]$sampleN, digits), " transactions with ", round(x[["specifics"]]$sampleK, digits), " errors"),
                                     "factor" = paste0("Earlier sample of ", round(x[["specifics"]]$sampleN, digits), " transactions with ", round(x[["specifics"]]$sampleK, digits), " errors weighted by ", round(x[["specifics"]]$factor, digits))), "
 # ------------------------------------------------------------

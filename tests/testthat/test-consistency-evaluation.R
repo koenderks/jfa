@@ -1,4 +1,4 @@
-context("2. Consistency test for function evaluation()")
+context("2. Test consistency of function evaluation()")
 
 # jfa version 0.1.0
 
@@ -323,4 +323,7 @@ test_that(desc = "(id: f5-v0.2.0-t4) Test for Bayesian plot function", {
 # No changes to be benchmarked
 
 # jfa version 0.5.2
+# No changes to be benchmarked
+
+# jfa version 0.5.3
 # No changes to be benchmarked

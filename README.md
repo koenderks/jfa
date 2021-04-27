@@ -51,11 +51,12 @@ The cheat sheet below can help you get started with the `jfa` package and its wo
 
 ## 3. Benchmarks
 
-To validate the statistical results, `jfa`'s main output is currently being verified against the following benchmarks:
+To validate the statistical results, `jfa`'s automatic [unit tests](https://github.com/koenderks/jfa/tree/master/tests/testthat) regularly verify the main output from the package against the following benchmarks:
 
-- [AuditSampler](https://cplusglobal.wordpress.com/solutions/auditsampler-statistical-sampling-software/) 
 - [Audit Sampling: Audit Guide](https://future.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL) (Appendix A and Appendix C)
-- Touw, P., and Hoogduin, L. (2011). *Statistiek voor audit en controlling*. Boom uitgevers, Amsterdam.
+- [AuditSampler](https://cplusglobal.wordpress.com/solutions/auditsampler-statistical-sampling-software/)
+- Touw, P., and Hoogduin, L. (2011). *Statistiek voor audit en controlling*. Boom uitgevers, Amsterdam. 
+- [SMASH21](https://steekproeven.eu/)
 
 ## 4. Statistical tables
 
@@ -96,7 +97,7 @@ The `auditPrior()` function creates a prior distribution according to one of sev
 
 *Full function with default arguments:*
 
-`auditPrior(confidence, materiality = NULL, expectedError = 0, method = 'none', likelihood = 'binomial', N = NULL, ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, sampleN = 0, sampleK = 0, factor = 1)`
+`auditPrior(confidence, materiality = NULL, expectedError = 0, method = 'none', likelihood = 'binomial', N = NULL, ir = 1, cr = 1, ub = NULL, pHmin = NULL, pHplus = NULL, sampleN = 0, sampleK = 0, factor = 1)`
 
 *Supported options for the `method` argument:*
 
@@ -104,8 +105,9 @@ The `auditPrior()` function creates a prior distribution according to one of sev
 | :----------- | :----------- | :----------- | :----------- |
 | `none` | No prior information | | Derks et al. (2020) |
 | `arm` | Translates risk assessments (ARM) | `ir` and `cr` | Derks et al. (2020) |
-| `median` | Equal prior probabilities for hypotheses | | Derks et al. (2020) |
-| `hypotheses` | Custom prior probabilities for hypotheses | `pHmin` or `pHplus` |  Derks et al. (2020) |
+| `bram` | Bayesian risk assessment model (BRAM) | `ub` | Touw and Hoogduin (2011) |
+| `median` | Equal prior probabilities for (in)tolerable misstatement | | Derks et al. (2020) |
+| `hypotheses` | Custom prior probabilities for (in)tolerable misstatement | `pHmin` or `pHplus` | Derks et al. (2020) |
 | `sample` | Earlier sample | `sampleN` and `sampleK` | Derks et al. (2020) |
 | `factor` | Weighted earlier sample | `sampleN`, `sampleK`, and `factor` | Derks et al. (2020) |
 
@@ -193,7 +195,7 @@ The `evaluation()` function takes a sample or summary statistics of the sample a
 
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
-The `report()` function takes an object of class `jfaEvaluation` as returned by the `evaluation()` function and automatically generates a `html` or `pdf` report containing the analysis results and their interpretation.
+The `report()` function takes an object of class `jfaEvaluation` as returned by the `evaluation()` function and automatically creates a `html` or `pdf` report containing the analysis results and their interpretation.
 
 *Full function with default arguments:*
 
@@ -205,7 +207,7 @@ For an example report, see the following [link](https://github.com/koenderks/jfa
 
 - Bickel, P. J. (1992). Inference and auditing: The Stringer bound. *International Statistical Review*, 60(2), 197–209. - [View online](https://www.jstor.org/stable/1403650)
 - Cox, D. R., & Snell, E. J. (1979). On sampling and the estimation of rare errors. *Biometrika*, 66(1), 125-132. - [View online](https://doi.org/10.1093/biomet/66.1.125)
-- Derks, K. (2021). jfa: Bayesian and classical audit sampling. R package version 0.5.2. - [View online](https://cran.r-project.org/package=jfa)
+- Derks, K. (2021). jfa: Bayesian and classical audit sampling. R package version 0.5.3. - [View online](https://cran.r-project.org/package=jfa)
 - Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., & Wetzels, R. (2020). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. *Under review*. - [View online](https://psyarxiv.com/8fhkp/)
 - Dworin, L. D. and Grimlund, R. A. (1984). Dollar-unit sampling for accounts receivable and inventory. *The Accounting Review*, 59(2), 218–241. - [View online](https://www.jstor.org/stable/247296)
 - Dyer, D., & Pierce, R. L. (1993). On the choice of the prior distribution in hypergeometric sampling. *Communications in Statistics - Theory and Methods*, 22(8), 2125-2146. - [View online](https://www.tandfonline.com/doi/abs/10.1080/03610929308831139)

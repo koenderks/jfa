@@ -1,4 +1,4 @@
-context("5. Consistency test for function selection()")
+context("5. Test consistency of function selection()")
 
 # jfa version 0.1.0
 
@@ -100,4 +100,7 @@ test_that(desc = "(id: f7-v0.5.0-t2) Test for plot function", {
 # No changes to be benchmarked
 
 # jfa version 0.5.2
+# No changes to be benchmarked
+
+# jfa version 0.5.3
 # No changes to be benchmarked
