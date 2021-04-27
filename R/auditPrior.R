@@ -7,8 +7,8 @@
 #'
 #' @usage auditPrior(confidence, materiality = NULL, expectedError = 0, 
 #'            method = 'none', likelihood = 'binomial', N = NULL, 
-#'            ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, 
-#'            sampleN = 0, sampleK = 0, factor = 1, ub = NULL)
+#'            ir = 1, cr = 1, ub = NULL, pHmin = NULL, pHplus = NULL, 
+#'            sampleN = 0, sampleK = 0, factor = 1)
 #' 
 #' @param confidence      a numeric value between 0 and 1 specifying the confidence level to be used in the planning.
 #' @param materiality     a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum upper limit) as a fraction of the total population size. Can be \code{NULL} for some methods.
@@ -18,12 +18,12 @@
 #' @param N               an numeric value larger than 0 specifying the total population size. Optional unless \code{likelihood = 'hypergeometric'}.
 #' @param ir              if \code{method = 'arm'}, a numeric value between 0 and 1 specifying the inherent risk in the audit risk model. Defaults to 1 for 100\% risk.
 #' @param cr              if \code{method = 'arm'}, a numeric value between 0 and 1 specifying the internal control risk in the audit risk model. Defaults to 1 for 100\% risk.
+#' @param ub              if \code{method = 'bram'}, a numeric value between 0 and 1 specifying the upper bound for the prior distribution as a fraction of the population size.
 #' @param pHmin           if \code{method = 'hypotheses'}, a numeric value between 0 and 1 specifying the prior probability of the hypothesis \eqn{\theta <} materiality.
 #' @param pHplus          if \code{method = 'hypotheses'}, a numeric value between 0 and 1 specifying the prior probability of the hypothesis \eqn{\theta >} materiality.
 #' @param sampleN         if \code{method = 'sample'} or \code{method = 'factor'}, an integer larger than, or equal to, 0 specifying the sample size of the sample equivalent to the prior information.
 #' @param sampleK         if \code{sample} or \code{factor}, a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.
 #' @param factor          if \code{method = 'factor'}, a numeric value between 0 and 1 specifying the weighting factor for the results of the sample equivalent to the prior information.
-#' @param ub              if \code{method = 'bram'}, a numeric value between 0 and 1 specifying the upper bound for the prior distribution as a fraction of the population size.
 #' 
 #' @details This section elaborates on the available options for the \code{method} argument.
 #'
@@ -68,15 +68,15 @@
 #' @keywords prior distribution audit
 #'
 #' @examples  
-#' # Prior distribution on the basis of inherent risk (ir) and control risk (cr)
+#' # Translate inherent risk (ir) and control risk (cr) to a prior distribution
 #' auditPrior(confidence = 0.95, materiality = 0.05, expectedError = 0.025,
 #'            method = 'arm', likelihood = 'binomial', ir = 1, cr = 0.6)
 #' @export
 
 auditPrior <- function(confidence, materiality = NULL, expectedError = 0, 
                        method = 'none', likelihood = 'binomial', N = NULL, 
-                       ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, 
-                       sampleN = 0, sampleK = 0, factor = 1, ub = NULL) {
+                       ir = 1, cr = 1, ub = NULL, pHmin = NULL, pHplus = NULL, 
+                       sampleN = 0, sampleK = 0, factor = 1) {
   
   if (confidence >= 1 || confidence <= 0 || is.null(confidence)) # Check if the confidence has a valid input
     stop("Specify a value for the confidence likelihood. Possible values lie within the range of 0 to 1.")

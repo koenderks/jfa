@@ -6,8 +6,8 @@
 \usage{
 auditPrior(confidence, materiality = NULL, expectedError = 0, 
            method = 'none', likelihood = 'binomial', N = NULL, 
-           ir = 1, cr = 1, pHmin = NULL, pHplus = NULL, 
-           sampleN = 0, sampleK = 0, factor = 1, ub = NULL)
+           ir = 1, cr = 1, ub = NULL, pHmin = NULL, pHplus = NULL, 
+           sampleN = 0, sampleK = 0, factor = 1)
 }
 \arguments{
 \item{confidence}{a numeric value between 0 and 1 specifying the confidence level to be used in the planning.}
@@ -26,6 +26,8 @@ auditPrior(confidence, materiality = NULL, expectedError = 0,
 
 \item{cr}{if \code{method = 'arm'}, a numeric value between 0 and 1 specifying the internal control risk in the audit risk model. Defaults to 1 for 100\% risk.}
 
+\item{ub}{if \code{method = 'bram'}, a numeric value between 0 and 1 specifying the upper bound for the prior distribution as a fraction of the population size.}
+
 \item{pHmin}{if \code{method = 'hypotheses'}, a numeric value between 0 and 1 specifying the prior probability of the hypothesis \eqn{\theta <} materiality.}
 
 \item{pHplus}{if \code{method = 'hypotheses'}, a numeric value between 0 and 1 specifying the prior probability of the hypothesis \eqn{\theta >} materiality.}
@@ -35,8 +37,6 @@ auditPrior(confidence, materiality = NULL, expectedError = 0,
 \item{sampleK}{if \code{sample} or \code{factor}, a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.}
 
 \item{factor}{if \code{method = 'factor'}, a numeric value between 0 and 1 specifying the weighting factor for the results of the sample equivalent to the prior information.}
-
-\item{ub}{if \code{method = 'bram'}, a numeric value between 0 and 1 specifying the upper bound for the prior distribution as a fraction of the population size.}
 }
 \value{
 An object of class \code{jfaPrior} containing:
@@ -81,7 +81,7 @@ This section elaborates on the available likelihoods and corresponding prior dis
 }
 \examples{
  
-# Prior distribution on the basis of inherent risk (ir) and control risk (cr)
+# Translate inherent risk (ir) and control risk (cr) to a prior distribution
 auditPrior(confidence = 0.95, materiality = 0.05, expectedError = 0.025,
            method = 'arm', likelihood = 'binomial', ir = 1, cr = 0.6)
 }
