@@ -1,6 +1,7 @@
 context("10. Benchmark against SMASH21")
 
 # SMASH21 [www.steekproeven.eu]
+# Retrieved on 27-04-2021 from https://steekproeven.eu/wp-content/uploads/2021/01/SMASH21-PRO-kopie.xlsx
 
 test_that(desc = "(id: f10-v0.5.3-t1) Test frequentist sample sizes", {
   theta <- 2000 / 20000 # materiality / N
@@ -10,6 +11,7 @@ test_that(desc = "(id: f10-v0.5.3-t1) Test frequentist sample sizes", {
 })
 
 # SMASH21-Bayes [www.steekproeven.eu]
+# Retrieved on 27-04-2021 from https://steekproeven.eu/wp-content/uploads/2021/01/SMASH21-Bayes-kopie.xlsx
 
 test_that(desc = "(id: f10-v0.5.3-t2) Test Bayesian sample sizes", {
   ub <- 5000 / 20000 # exp.ub / N
