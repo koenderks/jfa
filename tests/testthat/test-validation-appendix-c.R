@@ -1,6 +1,7 @@
 context("8. Benchmark against Appendix C (AICPA 2017)")
 
-# Sample size tables can be retrieved from: https://onlinelibrary.wiley.com/doi/pdf/10.1002/9781119448617.app3
+# Audit Guide: Audit Sampling [https://future.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL]
+# Retrieved on 28-04-2021 from https://onlinelibrary.wiley.com/doi/pdf/10.1002/9781119448617.app3
 
 test_that(desc = "(id f2-v0.4.0-t1) Test Monetary Unit Sample Sizes for 5 percent risk of overreliance (AICPA 2017 - Appendix C: Table C-1)", {
   riskOfIncorrectAcceptance <- c(rep(5, 6), rep(10, 5), rep(15, 5), rep(20, 5), rep(25, 5), rep(30, 4), rep(35, 4), rep(50, 4)) / 100

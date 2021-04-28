@@ -10,7 +10,7 @@ test_that(desc = "(id: f11-v0.5.1-t1) Test Sample sizes on page 17", {
   n <- numeric(length(SR))
   for(i in 1:length(SR))
     n[i] <- jfa::planning(confidence = 1 - SR[i], materiality = materiality, likelihood = "poisson")$sampleSize
-  expect_equal(n, c(300, 230 + 1, 140 - 1, 90 + 2, 70)) # Table on page 17 is inconsistent with the rest of the book...
+  expect_equal(n, c(300, 230 + 1, 140 - 1, 90 + 2, 70)) # Table on page 17 is inconsistent with the rest of the book.
 })
 
 # Example on page 23
