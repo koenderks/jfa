@@ -103,7 +103,7 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
   if (expectedError >= 0 && expectedError < 1) {
     errorType <- "percentage"
     if (!is.null(materiality) && expectedError >= materiality)
-      stop("This analysis is not possible: the expected errors are higher than materiality.")
+      stop("This analysis is not possible: the expected errors are higher than, or equal to, the materiality.")
   } else if (expectedError >= 1) {
     errorType <- "integer"
     if (expectedError%%1 != 0 && likelihood %in% c("binomial", "hypergeometric") && !((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"))
@@ -116,8 +116,7 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
   if (is.null(minPrecision))
     minPrecision <- 1
   
-  # Calculate the sample size depending on the probability distribution
-  
+  # Requirements for the hypergeometric distribution
   if (likelihood == "hypergeometric") {
     if (is.null(N) || N <= 0)
       stop("The hypergeometric likelihood requires that you specify a population size N.")

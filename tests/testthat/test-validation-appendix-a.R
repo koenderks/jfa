@@ -91,15 +91,15 @@ test_that(desc = "(id: f1-v0.4.0-t2) Test sample sizes for 10 percent risk of ov
     }
   }
   
-  # 5 percent tolerable deviation rate and 3.5 percent expected deviation rate results in n = 423, where in AICPA (2017) it says 200. JfA is correct since the expected errors in this case are actually ceiling(14.000000000000002) = 15 and not 14.
-  # 7 percent tolerable deviation rate and 6 percent expected deviation rate results in n = 1313, where in AICPA (2017) it says 1300. JfA is correct since the expected errors in this case are actually ceiling(91.000000000000014) = 92 and not 91.
+  # 5 percent tolerable deviation rate and 3.5 percent expected deviation rate results in n = 423, where AICPA (2017) gives 200. JfA is correct here since the expected errors in this case are actually ceiling(14.000000000000002) = 15 and not 14.
+  # 7 percent tolerable deviation rate and 6 percent expected deviation rate results in n = 1313, where AICPA (2017) gives 1300. JfA is correct here since the expected errors in this case are actually ceiling(91.000000000000014) = 92 and not 91.
   
   aicpaMatrix <- matrix(data = c(114, 194, 194, 265, 398, 708, 1463, rep(NA, 19), # 2%
                                  76, 129, 129, 129, 176, 221, 265, 390, 590, 974, rep(NA, 16), # 3%
                                  57, 96, 96, 96, 96, 132, 132, 166, 198, 262, 353, 471, 730, 1258, rep(NA, 12), # 4%
                                  45, 77, 77, 77, 77, 77, 105, 105, 132, 132, 158, 209, 258, 306, 423, 583, 873, rep(NA, 9), #5%
                                  38, 64, 64, 64, 64, 64, 64, 88, 88, 88, 110, 132, 132, 153, 194, 235, 274, 1019, rep(NA, 8), # 6%
-                                 32, 55, 55, 55, 55, 55, 55, 55, 75, 75, 75, 94, 94, 112 + 1, 112 + 1, 131, 149, 318, 1150, rep(NA, 7), # 7% # AICPA says 112 but must be 113 --> sum(dbinom(0:4, size = 112, prob = 0.07)) > 0.10
+                                 32, 55, 55, 55, 55, 55, 55, 55, 75, 75, 75, 94, 94, 112 + 1, 112 + 1, 131, 149, 318, 1150, rep(NA, 7), # 7% --> AICPA gives 112 but sum(dbinom(0:4, size = 112, prob = 0.07)) > 0.10
                                  28, 48, 48, 48, 48, 48, 48, 48, 48, 65, 65, 65, 65, 82, 82, 98, 98, 160, 349, 1313, rep(NA, 6), # 8%
                                  25, 42, 42, 42, 42, 42, 42, 42, 42, 42, 58, 58, 58, 58, 73, 73, 73, 115, 182, 385, 1437, rep(NA, 5), # 9%
                                  22, 38, 38, 38, 38, 38, 38, 38, 38, 38, 38, 52, 52, 52, 52, 52, 65, 78, 116, 199, 424, 1577, rep(NA, 4), # 10%

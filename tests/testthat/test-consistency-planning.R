@@ -112,8 +112,8 @@ test_that(desc = "(id: f6-v0.1.0-t18) Bayesian hypergeometric 5% materiality 2.5
 test_that(desc = "(id: f6-v0.1.0-t19) Bayesian binomial 2% precision 5% materiality 2.5% errors median prior", {
   jfaPrior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", expectedError = 0.025)
   jfaRes <- planning(materiality = 0.05, minPrecision = 0.02, confidence = 0.95, expectedError = 0.025, likelihood = "binomial", N = 1000, prior = jfaPrior)
-  expect_equal(jfaRes[["sampleSize"]], 285)
-  expect_equal(jfaRes[["expectedSampleError"]], 7.12, tolerance = 0.001)
+  expect_equal(jfaRes[["sampleSize"]], 284)
+  expect_equal(jfaRes[["expectedSampleError"]], 7.1, tolerance = 0.001)
 })
 
 test_that(desc = "(id: f6-v0.1.0-t20) Bayesian binomial 5% materiality 1% errors hypotheses prior", {

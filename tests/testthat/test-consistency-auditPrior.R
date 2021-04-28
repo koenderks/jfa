@@ -19,11 +19,11 @@ test_that(desc = "(id: f4-v0.1.0-t1) Test for method = 'none'", {
 test_that(desc = "(id: f4-v0.1.0-t2) Test for method = 'median'", {
   prior <- auditPrior(confidence = 0.95, likelihood = "binomial", method = "median", materiality = 0.05)
   expect_equal(prior[["description"]]$alpha, 1)
-  expect_equal(prior[["description"]]$beta, 13.513, tolerance = 0.001)
+  expect_equal(prior[["description"]]$beta, 13.51341, tolerance = 0.001)
   
   prior <- auditPrior(confidence = 0.95, likelihood = "binomial", method = "median", expectedError = 0.02, materiality = 0.05)
-  expect_equal(prior[["description"]]$alpha, 1.4, tolerance = 0.001)
-  expect_equal(prior[["description"]]$beta, 20.6, tolerance = 0.001)
+  expect_equal(prior[["description"]]$alpha, 1.4114, tolerance = 0.001)
+  expect_equal(prior[["description"]]$beta, 21.1586, tolerance = 0.001)
   
   prior <- auditPrior(confidence = 0.95, likelihood = "poisson", method = "median", materiality = 0.05)
   expect_equal(prior[["description"]]$alpha, 1)
@@ -96,12 +96,12 @@ test_that(desc = "(id: f4-v0.1.0-t6) Test for method = 'factor'", {
 
 test_that(desc = "(id: f4-v0.4.0-t1) Test for method = 'median' with expected errors > 0", {
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "binomial", expectedError = 0.01)
-  expect_equal(prior[["description"]]$alpha, 1.15, tolerance = 0.001)
-  expect_equal(prior[["description"]]$beta, 15.85, tolerance = 0.001)
+  expect_equal(prior[["description"]]$alpha, 1.1554, tolerance = 0.001)
+  expect_equal(prior[["description"]]$beta, 16.3846, tolerance = 0.001)
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "binomial", expectedError = 0.025)
-  expect_equal(prior[["description"]]$alpha, 1.6, tolerance = 0.001)
-  expect_equal(prior[["description"]]$beta, 24.4, tolerance = 0.001)
+  expect_equal(prior[["description"]]$alpha, 1.6146, tolerance = 0.001)
+  expect_equal(prior[["description"]]$beta, 24.9694, tolerance = 0.001)
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "poisson", expectedError = 0.01)
   expect_equal(prior[["description"]]$alpha, 1.1722, tolerance = 0.001)

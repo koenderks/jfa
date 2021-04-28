@@ -96,6 +96,9 @@ auditPrior <- function(confidence, materiality = NULL, expectedError = 0,
   if (expectedError < 0) # Check if the expected errors has a valid input
     stop("The expected errors must be zero or larger than zero.")
   
+  if (!is.null(materiality) && expectedError >= materiality)
+    stop("This prior is not possible: the expected errors are higher than, or equal to, the materiality.")
+  
   if (expectedError >= 1 && method != 'none') # Check if the expected errors are consistent with the method
     stop("The expected errors must be entered as a proportion to use this prior construction method.")
   
@@ -119,7 +122,7 @@ auditPrior <- function(confidence, materiality = NULL, expectedError = 0,
       r <- expectedError / ub
       q <- stats::qnorm(confidence)
       kPrior <- ((( (q * r) + sqrt(3 + ((r / 3) * (4 * q^2 - 10)) - ((r^2 / 3) * (q^2 - 1) ))) / (2 * (1 - r) ))^2 + (1 / 4)) - 1
-	  nPrior <- kPrior / expectedError
+      nPrior <- kPrior / expectedError
     } else { # Approximation through iteration over alpha parameter
       bound <- Inf
       kPrior <- 0
@@ -133,26 +136,20 @@ auditPrior <- function(confidence, materiality = NULL, expectedError = 0,
       }
     }
   } else if (method == "median") { # Method 4: Equal prior probabilities
-    if (likelihood == "hypergeometric") # Cannot use this method with the hypergeometric likelihood
-      stop("Method = 'median' is not supported for the hypergeometric likelihood.")
     probH1 <- probH0 <- 0.5 # Set equal prior probabilities
     if (expectedError == 0) { # Formulas for zero expected errors
       nPrior <- switch(likelihood, "poisson" = -(log(probH1) / materiality), "binomial" = log(probH1) / log(1 - materiality) - 1)
       kPrior <- 0
-    } else { # Formulas for expected errors > 0
-      if (likelihood == "binomial") { # Approximation through closed formulas
-        alpha <- (-4 * materiality * expectedError + 3 * materiality - expectedError) / (3 * (materiality - expectedError))
-        beta <- (4 * materiality * expectedError - materiality - 5 * expectedError + 2) / (3 * (materiality - expectedError))
-        nPrior <- beta + (alpha - 1) - 1 # Earlier sample
-        kPrior <- alpha - 1 # Earlier errors
-      } else if (likelihood == "poisson") { # Approximation through iteration over alpha parameter
-        median <- Inf
-        kPrior <- 0
-        while (median > materiality) {
-          kPrior <- kPrior + 0.0001 # Increase of 0.0001 (time intensive?)
-          nPrior <- kPrior / expectedError # Express beta in terms of alpha
-          median <- stats::qgamma(p = 0.5, shape = 1 + kPrior, rate = nPrior) # Calculate the median for the current parameters
-        }
+    } else { # Approximation through iteration over alpha parameter
+      median <- Inf
+      kPrior <- 0
+      while (median > materiality) {
+        kPrior <- kPrior + 0.0001 # Increase of 0.0001 (time intensive?)
+        nPrior <- kPrior / expectedError # Express beta in terms of alpha
+        median <- switch(likelihood, # Calculate the median for the current parameters
+                         "binomial" = stats::qbeta(p = 0.5, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior),
+                         "poisson" = stats::qgamma(p = 0.5, shape = 1 + kPrior, rate = nPrior),
+                         "hypergeometric" = .qBetaBinom(p = confidence, N = N, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior) / N)
       }
     }
   } else if (method == "hypotheses") { # Method 5: Custom prior probability
