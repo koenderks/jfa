@@ -25,9 +25,9 @@ test_that(desc = "(id: f4-v0.1.0-t2) Test for method = 'median'", {
   expect_equal(prior[["description"]]$alpha, 1.4, tolerance = 0.001)
   expect_equal(prior[["description"]]$beta, 20.6, tolerance = 0.001)
   
-  prior <- auditPrior(confidence = 0.95, likelihood = "poisson", method = "median", ir = 0.6, cr = 0.6, materiality = 0.05, )
+  prior <- auditPrior(confidence = 0.95, likelihood = "poisson", method = "median", materiality = 0.05)
   expect_equal(prior[["description"]]$alpha, 1)
-  expect_equal(prior[["description"]]$beta, 13.863, tolerance = 0.001)  
+  expect_equal(prior[["description"]]$beta, 13.86294, tolerance = 0.001)  
 })
 
 test_that(desc = "(id: f4-v0.1.0-t3) Test for method = 'hypotheses'", {
@@ -104,12 +104,12 @@ test_that(desc = "(id: f4-v0.4.0-t1) Test for method = 'median' with expected er
   expect_equal(prior[["description"]]$beta, 24.4, tolerance = 0.001)
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "poisson", expectedError = 0.01)
-  expect_equal(prior[["description"]]$alpha, 1.171, tolerance = 0.001)
-  expect_equal(prior[["description"]]$beta, 17.1, tolerance = 0.001)
+  expect_equal(prior[["description"]]$alpha, 1.1722, tolerance = 0.001)
+  expect_equal(prior[["description"]]$beta, 17.22, tolerance = 0.001)
   
   prior <- auditPrior(materiality = 0.05, confidence = 0.95, method = "median", likelihood = "poisson", expectedError = 0.025)
-  expect_equal(prior[["description"]]$alpha, 1.668, tolerance = 0.001)
-  expect_equal(prior[["description"]]$beta, 26.72, tolerance = 0.001)
+  expect_equal(prior[["description"]]$alpha, 1.681, tolerance = 0.001)
+  expect_equal(prior[["description"]]$beta, 27.24, tolerance = 0.001)
 })
 
 # jfa version 0.5.0
@@ -143,8 +143,7 @@ test_that(desc = "(id: f4-v0.5.0-t2) Test for plot function", {
 
 # jfa version 0.5.3
 
-test_that(desc = "(id: f4-v0.5.3-t1) Test for bram method", {
-  # SMASH21-Bayes [www.steekproeven.eu]
+test_that(desc = "(id: f4-v0.5.3-t1) Test for bram method binomial", {
   N <- 20000
   materiality <- 2000
   expectedMisstatement <- 300
@@ -155,7 +154,17 @@ test_that(desc = "(id: f4-v0.5.3-t1) Test for bram method", {
   prior <- auditPrior(confidence = 0.95, materiality = theta, likelihood = "binomial", method = "bram", expectedError = expectedError, ub = ub)
   expect_equal(prior[["description"]]$alpha, 1.1581)
   expect_equal(prior[["description"]]$beta, 11.3819)
+})
+
+test_that(desc = "(id: f4-v0.5.3-t2) Test for bram method poisson", {
+  N <- 20000
+  materiality <- 2000
+  expectedMisstatement <- 300
+  expectedUpperBound <- 5000
+  ub <- expectedUpperBound / N
+  theta <- materiality / N
+  expectedError <- expectedMisstatement / N
   prior <- auditPrior(confidence = 0.95, materiality = theta, likelihood = "poisson", method = "bram", expectedError = expectedError, ub = ub)
-  expect_equal(prior[["description"]]$alpha, 1.2028)
-  expect_equal(prior[["description"]]$beta, 13.52)
+  expect_equal(prior[["description"]]$alpha, 1.20259, tolerance = 0.00001)
+  expect_equal(prior[["description"]]$beta, 13.50597, tolerance = 0.00001)
 })

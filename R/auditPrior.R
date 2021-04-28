@@ -110,22 +110,29 @@ auditPrior <- function(confidence, materiality = NULL, expectedError = 0,
     nMin 	<- planning(confidence = 1 - alpha, likelihood = likelihood, expectedError = expectedError, N = N, materiality = materiality, prior = TRUE)$sampleSize # Calculated the sample size for the adjusted detection risk
     nPrior 	<- nPlus - nMin # Calculate the sample size equivalent to the increase in detection risk
     kPrior 	<- (nPlus * expectedError) - (nMin * expectedError) # Calculate errors equivalent 
-  } else if (method == 'bram') {
-    if(is.null(ub)) # Check if the value for the upper bound is present
+  } else if (method == 'bram') { # Method 3: Bayesian risk assessment model
+    if (is.null(ub)) # Check if the value for the upper bound is present
       stop("You must specify a value for 'ub'.")
-    if(ub <= 0 || ub >= 1) # Check if the value for the upper bound is valid
-      stop("The value of 'ub' must be between 0 and 1.")
-    bound <- Inf
-    nPrior <- 0
-    while (bound > ub) {
-      nPrior <- nPrior + 0.01
-      kPrior <- nPrior * expectedError
-      bound <- switch(likelihood, 
-                      "binomial" = stats::qbeta(p = confidence, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior),
-                      "poisson" = stats::qgamma(p = confidence, shape = 1 + kPrior, rate = nPrior),
-                      "hypergeometric" = .qBetaBinom(p = confidence, N = N, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior) / N)
+    if (ub <= 0 || ub >= 1 || ub <= expectedError) # Check if the value for the upper bound is valid
+      stop("The value of 'ub' must be between 0 and 1 and higher than 'expectedErrors'.")
+    if (likelihood == 'poisson') { # Perform approximation described in Stewart (2013) on p. 45.
+      r <- expectedError / ub
+      q <- stats::qnorm(confidence)
+      kPrior <- ((( (q * r) + sqrt(3 + ((r / 3) * (4 * q^2 - 10)) - ((r^2 / 3) * (q^2 - 1) ))) / (2 * (1 - r) ))^2 + (1 / 4)) - 1
+	  nPrior <- kPrior / expectedError
+    } else { # Approximation through iteration over alpha parameter
+      bound <- Inf
+      kPrior <- 0
+      while (bound > ub) {
+        kPrior <- kPrior + 0.0001 # Increase of 0.001 (time intensive?)
+        nPrior <- kPrior / expectedError
+        bound <- switch(likelihood, 
+                        "binomial" = stats::qbeta(p = confidence, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior),
+                        #"poisson" = stats::qgamma(p = confidence, shape = 1 + kPrior, rate = nPrior),
+                        "hypergeometric" = .qBetaBinom(p = confidence, N = N, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior) / N)
+      }
     }
-  } else if (method == "median") { # Method 3: Equal prior probabilities
+  } else if (method == "median") { # Method 4: Equal prior probabilities
     if (likelihood == "hypergeometric") # Cannot use this method with the hypergeometric likelihood
       stop("Method = 'median' is not supported for the hypergeometric likelihood.")
     probH1 <- probH0 <- 0.5 # Set equal prior probabilities
@@ -138,20 +145,17 @@ auditPrior <- function(confidence, materiality = NULL, expectedError = 0,
         beta <- (4 * materiality * expectedError - materiality - 5 * expectedError + 2) / (3 * (materiality - expectedError))
         nPrior <- beta + (alpha - 1) - 1 # Earlier sample
         kPrior <- alpha - 1 # Earlier errors
-      } else if (likelihood == "poisson") { # Approximation through iteration
-        for (alpha in seq(1, 5, 0.001)) { # Iterate over alpha
-          beta <- (alpha - 1) / expectedError # Express beta in terms of alpha
-          median <- stats::qgamma(p = 0.5, shape = alpha, rate = beta) # Calculate the median for the current parameters
-          mode <- (alpha - 1) / beta # Calculate the mode for the current parameters
-          if (round(median, 3) == materiality && round(mode, 3) == expectedError) {
-            break # Return if these match
-          }
+      } else if (likelihood == "poisson") { # Approximation through iteration over alpha parameter
+        median <- Inf
+        kPrior <- 0
+        while (median > materiality) {
+          kPrior <- kPrior + 0.0001 # Increase of 0.0001 (time intensive?)
+          nPrior <- kPrior / expectedError # Express beta in terms of alpha
+          median <- stats::qgamma(p = 0.5, shape = 1 + kPrior, rate = nPrior) # Calculate the median for the current parameters
         }
-        nPrior <- beta # Earlier sample
-        kPrior <- alpha - 1 # Earlier errors
       }
     }
-  } else if (method == "hypotheses") { # Method 4: Custom prior probability
+  } else if (method == "hypotheses") { # Method 5: Custom prior probability
     if (likelihood == "hypergeometric") # Cannot use this method with the hypergeometric likelihood
       stop("Method = 'hypotheses' is not supported for the hypergeometric likelihood.")
     if ((is.null(pHplus) && is.null(pHmin)) || is.null(materiality)) # Must have the prior probabilities and materiality
@@ -168,12 +172,12 @@ auditPrior <- function(confidence, materiality = NULL, expectedError = 0,
     probH0 <- 1 - probH1 # Calculate p(H0)
     nPrior <- switch(likelihood, "poisson" = -(log(probH1) / materiality), "binomial" = log(probH1) / log(1 - materiality) - 1) # Earlier sample size
     kPrior <- 0 # Earlier errors
-  } else if (method == "sample") { # Method 5: Earlier sample
+  } else if (method == "sample") { # Method 6: Earlier sample
     if (is.null(sampleN) || is.null(sampleK)) # Check for valid arguments
       stop("Method = 'sample' requires non-null 'sampleN', and 'sampleK' arguments.")
     nPrior <- sampleN # Earlier sample size
     kPrior <- sampleK # Earlier errors
-  } else if (method == "factor") {
+  } else if (method == "factor") { # Method 7: Weighted earlier sample
     if (is.null(sampleN) || is.null(sampleK) || is.null(factor)) # Check for valid arguments
       stop("Method = 'factor' requires non-null 'factor', 'sampleN', and 'sampleN=K' arguments.")  
     nPrior <- sampleN * factor # Earlier sample size
