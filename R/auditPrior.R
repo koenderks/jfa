@@ -79,15 +79,15 @@ auditPrior <- function(confidence, materiality = NULL, expectedError = 0,
                        sampleN = 0, sampleK = 0, factor = 1) {
   
   if (confidence >= 1 || confidence <= 0 || is.null(confidence)) # Check if the confidence has a valid input
-    stop("Specify a value for the confidence likelihood. Possible values lie within the range of 0 to 1.")
+    stop("The value for the confidence must be between 0 and 1.")
   
   if (!(likelihood %in% c("poisson", "binomial", "hypergeometric"))) # Check if the likelihood has a valid input
-    stop("Specify a valid likelihood. Possible options are 'poisson', 'binomial', and 'hypergeometric'.")
+    stop("Specify a valid likelihood. Possible options are 'binomial', 'poisson', and 'hypergeometric'.")
   
   if (!(method %in% c("none", "median", "hypotheses", "arm", "bram", "sample", "factor"))) # Check if the method has a valid input
     stop("Currently only method = 'none', 'median', 'hypotheses', 'arm', 'bram', 'sample', and 'factor' are supported")
   
-  if (is.null(materiality) && method %in% c("median", "hypotheses", "arm", "bram")) # Materiality is required for these methods
+  if (is.null(materiality) && method %in% c("median", "hypotheses", "arm")) # Materiality is required for these methods
     stop("The methods 'arm', 'median', and 'hypotheses' require that you specify a value for the materiality.")
   
   if (likelihood == "hypergeometric" && (is.null(N) || N <= 0)) # Check if N is specified if hypergeometric is specified
@@ -97,10 +97,10 @@ auditPrior <- function(confidence, materiality = NULL, expectedError = 0,
     stop("The expected errors must be zero or larger than zero.")
   
   if (!is.null(materiality) && expectedError >= materiality) # Check if the expected errors do not exceed the materiality
-    stop("This prior is not possible: the expected errors are higher than, or equal to, the materiality.")
+    stop("The expected errors must be lower than the materiality.")
   
   if (expectedError >= 1 && method != 'none') # Check if the expected errors are consistent with the method
-    stop("The expected errors must be entered as a proportion to use this prior construction method.")
+    stop("The expected errors must be entered as a proportion for this method.")
   
   if (method == "none") { # Method 1: Negligible prior information
     nPrior <- 0 # No earlier observations
@@ -135,40 +135,39 @@ auditPrior <- function(confidence, materiality = NULL, expectedError = 0,
                         "hypergeometric" = .qBetaBinom(p = confidence, N = N, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior) / N)
       }
     }
-  } else if (method == "median") { # Method 4: Equal prior probabilities
-    probH1 <- probH0 <- 0.5 # Set equal prior probabilities
+  } else if (method == "median" || method == "hypotheses") {
+    if(method == "median") { # Method 4: Equal prior probabilities
+      probH0 <- probH1 <- 0.5
+    } else if (method == "hypotheses") { # Method 5: Custom prior probabilities
+      if (is.null(pHmin) && is.null(pHplus)) # Must have the prior probabilities and materiality
+        stop("Method = 'hypotheses' requires non-null 'pHmin' or 'pHplus' arguments.")
+      if ((!is.null(pHmin) && !is.null(pHplus)) && pHmin + pHplus != 1) # Check for valid prior probabilities
+        stop("The values for 'pHmin' and 'pHplus' should sum to one.")  
+      if (!is.null(pHmin) && is.null(pHplus)) { # Adjust p(H1) for user input
+        probH1 <- 1 - pHmin
+      } else {
+        probH1 <- pHplus
+      }
+      probH0 <- 1 - probH1 # Calculate p(H0)
+    }
     if (expectedError == 0) { # Formulas for zero expected errors
-      nPrior <- switch(likelihood, "poisson" = -(log(probH1) / materiality), "binomial" = log(probH1) / log(1 - materiality) - 1)
+      nPrior <- switch(likelihood,
+                       "poisson" = -(log(probH1) / materiality),
+                       "binomial" = log(probH1) / log(1 - materiality) - 1,
+                       "hypergeometric" = log(probH1) / log(1 - materiality) - 1)
       kPrior <- 0
-    } else { # Approximation through iteration over alpha parameter
+    } else { # Approximation through iteration over alpha parameter = more accurate than approximation through formulas
       median <- Inf
       kPrior <- 0
       while (median > materiality) {
         kPrior <- kPrior + 0.0001 # Increase of 0.0001 (time intensive?)
         nPrior <- kPrior / expectedError # Express beta in terms of alpha
         median <- switch(likelihood, # Calculate the median for the current parameters
-                         "binomial" = stats::qbeta(p = 0.5, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior),
-                         "poisson" = stats::qgamma(p = 0.5, shape = 1 + kPrior, rate = nPrior),
-                         "hypergeometric" = .qBetaBinom(p = confidence, N = N, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior) / N)
+                         "binomial" = stats::qbeta(p = probH0, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior),
+                         "poisson" = stats::qgamma(p = probH0, shape = 1 + kPrior, rate = nPrior),
+                         "hypergeometric" = .qBetaBinom(p = probH0, N = N, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior) / N)
       }
     }
-  } else if (method == "hypotheses") { # Method 5: Custom prior probability
-    if (likelihood == "hypergeometric") # Cannot use this method with the hypergeometric likelihood
-      stop("Method = 'hypotheses' is not supported for the hypergeometric likelihood.")
-    if ((is.null(pHplus) && is.null(pHmin)) || is.null(materiality)) # Must have the prior probabilities and materiality
-      stop("Method = 'hypotheses' requires non-null 'materiality' and 'pHplus' or 'pHplus' arguments.")
-    if ((!is.null(pHplus) && !is.null(pHmin)) && pHplus + pHmin != 1) # Check for valid prior probabilities
-      stop("The values for 'pHplus' and 'pHmin' should sum to one.")  
-    if (expectedError != 0) # Cannot use this method with expected errors
-      stop("Expected errors are not supported for method = 'hypotheses'.")
-    if (is.null(pHplus) && !is.null(pHmin)) { # Adjust p(H1) for user input
-      probH1 <- 1 - pHmin
-    } else {
-      probH1 <- pHplus
-    }
-    probH0 <- 1 - probH1 # Calculate p(H0)
-    nPrior <- switch(likelihood, "poisson" = -(log(probH1) / materiality), "binomial" = log(probH1) / log(1 - materiality) - 1) # Earlier sample size
-    kPrior <- 0 # Earlier errors
   } else if (method == "sample") { # Method 6: Earlier sample
     if (is.null(sampleN) || is.null(sampleK)) # Check for valid arguments
       stop("Method = 'sample' requires non-null 'sampleN', and 'sampleK' arguments.")

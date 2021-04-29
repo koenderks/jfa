@@ -3,6 +3,8 @@
 - Changed the default `likelihood = 'poisson'` in the `planning()` function to `likelihood = 'binomial'` to be consistent across functions.
 - Changed the order of most function arguments so that `materiality` and `minPrecision` are among the first ones.
 - Removed the default value of `confidence = 0.95` in all applicable functions, it currently has no default so that the user is required to give an input.
+- Made `method = 'hypotheses'` and `method = 'median'` in the `auditPrior()` function available for `likelihood = 'hypergeometric'`.
+- Made `expectedErrors > 0` available for `method = 'hypotheses'` in the `auditPrior()`.
 - Added `bram` as a method for the `auditPrior()` function. `method = 'bram'` computes a prior distribution with a given mode (`expectedError`) and upper bound (`ub`).
 - Fixed an error in the mode of the gamma posterior distribution from the `evaluation()` function in which `+1` was added to the beta parameter, resulting in slighly lower modes than the correct ones.
 - Made a correction to the calculation of the beta-binomial prior and posterior so that the posterior parameter `N` has the correct value of `N = N - n` (current) instead of `N - n + k` (before).
