@@ -27,7 +27,7 @@ evaluation(confidence, materiality = NULL, minPrecision = NULL, method = 'binomi
 
 \item{auditValues}{a character specifying the column name for the audit values in the \code{sample}.}
 
-\item{counts}{a integer vector specifying the number of times each transaction in the sample should be counted in the evaluation (due to it being selected multiple times for the sample).}
+\item{counts}{a integer vector specifying the number of times each item in the sample should be counted in the evaluation (due to it being selected multiple times for the sample).}
 
 \item{nSumstats}{an integer larger than 0 specifying the number of items in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data come from summary statistics specified by both \code{nSumstats} and \code{kSumstats}.}
 
@@ -35,7 +35,7 @@ evaluation(confidence, materiality = NULL, minPrecision = NULL, method = 'binomi
 
 \item{N}{an integer larger than 0 specifying the total number of items in the population.}
 
-\item{populationBookValue}{if \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value specifying the total value of the transactions in the population. This argument is optional otherwise.}
+\item{populationBookValue}{if \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value specifying the total value of the items in the population. This argument is optional otherwise.}
 
 \item{prior}{a logical specifying if a prior distribution must be used, or an object of class `jfaPrior` containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a negligible prior distribution is chosen by default, but can be adjusted using the `kPrior` and `nPrior` arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
 

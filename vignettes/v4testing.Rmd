@@ -53,7 +53,7 @@ As an example of how to interpret the Bayes factor, the value of $BF_{-+} = 10$ 
 
 ### Example 
 
-As an example, consider that an auditor wants to verify whether the population contains less than 5 percent misstatement, implying the hypotheses $H_-:\theta<0.05$ and $H_+:\theta\geq0.05$. They have taken a sample of 40 transactions, of which 1 contained an error. The prior distribution is assumed to be a non-informative $beta(1,1)$ prior. 
+As an example, consider that an auditor wants to verify whether the population contains less than 5 percent misstatement, implying the hypotheses $H_-:\theta<0.05$ and $H_+:\theta\geq0.05$. They have taken a sample of 40 items, of which 1 contained an error. The prior distribution is assumed to be a non-informative $beta(1,1)$ prior. 
 
 The output below shows that $BF_{-+}=30.28$, implying that there is very strong evidence for $H_-$, the hypothesis that the population contains misstatements lower than 5 percent of the population. 
 

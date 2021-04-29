@@ -107,7 +107,7 @@ plot(prior4)
 
 ### Earlier sample (`method = "sample"`)
 
-You can incorporate information from an earlier sample into the prior distribution using `method = "sample` in combination with `sampleN` and `sampleK`. As an example, the code below incorporates the information from an earlier sample of 30 transactions, in which 0 misstatements were found, into a prior distribution.
+You can incorporate information from an earlier sample into the prior distribution using `method = "sample` in combination with `sampleN` and `sampleK`. As an example, the code below incorporates the information from an earlier sample of 30 items in which 0 misstatements were found into a prior distribution.
 
 ```{r}
 prior5 <- auditPrior(confidence, materiality, expectedError, likelihood = likelihood, method = "sample", sampleN = 30, sampleK = 0)
@@ -122,7 +122,7 @@ plot(prior5)
 
 ### Weighted earlier sample (`method = "factor"`)
 
-You can incorporate information from last years results, weighted by a factor, into the prior distribution using `method = "factor` in combination with `sampleN` and `sampleK`. As an example, the code below incorporates the information from a last years results (a sample of 58 transactions in which 0 misstatements were found), weighted by a factor 0.7, into a prior distribution.
+You can incorporate information from last years results, weighted by a factor, into the prior distribution using `method = "factor` in combination with `sampleN` and `sampleK`. As an example, the code below incorporates the information from a last years results (a sample of 58 items in which 0 misstatements were found), weighted by a factor 0.7, into a prior distribution.
 
 ```{r}
 prior6 <- auditPrior(confidence, materiality, expectedError, method = "factor", likelihood = likelihood, sampleN = 58, sampleK = 0, factor = 0.7)

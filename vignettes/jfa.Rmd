@@ -36,7 +36,7 @@ devtools::install_github("koenderks/jfa")
 
 ## Load data
 
-We can try out some examples with the `BuildIt` data set that is included in the package. It includes a population of 3500 transactions from a fictional construction company BuildIt, which we can use to illustrate statistical audit sampling using the `jfa` package (for more info, see ?BuildIt).
+We can try out some examples with the `BuildIt` data set that is included in the package. It includes a population of 3500 items from a fictional construction company BuildIt, which we can use to illustrate statistical audit sampling using the `jfa` package (for more info, see ?BuildIt).
 
 ```{r}
 library(jfa)
@@ -46,7 +46,7 @@ BuildIt <- BuildIt[, c("ID", "bookValue")] # Let's remove the auditValue column 
 head(BuildIt, n = 10)
 ```
 
-Because this data set contains the recorded values of the transactions, we need to consider each monetary unit in the population as a possible unit of inference.
+Because this data set contains the recorded values of the items we need to consider each monetary unit in the population as a possible unit of inference.
 
 For an example of the `jfa`'s audit sampling workflow see [The audit sampling workflow](https://koenderks.github.io/jfa/articles/v1auditWorkflow.html).
 
@@ -80,9 +80,9 @@ planning(confidence = 0.95, minPrecision = 0.02, expectedError = 0, likelihood =
 
 ## Using `selection()`: The basics
 
-Selecting a sample using the `selection()` function requires that you have knowledge of the sampling units. Transactions can be selected using *record sampling* (also called attribute sampling) with `units = "records"`, or using *monetary unit sampling* with `units = "mus"`. 
+Selecting a sample using the `selection()` function requires that you have knowledge of the sampling units. Items can be selected using *record sampling* (also called attribute sampling) with `units = "records"`, or using *monetary unit sampling* with `units = "mus"`. 
 
-It also requires knowledge of the sampling algorithm. Transactions can be selected using *random sampling* with `algorithm = "random"`, using *cell sampling* with `algorithm = "cell"`, or using fixed interval sampling (also known as systematic sampling) with `algorithm = "interval"`. 
+It also requires knowledge of the sampling algorithm. Items can be selected using *random sampling* with `algorithm = "random"`, using *cell sampling* with `algorithm = "cell"`, or using fixed interval sampling (also known as systematic sampling) with `algorithm = "interval"`. 
 
 ### Record sampling
 
@@ -115,13 +115,13 @@ head(sample, n = 10)
 
 ## Using `evaluation()`: The basics
 
-After executing the audit and annotating the transactions in the sample with their audit values, you can evaluate whether you have achieved your analysis goal via the `evaluation()` function. The function can be used with summary statistics from the sample, or with an annotated sample as input. 
+After executing the audit and annotating the items in the sample with their audit values, you can evaluate whether you have achieved your analysis goal via the `evaluation()` function. The function can be used with summary statistics from the sample, or with an annotated sample as input. 
 
 For more details on how to use this function see the package vignettes: [Estimating the misstatement](https://koenderks.github.io/jfa/articles/v3estimation.html) and [Testing the misstatement](https://koenderks.github.io/jfa/articles/v4testing.html)
 
 ### Summary statistics from the sample
 
-Suppose that in 60 transactions, you have found 1 misstatement. Using `nSumstats = 60` and `kSumstats = 1` you can specify the outcomes of the sample in the `evaluation()` function. Do not forget to specify your analysis goal using the `materiality` or `minPrecision` arguments.
+Suppose that in 60 items you have found 1 misstatement. Using `nSumstats = 60` and `kSumstats = 1` you can specify the outcomes of the sample in the `evaluation()` function. Do not forget to specify your analysis goal using the `materiality` or `minPrecision` arguments.
 
 ```{r}
 evaluation(confidence = 0.95,  materiality = 0.05, method = "binomial", N = 3500, nSumstats = 60, kSumstats = 1)
@@ -129,7 +129,7 @@ evaluation(confidence = 0.95,  materiality = 0.05, method = "binomial", N = 3500
 
 ### Annotated sample
 
-Suppose that you have audited the transactions in the sample and have found no deviations from the recorded values. 
+Suppose that you have audited the items in the sample and have found no deviations from the recorded values. 
 
 ```{r}
 sample$auditValue <- sample$bookValue

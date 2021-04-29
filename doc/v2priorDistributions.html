@@ -314,7 +314,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="earlier-sample-method-sample" class="section level3">
 <h3>Earlier sample (<code>method = &quot;sample&quot;</code>)</h3>
-<p>You can incorporate information from an earlier sample into the prior distribution using <code>method = &quot;sample</code> in combination with <code>sampleN</code> and <code>sampleK</code>. As an example, the code below incorporates the information from an earlier sample of 30 transactions, in which 0 misstatements were found, into a prior distribution.</p>
+<p>You can incorporate information from an earlier sample into the prior distribution using <code>method = &quot;sample</code> in combination with <code>sampleN</code> and <code>sampleK</code>. As an example, the code below incorporates the information from an earlier sample of 30 items in which 0 misstatements were found into a prior distribution.</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>prior5 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(confidence, materiality, expectedError, <span class="at">likelihood =</span> likelihood, <span class="at">method =</span> <span class="st">&quot;sample&quot;</span>, <span class="at">sampleN =</span> <span class="dv">30</span>, <span class="at">sampleK =</span> <span class="dv">0</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>prior5</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
@@ -325,7 +325,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # Confidence:              95%    
 ## # Expected sample errors:  0%       
 ## # Likelihood:              binomial 
-## # Specifics:               Earlier sample of 30 transactions with 0 errors 
+## # Specifics:               Earlier sample of 30 items with 0 errors 
 ## # ------------------------------------------------------------
 ## # Output: 
 ## #
@@ -347,7 +347,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="weighted-earlier-sample-method-factor" class="section level3">
 <h3>Weighted earlier sample (<code>method = &quot;factor&quot;</code>)</h3>
-<p>You can incorporate information from last years results, weighted by a factor, into the prior distribution using <code>method = &quot;factor</code> in combination with <code>sampleN</code> and <code>sampleK</code>. As an example, the code below incorporates the information from a last years results (a sample of 58 transactions in which 0 misstatements were found), weighted by a factor 0.7, into a prior distribution.</p>
+<p>You can incorporate information from last years results, weighted by a factor, into the prior distribution using <code>method = &quot;factor</code> in combination with <code>sampleN</code> and <code>sampleK</code>. As an example, the code below incorporates the information from a last years results (a sample of 58 items in which 0 misstatements were found), weighted by a factor 0.7, into a prior distribution.</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>prior6 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(confidence, materiality, expectedError, <span class="at">method =</span> <span class="st">&quot;factor&quot;</span>, <span class="at">likelihood =</span> likelihood, <span class="at">sampleN =</span> <span class="dv">58</span>, <span class="at">sampleK =</span> <span class="dv">0</span>, <span class="at">factor =</span> <span class="fl">0.7</span>)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>prior6</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
@@ -358,7 +358,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # Confidence:              95%    
 ## # Expected sample errors:  0%       
 ## # Likelihood:              binomial 
-## # Specifics:               Earlier sample of 58 transactions with 0 errors weighted by 0.7 
+## # Specifics:               Earlier sample of 58 items with 0 errors weighted by 0.7 
 ## # ------------------------------------------------------------
 ## # Output: 
 ## #
