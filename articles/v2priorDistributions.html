@@ -275,7 +275,7 @@
 <div id="earlier-sample-method-sample" class="section level3">
 <h3 class="hasAnchor">
 <a href="#earlier-sample-method-sample" class="anchor"></a>Earlier sample (<code>method = "sample"</code>)</h3>
-<p>You can incorporate information from an earlier sample into the prior distribution using <code>method = "sample</code> in combination with <code>sampleN</code> and <code>sampleK</code>. As an example, the code below incorporates the information from an earlier sample of 30 transactions, in which 0 misstatements were found, into a prior distribution.</p>
+<p>You can incorporate information from an earlier sample into the prior distribution using <code>method = "sample</code> in combination with <code>sampleN</code> and <code>sampleK</code>. As an example, the code below incorporates the information from an earlier sample of 30 items in which 0 misstatements were found into a prior distribution.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">prior5</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, method <span class="op">=</span> <span class="st">"sample"</span>, sampleN <span class="op">=</span> <span class="fl">30</span>, sampleK <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
 <span class="va">prior5</span></code></pre></div>
@@ -287,7 +287,7 @@
 ## # Confidence:              95%    
 ## # Expected sample errors:  0%       
 ## # Likelihood:              binomial 
-## # Specifics:               Earlier sample of 30 transactions with 0 errors 
+## # Specifics:               Earlier sample of 30 items with 0 errors 
 ## # ------------------------------------------------------------
 ## # Output: 
 ## #
@@ -311,7 +311,7 @@
 <div id="weighted-earlier-sample-method-factor" class="section level3">
 <h3 class="hasAnchor">
 <a href="#weighted-earlier-sample-method-factor" class="anchor"></a>Weighted earlier sample (<code>method = "factor"</code>)</h3>
-<p>You can incorporate information from last years results, weighted by a factor, into the prior distribution using <code>method = "factor</code> in combination with <code>sampleN</code> and <code>sampleK</code>. As an example, the code below incorporates the information from a last years results (a sample of 58 transactions in which 0 misstatements were found), weighted by a factor 0.7, into a prior distribution.</p>
+<p>You can incorporate information from last years results, weighted by a factor, into the prior distribution using <code>method = "factor</code> in combination with <code>sampleN</code> and <code>sampleK</code>. As an example, the code below incorporates the information from a last years results (a sample of 58 items in which 0 misstatements were found), weighted by a factor 0.7, into a prior distribution.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">prior6</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, method <span class="op">=</span> <span class="st">"factor"</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, sampleN <span class="op">=</span> <span class="fl">58</span>, sampleK <span class="op">=</span> <span class="fl">0</span>, factor <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span>
 <span class="va">prior6</span></code></pre></div>
@@ -323,7 +323,7 @@
 ## # Confidence:              95%    
 ## # Expected sample errors:  0%       
 ## # Likelihood:              binomial 
-## # Specifics:               Earlier sample of 58 transactions with 0 errors weighted by 0.7 
+## # Specifics:               Earlier sample of 58 items with 0 errors weighted by 0.7 
 ## # ------------------------------------------------------------
 ## # Output: 
 ## #
