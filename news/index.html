@@ -146,6 +146,8 @@
 <li>Changed the default <code>likelihood = 'poisson'</code> in the <code><a href="../reference/planning.html">planning()</a></code> function to <code>likelihood = 'binomial'</code> to be consistent across functions.</li>
 <li>Changed the order of most function arguments so that <code>materiality</code> and <code>minPrecision</code> are among the first ones.</li>
 <li>Removed the default value of <code>confidence = 0.95</code> in all applicable functions, it currently has no default so that the user is required to give an input.</li>
+<li>Made <code>method = 'hypotheses'</code> and <code>method = 'median'</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function available for <code>likelihood = 'hypergeometric'</code>.</li>
+<li>Made <code>expectedErrors &gt; 0</code> available for <code>method = 'hypotheses'</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code>.</li>
 <li>Added <code>bram</code> as a method for the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function. <code>method = 'bram'</code> computes a prior distribution with a given mode (<code>expectedError</code>) and upper bound (<code>ub</code>).</li>
 <li>Fixed an error in the mode of the gamma posterior distribution from the <code><a href="../reference/evaluation.html">evaluation()</a></code> function in which <code>+1</code> was added to the beta parameter, resulting in slighly lower modes than the correct ones.</li>
 <li>Made a correction to the calculation of the beta-binomial prior and posterior so that the posterior parameter <code>N</code> has the correct value of <code>N = N - n</code> (current) instead of <code>N - n + k</code> (before).</li>
