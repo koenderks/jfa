@@ -1,8 +1,9 @@
-[![CRAN](https://www.r-pkg.org/badges/version-ago/jfa)](https://cran.r-project.org/package=jfa)
-[![codecov](https://codecov.io/gh/koenderks/jfa/branch/master/graph/badge.svg?token=ZoxIB8p8PW)](https://codecov.io/gh/koenderks/jfa)
-[![R_build_status](https://github.com/koenderks/jfa/workflows/R-CMD/badge.svg)](https://github.com/koenderks/jfa/actions)
-![](https://cranlogs.r-pkg.org/badges/jfa)
-![](https://cranlogs.r-pkg.org/badges/grand-total/jfa)
+[![CRAN](https://img.shields.io/cran/v/jfa?color=yellow&label=CRAN&logo=r)](https://cran.r-project.org/package=jfa)
+[![R_build_status](https://github.com/koenderks/jfa/workflows/Build/badge.svg)](https://github.com/koenderks/jfa/actions)
+[![Codecov](https://codecov.io/gh/koenderks/jfa/branch/master/graph/badge.svg?token=ZoxIB8p8PW)](https://codecov.io/gh/koenderks/jfa)
+[![Bugs](https://img.shields.io/github/issues/koenderks/jfa/bug?label=Bugs&logo=github&logoColor=%23FFF&color=brightgreen)](https://github.com/koenderks/jfa/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
+[![Monthly](https://cranlogs.r-pkg.org/badges/jfa?color=blue)](https://cranlogs.r-pkg.org)
+[![Total](https://cranlogs.r-pkg.org/badges/grand-total/jfa?color=blue)](https://cranlogs.r-pkg.org)
 
 # jfa: Bayesian and Classical Audit Sampling
 
@@ -25,13 +26,13 @@ For complete documentation of `jfa`, visit the [package website](https://koender
 
 ## 1. Installation
 
-The most recent version of `jfa` can be downloaded from [CRAN](https://cran.r-project.org/package=jfa) by running the following command in R or RStudio:
+The released version of `jfa` can be downloaded from [CRAN](https://cran.r-project.org/package=jfa) by running the following command in R or RStudio:
 
 ```
 install.packages('jfa')
 ```
 
-Alternatively, you can download the most recent (development) version from GitHub using:
+Alternatively, you can download the development version from GitHub using:
 
 ```
 devtools::install.github('koenderks/jfa')
