@@ -2,6 +2,7 @@
 This is jfa version 0.5.3. In this version I have:
 
 * Updated documentation for all functions.
+* Added several new methods to two existing functions.
 * Fixed an error in the evaluation function.
 
 ## Test environments

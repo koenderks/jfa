@@ -2,7 +2,7 @@
 #'
 #' @description This function takes an object of class \code{jfaEvaluation} as returned by the \code{evaluation()} function automatically generates a \code{html} or \code{pdf} report containing the analysis results and their interpretation.
 #'
-#' For more details on how to use this function see the package vignette:
+#' For more details on how to use this function, see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
 #' @usage report(object, file = 'report.html', format = 'html_document')

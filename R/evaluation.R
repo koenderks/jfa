@@ -2,7 +2,7 @@
 #'
 #' @description This function takes a data frame (using \code{sample}, \code{bookValues}, and \code{auditValues}) or summary statistics (using \code{nSumstats} and \code{kSumstats}) and performs inference on the misstatement in the sample. The function returns an object of class \code{jfaEvaluation} which can be used with associated \code{print()} and \code{plot()} methods.
 #'
-#' For more details on how to use this function see the package vignette:
+#' For more details on how to use this function, see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
 #' @usage evaluation(confidence, materiality = NULL, minPrecision = NULL, method = 'binomial',

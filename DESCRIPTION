@@ -1,7 +1,7 @@
 Package: jfa
 Title: Bayesian and Classical Audit Sampling
 Version: 0.5.3
-Date: 2021-04-26
+Date: 2021-05-01
 Authors@R: 
     person(given = "Koen",
            family = "Derks",

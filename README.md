@@ -9,7 +9,7 @@
 
 <img src='https://github.com/koenderks/jfa/raw/master/man/figures/readme/logo/jfaLogo.png' width='149' height='173' alt='logo' align='right' margin-left='20' margin-right='20'/>
 
-`jfa` is an R package for statistical audit sampling. The package provides five functions for planning, performing, evaluating, and reporting an audit sample. Specifically, these functions implement standard audit sampling techniques for calculating sample sizes, selecting items from a population, and evaluating the misstatement from a data sample or summary statistics. Additionally, the `jfa` package allows the user to create a prior probability distribution to perform Bayesian audit sampling using these functions.
+`jfa` is an R package for statistical audit sampling. The package provides five functions for planning, performing, evaluating, and reporting an audit sample. Specifically, these functions implement standard audit sampling techniques for calculating sample sizes, selecting items from a population, and evaluating the misstatement from a data sample or from summary statistics. Additionally, the `jfa` package allows the user to create a prior probability distribution to perform Bayesian audit sampling using these functions.
 
 ## Overview
 
@@ -26,7 +26,7 @@ For complete documentation of `jfa`, visit the [package website](https://koender
 
 ## 1. Installation
 
-The released version of `jfa` can be downloaded from [CRAN](https://cran.r-project.org/package=jfa) by running the following command in R or RStudio:
+The most recently released version of `jfa` can be downloaded from [CRAN](https://cran.r-project.org/package=jfa) by running the following command in R or RStudio:
 
 ```
 install.packages('jfa')

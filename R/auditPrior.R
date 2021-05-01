@@ -2,7 +2,7 @@
 #'
 #' @description This function creates a prior distribution with audit information to be used in the \code{planning()} and \code{evaluation()} functions via their \code{prior} argument. The function returns an object of class \code{jfaPrior} which can be used with associated \code{print()} and \code{plot()} methods.
 #'
-#' For more details on how to use this function see the package vignette:
+#' For more details on how to use this function, see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
 #' @usage auditPrior(confidence, materiality = NULL, expectedError = 0, 
