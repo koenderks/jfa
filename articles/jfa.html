@@ -127,7 +127,7 @@
 <a href="#load-data" class="anchor"></a>Load data</h2>
 <p>We can try out some examples with the <code>BuildIt</code> data set that is included in the package. It includes a population of 3500 items from a fictional construction company BuildIt, which we can use to illustrate statistical audit sampling using the <code>jfa</code> package (for more info, see ?BuildIt).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/koenderks/jfa">jfa</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://koenderks.github.io/jfa/">jfa</a></span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="st">"BuildIt"</span><span class="op">)</span>
 <span class="va">BuildIt</span> <span class="op">&lt;-</span> <span class="va">BuildIt</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"ID"</span>, <span class="st">"bookValue"</span><span class="op">)</span><span class="op">]</span> <span class="co"># Let's remove the auditValue column for this example</span>
