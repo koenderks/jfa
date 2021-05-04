@@ -118,7 +118,7 @@ auditPrior <- function(confidence, materiality = NULL, expectedError = 0,
       stop("You must specify a value for 'ub'.")
     if (ub <= 0 || ub >= 1 || ub <= expectedError) # Check if the value for the upper bound is valid
       stop("The value of 'ub' must be between 0 and 1 and higher than 'expectedErrors'.")
-    if (likelihood == 'poisson') { # Perform approximation described in Stewart (2013) on p. 45.
+    if (likelihood == 'poisson' && expectedError > 0) { # Perform approximation described in Stewart (2013) on p. 45.
       r <- expectedError / ub
       q <- stats::qnorm(confidence)
       kPrior <- ((( (q * r) + sqrt(3 + ((r / 3) * (4 * q^2 - 10)) - ((r^2 / 3) * (q^2 - 1) ))) / (2 * (1 - r) ))^2 + (1 / 4)) - 1
@@ -126,12 +126,17 @@ auditPrior <- function(confidence, materiality = NULL, expectedError = 0,
     } else { # Approximation through iteration over alpha parameter
       bound <- Inf
       kPrior <- 0
+      nPrior <- 0
       while (bound > ub) {
-        kPrior <- kPrior + 0.0001 # Increase of 0.001 (time intensive?)
-        nPrior <- kPrior / expectedError
+        if (expectedError == 0) { # Iterate over nPrior because kPrior is zero
+          nPrior <- nPrior + 0.001 # Increase of 0.001 (time intensive?)
+        } else { # Iterate over kPrior to save time
+          kPrior <- kPrior + 0.0001 # Increase of 0.0001 (time intensive?)
+          nPrior <- kPrior / expectedError
+        }
         bound <- switch(likelihood, 
                         "binomial" = stats::qbeta(p = confidence, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior),
-                        #"poisson" = stats::qgamma(p = confidence, shape = 1 + kPrior, rate = nPrior),
+                        "poisson" = stats::qgamma(p = confidence, shape = 1 + kPrior, rate = nPrior),
                         "hypergeometric" = .qBetaBinom(p = confidence, N = N, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior) / N)
       }
     }

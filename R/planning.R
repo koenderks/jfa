@@ -137,7 +137,7 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
   sufficient <- FALSE
   
   # Start iterations
-  while (!sufficient) {
+  while (!sufficient && iter < maxSize) {
     
     i <- samplingFrame[iter]
     

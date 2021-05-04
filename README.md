@@ -90,6 +90,8 @@ Below you can find a enumeration and explanation of the functions in `jfa`, sort
 * [`evaluation()`](#evaluate-a-sample-with-the-evaluation-function)
 * [`report()`](#generate-a-report-with-the-report-function)
 
+For detailed examples of how to use these functions, visit the [get started](https://koenderks.github.io/jfa/articles/jfa.html) section on the package website.
+
 ### Create a prior distribution with the `auditPrior()` function
 
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
