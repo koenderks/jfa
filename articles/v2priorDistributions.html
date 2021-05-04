@@ -201,7 +201,7 @@
 <div id="bayesian-risk-assessment-model-method-bram" class="section level3">
 <h3 class="hasAnchor">
 <a href="#bayesian-risk-assessment-model-method-bram" class="anchor"></a>Bayesian Risk Assessment Model (<code>method = 'bram'</code>)</h3>
-<p>You can incorporate information about the expected errors (mode) and the upper confidence bound of the prior distribution according to the Bayesian Risk Assessment Model (BRAM) using <code>method = 'bram'</code>. As an example, the code below incorporates the information that the mode of the prior is 2% and the upper bound is 60%.</p>
+<p>You can incorporate information about the expected errors (mode) and the upper confidence bound of the prior distribution according to the Bayesian Risk Assessment Model (BRAM) using <code>method = 'bram'</code>. As an example, the code below incorporates the information that the mode of the prior distribution is 1% and the upper bound is 60%.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">prior3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, method <span class="op">=</span> <span class="st">'bram'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, ub <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span>
 <span class="va">prior3</span></code></pre></div>
