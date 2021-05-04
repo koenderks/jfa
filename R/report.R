@@ -43,6 +43,21 @@ report <- function(object, file = 'report.html', format = 'html_document'){
   if (!class(object) == "jfaEvaluation")
     stop("Object must be of class 'jfaEvaluation'.")
   
+  if (!requireNamespace("rmarkdown", quietly = TRUE)) {
+    stop("Package \"rmarkdown\" needed for this function to work. Please install it.",
+         call. = FALSE)
+  }
+  
+  if (!requireNamespace("knitr", quietly = TRUE)) {
+    stop("Package \"knitr\" needed for this function to work. Please install it.",
+         call. = FALSE)
+  }
+  
+  if (!requireNamespace("kableExtra", quietly = TRUE)) {
+    stop("Package \"kableExtra\" needed for this function to work. Please install it.",
+         call. = FALSE)
+  }
+  
   #Determine the template
   theFile <- system.file("rmd/report.Rmd", package = "jfa")
   
