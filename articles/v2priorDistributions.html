@@ -97,7 +97,7 @@
       <h1 data-toc-skip>Constructing a prior distribution</h1>
                         <h4 class="author">Koen Derks</h4>
             
-            <h4 class="date">last modified: 07-11-2020</h4>
+            <h4 class="date">last modified: 04-05-2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/master/vignettes/v2priorDistributions.Rmd"><code>vignettes/v2priorDistributions.Rmd</code></a></small>
       <div class="hidden name"><code>v2priorDistributions.Rmd</code></div>
@@ -123,15 +123,15 @@
 <p>First, let’s set some default options for the confidence, performance materiality, the likelihood, and the expected errors.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">confidence</span> <span class="op">&lt;-</span> <span class="fl">0.95</span>        <span class="co"># 95% confidence</span>
-<span class="va">likelihood</span> <span class="op">&lt;-</span> <span class="st">"binomial"</span>  <span class="co"># Binomial likelihood</span>
+<span class="va">likelihood</span> <span class="op">&lt;-</span> <span class="st">'binomial'</span>  <span class="co"># Binomial likelihood</span>
 <span class="va">materiality</span> <span class="op">&lt;-</span> <span class="fl">0.05</span>       <span class="co"># Performance materiality of 5%</span>
-<span class="va">expectedError</span> <span class="op">&lt;-</span> <span class="fl">0</span>        <span class="co"># Zero errors expected in sample</span></code></pre></div>
+<span class="va">expectedError</span> <span class="op">&lt;-</span> <span class="fl">0.01</span>     <span class="co"># 1% errors expected in sample</span></code></pre></div>
 <div id="default-no-explicit-information-method-none" class="section level3">
 <h3 class="hasAnchor">
-<a href="#default-no-explicit-information-method-none" class="anchor"></a>[Default] No explicit information (<code>method = "none"</code>)</h3>
-<p>You can refrain from incorporating explicit information in the prior distribution, and still use Bayesian statistics, using <code>method = none</code>. As an example, the code below incorporates no explicit information into a prior distribution</p>
+<a href="#default-no-explicit-information-method-none" class="anchor"></a>[Default] No explicit information (<code>method = 'none'</code>)</h3>
+<p>You can refrain from incorporating explicit information in the prior distribution, and still use Bayesian statistics, using <code>method = 'none'</code>. As an example, the code below incorporates no explicit information into a prior distribution</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, <span class="va">likelihood</span>, method <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">prior1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, <span class="va">likelihood</span>, method <span class="op">=</span> <span class="st">'none'</span><span class="op">)</span>
 <span class="va">prior1</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
@@ -139,7 +139,7 @@
 ## # Input:
 ## #
 ## # Confidence:              95%    
-## # Expected sample errors:  0%       
+## # Expected sample errors:  1%       
 ## # Likelihood:              binomial 
 ## # Specifics:               None 
 ## # ------------------------------------------------------------
@@ -164,10 +164,10 @@
 </div>
 <div id="audit-risk-model-method-arm" class="section level3">
 <h3 class="hasAnchor">
-<a href="#audit-risk-model-method-arm" class="anchor"></a>Audit Risk Model (<code>method = "arm"</code>)</h3>
-<p>You can incorporate the risk assessments from the Audit Risk Model (inherent risk and internal control risk) using <code>method = "arm</code> in combination with the <code>ir</code> and <code>cr</code> arguments. As an example, the code below incorporates the information that the inherent risk is equal to 90% and that the internal control risk is equal to 60% into a prior distribution.</p>
+<a href="#audit-risk-model-method-arm" class="anchor"></a>Audit Risk Model (<code>method = 'arm'</code>)</h3>
+<p>You can translate the risk assessments from the Audit Risk Model (inherent risk and internal control risk) into a prior distribution using <code>method = 'arm'</code> in combination with the <code>ir</code> and <code>cr</code> arguments. As an example, the code below incorporates the information that the inherent risk is equal to 90% and that the internal control risk is equal to 60% into a prior distribution.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, method <span class="op">=</span> <span class="st">"arm"</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, ir <span class="op">=</span> <span class="fl">0.9</span>, cr <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">prior2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, method <span class="op">=</span> <span class="st">'arm'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, ir <span class="op">=</span> <span class="fl">0.9</span>, cr <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span>
 <span class="va">prior2</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
@@ -175,36 +175,35 @@
 ## # Input:
 ## #
 ## # Confidence:              95%    
-## # Expected sample errors:  0%       
+## # Expected sample errors:  1%       
 ## # Likelihood:              binomial 
 ## # Specifics:               Inherent risk = 0.9; Internal control risk = 0.6; Detection risk = 0.093 
 ## # ------------------------------------------------------------
 ## # Output: 
 ## #
-## # Prior distribution:      beta(α = 1, β = 13) 
-## # Implicit sample size:    12 
-## # Implicit errors:         0 
+## # Prior distribution:      beta(α = 1.21, β = 21.79) 
+## # Implicit sample size:    21 
+## # Implicit errors:         0.21 
 ## # ------------------------------------------------------------
 ## # Statistics: 
 ## #
-## # Upper bound:             0.206 
-## # Precision:               0.206 
-## # Mode:                    0 
-## # Mean:                    0.071 
-## # Median:                  0.052 
+## # Upper bound:             0.143 
+## # Precision:               0.133 
+## # Mode:                    0.01 
+## # Mean:                    0.053 
+## # Median:                  0.04 
 ## # ------------------------------------------------------------</code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior2</span><span class="op">)</span></code></pre></div>
 <p><img src="v2priorDistributions_files/figure-html/unnamed-chunk-5-1.png" width="576"></p>
 </div>
-<div id="equal-prior-probabilities-method-median" class="section level3">
+<div id="bayesian-risk-assessment-model-method-bram" class="section level3">
 <h3 class="hasAnchor">
-<a href="#equal-prior-probabilities-method-median" class="anchor"></a>Equal prior probabilities (<code>method = "median"</code>)</h3>
-<p>You can incorporate the assumption that tolerable misstatement is equally likely as intolerable misstatement using <code>method = "median"</code>. As an example, the code below incorporates this assumption into a prior distribution.</p>
-<p><em>Note: This method requires that you specify a value for the <code>materiality</code>.</em></p>
+<a href="#bayesian-risk-assessment-model-method-bram" class="anchor"></a>Bayesian Risk Assessment Model (<code>method = 'bram'</code>)</h3>
+<p>You can incorporate information about the expected errors (mode) and the upper confidence bound of the prior distribution according to the Bayesian Risk Assessment Model (BRAM) using <code>method = 'bram'</code>. As an example, the code below incorporates the information that the mode of the prior is 2% and the upper bound is 60%.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, method <span class="op">=</span> <span class="st">"median"</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">prior3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, method <span class="op">=</span> <span class="st">'bram'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, ub <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span>
 <span class="va">prior3</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
@@ -212,36 +211,36 @@
 ## # Input:
 ## #
 ## # Confidence:              95%    
-## # Expected sample errors:  0%       
+## # Expected sample errors:  1%       
 ## # Likelihood:              binomial 
-## # Specifics:               p(Θ &lt; 0.05) = p(Θ &gt; 0.05) = 0.5 
+## # Specifics:               Mode = 0.01; Upper bound = 0.6 
 ## # ------------------------------------------------------------
 ## # Output: 
 ## #
-## # Prior distribution:      beta(α = 1, β = 13.513) 
-## # Implicit sample size:    12.513 
-## # Implicit errors:         0 
+## # Prior distribution:      beta(α = 1.023, β = 3.317) 
+## # Implicit sample size:    2.34 
+## # Implicit errors:         0.023 
 ## # ------------------------------------------------------------
 ## # Statistics: 
 ## #
-## # Upper bound:             0.199 
-## # Precision:               0.199 
-## # Mode:                    0 
-## # Mean:                    0.069 
-## # Median:                  0.05 
+## # Upper bound:             0.599 
+## # Precision:               0.589 
+## # Mode:                    0.01 
+## # Mean:                    0.236 
+## # Median:                  0.194 
 ## # ------------------------------------------------------------</code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior3</span><span class="op">)</span></code></pre></div>
 <p><img src="v2priorDistributions_files/figure-html/unnamed-chunk-7-1.png" width="576"></p>
 </div>
-<div id="custom-prior-probabilities-method-hypotheses" class="section level3">
+<div id="equal-prior-probabilities-method-median" class="section level3">
 <h3 class="hasAnchor">
-<a href="#custom-prior-probabilities-method-hypotheses" class="anchor"></a>Custom prior probabilities (<code>method = "hypotheses"</code>)</h3>
-<p>You can assign custom probabilities to the hypothesis of tolerable misstatement (using <code>pHmin</code>) and/or the hypotheses of intolerable misstatement (using <code>pHplus</code>) in combination with <code>method = "hypotheses</code>. As an example, the code below incorporates the information that the hypothesis of tolerable misstatement has a probability of 60% into a prior distribution.</p>
-<p><em>Note: This method requires that you specify a value for the <code>materiality</code> and that the expected errors are zero.</em></p>
+<a href="#equal-prior-probabilities-method-median" class="anchor"></a>Equal prior probabilities (<code>method = 'median'</code>)</h3>
+<p>You can incorporate the assumption that tolerable misstatement is equally likely as intolerable misstatement using <code>method = 'median'</code>. As an example, the code below incorporates this assumption into a prior distribution.</p>
+<p><em>Note: This method requires that you specify a value for the <code>materiality</code>.</em></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, method <span class="op">=</span> <span class="st">"hypotheses"</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, pHmin <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">prior4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, method <span class="op">=</span> <span class="st">'median'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span><span class="op">)</span>
 <span class="va">prior4</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
@@ -249,35 +248,36 @@
 ## # Input:
 ## #
 ## # Confidence:              95%    
-## # Expected sample errors:  0%       
+## # Expected sample errors:  1%       
 ## # Likelihood:              binomial 
-## # Specifics:               p(Θ &lt; 0.05) = 0.6; p(Θ &gt; 0.05) = 0.4 
+## # Specifics:               p(Θ &lt; 0.05) = p(Θ &gt; 0.05) = 0.5 
 ## # ------------------------------------------------------------
 ## # Output: 
 ## #
-## # Prior distribution:      beta(α = 1, β = 17.864) 
-## # Implicit sample size:    16.864 
-## # Implicit errors:         0 
+## # Prior distribution:      beta(α = 1.155, β = 16.385) 
+## # Implicit sample size:    15.54 
+## # Implicit errors:         0.155 
 ## # ------------------------------------------------------------
 ## # Statistics: 
 ## #
-## # Upper bound:             0.154 
-## # Precision:               0.154 
-## # Mode:                    0 
-## # Mean:                    0.053 
-## # Median:                  0.038 
+## # Upper bound:             0.181 
+## # Precision:               0.171 
+## # Mode:                    0.01 
+## # Mean:                    0.066 
+## # Median:                  0.05 
 ## # ------------------------------------------------------------</code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior4</span><span class="op">)</span></code></pre></div>
 <p><img src="v2priorDistributions_files/figure-html/unnamed-chunk-9-1.png" width="576"></p>
 </div>
-<div id="earlier-sample-method-sample" class="section level3">
+<div id="custom-prior-probabilities-method-hypotheses" class="section level3">
 <h3 class="hasAnchor">
-<a href="#earlier-sample-method-sample" class="anchor"></a>Earlier sample (<code>method = "sample"</code>)</h3>
-<p>You can incorporate information from an earlier sample into the prior distribution using <code>method = "sample</code> in combination with <code>sampleN</code> and <code>sampleK</code>. As an example, the code below incorporates the information from an earlier sample of 30 items in which 0 misstatements were found into a prior distribution.</p>
+<a href="#custom-prior-probabilities-method-hypotheses" class="anchor"></a>Custom prior probabilities (<code>method = 'hypotheses'</code>)</h3>
+<p>You can assign custom probabilities to the hypothesis of tolerable misstatement (using <code>pHmin</code>) and/or the hypotheses of intolerable misstatement (using <code>pHplus</code>) in combination with <code>method = 'hypotheses'</code>. As an example, the code below incorporates the information that the hypothesis of tolerable misstatement has a probability of 60% into a prior distribution.</p>
+<p><em>Note: This method requires that you specify a value for the <code>materiality</code>.</em></p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior5</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, method <span class="op">=</span> <span class="st">"sample"</span>, sampleN <span class="op">=</span> <span class="fl">30</span>, sampleK <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">prior5</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, method <span class="op">=</span> <span class="st">'hypotheses'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, pHmin <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span>
 <span class="va">prior5</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
@@ -285,7 +285,43 @@
 ## # Input:
 ## #
 ## # Confidence:              95%    
-## # Expected sample errors:  0%       
+## # Expected sample errors:  1%       
+## # Likelihood:              binomial 
+## # Specifics:               p(Θ &lt; 0.05) = 0.6; p(Θ &gt; 0.05) = 0.4 
+## # ------------------------------------------------------------
+## # Output: 
+## #
+## # Prior distribution:      beta(α = 1.217, β = 22.493) 
+## # Implicit sample size:    21.71 
+## # Implicit errors:         0.217 
+## # ------------------------------------------------------------
+## # Statistics: 
+## #
+## # Upper bound:             0.14 
+## # Precision:               0.13 
+## # Mode:                    0.01 
+## # Mean:                    0.051 
+## # Median:                  0.039 
+## # ------------------------------------------------------------</code></pre>
+<p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior5</span><span class="op">)</span></code></pre></div>
+<p><img src="v2priorDistributions_files/figure-html/unnamed-chunk-11-1.png" width="576"></p>
+</div>
+<div id="earlier-sample-method-sample" class="section level3">
+<h3 class="hasAnchor">
+<a href="#earlier-sample-method-sample" class="anchor"></a>Earlier sample (<code>method = 'sample'</code>)</h3>
+<p>You can incorporate information from an earlier sample into the prior distribution using <code>method = 'sample'</code> in combination with <code>sampleN</code> and <code>sampleK</code>. As an example, the code below incorporates the information from an earlier sample of 30 items in which 0 misstatements were found into a prior distribution.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">prior6</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, method <span class="op">=</span> <span class="st">'sample'</span>, sampleN <span class="op">=</span> <span class="fl">30</span>, sampleK <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
+<span class="va">prior6</span></code></pre></div>
+<pre><code>## # ------------------------------------------------------------
+## #         jfa Prior Distribution Summary (Bayesian)
+## # ------------------------------------------------------------
+## # Input:
+## #
+## # Confidence:              95%    
+## # Expected sample errors:  1%       
 ## # Likelihood:              binomial 
 ## # Specifics:               Earlier sample of 30 items with 0 errors 
 ## # ------------------------------------------------------------
@@ -304,24 +340,24 @@
 ## # Median:                  0.022 
 ## # ------------------------------------------------------------</code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior5</span><span class="op">)</span></code></pre></div>
-<p><img src="v2priorDistributions_files/figure-html/unnamed-chunk-11-1.png" width="576"></p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior6</span><span class="op">)</span></code></pre></div>
+<p><img src="v2priorDistributions_files/figure-html/unnamed-chunk-13-1.png" width="576"></p>
 </div>
 <div id="weighted-earlier-sample-method-factor" class="section level3">
 <h3 class="hasAnchor">
-<a href="#weighted-earlier-sample-method-factor" class="anchor"></a>Weighted earlier sample (<code>method = "factor"</code>)</h3>
-<p>You can incorporate information from last years results, weighted by a factor, into the prior distribution using <code>method = "factor</code> in combination with <code>sampleN</code> and <code>sampleK</code>. As an example, the code below incorporates the information from a last years results (a sample of 58 items in which 0 misstatements were found), weighted by a factor 0.7, into a prior distribution.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior6</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, method <span class="op">=</span> <span class="st">"factor"</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, sampleN <span class="op">=</span> <span class="fl">58</span>, sampleK <span class="op">=</span> <span class="fl">0</span>, factor <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span>
-<span class="va">prior6</span></code></pre></div>
+<a href="#weighted-earlier-sample-method-factor" class="anchor"></a>Weighted earlier sample (<code>method = 'factor'</code>)</h3>
+<p>You can incorporate information from last years results, weighted by a factor, into the prior distribution using <code>method = 'factor'</code> in combination with <code>sampleN</code> and <code>sampleK</code>. As an example, the code below incorporates the information from a last years results (a sample of 58 items in which 0 misstatements were found), weighted by a factor 0.7, into a prior distribution.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">prior7</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, method <span class="op">=</span> <span class="st">'factor'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, sampleN <span class="op">=</span> <span class="fl">58</span>, sampleK <span class="op">=</span> <span class="fl">0</span>, factor <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span>
+<span class="va">prior7</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
 ## # ------------------------------------------------------------
 ## # Input:
 ## #
 ## # Confidence:              95%    
-## # Expected sample errors:  0%       
+## # Expected sample errors:  1%       
 ## # Likelihood:              binomial 
 ## # Specifics:               Earlier sample of 58 items with 0 errors weighted by 0.7 
 ## # ------------------------------------------------------------
@@ -340,35 +376,10 @@
 ## # Median:                  0.017 
 ## # ------------------------------------------------------------</code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior6</span><span class="op">)</span></code></pre></div>
-<p><img src="v2priorDistributions_files/figure-html/unnamed-chunk-13-1.png" width="576"></p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior7</span><span class="op">)</span></code></pre></div>
+<p><img src="v2priorDistributions_files/figure-html/unnamed-chunk-15-1.png" width="576"></p>
 </div>
-</div>
-<div id="comparing-efficiency-through-required-sample-sizes" class="section level2">
-<h2 class="hasAnchor">
-<a href="#comparing-efficiency-through-required-sample-sizes" class="anchor"></a>Comparing efficiency through required sample sizes</h2>
-<p>To illustrate how the prior distribution can facilitate a more efficient audit, the table below lists the required sample sizes for the created priors after calling <code><a href="../reference/planning.html">planning(confidence = confidence, expectedError = expectedError, likelihood = likelihood, materiality = materiality, prior = X)</a></code>, where <code>X</code> is the object returned by the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function.</p>
-<table class="table">
-<thead><tr class="header">
-<th align="left"></th>
-<th align="right">none</th>
-<th align="right">arm</th>
-<th align="right">median</th>
-<th align="right">hypotheses</th>
-<th align="right">sample</th>
-<th align="right">factor</th>
-</tr></thead>
-<tbody><tr class="odd">
-<td align="left">Required sample size</td>
-<td align="right">58</td>
-<td align="right">46</td>
-<td align="right">45</td>
-<td align="right">41</td>
-<td align="right">28</td>
-<td align="right">17</td>
-</tr></tbody>
-</table>
 </div>
   </div>
 
