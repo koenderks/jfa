@@ -26,7 +26,7 @@ For complete documentation of `jfa`, visit the [package website](https://koender
 
 ## 1. Installation
 
-The most recently released version of `jfa` can be downloaded from [CRAN](https://cran.r-project.org/package=jfa) by running the following command in R or RStudio:
+The most recently released version of `jfa` can be downloaded from [CRAN](https://cran.r-project.org/package=jfa) by running the following command in R:
 
 ```
 install.packages('jfa')
@@ -38,7 +38,7 @@ Alternatively, you can download the development version from GitHub using:
 devtools::install.github('koenderks/jfa')
 ```
 
-After installation the `jfa` package can be loaded in R or RStudio by typing:
+After installation, the `jfa` package can be loaded with:
 
 ```
 library(jfa)
@@ -61,7 +61,7 @@ To validate the statistical results, `jfa`'s automated [unit tests](https://gith
 
 ## 4. Statistical tables
 
-Below you can find several informative tables that contain statistical sample sizes, upper limits, and Bayes factors. These tables are created using the `planning()` and `evaluation()` functions provided by the package.
+Below you can find several informative tables that contain statistical sample sizes, upper limits, and Bayes factors. These tables are created using the `planning()` and `evaluation()` functions provided in the package.
 
 *Sample sizes*
 
@@ -82,15 +82,13 @@ Below you can find several informative tables that contain statistical sample si
 
 <p align='center'><img src='https://github.com/koenderks/jfa/raw/master/man/figures/readme/banner/jfaBanner.png' alt='banner'/></p>
 
-Below you can find a enumeration and explanation of the functions in `jfa`, sorted by their occurrence in the standard audit sampling workflow.
+Below you can find an explanation of the available functions in `jfa`, sorted by their occurrence in the standard audit sampling workflow. For detailed examples of how to use these functions, visit the [Get started](https://koenderks.github.io/jfa/articles/jfa.html) section on the package website.
 
 * [`auditPrior()`](#create-a-prior-distribution-with-the-auditprior-function)
 * [`planning()`](#plan-a-sample-with-the-planning-function)
 * [`selection()`](#select-items-with-the-selection-function)
 * [`evaluation()`](#evaluate-a-sample-with-the-evaluation-function)
 * [`report()`](#generate-a-report-with-the-report-function)
-
-For detailed examples of how to use these functions, visit the [get started](https://koenderks.github.io/jfa/articles/jfa.html) section on the package website.
 
 ### Create a prior distribution with the `auditPrior()` function
 
