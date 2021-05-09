@@ -7,7 +7,7 @@
 planning(confidence, materiality = NULL, minPrecision = NULL,
          expectedError = 0, likelihood = 'binomial', N = NULL,
          prior = FALSE, nPrior = 0, kPrior = 0,
-         increase = 1, maxSize = 5000)
+         increase = 1, maxSize = 5000, p.exceed.k = NULL)
 }
 \arguments{
 \item{confidence}{a numeric value between 0 and 1 specifying the confidence level used in the planning.}
@@ -31,6 +31,8 @@ planning(confidence, materiality = NULL, minPrecision = NULL,
 \item{increase}{an integer larger than 0 specifying the desired increase step for the sample size calculation.}
 
 \item{maxSize}{an integer larger than 0 specifying the maximum sample size that is considered in the calculation. Defaults to 5000 for efficiency. Increase this value if the sample size cannot be found due to it being too large (e.g., for a low materiality).}
+
+\item{p.exceed.k}{a value between 0 and 1 specifying the planned maximum probability of the observed errors exceeding the expected errors. Can only be specified if \code{expectedErrors > 0}. If specified, the function will increase the sample size so that there is a planned probability that the observed errors exceed the expected errors. Defaults to \code{NULL} for undefined.}
 }
 \value{
 An object of class \code{jfaPlanning} containing:

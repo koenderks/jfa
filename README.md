@@ -130,7 +130,7 @@ The `planning()` function calculates the minimum sample size for a statistical a
 
 *Full function with default arguments:*
 
-`planning(confidence, materiality = NULL, minPrecision = NULL, expectedError = 0, likelihood = 'binomial', N = NULL, prior = FALSE, nPrior = 0, kPrior = 0, increase = 1, maxSize = 5000)`
+`planning(confidence, materiality = NULL, minPrecision = NULL, expectedError = 0, likelihood = 'binomial', N = NULL, prior = FALSE, nPrior = 0, kPrior = 0, increase = 1, maxSize = 5000, p.exceed.k = NULL)`
 
 *Supported options for the `likelihood` argument:*
 

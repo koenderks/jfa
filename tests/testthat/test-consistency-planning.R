@@ -272,3 +272,11 @@ test_that(desc = "(id: f6-v0.5.2-t2) Test for change in beta-binomial mode calcu
 
 # jfa version 0.5.3
 # No changes to be benchmarked
+
+# jfa version 0.5.4
+
+test_that(desc = "(id: f6-v0.5.4-t1) Test for p.exceed.k feature", {
+  jfaRes <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0.01106, likelihood = "poisson", p.exceed.k = 0.2)
+  expect_equal(jfaRes[["sampleSize"]], 116)
+  expect_equal(jfaRes[["expectedSampleError"]], 1.66296)
+})
