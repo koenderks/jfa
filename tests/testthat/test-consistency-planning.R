@@ -263,7 +263,7 @@ test_that(desc = "(id: f6-v0.5.2-t1) Test for change in Hypergeometric mode calc
   expect_equal(modeDist, 3)
 })
 
-test_that(desc = "(id: f6-v0.5.2-t1) Test for change in beta-binomial mode calculation", {
+test_that(desc = "(id: f6-v0.5.2-t2) Test for change in beta-binomial mode calculation", {
   jfaRes <- planning(materiality = 0.05, confidence = 0.95, expectedError = 0, likelihood = "hypergeometric", N = 10000, prior = T)
   modeDist <- ceiling((jfaRes[["expectedBound"]] - jfaRes[["expectedPrecision"]]) * 10000)
   expect_equal(jfaRes[["sampleSize"]], 58)
