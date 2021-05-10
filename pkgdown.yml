@@ -3,9 +3,10 @@ pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   jfa: jfa.html
-  v1auditWorkflow: v1auditWorkflow.html
-  v2priorDistributions: v2priorDistributions.html
-  v3estimation: v3estimation.html
-  v4testing: v4testing.html
-last_built: 2021-05-10T18:18Z
+  v1_sampling_workflow: v1_sampling_workflow.html
+  v2_estimating_misstatement: v2_estimating_misstatement.html
+  v3_testing_misstatement: v3_testing_misstatement.html
+  v4_prior_distributions: v4_prior_distributions.html
+  v5_bayesian_sampling_workflow: v5_bayesian_sampling_workflow.html
+last_built: 2021-05-10T18:47Z
 
