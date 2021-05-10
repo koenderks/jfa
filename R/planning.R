@@ -171,9 +171,9 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
       if (likelihood == "binomial") 
         implicitK <- ceiling(implicitK)
       prob <- switch(likelihood, 
-                     "poisson" = stats::pgamma(materiality, shape = 1 + implicitK, rate = i),
-                     "binomial" = stats::dbinom(0:implicitK, size = i, prob = materiality),
-                     "hypergeometric" = stats::dhyper(x = 0:implicitK, m = populationK, n = ceiling(N - populationK), k = i))
+                     "poisson" = stats::pgamma(q = materiality, shape = 1 + implicitK, rate = i, lower.tail = FALSE),
+                     "binomial" = stats::pbinom(q = implicitK, size = i, prob = materiality),
+                     "hypergeometric" = stats::phyper(q = implicitK, m = populationK, n = ceiling(N - populationK), k = i))
       bound <- switch(likelihood, 
                       "poisson" = stats::qgamma(confidence, shape = 1 + implicitK, rate = i),
                       "binomial" = stats::binom.test(x = implicitK, n = i, p = materiality, alternative = "less", conf.level = confidence)$conf.int[2],
@@ -182,10 +182,7 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
                     "poisson" = implicitK / i,
                     "binomial" = implicitK / i,
                     "hypergeometric" = floor( ((i + 1) * (populationK + 1)) / (N + 2) ) / N) # = ceiling((((i + 1) * (ceiling(populationK) + 1)) / (N + 2)) - 1) / N
-      sufficient <- switch(likelihood, 
-                           "poisson" = prob >= confidence && (bound - mle) < minPrecision,
-                           "binomial" = sum(prob) < (1 - confidence) && (bound - mle) < minPrecision,
-                           "hypergeometric" = sum(prob) < (1 - confidence) && (bound - mle) < minPrecision)
+      sufficient <- prob < (1 - confidence) && (bound - mle) < minPrecision
     }
     
     if (sufficient) # Sufficient work done
