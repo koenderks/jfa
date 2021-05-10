@@ -112,27 +112,27 @@
 <div id="bayesian-statistics" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bayesian-statistics" class="anchor"></a>Bayesian statistics</h2>
-<p>Bayesian statistics allows you to incorporate existing information into the statistical analysis and revise this information using the information from the sample, possibly increasing your efficiency in the sampling procedure. For example, when you have information that indicates a low-risk profile for your client, you may require less evidence from the audit sampling procedures. Be aware that all information that you incorporate into the statistical analysis should be justified.</p>
+<p>Bayesian statistics allows you to incorporate existing information into the sampling procedure and to revise this information using the information from the sample. The use of the prior distribution can potentially decrease the amount of audit work required to achieve the desired assurance, thereby increasing your efficiency as an auditor. For example, when you have information from the auditee’s internal controls that indicates a low-risk profile, you may build on this information to require less evidence from substantive testing. Be aware that all information that you incorporate into the statistical analysis should be justified.</p>
 <div id="prior-probability-distributions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#prior-probability-distributions" class="anchor"></a>Prior probability distributions</h3>
-<p>Bayesian statistics incorporates existing information into the sampling procedure using a prior probability distribution that reflects your current knowledge about the misstatement in the population. The prior distribution is created using existing information, and is therefore generally created before the planning stage in the procedure.</p>
+<p>Bayesian statistics incorporates existing information into the sampling procedure using a prior probability distribution. The prior distribution is a probability distribution that reflects your existing information about the misstatement in the population. Because the prior distribution is based on existing information, it is usually created before the auditor starts planning a sample.</p>
 </div>
 </div>
-<div id="prior-construction-methods" class="section level2">
+<div id="constructing-a-prior-distribution" class="section level2">
 <h2 class="hasAnchor">
-<a href="#prior-construction-methods" class="anchor"></a>Prior construction methods</h2>
-<p>An important question is how to incorporate various kinds of existing information into the prior distribution. <code>jfa</code> offers six methods to create a prior distribution. These methods are explained below.</p>
-<p>First, let’s set some default options for the confidence, performance materiality, the likelihood, and the expected errors.</p>
+<a href="#constructing-a-prior-distribution" class="anchor"></a>Constructing a prior distribution</h2>
+<p>What information can be incorporated into the prior distribution depends on what type of information is available, the quality of that information, and the situation at hand. When the auditor has decided what kind of information they want to incorporate into a prior distribution, they can use the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function to calculate the corresponding parameters of the prior distribution. Below we discuss the various types of audit information that <code>jfa</code> is able to incorporate into a prior distribution.</p>
+<p>First, we set some default options for the confidence, performance materiality, the likelihood, and the expected errors in the sample.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">confidence</span> <span class="op">&lt;-</span> <span class="fl">0.95</span>        <span class="co"># 95% confidence</span>
-<span class="va">likelihood</span> <span class="op">&lt;-</span> <span class="st">'binomial'</span>  <span class="co"># Binomial likelihood</span>
-<span class="va">materiality</span> <span class="op">&lt;-</span> <span class="fl">0.05</span>       <span class="co"># Performance materiality of 5%</span>
-<span class="va">expectedError</span> <span class="op">&lt;-</span> <span class="fl">0.01</span>     <span class="co"># 1% errors expected in sample</span></code></pre></div>
+<code class="sourceCode R"><span class="va">confidence</span>    <span class="op">&lt;-</span> <span class="fl">0.95</span>       <span class="co"># 95% confidence</span>
+<span class="va">likelihood</span>    <span class="op">&lt;-</span> <span class="st">'binomial'</span> <span class="co"># Binomial likelihood</span>
+<span class="va">materiality</span>   <span class="op">&lt;-</span> <span class="fl">0.05</span>       <span class="co"># Performance materiality of 5%</span>
+<span class="va">expectedError</span> <span class="op">&lt;-</span> <span class="fl">0.01</span>       <span class="co"># 1% errors expected in sample</span></code></pre></div>
 <div id="default-no-explicit-information-method-none" class="section level3">
 <h3 class="hasAnchor">
 <a href="#default-no-explicit-information-method-none" class="anchor"></a>[Default] No explicit information (<code>method = 'none'</code>)</h3>
-<p>You can refrain from incorporating explicit information in the prior distribution, and still use Bayesian statistics, using <code>method = 'none'</code>. As an example, the code below incorporates no explicit information into a prior distribution</p>
+<p>You can refrain from incorporating explicit information in the prior distribution using <code>method = 'none'</code>. As an example, the code below incorporates no explicit information into a prior distribution</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">prior1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, <span class="va">likelihood</span>, method <span class="op">=</span> <span class="st">'none'</span><span class="op">)</span>
 <span class="va">prior1</span></code></pre></div>
@@ -170,7 +170,8 @@
 <a href="#audit-risk-model-method-arm" class="anchor"></a>Audit Risk Model (<code>method = 'arm'</code>)</h3>
 <p>You can translate the risk assessments from the Audit Risk Model (inherent risk and internal control risk) into a prior distribution using <code>method = 'arm'</code> in combination with the <code>ir</code> and <code>cr</code> arguments. As an example, the code below incorporates the information that the inherent risk is equal to 90% and that the internal control risk is equal to 60% into a prior distribution.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, method <span class="op">=</span> <span class="st">'arm'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, ir <span class="op">=</span> <span class="fl">0.9</span>, cr <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">prior2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, <span class="va">likelihood</span>, method <span class="op">=</span> <span class="st">'arm'</span>, 
+                     ir <span class="op">=</span> <span class="fl">0.9</span>, cr <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span>
 <span class="va">prior2</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
@@ -206,7 +207,8 @@
 <a href="#bayesian-risk-assessment-model-method-bram" class="anchor"></a>Bayesian Risk Assessment Model (<code>method = 'bram'</code>)</h3>
 <p>You can incorporate information about the expected errors (mode) and the upper confidence bound of the prior distribution according to the Bayesian Risk Assessment Model (BRAM) using <code>method = 'bram'</code>. As an example, the code below incorporates the information that the mode of the prior distribution is 1% and the upper bound is 60%.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, method <span class="op">=</span> <span class="st">'bram'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, ub <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">prior3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, <span class="va">likelihood</span>, method <span class="op">=</span> <span class="st">'bram'</span>,
+                     ub <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span>
 <span class="va">prior3</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
@@ -243,7 +245,7 @@
 <p>You can incorporate the assumption that tolerable misstatement is equally likely as intolerable misstatement using <code>method = 'median'</code>. As an example, the code below incorporates this assumption into a prior distribution.</p>
 <p><em>Note: This method requires that you specify a value for the <code>materiality</code>.</em></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, method <span class="op">=</span> <span class="st">'median'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">prior4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, <span class="va">likelihood</span>, method <span class="op">=</span> <span class="st">'median'</span><span class="op">)</span>
 <span class="va">prior4</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
@@ -280,7 +282,8 @@
 <p>You can assign custom probabilities to the hypothesis of tolerable misstatement (using <code>pHmin</code>) and/or the hypotheses of intolerable misstatement (using <code>pHplus</code>) in combination with <code>method = 'hypotheses'</code>. As an example, the code below incorporates the information that the hypothesis of tolerable misstatement has a probability of 60% into a prior distribution.</p>
 <p><em>Note: This method requires that you specify a value for the <code>materiality</code>.</em></p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior5</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, method <span class="op">=</span> <span class="st">'hypotheses'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, pHmin <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">prior5</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, <span class="va">likelihood</span>, method <span class="op">=</span> <span class="st">'hypotheses'</span>, 
+                     pHmin <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span>
 <span class="va">prior5</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
@@ -316,7 +319,8 @@
 <a href="#earlier-sample-method-sample" class="anchor"></a>Earlier sample (<code>method = 'sample'</code>)</h3>
 <p>You can incorporate information from an earlier sample into the prior distribution using <code>method = 'sample'</code> in combination with <code>sampleN</code> and <code>sampleK</code>. As an example, the code below incorporates the information from an earlier sample of 30 items in which 0 misstatements were found into a prior distribution.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior6</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, method <span class="op">=</span> <span class="st">'sample'</span>, sampleN <span class="op">=</span> <span class="fl">30</span>, sampleK <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">prior6</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, <span class="va">likelihood</span>, method <span class="op">=</span> <span class="st">'sample'</span>,
+                     sampleN <span class="op">=</span> <span class="fl">30</span>, sampleK <span class="op">=</span> <span class="fl">0</span><span class="op">)</span>
 <span class="va">prior6</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
@@ -352,7 +356,8 @@
 <a href="#weighted-earlier-sample-method-factor" class="anchor"></a>Weighted earlier sample (<code>method = 'factor'</code>)</h3>
 <p>You can incorporate information from last years results, weighted by a factor, into the prior distribution using <code>method = 'factor'</code> in combination with <code>sampleN</code> and <code>sampleK</code>. As an example, the code below incorporates the information from a last years results (a sample of 58 items in which 0 misstatements were found), weighted by a factor 0.7, into a prior distribution.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior7</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, method <span class="op">=</span> <span class="st">'factor'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, sampleN <span class="op">=</span> <span class="fl">58</span>, sampleK <span class="op">=</span> <span class="fl">0</span>, factor <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">prior7</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, <span class="va">expectedError</span>, <span class="va">likelihood</span>, method <span class="op">=</span> <span class="st">'factor'</span>,
+                     sampleN <span class="op">=</span> <span class="fl">58</span>, sampleK <span class="op">=</span> <span class="fl">0</span>, factor <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span>
 <span class="va">prior7</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
