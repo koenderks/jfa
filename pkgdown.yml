@@ -4,9 +4,9 @@ pkgdown_sha: ~
 articles:
   jfa: jfa.html
   v1_sampling_workflow: v1_sampling_workflow.html
-  v2_estimating_misstatement: v2_estimating_misstatement.html
-  v3_testing_misstatement: v3_testing_misstatement.html
-  v4_prior_distributions: v4_prior_distributions.html
-  v5_bayesian_sampling_workflow: v5_bayesian_sampling_workflow.html
-last_built: 2021-05-10T18:49Z
+  v2_bayesian_sampling_workflow: v2_bayesian_sampling_workflow.html
+  v3_prior_distributions: v3_prior_distributions.html
+  v4_testing_misstatement: v4_testing_misstatement.html
+  v5_estimating_misstatement: v5_estimating_misstatement.html
+last_built: 2021-05-10T18:58Z
 

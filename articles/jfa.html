@@ -60,16 +60,16 @@
       <a href="../articles/v1_sampling_workflow.html">The audit sampling workflow</a>
     </li>
     <li>
-      <a href="../articles/v2_estimating_misstatement.html">Estimating the misstatement</a>
+      <a href="../articles/v2_bayesian_sampling_workflow.html">The Bayesian audit sampling workflow</a>
     </li>
     <li>
-      <a href="../articles/v3_testing_misstatement.html">Testing the misstatement</a>
+      <a href="../articles/v3_prior_distributions.html">Prior distributions</a>
     </li>
     <li>
-      <a href="../articles/v4_prior_distributions.html">Prior distributions</a>
+      <a href="../articles/v4_testing_misstatement.html">Testing the misstatement</a>
     </li>
     <li>
-      <a href="../articles/v5_bayesian_sampling_workflow.html">The Bayesian audit sampling workflow</a>
+      <a href="../articles/v5_estimating_misstatement.html">Estimating the misstatement</a>
     </li>
   </ul>
 </li>
@@ -132,12 +132,12 @@
 ## 8  81460    295.20     295.20
 ## 9  14608    216.48     216.48
 ## 10 79064    243.43     243.43</code></pre>
-<p>For a Bayesian walkthrough of <code>jfa</code>’s audit sampling workflow using the <code>BuildIt</code> data set, see <a href="https://koenderks.github.io/jfa/articles/v5_bayesian_sampling_workflow.html">The Bayesian audit sampling workflow</a>.</p>
+<p>For a Bayesian walkthrough of <code>jfa</code>’s audit sampling workflow using the <code>BuildIt</code> data set, see <a href="https://koenderks.github.io/jfa/articles/v1_sampling_workflow.html">The audit sampling workflow</a>. For a Bayesian version of the the walkthrough, see <a href="https://koenderks.github.io/jfa/articles/v2_bayesian_sampling_workflow.html">The Bayesian audit sampling workflow</a>.</p>
 </div>
 <div id="optional-using-auditprior-the-basics" class="section level2">
 <h2 class="hasAnchor">
 <a href="#optional-using-auditprior-the-basics" class="anchor"></a>(Optional) Using <code>auditPrior()</code>: The basics</h2>
-<p>The <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function allows you to create a prior distribution for the misstatement in the population that can be used to incorporate existing information into the sampling workflow. Prior distributions can be constructed based on various types of audit information. See the vignette <a href="https://koenderks.github.io/jfa/articles/v4_prior_distributions.html">Constructing a prior distribution</a> for a detailed explanation of the types of audit information that <code>jfa</code> is able to incorporate into a prior distribution. Bayesian planning and evaluation using the prior distribution can be performed by specifying the returned object from the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function as input for the <code>prior</code> argument in the <code><a href="../reference/planning.html">planning()</a></code> and <code><a href="../reference/evaluation.html">evaluation()</a></code> functions.</p>
+<p>The <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function allows you to create a prior distribution for the misstatement in the population that can be used to incorporate existing information into the sampling workflow. Prior distributions can be constructed based on various types of audit information. See the vignette <a href="https://koenderks.github.io/jfa/articles/v3_prior_distributions.html">Constructing a prior distribution</a> for a detailed explanation of the types of audit information that <code>jfa</code> is able to incorporate into a prior distribution. Bayesian planning and evaluation using the prior distribution can be performed by specifying the returned object from the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function as input for the <code>prior</code> argument in the <code><a href="../reference/planning.html">planning()</a></code> and <code><a href="../reference/evaluation.html">evaluation()</a></code> functions.</p>
 </div>
 <div id="using-planning-the-basics" class="section level2">
 <h2 class="hasAnchor">
@@ -286,7 +286,7 @@
 <div id="using-evaluation-the-basics" class="section level2">
 <h2 class="hasAnchor">
 <a href="#using-evaluation-the-basics" class="anchor"></a>Using <code>evaluation()</code>: The basics</h2>
-<p>After saving the sample and annotating the invoices in the sample with their audit values, you can evaluate the misstatement in the sample with the <code><a href="../reference/evaluation.html">evaluation()</a></code> function. The function can also be used with summary statistics from a data sample. For a more elaborate explanation of how to use this function, see the package vignettes: <a href="https://koenderks.github.io/jfa/articles/v2_estimating_misstatement.html">Estimating the misstatement</a> and <a href="https://koenderks.github.io/jfa/articles/v3_testing_misstatement.html">Testing the misstatement</a></p>
+<p>After saving the sample and annotating the invoices in the sample with their audit values, you can evaluate the misstatement in the sample with the <code><a href="../reference/evaluation.html">evaluation()</a></code> function. The function can also be used with summary statistics from a data sample. For a more elaborate explanation of how to use this function, see the package vignettes: <a href="https://koenderks.github.io/jfa/articles/v5_estimating_misstatement.html">Estimating the misstatement</a> and <a href="https://koenderks.github.io/jfa/articles/v4_testing_misstatement.html">Testing the misstatement</a></p>
 <div id="summary-statistics-from-the-sample" class="section level3">
 <h3 class="hasAnchor">
 <a href="#summary-statistics-from-the-sample" class="anchor"></a>Summary statistics from the sample</h3>
