@@ -4,6 +4,10 @@
 
 - Fixed a bug in `method = 'bram'` in the `auditPrior()` function where the prior parameters would go off to infinity when `expectedError = 0`.
 
+**Minor changes**
+
+- Added a benchmark for the `MUS` package to the unit tests.
+
 # jfa 0.5.3
 
 **New features**

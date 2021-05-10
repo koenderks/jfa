@@ -1,10 +1,10 @@
-context("11. Benchmark against Touw and Hoogduin (2011)")
+context("12. Benchmark against Touw and Hoogduin (2011)")
 
 # Touw, P., and Hoogduin, L. (2011). Statistiek voor audit en controlling. Boom uitgevers, Amsterdam.
 
 # Table 1.3 on page 17
 
-test_that(desc = "(id: f11-v0.5.1-t1) Test Sample sizes on page 17", {
+test_that(desc = "(id: f12-v0.5.1-t1) Test Sample sizes on page 17", {
   SR <- c(0.05, 0.10, 0.25, 0.40, 0.50)
   materiality <- 0.01
   n <- numeric(length(SR))
@@ -15,7 +15,7 @@ test_that(desc = "(id: f11-v0.5.1-t1) Test Sample sizes on page 17", {
 
 # Example on page 23
 
-test_that(desc = "(id: f11-v0.5.1-t2) Test Sample sizes on page 23", {
+test_that(desc = "(id: f12-v0.5.1-t2) Test Sample sizes on page 23", {
   n <- jfa::planning(confidence = 1 - 0.05, materiality =  100000 / 5000000, likelihood = "poisson")$sampleSize
   expect_equal(n, 150)
   n <- jfa::planning(confidence = 1 - 0.125, materiality =  100000 / 5000000, likelihood = "poisson")$sampleSize

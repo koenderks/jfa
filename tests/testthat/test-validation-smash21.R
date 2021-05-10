@@ -1,9 +1,9 @@
-context("10. Benchmark against SMASH21")
+context("11. Benchmark against SMASH21 + SMASH21-Bayes")
 
 # SMASH21 [www.steekproeven.eu]
 # Retrieved on 27-04-2021 from https://steekproeven.eu/wp-content/uploads/2021/01/SMASH21-PRO-kopie.xlsx
 
-test_that(desc = "(id: f10-v0.5.3-t1) Test frequentist sample sizes", {
+test_that(desc = "(id: f11-v0.5.3-t1) Test frequentist sample sizes", {
   theta <- c(1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000) / 20000 # materiality / N
   expectedError <- c(100, 200, 300, 400, 500, 600) / 20000 # exp.error / N
   sampleSizeMatrix <- matrix(NA, nrow = length(expectedError), ncol = length(theta))
@@ -28,7 +28,7 @@ test_that(desc = "(id: f10-v0.5.3-t1) Test frequentist sample sizes", {
 # SMASH21-Bayes [www.steekproeven.eu]
 # Retrieved on 27-04-2021 from https://steekproeven.eu/wp-content/uploads/2021/01/SMASH21-Bayes-kopie.xlsx
 
-test_that(desc = "(id: f10-v0.5.3-t2) Test Bayesian sample sizes (N = 20,000)", {
+test_that(desc = "(id: f11-v0.5.3-t2) Test Bayesian sample sizes (N = 20,000)", {
   
   N <- 20000
   materiality <- 2000 / N
@@ -55,7 +55,7 @@ test_that(desc = "(id: f10-v0.5.3-t2) Test Bayesian sample sizes (N = 20,000)", 
   
 })
 
-test_that(desc = "(id: f10-v0.5.3-t3) Test Bayesian sample sizes (N = 100,000)", {
+test_that(desc = "(id: f11-v0.5.3-t3) Test Bayesian sample sizes (N = 100,000)", {
   
   N <- 100000
   materiality <- 6000 / N
