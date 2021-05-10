@@ -1,5 +1,9 @@
 # jfa 0.5.4
 
+**New features**
+
+- Added the possibility to specify the planned maximum probability of the errors in the sample exceeding the expected errors in the `planning()` function via the new argument `p.exceed.k`.
+
 **Bug fixes**
 
 - Fixed a bug in `method = 'bram'` in the `auditPrior()` function where the prior parameters would go off to infinity when `expectedError = 0`.

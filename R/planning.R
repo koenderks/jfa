@@ -8,7 +8,7 @@
 #' @usage planning(confidence, materiality = NULL, minPrecision = NULL,
 #'          expectedError = 0, likelihood = 'binomial', N = NULL,
 #'          prior = FALSE, nPrior = 0, kPrior = 0,
-#'          increase = 1, maxSize = 5000)
+#'          increase = 1, maxSize = 5000, p.exceed.k = NULL)
 #'
 #' @param confidence    a numeric value between 0 and 1 specifying the confidence level used in the planning.
 #' @param materiality   a numeric value between 0 and 1 specifying the performance materiality (i.e., maximum upper limit) as a fraction of the total population size. Can be \code{NULL}, but \code{minPrecision} should be specified in that case.
@@ -21,6 +21,7 @@
 #' @param kPrior        if \code{prior = TRUE}, a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.
 #' @param increase      an integer larger than 0 specifying the desired increase step for the sample size calculation.
 #' @param maxSize       an integer larger than 0 specifying the maximum sample size that is considered in the calculation. Defaults to 5000 for efficiency. Increase this value if the sample size cannot be found due to it being too large (e.g., for a low materiality).
+#' @param p.exceed.k  	a numeric value between 0 and 1 specifying the planned maximum probability of the observed errors exceeding the expected errors. Can only be specified if \code{expectedErrors > 0}. If specified, the function will increase the sample size so that there is a planned probability that the observed errors exceed the expected errors. Defaults to \code{NULL} for undefined.
 #' 
 #' @details This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
 #' 
@@ -69,7 +70,7 @@
 planning <- function(confidence, materiality = NULL, minPrecision = NULL,
                      expectedError = 0, likelihood = 'binomial', N = NULL,  
                      prior = FALSE, nPrior = 0, kPrior = 0,
-                     increase = 1, maxSize = 5000) {
+                     increase = 1, maxSize = 5000, p.exceed.k = NULL) {
   
   # Import an existing prior distribution with class 'jfaPrior'.
   if (class(prior) == "jfaPrior") {
@@ -88,10 +89,13 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
     stop("Specify a valid likelihood. Possible options are 'poisson', 'binomial', and 'hypergeometric'.")
   
   if (is.null(materiality) && is.null(minPrecision))
-    stop("Specify the materiality or the minimum precision")
+    stop("Specify the materiality or the minimum precision.")
   
   if (!is.null(minPrecision) && (minPrecision <= 0 || minPrecision >= 1))
     stop("The minimum required precision must be a positive value < 1.")
+  
+  if (is.null(expectedError) || expectedError < 0)
+    stop("Specify a non-negative value for the expected errors.")
   
   if ((class(prior) == "logical" && prior == TRUE) && kPrior < 0 || nPrior < 0)
     stop("If you specify a prior, the values for nPrior and kPrior should be >= 0.")
@@ -125,6 +129,7 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
     populationK <- ceiling(materiality * N)
   }
   
+  # Take N as the maximum sample size if it is defined
   if (!is.null(N) && N < maxSize)
     maxSize <- N
   
@@ -145,52 +150,93 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
     implicitK <- switch(errorType, "percentage" = expectedError * i, "integer" = expectedError)
     if (likelihood == "hypergeometric")
       implicitK <- ceiling(implicitK)
+    og_k <- implicitK
     
-    while (i <= implicitK) { # Remove these numbers from the sampling frame for more efficient sampling
+    # Stop the loop if the required sample size exceeds the maximum sample size
+    if (is.na(i) || i > maxSize)
+      break
+    
+    # Remove the redundant sample sizes from the sampling frame for more efficient sampling
+    while (i <= implicitK) {
       samplingFrame <- samplingFrame[-iter]
       i <- samplingFrame[iter]
     }
     
-    if (!is.null(N) && i > N) # The sample size is too large
+    # Throw an error if the sample size is too large
+    if (!is.null(N) && i > N)
       stop("The resulting sample size is larger than the population size.")
     
-    if ((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior") { # Bayesian planning
-      
-      bound <- switch(likelihood, 
-                      "poisson" = stats::qgamma(confidence, shape = 1 + kPrior + implicitK, rate = nPrior + i),
-                      "binomial" = stats::qbeta(confidence, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK),
-                      "hypergeometric" = .qBetaBinom(p = confidence, N = N - i, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK) / N)
-      mle <- switch(likelihood,
-                    "poisson" = (1 + kPrior + implicitK - 1) / (nPrior + i),
-                    "binomial" = (1 + kPrior + implicitK - 1) / (1 + kPrior + implicitK + 1 + nPrior - kPrior + i - implicitK - 2),
-                    "hypergeometric" = .modeBetaBinom(N = N - i, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK) / N)
-      sufficient <- bound < materiality && (bound - mle) < minPrecision
-      
-    } else { # Classical planning
-      
-      if (likelihood == "binomial") 
-        implicitK <- ceiling(implicitK)
-      prob <- switch(likelihood, 
-                     "poisson" = stats::pgamma(q = materiality, shape = 1 + implicitK, rate = i, lower.tail = FALSE),
-                     "binomial" = stats::pbinom(q = implicitK, size = i, prob = materiality),
-                     "hypergeometric" = stats::phyper(q = implicitK, m = populationK, n = ceiling(N - populationK), k = i))
-      bound <- switch(likelihood, 
-                      "poisson" = stats::qgamma(confidence, shape = 1 + implicitK, rate = i),
-                      "binomial" = stats::binom.test(x = implicitK, n = i, p = materiality, alternative = "less", conf.level = confidence)$conf.int[2],
-                      "hypergeometric" = stats::qhyper(p = confidence, m = populationK, n = ceiling(N - populationK), k = i) / N)
-      mle <- switch(likelihood, 
-                    "poisson" = implicitK / i,
-                    "binomial" = implicitK / i,
-                    "hypergeometric" = floor( ((i + 1) * (populationK + 1)) / (N + 2) ) / N) # = ceiling((((i + 1) * (ceiling(populationK) + 1)) / (N + 2)) - 1) / N
-      sufficient <- prob < (1 - confidence) && (bound - mle) < minPrecision
+    # Catch runaway errors by making a vector for k instead of a single value 
+    if (expectedError > 0 && !is.null(p.exceed.k)) {
+      if (p.exceed.k <= 0 || p.exceed.k >= 1)
+        stop("Specify a value between 0 and 1 for p.exceed.k.")
+      implicitK <- seq(implicitK, implicitK * 2, by = ifelse(likelihood == "hypergeometric", yes = 1, no = 0.01))   
     }
     
-    if (sufficient) # Sufficient work done
-      ss <- i
+    # Loop over the possible values of k
+    for (k in implicitK) {
+      
+      if (k >= i)
+        next
+      
+      # Bayesian planning
+      if ((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior") {
+        
+        bound <- switch(likelihood, 
+                        "poisson" = stats::qgamma(confidence, shape = 1 + kPrior + k, rate = nPrior + i),
+                        "binomial" = stats::qbeta(confidence, shape1 = 1 + kPrior + k, shape2 = 1 + nPrior - kPrior + i - k),
+                        "hypergeometric" = .qBetaBinom(p = confidence, N = N - i, shape1 = 1 + kPrior + k, shape2 = 1 + nPrior - kPrior + i - k) / N)
+        mle <- switch(likelihood,
+                      "poisson" = (1 + kPrior + k - 1) / (nPrior + i),
+                      "binomial" = (1 + kPrior + k - 1) / (1 + kPrior + k + 1 + nPrior - kPrior + i - k - 2),
+                      "hypergeometric" = .modeBetaBinom(N = N - i, shape1 = 1 + kPrior + k, shape2 = 1 + nPrior - kPrior + i - k) / N)   
+        sufficient <- bound < materiality && (bound - mle) < minPrecision   
+        
+      } else { # Classical planning
+        
+        if (likelihood == "binomial") 
+          k <- ceiling(k)
+        prob <- switch(likelihood, 
+                       "poisson" = stats::pgamma(q = materiality, shape = 1 + k, rate = i, lower.tail = FALSE),
+                       "binomial" = stats::pbinom(q = k, size = i, prob = materiality),
+                       "hypergeometric" = stats::phyper(q = k, m = populationK, n = ceiling(N - populationK), k = i))
+        bound <- switch(likelihood, 
+                        "poisson" = stats::qgamma(confidence, shape = 1 + k, rate = i),
+                        "binomial" = stats::binom.test(x = k, n = i, p = materiality, alternative = "less", conf.level = confidence)$conf.int[2],
+                        "hypergeometric" = stats::qhyper(p = confidence, m = populationK, n = ceiling(N - populationK), k = i) / N)
+        mle <- switch(likelihood, 
+                      "poisson" = k / i,
+                      "binomial" = k / i,
+                      "hypergeometric" = floor( ((i + 1) * (populationK + 1)) / (N + 2) ) / N) # = ceiling((((i + 1) * (ceiling(populationK) + 1)) / (N + 2)) - 1) / N
+        sufficient <- prob < (1 - confidence) && (bound - mle) < minPrecision
+      }
+      
+      # Extra sufficiency check for p.exceed.k
+      if (expectedError > 0 && !is.null(p.exceed.k)) {
+        if ((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior") {
+          pexpe <- switch(likelihood, 
+                          "poisson" = stats::pgamma(og_k / i, shape = 1 + kPrior + k, rate = nPrior + i),
+                          "binomial" = stats::pbeta(og_k / i, shape1 = 1 + kPrior + k, shape2 = 1 + nPrior - kPrior + i - k),
+                          "hypergeometric" = .pBetaBinom(q = og_k, N = N - i, shape1 = 1 + kPrior + k, shape2 = 1 + nPrior - kPrior + i - k))	 
+        } else {
+          pexpe <- switch(likelihood, 
+                          "poisson" = stats::pgamma(og_k / i, shape = 1 + k, rate = i),
+                          "binomial" = stats::pbinom(og_k / i, size = i, prob = k / i),
+                          "hypergeometric" = stats::phyper(og_k, m = ceiling(k / i * N), n = ceiling(N - ceiling(k / i * N)), k = i))
+        }
+        sufficient <- sufficient && pexpe < p.exceed.k
+      }
+      
+      # Sufficient work done
+      if (sufficient) {
+        ss <- i
+        break
+      }
+    }
     iter <- iter + 1
   }
   
-  # No sample size could be calculated, throw an error
+  # The sample size could not be calculated so we throw an error
   if (is.null(ss))
     stop("Sample size could not be calculated, you may want to increase the maxSize argument.")
   
@@ -204,7 +250,7 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
   result[["N"]]						<- as.numeric(N)
   result[["sampleSize"]]          	<- as.numeric(ceiling(ss))
   result[["errorType"]]				<- as.character(errorType)
-  result[["expectedSampleError"]]  	<- as.numeric(implicitK)
+  result[["expectedSampleError"]]  	<- as.numeric(k)
   result[["expectedBound"]]        	<- as.numeric(bound)
   result[["expectedPrecision"]]    	<- as.numeric(bound - mle)
   if (likelihood == "hypergeometric")
