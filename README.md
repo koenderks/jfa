@@ -68,6 +68,7 @@ Below you can find several informative tables that contain statistical sample si
 
 - [Sample sizes based on the binomial distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaBinomialSampleSizes.pdf)
 - [Sample sizes based on the Poisson distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaPoissonSampleSizes.pdf)
+- [Sample sizes based on the hypergeometric distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaHypergeometricSampleSizes.pdf)
 
 *Upper limits*
 

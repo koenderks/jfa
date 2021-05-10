@@ -1,12 +1,12 @@
 ---
-title: "Estimating the misstatement"
+title: "Estimating misstatement"
 author: Koen Derks
 date: "last modified: 19-11-2020"
 output: 
   rmarkdown::html_vignette:
     toc: true
 vignette: >
-  %\VignetteIndexEntry{Estimating the misstatement}
+  %\VignetteIndexEntry{Estimating misstatement}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteDepends{jfa}
   %\VignetteKeywords{audit, evaluation, jfa, planning, prior}
