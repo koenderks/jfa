@@ -43,7 +43,7 @@ for(rows in 1:length(n)){
     if(n[rows] >= N)
       next
       ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ss$confBound
+      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
   }
 }
 table <- as.data.frame(tab)
@@ -89,7 +89,7 @@ for(rows in 1:length(n)){
     if(n[rows] >= N)
       next
       ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ss$confBound
+      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
   }
 }
 table <- as.data.frame(tab)
@@ -135,7 +135,7 @@ for(rows in 1:length(n)){
     if(n[rows] >= N)
       next
       ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ss$confBound
+      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
   }
 }
 table <- as.data.frame(tab)
@@ -181,7 +181,7 @@ for(rows in 1:length(n)){
     if(n[rows] >= N)
       next
       ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ss$confBound
+      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
   }
 }
 table <- as.data.frame(tab)
@@ -227,7 +227,7 @@ for(rows in 1:length(n)){
     if(n[rows] >= N)
       next
       ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ss$confBound
+      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
   }
 }
 table <- as.data.frame(tab)
@@ -273,7 +273,7 @@ for(rows in 1:length(n)){
     if(n[rows] >= N)
       next
       ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ss$confBound
+      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
   }
 }
 table <- as.data.frame(tab)
@@ -319,7 +319,7 @@ for(rows in 1:length(n)){
     if(n[rows] >= N)
       next
       ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ss$confBound
+      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
   }
 }
 table <- as.data.frame(tab)
@@ -365,7 +365,7 @@ for(rows in 1:length(n)){
     if(n[rows] >= N)
       next
       ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ss$confBound
+      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
   }
 }
 table <- as.data.frame(tab)
@@ -411,7 +411,7 @@ for(rows in 1:length(n)){
     if(n[rows] >= N)
       next
       ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ss$confBound
+      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
   }
 }
 table <- as.data.frame(tab)
@@ -457,7 +457,7 @@ for(rows in 1:length(n)){
     if(n[rows] >= N)
       next
       ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ss$confBound
+      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
   }
 }
 table <- as.data.frame(tab)
@@ -503,7 +503,7 @@ for(rows in 1:length(n)){
     if(n[rows] >= N)
       next
       ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ss$confBound
+      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
   }
 }
 table <- as.data.frame(tab)
@@ -549,7 +549,7 @@ for(rows in 1:length(n)){
     if(n[rows] >= N)
       next
       ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ss$confBound
+      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
   }
 }
 table <- as.data.frame(tab)
