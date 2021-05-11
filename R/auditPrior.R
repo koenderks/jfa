@@ -241,16 +241,16 @@ auditPrior <- function(confidence, materiality = NULL, expectedError = 0,
   if (!is.null(result[["materiality"]])) {
     result[["hypotheses"]] 				<- list()
     result[["hypotheses"]]$hypotheses 	<- c(paste0("H-: \u0398 < ", materiality), paste0("H+: \u0398 > ", materiality))
-    result[["hypotheses"]]$pHmin 		<- switch(likelihood, 
-                                             "poisson" = stats::pgamma(materiality, shape = result[["description"]]$alpha, rate = result[["description"]]$beta),
-                                             "binomial" = stats::pbeta(materiality, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta),
-                                             "hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N"]]), N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta))
-    result[["hypotheses"]]$pHplus 		<- switch(likelihood, 
-                                              "poisson" = stats::pgamma(materiality, shape = result[["description"]]$alpha, rate = result[["description"]]$beta, lower.tail = FALSE),
-                                              "binomial" = stats::pbeta(materiality, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta, lower.tail = FALSE),
-                                              "hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N"]]), N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta, lower.tail = FALSE))
-    result[["hypotheses"]]$oddsHmin 	<- result[["hypotheses"]]$pHmin / result[["hypotheses"]]$pHplus
-    result[["hypotheses"]]$oddsHplus 	<- 1 / result[["hypotheses"]]$oddsHmin
+    result[["hypotheses"]]$pHmin 		<- .restrictprob(switch(likelihood, 
+                                                           "poisson" = stats::pgamma(materiality, shape = result[["description"]]$alpha, rate = result[["description"]]$beta),
+                                                           "binomial" = stats::pbeta(materiality, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta),
+                                                           "hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N"]]), N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta)))
+    result[["hypotheses"]]$pHplus 		<- .restrictprob(switch(likelihood, 
+                                                            "poisson" = stats::pgamma(materiality, shape = result[["description"]]$alpha, rate = result[["description"]]$beta, lower.tail = FALSE),
+                                                            "binomial" = stats::pbeta(materiality, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta, lower.tail = FALSE),
+                                                            "hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N"]]), N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta, lower.tail = FALSE)))
+    result[["hypotheses"]]$oddsHmin    <- result[["hypotheses"]]$pHmin / result[["hypotheses"]]$pHplus
+    result[["hypotheses"]]$oddsHplus   <- 1 / result[["hypotheses"]]$oddsHmin
   }
   # Functional form of the prior distribution
   result[["prior"]] <- switch(likelihood, 

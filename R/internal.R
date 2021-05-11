@@ -71,3 +71,15 @@
     return(x)
   }
 }
+
+# This function takes a value and restricts it to the range [0, 1] and is needed for 
+# controlling certain difficult to compute probabilities for in beta-binomial calculations
+.restrictprob <- function(x) {
+  if (x > 1) {
+    return(1)
+  } else if (x < 0) {
+    return(0)
+  } else {
+    return(x)
+  }
+}

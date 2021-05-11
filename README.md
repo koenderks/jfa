@@ -80,6 +80,7 @@ Below you can find several informative tables that contain statistical sample si
 
 - [Bayes factors based on the beta distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaBinomialBayesFactors.pdf)
 - [Bayes factors based on the gamma distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaPoissonBayesFactors.pdf)
+- [Bayes factors based on the beta-binomial distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaHypergeometricBayesFactors.pdf)
 
 ## 5. Available functions
 
