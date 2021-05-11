@@ -6,31 +6,31 @@ print.jfaPrior <- function(x, digits = 3, ...) {
 # ------------------------------------------------------------
 # Input:
 #
-# Confidence:             ", paste0(round(x[["confidence"]] * 100, digits), "%"),"   
-# Expected sample errors: ", paste0(round(x[["expectedError"]] * 100, digits), "%"),"      
-# Likelihood:             ", x[["likelihood"]],"
-# Specifics:              ", switch(x[["method"]],
-                                    "none" = "None",
-                                    "median" = paste0("p(\u0398 < ",round(x[["materiality"]], digits),") = p(\u0398 > ", round(x[["materiality"]], digits),") = 0.5"),
-                                    "hypotheses" = paste0("p(\u0398 < ",round(x[["materiality"]], digits),") = ",round(x[["specifics"]]$pHmin, digits),"; p(\u0398 > ", round(x[["materiality"]], digits),") = ", round(x[["specifics"]]$pHplus, digits)),
-                                    "arm" = paste0("Inherent risk = ", round(x[["specifics"]]$ir, digits), "; Internal control risk = ", round(x[["specifics"]]$cr, digits), "; Detection risk = ", round((1 - x[["confidence"]]) / (x[["specifics"]]$ir * x[["specifics"]]$cr), digits)),
-                                    "bram" = paste0("Mode = ", round(x[["specifics"]]$mode, digits), "; Upper bound = ", round(x[["specifics"]]$ub, digits)),
-                                    "sample" = paste0("Earlier sample of ", round(x[["specifics"]]$sampleN, digits), " items with ", round(x[["specifics"]]$sampleK, digits), " errors"),
-                                    "factor" = paste0("Earlier sample of ", round(x[["specifics"]]$sampleN, digits), " items with ", round(x[["specifics"]]$sampleK, digits), " errors weighted by ", round(x[["specifics"]]$factor, digits))), "
+# Confidence:                   ", paste0(round(x[["confidence"]] * 100, digits), "%"),"
+# Expected sample errors:       ", paste0(round(x[["expectedError"]] * 100, digits), "%"),"
+# Likelihood:                   ", x[["likelihood"]],"
+# Specifics:                    ", switch(x[["method"]],
+                                          "none" = "None",
+                                          "median" = paste0("p(\u0398 < ",round(x[["materiality"]], digits),") = p(\u0398 > ", round(x[["materiality"]], digits),") = 0.5"),
+                                          "hypotheses" = paste0("p(\u0398 < ",round(x[["materiality"]], digits),") = ",round(x[["specifics"]]$pHmin, digits),"; p(\u0398 > ", round(x[["materiality"]], digits),") = ", round(x[["specifics"]]$pHplus, digits)),
+                                          "arm" = paste0("Inherent risk = ", round(x[["specifics"]]$ir, digits), "; Internal control risk = ", round(x[["specifics"]]$cr, digits), "; Detection risk = ", round((1 - x[["confidence"]]) / (x[["specifics"]]$ir * x[["specifics"]]$cr), digits)),
+                                          "bram" = paste0("Mode = ", round(x[["specifics"]]$mode, digits), "; Upper bound = ", round(x[["specifics"]]$ub, digits)),
+                                          "sample" = paste0("Earlier sample of ", round(x[["specifics"]]$sampleN, digits), " items with ", round(x[["specifics"]]$sampleK, digits), " errors"),
+                                          "factor" = paste0("Earlier sample of ", round(x[["specifics"]]$sampleN, digits), " items with ", round(x[["specifics"]]$sampleK, digits), " errors weighted by ", round(x[["specifics"]]$factor, digits))), "
 # ------------------------------------------------------------
 # Output: 
 #
-# Prior distribution:     ", x$prior,"
-# Implicit sample size:   ", round(x[["description"]]$implicitn, digits),"
-# Implicit errors:        ", round(x[["description"]]$implicitk, digits),"
+# Prior distribution:           ", x$prior,"
+# Implicit sample size:         ", round(x[["description"]]$implicitn, digits),"
+# Implicit errors:              ", round(x[["description"]]$implicitk, digits),"
 # ------------------------------------------------------------
 # Statistics: 
 #
-# Upper bound:            ", round(x[["statistics"]]$ub, digits),"
-# Precision:              ", round(x[["statistics"]]$precision, digits),"
-# Mode:                   ", round(x[["statistics"]]$mode, digits),"
-# Mean:                   ", round(x[["statistics"]]$mean, digits),"
-# Median:                 ", round(x[["statistics"]]$median, digits),"
+# Upper bound:                  ", round(x[["statistics"]]$ub, digits),"
+# Precision:                    ", round(x[["statistics"]]$precision, digits),"
+# Mode:                         ", round(x[["statistics"]]$mode, digits),"
+# Mean:                         ", round(x[["statistics"]]$mean, digits),"
+# Median:                       ", round(x[["statistics"]]$median, digits),"
 # ------------------------------------------------------------"
   )
 }
@@ -43,15 +43,15 @@ print.jfaPosterior <- function(x, digits = 3, ...) {
 # ------------------------------------------------------------
 # Input: 
 #
-# Posterior distribution:  ", x[["posterior"]],"
+# Posterior distribution:       ", x[["posterior"]],"
 # ------------------------------------------------------------
 # Statistics:
 #
-# Upper bound:             ", round(x[["statistics"]]$ub, digits),"
-# Precision:               ", round(x[["statistics"]]$precision, digits),"
-# Mode:                    ", round(x[["statistics"]]$mode, digits),"
-# Mean:                    ", round(x[["statistics"]]$mean, digits),"
-# Median:                  ", round(x[["statistics"]]$median, digits),"
+# Upper bound:                  ", round(x[["statistics"]]$ub, digits),"
+# Precision:                    ", round(x[["statistics"]]$precision, digits),"
+# Mode:                         ", round(x[["statistics"]]$mode, digits),"
+# Mean:                         ", round(x[["statistics"]]$mean, digits),"
+# Median:                       ", round(x[["statistics"]]$median, digits),"
 # ------------------------------------------------------------"
   )
 }
@@ -65,23 +65,24 @@ print.jfaPlanning <- function(x, digits = 3, ...) {
 # ------------------------------------------------------------
 # Input:
 # 
-# Confidence:             ", paste0(round(x[["confidence"]] * 100, digits), "%"),"     
-# Materiality:            ", ifelse(x[["materiality"]] == 1, yes = "Not specified", no = paste0(round(x[["materiality"]] * 100, digits), "%")),"
-# Minimum precision:      ", ifelse(x[["minPrecision"]] == 1, yes = "Not specified", no = paste0(round(x[["minPrecision"]] * 100, digits), "%")),"
-# Likelihood:             ", x[["likelihood"]],"
-# Prior distribution:     ", x[["prior"]]$prior, "
-# Expected sample errors: ", round(x[["expectedSampleError"]], digits), "
+# Confidence:                   ", paste0(round(x[["confidence"]] * 100, digits), "%"),"
+# Materiality:                  ", ifelse(x[["materiality"]] == 1, yes = "Not specified", no = paste0(round(x[["materiality"]] * 100, digits), "%")),"
+# Minimum precision:            ", ifelse(x[["minPrecision"]] == 1, yes = "Not specified", no = paste0(round(x[["minPrecision"]] * 100, digits), "%")),"
+# Likelihood:                   ", x[["likelihood"]],"
+# Prior distribution:           ", x[["prior"]]$prior,"
+# Expected sample errors:       ", round(x[["expectedSampleError"]], digits),"
 # ------------------------------------------------------------
 # Output:
 #
-# Sample size:            ", x[["sampleSize"]],"
-# Posterior distribution: ", x[["expectedPosterior"]]$posterior,"
+# Sample size:                  ", x[["sampleSize"]],"
+# Posterior distribution:       ", x[["expectedPosterior"]]$posterior,"
 # ------------------------------------------------------------
 # Statistics:
 #
-# Expected upper bound:   ", paste0(round(x[["expectedBound"]] * 100, digits), "%"),"
-# Expected precision:     ", paste0(round(x[["expectedPrecision"]] * 100, digits), "%"),"
-# Expected Bayes factor-+:", ifelse(x[["materiality"]] == 1, yes = "Requires materiality", no = round(x[["expectedPosterior"]][["hypotheses"]]$expectedBf, digits)),"
+# Expected most likely error:   ", paste0(round(x[["expectedPosterior"]][["statistics"]]$mode * 100, digits), "%"),"
+# Expected upper bound:         ", paste0(round(x[["expectedBound"]] * 100, digits), "%"),"
+# Expected precision:           ", paste0(round(x[["expectedPrecision"]] * 100, digits), "%"),"
+# Expected Bayes factor-+:      ", ifelse(x[["materiality"]] == 1, yes = "Requires materiality", no = round(x[["expectedPosterior"]][["hypotheses"]]$expectedBf, digits)),"
 # ------------------------------------------------------------ ")
   } else {
     cat("# ------------------------------------------------------------
@@ -89,20 +90,21 @@ print.jfaPlanning <- function(x, digits = 3, ...) {
 # ------------------------------------------------------------     
 # Input:
 # 
-# Confidence:             ", paste0(round(x[["confidence"]] * 100, digits), "%"),"
-# Materiality:            ", ifelse(x[["materiality"]] == 1, yes = "Not specified", no = paste0(round(x[["materiality"]] * 100, digits), "%")),"
-# Minimum precision:      ", ifelse(x[["minPrecision"]] == 1, yes = "Not specified", no = paste0(round(x[["minPrecision"]] * 100, digits), "%")),"
-# Likelihood:             ", x[["likelihood"]],"
-# Expected sample errors: ", round(x[["expectedSampleError"]], digits), "
+# Confidence:                   ", paste0(round(x[["confidence"]] * 100, digits), "%"),"
+# Materiality:                  ", ifelse(x[["materiality"]] == 1, yes = "Not specified", no = paste0(round(x[["materiality"]] * 100, digits), "%")),"
+# Minimum precision:            ", ifelse(x[["minPrecision"]] == 1, yes = "Not specified", no = paste0(round(x[["minPrecision"]] * 100, digits), "%")),"
+# Likelihood:                   ", x[["likelihood"]],"
+# Expected sample errors:       ", round(x[["expectedSampleError"]], digits), "
 # ------------------------------------------------------------
 # Output:
 #
-# Sample size:            ", x[["sampleSize"]],"
+# Sample size:                  ", x[["sampleSize"]],"
 # ------------------------------------------------------------
 # Statistics:
 #
-# Expected upper bound:   ", paste0(round(x[["expectedBound"]] * 100, digits), "%"),"
-# Expected precision:     ", paste0(round(x[["expectedPrecision"]] * 100, digits), "%"),"
+# Expected most likely error:   ", paste0(round(x[["expectedSampleError"]] / x[["sampleSize"]] * 100, digits), "%"),"
+# Expected upper bound:         ", paste0(round(x[["expectedBound"]] * 100, digits), "%"),"
+# Expected precision:           ", paste0(round(x[["expectedPrecision"]] * 100, digits), "%"),"
 # ------------------------------------------------------------ ")
   }
 }
@@ -110,30 +112,30 @@ print.jfaPlanning <- function(x, digits = 3, ...) {
 #' @method print jfaSelection
 #' @export
 print.jfaSelection <- function(x, digits = 3, ...) {
-  if (x$units == "mus") {
+  if (x[["units"]] == "mus") {
     cat("# ------------------------------------------------------------
 #                  jfa Selection Summary
 # ------------------------------------------------------------
 # Input:
 #      
-# Population size:        ", round(x$populationSize, digits),"
-# Requested sample size:  ", x$requestedSampleSize,"
-# Sampling units:         ", "Monetary units","
-# Algorithm:              ", switch(x$algorithm, "random" = "Random sampling", "interval" = "Fixed interval sampling", "cell" = "Cell sampling"), 
-        ifelse(x$algorithm == "interval", no = "", yes = paste0("
-# Interval:                ", round(x$interval, digits),"
-# Starting point:          ", x$intervalStartingPoint)), 
-        ifelse(x$algorithm == "cell", no = "", yes = paste0("
-# Interval:                ", round(x$interval, digits))),"
+# Population size:              ", round(x[["populationSize"]], digits),"
+# Requested sample size:        ", x[["requestedSampleSize"]],"
+# Sampling units:               ", "Monetary units","
+# Algorithm:                    ", switch(x[["algorithm"]], "random" = "Random sampling", "interval" = "Fixed interval sampling", "cell" = "Cell sampling"), 
+        ifelse(x[["algorithm"]] == "interval", no = "", yes = paste0("
+# Interval:                      ", round(x[["interval"]], digits),"
+# Starting point:                ", x[["intervalStartingPoint"]])), 
+        ifelse(x[["algorithm"]] == "cell", no = "", yes = paste0("
+# Interval:                      ", round(x[["interval"]], digits))),"
 # ------------------------------------------------------------ 
 # Output:
 #
-# Obtained sample size:   ", x$obtainedSampleSize,"
+# Obtained sample size:         ", x[["obtainedSampleSize"]],"
 # ------------------------------------------------------------
 # Statistics:
 #
-# Proportion n/N:         ", round(x$obtainedSampleSize / x$populationSize, digits), "
-# Percentage of value:    ", paste0(round(sum(x$sample[, x$bookValues]) / sum(x$population[, x$bookValues]) * 100, digits), "%"),"
+# Proportion n/N:               ", round(x[["obtainedSampleSize"]] / x[["populationSize"]], digits), "
+# Percentage of value:          ", paste0(round(sum(x[["sample"]][, x[["bookValues"]]]) / sum(x[["population"]][, x[["bookValues"]]]) * 100, digits), "%"),"
 # ------------------------------------------------------------ ") 
   } else {
     cat("# ------------------------------------------------------------
@@ -141,24 +143,24 @@ print.jfaSelection <- function(x, digits = 3, ...) {
 # ------------------------------------------------------------
 # Input:
 #       
-# Population size:        ", round(x$populationSize, digits),"
-# Requested sample size:  ", round(x$requestedSampleSize, digits),"
-# Sampling units:         ", "Records","
-# Algorithm:              ", switch(x$algorithm, "random" = "Random sampling", "interval" = "Fixed interval sampling", "cell" = "Cell sampling"), 
-        ifelse(x$algorithm == "interval", no = "", yes = paste0("
-# Interval:                ", round(x$interval, digits),"
-# Starting point:          ", x$intervalStartingPoint)), 
-        ifelse(x$algorithm == "cell", no = "", yes = paste0("
-# Interval:                ", round(x$interval, digits))),"
+# Population size:              ", round(x[["populationSize"]], digits),"
+# Requested sample size:        ", round(x[["requestedSampleSize"]], digits),"
+# Sampling units:               ", "Records","
+# Algorithm:                    ", switch(x[["algorithm"]], "random" = "Random sampling", "interval" = "Fixed interval sampling", "cell" = "Cell sampling"), 
+        ifelse(x[["algorithm"]] == "interval", no = "", yes = paste0("
+# Interval:                      ", round(x[["interval"]], digits),"
+# Starting point:                ", x[["intervalStartingPoint"]])), 
+        ifelse(x[["algorithm"]] == "cell", no = "", yes = paste0("
+# Interval:                      ", round(x[["interval"]], digits))),"
 # ------------------------------------------------------------ 
 # Output:
 # 
-# Obtained sample size:   ", x$obtainedSampleSize,"
+# Obtained sample size:         ", x[["obtainedSampleSize"]],"
 # ------------------------------------------------------------
 # Statistics:
 #
-# Proportion n/N:         ", round(nrow(x$sample)/nrow(x$population), digits), "
-# ------------------------------------------------------------ ") 
+# Proportion n/N:               ", round(nrow(x[["sample"]])/nrow(x[["population"]]), digits), "
+# ------------------------------------------------------------ ")
   }
 }
 
@@ -171,21 +173,21 @@ print.jfaEvaluation <- function(x, digits = 3, ...) {
 # ------------------------------------------------------------
 # Input:
 #   
-# Confidence:              ", paste0(round(x[["confidence"]] * 100, digits), "%"),"
-# Materiality:             ", ifelse(x[["materiality"]] == 1, yes = "Not specified", no = paste0(round(x[["materiality"]] * 100, digits), "%")),"
-# Minium precision:        ", ifelse(x[["minPrecision"]] == 1, yes = "Not specified", no = paste0(round(x[["minPrecision"]] * 100, digits), "%")),"
-# Sample size:             ", round(x[["n"]], digits),"
-# Sample errors:           ", round(x[["k"]], digits), "
-# Method:                  ", x[["method"]], "
-# Population book value:   ", round(x[["popBookvalue"]], digits), "
+# Confidence:                   ", paste0(round(x[["confidence"]] * 100, digits), "%"),"
+# Materiality:                  ", ifelse(x[["materiality"]] == 1, yes = "Not specified", no = paste0(round(x[["materiality"]] * 100, digits), "%")),"
+# Minium precision:             ", ifelse(x[["minPrecision"]] == 1, yes = "Not specified", no = paste0(round(x[["minPrecision"]] * 100, digits), "%")),"
+# Sample size:                  ", round(x[["n"]], digits),"
+# Sample errors:                ", round(x[["k"]], digits), "
+# Method:                       ", x[["method"]], "
+# Population book value:        ", round(x[["popBookvalue"]], digits), "
 # ------------------------------------------------------------
 # Output:
 #
-# Most likely error:       ", round(x[["mle"]], digits), "
-# Lower bound:             ", round(x[["lowerBound"]], digits),"
-# Upper bound:             ", round(x[["upperBound"]], digits),"
-# Precision:               ", round(x[["precision"]], digits),"
-# Conclusion:              ", x[["conclusion"]], "
+# Most likely error:            ", round(x[["mle"]], digits), "
+# Lower bound:                  ", round(x[["lowerBound"]], digits),"
+# Upper bound:                  ", round(x[["upperBound"]], digits),"
+# Precision:                    ", round(x[["precision"]], digits),"
+# Conclusion:                   ", x[["conclusion"]], "
 # ------------------------------------------------------------ ")
   } else {
     if (!is.null(x[["prior"]])) {
@@ -194,23 +196,23 @@ print.jfaEvaluation <- function(x, digits = 3, ...) {
 # ------------------------------------------------------------
 # Input: 
 #
-# Confidence:              ", paste0(round(x[["confidence"]] * 100, digits), "%"),"  
-# Materiality:             ", ifelse(x[["materiality"]] == 1, yes = "Not specified", no = paste0(round(x[["materiality"]] * 100, digits), "%")),"
-# Minium precision:        ", ifelse(x[["minPrecision"]] == 1, yes = "Not specified", no = paste0(round(x[["minPrecision"]] * 100, digits), "%")),"
-# Sample size:             ", round(x[["n"]], digits),"
-# Sample errors:           ", round(x[["k"]], digits), "
-# Sum of taints:           ", round(x[["t"]], digits), " 
-# Method:                  ", x[["method"]], "
-# Prior distribution:      ", x[["prior"]][["prior"]], "
+# Confidence:                   ", paste0(round(x[["confidence"]] * 100, digits), "%"),"  
+# Materiality:                  ", ifelse(x[["materiality"]] == 1, yes = "Not specified", no = paste0(round(x[["materiality"]] * 100, digits), "%")),"
+# Minium precision:             ", ifelse(x[["minPrecision"]] == 1, yes = "Not specified", no = paste0(round(x[["minPrecision"]] * 100, digits), "%")),"
+# Sample size:                  ", round(x[["n"]], digits),"
+# Sample errors:                ", round(x[["k"]], digits), "
+# Sum of taints:                ", round(x[["t"]], digits), " 
+# Method:                       ", x[["method"]], "
+# Prior distribution:           ", x[["prior"]][["prior"]], "
 # ------------------------------------------------------------
 # Output:
 #
-# Posterior distribution:  ", x[["posterior"]][["posterior"]], "
-# Most likely error:       ", paste0(round(x[["mle"]] * 100, digits), "%"),"
-# Upper bound:             ", paste0(round(x[["confBound"]] * 100, digits), "%"),"
-# Precision:               ", paste0(round(x[["precision"]] * 100, digits), "%"),"
-# Bayes factor-+:          ", ifelse(x[["materiality"]] == 1 || !(x[["method"]] %in% c("poisson", "binomial", "hypergeometric")), yes = "Not available", no = round(x[["posterior"]][["hypotheses"]]$bf, digits)),"
-# Conclusion:              ", x[["conclusion"]], "
+# Posterior distribution:       ", x[["posterior"]][["posterior"]], "
+# Most likely error:            ", paste0(round(x[["mle"]] * 100, digits), "%"),"
+# Upper bound:                  ", paste0(round(x[["confBound"]] * 100, digits), "%"),"
+# Precision:                    ", paste0(round(x[["precision"]] * 100, digits), "%"),"
+# Bayes factor-+:               ", ifelse(x[["materiality"]] == 1 || !(x[["method"]] %in% c("poisson", "binomial", "hypergeometric")), yes = "Not available", no = round(x[["posterior"]][["hypotheses"]]$bf, digits)),"
+# Conclusion:                   ", x[["conclusion"]], "
 # ------------------------------------------------------------ ")
     } else {
       cat("# ------------------------------------------------------------ 
@@ -218,20 +220,20 @@ print.jfaEvaluation <- function(x, digits = 3, ...) {
 # ------------------------------------------------------------ 
 # Input: 
 #
-# Confidence:              ", paste0(round(x[["confidence"]] * 100, digits), "%"),"  
-# Materiality:             ", ifelse(x[["materiality"]] == 1, yes = "Not specified", no = paste0(round(x[["materiality"]] * 100, digits), "%")),"
-# Minium precision:        ", ifelse(x[["minPrecision"]] == 1, yes = "Not specified", no = paste0(round(x[["minPrecision"]] * 100, digits), "%")),"
-# Sample size:             ", round(x[["n"]], digits),"
-# Sample errors:           ", round(x[["k"]], digits), "
-# Sum of taints:           ", round(x[["k"]], digits), "
-# Method:                  ", x[["method"]], "
+# Confidence:                   ", paste0(round(x[["confidence"]] * 100, digits), "%"),"  
+# Materiality:                  ", ifelse(x[["materiality"]] == 1, yes = "Not specified", no = paste0(round(x[["materiality"]] * 100, digits), "%")),"
+# Minium precision:             ", ifelse(x[["minPrecision"]] == 1, yes = "Not specified", no = paste0(round(x[["minPrecision"]] * 100, digits), "%")),"
+# Sample size:                  ", round(x[["n"]], digits),"
+# Sample errors:                ", round(x[["k"]], digits), "
+# Sum of taints:                ", round(x[["k"]], digits), "
+# Method:                       ", x[["method"]], "
 # ------------------------------------------------------------
 # Output:
 #
-# Most likely error:       ", paste0(round(x[["mle"]] * 100, digits), "%"),"
-# Upper bound:             ", paste0(round(x[["confBound"]] * 100, digits), "%"),"
-# Precision:               ", paste0(round(x[["precision"]] * 100, digits), "%"),"
-# Conclusion:              ", x[["conclusion"]], "
+# Most likely error:            ", paste0(round(x[["mle"]] * 100, digits), "%"),"
+# Upper bound:                  ", paste0(round(x[["confBound"]] * 100, digits), "%"),"
+# Precision:                    ", paste0(round(x[["precision"]] * 100, digits), "%"),"
+# Conclusion:                   ", x[["conclusion"]], "
 # ------------------------------------------------------------ ")
     }
   }
