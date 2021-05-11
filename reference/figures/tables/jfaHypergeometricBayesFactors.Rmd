@@ -59,7 +59,6 @@ for(i in 2:12){
 }
 
 table[is.na(table)] <- ""
-table[table == Inf] <- "&#8734;"
 
 ```
 
