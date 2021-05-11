@@ -11,6 +11,7 @@
 **Minor changes**
 
 - Added a benchmark for the `MUS` package to the unit tests.
+- Improved plots with better titles and axes labels.
 
 # jfa 0.5.3
 

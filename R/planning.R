@@ -227,6 +227,8 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
     # Create the description section
     result[["expectedPosterior"]][["description"]]			<- list()
     result[["expectedPosterior"]][["description"]]$density 	<- switch(likelihood, "poisson" = "gamma", "binomial" = "beta", "hypergeometric" = "beta-binomial")
+    result[["expectedPosterior"]][["description"]]$n        <- result[["sampleSize"]]
+    result[["expectedPosterior"]][["description"]]$k        <- result[["expectedSampleError"]]
     result[["expectedPosterior"]][["description"]]$alpha   	<- result[["prior"]]$description$alpha + result[["expectedSampleError"]]
     result[["expectedPosterior"]][["description"]]$beta   	<- switch(likelihood, 
                                                                      "poisson" = result[["prior"]]$description$beta + result[["sampleSize"]], 

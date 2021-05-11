@@ -397,6 +397,8 @@ evaluation <- function(confidence, materiality = NULL, minPrecision = NULL, meth
     # Create the description section
     result[["posterior"]][["description"]]			<- list()
     result[["posterior"]][["description"]]$density 	<- switch(method, "poisson" = "gamma", "binomial" = "beta", "hypergeometric" = "beta-binomial")
+    result[["posterior"]][["description"]]$n        <- result[["n"]]
+    result[["posterior"]][["description"]]$k        <- result[["t"]]
     result[["posterior"]][["description"]]$alpha   	<- switch(method, 
                                                               "poisson" = result[["prior"]]$description$alpha + result[["t"]],
                                                               "binomial" = result[["prior"]]$description$alpha + result[["t"]],

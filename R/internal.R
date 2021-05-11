@@ -1,11 +1,11 @@
-# From https://github.com/jasp-stats/jaspDistributions/raw/master/R/ldBetaBinomial.R
+# Consistent with JASP: https://github.com/jasp-stats/jaspDistributions/raw/master/R/ldBetaBinomial.R
 .dBetaBinom <- function(x, N, shape1, shape2, log = FALSE) {
   out <- lchoose(N, x) + lbeta(x + shape1, N - x + shape2) - lbeta(shape1, shape2)
   if(!log) out <- exp(out)
   return(out)
 }
 
-# From https://github.com/jasp-stats/jaspDistributions/raw/master/R/ldBetaBinomial.R
+# Consistent with JASP: https://github.com/jasp-stats/jaspDistributions/raw/master/R/ldBetaBinomial.R
 .qBetaBinom <- function(p, N, shape1, shape2, lower.tail = TRUE, log.p = FALSE) {
   if(log.p) p <- exp(p)
   if(!lower.tail) p <- 1-p
@@ -22,7 +22,7 @@
   return(result)
 }
 
-# From https://github.com/jasp-stats/jaspDistributions/raw/master/R/ldBetaBinomial.R
+# Consistent with JASP: https://github.com/jasp-stats/jaspDistributions/raw/master/R/ldBetaBinomial.R
 .pBetaBinom <- function(q, N, shape1, shape2, lower.tail = TRUE, log.p = FALSE) {
   .p <- function(q, N, shape1, shape2) {
     if(q < 0) {
@@ -40,8 +40,8 @@
 }
 
 .modeBetaBinom <- function(N, shape1, shape2) {
-  # To calculate the mode of the beta-binomial distribution we can use the fact that the mode has 
-  # the largest probability to iteratively find it.
+  # One can use the fact that the mode of the beta-binomial distribution is the value with the
+  # highest probability to iteratively find it.
   if(shape1 == 1 && shape2 == 1)
     return(NA)
   index <- pcount <- pnextcount <- -1
@@ -54,31 +54,31 @@
 }
 
 .qHyper <- function(p, N, n, k) {
-  # To calculate the p percent upper bound on the population errors (K) using the hypergeometric 
-  # distribution we perform an inverted hypothesis test (a la binom.test) as described on page 63 of 
+  # To calculate the p percent upper bound on the population errors (K) using the hypergeometric
+  # distribution one can use an inverted hypothesis test as described on page 63 of:
   # Talens, E. (2005). Statistical Auditing and the AOQL-method (https://core.ac.uk/download/pdf/232379784.pdf).
   K <- k:N
   cdf <- stats::phyper(q = k, m = K, n = N - K, k = n)
   return(max(K[cdf > (1 - p)]))
 }
 
-# This function is for internal calls to the markdown renderer
-.getfun <- function(x) {
-  if (length(grep('::', x)) > 0) {
-    parts <- strsplit(x, '::')[[1]]
-    return(getExportedValue(parts[1], parts[2]))
-  } else {
-    return(x)
-  }
-}
-
-# This function takes a value and restricts it to the range [0, 1] and is needed for 
-# controlling certain difficult to compute probabilities for in beta-binomial calculations
+# This function takes a value and restricts it to the range [0, 1] and is needed for
+# controlling certain edge cases in beta-binomial calculations.
 .restrictprob <- function(x) {
   if (x > 1) {
     return(1)
   } else if (x < 0) {
     return(0)
+  } else {
+    return(x)
+  }
+}
+
+# This function is for internal calls to the markdown renderer only.
+.getfun <- function(x) {
+  if (length(grep('::', x)) > 0) {
+    parts <- strsplit(x, '::')[[1]]
+    return(getExportedValue(parts[1], parts[2]))
   } else {
     return(x)
   }
