@@ -74,6 +74,7 @@ Below you can find several informative tables that contain statistical sample si
 
 - [Upper limits based on the binomial distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaBinomialUpperBounds.pdf)
 - [Upper limits based on the Poisson distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaPoissonUpperBounds.pdf)
+- [Upper limits based on the hypergeometric distribution](https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaHypergeometricUpperBounds.pdf)
 
 *Bayes factors*
 

@@ -175,14 +175,12 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
                      "binomial" = stats::pbinom(q = implicitK, size = i, prob = materiality),
                      "hypergeometric" = stats::phyper(q = implicitK, m = populationK, n = ceiling(N - populationK), k = i))
       bound <- switch(likelihood, 
-                      "poisson" = stats::qgamma(confidence, shape = 1 + implicitK, rate = i),
+                      "poisson" = stats::qgamma(p = confidence, shape = 1 + implicitK, rate = i),
                       "binomial" = stats::binom.test(x = implicitK, n = i, p = materiality, alternative = "less", conf.level = confidence)$conf.int[2],
-                      "hypergeometric" = stats::qhyper(p = confidence, m = populationK, n = ceiling(N - populationK), k = i) / N)
-      mle <- switch(likelihood, 
-                    "poisson" = implicitK / i,
-                    "binomial" = implicitK / i,
-                    "hypergeometric" = floor( ((i + 1) * (populationK + 1)) / (N + 2) ) / N) # = ceiling((((i + 1) * (ceiling(populationK) + 1)) / (N + 2)) - 1) / N
+                      "hypergeometric" = .hypergeometricBound(p = confidence, N = N, n = i, k = implicitK) / N)
+      mle <- implicitK / i
       sufficient <- prob < (1 - confidence) && (bound - mle) < minPrecision
+      
     }
     
     if (sufficient) # Sufficient work done

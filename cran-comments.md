@@ -1,9 +1,7 @@
-## This is a submission for version 0.5.3
-This is jfa version 0.5.3. In this version I have:
+## This is a submission for version 0.5.4
+This is jfa version 0.5.4. In this version I have:
 
-* Updated documentation for all functions.
-* Added several new methods to two existing functions.
-* Fixed an error in the evaluation function.
+* Implemented small changes in some of the functions
 
 ## Test environments
 * OS X install (on travis-ci), R release

@@ -52,6 +52,17 @@
   return(index)
 }
 
+.hypergeometricBound <- function(p, N, n, k) {
+  # To calculate the p-percent confidence bound on the population errors using the hypergeometric 
+  # distribution we perform an inverted hypothesis test (a la binom.test) as described on page 63 of 
+  # https://core.ac.uk/download/pdf/232379784.pdf.
+  K <- k
+  while ( sum(stats::phyper(q = 0:k, m = K, n = N - K, k = n)) > (1 - p) ) {
+    K <- K + 1
+  }
+  return(K - 1)
+}
+
 # .dCoxAndSnellF <- function(x, df1, df2, multiplicationFactor) {
 # 	# Rewritten using Wolfram Mathematica
 # 	(df1 ** (df1 / 2) * df2**(df2 / 2) * (x / multiplicationFactor) ** (- 1 + df1 / 2) * (df2 + (df1 * x) / multiplicationFactor)**(( -df1 - df2) / 2))/(abs(multiplicationFactor) * beta(df1/2, df2/2))

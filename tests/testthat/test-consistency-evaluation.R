@@ -49,7 +49,7 @@ test_that(desc = "(id: f5-v0.1.0-t5) Evaluation with hypergeometric method", {
   samp <- selection(population, sampleSize = jfaRes, units = "records", algorithm = "random", ordered = TRUE)$sample
   samp$auditValue <- samp[["bookValue"]]
   jfaEval <- evaluation(confidence = 0.95, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "hypergeometric", N = 1000, materiality = 0.05)
-  expect_equal(jfaEval[["confBound"]], 0.006, tolerance = 0.001)
+  expect_equal(jfaEval[["confBound"]], 0.049, tolerance = 0.001)
 })
 
 test_that(desc = "(id: f5-v0.1.0-t6) Evaluation with hypergeometric method with prior", {

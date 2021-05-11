@@ -3,6 +3,7 @@
 **Bug fixes**
 
 - Fixed a bug in `method = 'bram'` in the `auditPrior()` function where the prior parameters would go off to infinity when `expectedError = 0`.
+- Now calculates the upper bound induced by the hypergeometric distribution via an inverted hypothesis test.
 
 **Minor changes**
 

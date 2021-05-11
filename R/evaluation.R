@@ -230,8 +230,8 @@ evaluation <- function(confidence, materiality = NULL, minPrecision = NULL, meth
       if (materiality == 1)
         stop("Evaluation with the hypergeometric distribution requires that you specify the materiality")
       populationK <- materiality * N
-      bound <- stats::qhyper(p = confidence, m = populationK, n = ceiling(N - populationK), k = n) / N
-      mle <- floor( ((n + 1) * (populationK + 1)) / (N + 2) ) / N
+      bound <- .hypergeometricBound(p = confidence, N = N, n = n, k = k) / N
+      mle <- k / n
       precision <- bound - mle
     }
   } else if (method == "stringer") {
