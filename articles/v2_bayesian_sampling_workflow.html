@@ -154,24 +154,24 @@
 ## # ------------------------------------------------------------
 ## # Input:
 ## #
-## # Confidence:              95%    
-## # Expected sample errors:  2.5%       
-## # Likelihood:              binomial 
-## # Specifics:               Inherent risk = 1; Internal control risk = 0.6; Detection risk = 0.083 
+## # Confidence:                    95% 
+## # Expected sample errors:        2.5% 
+## # Likelihood:                    binomial 
+## # Specifics:                     Inherent risk = 1; Internal control risk = 0.6; Detection risk = 0.083 
 ## # ------------------------------------------------------------
 ## # Output: 
 ## #
-## # Prior distribution:      beta(α = 2.275, β = 50.725) 
-## # Implicit sample size:    51 
-## # Implicit errors:         1.275 
+## # Prior distribution:            beta(α = 2.275, β = 50.725) 
+## # Implicit sample size:          51 
+## # Implicit errors:               1.275 
 ## # ------------------------------------------------------------
 ## # Statistics: 
 ## #
-## # Upper bound:             0.096 
-## # Precision:               0.071 
-## # Mode:                    0.025 
-## # Mean:                    0.043 
-## # Median:                  0.037 
+## # Upper bound:                   0.096 
+## # Precision:                     0.071 
+## # Mode:                          0.025 
+## # Mean:                          0.043 
+## # Median:                        0.037 
 ## # ------------------------------------------------------------</code></pre>
 <p>The prior distribution can be shown by using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
@@ -189,23 +189,24 @@
 ## # ------------------------------------------------------------
 ## # Input:
 ## # 
-## # Confidence:              95%      
-## # Materiality:             5% 
-## # Minimum precision:       Not specified 
-## # Likelihood:              binomial 
-## # Prior distribution:      beta(α = 2.275, β = 50.725) 
-## # Expected sample errors:  4.225 
+## # Confidence:                    95% 
+## # Materiality:                   5% 
+## # Minimum precision:             Not specified 
+## # Likelihood:                    binomial 
+## # Prior distribution:            beta(α = 2.275, β = 50.725) 
+## # Expected sample errors:        4.225 
 ## # ------------------------------------------------------------
 ## # Output:
 ## #
-## # Sample size:             169 
-## # Posterior distribution:  beta(α = 6.5, β = 215.5) 
+## # Sample size:                   169 
+## # Posterior distribution:        beta(α = 6.5, β = 215.5) 
 ## # ------------------------------------------------------------
 ## # Statistics:
 ## #
-## # Expected upper bound:    4.994% 
-## # Expected precision:      2.494% 
-## # Expected Bayes factor-+: 9.323 
+## # Expected most likely error:    2.5% 
+## # Expected upper bound:          4.994% 
+## # Expected precision:            2.494% 
+## # Expected Bayes factor-+:       9.323 
 ## # ------------------------------------------------------------</code></pre>
 <p>Laura can inspect how the prior distribution compares to the expected posterior distribution by using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function. The expected posterior distribution is the posterior distribution that would occur if Laura actually observed a sample of 169 transactions, from which 4.225 were in error.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
@@ -228,19 +229,19 @@
 ## # ------------------------------------------------------------
 ## # Input:
 ## #      
-## # Population size:         3500 
-## # Requested sample size:   164 
-## # Sampling units:          Monetary units 
-## # Algorithm:               Random sampling   
+## # Population size:               3500 
+## # Requested sample size:         164 
+## # Sampling units:                Monetary units 
+## # Algorithm:                     Random sampling   
 ## # ------------------------------------------------------------ 
 ## # Output:
 ## #
-## # Obtained sample size:    164 
+## # Obtained sample size:          164 
 ## # ------------------------------------------------------------
 ## # Statistics:
 ## #
-## # Proportion n/N:          0.047 
-## # Percentage of value:     4.987% 
+## # Proportion n/N:                0.047 
+## # Percentage of value:           4.987% 
 ## # ------------------------------------------------------------</code></pre>
 </div>
 <div id="stage-3-executing-the-audit" class="section level2">
@@ -273,23 +274,23 @@
 ## # ------------------------------------------------------------
 ## # Input: 
 ## #
-## # Confidence:               95%   
-## # Materiality:              5% 
-## # Minium precision:         Not specified 
-## # Sample size:              164 
-## # Sample errors:            0 
-## # Sum of taints:            0  
-## # Method:                   binomial 
-## # Prior distribution:       beta(α = 2.275, β = 50.725) 
+## # Confidence:                    95%   
+## # Materiality:                   5% 
+## # Minium precision:              Not specified 
+## # Sample size:                   164 
+## # Sample errors:                 0 
+## # Sum of taints:                 0  
+## # Method:                        binomial 
+## # Prior distribution:            beta(α = 2.275, β = 50.725) 
 ## # ------------------------------------------------------------
 ## # Output:
 ## #
-## # Posterior distribution:   beta(α = 2.275, β = 214.725) 
-## # Most likely error:        0.588% 
-## # Upper bound:              2.378% 
-## # Precision:                1.791% 
-## # Bayes factor-+:           1467.851 
-## # Conclusion:               Approve population 
+## # Posterior distribution:        beta(α = 2.275, β = 214.725) 
+## # Most likely error:             0.588% 
+## # Upper bound:                   2.378% 
+## # Precision:                     1.791% 
+## # Bayes factor-+:                1467.851 
+## # Conclusion:                    Approve population 
 ## # ------------------------------------------------------------</code></pre>
 <p>She can inspect the prior and posterior distribution by using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function. The shaded area quantifies the area under the posterior distribution that contains 95% of the probability, which ends at 2.378%. Therefore, Laura can state that there is a 95% probability that the misstatement in BuildIt’s statements is lower than 2.378%.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
