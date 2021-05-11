@@ -1,5 +1,5 @@
 ---
-title: "Statistical Sampling Results"
+title: "Default Bayes Factors"
 output: 
   html_document:
     theme: journal
@@ -33,6 +33,7 @@ library(jfa)
 ```{r, include = F}
 
 confidence <- 0.90
+materiality <- 0.10
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 100
@@ -42,21 +43,29 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+    prior <- jfa::auditPrior(confidence, likelihood = "hypergeometric", method = "median", materiality = materiality, N = N)
+      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "hypergeometric", prior = prior, materiality = materiality, N = N)
+      tab[rows, columns] <- ss$posterior$hypotheses$bf
   }
 }
+
 table <- as.data.frame(tab)
-table[is.na(table)] <- ""
 table <- cbind(n = n, table)
 colnames(table) <- c('Sample Size', k)
+table <- round(table, 2)
+
+for(i in 2:12){
+  table[, i] <- ifelse(table[, i] > 10000000, yes = format(table[, i], scientific = T), no = table[, i])
+}
+
+table[is.na(table)] <- ""
 
 ```
 
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 1: Statistical Sampling Results based on the Hypergeometric Distribution (N = 100) — <br>Upper Limits at 10 Percent Risk of Overreliance</center>",
+                       caption = "<center>Table 1: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 100) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 10 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
@@ -64,7 +73,7 @@ ktable <- knitr::kable(table,
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents upper limits (body of table) as percentages")
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and zero expected errors.")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -79,6 +88,7 @@ kableExtra::kable_paper(ktable, "striped")
 ```{r, include = F}
 
 confidence <- 0.90
+materiality <- 0.10
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 500
@@ -88,21 +98,29 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+    prior <- jfa::auditPrior(confidence, likelihood = "hypergeometric", method = "median", materiality = materiality, N = N)
+      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "hypergeometric", prior = prior, materiality = materiality, N = N)
+      tab[rows, columns] <- ss$posterior$hypotheses$bf
   }
 }
+
 table <- as.data.frame(tab)
-table[is.na(table)] <- ""
 table <- cbind(n = n, table)
 colnames(table) <- c('Sample Size', k)
+table <- round(table, 2)
+
+for(i in 2:12){
+  table[, i] <- ifelse(table[, i] > 10000000, yes = format(table[, i], scientific = T), no = table[, i])
+}
+
+table[is.na(table)] <- ""
 
 ```
 
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 2: Statistical Sampling Results based on the Hypergeometric Distribution (N = 500) — <br>Upper Limits at 10 Percent Risk of Overreliance</center>",
+                       caption = "<center>Table 2: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 500) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 10 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
@@ -110,7 +128,7 @@ ktable <- knitr::kable(table,
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents upper limits (body of table) as percentages")
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and zero expected errors.")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -125,6 +143,7 @@ kableExtra::kable_paper(ktable, "striped")
 ```{r, include = F}
 
 confidence <- 0.90
+materiality <- 0.10
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 1000
@@ -134,21 +153,29 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+    prior <- jfa::auditPrior(confidence, likelihood = "hypergeometric", method = "median", materiality = materiality, N = N)
+      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "hypergeometric", prior = prior, materiality = materiality, N = N)
+      tab[rows, columns] <- ss$posterior$hypotheses$bf
   }
 }
+
 table <- as.data.frame(tab)
-table[is.na(table)] <- ""
 table <- cbind(n = n, table)
 colnames(table) <- c('Sample Size', k)
+table <- round(table, 2)
+
+for(i in 2:12){
+  table[, i] <- ifelse(table[, i] > 10000000, yes = format(table[, i], scientific = T), no = table[, i])
+}
+
+table[is.na(table)] <- ""
 
 ```
 
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 3: Statistical Sampling Results based on the Hypergeometric Distribution (N = 1000) — <br>Upper Limits at 10 Percent Risk of Overreliance</center>",
+                       caption = "<center>Table 3: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 1000) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 10 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
@@ -156,7 +183,7 @@ ktable <- knitr::kable(table,
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents upper limits (body of table) as percentages")
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and zero expected errors.")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -171,6 +198,7 @@ kableExtra::kable_paper(ktable, "striped")
 ```{r, include = F}
 
 confidence <- 0.95
+materiality <- 0.05
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 100
@@ -180,21 +208,29 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+    prior <- jfa::auditPrior(confidence, likelihood = "hypergeometric", method = "median", materiality = materiality, N = N)
+      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "hypergeometric", prior = prior, materiality = materiality, N = N)
+      tab[rows, columns] <- ss$posterior$hypotheses$bf
   }
 }
+
 table <- as.data.frame(tab)
-table[is.na(table)] <- ""
 table <- cbind(n = n, table)
 colnames(table) <- c('Sample Size', k)
+table <- round(table, 2)
+
+for(i in 2:12){
+  table[, i] <- ifelse(table[, i] > 10000000, yes = format(table[, i], scientific = T), no = table[, i])
+}
+
+table[is.na(table)] <- ""
 
 ```
 
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 4: Statistical Sampling Results based on the Hypergeometric Distribution (N = 100) — <br>Upper Limits at 5 Percent Risk of Overreliance</center>",
+                       caption = "<center>Table 4: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 100) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 5 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
@@ -202,7 +238,7 @@ ktable <- knitr::kable(table,
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents upper limits (body of table) as percentages")
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and zero expected errors.")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -217,6 +253,7 @@ kableExtra::kable_paper(ktable, "striped")
 ```{r, include = F}
 
 confidence <- 0.95
+materiality <- 0.05
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 500
@@ -226,21 +263,29 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+    prior <- jfa::auditPrior(confidence, likelihood = "hypergeometric", method = "median", materiality = materiality, N = N)
+      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "hypergeometric", prior = prior, materiality = materiality, N = N)
+      tab[rows, columns] <- ss$posterior$hypotheses$bf
   }
 }
+
 table <- as.data.frame(tab)
-table[is.na(table)] <- ""
 table <- cbind(n = n, table)
 colnames(table) <- c('Sample Size', k)
+table <- round(table, 2)
+
+for(i in 2:12){
+  table[, i] <- ifelse(table[, i] > 10000000, yes = format(table[, i], scientific = T), no = table[, i])
+}
+
+table[is.na(table)] <- ""
 
 ```
 
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 5: Statistical Sampling Results based on the Hypergeometric Distribution (N = 500) — <br>Upper Limits at 5 Percent Risk of Overreliance</center>",
+                       caption = "<center>Table 5: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 500) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 5 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
@@ -248,7 +293,7 @@ ktable <- knitr::kable(table,
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents upper limits (body of table) as percentages")
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and zero expected errors.")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -263,6 +308,7 @@ kableExtra::kable_paper(ktable, "striped")
 ```{r, include = F}
 
 confidence <- 0.95
+materiality <- 0.05
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 1000
@@ -272,21 +318,29 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+    prior <- jfa::auditPrior(confidence, likelihood = "hypergeometric", method = "median", materiality = materiality, N = N)
+      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "hypergeometric", prior = prior, materiality = materiality, N = N)
+      tab[rows, columns] <- ss$posterior$hypotheses$bf
   }
 }
+
 table <- as.data.frame(tab)
-table[is.na(table)] <- ""
 table <- cbind(n = n, table)
 colnames(table) <- c('Sample Size', k)
+table <- round(table, 2)
+
+for(i in 2:12){
+  table[, i] <- ifelse(table[, i] > 10000000, yes = format(table[, i], scientific = T), no = table[, i])
+}
+
+table[is.na(table)] <- ""
 
 ```
 
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 6: Statistical Sampling Results based on the Hypergeometric Distribution (N = 1000) — <br>Upper Limits at 5 Percent Risk of Overreliance</center>",
+                       caption = "<center>Table 6: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 1000) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 5 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
@@ -294,7 +348,7 @@ ktable <- knitr::kable(table,
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents upper limits (body of table) as percentages")
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and zero expected errors.")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -309,6 +363,7 @@ kableExtra::kable_paper(ktable, "striped")
 ```{r, include = F}
 
 confidence <- 0.975
+materiality <- 0.025
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 100
@@ -318,21 +373,29 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+    prior <- jfa::auditPrior(confidence, likelihood = "hypergeometric", method = "median", materiality = materiality, N = N)
+      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "hypergeometric", prior = prior, materiality = materiality, N = N)
+      tab[rows, columns] <- ss$posterior$hypotheses$bf
   }
 }
+
 table <- as.data.frame(tab)
-table[is.na(table)] <- ""
 table <- cbind(n = n, table)
 colnames(table) <- c('Sample Size', k)
+table <- round(table, 2)
+
+for(i in 2:12){
+  table[, i] <- ifelse(table[, i] > 10000000, yes = format(table[, i], scientific = T), no = table[, i])
+}
+
+table[is.na(table)] <- ""
 
 ```
 
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 7: Statistical Sampling Results based on the Hypergeometric Distribution (N = 100) — <br>Upper Limits at 2.5 Percent Risk of Overreliance</center>",
+                       caption = "<center>Table 7: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 100) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 2.5 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
@@ -340,7 +403,7 @@ ktable <- knitr::kable(table,
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents upper limits (body of table) as percentages")
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and zero expected errors.")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -355,6 +418,7 @@ kableExtra::kable_paper(ktable, "striped")
 ```{r, include = F}
 
 confidence <- 0.975
+materiality <- 0.025
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 500
@@ -364,21 +428,29 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+    prior <- jfa::auditPrior(confidence, likelihood = "hypergeometric", method = "median", materiality = materiality, N = N)
+      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "hypergeometric", prior = prior, materiality = materiality, N = N)
+      tab[rows, columns] <- ss$posterior$hypotheses$bf
   }
 }
+
 table <- as.data.frame(tab)
-table[is.na(table)] <- ""
 table <- cbind(n = n, table)
 colnames(table) <- c('Sample Size', k)
+table <- round(table, 2)
+
+for(i in 2:12){
+  table[, i] <- ifelse(table[, i] > 10000000, yes = format(table[, i], scientific = T), no = table[, i])
+}
+
+table[is.na(table)] <- ""
 
 ```
 
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 8: Statistical Sampling Results based on the Hypergeometric Distribution (N = 500) — <br>Upper Limits at 2.5 Percent Risk of Overreliance</center>",
+                       caption = "<center>Table 8: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 500) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 2.5 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
@@ -386,7 +458,7 @@ ktable <- knitr::kable(table,
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents upper limits (body of table) as percentages")
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and zero expected errors.")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -401,6 +473,7 @@ kableExtra::kable_paper(ktable, "striped")
 ```{r, include = F}
 
 confidence <- 0.975
+materiality <- 0.025
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 1000
@@ -410,21 +483,29 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+    prior <- jfa::auditPrior(confidence, likelihood = "hypergeometric", method = "median", materiality = materiality, N = N)
+      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "hypergeometric", prior = prior, materiality = materiality, N = N)
+      tab[rows, columns] <- ss$posterior$hypotheses$bf
   }
 }
+
 table <- as.data.frame(tab)
-table[is.na(table)] <- ""
 table <- cbind(n = n, table)
 colnames(table) <- c('Sample Size', k)
+table <- round(table, 2)
+
+for(i in 2:12){
+  table[, i] <- ifelse(table[, i] > 10000000, yes = format(table[, i], scientific = T), no = table[, i])
+}
+
+table[is.na(table)] <- ""
 
 ```
 
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 9: Statistical Sampling Results based on the Hypergeometric Distribution (N = 1000) — <br>Upper Limits at 2.5 Percent Risk of Overreliance</center>",
+                       caption = "<center>Table 9: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 1000) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 2.5 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
@@ -432,7 +513,7 @@ ktable <- knitr::kable(table,
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents upper limits (body of table) as percentages")
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and zero expected errors.")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -447,6 +528,7 @@ kableExtra::kable_paper(ktable, "striped")
 ```{r, include = F}
 
 confidence <- 0.99
+materiality <- 0.01
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 100
@@ -456,21 +538,29 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+    prior <- jfa::auditPrior(confidence, likelihood = "hypergeometric", method = "median", materiality = materiality, N = N)
+      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "hypergeometric", prior = prior, materiality = materiality, N = N)
+      tab[rows, columns] <- ss$posterior$hypotheses$bf
   }
 }
+
 table <- as.data.frame(tab)
-table[is.na(table)] <- ""
 table <- cbind(n = n, table)
 colnames(table) <- c('Sample Size', k)
+table <- round(table, 2)
+
+for(i in 2:12){
+  table[, i] <- ifelse(table[, i] > 10000000, yes = format(table[, i], scientific = T), no = table[, i])
+}
+
+table[is.na(table)] <- ""
 
 ```
 
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 10: Statistical Sampling Results based on the Hypergeometric Distribution (N = 100) — <br>Upper Limits at 1 Percent Risk of Overreliance</center>",
+                       caption = "<center>Table 10: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 100) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 1 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
@@ -478,7 +568,7 @@ ktable <- knitr::kable(table,
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents upper limits (body of table) as percentages")
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and zero expected errors.")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -493,6 +583,7 @@ kableExtra::kable_paper(ktable, "striped")
 ```{r, include = F}
 
 confidence <- 0.99
+materiality <- 0.01
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 500
@@ -502,21 +593,29 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+    prior <- jfa::auditPrior(confidence, likelihood = "hypergeometric", method = "median", materiality = materiality, N = N)
+      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "hypergeometric", prior = prior, materiality = materiality, N = N)
+      tab[rows, columns] <- ss$posterior$hypotheses$bf
   }
 }
+
 table <- as.data.frame(tab)
-table[is.na(table)] <- ""
 table <- cbind(n = n, table)
 colnames(table) <- c('Sample Size', k)
+table <- round(table, 2)
+
+for(i in 2:12){
+  table[, i] <- ifelse(table[, i] > 10000000, yes = format(table[, i], scientific = T), no = table[, i])
+}
+
+table[is.na(table)] <- ""
 
 ```
 
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 11: Statistical Sampling Results based on the Hypergeometric Distribution (N = 500) — <br>Upper Limits at 1 Percent Risk of Overreliance</center>",
+                       caption = "<center>Table 11: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 500) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 1 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
@@ -524,7 +623,7 @@ ktable <- knitr::kable(table,
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents upper limits (body of table) as percentages")
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and zero expected errors.")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -539,6 +638,7 @@ kableExtra::kable_paper(ktable, "striped")
 ```{r, include = F}
 
 confidence <- 0.99
+materiality <- 0.01
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 1000
@@ -548,21 +648,29 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+    prior <- jfa::auditPrior(confidence, likelihood = "hypergeometric", method = "median", materiality = materiality, N = N)
+      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "hypergeometric", prior = prior, materiality = materiality, N = N)
+      tab[rows, columns] <- ss$posterior$hypotheses$bf
   }
 }
+
 table <- as.data.frame(tab)
-table[is.na(table)] <- ""
 table <- cbind(n = n, table)
 colnames(table) <- c('Sample Size', k)
+table <- round(table, 2)
+
+for(i in 2:12){
+  table[, i] <- ifelse(table[, i] > 10000000, yes = format(table[, i], scientific = T), no = table[, i])
+}
+
+table[is.na(table)] <- ""
 
 ```
 
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 10: Statistical Sampling Results based on the Hypergeometric Distribution (N = 1000) — <br>Upper Limits at 1 Percent Risk of Overreliance</center>",
+                       caption = "<center>Table 12: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 1000) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 1 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
@@ -570,7 +678,7 @@ ktable <- knitr::kable(table,
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents upper limits (body of table) as percentages")
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and zero expected errors.")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 

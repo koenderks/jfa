@@ -40,10 +40,11 @@
 }
 
 .modeBetaBinom <- function(N, shape1, shape2) {
+  # To calculate the mode of the beta-binomial distribution we can use the fact that the mode has 
+  # the largest probability to iteratively find it.
   if(shape1 == 1 && shape2 == 1)
     return(NA)
   index <- pcount <- pnextcount <- -1
-  # Use the fact that the mode has the highest density to iteratively find it
   while (pnextcount >= pcount) {
     index <- index + 1
     pcount <- .dBetaBinom(x = index, N = N, shape1 = shape1, shape2 = shape2)
@@ -52,27 +53,21 @@
   return(index)
 }
 
-.hypergeometricBound <- function(p, N, n, k) {
-  # To calculate the p-percent confidence bound on the population errors using the hypergeometric 
+.qHyper <- function(p, N, n, k) {
+  # To calculate the p percent upper bound on the population errors (K) using the hypergeometric 
   # distribution we perform an inverted hypothesis test (a la binom.test) as described on page 63 of 
-  # https://core.ac.uk/download/pdf/232379784.pdf.
-  K <- k
-  while ( sum(stats::phyper(q = 0:k, m = K, n = N - K, k = n)) > (1 - p) ) {
-    K <- K + 1
-  }
-  return(K - 1)
+  # Talens, E. (2005). Statistical Auditing and the AOQL-method (https://core.ac.uk/download/pdf/232379784.pdf).
+  K <- k:N
+  cdf <- stats::phyper(q = k, m = K, n = N - K, k = n)
+  return(max(K[cdf > (1 - p)]))
 }
 
-# .dCoxAndSnellF <- function(x, df1, df2, multiplicationFactor) {
-# 	# Rewritten using Wolfram Mathematica
-# 	(df1 ** (df1 / 2) * df2**(df2 / 2) * (x / multiplicationFactor) ** (- 1 + df1 / 2) * (df2 + (df1 * x) / multiplicationFactor)**(( -df1 - df2) / 2))/(abs(multiplicationFactor) * beta(df1/2, df2/2))
-# }
-
+# This function is for internal calls to the markdown renderer
 .getfun <- function(x) {
-  if (length(grep("::", x))>0) {
-    parts<-strsplit(x, "::")[[1]]
-    getExportedValue(parts[1], parts[2])
+  if (length(grep('::', x)) > 0) {
+    parts <- strsplit(x, '::')[[1]]
+    return(getExportedValue(parts[1], parts[2]))
   } else {
-    x
+    return(x)
   }
 }

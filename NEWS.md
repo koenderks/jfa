@@ -3,7 +3,10 @@
 **Bug fixes**
 
 - Fixed a bug in `method = 'bram'` in the `auditPrior()` function where the prior parameters would go off to infinity when `expectedError = 0`.
-- Now calculates the upper bound induced by the hypergeometric distribution via an inverted hypothesis test.
+
+**Major changes**
+
+- Now calculates the upper bound for the population errors according to the hypergeometric distribution via an inverted hypothesis test. As a result of this method, the `planning()` function does not require a value for the `materiality` anymore when planning with the `hypergeometric` likelihood.
 
 **Minor changes**
 

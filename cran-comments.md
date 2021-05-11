@@ -1,7 +1,7 @@
 ## This is a submission for version 0.5.4
 This is jfa version 0.5.4. In this version I have:
 
-* Implemented small changes in some of the functions
+* Implemented small changes in one of the functions.
 
 ## Test environments
 * OS X install (on travis-ci), R release

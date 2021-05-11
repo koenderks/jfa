@@ -85,10 +85,10 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
     stop("Specify a value for the confidence likelihood. Possible values lie within the range of 0 to 1.")
   
   if (!(likelihood %in% c("poisson", "binomial", "hypergeometric")))
-    stop("Specify a valid likelihood. Possible options are 'poisson', 'binomial', and 'hypergeometric'.")
+    stop("Specify a valid likelihood. Possible options are 'binomial', 'poisson', and 'hypergeometric'.")
   
   if (is.null(materiality) && is.null(minPrecision))
-    stop("Specify the materiality or the minimum precision")
+    stop("You must specify the materiality or the minimum precision.")
   
   if (!is.null(minPrecision) && (minPrecision <= 0 || minPrecision >= 1))
     stop("The minimum required precision must be a positive value < 1.")
@@ -107,7 +107,7 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
   } else if (expectedError >= 1) {
     errorType <- "integer"
     if (expectedError%%1 != 0 && likelihood %in% c("binomial", "hypergeometric") && !((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"))
-      stop("When expectedError > 1 and the likelihood is binomial or hypergeometric, its value must be an integer.")
+      stop("When expectedError > 1 and the likelihood is 'binomial' or 'hypergeometric', its value must be an integer.")
   }
   
   # Set the materiality and the minimium precision to 1 if they are NULL
@@ -117,13 +117,8 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
     minPrecision <- 1
   
   # Requirements for the hypergeometric distribution
-  if (likelihood == "hypergeometric") {
-    if (is.null(N) || N <= 0)
-      stop("The hypergeometric likelihood requires that you specify a population size N.")
-    if (materiality == 1)
-      stop("The hypergeometric likelihood requires that you specify a materiality.")
-    populationK <- ceiling(materiality * N)
-  }
+  if (likelihood == "hypergeometric" && (is.null(N) || N <= 0))
+    stop("The 'hypergeometric' likelihood requires that you specify the population size 'N'.")
   
   if (!is.null(N) && N < maxSize)
     maxSize <- N
@@ -143,16 +138,18 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
     
     # Find the expected errors in the sample
     implicitK <- switch(errorType, "percentage" = expectedError * i, "integer" = expectedError)
-    if (likelihood == "hypergeometric")
-      implicitK <- ceiling(implicitK)
+    if (likelihood == "hypergeometric") {
+      implicitK <- ceiling(implicitK) # Convert to an integer in the case of a hypergeometric likelihood
+      populationK <- ceiling(materiality * N)
+    }
     
-    while (i <= implicitK) { # Remove these numbers from the sampling frame for more efficient sampling
+    while (i <= implicitK) { # Remove redundant numbers from the sampling frame for more efficient sampling
       samplingFrame <- samplingFrame[-iter]
       i <- samplingFrame[iter]
     }
     
     if (!is.null(N) && i > N) # The sample size is too large
-      stop("The resulting sample size is larger than the population size.")
+      stop("The resulting sample size is larger than the population size 'N'.")
     
     if ((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior") { # Bayesian planning
       
@@ -164,33 +161,30 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
                     "poisson" = (1 + kPrior + implicitK - 1) / (nPrior + i),
                     "binomial" = (1 + kPrior + implicitK - 1) / (1 + kPrior + implicitK + 1 + nPrior - kPrior + i - implicitK - 2),
                     "hypergeometric" = .modeBetaBinom(N = N - i, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK) / N)
-      sufficient <- bound < materiality && (bound - mle) < minPrecision
       
     } else { # Classical planning
       
       if (likelihood == "binomial") 
-        implicitK <- ceiling(implicitK)
-      prob <- switch(likelihood, 
-                     "poisson" = stats::pgamma(q = materiality, shape = 1 + implicitK, rate = i, lower.tail = FALSE),
-                     "binomial" = stats::pbinom(q = implicitK, size = i, prob = materiality),
-                     "hypergeometric" = stats::phyper(q = implicitK, m = populationK, n = ceiling(N - populationK), k = i))
+        implicitK <- ceiling(implicitK) # Convert to an integer in the case of a binomial likelihood
+      
       bound <- switch(likelihood, 
                       "poisson" = stats::qgamma(p = confidence, shape = 1 + implicitK, rate = i),
-                      "binomial" = stats::binom.test(x = implicitK, n = i, p = materiality, alternative = "less", conf.level = confidence)$conf.int[2],
-                      "hypergeometric" = .hypergeometricBound(p = confidence, N = N, n = i, k = implicitK) / N)
+                      "binomial" = stats::qbeta(p = confidence, shape1 = 1 + implicitK, shape2 = i - implicitK),
+                      "hypergeometric" = .qHyper(p = confidence, N = N, n = i, k = implicitK) / N)
       mle <- implicitK / i
-      sufficient <- prob < (1 - confidence) && (bound - mle) < minPrecision
       
     }
     
-    if (sufficient) # Sufficient work done
+    sufficient <- bound < materiality && (bound - mle) < minPrecision # Sufficient work done?
+    
+    if (sufficient)
       ss <- i
     iter <- iter + 1
   }
   
   # No sample size could be calculated, throw an error
   if (is.null(ss))
-    stop("Sample size could not be calculated, you may want to increase the maxSize argument.")
+    stop("Sample size could not be calculated, you may want to increase the 'maxSize' argument.")
   
   # Create the main results object
   result <- list()

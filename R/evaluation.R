@@ -124,11 +124,14 @@ evaluation <- function(confidence, materiality = NULL, minPrecision = NULL, meth
   }
   
   # Perform error handling with respect to incompatible input options
-  if (is.null(materiality) && is.null(minPrecision))
-    stop("Specify the materiality or the minimum precision")
+  if (confidence >= 1 || confidence <= 0 || is.null(confidence))
+    stop("Specify a value for the confidence likelihood. Possible values lie within the range of 0 to 1.")
   
-  if (!is.null(minPrecision) && minPrecision == 0)
-    stop("The minimum required precision cannot be zero.")
+  if (is.null(materiality) && is.null(minPrecision))
+    stop("You must specify the materiality or the minimum precision.")
+  
+  if (!is.null(minPrecision) && (minPrecision <= 0 || minPrecision >= 1))
+    stop("The minimum required precision must be a positive value < 1.")
   
   if (!(method %in% c("poisson", "binomial", "hypergeometric", "stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "rohrbach", "moment", "coxsnell", "direct", "difference", "quotient", "regression", "mpu")) || length(method) != 1)
     stop("Specify a valid method for the evaluation.")
@@ -137,22 +140,26 @@ evaluation <- function(confidence, materiality = NULL, minPrecision = NULL, meth
     stop("When specified, your 'counts' must all be equal to, or larger than, 1.")          
   
   if (((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior") && method %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
-    stop("To use a prior distribution, you must use either the poisson, the binomial, or the hypergeometric method.")  
+    stop("To use a prior distribution, you must use either the 'poisson', the 'binomial', or the 'hypergeometric' method.")  
   
   if ((class(prior) == "logical" && prior == TRUE) && kPrior < 0 || nPrior < 0)
-    stop("When you specify a prior, both kPrior and nPrior should be higher than zero")
+    stop("When you specify a 'prior', both 'kPrior' and 'nPrior' should be higher than zero.")
   
   if (!is.null(nSumstats) || !is.null(kSumstats)) {
     if (is.null(nSumstats) || is.null(kSumstats))
-      stop("When using summary statistics, both nSumstats and kSumstats must be defined")
-    if (nSumstats <= 0 || kSumstats < 0)
-      stop("When using summary statistics, both nSumstats and kSumstats must be positive")
+      stop("When using summary statistics, both 'nSumstats' and 'kSumstats' must be specified.")
+    if (nSumstats <= 0 || nSumstats%%1 != 0)
+      stop("'nSumstats' must be a positive integer.")
+    if (kSumstats < 0)
+      stop("'kSumstats' must be equal to, or larger than, zero.")
     if (length(nSumstats) != 1 || length(kSumstats) != 1)
-      stop("Specify one value for nSumstat and kSumstat")
-    if (kSumstats > nSumstats)
-      stop("The sum of the errors is higher than the sample size")
+      stop("Specify one value for 'nSumstats' and 'kSumstats'.")
+    if (kSumstats >= nSumstats)
+      stop("The sum of the errors provided in 'kSumstats' are equal to, or higher than, the sample size provided in 'nSumstats'.")
     if (method %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "coxsnell", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
-      stop("The selected method requires raw observations, and does not accomodate summary statistics")
+      stop("The selected method requires raw observations and does not accomodate summary statistics")
+    if (kSumstats%%1 != 0 && method == "hypergeometric" && !((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"))
+      stop("When 'kSumstats' is specified and the likelihood is 'hypergeometric', its value must be an integer.")
     
     n <- nSumstats
     k <- kSumstats
@@ -161,11 +168,11 @@ evaluation <- function(confidence, materiality = NULL, minPrecision = NULL, meth
   } else if (!is.null(sample)) {
     
     if (is.null(bookValues) || is.null(auditValues) || length(bookValues) != 1 || length(auditValues) != 1)
-      stop("Specify a valid book value column name and a valid audit value column name when using a sample")
+      stop("Specify a valid book value column name and a valid audit value column name when using a sample.")
     
     missingValues <- unique(c(which(is.na(sample[, bookValues])), which(is.na(sample[, auditValues]))))
     if (length(missingValues) == nrow(sample))
-      stop("Your sample has 0 rows after removing missing values.")
+      stop("Your sample contains no items after removing missing values from the book value and audit value columns.")
     sample <- stats::na.omit(sample)
     n <- nrow(sample)
     if (!is.null(counts))
@@ -180,6 +187,8 @@ evaluation <- function(confidence, materiality = NULL, minPrecision = NULL, meth
     
     t <- sum(taints)
     
+  } else {
+    stop("You must specify an annotated sample using 'sample', 'bookValues', 'auditValues', and 'counts', or provide summary statistics using 'nSumstats' and 'kSumstats'.")
   }
   
   # Set the materiality and the minimium precision to 1 if they are NULL
@@ -193,116 +202,114 @@ evaluation <- function(confidence, materiality = NULL, minPrecision = NULL, meth
   precision <- NULL
   
   # Calculate the results depending on the specified method
-  if (method == "poisson") {
+  if (method == 'poisson') {
     if ((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior") {
-      # Bayesian evaluation using gamma distribution
-      bound <- stats::qgamma(p = confidence, shape = 1 + kPrior + t, rate = nPrior + n)
-      mle <- (1 + kPrior + t - 1) / (nPrior + n)
+      # Bayesian evaluation using the gamma distribution
+      bound     <- stats::qgamma(p = confidence, shape = 1 + kPrior + t, rate = nPrior + n)
+      mle       <- (1 + kPrior + t - 1) / (nPrior + n)
       precision <- bound - mle
     } else {
-      # Classical evaluation using Poisson distribution
-      bound <- stats::qgamma(p = confidence, shape = 1 + t, rate = n)
-      mle <- k / n
+      # Classical evaluation using the Poisson distribution
+      bound     <- stats::qgamma(p = confidence, shape = 1 + t, rate = n)
+      mle       <- t / n
       precision <- bound - mle
     }
-  } else if (method == "binomial") { 
-    # Bayesian evaluation using beta distribution
+  } else if (method == 'binomial') { 
+    # Bayesian evaluation using the beta distribution
     if ((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior") {
-      bound <- stats::qbeta(p = confidence, shape1 = 1 + kPrior + t, shape2 = 1 + nPrior - kPrior + n - t)
-      mle <- (1 + kPrior + t - 1) / (1 + kPrior + t + 1 + nPrior - kPrior + n - t)
+      bound     <- stats::qbeta(p = confidence, shape1 = 1 + kPrior + t, shape2 = 1 + nPrior - kPrior + n - t)
+      mle       <- (1 + kPrior + t - 1) / (1 + kPrior + t + 1 + nPrior - kPrior + n - t)
       precision <- bound - mle
     } else {
-      # Classical evaluation using binomial distribution
-      bound <- stats::binom.test(x = k, n = n, p = materiality, alternative = "less", conf.level = confidence)$conf.int[2]
-      mle <- k / n
+      # Classical evaluation using the binomial distribution
+      bound     <- stats::qbeta(p = confidence, shape1 = 1 + t, shape2 = n - t)
+      mle       <- t / n
       precision <- bound - mle
     }
-  } else if (method == "hypergeometric") {
+  } else if (method == 'hypergeometric') {
     if (is.null(N))
-      stop("Evaluation with hypergeometric likelihood requires that you specify the population size N")
-    # Hypergeometric evaluation using beta-binomial distribution
+      stop("Evaluation with hypergeometric likelihood requires that you specify the population size N.")
+    # Bayesian evaluation using the beta-binomial distribution
     if ((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior") {
-      bound <- .qBetaBinom(p = confidence, N = N - n, shape1 = 1 + kPrior + t, shape2 = 1 + nPrior - kPrior + n - t) / N
-      mle <- .modeBetaBinom(N = N - n, shape1 = 1 + kPrior + t, shape2 = 1 + nPrior - kPrior + n - t) / N
+      bound     <- .qBetaBinom(p = confidence, N = N - n, shape1 = 1 + kPrior + t, shape2 = 1 + nPrior - kPrior + n - t) / N
+      mle       <- .modeBetaBinom(N = N - n, shape1 = 1 + kPrior + t, shape2 = 1 + nPrior - kPrior + n - t) / N
       precision <- bound - mle
     } else {
-      # Classical evaluation using hypergeometric distribution
-      if (materiality == 1)
-        stop("Evaluation with the hypergeometric distribution requires that you specify the materiality")
-      populationK <- materiality * N
-      bound <- .hypergeometricBound(p = confidence, N = N, n = n, k = k) / N
-      mle <- k / n
+      # Classical evaluation using the hypergeometric distribution
+      populationK <- ceiling(materiality * N)
+      bound     <- .qHyper(p = confidence, N = N, n = n, k = k) / N
+      mle       <- k / n
       precision <- bound - mle
     }
-  } else if (method == "stringer") {
+  } else if (method == 'stringer') {
     # Classical evaluation using the Stringer bound
     out 		<- .stringerBound(taints, confidence, n)
     bound 		<- out[["confBound"]]
     mle 		<- out[["mle"]]
     precision 	<- out[["precision"]]
-  } else if (method == "stringer-meikle") {
+  } else if (method == 'stringer-meikle') {
     # Classical evaluation using the Stringer bound with Meikle's adjustment
-    out 		<- .stringerBound(taints, confidence, n, correction = "meikle")
+    out 		<- .stringerBound(taints, confidence, n, correction = 'meikle')
     bound 		<- out[["confBound"]]
     mle 		<- out[["mle"]]
     precision 	<- out[["precision"]]
-  } else if (method == "stringer-lta") {
+  } else if (method == 'stringer-lta') {
     # Classical evaluation using the Stringer bound with the LTA adjustment
-    out 		<- .stringerBound(taints, confidence, n, correction = "lta")
+    out 		<- .stringerBound(taints, confidence, n, correction = 'lta')
     bound 		<- out[["confBound"]]
     mle 		<- out[["mle"]]
     precision 	<- out[["precision"]]
-  } else if (method == "stringer-pvz") {
+  } else if (method == 'stringer-pvz') {
     # Classical evaluation using the Stringer bound with PvZ adjustment
-    out 		<- .stringerBound(taints, confidence, n, correction = "pvz")
+    out 		<- .stringerBound(taints, confidence, n, correction = 'pvz')
     bound 		<- out[["confBound"]]
     mle 		<- out[["mle"]]
     precision 	<- out[["precision"]]
-  } else if (method == "rohrbach") {
+  } else if (method == 'rohrbach') {
     # Classical evaluation using Rohrbachs augmented variance bound
     out 		<- .rohrbachBound(taints, confidence, n, N, rohrbachDelta = rohrbachDelta)
     bound 		<- out[["confBound"]]
     mle 		<- out[["mle"]]
     precision 	<- out[["precision"]]
-  } else if (method == "moment") {
+  } else if (method == 'moment') {
     # Classical evaluation using the Modified Moment bound
     out 		<- .momentBound(taints, confidence, n, momentPoptype = momentPoptype)
     bound 		<- out[["confBound"]]
     mle 		<- out[["mle"]]
     precision 	<- out[["precision"]]
-  } else if (method == "coxsnell") {
+  } else if (method == 'coxsnell') {
     # Bayesian evaluation using the Cox and Snell bound 
     out 		<- .coxAndSnellBound(taints, confidence, n, csA, csB, csMu, aPrior = 1 + kPrior, bPrior = 1 + nPrior - kPrior)
     bound 		<- out[["confBound"]]
     mle 		<- out[["mle"]]
     precision 	<- out[["precision"]]
-  } else if (method == "mpu") {
+  } else if (method == 'mpu') {
     # Classical evaluation using the Mean-per-unit estimator
     out 		<- .mpuMethod(taints, confidence, n)
     bound 		<- out[["confBound"]]
     mle 		<- out[["mle"]]
     precision 	<- out[["precision"]]		
-  } else if (method == "direct") {
+  } else if (method == 'direct') {
     # Classical evaluation using the Direct estimator
     out 		<- .directMethod(bv, av, confidence, N, n, populationBookValue)
     mle 		<- out[["pointEstimate"]]
     precision 	<- out[["precision"]]
-  } else if (method == "difference") {
+  } else if (method == 'difference') {
     # Classical evaluation using the Difference estimator
     out 		<- .differenceMethod(bv, av, confidence, N, n, populationBookValue)
     mle 		<- out[["pointEstimate"]]
     precision 	<- out[["precision"]]
-  } else if (method == "quotient") {
+  } else if (method == 'quotient') {
     # Classical evaluation using the Quotient estimator
     out 		<- .quotientMethod(bv, av, confidence, N, n, populationBookValue)
     mle 		<- out[["pointEstimate"]]
     precision 	<- out[["precision"]]
-  } else if (method == "regression") {
+  } else if (method == 'regression') {
     # Classical evaluation using the Regression estimator
     out 		<- .regressionMethod(bv, av, confidence, N, n, populationBookValue)
     mle 		<- out[["pointEstimate"]]
     precision 	<- out[["precision"]]
-  } else if (method == "newmethod") {
+  } else if (method == 'newmethod') {
     # Evaluation using a new (to be added) method
     #
     # out 		<- .functionFromMethodsFile()
@@ -313,24 +320,24 @@ evaluation <- function(confidence, materiality = NULL, minPrecision = NULL, meth
   
   # Create the main results object
   result <- list()
-  result[["confidence"]]    <- as.numeric(confidence)
-  result[["materiality"]]   <- as.numeric(materiality)
-  result[["minPrecision"]]  <- as.numeric(minPrecision)
-  result[["method"]]        <- as.character(method)
-  result[["N"]]             <- as.numeric(N)
-  result[["n"]]             <- as.numeric(n)
-  result[["k"]]             <- as.numeric(k)
-  result[["t"]]             <- as.numeric(t)
+  result[["confidence"]]     <- as.numeric(confidence)
+  result[["materiality"]]    <- as.numeric(materiality)
+  result[["minPrecision"]]   <- as.numeric(minPrecision)
+  result[["method"]]         <- as.character(method)
+  result[["N"]]              <- as.numeric(N)
+  result[["n"]]              <- as.numeric(n)
+  result[["k"]]              <- as.numeric(k)
+  result[["t"]]              <- as.numeric(t)
   if (!is.null(mle))
-    result[["mle"]]			<- as.numeric(mle)
+    result[["mle"]]			 <- as.numeric(mle)
   if (!is.null(precision))
-    result[["precision"]]	<- as.numeric(precision)
+    result[["precision"]]	 <- as.numeric(precision)
   if (!is.null(populationBookValue))
-    result[["popBookvalue"]]   <- as.numeric(populationBookValue)
+    result[["popBookvalue"]] <- as.numeric(populationBookValue)
   if (method %in% c("direct", "difference", "quotient", "regression")) {
     # These methods yield an interval instead of a bound
-    result[["lowerBound"]]     <- as.numeric(out[["lowerBound"]])
-    result[["upperBound"]]     <- as.numeric(out[["upperBound"]])
+    result[["lowerBound"]]   <- as.numeric(out[["lowerBound"]])
+    result[["upperBound"]]   <- as.numeric(out[["upperBound"]])
   } else {
     # These methods yield an upper bound
     result[["confBound"]] <- as.numeric(bound) 
@@ -341,8 +348,8 @@ evaluation <- function(confidence, materiality = NULL, minPrecision = NULL, meth
       result[["df2"]]                  <- as.numeric(out[["df2"]])
     }
   }
-  if (method == "hypergeometric" && is.logical(prior) && prior == FALSE)
-    result[["populationK"]]        		 <- as.numeric(populationK)
+  if (method == 'hypergeometric' && is.logical(prior) && prior == FALSE)
+    result[["populationK"]] <- as.numeric(populationK)
   # Produce relevant conclusions conditional on the analysis result
   approvePrecision <- TRUE
   if (minPrecision != 1) {
@@ -419,7 +426,7 @@ evaluation <- function(confidence, materiality = NULL, minPrecision = NULL, meth
     result[["posterior"]][["statistics"]]$precision <- result[["posterior"]][["statistics"]]$ub - result[["posterior"]][["statistics"]]$mode
     # Create the hypotheses section
     if (result[["materiality"]] != 1) {
-      result[["posterior"]][["hypotheses"]] 				<- list()
+      result[["posterior"]][["hypotheses"]] 			<- list()
       result[["posterior"]][["hypotheses"]]$hypotheses 	<- c(paste0("H-: \u0398 < ", materiality), paste0("H+: \u0398 > ", materiality))
       result[["posterior"]][["hypotheses"]]$pHmin 		<- switch(method, 
                                                               "poisson" = stats::pgamma(materiality, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
