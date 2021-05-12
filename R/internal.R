@@ -39,9 +39,9 @@
   return(out)
 }
 
+# This function iteratively finds the mode (= value with the largest probability) of the 
+# beta-binomial distribution by checking if p(k = i) < p(k = i + 1)
 .modeBetaBinom <- function(N, shape1, shape2) {
-  # One can use the fact that the mode of the beta-binomial distribution is the value with the
-  # highest probability to iteratively find it.
   if(shape1 == 1 && shape2 == 1)
     return(NA)
   index <- pcount <- pnextcount <- -1
@@ -53,10 +53,10 @@
   return(index)
 }
 
+# This function performs an inverted hypothesis test in order to calculate the p percent upper 
+# bound on the population errors (K) using the hypergeometric distribution. 
+# For more information, see: Talens, E. (2005). Statistical Auditing and the AOQL-method (https://core.ac.uk/download/pdf/232379784.pdf).
 .qHyper <- function(p, N, n, k) {
-  # To calculate the p percent upper bound on the population errors (K) using the hypergeometric
-  # distribution one can use an inverted hypothesis test as described on page 63 of:
-  # Talens, E. (2005). Statistical Auditing and the AOQL-method (https://core.ac.uk/download/pdf/232379784.pdf).
   K <- k:N
   cdf <- stats::phyper(q = k, m = K, n = N - K, k = n)
   return(max(K[cdf > (1 - p)]))

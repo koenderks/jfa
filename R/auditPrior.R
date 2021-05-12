@@ -103,67 +103,94 @@ auditPrior <- function(confidence, materiality = NULL, expectedError = 0,
     stop("The expected errors must be entered as a proportion for this method.")
   
   if (method == "none") { # Method 1: Negligible prior information
+    
     nPrior <- 0 # No earlier observations
     kPrior <- 0 # No earlier errors
+    
   } else if (method == "arm") { # Method 2: Translate the risks from the audit risk model
-    if (is.null(ir) || is.null(cr) || is.null(materiality))
+    
+    if (is.null(ir) || is.null(cr) || is.null(materiality)) # Check if ir and cr have valid inputs
       stop("Method = 'arm' requires non-null 'materiality', 'ir', and 'cr' arguments.")
-    alpha 	<- (1 - confidence) / (ir * cr) # Calculate the required detection risk from the audit risk model
-    nPlus 	<- planning(confidence = confidence, likelihood = likelihood, expectedError = expectedError, N = N, materiality = materiality, prior = TRUE)$sampleSize # Calculate the sample size for the full detection risk  
-    nMin 	<- planning(confidence = 1 - alpha, likelihood = likelihood, expectedError = expectedError, N = N, materiality = materiality, prior = TRUE)$sampleSize # Calculated the sample size for the adjusted detection risk
-    nPrior 	<- nPlus - nMin # Calculate the sample size equivalent to the increase in detection risk
-    kPrior 	<- (nPlus * expectedError) - (nMin * expectedError) # Calculate errors equivalent 
+    
+    alpha  <- (1 - confidence) / (ir * cr) # Calculate the required detection risk from the audit risk model
+    nPlus  <- planning(confidence = confidence, likelihood = likelihood, expectedError = expectedError, N = N, materiality = materiality, prior = TRUE)$sampleSize # Calculate the sample size for the full detection risk  
+    nMin   <- planning(confidence = 1 - alpha, likelihood = likelihood, expectedError = expectedError, N = N, materiality = materiality, prior = TRUE)$sampleSize # Calculated the sample size for the adjusted detection risk
+    nPrior <- nPlus - nMin # Calculate the sample size equivalent to the increase in detection risk
+    kPrior <- (nPlus * expectedError) - (nMin * expectedError) # Calculate errors equivalent to the increase in detection risk
+    
   } else if (method == 'bram') { # Method 3: Bayesian risk assessment model
+    
     if (is.null(ub)) # Check if the value for the upper bound is present
       stop("You must specify a value for 'ub'.")
+    
     if (ub <= 0 || ub >= 1 || ub <= expectedError) # Check if the value for the upper bound is valid
       stop("The value of 'ub' must be between 0 and 1 and higher than 'expectedErrors'.")
+    
     if (likelihood == 'poisson' && expectedError > 0) { # Perform approximation described in Stewart (2013) on p. 45.
-      r <- expectedError / ub
-      q <- stats::qnorm(confidence)
+      
+      r      <- expectedError / ub
+      q      <- stats::qnorm(confidence)
       kPrior <- ((( (q * r) + sqrt(3 + ((r / 3) * (4 * q^2 - 10)) - ((r^2 / 3) * (q^2 - 1) ))) / (2 * (1 - r) ))^2 + (1 / 4)) - 1
       nPrior <- kPrior / expectedError
-    } else { # Approximation through iteration over alpha parameter
-      bound <- Inf
+      
+    } else { # Approximation through iteration over one of the parameters
+      
+      bound  <- Inf
       kPrior <- 0
       nPrior <- 0
+      
       while (bound > ub) {
-        if (expectedError == 0) { # Iterate over nPrior because kPrior is zero
+        
+        if (expectedError == 0) { # In this case, iterate over nPrior because kPrior is zero
           nPrior <- nPrior + 0.001 # Increase of 0.001 (time intensive?)
-        } else { # Iterate over kPrior to save time
+        } else { # In this case, iterate over kPrior to save computation time
           kPrior <- kPrior + 0.0001 # Increase of 0.0001 (time intensive?)
           nPrior <- kPrior / expectedError
         }
+        
         bound <- switch(likelihood, 
                         "binomial" = stats::qbeta(p = confidence, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior),
                         "poisson" = stats::qgamma(p = confidence, shape = 1 + kPrior, rate = nPrior),
                         "hypergeometric" = .qBetaBinom(p = confidence, N = N, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior) / N)
       }
+      
     }
   } else if (method == "median" || method == "hypotheses") {
+    
     if(method == "median") { # Method 4: Equal prior probabilities
+      
       probH0 <- probH1 <- 0.5
+      
     } else if (method == "hypotheses") { # Method 5: Custom prior probabilities
+      
       if (is.null(pHmin) && is.null(pHplus)) # Must have the prior probabilities and materiality
         stop("Method = 'hypotheses' requires non-null 'pHmin' or 'pHplus' arguments.")
+      
       if ((!is.null(pHmin) && !is.null(pHplus)) && pHmin + pHplus != 1) # Check for valid prior probabilities
         stop("The values for 'pHmin' and 'pHplus' should sum to one.")  
+      
       if (!is.null(pHmin) && is.null(pHplus)) { # Adjust p(H1) for user input
         probH1 <- 1 - pHmin
       } else {
         probH1 <- pHplus
       }
+      
       probH0 <- 1 - probH1 # Calculate p(H0)
     }
+    
     if (expectedError == 0) { # Formulas for zero expected errors
+      
       nPrior <- switch(likelihood,
                        "poisson" = -(log(probH1) / materiality),
                        "binomial" = log(probH1) / log(1 - materiality) - 1,
                        "hypergeometric" = log(probH1) / log(1 - materiality) - 1)
       kPrior <- 0
+      
     } else { # Approximation through iteration over alpha parameter = more accurate than approximation through formulas
+      
       median <- Inf
       kPrior <- 0
+      
       while (median > materiality) {
         kPrior <- kPrior + 0.0001 # Increase of 0.0001 (time intensive?)
         nPrior <- kPrior / expectedError # Express beta in terms of alpha
@@ -173,90 +200,101 @@ auditPrior <- function(confidence, materiality = NULL, expectedError = 0,
                          "hypergeometric" = .qBetaBinom(p = probH0, N = N, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior) / N)
       }
     }
+    
   } else if (method == "sample") { # Method 6: Earlier sample
+    
     if (is.null(sampleN) || is.null(sampleK)) # Check for valid arguments
       stop("Method = 'sample' requires non-null 'sampleN', and 'sampleK' arguments.")
     nPrior <- sampleN # Earlier sample size
     kPrior <- sampleK # Earlier errors
+    
   } else if (method == "factor") { # Method 7: Weighted earlier sample
+    
     if (is.null(sampleN) || is.null(sampleK) || is.null(factor)) # Check for valid arguments
       stop("Method = 'factor' requires non-null 'factor', 'sampleN', and 'sampleN=K' arguments.")  
     nPrior <- sampleN * factor # Earlier sample size
     kPrior <- sampleK * factor # Earlier errors
+    
   }
   
   # Create the main result object	
   result <- list()
-  result[["confidence"]]   	<- as.numeric(confidence)
+  result[["confidence"]]            <- as.numeric(confidence)
   if (!is.null(materiality))
-    result[["materiality"]]  <- as.numeric(materiality)
-  result[["expectedError"]] <- as.numeric(expectedError)
-  result[["method"]]       	<- as.character(method)
-  result[["likelihood"]]   	<- as.character(likelihood)
-  result[["N"]]            	<- as.numeric(N)
+    result[["materiality"]]         <- as.numeric(materiality)
+  result[["expectedError"]]         <- as.numeric(expectedError)
+  result[["method"]]                <- as.character(method)
+  result[["likelihood"]]            <- as.character(likelihood)
+  result[["N"]]                     <- as.numeric(N)
+  
   # Create the description section
-  result[["description"]]			<- list()
-  result[["description"]]$density  	<- switch(likelihood, "poisson" = "gamma", "binomial" = "beta", "hypergeometric" = "beta-binomial")
+  result[["description"]]           <- list()
+  result[["description"]]$density   <- switch(likelihood, "poisson" = "gamma", "binomial" = "beta", "hypergeometric" = "beta-binomial")
   result[["description"]]$implicitk <- as.numeric(kPrior)
-  result[["description"]]$implicitn	<- as.numeric(nPrior)
-  result[["description"]]$alpha   	<- as.numeric(1 + kPrior)
-  result[["description"]]$beta   	<- switch(likelihood, "poisson" = nPrior, "binomial" = 1 + nPrior - kPrior, "hypergeometric" = 1 + nPrior - kPrior)
+  result[["description"]]$implicitn <- as.numeric(nPrior)
+  result[["description"]]$alpha     <- as.numeric(1 + kPrior)
+  result[["description"]]$beta      <- switch(likelihood, "poisson" = nPrior, "binomial" = 1 + nPrior - kPrior, "hypergeometric" = 1 + nPrior - kPrior)
+  
   # Create the statistics section
-  result[["statistics"]] 			<- list()
-  result[["statistics"]]$mode 		<- switch(likelihood, 
-                                          "poisson" = (result[["description"]]$alpha - 1) / result[["description"]]$beta,
-                                          "binomial" = (result[["description"]]$alpha - 1) / (result[["description"]]$alpha + result[["description"]]$beta - 2),
-                                          "hypergeometric" = .modeBetaBinom(N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta))
-  result[["statistics"]]$mean 		<- switch(likelihood, 
-                                          "poisson" = result[["description"]]$alpha / result[["description"]]$beta,
-                                          "binomial" = result[["description"]]$alpha / (result[["description"]]$alpha + result[["description"]]$beta),
-                                          "hypergeometric" = result[["description"]]$alpha / (result[["description"]]$alpha + result[["description"]]$beta) * result[["N"]])
-  result[["statistics"]]$median 	<- switch(likelihood, 
-                                           "poisson" = stats::qgamma(0.5, shape = result[["description"]]$alpha, rate = result[["description"]]$beta),
-                                           "binomial" = stats::qbeta(0.5, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta),
-                                           "hypergeometric" = .qBetaBinom(0.5, N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta))
-  result[["statistics"]]$ub 		<- switch(likelihood, 
-                                        "poisson" = stats::qgamma(confidence, shape = result[["description"]]$alpha, rate = result[["description"]]$beta),
-                                        "binomial" = stats::qbeta(confidence, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta),
-                                        "hypergeometric" = .qBetaBinom(confidence, N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta))									
-  result[["statistics"]]$precision 	<- result[["statistics"]]$ub - result[["statistics"]]$mode
+  result[["statistics"]]            <- list()
+  result[["statistics"]]$mode       <- switch(likelihood, 
+                                              "poisson" = (result[["description"]]$alpha - 1) / result[["description"]]$beta,
+                                              "binomial" = (result[["description"]]$alpha - 1) / (result[["description"]]$alpha + result[["description"]]$beta - 2),
+                                              "hypergeometric" = .modeBetaBinom(N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta))
+  result[["statistics"]]$mean       <- switch(likelihood, 
+                                              "poisson" = result[["description"]]$alpha / result[["description"]]$beta,
+                                              "binomial" = result[["description"]]$alpha / (result[["description"]]$alpha + result[["description"]]$beta),
+                                              "hypergeometric" = result[["description"]]$alpha / (result[["description"]]$alpha + result[["description"]]$beta) * result[["N"]])
+  result[["statistics"]]$median     <- switch(likelihood, 
+                                              "poisson" = stats::qgamma(0.5, shape = result[["description"]]$alpha, rate = result[["description"]]$beta),
+                                              "binomial" = stats::qbeta(0.5, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta),
+                                              "hypergeometric" = .qBetaBinom(0.5, N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta))
+  result[["statistics"]]$ub         <- switch(likelihood, 
+                                              "poisson" = stats::qgamma(confidence, shape = result[["description"]]$alpha, rate = result[["description"]]$beta),
+                                              "binomial" = stats::qbeta(confidence, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta),
+                                              "hypergeometric" = .qBetaBinom(confidence, N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta))									
+  result[["statistics"]]$precision  <- result[["statistics"]]$ub - result[["statistics"]]$mode
+  
   # Create the specifics section
   if (method != "none")
-    result[["specifics"]] 			<- list()
+    result[["specifics"]]           <- list()
   if (method == "median" || method == "hypotheses") {
-    result[["specifics"]]$pHmin   	<- as.numeric(probH0)
-    result[["specifics"]]$pHplus  	<- as.numeric(probH1)
+    result[["specifics"]]$pHmin     <- as.numeric(probH0)
+    result[["specifics"]]$pHplus    <- as.numeric(probH1)
   } else if (method == "sample" || method == "factor") {
     result[["specifics"]]$sampleN   <- as.numeric(sampleN)
     result[["specifics"]]$sampleK   <- as.numeric(sampleK)
-    result[["specifics"]]$factor   	<- as.numeric(factor)    
+    result[["specifics"]]$factor    <- as.numeric(factor)    
   } else if (method == "arm") {
-    result[["specifics"]]$ir       	<- as.numeric(ir)
-    result[["specifics"]]$cr       	<- as.numeric(cr)  
+    result[["specifics"]]$ir        <- as.numeric(ir)
+    result[["specifics"]]$cr        <- as.numeric(cr)  
   } else if (method == "bram") {
     result[["specifics"]]$mode      <- result[["expectedError"]]
-    result[["specifics"]]$ub       	<- as.numeric(ub)
+    result[["specifics"]]$ub        <- as.numeric(ub)
   }
+  
   # Create the hypotheses section
   if (!is.null(result[["materiality"]])) {
-    result[["hypotheses"]] 				<- list()
-    result[["hypotheses"]]$hypotheses 	<- c(paste0("H-: \u0398 < ", materiality), paste0("H+: \u0398 > ", materiality))
-    result[["hypotheses"]]$pHmin 		<- .restrictprob(switch(likelihood, 
-                                                           "poisson" = stats::pgamma(materiality, shape = result[["description"]]$alpha, rate = result[["description"]]$beta),
-                                                           "binomial" = stats::pbeta(materiality, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta),
-                                                           "hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N"]]), N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta)))
-    result[["hypotheses"]]$pHplus 		<- .restrictprob(switch(likelihood, 
-                                                            "poisson" = stats::pgamma(materiality, shape = result[["description"]]$alpha, rate = result[["description"]]$beta, lower.tail = FALSE),
-                                                            "binomial" = stats::pbeta(materiality, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta, lower.tail = FALSE),
-                                                            "hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N"]]), N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta, lower.tail = FALSE)))
-    result[["hypotheses"]]$oddsHmin    <- result[["hypotheses"]]$pHmin / result[["hypotheses"]]$pHplus
-    result[["hypotheses"]]$oddsHplus   <- 1 / result[["hypotheses"]]$oddsHmin
+    result[["hypotheses"]]              <- list()
+    result[["hypotheses"]]$hypotheses   <- c(paste0("H-: \u0398 < ", materiality), paste0("H+: \u0398 > ", materiality))
+    result[["hypotheses"]]$pHmin        <- .restrictprob(switch(likelihood, 
+                                                                "poisson" = stats::pgamma(materiality, shape = result[["description"]]$alpha, rate = result[["description"]]$beta),
+                                                                "binomial" = stats::pbeta(materiality, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta),
+                                                                "hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N"]]), N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta)))
+    result[["hypotheses"]]$pHplus       <- .restrictprob(switch(likelihood, 
+                                                                "poisson" = stats::pgamma(materiality, shape = result[["description"]]$alpha, rate = result[["description"]]$beta, lower.tail = FALSE),
+                                                                "binomial" = stats::pbeta(materiality, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta, lower.tail = FALSE),
+                                                                "hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N"]]), N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta, lower.tail = FALSE)))
+    result[["hypotheses"]]$oddsHmin     <- result[["hypotheses"]]$pHmin / result[["hypotheses"]]$pHplus
+    result[["hypotheses"]]$oddsHplus    <- 1 / result[["hypotheses"]]$oddsHmin
   }
+  
   # Functional form of the prior distribution
   result[["prior"]] <- switch(likelihood, 
                               "poisson" = paste0("gamma(\u03B1 = ", round(result[["description"]]$alpha, 3), ", \u03B2 = ", round(result[["description"]]$beta, 3), ")"),
                               "binomial" = paste0("beta(\u03B1 = ", round(result[["description"]]$alpha, 3), ", \u03B2 = ", round(result[["description"]]$beta, 3), ")"),
                               "hypergeometric" = paste0("beta-binomial(N = ", result[["N"]], ", \u03B1 = ", round(result[["description"]]$alpha, 3), ", \u03B2 = ", round(result[["description"]]$beta, 3), ")"))	
+  
   # Add class 'jfaPrior' to the result
   class(result) <- "jfaPrior"
   return(result)
