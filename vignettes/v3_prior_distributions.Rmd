@@ -164,7 +164,7 @@ Bayesian statistics allows the auditor to build on their existing information. T
 The prior distribution can be used the planning stage to calculate a minimum sample size by providing the objected returned by the `auditPrior()` function to the `planning()` function. For example, the code below calculates the minimum sample size to test the misstatement in the population against a performance materiality of 5%, while incorporating the information in `prior7`.
 
 ```{r}
-jfa::planning(confidence, materiality, expectedError, prior = prior7)
+jfa::planning(confidence, materiality, expectedError = expectedError, prior = prior7)
 ```
 
 ### Combining `auditPrior()` with `evaluation()`

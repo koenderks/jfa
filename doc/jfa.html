@@ -209,20 +209,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # ------------------------------------------------------------     
 ## # Input:
 ## # 
-## # Confidence:              95% 
-## # Materiality:             5% 
-## # Minimum precision:       Not specified 
-## # Likelihood:              poisson 
-## # Expected sample errors:  0 
+## # Confidence:                    95% 
+## # Materiality:                   5% 
+## # Minimum precision:             Not specified 
+## # Likelihood:                    poisson 
+## # Expected sample errors:        0 
 ## # ------------------------------------------------------------
 ## # Output:
 ## #
-## # Sample size:             60 
+## # Sample size:                   60 
 ## # ------------------------------------------------------------
 ## # Statistics:
 ## #
-## # Expected upper bound:    4.993% 
-## # Expected precision:      4.993% 
+## # Expected most likely error:    0% 
+## # Expected upper bound:          4.993% 
+## # Expected precision:            4.993% 
 ## # ------------------------------------------------------------</code></pre>
 </div>
 <div id="obtaining-a-minimum-precision" class="section level3">
@@ -236,20 +237,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # ------------------------------------------------------------     
 ## # Input:
 ## # 
-## # Confidence:              95% 
-## # Materiality:             Not specified 
-## # Minimum precision:       2% 
-## # Likelihood:              poisson 
-## # Expected sample errors:  0 
+## # Confidence:                    95% 
+## # Materiality:                   Not specified 
+## # Minimum precision:             2% 
+## # Likelihood:                    poisson 
+## # Expected sample errors:        0 
 ## # ------------------------------------------------------------
 ## # Output:
 ## #
-## # Sample size:             150 
+## # Sample size:                   150 
 ## # ------------------------------------------------------------
 ## # Statistics:
 ## #
-## # Expected upper bound:    1.997% 
-## # Expected precision:      1.997% 
+## # Expected most likely error:    0% 
+## # Expected upper bound:          1.997% 
+## # Expected precision:            1.997% 
 ## # ------------------------------------------------------------</code></pre>
 </div>
 </div>
@@ -265,18 +267,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # ------------------------------------------------------------
 ## # Input:
 ## #       
-## # Population size:         3500 
-## # Requested sample size:   60 
-## # Sampling units:          Records 
-## # Algorithm:               Random sampling   
+## # Population size:               3500 
+## # Requested sample size:         60 
+## # Sampling units:                Records 
+## # Algorithm:                     Random sampling   
 ## # ------------------------------------------------------------ 
 ## # Output:
 ## # 
-## # Obtained sample size:    60 
+## # Obtained sample size:          60 
 ## # ------------------------------------------------------------
 ## # Statistics:
 ## #
-## # Proportion n/N:          0.017 
+## # Proportion n/N:                0.017 
 ## # ------------------------------------------------------------</code></pre>
 </div>
 <div id="monetary-unit-sampling-mus" class="section level3">
@@ -289,21 +291,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # ------------------------------------------------------------
 ## # Input:
 ## #      
-## # Population size:         3500 
-## # Requested sample size:   150 
-## # Sampling units:          Monetary units 
-## # Algorithm:               Fixed interval sampling 
-## # Interval:                9354.805
-## # Starting point:          1  
+## # Population size:               3500 
+## # Requested sample size:         150 
+## # Sampling units:                Monetary units 
+## # Algorithm:                     Fixed interval sampling 
+## # Interval:                      9354.805
+## # Starting point:                1  
 ## # ------------------------------------------------------------ 
 ## # Output:
 ## #
-## # Obtained sample size:    150 
+## # Obtained sample size:          150 
 ## # ------------------------------------------------------------
 ## # Statistics:
 ## #
-## # Proportion n/N:          0.043 
-## # Percentage of value:     5.294% 
+## # Proportion n/N:                0.043 
+## # Percentage of value:           5.294% 
 ## # ------------------------------------------------------------</code></pre>
 </div>
 <div id="extracting-the-sample" class="section level3">
@@ -339,20 +341,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # ------------------------------------------------------------ 
 ## # Input: 
 ## #
-## # Confidence:               95%   
-## # Materiality:              5% 
-## # Minium precision:         Not specified 
-## # Sample size:              60 
-## # Sample errors:            1 
-## # Sum of taints:            1 
-## # Method:                   binomial 
+## # Confidence:                    95%   
+## # Materiality:                   5% 
+## # Minium precision:              Not specified 
+## # Sample size:                   60 
+## # Sample errors:                 1 
+## # Sum of taints:                 1 
+## # Method:                        binomial 
 ## # ------------------------------------------------------------
 ## # Output:
 ## #
-## # Most likely error:        1.667% 
-## # Upper bound:              7.664% 
-## # Precision:                5.997% 
-## # Conclusion:               Do not approve population 
+## # Most likely error:             1.667% 
+## # Upper bound:                   7.664% 
+## # Precision:                     5.997% 
+## # Conclusion:                    Do not approve population 
 ## # ------------------------------------------------------------</code></pre>
 <p>As you can see, the upper bound on the misstatement is higher than 5% and thus the sample does not provide sufficient evidence to conclude that the misstatement is lower than 5%.</p>
 </div>
@@ -370,20 +372,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # ------------------------------------------------------------ 
 ## # Input: 
 ## #
-## # Confidence:               95%   
-## # Materiality:              5% 
-## # Minium precision:         Not specified 
-## # Sample size:              60 
-## # Sample errors:            1 
-## # Sum of taints:            1 
-## # Method:                   stringer 
+## # Confidence:                    95%   
+## # Materiality:                   5% 
+## # Minium precision:              Not specified 
+## # Sample size:                   60 
+## # Sample errors:                 1 
+## # Sum of taints:                 1 
+## # Method:                        stringer 
 ## # ------------------------------------------------------------
 ## # Output:
 ## #
-## # Most likely error:        0.27% 
-## # Upper bound:              5.322% 
-## # Precision:                5.053% 
-## # Conclusion:               Do not approve population 
+## # Most likely error:             0.27% 
+## # Upper bound:                   5.322% 
+## # Precision:                     5.053% 
+## # Conclusion:                    Do not approve population 
 ## # ------------------------------------------------------------</code></pre>
 </div>
 </div>

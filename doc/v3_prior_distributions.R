@@ -63,7 +63,7 @@ prior7
 plot(prior7)
 
 ## -----------------------------------------------------------------------------
-jfa::planning(confidence, materiality, expectedError, prior = prior7)
+jfa::planning(confidence, materiality, expectedError = expectedError, prior = prior7)
 
 ## -----------------------------------------------------------------------------
 jfa::evaluation(confidence, materiality, nSumstats = 60, kSumstats = 1, prior = prior7)
