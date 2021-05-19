@@ -94,7 +94,7 @@
 <rect x='495.27' y='236.67' width='26.55' height='111.90' style='stroke-width: 2.13; stroke-linecap: square; stroke-linejoin: miter; fill: #4168C3;' />
 <rect x='524.77' y='190.93' width='26.55' height='157.65' style='stroke-width: 2.13; stroke-linecap: square; stroke-linejoin: miter; fill: #4168C3;' />
 <rect x='557.43' y='138.00' width='26.55' height='210.58' style='stroke-width: 2.13; stroke-linecap: square; stroke-linejoin: miter; fill: #4168C3;' />
-<rect x='589.04' y='231.29' width='26.55' height='117.29' style='stroke-width: 2.13; stroke-linecap: square; stroke-linejoin: miter; fill: #4168C3;' />
+<rect x='589.04' y='228.60' width='26.55' height='119.98' style='stroke-width: 2.13; stroke-linecap: square; stroke-linejoin: miter; fill: #4168C3;' />
 <text x='90.25' y='268.66' text-anchor='middle' style='font-size: 11.04px; font-family: Arial;' textLength='18.40px' lengthAdjust='spacingAndGlyphs'>324</text>
 <text x='122.91' y='285.25' text-anchor='middle' style='font-size: 11.04px; font-family: Arial;' textLength='18.40px' lengthAdjust='spacingAndGlyphs'>250</text>
 <text x='153.47' y='278.75' text-anchor='middle' style='font-size: 11.04px; font-family: Arial;' textLength='18.40px' lengthAdjust='spacingAndGlyphs'>279</text>
@@ -111,7 +111,7 @@
 <text x='508.54' y='229.41' text-anchor='middle' style='font-size: 11.04px; font-family: Arial;' textLength='18.40px' lengthAdjust='spacingAndGlyphs'>499</text>
 <text x='538.04' y='183.66' text-anchor='middle' style='font-size: 11.04px; font-family: Arial;' textLength='18.40px' lengthAdjust='spacingAndGlyphs'>703</text>
 <text x='570.71' y='130.74' text-anchor='middle' style='font-size: 11.04px; font-family: Arial;' textLength='18.40px' lengthAdjust='spacingAndGlyphs'>939</text>
-<text x='602.31' y='224.03' text-anchor='middle' style='font-size: 11.04px; font-family: Arial;' textLength='18.40px' lengthAdjust='spacingAndGlyphs'>523</text>
+<text x='602.31' y='221.34' text-anchor='middle' style='font-size: 11.04px; font-family: Arial;' textLength='18.40px' lengthAdjust='spacingAndGlyphs'>535</text>
 <line x1='90.25' y1='85.08' x2='90.25' y2='101.90' style='stroke-width: 2.13; stroke: #555555; stroke-linecap: butt;' />
 <polyline points='86.18,94.85 90.25,101.90 94.32,94.85 ' style='stroke-width: 2.13; stroke: #555555; stroke-linecap: butt;' />
 <line x1='314.67' y1='85.08' x2='314.67' y2='101.90' style='stroke-width: 2.13; stroke: #555555; stroke-linecap: butt;' />
