@@ -96,7 +96,7 @@ auditPrior <- function(confidence, materiality = NULL, expectedError = 0,
   if (expectedError < 0) # Check if the expected errors has a valid input
     stop("The expected errors must be zero or larger than zero.")
   
-  if (!is.null(materiality) && expectedError >= materiality) # Check if the expected errors do not exceed the materiality
+  if (!is.null(materiality) && expectedError >= materiality && expectedError < 1) # Check if the expected errors do not exceed the materiality
     stop("The expected errors must be lower than the materiality.")
   
   if (expectedError >= 1 && method != 'none') # Check if the expected errors are consistent with the method
