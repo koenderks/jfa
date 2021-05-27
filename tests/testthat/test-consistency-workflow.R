@@ -39,3 +39,24 @@ test_that(desc = "(id: f8-v0.1.0-t1) Test for workflow elements", {
                            prior = prior, materiality = 0.05)
   expect_equal(conclusion[["confBound"]], 0.02669982, tolerance = 0.001)
 })
+
+test_that(desc = "(id: f8-v0.1.0-t1) Test for use of jfaPrior and jfaPosterior", {
+  
+  confidence <- 0.90 # 90% confidence
+  tolerance  <- 0.05 # 5% tolerance (materiality)
+  
+  # Construct a prior distribution
+  prior <- auditPrior(confidence, tolerance, method = 'median')
+  # Use the prior distribution for planning
+  plan <- planning(confidence, tolerance, expectedError = 0, prior = prior)
+  # Use the prior distribution for evaluation
+  result <- evaluation(confidence, tolerance, nSumstats = plan$sampleSize, kSumstats = plan$expectedSampleError, prior = prior)
+  # Extract the posterior distribution
+  posterior <- result$posterior
+  # Use the posterior distribution for planning
+  plan2 <- planning(confidence, tolerance, expectedError = 0, prior = result$posterior)
+  # Use the posterior distribution for evaluation
+  result2 <- evaluation(confidence, tolerance, nSumstats = plan2$sampleSize, kSumstats = plan2$expectedSampleError, prior = result$posterior)
+  
+  expect_equal(result2[["confBound"]], 0.04829835) # Upper bound of 4.8%
+})

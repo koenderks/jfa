@@ -1,6 +1,7 @@
 ## This is a submission for version 0.5.4
 This is jfa version 0.5.4. In this version I have:
 
+* Made internal improvements to functionality for a specific class.
 * Implemented small changes in one of the functions.
 
 ## Test environments

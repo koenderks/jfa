@@ -113,7 +113,7 @@ auditPrior <- function(confidence, materiality = NULL, expectedError = 0,
       stop("Method = 'arm' requires non-null 'materiality', 'ir', and 'cr' arguments.")
     
     alpha  <- (1 - confidence) / (ir * cr) # Calculate the required detection risk from the audit risk model
-	usedPopSize <- if (likelihood == "hypergeometric") N else NULL
+    usedPopSize <- if (likelihood == "hypergeometric") N else NULL
     nPlus  <- planning(confidence = confidence, likelihood = likelihood, expectedError = expectedError, N = usedPopSize, materiality = materiality, prior = TRUE)$sampleSize # Calculate the sample size for the full detection risk  
     nMin   <- planning(confidence = 1 - alpha, likelihood = likelihood, expectedError = expectedError, N = usedPopSize, materiality = materiality, prior = TRUE)$sampleSize # Calculated the sample size for the adjusted detection risk
     nPrior <- nPlus - nMin # Calculate the sample size equivalent to the increase in detection risk

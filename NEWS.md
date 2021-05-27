@@ -1,5 +1,9 @@
 # jfa 0.5.4
 
+**New features**
+
+- Objects with class `jfaPosterior` as returned by the `evaluation()` function can now be used for the `prior` argument in the `planning()` and `evaluation()` functions.
+
 **Bug fixes**
 
 - Fixed a bug in `method = 'bram'` in the `auditPrior()` function where the prior parameters would go off to infinity when `expectedError = 0`.

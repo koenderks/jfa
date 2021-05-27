@@ -16,7 +16,7 @@
 #' @param expectedError a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a number (>= 1) that represents the number of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.
 #' @param likelihood    a character specifying the likelihood assumed in the calculation. This can be either \code{binomial} for the binomial likelihood, \code{poisson} for the Poisson likelihood, or \code{hypergeometric} for the hypergeometric likelihood. See the details section for more information about the available likelihoods.
 #' @param N             an integer larger than 0 specifying the total population size. Only required when \code{likelihood = 'hypergeometric'}.
-#' @param prior         a logical specifying whether to use a prior distribution when planning, or an object of class \code{jfaPrior} containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a negligible prior distribution is chosen by default, but can be adjusted using the \code{kPrior} and \code{nPrior} arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.
+#' @param prior         a logical specifying whether to use a prior distribution when planning, or an object of class \code{jfaPrior} or \code{jfaPosterior} containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a negligible prior distribution is chosen by default, but can be adjusted using the \code{kPrior} and \code{nPrior} arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.
 #' @param nPrior        if \code{prior = TRUE}, a numeric value larger than, or equal to, 0 specifying the sample size of the sample equivalent to the prior information.
 #' @param kPrior        if \code{prior = TRUE}, a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.
 #' @param increase      an integer larger than 0 specifying the desired increase step for the sample size calculation.
@@ -71,11 +71,11 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
                      prior = FALSE, nPrior = 0, kPrior = 0,
                      increase = 1, maxSize = 5000) {
   
-  # Import an existing prior distribution with class 'jfaPrior'.
-  if (class(prior) == "jfaPrior") {
+  # Import existing prior distribution with class 'jfaPrior' or 'jfaPosterior'.
+  if (class(prior) %in% c("jfaPrior", "jfaPosterior")) {
     
     if (kPrior != 0 || nPrior != 0)
-      warning("When the prior is of class 'jfaPrior', the arguments 'nPrior' and 'kPrior' will not be used.")
+      warning("When the prior is of class 'jfaPrior' or 'jfaPosterior', the arguments 'nPrior' and 'kPrior' will not be used.")
     
     nPrior      <- prior[["description"]]$implicitn
     kPrior      <- prior[["description"]]$implicitk
@@ -112,7 +112,7 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
   } else if (expectedError >= 1) {
     
     errorType <- "integer"
-    if (expectedError%%1 != 0 && likelihood %in% c("binomial", "hypergeometric") && !((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior"))
+    if (expectedError%%1 != 0 && likelihood %in% c("binomial", "hypergeometric") && !((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")))
       stop("When expectedError > 1 and the likelihood is 'binomial' or 'hypergeometric', its value must be an integer.")
     
   }
@@ -159,7 +159,7 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
     if (!is.null(N) && i > N) # The sample size is too large
       stop("The resulting sample size is larger than the population size 'N'.")
     
-    if ((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior") { # Bayesian planning
+    if ((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")) { # Bayesian planning
       
       bound <- switch(likelihood, 
                       "poisson" = stats::qgamma(confidence, shape = 1 + kPrior + implicitK, rate = nPrior + i),
@@ -211,7 +211,7 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
     result[["populationK"]]         <- as.numeric(populationK)
   
   # Create the prior distribution object	
-  if (((class(prior) == "logical" && prior == TRUE) || class(prior) == "jfaPrior")) {
+  if (((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior"))) {
     if (class(prior) == "jfaPrior" && !is.null(prior[["hypotheses"]])) {
       result[["prior"]]             <- prior
     } else {
@@ -235,6 +235,7 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
                                                       "poisson" = paste0("gamma(\u03B1 = ", round(result[["prior"]]$description$alpha + result[["expectedSampleError"]], 3), ", \u03B2 = ", round(result[["prior"]]$description$beta + result[["sampleSize"]], 3), ")"),
                                                       "binomial" = paste0("beta(\u03B1 = ", round(result[["prior"]]$description$alpha + result[["expectedSampleError"]], 3), ", \u03B2 = ", round(result[["prior"]]$description$beta + result[["sampleSize"]] - result[["expectedSampleError"]], 3), ")"),
                                                       "hypergeometric" = paste0("beta-binomial(N = ", result[["N"]] - result[["sampleSize"]], ", \u03B1 = ", round(result[["prior"]]$description$alpha + result[["expectedSampleError"]], 3), ", \u03B2 = ", round(result[["prior"]]$description$beta + result[["sampleSize"]] - result[["expectedSampleError"]], 3), ")"))
+    result[["expectedPosterior"]]$likelihood <- likelihood
     
     # Create the description section
     result[["expectedPosterior"]][["description"]]          <- list()
@@ -246,6 +247,11 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
                                                                       "poisson" = result[["prior"]]$description$beta + result[["sampleSize"]], 
                                                                       "binomial" = result[["prior"]]$description$beta + result[["sampleSize"]] - result[["expectedSampleError"]], 
                                                                       "hypergeometric" = result[["prior"]]$description$beta + result[["sampleSize"]] - result[["expectedSampleError"]])
+    result[["expectedPosterior"]][["description"]]$implicitk <- result[["expectedPosterior"]][["description"]]$alpha - 1
+    result[["expectedPosterior"]][["description"]]$implicitn <- switch(likelihood,
+                                                                       "poisson" = result[["expectedPosterior"]][["description"]]$beta, 
+                                                                       "binomial" = result[["expectedPosterior"]][["description"]]$beta - 1 + result[["expectedPosterior"]][["description"]]$implicitk, 
+                                                                       "hypergeometric" = result[["expectedPosterior"]][["description"]]$beta - 1 + result[["expectedPosterior"]][["description"]]$implicitk)    
     
     # Create the statistics section
     result[["expectedPosterior"]][["statistics"]]           <- list()
