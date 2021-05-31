@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Koen Derks" />
+
+
+<title>Bayes factors using summary statistics</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Bayes factors using summary statistics</h1>
+<h4 class="author">Koen Derks</h4>
+<h4 class="date">last modified: 31-05-2021</h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#application">Application</a>
+<ul>
+<li><a href="#standard-procedure">Standard procedure</a></li>
+<li><a href="#numerical-example">Numerical example</a></li>
+</ul></li>
+<li><a href="#bayes-factors">Bayes factors</a>
+<ul>
+<li><a href="#prior-distribution">Prior distribution</a></li>
+<li><a href="#bayes-factor-after-stage-1">Bayes factor after stage 1</a></li>
+<li><a href="#bayes-factor-after-stage-2">Bayes factor after stage 2</a></li>
+<li><a href="#monitoring-evidence">Monitoring evidence</a></li>
+</ul></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>This vignette illustrates how an auditor can use <code>jfa</code> to evaluate their sample outcomes with the Bayes factor using summary statistics alone. An example application in the context of quality control is described below.</p>
+</div>
+<div id="application" class="section level1">
+<h1>Application</h1>
+<p>Two-stage sampling plans are required if an initial sample does not provide enough assurance to accept (or reject) a population definitively. In the field of quality control, ISO 28596 ‘Sampling procedures for inspection by attributes — Two-stage sampling plans for auditing and for inspection under prior information’ provides two-stage sampling plans by attributes for inspection for a proportion of nonconforming items in a target population of discrete units. For example, this standard applies for inspections of a proportion of nonconforming items in a lot of product items, or inspections of the proportion of nonconforming test characteristics of a product subject to an acceptance test.</p>
+<div id="standard-procedure" class="section level2">
+<h2>Standard procedure</h2>
+<p>The idea behind the standard two-stage sampling plan is simple. In the first stage, after drawing <span class="math inline">\(n_1\)</span> items and observing <span class="math inline">\(k_1\)</span> nonconforming items, a confidence interval for the proportion of nonconforming items is calculated. The decision in the first stage proceeds according to one of the three following scenarios:</p>
+<ol style="list-style-type: decimal">
+<li>If the confidence interval completely lies below the tolerance value, the lot is accepted.</li>
+<li>If the confidence interval completely lies above the tolerance value, the lot is rejected.</li>
+<li>If the confidence interval contains the tolerance value, no decision can be made in the first stage. In this case, the auditor proceeds to the second stage.</li>
+</ol>
+<p>In the second stage, a number <span class="math inline">\(k_2\)</span> of nonconforming items is observed in a sample of size <span class="math inline">\(n_2\)</span>. A new confidence interval for the proportion of nonconforming items is calculated based on the total number <span class="math inline">\(k_1 + k_2\)</span> of nonconforming items. The decision in the second stage proceeds according to one of the two following scenarios:</p>
+<ol style="list-style-type: decimal">
+<li>If the confidence interval completely lies above or below the tolerance value, the decision for approval and rejection is analogous to that in the first stage.</li>
+<li>If the interval contains the tolerance value, the decision is based on whether a bigger portion of the confidence interval lies below or above the tolerance value. If a larger portion of the interval lies above the tolerance value, the lot is rejected. If a larger portion of the interval lies below the tolerance value, the lot is accepted.</li>
+</ol>
+</div>
+<div id="numerical-example" class="section level2">
+<h2>Numerical example</h2>
+<p>The auditor is inspecting a lot of products and wants to make a statement with 90% confidence against a tolerance value of 5%. They formulate the hypothesis of intolerable deviations as <span class="math inline">\(H_0:\theta \geq 0.05\)</span> and the hypothesis of tolerable deviations as <span class="math inline">\(H_1: \theta &lt; 0.05\)</span>.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>confidence <span class="ot">&lt;-</span> <span class="fl">0.90</span> <span class="co"># 90% confidence</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>tolerance  <span class="ot">&lt;-</span> <span class="fl">0.05</span> <span class="co"># 5% tolerance</span></span></code></pre></div>
+<p>In the first stage, the auditor inspects <span class="math inline">\(n_1 = 32\)</span> items and observes <span class="math inline">\(k_1 = 2\)</span> nonconforming items. The shortest two-sided confidence interval (Göb &amp; Lurz, 2012) for the proportion of nonconforming items is [0.0167; 0.1866]. This confidence interval contains the tolerance value and therefore no decision can be made in the first stage. The auditor therefore continues to the second stage.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ISO28596<span class="sc">:::</span><span class="fu">CI.binom.shortest</span>(<span class="at">size =</span> <span class="dv">32</span>, <span class="at">x =</span> <span class="dv">2</span>, <span class="at">level =</span> confidence)<span class="sc">$</span>bounds</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#      x estimate      lower     upper</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># [1,] 2   0.0625 0.01674365 0.1866428</span></span></code></pre></div>
+<p>In the second stage, the auditor inspects an additional <span class="math inline">\(n_2 = 50\)</span> items and observes <span class="math inline">\(k_2 = 0\)</span> nonconforming items. After observing these data, the shortest two-sided confidence interval for the proportion of nonconforming items (using <span class="math inline">\(n = n_1 + n_2\)</span> and <span class="math inline">\(k = k_1 + k_2\)</span>) is [0.0065; 0.0734]. At this point, the confidence interval still contains the tolerance value but the auditor determines that the portion of the confidence interval that lies below the tolerance value is larger than the portion above the tolerance value. Therefore, they accept the lot.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>ISO28596<span class="sc">:::</span><span class="fu">CI.binom.shortest</span>(<span class="at">size =</span> <span class="dv">32</span> <span class="sc">+</span> <span class="dv">50</span>, <span class="at">x =</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">0</span>, <span class="at">level =</span> confidence)<span class="sc">$</span>bounds</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#      x   estimate       lower      upper</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># [1,] 2 0.02439024 0.006504196 0.07341118</span></span></code></pre></div>
+</div>
+</div>
+<div id="bayes-factors" class="section level1">
+<h1>Bayes factors</h1>
+<p>The <code>jfa</code> package can be used to calculate Bayes factors for the hypothesis of tolerable deviations <span class="math inline">\(H_1\)</span> in the lot versus the hypothesis of intolerable deviations <span class="math inline">\(H_0\)</span> in the lot. The Bayes factor can provide insight into the weight of evidence in favor of acceptance of the lot versus the evidence in favor of rejection of the lot. Especially in the situation where the confidence interval contains the tolerance value the Bayes factor can provide an easy interpretation of the evidence in favor of acceptance versus rejection.</p>
+<p><span class="math display">\[BF_{10} = \underbrace{\frac{p(\text{data} | H_1)}{p(\text{data} | H_0)}}_{\text{Relative evidence}} \]</span></p>
+<div id="prior-distribution" class="section level2">
+<h2>Prior distribution</h2>
+<p>To calculate the Bayes factor the auditor must first specify the prior distribution for the proportion of nonconforming items in the lot. An appropriate prior distribution can be one that assigns equal probability to the event of acceptance and the event of rejection (Derks et al., 2021). This prior distribution can be constructed using the <code>auditPrior()</code> function in combination with the argument <code>method = &#39;median&#39;</code> (see also the vignette <a href="https://koenderks.github.io/jfa/articles/v3_prior_distributions.html">Prior distributions</a>).</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>prior <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(confidence, tolerance, <span class="at">method =</span> <span class="st">&#39;median&#39;</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(prior)</span></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
+</div>
+<div id="bayes-factor-after-stage-1" class="section level2">
+<h2>Bayes factor after stage 1</h2>
+<p>Using the <code>evaluation()</code> function the auditor can calculate the Bayes factor in favor of acceptance of the lot versus rejection of the lot. In this case, the Bayes factor in favor of acceptance (<span class="math inline">\(BF_{-+}\)</span>) is 0.665 and represents only anecdotal evidence in favor of rejection (see also the vignette <a href="https://koenderks.github.io/jfa/articles/v4_testing_misstatement.html">Testing misstatement</a>).</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">evaluation</span>(confidence, tolerance, <span class="at">nSumstats =</span> <span class="dv">32</span>, <span class="at">kSumstats =</span> <span class="dv">2</span>, <span class="at">prior =</span> prior)</span></code></pre></div>
+<pre><code>## # ------------------------------------------------------------ 
+## #             jfa Evaluation Summary (Bayesian)
+## # ------------------------------------------------------------
+## # Input: 
+## #
+## # Confidence:                    90%   
+## # Materiality:                   5% 
+## # Minium precision:              Not specified 
+## # Sample size:                   32 
+## # Sample errors:                 2 
+## # Sum of taints:                 2  
+## # Method:                        binomial 
+## # Prior distribution:            beta(a = 1, ß = 13.513) 
+## # ------------------------------------------------------------
+## # Output:
+## #
+## # Posterior distribution:        beta(a = 3, ß = 43.513) 
+## # Most likely error:             4.3% 
+## # Upper bound:                   11.274% 
+## # Precision:                     6.974% 
+## # Bayes factor-+:                0.665 
+## # Conclusion:                    Do not approve population 
+## # ------------------------------------------------------------</code></pre>
+</div>
+<div id="bayes-factor-after-stage-2" class="section level2">
+<h2>Bayes factor after stage 2</h2>
+<p>The Bayes factor in favor of acceptance after the second sample of items is 6.24 which represents moderate evidence in favor of acceptance.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">evaluation</span>(confidence, tolerance, <span class="at">nSumstats =</span> <span class="dv">32</span> <span class="sc">+</span> <span class="dv">50</span>, <span class="at">kSumstats =</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">0</span>, <span class="at">prior =</span> prior)</span></code></pre></div>
+<pre><code>## # ------------------------------------------------------------ 
+## #             jfa Evaluation Summary (Bayesian)
+## # ------------------------------------------------------------
+## # Input: 
+## #
+## # Confidence:                    90%   
+## # Materiality:                   5% 
+## # Minium precision:              Not specified 
+## # Sample size:                   82 
+## # Sample errors:                 2 
+## # Sum of taints:                 2  
+## # Method:                        binomial 
+## # Prior distribution:            beta(a = 1, ß = 13.513) 
+## # ------------------------------------------------------------
+## # Output:
+## #
+## # Posterior distribution:        beta(a = 3, ß = 93.513) 
+## # Most likely error:             2.072% 
+## # Upper bound:                   5.476% 
+## # Precision:                     3.404% 
+## # Bayes factor-+:                6.241 
+## # Conclusion:                    Do not approve population 
+## # ------------------------------------------------------------</code></pre>
+</div>
+<div id="monitoring-evidence" class="section level2">
+<h2>Monitoring evidence</h2>
+<p>In the Bayesian framework, the auditor can continue to accumulate and monitor evidence one item at the time. This means that the auditor can continue sampling until a certain threshold of evidence is reached.</p>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAkAAAAGACAMAAAByRC0tAAAAV1BMVEUAAAAAACsAAFUAK4AAVaorAAArACsrAFUrKysrK4ArgNRVAABVACtVAFVVqqpVqv+AKwCAVQCA1P+qVQCq/6qq///UgCvU////qlX/1ID//6r//9T////WKITSAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAMbklEQVR4nO3dD3ejNhbGYaaZ2U7j7k627BDi+Pt/zkWW/8XBjnXfC0jo95zTTnpO5/oavQEBRm52gKBZugGUjQBBQoAgIUCQECBICBAkBAgSAgQJAYKEAEFCgCAhQJAQIEgIECQECBICBAkBgoQAQUKAICFAkBAgSAgQJAQIEgIECQGChABBQoAgIUCQECBICBAkBAgSAgQJAYKEAEFCgCAhQJAQIEgIECQECBICBAkBgoQAQUKAICFAkBAgSAgQJAQIEgIECQGChABBQoAgIUCQECBICBAkBAgSAgQJAYKEAEFCgCAhQJAQIEgIECQECBICBAkBgoQAQUKAICFAkBAgSAgQJAQIEgIECQGChABBQoAgIUCQECBICBAkBAgSAgRJSoC6pvn2T/ihP/6A6iUEqPvj964PwQn/6kkQgscDtN0873bvL9+Hf4Yfdu336ZpCORLnQCFAbz9+7eL+CEgMUDccud7+FY5ePQHCLjFAw+T5eXeY/nyYBDUnzu0hd8mHsKfXkQBZy6F4qSM+5ObeIYwA1SZ1xIcZ9L1JNAGqzeMjHnMz7HjuncYToNokjHj79BqvAd25kEiAapMy4u1wlhX2Qud7GlI5rIHziBOg2hAgSAgQJAQIEgIECQGChABBQoAgIUCQECBICBAkBAgSAgQJAYKEAEFCgCAhQJAQIEgIECQECJKEEX9/afaPNu+2m/AQM4/1YJcy4u8v3/7ZdSE38dFUsRzWIfXBwv0qU7cX5iBAtTE8G7/rbq8tRYBqkzri7bD3aX8eJkN6OZQuccT7ITjbzdPrkKTLBLE+ULXSRrw/n3uxvAuCxBXKzrudOKeWymEF0taJvjhsjZ/LE6DapKwTHZfmOC8UpJXDKqRcBzruf/ZrS7Wjp2EEqDaPj3gXT7PCwkCnhYKEclgHbqZCQoAgIUCQECBICBAkBAgSAgQJAYKEAEFCgCAhQJAQIEgIECQECBICBAkBgoQAQUKAICFAkBAgSCzrA+16vnQXB5b1gfjab5wY1gfaf3d8fDhMKId1MKwPdF5pSi+H0hnWB4pPxfNoMwLD+kBx+vNhEsT6QNUyrA80EiBjOZTPsD4QhzCcGdYHYhKNM8P6QJzG48yyPhAXEnFiWh+o41YGDriZCgkBgoQAQUKAICFAkBAgSAgQJAQIEgIEycWI96crzS7lUIXziL+/7O+Vvv316lIOdTiP+Pbfvy/+kMuhDp/3QH8SIDzuYsTffjAHQirOwiAhQJAQIEguzsI28SOHox+WTy+HOlyM+PZvaf58XQ5VuBzx/km5hvipHGqQNuLxIlE82PFYD3ZhxLeb8S9gHrHd7CdI8dHUG+VQl0OA4sOCX+gPM+zxp5oP5VCXhAD1zXOMTjd69DqUQ11S9kDHfU/787hY4kg51MUQoO0mnK21l3+B9YGqZdkDXf/4oRzqYg5QXOTlcznUpTndwnjkNsZlgEbP5csNULmdLytxibsQoLjvWdkhjNmbkSFAcW2pdvSYV+owNMV2vrSw3bpw7GqHI9iXl6QPu53b/2+pw0CArJq42mHbDKfm4/Pi1HIlaortfHFNPAGL69d18u34Moeh2ZXa+fIOp/HbTQjQnZtcD5crUHP6F5IRoEPPJXaeAwLUXP2JJNUHqPn0A1LUHqBm5CckSLuV8UC5sjSjP+JxlT8XRoAi+5uvO0DNjZ8ro9wIrDpAzc3/qIr0zmsOUHPnvyqivfF6A3S93y6odU/q51iqDdCnTstp3ZP8rmsN0OdGi2ndk/6mKw3QSJ+ltO7I42OYdQZorM1CWnfk8o6rDNBol2W07sfpU+A1BuhGk0X07sXtIYIKA3SrxxJ6d+L4DIplfaCwTEe5X7p7s8UCevfh+ghTUq3D+kBFf+337Q7z792H7/tMqXZYHyg+Bt2WuULZnQaz793HcpOW4/pA8emfrsgnU+/1l3vvLtyfwLU82rx/Kr7IR5vvtpd57y7836MhQHH682ESVMj6QPe7y7t3D1MMj0+AjOVm9kVzWffuYJrf7noOYV9uv4x79zDR27MEqMhJ9Ned5du7g8kmF4YAFXka/0Bj2faum3BuaghQiRcSH+kr195lk57aWAIUFhQq6lbGY1swz95lE58Z13Az9cGmsuxdNfmFlQoC9HBPOTavmeG63OoDlLAN82teM8tl3bUHKKWh7JqXzHRXYOUBSuont+YVs91UWnWAErdiXs0rZrwnueYApTaTVfN2897SXm+A0jdjRs3bzf2BiLUGyLIds2nebv7P06w0QKY+cmnebImPY60yQMYNmUfzZst8mm+FATJvyByaN1vqw6DrC5C9hQyat1rus8RrC9DSy/0tMpJLfhR9ZQGSXl9vvlnga6MWfpJhVQFaeLm2/cvPugUyeA5mRQHSt6W2/2ociphecVGrCdCyq21d7Almu4uZQ3xWEyCfrWks8vE4MtOnKPKIz1oC5PSytuvXV39rhk2w/MznzNJJ/HqWfB7rWXC1rZGhnHgTZDBv/sDSTHw01a2caLHVtm689ISbILfwBJaG7nyt2AJXQTyLpb3yjf99qm2QX3gCS1Pd6NHLXE7gvE0TPn9/55Un2QYZ7nsiS1vtz+HtPLuVM1tssaT7L+y+DXI8cp0YOttuwtfLt5cJWmJ9oAle66GKX75J571ixuEJzN0tvLzLJJv1y5oP/Yq4zsryTs9OeLdxkRe3cmkm2q5f7Voee1W3iwq573z27AEaPZef4x1Pt13v1U14VY+bKkWEJzC0Gfc9Cx3Cpt2wt2qnvap8U7+U8ASms7BwGt+OnoZNfhl24vour6p8pq2o8ASmdtvhbY7NgKYN0AzbduQFDK9qvydbWHiCYm6mLrHUhHFITbfUSgxPUEaA5tq851dRhjTt75Wbnb0CAjTjBm6OL6i94uPna2WHJ8g+QDOvFOAypI9e0S49PEHeAZp7G8/0NZAFT3k+yTZAJW/kLy5Ilvq2RuUZoMI38ujnzEr4NhqDHANU/FYeuRpQ+lu6KbsArWJbf7wcsGAj08sqQKvZ2s1qj1if5BKgdW3tFb2Vr+QQoFVlpzZLB4jwFG7JABGeFVgqQIRnJRYI0Lrmy7WbMUDVnNlWZaYAEZy1miNAhGfFlj6NR+FMI94X9qW7mI5lxAv82m9MxTDi7y/hkbA2nxXKsCDzk6ndsosrIBOWAO2fil94dQ5kwjDicfrzYRK0xPpAyIJPgFAt50MYauM8iUZtnE/jURvnC4mojem0qbt5KwO14bwbkqkD1KAI9gF2DMts9SdZhWiCmuUUJUBZ1iynKAHKsmY5RQlQljXLKUqAsqxZTlEClGXNcooSoCxrllOUAGVZs5yiBCjLmuUUzTdAWDkCBAkBgoQAQUKAICFAkBAgSAgQJAQIEgIECQGChABBQoAgmTRAt9dStHl/aZrm2b9y+/TqXPPtR9Psn/32LNoN7/6XZ9G3P39/KGepO2WAvB+Bfn8ZinVhYHwr900IkGfNfii43Tg32oVaIUFeRbeb/QIZp3KmuhMGyH0RhtOyIL6Vt5sQIM+asZZzo+8v32Mtr6LD/iYE6FTOVnfCAE20DMzwO+JbuXv67xAgz5pxBaWd7yY4BcipaN8879d4OpWz1Z0yQNMsRNUOb9Wz8lAszIE8a/Z//G+zn6y5Nno8hPkVjQE6lrPVnTBA0yyFN/ziuFYOO+4QIM+aXTg2hD2G7yY4zHH9iu7Dcipnq1tagPrjHNptsIfwuAfo2+F32XUTDLve4Xjj+euTeYCmOIT1+7N4x8r7Ut6HsDiPGOYUnkXPc5VaDmETTKK7eBXIsXJ3WN7kl2e3cRCGAXEtetxB+BXNfBLtv5ZiF6+juVdunU/jt5vQZ+97Gh/H17Von/dpvPuFxDABmKRy630hsTsm0rPocQ7kV7TP+0Ki+1qKh8NNKOlbOd7K8KzZH++5eBZtvYse5juncpa63EyFhABBQoAgIUCQECBICBAkBAgSAgQJAYKEAEFCgCAhQJAQIEgIECQECBICBAkBgoQAQUKAICFAkBAgSAgQJAQIEgIECQGChABBQoAgIUCQECBICBAkBCjNdvOfzWG9eAQEKM12E1bLd155tmQEKM1283xcbQ4BAUqzX/4wroGIgAClIUBXCFAaAnSFAKUhQFcIUBoCdIUApSFAVwgQJAQIEgIECQGChABBQoAgIUCQECBICBAkBAgSAgQJAYKEAEFCgCAhQJAQIEgIECQECBICBAkBgoQAQUKAICFAkBAgSP4PfiSdVkGbTsEAAAAASUVORK5CYII=" /><!-- --></p>
+</div>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<ul>
+<li><p>Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., and Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. <em>In press</em>.</p></li>
+<li><p>Göb R. &amp; Lurz, K. (2014). Shortest two-sided confidence intervals for a probability under prior information. <em>Metrika: International Journal for Theoretical and Applied Statistics</em>, 77 (3), 389-413.</p></li>
+</ul>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
