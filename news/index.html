@@ -150,7 +150,7 @@
 </h1>
 <p><strong>New features</strong></p>
 <ul>
-<li>Objects with class <code>jfaPosterior</code> as returned by the <code><a href="../reference/evaluation.html">evaluation()</a></code> function can now be used for the <code>prior</code> argument in the <code><a href="../reference/planning.html">planning()</a></code> and <code><a href="../reference/evaluation.html">evaluation()</a></code> functions.</li>
+<li>Objects with class <code>jfaPosterior</code> as returned by <code>evaluation()$posterior</code> and <code>planning()$expectedPosterior</code> can now be used as input for the <code>prior</code> argument in the <code><a href="../reference/planning.html">planning()</a></code> and <code><a href="../reference/evaluation.html">evaluation()</a></code> functions.</li>
 </ul>
 <p><strong>Bug fixes</strong></p>
 <ul>
@@ -178,7 +178,7 @@
 </ul>
 <p><strong>Bug fixes</strong></p>
 <ul>
-<li>Fixed an error in the mode of the gamma posterior distribution from the <code><a href="../reference/evaluation.html">evaluation()</a></code> function in which <code>+1</code> was added to the beta parameter, resulting in slighly lower modes than the correct ones.</li>
+<li>Fixed an error in the mode of the gamma posterior distribution from the <code><a href="../reference/evaluation.html">evaluation()</a></code> function in which <code>+1</code> was added to the beta parameter, resulting in slightly lower modes than the correct ones.</li>
 <li>Made a correction to the calculation of the beta-binomial prior and posterior so that the posterior parameter <code>N</code> has the correct value of <code>N = N - n</code> (current) instead of <code>N - n + k</code> (before).</li>
 </ul>
 <p><strong>Major changes</strong></p>
