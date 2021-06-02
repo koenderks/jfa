@@ -2,7 +2,7 @@
 
 **New features**
 
-- Objects with class `jfaPosterior` as returned by the `evaluation()` function can now be used for the `prior` argument in the `planning()` and `evaluation()` functions.
+- Objects with class `jfaPosterior` as returned by `evaluation()$posterior` and `planning()$expectedPosterior` can now be used as input for the `prior` argument in the `planning()` and `evaluation()` functions.
 
 **Bug fixes**
 
@@ -27,7 +27,7 @@
 
 **Bug fixes**
 
-- Fixed an error in the mode of the gamma posterior distribution from the `evaluation()` function in which `+1` was added to the beta parameter, resulting in slighly lower modes than the correct ones.
+- Fixed an error in the mode of the gamma posterior distribution from the `evaluation()` function in which `+1` was added to the beta parameter, resulting in slightly lower modes than the correct ones.
 - Made a correction to the calculation of the beta-binomial prior and posterior so that the posterior parameter `N` has the correct value of `N = N - n` (current) instead of `N - n + k` (before).
 
 **Major changes**

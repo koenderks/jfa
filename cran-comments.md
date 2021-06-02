@@ -1,8 +1,7 @@
 ## This is a submission for version 0.5.4
 This is jfa version 0.5.4. In this version I have:
 
-* Made internal improvements to functionality for a specific class.
-* Implemented small changes in one of the functions.
+* Made internal improvements and additions to functionality for a specific class of outputs.
 
 ## Test environments
 * OS X install (on travis-ci), R release

@@ -88,7 +88,7 @@ auditPrior(confidence = 0.95, materiality = 0.05, expectedError = 0.025,
 \references{
 Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., & Wetzels, R. (2019). JASP for audit: Bayesian tools for the auditing practice.
 
-Derks, K., de Swart, J., van Batenburg, P. Wagenmakers, E.-J., & Wetzels, R. (2020). Priors in a Bayesian audit: How integrating information into the prior distribution can improve audit transparency and efficiency.
+Derks, K., de Swart, J., van Batenburg, P. Wagenmakers, E.-J., & Wetzels, R. (2021). Priors in a Bayesian audit: How integrating information into the prior distribution can improve audit transparency and efficiency. In Press.
 }
 \seealso{
 \code{\link{planning}} \code{\link{selection}} \code{\link{evaluation}} \code{\link{report}}
