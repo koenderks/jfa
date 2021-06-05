@@ -1,7 +1,7 @@
-## This is a submission for version 0.5.4
-This is jfa version 0.5.4. In this version I have:
+## This is a submission for version 0.5.5
+This is jfa version 0.5.5. In this version I have:
 
-* Made internal improvements and additions to functionality for a specific class of outputs.
+* Fixed a bug in the calculation of the posterior mode.
 
 ## Test environments
 * OS X install (on travis-ci), R release

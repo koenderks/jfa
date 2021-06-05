@@ -162,13 +162,13 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
     if ((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")) { # Bayesian planning
       
       bound <- switch(likelihood, 
-                      "poisson" = stats::qgamma(confidence, shape = 1 + kPrior + implicitK, rate = nPrior + i),
-                      "binomial" = stats::qbeta(confidence, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK),
-                      "hypergeometric" = .qBetaBinom(p = confidence, N = N - i, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK) / N)
+                      "poisson" = stats::qgamma(confidence, shape = (1 + kPrior) + implicitK, rate = nPrior + i),
+                      "binomial" = stats::qbeta(confidence, shape1 = (1 + kPrior) + implicitK, shape2 = (1 + nPrior - kPrior) + i - implicitK),
+                      "hypergeometric" = .qBetaBinom(p = confidence, N = N - i, shape1 = (1 + kPrior) + implicitK, shape2 = (1 + nPrior - kPrior) + i - implicitK) / N)
       mle <- switch(likelihood,
-                    "poisson" = (1 + kPrior + implicitK - 1) / (nPrior + i),
-                    "binomial" = (1 + kPrior + implicitK - 1) / (1 + kPrior + implicitK + 1 + nPrior - kPrior + i - implicitK - 2),
-                    "hypergeometric" = .modeBetaBinom(N = N - i, shape1 = 1 + kPrior + implicitK, shape2 = 1 + nPrior - kPrior + i - implicitK) / N)
+                    "poisson" = ((1 + kPrior + implicitK) - 1) / (nPrior + i),
+                    "binomial" = ((1 + kPrior + implicitK) - 1) / ((1 + kPrior + implicitK) + (1 + nPrior - kPrior + i - implicitK) - 2),
+                    "hypergeometric" = .modeBetaBinom(N = N - i, shape1 = (1 + kPrior) + implicitK, shape2 = (1 + nPrior - kPrior) + i - implicitK) / N)
       
     } else { # Classical planning
       

@@ -223,7 +223,7 @@ evaluation <- function(confidence, materiality = NULL, minPrecision = NULL, meth
     if ((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")) {
       # Bayesian evaluation using the gamma distribution
       bound     <- stats::qgamma(p = confidence, shape = 1 + kPrior + t, rate = nPrior + n)
-      mle       <- (1 + kPrior + t - 1) / (nPrior + n)
+      mle       <- ((1 + kPrior + t) - 1) / (nPrior + n)
       precision <- bound - mle
     } else {
       # Classical evaluation using the Poisson distribution
@@ -237,7 +237,7 @@ evaluation <- function(confidence, materiality = NULL, minPrecision = NULL, meth
     if ((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")) {
       # Bayesian evaluation using the beta distribution
       bound     <- stats::qbeta(p = confidence, shape1 = 1 + kPrior + t, shape2 = 1 + nPrior - kPrior + n - t)
-      mle       <- (1 + kPrior + t - 1) / (1 + kPrior + t + 1 + nPrior - kPrior + n - t)
+      mle       <- (1 + kPrior + t - 1) / ((1 + kPrior + t) + (1 + nPrior - kPrior + n - t) - 2)
       precision <- bound - mle
     } else {
       # Classical evaluation using the binomial distribution

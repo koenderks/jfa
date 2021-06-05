@@ -1,3 +1,9 @@
+# jfa 0.5.5
+
+**Bug fixes**
+
+- Fixed an error in the calculation of the posterior mode of the beta distribution.
+
 # jfa 0.5.4
 
 **New features**
