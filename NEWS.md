@@ -1,5 +1,9 @@
 # jfa 0.5.5
 
+**New features**
+
+- Implemented a new function `auditBF()` which solely computes Bayes factors from summary statistics of an audit sample.
+
 **Bug fixes**
 
 - Fixed an error in the calculation of the posterior mode of the beta distribution.

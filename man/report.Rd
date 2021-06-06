@@ -41,7 +41,7 @@ result <- evaluation(confidence = 0.95, materiality = 0.05,
 
 }
 \seealso{
-\code{\link{auditPrior}} \code{\link{planning}} \code{\link{selection}} \code{\link{evaluation}}
+\code{\link{auditPrior}} \code{\link{planning}} \code{\link{selection}} \code{\link{evaluation}} \code{\link{auditBF}}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}

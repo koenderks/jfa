@@ -1,4 +1,4 @@
-context("11. Benchmark against SMASH21 + SMASH21-Bayes")
+context("12. Benchmark against SMASH21 + SMASH21-Bayes")
 
 # SMASH21 [www.steekproeven.eu]
 # Retrieved on 27-04-2021 from https://steekproeven.eu/wp-content/uploads/2021/01/SMASH21-PRO-kopie.xlsx

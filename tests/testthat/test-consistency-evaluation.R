@@ -1,4 +1,4 @@
-context("2. Test consistency of function evaluation()")
+context("3. Test consistency of function evaluation()")
 
 # jfa version 0.1.0
 

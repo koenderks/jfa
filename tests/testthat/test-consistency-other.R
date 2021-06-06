@@ -1,4 +1,4 @@
-context("3. Test consistency of other functionality")
+context("4. Test consistency of other functionality")
 
 # jfa version 0.5.0
 

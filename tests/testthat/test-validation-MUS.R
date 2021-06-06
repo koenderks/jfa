@@ -1,4 +1,4 @@
-context("10. Benchmark against R package MUS")
+context("11. Benchmark against R package MUS")
 
 # MUS R package (version 0.1.6)
 # install.packages('MUS')

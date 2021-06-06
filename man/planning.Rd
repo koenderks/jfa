@@ -79,7 +79,7 @@ planning(confidence = 0.95, materiality = 0.05, expectedError = 0.025,
 Dyer, D. and Pierce, R.L. (1993). On the choice of the prior distribution in hypergeometric sampling. \emph{Communications in Statistics - Theory and Methods}, 22(8), 2125 - 2146.
 }
 \seealso{
-\code{\link{auditPrior}} \code{\link{selection}} \code{\link{evaluation}} \code{\link{report}}
+\code{\link{auditPrior}} \code{\link{selection}} \code{\link{evaluation}} \code{\link{report}} \code{\link{auditBF}}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}
