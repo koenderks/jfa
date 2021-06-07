@@ -163,83 +163,36 @@
 <div id="prior-distribution" class="section level2">
 <h2 class="hasAnchor">
 <a href="#prior-distribution" class="anchor"></a>Prior distribution</h2>
-<p>To calculate the Bayes factor the auditor must first specify the prior distribution for the proportion of nonconforming items in the lot. An appropriate prior distribution can be one that assigns equal probability to the event of acceptance and the event of rejection (Derks et al., 2021). This prior distribution can be constructed using the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function in combination with the argument <code>method = 'median'</code> (see also the vignette <a href="https://koenderks.github.io/jfa/articles/v3_prior_distributions.html">Prior distributions</a>).</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">tolerance</span>, method <span class="op">=</span> <span class="st">'median'</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior</span><span class="op">)</span></code></pre></div>
-<p><img src="v6_bayes_factors_summary_statistics_files/figure-html/unnamed-chunk-4-1.png" width="576"></p>
+<p>To calculate the Bayes factor the auditor must first specify the prior distribution for the proportion of nonconforming items in the lot. An appropriate prior distribution can be one that assigns equal probability to the event of acceptance and the event of rejection (Derks et al., 2021), see also the vignette <a href="https://koenderks.github.io/jfa/articles/v3_prior_distributions.html">Prior distributions</a>.</p>
 </div>
 <div id="bayes-factor-after-stage-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bayes-factor-after-stage-1" class="anchor"></a>Bayes factor after stage 1</h2>
-<p>Using the <code><a href="../reference/evaluation.html">evaluation()</a></code> function the auditor can calculate the Bayes factor in favor of acceptance of the lot versus rejection of the lot. In this case, the Bayes factor in favor of acceptance (<span class="math inline">\(BF_{-+}\)</span>) is 0.665 and represents only anecdotal evidence in favor of rejection (see also the vignette <a href="https://koenderks.github.io/jfa/articles/v4_testing_misstatement.html">Testing misstatement</a>).</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">tolerance</span>, nSumstats <span class="op">=</span> <span class="fl">32</span>, kSumstats <span class="op">=</span> <span class="fl">2</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------ 
-## #             jfa Evaluation Summary (Bayesian)
-## # ------------------------------------------------------------
-## # Input: 
-## #
-## # Confidence:                    90%   
-## # Materiality:                   5% 
-## # Minium precision:              Not specified 
-## # Sample size:                   32 
-## # Sample errors:                 2 
-## # Sum of taints:                 2  
-## # Method:                        binomial 
-## # Prior distribution:            beta(α = 1, β = 13.513) 
-## # ------------------------------------------------------------
-## # Output:
-## #
-## # Posterior distribution:        beta(α = 3, β = 43.513) 
-## # Most likely error:             4.493% 
-## # Upper bound:                   11.274% 
-## # Precision:                     6.781% 
-## # Bayes factor-+:                0.665 
-## # Conclusion:                    Do not approve population 
-## # ------------------------------------------------------------</code></pre>
+<p>Using the <code><a href="../reference/auditBF.html">auditBF()</a></code> function the auditor can create the prior distribution and calculate the Bayes factor in favor of acceptance of the lot versus rejection of the lot. In this case, the Bayes factor in favor of acceptance (<span class="math inline">\(BF_{-+}\)</span>) is 0.665 and represents only anecdotal evidence in favor of rejection (see also the vignette <a href="https://koenderks.github.io/jfa/articles/v4_testing_misstatement.html">Testing misstatement</a>).</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/auditBF.html">auditBF</a></span><span class="op">(</span><span class="va">tolerance</span>, n <span class="op">=</span> <span class="fl">32</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] 0.6648668</code></pre>
 </div>
 <div id="bayes-factor-after-stage-2" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bayes-factor-after-stage-2" class="anchor"></a>Bayes factor after stage 2</h2>
 <p>The Bayes factor in favor of acceptance after the second sample of items is 6.24 which represents moderate evidence in favor of acceptance.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">tolerance</span>, nSumstats <span class="op">=</span> <span class="fl">32</span> <span class="op">+</span> <span class="fl">50</span>, kSumstats <span class="op">=</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">0</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------ 
-## #             jfa Evaluation Summary (Bayesian)
-## # ------------------------------------------------------------
-## # Input: 
-## #
-## # Confidence:                    90%   
-## # Materiality:                   5% 
-## # Minium precision:              Not specified 
-## # Sample size:                   82 
-## # Sample errors:                 2 
-## # Sum of taints:                 2  
-## # Method:                        binomial 
-## # Prior distribution:            beta(α = 1, β = 13.513) 
-## # ------------------------------------------------------------
-## # Output:
-## #
-## # Posterior distribution:        beta(α = 3, β = 93.513) 
-## # Most likely error:             2.116% 
-## # Upper bound:                   5.476% 
-## # Precision:                     3.36% 
-## # Bayes factor-+:                6.241 
-## # Conclusion:                    Do not approve population 
-## # ------------------------------------------------------------</code></pre>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/auditBF.html">auditBF</a></span><span class="op">(</span><span class="va">tolerance</span>, n <span class="op">=</span> <span class="fl">32</span> <span class="op">+</span> <span class="fl">50</span>, k <span class="op">=</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">0</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] 6.24126</code></pre>
 </div>
 <div id="monitoring-evidence" class="section level2">
 <h2 class="hasAnchor">
 <a href="#monitoring-evidence" class="anchor"></a>Monitoring evidence</h2>
 <p>In the Bayesian framework, the auditor can continue to accumulate and monitor evidence one item at the time. This means that the auditor can continue sampling until a certain threshold of evidence is reached.</p>
-<p><img src="v6_bayes_factors_summary_statistics_files/figure-html/unnamed-chunk-7-1.png" width="576"></p>
+<p><img src="v6_bayes_factors_summary_statistics_files/figure-html/unnamed-chunk-6-1.png" width="576"></p>
 </div>
 </div>
 <div id="references" class="section level1">
 <h1 class="hasAnchor">
 <a href="#references" class="anchor"></a>References</h1>
 <ul>
+<li><p>Derks, K., de Swart, J., Wagenmakers, E.-J., and Wetzels, R. (2021). A default Bayesian hypothesis test for audit sampling. <em>Working paper</em>.</p></li>
 <li><p>Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., and Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. <em>In press</em>.</p></li>
 <li><p>Göb R. &amp; Lurz, K. (2014). Shortest two-sided confidence intervals for a probability under prior information. <em>Metrika: International Journal for Theoretical and Applied Statistics</em>, 77 (3), 389-413.</p></li>
 </ul>

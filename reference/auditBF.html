@@ -166,7 +166,7 @@ vignette('jfa', package = 'jfa')" />
     </tr>
     <tr>
       <th>n</th>
-      <td><p>an integer specifying the number of seen items.</p></td>
+      <td><p>an integer larger than 0 specifying the number of items in the sample.</p></td>
     </tr>
     <tr>
       <th>k</th>
@@ -194,7 +194,7 @@ vignette('jfa', package = 'jfa')" />
     </tr>
     <tr>
       <th>log</th>
-      <td><p>whether to compute the logarithm of the Bayes factor.</p></td>
+      <td><p>logical; if TRUE, the Bayes factor is given as log(bf).</p></td>
     </tr>
     </table>
 
@@ -203,7 +203,8 @@ vignette('jfa', package = 'jfa')" />
     <p>A value for the Bayes factor in favor of the hypothesis of tolerable misstatement against the hypothesis of intolerable misstatement.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This section elaborates on the available likelihoods and corresponding prior distributions for the <code>likelihood</code> argument.</p>
+    <p>The Bayes Factor \(BF_{-+}\) quantifies how much more likely the data are to be observed under \(H_{-}: \theta &lt; \theta_{max}\) than under \(H_{+}: \theta &gt; \theta_{max}\). Therefore, \(BF_{-+}\) can be interpreted as the relative support in the observed data for \(H_{-}\) versus \(H_{+}\). If \(BF_{-+}\) is 1, there is no preference for either \(H_{-}\) or \(H_{+}\). If \(BF_{-+}\) is larger than 1, \(H_{-}\) is preferred. If \(BF_{-+}\) is between 0 and 1, \(H_{+}\) is preferred.</p>
+<p>This section elaborates on the available likelihoods and corresponding prior distributions for the <code>likelihood</code> argument.</p>
 <ul>
 <li><p><code>binomial</code>:         The binomial likelihood is often used as a likelihood for attributes sampling <em>with</em> replacement. The likelihood function is defined as: $$p(x) = {n \choose k} p^k (1 - p)^{n - k}$$ The conjugate <em>beta(\(\alpha, \beta\))</em> prior has probability density function: $$f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}$$</p></li>
 <li><p><code>poisson</code>:          The Poisson likelihood is often used as a likelihood for monetary unit sampling (MUS). The likelihood function is defined as: $$p(x) = \frac{\lambda^x e^{-\lambda}}{x!}$$ The conjugate <em>gamma(\(\alpha, \beta\))</em> prior has probability density function: $$f(x; \alpha, \beta) = \frac{\beta^\alpha x^{\alpha - 1} e^{-\beta x}}{\Gamma(\alpha)}$$</p></li>
