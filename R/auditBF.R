@@ -9,14 +9,16 @@
 #'         nPrior = NULL, kPrior = NULL, N = NULL, log = FALSE)
 #' 
 #' @param materiality   a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum upper limit) as a fraction of the total population size. Can be \code{NULL} for some methods.
-#' @param n             an integer specifying the number of seen items.
+#' @param n             an integer larger than 0 specifying the number of items in the sample.
 #' @param k             a number larger than zero specifying the observed proportional error (i.e., sum of taints) in the sample.
 #' @param expectedError a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a numeric value (>= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.
 #' @param likelihood    a character specifying the likelihood assumed when updating the prior distribution. This can be either \code{binomial} for the binomial likelihood and beta prior distribution, \code{poisson} for the Poisson likelihood and gamma prior distribution, or \code{hypergeometric} for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.
 #' @param nPrior        numeric value larger than, or equal to, 0 specifying the sample size of the sample equivalent to the prior information.
 #' @param kPrior        a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.
 #' @param N             an integer larger than 0 specifying the total population size. Only required when \code{likelihood = 'hypergeometric'}.
-#' @param log           whether to compute the logarithm of the Bayes factor.
+#' @param log           logical; if TRUE, the Bayes factor is given as log(bf).
+#'
+#' @details The Bayes Factor \eqn{BF_{-+}} quantifies how much more likely the data are to be observed under \eqn{H_{-}: \theta < \theta_{max}} than under \eqn{H_{+}: \theta > \theta_{max}}. Therefore, \eqn{BF_{-+}} can be interpreted as the relative support in the observed data for \eqn{H_{-}} versus \eqn{H_{+}}. If \eqn{BF_{-+}} is 1, there is no preference for either \eqn{H_{-}} or \eqn{H_{+}}. If \eqn{BF_{-+}} is larger than 1, \eqn{H_{-}} is preferred. If \eqn{BF_{-+}} is between 0 and 1, \eqn{H_{+}} is preferred.
 #'
 #' @details This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
 #' 

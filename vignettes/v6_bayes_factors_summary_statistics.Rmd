@@ -74,19 +74,14 @@ $$BF_{10} = \underbrace{\frac{p(\text{data} | H_1)}{p(\text{data} | H_0)}}_{\tex
 
 ## Prior distribution
 
-To calculate the Bayes factor the auditor must first specify the prior distribution for the proportion of nonconforming items in the lot. An appropriate prior distribution can be one that assigns equal probability to the event of acceptance and the event of rejection (Derks et al., 2021). This prior distribution can be constructed using the `auditPrior()` function in combination with the argument `method = 'median'` (see also the vignette [Prior distributions](https://koenderks.github.io/jfa/articles/v3_prior_distributions.html)).
-
-```{r}
-prior <- auditPrior(confidence, tolerance, method = 'median')
-plot(prior)
-```
+To calculate the Bayes factor the auditor must first specify the prior distribution for the proportion of nonconforming items in the lot. An appropriate prior distribution can be one that assigns equal probability to the event of acceptance and the event of rejection (Derks et al., 2021), see also the vignette [Prior distributions](https://koenderks.github.io/jfa/articles/v3_prior_distributions.html).
 
 ## Bayes factor after stage 1
 
-Using the `evaluation()` function the auditor can calculate the Bayes factor in favor of acceptance of the lot versus rejection of the lot. In this case, the Bayes factor in favor of acceptance ($BF_{-+}$) is 0.665 and represents only anecdotal evidence in favor of rejection (see also the vignette [Testing misstatement](https://koenderks.github.io/jfa/articles/v4_testing_misstatement.html)).
+Using the `auditBF()` function the auditor can create the prior distribution and calculate the Bayes factor in favor of acceptance of the lot versus rejection of the lot. In this case, the Bayes factor in favor of acceptance ($BF_{-+}$) is 0.665 and represents only anecdotal evidence in favor of rejection (see also the vignette [Testing misstatement](https://koenderks.github.io/jfa/articles/v4_testing_misstatement.html)).
 
 ```{r}
-evaluation(confidence, tolerance, nSumstats = 32, kSumstats = 2, prior = prior)
+auditBF(tolerance, n = 32, k = 2)
 ```
 
 ## Bayes factor after stage 2
@@ -94,7 +89,7 @@ evaluation(confidence, tolerance, nSumstats = 32, kSumstats = 2, prior = prior)
 The Bayes factor in favor of acceptance after the second sample of items is 6.24 which represents moderate evidence in favor of acceptance.
 
 ```{r}
-evaluation(confidence, tolerance, nSumstats = 32 + 50, kSumstats = 2 + 0, prior = prior)
+auditBF(tolerance, n = 32 + 50, k = 2 + 0)
 ```
 
 ## Monitoring evidence
@@ -108,12 +103,14 @@ n <- 100
 bf <- NULL
 for (i in 1:n) {
   k <- k + sample(0:1, size = 1, prob = c(0.98, 0.02))
-  bf[i] <- evaluation(confidence, tolerance, nSumstats = i, kSumstats = k, prior = prior)$posterior$hypotheses$bf
+  bf[i] <- auditBF(tolerance, n = i, k = k)
 }
 plot(1:n, bf, type = "l", xlab = "n", las = 1, bty = "n", ylim = c(0, 30), xlim = c(0, 100), ylab = expression(BF['10']))
 ```
 
 # References
+
+* Derks, K., de Swart, J., Wagenmakers, E.-J., and Wetzels, R. (2021). A default Bayesian hypothesis test for audit sampling. *Working paper*.
 
 * Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., and Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. *In press*.
 

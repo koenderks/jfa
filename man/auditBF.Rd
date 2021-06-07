@@ -10,7 +10,7 @@ auditBF(materiality, n, k, expectedError = 0, likelihood = 'binomial',
 \arguments{
 \item{materiality}{a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum upper limit) as a fraction of the total population size. Can be \code{NULL} for some methods.}
 
-\item{n}{an integer specifying the number of seen items.}
+\item{n}{an integer larger than 0 specifying the number of items in the sample.}
 
 \item{k}{a number larger than zero specifying the observed proportional error (i.e., sum of taints) in the sample.}
 
@@ -24,7 +24,7 @@ auditBF(materiality, n, k, expectedError = 0, likelihood = 'binomial',
 
 \item{N}{an integer larger than 0 specifying the total population size. Only required when \code{likelihood = 'hypergeometric'}.}
 
-\item{log}{whether to compute the logarithm of the Bayes factor.}
+\item{log}{logical; if TRUE, the Bayes factor is given as log(bf).}
 }
 \value{
 A value for the Bayes factor in favor of the hypothesis of tolerable misstatement against the hypothesis of intolerable misstatement.
@@ -36,6 +36,8 @@ For more details on how to use this function, see the package vignette:
 \code{vignette('jfa', package = 'jfa')}
 }
 \details{
+The Bayes Factor \eqn{BF_{-+}} quantifies how much more likely the data are to be observed under \eqn{H_{-}: \theta < \theta_{max}} than under \eqn{H_{+}: \theta > \theta_{max}}. Therefore, \eqn{BF_{-+}} can be interpreted as the relative support in the observed data for \eqn{H_{-}} versus \eqn{H_{+}}. If \eqn{BF_{-+}} is 1, there is no preference for either \eqn{H_{-}} or \eqn{H_{+}}. If \eqn{BF_{-+}} is larger than 1, \eqn{H_{-}} is preferred. If \eqn{BF_{-+}} is between 0 and 1, \eqn{H_{+}} is preferred.
+
 This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
 
 \itemize{

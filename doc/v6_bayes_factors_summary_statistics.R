@@ -17,14 +17,10 @@ tolerance  <- 0.05 # 5% tolerance
 #  # [1,] 2 0.02439024 0.006504196 0.07341118
 
 ## -----------------------------------------------------------------------------
-prior <- auditPrior(confidence, tolerance, method = 'median')
-plot(prior)
+auditBF(tolerance, n = 32, k = 2)
 
 ## -----------------------------------------------------------------------------
-evaluation(confidence, tolerance, nSumstats = 32, kSumstats = 2, prior = prior)
-
-## -----------------------------------------------------------------------------
-evaluation(confidence, tolerance, nSumstats = 32 + 50, kSumstats = 2 + 0, prior = prior)
+auditBF(tolerance, n = 32 + 50, k = 2 + 0)
 
 ## ---- echo = F----------------------------------------------------------------
 set.seed(2)
@@ -33,7 +29,7 @@ n <- 100
 bf <- NULL
 for (i in 1:n) {
   k <- k + sample(0:1, size = 1, prob = c(0.98, 0.02))
-  bf[i] <- evaluation(confidence, tolerance, nSumstats = i, kSumstats = k, prior = prior)$posterior$hypotheses$bf
+  bf[i] <- auditBF(tolerance, n = i, k = k)
 }
 plot(1:n, bf, type = "l", xlab = "n", las = 1, bty = "n", ylim = c(0, 30), xlim = c(0, 100), ylab = expression(BF['10']))
 
