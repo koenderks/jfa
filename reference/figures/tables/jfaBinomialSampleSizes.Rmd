@@ -32,7 +32,6 @@ library(jfa)
 
 ```{r, include = F}
 
-confidence <- 0.90
 m <- c(seq(0.01, 0.10, 0.01), 0.15, 0.20)
 expected <- seq(0, 0.1, 0.0025)
 
@@ -42,7 +41,7 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "binomial", materiality = m[columns])) }, silent = T)
+      p <- try({ suppressMessages(ss <- jfa::planning(confidence = 0.90, expectedError = expected[rows], likelihood = "binomial", materiality = m[columns])) }, silent = T)
       if(class(p) == "try-error"){
         next 
       }
@@ -83,7 +82,6 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.95
 m <- c(seq(0.01, 0.10, 0.01), 0.15, 0.20)
 expected <- seq(0, 0.10, 0.0025)
 
@@ -93,7 +91,7 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "binomial", materiality = m[columns])) }, silent = T)
+      p <- try({ suppressMessages(ss <- jfa::planning(confidence = 0.95, expectedError = expected[rows], likelihood = "binomial", materiality = m[columns])) }, silent = T)
       if(class(p) == "try-error"){
         next 
       }
@@ -134,7 +132,6 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.975
 m <- c(seq(0.01, 0.10, 0.01), 0.15, 0.20)
 expected <- seq(0, 0.1, 0.0025)
 
@@ -144,7 +141,7 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "binomial", materiality = m[columns])) }, silent = T)
+      p <- try({ suppressMessages(ss <- jfa::planning(confidence = 0.975, expectedError = expected[rows], likelihood = "binomial", materiality = m[columns])) }, silent = T)
       if(class(p) == "try-error"){
         next 
       }
@@ -185,7 +182,6 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.99
 m <- c(seq(0.01, 0.10, 0.01), 0.15, 0.20)
 expected <- seq(0, 0.1, 0.0025)
 
@@ -195,7 +191,7 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "binomial", materiality = m[columns])) }, silent = T)
+      p <- try({ suppressMessages(ss <- jfa::planning(confidence = 0.99, expectedError = expected[rows], likelihood = "binomial", materiality = m[columns])) }, silent = T)
       if(class(p) == "try-error"){
         next 
       }

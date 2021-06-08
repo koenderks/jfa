@@ -32,14 +32,13 @@ library(jfa)
 
 ```{r, include = F}
 
-confidence <- 0.90
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
 for(rows in 1:length(n)){
   for(columns in 1:length(k)){
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "poisson")
+      ss <- jfa::evaluation(confidence = 0.90, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "poisson")
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
   }
 }
@@ -75,14 +74,13 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.95
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
 for(rows in 1:length(n)){
   for(columns in 1:length(k)){
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "poisson")
+      ss <- jfa::evaluation(confidence = 0.95, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "poisson")
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
   }
 }
@@ -118,14 +116,13 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.975
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
 for(rows in 1:length(n)){
   for(columns in 1:length(k)){
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "poisson")
+      ss <- jfa::evaluation(confidence = 0.975, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "poisson")
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
   }
 }
@@ -161,14 +158,13 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.99
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
 for(rows in 1:length(n)){
   for(columns in 1:length(k)){
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "poisson")
+      ss <- jfa::evaluation(confidence = 0.99, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "poisson")
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
   }
 }
