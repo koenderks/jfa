@@ -346,8 +346,6 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.975
-materiality <- 0.025
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 100
@@ -357,9 +355,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-    prior <- jfa::auditPrior(confidence, likelihood = "hypergeometric", method = "median", materiality = materiality, N = N)
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "hypergeometric", prior = prior, materiality = materiality, N = N)
-      tab[rows, columns] <- ss$posterior$hypotheses$bf
+      tab[rows, columns] <- auditBF(materiality = 0.02, n[rows], k[columns], 
+                                    likelihood = "hypergeometric", N = N)
   }
 }
 
@@ -379,7 +376,7 @@ table[is.na(table)] <- ""
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 7: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 100) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 2.5 Percent</center>",
+                       caption = "<center>Table 7: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 100) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 2 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
@@ -401,8 +398,6 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.975
-materiality <- 0.025
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 500
@@ -412,9 +407,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-    prior <- jfa::auditPrior(confidence, likelihood = "hypergeometric", method = "median", materiality = materiality, N = N)
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "hypergeometric", prior = prior, materiality = materiality, N = N)
-      tab[rows, columns] <- ss$posterior$hypotheses$bf
+      tab[rows, columns] <- auditBF(materiality = 0.02, n[rows], k[columns], 
+                                    likelihood = "hypergeometric", N = N)
   }
 }
 
@@ -434,7 +428,7 @@ table[is.na(table)] <- ""
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 8: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 500) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 2.5 Percent</center>",
+                       caption = "<center>Table 8: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 500) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 2 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
@@ -456,8 +450,6 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.975
-materiality <- 0.025
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 1000
@@ -467,9 +459,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-    prior <- jfa::auditPrior(confidence, likelihood = "hypergeometric", method = "median", materiality = materiality, N = N)
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "hypergeometric", prior = prior, materiality = materiality, N = N)
-      tab[rows, columns] <- ss$posterior$hypotheses$bf
+      tab[rows, columns] <- auditBF(materiality = 0.02, n[rows], k[columns], 
+                                    likelihood = "hypergeometric", N = N)
   }
 }
 
@@ -489,7 +480,7 @@ table[is.na(table)] <- ""
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 9: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 1000) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 2.5 Percent</center>",
+                       caption = "<center>Table 9: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 1000) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 2 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
@@ -511,8 +502,6 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.99
-materiality <- 0.01
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 100
@@ -522,9 +511,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-    prior <- jfa::auditPrior(confidence, likelihood = "hypergeometric", method = "median", materiality = materiality, N = N)
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "hypergeometric", prior = prior, materiality = materiality, N = N)
-      tab[rows, columns] <- ss$posterior$hypotheses$bf
+      tab[rows, columns] <- auditBF(materiality = 0.02, n[rows], k[columns], 
+                                    likelihood = "hypergeometric", N = N)
   }
 }
 
@@ -566,8 +554,6 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.99
-materiality <- 0.01
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 500
@@ -577,9 +563,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-    prior <- jfa::auditPrior(confidence, likelihood = "hypergeometric", method = "median", materiality = materiality, N = N)
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "hypergeometric", prior = prior, materiality = materiality, N = N)
-      tab[rows, columns] <- ss$posterior$hypotheses$bf
+      tab[rows, columns] <- auditBF(materiality = 0.01, n[rows], k[columns], 
+                                    likelihood = "hypergeometric", N = N)
   }
 }
 
@@ -621,8 +606,6 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.99
-materiality <- 0.01
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 1000
@@ -632,9 +615,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-    prior <- jfa::auditPrior(confidence, likelihood = "hypergeometric", method = "median", materiality = materiality, N = N)
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "hypergeometric", prior = prior, materiality = materiality, N = N)
-      tab[rows, columns] <- ss$posterior$hypotheses$bf
+      tab[rows, columns] <- auditBF(materiality = 0.01, n[rows], k[columns], 
+                                    likelihood = "hypergeometric", N = N)
   }
 }
 
