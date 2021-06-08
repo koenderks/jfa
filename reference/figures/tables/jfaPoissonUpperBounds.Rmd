@@ -125,7 +125,7 @@ k <- 0:10
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
 for(rows in 1:length(n)){
   for(columns in 1:length(k)){
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "binomial")
+      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "poisson")
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
   }
 }
@@ -168,7 +168,7 @@ k <- 0:10
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
 for(rows in 1:length(n)){
   for(columns in 1:length(k)){
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "binomial")
+      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "poisson")
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
   }
 }
