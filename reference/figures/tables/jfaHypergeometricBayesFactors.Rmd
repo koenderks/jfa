@@ -32,8 +32,6 @@ library(jfa)
 
 ```{r, include = F}
 
-confidence <- 0.90
-materiality <- 0.10
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 100
@@ -43,9 +41,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-    prior <- jfa::auditPrior(confidence, likelihood = "hypergeometric", method = "median", materiality = materiality, N = N)
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "hypergeometric", prior = prior, materiality = materiality, N = N)
-      tab[rows, columns] <- ss$posterior$hypotheses$bf
+      tab[rows, columns] <- auditBF(materiality = 0.10, n[rows], k[columns], 
+                                    likelihood = "hypergeometric", N = N)
   }
 }
 
@@ -87,8 +84,6 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.90
-materiality <- 0.10
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 500
@@ -98,9 +93,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-    prior <- jfa::auditPrior(confidence, likelihood = "hypergeometric", method = "median", materiality = materiality, N = N)
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "hypergeometric", prior = prior, materiality = materiality, N = N)
-      tab[rows, columns] <- ss$posterior$hypotheses$bf
+      tab[rows, columns] <- auditBF(materiality = 0.10, n[rows], k[columns], 
+                                    likelihood = "hypergeometric", N = N)
   }
 }
 
@@ -142,8 +136,6 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.90
-materiality <- 0.10
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 1000
@@ -153,9 +145,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-    prior <- jfa::auditPrior(confidence, likelihood = "hypergeometric", method = "median", materiality = materiality, N = N)
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "hypergeometric", prior = prior, materiality = materiality, N = N)
-      tab[rows, columns] <- ss$posterior$hypotheses$bf
+      tab[rows, columns] <- auditBF(materiality = 0.10, n[rows], k[columns], 
+                                    likelihood = "hypergeometric", N = N)
   }
 }
 
@@ -208,9 +199,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-    prior <- jfa::auditPrior(confidence, likelihood = "hypergeometric", method = "median", materiality = materiality, N = N)
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "hypergeometric", prior = prior, materiality = materiality, N = N)
-      tab[rows, columns] <- ss$posterior$hypotheses$bf
+      tab[rows, columns] <- auditBF(materiality = 0.05, n[rows], k[columns], 
+                                    likelihood = "hypergeometric", N = N)
   }
 }
 
@@ -252,8 +242,6 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.95
-materiality <- 0.05
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 500
@@ -263,9 +251,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-    prior <- jfa::auditPrior(confidence, likelihood = "hypergeometric", method = "median", materiality = materiality, N = N)
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "hypergeometric", prior = prior, materiality = materiality, N = N)
-      tab[rows, columns] <- ss$posterior$hypotheses$bf
+      tab[rows, columns] <- auditBF(materiality = 0.05, n[rows], k[columns], 
+                                    likelihood = "hypergeometric", N = N)
   }
 }
 
@@ -307,8 +294,6 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.95
-materiality <- 0.05
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 1000
@@ -318,9 +303,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-    prior <- jfa::auditPrior(confidence, likelihood = "hypergeometric", method = "median", materiality = materiality, N = N)
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "hypergeometric", prior = prior, materiality = materiality, N = N)
-      tab[rows, columns] <- ss$posterior$hypotheses$bf
+      tab[rows, columns] <- auditBF(materiality = 0.05, n[rows], k[columns], 
+                                    likelihood = "hypergeometric", N = N)
   }
 }
 

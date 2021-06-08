@@ -32,17 +32,13 @@ library(jfa)
 
 ```{r, include = F}
 
-confidence <- 0.90
-materiality <- 0.10
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
 for(rows in 1:length(n)){
   for(columns in 1:length(k)){
-    prior <- jfa::auditPrior(confidence, likelihood = "binomial", method = "median", materiality = materiality)
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "binomial", prior = prior, materiality = materiality)
-      tab[rows, columns] <- ss$posterior$hypotheses$bf
+    tab[rows, columns] <- auditBF(materiality = 0.10, n = n[rows], k = k[columns])
   }
 }
 
@@ -83,17 +79,13 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.90
-materiality <- 0.05
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
 for(rows in 1:length(n)){
   for(columns in 1:length(k)){
-    prior <- jfa::auditPrior(confidence, likelihood = "binomial", method = "median", materiality = materiality)
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "binomial", prior = prior, materiality = materiality)
-      tab[rows, columns] <- ss$posterior$hypotheses$bf
+    tab[rows, columns] <- auditBF(materiality = 0.05, n = n[rows], k = k[columns])
   }
 }
 
@@ -133,17 +125,13 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.90
-materiality <- 0.02
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
 for(rows in 1:length(n)){
   for(columns in 1:length(k)){
-    prior <- jfa::auditPrior(confidence, likelihood = "binomial", method = "median", materiality = materiality)
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "binomial", prior = prior, materiality = materiality)
-      tab[rows, columns] <- ss$posterior$hypotheses$bf
+    tab[rows, columns] <- auditBF(materiality = 0.02, n = n[rows], k = k[columns])
   }
 }
 
@@ -183,17 +171,13 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.90
-materiality <- 0.01
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
 for(rows in 1:length(n)){
   for(columns in 1:length(k)){
-    prior <- jfa::auditPrior(confidence, likelihood = "binomial", method = "median", materiality = materiality)
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], method = "binomial", prior = prior, materiality = materiality)
-      tab[rows, columns] <- ss$posterior$hypotheses$bf
+    tab[rows, columns] <- auditBF(materiality = 0.01, n = n[rows], k = k[columns])
   }
 }
 

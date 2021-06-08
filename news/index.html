@@ -154,6 +154,7 @@
 </ul>
 <p><strong>Bug fixes</strong></p>
 <ul>
+<li>Fixed a bug in <code><a href="../reference/evaluation.html">evaluation()</a></code> in which the likelihood stored in the prior was not properly passed to the function.</li>
 <li>Fixed an error in the calculation of the posterior mode of the beta distribution.</li>
 </ul>
 </div>
@@ -185,7 +186,7 @@
 </h1>
 <p><strong>New features</strong></p>
 <ul>
-<li>Made <code>expectedErrors &gt; 0</code> available for <code>method = 'hypotheses'</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code>.</li>
+<li>Made <code>expectedErrors &gt; 0</code> available for <code>method = 'hypotheses'</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function.</li>
 <li>Made <code>method = 'hypotheses'</code> and <code>method = 'median'</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function available for <code>likelihood = 'hypergeometric'</code>.</li>
 <li>Added <code>bram</code> as a method for the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function. <code>method = 'bram'</code> computes a prior distribution with a given mode (<code>expectedError</code>) and upper bound (<code>ub</code>).</li>
 </ul>
