@@ -68,14 +68,16 @@ auditBF <- function(materiality, n, k, expectedError = 0, likelihood = 'binomial
   
   if(!is.null(nPrior) && !is.null(kPrior)) {
     # Create a prior distribution on the basis of an earlier sample (Derks et al. 2021a)
-    p <- jfa::auditPrior(confidence = 0.95, materiality, expectedError, likelihood, method = 'sample', sampleN = nPrior, sampleK = kPrior, N = N)
+    p <- jfa::auditPrior(confidence = 0.95, materiality = materiality, expectedError = expectedError, 
+	                     method = 'sample', likelihood = likelihood, sampleN = nPrior, sampleK = kPrior, N = N)
   } else {
     # Create the impartial prior distribution (Derks et al. 2021b)
-    p <- jfa::auditPrior(confidence = 0.95, materiality, expectedError, likelihood, method = 'median', N = N)
+    p <- jfa::auditPrior(confidence = 0.95, materiality = materiality, expectedError = expectedError, 
+	                     method = 'median', likelihood = likelihood, N = N)
   }
 
   # Compute the Bayes factor in favor of tolerable misstatement
-  bfminplus <- jfa::evaluation(confidence = 0.95, materiality, nSumstats = n, kSumstats = k, prior = p, N = N)$posterior$hypotheses$bf
+  bfminplus <- jfa::evaluation(confidence = 0.95, materiality = materiality, nSumstats = n, kSumstats = k, prior = p, N = N)$posterior$hypotheses$bf
   
   # Transform to logarithm if the user wants to
   if(log)

@@ -1,9 +1,9 @@
-context("8. Benchmark against Appendix A (AICPA 2017)")
+context("9. Benchmark against Appendix A (AICPA 2017)")
 
 # Audit Guide: Audit Sampling [https://future.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL]
 # Retrieved on 28-04-2021 from https://onlinelibrary.wiley.com/doi/pdf/10.1002/9781119448617.app1
 
-test_that(desc = "(id: f1-v0.4.0-t1) Test sample sizes for 5 percent risk of overreliance (AICPA 2017 - Appendix A: Table A-1)", {
+test_that(desc = "(id: f9-v0.4.0-t1) Test sample sizes for 5 percent risk of overreliance (AICPA 2017 - Appendix A: Table A-1)", {
   expectedDeviationRate <- c(seq(0, 4, 0.25), 5:10, 12.50, 15.00, 17.50) / 100
   tolerableDeivationRate <- c(2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20) / 100
   sampleSizeMatrix <- matrix(NA, nrow = length(expectedDeviationRate), ncol = length(tolerableDeivationRate))
@@ -56,7 +56,7 @@ test_that(desc = "(id: f1-v0.4.0-t1) Test sample sizes for 5 percent risk of ove
   expect_equal(sampleSizeMatrix, aicpaMatrix)
 })
 
-test_that(desc = "(id: f1-v0.4.0-t2) Test sample sizes for 10 percent risk of overreliance (AICPA 2017 - Appendix A: Table A-2)", {
+test_that(desc = "(id: f9-v0.4.0-t2) Test sample sizes for 10 percent risk of overreliance (AICPA 2017 - Appendix A: Table A-2)", {
   expectedDeviationRate <- c(seq(0, 4, 0.25), 5:10, 12.50, 15.00, 17.50) / 100
   tolerableDeivationRate <- c(2, 3, 4, 5, 6, 7, 8, 9, 10, 15, 20) / 100
   sampleSizeMatrix <- matrix(NA, nrow = length(expectedDeviationRate), ncol = length(tolerableDeivationRate))
@@ -112,7 +112,7 @@ test_that(desc = "(id: f1-v0.4.0-t2) Test sample sizes for 10 percent risk of ov
   expect_equal(sampleSizeMatrix, aicpaMatrix)
 })
 
-test_that(desc = "(id: f1-v0.4.0-t3) Test upper bounds for 5 percent risk of overreliance (AICPA 2017 - Appendix A: Table A-3)", {
+test_that(desc = "(id: f9-v0.4.0-t3) Test upper bounds for 5 percent risk of overreliance (AICPA 2017 - Appendix A: Table A-3)", {
   sampleSize <- c(seq(20, 80, 5), 90, 100, 125, 150, 200, 300, 400, 500)
   numberOfDeviations <- 0:10
   evaluationMatrix <- matrix(NA, nrow = length(sampleSize), ncol = length(numberOfDeviations))
@@ -154,7 +154,7 @@ test_that(desc = "(id: f1-v0.4.0-t3) Test upper bounds for 5 percent risk of ove
   expect_equal(evaluationMatrix, aicpaMatrix)
 })
 
-test_that(desc = "(id: f1-v0.4.0-t4) Test upper bounds for 10 percent risk of overreliance (AICPA 2017 - Appendix A: Table A-4)", {
+test_that(desc = "(id: f9-v0.4.0-t4) Test upper bounds for 10 percent risk of overreliance (AICPA 2017 - Appendix A: Table A-4)", {
   sampleSize <- c(seq(20, 80, 5), 90, 100, 125, 150, 200, 300, 400, 500)
   numberOfDeviations <- 0:10
   evaluationMatrix <- matrix(NA, nrow = length(sampleSize), ncol = length(numberOfDeviations))

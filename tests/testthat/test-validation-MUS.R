@@ -1,9 +1,9 @@
-context("11. Benchmark against R package MUS")
+context("12. Benchmark against R package MUS")
 
 # MUS R package (version 0.1.6)
 # install.packages('MUS')
 
-test_that(desc = "(id: f10-v0.5.4-t1) Test Sample sizes for poisson distribution", {
+test_that(desc = "(id: f12-v0.5.4-t1) Test Sample sizes for poisson distribution", {
   
   set.seed(1)
   data <- data.frame(book.value = round(stats::runif(n = 500, min = 1, max = 1000)))
@@ -30,7 +30,7 @@ test_that(desc = "(id: f10-v0.5.4-t1) Test Sample sizes for poisson distribution
 # MUS R package (version 0.1.6)
 # install.packages('MUS')
 
-test_that(desc = "(id: f10-v0.5.4-t2) Test most likely error and upper bound using stringer bound", {
+test_that(desc = "(id: f12-v0.5.4-t2) Test most likely error and upper bound using stringer bound", {
   
   set.seed(1)
   data <- data.frame(book.value = round(stats::runif(n = 1000, min = 1, max = 1000)))

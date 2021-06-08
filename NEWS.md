@@ -6,6 +6,7 @@
 
 **Bug fixes**
 
+- Fixed a bug in `evaluation()` in which the likelihood stored in the prior was not properly passed to the function.
 - Fixed an error in the calculation of the posterior mode of the beta distribution.
 
 # jfa 0.5.4
@@ -31,7 +32,7 @@
 
 **New features**
 
-- Made `expectedErrors > 0` available for `method = 'hypotheses'` in the `auditPrior()`.
+- Made `expectedErrors > 0` available for `method = 'hypotheses'` in the `auditPrior()` function.
 - Made `method = 'hypotheses'` and `method = 'median'` in the `auditPrior()` function available for `likelihood = 'hypergeometric'`.
 - Added `bram` as a method for the `auditPrior()` function. `method = 'bram'` computes a prior distribution with a given mode (`expectedError`) and upper bound (`ub`).
 

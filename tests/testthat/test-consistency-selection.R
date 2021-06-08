@@ -2,7 +2,7 @@ context("6. Test consistency of function selection()")
 
 # jfa version 0.1.0
 
-test_that(desc = "(id: f7-v0.1.0-t1) Test for units = 'records' and algorithm = 'random'", {
+test_that(desc = "(id: f6-v0.1.0-t1) Test for units = 'records' and algorithm = 'random'", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- selection(population, sampleSize = 100, units = "records", algorithm = "random", ordered = TRUE)
@@ -10,7 +10,7 @@ test_that(desc = "(id: f7-v0.1.0-t1) Test for units = 'records' and algorithm = 
   expect_equal(nrow(jfaRes[["sample"]]), 100)
 })
 
-test_that(desc = "(id: f7-v0.1.0-t2) Test for units = 'mus' and algorithm = 'random'", {
+test_that(desc = "(id: f6-v0.1.0-t2) Test for units = 'mus' and algorithm = 'random'", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- selection(population, sampleSize = 100, units = "mus", algorithm = "random", bookValues = "bookValue")
@@ -18,7 +18,7 @@ test_that(desc = "(id: f7-v0.1.0-t2) Test for units = 'mus' and algorithm = 'ran
   expect_equal(nrow(jfaRes[["sample"]]), 100)
 })
 
-test_that(desc = "(id: f7-v0.1.0-t3) Test for units = 'records' and algorithm = 'cell'", {
+test_that(desc = "(id: f6-v0.1.0-t3) Test for units = 'records' and algorithm = 'cell'", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- selection(population, sampleSize = 100, units = "records", algorithm = "cell")
@@ -26,7 +26,7 @@ test_that(desc = "(id: f7-v0.1.0-t3) Test for units = 'records' and algorithm = 
   expect_equal(nrow(jfaRes[["sample"]]), 100)
 })
 
-test_that(desc = "(id: f7-v0.1.0-t4) Test for units = 'mus' and algorithm = 'cell'", {
+test_that(desc = "(id: f6-v0.1.0-t4) Test for units = 'mus' and algorithm = 'cell'", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- selection(population, sampleSize = 100, units = "mus", algorithm = "cell", bookValues = "bookValue")
@@ -34,7 +34,7 @@ test_that(desc = "(id: f7-v0.1.0-t4) Test for units = 'mus' and algorithm = 'cel
   expect_equal(nrow(jfaRes[["sample"]]), 100)
 })
 
-test_that(desc = "(id: f7-v0.1.0-t5) Test for units = 'records' and algorithm = 'interval'", {
+test_that(desc = "(id: f6-v0.1.0-t5) Test for units = 'records' and algorithm = 'interval'", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- selection(population, sampleSize = 100, units = "records", algorithm = "interval", intervalStartingPoint = 3)
@@ -42,7 +42,7 @@ test_that(desc = "(id: f7-v0.1.0-t5) Test for units = 'records' and algorithm = 
   expect_equal(nrow(jfaRes[["sample"]]), 100)
 })
 
-test_that(desc = "(id: f7-v0.1.0-t6) Test for units = 'mus' and algorithm = 'interval'", {
+test_that(desc = "(id: f6-v0.1.0-t6) Test for units = 'mus' and algorithm = 'interval'", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- selection(population, sampleSize = 100, units = "mus", algorithm = "interval", bookValues = "bookValue", intervalStartingPoint = 3)
@@ -50,7 +50,7 @@ test_that(desc = "(id: f7-v0.1.0-t6) Test for units = 'mus' and algorithm = 'int
   expect_equal(nrow(jfaRes[["sample"]]), 100)
 })
 
-test_that(desc = "(id: f7-v0.1.0-t7) Test for units = 'mus' and algorithm = 'interval' using negative book values", {
+test_that(desc = "(id: f6-v0.1.0-t7) Test for units = 'mus' and algorithm = 'interval' using negative book values", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = c(-100, runif(n = 999, min = 100, max = 500)))
   jfaRes <- expect_warning(selection(population, sampleSize = 100, units = "mus", algorithm = "interval", bookValues = "bookValue", intervalStartingPoint = 3))
@@ -73,7 +73,7 @@ test_that(desc = "(id: f7-v0.1.0-t7) Test for units = 'mus' and algorithm = 'int
 
 # jfa version 0.5.0
 
-test_that(desc = "(id: f7-v0.5.0-t1) Test for print function", {
+test_that(desc = "(id: f6-v0.5.0-t1) Test for print function", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- selection(population, sampleSize = 100, units = "mus", algorithm = "random", ordered = TRUE, bookValues = "bookValue")
@@ -87,7 +87,7 @@ test_that(desc = "(id: f7-v0.5.0-t1) Test for print function", {
   expect_equal(nrow(jfaRes[["sample"]]), 100)
 })
 
-test_that(desc = "(id: f7-v0.5.0-t2) Test for plot function", {
+test_that(desc = "(id: f6-v0.5.0-t2) Test for plot function", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- selection(population, sampleSize = 100, units = "mus", algorithm = "random", ordered = TRUE, bookValues = "bookValue")

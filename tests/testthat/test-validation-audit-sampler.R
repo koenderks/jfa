@@ -1,9 +1,9 @@
-context("10. Benchmark against AuditSampler package")
+context("11. Benchmark against AuditSampler package")
 
 # AuditSampler [https://cplusglobal.wordpress.com/2015/02/14/auditsampler-statistical-audit-sampling-software/]
 # Retrieved on 28-04-2021 from https://cplusglobal.wordpress.com/2014/04/15/attributes-sampling/
 
-test_that(desc = "(id: f3-v0.4.0-t1) Test Sample sizes for binomial distribution", {
+test_that(desc = "(id: f11-v0.4.0-t1) Test Sample sizes for binomial distribution", {
   expectedDeviationRate <- c(seq(0, 4, 0.25), 4.5, 5) / 100
   tolerableDeivationRate <- c(2, 3, 4, 5, 6, 7, 8, 9, 10) / 100
   sampleSizeMatrix <- matrix(NA, nrow = length(expectedDeviationRate), ncol = length(tolerableDeivationRate))
@@ -47,7 +47,7 @@ test_that(desc = "(id: f3-v0.4.0-t1) Test Sample sizes for binomial distribution
 # AuditSampler [https://cplusglobal.wordpress.com/2015/02/14/auditsampler-statistical-audit-sampling-software/]
 # Retrieved on 28-04-2021 from https://cplusglobal.wordpress.com/2015/11/13/attributes-sample-size-using-the-hypergeometric-distribution/
 
-test_that(desc = "(id: f3-v0.4.0-t1) Test Sample sizes for Hypergeometric distribution", {
+test_that(desc = "(id: f11-v0.4.0-t1) Test Sample sizes for Hypergeometric distribution", {
   populationSize <- c(rep(500, 12), rep(5000, 3), 15000, 36000)
   expectedErrorRate <- c(rep(1, 3), 2, rep(1, 3), 2, 3, 4, 5, 6, rep(1, 5)) / 100
   tolerableErrorRate <- c(8, 6, 4, 5, 8, 6, 4, 5, 6, 7, 8, 9, 8, 6, 4, 6, 4) / 100

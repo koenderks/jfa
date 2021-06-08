@@ -42,7 +42,7 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = 100)) })
+      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = 100)) }, silent = T)
       if(class(p) == "try-error"){
         next 
       }
@@ -93,7 +93,7 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = 500)) })
+      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = 500)) }, silent = T)
       if(class(p) == "try-error"){
         next 
       }
@@ -144,7 +144,7 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = 1000)) })
+      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = 1000)) }, silent = T)
       if(class(p) == "try-error"){
         next 
       }
@@ -195,7 +195,7 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = 100)) })
+      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = 100)) }, silent = T)
       if(class(p) == "try-error"){
         next 
       }
@@ -246,7 +246,7 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = 500)) })
+      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = 500)) }, silent = T)
       if(class(p) == "try-error"){
         next 
       }
@@ -297,7 +297,7 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = 1000)) })
+      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = 1000)) }, silent = T)
       if(class(p) == "try-error"){
         next 
       }
@@ -348,7 +348,7 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = 100)) })
+      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = 100)) }, silent = T)
       if(class(p) == "try-error"){
         next 
       }
@@ -399,7 +399,7 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = 500)) })
+      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = 500)) }, silent = T)
       if(class(p) == "try-error"){
         next 
       }
@@ -450,7 +450,7 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = 1000)) })
+      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = 1000)) }, silent = T)
       if(class(p) == "try-error"){
         next 
       }
@@ -501,7 +501,7 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = 100)) })
+      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = 100)) }, silent = T)
       if(class(p) == "try-error"){
         next 
       }
@@ -552,7 +552,7 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = 500)) })
+      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = 500)) }, silent = T)
       if(class(p) == "try-error"){
         next 
       }
@@ -603,7 +603,7 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = 1000)) })
+      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = 1000)) }, silent = T)
       if(class(p) == "try-error"){
         next 
       }

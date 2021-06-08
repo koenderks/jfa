@@ -122,7 +122,7 @@ evaluation <- function(confidence, materiality = NULL, minPrecision = NULL, meth
     
     nPrior      <- prior[["description"]]$implicitn
     kPrior      <- prior[["description"]]$implicitk
-    likelihood  <- prior[["likelihood"]]
+    method      <- prior[["likelihood"]]
     
   }
   

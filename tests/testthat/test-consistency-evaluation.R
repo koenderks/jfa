@@ -2,7 +2,7 @@ context("3. Test consistency of function evaluation()")
 
 # jfa version 0.1.0
 
-test_that(desc = "(id: f5-v0.1.0-t1) Evaluation with Poisson method", {
+test_that(desc = "(id: f3-v0.1.0-t1) Evaluation with Poisson method", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(confidence = 0.95, materiality = 0.05, likelihood = "poisson")
@@ -12,7 +12,7 @@ test_that(desc = "(id: f5-v0.1.0-t1) Evaluation with Poisson method", {
   expect_equal(jfaEval[["confBound"]], 0.04992887, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f5-v0.1.0-t2) Evaluation with Poisson method with prior", {
+test_that(desc = "(id: f3-v0.1.0-t2) Evaluation with Poisson method with prior", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(confidence = 0.95, materiality = 0.05, likelihood = "poisson")
@@ -22,7 +22,7 @@ test_that(desc = "(id: f5-v0.1.0-t2) Evaluation with Poisson method with prior",
   expect_equal(jfaEval[["confBound"]], 0.04911037, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f5-v0.1.0-t3) Evaluation with binomial method", {
+test_that(desc = "(id: f3-v0.1.0-t3) Evaluation with binomial method", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(confidence = 0.95, materiality = 0.05, likelihood = "poisson")
@@ -32,7 +32,7 @@ test_that(desc = "(id: f5-v0.1.0-t3) Evaluation with binomial method", {
   expect_equal(jfaEval[["confBound"]], 0.04870291, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f5-v0.1.0-t4) Evaluation with binomial method with prior", {
+test_that(desc = "(id: f3-v0.1.0-t4) Evaluation with binomial method with prior", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(confidence = 0.95, materiality = 0.05, likelihood = "poisson")
@@ -42,7 +42,7 @@ test_that(desc = "(id: f5-v0.1.0-t4) Evaluation with binomial method with prior"
   expect_equal(jfaEval[["confBound"]], 0.04792395, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f5-v0.1.0-t5) Evaluation with hypergeometric method", {
+test_that(desc = "(id: f3-v0.1.0-t5) Evaluation with hypergeometric method", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(confidence = 0.95, materiality = 0.05, likelihood = "hypergeometric", N = nrow(population))
@@ -52,7 +52,7 @@ test_that(desc = "(id: f5-v0.1.0-t5) Evaluation with hypergeometric method", {
   expect_equal(jfaEval[["confBound"]], 0.049, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f5-v0.1.0-t6) Evaluation with hypergeometric method with prior", {
+test_that(desc = "(id: f3-v0.1.0-t6) Evaluation with hypergeometric method with prior", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(confidence = 0.95, materiality = 0.05, likelihood = "poisson")
@@ -62,7 +62,7 @@ test_that(desc = "(id: f5-v0.1.0-t6) Evaluation with hypergeometric method with 
   expect_equal(jfaEval[["confBound"]], 0.047, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f5-v0.1.0-t7) Evaluation with stringer method", {
+test_that(desc = "(id: f3-v0.1.0-t7) Evaluation with stringer method", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(confidence = 0.95, materiality = 0.05, likelihood = "poisson")
@@ -72,7 +72,7 @@ test_that(desc = "(id: f5-v0.1.0-t7) Evaluation with stringer method", {
   expect_equal(jfaEval[["confBound"]], 0.04870291, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f5-v0.1.0-t8) Evaluation with stringer-meikle method", {
+test_that(desc = "(id: f3-v0.1.0-t8) Evaluation with stringer-meikle method", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(confidence = 0.95, materiality = 0.05, likelihood = "poisson")
@@ -88,7 +88,7 @@ test_that(desc = "(id: f5-v0.1.0-t8) Evaluation with stringer-meikle method", {
   expect_equal(jfaEval[["confBound"]], 0.0338254, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f5-v0.1.0-t9) Evaluation with stringer-lta method", {
+test_that(desc = "(id: f3-v0.1.0-t9) Evaluation with stringer-lta method", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(confidence = 0.95, materiality = 0.05, likelihood = "poisson")
@@ -104,7 +104,7 @@ test_that(desc = "(id: f5-v0.1.0-t9) Evaluation with stringer-lta method", {
   expect_equal(jfaEval[["confBound"]], 0.06899349, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f5-v0.1.0-t10) Evaluation with stringer-pvz method", {
+test_that(desc = "(id: f3-v0.1.0-t10) Evaluation with stringer-pvz method", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(confidence = 0.95, materiality = 0.05, likelihood = "poisson")
@@ -120,7 +120,7 @@ test_that(desc = "(id: f5-v0.1.0-t10) Evaluation with stringer-pvz method", {
   expect_equal(jfaEval[["confBound"]], 0.07590801, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f5-v0.1.0-t11) Evaluation with rohrbach method", {
+test_that(desc = "(id: f3-v0.1.0-t11) Evaluation with rohrbach method", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(confidence = 0.95, materiality = 0.05, likelihood = "poisson")
@@ -130,7 +130,7 @@ test_that(desc = "(id: f5-v0.1.0-t11) Evaluation with rohrbach method", {
   expect_equal(jfaEval[["confBound"]], 0.0308821, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f5-v0.1.0-t12) Evaluation with moment method", {
+test_that(desc = "(id: f3-v0.1.0-t12) Evaluation with moment method", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(confidence = 0.95, materiality = 0.05, likelihood = "poisson")
@@ -150,7 +150,7 @@ test_that(desc = "(id: f5-v0.1.0-t12) Evaluation with moment method", {
   expect_equal(jfaEval[["confBound"]], 0.03656485, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f5-v0.1.0-t13) Evaluation with direct method", {
+test_that(desc = "(id: f3-v0.1.0-t13) Evaluation with direct method", {
   data("BuildIt")
   BuildIt$inSample <- c(rep(1, 100), rep(0, 3400))
   BuildIt_sample <- subset(BuildIt, BuildIt$inSample == 1)
@@ -160,7 +160,7 @@ test_that(desc = "(id: f5-v0.1.0-t13) Evaluation with direct method", {
   expect_equal(jfaEval[["upperBound"]], 178211.9, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f5-v0.1.0-t14) Evaluation with difference method", {
+test_that(desc = "(id: f3-v0.1.0-t14) Evaluation with difference method", {
   data("BuildIt")
   BuildIt$inSample <- c(rep(1, 100), rep(0, 3400))
   BuildIt_sample <- subset(BuildIt, BuildIt$inSample == 1)
@@ -170,7 +170,7 @@ test_that(desc = "(id: f5-v0.1.0-t14) Evaluation with difference method", {
   expect_equal(jfaEval[["upperBound"]], 65159.94, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f5-v0.1.0-t15) Evaluation with quotient method", {
+test_that(desc = "(id: f3-v0.1.0-t15) Evaluation with quotient method", {
   data("BuildIt")
   BuildIt$inSample <- c(rep(1, 100), rep(0, 3400))
   BuildIt_sample <- subset(BuildIt, BuildIt$inSample == 1)
@@ -180,7 +180,7 @@ test_that(desc = "(id: f5-v0.1.0-t15) Evaluation with quotient method", {
   expect_equal(jfaEval[["upperBound"]], 65458.64, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f5-v0.1.0-t16) Evaluation with regression method", {
+test_that(desc = "(id: f3-v0.1.0-t16) Evaluation with regression method", {
   data("BuildIt")
   BuildIt$inSample <- c(rep(1, 100), rep(0, 3400))
   BuildIt_sample <- subset(BuildIt, BuildIt$inSample == 1)
@@ -190,7 +190,7 @@ test_that(desc = "(id: f5-v0.1.0-t16) Evaluation with regression method", {
   expect_equal(jfaEval[["upperBound"]], 64674.73, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f5-v0.1.0-t17) Evaluation with Cox and Snell method", {
+test_that(desc = "(id: f3-v0.1.0-t17) Evaluation with Cox and Snell method", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(confidence = 0.95, materiality = 0.05, expectedError = 0.025)
@@ -206,7 +206,7 @@ test_that(desc = "(id: f5-v0.1.0-t17) Evaluation with Cox and Snell method", {
 
 # jfa version 0.3.0
 
-test_that(desc = "(id: f5-v0.3.0-t1) Evaluation with counts and stringer method", {
+test_that(desc = "(id: f3-v0.3.0-t1) Evaluation with counts and stringer method", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(confidence = 0.95, materiality = 0.05, expectedError = 0.025)
@@ -222,7 +222,7 @@ test_that(desc = "(id: f5-v0.3.0-t1) Evaluation with counts and stringer method"
 # No changes to be benchmarked
 
 # jfa version 0.4.0
-test_that(desc = "(id: f5-v0.4.0-t1) Bayes factors", {
+test_that(desc = "(id: f3-v0.4.0-t1) Bayes factors", {
   data("BuildIt")
   jfaRes <- planning(confidence = 0.95, materiality = 0.05, expectedError = 0.025, likelihood = 'poisson')
   samp <- selection(BuildIt, sampleSize = jfaRes, units = "records", algorithm = "interval", ordered = TRUE)$sample
@@ -236,7 +236,7 @@ test_that(desc = "(id: f5-v0.4.0-t1) Bayes factors", {
 
 # jfa version 0.5.0
 
-test_that(desc = "(id: f5-v0.5.0-t1) Test for mpu estimator", {
+test_that(desc = "(id: f3-v0.5.0-t1) Test for mpu estimator", {
   
   sample <- data.frame(ID = 1:100, ist = rnorm(mean = 1000, n = 100))
   sample$soll <- sample$ist
@@ -248,7 +248,7 @@ test_that(desc = "(id: f5-v0.5.0-t1) Test for mpu estimator", {
   expect_equal(jfaEval[["confBound"]], 0.003970126, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f5-v0.5.0-t1) Test for frequentist print function", {
+test_that(desc = "(id: f3-v0.5.0-t1) Test for frequentist print function", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(confidence = 0.95, materiality = 0.05, likelihood = "poisson")
@@ -266,7 +266,7 @@ test_that(desc = "(id: f5-v0.5.0-t1) Test for frequentist print function", {
   expect_equal(jfaEval[["mle"]], 33872, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f5-v0.2.0-t2) Test for Bayesian print function", {
+test_that(desc = "(id: f3-v0.2.0-t2) Test for Bayesian print function", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(confidence = 0.95, materiality = 0.05, likelihood = "poisson")
@@ -278,7 +278,7 @@ test_that(desc = "(id: f5-v0.2.0-t2) Test for Bayesian print function", {
   expect_equal(jfaEval[["confBound"]], 0.04792395, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f5-v0.2.0-t3) Test for frequentist plot function", {
+test_that(desc = "(id: f3-v0.2.0-t3) Test for frequentist plot function", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(confidence = 0.95, materiality = 0.05, likelihood = "poisson")
@@ -301,7 +301,7 @@ test_that(desc = "(id: f5-v0.2.0-t3) Test for frequentist plot function", {
   invisible(capture.output(plot(jfaEval)))
 })
 
-test_that(desc = "(id: f5-v0.2.0-t4) Test for Bayesian plot function", {
+test_that(desc = "(id: f3-v0.2.0-t4) Test for Bayesian plot function", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   samp <- selection(population, sampleSize = 100, units = "records", algorithm = "random", ordered = TRUE)$sample
