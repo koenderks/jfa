@@ -42,7 +42,7 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "poisson", materiality = m[columns])) })
+      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "poisson", materiality = m[columns])) }, silent = T)
       if(class(p) == "try-error"){
         next 
       }
@@ -93,7 +93,7 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "poisson", materiality = m[columns])) })
+      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "poisson", materiality = m[columns])) }, silent = T)
       if(class(p) == "try-error"){
         next 
       }
@@ -144,7 +144,7 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "poisson", materiality = m[columns])) })
+      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "poisson", materiality = m[columns])) }, silent = T)
       if(class(p) == "try-error"){
         next 
       }
@@ -195,7 +195,7 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "poisson", materiality = m[columns])) })
+      p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "poisson", materiality = m[columns])) }, silent = T)
       if(class(p) == "try-error"){
         next 
       }
