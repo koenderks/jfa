@@ -225,7 +225,7 @@ print.jfaEvaluation <- function(x, digits = 3, ...) {
 # Minium precision:             ", ifelse(x[["minPrecision"]] == 1, yes = "Not specified", no = paste0(round(x[["minPrecision"]] * 100, digits), "%")),"
 # Sample size:                  ", round(x[["n"]], digits),"
 # Sample errors:                ", round(x[["k"]], digits), "
-# Sum of taints:                ", round(x[["k"]], digits), "
+# Sum of taints:                ", round(x[["t"]], digits), "
 # Method:                       ", x[["method"]], "
 # ------------------------------------------------------------
 # Output:
