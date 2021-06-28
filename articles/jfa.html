@@ -155,27 +155,8 @@
 <p>Constructing a sample with this objective in mind can be done using the code below (specifically by specifying the <code>materiality</code> argument). As you can see, the minimal sample size to achieve 95% assurance with respect to the performance materiality of 5% is 60 monetary units.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>confidence <span class="op">=</span> <span class="fl">0.95</span>, materiality <span class="op">=</span> <span class="fl">0.05</span>, expectedError <span class="op">=</span> <span class="fl">0</span>, likelihood <span class="op">=</span> <span class="st">'poisson'</span>, N <span class="op">=</span> <span class="fl">3500</span><span class="op">)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------
-## #              jfa Planning Summary (Frequentist)
-## # ------------------------------------------------------------     
-## # Input:
-## # 
-## # Confidence:                    95% 
-## # Materiality:                   5% 
-## # Minimum precision:             Not specified 
-## # Likelihood:                    poisson 
-## # Expected sample errors:        0 
-## # ------------------------------------------------------------
-## # Output:
-## #
-## # Sample size:                   60 
-## # ------------------------------------------------------------
-## # Statistics:
-## #
-## # Expected most likely error:    0% 
-## # Expected upper bound:          4.993% 
-## # Expected precision:            4.993% 
-## # ------------------------------------------------------------</code></pre>
+<pre><code>## Object of class 'jfaPlanning'.
+## Minimum sample size: 60</code></pre>
 </div>
 <div id="obtaining-a-minimum-precision" class="section level3">
 <h3 class="hasAnchor">
@@ -185,27 +166,8 @@
 <p>Planning a sample with this objective can be done using the code below (specifically by specifying the <code>minPrecision</code> argument). As you can see, the minimal sample size for to achieve a precision of at least 2% is 150 monetary units.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>confidence <span class="op">=</span> <span class="fl">0.95</span>, minPrecision <span class="op">=</span> <span class="fl">0.02</span>, expectedError <span class="op">=</span> <span class="fl">0</span>, likelihood <span class="op">=</span> <span class="st">'poisson'</span>, N <span class="op">=</span> <span class="fl">3500</span><span class="op">)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------
-## #              jfa Planning Summary (Frequentist)
-## # ------------------------------------------------------------     
-## # Input:
-## # 
-## # Confidence:                    95% 
-## # Materiality:                   Not specified 
-## # Minimum precision:             2% 
-## # Likelihood:                    poisson 
-## # Expected sample errors:        0 
-## # ------------------------------------------------------------
-## # Output:
-## #
-## # Sample size:                   150 
-## # ------------------------------------------------------------
-## # Statistics:
-## #
-## # Expected most likely error:    0% 
-## # Expected upper bound:          1.997% 
-## # Expected precision:            1.997% 
-## # ------------------------------------------------------------</code></pre>
+<pre><code>## Object of class 'jfaPlanning'.
+## Minimum sample size: 150</code></pre>
 </div>
 </div>
 <div id="using-selection-the-basics" class="section level2">
@@ -218,24 +180,8 @@
 <p>First, we take a look at how you can use the <code><a href="../reference/selection.html">selection()</a></code> function to perform random sampling from the items in the population. As an example, the code below samples 60 invoices from the <code>BuildIt</code> data set using a <em>random record sampling</em> scheme.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="fl">60</span>, units <span class="op">=</span> <span class="st">'records'</span>, algorithm <span class="op">=</span> <span class="st">'random'</span><span class="op">)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------
-## #                  jfa Selection Summary
-## # ------------------------------------------------------------
-## # Input:
-## #       
-## # Population size:               3500 
-## # Requested sample size:         60 
-## # Sampling units:                Records 
-## # Algorithm:                     Random sampling   
-## # ------------------------------------------------------------ 
-## # Output:
-## # 
-## # Obtained sample size:          60 
-## # ------------------------------------------------------------
-## # Statistics:
-## #
-## # Proportion n/N:                0.017 
-## # ------------------------------------------------------------</code></pre>
+<pre><code>## Object of class 'jfaSelection'.
+## Obtained sample size: 60</code></pre>
 </div>
 <div id="monetary-unit-sampling-mus" class="section level3">
 <h3 class="hasAnchor">
@@ -244,27 +190,8 @@
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="fl">150</span>, units <span class="op">=</span> <span class="st">'mus'</span>, algorithm <span class="op">=</span> <span class="st">'interval'</span>,
           bookValues <span class="op">=</span> <span class="st">'bookValue'</span><span class="op">)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------
-## #                  jfa Selection Summary
-## # ------------------------------------------------------------
-## # Input:
-## #      
-## # Population size:               3500 
-## # Requested sample size:         150 
-## # Sampling units:                Monetary units 
-## # Algorithm:                     Fixed interval sampling 
-## # Interval:                      9354.805
-## # Starting point:                1  
-## # ------------------------------------------------------------ 
-## # Output:
-## #
-## # Obtained sample size:          150 
-## # ------------------------------------------------------------
-## # Statistics:
-## #
-## # Proportion n/N:                0.043 
-## # Percentage of value:           5.294% 
-## # ------------------------------------------------------------</code></pre>
+<pre><code>## Object of class 'jfaSelection'.
+## Obtained sample size: 150</code></pre>
 </div>
 <div id="extracting-the-sample" class="section level3">
 <h3 class="hasAnchor">
@@ -299,26 +226,8 @@
 <p>Sampling objective: <em>Evaluate, on the basis of summary statistics of a sample, whether the misstatement in the population exceeds the allocated performance materiality such that there is a 5% ‘chance’ of incorrectly concluding that the population is free of material misstatement.</em></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>confidence <span class="op">=</span> <span class="fl">0.95</span>,  materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">'binomial'</span>, N <span class="op">=</span> <span class="fl">3500</span>, nSumstats <span class="op">=</span> <span class="fl">60</span>, kSumstats <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------ 
-## #             jfa Evaluation Summary (Frequentist)
-## # ------------------------------------------------------------ 
-## # Input: 
-## #
-## # Confidence:                    95%   
-## # Materiality:                   5% 
-## # Minimum precision:             Not specified 
-## # Sample size:                   60 
-## # Sample errors:                 1 
-## # Sum of taints:                 1 
-## # Method:                        binomial 
-## # ------------------------------------------------------------
-## # Output:
-## #
-## # Most likely error:             1.667% 
-## # Upper bound:                   7.664% 
-## # Precision:                     5.997% 
-## # Conclusion:                    Do not approve population 
-## # ------------------------------------------------------------</code></pre>
+<pre><code>## Object of class 'jfaEvaluation'.
+## Conclusion: Do not approve population</code></pre>
 <p>As you can see, the upper bound on the misstatement is higher than 5% and thus the sample does not provide sufficient evidence to conclude that the misstatement is lower than 5%.</p>
 </div>
 <div id="annotated-sample" class="section level3">
@@ -333,26 +242,8 @@
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>confidence <span class="op">=</span> <span class="fl">0.95</span>, materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">'stringer'</span>, sample <span class="op">=</span> <span class="va">sample</span>, bookValues <span class="op">=</span> <span class="st">'bookValue'</span>, 
            auditValues <span class="op">=</span> <span class="st">'auditValue'</span>, counts <span class="op">=</span> <span class="va">sample</span><span class="op">$</span><span class="va">count</span>, N <span class="op">=</span> <span class="fl">3500</span><span class="op">)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------ 
-## #             jfa Evaluation Summary (Frequentist)
-## # ------------------------------------------------------------ 
-## # Input: 
-## #
-## # Confidence:                    95%   
-## # Materiality:                   5% 
-## # Minimum precision:             Not specified 
-## # Sample size:                   60 
-## # Sample errors:                 1 
-## # Sum of taints:                 0.162 
-## # Method:                        stringer 
-## # ------------------------------------------------------------
-## # Output:
-## #
-## # Most likely error:             0.27% 
-## # Upper bound:                   5.322% 
-## # Precision:                     5.053% 
-## # Conclusion:                    Do not approve population 
-## # ------------------------------------------------------------</code></pre>
+<pre><code>## Object of class 'jfaEvaluation'.
+## Conclusion: Do not approve population</code></pre>
 </div>
 </div>
 <div id="using-report-the-basics" class="section level2">

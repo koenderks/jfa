@@ -200,29 +200,8 @@
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>confidence <span class="op">=</span> <span class="fl">0.95</span>, materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"none"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span>
 <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>confidence <span class="op">=</span> <span class="fl">0.95</span>, materiality <span class="op">=</span> <span class="fl">0.05</span>, nSumstats <span class="op">=</span> <span class="fl">40</span>, kSumstats <span class="op">=</span> <span class="fl">1</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------ 
-## #             jfa Evaluation Summary (Bayesian)
-## # ------------------------------------------------------------
-## # Input: 
-## #
-## # Confidence:                    95%   
-## # Materiality:                   5% 
-## # Minimum precision:             Not specified 
-## # Sample size:                   40 
-## # Sample errors:                 1 
-## # Sum of taints:                 1  
-## # Method:                        binomial 
-## # Prior distribution:            beta(α = 1, β = 1) 
-## # ------------------------------------------------------------
-## # Output:
-## #
-## # Posterior distribution:        beta(α = 2, β = 40) 
-## # Most likely error:             2.5% 
-## # Upper bound:                   11.055% 
-## # Precision:                     8.555% 
-## # Bayes factor-+:                30.282 
-## # Conclusion:                    Do not approve population 
-## # ------------------------------------------------------------</code></pre>
+<pre><code>## Object of class 'jfaEvaluation'.
+## Conclusion: Do not approve population</code></pre>
 </div>
 <div id="sensitivity-to-the-prior-distribution" class="section level3">
 <h3 class="hasAnchor">
@@ -232,29 +211,8 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>confidence <span class="op">=</span> <span class="fl">0.95</span>, materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"median"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span>
 <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>confidence <span class="op">=</span> <span class="fl">0.95</span>, materiality <span class="op">=</span> <span class="fl">0.05</span>, nSumstats <span class="op">=</span> <span class="fl">40</span>, kSumstats <span class="op">=</span> <span class="fl">1</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------ 
-## #             jfa Evaluation Summary (Bayesian)
-## # ------------------------------------------------------------
-## # Input: 
-## #
-## # Confidence:                    95%   
-## # Materiality:                   5% 
-## # Minimum precision:             Not specified 
-## # Sample size:                   40 
-## # Sample errors:                 1 
-## # Sum of taints:                 1  
-## # Method:                        binomial 
-## # Prior distribution:            beta(α = 1, β = 13.513) 
-## # ------------------------------------------------------------
-## # Output:
-## #
-## # Posterior distribution:        beta(α = 2, β = 52.513) 
-## # Most likely error:             1.904% 
-## # Upper bound:                   8.561% 
-## # Precision:                     6.656% 
-## # Bayes factor-+:                3.078 
-## # Conclusion:                    Do not approve population 
-## # ------------------------------------------------------------</code></pre>
+<pre><code>## Object of class 'jfaEvaluation'.
+## Conclusion: Do not approve population</code></pre>
 </div>
 </div>
   </div>
