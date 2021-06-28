@@ -20,14 +20,14 @@ adjustedConfidence <- 1 - ((1 - confidence) / (ir * cr))
 planningResult <- planning(adjustedConfidence, materiality, expectedError = expectedError)
 
 ## -----------------------------------------------------------------------------
-print(planningResult)
+summary(planningResult)
 
 ## -----------------------------------------------------------------------------
 # Step 2: Draw a sample from the financial statements.
 samplingResult <- selection(BuildIt, sampleSize = 190, units = "mus", bookValues = "bookValue")
 
 ## -----------------------------------------------------------------------------
-print(samplingResult)
+summary(samplingResult)
 
 ## -----------------------------------------------------------------------------
 # Step 3: Isolate the sample for execution of the audit.
@@ -45,5 +45,5 @@ evaluationResult <- evaluation(confidence, materiality, sample = sample,
                                bookValues = 'bookValue', auditValues = 'auditValue')
 
 ## -----------------------------------------------------------------------------
-print(evaluationResult)
+summary(evaluationResult)
 

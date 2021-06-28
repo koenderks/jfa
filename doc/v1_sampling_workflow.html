@@ -183,8 +183,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>adjustedConfidence <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> ((<span class="dv">1</span> <span class="sc">-</span> confidence) <span class="sc">/</span> (ir <span class="sc">*</span> cr))</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Calculate the required sample size.</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>planningResult <span class="ot">&lt;-</span> <span class="fu">planning</span>(adjustedConfidence, materiality, <span class="at">expectedError =</span> expectedError)</span></code></pre></div>
-<p>Laura can then inspect the result from her planning procedure by using the <code>print()</code> function. Her result tells her that, given her prior distribution she needs to audit a sample of 190 transactions so that, when at most 5 errors are found, she can conclude with 91.66% confidence that the maximum error in BuildIt’s financial statements is lower the materiality of 5%.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(planningResult)</span></code></pre></div>
+<p>Laura can then inspect the result from her planning procedure by using the <code>summary()</code> function. Her result tells her that, given her prior distribution she needs to audit a sample of 190 transactions so that, when at most 5 errors are found, she can conclude with 91.66% confidence that the maximum error in BuildIt’s financial statements is lower the materiality of 5%.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(planningResult)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #              jfa Planning Summary (Frequentist)
 ## # ------------------------------------------------------------     
@@ -213,8 +213,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Laura chooses to use <em>monetary unit sampling</em>, as she wants to include more high-valued transactions. The <code>selection()</code> function allows her to sample from the financial statements. She uses the <code>planningResult</code> object as an input for the <code>selection()</code> function.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Draw a sample from the financial statements.</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>samplingResult <span class="ot">&lt;-</span> <span class="fu">selection</span>(BuildIt, <span class="at">sampleSize =</span> <span class="dv">190</span>, <span class="at">units =</span> <span class="st">&quot;mus&quot;</span>, <span class="at">bookValues =</span> <span class="st">&quot;bookValue&quot;</span>)</span></code></pre></div>
-<p>Laura can inspect the outcomes of her sampling procedure by using the <code>print()</code> function.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(samplingResult)</span></code></pre></div>
+<p>Laura can inspect the outcomes of her sampling procedure by using the <code>summary()</code> function.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(samplingResult)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #                  jfa Selection Summary
 ## # ------------------------------------------------------------
@@ -254,8 +254,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 4: Evaluate the sample</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>evaluationResult <span class="ot">&lt;-</span> <span class="fu">evaluation</span>(confidence, materiality, <span class="at">sample =</span> sample, </span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                               <span class="at">bookValues =</span> <span class="st">&#39;bookValue&#39;</span>, <span class="at">auditValues =</span> <span class="st">&#39;auditValue&#39;</span>)</span></code></pre></div>
-<p>Laura can inspect the outcomes of her inference by using the <code>print()</code> function. Her resulting upper bound is 1.564%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(evaluationResult)</span></code></pre></div>
+<p>Laura can inspect the outcomes of her inference by using the <code>summary()</code> function. Her resulting upper bound is 1.564%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(evaluationResult)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------ 
 ## #             jfa Evaluation Summary (Frequentist)
 ## # ------------------------------------------------------------ 

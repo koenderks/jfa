@@ -2,6 +2,8 @@
 
 **New features**
 
+- The `print()` functions return a more concise description of the relevant output.
+- Added `summary()` functions for all returned objects that take over the former of the `print()` functions.
 - Implemented a new function `auditBF()` which solely computes Bayes factors from summary statistics of an audit sample.
 
 **Bug fixes**

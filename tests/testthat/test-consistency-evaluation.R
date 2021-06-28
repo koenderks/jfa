@@ -248,33 +248,33 @@ test_that(desc = "(id: f3-v0.5.0-t1) Test for mpu estimator", {
   expect_equal(jfaEval[["confBound"]], 0.003970126, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f3-v0.5.0-t1) Test for frequentist print function", {
+test_that(desc = "(id: f3-v0.5.0-t1) Test for frequentist summary function", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(confidence = 0.95, materiality = 0.05, likelihood = "poisson")
   samp <- selection(population, sampleSize = jfaRes, units = "records", algorithm = "random", ordered = TRUE)$sample
   samp$auditValue <- samp[["bookValue"]]
   jfaEval <- evaluation(confidence = 0.95, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "poisson", materiality = 0.05)
-  invisible(capture.output(print(jfaEval)))
+  invisible(capture.output(summary(jfaEval)))
   expect_equal(jfaEval[["confBound"]], 0.04992887, tolerance = 0.001)
   
   data("BuildIt")
   BuildIt$inSample <- c(rep(1, 100), rep(0, 3400))
   BuildIt_sample <- subset(BuildIt, BuildIt$inSample == 1)
   jfaEval <- evaluation(confidence = 0.95, materiality = 0.05, sample = BuildIt_sample, bookValues = "bookValue", auditValues = "auditValue", method = "regression", N = 3500, populationBookValue = sum(BuildIt$bookValue))
-  invisible(capture.output(print(jfaEval)))
+  invisible(capture.output(summary(jfaEval)))
   expect_equal(jfaEval[["mle"]], 33872, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f3-v0.2.0-t2) Test for Bayesian print function", {
+test_that(desc = "(id: f3-v0.2.0-t2) Test for Bayesian summary function", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(confidence = 0.95, materiality = 0.05, likelihood = "poisson")
   samp <- selection(population, sampleSize = jfaRes, units = "records", algorithm = "random", ordered = TRUE)$sample
   samp$auditValue <- samp[["bookValue"]]
   jfaEval <- evaluation(confidence = 0.95, sample = samp, bookValues = "bookValue", auditValues = "auditValue", method = "binomial", prior = TRUE, materiality = 0.05)
-  invisible(capture.output(print(jfaEval)))
-  invisible(capture.output(print(jfaEval[["expectedPosterior"]])))
+  invisible(capture.output(summary(jfaEval)))
+  invisible(capture.output(summary(jfaEval[["expectedPosterior"]])))
   expect_equal(jfaEval[["confBound"]], 0.04792395, tolerance = 0.001)
 })
 

@@ -59,10 +59,10 @@ adjustedConfidence <- 1 - ((1 - confidence) / (ir * cr))
 planningResult <- planning(adjustedConfidence, materiality, expectedError = expectedError)
 ```
 
-Laura can then inspect the result from her planning procedure by using the `print()` function. Her result tells her that, given her prior distribution she needs to audit a sample of 190 transactions so that, when at most 5 errors are found, she can conclude with 91.66% confidence that the maximum error in BuildIt's financial statements is lower the materiality of 5%. 
+Laura can then inspect the result from her planning procedure by using the `summary()` function. Her result tells her that, given her prior distribution she needs to audit a sample of 190 transactions so that, when at most 5 errors are found, she can conclude with 91.66% confidence that the maximum error in BuildIt's financial statements is lower the materiality of 5%. 
 
 ```{r}
-print(planningResult)
+summary(planningResult)
 ```
 
 ## Stage 2: Selecting a sample
@@ -76,10 +76,10 @@ Laura chooses to use *monetary unit sampling*, as she wants to include more high
 samplingResult <- selection(BuildIt, sampleSize = 190, units = "mus", bookValues = "bookValue")
 ```
 
-Laura can inspect the outcomes of her sampling procedure by using the `print()` function.
+Laura can inspect the outcomes of her sampling procedure by using the `summary()` function.
 
 ```{r}
-print(samplingResult)
+summary(samplingResult)
 ```
 
 ## Stage 3: Executing the audit
@@ -109,10 +109,10 @@ evaluationResult <- evaluation(confidence, materiality, sample = sample,
                                bookValues = 'bookValue', auditValues = 'auditValue')
 ```
 
-Laura can inspect the outcomes of her inference by using the `print()` function. Her resulting upper bound is 1.564%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.
+Laura can inspect the outcomes of her inference by using the `summary()` function. Her resulting upper bound is 1.564%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.
 
 ```{r}
-print(evaluationResult)
+summary(evaluationResult)
 ```
 
 ## Conclusion

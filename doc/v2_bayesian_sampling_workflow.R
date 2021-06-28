@@ -22,7 +22,7 @@ adjustedConfidence <- 1 - ((1 - confidence) / (ir * cr))
 prior <- auditPrior(confidence, materiality, expectedError, method = "arm", likelihood = "binomial", ir = ir, cr = cr)
 
 ## -----------------------------------------------------------------------------
-print(prior)
+summary(prior)
 
 ## ----fig.align="center", fig.height=4, fig.width=6----------------------------
 plot(prior)
@@ -32,7 +32,7 @@ plot(prior)
 planningResult <- planning(confidence, materiality, expectedError = expectedError, prior = prior)
 
 ## -----------------------------------------------------------------------------
-print(planningResult)
+summary(planningResult)
 
 ## ----fig.align="center", fig.height=4, fig.width=6----------------------------
 plot(planningResult)
@@ -42,7 +42,7 @@ plot(planningResult)
 samplingResult <- selection(BuildIt, sampleSize = 164, units = "mus", bookValues = "bookValue")
 
 ## -----------------------------------------------------------------------------
-print(samplingResult)
+summary(samplingResult)
 
 ## -----------------------------------------------------------------------------
 # Step 3: Isolate the sample for execution of the audit.
@@ -59,7 +59,7 @@ sample <- samplingResult$sample
 evaluationResult <- evaluation(confidence, materiality, sample = sample, bookValues = "bookValue", auditValues = "auditValue", prior = prior)
 
 ## -----------------------------------------------------------------------------
-print(evaluationResult)
+summary(evaluationResult)
 
 ## ----fig.align="center", fig.height=4, fig.width=6----------------------------
 plot(evaluationResult)

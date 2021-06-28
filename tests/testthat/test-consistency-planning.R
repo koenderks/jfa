@@ -205,17 +205,17 @@ test_that(desc = "(id: f5-v0.4.0-t3) Expected Bayes factors for median priors", 
 
 # jfa version 0.5.0
 
-test_that(desc = "(id: f5-v0.5.0-t1) Test for frequentist print function", {
+test_that(desc = "(id: f5-v0.5.0-t1) Test for frequentist summary function", {
   jfaRes <- planning(materiality = 0.01, confidence = 0.95, expectedError = 0, likelihood = "poisson")
-  invisible(capture.output(print(jfaRes)))
+  invisible(capture.output(summary(jfaRes)))
   expect_equal(jfaRes[["sampleSize"]], 300)
   expect_equal(jfaRes[["expectedSampleError"]], 0)
 })
 
-test_that(desc = "(id: f5-v0.5.0-t2) Test for Bayesian print function", {
+test_that(desc = "(id: f5-v0.5.0-t2) Test for Bayesian summary function", {
   jfaRes <- planning(materiality = 0.01, confidence = 0.95, expectedError = 0, likelihood = "poisson", prior = TRUE)
-  invisible(capture.output(print(jfaRes)))
-  invisible(capture.output(print(jfaRes[["expectedPosterior"]])))
+  invisible(capture.output(summary(jfaRes)))
+  invisible(capture.output(summary(jfaRes[["expectedPosterior"]])))
   expect_equal(jfaRes[["sampleSize"]], 300)
   expect_equal(jfaRes[["expectedSampleError"]], 0)
 })
