@@ -128,7 +128,7 @@ The `auditPrior()` function creates a prior distribution according to one of sev
 
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
-The `planning()` function calculates the minimum sample size for a statistical audit sample based on the binomial, Poisson, or hypergeometric likelihood. The function returns an object of class `jfaPlanning` which can be used with associated `summary()` and a `plot()` methods. To perform Bayesian planning, the input for the `prior` argument can be an object of class `jfaPrior` as returned by the `auditPrior()` function, or an object of class `jfaPosterior` as returned by the `evaluation()` function.
+The `planning()` function calculates the minimum sample size for a statistical audit sample based on the binomial, Poisson, or hypergeometric likelihood. The function returns an object of class `jfaPlanning` which can be used with associated `summary()` and `plot()` methods. To perform Bayesian planning, the input for the `prior` argument can be an object of class `jfaPrior` as returned by the `auditPrior()` function, or an object of class `jfaPosterior` as returned by the `evaluation()` function.
 
 *Full function with default arguments:*
 
@@ -146,7 +146,7 @@ The `planning()` function calculates the minimum sample size for a statistical a
 
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
-The `selection()` function takes a data frame and performs statistical sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. The function returns an object of class `jfaSelection` which can be used with associated `summary()` and a `plot()` methods. The input for the `sampleSize` argument can be an object of class `jfaPlanning` as returned by the `planning()` function.
+The `selection()` function takes a data frame and performs statistical sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. The function returns an object of class `jfaSelection` which can be used with associated `summary()` and `plot()` methods. The input for the `sampleSize` argument can be an object of class `jfaPlanning` as returned by the `planning()` function.
 
 *Full function with default arguments:*
 
