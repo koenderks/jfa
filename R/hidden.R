@@ -175,7 +175,7 @@ print.jfaEvaluation <- function(x, digits = 3, ...) {
 #   
 # Confidence:                   ", paste0(round(x[["confidence"]] * 100, digits), "%"),"
 # Materiality:                  ", ifelse(x[["materiality"]] == 1, yes = "Not specified", no = paste0(round(x[["materiality"]] * 100, digits), "%")),"
-# Minium precision:             ", ifelse(x[["minPrecision"]] == 1, yes = "Not specified", no = paste0(round(x[["minPrecision"]] * 100, digits), "%")),"
+# Minimum precision:            ", ifelse(x[["minPrecision"]] == 1, yes = "Not specified", no = paste0(round(x[["minPrecision"]] * 100, digits), "%")),"
 # Sample size:                  ", round(x[["n"]], digits),"
 # Sample errors:                ", round(x[["k"]], digits), "
 # Method:                       ", x[["method"]], "
@@ -198,7 +198,7 @@ print.jfaEvaluation <- function(x, digits = 3, ...) {
 #
 # Confidence:                   ", paste0(round(x[["confidence"]] * 100, digits), "%"),"  
 # Materiality:                  ", ifelse(x[["materiality"]] == 1, yes = "Not specified", no = paste0(round(x[["materiality"]] * 100, digits), "%")),"
-# Minium precision:             ", ifelse(x[["minPrecision"]] == 1, yes = "Not specified", no = paste0(round(x[["minPrecision"]] * 100, digits), "%")),"
+# Minimum precision:            ", ifelse(x[["minPrecision"]] == 1, yes = "Not specified", no = paste0(round(x[["minPrecision"]] * 100, digits), "%")),"
 # Sample size:                  ", round(x[["n"]], digits),"
 # Sample errors:                ", round(x[["k"]], digits), "
 # Sum of taints:                ", round(x[["t"]], digits), " 
@@ -222,7 +222,7 @@ print.jfaEvaluation <- function(x, digits = 3, ...) {
 #
 # Confidence:                   ", paste0(round(x[["confidence"]] * 100, digits), "%"),"  
 # Materiality:                  ", ifelse(x[["materiality"]] == 1, yes = "Not specified", no = paste0(round(x[["materiality"]] * 100, digits), "%")),"
-# Minium precision:             ", ifelse(x[["minPrecision"]] == 1, yes = "Not specified", no = paste0(round(x[["minPrecision"]] * 100, digits), "%")),"
+# Minimum precision:            ", ifelse(x[["minPrecision"]] == 1, yes = "Not specified", no = paste0(round(x[["minPrecision"]] * 100, digits), "%")),"
 # Sample size:                  ", round(x[["n"]], digits),"
 # Sample errors:                ", round(x[["k"]], digits), "
 # Sum of taints:                ", round(x[["t"]], digits), "
