@@ -403,8 +403,8 @@
 <p>The prior distribution can be used the planning stage to calculate a minimum sample size by providing the objected returned by the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function to the <code><a href="../reference/planning.html">planning()</a></code> function. For example, the code below calculates the minimum sample size to test the misstatement in the population against a performance materiality of 5%, while incorporating the information in <code>prior7</code>.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, expectedError <span class="op">=</span> <span class="va">expectedError</span>, prior <span class="op">=</span> <span class="va">prior7</span><span class="op">)</span></code></pre></div>
-<pre><code>## Object of class 'jfaPlanning'.
-## Minimum sample size: 27</code></pre>
+<pre><code>## Minimum sample size: 27 
+## Sample size obtained via method 'binomial'.</code></pre>
 </div>
 <div id="combining-auditprior-with-evaluation" class="section level3">
 <h3 class="hasAnchor">
@@ -413,8 +413,8 @@
 <p>The prior distribution can be used the evaluation stage by providing the objected returned by the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function to the <code><a href="../reference/evaluation.html">evaluation()</a></code> function. For example, the code below evaluates the misstatement in the population with respect to the performance materiality of 5% after seeing a sample of 60 items with 1 misstatement, while incorporating the information in <code>prior7</code>.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span><span class="va">confidence</span>, <span class="va">materiality</span>, nSumstats <span class="op">=</span> <span class="fl">60</span>, kSumstats <span class="op">=</span> <span class="fl">1</span>, prior <span class="op">=</span> <span class="va">prior7</span><span class="op">)</span></code></pre></div>
-<pre><code>## Object of class 'jfaEvaluation'.
-## Conclusion: Approve population</code></pre>
+<pre><code>## Most likely error: 0.994% | 95% upper bound: 4.584% | Precision: 3.59% | BF-+: 3.745 
+## Estimates obtained via method 'binomial'.</code></pre>
 </div>
 </div>
   </div>
