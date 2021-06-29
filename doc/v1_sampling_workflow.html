@@ -186,26 +186,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">confidence =</span> adjustedConfidence)</span></code></pre></div>
 <p>Laura can then inspect the result from her planning procedure by using the <code>summary()</code> function. Her result tells her that, given her prior distribution she needs to audit a sample of 190 transactions so that, when at most 5 errors are found, she can conclude with 91.66% confidence that the maximum error in BuildIt’s financial statements is lower the materiality of 5%.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(planningResult)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------
-## #              jfa Planning Summary (Frequentist)
-## # ------------------------------------------------------------     
+<pre><code>## # ------------------------------------------------------------ 
+## #              jfa Planning Summary (Classical)
+## # ------------------------------------------------------------ 
 ## # Input:
 ## # 
 ## # Confidence:                    91.667% 
 ## # Materiality:                   5% 
 ## # Minimum precision:             Not specified 
-## # Likelihood:                    binomial 
+## # Likelihood:                    binomial  
 ## # Expected sample errors:        5 
 ## # ------------------------------------------------------------
 ## # Output:
 ## #
-## # Sample size:                   190 
+## # Sample size:                   190  
 ## # ------------------------------------------------------------
 ## # Statistics:
 ## #
 ## # Expected most likely error:    2.632% 
 ## # Expected upper bound:          4.997% 
-## # Expected precision:            2.365% 
+## # Expected precision:            2.365%  
 ## # ------------------------------------------------------------</code></pre>
 </div>
 <div id="stage-2-selecting-a-sample" class="section level2">
@@ -261,23 +261,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Laura can inspect the outcomes of her inference by using the <code>summary()</code> function. Her resulting 91.66% upper bound is 1.299%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(evaluationResult)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------ 
-## #             jfa Evaluation Summary (Frequentist)
+## #             jfa Evaluation Summary (Classical)
 ## # ------------------------------------------------------------ 
-## # Input: 
+## # Input:
 ## #
-## # Confidence:                    91.667%   
+## # Confidence:                    91.667% 
 ## # Materiality:                   5% 
 ## # Minimum precision:             Not specified 
 ## # Sample size:                   190 
 ## # Sample errors:                 0 
 ## # Sum of taints:                 0 
-## # Method:                        binomial 
+## # Method:                        binomial   
 ## # ------------------------------------------------------------
 ## # Output:
-## #
-## # Most likely error:             0% 
-## # Upper bound:                   1.299% 
-## # Precision:                     1.299% 
+## #  
+## # Most likely error:             0%
+## # Upper bound:                   1.299%
+## # Precision:                     1.299%  
 ## # Conclusion:                    Approve population 
 ## # ------------------------------------------------------------</code></pre>
 </div>

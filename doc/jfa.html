@@ -205,26 +205,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Constructing a sample with this objective in mind can be done using the code below (specifically by specifying the <code>materiality</code> argument). A summary of the output can be obtained from the <code>summary()</code> function. As you can see, the minimal sample size to achieve 95% assurance with respect to the performance materiality of 5% is 60 monetary units.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>stage1 <span class="ot">&lt;-</span> <span class="fu">planning</span>(<span class="at">materiality =</span> <span class="fl">0.05</span>, <span class="at">expectedError =</span> <span class="dv">0</span>, <span class="at">likelihood =</span> <span class="st">&#39;poisson&#39;</span>, <span class="at">confidence =</span> <span class="fl">0.95</span>, <span class="at">N =</span> <span class="dv">3500</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage1)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------
-## #              jfa Planning Summary (Frequentist)
-## # ------------------------------------------------------------     
+<pre><code>## # ------------------------------------------------------------ 
+## #              jfa Planning Summary (Classical)
+## # ------------------------------------------------------------ 
 ## # Input:
 ## # 
 ## # Confidence:                    95% 
 ## # Materiality:                   5% 
 ## # Minimum precision:             Not specified 
-## # Likelihood:                    poisson 
+## # Likelihood:                    poisson  
 ## # Expected sample errors:        0 
 ## # ------------------------------------------------------------
 ## # Output:
 ## #
-## # Sample size:                   60 
+## # Sample size:                   60  
 ## # ------------------------------------------------------------
 ## # Statistics:
 ## #
 ## # Expected most likely error:    0% 
 ## # Expected upper bound:          4.993% 
-## # Expected precision:            4.993% 
+## # Expected precision:            4.993%  
 ## # ------------------------------------------------------------</code></pre>
 </div>
 <div id="obtaining-a-minimum-precision" class="section level3">
@@ -234,26 +234,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Planning a sample with this objective can be done using the code below (specifically by specifying the <code>minPrecision</code> argument). As you can see, the minimal sample size for to achieve a precision of at least 2% is 150 monetary units.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>stage1 <span class="ot">&lt;-</span> <span class="fu">planning</span>(<span class="at">minPrecision =</span> <span class="fl">0.02</span>, <span class="at">expectedError =</span> <span class="dv">0</span>, <span class="at">likelihood =</span> <span class="st">&#39;poisson&#39;</span>, <span class="at">confidence =</span> <span class="fl">0.95</span>, <span class="at">N =</span> <span class="dv">3500</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage1)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------
-## #              jfa Planning Summary (Frequentist)
-## # ------------------------------------------------------------     
+<pre><code>## # ------------------------------------------------------------ 
+## #              jfa Planning Summary (Classical)
+## # ------------------------------------------------------------ 
 ## # Input:
 ## # 
 ## # Confidence:                    95% 
 ## # Materiality:                   Not specified 
 ## # Minimum precision:             2% 
-## # Likelihood:                    poisson 
+## # Likelihood:                    poisson  
 ## # Expected sample errors:        0 
 ## # ------------------------------------------------------------
 ## # Output:
 ## #
-## # Sample size:                   150 
+## # Sample size:                   150  
 ## # ------------------------------------------------------------
 ## # Statistics:
 ## #
 ## # Expected most likely error:    0% 
 ## # Expected upper bound:          1.997% 
-## # Expected precision:            1.997% 
+## # Expected precision:            1.997%  
 ## # ------------------------------------------------------------</code></pre>
 </div>
 </div>
@@ -299,8 +299,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # Requested sample size:         150 
 ## # Sampling units:                Monetary units 
 ## # Algorithm:                     Fixed interval sampling 
-## # Interval:                      9354.805
-## # Starting point:                1  
+## # Interval:                      9354.805 
+## # Starting point:                1 
 ## # ------------------------------------------------------------ 
 ## # Output:
 ## #
@@ -343,23 +343,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>stage4 <span class="ot">&lt;-</span> <span class="fu">evaluation</span>(<span class="at">materiality =</span> <span class="fl">0.05</span>, <span class="at">method =</span> <span class="st">&#39;binomial&#39;</span>, <span class="at">confidence =</span> <span class="fl">0.95</span>, <span class="at">N =</span> <span class="dv">3500</span>, <span class="at">nSumstats =</span> <span class="dv">60</span>, <span class="at">kSumstats =</span> <span class="dv">1</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage4)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------ 
-## #             jfa Evaluation Summary (Frequentist)
+## #             jfa Evaluation Summary (Classical)
 ## # ------------------------------------------------------------ 
-## # Input: 
+## # Input:
 ## #
-## # Confidence:                    95%   
+## # Confidence:                    95% 
 ## # Materiality:                   5% 
 ## # Minimum precision:             Not specified 
 ## # Sample size:                   60 
 ## # Sample errors:                 1 
 ## # Sum of taints:                 1 
-## # Method:                        binomial 
+## # Method:                        binomial   
 ## # ------------------------------------------------------------
 ## # Output:
-## #
-## # Most likely error:             1.667% 
-## # Upper bound:                   7.664% 
-## # Precision:                     5.997% 
+## #  
+## # Most likely error:             1.667%
+## # Upper bound:                   7.664%
+## # Precision:                     5.997%  
 ## # Conclusion:                    Do not approve population 
 ## # ------------------------------------------------------------</code></pre>
 <p>As you can see, the upper bound on the misstatement is higher than 5% and thus the sample does not provide sufficient evidence to conclude that the misstatement is lower than 5%.</p>
@@ -376,23 +376,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">counts =</span> sample<span class="sc">$</span>count, <span class="at">N =</span> <span class="dv">3500</span>)</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage4)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------ 
-## #             jfa Evaluation Summary (Frequentist)
+## #             jfa Evaluation Summary (Classical)
 ## # ------------------------------------------------------------ 
-## # Input: 
+## # Input:
 ## #
-## # Confidence:                    95%   
+## # Confidence:                    95% 
 ## # Materiality:                   5% 
 ## # Minimum precision:             Not specified 
 ## # Sample size:                   60 
 ## # Sample errors:                 1 
 ## # Sum of taints:                 0.162 
-## # Method:                        stringer 
+## # Method:                        stringer   
 ## # ------------------------------------------------------------
 ## # Output:
-## #
-## # Most likely error:             0.27% 
-## # Upper bound:                   5.322% 
-## # Precision:                     5.053% 
+## #  
+## # Most likely error:             0.27%
+## # Upper bound:                   5.322%
+## # Precision:                     5.053%  
 ## # Conclusion:                    Do not approve population 
 ## # ------------------------------------------------------------</code></pre>
 </div>

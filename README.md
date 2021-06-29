@@ -227,7 +227,7 @@ The `evaluation()` function takes a sample or summary statistics of the sample a
 
 ```
 # Binomial evaluation using summary statistics from a sample
-evaluation(materiality = 0.03, confidence = 0.95, nSumstats = 100, kSumstats = 1, method = 'binomial')
+x <- evaluation(materiality = 0.03, confidence = 0.95, nSumstats = 100, kSumstats = 1, method = 'binomial')
 
 summary(x) # Prints information about the evaluation
 ```
@@ -246,7 +246,7 @@ The `report()` function takes an object of class `jfaEvaluation` as returned by 
 
 ```
 # Generate an automatic report
-report(object = evaluation, file = 'myReport.html')
+report(object = x, file = 'myReport.html')
 ```
 
 For an example report, see the following [link](https://github.com/koenderks/jfa/raw/master/man/figures/readme/report/report.pdf).

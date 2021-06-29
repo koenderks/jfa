@@ -446,7 +446,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The prior distribution can be used the evaluation stage by providing the objected returned by the <code>auditPrior()</code> function to the <code>evaluation()</code> function. For example, the code below evaluates the misstatement in the population with respect to the performance materiality of 5% after seeing a sample of 60 items with 1 misstatement, while incorporating the information in <code>prior7</code>.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>jfa<span class="sc">::</span><span class="fu">evaluation</span>(<span class="at">materiality =</span> materiality, <span class="at">confidence =</span> confidence, </span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">nSumstats =</span> <span class="dv">60</span>, <span class="at">kSumstats =</span> <span class="dv">1</span>, <span class="at">prior =</span> prior7)</span></code></pre></div>
-<pre><code>## Most likely error: 0.994% | 95% upper bound: 4.584% | Precision: 3.59% | BF-+: 3.745 
+<pre><code>## Most likely error: 0.994% | 95% Upper bound: 4.584% | Precision: 3.59% | BF-+: 3.745 
 ## Estimates obtained via method &#39;binomial&#39;.</code></pre>
 </div>
 </div>
