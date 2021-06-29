@@ -154,9 +154,9 @@ vignette('jfa', package = 'jfa')" />
 <code><a href='../articles/jfa.html'>vignette('jfa', package = 'jfa')</a></code></p>
     </div>
 
-    <pre class="usage"><span class='fu'>evaluation</span><span class='op'>(</span><span class='va'>confidence</span>, materiality <span class='op'>=</span> <span class='cn'>NULL</span>, minPrecision <span class='op'>=</span> <span class='cn'>NULL</span>, method <span class='op'>=</span> <span class='st'>'binomial'</span>,
-           sample <span class='op'>=</span> <span class='cn'>NULL</span>, bookValues <span class='op'>=</span> <span class='cn'>NULL</span>, auditValues <span class='op'>=</span> <span class='cn'>NULL</span>, counts <span class='op'>=</span> <span class='cn'>NULL</span>, 
-           nSumstats <span class='op'>=</span> <span class='cn'>NULL</span>, kSumstats <span class='op'>=</span> <span class='cn'>NULL</span>,
+    <pre class="usage"><span class='fu'>evaluation</span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='cn'>NULL</span>, minPrecision <span class='op'>=</span> <span class='cn'>NULL</span>, method <span class='op'>=</span> <span class='st'>'binomial'</span>,
+           confidence <span class='op'>=</span> <span class='fl'>0.95</span>, sample <span class='op'>=</span> <span class='cn'>NULL</span>, bookValues <span class='op'>=</span> <span class='cn'>NULL</span>, auditValues <span class='op'>=</span> <span class='cn'>NULL</span>, 
+           counts <span class='op'>=</span> <span class='cn'>NULL</span>, nSumstats <span class='op'>=</span> <span class='cn'>NULL</span>, kSumstats <span class='op'>=</span> <span class='cn'>NULL</span>,
            N <span class='op'>=</span> <span class='cn'>NULL</span>, populationBookValue <span class='op'>=</span> <span class='cn'>NULL</span>,
            prior <span class='op'>=</span> <span class='cn'>FALSE</span>, nPrior <span class='op'>=</span> <span class='fl'>0</span>, kPrior <span class='op'>=</span> <span class='fl'>0</span>, 
            rohrbachDelta <span class='op'>=</span> <span class='fl'>2.7</span>, momentPoptype <span class='op'>=</span> <span class='st'>'accounts'</span>,
@@ -165,10 +165,6 @@ vignette('jfa', package = 'jfa')" />
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>confidence</th>
-      <td><p>a numeric value between 0 and 1 specifying the confidence level used in the evaluation. Defaults to 0.95 for 95% confidence.</p></td>
-    </tr>
     <tr>
       <th>materiality</th>
       <td><p>a numeric value between 0 and 1 specifying the performance materiality (maximum tolerable error) as a fraction of the total size of the population. If specified, the function also returns the conclusion of the analysis with respect to the performance materiality. The value is discarded when <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code> method is chosen.</p></td>
@@ -180,6 +176,10 @@ vignette('jfa', package = 'jfa')" />
     <tr>
       <th>method</th>
       <td><p>a character specifying the method to be used in the evaluation. Possible options are <code>poisson</code>, <code>binomial</code> (default), <code>hypergeometric</code>, <code>mpu</code>, <code>stringer</code>, <code>stringer-meikle</code>, <code>stringer-lta</code>, <code>stringer-pvz</code>, <code>rohrbach</code>, <code>moment</code>, <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code>. See the details section for more information.</p></td>
+    </tr>
+    <tr>
+      <th>confidence</th>
+      <td><p>a numeric value between 0 and 1 specifying the confidence level used in the evaluation. Defaults to 0.95 for 95% confidence.</p></td>
     </tr>
     <tr>
       <th>sample</th>
@@ -318,7 +318,7 @@ vignette('jfa', package = 'jfa')" />
           algorithm <span class='op'>=</span> <span class='st'>'interval'</span>, units <span class='op'>=</span> <span class='st'>'mus'</span>, bookValues <span class='op'>=</span> <span class='st'>'bookValue'</span><span class='op'>)</span><span class='op'>$</span><span class='va'>sample</span>
 
 <span class='co'># Evaluate using the Stringer bound</span>
-<span class='fu'>evaluation</span><span class='op'>(</span>confidence <span class='op'>=</span> <span class='fl'>0.95</span>, materiality <span class='op'>=</span> <span class='fl'>0.05</span>, method <span class='op'>=</span> <span class='st'>'stringer'</span>,
+<span class='fu'>evaluation</span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.05</span>, method <span class='op'>=</span> <span class='st'>'stringer'</span>, confidence <span class='op'>=</span> <span class='fl'>0.95</span>,
            sample <span class='op'>=</span> <span class='va'>sample</span>, bookValues <span class='op'>=</span> <span class='st'>'bookValue'</span>, auditValues <span class='op'>=</span> <span class='st'>'auditValue'</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Most likely error: 0% | 95% upper bound: 2.951% | Precision: 2.951% 
 #&gt; Estimates obtained via method 'stringer'.</div><div class='input'>

@@ -154,18 +154,14 @@ vignette('jfa', package = 'jfa')" />
 <code><a href='../articles/jfa.html'>vignette('jfa', package = 'jfa')</a></code></p>
     </div>
 
-    <pre class="usage"><span class='fu'>planning</span><span class='op'>(</span><span class='va'>confidence</span>, materiality <span class='op'>=</span> <span class='cn'>NULL</span>, minPrecision <span class='op'>=</span> <span class='cn'>NULL</span>,
-         expectedError <span class='op'>=</span> <span class='fl'>0</span>, likelihood <span class='op'>=</span> <span class='st'>'binomial'</span>, N <span class='op'>=</span> <span class='cn'>NULL</span>,
+    <pre class="usage"><span class='fu'>planning</span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='cn'>NULL</span>, minPrecision <span class='op'>=</span> <span class='cn'>NULL</span>, expectedError <span class='op'>=</span> <span class='fl'>0</span>,
+         likelihood <span class='op'>=</span> <span class='st'>'binomial'</span>, confidence <span class='op'>=</span> <span class='fl'>0.95</span>, N <span class='op'>=</span> <span class='cn'>NULL</span>,
          prior <span class='op'>=</span> <span class='cn'>FALSE</span>, nPrior <span class='op'>=</span> <span class='fl'>0</span>, kPrior <span class='op'>=</span> <span class='fl'>0</span>,
          increase <span class='op'>=</span> <span class='fl'>1</span>, maxSize <span class='op'>=</span> <span class='fl'>5000</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
-    <tr>
-      <th>confidence</th>
-      <td><p>a numeric value between 0 and 1 specifying the confidence level used in the planning.</p></td>
-    </tr>
     <tr>
       <th>materiality</th>
       <td><p>a numeric value between 0 and 1 specifying the performance materiality (i.e., maximum upper limit) as a fraction of the total population size. Can be <code>NULL</code>, but <code>minPrecision</code> should be specified in that case.</p></td>
@@ -181,6 +177,10 @@ vignette('jfa', package = 'jfa')" />
     <tr>
       <th>likelihood</th>
       <td><p>a character specifying the likelihood assumed in the calculation. This can be either <code>binomial</code> for the binomial likelihood, <code>poisson</code> for the Poisson likelihood, or <code>hypergeometric</code> for the hypergeometric likelihood. See the details section for more information about the available likelihoods.</p></td>
+    </tr>
+    <tr>
+      <th>confidence</th>
+      <td><p>a numeric value between 0 and 1 specifying the confidence level used in the planning. Defaults to 0.95 for 95% confidence.</p></td>
     </tr>
     <tr>
       <th>N</th>
@@ -247,15 +247,19 @@ vignette('jfa', package = 'jfa')" />
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Frequentist planning using a binomial likelihood</span>
-<span class='fu'>planning</span><span class='op'>(</span>confidence <span class='op'>=</span> <span class='fl'>0.95</span>, materiality <span class='op'>=</span> <span class='fl'>0.05</span>, expectedError <span class='op'>=</span> <span class='fl'>0.025</span>,
-         likelihood <span class='op'>=</span> <span class='st'>'binomial'</span><span class='op'>)</span>
+<span class='fu'>planning</span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.05</span>, expectedError <span class='op'>=</span> <span class='fl'>0.025</span>, likelihood <span class='op'>=</span> <span class='st'>'binomial'</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Minimum sample size: 234 
 #&gt; Sample size obtained in 236 iteration(s) via method 'binomial'.</div><div class='input'>
 <span class='co'># Bayesian planning using a negligible beta prior</span>
-<span class='fu'>planning</span><span class='op'>(</span>confidence <span class='op'>=</span> <span class='fl'>0.95</span>, materiality <span class='op'>=</span> <span class='fl'>0.05</span>, expectedError <span class='op'>=</span> <span class='fl'>0.025</span>,
-         likelihood <span class='op'>=</span> <span class='st'>'binomial'</span>, prior <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='fu'>planning</span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.05</span>, expectedError <span class='op'>=</span> <span class='fl'>0.025</span>, likelihood <span class='op'>=</span> <span class='st'>'binomial'</span>, 
+         prior <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Minimum sample size: 220 
 #&gt; Sample size obtained in 222 iteration(s) via method 'binomial'.</div><div class='input'>
+<span class='co'># Bayesian planning using an informed beta prior</span>
+<span class='fu'>planning</span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.05</span>, expectedError <span class='op'>=</span> <span class='fl'>0.025</span>, likelihood <span class='op'>=</span> <span class='st'>'binomial'</span>, 
+         prior <span class='op'>=</span> <span class='fu'><a href='auditPrior.html'>auditPrior</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'median'</span>, materiality <span class='op'>=</span> <span class='fl'>0.05</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Minimum sample size: 182 
+#&gt; Sample size obtained in 184 iteration(s) via method 'binomial'.</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

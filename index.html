@@ -194,7 +194,7 @@
 <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
 <p>The <code><a href="reference/auditPrior.html">auditPrior()</a></code> function creates a prior distribution according to one of several methods, including a translation of the assessments of the inherent risk and control risk from the audit risk model. The function returns an object of class <code>jfaPrior</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. Objects with class <code>jfaPrior</code> can also be used as input for the <code>prior</code> argument in other functions.</p>
 <p><em>Full function with default arguments:</em></p>
-<p><code><a href="reference/auditPrior.html">auditPrior(confidence, materiality = NULL, expectedError = 0, method = 'none', likelihood = 'binomial', N = NULL, ir = 1, cr = 1, ub = NULL, pHmin = NULL, pHplus = NULL, sampleN = 0, sampleK = 0, factor = 1)</a></code></p>
+<p><code><a href="reference/auditPrior.html">auditPrior(method = 'none', likelihood = 'binomial', expectedError = 0, confidence = 0.95, materiality = NULL, N = NULL, ir = 1, cr = 1, ub = NULL, pHmin = NULL, pHplus = NULL, sampleN = 0, sampleK = 0, factor = 1)</a></code></p>
 <p><em>Supported options for the <code>method</code> argument:</em></p>
 <table class="table">
 <colgroup>
@@ -294,7 +294,7 @@
 </table>
 <p><em>Example usage:</em></p>
 <pre><code><a href="reference/auditPrior.html"># A uniform beta prior distribution 
-auditPrior(confidence = 0.95, method = 'none', likelihood = 'binomial')</a></code></pre>
+auditPrior(method = 'none', likelihood = 'binomial')</a></code></pre>
 </div>
 <div id="plan-a-sample-with-the-planning-function" class="section level3">
 <h3 class="hasAnchor">
@@ -302,7 +302,7 @@ auditPrior(confidence = 0.95, method = 'none', likelihood = 'binomial')</a></cod
 <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
 <p>The <code><a href="reference/planning.html">planning()</a></code> function calculates the minimum sample size for a statistical audit sample based on the binomial, Poisson, or hypergeometric likelihood. The function returns an object of class <code>jfaPlanning</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. To perform Bayesian planning, the input for the <code>prior</code> argument can be an object of class <code>jfaPrior</code> as returned by the <code><a href="reference/auditPrior.html">auditPrior()</a></code> function, or an object of class <code>jfaPosterior</code> as returned by the <code><a href="reference/evaluation.html">evaluation()</a></code> function.</p>
 <p><em>Full function with default arguments:</em></p>
-<p><code><a href="reference/planning.html">planning(confidence, materiality = NULL, minPrecision = NULL, expectedError = 0, likelihood = 'binomial', N = NULL, prior = FALSE, nPrior = 0, kPrior = 0, increase = 1, maxSize = 5000)</a></code></p>
+<p><code><a href="reference/planning.html">planning(materiality = NULL, minPrecision = NULL, expectedError = 0, likelihood = 'binomial', confidence = 0.95, N = NULL, prior = FALSE, nPrior = 0, kPrior = 0, increase = 1, maxSize = 5000)</a></code></p>
 <p><em>Supported options for the <code>likelihood</code> argument:</em></p>
 <table class="table">
 <thead><tr class="header">
@@ -403,7 +403,7 @@ selection(population = BuildIt, sampleSize = 100, algorithm = 'interval')</a></c
 <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
 <p>The <code><a href="reference/evaluation.html">evaluation()</a></code> function takes a sample or summary statistics of the sample and performs evaluation according to the specified method and sampling objectives. The function returns an object of class <code>jfaEvalution</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. To perform Bayesian evaluation, the input for the <code>prior</code> argument can be an object of class <code>jfaPrior</code> as returned by the <code><a href="reference/auditPrior.html">auditPrior()</a></code> function, or an object of class <code>jfaPosterior</code> as returned by the <code><a href="reference/evaluation.html">evaluation()</a></code> function.</p>
 <p><em>Full function with default arguments:</em></p>
-<p><code><a href="reference/evaluation.html">evaluation(confidence, materiality = NULL, minPrecision = NULL, method = 'binomial', sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, nSumstats = NULL, kSumstats = NULL, N = NULL, populationBookValue = NULL, prior = FALSE, nPrior = 0, kPrior = 0, rohrbachDelta = 2.7, momentPoptype = 'accounts', csA = 1, csB = 3, csMu = 0.5)</a></code></p>
+<p><code><a href="reference/evaluation.html">evaluation(materiality = NULL, minPrecision = NULL, method = 'binomial', confidence = 0.95, sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, nSumstats = NULL, kSumstats = NULL, N = NULL, populationBookValue = NULL, prior = FALSE, nPrior = 0, kPrior = 0, rohrbachDelta = 2.7, momentPoptype = 'accounts', csA = 1, csB = 3, csMu = 0.5)</a></code></p>
 <p><em>Supported options for the <code>method</code> argument:</em></p>
 <table class="table">
 <colgroup>

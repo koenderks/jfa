@@ -154,8 +154,8 @@ vignette('jfa', package = 'jfa')" />
 <code><a href='../articles/jfa.html'>vignette('jfa', package = 'jfa')</a></code></p>
     </div>
 
-    <pre class="usage"><span class='fu'>auditPrior</span><span class='op'>(</span><span class='va'>confidence</span>, materiality <span class='op'>=</span> <span class='cn'>NULL</span>, expectedError <span class='op'>=</span> <span class='fl'>0</span>, 
-           method <span class='op'>=</span> <span class='st'>'none'</span>, likelihood <span class='op'>=</span> <span class='st'>'binomial'</span>, N <span class='op'>=</span> <span class='cn'>NULL</span>, 
+    <pre class="usage"><span class='fu'>auditPrior</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'none'</span>, likelihood <span class='op'>=</span> <span class='st'>'binomial'</span>, expectedError <span class='op'>=</span> <span class='fl'>0</span>, 
+           confidence <span class='op'>=</span> <span class='fl'>0.95</span>, materiality <span class='op'>=</span> <span class='cn'>NULL</span>, N <span class='op'>=</span> <span class='cn'>NULL</span>, 
            ir <span class='op'>=</span> <span class='fl'>1</span>, cr <span class='op'>=</span> <span class='fl'>1</span>, ub <span class='op'>=</span> <span class='cn'>NULL</span>, pHmin <span class='op'>=</span> <span class='cn'>NULL</span>, pHplus <span class='op'>=</span> <span class='cn'>NULL</span>, 
            sampleN <span class='op'>=</span> <span class='fl'>0</span>, sampleK <span class='op'>=</span> <span class='fl'>0</span>, factor <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
 
@@ -163,24 +163,24 @@ vignette('jfa', package = 'jfa')" />
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>confidence</th>
-      <td><p>a numeric value between 0 and 1 specifying the confidence level to be used in the planning.</p></td>
-    </tr>
-    <tr>
-      <th>materiality</th>
-      <td><p>a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum upper limit) as a fraction of the total population size. Can be <code>NULL</code> for some methods.</p></td>
-    </tr>
-    <tr>
-      <th>expectedError</th>
-      <td><p>a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a numeric value (&gt;= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.</p></td>
-    </tr>
-    <tr>
       <th>method</th>
       <td><p>a character specifying the method by which the prior distribution is constructed. Defaults to <code>none</code> which incorporates no existing information. Other options are <code>arm</code>, <code>bram</code>, <code>median</code>, <code>hypotheses</code>, <code>sample</code>, and <code>factor</code>. See the details section for more information about the available methods.</p></td>
     </tr>
     <tr>
       <th>likelihood</th>
       <td><p>a character specifying the likelihood assumed when updating the prior distribution. This can be either <code>binomial</code> for the binomial likelihood and beta prior distribution, <code>poisson</code> for the Poisson likelihood and gamma prior distribution, or <code>hypergeometric</code> for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.</p></td>
+    </tr>
+    <tr>
+      <th>expectedError</th>
+      <td><p>a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a numeric value (&gt;= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.</p></td>
+    </tr>
+    <tr>
+      <th>confidence</th>
+      <td><p>a numeric value between 0 and 1 specifying the confidence level to be used in the planning. Defaults to 0.95 for 95% confidence.</p></td>
+    </tr>
+    <tr>
+      <th>materiality</th>
+      <td><p>a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum upper limit) as a fraction of the total population size. Can be <code>NULL</code> for some methods.</p></td>
     </tr>
     <tr>
       <th>N</th>
@@ -268,8 +268,8 @@ vignette('jfa', package = 'jfa')" />
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'> 
 <span class='co'># Translate inherent risk (ir) and control risk (cr) to a prior distribution</span>
-<span class='fu'>auditPrior</span><span class='op'>(</span>confidence <span class='op'>=</span> <span class='fl'>0.95</span>, materiality <span class='op'>=</span> <span class='fl'>0.05</span>, expectedError <span class='op'>=</span> <span class='fl'>0.025</span>,
-           method <span class='op'>=</span> <span class='st'>'arm'</span>, likelihood <span class='op'>=</span> <span class='st'>'binomial'</span>, ir <span class='op'>=</span> <span class='fl'>1</span>, cr <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span>
+<span class='fu'>auditPrior</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'arm'</span>, likelihood <span class='op'>=</span> <span class='st'>'binomial'</span>, expectedError <span class='op'>=</span> <span class='fl'>0.025</span>,
+           materiality <span class='op'>=</span> <span class='fl'>0.05</span>, ir <span class='op'>=</span> <span class='fl'>1</span>, cr <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Probability distribution for audit sampling: beta(α = 2.275, β = 50.725) 
 #&gt; Distribution obtained via method 'arm'.</div></pre>
   </div>
