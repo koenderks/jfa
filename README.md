@@ -92,7 +92,7 @@ Below you can find an explanation of the available functions in `jfa`, sorted by
 * [`planning()`](#plan-a-sample-with-the-planning-function)
 * [`selection()`](#select-items-with-the-selection-function)
 * [`evaluation()`](#evaluate-a-sample-with-the-evaluation-function)
-* [`report()`](#generate-a-report-with-the-report-function)
+* [`report()`](#create-a-report-with-the-report-function)
 
 ### Create a prior distribution with the `auditPrior()` function
 

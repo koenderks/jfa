@@ -177,7 +177,7 @@ print.summary.jfaSelection <- function(x, ...) {
 # Output:
 #
 # Obtained sampling units:      ", x[["Obtained_Sampling_Units"]],"
-# Obtained sample size:         ", x[["Obtained_Sample_Items"]],"
+# Obtained sample items:        ", x[["Obtained_Sample_Items"]],"
 # ------------------------------------------------------------
 # Statistics:
 #
@@ -301,14 +301,12 @@ summary.jfaPlanning <- function(object, digits = 3, ...) {
                     "Expected_Precision" = round(object[["expectedPrecision"]], digits + 2),
                     stringsAsFactors = FALSE)
   if (inherits(object[["prior"]], "jfaPrior")) {
-    out[["Type"]] <- "Bayesian"
     out[["Prior"]] <- object[["prior"]]$prior
     out[["Posterior"]] <- object[["expectedPosterior"]]$posterior
     out[["Expected_MLE"]] <- round(object[["expectedPosterior"]][["statistics"]]$mode, digits + 2)
     if (object[["materiality"]] != 1)
       out[["Expected_BF"]] <- round(object[["expectedPosterior"]][["hypotheses"]]$expectedBf, digits)
   } else {
-    out[["Type"]] <- "Classical"
     out[["Expected_MLE"]] <- round(object[["expectedSampleError"]] / object[["sampleSize"]], digits + 2)
   }
   out[["Type"]] <- if (inherits(object[["prior"]], "jfaPrior")) "Bayesian" else "Classical"
