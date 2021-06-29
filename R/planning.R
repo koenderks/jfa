@@ -209,6 +209,7 @@ planning <- function(confidence, materiality = NULL, minPrecision = NULL,
   result[["expectedPrecision"]]     <- as.numeric(bound - mle)
   if (likelihood == "hypergeometric")
     result[["populationK"]]         <- as.numeric(populationK)
+  result[["iterations"]]            <- as.numeric(iter)
   
   # Create the prior distribution object	
   if (((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior"))) {

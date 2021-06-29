@@ -96,7 +96,7 @@ selection <- function(population, sampleSize, units = 'records', algorithm = 'ra
     bv <- population[, bookValues]
   
   if (units == "mus" && sampleSize > sum(bv)) # Check if the sample size is valid
-    stop("Cannot take a sample larger than the population value")
+    stop("Cannot take a sample larger than the population value.")
   
   if (ordered && !is.null(bv)) { # Order the population
     population <- population[order(bv, decreasing = !ascending), ]
@@ -104,7 +104,7 @@ selection <- function(population, sampleSize, units = 'records', algorithm = 'ra
   }
   
   if (!is.null(bv) && any(bv < 0)) { # Remove the negative book values from the population
-    warning("The book values contain negative values, these are removed from the data")
+    warning("The book values contain negative values, these are removed from the data.")
     negativeValues <- which(bv < 0)
     population     <- population[-negativeValues, ]
     bv             <- population[, bookValues]
@@ -175,9 +175,6 @@ selection <- function(population, sampleSize, units = 'records', algorithm = 'ra
   # Gather output
   count     <- as.numeric(table(index))
   rowNumber <- as.numeric(unique(index))
-  
-  if (length(rowNumber) < sampleSize) # The sample size was larger than the population
-    warning("The sample contains fewer items than the specified sample size")
   
   sample           <- cbind(rowNumber, count, population[rowNumber, ])
   rownames(sample) <- 1:nrow(sample)

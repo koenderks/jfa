@@ -1,7 +1,7 @@
 ## This is a submission for version 0.5.5
 This is jfa version 0.5.5. In this version I have:
 
-* Implemented a new function.
+* Added summary functions for the jfa classes.
 * Fixed a bug in the calculation of the posterior mode.
 
 ## Test environments

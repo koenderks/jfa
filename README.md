@@ -124,6 +124,13 @@ The `auditPrior()` function creates a prior distribution according to one of sev
 | `poisson` | Gamma prior distribution (+ Poisson likelihood) | Stewart (2013) |
 | `hypergeometric` | Beta-binomial prior distribution (+ hypergeometric likelihood) | Dyer and Pierce (1991) |
 
+*Example usage:*
+
+```
+# A uniform beta prior distribution 
+auditPrior(confidence = 0.95, method = 'none', likelihood = 'binomial')
+```
+
 ### Plan a sample with the `planning()` function
 
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
@@ -141,6 +148,13 @@ The `planning()` function calculates the minimum sample size for a statistical a
 | `binomial` | Binomial likelihood | Stewart (2012) |
 | `poisson` | Poisson likelihood | Stewart (2012) |
 | `hypergeometric` | Hypergeometric likelihood | Stewart (2012) |
+
+*Example usage:*
+
+```
+# Planning using binomial likelihood
+planning(confidence = 0.95, materiality = 0.03, likelihood = 'binomial')
+```
 
 ### Select items with the `selection()` function
 
@@ -166,6 +180,13 @@ The `selection()` function takes a data frame and performs statistical sampling 
 | `random` | Select random units without the use of an interval | |
 | `cell` | Select a random unit from every interval | |
 | `interval` | Select a fixed unit from every interval | `intervalStartingPoint` |
+
+*Example usage:*
+
+```
+# Selection using fixed interval record sampling
+selection(population = BuildIt, sampleSize = 100, algorithm = 'interval')
+```
 
 ### Evaluate a sample with the `evaluation()` function
 
@@ -196,6 +217,13 @@ The `evaluation()` function takes a sample or summary statistics of the sample a
 | `quotient` | Quotient estimator | `populationBookValue` | Touw and Hoogduin (2011) |
 | `regression` | Regression estimator | `populationBookValue` | Touw and Hoogduin (2011) |
 
+*Example usage:*
+
+```
+# Binomial evaluation using summary statistics from a sample
+evaluation(confidence = 0.95, materiality = 0.03, nSumstats = 100, kSumstats = 1, method = 'binomial')
+```
+
 ### Create a report with the `report()` function
 
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
@@ -205,6 +233,13 @@ The `report()` function takes an object of class `jfaEvaluation` as returned by 
 *Full function with default arguments:*
 
 `report(object, file = 'report.html', format = 'html_document')`
+
+*Example usage:*
+
+```
+# Audit sampling report
+report(object = evaluation, file = 'myReport.html')
+```
 
 For an example report, see the following [link](https://github.com/koenderks/jfa/raw/master/man/figures/readme/report/report.pdf).
 

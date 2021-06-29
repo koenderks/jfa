@@ -1,31 +1,39 @@
 #' @method print jfaPrior
 #' @export
 print.jfaPrior <- function(x, ...) {
-  cat("Object of class 'jfaPrior'.\nProbability distribution for audit sampling:", x[["prior"]])
+  cat("Probability distribution for audit sampling:", x[["prior"]], "\nDistribution obtained via method", paste0("'", x[["method"]], "'."))
 }
 
 #' @method print jfaPosterior
 #' @export
 print.jfaPosterior <- function(x, ...) {
-  cat("Object of class 'jfaPosterior'.\nProbability distribution for audit sampling:", x[["posterior"]])
+  cat("Probability distribution for audit sampling:", x[["posterior"]], "\nDistribution obtained via method 'sample'.")
 }
 
 #' @method print jfaPlanning
 #' @export
 print.jfaPlanning <- function(x, ...) {
-  cat("Object of class 'jfaPlanning'.\nMinimum sample size:", x[["sampleSize"]])
+  cat("Minimum sample size:", x[["sampleSize"]], "\nSample size obtained in", x[["iterations"]], "iteration(s) via method", paste0("'", x[["likelihood"]], "'."))
 }
 
 #' @method print jfaSelection
 #' @export
 print.jfaSelection <- function(x, ...) {
-  cat("Object of class 'jfaSelection'.\nObtained sample size:", x[["obtainedSampleSize"]])
+  cat("Obtained sampling units:", sum(x[["sample"]][["count"]]), "| Sample items:", x[["obtainedSampleSize"]], "\nSample obtained via methods", paste0("'", x[["units"]], "' + '", x[["algorithm"]], "'."))
 }
 
 #' @method print jfaEvaluation
 #' @export
 print.jfaEvaluation <- function(x, ...) {
-  cat("Object of class 'jfaEvaluation'.\nConclusion:", x[["conclusion"]])
+  if (x[["method"]] %in% c("direct", "difference", "quotient", "regression")) {
+    cat("Most likely error:", round(x[["mle"]], 3), "|", paste0(round(x[["confidence"]] * 100, 3), "%"), "interval:", paste0("[", round(x[["lowerBound"]], 3), "; ", round(x[["upperBound"]], 3), "]"), "| Precision:", round(x[["precision"]], 3), "\nEstimates obtained via method", paste0("'", x[["method"]], "'."))
+  } else {
+    if (!is.null(x[["prior"]])) {
+      cat("Most likely error:", paste0(round(x[["mle"]] * 100, 3), "%"), "|", paste0(round(x[["confidence"]] * 100, 3), "%"), "upper bound:", paste0(round(x[["confBound"]] * 100, 3), "%"), "| Precision:", paste0(round(x[["precision"]] * 100, 3), "%"), "| BF-+:", round(x[["posterior"]][["hypotheses"]]$bf, 3), "\nEstimates obtained via method", paste0("'", x[["method"]], "'."))
+    } else {
+      cat("Most likely error:", paste0(round(x[["mle"]] * 100, 3), "%"), "|", paste0(round(x[["confidence"]] * 100, 3), "%"), "upper bound:", paste0(round(x[["confBound"]] * 100, 3), "%"), "| Precision:", paste0(round(x[["precision"]] * 100, 3), "%"), "\nEstimates obtained via method", paste0("'", x[["method"]], "'."))
+    }
+  }
 }
 
 #' @method summary jfaPrior
@@ -142,56 +150,32 @@ summary.jfaPlanning <- function(object, digits = 3, ...) {
 #' @method summary jfaSelection
 #' @export
 summary.jfaSelection <- function(object, digits = 3, ...) {
-  if (object[["units"]] == "mus") {
-    cat("# ------------------------------------------------------------
+  cat("# ------------------------------------------------------------
 #                  jfa Selection Summary
 # ------------------------------------------------------------
 # Input:
 #      
 # Population size:              ", round(object[["populationSize"]], digits),"
 # Requested sample size:        ", object[["requestedSampleSize"]],"
-# Sampling units:               ", "Monetary units","
+# Sampling units:               ", switch(object[["units"]], "mus" = "Monetary units", "records" = "Records"),"
 # Algorithm:                    ", switch(object[["algorithm"]], "random" = "Random sampling", "interval" = "Fixed interval sampling", "cell" = "Cell sampling"), 
-        ifelse(object[["algorithm"]] == "interval", no = "", yes = paste0("
+      ifelse(object[["algorithm"]] == "interval", no = "", yes = paste0("
 # Interval:                      ", round(object[["interval"]], digits),"
 # Starting point:                ", object[["intervalStartingPoint"]])), 
-        ifelse(object[["algorithm"]] == "cell", no = "", yes = paste0("
+      ifelse(object[["algorithm"]] == "cell", no = "", yes = paste0("
 # Interval:                      ", round(object[["interval"]], digits))),"
 # ------------------------------------------------------------ 
 # Output:
 #
+# Obtained sampling units:      ", sum(object[["sample"]][["count"]]),"
 # Obtained sample size:         ", object[["obtainedSampleSize"]],"
 # ------------------------------------------------------------
 # Statistics:
 #
-# Proportion n/N:               ", round(object[["obtainedSampleSize"]] / object[["populationSize"]], digits), "
-# Percentage of value:          ", paste0(round(sum(object[["sample"]][, object[["bookValues"]]]) / sum(object[["population"]][, object[["bookValues"]]]) * 100, digits), "%"),"
+# Proportion n/N:               ", round(object[["obtainedSampleSize"]] / object[["populationSize"]], digits), 
+      ifelse(object[["units"]] == "mus", no = "", yes = paste0("
+# Percentage of value:           ", paste0(round(sum(object[["sample"]][, object[["bookValues"]]]) / sum(object[["population"]][, object[["bookValues"]]]) * 100, digits), "%"))),"
 # ------------------------------------------------------------ ") 
-  } else {
-    cat("# ------------------------------------------------------------
-#                  jfa Selection Summary
-# ------------------------------------------------------------
-# Input:
-#       
-# Population size:              ", round(object[["populationSize"]], digits),"
-# Requested sample size:        ", round(object[["requestedSampleSize"]], digits),"
-# Sampling units:               ", "Records","
-# Algorithm:                    ", switch(object[["algorithm"]], "random" = "Random sampling", "interval" = "Fixed interval sampling", "cell" = "Cell sampling"), 
-        ifelse(object[["algorithm"]] == "interval", no = "", yes = paste0("
-# Interval:                      ", round(object[["interval"]], digits),"
-# Starting point:                ", object[["intervalStartingPoint"]])), 
-        ifelse(object[["algorithm"]] == "cell", no = "", yes = paste0("
-# Interval:                      ", round(object[["interval"]], digits))),"
-# ------------------------------------------------------------ 
-# Output:
-# 
-# Obtained sample size:         ", object[["obtainedSampleSize"]],"
-# ------------------------------------------------------------
-# Statistics:
-#
-# Proportion n/N:               ", round(nrow(object[["sample"]])/nrow(object[["population"]]), digits), "
-# ------------------------------------------------------------ ")
-  }
 }
 
 #' @method summary jfaEvaluation
