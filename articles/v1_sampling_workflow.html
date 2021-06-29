@@ -141,7 +141,7 @@
 <div id="stage-1-planning-an-audit-sample" class="section level2">
 <h2 class="hasAnchor">
 <a href="#stage-1-planning-an-audit-sample" class="anchor"></a>Stage 1: Planning an audit sample</h2>
-<p>Laura can choose to either perform a frequentist analysis, where she uses the increased detection risk as her level of uncertainty, or perform a Bayesian analysis, where she captures the information in the control risk in a prior distribution. For this example, we will show how Laura performs a frequentist analysis. A frequentist analysis can easily be done through the following functions by setting <code>prior = FALSE</code>. In a frequentist audit, Laura immediately uses the adjusted confidence to calculate the sample size using the <code><a href="../reference/planning.html">planning()</a></code> function.</p>
+<p>Laura can choose to either perform a frequentist analysis, where she uses the increased detection risk as her level of uncertainty, or perform a Bayesian analysis, where she captures the information in the control risk in a prior distribution. For this example, we will show how Laura performs a frequentist analysis. In a frequentist audit, Laura immediately uses the adjusted confidence to calculate the sample size using the <code><a href="../reference/planning.html">planning()</a></code> function.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Adjust the required confidence for a frequentist analysis.</span>
 <span class="va">adjustedConfidence</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="op">(</span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">confidence</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">ir</span> <span class="op">*</span> <span class="va">cr</span><span class="op">)</span><span class="op">)</span>
@@ -219,7 +219,7 @@
 
 <span class="co"># To load annotated sample back into R:</span>
 <span class="co"># sample &lt;- read.csv(file = "auditSample.csv")</span></code></pre></div>
-<p>For this example, the audit values of the sample are already included in the <code>auditValue</code> column of the dataset .</p>
+<p>For this example, the audit values of the sample are already included in the <code>auditValue</code> column of the data set .</p>
 </div>
 <div id="stage-4-evaluating-the-sample" class="section level2">
 <h2 class="hasAnchor">
