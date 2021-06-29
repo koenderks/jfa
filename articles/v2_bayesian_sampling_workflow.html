@@ -189,9 +189,9 @@
 <p>Laura can then inspect the result from her planning procedure by using the <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> function. Her result tells her that, given her prior distribution she needs to audit a sample of 169 transactions so that, when at most 4.225 errors are found, she can conclude with 95% confidence that the maximum error in BuildIt’s financial statements is lower the materiality of 5%.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">planningResult</span><span class="op">)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------
+<pre><code>## # ------------------------------------------------------------ 
 ## #              jfa Planning Summary (Bayesian)
-## # ------------------------------------------------------------
+## # ------------------------------------------------------------ 
 ## # Input:
 ## # 
 ## # Confidence:                    95% 
@@ -280,23 +280,23 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">evaluationResult</span><span class="op">)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------ 
 ## #             jfa Evaluation Summary (Bayesian)
-## # ------------------------------------------------------------
-## # Input: 
+## # ------------------------------------------------------------ 
+## # Input:
 ## #
-## # Confidence:                    95%   
+## # Confidence:                    95% 
 ## # Materiality:                   5% 
 ## # Minimum precision:             Not specified 
 ## # Sample size:                   169 
 ## # Sample errors:                 0 
-## # Sum of taints:                 0  
-## # Method:                        binomial 
+## # Sum of taints:                 0 
+## # Method:                        binomial  
 ## # Prior distribution:            beta(α = 2.275, β = 50.725) 
 ## # ------------------------------------------------------------
 ## # Output:
-## #
+## # 
 ## # Posterior distribution:        beta(α = 2.275, β = 219.725) 
-## # Most likely error:             0.58% 
-## # Upper bound:                   2.325% 
+## # Most likely error:             0.58%
+## # Upper bound:                   2.325%
 ## # Precision:                     1.745% 
 ## # Bayes factor-+:                1846.926 
 ## # Conclusion:                    Approve population 

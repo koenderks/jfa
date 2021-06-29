@@ -156,26 +156,26 @@
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, expectedError <span class="op">=</span> <span class="fl">0</span>, likelihood <span class="op">=</span> <span class="st">'poisson'</span>, confidence <span class="op">=</span> <span class="fl">0.95</span>, N <span class="op">=</span> <span class="fl">3500</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------
-## #              jfa Planning Summary (Frequentist)
-## # ------------------------------------------------------------     
+<pre><code>## # ------------------------------------------------------------ 
+## #              jfa Planning Summary (Classical)
+## # ------------------------------------------------------------ 
 ## # Input:
 ## # 
 ## # Confidence:                    95% 
 ## # Materiality:                   5% 
 ## # Minimum precision:             Not specified 
-## # Likelihood:                    poisson 
+## # Likelihood:                    poisson  
 ## # Expected sample errors:        0 
 ## # ------------------------------------------------------------
 ## # Output:
 ## #
-## # Sample size:                   60 
+## # Sample size:                   60  
 ## # ------------------------------------------------------------
 ## # Statistics:
 ## #
 ## # Expected most likely error:    0% 
 ## # Expected upper bound:          4.993% 
-## # Expected precision:            4.993% 
+## # Expected precision:            4.993%  
 ## # ------------------------------------------------------------</code></pre>
 </div>
 <div id="obtaining-a-minimum-precision" class="section level3">
@@ -187,26 +187,26 @@
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>minPrecision <span class="op">=</span> <span class="fl">0.02</span>, expectedError <span class="op">=</span> <span class="fl">0</span>, likelihood <span class="op">=</span> <span class="st">'poisson'</span>, confidence <span class="op">=</span> <span class="fl">0.95</span>, N <span class="op">=</span> <span class="fl">3500</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------
-## #              jfa Planning Summary (Frequentist)
-## # ------------------------------------------------------------     
+<pre><code>## # ------------------------------------------------------------ 
+## #              jfa Planning Summary (Classical)
+## # ------------------------------------------------------------ 
 ## # Input:
 ## # 
 ## # Confidence:                    95% 
 ## # Materiality:                   Not specified 
 ## # Minimum precision:             2% 
-## # Likelihood:                    poisson 
+## # Likelihood:                    poisson  
 ## # Expected sample errors:        0 
 ## # ------------------------------------------------------------
 ## # Output:
 ## #
-## # Sample size:                   150 
+## # Sample size:                   150  
 ## # ------------------------------------------------------------
 ## # Statistics:
 ## #
 ## # Expected most likely error:    0% 
 ## # Expected upper bound:          1.997% 
-## # Expected precision:            1.997% 
+## # Expected precision:            1.997%  
 ## # ------------------------------------------------------------</code></pre>
 </div>
 </div>
@@ -257,8 +257,8 @@
 ## # Requested sample size:         150 
 ## # Sampling units:                Monetary units 
 ## # Algorithm:                     Fixed interval sampling 
-## # Interval:                      9354.805
-## # Starting point:                1  
+## # Interval:                      9354.805 
+## # Starting point:                1 
 ## # ------------------------------------------------------------ 
 ## # Output:
 ## #
@@ -306,23 +306,23 @@
 <code class="sourceCode R"><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">'binomial'</span>, confidence <span class="op">=</span> <span class="fl">0.95</span>, N <span class="op">=</span> <span class="fl">3500</span>, nSumstats <span class="op">=</span> <span class="fl">60</span>, kSumstats <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------ 
-## #             jfa Evaluation Summary (Frequentist)
+## #             jfa Evaluation Summary (Classical)
 ## # ------------------------------------------------------------ 
-## # Input: 
+## # Input:
 ## #
-## # Confidence:                    95%   
+## # Confidence:                    95% 
 ## # Materiality:                   5% 
 ## # Minimum precision:             Not specified 
 ## # Sample size:                   60 
 ## # Sample errors:                 1 
 ## # Sum of taints:                 1 
-## # Method:                        binomial 
+## # Method:                        binomial   
 ## # ------------------------------------------------------------
 ## # Output:
-## #
-## # Most likely error:             1.667% 
-## # Upper bound:                   7.664% 
-## # Precision:                     5.997% 
+## #  
+## # Most likely error:             1.667%
+## # Upper bound:                   7.664%
+## # Precision:                     5.997%  
 ## # Conclusion:                    Do not approve population 
 ## # ------------------------------------------------------------</code></pre>
 <p>As you can see, the upper bound on the misstatement is higher than 5% and thus the sample does not provide sufficient evidence to conclude that the misstatement is lower than 5%.</p>
@@ -342,23 +342,23 @@
                      counts <span class="op">=</span> <span class="va">sample</span><span class="op">$</span><span class="va">count</span>, N <span class="op">=</span> <span class="fl">3500</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------ 
-## #             jfa Evaluation Summary (Frequentist)
+## #             jfa Evaluation Summary (Classical)
 ## # ------------------------------------------------------------ 
-## # Input: 
+## # Input:
 ## #
-## # Confidence:                    95%   
+## # Confidence:                    95% 
 ## # Materiality:                   5% 
 ## # Minimum precision:             Not specified 
 ## # Sample size:                   60 
 ## # Sample errors:                 1 
 ## # Sum of taints:                 0.162 
-## # Method:                        stringer 
+## # Method:                        stringer   
 ## # ------------------------------------------------------------
 ## # Output:
-## #
-## # Most likely error:             0.27% 
-## # Upper bound:                   5.322% 
-## # Precision:                     5.053% 
+## #  
+## # Most likely error:             0.27%
+## # Upper bound:                   5.322%
+## # Precision:                     5.053%  
 ## # Conclusion:                    Do not approve population 
 ## # ------------------------------------------------------------</code></pre>
 </div>

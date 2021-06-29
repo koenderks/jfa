@@ -151,26 +151,26 @@
 <p>Laura can then inspect the result from her planning procedure by using the <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> function. Her result tells her that, given her prior distribution she needs to audit a sample of 190 transactions so that, when at most 5 errors are found, she can conclude with 91.66% confidence that the maximum error in BuildIt’s financial statements is lower the materiality of 5%.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">planningResult</span><span class="op">)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------
-## #              jfa Planning Summary (Frequentist)
-## # ------------------------------------------------------------     
+<pre><code>## # ------------------------------------------------------------ 
+## #              jfa Planning Summary (Classical)
+## # ------------------------------------------------------------ 
 ## # Input:
 ## # 
 ## # Confidence:                    91.667% 
 ## # Materiality:                   5% 
 ## # Minimum precision:             Not specified 
-## # Likelihood:                    binomial 
+## # Likelihood:                    binomial  
 ## # Expected sample errors:        5 
 ## # ------------------------------------------------------------
 ## # Output:
 ## #
-## # Sample size:                   190 
+## # Sample size:                   190  
 ## # ------------------------------------------------------------
 ## # Statistics:
 ## #
 ## # Expected most likely error:    2.632% 
 ## # Expected upper bound:          4.997% 
-## # Expected precision:            2.365% 
+## # Expected precision:            2.365%  
 ## # ------------------------------------------------------------</code></pre>
 </div>
 <div id="stage-2-selecting-a-sample" class="section level2">
@@ -234,23 +234,23 @@
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">evaluationResult</span><span class="op">)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------ 
-## #             jfa Evaluation Summary (Frequentist)
+## #             jfa Evaluation Summary (Classical)
 ## # ------------------------------------------------------------ 
-## # Input: 
+## # Input:
 ## #
-## # Confidence:                    91.667%   
+## # Confidence:                    91.667% 
 ## # Materiality:                   5% 
 ## # Minimum precision:             Not specified 
 ## # Sample size:                   190 
 ## # Sample errors:                 0 
 ## # Sum of taints:                 0 
-## # Method:                        binomial 
+## # Method:                        binomial   
 ## # ------------------------------------------------------------
 ## # Output:
-## #
-## # Most likely error:             0% 
-## # Upper bound:                   1.299% 
-## # Precision:                     1.299% 
+## #  
+## # Most likely error:             0%
+## # Upper bound:                   1.299%
+## # Precision:                     1.299%  
 ## # Conclusion:                    Approve population 
 ## # ------------------------------------------------------------</code></pre>
 </div>
