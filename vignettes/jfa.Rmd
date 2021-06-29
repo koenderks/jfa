@@ -1,7 +1,7 @@
 ---
 title: "Get started"
 author: Koen Derks
-date: "last modified: 10-05-2021"
+date: "last modified: 29-06-2021"
 output: 
   rmarkdown::html_vignette:
     toc: true
@@ -49,10 +49,11 @@ First, we take a look at how you can use the `planning()` function to construct 
 
 Sampling objective: *Calculate a minimal sample size such that, when zero misstatements are found in the sample, there is a 95% 'chance' that the misstatement in the population is lower than 5% of the population value.*
 
-Constructing a sample with this objective in mind can be done using the code below (specifically by specifying the `materiality` argument). As you can see, the minimal sample size to achieve 95% assurance with respect to the performance materiality of 5% is 60 monetary units.
+Constructing a sample with this objective in mind can be done using the code below (specifically by specifying the `materiality` argument). A summary of the output can be obtained from the `summary()` function. As you can see, the minimal sample size to achieve 95% assurance with respect to the performance materiality of 5% is 60 monetary units.
 
 ```{r}
-planning(confidence = 0.95, materiality = 0.05, expectedError = 0, likelihood = 'poisson', N = 3500)
+stage1 <- planning(confidence = 0.95, materiality = 0.05, expectedError = 0, likelihood = 'poisson', N = 3500)
+summary(stage1)
 ```
 
 ### Obtaining a minimum precision
@@ -64,7 +65,8 @@ Sampling objective: *Calculate a minimal sample size such that, when zero missta
 Planning a sample with this objective can be done using the code below (specifically by specifying the `minPrecision` argument). As you can see, the minimal sample size for to achieve a precision of at least 2% is 150 monetary units.
 
 ```{r}
-planning(confidence = 0.95, minPrecision = 0.02, expectedError = 0, likelihood = 'poisson', N = 3500)
+stage1 <- planning(confidence = 0.95, minPrecision = 0.02, expectedError = 0, likelihood = 'poisson', N = 3500)
+summary(stage1)
 ```
 
 ## Using `selection()`: The basics
@@ -76,7 +78,8 @@ Selecting a sample using the `selection()` function requires knowledge of the sa
 First, we take a look at how you can use the `selection()` function to perform random sampling from the items in the population. As an example, the code below samples 60 invoices from the `BuildIt` data set using a *random record sampling* scheme.
 
 ```{r}
-selection(population = BuildIt, sampleSize = 60, units = 'records', algorithm = 'random')
+stage2 <- selection(population = BuildIt, sampleSize = 60, units = 'records', algorithm = 'random')
+summary(stage2)
 ```
 
 ### Monetary unit sampling (MUS)
@@ -84,8 +87,8 @@ selection(population = BuildIt, sampleSize = 60, units = 'records', algorithm = 
 Next, we take a look at how you can use the `selection()` function to perform fixed interval sampling using the monetary units in the population as sampling units. As an example, the code below samples 150 monetary units from the `BuildIt` data set using a *fixed interval monetary unit sampling* scheme.
 
 ```{r}
-selection(population = BuildIt, sampleSize = 150, units = 'mus', algorithm = 'interval',
-          bookValues = 'bookValue')
+stage2 <- selection(population = BuildIt, sampleSize = 150, units = 'mus', algorithm = 'interval', bookValues = 'bookValue')
+summary(stage2)
 ```
 
 ### Extracting the sample
@@ -93,9 +96,9 @@ selection(population = BuildIt, sampleSize = 150, units = 'mus', algorithm = 'in
 The selected sample is stored in the object that is returned by the `selection()` function. It can be accesses or extracted by indexing it via `$sample`. Let's take a look at the first ten rows of the previously selected sample of 60 invoices.
 
 ```{r}
-result <- selection(population = BuildIt, sampleSize = 60, units = 'records', algorithm = 'random')
+stage2 <- selection(population = BuildIt, sampleSize = 60, units = 'records', algorithm = 'random')
 
-sample <- result$sample
+sample <- stage2$sample
 head(sample, n = 10)
 ```
 
@@ -110,7 +113,8 @@ First, let's take a look at how you can use the `evaluation()` function to evalu
 Sampling objective: *Evaluate, on the basis of summary statistics of a sample, whether the misstatement in the population exceeds the allocated performance materiality such that there is a 5% 'chance' of incorrectly concluding that the population is free of material misstatement.*
 
 ```{r}
-evaluation(confidence = 0.95,  materiality = 0.05, method = 'binomial', N = 3500, nSumstats = 60, kSumstats = 1)
+stage4 <- evaluation(confidence = 0.95,  materiality = 0.05, method = 'binomial', N = 3500, nSumstats = 60, kSumstats = 1)
+summary(stage4)
 ```
 
 As you can see, the upper bound on the misstatement is higher than 5% and thus the sample does not provide sufficient evidence to conclude that the misstatement is lower than 5%.
@@ -129,8 +133,10 @@ You can evaluate the misstatement in the annotated sample using the `sample`, `b
 Sampling objective: *Evaluate, on the basis of an annotated sample, whether the misstatement in the population exceeds the allocated performance materiality such that there is a 5% 'chance' of incorrectly concluding that the population is free of material misstatement.*
 
 ```{r}
-evaluation(confidence = 0.95, materiality = 0.05, method = 'stringer', sample = sample, bookValues = 'bookValue', 
-           auditValues = 'auditValue', counts = sample$count, N = 3500)
+stage4 <- evaluation(confidence = 0.95, materiality = 0.05, method = 'stringer', 
+                     sample = sample, bookValues = 'bookValue', auditValues = 'auditValue',
+                     counts = sample$count, N = 3500)
+summary(stage4)
 ```
 
 ## Using `report()`: The basics
@@ -138,8 +144,9 @@ evaluation(confidence = 0.95, materiality = 0.05, method = 'stringer', sample = 
 After obtaining the result from the `evaluation()` function you can generate a report containing the data, the statistical results and their interpretation, and the conclusion of the sampling procedure with respect to the input for `materiality` and `minPrecision`. The report can be automatically generated by providing the object returned by the `evaluation()` function to the `report()` function.
 
 ```{r, eval = FALSE}
-result <- evaluation(confidence = 0.95, materiality = 0.05, method = 'stringer', sample = sample, 
-                     bookValues = 'bookValue', auditValues = 'auditValue', counts = sample$count, N = 3500)
+stage4 <- evaluation(confidence = 0.95, materiality = 0.05, method = 'stringer', 
+                     sample = sample, bookValues = 'bookValue', auditValues = 'auditValue',
+                     counts = sample$count, N = 3500)
 
-report(result, file = 'report.html', format = 'html_document') # Generates .html report
+report(stage4, file = 'report.html', format = 'html_document') # Generates .html report
 ```

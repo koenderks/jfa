@@ -22,14 +22,3 @@ auditBF(tolerance, n = 32, k = 2)
 ## -----------------------------------------------------------------------------
 auditBF(tolerance, n = 32 + 50, k = 2 + 0)
 
-## ---- echo = F----------------------------------------------------------------
-set.seed(2)
-k <- 0
-n <- 100
-bf <- NULL
-for (i in 1:n) {
-  k <- k + sample(0:1, size = 1, prob = c(0.98, 0.02))
-  bf[i] <- auditBF(tolerance, n = i, k = k)
-}
-plot(1:n, bf, type = "l", xlab = "n", las = 1, bty = "n", ylim = c(0, 30), xlim = c(0, 100), ylab = expression(BF['10']))
-

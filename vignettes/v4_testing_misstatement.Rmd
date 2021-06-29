@@ -1,7 +1,7 @@
 ---
 title: "Testing misstatement"
 author: Koen Derks
-date: "last modified: 19-11-2020"
+date: "last modified: 29-06-2021"
 output: 
   rmarkdown::html_vignette:
     toc: true
@@ -59,7 +59,8 @@ The output below shows that $BF_{-+}=30.28$, implying that there is very strong 
 
 ```{r}
 prior <- auditPrior(confidence = 0.95, materiality = 0.05, method = "none", likelihood = "binomial")
-evaluation(confidence = 0.95, materiality = 0.05, nSumstats = 40, kSumstats = 1, prior = prior)
+stage4 <- evaluation(confidence = 0.95, materiality = 0.05, nSumstats = 40, kSumstats = 1, prior = prior)
+summary(stage4)
 ```
 
 ### Sensitivity to the prior distribution
@@ -70,5 +71,6 @@ The output below shows that $BF_{-+}=3.08$, implying that there is anecdotal evi
 
 ```{r}
 prior <- auditPrior(confidence = 0.95, materiality = 0.05, method = "median", likelihood = "binomial")
-evaluation(confidence = 0.95, materiality = 0.05, nSumstats = 40, kSumstats = 1, prior = prior)
+stage4 <- evaluation(confidence = 0.95, materiality = 0.05, nSumstats = 40, kSumstats = 1, prior = prior)
+summary(stage4)
 ```

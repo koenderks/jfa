@@ -1,7 +1,7 @@
 ---
 title: 'Prior distributions'
 author: Koen Derks
-date: 'last modified: 10-05-2021'
+date: 'last modified: 29-06-2021'
 output: 
   rmarkdown::html_vignette:
     toc: true
@@ -47,7 +47,7 @@ You can refrain from incorporating explicit information in the prior distributio
 
 ```{r}
 prior1 <- auditPrior(confidence, materiality, expectedError, likelihood, method = 'none')
-prior1
+summary(prior1)
 ```
 
 You can visually inspect the prior distribution using the `plot()` function.
@@ -63,7 +63,7 @@ You can translate the risk assessments from the Audit Risk Model (inherent risk 
 ```{r}
 prior2 <- auditPrior(confidence, materiality, expectedError, likelihood, method = 'arm', 
                      ir = 0.9, cr = 0.6)
-prior2
+summary(prior2)
 ```
 
 You can visually inspect the prior distribution using the `plot()` function.
@@ -79,7 +79,7 @@ You can incorporate information about the expected errors (mode) and the upper c
 ```{r}
 prior3 <- auditPrior(confidence, materiality, expectedError, likelihood, method = 'bram',
                      ub = 0.6)
-prior3
+summary(prior3)
 ```
 
 You can visually inspect the prior distribution using the `plot()` function.
@@ -96,7 +96,7 @@ You can incorporate the assumption that tolerable misstatement is equally likely
 
 ```{r}
 prior4 <- auditPrior(confidence, materiality, expectedError, likelihood, method = 'median')
-prior4
+summary(prior4)
 ```
 
 You can visually inspect the prior distribution using the `plot()` function.
@@ -114,7 +114,7 @@ You can assign custom probabilities to the hypothesis of tolerable misstatement 
 ```{r}
 prior5 <- auditPrior(confidence, materiality, expectedError, likelihood, method = 'hypotheses', 
                      pHmin = 0.6)
-prior5
+summary(prior5)
 ```
 
 You can visually inspect the prior distribution using the `plot()` function.
@@ -130,7 +130,7 @@ You can incorporate information from an earlier sample into the prior distributi
 ```{r}
 prior6 <- auditPrior(confidence, materiality, expectedError, likelihood, method = 'sample',
                      sampleN = 30, sampleK = 0)
-prior6
+summary(prior6)
 ```
 
 You can visually inspect the prior distribution using the `plot()` function.
@@ -146,7 +146,7 @@ You can incorporate information from last years results, weighted by a factor, i
 ```{r}
 prior7 <- auditPrior(confidence, materiality, expectedError, likelihood, method = 'factor',
                      sampleN = 58, sampleK = 0, factor = 0.7)
-prior7
+summary(prior7)
 ```
 
 You can visually inspect the prior distribution using the `plot()` function.

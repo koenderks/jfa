@@ -1,7 +1,7 @@
 ---
 title: "The Bayesian audit sampling workflow"
 author: Koen Derks
-date: "last modified: 10-05-2021"
+date: "last modified: 29-06-2021"
 output: 
   rmarkdown::html_vignette:
     toc: true

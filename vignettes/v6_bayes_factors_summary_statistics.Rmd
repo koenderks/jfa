@@ -1,7 +1,7 @@
 ---
 title: "Bayes factors using summary statistics"
 author: Koen Derks
-date: "last modified: 31-05-2021"
+date: "last modified: 29-06-2021"
 output: 
   rmarkdown::html_vignette:
     toc: true
@@ -90,22 +90,6 @@ The Bayes factor in favor of acceptance after the second sample of items is 6.24
 
 ```{r}
 auditBF(tolerance, n = 32 + 50, k = 2 + 0)
-```
-
-## Monitoring evidence
-
-In the Bayesian framework, the auditor can continue to accumulate and monitor evidence one item at the time. This means that the auditor can continue sampling until a certain threshold of evidence is reached.
-
-```{r, echo = F}
-set.seed(2)
-k <- 0
-n <- 100
-bf <- NULL
-for (i in 1:n) {
-  k <- k + sample(0:1, size = 1, prob = c(0.98, 0.02))
-  bf[i] <- auditBF(tolerance, n = i, k = k)
-}
-plot(1:n, bf, type = "l", xlab = "n", las = 1, bty = "n", ylim = c(0, 30), xlim = c(0, 100), ylab = expression(BF['10']))
 ```
 
 # References
