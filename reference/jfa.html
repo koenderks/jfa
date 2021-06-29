@@ -161,7 +161,7 @@ For documentation on jfa itself, including the manual and user guide
     <div class="ref-description">
     
 
-<p>jfa is an <span style="R">R</span> package for statistical audit sampling. The package provides functions for planning, 
+<p><code>jfa</code> is an <span style="R">R</span> package for statistical audit sampling. The package provides functions for planning, 
   performing, evaluating, and reporting an audit sample. Specifically, these functions implement 
   standard audit sampling techniques for calculating sample sizes, selecting items from a population, 
   and evaluating the misstatement from a data sample or from summary statistics. Additionally, 
@@ -169,12 +169,35 @@ For documentation on jfa itself, including the manual and user guide
   audit sampling using these functions.</p>  
 <p>The package is also implemented with a graphical user interface in the Audit module of 
   <a href='https://jasp-stats.org'>JASP</a>, a free and open-source statistical software program.</p>
-<p>For documentation on jfa itself, including the manual and user guide
+<p>For documentation on <code>jfa</code> itself, including the manual and user guide
   for the package, worked examples, and other
   tutorial information visit the <a href='https://koenderks.github.io/jfa/'>package website</a>.</p>
     </div>
 
 
+
+    <h2 class="hasAnchor" id="reference-tables"><a class="anchor" href="#reference-tables"></a>Reference tables</h2>
+
+    <p>Below you can find several informative tables that contain statistical sample sizes, upper limits, and Bayes factors. 
+  These tables are created using the <code><a href='planning.html'>planning()</a></code> and <code><a href='evaluation.html'>evaluation()</a></code> functions provided in the package. For
+  more information about these functions, see the corresponding help files.</p>
+<p><em>Sample sizes</em></p><ul>
+<li><p><a href='https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaBinomialSampleSizes.pdf'>Sample sizes based on the binomial distribution</a></p></li>
+<li><p><a href='https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaPoissonSampleSizes.pdf'>Sample sizes based on the Poisson distribution</a></p></li>
+<li><p><a href='https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaHypergeometricSampleSizes.pdf'>Sample sizes based on the hypergeometric distribution</a></p></li>
+</ul>
+
+<p><em>Upper limits</em></p><ul>
+<li><p><a href='https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaBinomialUpperBounds.pdf'>Upper limits based on the binomial distribution</a></p></li>
+<li><p><a href='https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaPoissonUpperBounds.pdf'>Upper limits based on the Poisson distribution</a></p></li>
+<li><p><a href='https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaHypergeometricUpperBounds.pdf'>Upper limits based on the hypergeometric distribution</a></p></li>
+</ul>
+
+<p><em>Bayes factors</em></p><ul>
+<li><p><a href='https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaBinomialBayesFactors.pdf'>Bayes factors based on the beta distribution</a></p></li>
+<li><p><a href='https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaPoissonBayesFactors.pdf'>Bayes factors based on the gamma distribution</a></p></li>
+<li><p><a href='https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaHypergeometricBayesFactors.pdf'>Bayes factors based on the beta-binomial distribution</a></p></li>
+</ul>
 
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
