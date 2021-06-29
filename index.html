@@ -293,8 +293,10 @@
 </tbody>
 </table>
 <p><em>Example usage:</em></p>
-<pre><code><a href="reference/auditPrior.html"># A uniform beta prior distribution 
-auditPrior(method = 'none', likelihood = 'binomial')</a></code></pre>
+<pre><code># A uniform beta prior distribution 
+x &lt;- auditPrior(method = 'none', likelihood = 'binomial')
+
+summary(x) # Prints information about the prior distribution</code></pre>
 </div>
 <div id="plan-a-sample-with-the-planning-function" class="section level3">
 <h3 class="hasAnchor">
@@ -329,8 +331,10 @@ auditPrior(method = 'none', likelihood = 'binomial')</a></code></pre>
 </tbody>
 </table>
 <p><em>Example usage:</em></p>
-<pre><code><a href="reference/planning.html"># Planning using binomial likelihood
-planning(confidence = 0.95, materiality = 0.03, likelihood = 'binomial')</a></code></pre>
+<pre><code># Planning using binomial likelihood
+x &lt;- planning(confidence = 0.95, materiality = 0.03, likelihood = 'binomial')
+
+summary(x) # Prints information about the planning</code></pre>
 </div>
 <div id="select-items-with-the-selection-function" class="section level3">
 <h3 class="hasAnchor">
@@ -394,8 +398,10 @@ planning(confidence = 0.95, materiality = 0.03, likelihood = 'binomial')</a></co
 </tbody>
 </table>
 <p><em>Example usage:</em></p>
-<pre><code><a href="reference/selection.html"># Selection using fixed interval record sampling
-selection(population = BuildIt, sampleSize = 100, algorithm = 'interval')</a></code></pre>
+<pre><code># Selection using fixed interval record sampling
+x &lt;- selection(population = BuildIt, sampleSize = 100, algorithm = 'interval')
+
+summary(x) # Prints information about the selection</code></pre>
 </div>
 <div id="evaluate-a-sample-with-the-evaluation-function" class="section level3">
 <h3 class="hasAnchor">
@@ -509,7 +515,9 @@ selection(population = BuildIt, sampleSize = 100, algorithm = 'interval')</a></c
 </table>
 <p><em>Example usage:</em></p>
 <pre><code><a href="reference/evaluation.html"># Binomial evaluation using summary statistics from a sample
-evaluation(confidence = 0.95, materiality = 0.03, nSumstats = 100, kSumstats = 1, method = 'binomial')</a></code></pre>
+evaluation(confidence = 0.95, materiality = 0.03, nSumstats = 100, kSumstats = 1, method = 'binomial')
+
+summary(x) # Prints information about the evaluation</a></code></pre>
 </div>
 <div id="create-a-report-with-the-report-function" class="section level3">
 <h3 class="hasAnchor">
@@ -519,7 +527,7 @@ evaluation(confidence = 0.95, materiality = 0.03, nSumstats = 100, kSumstats = 1
 <p><em>Full function with default arguments:</em></p>
 <p><code><a href="reference/report.html">report(object, file = 'report.html', format = 'html_document')</a></code></p>
 <p><em>Example usage:</em></p>
-<pre><code><a href="reference/report.html"># Audit sampling report
+<pre><code><a href="reference/report.html"># Generate an automatic report
 report(object = evaluation, file = 'myReport.html')</a></code></pre>
 <p>For an example report, see the following <a href="https://github.com/koenderks/jfa/raw/master/man/figures/readme/report/report.pdf">link</a>.</p>
 </div>
