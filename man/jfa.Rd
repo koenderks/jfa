@@ -22,9 +22,9 @@
 }
 
 \section{Reference tables}{
-  Below you can find several informative tables that contain statistical sample sizes, upper limits, and Bayes factors. 
-  These tables are created using the \code{planning()} and \code{evaluation()} functions provided in the package. For
-  more information about these functions, see the corresponding help files.
+  Below you can find several links to reference tables that contain statistical sample sizes, upper limits, and Bayes factors. 
+  These tables are created using the \code{planning()} and \code{evaluation()} functions provided in the package. See the 
+  corresponding help files for more information about these functions and how to replicate this output.
 
   \emph{Sample sizes}
   \itemize{
@@ -65,7 +65,7 @@
 }
 }
 
-\examples{\dontrun{ 
+\examples{
 
 # Load the jfa package
 library(jfa)
@@ -153,6 +153,6 @@ stage4 <- evaluation(materiality = 0.03, confidence = 0.95, sample = sample,
                      bookValues = "bookValue", auditValues = "auditValue",
                      prior = prior)
 summary(stage4)
-}}
+}
 \keyword{jfa} 
 \keyword{package}
