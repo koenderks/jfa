@@ -332,7 +332,7 @@ summary(x) # Prints information about the prior distribution</code></pre>
 </table>
 <p><em>Example usage:</em></p>
 <pre><code># Planning using binomial likelihood
-x &lt;- planning(confidence = 0.95, materiality = 0.03, likelihood = 'binomial')
+x &lt;- planning(materiality = 0.03, likelihood = 'binomial', confidence = 0.95)
 
 summary(x) # Prints information about the planning</code></pre>
 </div>
@@ -399,7 +399,7 @@ summary(x) # Prints information about the planning</code></pre>
 </table>
 <p><em>Example usage:</em></p>
 <pre><code># Selection using fixed interval record sampling
-x &lt;- selection(population = BuildIt, sampleSize = 100, algorithm = 'interval')
+x &lt;- selection(population = BuildIt, sampleSize = 100, units = 'records', algorithm = 'interval')
 
 summary(x) # Prints information about the selection</code></pre>
 </div>
@@ -515,7 +515,7 @@ summary(x) # Prints information about the selection</code></pre>
 </table>
 <p><em>Example usage:</em></p>
 <pre><code><a href="reference/evaluation.html"># Binomial evaluation using summary statistics from a sample
-evaluation(confidence = 0.95, materiality = 0.03, nSumstats = 100, kSumstats = 1, method = 'binomial')
+evaluation(materiality = 0.03, confidence = 0.95, nSumstats = 100, kSumstats = 1, method = 'binomial')
 
 summary(x) # Prints information about the evaluation</a></code></pre>
 </div>
