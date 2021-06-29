@@ -30,7 +30,7 @@ auditBF(materiality, n, k, expectedError = 0, likelihood = 'binomial',
 A value for the Bayes factor in favor of the hypothesis of tolerable misstatement against the hypothesis of intolerable misstatement.
 }
 \description{
-This function computes Bayes factors for audit sampling from summary statistics of an audit sample. By default, the Bayes factor is computed using an impartial prior distribution on the misstatement (Derks et al. 2021b). However, the arguments \code{nPrior} and \code{kPrior} can be used to specify an alternative prior distribution (Derks et al. 2021a).
+This function computes Bayes factors for audit sampling from summary statistics of an audit sample. By default, the Bayes factor is computed using an impartial prior distribution on the misstatement (Derks et al., 2021). However, the arguments \code{nPrior} and \code{kPrior} can be used to specify an alternative prior distribution (Derks et al., 2021).
 
 For more details on how to use this function, see the package vignette:
 \code{vignette('jfa', package = 'jfa')}
@@ -56,9 +56,7 @@ auditBF(materiality = 0.05, n = 50, k = 1, nPrior = 0, kPrior = 0)
 
 }
 \references{
-Derks, K., de Swart, J., van Batenburg, P. Wagenmakers, E.-J., & Wetzels, R. (2021a). Priors in a Bayesian audit: How integrating information into the prior distribution can improve audit transparency and efficiency. In Press.
-
-Derks, K., de Swart, J., Wagenmakers, E.-J., & Wetzels, R. (2021b). A default Bayesian hypothesis test for audit sampling.
+Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., & Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. \emph{International Journal of Auditing}, 1-16.
 }
 \seealso{
 \code{\link{auditPrior}} \code{\link{planning}} \code{\link{selection}} \code{\link{evaluation}} \code{\link{report}}

@@ -1,0 +1,130 @@
+\name{jfa-package}
+\alias{jfa}
+\alias{jfa-package}
+\docType{package}
+\title{jfa --- Bayesian and Classical Audit Sampling}
+\description{
+
+  jfa is an \R package for statistical audit sampling. The package provides functions for planning, 
+  performing, evaluating, and reporting an audit sample. Specifically, these functions implement 
+  standard audit sampling techniques for calculating sample sizes, selecting items from a population, 
+  and evaluating the misstatement from a data sample or from summary statistics. Additionally, 
+  the jfa package allows the user to create a prior probability distribution to perform Bayesian 
+  audit sampling using these functions.
+  
+  The package is also implemented with a graphical user interface in the Audit module of 
+  \href{https://jasp-stats.org}{JASP}, a free and open-source statistical software program.
+
+  For documentation on jfa itself, including the manual and user guide
+  for the package, worked examples, and other
+  tutorial information visit the \href{https://koenderks.github.io/jfa/}{package website}.
+  
+}
+\author{
+  \tabular{ll}{
+    Koen Derks (maintainer, author)\tab <k.derks@nyenrode.nl> \cr
+  }
+ 
+  Please use the citation provided by \R when citing this package. 
+  A BibTex entry is available from \code{citation("jfa")}.
+}
+
+\seealso{
+\itemize{
+  \item The \href{https://raw.githubusercontent.com/koenderks/jfa/master/man/figures/cheatsheet/cheatsheet.png}{cheat sheet} for a quick overview of the intended workflow.
+  \item The \href{https://koenderks.github.io/jfa/articles/}{vignettes} for worked examples.
+  \item The \href{https://github.com/koenderks/jfa/issues}{issue page} to submit a bug report or feature request.
+}
+}
+
+\examples{\dontrun{ 
+
+# Load the jfa package
+library(jfa)
+
+# Load the BuildIt population
+data("BuildIt")
+
+############################################
+### Example 1: Classical audit sampling ####
+############################################
+
+# Stage 1: Planning
+stage1 <- planning(materiality = 0.03, expectedError = 0.01, 
+                   likelihood = "poisson", confidence = 0.95)
+summary(stage1)
+
+# Stage 2: Selection
+stage2 <- selection(population = BuildIt, sampleSize = stage1,
+                    units = "mus", bookValues = "bookValue",
+                    algorithm = "interval", intervalStartingPoint = 1)
+summary(stage2)
+
+# Stage 3: Execution
+sample <- stage2[["sample"]]
+
+# Stage 4: Evaluation
+stage4 <- evaluation(materiality = 0.03, method = "stringer",
+                     confidence = 0.95, sample = sample,
+                     bookValues = "bookValue", auditValues = "auditValue")
+summary(stage4)
+
+######################################################################
+### Example 2: Bayesian audit sampling using a non-informed prior ####
+######################################################################
+
+# Create the prior distribution
+prior <- auditPrior(method = "none", likelihood = "poisson")
+summary(prior)
+
+# Stage 1: Planning
+stage1 <- planning(materiality = 0.03, expectedError = 0.01,
+                   likelihood = "poisson", confidence = 0.95, prior = prior)
+summary(stage1)
+
+# Stage 2: Selection
+stage2 <- selection(population = BuildIt, sampleSize = stage1,
+                    units = "mus", bookValues = "bookValue",
+                    algorithm = "interval", intervalStartingPoint = 1)
+summary(stage2)
+
+# Stage 3: Execution
+sample <- stage2[["sample"]]
+
+# Stage 4: Evaluation
+stage4 <- evaluation(materiality = 0.03, confidence = 0.95, sample = sample,
+                     bookValues = "bookValue", auditValues = "auditValue",
+                     prior = prior)
+summary(stage4)
+
+###################################################################
+### Example 3: Bayesian audit sampling using an informed prior ####
+###################################################################
+
+# Create the prior distribution
+prior <- auditPrior(method = "arm", likelihood = "poisson",
+                    expectedError = 0.01, materiality = 0.03, cr = 0.6)
+summary(prior)
+
+# Stage 1: Planning
+stage1 <- planning(materiality = 0.03, expectedError = 0.01,
+                   likelihood = "poisson", confidence = 0.95, prior = prior)
+summary(stage1)
+
+# Stage 2: Selection
+stage2 <- selection(population = BuildIt, sampleSize = stage1,
+                    units = "mus", bookValues = "bookValue",
+                    algorithm = "interval", intervalStartingPoint = 1)
+summary(stage2)
+
+# Stage 3: Execution
+sample <- stage2[["sample"]]
+
+# Stage 4: Evaluation
+stage4 <- evaluation(materiality = 0.03, confidence = 0.95, sample = sample,
+                     bookValues = "bookValue", auditValues = "auditValue",
+                     prior = prior)
+summary(stage4)
+}}
+\keyword{jfa} 
+\keyword{package}

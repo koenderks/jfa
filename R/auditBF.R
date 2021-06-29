@@ -1,6 +1,6 @@
 #' Function to compute Bayes factors for audit sampling
 #'
-#' @description This function computes Bayes factors for audit sampling from summary statistics of an audit sample. By default, the Bayes factor is computed using an impartial prior distribution on the misstatement (Derks et al. 2021b). However, the arguments \code{nPrior} and \code{kPrior} can be used to specify an alternative prior distribution (Derks et al. 2021a).
+#' @description This function computes Bayes factors for audit sampling from summary statistics of an audit sample. By default, the Bayes factor is computed using an impartial prior distribution on the misstatement (Derks et al., 2021). However, the arguments \code{nPrior} and \code{kPrior} can be used to specify an alternative prior distribution (Derks et al., 2021).
 #'
 #' For more details on how to use this function, see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
@@ -34,8 +34,7 @@
 #' 
 #' @seealso \code{\link{auditPrior}} \code{\link{planning}} \code{\link{selection}} \code{\link{evaluation}} \code{\link{report}}
 #' 
-#' @references Derks, K., de Swart, J., van Batenburg, P. Wagenmakers, E.-J., & Wetzels, R. (2021a). Priors in a Bayesian audit: How integrating information into the prior distribution can improve audit transparency and efficiency. In Press.
-#' @references Derks, K., de Swart, J., Wagenmakers, E.-J., & Wetzels, R. (2021b). A default Bayesian hypothesis test for audit sampling.
+#' @references Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., & Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. \emph{International Journal of Auditing}, 1-16.
 #'
 #' @keywords prior distribution audit Bayes factor
 #'
@@ -67,11 +66,11 @@ auditBF <- function(materiality, n, k, expectedError = 0, likelihood = 'binomial
     warning("Falling back to an impartial prior distribution, since both 'nPrior' and 'kPrior' must be specified to use a custom prior distribution.")
   
   if(!is.null(nPrior) && !is.null(kPrior)) {
-    # Create a prior distribution on the basis of an earlier sample (Derks et al. 2021a)
+    # Create a prior distribution on the basis of an earlier sample (Derks et al., 2021)
     p <- jfa::auditPrior(confidence = 0.95, materiality = materiality, expectedError = expectedError, 
 	                     method = 'sample', likelihood = likelihood, sampleN = nPrior, sampleK = kPrior, N = N)
   } else {
-    # Create the impartial prior distribution (Derks et al. 2021b)
+    # Create the impartial prior distribution (Derks et al., 2021)
     p <- jfa::auditPrior(confidence = 0.95, materiality = materiality, expectedError = expectedError, 
 	                     method = 'median', likelihood = likelihood, N = N)
   }
