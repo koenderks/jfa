@@ -5,7 +5,7 @@
 \title{jfa --- Bayesian and Classical Audit Sampling}
 \description{
 
-  jfa is an \R package for statistical audit sampling. The package provides functions for planning, 
+  \code{jfa} is an \R package for statistical audit sampling. The package provides functions for planning, 
   performing, evaluating, and reporting an audit sample. Specifically, these functions implement 
   standard audit sampling techniques for calculating sample sizes, selecting items from a population, 
   and evaluating the misstatement from a data sample or from summary statistics. Additionally, 
@@ -15,11 +15,39 @@
   The package is also implemented with a graphical user interface in the Audit module of 
   \href{https://jasp-stats.org}{JASP}, a free and open-source statistical software program.
 
-  For documentation on jfa itself, including the manual and user guide
+  For documentation on \code{jfa} itself, including the manual and user guide
   for the package, worked examples, and other
   tutorial information visit the \href{https://koenderks.github.io/jfa/}{package website}.
   
 }
+
+\section{Reference tables}{
+  Below you can find several informative tables that contain statistical sample sizes, upper limits, and Bayes factors. 
+  These tables are created using the \code{planning()} and \code{evaluation()} functions provided in the package. For
+  more information about these functions, see the corresponding help files.
+
+  \emph{Sample sizes}
+  \itemize{
+  \item \href{https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaBinomialSampleSizes.pdf}{Sample sizes based on the binomial distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaPoissonSampleSizes.pdf}{Sample sizes based on the Poisson distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaHypergeometricSampleSizes.pdf}{Sample sizes based on the hypergeometric distribution}
+  }
+
+  \emph{Upper limits}
+  \itemize{
+  \item \href{https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaBinomialUpperBounds.pdf}{Upper limits based on the binomial distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaPoissonUpperBounds.pdf}{Upper limits based on the Poisson distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaHypergeometricUpperBounds.pdf}{Upper limits based on the hypergeometric distribution}
+  }
+
+  \emph{Bayes factors}
+  \itemize{
+  \item \href{https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaBinomialBayesFactors.pdf}{Bayes factors based on the beta distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaPoissonBayesFactors.pdf}{Bayes factors based on the gamma distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaHypergeometricBayesFactors.pdf}{Bayes factors based on the beta-binomial distribution}
+  }
+}
+
 \author{
   \tabular{ll}{
     Koen Derks (maintainer, author)\tab <k.derks@nyenrode.nl> \cr
