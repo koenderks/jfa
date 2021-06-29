@@ -50,7 +50,7 @@ cr <- 0.6   # 60%
 
 ## Stage 1: Planning an audit sample
 
-Laura can choose to either perform a frequentist analysis, where she uses the increased detection risk as her level of uncertainty, or perform a Bayesian analysis, where she captures the information in the control risk in a prior distribution. For this example, we will show how Laura performs a frequentist analysis. A frequentist analysis can easily be done through the following functions by setting `prior = FALSE`. In a frequentist audit, Laura immediately uses the adjusted confidence to calculate the sample size using the `planning()` function.
+Laura can choose to either perform a frequentist analysis, where she uses the increased detection risk as her level of uncertainty, or perform a Bayesian analysis, where she captures the information in the control risk in a prior distribution. For this example, we will show how Laura performs a frequentist analysis. In a frequentist audit, Laura immediately uses the adjusted confidence to calculate the sample size using the `planning()` function.
 
 ```{r}
 # Adjust the required confidence for a frequentist analysis.
@@ -99,7 +99,7 @@ sample <- samplingResult$sample
 # sample <- read.csv(file = "auditSample.csv")
 ```
 
-For this example, the audit values of the sample are already included in the `auditValue` column of the dataset .
+For this example, the audit values of the sample are already included in the `auditValue` column of the data set .
 
 ## Stage 4: Evaluating the sample
 

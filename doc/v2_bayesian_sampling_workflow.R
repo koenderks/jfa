@@ -30,7 +30,8 @@ plot(prior)
 
 ## -----------------------------------------------------------------------------
 # Step 1: Calculate the required sample size.
-planningResult <- planning(materiality = materiality, expectedError = expectedError, confidence = confidence, prior = prior)
+planningResult <- planning(materiality = materiality, expectedError = expectedError,
+                           confidence = confidence, prior = prior)
 
 ## -----------------------------------------------------------------------------
 summary(planningResult)
@@ -40,7 +41,8 @@ plot(planningResult)
 
 ## -----------------------------------------------------------------------------
 # Step 2: Draw a sample from the financial statements.
-samplingResult <- selection(BuildIt, sampleSize = 164, units = "mus", bookValues = "bookValue")
+samplingResult <- selection(population = BuildIt, sampleSize = planningResult, 
+                            units = "mus", bookValues = "bookValue")
 
 ## -----------------------------------------------------------------------------
 summary(samplingResult)
