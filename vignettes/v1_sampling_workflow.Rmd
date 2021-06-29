@@ -56,7 +56,8 @@ Laura can choose to either perform a frequentist analysis, where she uses the in
 # Adjust the required confidence for a frequentist analysis.
 adjustedConfidence <- 1 - ((1 - confidence) / (ir * cr))
 # Step 1: Calculate the required sample size.
-planningResult <- planning(adjustedConfidence, materiality, expectedError = expectedError)
+planningResult <- planning(materiality = materiality, expectedError = expectedError, 
+                           confidence = adjustedConfidence)
 ```
 
 Laura can then inspect the result from her planning procedure by using the `summary()` function. Her result tells her that, given her prior distribution she needs to audit a sample of 190 transactions so that, when at most 5 errors are found, she can conclude with 91.66% confidence that the maximum error in BuildIt's financial statements is lower the materiality of 5%. 
@@ -73,7 +74,8 @@ Laura chooses to use *monetary unit sampling*, as she wants to include more high
 
 ```{r}
 # Step 2: Draw a sample from the financial statements.
-samplingResult <- selection(BuildIt, sampleSize = 190, units = "mus", bookValues = "bookValue")
+samplingResult <- selection(population = BuildIt, sampleSize = planningResult, 
+                            units = "mus", bookValues = "bookValue")
 ```
 
 Laura can inspect the outcomes of her sampling procedure by using the `summary()` function.
@@ -105,11 +107,12 @@ Using her annotated sample, Laura can perform her inference with the `evaluation
 
 ```{r}
 # Step 4: Evaluate the sample
-evaluationResult <- evaluation(confidence, materiality, sample = sample, 
-                               bookValues = 'bookValue', auditValues = 'auditValue')
+evaluationResult <- evaluation(materiality = materiality, confidence = adjustedConfidence, 
+                               sample = sample, bookValues = 'bookValue', 
+                               auditValues = 'auditValue')
 ```
 
-Laura can inspect the outcomes of her inference by using the `summary()` function. Her resulting upper bound is 1.564%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.
+Laura can inspect the outcomes of her inference by using the `summary()` function. Her resulting 91.66% upper bound is 1.299%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.
 
 ```{r}
 summary(evaluationResult)
@@ -117,4 +120,4 @@ summary(evaluationResult)
 
 ## Conclusion
 
-Since the 95% upper confidence bound on the misstatement in population is lower than the performance materiality Laura can conclude that there is less than 5% risk that the population contains material misstatement.
+Since the 91.66% upper confidence bound on the misstatement in population is lower than the performance materiality Laura can conclude that there is less than 5% risk that the population contains material misstatement.

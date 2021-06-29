@@ -5,18 +5,18 @@
 #' For more details on how to use this function, see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
-#' @usage evaluation(confidence, materiality = NULL, minPrecision = NULL, method = 'binomial',
-#'            sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, 
-#'            nSumstats = NULL, kSumstats = NULL,
+#' @usage evaluation(materiality = NULL, minPrecision = NULL, method = 'binomial',
+#'            confidence = 0.95, sample = NULL, bookValues = NULL, auditValues = NULL, 
+#'            counts = NULL, nSumstats = NULL, kSumstats = NULL,
 #'            N = NULL, populationBookValue = NULL,
 #'            prior = FALSE, nPrior = 0, kPrior = 0, 
 #'            rohrbachDelta = 2.7, momentPoptype = 'accounts',
 #'            csA = 1, csB = 3, csMu = 0.5) 
 #'
-#' @param confidence   	a numeric value between 0 and 1 specifying the confidence level used in the evaluation. Defaults to 0.95 for 95\% confidence.
 #' @param materiality   a numeric value between 0 and 1 specifying the performance materiality (maximum tolerable error) as a fraction of the total size of the population. If specified, the function also returns the conclusion of the analysis with respect to the performance materiality. The value is discarded when \code{direct}, \code{difference}, \code{quotient}, or \code{regression} method is chosen.
 #' @param minPrecision  a numeric value between 0 and 1 specifying the required minimum precision (upper bound minus most likely error) as a fraction of the total size of the population. If specified, the function also returns the conclusion of the analysis with respect to the required minimum precision.
 #' @param method        a character specifying the method to be used in the evaluation. Possible options are \code{poisson}, \code{binomial} (default), \code{hypergeometric}, \code{mpu}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}. See the details section for more information.
+#' @param confidence   	a numeric value between 0 and 1 specifying the confidence level used in the evaluation. Defaults to 0.95 for 95\% confidence.
 #' @param sample        a data frame containing the sample to be evaluated. The sample must at least contain a column of book values and a column of audit (true) values.
 #' @param bookValues    a character specifying the column name for the book values in the \code{sample}.
 #' @param auditValues   a character specifying the column name for the audit values in the \code{sample}.
@@ -101,14 +101,14 @@
 #'           algorithm = 'interval', units = 'mus', bookValues = 'bookValue')$sample
 #' 
 #' # Evaluate using the Stringer bound
-#' evaluation(confidence = 0.95, materiality = 0.05, method = 'stringer',
+#' evaluation(materiality = 0.05, method = 'stringer', confidence = 0.95,
 #'            sample = sample, bookValues = 'bookValue', auditValues = 'auditValue')
 #'
 #' @export 
 
-evaluation <- function(confidence, materiality = NULL, minPrecision = NULL, method = 'binomial',
-                       sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL,
-                       nSumstats = NULL, kSumstats = NULL,
+evaluation <- function(materiality = NULL, minPrecision = NULL, method = 'binomial', 
+                       confidence = 0.95, sample = NULL, bookValues = NULL, auditValues = NULL,
+                       counts = NULL, nSumstats = NULL, kSumstats = NULL,
                        N = NULL, populationBookValue = NULL,
                        prior = FALSE, nPrior = 0, kPrior = 0, 
                        rohrbachDelta = 2.7, momentPoptype = 'accounts',
@@ -128,10 +128,10 @@ evaluation <- function(confidence, materiality = NULL, minPrecision = NULL, meth
   
   # Perform error handling with respect to incompatible input options
   if (confidence >= 1 || confidence <= 0 || is.null(confidence))
-    stop("Specify a value for the confidence likelihood. Possible values lie within the range of 0 to 1.")
+    stop("Specify a valid value for the 'confidence' argument. Possible values lie within the range of 0 to 1.")
   
   if (is.null(materiality) && is.null(minPrecision))
-    stop("You must specify the materiality or the minimum precision.")
+    stop("You must specify your sampling objective(s) using the 'materiality' or 'minPrecision' argument(s).")
   
   if (!is.null(minPrecision) && (minPrecision <= 0 || minPrecision >= 1))
     stop("The minimum required precision must be a positive value < 1.")

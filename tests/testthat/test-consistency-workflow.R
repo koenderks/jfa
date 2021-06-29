@@ -46,17 +46,17 @@ test_that(desc = "(id: f8-v0.1.0-t1) Test for use of jfaPrior and jfaPosterior",
   tolerance  <- 0.05 # 5% tolerance (materiality)
   
   # Construct a prior distribution
-  prior <- auditPrior(confidence, tolerance, method = 'median')
+  prior <- auditPrior(confidence = confidence, materiality = tolerance, method = 'median')
   # Use the prior distribution for planning
-  plan <- planning(confidence, tolerance, expectedError = 0, prior = prior)
+  plan <- planning(confidence = confidence, materiality = tolerance, expectedError = 0, prior = prior)
   # Use the prior distribution for evaluation
-  result <- evaluation(confidence, tolerance, nSumstats = plan$sampleSize, kSumstats = plan$expectedSampleError, prior = prior)
+  result <- evaluation(confidence = confidence, materiality = tolerance, nSumstats = plan$sampleSize, kSumstats = plan$expectedSampleError, prior = prior)
   # Extract the posterior distribution
   posterior <- result$posterior
   # Use the posterior distribution for planning
-  plan2 <- planning(confidence, tolerance, expectedError = 0, prior = result$posterior)
+  plan2 <- planning(confidence = confidence, materiality = tolerance, expectedError = 0, prior = result$posterior)
   # Use the posterior distribution for evaluation
-  result2 <- evaluation(confidence, tolerance, nSumstats = plan2$sampleSize, kSumstats = plan2$expectedSampleError, prior = result$posterior)
+  result2 <- evaluation(confidence = confidence, materiality = tolerance, nSumstats = plan2$sampleSize, kSumstats = plan2$expectedSampleError, prior = result$posterior)
   
   expect_equal(result2[["confBound"]], 0.04829835) # Upper bound of 4.8%
 })

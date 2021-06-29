@@ -102,7 +102,7 @@ The `auditPrior()` function creates a prior distribution according to one of sev
 
 *Full function with default arguments:*
 
-`auditPrior(confidence, materiality = NULL, expectedError = 0, method = 'none', likelihood = 'binomial', N = NULL, ir = 1, cr = 1, ub = NULL, pHmin = NULL, pHplus = NULL, sampleN = 0, sampleK = 0, factor = 1)`
+`auditPrior(method = 'none', likelihood = 'binomial', expectedError = 0, confidence = 0.95, materiality = NULL, N = NULL, ir = 1, cr = 1, ub = NULL, pHmin = NULL, pHplus = NULL, sampleN = 0, sampleK = 0, factor = 1)`
 
 *Supported options for the `method` argument:*
 
@@ -128,7 +128,9 @@ The `auditPrior()` function creates a prior distribution according to one of sev
 
 ```
 # A uniform beta prior distribution 
-auditPrior(confidence = 0.95, method = 'none', likelihood = 'binomial')
+x <- auditPrior(method = 'none', likelihood = 'binomial')
+
+summary(x) # Prints information about the prior distribution
 ```
 
 ### Plan a sample with the `planning()` function
@@ -139,7 +141,7 @@ The `planning()` function calculates the minimum sample size for a statistical a
 
 *Full function with default arguments:*
 
-`planning(confidence, materiality = NULL, minPrecision = NULL, expectedError = 0, likelihood = 'binomial', N = NULL, prior = FALSE, nPrior = 0, kPrior = 0, increase = 1, maxSize = 5000)`
+`planning(materiality = NULL, minPrecision = NULL, expectedError = 0, likelihood = 'binomial', confidence = 0.95, N = NULL, prior = FALSE, nPrior = 0, kPrior = 0, increase = 1, maxSize = 5000)`
 
 *Supported options for the `likelihood` argument:*
 
@@ -153,7 +155,9 @@ The `planning()` function calculates the minimum sample size for a statistical a
 
 ```
 # Planning using binomial likelihood
-planning(confidence = 0.95, materiality = 0.03, likelihood = 'binomial')
+x <- planning(materiality = 0.03, likelihood = 'binomial', confidence = 0.95)
+
+summary(x) # Prints information about the planning
 ```
 
 ### Select items with the `selection()` function
@@ -185,7 +189,9 @@ The `selection()` function takes a data frame and performs statistical sampling 
 
 ```
 # Selection using fixed interval record sampling
-selection(population = BuildIt, sampleSize = 100, algorithm = 'interval')
+x <- selection(population = BuildIt, sampleSize = 100, units = 'records', algorithm = 'interval')
+
+summary(x) # Prints information about the selection
 ```
 
 ### Evaluate a sample with the `evaluation()` function
@@ -196,7 +202,7 @@ The `evaluation()` function takes a sample or summary statistics of the sample a
 
 *Full function with default arguments:*
 
-`evaluation(confidence, materiality = NULL, minPrecision = NULL, method = 'binomial', sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, nSumstats = NULL, kSumstats = NULL, N = NULL, populationBookValue = NULL, prior = FALSE, nPrior = 0, kPrior = 0, rohrbachDelta = 2.7, momentPoptype = 'accounts', csA = 1, csB = 3, csMu = 0.5)`
+`evaluation(materiality = NULL, minPrecision = NULL, method = 'binomial', confidence = 0.95, sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, nSumstats = NULL, kSumstats = NULL, N = NULL, populationBookValue = NULL, prior = FALSE, nPrior = 0, kPrior = 0, rohrbachDelta = 2.7, momentPoptype = 'accounts', csA = 1, csB = 3, csMu = 0.5)`
 
 *Supported options for the `method` argument:*
 
@@ -221,7 +227,9 @@ The `evaluation()` function takes a sample or summary statistics of the sample a
 
 ```
 # Binomial evaluation using summary statistics from a sample
-evaluation(confidence = 0.95, materiality = 0.03, nSumstats = 100, kSumstats = 1, method = 'binomial')
+evaluation(materiality = 0.03, confidence = 0.95, nSumstats = 100, kSumstats = 1, method = 'binomial')
+
+summary(x) # Prints information about the evaluation
 ```
 
 ### Create a report with the `report()` function
@@ -237,7 +245,7 @@ The `report()` function takes an object of class `jfaEvaluation` as returned by 
 *Example usage:*
 
 ```
-# Audit sampling report
+# Generate an automatic report
 report(object = evaluation, file = 'myReport.html')
 ```
 

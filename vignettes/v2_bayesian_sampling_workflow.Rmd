@@ -61,7 +61,8 @@ However, in a Bayesian audit, Laura starts at step 0 by defining the prior distr
 
 ```{r}
 # Step 0: Create a prior distribution according to the audit risk model.
-prior <- auditPrior(confidence, materiality, expectedError, method = "arm", likelihood = "binomial", ir = ir, cr = cr)
+prior <- auditPrior(method = "arm", likelihood = "binomial", expectedError = expectedError,
+                    materiality = materiality, ir = ir, cr = cr)
 ```
 
 Laura can inspect the resulting prior distribution with the `summary()` function.
@@ -80,7 +81,7 @@ Now that the prior distribution is specified, Laura can calculate the required s
 
 ```{r}
 # Step 1: Calculate the required sample size.
-planningResult <- planning(confidence, materiality, expectedError = expectedError, prior = prior)
+planningResult <- planning(materiality = materiality, expectedError = expectedError, confidence = confidence, prior = prior)
 ```
 
 Laura can then inspect the result from her planning procedure by using the `summary()` function. Her result tells her that, given her prior distribution she needs to audit a sample of 169 transactions so that, when at most 4.225 errors are found, she can conclude with 95% confidence that the maximum error in BuildIt's financial statements is lower the materiality of 5%. 
@@ -135,7 +136,9 @@ Using her annotated sample, Laura can perform her inference with the `evaluation
 
 ```{r}
 # Step 4: Evaluate the sample.
-evaluationResult <- evaluation(confidence, materiality, sample = sample, bookValues = "bookValue", auditValues = "auditValue", prior = prior)
+evaluationResult <- evaluation(materiality = materiality, confidence = confidence, 
+                               sample = sample, bookValues = "bookValue", 
+                               auditValues = "auditValue", prior = prior)
 ```
 
 Laura can inspect the outcomes of her inference by using the `summary()` function. Her resulting upper bound is 2.378%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.

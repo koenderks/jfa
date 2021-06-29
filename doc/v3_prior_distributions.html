@@ -186,8 +186,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="default-no-explicit-information-method-none" class="section level3">
 <h3>[Default] No explicit information (<code>method = &#39;none&#39;</code>)</h3>
 <p>You can refrain from incorporating explicit information in the prior distribution using <code>method = &#39;none&#39;</code>. As an example, the code below incorporates no explicit information into a prior distribution</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>prior1 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(confidence, materiality, expectedError, likelihood, <span class="at">method =</span> <span class="st">&#39;none&#39;</span>)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior1)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>prior1 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(<span class="at">method =</span> <span class="st">&#39;none&#39;</span>, <span class="at">likelihood =</span> likelihood, </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">expectedError =</span> expectedError, <span class="at">confidence =</span> confidence)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior1)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
 ## # ------------------------------------------------------------
@@ -219,9 +220,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="audit-risk-model-method-arm" class="section level3">
 <h3>Audit Risk Model (<code>method = &#39;arm&#39;</code>)</h3>
 <p>You can translate the risk assessments from the Audit Risk Model (inherent risk and internal control risk) into a prior distribution using <code>method = &#39;arm&#39;</code> in combination with the <code>ir</code> and <code>cr</code> arguments. As an example, the code below incorporates the information that the inherent risk is equal to 90% and that the internal control risk is equal to 60% into a prior distribution.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>prior2 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(confidence, materiality, expectedError, likelihood, <span class="at">method =</span> <span class="st">&#39;arm&#39;</span>, </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">ir =</span> <span class="fl">0.9</span>, <span class="at">cr =</span> <span class="fl">0.6</span>)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior2)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>prior2 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(<span class="at">method =</span> <span class="st">&#39;arm&#39;</span>, <span class="at">likelihood =</span> likelihood, </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">expectedError =</span> expectedError, <span class="at">confidence =</span> confidence,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">materiality =</span> materiality, <span class="at">ir =</span> <span class="fl">0.9</span>, <span class="at">cr =</span> <span class="fl">0.6</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior2)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
 ## # ------------------------------------------------------------
@@ -253,9 +255,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="bayesian-risk-assessment-model-method-bram" class="section level3">
 <h3>Bayesian Risk Assessment Model (<code>method = &#39;bram&#39;</code>)</h3>
 <p>You can incorporate information about the expected errors (mode) and the upper confidence bound of the prior distribution according to the Bayesian Risk Assessment Model (BRAM) using <code>method = &#39;bram&#39;</code>. As an example, the code below incorporates the information that the mode of the prior distribution is 1% and the upper bound is 60%.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>prior3 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(confidence, materiality, expectedError, likelihood, <span class="at">method =</span> <span class="st">&#39;bram&#39;</span>,</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">ub =</span> <span class="fl">0.6</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior3)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>prior3 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(<span class="at">method =</span> <span class="st">&#39;bram&#39;</span>, <span class="at">likelihood =</span> likelihood, </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">expectedError =</span> expectedError, <span class="at">confidence =</span> confidence,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">materiality =</span> materiality, <span class="at">ub =</span> <span class="fl">0.6</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior3)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
 ## # ------------------------------------------------------------
@@ -288,8 +291,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3>Equal prior probabilities (<code>method = &#39;median&#39;</code>)</h3>
 <p>You can incorporate the assumption that tolerable misstatement is equally likely as intolerable misstatement using <code>method = &#39;median&#39;</code>. As an example, the code below incorporates this assumption into a prior distribution.</p>
 <p><em>Note: This method requires that you specify a value for the <code>materiality</code>.</em></p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>prior4 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(confidence, materiality, expectedError, likelihood, <span class="at">method =</span> <span class="st">&#39;median&#39;</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior4)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>prior4 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(<span class="at">method =</span> <span class="st">&#39;median&#39;</span>, <span class="at">likelihood =</span> likelihood, </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">expectedError =</span> expectedError, <span class="at">confidence =</span> confidence,</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">materiality =</span> materiality)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior4)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
 ## # ------------------------------------------------------------
@@ -322,9 +327,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3>Custom prior probabilities (<code>method = &#39;hypotheses&#39;</code>)</h3>
 <p>You can assign custom probabilities to the hypothesis of tolerable misstatement (using <code>pHmin</code>) and/or the hypotheses of intolerable misstatement (using <code>pHplus</code>) in combination with <code>method = &#39;hypotheses&#39;</code>. As an example, the code below incorporates the information that the hypothesis of tolerable misstatement has a probability of 60% into a prior distribution.</p>
 <p><em>Note: This method requires that you specify a value for the <code>materiality</code>.</em></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>prior5 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(confidence, materiality, expectedError, likelihood, <span class="at">method =</span> <span class="st">&#39;hypotheses&#39;</span>, </span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">pHmin =</span> <span class="fl">0.6</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior5)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>prior5 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(<span class="at">method =</span> <span class="st">&#39;hypotheses&#39;</span>, <span class="at">likelihood =</span> likelihood, </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">expectedError =</span> expectedError, <span class="at">confidence =</span> confidence,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">materiality =</span> materiality, <span class="at">pHmin =</span> <span class="fl">0.6</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior5)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
 ## # ------------------------------------------------------------
@@ -356,9 +362,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="earlier-sample-method-sample" class="section level3">
 <h3>Earlier sample (<code>method = &#39;sample&#39;</code>)</h3>
 <p>You can incorporate information from an earlier sample into the prior distribution using <code>method = &#39;sample&#39;</code> in combination with <code>sampleN</code> and <code>sampleK</code>. As an example, the code below incorporates the information from an earlier sample of 30 items in which 0 misstatements were found into a prior distribution.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>prior6 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(confidence, materiality, expectedError, likelihood, <span class="at">method =</span> <span class="st">&#39;sample&#39;</span>,</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">sampleN =</span> <span class="dv">30</span>, <span class="at">sampleK =</span> <span class="dv">0</span>)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior6)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>prior6 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(<span class="at">method =</span> <span class="st">&#39;sample&#39;</span>, <span class="at">likelihood =</span> likelihood, </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">expectedError =</span> expectedError, <span class="at">confidence =</span> confidence,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">materiality =</span> materiality, <span class="at">sampleN =</span> <span class="dv">30</span>, <span class="at">sampleK =</span> <span class="dv">0</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior6)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
 ## # ------------------------------------------------------------
@@ -390,9 +397,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="weighted-earlier-sample-method-factor" class="section level3">
 <h3>Weighted earlier sample (<code>method = &#39;factor&#39;</code>)</h3>
 <p>You can incorporate information from last years results, weighted by a factor, into the prior distribution using <code>method = &#39;factor&#39;</code> in combination with <code>sampleN</code> and <code>sampleK</code>. As an example, the code below incorporates the information from a last years results (a sample of 58 items in which 0 misstatements were found), weighted by a factor 0.7, into a prior distribution.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>prior7 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(confidence, materiality, expectedError, likelihood, <span class="at">method =</span> <span class="st">&#39;factor&#39;</span>,</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">sampleN =</span> <span class="dv">58</span>, <span class="at">sampleK =</span> <span class="dv">0</span>, <span class="at">factor =</span> <span class="fl">0.7</span>)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior7)</span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>prior7 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(<span class="at">method =</span> <span class="st">&#39;factor&#39;</span>, <span class="at">likelihood =</span> likelihood, </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">expectedError =</span> expectedError, <span class="at">confidence =</span> confidence,</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">materiality =</span> materiality, <span class="at">sampleN =</span> <span class="dv">58</span>, <span class="at">sampleK =</span> <span class="dv">0</span>, <span class="at">factor =</span> <span class="fl">0.7</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior7)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
 ## # ------------------------------------------------------------
@@ -428,16 +436,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="combining-auditprior-with-planning" class="section level3">
 <h3>Combining <code>auditPrior()</code> with <code>planning()</code></h3>
 <p>The prior distribution can be used the planning stage to calculate a minimum sample size by providing the objected returned by the <code>auditPrior()</code> function to the <code>planning()</code> function. For example, the code below calculates the minimum sample size to test the misstatement in the population against a performance materiality of 5%, while incorporating the information in <code>prior7</code>.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>jfa<span class="sc">::</span><span class="fu">planning</span>(confidence, materiality, <span class="at">expectedError =</span> expectedError, <span class="at">prior =</span> prior7)</span></code></pre></div>
-<pre><code>## Object of class &#39;jfaPlanning&#39;.
-## Minimum sample size: 27</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>jfa<span class="sc">::</span><span class="fu">planning</span>(<span class="at">materiality =</span> materiality, <span class="at">expectedError =</span> expectedError, </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">confidence =</span> confidence, <span class="at">prior =</span> prior7)</span></code></pre></div>
+<pre><code>## Minimum sample size: 27 
+## Sample size obtained in 29 iteration(s) via method &#39;binomial&#39;.</code></pre>
 </div>
 <div id="combining-auditprior-with-evaluation" class="section level3">
 <h3>Combining <code>auditPrior()</code> with <code>evaluation()</code></h3>
 <p>The prior distribution can be used the evaluation stage by providing the objected returned by the <code>auditPrior()</code> function to the <code>evaluation()</code> function. For example, the code below evaluates the misstatement in the population with respect to the performance materiality of 5% after seeing a sample of 60 items with 1 misstatement, while incorporating the information in <code>prior7</code>.</p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>jfa<span class="sc">::</span><span class="fu">evaluation</span>(confidence, materiality, <span class="at">nSumstats =</span> <span class="dv">60</span>, <span class="at">kSumstats =</span> <span class="dv">1</span>, <span class="at">prior =</span> prior7)</span></code></pre></div>
-<pre><code>## Object of class &#39;jfaEvaluation&#39;.
-## Conclusion: Approve population</code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>jfa<span class="sc">::</span><span class="fu">evaluation</span>(<span class="at">materiality =</span> materiality, <span class="at">confidence =</span> confidence, </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">nSumstats =</span> <span class="dv">60</span>, <span class="at">kSumstats =</span> <span class="dv">1</span>, <span class="at">prior =</span> prior7)</span></code></pre></div>
+<pre><code>## Most likely error: 0.994% | 95% upper bound: 4.584% | Precision: 3.59% | BF-+: 3.745 
+## Estimates obtained via method &#39;binomial&#39;.</code></pre>
 </div>
 </div>
 

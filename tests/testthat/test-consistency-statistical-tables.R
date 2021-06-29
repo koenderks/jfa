@@ -32,7 +32,7 @@ test_that(desc = "(id: f7-v0.5.5-t1) Statistical Sample Sizes based on the Binom
       if(expected[rows] >= m[columns]){
         next
       } else {
-        p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "binomial", materiality = m[columns])) }, silent = T)
+        p <- try({ suppressMessages(ss <- jfa::planning(confidence = confidence, expectedError = expected[rows], likelihood = "binomial", materiality = m[columns])) }, silent = T)
         if(class(p) == "try-error"){
           next 
         }
@@ -74,7 +74,7 @@ test_that(desc = "(id: f7-v0.5.5-t2) Statistical Sample Sizes based on the Binom
       if(expected[rows] >= m[columns]){
         next
       } else {
-        p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "binomial", materiality = m[columns])) }, silent = T)
+        p <- try({ suppressMessages(ss <- jfa::planning(confidence = confidence, expectedError = expected[rows], likelihood = "binomial", materiality = m[columns])) }, silent = T)
         if(class(p) == "try-error"){
           next 
         }
@@ -116,7 +116,7 @@ test_that(desc = "(id: f7-v0.5.5-t3) Statistical Sample Sizes based on the Binom
       if(expected[rows] >= m[columns]){
         next
       } else {
-        p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "binomial", materiality = m[columns])) }, silent = T)
+        p <- try({ suppressMessages(ss <- jfa::planning(confidence = confidence, expectedError = expected[rows], likelihood = "binomial", materiality = m[columns])) }, silent = T)
         if(class(p) == "try-error"){
           next 
         }
@@ -158,7 +158,7 @@ test_that(desc = "(id: f7-v0.5.5-t4) Statistical Sample Sizes based on the Binom
       if(expected[rows] >= m[columns]){
         next
       } else {
-        p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "binomial", materiality = m[columns])) }, silent = T)
+        p <- try({ suppressMessages(ss <- jfa::planning(confidence = confidence, expectedError = expected[rows], likelihood = "binomial", materiality = m[columns])) }, silent = T)
         if(class(p) == "try-error"){
           next 
         }
@@ -202,7 +202,7 @@ test_that(desc = "(id: f7-v0.5.5-t5) Statistical Sample Sizes based on the Poiss
       if(expected[rows] >= m[columns]){
         next
       } else {
-        p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "poisson", materiality = m[columns])) }, silent = T)
+        p <- try({ suppressMessages(ss <- jfa::planning(confidence = confidence, expectedError = expected[rows], likelihood = "poisson", materiality = m[columns])) }, silent = T)
         if(class(p) == "try-error"){
           next 
         }
@@ -244,7 +244,7 @@ test_that(desc = "(id: f7-v0.5.5-t6) Statistical Sample Sizes based on the Poiss
       if(expected[rows] >= m[columns]){
         next
       } else {
-        p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "poisson", materiality = m[columns])) }, silent = T)
+        p <- try({ suppressMessages(ss <- jfa::planning(confidence = confidence, expectedError = expected[rows], likelihood = "poisson", materiality = m[columns])) }, silent = T)
         if(class(p) == "try-error"){
           next 
         }
@@ -286,7 +286,7 @@ test_that(desc = "(id: f7-v0.5.5-t7) Statistical Sample Sizes based on the Poiss
       if(expected[rows] >= m[columns]){
         next
       } else {
-        p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "poisson", materiality = m[columns])) }, silent = T)
+        p <- try({ suppressMessages(ss <- jfa::planning(confidence = confidence, expectedError = expected[rows], likelihood = "poisson", materiality = m[columns])) }, silent = T)
         if(class(p) == "try-error"){
           next 
         }
@@ -328,7 +328,7 @@ test_that(desc = "(id: f7-v0.5.5-t8) Statistical Sample Sizes based on the Poiss
       if(expected[rows] >= m[columns]){
         next
       } else {
-        p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "poisson", materiality = m[columns])) }, silent = T)
+        p <- try({ suppressMessages(ss <- jfa::planning(confidence = confidence, expectedError = expected[rows], likelihood = "poisson", materiality = m[columns])) }, silent = T)
         if(class(p) == "try-error"){
           next 
         }
@@ -379,7 +379,7 @@ test_that(desc = "(id: f7-v0.5.5-t9) Statistical Sample Sizes based on the Hyper
       if(expected[rows] >= m[columns]){
         next
       } else {
-        p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = N)) }, silent = T)
+        p <- try({ suppressMessages(ss <- jfa::planning(confidence = confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = N)) }, silent = T)
         if(class(p) == "try-error"){
           next 
         }
@@ -422,7 +422,7 @@ test_that(desc = "(id: f7-v0.5.5-t10) Statistical Sample Sizes based on the Hype
       if(expected[rows] >= m[columns]){
         next
       } else {
-        p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = N)) }, silent = T)
+        p <- try({ suppressMessages(ss <- jfa::planning(confidence = confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = N)) }, silent = T)
         if(class(p) == "try-error"){
           next 
         }
@@ -465,7 +465,7 @@ test_that(desc = "(id: f7-v0.5.5-t11) Statistical Sample Sizes based on the Hype
       if(expected[rows] >= m[columns]){
         next
       } else {
-        p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = N)) }, silent = T)
+        p <- try({ suppressMessages(ss <- jfa::planning(confidence = confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = N)) }, silent = T)
         if(class(p) == "try-error"){
           next 
         }
@@ -508,7 +508,7 @@ test_that(desc = "(id: f7-v0.5.5-t12) Statistical Sample Sizes based on the Hype
       if(expected[rows] >= m[columns]){
         next
       } else {
-        p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = N)) }, silent = T)
+        p <- try({ suppressMessages(ss <- jfa::planning(confidence = confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = N)) }, silent = T)
         if(class(p) == "try-error"){
           next 
         }
@@ -551,7 +551,7 @@ test_that(desc = "(id: f7-v0.5.5-t13) Statistical Sample Sizes based on the Hype
       if(expected[rows] >= m[columns]){
         next
       } else {
-        p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = N)) }, silent = T)
+        p <- try({ suppressMessages(ss <- jfa::planning(confidence = confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = N)) }, silent = T)
         if(class(p) == "try-error"){
           next 
         }
@@ -594,7 +594,7 @@ test_that(desc = "(id: f7-v0.5.5-t14) Statistical Sample Sizes based on the Hype
       if(expected[rows] >= m[columns]){
         next
       } else {
-        p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = N)) }, silent = T)
+        p <- try({ suppressMessages(ss <- jfa::planning(confidence = confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = N)) }, silent = T)
         if(class(p) == "try-error"){
           next 
         }
@@ -637,7 +637,7 @@ test_that(desc = "(id: f7-v0.5.5-t15) Statistical Sample Sizes based on the Hype
       if(expected[rows] >= m[columns]){
         next
       } else {
-        p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = N)) }, silent = T)
+        p <- try({ suppressMessages(ss <- jfa::planning(confidence = confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = N)) }, silent = T)
         if(class(p) == "try-error"){
           next 
         }
@@ -680,7 +680,7 @@ test_that(desc = "(id: f7-v0.5.5-t16) Statistical Sample Sizes based on the Hype
       if(expected[rows] >= m[columns]){
         next
       } else {
-        p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = N)) }, silent = T)
+        p <- try({ suppressMessages(ss <- jfa::planning(confidence = confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = N)) }, silent = T)
         if(class(p) == "try-error"){
           next 
         }
@@ -723,7 +723,7 @@ test_that(desc = "(id: f7-v0.5.5-t17) Statistical Sample Sizes based on the Hype
       if(expected[rows] >= m[columns]){
         next
       } else {
-        p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = N)) }, silent = T)
+        p <- try({ suppressMessages(ss <- jfa::planning(confidence = confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = N)) }, silent = T)
         if(class(p) == "try-error"){
           next 
         }
@@ -766,7 +766,7 @@ test_that(desc = "(id: f7-v0.5.5-t18) Statistical Sample Sizes based on the Hype
       if(expected[rows] >= m[columns]){
         next
       } else {
-        p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = N)) }, silent = T)
+        p <- try({ suppressMessages(ss <- jfa::planning(confidence = confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = N)) }, silent = T)
         if(class(p) == "try-error"){
           next 
         }
@@ -809,7 +809,7 @@ test_that(desc = "(id: f7-v0.5.5-t19) Statistical Sample Sizes based on the Hype
       if(expected[rows] >= m[columns]){
         next
       } else {
-        p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = N)) }, silent = T)
+        p <- try({ suppressMessages(ss <- jfa::planning(confidence = confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = N)) }, silent = T)
         if(class(p) == "try-error"){
           next 
         }
@@ -852,7 +852,7 @@ test_that(desc = "(id: f7-v0.5.5-t20) Statistical Sample Sizes based on the Hype
       if(expected[rows] >= m[columns]){
         next
       } else {
-        p <- try({ suppressMessages(ss <- jfa::planning(confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = N)) }, silent = T)
+        p <- try({ suppressMessages(ss <- jfa::planning(confidence = confidence, expectedError = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N = N)) }, silent = T)
         if(class(p) == "try-error"){
           next 
         }
@@ -896,7 +896,7 @@ test_that(desc = "(id: f7-v0.5.5-21) Statistical Sampling Results based on the B
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "binomial")
+      ss <- jfa::evaluation(confidence = confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "binomial")
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
     }
   }
@@ -930,7 +930,7 @@ test_that(desc = "(id: f7-v0.5.5-22) Statistical Sampling Results based on the B
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "binomial")
+      ss <- jfa::evaluation(confidence = confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "binomial")
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
     }
   }
@@ -964,7 +964,7 @@ test_that(desc = "(id: f7-v0.5.5-23) Statistical Sampling Results based on the B
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "binomial")
+      ss <- jfa::evaluation(confidence = confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "binomial")
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
     }
   }
@@ -998,7 +998,7 @@ test_that(desc = "(id: f7-v0.5.5-24) Statistical Sampling Results based on the B
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "binomial")
+      ss <- jfa::evaluation(confidence = confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "binomial")
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
     }
   }
@@ -1034,7 +1034,7 @@ test_that(desc = "(id: f7-v0.5.5-25) Statistical Sampling Results based on the P
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "poisson")
+      ss <- jfa::evaluation(confidence = confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "poisson")
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
     }
   }
@@ -1068,7 +1068,7 @@ test_that(desc = "(id: f7-v0.5.5-26) Statistical Sampling Results based on the P
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "poisson")
+      ss <- jfa::evaluation(confidence = confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "poisson")
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
     }
   }
@@ -1102,7 +1102,7 @@ test_that(desc = "(id: f7-v0.5.5-27) Statistical Sampling Results based on the P
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "poisson")
+      ss <- jfa::evaluation(confidence = confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "poisson")
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
     }
   }
@@ -1136,7 +1136,7 @@ test_that(desc = "(id: f7-v0.5.5-28) Statistical Sampling Results based on the P
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "poisson")
+      ss <- jfa::evaluation(confidence = confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "poisson")
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
     }
   }
@@ -1175,7 +1175,7 @@ test_that(desc = "(id: f7-v0.5.5-29) Statistical Sampling Results based on the H
     for(columns in 1:length(k)){
       if(n[rows] >= N)
         next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "hypergeometric", N = N)
+      ss <- jfa::evaluation(confidence = confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "hypergeometric", N = N)
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
     }
   }
@@ -1212,7 +1212,7 @@ test_that(desc = "(id: f7-v0.5.5-30) Statistical Sampling Results based on the H
     for(columns in 1:length(k)){
       if(n[rows] >= N)
         next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "hypergeometric", N = N)
+      ss <- jfa::evaluation(confidence = confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "hypergeometric", N = N)
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
     }
   }
@@ -1249,7 +1249,7 @@ test_that(desc = "(id: f7-v0.5.5-31) Statistical Sampling Results based on the H
     for(columns in 1:length(k)){
       if(n[rows] >= N)
         next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "hypergeometric", N = N)
+      ss <- jfa::evaluation(confidence = confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "hypergeometric", N = N)
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
     }
   }
@@ -1286,7 +1286,7 @@ test_that(desc = "(id: f7-v0.5.5-32) Statistical Sampling Results based on the H
     for(columns in 1:length(k)){
       if(n[rows] >= N)
         next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "hypergeometric", N = N)
+      ss <- jfa::evaluation(confidence = confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "hypergeometric", N = N)
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
     }
   }
@@ -1323,7 +1323,7 @@ test_that(desc = "(id: f7-v0.5.5-33) Statistical Sampling Results based on the H
     for(columns in 1:length(k)){
       if(n[rows] >= N)
         next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "hypergeometric", N = N)
+      ss <- jfa::evaluation(confidence = confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "hypergeometric", N = N)
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
     }
   }
@@ -1360,7 +1360,7 @@ test_that(desc = "(id: f7-v0.5.5-34) Statistical Sampling Results based on the H
     for(columns in 1:length(k)){
       if(n[rows] >= N)
         next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "hypergeometric", N = N)
+      ss <- jfa::evaluation(confidence = confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "hypergeometric", N = N)
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
     }
   }
@@ -1397,7 +1397,7 @@ test_that(desc = "(id: f7-v0.5.5-35) Statistical Sampling Results based on the H
     for(columns in 1:length(k)){
       if(n[rows] >= N)
         next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "hypergeometric", N = N)
+      ss <- jfa::evaluation(confidence = confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "hypergeometric", N = N)
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
     }
   }
@@ -1434,7 +1434,7 @@ test_that(desc = "(id: f7-v0.5.5-36) Statistical Sampling Results based on the H
     for(columns in 1:length(k)){
       if(n[rows] >= N)
         next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "hypergeometric", N = N)
+      ss <- jfa::evaluation(confidence = confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "hypergeometric", N = N)
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
     }
   }
@@ -1471,7 +1471,7 @@ test_that(desc = "(id: f7-v0.5.5-37) Statistical Sampling Results based on the H
     for(columns in 1:length(k)){
       if(n[rows] >= N)
         next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "hypergeometric", N = N)
+      ss <- jfa::evaluation(confidence = confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "hypergeometric", N = N)
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
     }
   }
@@ -1508,7 +1508,7 @@ test_that(desc = "(id: f7-v0.5.5-38) Statistical Sampling Results based on the H
     for(columns in 1:length(k)){
       if(n[rows] >= N)
         next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "hypergeometric", N = N)
+      ss <- jfa::evaluation(confidence = confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "hypergeometric", N = N)
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
     }
   }
@@ -1545,7 +1545,7 @@ test_that(desc = "(id: f7-v0.5.5-39) Statistical Sampling Results based on the H
     for(columns in 1:length(k)){
       if(n[rows] >= N)
         next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "hypergeometric", N = N)
+      ss <- jfa::evaluation(confidence = confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "hypergeometric", N = N)
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
     }
   }
@@ -1582,7 +1582,7 @@ test_that(desc = "(id: f7-v0.5.5-40) Statistical Sampling Results based on the H
     for(columns in 1:length(k)){
       if(n[rows] >= N)
         next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "hypergeometric", N = N)
+      ss <- jfa::evaluation(confidence = confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 1, method = "hypergeometric", N = N)
       tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
     }
   }
@@ -1624,10 +1624,10 @@ test_that(desc = "(id: f7-v0.5.5-t41) Statistical Sampling Results based on the 
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality, n[rows], k[columns])
+      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], k = k[columns])
       # Via workflow
-      prior <- auditPrior(confidence = 0.9, materiality, method = "median")
-      result <- evaluation(confidence = 0.9, materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior)
+      prior <- auditPrior(confidence = 0.9, materiality = materiality, method = "median")
+      result <- evaluation(confidence = 0.9, materiality = materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
@@ -1676,10 +1676,10 @@ test_that(desc = "(id: f7-v0.5.5-t42) Statistical Sampling Results based on the 
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality, n[rows], k[columns])
+      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], k = k[columns])
       # Via workflow
-      prior <- auditPrior(confidence = 0.9, materiality, method = "median")
-      result <- evaluation(confidence = 0.9, materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior)
+      prior <- auditPrior(confidence = 0.9, materiality = materiality, method = "median")
+      result <- evaluation(confidence = 0.9, materiality = materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
@@ -1728,10 +1728,10 @@ test_that(desc = "(id: f7-v0.5.5-t43) Statistical Sampling Results based on the 
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality, n[rows], k[columns])
+      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], k = k[columns])
       # Via workflow
-      prior <- auditPrior(confidence = 0.9, materiality, method = "median")
-      result <- evaluation(confidence = 0.9, materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior)
+      prior <- auditPrior(confidence = 0.9, materiality = materiality, method = "median")
+      result <- evaluation(confidence = 0.9, materiality = materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
@@ -1780,10 +1780,10 @@ test_that(desc = "(id: f7-v0.5.5-t44) Statistical Sampling Results based on the 
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality, n[rows], k[columns])
+      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], k = k[columns])
       # Via workflow
-      prior <- auditPrior(confidence = 0.9, materiality, method = "median")
-      result <- evaluation(confidence = 0.9, materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior)
+      prior <- auditPrior(confidence = 0.9, materiality = materiality, method = "median")
+      result <- evaluation(confidence = 0.9, materiality = materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
@@ -1834,10 +1834,10 @@ test_that(desc = "(id: f7-v0.5.5-t45) Statistical Sampling Results based on the 
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality, n[rows], k[columns], likelihood = "poisson")
+      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], k = k[columns], likelihood = "poisson")
       # Via workflow
-      prior <- auditPrior(confidence = 0.9, materiality, method = "median", likelihood = "poisson")
-      result <- evaluation(confidence = 0.9, materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior)
+      prior <- auditPrior(confidence = 0.9, materiality = materiality, method = "median", likelihood = "poisson")
+      result <- evaluation(confidence = 0.9, materiality = materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
@@ -1886,10 +1886,10 @@ test_that(desc = "(id: f7-v0.5.5-t46) Statistical Sampling Results based on the 
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality, n[rows], k[columns], likelihood = "poisson")
+      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], k = k[columns], likelihood = "poisson")
       # Via workflow
-      prior <- auditPrior(confidence = 0.9, materiality, method = "median", likelihood = "poisson")
-      result <- evaluation(confidence = 0.9, materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior)
+      prior <- auditPrior(confidence = 0.9, materiality = materiality, method = "median", likelihood = "poisson")
+      result <- evaluation(confidence = 0.9, materiality = materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
@@ -1938,10 +1938,10 @@ test_that(desc = "(id: f7-v0.5.5-t47) Statistical Sampling Results based on the 
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality, n[rows], k[columns], likelihood = "poisson")
+      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], k = k[columns], likelihood = "poisson")
       # Via workflow
-      prior <- auditPrior(confidence = 0.9, materiality, method = "median", likelihood = "poisson")
-      result <- evaluation(confidence = 0.9, materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior)
+      prior <- auditPrior(confidence = 0.9, materiality = materiality, method = "median", likelihood = "poisson")
+      result <- evaluation(confidence = 0.9, materiality = materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
@@ -1990,10 +1990,10 @@ test_that(desc = "(id: f7-v0.5.5-t48) Statistical Sampling Results based on the 
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality, n[rows], k[columns], likelihood = "poisson")
+      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], k = k[columns], likelihood = "poisson")
       # Via workflow
-      prior <- auditPrior(confidence = 0.9, materiality, method = "median", likelihood = "poisson")
-      result <- evaluation(confidence = 0.9, materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior)
+      prior <- auditPrior(confidence = 0.9, materiality = materiality, method = "median", likelihood = "poisson")
+      result <- evaluation(confidence = 0.9, materiality = materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
@@ -2047,10 +2047,10 @@ test_that(desc = "(id: f7-v0.5.5-t49) Statistical Sampling Results based on the 
       if(n[rows] >= N)
         next
       # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality, n[rows], k[columns], likelihood = "hypergeometric", N = N)
+      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], k = k[columns], likelihood = "hypergeometric", N = N)
       # Via workflow
-      prior <- auditPrior(confidence = 0.9, materiality, method = "median", likelihood = "hypergeometric", N = N)
-      result <- evaluation(confidence = 0.9, materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior, N = N)
+      prior <- auditPrior(confidence = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N = N)
+      result <- evaluation(confidence = 0.9, materiality = materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior, N = N)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
@@ -2102,10 +2102,10 @@ test_that(desc = "(id: f7-v0.5.5-t50) Statistical Sampling Results based on the 
       if(n[rows] >= N)
         next
       # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality, n[rows], k[columns], likelihood = "hypergeometric", N = N)
+      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], k = k[columns], likelihood = "hypergeometric", N = N)
       # Via workflow
-      prior <- auditPrior(confidence = 0.9, materiality, method = "median", likelihood = "hypergeometric", N = N)
-      result <- evaluation(confidence = 0.9, materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior, N = N)
+      prior <- auditPrior(confidence = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N = N)
+      result <- evaluation(confidence = 0.9, materiality = materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior, N = N)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
@@ -2168,10 +2168,10 @@ test_that(desc = "(id: f7-v0.5.5-t51) Statistical Sampling Results based on the 
       if(n[rows] >= N)
         next
       # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality, n[rows], k[columns], likelihood = "hypergeometric", N = N)
+      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], k = k[columns], likelihood = "hypergeometric", N = N)
       # Via workflow
-      prior <- auditPrior(confidence = 0.9, materiality, method = "median", likelihood = "hypergeometric", N = N)
-      result <- evaluation(confidence = 0.9, materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior, N = N)
+      prior <- auditPrior(confidence = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N = N)
+      result <- evaluation(confidence = 0.9, materiality = materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior, N = N)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
@@ -2223,10 +2223,10 @@ test_that(desc = "(id: f7-v0.5.5-t52) Statistical Sampling Results based on the 
       if(n[rows] >= N)
         next
       # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality, n[rows], k[columns], likelihood = "hypergeometric", N = N)
+      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], k = k[columns], likelihood = "hypergeometric", N = N)
       # Via workflow
-      prior <- auditPrior(confidence = 0.9, materiality, method = "median", likelihood = "hypergeometric", N = N)
-      result <- evaluation(confidence = 0.9, materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior, N = N)
+      prior <- auditPrior(confidence = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N = N)
+      result <- evaluation(confidence = 0.9, materiality = materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior, N = N)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
@@ -2278,10 +2278,10 @@ test_that(desc = "(id: f7-v0.5.5-t53) Statistical Sampling Results based on the 
       if(n[rows] >= N)
         next
       # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality, n[rows], k[columns], likelihood = "hypergeometric", N = N)
+      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], k = k[columns], likelihood = "hypergeometric", N = N)
       # Via workflow
-      prior <- auditPrior(confidence = 0.9, materiality, method = "median", likelihood = "hypergeometric", N = N)
-      result <- evaluation(confidence = 0.9, materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior, N = N)
+      prior <- auditPrior(confidence = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N = N)
+      result <- evaluation(confidence = 0.9, materiality = materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior, N = N)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
@@ -2333,10 +2333,10 @@ test_that(desc = "(id: f7-v0.5.5-t54) Statistical Sampling Results based on the 
       if(n[rows] >= N)
         next
       # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality, n[rows], k[columns], likelihood = "hypergeometric", N = N)
+      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], k = k[columns], likelihood = "hypergeometric", N = N)
       # Via workflow
-      prior <- auditPrior(confidence = 0.9, materiality, method = "median", likelihood = "hypergeometric", N = N)
-      result <- evaluation(confidence = 0.9, materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior, N = N)
+      prior <- auditPrior(confidence = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N = N)
+      result <- evaluation(confidence = 0.9, materiality = materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior, N = N)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
@@ -2388,10 +2388,10 @@ test_that(desc = "(id: f7-v0.5.5-t55) Statistical Sampling Results based on the 
       if(n[rows] >= N)
         next
       # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality, n[rows], k[columns], likelihood = "hypergeometric", N = N)
+      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], k = k[columns], likelihood = "hypergeometric", N = N)
       # Via workflow
-      prior <- auditPrior(confidence = 0.9, materiality, method = "median", likelihood = "hypergeometric", N = N)
-      result <- evaluation(confidence = 0.9, materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior, N = N)
+      prior <- auditPrior(confidence = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N = N)
+      result <- evaluation(confidence = 0.9, materiality = materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior, N = N)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
@@ -2443,10 +2443,10 @@ test_that(desc = "(id: f7-v0.5.5-t56) Statistical Sampling Results based on the 
       if(n[rows] >= N)
         next
       # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality, n[rows], k[columns], likelihood = "hypergeometric", N = N)
+      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], k = k[columns], likelihood = "hypergeometric", N = N)
       # Via workflow
-      prior <- auditPrior(confidence = 0.9, materiality, method = "median", likelihood = "hypergeometric", N = N)
-      result <- evaluation(confidence = 0.9, materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior, N = N)
+      prior <- auditPrior(confidence = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N = N)
+      result <- evaluation(confidence = 0.9, materiality = materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior, N = N)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
@@ -2498,10 +2498,10 @@ test_that(desc = "(id: f7-v0.5.5-t57) Statistical Sampling Results based on the 
       if(n[rows] >= N)
         next
       # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality, n[rows], k[columns], likelihood = "hypergeometric", N = N)
+      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], k = k[columns], likelihood = "hypergeometric", N = N)
       # Via workflow
-      prior <- auditPrior(confidence = 0.9, materiality, method = "median", likelihood = "hypergeometric", N = N)
-      result <- evaluation(confidence = 0.9, materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior, N = N)
+      prior <- auditPrior(confidence = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N = N)
+      result <- evaluation(confidence = 0.9, materiality = materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior, N = N)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
@@ -2553,10 +2553,10 @@ test_that(desc = "(id: f7-v0.5.5-t58) Statistical Sampling Results based on the 
       if(n[rows] >= N)
         next
       # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality, n[rows], k[columns], likelihood = "hypergeometric", N = N)
+      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], k = k[columns], likelihood = "hypergeometric", N = N)
       # Via workflow
-      prior <- auditPrior(confidence = 0.9, materiality, method = "median", likelihood = "hypergeometric", N = N)
-      result <- evaluation(confidence = 0.9, materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior, N = N)
+      prior <- auditPrior(confidence = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N = N)
+      result <- evaluation(confidence = 0.9, materiality = materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior, N = N)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
@@ -2608,10 +2608,10 @@ test_that(desc = "(id: f7-v0.5.5-t59) Statistical Sampling Results based on the 
       if(n[rows] >= N)
         next
       # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality, n[rows], k[columns], likelihood = "hypergeometric", N = N)
+      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], k = k[columns], likelihood = "hypergeometric", N = N)
       # Via workflow
-      prior <- auditPrior(confidence = 0.9, materiality, method = "median", likelihood = "hypergeometric", N = N)
-      result <- evaluation(confidence = 0.9, materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior, N = N)
+      prior <- auditPrior(confidence = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N = N)
+      result <- evaluation(confidence = 0.9, materiality = materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior, N = N)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
@@ -2663,10 +2663,10 @@ test_that(desc = "(id: f7-v0.5.5-t60) Statistical Sampling Results based on the 
       if(n[rows] >= N)
         next
       # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality, n[rows], k[columns], likelihood = "hypergeometric", N = N)
+      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], k = k[columns], likelihood = "hypergeometric", N = N)
       # Via workflow
-      prior <- auditPrior(confidence = 0.9, materiality, method = "median", likelihood = "hypergeometric", N = N)
-      result <- evaluation(confidence = 0.9, materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior, N = N)
+      prior <- auditPrior(confidence = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N = N)
+      result <- evaluation(confidence = 0.9, materiality = materiality, nSumstats = n[rows], kSumstats = k[columns], prior = prior, N = N)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }

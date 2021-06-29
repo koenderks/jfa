@@ -2,14 +2,18 @@
 
 **New features**
 
-- The `print()` functions return a more concise description of the relevant output.
-- Added `summary()` functions for all returned objects that take over the former of the `print()` functions.
-- Implemented a new function `auditBF()` which solely computes Bayes factors from summary statistics of an audit sample.
+- The `print()` functions now return a more concise description of the relevant output.
+- Added `summary()` functions for all returned objects that take over the former (elaborate) output of the `print()` functions.
+- Implemented a new function `auditBF()` which computes Bayes factors from summary statistics of an audit sample.
 
 **Bug fixes**
 
 - Fixed a bug in `evaluation()` in which the likelihood stored in the prior was not properly passed to the function.
 - Fixed an error in the calculation of the posterior mode of the beta distribution.
+
+**Minor changes**
+
+- Restored the default value (0.95) for the 'confidence' argument in all applicable functions.
 
 # jfa 0.5.4
 

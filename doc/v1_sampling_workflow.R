@@ -17,14 +17,16 @@ cr <- 0.6   # 60%
 # Adjust the required confidence for a frequentist analysis.
 adjustedConfidence <- 1 - ((1 - confidence) / (ir * cr))
 # Step 1: Calculate the required sample size.
-planningResult <- planning(adjustedConfidence, materiality, expectedError = expectedError)
+planningResult <- planning(materiality = materiality, expectedError = expectedError, 
+                           confidence = adjustedConfidence)
 
 ## -----------------------------------------------------------------------------
 summary(planningResult)
 
 ## -----------------------------------------------------------------------------
 # Step 2: Draw a sample from the financial statements.
-samplingResult <- selection(BuildIt, sampleSize = 190, units = "mus", bookValues = "bookValue")
+samplingResult <- selection(population = BuildIt, sampleSize = planningResult, 
+                            units = "mus", bookValues = "bookValue")
 
 ## -----------------------------------------------------------------------------
 summary(samplingResult)
@@ -41,8 +43,9 @@ sample <- samplingResult$sample
 
 ## -----------------------------------------------------------------------------
 # Step 4: Evaluate the sample
-evaluationResult <- evaluation(confidence, materiality, sample = sample, 
-                               bookValues = 'bookValue', auditValues = 'auditValue')
+evaluationResult <- evaluation(materiality = materiality, confidence = adjustedConfidence, 
+                               sample = sample, bookValues = 'bookValue', 
+                               auditValues = 'auditValue')
 
 ## -----------------------------------------------------------------------------
 summary(evaluationResult)

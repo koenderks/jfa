@@ -19,7 +19,8 @@ adjustedConfidence <- 1 - ((1 - confidence) / (ir * cr))
 
 ## -----------------------------------------------------------------------------
 # Step 0: Create a prior distribution according to the audit risk model.
-prior <- auditPrior(confidence, materiality, expectedError, method = "arm", likelihood = "binomial", ir = ir, cr = cr)
+prior <- auditPrior(method = "arm", likelihood = "binomial", expectedError = expectedError,
+                    materiality = materiality, ir = ir, cr = cr)
 
 ## -----------------------------------------------------------------------------
 summary(prior)
@@ -29,7 +30,7 @@ plot(prior)
 
 ## -----------------------------------------------------------------------------
 # Step 1: Calculate the required sample size.
-planningResult <- planning(confidence, materiality, expectedError = expectedError, prior = prior)
+planningResult <- planning(materiality = materiality, expectedError = expectedError, confidence = confidence, prior = prior)
 
 ## -----------------------------------------------------------------------------
 summary(planningResult)
@@ -56,7 +57,9 @@ sample <- samplingResult$sample
 
 ## -----------------------------------------------------------------------------
 # Step 4: Evaluate the sample.
-evaluationResult <- evaluation(confidence, materiality, sample = sample, bookValues = "bookValue", auditValues = "auditValue", prior = prior)
+evaluationResult <- evaluation(materiality = materiality, confidence = confidence, 
+                               sample = sample, bookValues = "bookValue", 
+                               auditValues = "auditValue", prior = prior)
 
 ## -----------------------------------------------------------------------------
 summary(evaluationResult)

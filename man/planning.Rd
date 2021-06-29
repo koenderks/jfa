@@ -4,14 +4,12 @@
 \alias{planning}
 \title{Plan a statistical audit sample}
 \usage{
-planning(confidence, materiality = NULL, minPrecision = NULL,
-         expectedError = 0, likelihood = 'binomial', N = NULL,
+planning(materiality = NULL, minPrecision = NULL, expectedError = 0,
+         likelihood = 'binomial', confidence = 0.95, N = NULL,
          prior = FALSE, nPrior = 0, kPrior = 0,
          increase = 1, maxSize = 5000)
 }
 \arguments{
-\item{confidence}{a numeric value between 0 and 1 specifying the confidence level used in the planning.}
-
 \item{materiality}{a numeric value between 0 and 1 specifying the performance materiality (i.e., maximum upper limit) as a fraction of the total population size. Can be \code{NULL}, but \code{minPrecision} should be specified in that case.}
 
 \item{minPrecision}{a numeric value between 0 and 1 specifying the minimum precision (i.e., upper bound minus most likely error) as a fraction of the total population size. Can be \code{NULL}, but \code{materiality} should be specified in that case.}
@@ -19,6 +17,8 @@ planning(confidence, materiality = NULL, minPrecision = NULL,
 \item{expectedError}{a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a number (>= 1) that represents the number of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.}
 
 \item{likelihood}{a character specifying the likelihood assumed in the calculation. This can be either \code{binomial} for the binomial likelihood, \code{poisson} for the Poisson likelihood, or \code{hypergeometric} for the hypergeometric likelihood. See the details section for more information about the available likelihoods.}
+
+\item{confidence}{a numeric value between 0 and 1 specifying the confidence level used in the planning. Defaults to 0.95 for 95\% confidence.}
 
 \item{N}{an integer larger than 0 specifying the total population size. Only required when \code{likelihood = 'hypergeometric'}.}
 
@@ -67,12 +67,15 @@ This section elaborates on the available likelihoods and corresponding prior dis
 }
 \examples{
 # Frequentist planning using a binomial likelihood
-planning(confidence = 0.95, materiality = 0.05, expectedError = 0.025,
-         likelihood = 'binomial')
+planning(materiality = 0.05, expectedError = 0.025, likelihood = 'binomial')
 
 # Bayesian planning using a negligible beta prior
-planning(confidence = 0.95, materiality = 0.05, expectedError = 0.025,
-         likelihood = 'binomial', prior = TRUE)
+planning(materiality = 0.05, expectedError = 0.025, likelihood = 'binomial', 
+         prior = TRUE)
+
+# Bayesian planning using an informed beta prior
+planning(materiality = 0.05, expectedError = 0.025, likelihood = 'binomial', 
+         prior = auditPrior(method = 'median', materiality = 0.05))
 
 }
 \references{
