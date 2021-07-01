@@ -1,8 +1,7 @@
-## This is a submission for version 0.5.5
-This is jfa version 0.5.5. In this version I have:
+## This is a submission for version 0.5.6
+This is jfa version 0.5.6. In this version I have:
 
-* Added summary functions for the jfa classes.
-* Fixed a bug in the calculation of the posterior mode.
+* Done nothing yet.
 
 ## Test environments
 * Windows install (on GitHub actions), R release

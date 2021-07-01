@@ -47,3 +47,5 @@ test_that(desc = "(id: f1-v0.5.5-t11) Test Bayes factors for beta-binomial prior
   BF <- auditBF(materiality = 0.05, n = 50, k = 1, likelihood = "hypergeometric", N = 1000)
   expect_equal(BF, 5.676959268)
 })
+
+# jfa version 0.5.6
