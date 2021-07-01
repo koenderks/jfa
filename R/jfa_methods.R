@@ -52,7 +52,7 @@ print.jfaEvaluation <- function(x, ...) {
   if (x[["method"]] %in% c("direct", "difference", "quotient", "regression")) {
     cat("Most likely error:", round(x[["mle"]], 3), "|", paste0(round(x[["confidence"]] * 100, 3), "%"), "Interval:", paste0("[", round(x[["lowerBound"]], 3), "; ", round(x[["upperBound"]], 3), "]"), "| Precision:", round(x[["precision"]], 3), "\nEstimates obtained via method", paste0("'", x[["method"]], "'."))
   } else {
-    if (!is.null(x[["prior"]])) {
+    if (!is.null(x[["prior"]]) && x[["materiality"]] != 1) {
       cat("Most likely error:", paste0(round(x[["mle"]] * 100, 3), "%"), "|", paste0(round(x[["confidence"]] * 100, 3), "%"), "Upper bound:", paste0(round(x[["confBound"]] * 100, 3), "%"), "| Precision:", paste0(round(x[["precision"]] * 100, 3), "%"), "| BF-+:", round(x[["posterior"]][["hypotheses"]]$bf, 3), "\nEstimates obtained via method", paste0("'", x[["method"]], "'."))
     } else {
       cat("Most likely error:", paste0(round(x[["mle"]] * 100, 3), "%"), "|", paste0(round(x[["confidence"]] * 100, 3), "%"), "Upper bound:", paste0(round(x[["confBound"]] * 100, 3), "%"), "| Precision:", paste0(round(x[["precision"]] * 100, 3), "%"), "\nEstimates obtained via method", paste0("'", x[["method"]], "'."))
