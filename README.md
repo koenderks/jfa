@@ -28,19 +28,19 @@ For complete documentation of `jfa`, visit the [package website](https://koender
 
 The most recently released version of `jfa` can be downloaded from [CRAN](https://cran.r-project.org/package=jfa) by running the following command in R:
 
-```
+```r
 install.packages('jfa')
 ```
 
 Alternatively, you can download the development version from GitHub using:
 
-```
-devtools::install.github('koenderks/jfa')
+```r
+devtools::install_github('koenderks/jfa')
 ```
 
 After installation, the `jfa` package can be loaded with:
 
-```
+```r
 library(jfa)
 ```
 
@@ -102,7 +102,12 @@ The `auditPrior()` function creates a prior distribution according to one of sev
 
 *Full function with default arguments:*
 
-`auditPrior(method = 'none', likelihood = 'binomial', expectedError = 0, confidence = 0.95, materiality = NULL, N = NULL, ir = 1, cr = 1, ub = NULL, pHmin = NULL, pHplus = NULL, sampleN = 0, sampleK = 0, factor = 1)`
+```r
+auditPrior(method = 'none', likelihood = 'binomial', expectedError = 0, 
+           confidence = 0.95, materiality = NULL, N = NULL, 
+           ir = 1, cr = 1, ub = NULL, pHmin = NULL, pHplus = NULL, 
+           sampleN = 0, sampleK = 0, factor = 1)
+```
 
 *Supported options for the `method` argument:*
 
@@ -126,7 +131,7 @@ The `auditPrior()` function creates a prior distribution according to one of sev
 
 *Example usage:*
 
-```
+```r
 # A uniform beta prior distribution 
 x <- auditPrior(method = 'none', likelihood = 'binomial')
 
@@ -141,7 +146,12 @@ The `planning()` function calculates the minimum sample size for a statistical a
 
 *Full function with default arguments:*
 
-`planning(materiality = NULL, minPrecision = NULL, expectedError = 0, likelihood = 'binomial', confidence = 0.95, N = NULL, prior = FALSE, nPrior = 0, kPrior = 0, increase = 1, maxSize = 5000)`
+```r
+planning(materiality = NULL, minPrecision = NULL, expectedError = 0, 
+         likelihood = 'binomial', confidence = 0.95, N = NULL, 
+         prior = FALSE, nPrior = 0, kPrior = 0, 
+         increase = 1, maxSize = 5000)
+```
 
 *Supported options for the `likelihood` argument:*
 
@@ -153,7 +163,7 @@ The `planning()` function calculates the minimum sample size for a statistical a
 
 *Example usage:*
 
-```
+```r
 # Planning using binomial likelihood
 x <- planning(materiality = 0.03, likelihood = 'binomial', confidence = 0.95)
 
@@ -168,7 +178,11 @@ The `selection()` function takes a data frame and performs statistical sampling 
 
 *Full function with default arguments:*
 
-`selection(population, sampleSize, units = 'records', algorithm = 'random', bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, ascending = TRUE, withReplacement = FALSE, seed = 1)`
+```r
+selection(population, sampleSize, units = 'records', algorithm = 'random', 
+          bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, 
+          ascending = TRUE, withReplacement = FALSE, seed = 1)
+```
 
 *Supported options for the `units` argument:*
 
@@ -187,7 +201,7 @@ The `selection()` function takes a data frame and performs statistical sampling 
 
 *Example usage:*
 
-```
+```r
 # Selection using fixed interval record sampling
 x <- selection(population = BuildIt, sampleSize = 100, units = 'records', algorithm = 'interval')
 
@@ -202,7 +216,15 @@ The `evaluation()` function takes a sample or summary statistics of the sample a
 
 *Full function with default arguments:*
 
-`evaluation(materiality = NULL, minPrecision = NULL, method = 'binomial', confidence = 0.95, sample = NULL, bookValues = NULL, auditValues = NULL, counts = NULL, nSumstats = NULL, kSumstats = NULL, N = NULL, populationBookValue = NULL, prior = FALSE, nPrior = 0, kPrior = 0, rohrbachDelta = 2.7, momentPoptype = 'accounts', csA = 1, csB = 3, csMu = 0.5)`
+```r
+evaluation(materiality = NULL, minPrecision = NULL, method = 'binomial', 
+           confidence = 0.95, sample = NULL, bookValues = NULL, auditValues = NULL, 
+           counts = NULL, nSumstats = NULL, kSumstats = NULL, 
+           N = NULL, populationBookValue = NULL, 
+           prior = FALSE, nPrior = 0, kPrior = 0, 
+           rohrbachDelta = 2.7, momentPoptype = 'accounts', 
+           csA = 1, csB = 3, csMu = 0.5)
+```
 
 *Supported options for the `method` argument:*
 
@@ -225,7 +247,7 @@ The `evaluation()` function takes a sample or summary statistics of the sample a
 
 *Example usage:*
 
-```
+```r
 # Binomial evaluation using summary statistics from a sample
 x <- evaluation(materiality = 0.03, confidence = 0.95, nSumstats = 100, kSumstats = 1, method = 'binomial')
 
@@ -240,11 +262,13 @@ The `report()` function takes an object of class `jfaEvaluation` as returned by 
 
 *Full function with default arguments:*
 
-`report(object, file = 'report.html', format = 'html_document')`
+```r
+report(object, file = 'report.html', format = 'html_document')
+```
 
 *Example usage:*
 
-```
+```r
 # Generate an automatic report
 report(object = x, file = 'myReport.html')
 ```
