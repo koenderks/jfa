@@ -4,15 +4,16 @@
 \docType{package}
 \title{jfa --- Bayesian and Classical Audit Sampling}
 \description{
+  \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
 
   \code{jfa} is an \R package for statistical audit sampling. The package provides functions for planning, 
   performing, evaluating, and reporting an audit sample. Specifically, these functions implement 
   standard audit sampling techniques for calculating sample sizes, selecting items from a population, 
   and evaluating the misstatement from a data sample or from summary statistics. Additionally, 
-  the jfa package allows the user to create a prior probability distribution to perform Bayesian 
+  the \code{jfa} package allows the user to create a prior probability distribution to perform Bayesian 
   audit sampling using these functions.
   
-  The package is also implemented with a graphical user interface in the Audit module of 
+  The package and its intended workflow are also implemented with a graphical user interface in the Audit module of 
   \href{https://jasp-stats.org}{JASP}, a free and open-source statistical software program.
 
   For documentation on \code{jfa} itself, including the manual and user guide
@@ -58,6 +59,7 @@
 }
 
 \seealso{
+Useful links:
 \itemize{
   \item The \href{https://raw.githubusercontent.com/koenderks/jfa/master/man/figures/cheatsheet/cheatsheet.png}{cheat sheet} for a quick overview of the intended workflow.
   \item The \href{https://koenderks.github.io/jfa/articles/}{vignettes} for worked examples.
