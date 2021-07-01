@@ -132,11 +132,14 @@
 <h2 class="hasAnchor">
 <a href="#1-installation" class="anchor"></a>1. Installation</h2>
 <p>The most recently released version of <code>jfa</code> can be downloaded from <a href="https://cran.r-project.org/package=jfa">CRAN</a> by running the following command in R:</p>
-<pre><code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages('jfa')</a></code></pre>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">'jfa'</span><span class="op">)</span></code></pre></div>
 <p>Alternatively, you can download the development version from GitHub using:</p>
-<pre><code>devtools::install.github('koenderks/jfa')</code></pre>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install.github</span><span class="op">(</span><span class="st">'koenderks/jfa'</span><span class="op">)</span></code></pre></div>
 <p>After installation, the <code>jfa</code> package can be loaded with:</p>
-<pre><code><a href="https://koenderks.github.io/jfa/">library(jfa)</a></code></pre>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://koenderks.github.io/jfa/">jfa</a></span><span class="op">)</span></code></pre></div>
 </div>
 <div id="2-cheat-sheet" class="section level2">
 <h2 class="hasAnchor">
@@ -300,10 +303,11 @@
 </tbody>
 </table>
 <p><em>Example usage:</em></p>
-<pre><code># A uniform beta prior distribution 
-x &lt;- auditPrior(method = 'none', likelihood = 'binomial')
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># A uniform beta prior distribution </span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'none'</span>, likelihood <span class="op">=</span> <span class="st">'binomial'</span><span class="op">)</span>
 
-summary(x) # Prints information about the prior distribution</code></pre>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the prior distribution</span></code></pre></div>
 </div>
 <div id="plan-a-sample-with-the-planning-function" class="section level3">
 <h3 class="hasAnchor">
@@ -338,10 +342,11 @@ summary(x) # Prints information about the prior distribution</code></pre>
 </tbody>
 </table>
 <p><em>Example usage:</em></p>
-<pre><code># Planning using binomial likelihood
-x &lt;- planning(materiality = 0.03, likelihood = 'binomial', confidence = 0.95)
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Planning using binomial likelihood</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, likelihood <span class="op">=</span> <span class="st">'binomial'</span>, confidence <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span>
 
-summary(x) # Prints information about the planning</code></pre>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the planning</span></code></pre></div>
 </div>
 <div id="select-items-with-the-selection-function" class="section level3">
 <h3 class="hasAnchor">
@@ -405,10 +410,11 @@ summary(x) # Prints information about the planning</code></pre>
 </tbody>
 </table>
 <p><em>Example usage:</em></p>
-<pre><code># Selection using fixed interval record sampling
-x &lt;- selection(population = BuildIt, sampleSize = 100, units = 'records', algorithm = 'interval')
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Selection using fixed interval record sampling</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'records'</span>, algorithm <span class="op">=</span> <span class="st">'interval'</span><span class="op">)</span>
 
-summary(x) # Prints information about the selection</code></pre>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the selection</span></code></pre></div>
 </div>
 <div id="evaluate-a-sample-with-the-evaluation-function" class="section level3">
 <h3 class="hasAnchor">
@@ -521,10 +527,11 @@ summary(x) # Prints information about the selection</code></pre>
 </tbody>
 </table>
 <p><em>Example usage:</em></p>
-<pre><code># Binomial evaluation using summary statistics from a sample
-x &lt;- evaluation(materiality = 0.03, confidence = 0.95, nSumstats = 100, kSumstats = 1, method = 'binomial')
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Binomial evaluation using summary statistics from a sample</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, confidence <span class="op">=</span> <span class="fl">0.95</span>, nSumstats <span class="op">=</span> <span class="fl">100</span>, kSumstats <span class="op">=</span> <span class="fl">1</span>, method <span class="op">=</span> <span class="st">'binomial'</span><span class="op">)</span>
 
-summary(x) # Prints information about the evaluation</code></pre>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the evaluation</span></code></pre></div>
 </div>
 <div id="create-a-report-with-the-report-function" class="section level3">
 <h3 class="hasAnchor">
@@ -534,8 +541,9 @@ summary(x) # Prints information about the evaluation</code></pre>
 <p><em>Full function with default arguments:</em></p>
 <p><code><a href="reference/report.html">report(object, file = 'report.html', format = 'html_document')</a></code></p>
 <p><em>Example usage:</em></p>
-<pre><code><a href="reference/report.html"># Generate an automatic report
-report(object = x, file = 'myReport.html')</a></code></pre>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Generate an automatic report</span>
+<span class="fu"><a href="reference/report.html">report</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">x</span>, file <span class="op">=</span> <span class="st">'myReport.html'</span><span class="op">)</span></code></pre></div>
 <p>For an example report, see the following <a href="https://github.com/koenderks/jfa/raw/master/man/figures/readme/report/report.pdf">link</a>.</p>
 </div>
 </div>
