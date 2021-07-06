@@ -1,5 +1,5 @@
-## This is a submission for version 0.5.5.1
-This is jfa version 0.5.5.1. In this version I have:
+## This is a submission for version 0.5.6
+This is jfa version 0.5.6. In this version I have:
 
 * Fixed unit tests for r-patched-solaris-x86 on CRAN that did not reproduce
 

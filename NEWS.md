@@ -1,8 +1,8 @@
-# jfa 0.5.5.1
+# jfa 0.5.6
 
 **Bug fixes**
 
-- Fixed a bug in the `print.jfaEvaluation()` call if there was no materiality specified for a Bayesian outcome.
+- Fixed a bug in the `print.jfaEvaluation()` call if there was no performance materiality specified and `prior = TRUE`.
 
 # jfa 0.5.5
 

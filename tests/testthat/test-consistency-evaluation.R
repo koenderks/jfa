@@ -334,5 +334,5 @@ test_that(desc = "(id: f3-v0.2.0-t4) Test for Bayesian plot function", {
 # jfa version 0.5.5
 # No changes to be benchmarked
 
-# jfa version 0.5.5.1
+# jfa version 0.5.6
 # No changes to be benchmarked

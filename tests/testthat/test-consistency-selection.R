@@ -111,5 +111,5 @@ test_that(desc = "(id: f6-v0.5.0-t2) Test for plot function", {
 # jfa version 0.5.5
 # No changes to be benchmarked
 
-# jfa version 0.5.5.1
+# jfa version 0.5.6
 # No changes to be benchmarked
