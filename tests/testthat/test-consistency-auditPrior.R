@@ -175,5 +175,5 @@ test_that(desc = "(id: f2-v0.5.3-t2) Test for bram method poisson", {
 # jfa version 0.5.5
 # No changes to be benchmarked
 
-# jfa version 0.5.6
+# jfa version 0.5.5.1
 # No changes to be benchmarked

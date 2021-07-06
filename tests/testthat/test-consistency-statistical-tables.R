@@ -7,7 +7,7 @@ context("7. Test consistency of statistical tables")
 # Binomial distribution
 
 test_that(desc = "(id: f7-v0.5.5-t1) Statistical Sample Sizes based on the Binomial Distribution - 10 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(0, 0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.0275, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045, 0.0475, 0.05, 0.0525, 0.055, 0.0575, 0.06, 0.0625, 0.065, 0.0675, 0.07, 0.0725, 0.075, 0.0775, 0.08, 0.0825, 0.085, 0.0875, 0.09, 0.0925, 0.095, 0.0975, 0.1, 
                         230, 388, 798, 2929, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         114, 194, 194, 265, 398, 708, 1463, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
@@ -49,7 +49,7 @@ test_that(desc = "(id: f7-v0.5.5-t1) Statistical Sample Sizes based on the Binom
 })
 
 test_that(desc = "(id: f7-v0.5.5-t2) Statistical Sample Sizes based on the Binomial Distribution - 5 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(0, 0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.0275, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045, 0.0475, 0.05, 0.0525, 0.055, 0.0575, 0.06, 0.0625, 0.065, 0.0675, 0.07, 0.0725, 0.075, 0.0775, 0.08, 0.0825, 0.085, 0.0875, 0.09, 0.0925, 0.095, 0.0975, 0.1, 
                         299, 628, 1182, 4521, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         149, 236, 313, 386, 590, 1030, 2258, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
@@ -91,7 +91,7 @@ test_that(desc = "(id: f7-v0.5.5-t2) Statistical Sample Sizes based on the Binom
 })
 
 test_that(desc = "(id: f7-v0.5.5-t3) Statistical Sample Sizes based on the Binomial Distribution - 2.5 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(0, 0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.0275, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045, 0.0475, 0.05, 0.0525, 0.055, 0.0575, 0.06, 0.0625, 0.065, 0.0675, 0.07, 0.0725, 0.075, 0.0775, 0.08, 0.0825, 0.085, 0.0875, 0.09, 0.0925, 0.095, 0.0975, 0.1, 
                         368, 720, 1573, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         183, 277, 359, 509, 785, 1356, 3061, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
@@ -133,7 +133,7 @@ test_that(desc = "(id: f7-v0.5.5-t3) Statistical Sample Sizes based on the Binom
 })
 
 test_that(desc = "(id: f7-v0.5.5-t4) Statistical Sample Sizes based on the Binomial Distribution - 1 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(0, 0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.0275, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045, 0.0475, 0.05, 0.0525, 0.055, 0.0575, 0.06, 0.0625, 0.065, 0.0675, 0.07, 0.0725, 0.075, 0.0775, 0.08, 0.0825, 0.085, 0.0875, 0.09, 0.0925, 0.095, 0.0975, 0.1, 
                         459, 1001, 2144, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         228, 330, 499, 652, 1070, 1836, 4193, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
@@ -177,7 +177,7 @@ test_that(desc = "(id: f7-v0.5.5-t4) Statistical Sample Sizes based on the Binom
 # Poisson distribution
 
 test_that(desc = "(id: f7-v0.5.5-t5) Statistical Sample Sizes based on the Poisson Distribution - 10 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(0, 0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.0275, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045, 0.0475, 0.05, 0.0525, 0.055, 0.0575, 0.06, 0.0625, 0.065, 0.0675, 0.07, 0.0725, 0.075, 0.0775, 0.08, 0.0825, 0.085, 0.0875, 0.09, 0.0925, 0.095, 0.0975, 0.1, 
                         231, 383, 799, 2925, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         116, 146, 192, 266, 400, 681, 1463, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
@@ -219,7 +219,7 @@ test_that(desc = "(id: f7-v0.5.5-t5) Statistical Sample Sizes based on the Poiss
 })
 
 test_that(desc = "(id: f7-v0.5.5-t6) Statistical Sample Sizes based on the Poisson Distribution - 5 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(0, 0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.0275, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045, 0.0475, 0.05, 0.0525, 0.055, 0.0575, 0.06, 0.0625, 0.065, 0.0675, 0.07, 0.0725, 0.075, 0.0775, 0.08, 0.0825, 0.085, 0.0875, 0.09, 0.0925, 0.095, 0.0975, 0.1, 
                         300, 524, 1154, 4487, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         150, 195, 262, 374, 577, 1013, 2244, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
@@ -261,7 +261,7 @@ test_that(desc = "(id: f7-v0.5.5-t6) Statistical Sample Sizes based on the Poiss
 })
 
 test_that(desc = "(id: f7-v0.5.5-t7) Statistical Sample Sizes based on the Poisson Distribution - 2.5 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(0, 0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.0275, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045, 0.0475, 0.05, 0.0525, 0.055, 0.0575, 0.06, 0.0625, 0.065, 0.0675, 0.07, 0.0725, 0.075, 0.0775, 0.08, 0.0825, 0.085, 0.0875, 0.09, 0.0925, 0.095, 0.0975, 0.1, 
                         369, 671, 1529, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         185, 244, 336, 487, 765, 1365, 3076, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
@@ -303,7 +303,7 @@ test_that(desc = "(id: f7-v0.5.5-t7) Statistical Sample Sizes based on the Poiss
 })
 
 test_that(desc = "(id: f7-v0.5.5-t8) Statistical Sample Sizes based on the Poisson Distribution - 1 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(0, 0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.0275, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045, 0.0475, 0.05, 0.0525, 0.055, 0.0575, 0.06, 0.0625, 0.065, 0.0675, 0.07, 0.0725, 0.075, 0.0775, 0.08, 0.0825, 0.085, 0.0875, 0.09, 0.0925, 0.095, 0.0975, 0.1, 
                         461, 871, 2045, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         231, 311, 436, 642, 1023, 1850, 4224, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
@@ -347,7 +347,7 @@ test_that(desc = "(id: f7-v0.5.5-t8) Statistical Sample Sizes based on the Poiss
 # Hypergeometric distribution
 
 test_that(desc = "(id: f7-v0.5.5-t9) Statistical Sample Sizes based on the Hypergeometric Distribution (N = 100) - 10 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(0, 0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.0275, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045, 0.0475, 0.05, 0.0525, 0.055, 0.0575, 0.06, 0.0625, 0.065, 0.0675, 0.07, 0.0725, 0.075, 0.0775, 0.08, 0.0825, 0.085, 0.0875, 0.09, 0.0925, 0.095, 0.0975, 0.1, 
                         91, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         69, 95, 95, 95, 95, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
@@ -396,7 +396,7 @@ test_that(desc = "(id: f7-v0.5.5-t9) Statistical Sample Sizes based on the Hyper
 })
 
 test_that(desc = "(id: f7-v0.5.5-t10) Statistical Sample Sizes based on the Hypergeometric Distribution (N = 500) - 10 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(0, 0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.0275, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045, 0.0475, 0.05, 0.0525, 0.055, 0.0575, 0.06, 0.0625, 0.065, 0.0675, 0.07, 0.0725, 0.075, 0.0775, 0.08, 0.0825, 0.085, 0.0875, 0.09, 0.0925, 0.095, 0.0975, 0.1, 
                         184, 292, 377, 490, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         102, 168, 168, 224, 275, 366, 442, 495, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
@@ -439,7 +439,7 @@ test_that(desc = "(id: f7-v0.5.5-t10) Statistical Sample Sizes based on the Hype
 })
 
 test_that(desc = "(id: f7-v0.5.5-t11) Statistical Sample Sizes based on the Hypergeometric Distribution (N = 1000) - 10 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(0, 0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.0275, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045, 0.0475, 0.05, 0.0525, 0.055, 0.0575, 0.06, 0.0625, 0.065, 0.0675, 0.07, 0.0725, 0.075, 0.0775, 0.08, 0.0825, 0.085, 0.0875, 0.09, 0.0925, 0.095, 0.0975, 0.1, 
                         205, 336, 551, 884, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         108, 180, 180, 244, 360, 466, 661, 910, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
@@ -482,7 +482,7 @@ test_that(desc = "(id: f7-v0.5.5-t11) Statistical Sample Sizes based on the Hype
 })
 
 test_that(desc = "(id: f7-v0.5.5-t12) Statistical Sample Sizes based on the Hypergeometric Distribution (N = 100) - 5 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(0, 0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.0275, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045, 0.0475, 0.05, 0.0525, 0.055, 0.0575, 0.06, 0.0625, 0.065, 0.0675, 0.07, 0.0725, 0.075, 0.0775, 0.08, 0.0825, 0.085, 0.0875, 0.09, 0.0925, 0.095, 0.0975, 0.1, 
                         95, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         78, 98, 98, 98, 98, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
@@ -525,7 +525,7 @@ test_that(desc = "(id: f7-v0.5.5-t12) Statistical Sample Sizes based on the Hype
 })
 
 test_that(desc = "(id: f7-v0.5.5-t13) Statistical Sample Sizes based on the Hypergeometric Distribution (N = 500) - 5 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(0, 0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.0275, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045, 0.0475, 0.05, 0.0525, 0.055, 0.0575, 0.06, 0.0625, 0.065, 0.0675, 0.07, 0.0725, 0.075, 0.0775, 0.08, 0.0825, 0.085, 0.0875, 0.09, 0.0925, 0.095, 0.0975, 0.1, 
                         225, 328, 462, 495, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         129, 196, 196, 253, 348, 388, 456, 498, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
@@ -568,7 +568,7 @@ test_that(desc = "(id: f7-v0.5.5-t13) Statistical Sample Sizes based on the Hype
 })
 
 test_that(desc = "(id: f7-v0.5.5-t14) Statistical Sample Sizes based on the Hypergeometric Distribution (N = 1000) - 5 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(0, 0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.0275, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045, 0.0475, 0.05, 0.0525, 0.055, 0.0575, 0.06, 0.0625, 0.065, 0.0675, 0.07, 0.0725, 0.075, 0.0775, 0.08, 0.0825, 0.085, 0.0875, 0.09, 0.0925, 0.095, 0.0975, 0.1, 
                         258, 393, 696, 913, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         138, 215, 281, 342, 400, 557, 782, 958, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
@@ -611,7 +611,7 @@ test_that(desc = "(id: f7-v0.5.5-t14) Statistical Sample Sizes based on the Hype
 })
 
 test_that(desc = "(id: f7-v0.5.5-t15) Statistical Sample Sizes based on the Hypergeometric Distribution (N = 100) - 2.5 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(0, 0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.0275, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045, 0.0475, 0.05, 0.0525, 0.055, 0.0575, 0.06, 0.0625, 0.065, 0.0675, 0.07, 0.0725, 0.075, 0.0775, 0.08, 0.0825, 0.085, 0.0875, 0.09, 0.0925, 0.095, 0.0975, 0.1, 
                         98, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         84, 99, 99, 99, 99, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
@@ -654,7 +654,7 @@ test_that(desc = "(id: f7-v0.5.5-t15) Statistical Sample Sizes based on the Hype
 })
 
 test_that(desc = "(id: f7-v0.5.5-t16) Statistical Sample Sizes based on the Hypergeometric Distribution (N = 500) - 2.5 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(0, 0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.0275, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045, 0.0475, 0.05, 0.0525, 0.055, 0.0575, 0.06, 0.0625, 0.065, 0.0675, 0.07, 0.0725, 0.075, 0.0775, 0.08, 0.0825, 0.085, 0.0875, 0.09, 0.0925, 0.095, 0.0975, 0.1, 
                         260, 358, 474, 498, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         153, 221, 277, 325, 368, 439, 466, 499, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
@@ -697,7 +697,7 @@ test_that(desc = "(id: f7-v0.5.5-t16) Statistical Sample Sizes based on the Hype
 })
 
 test_that(desc = "(id: f7-v0.5.5-t17) Statistical Sample Sizes based on the Hypergeometric Distribution (N = 1000) - 2.5 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(0, 0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.0275, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045, 0.0475, 0.05, 0.0525, 0.055, 0.0575, 0.06, 0.0625, 0.065, 0.0675, 0.07, 0.0725, 0.075, 0.0775, 0.08, 0.0825, 0.085, 0.0875, 0.09, 0.0925, 0.095, 0.0975, 0.1, 
                         308, 555, 737, 933, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         167, 247, 315, 377, 489, 638, 845, 968, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
@@ -740,7 +740,7 @@ test_that(desc = "(id: f7-v0.5.5-t17) Statistical Sample Sizes based on the Hype
 })
 
 test_that(desc = "(id: f7-v0.5.5-t18) Statistical Sample Sizes based on the Hypergeometric Distribution (N = 100) - 1 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(0, 0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.0275, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045, 0.0475, 0.05, 0.0525, 0.055, 0.0575, 0.06, 0.0625, 0.065, 0.0675, 0.07, 0.0725, 0.075, 0.0775, 0.08, 0.0825, 0.085, 0.0875, 0.09, 0.0925, 0.095, 0.0975, 0.1, 
                         NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         90, 100, 100, 100, 100, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
@@ -783,7 +783,7 @@ test_that(desc = "(id: f7-v0.5.5-t18) Statistical Sample Sizes based on the Hype
 })
 
 test_that(desc = "(id: f7-v0.5.5-t19) Statistical Sample Sizes based on the Hypergeometric Distribution (N = 500) - 1 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(0, 0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.0275, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045, 0.0475, 0.05, 0.0525, 0.055, 0.0575, 0.06, 0.0625, 0.065, 0.0675, 0.07, 0.0725, 0.075, 0.0775, 0.08, 0.0825, 0.085, 0.0875, 0.09, 0.0925, 0.095, 0.0975, 0.1, 
                         300, 388, 484, 500, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         183, 251, 305, 350, 390, 453, 492, 500, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
@@ -826,7 +826,7 @@ test_that(desc = "(id: f7-v0.5.5-t19) Statistical Sample Sizes based on the Hype
 })
 
 test_that(desc = "(id: f7-v0.5.5-t20) Statistical Sample Sizes based on the Hypergeometric Distribution (N = 1000) - 1 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(0, 0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.0275, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045, 0.0475, 0.05, 0.0525, 0.055, 0.0575, 0.06, 0.0625, 0.065, 0.0675, 0.07, 0.0725, 0.075, 0.0775, 0.08, 0.0825, 0.085, 0.0875, 0.09, 0.0925, 0.095, 0.0975, 0.1, 
                         368, 610, 781, 985, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         204, 287, 356, 476, 581, 718, 901, 992, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
@@ -875,7 +875,7 @@ test_that(desc = "(id: f7-v0.5.5-t20) Statistical Sample Sizes based on the Hype
 # Binomial distribution
 
 test_that(desc = "(id: f7-v0.5.5-21) Statistical Sampling Results based on the Binomial Distribution - Upper Limits at 10 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         10.9, 8.8, 7.4, 6.4, 5.6, 5, 4.6, 4.2, 3.8, 3.5, 3.3, 3.1, 2.9, 2.7, 2.6, 2.4, 2.3, 1.9, 1.6, 1.2, 0.8, 0.6, 0.5, 
                         18.1, 14.7, 12.4, 10.7, 9.4, 8.4, 7.6, 6.9, 6.4, 5.9, 5.5, 5.1, 4.8, 4.5, 4.3, 4.1, 3.9, 3.1, 2.6, 2, 1.3, 1, 0.8, 
@@ -909,7 +909,7 @@ test_that(desc = "(id: f7-v0.5.5-21) Statistical Sampling Results based on the B
 })
 
 test_that(desc = "(id: f7-v0.5.5-22) Statistical Sampling Results based on the Binomial Distribution - Upper Limits at 5 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         14, 11.3, 9.6, 8.3, 7.3, 6.5, 5.9, 5.4, 4.9, 4.6, 4.2, 4, 3.7, 3.5, 3.3, 3.2, 3, 2.4, 2, 1.5, 1, 0.8, 0.6, 
                         21.7, 17.7, 14.9, 12.9, 11.4, 10.2, 9.2, 8.4, 7.7, 7.1, 6.6, 6.2, 5.8, 5.5, 5.2, 4.9, 4.7, 3.8, 3.2, 2.4, 1.6, 1.2, 1, 
@@ -943,7 +943,7 @@ test_that(desc = "(id: f7-v0.5.5-22) Statistical Sampling Results based on the B
 })
 
 test_that(desc = "(id: f7-v0.5.5-23) Statistical Sampling Results based on the Binomial Distribution - Upper Limits at 2.5 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         16.9, 13.8, 11.6, 10.1, 8.9, 7.9, 7.2, 6.5, 6, 5.6, 5.2, 4.8, 4.6, 4.3, 4.1, 3.9, 3.7, 3, 2.5, 1.9, 1.3, 1, 0.8, 
                         24.9, 20.4, 17.3, 15, 13.2, 11.8, 10.7, 9.8, 9, 8.3, 7.8, 7.3, 6.8, 6.4, 6.1, 5.8, 5.5, 4.4, 3.7, 2.8, 1.9, 1.4, 1.2, 
@@ -977,7 +977,7 @@ test_that(desc = "(id: f7-v0.5.5-23) Statistical Sampling Results based on the B
 })
 
 test_that(desc = "(id: f7-v0.5.5-24) Statistical Sampling Results based on the Binomial Distribution - Upper Limits at 1 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         20.6, 16.9, 14.3, 12.4, 10.9, 9.8, 8.8, 8.1, 7.4, 6.9, 6.4, 6, 5.6, 5.3, 5, 4.8, 4.6, 3.7, 3.1, 2.3, 1.6, 1.2, 1, 
                         28.9, 23.8, 20.2, 17.6, 15.5, 13.9, 12.6, 11.5, 10.6, 9.8, 9.2, 8.6, 8.1, 7.6, 7.2, 6.8, 6.5, 5.2, 4.4, 3.3, 2.2, 1.7, 1.4, 
@@ -1013,7 +1013,7 @@ test_that(desc = "(id: f7-v0.5.5-24) Statistical Sampling Results based on the B
 # Poisson distribution
 
 test_that(desc = "(id: f7-v0.5.5-25) Statistical Sampling Results based on the Poisson Distribution - Upper Limits at 10 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         11.6, 9.3, 7.7, 6.6, 5.8, 5.2, 4.7, 4.2, 3.9, 3.6, 3.3, 3.1, 2.9, 2.8, 2.6, 2.5, 2.4, 1.9, 1.6, 1.2, 0.8, 0.6, 0.5, 
                         19.5, 15.6, 13, 11.2, 9.8, 8.7, 7.8, 7.1, 6.5, 6, 5.6, 5.2, 4.9, 4.6, 4.4, 4.1, 3.9, 3.2, 2.6, 2, 1.3, 1, 0.8, 
@@ -1047,7 +1047,7 @@ test_that(desc = "(id: f7-v0.5.5-25) Statistical Sampling Results based on the P
 })
 
 test_that(desc = "(id: f7-v0.5.5-26) Statistical Sampling Results based on the Poisson Distribution - Upper Limits at 5 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         15, 12, 10, 8.6, 7.5, 6.7, 6, 5.5, 5, 4.7, 4.3, 4, 3.8, 3.6, 3.4, 3.2, 3, 2.4, 2, 1.5, 1, 0.8, 0.6, 
                         23.8, 19, 15.9, 13.6, 11.9, 10.6, 9.5, 8.7, 8, 7.3, 6.8, 6.4, 6, 5.6, 5.3, 5, 4.8, 3.8, 3.2, 2.4, 1.6, 1.2, 1, 
@@ -1081,7 +1081,7 @@ test_that(desc = "(id: f7-v0.5.5-26) Statistical Sampling Results based on the P
 })
 
 test_that(desc = "(id: f7-v0.5.5-27) Statistical Sampling Results based on the Poisson Distribution - Upper Limits at 2.5 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         18.5, 14.8, 12.3, 10.6, 9.3, 8.2, 7.4, 6.8, 6.2, 5.7, 5.3, 5, 4.7, 4.4, 4.1, 3.9, 3.7, 3, 2.5, 1.9, 1.3, 1, 0.8, 
                         27.9, 22.3, 18.6, 16, 14, 12.4, 11.2, 10.2, 9.3, 8.6, 8, 7.5, 7, 6.6, 6.2, 5.9, 5.6, 4.5, 3.8, 2.8, 1.9, 1.4, 1.2, 
@@ -1115,7 +1115,7 @@ test_that(desc = "(id: f7-v0.5.5-27) Statistical Sampling Results based on the P
 })
 
 test_that(desc = "(id: f7-v0.5.5-28) Statistical Sampling Results based on the Poisson Distribution - Upper Limits at 1 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         23.1, 18.5, 15.4, 13.2, 11.6, 10.3, 9.3, 8.4, 7.7, 7.1, 6.6, 6.2, 5.8, 5.5, 5.2, 4.9, 4.7, 3.7, 3.1, 2.4, 1.6, 1.2, 1, 
                         33.2, 26.6, 22.2, 19, 16.6, 14.8, 13.3, 12.1, 11.1, 10.3, 9.5, 8.9, 8.3, 7.9, 7.4, 7, 6.7, 5.4, 4.5, 3.4, 2.3, 1.7, 1.4, 
@@ -1151,7 +1151,7 @@ test_that(desc = "(id: f7-v0.5.5-28) Statistical Sampling Results based on the P
 # Hypergeometric distribution
 
 test_that(desc = "(id: f7-v0.5.5-29) Statistical Sampling Results based on the Hypergeometric Distribution (N = 100) - Upper Limits at 10 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         9, 7, 6, 5, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1, 1, 0, NA, NA, NA, NA, NA, NA, NA, 
                         16, 13, 10, 9, 7, 6, 6, 5, 4, 4, 3, 3, 3, 2, 2, 1, NA, NA, NA, NA, NA, NA, NA, 
@@ -1188,7 +1188,7 @@ test_that(desc = "(id: f7-v0.5.5-29) Statistical Sampling Results based on the H
 })
 
 test_that(desc = "(id: f7-v0.5.5-30) Statistical Sampling Results based on the Hypergeometric Distribution (N = 500) - Upper Limits at 10 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         10.6, 8.4, 7, 6, 5.2, 4.6, 4.2, 3.8, 3.4, 3.2, 3, 2.6, 2.6, 2.4, 2.2, 2, 2, 1.4, 1.2, 0.8, 0.4, 0.2, NA, 
                         17.8, 14.4, 12, 10.2, 9, 8, 7.2, 6.6, 6, 5.4, 5, 4.8, 4.4, 4.2, 3.8, 3.6, 3.4, 2.6, 2.2, 1.6, 0.8, 0.6, NA, 
@@ -1225,7 +1225,7 @@ test_that(desc = "(id: f7-v0.5.5-30) Statistical Sampling Results based on the H
 })
 
 test_that(desc = "(id: f7-v0.5.5-31) Statistical Sampling Results based on the Hypergeometric Distribution (N = 1000) - Upper Limits at 10 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         10.7, 8.6, 7.2, 6.2, 5.4, 4.8, 4.3, 3.9, 3.6, 3.3, 3.1, 2.9, 2.7, 2.5, 2.4, 2.2, 2.1, 1.7, 1.4, 1, 0.6, 0.4, 0.3, 
                         17.9, 14.5, 12.2, 10.5, 9.2, 8.2, 7.4, 6.7, 6.1, 5.7, 5.3, 4.9, 4.6, 4.3, 4.1, 3.8, 3.6, 2.9, 2.4, 1.7, 1.1, 0.8, 0.6, 
@@ -1262,7 +1262,7 @@ test_that(desc = "(id: f7-v0.5.5-31) Statistical Sampling Results based on the H
 })
 
 test_that(desc = "(id: f7-v0.5.5-32) Statistical Sampling Results based on the Hypergeometric Distribution (N = 100) - Upper Limits at 5 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         12, 9, 8, 6, 5, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1, 0, NA, NA, NA, NA, NA, NA, NA, 
                         19, 15, 13, 11, 9, 8, 7, 6, 5, 4, 4, 3, 3, 3, 2, 2, NA, NA, NA, NA, NA, NA, NA, 
@@ -1299,7 +1299,7 @@ test_that(desc = "(id: f7-v0.5.5-32) Statistical Sampling Results based on the H
 })
 
 test_that(desc = "(id: f7-v0.5.5-33) Statistical Sampling Results based on the Hypergeometric Distribution (N = 500) - Upper Limits at 5 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         13.6, 11, 9.2, 7.8, 6.8, 6, 5.4, 5, 4.4, 4.2, 3.8, 3.6, 3.2, 3, 2.8, 2.8, 2.6, 2, 1.6, 1, 0.6, 0.2, NA, 
                         21.2, 17.2, 14.4, 12.4, 10.8, 9.6, 8.6, 7.8, 7.2, 6.6, 6.2, 5.8, 5.4, 5, 4.6, 4.4, 4.2, 3.2, 2.6, 1.8, 1, 0.6, NA, 
@@ -1336,7 +1336,7 @@ test_that(desc = "(id: f7-v0.5.5-33) Statistical Sampling Results based on the H
 })
 
 test_that(desc = "(id: f7-v0.5.5-34) Statistical Sampling Results based on the Hypergeometric Distribution (N = 1000) - Upper Limits at 5 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         13.7, 11.1, 9.3, 8, 7, 6.2, 5.6, 5.1, 4.7, 4.3, 4, 3.7, 3.5, 3.3, 3.1, 2.9, 2.8, 2.2, 1.8, 1.3, 0.8, 0.5, 0.4, 
                         21.4, 17.4, 14.6, 12.6, 11.1, 9.9, 8.9, 8.1, 7.4, 6.9, 6.4, 5.9, 5.6, 5.2, 4.9, 4.7, 4.4, 3.5, 2.9, 2.1, 1.3, 0.9, 0.7, 
@@ -1373,7 +1373,7 @@ test_that(desc = "(id: f7-v0.5.5-34) Statistical Sampling Results based on the H
 })
 
 test_that(desc = "(id: f7-v0.5.5-35) Statistical Sampling Results based on the Hypergeometric Distribution (N = 100) - Upper Limits at 2.5 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         15, 11, 9, 8, 6, 5, 5, 4, 3, 3, 3, 2, 2, 1, 1, 1, NA, NA, NA, NA, NA, NA, NA, 
                         22, 18, 15, 12, 10, 9, 8, 7, 6, 5, 5, 4, 3, 3, 3, 2, NA, NA, NA, NA, NA, NA, NA, 
@@ -1410,7 +1410,7 @@ test_that(desc = "(id: f7-v0.5.5-35) Statistical Sampling Results based on the H
 })
 
 test_that(desc = "(id: f7-v0.5.5-36) Statistical Sampling Results based on the Hypergeometric Distribution (N = 500) - Upper Limits at 2.5 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         16.4, 13.2, 11.2, 9.6, 8.4, 7.4, 6.6, 6, 5.6, 5, 4.6, 4.4, 4, 3.8, 3.6, 3.4, 3.2, 2.4, 2, 1.4, 0.8, 0.4, NA, 
                         24.4, 19.8, 16.8, 14.4, 12.6, 11.2, 10.2, 9.2, 8.4, 7.8, 7.2, 6.6, 6.2, 5.8, 5.4, 5.2, 4.8, 3.8, 3, 2.2, 1.2, 0.8, NA, 
@@ -1447,7 +1447,7 @@ test_that(desc = "(id: f7-v0.5.5-36) Statistical Sampling Results based on the H
 })
 
 test_that(desc = "(id: f7-v0.5.5-37) Statistical Sampling Results based on the Hypergeometric Distribution (N = 1000) - Upper Limits at 2.5 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         16.6, 13.5, 11.4, 9.8, 8.6, 7.6, 6.9, 6.3, 5.7, 5.3, 4.9, 4.6, 4.3, 4, 3.8, 3.6, 3.4, 2.7, 2.2, 1.6, 1, 0.7, 0.5, 
                         24.6, 20.1, 17, 14.7, 12.9, 11.5, 10.4, 9.5, 8.7, 8, 7.4, 6.9, 6.5, 6.1, 5.8, 5.5, 5.2, 4.1, 3.4, 2.5, 1.6, 1.1, 0.8, 
@@ -1484,7 +1484,7 @@ test_that(desc = "(id: f7-v0.5.5-37) Statistical Sampling Results based on the H
 })
 
 test_that(desc = "(id: f7-v0.5.5-38) Statistical Sampling Results based on the Hypergeometric Distribution (N = 100) - Upper Limits at 1 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         18, 14, 12, 10, 8, 7, 6, 5, 4, 4, 3, 3, 2, 2, 1, 1, NA, NA, NA, NA, NA, NA, NA, 
                         26, 21, 17, 14, 12, 11, 9, 8, 7, 6, 5, 5, 4, 4, 3, 2, NA, NA, NA, NA, NA, NA, NA, 
@@ -1521,7 +1521,7 @@ test_that(desc = "(id: f7-v0.5.5-38) Statistical Sampling Results based on the H
 })
 
 test_that(desc = "(id: f7-v0.5.5-39) Statistical Sampling Results based on the Hypergeometric Distribution (N = 500) - Upper Limits at 1 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         20, 16.4, 13.8, 11.8, 10.4, 9.2, 8.2, 7.4, 6.8, 6.2, 5.8, 5.4, 5, 4.8, 4.4, 4.2, 4, 3, 2.4, 1.6, 0.8, 0.4, NA, 
                         28.4, 23.2, 19.6, 17, 14.8, 13.2, 12, 10.8, 10, 9.2, 8.4, 7.8, 7.4, 7, 6.4, 6.2, 5.8, 4.6, 3.6, 2.6, 1.4, 0.8, NA, 
@@ -1558,7 +1558,7 @@ test_that(desc = "(id: f7-v0.5.5-39) Statistical Sampling Results based on the H
 })
 
 test_that(desc = "(id: f7-v0.5.5-40) Statistical Sampling Results based on the Hypergeometric Distribution (N = 1000) - Upper Limits at 1 Percent Risk of Overreliance", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         20.3, 16.6, 14, 12.1, 10.6, 9.5, 8.5, 7.8, 7.1, 6.6, 6.1, 5.7, 5.3, 5, 4.7, 4.5, 4.2, 3.3, 2.7, 2, 1.2, 0.8, 0.6, 
                         28.6, 23.5, 19.9, 17.2, 15.2, 13.6, 12.2, 11.2, 10.2, 9.5, 8.8, 8.2, 7.7, 7.2, 6.8, 6.5, 6.1, 4.9, 4, 2.9, 1.8, 1.3, 1, 
@@ -1601,7 +1601,7 @@ test_that(desc = "(id: f7-v0.5.5-40) Statistical Sampling Results based on the H
 # Beta distribution
 
 test_that(desc = "(id: f7-v0.5.5-t41) Statistical Sampling Results based on the Beta Distribution - Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 10 percent", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         15.45, 26.86, 46.18, 78.9, 134.31, 228.15, 387.07, 656.19, 1111.96, 1883.81, 3190.94, 5404.57, 9153.39, 15502.03, 26253.52, 44461.27, 75296.24, 1048856.08, 1.461011e+07, 2.834837e+09, 1.067277e+14, 4.018151e+18, 1.512778e+23, 
                         3.16, 5.18, 8.32, 13.22, 20.91, 33.04, 52.26, 82.8, 131.53, 209.52, 334.68, 536.1, 861.01, 1386.24, 2237.05, 3617.78, 5862.32, 67147.91, 794128.49, 1.183490e+08, 3.043770e+12, 8.701925e+16, 2.640722e+21, 
@@ -1653,7 +1653,7 @@ test_that(desc = "(id: f7-v0.5.5-t41) Statistical Sampling Results based on the 
 })
 
 test_that(desc = "(id: f7-v0.5.5-t42) Statistical Sampling Results based on the Beta Distribution - Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 5 percent", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         4.58, 6.21, 8.32, 11.04, 14.56, 19.11, 24.99, 32.59, 42.41, 55.1, 71.51, 92.7, 120.1, 155.5, 201.26, 260.39, 336.81, 1216.81, 4389.25, 57056, 9637144.35, 1.627751e+09, 2.749333e+11, 
                         1.02, 1.38, 1.83, 2.39, 3.08, 3.93, 4.99, 6.29, 7.92, 9.93, 12.44, 15.56, 19.45, 24.3, 30.37, 37.95, 47.44, 145.9, 456.03, 4661.45, 550670.82, 7.150590e+07, 9.809580e+09, 
@@ -1705,7 +1705,7 @@ test_that(desc = "(id: f7-v0.5.5-t42) Statistical Sampling Results based on the 
 })
 
 test_that(desc = "(id: f7-v0.5.5-t43) Statistical Sampling Results based on the Beta Distribution - Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 2 percent", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         2, 2.31, 2.67, 3.06, 3.49, 3.96, 4.49, 5.08, 5.72, 6.44, 7.23, 8.1, 9.07, 10.14, 11.32, 12.63, 14.08, 23.99, 40.41, 112.71, 856.45, 6464.46, 48750.97, 
                         0.42, 0.5, 0.59, 0.68, 0.78, 0.9, 1.02, 1.15, 1.3, 1.46, 1.63, 1.82, 2.02, 2.24, 2.48, 2.75, 3.03, 4.88, 7.7, 18.67, 108.61, 654.5, 4094.33, 
@@ -1757,7 +1757,7 @@ test_that(desc = "(id: f7-v0.5.5-t43) Statistical Sampling Results based on the 
 })
 
 test_that(desc = "(id: f7-v0.5.5-t44) Statistical Sampling Results based on the Beta Distribution - Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 1 percent", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         1.45, 1.57, 1.7, 1.84, 1.99, 2.14, 2.31, 2.48, 2.66, 2.84, 3.04, 3.25, 3.47, 3.7, 3.94, 4.2, 4.46, 6.02, 8.03, 13.93, 39.78, 110.42, 303.39, 
                         0.29, 0.32, 0.35, 0.39, 0.42, 0.46, 0.5, 0.54, 0.59, 0.63, 0.68, 0.73, 0.78, 0.84, 0.9, 0.96, 1.02, 1.37, 1.81, 3.02, 7.63, 18.42, 44.11, 
@@ -1811,7 +1811,7 @@ test_that(desc = "(id: f7-v0.5.5-t44) Statistical Sampling Results based on the 
 # Gamma distribution
 
 test_that(desc = "(id: f7-v0.5.5-t45) Statistical Sampling Results based on the Gamma Distribution - Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 10 percent", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         13.78, 23.36, 39.17, 65.23, 108.2, 179.03, 295.83, 488.38, 805.86, 1329.28, 2192.27, 3615.08, 5960.92, 9828.54, 16205.17, 26718.45, 44051.93, 536673.57, 6538033.74, 9.703304e+08, 2.137295e+13, 4.707705e+17, 1.036941e+22, 
                         3, 4.81, 7.56, 11.75, 18.18, 28.07, 43.35, 67.03, 103.88, 161.37, 251.3, 392.35, 614.07, 963.33, 1514.57, 2386.13, 3766.41, 37811.23, 391658.8, 4.472981e+07, 6.743713e+11, 1.129132e+16, 2.005955e+20, 
@@ -1863,7 +1863,7 @@ test_that(desc = "(id: f7-v0.5.5-t45) Statistical Sampling Results based on the 
 })
 
 test_that(desc = "(id: f7-v0.5.5-t46) Statistical Sampling Results based on the Gamma Distribution - Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 5 percent", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         4.44, 5.98, 7.96, 10.51, 13.78, 17.98, 23.36, 30.29, 39.17, 50.58, 65.23, 84.04, 108.2, 139.21, 179.03, 230.17, 295.83, 1035.03, 3615.08, 44051.93, 6538033.74, 9.703304e+08, 1.440098e+11, 
                         1.02, 1.37, 1.81, 2.34, 3, 3.81, 4.81, 6.04, 7.56, 9.43, 11.75, 14.62, 18.18, 22.59, 28.07, 34.88, 43.35, 129.43, 392.35, 3766.41, 391658.8, 4.472981e+07, 5.395010e+09, 
@@ -1915,7 +1915,7 @@ test_that(desc = "(id: f7-v0.5.5-t46) Statistical Sampling Results based on the 
 })
 
 test_that(desc = "(id: f7-v0.5.5-t47) Statistical Sampling Results based on the Gamma Distribution - Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 2 percent", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         1.98, 2.3, 2.64, 3.03, 3.45, 3.92, 4.44, 5.01, 5.64, 6.34, 7.11, 7.96, 8.91, 9.95, 11.1, 12.37, 13.78, 23.36, 39.17, 108.2, 805.86, 5960.92, 44051.93, 
                         0.43, 0.5, 0.59, 0.68, 0.79, 0.9, 1.02, 1.15, 1.3, 1.45, 1.62, 1.81, 2.01, 2.23, 2.46, 2.72, 3, 4.81, 7.56, 18.18, 103.88, 614.07, 3766.41, 
@@ -1967,7 +1967,7 @@ test_that(desc = "(id: f7-v0.5.5-t47) Statistical Sampling Results based on the 
 })
 
 test_that(desc = "(id: f7-v0.5.5-t48) Statistical Sampling Results based on the Gamma Distribution - Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 1 percent", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         1.44, 1.57, 1.7, 1.84, 1.98, 2.14, 2.3, 2.47, 2.64, 2.83, 3.03, 3.23, 3.45, 3.68, 3.92, 4.17, 4.44, 5.98, 7.96, 13.78, 39.17, 108.2, 295.83, 
                         0.29, 0.32, 0.35, 0.39, 0.43, 0.46, 0.5, 0.55, 0.59, 0.64, 0.68, 0.73, 0.79, 0.84, 0.9, 0.96, 1.02, 1.37, 1.81, 3, 7.56, 18.18, 43.35, 
@@ -2021,7 +2021,7 @@ test_that(desc = "(id: f7-v0.5.5-t48) Statistical Sampling Results based on the 
 # Beta-binomial distribution
 
 test_that(desc = "(id: f7-v0.5.5-t49) Statistical Sampling Results based on the beta-binomial Distribution (N = 100) - Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 10 percent", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         25, 54.52, 124.57, 302.45, 791.41, 2268.39, 7268.25, 26749.28, 117453.15, 650798.76, 4970599.57, 6.091679e+07, 1.616639e+09, 1.989180e+11, Inf, Inf, NA, NA, NA, NA, NA, NA, NA,
                         5.47, 11.04, 23.17, 51.52, 123.65, 326.26, 966.81, 3306.89, 13558.09, 70448.1, 506514.61, 5863717.25, 1.474469e+08, 1.723841e+10, Inf, Inf, NA, NA, NA, NA, NA, NA, NA,
@@ -2076,7 +2076,7 @@ test_that(desc = "(id: f7-v0.5.5-t49) Statistical Sampling Results based on the 
 })
 
 test_that(desc = "(id: f7-v0.5.5-t50) Statistical Sampling Results based on the beta-binomial Distribution (N = 500) - Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 10 percent", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         16.84, 30.34, 54.43, 97.69, 175.87, 318.15, 578.9, 1060.17, 1955.02, 3631.37, 6795.97, 12817.3, 24367.04, 46705.28, 90277.95, 176014.2, 346230.21, 1.174959e+07, 5.183002e+08, 2.643183e+12, 6.805179e+14, Inf, NA, 
                         3.5, 5.93, 9.89, 16.47, 27.48, 46.13, 78.09, 133.45, 230.41, 402.03, 709.06, 1264.1, 2278.08, 4150.01, 7642.28, 14226.73, 26774.26, 746969.6, 2.797347e+07, 1.099437e+11, 4.212730e+14, 3.050597e+14, NA, 
@@ -2142,7 +2142,7 @@ test_that(desc = "(id: f7-v0.5.5-t50) Statistical Sampling Results based on the 
 })
 
 test_that(desc = "(id: f7-v0.5.5-t51) Statistical Sampling Results based on the beta-binomial Distribution (N = 1000) - Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 10 percent", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         16.12, 28.52, 50.05, 87.57, 153.12, 268.01, 470.02, 826.29, 1456.65, 2575.56, 4568.1, 8128.12, 14509.87, 25988.46, 46704.89, 84222.61, 152404.79, 3119284.12, 7.007415e+07, 4.791690e+10, 5.950799e+14, 1.487700e+15, 1.487700e+15, 
                         3.33, 5.53, 9.06, 14.72, 23.89, 38.85, 63.44, 104.15, 172.01, 285.83, 477.9, 803.99, 1360.74, 2316.63, 3966.71, 6830.25, 11825.49, 198995.19, 3795305.12, 1.993201e+09, 1.785240e+15, 6.375857e+14, Inf, 
@@ -2197,7 +2197,7 @@ test_that(desc = "(id: f7-v0.5.5-t51) Statistical Sampling Results based on the 
 })
 
 test_that(desc = "(id: f7-v0.5.5-t52) Statistical Sampling Results based on the beta-binomial Distribution (N = 100) - Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 5 percent", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         6.48, 10.09, 15.95, 25.82, 43.15, 75.14, 137.78, 269.61, 573.06, 1356.3, 3709.09, 12437.71, 56832.71, 440132.79, 1.048985e+07, Inf, NA, NA, NA, NA, NA, NA, NA, 
                         1.71, 2.63, 4.05, 6.35, 10.19, 16.97, 29.66, 55.22, 111.63, 251.34, 654.55, 2093.3, 9138.29, 67735.6, 1547911.88, Inf, NA, NA, NA, NA, NA, NA, NA, 
@@ -2252,7 +2252,7 @@ test_that(desc = "(id: f7-v0.5.5-t52) Statistical Sampling Results based on the 
 })
 
 test_that(desc = "(id: f7-v0.5.5-t53) Statistical Sampling Results based on the beta-binomial Distribution (N = 500) - Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 5 percent", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500,
                         4.88, 6.76, 9.29, 12.68, 17.25, 23.43, 31.82, 43.24, 58.85, 80.26, 109.73, 150.47, 207, 285.74, 395.89, 550.63, 768.94, 4362.14, 27992.56, 1814039.47, 1.231446e+11, 1.738556e+15, NA, 
                         1.13, 1.56, 2.12, 2.84, 3.76, 4.95, 6.51, 8.53, 11.19, 14.69, 19.33, 25.51, 33.77, 44.88, 59.9, 80.3, 108.18, 519.25, 2878.89, 146445.34, 6.949121e+09, Inf, NA, 
@@ -2307,7 +2307,7 @@ test_that(desc = "(id: f7-v0.5.5-t53) Statistical Sampling Results based on the 
 })
 
 test_that(desc = "(id: f7-v0.5.5-t54) Statistical Sampling Results based on the beta-binomial Distribution (N = 1000) - Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 5 percent", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         4.72, 6.48, 8.78, 11.81, 15.81, 21.1, 28.09, 37.35, 49.63, 65.95, 87.68, 116.63, 155.29, 206.99, 276.23, 369.14, 494, 2170.81, 9958.5, 241807.33, 2.783800e+08, 9.948293e+11, Inf, 
                         1.07, 1.47, 1.97, 2.6, 3.4, 4.4, 5.68, 7.3, 9.36, 11.99, 15.36, 19.69, 25.26, 32.45, 41.77, 53.85, 69.58, 259.45, 1029.6, 19637.03, 1.580635e+07, 4.345571e+10, 8.847017e+15, 
@@ -2362,7 +2362,7 @@ test_that(desc = "(id: f7-v0.5.5-t54) Statistical Sampling Results based on the 
 })
 
 test_that(desc = "(id: f7-v0.5.5-t55) Statistical Sampling Results based on the beta-binomial Distribution (N = 100) - Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 2 percent", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         2.64, 3.36, 4.31, 5.58, 7.31, 9.74, 13.28, 18.61, 27.02, 41.15, 66.76, 118.37, 239.53, 601.19, 2281.44, 27384.95, NA, NA, NA, NA, NA, NA, NA, 
                         0.79, 1.03, 1.33, 1.73, 2.27, 3.02, 4.08, 5.65, 8.09, 12.11, 19.24, 33.35, 65.82, 160.85, 593.6, 6924.83, NA, NA, NA, NA, NA, NA, NA, 
@@ -2417,7 +2417,7 @@ test_that(desc = "(id: f7-v0.5.5-t55) Statistical Sampling Results based on the 
 })
 
 test_that(desc = "(id: f7-v0.5.5-t56) Statistical Sampling Results based on the beta-binomial Distribution (N = 500) - Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 2 percent", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         2.1, 2.47, 2.9, 3.38, 3.93, 4.55, 5.27, 6.09, 7.03, 8.1, 9.34, 10.77, 12.41, 14.32, 16.52, 19.07, 22.04, 46.2, 100.81, 568.59, 54138.31, 148236100, NA, 
                         0.49, 0.59, 0.7, 0.83, 0.97, 1.13, 1.31, 1.52, 1.75, 2, 2.3, 2.63, 3, 3.43, 3.91, 4.46, 5.09, 9.92, 19.95, 95.2, 6743.55, 14634510, NA, 
@@ -2472,7 +2472,7 @@ test_that(desc = "(id: f7-v0.5.5-t56) Statistical Sampling Results based on the 
 })
 
 test_that(desc = "(id: f7-v0.5.5-t57) Statistical Sampling Results based on the beta-binomial Distribution (N = 1000) - Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 2 percent", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         2.05, 2.39, 2.78, 3.21, 3.7, 4.24, 4.85, 5.54, 6.32, 7.19, 8.17, 9.28, 10.53, 11.93, 13.53, 15.32, 17.36, 32.35, 60.71, 222.82, 3838.17, 102871.72, 5084996.21, 
                         0.46, 0.55, 0.64, 0.75, 0.87, 1.01, 1.16, 1.32, 1.51, 1.71, 1.93, 2.18, 2.45, 2.76, 3.09, 3.47, 3.88, 6.79, 11.84, 37.26, 483.27, 10285.58, 421182.3, 
@@ -2527,7 +2527,7 @@ test_that(desc = "(id: f7-v0.5.5-t57) Statistical Sampling Results based on the 
 })
 
 test_that(desc = "(id: f7-v0.5.5-t58) Statistical Sampling Results based on the beta-binomial Distribution (N = 100) - Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 1 percent", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         1.87, 2.2, 2.61, 3.12, 3.76, 4.58, 5.67, 7.14, 9.21, 12.24, 16.94, 24.8, 39.47, 71.86, 168.39, 759.63, NA, NA, NA, NA, NA, NA, NA, 
                         0.63, 0.75, 0.9, 1.09, 1.33, 1.63, 2.02, 2.55, 3.29, 4.37, 6.02, 8.76, 13.83, 24.92, 57.63, 255.92, NA, NA, NA, NA, NA, NA, NA, 
@@ -2582,7 +2582,7 @@ test_that(desc = "(id: f7-v0.5.5-t58) Statistical Sampling Results based on the 
 })
 
 test_that(desc = "(id: f7-v0.5.5-t59) Statistical Sampling Results based on the beta-binomial Distribution (N = 500) - Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 1 percent", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         1.52, 1.67, 1.84, 2.01, 2.21, 2.42, 2.64, 2.88, 3.15, 3.43, 3.74, 4.08, 4.44, 4.84, 5.27, 5.74, 6.26, 9.64, 15.07, 39.57, 471.38, 32644.89, NA, 
                         0.37, 0.41, 0.46, 0.51, 0.57, 0.63, 0.69, 0.76, 0.83, 0.92, 1, 1.1, 1.2, 1.31, 1.42, 1.55, 1.69, 2.57, 3.93, 9.61, 94.89, 5441.77, NA, 
@@ -2637,7 +2637,7 @@ test_that(desc = "(id: f7-v0.5.5-t59) Statistical Sampling Results based on the 
 })
 
 test_that(desc = "(id: f7-v0.5.5-t60) Statistical Sampling Results based on the beta-binomial Distribution (N = 1000) - Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 1 percent", {
-  
+  testthat::skip_on_cran()
   reference <- matrix(c(20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500, 
                         1.48, 1.62, 1.77, 1.93, 2.09, 2.27, 2.46, 2.67, 2.88, 3.11, 3.36, 3.62, 3.9, 4.2, 4.52, 4.86, 5.23, 7.48, 10.65, 21.72, 98.38, 547.51, 4150.3, 
                         0.33, 0.37, 0.41, 0.45, 0.49, 0.54, 0.59, 0.65, 0.71, 0.77, 0.83, 0.9, 0.97, 1.05, 1.13, 1.22, 1.31, 1.87, 2.61, 5.04, 19.62, 92.42, 599.34, 

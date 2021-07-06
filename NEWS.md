@@ -1,8 +1,8 @@
-# jfa 0.5.6
+# jfa 0.5.5.1
 
-**New features**
+**Bug fixes**
 
-- No changes yet.
+- Fixed a bug in the `print.jfaEvaluation()` call if there was no materiality specified for a Bayesian outcome.
 
 # jfa 0.5.5
 
