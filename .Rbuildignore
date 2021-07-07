@@ -3,7 +3,11 @@
 ^codecov.yml$
 ^.github$
 ^doc$
-^man/figures$
+^man/figures/render-figures.R$
+^man/figures/tables$
+^man/figures/readme$
+^man/figures/poster$
+^man/figures/cheatsheet$
 ^man/manual$
 ^Meta$
 ^CRAN-RELEASE$

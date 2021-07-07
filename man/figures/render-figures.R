@@ -21,7 +21,7 @@ yBreaks           <- pretty(c(0, plotData[['count']], max(plotData[['count']]) +
 
 # Specify the specific release dates (rounded down)
 releases          <- c('2020-01-01', '2020-08-01', '2020-09-01', '2020-11-01', '2021-01-01', '2021-03-01', '2021-04-01', '2021-05-01', '2021-06-01', '2021-07-01')
-releaseLabs       <- c('0.1.0', '0.2.0', '0.3.0', '0.4.0', '0.5.0', '0.5.1', '0.5.2', '0.5.3', '0.5.4', '0.5.5')
+releaseLabs       <- c('0.1.0', '0.2.0', '0.3.0', '0.4.0', '0.5.0', '0.5.1', '0.5.2', '0.5.3', '0.5.4', '0.5.6')
 
 # Create the figure
 p <- ggplot2::ggplot(plotData, ggplot2::aes(x = date, y = count)) +

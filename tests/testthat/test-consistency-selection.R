@@ -59,16 +59,7 @@ test_that(desc = "(id: f6-v0.1.0-t7) Test for units = 'mus' and algorithm = 'int
 })
 
 
-# jfa version 0.2.0
-# No changes to be benchmarked
-
-# jfa version 0.3.0
-# No changes to be benchmarked
-
-# jfa version 0.3.1
-# No changes to be benchmarked
-
-# jfa version 0.4.0
+# jfa version 0.2.0 - 0.4.0
 # No changes to be benchmarked
 
 # jfa version 0.5.0
@@ -96,20 +87,5 @@ test_that(desc = "(id: f6-v0.5.0-t2) Test for plot function", {
   expect_equal(nrow(jfaRes[["sample"]]), 100)
 })
 
-# jfa version 0.5.1
-# No changes to be benchmarked
-
-# jfa version 0.5.2
-# No changes to be benchmarked
-
-# jfa version 0.5.3
-# No changes to be benchmarked
-
-# jfa version 0.5.4
-# No changes to be benchmarked
-
-# jfa version 0.5.5
-# No changes to be benchmarked
-
-# jfa version 0.5.6
+# jfa version 0.5.1 - 0.5.7
 # No changes to be benchmarked

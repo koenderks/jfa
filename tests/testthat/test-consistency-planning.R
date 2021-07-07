@@ -163,10 +163,7 @@ test_that(desc = "(id: f5-v0.2.0-t3) Bayesian poisson 100% materiality 1% errors
   expect_equal(jfaRes$expectedSampleError, 2.2, tolerance = 0.001)
 })
 
-# jfa version 0.3.0
-# No changes to be benchmarked
-
-# jfa version 0.3.1
+# jfa version 0.3.0 - 0.3.1
 # No changes to be benchmarked
 
 # jfa version 0.4.0
@@ -270,14 +267,5 @@ test_that(desc = "(id: f5-v0.5.2-t2) Test for change in beta-binomial mode calcu
   expect_equal(modeDist, 0)
 })
 
-# jfa version 0.5.3
-# No changes to be benchmarked
-
-# jfa version 0.5.4
-# No changes to be benchmarked
-
-# jfa version 0.5.5
-# No changes to be benchmarked
-
-# jfa version 0.5.6
+# jfa version 0.5.3 - 0.5.7
 # No changes to be benchmarked

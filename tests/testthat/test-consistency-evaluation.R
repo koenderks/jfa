@@ -319,20 +319,5 @@ test_that(desc = "(id: f3-v0.2.0-t4) Test for Bayesian plot function", {
   expect_equal(jfaEval[["confBound"]], 0.028, tolerance = 0.001)
 })
 
-# jfa version 0.5.1
-# No changes to be benchmarked
-
-# jfa version 0.5.2
-# No changes to be benchmarked
-
-# jfa version 0.5.3
-# No changes to be benchmarked
-
-# jfa version 0.5.4
-# No changes to be benchmarked
-
-# jfa version 0.5.5
-# No changes to be benchmarked
-
-# jfa version 0.5.6
+# jfa version 0.5.1 - 0.5.7
 # No changes to be benchmarked

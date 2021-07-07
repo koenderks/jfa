@@ -86,10 +86,7 @@ test_that(desc = "(id: f2-v0.1.0-t6) Test for method = 'factor'", {
   expect_equal(prior[["description"]]$beta, 18.4, tolerance = 0.001)
 })
 
-# jfa version 0.3.0
-# No changes to be benchmarked
-
-# jfa version 0.3.1
+# jfa version 0.3.0 - 0.3.1
 # No changes to be benchmarked
 
 # jfa version 0.4.0
@@ -135,10 +132,7 @@ test_that(desc = "(id: f2-v0.5.0-t2) Test for plot function", {
   expect_equal(prior[["description"]]$alpha, 1)
 })
 
-# jfa version 0.5.1
-# No changes to be benchmarked
-
-# jfa version 0.5.2
+# jfa version 0.5.1 - 0.5.2
 # No changes to be benchmarked
 
 # jfa version 0.5.3
@@ -169,11 +163,5 @@ test_that(desc = "(id: f2-v0.5.3-t2) Test for bram method poisson", {
   expect_equal(prior[["description"]]$beta, 13.50597, tolerance = 0.00001)
 })
 
-# jfa version 0.5.4
-# No changes to be benchmarked
-
-# jfa version 0.5.5
-# No changes to be benchmarked
-
-# jfa version 0.5.6
+# jfa version 0.5.4 - 0.5.7
 # No changes to be benchmarked

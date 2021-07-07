@@ -48,4 +48,5 @@ test_that(desc = "(id: f1-v0.5.5-t11) Test Bayes factors for beta-binomial prior
   expect_equal(BF, 5.676959268)
 })
 
-# jfa version 0.5.6
+# jfa version 0.5.6 - 0.5.7
+# No changes to be benchmarked
