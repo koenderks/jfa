@@ -111,8 +111,9 @@ test_that(desc = "(id: f2-v0.4.0-t1) Test for method = 'median' with expected er
 
 # jfa version 0.5.0
 
-test_that(desc = "(id: f2-v0.5.0-t1) Test for summary function", {
+test_that(desc = "(id: f2-v0.5.0-t1) Test for summary and print function", {
   prior <- auditPrior(confidence = 0.95, likelihood = "binomial", method = "none")
+  invisible(capture.output(print(prior)))
   invisible(capture.output(summary(prior)))
   expect_equal(prior[["description"]]$alpha, 1)
   expect_equal(prior[["description"]]$beta, 1)
