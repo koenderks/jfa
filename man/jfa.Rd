@@ -29,23 +29,23 @@
 
   \emph{Sample sizes}
   \itemize{
-  \item \href{https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaBinomialSampleSizes.pdf}{Sample sizes based on the binomial distribution}
-  \item \href{https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaPoissonSampleSizes.pdf}{Sample sizes based on the Poisson distribution}
-  \item \href{https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaHypergeometricSampleSizes.pdf}{Sample sizes based on the hypergeometric distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaBinomialSampleSizes.pdf}{Sample sizes based on the binomial distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaPoissonSampleSizes.pdf}{Sample sizes based on the Poisson distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaHypergeometricSampleSizes.pdf}{Sample sizes based on the hypergeometric distribution}
   }
 
   \emph{Upper limits}
   \itemize{
-  \item \href{https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaBinomialUpperBounds.pdf}{Upper limits based on the binomial distribution}
-  \item \href{https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaPoissonUpperBounds.pdf}{Upper limits based on the Poisson distribution}
-  \item \href{https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaHypergeometricUpperBounds.pdf}{Upper limits based on the hypergeometric distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaBinomialUpperBounds.pdf}{Upper limits based on the binomial distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaPoissonUpperBounds.pdf}{Upper limits based on the Poisson distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaHypergeometricUpperBounds.pdf}{Upper limits based on the hypergeometric distribution}
   }
 
   \emph{Bayes factors}
   \itemize{
-  \item \href{https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaBinomialBayesFactors.pdf}{Bayes factors based on the beta distribution}
-  \item \href{https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaPoissonBayesFactors.pdf}{Bayes factors based on the gamma distribution}
-  \item \href{https://github.com/koenderks/jfa/raw/master/man/figures/tables/jfaHypergeometricBayesFactors.pdf}{Bayes factors based on the beta-binomial distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaBinomialBayesFactors.pdf}{Bayes factors based on the beta distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaPoissonBayesFactors.pdf}{Bayes factors based on the gamma distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaHypergeometricBayesFactors.pdf}{Bayes factors based on the beta-binomial distribution}
   }
 }
 
@@ -61,7 +61,7 @@
 \seealso{
 Useful links:
 \itemize{
-  \item The \href{https://raw.githubusercontent.com/koenderks/jfa/master/man/figures/cheatsheet/cheatsheet.png}{cheat sheet} for a quick overview of the intended workflow.
+  \item The \href{https://raw.githubusercontent.com/koenderks/jfa/development/man/figures/cheatsheet/cheatsheet.png}{cheat sheet} for a quick overview of the intended workflow.
   \item The \href{https://koenderks.github.io/jfa/articles/}{vignettes} for worked examples.
   \item The \href{https://github.com/koenderks/jfa/issues}{issue page} to submit a bug report or feature request.
 }
