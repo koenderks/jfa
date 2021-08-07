@@ -1,7 +1,7 @@
 ## This is a submission for version 0.5.7
 This is jfa version 0.5.7. In this version I have:
 
-* Done nothing yet.
+* Updated the help files with additional information.
 
 ## Test environments
 * Windows install (on GitHub actions), R release

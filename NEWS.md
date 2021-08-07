@@ -1,6 +1,8 @@
 # jfa 0.5.7
 
-- No changes yet.
+**Minor changes**
+
+- The logo is now displayed in the ?jfa-package help file.
 
 # jfa 0.5.6
 
