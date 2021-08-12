@@ -103,7 +103,7 @@
 <rect x='510.94' y='165.14' width='22.50' height='183.44' style='stroke-width: 2.13; stroke-linecap: square; stroke-linejoin: miter; fill: #4168C3;' />
 <rect x='538.62' y='194.07' width='22.50' height='154.51' style='stroke-width: 2.13; stroke-linecap: square; stroke-linejoin: miter; fill: #4168C3;' />
 <rect x='565.41' y='174.33' width='22.50' height='174.25' style='stroke-width: 2.13; stroke-linecap: square; stroke-linejoin: miter; fill: #4168C3;' />
-<rect x='593.09' y='289.15' width='22.50' height='59.43' style='stroke-width: 2.13; stroke-linecap: square; stroke-linejoin: miter; fill: #4168C3;' />
+<rect x='593.09' y='286.68' width='22.50' height='61.90' style='stroke-width: 2.13; stroke-linecap: square; stroke-linejoin: miter; fill: #4168C3;' />
 <text x='88.23' y='268.66' text-anchor='middle' style='font-size: 11.04px; font-family: Arial;' textLength='18.40px' lengthAdjust='spacingAndGlyphs'>324</text>
 <text x='115.91' y='285.25' text-anchor='middle' style='font-size: 11.04px; font-family: Arial;' textLength='18.40px' lengthAdjust='spacingAndGlyphs'>250</text>
 <text x='141.80' y='278.75' text-anchor='middle' style='font-size: 11.04px; font-family: Arial;' textLength='18.40px' lengthAdjust='spacingAndGlyphs'>279</text>
@@ -123,7 +123,7 @@
 <text x='522.19' y='157.87' text-anchor='middle' style='font-size: 11.04px; font-family: Arial;' textLength='18.40px' lengthAdjust='spacingAndGlyphs'>818</text>
 <text x='549.87' y='186.80' text-anchor='middle' style='font-size: 11.04px; font-family: Arial;' textLength='18.40px' lengthAdjust='spacingAndGlyphs'>689</text>
 <text x='576.66' y='167.07' text-anchor='middle' style='font-size: 11.04px; font-family: Arial;' textLength='18.40px' lengthAdjust='spacingAndGlyphs'>777</text>
-<text x='604.34' y='281.89' text-anchor='middle' style='font-size: 11.04px; font-family: Arial;' textLength='18.40px' lengthAdjust='spacingAndGlyphs'>265</text>
+<text x='604.34' y='279.42' text-anchor='middle' style='font-size: 11.04px; font-family: Arial;' textLength='18.40px' lengthAdjust='spacingAndGlyphs'>276</text>
 <line x1='88.23' y1='85.08' x2='88.23' y2='101.90' style='stroke-width: 2.13; stroke: #555555; stroke-linecap: butt;' />
 <polyline points='84.15,94.85 88.23,101.90 92.30,94.85 ' style='stroke-width: 2.13; stroke: #555555; stroke-linecap: butt;' />
 <line x1='278.42' y1='85.08' x2='278.42' y2='101.90' style='stroke-width: 2.13; stroke: #555555; stroke-linecap: butt;' />
@@ -144,6 +144,8 @@
 <polyline points='545.80,94.85 549.87,101.90 553.94,94.85 ' style='stroke-width: 2.13; stroke: #555555; stroke-linecap: butt;' />
 <line x1='576.66' y1='85.08' x2='576.66' y2='101.90' style='stroke-width: 2.13; stroke: #555555; stroke-linecap: butt;' />
 <polyline points='572.59,94.85 576.66,101.90 580.73,94.85 ' style='stroke-width: 2.13; stroke: #555555; stroke-linecap: butt;' />
+<line x1='604.34' y1='85.08' x2='604.34' y2='101.90' style='stroke-width: 2.13; stroke: #555555; stroke-linecap: butt;' />
+<polyline points='600.27,94.85 604.34,101.90 608.41,94.85 ' style='stroke-width: 2.13; stroke: #555555; stroke-linecap: butt;' />
 <text transform='translate(86.79,78.03) rotate(-45)' text-anchor='middle' style='font-size: 11.38px; font-family: Arial;' textLength='25.31px' lengthAdjust='spacingAndGlyphs'>0.1.0</text>
 <text transform='translate(276.98,78.03) rotate(-45)' text-anchor='middle' style='font-size: 11.38px; font-family: Arial;' textLength='25.31px' lengthAdjust='spacingAndGlyphs'>0.2.0</text>
 <text transform='translate(304.66,78.03) rotate(-45)' text-anchor='middle' style='font-size: 11.38px; font-family: Arial;' textLength='25.31px' lengthAdjust='spacingAndGlyphs'>0.3.0</text>
@@ -154,6 +156,7 @@
 <text transform='translate(520.75,78.03) rotate(-45)' text-anchor='middle' style='font-size: 11.38px; font-family: Arial;' textLength='25.31px' lengthAdjust='spacingAndGlyphs'>0.5.3</text>
 <text transform='translate(548.43,78.03) rotate(-45)' text-anchor='middle' style='font-size: 11.38px; font-family: Arial;' textLength='25.31px' lengthAdjust='spacingAndGlyphs'>0.5.4</text>
 <text transform='translate(575.22,78.03) rotate(-45)' text-anchor='middle' style='font-size: 11.38px; font-family: Arial;' textLength='25.31px' lengthAdjust='spacingAndGlyphs'>0.5.6</text>
+<text transform='translate(602.90,78.03) rotate(-45)' text-anchor='middle' style='font-size: 11.38px; font-family: Arial;' textLength='25.31px' lengthAdjust='spacingAndGlyphs'>0.5.7</text>
 </g>
 <g clip-path='url(#cpMC4wMHw2NDguMDB8MC4wMHw0MzIuMDA=)'>
 <text x='45.11' y='352.88' text-anchor='end' style='font-size: 12.00px; fill: #4D4D4D; font-family: Arial;' textLength='6.67px' lengthAdjust='spacingAndGlyphs'>0</text>
