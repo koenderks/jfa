@@ -17,7 +17,6 @@ vignette: >
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.height=4, fig.width=6)
 library(jfa)
-data(BuildIt)
 ```
 
 ## Selection methodology
@@ -50,6 +49,13 @@ $$N = \{x_1, x_2, \dots, x_N\}$$
 
 Theoretically, every sample $S_i$ is a collection of units and is assigned an inclusion probability $p(s)$ with which this collection is drawn. Practically, this translates to each sampling unit in the population having an inclusion probability $p(x)$. The purpose of a sampling algorithm is to assign inclusion probabilities to each one of the sampling units to get to a sample of size $n$.
 
+To illustrate the procedure for different sampling algorithms we will use the `BuildIt` data set.
+
+```{r}
+data(BuildIt)
+```
+
+
 #### Random selection
 
 Random sampling is the most straight-forward selection method. With this method, every combination of sampling units has the same probability of being selected as every other combination of the same number of sampling units. The procedure begins by ranking each of the units $x_i$ by their monetary value. A random selection of size $n$ of the ranks is then taken and the corresponding units are included in the sample. The inclusion probabilities for the sampling units in this method are defined as:
@@ -60,7 +66,7 @@ where $N$ is the number of units in the population. The random sampling method p
 
 <center>
 
-![Figure 1: Simple random sampling](img/randomSampling.png)
+![Figure 1: Illustration of random sampling](img/randomSampling.png)
 
 </center>
 
@@ -88,7 +94,7 @@ For this method, the auditor determines a uniform interval on the ranked units. 
 
 <center>
 
-![Figure 2: Fixed interval sampling](img/fixedIntervalSampling.png)
+![Figure 2: Illustration of fixed interval sampling](img/fixedIntervalSampling.png)
 
 </center>
 
@@ -130,7 +136,7 @@ In the case of cell sampling, the auditor, like in systematic sampling, is again
 
 <center>
 
-![Figure 3: Cell sampling](img/cellSampling.png)
+![Figure 3: Illustration of cell sampling](img/cellSampling.png)
 
 </center>
 

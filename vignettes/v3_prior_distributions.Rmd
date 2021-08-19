@@ -19,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE, fig.height=4, fig.width=6)
 library(jfa)
 ```
 
-## Bayesian statistics
+## Bayesian inference
 
 Bayesian statistics allows you to incorporate existing information into the sampling procedure and to revise this information using the information from the sample. The use of the prior distribution can potentially decrease the amount of audit work required to achieve the desired assurance, thereby increasing your efficiency as an auditor. For example, when you have information from the auditee's internal controls that indicates a low-risk profile, you may build on this information to require less evidence from substantive testing. Be aware that all information that you incorporate into the statistical analysis should be justified.
 
