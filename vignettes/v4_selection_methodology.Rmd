@@ -1,12 +1,12 @@
 ---
-title: 'Selection: Methodology'
+title: 'Selection: Sampling methodology'
 author: Koen Derks
 date: 'last modified: 19-08-2021'
 output: 
   rmarkdown::html_vignette:
     toc: true
 vignette: >
-  %\VignetteIndexEntry{Selection: Methodology}
+  %\VignetteIndexEntry{Selection: Sampling methodology}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteDepends{jfa}
   %\VignetteKeywords{algorithm, audit, methodology, sampling, selection}

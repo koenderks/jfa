@@ -1,12 +1,12 @@
 ---
-title: "Classical audit sampling"
+title: "Workflow: Classical audit sampling"
 author: Koen Derks
 date: "last modified: 19-08-2021"
 output: 
   rmarkdown::html_vignette:
     toc: true
 vignette: >
-  %\VignetteIndexEntry{Classical audit sampling}
+  %\VignetteIndexEntry{Workflow: Classical audit sampling}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteDepends{jfa}
   %\VignetteKeywords{audit, classical, sampling, workflow}

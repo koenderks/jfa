@@ -1,12 +1,12 @@
 ---
-title: "Bayesian audit sampling"
+title: "Workflow: Bayesian audit sampling"
 author: Koen Derks
 date: "last modified: 19-08-2021"
 output: 
   rmarkdown::html_vignette:
     toc: true
 vignette: >
-  %\VignetteIndexEntry{Bayesian audit sampling}
+  %\VignetteIndexEntry{Workflow: Bayesian audit sampling}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteDepends{jfa}
   %\VignetteKeywords{audit, bayesian, sampling, workflow}
