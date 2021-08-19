@@ -1,0 +1,145 @@
+---
+title: 'Selection methodology'
+author: Koen Derks
+date: 'last modified: 19-08-2021'
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Selection methodology}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteDepends{jfa}
+  %\VignetteKeywords{algorithm, audit, sampling, selection}
+  %\VignettePackage{jfa}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.height=4, fig.width=6)
+library(jfa)
+data(BuildIt)
+```
+
+## Selection methodology
+
+Auditors are often required to assess balances or processes that involve a large number of items. Since they cannot inspect all of these items individually, they need to select a sample to infer a statistical statement about the total population. Various selection methodologies are available for this purpose which are standard in an audit setting. However, in practice it seems that the distinction between sampling methods ---and when to use them--- is not always easy to make, thereby complicating the audit process. This vignette aims to clear the air when it comes to the four most commonly used audit sampling methods, by outlining them in a clear, concise way and, in addition, showing how to apply these sampling methods using the `jfa` package.
+
+### Sampling units
+
+Sampling from the population requires knowledge of the sampling units; physical representations of the population that needs to be audited. Sampling units can be individual transactions or individual monetary values. For statistical sampling, the sampling elements are required to have individual sampling units that can be assigned a probability to be included in the sample. The total collection of all elements with an assigned selection probability is named the sampling frame.
+
+#### Records
+
+A sampling unit for record (attribute) sampling is a characteristic of a population item, like the date of payment of the receipt for coffee milk. In this case, the item that corresponds to the sampled unit (e.g., date of payment) is selected.
+
+#### Monetary units
+
+A sampling unit for monetary unit sampling is different than a sampling unit for record (attributes) sampling in that it is an individual monetary unit within an item, like an individual dollar. In this case, the item that includes the sampled dollar is selected. For example, this can be the 10$^{th}$ dollar from a receipt for coffee milk. 
+
+### Sampling algorithms
+
+This section discusses the three sampling algorithms implemented in `jfa`. First, for notation, let the set of all possible samples $S_i$ be defined as $S$.
+
+$$S = \{s_1, s_2,\dots,s_M\}$$
+
+and define the population $N$ as the total set of units $x_i$.
+
+$$N = \{x_1, x_2, \dots, x_N\}$$
+
+Theoretically, every sample $S_i$ is a collection of units and is assigned an inclusion probability $p(s)$ with which this collection is drawn. Practically, this translates to each sampling unit in the population having an inclusion probability $p(x)$. The purpose of a sampling algorithm is to assign inclusion probabilities to each one of the sampling units to get to a sample of size $n$.
+
+#### Random selection
+
+Random sampling is the most straight-forward selection method. With this method, every combination of sampling units has the same probability of being selected as every other combination of the same number of sampling units. The procedure begins by ranking each of the units $x_i$ by their monetary value. A random selection of size $n$ of the ranks is then taken and the corresponding units are included in the sample. The inclusion probabilities for the sampling units in this method are defined as:
+
+$$p(x) = \frac{1}{N},$$
+
+where $N$ is the number of units in the population. The random sampling method provides a sample that allows every sampling unit in the population an equal chance of being selected. Figure 1 provides a visualization of the simple random sampling method.
+
+![Figure 1: Simple random sampling](img/randomSampling.png)
+
+**Advantages:** This method yields an optimal random selection, with the additional advantage that the sample can be extended with ease by applying the same method.
+
+**Disadvantages:** As selection probabilities are equal for all units, there is no guarantee that large elements in the population are selected.
+
+The code below shows how to apply random sampling using the `jfa` package in a record sampling and a monetary unit sampling setting.
+
+```{r}
+# Record sampling
+sample <- jfa::selection(population = BuildIt, sampleSize = 100, units = 'records', algorithm = 'random')
+head(sample$sample, n = 6)
+```
+
+```{r}
+# Monetary unit sampling
+sample <- jfa::selection(population = BuildIt, sampleSize = 100, units = 'mus', algorithm = 'random', bookValues = 'bookValue')
+head(sample$sample, n = 6)
+```
+
+#### Fixed interval sampling (Systematic sampling)
+
+For this method, the auditor determines a uniform interval on the ranked units. A starting point is handpicked or randomly selected in the first interval and one item is selected throughout the population at each of the uniform intervals from the starting point. For example, if the interval has a width of 10 transactions and transaction number 5 is chosen as the starting point, the transactions 5, 15, 20 etc. are selected.
+
+![Figure 2: Fixed interval sampling](img/fixedIntervalSampling.png)
+
+The number of required intervals $I$ can be determined by dividing the number of units in the population by the required sample size. For record sampling, the interval is calculated by dividing the number of units $N$ by the sample size $n$.
+
+$$I = \frac{N}{n}$$
+
+In monetary unit sampling, the interval is calculated by dividing the number of monetary units $M$ by the sample size $n$.
+
+$$I = \frac{M}{n}$$
+
+If the same unit is selected in each interval, the inclusion probabilities for the sampling units in this method are defined as:
+
+$$p(x) = \frac{1}{I},$$
+
+with the property that the space between selected units $i$ is the same as the interval $I$, see Figure 2. The systematic method, like the simple random sampling method, provides a sample that allows every sampling unit in the population an equal chance of being selected. However, if the population is arranged randomly with respect to its deviation pattern, systematic selection is equivalent to simple random selection. The systematic sampling method has the property that all units larger than the interval width have an inclusion probability of one, as one of these transactions' units are always selected from the interval.
+
+**Advantages:** The advantage of the systematic sampling method is that it is often simple and fast to perform and understand. Another advantage is that, in monetary unit sampling, all transactions that are greater than the calculated interval will be selected. In record sampling, since the units are ranked, there is also a guarantee that some large transactions will be in the sample, as the method stratifies on value.
+
+**Disadvantages:** A pattern in the population can coincide with the selected interval, rendering the sample unrepresentative. What is sometimes seen as an added complication for this method is that the sample is hard to extend after drawing the initial sample due to the chance of sampling the same unit. However, by removing the already sampled units from the population and redrawing the intervals, this problem can be efficiently solved.
+
+The code below shows how to apply fixed interval sampling using the `jfa` package in a record sampling and a monetary unit sampling setting. By default, the first sampling unit from each interval is selected, but this can be changed by setting the argument `intervalStartingPoint = 1` to a different value.
+
+```{r}
+# Record sampling
+sample <- jfa::selection(population = BuildIt, sampleSize = 100, units = 'records', algorithm = 'interval', intervalStartingPoint = 1)
+head(sample$sample, n = 6)
+```
+
+```{r}
+# Monetary unit sampling
+sample <- jfa::selection(population = BuildIt, sampleSize = 100, units = 'mus', algorithm = 'interval', bookValues = 'bookValue', intervalStartingPoint = 1)
+head(sample$sample, n = 6)
+```
+
+#### Cell sampling
+
+In the case of cell sampling, the auditor, like in systematic sampling, is again dividing the ranked population into a set of intervals $I$ that are computed by the above equations. The difference is that in cell sampling, withing each interval, a unit is selected by randomly drawing a number within the interval range. This causes the space between the intervals $i$ to vary. 
+
+![Figure 3: Cell sampling](img/cellSampling.png)
+
+However, as in systematic sampling, the inclusion probabilities are still equal for each unit.
+
+$$p(x) = \frac{1}{I}$$
+
+The cell sampling algorithm has the property that all units larger than twice the interval width have a inclusion probability of one.
+
+**Advantages:** More sets of samples are possible than in systematic sampling, as there is no fixed interval $i$ to limit the selections. This method also offers a solution to the pattern problem in systematic sampling.
+
+**Disadvantages:** A disadvantage of this selection method is that not all elements the size of one interval have a selection probability of one. On top of that elements can be in two adjacent cells, thereby creating the possibility that an element is selected twice.
+
+The code below shows how to apply cell sampling using the `jfa` package in a record sampling and a monetary unit sampling setting.
+
+```{r}
+# Record sampling
+sample <- jfa::selection(population = BuildIt, sampleSize = 100, units = 'records', algorithm = 'cell')
+head(sample$sample, n = 6)
+```
+
+```{r}
+# Monetary unit sampling
+sample <- jfa::selection(population = BuildIt, sampleSize = 100, units = 'mus', algorithm = 'cell', bookValues = 'bookValue')
+head(sample$sample, n = 6)
+```

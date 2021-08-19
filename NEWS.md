@@ -1,9 +1,15 @@
+# jfa 0.5.8
+
+**New features**
+
+- New vignette that describes the sampling algorithms.
+
 # jfa 0.5.7
 
 **Minor changes**
 
 - The logo is now displayed in the `?jfa-package` help file.
-- The cheat sheet link has changed in the RADME file.
+- The cheat sheet link has changed in the README file.
 
 # jfa 0.5.6
 

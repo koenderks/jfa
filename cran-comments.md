@@ -1,7 +1,7 @@
-## This is a submission for version 0.5.7
-This is jfa version 0.5.7. In this version I have:
+## This is a submission for version 0.5.8
+This is jfa version 0.5.8. In this version I have:
 
-* Updated the help files with additional information.
+* Added a new vignette.
 
 ## Test environments
 * Windows install (on GitHub actions), R release
