@@ -22,7 +22,7 @@ To concretely illustrate `jfa`'s functionality, we consider the `BuildIt` data s
 
 *Note: The information in the `auditValue` column is added for illustrative purposes, as it is unknown to the auditor before having audited any items from a sample.*
 
-First, we load in the data set and display the first 10 invoices in the population.
+First, we load the `jfa` package and the `BuildIt` data. The first 10 invoices from the data set are displayed below.
 
 ```{r}
 library(jfa)
@@ -31,43 +31,43 @@ data('BuildIt')
 head(BuildIt, n = 10)
 ```
 
-For a walkthrough of `jfa`'s workflow functionality using the `BuildIt` data set, see [The audit sampling workflow](https://koenderks.github.io/jfa/articles/v1_sampling_workflow.html). For a Bayesian version of the the walkthrough, see [The Bayesian audit sampling workflow](https://koenderks.github.io/jfa/articles/v2_bayesian_sampling_workflow.html).
+For a fully explained walkthrough of `jfa`'s workflow functionality using the `BuildIt` data set, see [Workflow: Classical audit sampling](https://koenderks.github.io/jfa/articles/v1_sampling_workflow.html). For a Bayesian version of the walkthrough, see [Workflow: Bayesian audit sampling](https://koenderks.github.io/jfa/articles/v2_bayesian_sampling_workflow.html).
 
 ## (Optional) Using `auditPrior()`: The basics
 
-The `auditPrior()` function allows you to create a prior distribution for the misstatement in the population that can be used to incorporate existing information into the sampling workflow. Prior distributions can be constructed based on various types of audit information. Bayesian planning and evaluation using the prior distribution can be performed by specifying the returned object from the `auditPrior()` function as input for the `prior` argument in the `planning()` and `evaluation()` functions.
+The `auditPrior()` function allows you to create a prior distribution for audit sampling. More specifically, this function sets up the prior distribution for the misstatement parameter in the statistical model that is specified later on. One advantage of Bayesian inference for auditors is that the prior distribution can be used to incorporate existing information into the statistical procedure, possibly yielding a decrease in sample size, and an increase in efficiency. The type of audit information that can be incorporated depends on the information that is available to the auditor. See the vignette [Planning: Prior distributions](https://koenderks.github.io/jfa/articles/v3_prior_distributions.html) or the accompanying [article](https://onlinelibrary.wiley.com/doi/10.1111/ijau.12240) for a detailed explanation of the types of audit information that `jfa` is able to incorporate into a prior distribution.
 
-See the vignette [Planning: Prior distributions](https://koenderks.github.io/jfa/articles/v3_prior_distributions.html) for a detailed explanation of the types of audit information that `jfa` is able to incorporate into a prior distribution.
+With the prior distribution in hand, Bayesian planning and evaluation can be performed by providing the returned object from the `auditPrior()` function as input for the `prior` argument in the `planning()` and `evaluation()` functions.
 
 ## Using `planning()`: The basics
 
-Planning a sample using the `planning()` function requires knowledge of the objective of the sampling procedure, the assumed distribution of the data (`binomial`, `poisson`, or `hypergeometric`), and the expected errors in the sample. However, it is advised to set the value for the expected errors in the sample conservatively to minimize the probability that the observed errors in the sample exceed the expected errors, which would imply that insufficient work has been done in the end.
+First of all, planning a sample requires that you have knowledge of the objective of your sampling procedure. Generally, a sampling objective can be one (or both) of the following: to *test* the population misstatement against a performance materiality (i.e., the maximum tolerable misstatement in the population), or to *estimate* the population misstatement with a minimum precision. Furthermore, it is advised to obtain knowledge of the assumed distribution of the expected data (`binomial`, `poisson`, or `hypergeometric`), and the expected (or tolerable) errors in the sample. When planning an audit sample, it is strongly advised to set the value for the expected errors in the sample conservatively to minimize the chance of the observed errors in the sample exceeding the expected errors, which would imply that insufficient work has been done in the end.
 
-Because we have access to the recorded values of the invoices in the population, we are going to consider each monetary unit in the population as a possible unit of inference. The audit standards assume that such data are distributed according to the Poisson distribution and so we will assume this distribution in this example as well. For illustrative purposes, we do not expect to find any errors in the sample.
+With the `BuildIt` data set, because we have access to the booked amounts (monetary values) of each invoice in the population, we are going to consider each monetary unit in the population as a possible unit of inference. In this case, the audit standards assume such data to be distributed according to the Poisson distribution, and so we will use this distribution in this example as well. For illustrative purposes, we will use a strict requirement where the population will only be approved when the sample contains no misstatements.
 
 ### Testing against a performance materiality
 
-First, we take a look at how you can use the `planning()` function to construct a sample with the objective of testing the misstatement in the population against a performance materiality (i.e., the maximum tolerable misstatement in the population). In this example, we will set the performance materiality at 5% of the total value of the population.
+First, we take a look at how you can use the `planning()` function to construct a sample with the objective of testing the misstatement in the population against a performance materiality. In this example, we will set the performance materiality at 5% of the total value of the population.
 
-Sampling objective: *Calculate a minimal sample size such that, when zero misstatements are found in the sample, there is a 95% 'chance' that the misstatement in the population is lower than 5% of the population value.*
+Sampling objective: *Calculate a minimal sample size such that, when no misstatements are found in the sample, you have obtained 95% assurance that the misstatement in the population is lower than 5% of the total value.*
 
-Constructing a sample with this objective in mind can be done using the code below (specifically by specifying the `materiality` argument). A summary of the output can be obtained from the `summary()` function. As you can see, the minimal sample size to achieve 95% assurance with respect to the performance materiality of 5% is 60 monetary units.
+Planning a sample with this objective in mind can be done using the code below (specifically by specifying the `materiality` argument). Next, a summary of the results can be obtained using the `summary()` function. As you can see below, the minimal sample size to achieve 95% assurance with respect to the performance materiality of 5% is 60 monetary units.
 
 ```{r}
-stage1 <- planning(materiality = 0.05, expectedError = 0, likelihood = 'poisson', confidence = 0.95, N = 3500)
+stage1 <- planning(materiality = 0.05, expectedError = 0, likelihood = 'poisson', confidence = 0.95)
 summary(stage1)
 ```
 
 ### Obtaining a minimum precision
 
-Next, we take a look at how you can use the `planning()` function to construct a sample with the objective of obtaining a minimum precision. The precision is an indication of the accuracy of your estimate of the misstatement, as it is defined as the difference between the most likely misstatement and the upper confidence bound on the misstatement. For this example, we will set the minimum precision to 2% of the population value.
+Next, we take a look at how you can use the `planning()` function to construct a sample with the objective of estimating the misstatement in the population with a minimum precision. The precision is defined as the difference between the most likely misstatement and the upper confidence bound on the misstatement and is an indication of the accuracy of your estimate. For this example, we will set the minimum precision to 2% of the population value.
 
-Sampling objective: *Calculate a minimal sample size such that, when zero misstatements are found in the sample, there is a 95% 'chance' that the misstatement in the population is at most 2% above the most likely misstatement.*
+Sampling objective: *Calculate a minimal sample size such that, when zero misstatements are found in the sample, you have obtained 95% assurance that the misstatement in the population is at most 2% above the most likely misstatement.*
 
-Planning a sample with this objective can be done using the code below (specifically by specifying the `minPrecision` argument). As you can see, the minimal sample size for to achieve a precision of at least 2% is 150 monetary units.
+Planning a sample with this objective can be done using the code below (specifically by specifying the `minPrecision` argument). As you can see below, the minimal sample size for to achieve a precision of at least 2% is 150 monetary units.
 
 ```{r}
-stage1 <- planning(minPrecision = 0.02, expectedError = 0, likelihood = 'poisson', confidence = 0.95, N = 3500)
+stage1 <- planning(minPrecision = 0.02, expectedError = 0, likelihood = 'poisson', confidence = 0.95)
 summary(stage1)
 ```
 
@@ -75,7 +75,7 @@ summary(stage1)
 
 Selecting a sample using the `selection()` function requires knowledge of the sampling units (i.e., units of inference) in the population. Items can be selected from the population using *record sampling* (also known as attribute sampling) using `units = 'records'`, or using *monetary unit sampling (MUS)* using `units = 'mus'`. Selection also requires knowledge of the sampling algorithm. Sampling units can be selected with a *random sampling* scheme using `algorithm = 'random'`, with a *cell sampling* scheme using `algorithm = 'cell'`, or with a *fixed interval sampling* (also known as systematic sampling) scheme using `algorithm = 'interval'`.
 
-See the vignette [Selection: Sampling methodology](https://koenderks.github.io/jfa/articles/v4_selection_methodology.html) for a detailed explanation the selection algorithms implemented in `jfa`.
+See the vignette [Selection: Sampling methodology](https://koenderks.github.io/jfa/articles/v4_selection_methodology.html) for a more detailed explanation the selection algorithms implemented in `jfa`.
 
 ### Record sampling
 
@@ -97,7 +97,7 @@ summary(stage2)
 
 ### Extracting the sample
 
-The selected sample is stored in the object that is returned by the `selection()` function. It can be accesses or extracted by indexing it via `$sample`. Let's take a look at the first ten rows of the previously selected sample of 60 invoices.
+The selected sample is stored in the object that is returned by the `selection()` function. It can be accesses or extracted by indexing it via `$sample`. The first 10 invoices in the previously selected sample of 60 invoices are displayed below. After this step it is up to the auditor to annotate the sample with their audit values.
 
 ```{r}
 stage2 <- selection(population = BuildIt, sampleSize = 60, units = 'records', algorithm = 'random')
@@ -108,24 +108,24 @@ head(sample, n = 10)
 
 ## Using `evaluation()`: The basics
 
-After saving the sample and annotating the invoices in the sample with their audit values, you can evaluate the misstatement in the sample with the `evaluation()` function. The function can also be used with summary statistics from a data sample. For a more elaborate explanation of how to use this function, see the package vignettes [Evaluation: Testing misstatement](https://koenderks.github.io/jfa/articles/v6_testing_misstatement.html) and [Evaluation: Estimating misstatement](https://koenderks.github.io/jfa/articles/v5_estimating_misstatement.html).
+After saving the sample and annotating the invoices in the sample with their audit values you can it to perform statistical inference about the misstatement in the population with the `evaluation()` function. Next to a data sample as input, this function can also be used when you only have access to summary statistics from a data sample (e.g., sample size and number of errors). For an elaborate explanation of how to use this function in the context of each sampling objective, see the package vignettes [Evaluation: Testing misstatement](https://koenderks.github.io/jfa/articles/v6_testing_misstatement.html) and [Evaluation: Estimating misstatement](https://koenderks.github.io/jfa/articles/v5_estimating_misstatement.html).
 
 ### Summary statistics from the sample
 
-First, let's take a look at how you can use the `evaluation()` function to evaluate the misstatement in the population using summary statistics from a sample. Suppose that in the previously selected sample of 60 invoices you have found that 1 invoice is missing. Using `nSumstats = 60` and `kSumstats = 1` you can provide these outcomes of the sample to the `evaluation()` function. Don't forget to specify your sampling objectives using the `materiality` or `minPrecision` arguments. In this example, a performance materiality of 5% applies.
+First, let's take a look at how you can use the `evaluation()` function to evaluate the misstatement in the population using summary statistics from a sample. Suppose that in the previously selected sample of 60 invoices you have found that 1 invoice is missing. Using `nSumstats = 60` and `kSumstats = 1` you can provide these summary statistics of the sample to the `evaluation()` function. Don't forget to also specify the sampling objectives using the `materiality` or `minPrecision` arguments. In the following example, a performance materiality of 5% again applies. Also note that these data ($n$, $k$) are best described using a binomial distribution, which is why we specify `method = 'binomial'`.
 
-Sampling objective: *Evaluate, on the basis of summary statistics of a sample, whether the misstatement in the population exceeds the allocated performance materiality such that there is a 5% 'chance' of incorrectly concluding that the population is free of material misstatement.*
+Sampling objective: *Evaluate, on the basis of summary statistics of a sample, whether the misstatement in the population exceeds the performance materiality such that there is a 5% 'chance' of incorrectly concluding that the population is free of material misstatement.*
 
 ```{r}
-stage4 <- evaluation(materiality = 0.05, method = 'binomial', confidence = 0.95, N = 3500, nSumstats = 60, kSumstats = 1)
+stage4 <- evaluation(materiality = 0.05, method = 'binomial', confidence = 0.95, nSumstats = 60, kSumstats = 1)
 summary(stage4)
 ```
 
-As you can see, the upper bound on the misstatement is higher than 5% and thus the sample does not provide sufficient evidence to conclude that the misstatement is lower than 5%.
+As you can see above, the 95% upper bound for the misstatement is higher than 5% and therefore the sample does not provide sufficient evidence to conclude that the misstatement is lower than 5%.
 
 ### Annotated sample
 
-Next, we take a look at how you can use the `evaluation()` function to evaluate the misstatement using an annotated sample. Suppose that you have audited the 60 invoices in the sample and have found 1 misstatement. 
+Next, we take a look at how you can use the `evaluation()` function to evaluate the misstatement using an annotated sample. Returning to our annotated sample from the `selection()` function, suppose that you have audited these 60 invoices and have found that they contain 1 misstatement. 
 
 ```{r}
 sample$auditValue    <- sample$bookValue
@@ -139,18 +139,18 @@ Sampling objective: *Evaluate, on the basis of an annotated sample, whether the 
 ```{r}
 stage4 <- evaluation(materiality = 0.05, method = 'stringer', confidence = 0.95,
                      sample = sample, bookValues = 'bookValue', auditValues = 'auditValue',
-                     counts = sample$count, N = 3500)
+                     counts = sample$count)
 summary(stage4)
 ```
 
 ## Using `report()`: The basics
 
-After obtaining the result from the `evaluation()` function you can generate a report containing the data, the statistical results and their interpretation, and the conclusion of the sampling procedure with respect to the input for `materiality` and `minPrecision`. The report can be automatically generated by providing the object returned by the `evaluation()` function to the `report()` function.
+With the results from the `evaluation()` function in hand, you can use the `report()` function to automatically generate a report containing the data, the statistical results and their interpretation, and the conclusion of the sampling procedure with respect to the sampling objectives. The report can be generated by providing the object returned by the `evaluation()` function to the `report()` function.
 
 ```{r, eval = FALSE}
 stage4 <- evaluation(materiality = 0.05, method = 'stringer', confidence = 0.95,
                      sample = sample, bookValues = 'bookValue', auditValues = 'auditValue',
-                     counts = sample$count, N = 3500)
+                     counts = sample$count)
 
 report(stage4, file = 'report.html', format = 'html_document') # Generates .html report
 ```
