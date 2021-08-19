@@ -6,8 +6,9 @@ articles:
   v1_sampling_workflow: v1_sampling_workflow.html
   v2_bayesian_sampling_workflow: v2_bayesian_sampling_workflow.html
   v3_prior_distributions: v3_prior_distributions.html
-  v4_testing_misstatement: v4_testing_misstatement.html
-  v5_estimating_misstatement: v5_estimating_misstatement.html
-  v6_bayes_factors_summary_statistics: v6_bayes_factors_summary_statistics.html
-last_built: 2021-08-12T16:35Z
+  v4_selection_methodology: v4_selection_methodology.html
+  v5_testing_misstatement: v5_testing_misstatement.html
+  v6_estimating_misstatement: v6_estimating_misstatement.html
+  v7_bayes_factors_summary_statistics: v7_bayes_factors_summary_statistics.html
+last_built: 2021-08-19T08:34Z
 
