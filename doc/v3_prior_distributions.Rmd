@@ -1,12 +1,12 @@
 ---
-title: 'Prior distributions'
+title: 'Planning: Prior distributions'
 author: Koen Derks
-date: 'last modified: 29-06-2021'
+date: 'last modified: 19-08-2021'
 output: 
   rmarkdown::html_vignette:
     toc: true
 vignette: >
-  %\VignetteIndexEntry{Prior distributions}
+  %\VignetteIndexEntry{Planning: Prior distributions}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteDepends{jfa}
   %\VignetteKeywords{audit, evaluation, planning, prior}

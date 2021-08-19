@@ -2,7 +2,7 @@
 
 **New features**
 
-- New vignette that describes the sampling algorithms.
+- Added a new vignette that describes the sampling methodology implemented in `jfa`.
 
 # jfa 0.5.7
 

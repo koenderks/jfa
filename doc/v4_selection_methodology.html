@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Koen Derks" />
+
+
+<title>Selection: Methodology</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Selection: Methodology</h1>
+<h4 class="author">Koen Derks</h4>
+<h4 class="date">last modified: 19-08-2021</h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#selection-methodology">Selection methodology</a>
+<ul>
+<li><a href="#sampling-units">Sampling units</a></li>
+<li><a href="#sampling-algorithms">Sampling algorithms</a></li>
+</ul></li>
+</ul>
+</div>
+
+<div id="selection-methodology" class="section level2">
+<h2>Selection methodology</h2>
+<p>Auditors are often required to assess balances or processes that involve a large number of items. Since they cannot inspect all of these items individually, they need to select a sample to infer a statistical statement about the total population. Various selection methodologies are available for this purpose which are standard in an audit setting. However, in practice it seems that the distinction between sampling methods —and when to use them— is not always easy to make, thereby complicating the audit process.</p>
+<p>This vignette outlines the most common sampling methods and shows how to apply these methods using the <code>jfa</code> package.</p>
+<div id="sampling-units" class="section level3">
+<h3>Sampling units</h3>
+<p>Sampling from the population requires knowledge of the sampling units; physical representations of the population that needs to be audited. Sampling units can be individual transactions or individual monetary values. For statistical sampling, the sampling elements are required to have individual sampling units that can be assigned a probability to be included in the sample. The total collection of all elements with an assigned selection probability is named the sampling frame.</p>
+<div id="records" class="section level4">
+<h4>Records</h4>
+<p>A sampling unit for record (attribute) sampling is a characteristic of a population item, like the date of payment of the receipt for coffee milk. In this case, the item that corresponds to the sampled unit (e.g., date of payment) is selected.</p>
+</div>
+<div id="monetary-units" class="section level4">
+<h4>Monetary units</h4>
+<p>A sampling unit for monetary unit sampling is different than a sampling unit for record (attributes) sampling in that it is an individual monetary unit within an item, like an individual dollar. In this case, the item that includes the sampled dollar is selected. For example, this can be the 10<span class="math inline">\(^{th}\)</span> dollar from a receipt for coffee milk.</p>
+</div>
+</div>
+<div id="sampling-algorithms" class="section level3">
+<h3>Sampling algorithms</h3>
+<p>This section discusses the three sampling algorithms implemented in <code>jfa</code>. First, for notation, let the set of all possible samples <span class="math inline">\(S_i\)</span> be defined as <span class="math inline">\(S\)</span>.</p>
+<p><span class="math display">\[S = \{s_1, s_2,\dots,s_M\}\]</span></p>
+<p>and define the population <span class="math inline">\(N\)</span> as the total set of units <span class="math inline">\(x_i\)</span>.</p>
+<p><span class="math display">\[N = \{x_1, x_2, \dots, x_N\}\]</span></p>
+<p>Theoretically, every sample <span class="math inline">\(S_i\)</span> is a collection of units and is assigned an inclusion probability <span class="math inline">\(p(s)\)</span> with which this collection is drawn. Practically, this translates to each sampling unit in the population having an inclusion probability <span class="math inline">\(p(x)\)</span>. The purpose of a sampling algorithm is to assign inclusion probabilities to each one of the sampling units to get to a sample of size <span class="math inline">\(n\)</span>.</p>
+<div id="random-selection" class="section level4">
+<h4>Random selection</h4>
+<p>Random sampling is the most straight-forward selection method. With this method, every combination of sampling units has the same probability of being selected as every other combination of the same number of sampling units. The procedure begins by ranking each of the units <span class="math inline">\(x_i\)</span> by their monetary value. A random selection of size <span class="math inline">\(n\)</span> of the ranks is then taken and the corresponding units are included in the sample. The inclusion probabilities for the sampling units in this method are defined as:</p>
+<p><span class="math display">\[p(x) = \frac{1}{N},\]</span></p>
+<p>where <span class="math inline">\(N\)</span> is the number of units in the population. The random sampling method provides a sample that allows every sampling unit in the population an equal chance of being selected. Figure 1 provides a visualization of the simple random sampling method.</p>
+<center>
+<div class="figure">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAdsAAAA+CAMAAABUWkGDAAAAUVBMVEX///+Hh4c/Pz/Nzc0GBgbb29taWloAAAC7u7vv7+/4+PhYWFhnZ2cODg7T09N6enqkpKSWlpZQUFDs7OwqKioaGhpra2vg4OBfX1/ExMSBgYGRs/oRAAADS0lEQVR4Ae2b7W6yUBCEFbD4+Sp+2/u/0FdqTYxu3J09ZNKY4UeFddh5dk5IaaCjkTYloASUgBJQAkpACSgBJaAElIASUAJKQAl8dALzNTTe5gLJb2LQI+HQn5JCS3q9P40z73uG/ttJ42seFOfxw0F0F/SItn3SpdCeegxzyJnXZwU5UgGCHj60qUihmZ1Ki5x5fUqQ4+vvXrcpND+ghALMNOEQOwXkSAUIesTAX1QptJcuQxQ48/qkIEcqQNDDhzYVKTSzU2mRM69PCXKkAgQ9fGhTkUIzO5UWOfP6lCBHKkDQw4c2FSk0s1NpkTOvTwlypAIEPXxoU5FCMzuVFjnz+pQgRypA0MOHNhUpNLNTaZEzr08JcqQCBD18aFORQjM7lRY58/qUIEcqQNDDhzYVKTSzU2mRM69PCXKkAgQ9fGhTkUIzO5UWOfP6lCBHKkDQw4c2FSk0s1NpkTOvTwlypAIEPXxoU5FCMzuVFjnz+pQgRypA0MOHNhUpNLNTaZEzr08JcqQCBD18aFORQjM7lRY5876lrNaz3+e3p+PirbL/sttOrz9/AtxU/W5owzxCLV9FObTXPgNUKPMGOKfVYdw/m58fV+fa1e++D9WkX9vLft/NXfmvAPOIdn3S5dCemgxzSJk3hFrvz5NmXlW7kHr+vaq/xtO2C6nvIszjfhb4mUMDTWJyyrwRlNl+2Xxtw1fh5lAtVugbU6BHBNvQpNCMPuUlzrwBztOqPVx/60a3Y9PgL16AHlGWJ10K7anHMIeceQOs63YTUN0lu9Xhvgt8Yh5A40dpDu2xw2D7lHkDtHULXLaj0RZ75fUGAHoEqC1JCs1qVFzjzBvAxBZr499QG56Yh9EgUsqhRTrDGsq8MJVOUAJKQAkoASWgBJSAElACSkAJKAEloASUwIAJdF3s8dyAlmpFSODSTUdN+4/gJAt2Atcnr6NWa8uOneK3bBdaW0rSfBOtLT9zlqPWlpU030dry8+c5Xhb226q7fMS2P7cSzWttk9MoL9P1vaZCfRre5lp+7wEzvr7lnVrQ/fRfTI9cpqh1pYWNd1Ia0uPnGaotaVFTTdatnoORA+dZNhft3Ud/v9KEpVshkjgVJ+GaKMefzOB/zXbSvPrJ1xpAAAAAElFTkSuQmCC" alt />
+<p class="caption">Figure 1: Simple random sampling</p>
+</div>
+</center>
+<p><strong>Advantages:</strong> This method yields an optimal random selection, with the additional advantage that the sample can be extended with ease by applying the same method.</p>
+<p><strong>Disadvantages:</strong> As selection probabilities are equal for all units, there is no guarantee that large elements in the population are selected.</p>
+<p>The code below shows how to apply random sampling using the <code>jfa</code> package in a record sampling and a monetary unit sampling setting.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Record sampling</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> jfa<span class="sc">::</span><span class="fu">selection</span>(<span class="at">population =</span> BuildIt, <span class="at">sampleSize =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;records&#39;</span>, <span class="at">algorithm =</span> <span class="st">&#39;random&#39;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample<span class="sc">$</span>sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
+<pre><code>##   rowNumber count    ID bookValue auditValue
+## 1      1017     1 50755    618.24     618.24
+## 2       679     1 20237    669.75     669.75
+## 3      2177     1  9517    454.02     454.02
+## 4       930     1 85674    257.82     257.82
+## 5      1533     1 31051    308.53     308.53
+## 6       471     1 84375    824.66     824.66</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Monetary unit sampling</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> jfa<span class="sc">::</span><span class="fu">selection</span>(<span class="at">population =</span> BuildIt, <span class="at">sampleSize =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;mus&#39;</span>, <span class="at">algorithm =</span> <span class="st">&#39;random&#39;</span>, <span class="at">bookValues =</span> <span class="st">&#39;bookValue&#39;</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample<span class="sc">$</span>sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
+<pre><code>##   rowNumber count    ID bookValue auditValue
+## 1      2174     1 57702    428.87     428.87
+## 2      2928     1 81225    593.87     593.87
+## 3      1627     1 13574    346.87     346.87
+## 4      2532     1 84419    494.53     494.53
+## 5       147     1 45361    125.35     125.35
+## 6      3056     1 98879    638.36     638.36</code></pre>
+</div>
+<div id="fixed-interval-sampling-systematic-sampling" class="section level4">
+<h4>Fixed interval sampling (Systematic sampling)</h4>
+<p>For this method, the auditor determines a uniform interval on the ranked units. A starting point is handpicked or randomly selected in the first interval and one item is selected throughout the population at each of the uniform intervals from the starting point. For example, if the interval has a width of 10 transactions and transaction number 5 is chosen as the starting point, the transactions 5, 15, 20 etc. are selected.</p>
+<center>
+<div class="figure">
+<img src="data:image/png;base64,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" alt />
+<p class="caption">Figure 2: Fixed interval sampling</p>
+</div>
+</center>
+<p>The number of required intervals <span class="math inline">\(I\)</span> can be determined by dividing the number of units in the population by the required sample size. For record sampling, the interval is calculated by dividing the number of units <span class="math inline">\(N\)</span> by the sample size <span class="math inline">\(n\)</span>.</p>
+<p><span class="math display">\[I = \frac{N}{n}\]</span></p>
+<p>In monetary unit sampling, the interval is calculated by dividing the number of monetary units <span class="math inline">\(M\)</span> by the sample size <span class="math inline">\(n\)</span>.</p>
+<p><span class="math display">\[I = \frac{M}{n}\]</span></p>
+<p>If the same unit is selected in each interval, the inclusion probabilities for the sampling units in this method are defined as:</p>
+<p><span class="math display">\[p(x) = \frac{1}{I},\]</span></p>
+<p>with the property that the space between selected units <span class="math inline">\(i\)</span> is the same as the interval <span class="math inline">\(I\)</span>, see Figure 2. The systematic method, like the simple random sampling method, provides a sample that allows every sampling unit in the population an equal chance of being selected. However, if the population is arranged randomly with respect to its deviation pattern, systematic selection is equivalent to simple random selection. The systematic sampling method has the property that all units larger than the interval width have an inclusion probability of one, as one of these transactions’ units are always selected from the interval.</p>
+<p><strong>Advantages:</strong> The advantage of the systematic sampling method is that it is often simple and fast to perform and understand. Another advantage is that, in monetary unit sampling, all transactions that are greater than the calculated interval will be selected. In record sampling, since the units are ranked, there is also a guarantee that some large transactions will be in the sample, as the method stratifies on value.</p>
+<p><strong>Disadvantages:</strong> A pattern in the population can coincide with the selected interval, rendering the sample unrepresentative. What is sometimes seen as an added complication for this method is that the sample is hard to extend after drawing the initial sample due to the chance of sampling the same unit. However, by removing the already sampled units from the population and redrawing the intervals, this problem can be efficiently solved.</p>
+<p>The code below shows how to apply fixed interval sampling using the <code>jfa</code> package in a record sampling and a monetary unit sampling setting. By default, the first sampling unit from each interval is selected, but this can be changed by setting the argument <code>intervalStartingPoint = 1</code> to a different value.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Record sampling</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> jfa<span class="sc">::</span><span class="fu">selection</span>(<span class="at">population =</span> BuildIt, <span class="at">sampleSize =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;records&#39;</span>, <span class="at">algorithm =</span> <span class="st">&#39;interval&#39;</span>, <span class="at">intervalStartingPoint =</span> <span class="dv">1</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample<span class="sc">$</span>sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
+<pre><code>##   rowNumber count    ID bookValue auditValue
+## 1         1     1 82884    242.61     242.61
+## 2        36     1 80125    118.58     118.58
+## 3        71     1 27566    481.44     481.44
+## 4       106     1 88261    266.66     266.66
+## 5       141     1 58999    568.60     568.60
+## 6       176     1 27801    314.65     314.65</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Monetary unit sampling</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> jfa<span class="sc">::</span><span class="fu">selection</span>(<span class="at">population =</span> BuildIt, <span class="at">sampleSize =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;mus&#39;</span>, <span class="at">algorithm =</span> <span class="st">&#39;interval&#39;</span>, <span class="at">bookValues =</span> <span class="st">&#39;bookValue&#39;</span>, <span class="at">intervalStartingPoint =</span> <span class="dv">1</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample<span class="sc">$</span>sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
+<pre><code>##   rowNumber count    ID bookValue auditValue
+## 1         1     1 30568     14.47      14.47
+## 2       146     1 63567    125.21     125.21
+## 3       246     1 95807    153.56     153.56
+## 4       332     1 64282    172.65     172.65
+## 5       410     1 43352    188.72     188.72
+## 6       482     1 94296    198.59     198.59</code></pre>
+</div>
+<div id="cell-sampling" class="section level4">
+<h4>Cell sampling</h4>
+<p>In the case of cell sampling, the auditor, like in systematic sampling, is again dividing the ranked population into a set of intervals <span class="math inline">\(I\)</span> that are computed by the above equations. The difference is that in cell sampling, withing each interval, a unit is selected by randomly drawing a number within the interval range. This causes the space between the intervals <span class="math inline">\(i\)</span> to vary.</p>
+<center>
+<div class="figure">
+<img src="data:image/png;base64,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" alt />
+<p class="caption">Figure 3: Cell sampling</p>
+</div>
+</center>
+<p>However, as in systematic sampling, the inclusion probabilities are still equal for each unit.</p>
+<p><span class="math display">\[p(x) = \frac{1}{I}\]</span></p>
+<p>The cell sampling algorithm has the property that all units larger than twice the interval width have a inclusion probability of one.</p>
+<p><strong>Advantages:</strong> More sets of samples are possible than in systematic sampling, as there is no fixed interval <span class="math inline">\(i\)</span> to limit the selections. This method also offers a solution to the pattern problem in systematic sampling.</p>
+<p><strong>Disadvantages:</strong> A disadvantage of this selection method is that not all elements the size of one interval have a selection probability of one. On top of that elements can be in two adjacent cells, thereby creating the possibility that an element is selected twice.</p>
+<p>The code below shows how to apply cell sampling using the <code>jfa</code> package in a record sampling and a monetary unit sampling setting.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Record sampling</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> jfa<span class="sc">::</span><span class="fu">selection</span>(<span class="at">population =</span> BuildIt, <span class="at">sampleSize =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;records&#39;</span>, <span class="at">algorithm =</span> <span class="st">&#39;cell&#39;</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample<span class="sc">$</span>sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
+<pre><code>##   rowNumber count    ID bookValue auditValue
+## 1         9     1 14608    216.48     216.48
+## 2        48     1 45437    347.94     139.18
+## 3        90     1 90333    241.17     241.17
+## 4       136     1 45746    440.72     440.72
+## 5       147     1 72906    677.62     677.62
+## 6       206     1 93529    528.79     528.79</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Monetary unit sampling</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> jfa<span class="sc">::</span><span class="fu">selection</span>(<span class="at">population =</span> BuildIt, <span class="at">sampleSize =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;mus&#39;</span>, <span class="at">algorithm =</span> <span class="st">&#39;cell&#39;</span>, <span class="at">bookValues =</span> <span class="st">&#39;bookValue&#39;</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample<span class="sc">$</span>sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
+<pre><code>##   rowNumber count    ID bookValue auditValue
+## 1        53     1 40775     96.61      96.61
+## 2       186     1 68230    137.18     137.18
+## 3       297     1 71669    164.20     164.20
+## 4       403     1 42205    186.66     186.66
+## 5       425     1 16965    190.50     190.50
+## 6       544     1 16989    208.21     208.21</code></pre>
+</div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

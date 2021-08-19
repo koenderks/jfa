@@ -108,7 +108,7 @@ head(sample, n = 10)
 
 ## Using `evaluation()`: The basics
 
-After saving the sample and annotating the invoices in the sample with their audit values, you can evaluate the misstatement in the sample with the `evaluation()` function. The function can also be used with summary statistics from a data sample. For a more elaborate explanation of how to use this function, see the package vignettes [Testing misstatement](https://koenderks.github.io/jfa/articles/v5_testing_misstatement.html) and [Estimating misstatement](https://koenderks.github.io/jfa/articles/v6_estimating_misstatement.html).
+After saving the sample and annotating the invoices in the sample with their audit values, you can evaluate the misstatement in the sample with the `evaluation()` function. The function can also be used with summary statistics from a data sample. For a more elaborate explanation of how to use this function, see the package vignettes [Testing misstatement](https://koenderks.github.io/jfa/articles/v6_testing_misstatement.html) and [Estimating misstatement](https://koenderks.github.io/jfa/articles/v5_estimating_misstatement.html).
 
 ### Summary statistics from the sample
 
