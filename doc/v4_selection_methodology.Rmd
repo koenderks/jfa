@@ -39,15 +39,11 @@ A sampling unit for monetary unit sampling is different than a sampling unit for
 
 ### Sampling algorithms
 
-This section discusses the three sampling algorithms implemented in `jfa`. First, for notation, let the set $S$ of all possible samples $s_i$ be defined as:
-
-$$S = \{s_1, s_2,\dots,s_M\},$$
-
-and define the population $N$ as the total set of sampling units $x_j$.
+This section discusses the three sampling algorithms implemented in `jfa`. First, for notation, let the the population $N$ be defined as the total set of individual sampling units $x_i$.
 
 $$N = \{x_1, x_2, \dots, x_N\}.$$
 
-Theoretically, every sample $s_i$ is a set of sampling units and is assigned a selection probability $p(s_i)$ with which this set occurs. Practically, this is equivalent to each sampling unit $x_j$ in the population having a selection probability $p(x_j)$. The purpose of the sampling algorithm is to assign selection probabilities to each of the sampling units, and draw sampling units from the population until a set of size $n$ has been created.
+In statistical sampling, every sampling unit $x_i$ in the population must receive a selection probability $p(x_i)$. The purpose of the sampling algorithm is to provide a framework to assign selection probabilities to each of the sampling units, and subsequently draw sampling units from the population until a set of size $n$ has been created.
 
 The next section discusses which sampling algorithms are available in `jfa`. To illustrate the outcomes for different sampling algorithms we will use the `BuildIt` data set that can be loaded using the code below.
 
