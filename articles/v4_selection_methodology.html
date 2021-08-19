@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Selection methodology • jfa</title>
+<title>Selection: Methodology • jfa</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Selection methodology">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Selection: Methodology">
 <meta property="og:description" content="jfa">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -64,25 +64,25 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/v1_sampling_workflow.html">The audit sampling workflow</a>
+      <a href="../articles/v1_sampling_workflow.html">Classical audit sampling</a>
     </li>
     <li>
-      <a href="../articles/v2_bayesian_sampling_workflow.html">The Bayesian audit sampling workflow</a>
+      <a href="../articles/v2_bayesian_sampling_workflow.html">Bayesian audit sampling</a>
     </li>
     <li>
-      <a href="../articles/v3_prior_distributions.html">Prior distributions</a>
+      <a href="../articles/v3_prior_distributions.html">Planning: Prior distributions</a>
     </li>
     <li>
-      <a href="../articles/v4_selection_methodology.html">Selection methodology</a>
+      <a href="../articles/v4_selection_methodology.html">Selection: Methodology</a>
     </li>
     <li>
-      <a href="../articles/v5_testing_misstatement.html">Testing misstatement</a>
+      <a href="../articles/v5_estimating_misstatement.html">Evaluation: Estimating misstatement</a>
     </li>
     <li>
-      <a href="../articles/v6_estimating_misstatement.html">Estimating misstatement</a>
+      <a href="../articles/v6_testing_misstatement.html">Evaluation: Testing misstatement</a>
     </li>
     <li>
-      <a href="../articles/v7_bayes_factors_summary_statistics.html">Bayes factors using summary statistics</a>
+      <a href="../articles/v7_bayes_factors_summary_statistics.html">Evaluation: Bayes factors using summary statistics</a>
     </li>
   </ul>
 </li>
@@ -110,7 +110,7 @@
       </header><script src="v4_selection_methodology_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Selection methodology</h1>
+      <h1 data-toc-skip>Selection: Methodology</h1>
                         <h4 class="author">Koen Derks</h4>
             
             <h4 class="date">last modified: 19-08-2021</h4>
@@ -125,7 +125,8 @@
 <div id="selection-methodology" class="section level2">
 <h2 class="hasAnchor">
 <a href="#selection-methodology" class="anchor"></a>Selection methodology</h2>
-<p>Auditors are often required to assess balances or processes that involve a large number of items. Since they cannot inspect all of these items individually, they need to select a sample to infer a statistical statement about the total population. Various selection methodologies are available for this purpose which are standard in an audit setting. However, in practice it seems that the distinction between sampling methods —and when to use them— is not always easy to make, thereby complicating the audit process. This vignette aims to clear the air when it comes to the four most commonly used audit sampling methods, by outlining them in a clear, concise way and, in addition, showing how to apply these sampling methods using the <code>jfa</code> package.</p>
+<p>Auditors are often required to assess balances or processes that involve a large number of items. Since they cannot inspect all of these items individually, they need to select a sample to infer a statistical statement about the total population. Various selection methodologies are available for this purpose which are standard in an audit setting. However, in practice it seems that the distinction between sampling methods —and when to use them— is not always easy to make, thereby complicating the audit process.</p>
+<p>This vignette outlines the most common sampling methods and shows how to apply these methods using the <code>jfa</code> package.</p>
 <div id="sampling-units" class="section level3">
 <h3 class="hasAnchor">
 <a href="#sampling-units" class="anchor"></a>Sampling units</h3>
@@ -155,9 +156,11 @@
 <p>Random sampling is the most straight-forward selection method. With this method, every combination of sampling units has the same probability of being selected as every other combination of the same number of sampling units. The procedure begins by ranking each of the units <span class="math inline">\(x_i\)</span> by their monetary value. A random selection of size <span class="math inline">\(n\)</span> of the ranks is then taken and the corresponding units are included in the sample. The inclusion probabilities for the sampling units in this method are defined as:</p>
 <p><span class="math display">\[p(x) = \frac{1}{N},\]</span></p>
 <p>where <span class="math inline">\(N\)</span> is the number of units in the population. The random sampling method provides a sample that allows every sampling unit in the population an equal chance of being selected. Figure 1 provides a visualization of the simple random sampling method.</p>
+<center>
 <div class="figure">
 <img src="img/randomSampling.png" alt=""><p class="caption">Figure 1: Simple random sampling</p>
 </div>
+</center>
 <p><strong>Advantages:</strong> This method yields an optimal random selection, with the additional advantage that the sample can be extended with ease by applying the same method.</p>
 <p><strong>Disadvantages:</strong> As selection probabilities are equal for all units, there is no guarantee that large elements in the population are selected.</p>
 <p>The code below shows how to apply random sampling using the <code>jfa</code> package in a record sampling and a monetary unit sampling setting.</p>
@@ -188,9 +191,11 @@
 <h4 class="hasAnchor">
 <a href="#fixed-interval-sampling-systematic-sampling" class="anchor"></a>Fixed interval sampling (Systematic sampling)</h4>
 <p>For this method, the auditor determines a uniform interval on the ranked units. A starting point is handpicked or randomly selected in the first interval and one item is selected throughout the population at each of the uniform intervals from the starting point. For example, if the interval has a width of 10 transactions and transaction number 5 is chosen as the starting point, the transactions 5, 15, 20 etc. are selected.</p>
+<center>
 <div class="figure">
 <img src="img/fixedIntervalSampling.png" alt=""><p class="caption">Figure 2: Fixed interval sampling</p>
 </div>
+</center>
 <p>The number of required intervals <span class="math inline">\(I\)</span> can be determined by dividing the number of units in the population by the required sample size. For record sampling, the interval is calculated by dividing the number of units <span class="math inline">\(N\)</span> by the sample size <span class="math inline">\(n\)</span>.</p>
 <p><span class="math display">\[I = \frac{N}{n}\]</span></p>
 <p>In monetary unit sampling, the interval is calculated by dividing the number of monetary units <span class="math inline">\(M\)</span> by the sample size <span class="math inline">\(n\)</span>.</p>
@@ -228,9 +233,11 @@
 <h4 class="hasAnchor">
 <a href="#cell-sampling" class="anchor"></a>Cell sampling</h4>
 <p>In the case of cell sampling, the auditor, like in systematic sampling, is again dividing the ranked population into a set of intervals <span class="math inline">\(I\)</span> that are computed by the above equations. The difference is that in cell sampling, withing each interval, a unit is selected by randomly drawing a number within the interval range. This causes the space between the intervals <span class="math inline">\(i\)</span> to vary.</p>
+<center>
 <div class="figure">
 <img src="img/cellSampling.png" alt=""><p class="caption">Figure 3: Cell sampling</p>
 </div>
+</center>
 <p>However, as in systematic sampling, the inclusion probabilities are still equal for each unit.</p>
 <p><span class="math display">\[p(x) = \frac{1}{I}\]</span></p>
 <p>The cell sampling algorithm has the property that all units larger than twice the interval width have a inclusion probability of one.</p>
