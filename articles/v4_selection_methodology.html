@@ -150,6 +150,9 @@
 <p>and define the population <span class="math inline">\(N\)</span> as the total set of units <span class="math inline">\(x_i\)</span>.</p>
 <p><span class="math display">\[N = \{x_1, x_2, \dots, x_N\}\]</span></p>
 <p>Theoretically, every sample <span class="math inline">\(S_i\)</span> is a collection of units and is assigned an inclusion probability <span class="math inline">\(p(s)\)</span> with which this collection is drawn. Practically, this translates to each sampling unit in the population having an inclusion probability <span class="math inline">\(p(x)\)</span>. The purpose of a sampling algorithm is to assign inclusion probabilities to each one of the sampling units to get to a sample of size <span class="math inline">\(n\)</span>.</p>
+<p>To illustrate the procedure for different sampling algorithms we will use the <code>BuildIt</code> data set.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">BuildIt</span><span class="op">)</span></code></pre></div>
 <div id="random-selection" class="section level4">
 <h4 class="hasAnchor">
 <a href="#random-selection" class="anchor"></a>Random selection</h4>
@@ -158,13 +161,13 @@
 <p>where <span class="math inline">\(N\)</span> is the number of units in the population. The random sampling method provides a sample that allows every sampling unit in the population an equal chance of being selected. Figure 1 provides a visualization of the simple random sampling method.</p>
 <center>
 <div class="figure">
-<img src="img/randomSampling.png" alt=""><p class="caption">Figure 1: Simple random sampling</p>
+<img src="img/randomSampling.png" alt=""><p class="caption">Figure 1: Illustration of random sampling</p>
 </div>
 </center>
 <p><strong>Advantages:</strong> This method yields an optimal random selection, with the additional advantage that the sample can be extended with ease by applying the same method.</p>
 <p><strong>Disadvantages:</strong> As selection probabilities are equal for all units, there is no guarantee that large elements in the population are selected.</p>
 <p>The code below shows how to apply random sampling using the <code>jfa</code> package in a record sampling and a monetary unit sampling setting.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Record sampling</span>
 <span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'records'</span>, algorithm <span class="op">=</span> <span class="st">'random'</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
@@ -175,7 +178,7 @@
 ## 4       930     1 85674    257.82     257.82
 ## 5      1533     1 31051    308.53     308.53
 ## 6       471     1 84375    824.66     824.66</code></pre>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Monetary unit sampling</span>
 <span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'mus'</span>, algorithm <span class="op">=</span> <span class="st">'random'</span>, bookValues <span class="op">=</span> <span class="st">'bookValue'</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
@@ -193,7 +196,7 @@
 <p>For this method, the auditor determines a uniform interval on the ranked units. A starting point is handpicked or randomly selected in the first interval and one item is selected throughout the population at each of the uniform intervals from the starting point. For example, if the interval has a width of 10 transactions and transaction number 5 is chosen as the starting point, the transactions 5, 15, 20 etc. are selected.</p>
 <center>
 <div class="figure">
-<img src="img/fixedIntervalSampling.png" alt=""><p class="caption">Figure 2: Fixed interval sampling</p>
+<img src="img/fixedIntervalSampling.png" alt=""><p class="caption">Figure 2: Illustration of fixed interval sampling</p>
 </div>
 </center>
 <p>The number of required intervals <span class="math inline">\(I\)</span> can be determined by dividing the number of units in the population by the required sample size. For record sampling, the interval is calculated by dividing the number of units <span class="math inline">\(N\)</span> by the sample size <span class="math inline">\(n\)</span>.</p>
@@ -206,7 +209,7 @@
 <p><strong>Advantages:</strong> The advantage of the systematic sampling method is that it is often simple and fast to perform and understand. Another advantage is that, in monetary unit sampling, all transactions that are greater than the calculated interval will be selected. In record sampling, since the units are ranked, there is also a guarantee that some large transactions will be in the sample, as the method stratifies on value.</p>
 <p><strong>Disadvantages:</strong> A pattern in the population can coincide with the selected interval, rendering the sample unrepresentative. What is sometimes seen as an added complication for this method is that the sample is hard to extend after drawing the initial sample due to the chance of sampling the same unit. However, by removing the already sampled units from the population and redrawing the intervals, this problem can be efficiently solved.</p>
 <p>The code below shows how to apply fixed interval sampling using the <code>jfa</code> package in a record sampling and a monetary unit sampling setting. By default, the first sampling unit from each interval is selected, but this can be changed by setting the argument <code>intervalStartingPoint = 1</code> to a different value.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Record sampling</span>
 <span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'records'</span>, algorithm <span class="op">=</span> <span class="st">'interval'</span>, intervalStartingPoint <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
@@ -217,7 +220,7 @@
 ## 4       106     1 88261    266.66     266.66
 ## 5       141     1 58999    568.60     568.60
 ## 6       176     1 27801    314.65     314.65</code></pre>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Monetary unit sampling</span>
 <span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'mus'</span>, algorithm <span class="op">=</span> <span class="st">'interval'</span>, bookValues <span class="op">=</span> <span class="st">'bookValue'</span>, intervalStartingPoint <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
@@ -235,7 +238,7 @@
 <p>In the case of cell sampling, the auditor, like in systematic sampling, is again dividing the ranked population into a set of intervals <span class="math inline">\(I\)</span> that are computed by the above equations. The difference is that in cell sampling, withing each interval, a unit is selected by randomly drawing a number within the interval range. This causes the space between the intervals <span class="math inline">\(i\)</span> to vary.</p>
 <center>
 <div class="figure">
-<img src="img/cellSampling.png" alt=""><p class="caption">Figure 3: Cell sampling</p>
+<img src="img/cellSampling.png" alt=""><p class="caption">Figure 3: Illustration of cell sampling</p>
 </div>
 </center>
 <p>However, as in systematic sampling, the inclusion probabilities are still equal for each unit.</p>
@@ -244,7 +247,7 @@
 <p><strong>Advantages:</strong> More sets of samples are possible than in systematic sampling, as there is no fixed interval <span class="math inline">\(i\)</span> to limit the selections. This method also offers a solution to the pattern problem in systematic sampling.</p>
 <p><strong>Disadvantages:</strong> A disadvantage of this selection method is that not all elements the size of one interval have a selection probability of one. On top of that elements can be in two adjacent cells, thereby creating the possibility that an element is selected twice.</p>
 <p>The code below shows how to apply cell sampling using the <code>jfa</code> package in a record sampling and a monetary unit sampling setting.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Record sampling</span>
 <span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'records'</span>, algorithm <span class="op">=</span> <span class="st">'cell'</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
@@ -255,7 +258,7 @@
 ## 4       136     1 45746    440.72     440.72
 ## 5       147     1 72906    677.62     677.62
 ## 6       206     1 93529    528.79     528.79</code></pre>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Monetary unit sampling</span>
 <span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'mus'</span>, algorithm <span class="op">=</span> <span class="st">'cell'</span>, bookValues <span class="op">=</span> <span class="st">'bookValue'</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
