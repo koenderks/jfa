@@ -163,8 +163,8 @@ evaluation <- function(materiality = NULL, minPrecision = NULL, method = 'binomi
     if (length(nSumstats) != 1 || length(kSumstats) != 1)
       stop("Specify one value for 'nSumstats' and 'kSumstats'.")
     
-    if (kSumstats >= nSumstats)
-      stop("The sum of the errors provided in 'kSumstats' are equal to, or higher than, the sample size provided in 'nSumstats'.")
+    if (kSumstats > nSumstats)
+      stop("The sum of the errors provided in 'kSumstats' is higher than the sample size provided in 'nSumstats'.")
     
     if (method %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "coxsnell", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
       stop("The selected method requires raw observations and does not accomodate summary statistics")

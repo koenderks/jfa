@@ -4,6 +4,10 @@
 
 - Added a new vignette that describes the sampling methodology implemented in `jfa`.
 
+**Minor changes**
+
+- It is now allowed for `nSumstats` and `kSumstats` to have the same value.
+
 # jfa 0.5.7
 
 **Minor changes**
