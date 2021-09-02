@@ -128,11 +128,12 @@ planning <- function(materiality = NULL, minPrecision = NULL, expectedError = 0,
     minPrecision <- 1
   
   # Requirements for the hypergeometric distribution
-  if (likelihood == "hypergeometric" && (is.null(N) || N <= 0))
-    stop("The 'hypergeometric' likelihood requires that you specify the population size 'N'.")
-  
-  if (!is.null(N) && N < maxSize)
-    maxSize <- N
+  if (likelihood == 'hypergeometric') {
+    if (is.null(N) || N <= 0)
+      stop("The 'hypergeometric' likelihood requires a positive integer as input for the population size 'N'.")
+    if (!is.null(materiality) && (expectedError / N) >= materiality)
+      stop("The value of 'expectedError' / 'N' must be lower than the value for the 'materiality' argument.")
+  }
   
   # Define the sampling frame (the possible sample sizes)
   samplingFrame <- seq(from = 0, to = maxSize, by = increase)
@@ -159,9 +160,6 @@ planning <- function(materiality = NULL, minPrecision = NULL, expectedError = 0,
       samplingFrame <- samplingFrame[-iter]
       i <- samplingFrame[iter]
     }
-    
-    if (!is.null(N) && i > N) # The sample size is too large
-      stop("The resulting sample size is larger than the population size 'N'.")
     
     if ((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")) { # Bayesian planning
       
@@ -197,6 +195,9 @@ planning <- function(materiality = NULL, minPrecision = NULL, expectedError = 0,
   # No sample size could be calculated, throw an error
   if (is.null(ss))
     stop("Sample size could not be calculated, you may want to increase the 'maxSize' argument.")
+  
+  if (!is.null(N) && ss > N) # The sample size is too large
+    warning("Sampling with replacement is required. The resulting sample size is larger than the population size 'N'.")
   
   # Create the main results object
   result <- list()

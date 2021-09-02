@@ -250,7 +250,7 @@ evaluation <- function(materiality = NULL, minPrecision = NULL, method = 'binomi
   } else if (method == 'hypergeometric') {
     
     if (is.null(N))
-      stop("Evaluation with 'hypergeometric' likelihood requires that you specify the population size 'N'.")
+      stop("The 'hypergeometric' likelihood requires a positive integer as input for the population size 'N'.")
     
     if ((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")) {
       # Bayesian evaluation using the beta-binomial distribution
