@@ -38,7 +38,7 @@ k <- 0:10
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
 for(rows in 1:length(n)){
   for(columns in 1:length(k)){
-      tab[rows, columns] <- auditBF(materiality = 0.10, n = n[rows], k = k[columns], 
+      tab[rows, columns] <- auditBF(materiality = 0.10, n = n[rows], x = k[columns], 
                                     likelihood = 'poisson')
   }
 }
@@ -86,7 +86,7 @@ k <- 0:10
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
 for(rows in 1:length(n)){
   for(columns in 1:length(k)){
-      tab[rows, columns] <- auditBF(materiality = 0.05, n = n[rows], k = k[columns], 
+      tab[rows, columns] <- auditBF(materiality = 0.05, n = n[rows], x = k[columns], 
                                     likelihood = 'poisson')
   }
 }
@@ -133,7 +133,7 @@ k <- 0:10
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
 for(rows in 1:length(n)){
   for(columns in 1:length(k)){
-      tab[rows, columns] <- auditBF(materiality = 0.02, n = n[rows], k = k[columns], 
+      tab[rows, columns] <- auditBF(materiality = 0.02, n = n[rows], x = k[columns], 
                                     likelihood = 'poisson')
   }
 }
@@ -175,7 +175,7 @@ k <- 0:10
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
 for(rows in 1:length(n)){
   for(columns in 1:length(k)){
-      tab[rows, columns] <- auditBF(materiality = 0.01, n = n[rows], k = k[columns], 
+      tab[rows, columns] <- auditBF(materiality = 0.01, n = n[rows], x = k[columns], 
                                     likelihood = 'poisson')
   }
 }

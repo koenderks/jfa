@@ -72,7 +72,7 @@
 #' \item{materiality}{if \code{materiality} is specified, a numeric value between 0 and 1 indicating the performance materiality as a fraction of the total population size.}
 #' \item{min.precision}{if \code{min.precision} is specified, a numeric value between 0 and 1 indicating the minimum required precision as a fraction of the total population size.}
 #' \item{method}{a character indicating the evaluation method.}
-#' \item{N}{if \code{N} is specified, in integer larger than 0 indicating the population size.}
+#' \item{N.units}{if \code{N.units} is specified, in integer larger than 0 indicating the population size.}
 #' \item{popBookvalue}{if \code{populationBookValue} is specified, a numeric value larger than 0 indicating the total value of the population.}
 #' \item{pointEstimate}{if \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value indicating the point estimate of the population misstatement as a fraction the total population size.}
 #' \item{lowerBound}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value indicating the lower bound of the interval around the population misstatement as a fraction the total population size.}
@@ -231,74 +231,26 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'binom
       mle       <- x.obs / n.obs
       precision <- ub - mle
     }
-  } else if (method == 'stringer') {
-    # Classical evaluation using the Stringer bound
-    out         <- .stringer(t, conf.level, n.obs)
-    ub          <- out[["ub"]]
-    mle         <- out[["mle"]]
-    precision   <- out[["precision"]]
-  } else if (method == 'stringer.meikle') {
-    # Classical evaluation using the Stringer bound with Meikle's adjustment
-    out         <- .stringer(t, conf.level, n.obs, correction = 'meikle')
-    ub          <- out[["ub"]]
-    mle         <- out[["mle"]]
-    precision   <- out[["precision"]]
-  } else if (method == 'stringer.lta') {
-    # Classical evaluation using the Stringer bound with the LTA adjustment
-    out         <- .stringer(t, conf.level, n.obs, correction = 'lta')
-    ub          <- out[["ub"]]
-    mle         <- out[["mle"]]
-    precision   <- out[["precision"]]
-  } else if (method == 'stringer.pvz') {
-    # Classical evaluation using the Stringer bound with PvZ adjustment
-    out         <- .stringer(t, conf.level, n.obs, correction = 'pvz')
-    ub          <- out[["ub"]]
-    mle         <- out[["mle"]]
-    precision   <- out[["precision"]]
-  } else if (method == 'rohrbach') {
-    # Classical evaluation using Rohrbachs augmented variance bound
-    out         <- .rohrbach(t, conf.level, n.obs, N.units, r.delta)
-    ub          <- out[["ub"]]
-    mle         <- out[["mle"]]
-    precision   <- out[["precision"]]
-  } else if (method == 'moment') {
-    # Classical evaluation using the Modified Moment bound
-    out         <- .moment(t, conf.level, n.obs, m.type)
-    ub          <- out[["ub"]]
-    mle         <- out[["mle"]]
-    precision   <- out[["precision"]]
-  } else if (method == 'coxsnell') {
-    # Bayesian evaluation using the Cox and Snell bound 
-    out         <- .coxsnell(t, conf.level, n.obs, cs.a, cs.b, cs.mu, 1 + prior.x, 1 + prior.n - prior.x)
-    ub          <- out[["ub"]]
-    mle         <- out[["mle"]]
-    precision   <- out[["precision"]]
-  } else if (method == 'mpu') {
-    # Classical evaluation using the Mean-per-unit estimator
-    out         <- .mpu(t, conf.level, n.obs)
-    ub          <- out[["ub"]]
-    mle         <- out[["mle"]]
-    precision   <- out[["precision"]]
-  } else if (method == 'direct') {
-    # Classical evaluation using the Direct estimator
-    out         <- .direct(bookvalues, auditvalues, conf.level, N.items, n.obs, N.units)
-    mle         <- out[["mle"]]
-    precision   <- out[["precision"]]
-  } else if (method == 'difference') {
-    # Classical evaluation using the Difference estimator
-    out         <- .difference(bookvalues, auditvalues, conf.level, N.items, n.obs)
-    mle         <- out[["mle"]]
-    precision   <- out[["precision"]]
-  } else if (method == 'quotient') {
-    # Classical evaluation using the Quotient estimator
-    out         <- .quotient(bookvalues, auditvalues, conf.level, N.items, n.obs)
-    mle         <- out[["mle"]]
-    precision   <- out[["precision"]]
-  } else if (method == 'regression') {
-    # Classical evaluation using the Regression estimator
-    out         <- .regression(bookvalues, auditvalues, conf.level, N.items, n.obs, N.units)
-    mle         <- out[["mle"]]
-    precision   <- out[["precision"]]
+  } else {
+    out <- switch(method,
+                  'stringer' = .stringer(t, conf.level, n.obs), # Classical evaluation using the Stringer bound
+                  'stringer.meikle' = .stringer(t, conf.level, n.obs, correction = 'meikle'), # Classical evaluation using the Stringer bound with Meikle's adjustment
+                  'stringer.lta' = .stringer(t, conf.level, n.obs, correction = 'lta'), # Classical evaluation using the Stringer bound with the LTA adjustment
+                  'stringer.pvz' = .stringer(t, conf.level, n.obs, correction = 'pvz'), # Classical evaluation using the Stringer bound with PvZ adjustment
+                  'rohrbach' = .rohrbach(t, conf.level, n.obs, N.units, r.delta), # Classical evaluation using Rohrbachs augmented variance bound
+                  'moment' = .moment(t, conf.level, n.obs, m.type), # Classical evaluation using the Modified Moment bound
+                  'coxsnell' = .coxsnell(t, conf.level, n.obs, cs.a, cs.b, cs.mu, 1 + prior.x, 1 + prior.n - prior.x), # Bayesian evaluation using the Cox and Snell bound
+                  'mpu' = .mpu(t, conf.level, n.obs), # Classical evaluation using the Mean-per-unit estimator
+                  'direct' = .direct(bookvalues, auditvalues, conf.level, N.items, n.obs, N.units), # Classical evaluation using the Direct estimator
+                  'difference' = .difference(bookvalues, auditvalues, conf.level, N.items, n.obs), # Classical evaluation using the Difference estimator
+                  'quotient' = .quotient(bookvalues, auditvalues, conf.level, N.items, n.obs), # Classical evaluation using the Quotient estimator
+                  'regression' = .regression(bookvalues, auditvalues, conf.level, N.items, n.obs, N.units), # Classical evaluation using the Regression estimator
+                  'newmethod' = NULL) # Add new method here
+    mle <- out[["mle"]]
+    ub <- out[["ub"]]
+    precision <- out[["precision"]]
+    if (!is.null(out[["lb"]]))
+      lb <- out[["lb"]]
   }
   # Create the main results object
   result                    <- list()
@@ -308,8 +260,8 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'binom
   if (!(method %in% c("direct", "difference", "quotient", "regression"))) {
     result[["ub"]]          <- as.numeric(ub)
   } else {
-    result[["ub"]]          <- as.numeric(out[["ub"]])
-    result[["lb"]]          <- as.numeric(out[["lb"]])
+    result[["ub"]]          <- as.numeric(ub)
+    result[["lb"]]          <- as.numeric(lb)
   }
   if (!is.null(precision))
     result[["precision"]]   <- as.numeric(precision)
@@ -350,7 +302,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'binom
     if (class(prior) == "jfaPrior" && !is.null(prior[["hypotheses"]])) {
       result[["prior"]]           <- prior
     } else {
-      result[["prior"]]           <- auditPrior(method = "sample", likelihood = method, N = result[["N.units"]], 
+      result[["prior"]]           <- auditPrior(method = "sample", likelihood = method, N.units = result[["N.units"]], 
                                                 materiality = result[["materiality"]], x = prior.x, n = prior.n)
     }
   }
@@ -378,9 +330,9 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'binom
                                                                "hypergeometric" = result[["prior"]][["description"]]$beta + result[["n"]] - result[["t"]])
     result[["posterior"]][["description"]]$implicit.x <- result[["posterior"]][["description"]]$alpha - 1
     result[["posterior"]][["description"]]$implicit.n <- switch(method,
-                                                               "poisson" = result[["posterior"]][["description"]]$beta, 
-                                                               "binomial" = result[["posterior"]][["description"]]$beta - 1 + result[["t"]], 
-                                                               "hypergeometric" = result[["posterior"]][["description"]]$beta - 1 + result[["t"]])
+                                                                "poisson" = result[["posterior"]][["description"]]$beta, 
+                                                                "binomial" = result[["posterior"]][["description"]]$beta - 1 + result[["t"]], 
+                                                                "hypergeometric" = result[["posterior"]][["description"]]$beta - 1 + result[["t"]])
     # Create the statistics section
     result[["posterior"]][["statistics"]]           <- list()
     result[["posterior"]][["statistics"]]$mode      <- switch(method,
@@ -398,7 +350,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'binom
     result[["posterior"]][["statistics"]]$ub        <- switch(method, 
                                                               "poisson" = stats::qgamma(conf.level, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
                                                               "binomial" = stats::qbeta(conf.level, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
-                                                              "hypergeometric" = .qBetaBinom(conf.level, N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta))									
+                                                              "hypergeometric" = .qBetaBinom(conf.level, N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta))
     result[["posterior"]][["statistics"]]$precision <- result[["posterior"]][["statistics"]]$ub - result[["posterior"]][["statistics"]]$mode
     # Create the hypotheses section
     if (result[["materiality"]] != 1) {

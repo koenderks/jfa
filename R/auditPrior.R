@@ -6,7 +6,7 @@
 #' \code{vignette('jfa', package = 'jfa')}
 #'
 #' @usage auditPrior(method = 'none', likelihood = 'binomial', expected = 0, 
-#'            confl.evel = 0.95, materiality = NULL, N.units = NULL, 
+#'            conf.level = 0.95, materiality = NULL, N.units = NULL, 
 #'            ir = NULL, cr = NULL, ub = NULL, p.min = NULL, 
 #'            x = NULL, n = NULL, factor = NULL, alpha = NULL, beta = NULL)
 #' 
@@ -117,9 +117,8 @@ auditPrior <- function(method = 'none', likelihood = 'binomial', expected = 0,
     if (ir < 0 || ir > 1)
       stop("'ir' must be a single value between 0 and 1")
     dr      <- (1 - conf.level) / (ir * cr) # Calculate the required detection risk from the audit risk model
-    population.n <- if (likelihood == 'hypergeometric') N.units else NULL
-    n.plus  <- planning(conf.level = conf.level, likelihood = likelihood, expected = expected, N = population.n, materiality = materiality, prior = TRUE)$n # Calculate the sample size for the full detection risk  
-    n.min   <- planning(conf.level = 1 - dr, likelihood = likelihood, expected = expected, N = population.n, materiality = materiality, prior = TRUE)$n # Calculated the sample size for the adjusted detection risk
+    n.plus  <- planning(conf.level = conf.level, likelihood = likelihood, expected = expected, N = N.units, materiality = materiality, prior = TRUE)$n # Calculate the sample size for the full detection risk  
+    n.min   <- planning(conf.level = 1 - dr, likelihood = likelihood, expected = expected, N = N.units, materiality = materiality, prior = TRUE)$n # Calculated the sample size for the adjusted detection risk
     prior.n <- n.plus - n.min # Calculate the sample size equivalent to the increase in detection risk
     prior.x <- (n.plus * expected) - (n.min * expected) # Calculate errors equivalent to the increase in detection risk
   } else if (method == 'bram') { # Method 3: Bayesian risk assessment model

@@ -41,8 +41,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- auditBF(materiality = 0.10, n[rows], k[columns], 
-                                    likelihood = "hypergeometric", N = N)
+      tab[rows, columns] <- auditBF(materiality = 0.10, n = n[rows], x = k[columns], 
+                                    likelihood = "hypergeometric", N.units = N)
   }
 }
 
@@ -93,8 +93,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- auditBF(materiality = 0.10, n[rows], k[columns], 
-                                    likelihood = "hypergeometric", N = N)
+      tab[rows, columns] <- auditBF(materiality = 0.10, n = n[rows], x = k[columns], 
+                                    likelihood = "hypergeometric", N.units = N)
   }
 }
 
@@ -145,8 +145,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- auditBF(materiality = 0.10, n[rows], k[columns], 
-                                    likelihood = "hypergeometric", N = N)
+      tab[rows, columns] <- auditBF(materiality = 0.10, n = n[rows], x = k[columns], 
+                                    likelihood = "hypergeometric", N.units = N)
   }
 }
 
@@ -199,8 +199,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- auditBF(materiality = 0.05, n[rows], k[columns], 
-                                    likelihood = "hypergeometric", N = N)
+      tab[rows, columns] <- auditBF(materiality = 0.05, n = n[rows], x = k[columns], 
+                                    likelihood = "hypergeometric", N.units = N)
   }
 }
 
@@ -251,8 +251,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- auditBF(materiality = 0.05, n[rows], k[columns], 
-                                    likelihood = "hypergeometric", N = N)
+      tab[rows, columns] <- auditBF(materiality = 0.05, n = n[rows], x = k[columns], 
+                                    likelihood = "hypergeometric", N.units = N)
   }
 }
 
@@ -303,8 +303,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- auditBF(materiality = 0.05, n[rows], k[columns], 
-                                    likelihood = "hypergeometric", N = N)
+      tab[rows, columns] <- auditBF(materiality = 0.05, n = n[rows], x = k[columns], 
+                                    likelihood = "hypergeometric", N.units = N)
   }
 }
 
@@ -355,8 +355,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- auditBF(materiality = 0.02, n[rows], k[columns], 
-                                    likelihood = "hypergeometric", N = N)
+      tab[rows, columns] <- auditBF(materiality = 0.02, n = n[rows], x = k[columns], 
+                                    likelihood = "hypergeometric", N.units = N)
   }
 }
 
@@ -407,8 +407,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- auditBF(materiality = 0.02, n[rows], k[columns], 
-                                    likelihood = "hypergeometric", N = N)
+      tab[rows, columns] <- auditBF(materiality = 0.02, n = n[rows], x = k[columns], 
+                                    likelihood = "hypergeometric", N.units = N)
   }
 }
 
@@ -459,8 +459,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- auditBF(materiality = 0.02, n[rows], k[columns], 
-                                    likelihood = "hypergeometric", N = N)
+      tab[rows, columns] <- auditBF(materiality = 0.02, n = n[rows], x = k[columns], 
+                                    likelihood = "hypergeometric", N.units = N)
   }
 }
 
@@ -511,8 +511,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- auditBF(materiality = 0.02, n[rows], k[columns], 
-                                    likelihood = "hypergeometric", N = N)
+      tab[rows, columns] <- auditBF(materiality = 0.02, n = n[rows], x = k[columns], 
+                                    likelihood = "hypergeometric", N.units = N)
   }
 }
 
@@ -563,8 +563,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- auditBF(materiality = 0.01, n[rows], k[columns], 
-                                    likelihood = "hypergeometric", N = N)
+      tab[rows, columns] <- auditBF(materiality = 0.01, n = n[rows], x = k[columns], 
+                                    likelihood = "hypergeometric", N.units = N)
   }
 }
 
@@ -615,8 +615,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- auditBF(materiality = 0.01, n[rows], k[columns], 
-                                    likelihood = "hypergeometric", N = N)
+      tab[rows, columns] <- auditBF(materiality = 0.01, n = n[rows], x = k[columns], 
+                                    likelihood = "hypergeometric", N.units = N)
   }
 }
 

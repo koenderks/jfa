@@ -133,7 +133,7 @@ summary(stage4)
 
 # Create the prior distribution
 prior <- auditPrior(method = "arm", likelihood = "poisson",
-                    expected = 0.01, materiality = 0.03, cr = 0.6)
+                    expected = 0.01, materiality = 0.03, cr = 0.6, ir = 1)
 summary(prior)
 
 # Stage 1: Planning

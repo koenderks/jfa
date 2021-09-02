@@ -114,9 +114,9 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
       stop("'N.units' is missing for planning")
     if (N.units <= 0 || N.units%%1 != 0)
       stop("'N.units' must be a positive integer")
-    if (!is.null(materiality) && expected >= 1 && expected >= ceiling(materiality * N))
+    if (!is.null(materiality) && expected >= 1 && expected >= ceiling(materiality * N.units))
       stop("'expected' / 'N.units' must be smaller than 'materiality'")
-    if (!is.null(materiality) && expected < 1 && ceiling(expected * N) >= ceiling(materiality * N))
+    if (!is.null(materiality) && expected < 1 && ceiling(expected * N.units) >= ceiling(materiality * N.units))
       stop("'expected' * 'N.units' must be smaller than 'materiality' * 'N.units'")
   }
   # Define the sampling frame (the possible sample sizes)
