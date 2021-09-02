@@ -356,7 +356,7 @@ test_that(desc = "(id: f7-v0.5.5-t9) Statistical Sample Sizes based on the Hyper
                         37, 58, 58, 58, 58, 58, 58, 75, 75, 75, 75, 89, 89, 89, 98, 98, 98, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         28, 45, 45, 45, 45, 45, 45, 45, 45, 59, 59, 59, 59, 59, 72, 72, 72, 83, 83, 83, 92, 92, 99, 99, 99, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         28, 45, 45, 45, 45, 45, 45, 45, 45, 59, 59, 59, 59, 59, 72, 72, 72, 83, 83, 83, 92, 92, 99, 99, 99, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
-                        25, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 53, 53, 53, 53, 53, 65, 65, 65, 76, 76, 76, 85, 85, 93, 93, 99, 99, 99, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
+                        25, 40, 40, 40, 40, 40, 40, 40, 40, 40, 40, 53, 53, 53, 53, 53, 65, 65, 65, 76, 76, 76, 85, 85, 93, 93, 99, 99, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         22, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 36, 49, 49, 49, 49, 49, 60, 60, 60, 60, 70, 70, 79, 79, 79, 87, 87, 94, 94, 99, 99, 99, NA, NA, NA, NA, NA, NA, NA, NA, 
                         20, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 44, 44, 44, 44, 44, 44, 55, 55, 55, 64, 64, 64, 64, 73, 73, 81, 81, 88, 88, 95, 95, 99, 99, 99, NA, NA, NA, NA, 
                         14, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 23, 31, 31, 31, 31, 31, 31, 31, 31, 38, 38, 38, 38, 38, 38, 46, 46, 46, 52, 52, 52, 52, 59, 59, 
@@ -742,7 +742,7 @@ test_that(desc = "(id: f7-v0.5.5-t17) Statistical Sample Sizes based on the Hype
 test_that(desc = "(id: f7-v0.5.5-t18) Statistical Sample Sizes based on the Hypergeometric Distribution (N = 100) - 1 Percent Risk of Overreliance", {
   testthat::skip_on_cran()
   reference <- matrix(c(0, 0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.0275, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045, 0.0475, 0.05, 0.0525, 0.055, 0.0575, 0.06, 0.0625, 0.065, 0.0675, 0.07, 0.0725, 0.075, 0.0775, 0.08, 0.0825, 0.085, 0.0875, 0.09, 0.0925, 0.095, 0.0975, 0.1, 
-                        NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
+                        99, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         90, 100, 100, 100, 100, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         78, 94, 94, 94, 94, 100, 100, 100, 100, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
                         68, 86, 86, 86, 86, 96, 96, 96, 96, 100, 100, 100, 100, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, 
