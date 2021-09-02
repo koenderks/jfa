@@ -41,11 +41,11 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(confidence = 0.90, expectedError = expected[rows], likelihood = "poisson", materiality = m[columns])) }, silent = T)
+      p <- try({ suppressMessages(ss <- jfa::planning(conf.level = 0.90, expected = expected[rows], likelihood = "poisson", materiality = m[columns])) }, silent = T)
       if(class(p) == "try-error"){
         next 
       }
-      tab[rows, columns] <- paste0(ss$sampleSize, " (", round(ss$expectedSampleError, 2), ")")
+      tab[rows, columns] <- paste0(ss$n, " (", round(ss$x, 2), ")")
     }
   }
 }
@@ -91,11 +91,11 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(confidence = 0.95, expectedError = expected[rows], likelihood = "poisson", materiality = m[columns])) }, silent = T)
+      p <- try({ suppressMessages(ss <- jfa::planning(conf.level = 0.95, expected = expected[rows], likelihood = "poisson", materiality = m[columns])) }, silent = T)
       if(class(p) == "try-error"){
         next 
       }
-      tab[rows, columns] <- paste0(ss$sampleSize, " (", round(ss$expectedSampleError, 2), ")")
+      tab[rows, columns] <- paste0(ss$n, " (", round(ss$x, 2), ")")
     }
   }
 }
@@ -141,11 +141,11 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(confidence = 0.975, expectedError = expected[rows], likelihood = "poisson", materiality = m[columns])) }, silent = T)
+      p <- try({ suppressMessages(ss <- jfa::planning(conf.level = 0.975, expected = expected[rows], likelihood = "poisson", materiality = m[columns])) }, silent = T)
       if(class(p) == "try-error"){
         next 
       }
-      tab[rows, columns] <- paste0(ss$sampleSize, " (", round(ss$expectedSampleError, 2), ")")
+      tab[rows, columns] <- paste0(ss$n, " (", round(ss$x, 2), ")")
     }
   }
 }
@@ -191,11 +191,11 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(confidence = 0.99, expectedError = expected[rows], likelihood = "poisson", materiality = m[columns])) }, silent = T)
+      p <- try({ suppressMessages(ss <- jfa::planning(conf.level = 0.99, expected = expected[rows], likelihood = "poisson", materiality = m[columns])) }, silent = T)
       if(class(p) == "try-error"){
         next 
       }
-      tab[rows, columns] <- paste0(ss$sampleSize, " (", round(ss$expectedSampleError, 2), ")")
+      tab[rows, columns] <- paste0(ss$n, " (", round(ss$x, 2), ")")
     }
   }
 }

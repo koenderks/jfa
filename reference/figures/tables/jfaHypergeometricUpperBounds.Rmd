@@ -32,7 +32,7 @@ library(jfa)
 
 ```{r, include = F}
 
-confidence <- 0.90
+conf.level <- 0.90
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 100
@@ -42,8 +42,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      ss <- jfa::evaluation(conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
   }
 }
 table <- as.data.frame(tab)
@@ -78,7 +78,7 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.90
+conf.level <- 0.90
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 500
@@ -88,8 +88,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      ss <- jfa::evaluation(conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
   }
 }
 table <- as.data.frame(tab)
@@ -124,7 +124,7 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.90
+conf.level <- 0.90
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 1000
@@ -134,8 +134,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      ss <- jfa::evaluation(conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
   }
 }
 table <- as.data.frame(tab)
@@ -170,7 +170,7 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.95
+conf.level <- 0.95
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 100
@@ -180,8 +180,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      ss <- jfa::evaluation(conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
   }
 }
 table <- as.data.frame(tab)
@@ -216,7 +216,7 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.95
+conf.level <- 0.95
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 500
@@ -226,8 +226,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      ss <- jfa::evaluation(conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
   }
 }
 table <- as.data.frame(tab)
@@ -262,7 +262,7 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.95
+conf.level <- 0.95
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 1000
@@ -272,8 +272,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      ss <- jfa::evaluation(conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
   }
 }
 table <- as.data.frame(tab)
@@ -308,7 +308,7 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.975
+conf.level <- 0.975
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 100
@@ -318,8 +318,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      ss <- jfa::evaluation(conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
   }
 }
 table <- as.data.frame(tab)
@@ -354,7 +354,7 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.975
+conf.level <- 0.975
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 500
@@ -364,8 +364,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      ss <- jfa::evaluation(conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
   }
 }
 table <- as.data.frame(tab)
@@ -400,7 +400,7 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.975
+conf.level <- 0.975
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 1000
@@ -410,8 +410,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      ss <- jfa::evaluation(conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
   }
 }
 table <- as.data.frame(tab)
@@ -446,7 +446,7 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.99
+conf.level <- 0.99
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 100
@@ -456,8 +456,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      ss <- jfa::evaluation(conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
   }
 }
 table <- as.data.frame(tab)
@@ -492,7 +492,7 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.99
+conf.level <- 0.99
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 500
@@ -502,8 +502,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      ss <- jfa::evaluation(conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
   }
 }
 table <- as.data.frame(tab)
@@ -538,7 +538,7 @@ kableExtra::kable_paper(ktable, "striped")
 
 ```{r, include = F}
 
-confidence <- 0.99
+conf.level <- 0.99
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 1000
@@ -548,8 +548,8 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- jfa::evaluation(confidence, nSumstats = n[rows], kSumstats = k[columns], materiality = 0.05, method = "hypergeometric", N = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      ss <- jfa::evaluation(conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
   }
 }
 table <- as.data.frame(tab)
