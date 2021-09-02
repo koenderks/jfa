@@ -167,7 +167,7 @@ vignette('jfa', package = 'jfa')" />
 
     <pre class="usage"><span class='fu'>selection</span><span class='op'>(</span><span class='va'>population</span>, <span class='va'>sampleSize</span>, units <span class='op'>=</span> <span class='st'>'records'</span>, algorithm <span class='op'>=</span> <span class='st'>'random'</span>,
           bookValues <span class='op'>=</span> <span class='cn'>NULL</span>, intervalStartingPoint <span class='op'>=</span> <span class='fl'>1</span>, ordered <span class='op'>=</span> <span class='cn'>TRUE</span>, 
-          ascending <span class='op'>=</span> <span class='cn'>TRUE</span>, withReplacement <span class='op'>=</span> <span class='cn'>FALSE</span>, seed <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
+          ascending <span class='op'>=</span> <span class='cn'>TRUE</span>, replace <span class='op'>=</span> <span class='cn'>FALSE</span>, seed <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -205,7 +205,7 @@ vignette('jfa', package = 'jfa')" />
       <td><p>if <code>ordered = TRUE</code>, a logical specifying whether to order the population <code>bookValues</code> from smallest to largest. Defaults to <code>TRUE</code>.</p></td>
     </tr>
     <tr>
-      <th>withReplacement</th>
+      <th>replace</th>
       <td><p>if <code>algorithm = 'random'</code>, a logical specifying whether sampling should be performed with replacement. Defaults to <code>FALSE</code>.</p></td>
     </tr>
     <tr>
@@ -257,7 +257,7 @@ vignette('jfa', package = 'jfa')" />
 <span class='fu'>selection</span><span class='op'>(</span>population <span class='op'>=</span> <span class='va'>BuildIt</span>, sampleSize <span class='op'>=</span> <span class='fl'>100</span>, 
           algorithm <span class='op'>=</span> <span class='st'>'interval'</span>, units <span class='op'>=</span> <span class='st'>'mus'</span>, bookValues <span class='op'>=</span> <span class='st'>'bookValue'</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Obtained sampling units: 100 | Sample items: 100 
-#&gt; Sample obtained via methods 'mus' + 'interval'.</div><div class='input'>
+#&gt; Sample obtained via methods 'mus' + 'interval'</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

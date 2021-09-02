@@ -218,7 +218,7 @@ vignette('jfa', package = 'jfa')" />
     </tr>
     <tr>
       <th>N</th>
-      <td><p>an integer larger than 0 specifying the total number of items in the population.</p></td>
+      <td><p>an integer larger than 0 specifying the total number of units or items in the population (i.e., the population size). Only required when <code>likelihood = 'hypergeometric'</code>.</p></td>
     </tr>
     <tr>
       <th>populationBookValue</th>
@@ -289,7 +289,7 @@ vignette('jfa', package = 'jfa')" />
 <li><p><code>poisson</code>:          Evaluates the sample with the Poisson distribution. If combined with <code>prior = TRUE</code>, performs Bayesian evaluation using a <em>gamma</em> prior and posterior.</p></li>
 <li><p><code>binomial</code>:         Evaluates the sample with the binomial distribution. If combined with <code>prior = TRUE</code>, performs Bayesian evaluation using a <em>beta</em> prior and posterior.</p></li>
 <li><p><code>hypergeometric</code>:   Evaluates the sample with the hypergeometric distribution. If combined with <code>prior = TRUE</code>, performs Bayesian evaluation using a <em>beta-binomial</em> prior and posterior.</p></li>
-<li><p><code>mpu</code>:			   Evaluates the sample with the mean-per-unit estimator.</p></li>
+<li><p><code>mpu</code>:              Evaluates the sample with the mean-per-unit estimator.</p></li>
 <li><p><code>stringer</code>:         Evaluates the sample with the Stringer bound (Stringer, 1963).</p></li>
 <li><p><code>stringer-meikle</code>:  Evaluates the sample with the Stringer bound with Meikle's correction for understatements (Meikle, 1972).</p></li>
 <li><p><code>stringer-lta</code>:     Evaluates the sample with the Stringer bound with LTA correction for understatements (Leslie, Teitlebaum, and Anderson, 1979).</p></li>
@@ -333,7 +333,7 @@ vignette('jfa', package = 'jfa')" />
 <span class='fu'>evaluation</span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.05</span>, method <span class='op'>=</span> <span class='st'>'stringer'</span>, confidence <span class='op'>=</span> <span class='fl'>0.95</span>,
            sample <span class='op'>=</span> <span class='va'>sample</span>, bookValues <span class='op'>=</span> <span class='st'>'bookValue'</span>, auditValues <span class='op'>=</span> <span class='st'>'auditValue'</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Most likely error: 0% | 95% Upper bound: 2.951% | Precision: 2.951% 
-#&gt; Estimates obtained via method 'stringer'.</div><div class='input'>
+#&gt; Estimates obtained via method 'stringer'</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
