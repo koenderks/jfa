@@ -2,12 +2,12 @@
 
 **New features**
 
-- Added `method = 'custom'` to function `auditPrior()`. This method takes raw `alpha` and `beta` parameters for the prior distribution.
+- Added `method = 'custom'` to function `auditPrior()` which takes as input the raw `alpha` and `beta` parameters of the prior distribution.
 - Added a new vignette that describes the sampling methodology implemented in `jfa`.
 
 **Minor changes**
 
-- Changed the name of the `withReplacement` argument in `selection()` to `replace` to be consistent with general `R` style.
+- Changed the name of the `withReplacement` argument in the `selection()` function to `replace` to be consistent with general `R` style.
 - It is now allowed for `nSumstats` and `kSumstats` to have the same value.
 
 # jfa 0.5.7

@@ -166,3 +166,22 @@ test_that(desc = "(id: f2-v0.5.3-t2) Test for bram method poisson", {
 
 # jfa version 0.5.4 - 0.5.7
 # No changes to be benchmarked
+
+# jfa version 0.5.8
+test_that(desc = "(id: f2-v0.5.8-t1) Test for custom method binomial", {
+  prior <- auditPrior(materiality = 0.05, likelihood = "binomial", method = "custom", alpha = 5, beta = 10)
+  expect_equal(prior[["description"]]$alpha, 5)
+  expect_equal(prior[["description"]]$beta, 10)
+})
+
+test_that(desc = "(id: f2-v0.5.8-t2) Test for custom method poisson", {
+  prior <- auditPrior(materiality = 0.05, likelihood = "poisson", method = "custom", alpha = 5, beta = 10)
+  expect_equal(prior[["description"]]$alpha, 5)
+  expect_equal(prior[["description"]]$beta, 10)
+})
+
+test_that(desc = "(id: f2-v0.5.8-t1) Test for custom method hypergeometric", {
+  prior <- auditPrior(materiality = 0.05, likelihood = "hypergeometric", method = "custom", alpha = 5, beta = 10, N = 100)
+  expect_equal(prior[["description"]]$alpha, 5)
+  expect_equal(prior[["description"]]$beta, 10)
+})
