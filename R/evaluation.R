@@ -125,7 +125,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'binom
     stop("'conf.level' must be a single number between 0 and 1")
   if (is.null(materiality) && is.null(min.precision))
     stop("'materiality' or `min.precision` is missing for evaluation")
-  if (!is.null(materiality) && (materiality <= 0 || materiality >= 1))
+  if (!is.null(materiality) && (materiality <= 0 || materiality > 1))
     stop("'materiality' must be a single number between 0 and 1")
   if (!is.null(min.precision) && (min.precision <= 0 || min.precision >= 1))
     stop("'min.precision' must be a single number between 0 and 1")

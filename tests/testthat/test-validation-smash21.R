@@ -10,7 +10,7 @@ test_that(desc = "(id: f13-v0.5.3-t1) Test frequentist sample sizes", {
   for (i in 1:nrow(sampleSizeMatrix)) {
     for (j in 1:ncol(sampleSizeMatrix)) {
       plan <- planning(conf.level = 0.95, materiality = theta[j], expected = expected[i], likelihood = "poisson")
-      sampleSizeMatrix[i, j] <- plan[["sampleSize"]]
+      sampleSizeMatrix[i, j] <- plan[["n"]]
     }
   }
   smash_matrix <- matrix(c(74, 34, 22, 16, 13, 11, 9, 8, 7, 7, # 0.5%
@@ -39,7 +39,7 @@ test_that(desc = "(id: f13-v0.5.3-t2) Test Bayesian sample sizes (N = 20,000)", 
     for (j in 1:ncol(sampleSizeMatrix)) {
       prior <- auditPrior(conf.level = 0.95, materiality = materiality, likelihood = "poisson", method = "bram", expected = expected[i], ub = ub[j])
       plan <- planning(conf.level = 0.95, materiality = materiality, expected = expected[i], prior = prior)
-      sampleSizeMatrix[i, j] <- plan[["sampleSize"]]
+      sampleSizeMatrix[i, j] <- plan[["n"]]
     }
   }
   
@@ -66,7 +66,7 @@ test_that(desc = "(id: f13-v0.5.3-t3) Test Bayesian sample sizes (N = 100,000)",
     for (j in 1:ncol(sampleSizeMatrix)) {
       prior <- auditPrior(conf.level = 0.95, materiality = materiality, likelihood = "poisson", method = "bram", expected = expected[i], ub = ub[j])
       plan <- planning(conf.level = 0.95, materiality = materiality, expected = expected[i], prior = prior)
-      sampleSizeMatrix[i, j] <- plan[["sampleSize"]]
+      sampleSizeMatrix[i, j] <- plan[["n"]]
     }
   }
   

@@ -49,7 +49,7 @@
 
 auditBF <- function(x, n, materiality, likelihood = 'binomial', BF10 = TRUE,
                     log = FALSE, N.units = NULL, alpha = NULL, beta = NULL) {
-  if(materiality <= 0 || materiality >= 1)
+  if(materiality <= 0 || materiality > 1)
     stop("'materiality' must be a single number between 0 and 1")
   if(n <= 0 || !(n%%1 == 0))
     stop("'n' must be a single number larger than 0")
