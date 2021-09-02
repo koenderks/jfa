@@ -15,7 +15,7 @@
 #' @param expectedError a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a number (>= 1) that represents the number of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.
 #' @param likelihood    a character specifying the likelihood assumed in the calculation. This can be either \code{binomial} for the binomial likelihood, \code{poisson} for the Poisson likelihood, or \code{hypergeometric} for the hypergeometric likelihood. See the details section for more information about the available likelihoods.
 #' @param confidence    a numeric value between 0 and 1 specifying the confidence level used in the planning. Defaults to 0.95 for 95\% confidence.
-#' @param N             an integer larger than 0 specifying the total population size. Only required when \code{likelihood = 'hypergeometric'}.
+#' @param N             an integer larger than 0 specifying the total number of units or items in the population (i.e., the population size). Only required when \code{likelihood = 'hypergeometric'}.
 #' @param prior         a logical specifying whether to use a prior distribution when planning, or an object of class \code{jfaPrior} or \code{jfaPosterior} containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a negligible prior distribution is chosen by default, but can be adjusted using the \code{kPrior} and \code{nPrior} arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.
 #' @param nPrior        if \code{prior = TRUE}, a numeric value larger than, or equal to, 0 specifying the sample size of the sample equivalent to the prior information.
 #' @param kPrior        if \code{prior = TRUE}, a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.
@@ -79,7 +79,7 @@ planning <- function(materiality = NULL, minPrecision = NULL, expectedError = 0,
   if (class(prior) %in% c("jfaPrior", "jfaPosterior")) {
     
     if (kPrior != 0 || nPrior != 0)
-      warning("When the prior is of class 'jfaPrior' or 'jfaPosterior', the arguments 'nPrior' and 'kPrior' will not be used.")
+      warning("'nPrior' and 'kPrior' will not be used")
     
     nPrior      <- prior[["description"]]$implicitn
     kPrior      <- prior[["description"]]$implicitk
@@ -89,19 +89,23 @@ planning <- function(materiality = NULL, minPrecision = NULL, expectedError = 0,
   
   # Perform error handling with respect to incompatible input options
   if (is.null(materiality) && is.null(minPrecision))
-    stop("You must specify your sampling objective(s) using the 'materiality' or 'minPrecision' argument(s).")
-
+    stop("'materiality' or `minPrecision` is missing for planning")
+  
   if (confidence >= 1 || confidence <= 0 || is.null(confidence))
-    stop("Specify a valid value for the 'confidence' argument. Possible values lie within the range of 0 to 1.")
+    stop("'confidence' must be a single number between 0 and 1")
   
   if (!(likelihood %in% c("poisson", "binomial", "hypergeometric")))
-    stop("Specify a valid option for the 'likelihood' argument. Possible options are 'binomial', 'poisson', and 'hypergeometric'.")
+    stop("'likelihood' should be one of 'binomial', 'poisson', 'hypergeometric'")
   
   if (!is.null(minPrecision) && (minPrecision <= 0 || minPrecision >= 1))
-    stop("The minimum required precision must be a positive value < 1.")
+    stop("'minPrecision' must be a single number between 0 and 1")
   
-  if ((class(prior) == "logical" && prior == TRUE) && kPrior < 0 || nPrior < 0)
-    stop("If you specify a prior, the values for the 'nPrior' and 'kPrior' arguments should be >= 0.")
+  if (class(prior) == "logical" && prior == TRUE) {
+    if (kPrior < 0)
+      stop("'kPrior' must be a single number equal to or larger than 0")
+    if (nPrior < 0)
+      stop("'nPrior' must be a single number equal to or larger than 0")
+  }
   
   # Define a placeholder for the sample size 
   ss <- NULL
@@ -111,13 +115,13 @@ planning <- function(materiality = NULL, minPrecision = NULL, expectedError = 0,
     
     errorType <- "percentage"
     if (!is.null(materiality) && expectedError >= materiality)
-      stop("The value for the 'expectedError' argument must be lower than the value for the 'materiality' argument.")
+      stop("'expectedError' must be a single number smaller than 'materiality'")
     
   } else if (expectedError >= 1) {
     
     errorType <- "integer"
     if (expectedError%%1 != 0 && likelihood %in% c("binomial", "hypergeometric") && !((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")))
-      stop("When the 'expectedError' argument > 1 and the 'likelihood' argument is 'binomial' or 'hypergeometric', its value must be an integer.")
+      stop("'expectedError' must be a single integer")
     
   }
   
@@ -129,10 +133,14 @@ planning <- function(materiality = NULL, minPrecision = NULL, expectedError = 0,
   
   # Requirements for the hypergeometric distribution
   if (likelihood == 'hypergeometric') {
-    if (is.null(N) || N <= 0)
-      stop("The 'hypergeometric' likelihood requires a positive integer as input for the population size 'N'.")
-    if (!is.null(materiality) && (expectedError / N) >= materiality)
-      stop("The value of 'expectedError' / 'N' must be lower than the value for the 'materiality' argument.")
+    if (is.null(N))
+      stop("'N' is missing for planning")
+    if (N <= 0 || N%%1 != 0)
+      stop("'N' must be a positive integer")
+    if (!is.null(materiality) && expectedError >= 1 && ceiling(expectedError / N) >= materiality)
+      stop("'expectedError' / 'N' must be smaller than 'materiality'")
+    if (!is.null(materiality) && expectedError < 1 && ceiling(expectedError * N) >= ceiling(materiality * N))
+      stop("'expectedError' * 'N' must be smaller than 'materiality' * 'N'")
   }
   
   # Define the sampling frame (the possible sample sizes)
@@ -194,10 +202,10 @@ planning <- function(materiality = NULL, minPrecision = NULL, expectedError = 0,
   
   # No sample size could be calculated, throw an error
   if (is.null(ss))
-    stop("Sample size could not be calculated, you may want to increase the 'maxSize' argument.")
+    stop("Sample size could not be calculated, you may want to increase the 'maxSize' argument")
   
   if (!is.null(N) && ss > N) # The sample size is too large
-    warning("Sampling with replacement is required. The resulting sample size is larger than the population size 'N'.")
+    warning("the sample size is larger than 'N'")
   
   # Create the main results object
   result <- list()
@@ -206,7 +214,7 @@ planning <- function(materiality = NULL, minPrecision = NULL, expectedError = 0,
   result[["minPrecision"]]          <- as.numeric(minPrecision)
   result[["expectedError"]]         <- as.numeric(expectedError)
   result[["likelihood"]]            <- as.character(likelihood)
-  result[["N"]]                     <- as.numeric(N)
+  result[["N"]]                     <- N
   result[["sampleSize"]]            <- as.numeric(ceiling(ss))
   result[["errorType"]]             <- as.character(errorType)
   result[["expectedSampleError"]]   <- as.numeric(implicitK)

@@ -51,32 +51,33 @@ auditBF <- function(materiality, n, k, expectedError = 0, likelihood = 'binomial
                     nPrior = NULL, kPrior = NULL, N = NULL, log = FALSE) {
   
   if(materiality <= 0 || materiality >= 1)
-    stop('The input for the performance materiality must be a value between 0 and 1.')
+    stop("'materiality' must be a single number between 0 and 1")
   
   if(n <= 0 || !(n%%1 == 0))
-    stop('n must be an integer larger than zero.')
+    stop("'n' must be a single number larger than 0")
   
   if(k < 0)
-    stop('k must be a number equal to, or larger than, zero.')
+    stop("'k' must be a single number equal to or larger than 0")
   
   if(k > n)
-    stop('k cannot be larger than n.')
+    stop("'k' must be a single number equal to or smaller than 'n'")
   
-  if((is.null(nPrior) && !is.null(kPrior)) || (!is.null(nPrior) && is.null(kPrior)))
-    warning("Falling back to an impartial prior distribution, since both 'nPrior' and 'kPrior' must be specified to use a custom prior distribution.")
-  
+  if(is.null(nPrior) && !is.null(kPrior))
+    stop("'kPrior' will not be used")
+
+  if(!is.null(nPrior) && is.null(kPrior))
+    stop("'nPrior' will not be used")
+    
   if(!is.null(nPrior) && !is.null(kPrior)) {
     # Create a prior distribution on the basis of an earlier sample (Derks et al., 2021)
-    p <- jfa::auditPrior(confidence = 0.95, materiality = materiality, expectedError = expectedError, 
-	                     method = 'sample', likelihood = likelihood, sampleN = nPrior, sampleK = kPrior, N = N)
+    prior <- jfa::auditPrior(materiality = materiality, expectedError = expectedError, method = 'sample', likelihood = likelihood, sampleN = nPrior, sampleK = kPrior, N = N)
   } else {
     # Create the impartial prior distribution (Derks et al., 2021)
-    p <- jfa::auditPrior(confidence = 0.95, materiality = materiality, expectedError = expectedError, 
-	                     method = 'median', likelihood = likelihood, N = N)
+    prior <- jfa::auditPrior(materiality = materiality, expectedError = expectedError, method = 'median', likelihood = likelihood, N = N)
   }
-
+  
   # Compute the Bayes factor in favor of tolerable misstatement
-  bfminplus <- jfa::evaluation(confidence = 0.95, materiality = materiality, nSumstats = n, kSumstats = k, prior = p, N = N)$posterior$hypotheses$bf
+  bfminplus <- jfa::evaluation(materiality = materiality, nSumstats = n, kSumstats = k, prior = prior, N = N)$posterior$hypotheses$bf
   
   # Transform to logarithm if the user wants to
   if(log)

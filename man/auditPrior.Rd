@@ -7,7 +7,8 @@
 auditPrior(method = 'none', likelihood = 'binomial', expectedError = 0, 
            confidence = 0.95, materiality = NULL, N = NULL, 
            ir = 1, cr = 1, ub = NULL, pHmin = NULL, pHplus = NULL, 
-           sampleN = 0, sampleK = 0, factor = 1)
+           sampleN = 0, sampleK = 0, factor = 1,
+           alpha = NULL, beta = NULL)
 }
 \arguments{
 \item{method}{a character specifying the method by which the prior distribution is constructed. Defaults to \code{none} which incorporates no existing information. Other options are \code{arm}, \code{bram}, \code{median}, \code{hypotheses}, \code{sample}, and \code{factor}. See the details section for more information about the available methods.}
@@ -37,6 +38,10 @@ auditPrior(method = 'none', likelihood = 'binomial', expectedError = 0,
 \item{sampleK}{if \code{method = 'sample'} or \code{method = 'factor'}, a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.}
 
 \item{factor}{if \code{method = 'factor'}, a numeric value between 0 and 1 specifying the weighting factor for the results of the sample equivalent to the prior information.}
+
+\item{alpha}{if \code{method = 'custom'}, a numeric value specifying the \eqn{\alpha} parameter of the prior distribution.}
+
+\item{beta}{if \code{method = 'custom'}, a numeric value specifying the \eqn{\beta} parameter of the prior distribution.}
 }
 \value{
 An object of class \code{jfaPrior} containing:
@@ -69,6 +74,7 @@ This section elaborates on the available options for the \code{method} argument.
  \item{\code{hypotheses}:        This method constructs a prior distribution with custom prior probabilities for the hypotheses of tolerable misstatement (\eqn{\theta <} materiality) and intolerable misstatement (\eqn{\theta >} materiality). This method requires specification of the \code{pHmin} and \code{pHplus} arguments.}
  \item{\code{sample}:            This method constructs a prior distribution on the basis of an earlier sample. This method requires specification of the \code{sampleN} and \code{sampleK} arguments.}
  \item{\code{factor}:            This method constructs a prior distribution on the basis of an earlier sample in combination with a weighting factor. This method requires specification of the \code{sampleN}, \code{sampleK}, and \code{factor} arguments.}
+ \item{\code{custom}:            This method constructs a prior distribution on the basis of user specified \eqn{\alpha} and \eqn{\beta} parameters.}
 }
 
 This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.

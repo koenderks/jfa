@@ -23,7 +23,7 @@
 #' @param counts        a integer vector specifying the number of times each item in the sample should be counted in the evaluation (due to it being selected multiple times for the sample).
 #' @param nSumstats     an integer larger than 0 specifying the number of items in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data come from summary statistics specified by both \code{nSumstats} and \code{kSumstats}.
 #' @param kSumstats     a numeric value larger than 0 specifying the sum of errors found in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data come from summary statistics specified by both \code{kSumstats} and \code{nSumstats}.
-#' @param N             an integer larger than 0 specifying the total number of items in the population.
+#' @param N             an integer larger than 0 specifying the total number of units or items in the population (i.e., the population size). Only required when \code{likelihood = 'hypergeometric'}.
 #' @param populationBookValue if \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value specifying the total value of the items in the population. This argument is optional otherwise.
 #' @param prior         a logical specifying if a prior distribution must be used, or an object of class \code{jfaPrior} or \code{jfaPosterior} containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a negligible prior distribution is chosen by default, but can be adjusted using the `kPrior` and `nPrior` arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.
 #' @param nPrior        if \code{prior = TRUE}, a numeric value larger than, or equal to, 0 specifying the sample size of the sample equivalent to the prior information.
@@ -40,7 +40,7 @@
 #'  \item{\code{poisson}:          Evaluates the sample with the Poisson distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{gamma} prior and posterior.}
 #'  \item{\code{binomial}:         Evaluates the sample with the binomial distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{beta} prior and posterior.}
 #'  \item{\code{hypergeometric}:   Evaluates the sample with the hypergeometric distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{beta-binomial} prior and posterior.}
-#'	\item{\code{mpu}:			   Evaluates the sample with the mean-per-unit estimator.}
+#'	\item{\code{mpu}:              Evaluates the sample with the mean-per-unit estimator.}
 #'  \item{\code{stringer}:         Evaluates the sample with the Stringer bound (Stringer, 1963).}
 #'  \item{\code{stringer-meikle}:  Evaluates the sample with the Stringer bound with Meikle's correction for understatements (Meikle, 1972).}
 #'  \item{\code{stringer-lta}:     Evaluates the sample with the Stringer bound with LTA correction for understatements (Leslie, Teitlebaum, and Anderson, 1979).}
@@ -119,7 +119,7 @@ evaluation <- function(materiality = NULL, minPrecision = NULL, method = 'binomi
   if (class(prior) %in% c("jfaPrior", "jfaPosterior")) {
     
     if (kPrior != 0 || nPrior != 0)
-      warning("When the prior is of class 'jfaPrior' or 'jfaPosterior', the arguments 'nPrior' and 'kPrior' will not be used.")
+      warning("'nPrior' and 'kPrior' will not be used")
     
     nPrior      <- prior[["description"]]$implicitn
     kPrior      <- prior[["description"]]$implicitk
@@ -129,48 +129,46 @@ evaluation <- function(materiality = NULL, minPrecision = NULL, method = 'binomi
   
   # Perform error handling with respect to incompatible input options
   if (confidence >= 1 || confidence <= 0 || is.null(confidence))
-    stop("Specify a valid value for the 'confidence' argument. Possible values lie within the range of 0 to 1.")
+    stop("'confidence' must be a single number between 0 and 1")
   
   if (is.null(materiality) && is.null(minPrecision))
-    stop("You must specify your sampling objective(s) using the 'materiality' or 'minPrecision' argument(s).")
+    stop("'materiality' or `minPrecision` is missing for evaluation")
   
   if (!is.null(minPrecision) && (minPrecision <= 0 || minPrecision >= 1))
-    stop("The minimum required precision must be a positive value < 1.")
+    stop("'minPrecision' must be a single number between 0 and 1")
   
-  if (!(method %in% c("poisson", "binomial", "hypergeometric", "stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "rohrbach", "moment", "coxsnell", "direct", "difference", "quotient", "regression", "mpu")) || length(method) != 1)
-    stop("Specify a valid method for the evaluation.")
+  if (!(method %in% c('binomial', 'poisson', 'hypergeometric', 'stringer', 'stringer-meikle', 'stringer-lta', 'stringer-pvz', 'rohrbach', 'moment', 'coxsnell', 'direct', 'difference', 'quotient', 'regression', 'mpu')) || length(method) != 1)
+    stop("'method' should be one of 'binomial', 'poisson', 'hypergeometric', 'stringer', 'stringer-meikle', 'stringer-lta', 'stringer-pvz', 'rohrbach', 'moment', 'coxsnell', 'direct', 'difference', 'quotient', 'regression', 'mpu'")
   
   if (!is.null(counts) && any(counts < 1))
-    stop("When specified, your 'counts' must all be equal to, or larger than, 1.")          
+    stop("'counts' must be a vector of positive integers")
   
   if (((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")) && method %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
-    stop("To use a prior distribution, you must use either the 'poisson', the 'binomial', or the 'hypergeometric' method.")  
+    stop("'method' should be one of 'binomial', 'poisson', 'hypergeometric'")  
   
-  if ((class(prior) == "logical" && prior == TRUE) && kPrior < 0 || nPrior < 0)
-    stop("When you specify a 'prior', both 'kPrior' and 'nPrior' should be higher than zero.")
+  if (class(prior) == "logical" && prior == TRUE) {
+    if (kPrior < 0)
+      stop("'kPrior' must be a single number equal to or larger than 0")
+    if (nPrior < 0)
+      stop("'nPrior' must be a single number equal to or larger than 0")
+  }
   
   if (!is.null(nSumstats) || !is.null(kSumstats)) {
     
-    if (is.null(nSumstats) || is.null(kSumstats))
-      stop("When using summary statistics, both 'nSumstats' and 'kSumstats' must be specified.")
-    
-    if (nSumstats <= 0 || nSumstats%%1 != 0)
-      stop("'nSumstats' must be a positive integer.")
-    
-    if (kSumstats < 0)
-      stop("'kSumstats' must be equal to, or larger than, zero.")
-    
-    if (length(nSumstats) != 1 || length(kSumstats) != 1)
-      stop("Specify one value for 'nSumstats' and 'kSumstats'.")
-    
-    if (kSumstats > nSumstats)
-      stop("The sum of the errors provided in 'kSumstats' is higher than the sample size provided in 'nSumstats'.")
-    
     if (method %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "coxsnell", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
-      stop("The selected method requires raw observations and does not accomodate summary statistics")
-    
+      stop(paste0("'method = ", method, "' does not accomodate summary statistics"))
+    if (is.null(nSumstats))
+      stop("'nSumstats' is missing for evaluation")
+    if (nSumstats <= 0 || nSumstats%%1 != 0 || length(nSumstats) != 1)
+      stop("'nSumstats' must be a single integer larger than 0")
+    if (is.null(kSumstats)) 
+      stop("'kSumstats' is missing for evaluation")
+    if (kSumstats < 0 || length(kSumstats) != 1)
+      stop("'kSumstats' must be a single value equal to or larger than 0")
+    if (kSumstats > nSumstats)
+      stop("'kSumstats' must be a single value equal to or smaller than 'nSumstats'")
     if (kSumstats%%1 != 0 && method == "hypergeometric" && !((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")))
-      stop("When 'kSumstats' is specified and the likelihood is 'hypergeometric', its value must be an integer.")
+      stop("'kSumstats' must be a single integer equal to or larger than 0")
     
     n <- nSumstats
     k <- kSumstats
@@ -178,13 +176,19 @@ evaluation <- function(materiality = NULL, minPrecision = NULL, method = 'binomi
     
   } else if (!is.null(sample)) {
     
-    if (is.null(bookValues) || is.null(auditValues) || length(bookValues) != 1 || length(auditValues) != 1)
-      stop("Specify a valid book value column name and a valid audit value column name when using a sample.")
+    if (is.null(bookValues))
+      stop("'bookValues' is missing for evaluation")
+    if (length(bookValues) != 1)
+      stop("'bookValues' must be a single character")
+    if (is.null(auditValues))
+      stop("'auditValues' is missing for evaluation")
+    if (length(auditValues) != 1)
+      stop("'auditValues' must be a single character")
     
     missingValues <- unique(c(which(is.na(sample[, bookValues])), which(is.na(sample[, auditValues]))))
     
     if (length(missingValues) == nrow(sample))
-      stop("Your sample contains no items after removing missing values from the book value and audit value columns.")
+      stop("not enough 'sample' observations")
     
     sample <- stats::na.omit(sample)
     n <- nrow(sample)
@@ -204,7 +208,7 @@ evaluation <- function(materiality = NULL, minPrecision = NULL, method = 'binomi
     
   } else {
     
-    stop("You must specify an annotated sample using 'sample', 'bookValues', 'auditValues', and 'counts', or provide summary statistics using 'nSumstats' and 'kSumstats'.")
+    stop("sample or summary statistics missing for evaluation")
     
   }
   
@@ -250,7 +254,9 @@ evaluation <- function(materiality = NULL, minPrecision = NULL, method = 'binomi
   } else if (method == 'hypergeometric') {
     
     if (is.null(N))
-      stop("The 'hypergeometric' likelihood requires a positive integer as input for the population size 'N'.")
+      stop("'N' is missing for evaluation")
+    if (N <= 0 || N%%1 != 0)
+      stop("'N' must be a positive integer")
     
     if ((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")) {
       # Bayesian evaluation using the beta-binomial distribution
@@ -374,7 +380,7 @@ evaluation <- function(materiality = NULL, minPrecision = NULL, method = 'binomi
   result[["materiality"]]    <- as.numeric(materiality)
   result[["minPrecision"]]   <- as.numeric(minPrecision)
   result[["method"]]         <- as.character(method)
-  result[["N"]]              <- as.numeric(N)
+  result[["N"]]              <- N
   result[["n"]]              <- as.numeric(n)
   result[["k"]]              <- as.numeric(k)
   result[["t"]]              <- as.numeric(t)

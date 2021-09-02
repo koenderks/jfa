@@ -6,7 +6,7 @@
 \usage{
 selection(population, sampleSize, units = 'records', algorithm = 'random',
           bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, 
-          ascending = TRUE, withReplacement = FALSE, seed = 1)
+          ascending = TRUE, replace = FALSE, seed = 1)
 }
 \arguments{
 \item{population}{a data frame containing the population of items the auditor wishes to sample from.}
@@ -25,7 +25,7 @@ selection(population, sampleSize, units = 'records', algorithm = 'random',
 
 \item{ascending}{if \code{ordered = TRUE}, a logical specifying whether to order the population \code{bookValues} from smallest to largest. Defaults to \code{TRUE}.}
 
-\item{withReplacement}{if \code{algorithm = 'random'}, a logical specifying whether sampling should be performed with replacement. Defaults to \code{FALSE}.}
+\item{replace}{if \code{algorithm = 'random'}, a logical specifying whether sampling should be performed with replacement. Defaults to \code{FALSE}.}
 
 \item{seed}{if \code{algorithm = 'random'} or \code{algorithm = 'cell'}, an integer specifying a seed to reproduce results. Defaults to 1.}
 }

@@ -163,6 +163,21 @@ You can visually inspect the prior distribution using the `plot()` function.
 plot(prior7)
 ```
 
+### Custom prior distribution
+
+You can manually specify the $\alpha$ and $\beta$ parameters of the prior distribution using `method = 'custom'` in combination with the `alpha` and `beta` arguments. As an example, the code below creates a beta(2, 5) prior distribution.
+
+```{r}
+prior8 <- auditPrior(method = 'custom', likelihood = likelihood, alpha = 1, beta = 5)
+summary(prior8)
+```
+
+You can visually inspect the prior distribution using the `plot()` function.
+
+```{r}
+plot(prior8)
+```
+
 ## Using a prior distribution
 
 Bayesian statistics allows the auditor to build on their existing information. Therefore, the objects returned by the `auditPrior()` function can be used as input for the `prior` argument in the `planning()` and `evaluation()` functions.

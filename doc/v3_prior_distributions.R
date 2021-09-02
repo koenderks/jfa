@@ -71,6 +71,13 @@ summary(prior7)
 plot(prior7)
 
 ## -----------------------------------------------------------------------------
+prior8 <- auditPrior(method = 'custom', likelihood = likelihood, alpha = 1, beta = 5)
+summary(prior8)
+
+## -----------------------------------------------------------------------------
+plot(prior8)
+
+## -----------------------------------------------------------------------------
 jfa::planning(materiality = materiality, expectedError = expectedError, 
               confidence = confidence, prior = prior7)
 

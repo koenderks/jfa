@@ -21,28 +21,28 @@ NULL
 #' @method print jfaPrior
 #' @export
 print.jfaPrior <- function(x, ...) {
-  cat("Probability distribution for audit sampling:", x[["prior"]], "\nDistribution obtained via method", paste0("'", x[["method"]], "'.\n"))
+  cat("Probability distribution for audit sampling:", x[["prior"]], "\nDistribution obtained via method", paste0("'", x[["method"]], "'\n"))
 }
 
 #' @rdname jfa-methods
 #' @method print jfaPosterior
 #' @export
 print.jfaPosterior <- function(x, ...) {
-  cat("Probability distribution for audit sampling:", x[["posterior"]], "\nDistribution obtained via method 'sample'.\n")
+  cat("Probability distribution for audit sampling:", x[["posterior"]], "\nDistribution obtained via method 'sample'\n")
 }
 
 #' @rdname jfa-methods
 #' @method print jfaPlanning
 #' @export
 print.jfaPlanning <- function(x, ...) {
-  cat("Minimum sample size:", x[["sampleSize"]], "\nSample size obtained in", x[["iterations"]], "iteration(s) via method", paste0("'", x[["likelihood"]], "'.\n"))
+  cat("Minimum sample size:", x[["sampleSize"]], "\nSample size obtained in", x[["iterations"]], "iteration(s) via method", paste0("'", x[["likelihood"]], "'\n"))
 }
 
 #' @rdname jfa-methods
 #' @method print jfaSelection
 #' @export
 print.jfaSelection <- function(x, ...) {
-  cat("Obtained sampling units:", sum(x[["sample"]][["count"]]), "| Sample items:", x[["obtainedSampleSize"]], "\nSample obtained via methods", paste0("'", x[["units"]], "' + '", x[["algorithm"]], "'.\n"))
+  cat("Obtained sampling units:", sum(x[["sample"]][["count"]]), "| Sample items:", x[["obtainedSampleSize"]], "\nSample obtained via methods", paste0("'", x[["units"]], "' + '", x[["algorithm"]], "'\n"))
 }
 
 #' @rdname jfa-methods
@@ -50,12 +50,12 @@ print.jfaSelection <- function(x, ...) {
 #' @export
 print.jfaEvaluation <- function(x, ...) {
   if (x[["method"]] %in% c("direct", "difference", "quotient", "regression")) {
-    cat("Most likely error:", round(x[["mle"]], 3), "|", paste0(round(x[["confidence"]] * 100, 3), "%"), "Interval:", paste0("[", round(x[["lowerBound"]], 3), "; ", round(x[["upperBound"]], 3), "]"), "| Precision:", round(x[["precision"]], 3), "\nEstimates obtained via method", paste0("'", x[["method"]], "'.\n"))
+    cat("Most likely error:", round(x[["mle"]], 3), "|", paste0(round(x[["confidence"]] * 100, 3), "%"), "Interval:", paste0("[", round(x[["lowerBound"]], 3), "; ", round(x[["upperBound"]], 3), "]"), "| Precision:", round(x[["precision"]], 3), "\nEstimates obtained via method", paste0("'", x[["method"]], "'\n"))
   } else {
     if (!is.null(x[["prior"]]) && x[["materiality"]] != 1) {
-      cat("Most likely error:", paste0(round(x[["mle"]] * 100, 3), "%"), "|", paste0(round(x[["confidence"]] * 100, 3), "%"), "Upper bound:", paste0(round(x[["confBound"]] * 100, 3), "%"), "| Precision:", paste0(round(x[["precision"]] * 100, 3), "%"), "| BF-+:", round(x[["posterior"]][["hypotheses"]]$bf, 3), "\nEstimates obtained via method", paste0("'", x[["method"]], "'.\n"))
+      cat("Most likely error:", paste0(round(x[["mle"]] * 100, 3), "%"), "|", paste0(round(x[["confidence"]] * 100, 3), "%"), "Upper bound:", paste0(round(x[["confBound"]] * 100, 3), "%"), "| Precision:", paste0(round(x[["precision"]] * 100, 3), "%"), "| BF-+:", round(x[["posterior"]][["hypotheses"]]$bf, 3), "\nEstimates obtained via method", paste0("'", x[["method"]], "'\n"))
     } else {
-      cat("Most likely error:", paste0(round(x[["mle"]] * 100, 3), "%"), "|", paste0(round(x[["confidence"]] * 100, 3), "%"), "Upper bound:", paste0(round(x[["confBound"]] * 100, 3), "%"), "| Precision:", paste0(round(x[["precision"]] * 100, 3), "%"), "\nEstimates obtained via method", paste0("'", x[["method"]], "'.\n"))
+      cat("Most likely error:", paste0(round(x[["mle"]] * 100, 3), "%"), "|", paste0(round(x[["confidence"]] * 100, 3), "%"), "Upper bound:", paste0(round(x[["confBound"]] * 100, 3), "%"), "| Precision:", paste0(round(x[["precision"]] * 100, 3), "%"), "\nEstimates obtained via method", paste0("'", x[["method"]], "'\n"))
     }
   }
 }
@@ -79,7 +79,8 @@ print.summary.jfaPrior <- function(x, ...) {
                                           "arm" = paste0("IR = ", x[["IR"]], "; ICR = ", x[["ICR"]], "; DR = ", x[["DR"]]),
                                           "bram" = paste0("Mode = ", x[["Mode_Prior"]], "; Upper bound = ", x[["UB_Prior"]]),
                                           "sample" = paste0("Earlier sample of ", x[["N_Prior"]], " items with ", x[["K_Prior"]], " errors"),
-                                          "factor" = paste0("Earlier sample of ", x[["N_Prior"]], " items with ", x[["K_Prior"]], " errors weighted by ", x[["Factor"]])), "
+                                          "factor" = paste0("Earlier sample of ", x[["N_Prior"]], " items with ", x[["K_Prior"]], " errors weighted by ", x[["Factor"]]),
+                                          "custom" = paste0("\u03B1 = ", x[["alpha"]], "; \u03B2 = ", x[["beta"]])), "
 # ------------------------------------------------------------
 # Output: 
 #
@@ -138,6 +139,7 @@ print.summary.jfaPlanning <- function(x, ...) {
 # Likelihood:                   ", x[["Likelihood"]],
       ifelse(x[["Type"]] == "Bayesian", no = "", yes = paste0("
 # Prior distribution:            ", x[["Prior"]])),"
+# Population size:              ", ifelse(is.null(x[["N"]]), yes = "Not specified", no = x[["N"]]),"
 # Expected sample errors:       ", x[["Expected_Sample_Errors"]],"
 # ------------------------------------------------------------
 # Output:
@@ -202,6 +204,7 @@ print.summary.jfaEvaluation <- function(x, ...) {
 # Confidence:                   ", paste0(x[["Confidence"]] * 100, "%"),"
 # Materiality:                  ", ifelse(x[["Materiality"]] == 1, yes = "Not specified", no = paste0(x[["Materiality"]] * 100, "%")),"
 # Minimum precision:            ", ifelse(x[["Minimum_Precision"]] == 1, yes = "Not specified", no = paste0(x[["Minimum_Precision"]] * 100, "%")),"
+# Population size:              ", ifelse(is.null(x[["N"]]), yes = "Not specified", no = x[["N"]]),"
 # Sample size:                  ", x[["Sample_Size"]],"
 # Sample errors:                ", x[["Sample_Errors"]],
       ifelse(!(x[["Method"]] %in% c("direct", "difference", "quotient", "regression")), no = "", yes = paste0("
@@ -267,6 +270,9 @@ summary.jfaPrior <- function(object, digits = 3, ...) {
     out[["K_Prior"]] <- object[["specifics"]]$sampleK
     if (object[["method"]] == "factor")
       out[["Factor"]] <- round(object[["specifics"]]$factor, digits)
+  } else if (object[["method"]] == 'custom') {
+    out[["alpha"]] <- round(object[["specifics"]]$alpha, digits)
+    out[["beta"]] <- round(object[["specifics"]]$beta, digits)
   }
   class(out) <- c("summary.jfaPrior", "data.frame")
   return(out)
@@ -300,6 +306,8 @@ summary.jfaPlanning <- function(object, digits = 3, ...) {
                     "Expected_UB" = round(object[["expectedBound"]], digits + 2),
                     "Expected_Precision" = round(object[["expectedPrecision"]], digits + 2),
                     stringsAsFactors = FALSE)
+  if (!is.null(object[["N"]]))
+    out$N <- object[["N"]]
   if (inherits(object[["prior"]], "jfaPrior")) {
     out[["Prior"]] <- object[["prior"]]$prior
     out[["Posterior"]] <- object[["expectedPosterior"]]$posterior
@@ -351,6 +359,8 @@ summary.jfaEvaluation <- function(object, digits = 3, ...) {
                     "Precision" = round(object[["precision"]], digits + 2),
                     "Conclusion" = object[["conclusion"]],
                     stringsAsFactors = FALSE)
+  if (!is.null(object[["N"]]))
+    out$N <- object[["N"]]
   if (object[["method"]] %in% c("direct", "difference", "quotient", "regression")) {
     out[["Type"]] <- "Classical"
     out[["Population_Value"]] <- round(object[["popBookvalue"]], digits)

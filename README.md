@@ -167,7 +167,7 @@ planning(materiality = NULL, minPrecision = NULL, expectedError = 0,
 
 ```r
 # Planning using binomial likelihood
-x <- planning(materiality = 0.03, likelihood = 'binomial', confidence = 0.95)
+x <- planning(materiality = 0.03, likelihood = 'binomial', confidence = 0.95, N = 500)
 
 summary(x) # Prints information about the planning
 ```
@@ -183,7 +183,7 @@ The `selection()` function takes a data frame and performs statistical sampling 
 ```r
 selection(population, sampleSize, units = 'records', algorithm = 'random', 
           bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, 
-          ascending = TRUE, withReplacement = FALSE, seed = 1)
+          ascending = TRUE, replace = FALSE, seed = 1)
 ```
 
 *Supported options for the `units` argument:*

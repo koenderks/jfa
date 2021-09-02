@@ -8,7 +8,8 @@
 #' @usage auditPrior(method = 'none', likelihood = 'binomial', expectedError = 0, 
 #'            confidence = 0.95, materiality = NULL, N = NULL, 
 #'            ir = 1, cr = 1, ub = NULL, pHmin = NULL, pHplus = NULL, 
-#'            sampleN = 0, sampleK = 0, factor = 1)
+#'            sampleN = 0, sampleK = 0, factor = 1,
+#'            alpha = NULL, beta = NULL)
 #' 
 #' @param method          a character specifying the method by which the prior distribution is constructed. Defaults to \code{none} which incorporates no existing information. Other options are \code{arm}, \code{bram}, \code{median}, \code{hypotheses}, \code{sample}, and \code{factor}. See the details section for more information about the available methods.
 #' @param likelihood      a character specifying the likelihood assumed when updating the prior distribution. This can be either \code{binomial} for the binomial likelihood and beta prior distribution, \code{poisson} for the Poisson likelihood and gamma prior distribution, or \code{hypergeometric} for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.
@@ -24,6 +25,8 @@
 #' @param sampleN         if \code{method = 'sample'} or \code{method = 'factor'}, an integer larger than, or equal to, 0 specifying the sample size of the sample equivalent to the prior information.
 #' @param sampleK         if \code{method = 'sample'} or \code{method = 'factor'}, a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.
 #' @param factor          if \code{method = 'factor'}, a numeric value between 0 and 1 specifying the weighting factor for the results of the sample equivalent to the prior information.
+#' @param alpha           if \code{method = 'custom'}, a numeric value specifying the \eqn{\alpha} parameter of the prior distribution.
+#' @param beta            if \code{method = 'custom'}, a numeric value specifying the \eqn{\beta} parameter of the prior distribution.
 #' 
 #' @details This section elaborates on the available options for the \code{method} argument.
 #'
@@ -35,6 +38,7 @@
 #'  \item{\code{hypotheses}:        This method constructs a prior distribution with custom prior probabilities for the hypotheses of tolerable misstatement (\eqn{\theta <} materiality) and intolerable misstatement (\eqn{\theta >} materiality). This method requires specification of the \code{pHmin} and \code{pHplus} arguments.}
 #'  \item{\code{sample}:            This method constructs a prior distribution on the basis of an earlier sample. This method requires specification of the \code{sampleN} and \code{sampleK} arguments.}
 #'  \item{\code{factor}:            This method constructs a prior distribution on the basis of an earlier sample in combination with a weighting factor. This method requires specification of the \code{sampleN}, \code{sampleK}, and \code{factor} arguments.}
+#'  \item{\code{custom}:            This method constructs a prior distribution on the basis of user specified \eqn{\alpha} and \eqn{\beta} parameters.}
 #' }
 #'
 #' @details This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
@@ -76,44 +80,47 @@
 auditPrior <- function(method = 'none', likelihood = 'binomial', expectedError = 0, 
                        confidence = 0.95, materiality = NULL, N = NULL, 
                        ir = 1, cr = 1, ub = NULL, pHmin = NULL, pHplus = NULL, 
-                       sampleN = 0, sampleK = 0, factor = 1) {
+                       sampleN = 0, sampleK = 0, factor = 1,
+                       alpha = NULL, beta = NULL) {
   
-  if (!(method %in% c("none", "median", "hypotheses", "arm", "bram", "sample", "factor"))) # Check if the method has a valid input
-    stop("Currently only methods 'none', 'median', 'hypotheses', 'arm', 'bram', 'sample', and 'factor' are supported.")
-
+  if (!(method %in% c("none", "median", "hypotheses", "arm", "bram", "sample", "factor", "custom"))) # Check if the method has a valid input
+    stop("'method' should be one of 'none', 'median', 'hypotheses', 'arm', 'bram', 'sample', 'factor', 'custom'")
+  
   if (!(likelihood %in% c("poisson", "binomial", "hypergeometric"))) # Check if the likelihood has a valid input
-    stop("Specify a valid option for the 'likelihood' argument. Possible options are 'binomial', 'poisson', and 'hypergeometric'.")
-
+    stop("'likelihood' should be one of 'binomial', 'poisson', 'hypergeometric'")
+  
   if (confidence >= 1 || confidence <= 0 || is.null(confidence)) # Check if the confidence has a valid input
-    stop("The value for the confidence must be between 0 and 1.")
+    stop("'confidence' must be a single number between 0 and 1")
   
   if (is.null(materiality) && method %in% c("median", "hypotheses", "arm")) # Materiality is required for these methods
-    stop("The methods 'arm', 'median', and 'hypotheses' require specification of the 'materiality' argument.")
+    stop("'materiality' is missing for prior construction")
   
   if (likelihood == "hypergeometric" && (is.null(N) || N <= 0)) # Check if N is specified if hypergeometric is specified
-    stop("The hypergeometric likelihood requires that you specify a positive value for the population size argument 'N'.")
+    stop("'N' is missing for prior construction")
   
   if (expectedError < 0) # Check if the expected errors has a valid input
-    stop("The value for the 'expectedError' argument must be zero or larger than zero.")
+    stop("'expectedError' must be a single number equal to or larger than 0")
   
   if (!is.null(materiality) && expectedError >= materiality && expectedError < 1) # Check if the expected errors do not exceed the materiality
-    stop("The value for the 'expectedError' argument must be lower than the value for the 'materiality' argument.")
+    stop("'expectedError' must be a single number smaller than 'materiality'")
   
-  if (expectedError >= 1 && method != 'none') # Check if the expected errors are consistent with the method
-    stop("The expected errors must be entered as a proportion for this method.")
+  if (expectedError >= 1 && !(method %in% c('none', 'sample', 'factor', 'custom'))) # Check if the expected errors are consistent with the method
+    stop(paste0("'expectedError' must be a single number equal to or larger than 0 for 'method = ", method, "'"))
   
-  if (method == "none") { # Method 1: Negligible prior information
+  if (method == "none") { # Method 1: Noninformative prior distribution
     
     nPrior <- 0 # No earlier observations
     kPrior <- 0 # No earlier errors
     
-  } else if (method == "arm") { # Method 2: Translate the risks from the audit risk model
+  } else if (method == "arm") { # Method 2: Translate risks from the audit risk model
     
-    if (is.null(ir) || is.null(cr) || is.null(materiality)) # Check if ir and cr have valid inputs
-      stop("Method = 'arm' requires specification of the 'materiality', 'ir', and 'cr' arguments.")
+    if (is.null(cr))
+      stop("'cr' is missing for prior construction")
+    if (is.null(ir))
+      stop("'ir' is missing for prior construction")
     
     alpha  <- (1 - confidence) / (ir * cr) # Calculate the required detection risk from the audit risk model
-    usedPopSize <- if (likelihood == "hypergeometric") N else NULL
+    usedPopSize <- if (likelihood == 'hypergeometric') N else NULL
     nPlus  <- planning(confidence = confidence, likelihood = likelihood, expectedError = expectedError, N = usedPopSize, materiality = materiality, prior = TRUE)$sampleSize # Calculate the sample size for the full detection risk  
     nMin   <- planning(confidence = 1 - alpha, likelihood = likelihood, expectedError = expectedError, N = usedPopSize, materiality = materiality, prior = TRUE)$sampleSize # Calculated the sample size for the adjusted detection risk
     nPrior <- nPlus - nMin # Calculate the sample size equivalent to the increase in detection risk
@@ -122,10 +129,10 @@ auditPrior <- function(method = 'none', likelihood = 'binomial', expectedError =
   } else if (method == 'bram') { # Method 3: Bayesian risk assessment model
     
     if (is.null(ub)) # Check if the value for the upper bound is present
-      stop("Method = 'bram' requires specification of the 'ub' argument.")
+      stop("'ub' is missing for prior construction")
     
     if (ub <= 0 || ub >= 1 || ub <= expectedError) # Check if the value for the upper bound is valid
-      stop("The value of 'ub' must be between 0 and 1 and higher than 'expectedErrors'.")
+      stop("'ub' must be a single number between 0 and 1 and higher than 'expectedError'")
     
     if (likelihood == 'poisson' && expectedError > 0) { # Perform approximation described in Stewart (2013) on p. 45.
       
@@ -165,10 +172,10 @@ auditPrior <- function(method = 'none', likelihood = 'binomial', expectedError =
     } else if (method == "hypotheses") { # Method 5: Custom prior probabilities
       
       if (is.null(pHmin) && is.null(pHplus)) # Must have the prior probabilities and materiality
-        stop("Method = 'hypotheses' requires specification of the 'pHmin' or 'pHplus' arguments.")
+        stop("'pHmin' or 'pHplus' is missing for prior construction")
       
       if ((!is.null(pHmin) && !is.null(pHplus)) && pHmin + pHplus != 1) # Check for valid prior probabilities
-        stop("The values for 'pHmin' and 'pHplus' should sum to one.")  
+        stop("'pHmin' and 'pHplus' should sum to one")  
       
       if (!is.null(pHmin) && is.null(pHplus)) { # Adjust p(H1) for user input
         probH1 <- 1 - pHmin
@@ -202,19 +209,31 @@ auditPrior <- function(method = 'none', likelihood = 'binomial', expectedError =
       }
     }
     
-  } else if (method == "sample") { # Method 6: Earlier sample
+  } else if (method == 'sample' || method == 'factor') { # Method 6: Earlier sample & Method 7: Weighted earlier sample
     
-    if (is.null(sampleN) || is.null(sampleK)) # Check for valid arguments
-      stop("Method = 'sample' requires specification of the 'sampleN', and 'sampleK' arguments.")
-    nPrior <- sampleN # Earlier sample size
-    kPrior <- sampleK # Earlier errors
+    if (is.null(sampleN))
+      stop("'sampleN' is missing for prior construction")
+    if (is.null(sampleK))
+      stop("'sampleK' is missing for prior construction")
+    if (method == 'factor') {
+      if (is.null(factor))
+        stop("'factor' is missing for prior construction")
+    } else {
+      factor <- 1
+    }
     
-  } else if (method == "factor") { # Method 7: Weighted earlier sample
-    
-    if (is.null(sampleN) || is.null(sampleK) || is.null(factor)) # Check for valid arguments
-      stop("Method = 'factor' requires specification of the 'factor', 'sampleN', and 'sampleN=K' arguments.")  
     nPrior <- sampleN * factor # Earlier sample size
     kPrior <- sampleK * factor # Earlier errors
+    
+  } else if (method == 'custom') { # User specified prior distribution
+    
+    if (is.null(alpha))
+      stop("'alpha' is missing for prior construction")
+    if (is.null(beta))
+      stop("'beta' is missing for prior construction")
+    
+    kPrior <- alpha - 1
+    nPrior <- switch(likelihood, 'binomial' = beta + kPrior - 1, 'poisson' = beta, 'hypergeometric' = beta + kPrior - 1) 
     
   }
   
@@ -272,6 +291,9 @@ auditPrior <- function(method = 'none', likelihood = 'binomial', expectedError =
   } else if (method == "bram") {
     result[["specifics"]]$mode      <- result[["expectedError"]]
     result[["specifics"]]$ub        <- as.numeric(ub)
+  } else if (method == 'custom') {
+    result[["specifics"]]$alpha     <- alpha
+    result[["specifics"]]$beta      <- beta
   }
   
   # Create the hypotheses section

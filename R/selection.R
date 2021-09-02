@@ -7,7 +7,7 @@
 #'
 #' @usage selection(population, sampleSize, units = 'records', algorithm = 'random',
 #'           bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, 
-#'           ascending = TRUE, withReplacement = FALSE, seed = 1)
+#'           ascending = TRUE, replace = FALSE, seed = 1)
 #'
 #' @param population            a data frame containing the population of items the auditor wishes to sample from.
 #' @param sampleSize            an integer larger than 0 specifying the number of sampling units that need to be selected from the population. Can also be an object of class \code{jfaPlanning}.
@@ -17,7 +17,7 @@
 #' @param intervalStartingPoint if \code{algorithm = 'interval'}, an integer larger than 0 specifying the starting point of the algorithm.
 #' @param ordered               a logical specifying whether to first order the items in the \code{population} according to the value of their \code{bookValues}. Defaults to \code{TRUE}.
 #' @param ascending             if \code{ordered = TRUE}, a logical specifying whether to order the population \code{bookValues} from smallest to largest. Defaults to \code{TRUE}.
-#' @param withReplacement       if \code{algorithm = 'random'}, a logical specifying whether sampling should be performed with replacement. Defaults to \code{FALSE}.
+#' @param replace               if \code{algorithm = 'random'}, a logical specifying whether sampling should be performed with replacement. Defaults to \code{FALSE}.
 #' @param seed                  if \code{algorithm = 'random'} or \code{algorithm = 'cell'}, an integer specifying a seed to reproduce results. Defaults to 1.
 #' 
 #' @details The first part of this section elaborates on the two possible options for the \code{units} argument:
@@ -64,28 +64,28 @@
 
 selection <- function(population, sampleSize, units = 'records', algorithm = 'random', 
                       bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, 
-                      ascending = TRUE, withReplacement = FALSE, seed = 1) {
+                      ascending = TRUE, replace = FALSE, seed = 1) {
   
   if (class(sampleSize) == "jfaPlanning") # If the input for 'sampleSize' is of class 'jfaPlanning', extract the planned sample size
     sampleSize <- sampleSize$sampleSize
   
-  if (units == "records" && sampleSize > nrow(population)) # Check if the sample size is valid (< N)
-    stop("Cannot take a sample larger than the population size")
+  if (units == "records" && sampleSize > nrow(population) && !replace) # Check if the sample size is valid (< N)
+    stop("cannot take a sample larger than the population when 'replace = FALSE'")
   
   if (!(algorithm %in% c("random", "cell", "interval")) || length(algorithm) != 1) # Check if the algorithm has a valid input
-    stop("algorithm must be one of 'random', 'cell', or 'interval'.")
+    stop("'algorithm' should be one of 'random', 'cell', 'interval'")
   
   if (!(units %in% c("records", "mus")) || length(units) != 1) # Check if the units have a valid input
-    stop("units must be one of 'records' or 'mus'.")
+    stop("'units' must be one of 'records', 'mus'")
   
   if (units == "mus" && is.null(bookValues)) # Check if the book values have a valid input
-    stop("Book values must be specified if 'units = mus' is used.")
+    stop("'bookValues' is missing for selection")
   
   if (!is.null(bookValues) && length(bookValues) != 1) # Check if the book values have a valid input
-    stop("Specify one column for the book values")
+    stop("'bookValues' must be a single character")
   
   if (!is.null(bookValues) && !(bookValues %in% colnames(population))) # Check if the book values column can be found in the population
-    stop("The book value column cannot be located in the population data.")
+    stop(paste0("'", bookValues, "' is not a column in 'population'"))
   
   interval             <- NULL # Placeholder for interval
   bv                   <- NULL # Placeholder for book values
@@ -96,7 +96,7 @@ selection <- function(population, sampleSize, units = 'records', algorithm = 'ra
     bv <- population[, bookValues]
   
   if (units == "mus" && sampleSize > sum(bv)) # Check if the sample size is valid
-    stop("Cannot take a sample larger than the population value.")
+    stop("cannot take a sample larger than the population value")
   
   if (ordered && !is.null(bv)) { # Order the population
     population <- population[order(bv, decreasing = !ascending), ]
@@ -104,7 +104,7 @@ selection <- function(population, sampleSize, units = 'records', algorithm = 'ra
   }
   
   if (!is.null(bv) && any(bv < 0)) { # Remove the negative book values from the population
-    warning("The book values contain negative values, these are removed from the data.")
+    warning("'bookValues' contains negative values which are removed from the population")
     negativeValues <- which(bv < 0)
     population     <- population[-negativeValues, ]
     bv             <- population[, bookValues]
@@ -117,15 +117,15 @@ selection <- function(population, sampleSize, units = 'records', algorithm = 'ra
   if (algorithm == "random" && units == "records") {
     
     # 1. Random record sampling
-    index <- sample(rownames(population), size = sampleSize, replace = withReplacement)
+    index <- sample(rownames(population), size = sampleSize, replace = replace)
     
   } else if (algorithm == "random" && units == "mus") {
     
     # 2. Random monetary unit sampling
     if (sampleSize > nrow(population))
-      withReplacement <- TRUE
+      replace <- TRUE
     
-    index <- sample(rownames(population), size = sampleSize, replace = withReplacement, prob = bv)
+    index <- sample(rownames(population), size = sampleSize, replace = replace, prob = bv)
     
   } else if (algorithm == "cell" && units == "records") {
     
