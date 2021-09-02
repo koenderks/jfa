@@ -897,7 +897,7 @@ test_that(desc = "(id: f7-v0.5.5-21) Statistical Sampling Results based on the B
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 1, method = "binomial")
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
   
@@ -931,7 +931,7 @@ test_that(desc = "(id: f7-v0.5.5-22) Statistical Sampling Results based on the B
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 1, method = "binomial")
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
   
@@ -965,7 +965,7 @@ test_that(desc = "(id: f7-v0.5.5-23) Statistical Sampling Results based on the B
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 1, method = "binomial")
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
   
@@ -999,7 +999,7 @@ test_that(desc = "(id: f7-v0.5.5-24) Statistical Sampling Results based on the B
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 1, method = "binomial")
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
   
@@ -1035,7 +1035,7 @@ test_that(desc = "(id: f7-v0.5.5-25) Statistical Sampling Results based on the P
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 1, method = "poisson")
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
   
@@ -1069,7 +1069,7 @@ test_that(desc = "(id: f7-v0.5.5-26) Statistical Sampling Results based on the P
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 1, method = "poisson")
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
   
@@ -1103,7 +1103,7 @@ test_that(desc = "(id: f7-v0.5.5-27) Statistical Sampling Results based on the P
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 1, method = "poisson")
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
   
@@ -1137,7 +1137,7 @@ test_that(desc = "(id: f7-v0.5.5-28) Statistical Sampling Results based on the P
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 1, method = "poisson")
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
   
@@ -1176,7 +1176,7 @@ test_that(desc = "(id: f7-v0.5.5-29) Statistical Sampling Results based on the H
       if(n[rows] >= N)
         next
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 1, method = "hypergeometric", N.units = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
   
@@ -1213,7 +1213,7 @@ test_that(desc = "(id: f7-v0.5.5-30) Statistical Sampling Results based on the H
       if(n[rows] >= N)
         next
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 1, method = "hypergeometric", N.units = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
   
@@ -1250,7 +1250,7 @@ test_that(desc = "(id: f7-v0.5.5-31) Statistical Sampling Results based on the H
       if(n[rows] >= N)
         next
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 1, method = "hypergeometric", N.units = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
   
@@ -1287,7 +1287,7 @@ test_that(desc = "(id: f7-v0.5.5-32) Statistical Sampling Results based on the H
       if(n[rows] >= N)
         next
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 1, method = "hypergeometric", N.units = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
   
@@ -1324,7 +1324,7 @@ test_that(desc = "(id: f7-v0.5.5-33) Statistical Sampling Results based on the H
       if(n[rows] >= N)
         next
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 1, method = "hypergeometric", N.units = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
   
@@ -1361,7 +1361,7 @@ test_that(desc = "(id: f7-v0.5.5-34) Statistical Sampling Results based on the H
       if(n[rows] >= N)
         next
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 1, method = "hypergeometric", N.units = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
   
@@ -1398,7 +1398,7 @@ test_that(desc = "(id: f7-v0.5.5-35) Statistical Sampling Results based on the H
       if(n[rows] >= N)
         next
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 1, method = "hypergeometric", N.units = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
   
@@ -1435,7 +1435,7 @@ test_that(desc = "(id: f7-v0.5.5-36) Statistical Sampling Results based on the H
       if(n[rows] >= N)
         next
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 1, method = "hypergeometric", N.units = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
   
@@ -1472,7 +1472,7 @@ test_that(desc = "(id: f7-v0.5.5-37) Statistical Sampling Results based on the H
       if(n[rows] >= N)
         next
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 1, method = "hypergeometric", N.units = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
   
@@ -1509,7 +1509,7 @@ test_that(desc = "(id: f7-v0.5.5-38) Statistical Sampling Results based on the H
       if(n[rows] >= N)
         next
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 1, method = "hypergeometric", N.units = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
   
@@ -1546,7 +1546,7 @@ test_that(desc = "(id: f7-v0.5.5-39) Statistical Sampling Results based on the H
       if(n[rows] >= N)
         next
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 1, method = "hypergeometric", N.units = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
   
@@ -1583,7 +1583,7 @@ test_that(desc = "(id: f7-v0.5.5-40) Statistical Sampling Results based on the H
       if(n[rows] >= N)
         next
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 1, method = "hypergeometric", N.units = N)
-      tab[rows, columns] <- ceiling(ss$confBound * 1000) / 10
+      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
   
