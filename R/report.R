@@ -24,13 +24,13 @@
 #'
 #' # Draw a sample of 100 monetary units from the population using
 #' # fixed interval monetary unit sampling
-#' sample <- selection(population = BuildIt, sampleSize = 100, 
-#'           algorithm = 'interval', units = 'mus', bookValues = 'bookValue')$sample
+#' sample <- selection(data = BuildIt, size = 100, method = 'interval', 
+#'                     units = 'mus', values = 'bookValue')$sample
 #' 
 #' # Evaluate using the Stringer bound
 #' result <- evaluation(confidence = 0.95, materiality = 0.05, 
-#'                      method = 'stringer', sample = sample, 
-#'                      bookValues = 'bookValue', auditValues = 'auditValue')
+#'                      method = 'stringer', data = sample, 
+#'                      values = 'bookValue', values.audit = 'auditValue')
 #'
 #' \dontrun{ 
 #'  report(result) 
