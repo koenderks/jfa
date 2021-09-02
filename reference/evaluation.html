@@ -199,6 +199,10 @@ vignette('jfa', package = 'jfa')" />
       <td><p>a character specifying the column name for the book values in the <code>data</code>.</p></td>
     </tr>
     <tr>
+      <th>values.audit</th>
+      <td><p>a character specifying the column name for the audit values in the <code>data</code>.</p></td>
+    </tr>
+    <tr>
       <th>times</th>
       <td><p>a integer vector specifying the number of times each item in the <code>data</code> should be counted in the evaluation (due to it being selected multiple times for the sample).</p></td>
     </tr>
@@ -241,10 +245,6 @@ vignette('jfa', package = 'jfa')" />
     <tr>
       <th>prior</th>
       <td><p>a logical specifying if a prior distribution must be used, or an object of class <code>jfaPrior</code> or <code>jfaPosterior</code> containing the prior distribution. Defaults to <code>FALSE</code> for frequentist planning. If <code>TRUE</code>, a negligible prior distribution is chosen by default, but can be adjusted using the `kPrior` and `nPrior` arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.</p></td>
-    </tr>
-    <tr>
-      <th>auditValues</th>
-      <td><p>a character specifying the column name for the audit values in the <code>data</code>.</p></td>
     </tr>
     </table>
 
