@@ -5,7 +5,7 @@
 \title{Prior Distributions for Audit Sampling}
 \usage{
 auditPrior(method = 'none', likelihood = 'binomial', expected = 0, 
-           confl.evel = 0.95, materiality = NULL, N.units = NULL, 
+           conf.level = 0.95, materiality = NULL, N.units = NULL, 
            ir = NULL, cr = NULL, ub = NULL, p.min = NULL, 
            x = NULL, n = NULL, factor = NULL, alpha = NULL, beta = NULL)
 }
