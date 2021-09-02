@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Select a statistical audit sample — selection • jfa</title>
+<title>Select a Statistical Audit Sample — selection • jfa</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="Select a statistical audit sample — selection" />
-<meta property="og:description" content="This function takes a data frame and performs statistical sampling according to one of three algorithms: random sampling, cell sampling, and fixed interval sampling. Sampling is done on the level of two possible sampling units: records or monetary units. The function returns an object of class jfaSelection which can be used with associated summary() and a plot() methods.
+<meta property="og:title" content="Select a Statistical Audit Sample — selection" />
+<meta property="og:description" content="This function takes a data frame and performs statistical sampling according to one of three algorithms: random sampling, cell sampling, and fixed interval sampling. Sampling is done on the level of two possible sampling units: items (records) or monetary units. The function returns an object of class jfaSelection which can be used with associated summary() and a plot() methods.
 For more details on how to use this function, see the package vignette:
 vignette('jfa', package = 'jfa')" />
 <meta property="og:image" content="/logo.png" />
@@ -82,7 +82,7 @@ vignette('jfa', package = 'jfa')" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">jfa</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -154,84 +154,86 @@ vignette('jfa', package = 'jfa')" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Select a statistical audit sample</h1>
+    <h1>Select a Statistical Audit Sample</h1>
     <small class="dont-index">Source: <a href='https://github.com/koenderks/jfa/blob/master/R/selection.R'><code>R/selection.R</code></a></small>
     <div class="hidden name"><code>selection.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function takes a data frame and performs statistical sampling according to one of three algorithms: random sampling, cell sampling, and fixed interval sampling. Sampling is done on the level of two possible sampling units: records or monetary units. The function returns an object of class <code>jfaSelection</code> which can be used with associated <code><a href='https://rdrr.io/r/base/summary.html'>summary()</a></code> and a <code><a href='https://rdrr.io/r/graphics/plot.default.html'>plot()</a></code> methods.</p>
+    <p>This function takes a data frame and performs statistical sampling according to one of three algorithms: random sampling, cell sampling, and fixed interval sampling. Sampling is done on the level of two possible sampling units: items (records) or monetary units. The function returns an object of class <code>jfaSelection</code> which can be used with associated <code><a href='https://rdrr.io/r/base/summary.html'>summary()</a></code> and a <code><a href='https://rdrr.io/r/graphics/plot.default.html'>plot()</a></code> methods.</p>
 <p>For more details on how to use this function, see the package vignette:
 <code><a href='../articles/jfa.html'>vignette('jfa', package = 'jfa')</a></code></p>
     </div>
 
-    <pre class="usage"><span class='fu'>selection</span><span class='op'>(</span><span class='va'>population</span>, <span class='va'>sampleSize</span>, units <span class='op'>=</span> <span class='st'>'records'</span>, algorithm <span class='op'>=</span> <span class='st'>'random'</span>,
-          bookValues <span class='op'>=</span> <span class='cn'>NULL</span>, intervalStartingPoint <span class='op'>=</span> <span class='fl'>1</span>, ordered <span class='op'>=</span> <span class='cn'>TRUE</span>, 
-          ascending <span class='op'>=</span> <span class='cn'>TRUE</span>, replace <span class='op'>=</span> <span class='cn'>FALSE</span>, seed <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>selection</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>size</span>, units <span class='op'>=</span> <span class='st'>'items'</span>, method <span class='op'>=</span> <span class='st'>'random'</span>, values <span class='op'>=</span> <span class='cn'>NULL</span>,
+          start <span class='op'>=</span> <span class='fl'>1</span>, order <span class='op'>=</span> <span class='cn'>TRUE</span>, decreasing <span class='op'>=</span> <span class='cn'>FALSE</span>, replace <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>population</th>
+      <th>data</th>
       <td><p>a data frame containing the population of items the auditor wishes to sample from.</p></td>
     </tr>
     <tr>
-      <th>sampleSize</th>
+      <th>size</th>
       <td><p>an integer larger than 0 specifying the number of sampling units that need to be selected from the population. Can also be an object of class <code>jfaPlanning</code>.</p></td>
     </tr>
     <tr>
       <th>units</th>
-      <td><p>a character specifying the sampling units used. Possible options are <code>records</code> (default) for selection on the level of items or <code>mus</code> for selection on the level of monetary units.</p></td>
+      <td><p>a character specifying the sampling units used. Possible options are <code>items</code> (default) for selection on the level of items or <code>mus</code> for selection on the level of monetary units.</p></td>
     </tr>
     <tr>
-      <th>algorithm</th>
+      <th>method</th>
       <td><p>a character specifying the sampling algorithm used. Possible options are <code>random</code> (default) for random sampling, <code>cell</code> for cell sampling, or <code>interval</code> for fixed interval sampling.</p></td>
     </tr>
     <tr>
-      <th>bookValues</th>
-      <td><p>a character specifying the name of the column in the <code>population</code> that contains the book values of the items.</p></td>
+      <th>values</th>
+      <td><p>a character specifying the name of the column in the <code>data</code> that contains the book values of the items.</p></td>
     </tr>
     <tr>
-      <th>intervalStartingPoint</th>
-      <td><p>if <code>algorithm = 'interval'</code>, an integer larger than 0 specifying the starting point of the algorithm.</p></td>
+      <th>start</th>
+      <td><p>if <code>method = 'interval'</code>, an integer larger than 0 specifying the starting point of the algorithm.</p></td>
     </tr>
     <tr>
-      <th>ordered</th>
-      <td><p>a logical specifying whether to first order the items in the <code>population</code> according to the value of their <code>bookValues</code>. Defaults to <code>TRUE</code>.</p></td>
+      <th>order</th>
+      <td><p>a logical specifying whether to first order the items in the <code>data</code> according to the value of their <code>values</code>. Defaults to <code>TRUE</code>.</p></td>
     </tr>
     <tr>
-      <th>ascending</th>
-      <td><p>if <code>ordered = TRUE</code>, a logical specifying whether to order the population <code>bookValues</code> from smallest to largest. Defaults to <code>TRUE</code>.</p></td>
+      <th>decreasing</th>
+      <td><p>if <code>order = TRUE</code>, a logical specifying whether to order the population <code>values</code> from smallest to largest. Defaults to <code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>replace</th>
-      <td><p>if <code>algorithm = 'random'</code>, a logical specifying whether sampling should be performed with replacement. Defaults to <code>FALSE</code>.</p></td>
-    </tr>
-    <tr>
-      <th>seed</th>
-      <td><p>if <code>algorithm = 'random'</code> or <code>algorithm = 'cell'</code>, an integer specifying a seed to reproduce results. Defaults to 1.</p></td>
+      <td><p>if <code>method = 'random'</code>, a logical specifying whether sampling should be performed with replacement. Defaults to <code>FALSE</code>.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An object of class <code>jfaSelection</code> containing:</p>
-<dt>population</dt><dd><p>a data frame containing the input population.</p></dd>
+<dt>data</dt><dd><p>a data frame containing the input data.</p></dd>
 <dt>sample</dt><dd><p>a data frame containing the selected sample of items.</p></dd>
+<dt>n.req</dt><dd><p>an integer indicating the requested sample size.</p></dd>
+<dt>n.units</dt><dd><p>an integer indicating the total number of obtained sampling units.</p></dd>
+<dt>n.items</dt><dd><p>an integer indicating the total number of obtained sample items.</p></dd>
+<dt>N.units</dt><dd><p>an integer indicating the total number of sampling units in the population.</p></dd>
+<dt>N.items</dt><dd><p>an integer indicating the total number of items in the population.</p></dd>
+<dt>interval</dt><dd><p>if <code>method = 'interval'</code>, a numeric value indicating the size of the selection interval.</p></dd>
 <dt>units</dt><dd><p>a character indicating the sampling units that were used to create the selection.</p></dd>
-<dt>algorithm</dt><dd><p>a character indicating the the algorithm that was used to create the selection.</p></dd>
-<dt>bookValues</dt><dd><p>if <code>bookValues</code> is specified, a character indicating the name of the book value column.</p></dd>
+<dt>method</dt><dd><p>a character indicating the the algorithm that was used to create the selection.</p></dd>
+<dt>values</dt><dd><p>if <code>values</code> is specified, a character indicating the name of the book value column.</p></dd>
+<dt>start</dt><dd><p>if <code>method = 'interval'</code>, an integer indicating the starting point in the interval.</p></dd>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The first part of this section elaborates on the two possible options for the <code>units</code> argument:</p>
 <ul>
-<li><p><code>records</code>:     In record sampling each item in the population is seen as a sampling unit. An item of $5000 is therefore equally likely to be selected as an item of $500.</p></li>
+<li><p><code>items</code>:       In record sampling each item in the population is seen as a sampling unit. An item of $5000 is therefore equally likely to be selected as an item of $500.</p></li>
 <li><p><code>mus</code>:         In monetary unit sampling each monetary unit in the population is seen as a sampling unit. An item of $5000 is therefore ten times more likely to be selected as an item of $500.</p></li>
 </ul>
 
-<p>The second part of this section elaborates on the three possible options for the <code>algorithm</code> argument:</p>
+<p>The second part of this section elaborates on the three possible options for the <code>method</code> argument:</p>
 <ul>
 <li><p><code>random</code>:      In random sampling each sampling unit in the population is drawn with equal probability.</p></li>
 <li><p><code>cell</code>:        In cell sampling the sampling units in the population are divided into a number (equal to the sample size) of intervals. From each interval one sampling unit is selected with equal probability.</p></li>
@@ -254,9 +256,9 @@ vignette('jfa', package = 'jfa')" />
 
 <span class='co'># Draw a sample of 100 monetary units from the population using</span>
 <span class='co'># fixed interval monetary unit sampling</span>
-<span class='fu'>selection</span><span class='op'>(</span>population <span class='op'>=</span> <span class='va'>BuildIt</span>, sampleSize <span class='op'>=</span> <span class='fl'>100</span>, 
-          algorithm <span class='op'>=</span> <span class='st'>'interval'</span>, units <span class='op'>=</span> <span class='st'>'mus'</span>, bookValues <span class='op'>=</span> <span class='st'>'bookValue'</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Obtained sampling units: 100 | Sample items: 100 
+<span class='fu'>selection</span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>BuildIt</span>, size <span class='op'>=</span> <span class='fl'>100</span>, units <span class='op'>=</span> <span class='st'>'mus'</span>,
+          method <span class='op'>=</span> <span class='st'>'interval'</span>, values <span class='op'>=</span> <span class='st'>'bookValue'</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Obtained sampling units: 100 | Obtained sample items: 100 
 #&gt; Sample obtained via methods 'mus' + 'interval'</div><div class='input'>
 </div></pre>
   </div>

@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">jfa</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -209,10 +209,10 @@
 <p>The <code><a href="reference/auditPrior.html">auditPrior()</a></code> function creates a prior distribution according to one of several methods, including a translation of the assessments of the inherent risk and control risk from the audit risk model. The function returns an object of class <code>jfaPrior</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. Objects with class <code>jfaPrior</code> can also be used as input for the <code>prior</code> argument in other functions.</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'none'</span>, likelihood <span class="op">=</span> <span class="st">'binomial'</span>, expectedError <span class="op">=</span> <span class="fl">0</span>, 
-           confidence <span class="op">=</span> <span class="fl">0.95</span>, materiality <span class="op">=</span> <span class="cn">NULL</span>, N <span class="op">=</span> <span class="cn">NULL</span>, 
-           ir <span class="op">=</span> <span class="fl">1</span>, cr <span class="op">=</span> <span class="fl">1</span>, ub <span class="op">=</span> <span class="cn">NULL</span>, pHmin <span class="op">=</span> <span class="cn">NULL</span>, pHplus <span class="op">=</span> <span class="cn">NULL</span>, 
-           sampleN <span class="op">=</span> <span class="fl">0</span>, sampleK <span class="op">=</span> <span class="fl">0</span>, factor <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'none'</span>, likelihood <span class="op">=</span> <span class="st">'binomial'</span>, expected <span class="op">=</span> <span class="fl">0</span>, 
+           conf.level <span class="op">=</span> <span class="fl">0.95</span>, materiality <span class="op">=</span> <span class="cn">NULL</span>, N.units <span class="op">=</span> <span class="cn">NULL</span>, 
+           ir <span class="op">=</span> <span class="cn">NULL</span>, cr <span class="op">=</span> <span class="cn">NULL</span>, ub <span class="op">=</span> <span class="cn">NULL</span>, p.min <span class="op">=</span> <span class="cn">NULL</span>,
+           x <span class="op">=</span> <span class="cn">NULL</span>, n <span class="op">=</span> <span class="cn">NULL</span>, factor <span class="op">=</span> <span class="cn">NULL</span>, alpha <span class="op">=</span> <span class="cn">NULL</span>, beta <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
 <p><em>Supported options for the <code>method</code> argument:</em></p>
 <table class="table">
 <colgroup>
@@ -257,16 +257,14 @@
 <tr class="odd">
 <td align="left"><code>hypotheses</code></td>
 <td align="left">Custom prior probabilities for (in)tolerable misstatement</td>
-<td align="left">
-<code>pHmin</code> or <code>pHplus</code>
-</td>
+<td align="left"><code>p.min</code></td>
 <td align="left">Derks et al. (2021)</td>
 </tr>
 <tr class="even">
 <td align="left"><code>sample</code></td>
 <td align="left">Earlier sample</td>
 <td align="left">
-<code>sampleN</code> and <code>sampleK</code>
+<code>x</code> and <code>n</code>
 </td>
 <td align="left">Derks et al. (2021)</td>
 </tr>
@@ -274,9 +272,17 @@
 <td align="left"><code>factor</code></td>
 <td align="left">Weighted earlier sample</td>
 <td align="left">
-<code>sampleN</code>, <code>sampleK</code>, and <code>factor</code>
+<code>x</code>, <code>n</code>, and <code>factor</code>
 </td>
 <td align="left">Derks et al. (2021)</td>
+</tr>
+<tr class="even">
+<td align="left"><code>custom</code></td>
+<td align="left">Custom prior distribution</td>
+<td align="left">
+<code>alpha</code> and <code>beta</code>
+</td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>
@@ -324,10 +330,9 @@
 <p>The <code><a href="reference/planning.html">planning()</a></code> function calculates the minimum sample size for a statistical audit sample based on the binomial, Poisson, or hypergeometric likelihood. The function returns an object of class <code>jfaPlanning</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. To perform Bayesian planning, the input for the <code>prior</code> argument can be an object of class <code>jfaPrior</code> as returned by the <code><a href="reference/auditPrior.html">auditPrior()</a></code> function, or an object of class <code>jfaPosterior</code> as returned by the <code><a href="reference/evaluation.html">evaluation()</a></code> function.</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="cn">NULL</span>, minPrecision <span class="op">=</span> <span class="cn">NULL</span>, expectedError <span class="op">=</span> <span class="fl">0</span>, 
-         likelihood <span class="op">=</span> <span class="st">'binomial'</span>, confidence <span class="op">=</span> <span class="fl">0.95</span>, N <span class="op">=</span> <span class="cn">NULL</span>, 
-         prior <span class="op">=</span> <span class="cn">FALSE</span>, nPrior <span class="op">=</span> <span class="fl">0</span>, kPrior <span class="op">=</span> <span class="fl">0</span>, 
-         increase <span class="op">=</span> <span class="fl">1</span>, maxSize <span class="op">=</span> <span class="fl">5000</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="cn">NULL</span>, min.precision <span class="op">=</span> <span class="cn">NULL</span>, expected <span class="op">=</span> <span class="fl">0</span>,
+         likelihood <span class="op">=</span> <span class="st">'binomial'</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, N.units <span class="op">=</span> <span class="cn">NULL</span>,
+         by <span class="op">=</span> <span class="fl">1</span>, max <span class="op">=</span> <span class="fl">5000</span>, prior <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><em>Supported options for the <code>likelihood</code> argument:</em></p>
 <table class="table">
 <thead><tr class="header">
@@ -356,7 +361,7 @@
 <p><em>Example usage:</em></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Planning using binomial likelihood</span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, likelihood <span class="op">=</span> <span class="st">'binomial'</span>, confidence <span class="op">=</span> <span class="fl">0.95</span>, N <span class="op">=</span> <span class="fl">500</span><span class="op">)</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, likelihood <span class="op">=</span> <span class="st">'binomial'</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, N.units <span class="op">=</span> <span class="fl">500</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the planning</span></code></pre></div>
 </div>
@@ -364,12 +369,11 @@
 <h3 class="hasAnchor">
 <a href="#select-items-with-the-selection-function" class="anchor"></a>Select items with the <code>selection()</code> function</h3>
 <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
-<p>The <code><a href="reference/selection.html">selection()</a></code> function takes a data frame and performs statistical sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. The function returns an object of class <code>jfaSelection</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. The input for the <code>sampleSize</code> argument can be an object of class <code>jfaPlanning</code> as returned by the <code><a href="reference/planning.html">planning()</a></code> function.</p>
+<p>The <code><a href="reference/selection.html">selection()</a></code> function takes a data frame and performs statistical sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. The function returns an object of class <code>jfaSelection</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. The input for the <code>size</code> argument can be an object of class <code>jfaPlanning</code> as returned by the <code><a href="reference/planning.html">planning()</a></code> function.</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/selection.html">selection</a></span><span class="op">(</span><span class="va">population</span>, <span class="va">sampleSize</span>, units <span class="op">=</span> <span class="st">'records'</span>, algorithm <span class="op">=</span> <span class="st">'random'</span>, 
-          bookValues <span class="op">=</span> <span class="cn">NULL</span>, intervalStartingPoint <span class="op">=</span> <span class="fl">1</span>, ordered <span class="op">=</span> <span class="cn">TRUE</span>, 
-          ascending <span class="op">=</span> <span class="cn">TRUE</span>, replace <span class="op">=</span> <span class="cn">FALSE</span>, seed <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="reference/selection.html">selection</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">size</span>, units <span class="op">=</span> <span class="st">'items'</span>, method <span class="op">=</span> <span class="st">'random'</span>, values <span class="op">=</span> <span class="cn">NULL</span>,
+          start <span class="op">=</span> <span class="fl">1</span>, order <span class="op">=</span> <span class="cn">TRUE</span>, decreasing <span class="op">=</span> <span class="cn">FALSE</span>, replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><em>Supported options for the <code>units</code> argument:</em></p>
 <table class="table">
 <colgroup>
@@ -386,7 +390,7 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left"><code>records</code></td>
+<td align="left"><code>items</code></td>
 <td align="left">Sampling units are items</td>
 <td align="left"></td>
 <td align="left">Leslie, Teitlebaum, and Anderson (1979)</td>
@@ -399,10 +403,10 @@
 </tr>
 </tbody>
 </table>
-<p><em>Supported options for the <code>algorithm</code> argument:</em></p>
+<p><em>Supported options for the <code>method</code> argument:</em></p>
 <table class="table">
 <thead><tr class="header">
-<th align="left"><code>algorithm</code></th>
+<th align="left"><code>method</code></th>
 <th align="left">Description</th>
 <th align="left">Required arguments</th>
 </tr></thead>
@@ -420,14 +424,14 @@
 <tr class="odd">
 <td align="left"><code>interval</code></td>
 <td align="left">Select a fixed unit from every interval</td>
-<td align="left"><code>intervalStartingPoint</code></td>
+<td align="left"><code>start</code></td>
 </tr>
 </tbody>
 </table>
 <p><em>Example usage:</em></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Selection using fixed interval record sampling</span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'records'</span>, algorithm <span class="op">=</span> <span class="st">'interval'</span><span class="op">)</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'records'</span>, method <span class="op">=</span> <span class="st">'interval'</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the selection</span></code></pre></div>
 </div>
@@ -438,13 +442,11 @@
 <p>The <code><a href="reference/evaluation.html">evaluation()</a></code> function takes a sample or summary statistics of the sample and performs evaluation according to the specified method and sampling objectives. The function returns an object of class <code>jfaEvalution</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. To perform Bayesian evaluation, the input for the <code>prior</code> argument can be an object of class <code>jfaPrior</code> as returned by the <code><a href="reference/auditPrior.html">auditPrior()</a></code> function, or an object of class <code>jfaPosterior</code> as returned by the <code><a href="reference/evaluation.html">evaluation()</a></code> function.</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="cn">NULL</span>, minPrecision <span class="op">=</span> <span class="cn">NULL</span>, method <span class="op">=</span> <span class="st">'binomial'</span>, 
-           confidence <span class="op">=</span> <span class="fl">0.95</span>, sample <span class="op">=</span> <span class="cn">NULL</span>, bookValues <span class="op">=</span> <span class="cn">NULL</span>, auditValues <span class="op">=</span> <span class="cn">NULL</span>, 
-           counts <span class="op">=</span> <span class="cn">NULL</span>, nSumstats <span class="op">=</span> <span class="cn">NULL</span>, kSumstats <span class="op">=</span> <span class="cn">NULL</span>, 
-           N <span class="op">=</span> <span class="cn">NULL</span>, populationBookValue <span class="op">=</span> <span class="cn">NULL</span>, 
-           prior <span class="op">=</span> <span class="cn">FALSE</span>, nPrior <span class="op">=</span> <span class="fl">0</span>, kPrior <span class="op">=</span> <span class="fl">0</span>, 
-           rohrbachDelta <span class="op">=</span> <span class="fl">2.7</span>, momentPoptype <span class="op">=</span> <span class="st">'accounts'</span>, 
-           csA <span class="op">=</span> <span class="fl">1</span>, csB <span class="op">=</span> <span class="fl">3</span>, csMu <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="cn">NULL</span>, min.precision <span class="op">=</span> <span class="cn">NULL</span>, method <span class="op">=</span> <span class="st">'binomial'</span>,
+           conf.level <span class="op">=</span> <span class="fl">0.95</span>, data <span class="op">=</span> <span class="cn">NULL</span>, values <span class="op">=</span> <span class="cn">NULL</span>, values.audit <span class="op">=</span> <span class="cn">NULL</span>,
+           times <span class="op">=</span> <span class="cn">NULL</span>, x <span class="op">=</span> <span class="cn">NULL</span>, n <span class="op">=</span> <span class="cn">NULL</span>, N.units <span class="op">=</span> <span class="cn">NULL</span>, N.items <span class="op">=</span> <span class="cn">NULL</span>, 
+           r.delta <span class="op">=</span> <span class="fl">2.7</span>, m.type <span class="op">=</span> <span class="st">'accounts'</span>, cs.a <span class="op">=</span> <span class="fl">1</span>, cs.b <span class="op">=</span> <span class="fl">3</span>, cs.mu <span class="op">=</span> <span class="fl">0.5</span>, 
+           prior <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><em>Supported options for the <code>method</code> argument:</em></p>
 <table class="table">
 <colgroup>
@@ -475,7 +477,7 @@
 <tr class="odd">
 <td align="left"><code>hypergeometric</code></td>
 <td align="left">Hypergeometric likelihood</td>
-<td align="left"></td>
+<td align="left"><code>N.units</code></td>
 <td align="left">Stewart (2012)</td>
 </tr>
 <tr class="even">
@@ -505,45 +507,49 @@
 <tr class="even">
 <td align="left"><code>rohrbach</code></td>
 <td align="left">Rohrbach’s augmented variance estimator</td>
-<td align="left"><code>rohrbachDelta</code></td>
+<td align="left"><code>r.delta</code></td>
 <td align="left">Rohrbach (1993)</td>
 </tr>
 <tr class="odd">
 <td align="left"><code>moment</code></td>
 <td align="left">Modified moment bound</td>
-<td align="left"><code>momentPoptype</code></td>
+<td align="left"><code>m.type</code></td>
 <td align="left">Dworin and Grimlund (1984)</td>
 </tr>
 <tr class="even">
 <td align="left"><code>coxsnell</code></td>
 <td align="left">Cox and Snell bound</td>
 <td align="left">
-<code>csA</code>, <code>csB</code>, and <code>csMu</code>
+<code>cs.a</code>, <code>cs.b</code>, and <code>cs.mu</code>
 </td>
 <td align="left">Cox and Snell (1979)</td>
 </tr>
 <tr class="odd">
 <td align="left"><code>direct</code></td>
 <td align="left">Direct estimator</td>
-<td align="left"><code>populationBookValue</code></td>
+<td align="left">
+<code>N.items</code> and <code>N.units</code>
+</td>
 <td align="left">Touw and Hoogduin (2011)</td>
 </tr>
 <tr class="even">
 <td align="left"><code>difference</code></td>
 <td align="left">Difference estimator</td>
-<td align="left"><code>populationBookValue</code></td>
+<td align="left"><code>N.items</code></td>
 <td align="left">Touw and Hoogduin (2011)</td>
 </tr>
 <tr class="odd">
 <td align="left"><code>quotient</code></td>
 <td align="left">Quotient estimator</td>
-<td align="left"><code>populationBookValue</code></td>
+<td align="left"><code>N.items</code></td>
 <td align="left">Touw and Hoogduin (2011)</td>
 </tr>
 <tr class="even">
 <td align="left"><code>regression</code></td>
 <td align="left">Regression estimator</td>
-<td align="left"><code>populationBookValue</code></td>
+<td align="left">
+<code>N.items</code> and <code>N.units</code>
+</td>
 <td align="left">Touw and Hoogduin (2011)</td>
 </tr>
 </tbody>
@@ -551,7 +557,7 @@
 <p><em>Example usage:</em></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Binomial evaluation using summary statistics from a sample</span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, confidence <span class="op">=</span> <span class="fl">0.95</span>, nSumstats <span class="op">=</span> <span class="fl">100</span>, kSumstats <span class="op">=</span> <span class="fl">1</span>, method <span class="op">=</span> <span class="st">'binomial'</span><span class="op">)</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, method <span class="op">=</span> <span class="st">'binomial'</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the evaluation</span></code></pre></div>
 </div>
@@ -578,7 +584,7 @@
 </li>
 <li>Cox, D. R., &amp; Snell, E. J. (1979). On sampling and the estimation of rare errors. <em>Biometrika</em>, 66(1), 125-132. - <a href="https://doi.org/10.1093/biomet/66.1.125">View online</a>
 </li>
-<li>Derks, K. (2021). jfa: Bayesian and classical audit sampling. R package version 0.5.7. - <a href="https://cran.r-project.org/package=jfa">View online</a>
+<li>Derks, K. (2021). jfa: Bayesian and classical audit sampling. R package version 0.6.0. - <a href="https://cran.r-project.org/package=jfa">View online</a>
 </li>
 <li>Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., &amp; Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. <em>International Journal of Auditing</em>, 1-16. - <a href="https://doi.org/10.1111/ijau.12240">View online</a>
 </li>

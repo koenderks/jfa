@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function to compute Bayes factors for audit sampling — auditBF • jfa</title>
+<title>Bayes Factors for Audit Sampling — auditBF • jfa</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,7 +46,7 @@
 
 
 
-<meta property="og:title" content="Function to compute Bayes factors for audit sampling — auditBF" />
+<meta property="og:title" content="Bayes Factors for Audit Sampling — auditBF" />
 <meta property="og:description" content="This function computes Bayes factors for audit sampling from summary statistics of an audit sample. By default, the Bayes factor is computed using an impartial prior distribution on the misstatement (Derks et al., 2021). However, the arguments nPrior and kPrior can be used to specify an alternative prior distribution (Derks et al., 2021).
 For more details on how to use this function, see the package vignette:
 vignette('jfa', package = 'jfa')" />
@@ -82,7 +82,7 @@ vignette('jfa', package = 'jfa')" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">jfa</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -154,7 +154,7 @@ vignette('jfa', package = 'jfa')" />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Function to compute Bayes factors for audit sampling</h1>
+    <h1>Bayes Factors for Audit Sampling</h1>
     <small class="dont-index">Source: <a href='https://github.com/koenderks/jfa/blob/master/R/auditBF.R'><code>R/auditBF.R</code></a></small>
     <div class="hidden name"><code>auditBF.Rd</code></div>
     </div>
@@ -165,53 +165,53 @@ vignette('jfa', package = 'jfa')" />
 <code><a href='../articles/jfa.html'>vignette('jfa', package = 'jfa')</a></code></p>
     </div>
 
-    <pre class="usage"><span class='fu'>auditBF</span><span class='op'>(</span><span class='va'>materiality</span>, <span class='va'>n</span>, <span class='va'>k</span>, expectedError <span class='op'>=</span> <span class='fl'>0</span>, likelihood <span class='op'>=</span> <span class='st'>'binomial'</span>, 
-        nPrior <span class='op'>=</span> <span class='cn'>NULL</span>, kPrior <span class='op'>=</span> <span class='cn'>NULL</span>, N <span class='op'>=</span> <span class='cn'>NULL</span>, log <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>auditBF</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>materiality</span>, likelihood <span class='op'>=</span> <span class='st'>'binomial'</span>, BF10 <span class='op'>=</span> <span class='cn'>TRUE</span>,
+        log <span class='op'>=</span> <span class='cn'>FALSE</span>, N.units <span class='op'>=</span> <span class='cn'>NULL</span>, alpha <span class='op'>=</span> <span class='cn'>NULL</span>, beta <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>materiality</th>
-      <td><p>a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum upper limit) as a fraction of the total population size. Can be <code>NULL</code> for some methods.</p></td>
-    </tr>
-    <tr>
-      <th>n</th>
-      <td><p>an integer larger than 0 specifying the number of items in the sample.</p></td>
-    </tr>
-    <tr>
-      <th>k</th>
+      <th>x</th>
       <td><p>a number larger than zero specifying the observed proportional error (i.e., sum of taints) in the sample.</p></td>
     </tr>
     <tr>
-      <th>expectedError</th>
-      <td><p>a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a numeric value (&gt;= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.</p></td>
+      <th>n</th>
+      <td><p>an integer larger than 0 specifying the number of items in the sample (i.e., the sample size).</p></td>
+    </tr>
+    <tr>
+      <th>materiality</th>
+      <td><p>a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum upper limit) as a fraction of the total population size. Can be <code>NULL</code> for some methods.</p></td>
     </tr>
     <tr>
       <th>likelihood</th>
       <td><p>a character specifying the likelihood assumed when updating the prior distribution. This can be either <code>binomial</code> for the binomial likelihood and beta prior distribution, <code>poisson</code> for the Poisson likelihood and gamma prior distribution, or <code>hypergeometric</code> for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.</p></td>
     </tr>
     <tr>
-      <th>nPrior</th>
-      <td><p>numeric value larger than, or equal to, 0 specifying the sample size of the sample equivalent to the prior information.</p></td>
-    </tr>
-    <tr>
-      <th>kPrior</th>
-      <td><p>a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.</p></td>
-    </tr>
-    <tr>
-      <th>N</th>
-      <td><p>an integer larger than 0 specifying the total population size. Only required when <code>likelihood = 'hypergeometric'</code>.</p></td>
+      <th>BF10</th>
+      <td><p>logical; if <code>TRUE</code>, the Bayes factor computed is in favor or tolerable misstatement. If <code>FALSE</code>, the Bayes factor is in favor of intolerable misstatement.</p></td>
     </tr>
     <tr>
       <th>log</th>
-      <td><p>logical; if TRUE, the Bayes factor is given as log(bf).</p></td>
+      <td><p>logical; if <code>TRUE</code>, the Bayes factor is given as log(bf).</p></td>
+    </tr>
+    <tr>
+      <th>N.units</th>
+      <td><p>an integer larger than 0 specifying the total number of sampling units in the population. Only required when <code>likelihood = 'hypergeometric'</code>.</p></td>
+    </tr>
+    <tr>
+      <th>alpha</th>
+      <td><p>a numeric value specifying the \(\alpha\) parameter of the prior distribution. If specified, overrides the default parameters from the impartial prior distribution.</p></td>
+    </tr>
+    <tr>
+      <th>beta</th>
+      <td><p>a numeric value specifying the \(\beta\) parameter of the prior distribution. If specified, overrides the default parameters from the impartial prior distribution.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A value for the Bayes factor in favor of the hypothesis of tolerable misstatement against the hypothesis of intolerable misstatement.</p>
+    <p>A numeric value for the Bayes factor.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The Bayes Factor \(BF_{-+}\) quantifies how much more likely the data are to be observed under \(H_{-}: \theta &lt; \theta_{max}\) than under \(H_{+}: \theta &gt; \theta_{max}\). Therefore, \(BF_{-+}\) can be interpreted as the relative support in the observed data for \(H_{-}\) versus \(H_{+}\). If \(BF_{-+}\) is 1, there is no preference for either \(H_{-}\) or \(H_{+}\). If \(BF_{-+}\) is larger than 1, \(H_{-}\) is preferred. If \(BF_{-+}\) is between 0 and 1, \(H_{+}\) is preferred.</p>
@@ -235,10 +235,10 @@ vignette('jfa', package = 'jfa')" />
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'> 
 <span class='co'># Compute a default Bayes factor from an impartial prior</span>
-<span class='fu'>auditBF</span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.05</span>, n <span class='op'>=</span> <span class='fl'>50</span>, k <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+<span class='fu'>auditBF</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span>, n <span class='op'>=</span> <span class='fl'>50</span>, materiality <span class='op'>=</span> <span class='fl'>0.05</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 4.985202</div><div class='input'>
 <span class='co'># Compute a Bayes factor from a negligible prior</span>
-<span class='fu'>auditBF</span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.05</span>, n <span class='op'>=</span> <span class='fl'>50</span>, k <span class='op'>=</span> <span class='fl'>1</span>, nPrior <span class='op'>=</span> <span class='fl'>0</span>, kPrior <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
+<span class='fu'>auditBF</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span>, n <span class='op'>=</span> <span class='fl'>50</span>, materiality <span class='op'>=</span> <span class='fl'>0.05</span>, alpha <span class='op'>=</span> <span class='fl'>1</span>, beta <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 51.55134</div><div class='input'>
 </div></pre>
   </div>

@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">jfa</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -165,14 +165,14 @@
 <p>Sampling objective: <em>Calculate a minimal sample size such that, when no misstatements are found in the sample, you have obtained 95% assurance that the misstatement in the population is lower than 5% of the total value.</em></p>
 <p>Planning a sample with this objective in mind can be done using the code below (specifically by specifying the <code>materiality</code> argument). Next, a summary of the results can be obtained using the <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> function. As you can see below, the minimal sample size to achieve 95% assurance with respect to the performance materiality of 5% is 60 monetary units.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, expectedError <span class="op">=</span> <span class="fl">0</span>, likelihood <span class="op">=</span> <span class="st">'poisson'</span>, confidence <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, expected <span class="op">=</span> <span class="fl">0</span>, likelihood <span class="op">=</span> <span class="st">'poisson'</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------ 
 ## #              jfa Planning Summary (Classical)
 ## # ------------------------------------------------------------ 
 ## # Input:
 ## # 
-## # Confidence:                    95% 
+## # Confidence level:              95% 
 ## # Materiality:                   5% 
 ## # Minimum precision:             Not specified 
 ## # Likelihood:                    poisson  
@@ -195,16 +195,16 @@
 <a href="#obtaining-a-minimum-precision" class="anchor"></a>Obtaining a minimum precision</h3>
 <p>Next, we take a look at how you can use the <code><a href="../reference/planning.html">planning()</a></code> function to construct a sample with the objective of estimating the misstatement in the population with a minimum precision. The precision is defined as the difference between the most likely misstatement and the upper confidence bound on the misstatement and is an indication of the accuracy of your estimate. For this example, we will set the minimum precision to 2% of the population value.</p>
 <p>Sampling objective: <em>Calculate a minimal sample size such that, when zero misstatements are found in the sample, you have obtained 95% assurance that the misstatement in the population is at most 2% above the most likely misstatement.</em></p>
-<p>Planning a sample with this objective can be done using the code below (specifically by specifying the <code>minPrecision</code> argument). As you can see below, the minimal sample size for to achieve a precision of at least 2% is 150 monetary units.</p>
+<p>Planning a sample with this objective can be done using the code below (specifically by specifying the <code>min.precision</code> argument). As you can see below, the minimal sample size for to achieve a precision of at least 2% is 150 monetary units.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>minPrecision <span class="op">=</span> <span class="fl">0.02</span>, expectedError <span class="op">=</span> <span class="fl">0</span>, likelihood <span class="op">=</span> <span class="st">'poisson'</span>, confidence <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>min.precision <span class="op">=</span> <span class="fl">0.02</span>, expected <span class="op">=</span> <span class="fl">0</span>, likelihood <span class="op">=</span> <span class="st">'poisson'</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------ 
 ## #              jfa Planning Summary (Classical)
 ## # ------------------------------------------------------------ 
 ## # Input:
 ## # 
-## # Confidence:                    95% 
+## # Confidence level:              95% 
 ## # Materiality:                   Not specified 
 ## # Minimum precision:             2% 
 ## # Likelihood:                    poisson  
@@ -226,14 +226,14 @@
 <div id="using-selection-the-basics" class="section level2">
 <h2 class="hasAnchor">
 <a href="#using-selection-the-basics" class="anchor"></a>Using <code>selection()</code>: The basics</h2>
-<p>Selecting a sample using the <code><a href="../reference/selection.html">selection()</a></code> function requires knowledge of the sampling units (i.e., units of inference) in the population. Items can be selected from the population using <em>record sampling</em> (also known as attribute sampling) using <code>units = 'records'</code>, or using <em>monetary unit sampling (MUS)</em> using <code>units = 'mus'</code>. Selection also requires knowledge of the sampling algorithm. Sampling units can be selected with a <em>random sampling</em> scheme using <code>algorithm = 'random'</code>, with a <em>cell sampling</em> scheme using <code>algorithm = 'cell'</code>, or with a <em>fixed interval sampling</em> (also known as systematic sampling) scheme using <code>algorithm = 'interval'</code>.</p>
+<p>Selecting a sample using the <code><a href="../reference/selection.html">selection()</a></code> function requires knowledge of the sampling units (i.e., units of inference) in the population. Items can be selected from the population using <em>record sampling</em> (also known as attribute sampling or item sampling) using <code>units = 'items'</code>, or using <em>monetary unit sampling (MUS)</em> using <code>units = 'mus'</code>. Selection also requires knowledge of the sampling algorithm. Sampling units can be selected with a <em>random sampling</em> scheme using <code>method = 'random'</code>, with a <em>cell sampling</em> scheme using <code>method = 'cell'</code>, or with a <em>fixed interval sampling</em> (also known as systematic sampling) scheme using <code>method = 'interval'</code>.</p>
 <p>See the vignette <a href="https://koenderks.github.io/jfa/articles/v4_selection_methodology.html">Selection: Sampling methodology</a> for a more detailed explanation the selection algorithms implemented in <code>jfa</code>.</p>
 <div id="record-sampling" class="section level3">
 <h3 class="hasAnchor">
 <a href="#record-sampling" class="anchor"></a>Record sampling</h3>
 <p>First, we take a look at how you can use the <code><a href="../reference/selection.html">selection()</a></code> function to perform random sampling from the items in the population. As an example, the code below samples 60 invoices from the <code>BuildIt</code> data set using a <em>random record sampling</em> scheme.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="fl">60</span>, units <span class="op">=</span> <span class="st">'records'</span>, algorithm <span class="op">=</span> <span class="st">'random'</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">60</span>, units <span class="op">=</span> <span class="st">'items'</span>, method <span class="op">=</span> <span class="st">'random'</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">stage2</span><span class="op">)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #                  jfa Selection Summary
@@ -242,7 +242,7 @@
 ## #      
 ## # Population size:               3500 
 ## # Requested sample size:         60 
-## # Sampling units:                Records 
+## # Sampling units:                Items 
 ## # Algorithm:                     Random sampling   
 ## # ------------------------------------------------------------ 
 ## # Output:
@@ -260,14 +260,14 @@
 <a href="#monetary-unit-sampling-mus" class="anchor"></a>Monetary unit sampling (MUS)</h3>
 <p>Next, we take a look at how you can use the <code><a href="../reference/selection.html">selection()</a></code> function to perform fixed interval sampling using the monetary units in the population as sampling units. As an example, the code below samples 150 monetary units from the <code>BuildIt</code> data set using a <em>fixed interval monetary unit sampling</em> scheme.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="fl">150</span>, units <span class="op">=</span> <span class="st">'mus'</span>, algorithm <span class="op">=</span> <span class="st">'interval'</span>, bookValues <span class="op">=</span> <span class="st">'bookValue'</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">150</span>, units <span class="op">=</span> <span class="st">'mus'</span>, method <span class="op">=</span> <span class="st">'interval'</span>, values <span class="op">=</span> <span class="st">'bookValue'</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">stage2</span><span class="op">)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #                  jfa Selection Summary
 ## # ------------------------------------------------------------
 ## # Input:
 ## #      
-## # Population size:               3500 
+## # Population size:               1403221 
 ## # Requested sample size:         150 
 ## # Sampling units:                Monetary units 
 ## # Algorithm:                     Fixed interval sampling 
@@ -282,7 +282,7 @@
 ## # Statistics:
 ## #
 ## # Proportion n/N:                0.043 
-## # Percentage of value:           5.294% 
+## # Percentage of value:           0.011% 
 ## # ------------------------------------------------------------</code></pre>
 </div>
 <div id="extracting-the-sample" class="section level3">
@@ -290,21 +290,21 @@
 <a href="#extracting-the-sample" class="anchor"></a>Extracting the sample</h3>
 <p>The selected sample is stored in the object that is returned by the <code><a href="../reference/selection.html">selection()</a></code> function. It can be accesses or extracted by indexing it via <code>$sample</code>. The first 10 invoices in the previously selected sample of 60 invoices are displayed below. After this step it is up to the auditor to annotate the sample with their audit values.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="fl">60</span>, units <span class="op">=</span> <span class="st">'records'</span>, algorithm <span class="op">=</span> <span class="st">'random'</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">60</span>, units <span class="op">=</span> <span class="st">'items'</span>, method <span class="op">=</span> <span class="st">'random'</span><span class="op">)</span>
 
 <span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">stage2</span><span class="op">$</span><span class="va">sample</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></code></pre></div>
 <pre><code>##    rowNumber count    ID bookValue auditValue
-## 1       1017     1 50755    618.24     618.24
-## 2        679     1 20237    669.75     669.75
-## 3       2177     1  9517    454.02     454.02
-## 4        930     1 85674    257.82     257.82
-## 5       1533     1 31051    308.53     308.53
-## 6        471     1 84375    824.66     824.66
-## 7       2347     1 75616    623.70     623.70
-## 8        270     1 82033    352.75     352.75
-## 9       1211     1 12877     52.89      52.89
-## 10      3379     1 85322    330.24     330.24</code></pre>
+## 1         72     1 38968    635.28     635.28
+## 2       2358     1 63287    235.61     235.61
+## 3       3305     1 77748    491.97     491.97
+## 4       1095     1 92681    257.03     257.03
+## 5        768     1 64154    398.42     398.42
+## 6        668     1 31451    622.51     249.00
+## 7        640     1 45342    408.83     408.83
+## 8        700     1 29683    239.26     239.26
+## 9       3046     1 91772    738.43     738.43
+## 10      2252     1 39363    324.43     324.43</code></pre>
 </div>
 </div>
 <div id="using-evaluation-the-basics" class="section level2">
@@ -314,17 +314,17 @@
 <div id="summary-statistics-from-the-sample" class="section level3">
 <h3 class="hasAnchor">
 <a href="#summary-statistics-from-the-sample" class="anchor"></a>Summary statistics from the sample</h3>
-<p>First, let’s take a look at how you can use the <code><a href="../reference/evaluation.html">evaluation()</a></code> function to evaluate the misstatement in the population using summary statistics from a sample. Suppose that in the previously selected sample of 60 invoices you have found that 1 invoice is missing. Using <code>nSumstats = 60</code> and <code>kSumstats = 1</code> you can provide these summary statistics of the sample to the <code><a href="../reference/evaluation.html">evaluation()</a></code> function. Don’t forget to also specify the sampling objectives using the <code>materiality</code> or <code>minPrecision</code> arguments. In the following example, a performance materiality of 5% again applies. Also note that these data (<span class="math inline">\(n\)</span>, <span class="math inline">\(k\)</span>) are best described using a binomial distribution, which is why we specify <code>method = 'binomial'</code>.</p>
+<p>First, let’s take a look at how you can use the <code><a href="../reference/evaluation.html">evaluation()</a></code> function to evaluate the misstatement in the population using summary statistics from a sample. Suppose that in the previously selected sample of 60 invoices you have found that 1 invoice is missing. Using <code>x = 1</code> and <code>n = 60</code> you can provide these summary statistics of the sample to the <code><a href="../reference/evaluation.html">evaluation()</a></code> function. Don’t forget to also specify the sampling objectives using the <code>materiality</code> or <code>min.precision</code> arguments. In the following example, a performance materiality of 5% again applies. Also note that these data (<span class="math inline">\(n\)</span>, <span class="math inline">\(x\)</span>) are best described using a binomial distribution, which is why we specify <code>method = 'binomial'</code>.</p>
 <p>Sampling objective: <em>Evaluate, on the basis of summary statistics of a sample, whether the misstatement in the population exceeds the performance materiality such that there is a 5% ‘chance’ of incorrectly concluding that the population is free of material misstatement.</em></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">'binomial'</span>, confidence <span class="op">=</span> <span class="fl">0.95</span>, nSumstats <span class="op">=</span> <span class="fl">60</span>, kSumstats <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">'binomial'</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">60</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------ 
 ## #             jfa Evaluation Summary (Classical)
 ## # ------------------------------------------------------------ 
 ## # Input:
 ## #
-## # Confidence:                    95% 
+## # Confidence level:              95% 
 ## # Materiality:                   5% 
 ## # Minimum precision:             Not specified 
 ## # Population size:               Not specified 
@@ -338,7 +338,7 @@
 ## # Most likely error:             1.667%
 ## # Upper bound:                   7.664%
 ## # Precision:                     5.997%  
-## # Conclusion:                    Do not approve population 
+## # Sufficient evidence:           FALSE 
 ## # ------------------------------------------------------------</code></pre>
 <p>As you can see above, the 95% upper bound for the misstatement is higher than 5% and therefore the sample does not provide sufficient evidence to conclude that the misstatement is lower than 5%.</p>
 </div>
@@ -349,33 +349,33 @@
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">sample</span><span class="op">$</span><span class="va">auditValue</span>    <span class="op">&lt;-</span> <span class="va">sample</span><span class="op">$</span><span class="va">bookValue</span>
 <span class="va">sample</span><span class="op">$</span><span class="va">auditValue</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sample</span><span class="op">$</span><span class="va">auditValue</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">-</span> <span class="fl">100</span></code></pre></div>
-<p>You can evaluate the misstatement in the annotated sample using the <code>sample</code>, <code>bookValues</code>, <code>auditValues</code>, and <code>counts</code> arguments. For example, the code below evaluates the misstatement in the population with respect to the performance materiality of 5% using the commonly used Stringer bound. You can find more information about which evaluation methods are implemented on the <a href="https://koenderks.github.io/jfa/">home page</a>.</p>
+<p>You can evaluate the misstatement in the annotated sample using the <code>data</code>, <code>values</code>, <code>values.audit</code>, and <code>times</code> arguments. For example, the code below evaluates the misstatement in the population with respect to the performance materiality of 5% using the commonly used Stringer bound. You can find more information about which evaluation methods are implemented on the <a href="https://koenderks.github.io/jfa/">home page</a>.</p>
 <p>Sampling objective: <em>Evaluate, on the basis of an annotated sample, whether the misstatement in the population exceeds the allocated performance materiality such that there is a 5% ‘chance’ of incorrectly concluding that the population is free of material misstatement.</em></p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">'stringer'</span>, confidence <span class="op">=</span> <span class="fl">0.95</span>,
-                     sample <span class="op">=</span> <span class="va">sample</span>, bookValues <span class="op">=</span> <span class="st">'bookValue'</span>, auditValues <span class="op">=</span> <span class="st">'auditValue'</span>,
-                     counts <span class="op">=</span> <span class="va">sample</span><span class="op">$</span><span class="va">count</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">'stringer'</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>,
+                     data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">'bookValue'</span>, values.audit <span class="op">=</span> <span class="st">'auditValue'</span>,
+                     times <span class="op">=</span> <span class="va">sample</span><span class="op">$</span><span class="va">count</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------ 
 ## #             jfa Evaluation Summary (Classical)
 ## # ------------------------------------------------------------ 
 ## # Input:
 ## #
-## # Confidence:                    95% 
+## # Confidence level:              95% 
 ## # Materiality:                   5% 
 ## # Minimum precision:             Not specified 
 ## # Population size:               Not specified 
 ## # Sample size:                   60 
 ## # Sample errors:                 1 
-## # Sum of taints:                 0.162 
+## # Sum of taints:                 0.157 
 ## # Method:                        stringer   
 ## # ------------------------------------------------------------
 ## # Output:
 ## #  
-## # Most likely error:             0.27%
-## # Upper bound:                   5.322%
-## # Precision:                     5.053%  
-## # Conclusion:                    Do not approve population 
+## # Most likely error:             0.262%
+## # Upper bound:                   5.31%
+## # Precision:                     5.048%  
+## # Sufficient evidence:           FALSE 
 ## # ------------------------------------------------------------</code></pre>
 </div>
 </div>
@@ -384,9 +384,9 @@
 <a href="#using-report-the-basics" class="anchor"></a>Using <code>report()</code>: The basics</h2>
 <p>With the results from the <code><a href="../reference/evaluation.html">evaluation()</a></code> function in hand, you can use the <code><a href="../reference/report.html">report()</a></code> function to automatically generate a report containing the data, the statistical results and their interpretation, and the conclusion of the sampling procedure with respect to the sampling objectives. The report can be generated by providing the object returned by the <code><a href="../reference/evaluation.html">evaluation()</a></code> function to the <code><a href="../reference/report.html">report()</a></code> function.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">'stringer'</span>, confidence <span class="op">=</span> <span class="fl">0.95</span>,
-                     sample <span class="op">=</span> <span class="va">sample</span>, bookValues <span class="op">=</span> <span class="st">'bookValue'</span>, auditValues <span class="op">=</span> <span class="st">'auditValue'</span>,
-                     counts <span class="op">=</span> <span class="va">sample</span><span class="op">$</span><span class="va">count</span><span class="op">)</span>
+<code class="sourceCode R"><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">'stringer'</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>,
+                     data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">'bookValue'</span>, values.audit <span class="op">=</span> <span class="st">'auditValue'</span>,
+                     times <span class="op">=</span> <span class="va">sample</span><span class="op">$</span><span class="va">count</span><span class="op">)</span>
 
 <span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span><span class="va">stage4</span>, file <span class="op">=</span> <span class="st">'report.html'</span>, format <span class="op">=</span> <span class="st">'html_document'</span><span class="op">)</span> <span class="co"># Generates .html report</span></code></pre></div>
 </div>

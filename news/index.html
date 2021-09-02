@@ -79,7 +79,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">jfa</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -155,19 +155,28 @@
       <small>Source: <a href='https://github.com/koenderks/jfa/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
-    <div id="jfa-058" class="section level1">
-<h1 class="page-header" data-toc-text="0.5.8">
-<a href="#jfa-058" class="anchor"></a>jfa 0.5.8<small> Unreleased </small>
+    <div id="jfa-060" class="section level1">
+<h1 class="page-header" data-toc-text="0.6.0">
+<a href="#jfa-060" class="anchor"></a>jfa 0.6.0<small> Unreleased </small>
 </h1>
 <p><strong>New features</strong></p>
 <ul>
 <li>Added <code>method = 'custom'</code> to function <code><a href="../reference/auditPrior.html">auditPrior()</a></code> which takes as input the raw <code>alpha</code> and <code>beta</code> parameters of the prior distribution.</li>
 <li>Added a new vignette that describes the sampling methodology implemented in <code>jfa</code>.</li>
 </ul>
+<p><strong>Major changes</strong></p>
+<ul>
+<li>
+<code>nPrior</code> and <code>kPrior</code> have been removed from the <code><a href="../reference/planning.html">planning()</a></code> function. All prior distributions must now be specified using <code>prior = TRUE</code> (noninformative priors) or from an object resulting from a call to <code><a href="../reference/auditPrior.html">auditPrior()</a></code>
+</li>
+<li>Changed the name of the <code>maxSize</code> argument in the <code><a href="../reference/planning.html">planning()</a></code> function to <code>max</code>.</li>
+<li>Changed the name of the <code>increase</code> argument in the <code><a href="../reference/planning.html">planning()</a></code> function to <code>by</code>.</li>
+<li>Changed the name of the <code>withReplacement</code> argument in the <code><a href="../reference/selection.html">selection()</a></code> function to <code>replace</code> to be consistent with general <code>R</code> style.</li>
+</ul>
 <p><strong>Minor changes</strong></p>
 <ul>
-<li>Changed the name of the <code>withReplacement</code> argument in the <code><a href="../reference/selection.html">selection()</a></code> function to <code>replace</code> to be consistent with general <code>R</code> style.</li>
 <li>It is now allowed for <code>nSumstats</code> and <code>kSumstats</code> to have the same value.</li>
+<li>Added argument <code>BF10</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function that computes Bayes factors in favor of intolerable misstatement.</li>
 </ul>
 </div>
     <div id="jfa-057" class="section level1">

@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">jfa</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -131,9 +131,9 @@
 <h3 class="hasAnchor">
 <a href="#sampling-units" class="anchor"></a>Sampling units</h3>
 <p>Selecting a subset from the population requires knowledge of the sampling units; physical representations of the population that needs to be audited. Generally, the auditor has to choose between two types of sampling units: individual items in the population or individual monetary units in the population. In order to perform statistical selection, the population must be divided into individual sampling units that can be assigned a probability to be included in the sample. The total collection of all sampling units which have been assigned a selection probability is called the sampling frame.</p>
-<div id="records" class="section level4">
+<div id="items" class="section level4">
 <h4 class="hasAnchor">
-<a href="#records" class="anchor"></a>Records</h4>
+<a href="#items" class="anchor"></a>Items</h4>
 <p>A sampling unit for record (i.e., attributes) sampling is generally a characteristic of an item in the population. For example, suppose that you inspect a population of receipts. A possible sampling unit for record sampling can be the date of payment of the receipt. When a sampling unit (e.g., date of payment) is selected by the sampling algorithm, the population item that corresponds to the sampled unit is included in the sample.</p>
 </div>
 <div id="monetary-units" class="section level4">
@@ -156,7 +156,7 @@
 <a href="#random-sampling" class="anchor"></a>Random sampling</h4>
 <p>Random sampling is the most simple and straight-forward selection algorithm. The random sampling algorithm provides a method that allows every sampling unit in the population an equal chance of being selected, meaning that every combination of sampling units has the same probability of being selected as every other combination of the same number of sampling units. Simply put, the algorithm draws a random selection of size <span class="math inline">\(n\)</span> of the sampling units. Therefore, the selection probability for each sampling unit is defined as:</p>
 <p><span class="math display">\[p(x) = \frac{1}{N},\]</span></p>
-<p>where <span class="math inline">\(N\)</span> is the number of units in the population. To clarify this procedure, Figure 1 provides an illustration of the simple random sampling algorithm.</p>
+<p>where <span class="math inline">\(N\)</span> is the number of units in the population. To clarify this procedure, Figure 1 provides an illustration of the random sampling algorithm.</p>
 <center>
 <div class="figure">
 <img src="img/randomSampling.png" alt=""><p class="caption">Figure 1: Illustration of random sampling</p>
@@ -164,10 +164,11 @@
 </center>
 <p><strong>Advantages:</strong> The random sampling algorithm yields an optimal random selection, with the additional advantage that the sample can be easily extended by applying the same algorithm again.</p>
 <p><strong>Disadvantages:</strong> Because the selection probabilities are equal for all sampling units there is no guarantee that items with a large monetary value in the population will be included in the sample.</p>
-<p>As an example, the code below shows how to apply the random sampling algorithm in a record sampling and a monetary unit sampling setting.</p>
+<p>As an example, the code below shows how to apply the random sampling algorithm in a record sampling and a monetary unit sampling setting. It is important to set a seed to make results reproducible.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Record sampling</span>
-<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'records'</span>, algorithm <span class="op">=</span> <span class="st">'random'</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'items'</span>, method <span class="op">=</span> <span class="st">'random'</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
 <pre><code>##   rowNumber count    ID bookValue auditValue
 ## 1      1017     1 50755    618.24     618.24
@@ -178,7 +179,8 @@
 ## 6       471     1 84375    824.66     824.66</code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Monetary unit sampling</span>
-<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'mus'</span>, algorithm <span class="op">=</span> <span class="st">'random'</span>, bookValues <span class="op">=</span> <span class="st">'bookValue'</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'mus'</span>, method <span class="op">=</span> <span class="st">'random'</span>, values <span class="op">=</span> <span class="st">'bookValue'</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
 <pre><code>##   rowNumber count    ID bookValue auditValue
 ## 1      2174     1 57702    428.87     428.87
@@ -197,7 +199,7 @@
 <p>in which <span class="math inline">\(n\)</span> is the required sample size and <span class="math inline">\(N\)</span> is the total number of sampling units in the population.</p>
 <p>If the space between the selected sampling units is equal, the selection probability for each sampling unit is theoretically defined as:</p>
 <p><span class="math display">\[p(x) = \frac{1}{I},\]</span></p>
-<p>with the property that the space between selected units <span class="math inline">\(i\)</span> is the same as the interval <span class="math inline">\(I\)</span>, see Figure 2. However, in practice the selection is deterministic and completely depends on the chosen <code>intervalStartingPoint</code>.</p>
+<p>with the property that the space between selected units <span class="math inline">\(i\)</span> is the same as the interval <span class="math inline">\(I\)</span>, see Figure 2. However, in practice the selection is deterministic and completely depends on the chosen starting points (using <code>start</code>).</p>
 <center>
 <div class="figure">
 <img src="img/fixedIntervalSampling.png" alt=""><p class="caption">Figure 2: Illustration of fixed interval sampling</p>
@@ -206,10 +208,10 @@
 <p>The fixed interval algorithm, like the random sampling algorithm, yields a sample that allows every sampling unit in the population an equal chance of being selected. However, the systematic sampling algorithm has the property that all items in the population with a monetary value larger than the interval <span class="math inline">\(I\)</span> have an selection probability of one because one of these items’ sampling units are always selected from the interval. Note that, if the population is arranged randomly with respect to its deviation pattern, fixed interval sampling is equivalent to random selection.</p>
 <p><strong>Advantages:</strong> The advantage of the fixed interval sampling algorithm is that it is often simple to understand and fast to perform. Another advantage is that, in monetary unit sampling, all items that are greater than the calculated interval will be included in the sample. In record sampling, since units can be ranked on the basis of value, there is also a guarantee that some large items will be in the sample.</p>
 <p><strong>Disadvantages:</strong> A pattern in the population can coincide with the selected interval, rendering the sample less representative. What is sometimes seen as an added complication for this algorithm is that the sample is hard to extend after drawing the initial sample. This is due to the chance of selecting the same sampling unit. However, by removing the already selected sampling units from the population and redrawing the intervals this problem can be efficiently solved.</p>
-<p>As an example, the code below shows how to apply the fixed interval sampling algorithm in a record sampling and a monetary unit sampling setting. Note that, by default, the first sampling unit from each interval is selected. However, this can be changed by setting the argument <code>intervalStartingPoint = 1</code> to a different value.</p>
+<p>As an example, the code below shows how to apply the fixed interval sampling algorithm in a record sampling and a monetary unit sampling setting. Note that, by default, the first sampling unit from each interval is selected. However, this can be changed by setting the argument <code>start = 1</code> to a different value.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Record sampling</span>
-<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'records'</span>, algorithm <span class="op">=</span> <span class="st">'interval'</span>, intervalStartingPoint <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'items'</span>, method <span class="op">=</span> <span class="st">'interval'</span>, start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
 <pre><code>##   rowNumber count    ID bookValue auditValue
 ## 1         1     1 82884    242.61     242.61
@@ -220,7 +222,7 @@
 ## 6       176     1 27801    314.65     314.65</code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Monetary unit sampling</span>
-<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'mus'</span>, algorithm <span class="op">=</span> <span class="st">'interval'</span>, bookValues <span class="op">=</span> <span class="st">'bookValue'</span>, intervalStartingPoint <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'mus'</span>, method <span class="op">=</span> <span class="st">'interval'</span>, values <span class="op">=</span> <span class="st">'bookValue'</span>, start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
 <pre><code>##   rowNumber count    ID bookValue auditValue
 ## 1         1     1 30568     14.47      14.47
@@ -244,10 +246,11 @@
 <p>The cell sampling algorithm has the property that all items in the population with a monetary value larger than twice the interval <span class="math inline">\(I\)</span> have a selection probability of one.</p>
 <p><strong>Advantages:</strong> More sets of samples are possible than in fixed interval sampling, as there is no systematic interval <span class="math inline">\(i\)</span> to determine the selections. It is argued that the cell sampling algorithm offers a solution to the pattern problem in fixed interval sampling.</p>
 <p><strong>Disadvantages:</strong> A disadvantage of this sampling algorithm is that not all items in the population with a monetary value larger than the interval have a selection probability of one. Besides, population items can be in two adjacent cells, thereby creating the possibility that an items is included in the sample twice.</p>
-<p>As an example, the code below shows how to apply the cell sampling algorithm in a record sampling and a monetary unit sampling setting.</p>
+<p>As an example, the code below shows how to apply the cell sampling algorithm in a record sampling and a monetary unit sampling setting. It is important to set a seed to make the results reproducible.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Record sampling</span>
-<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'records'</span>, algorithm <span class="op">=</span> <span class="st">'cell'</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'items'</span>, method <span class="op">=</span> <span class="st">'cell'</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
 <pre><code>##   rowNumber count    ID bookValue auditValue
 ## 1         9     1 14608    216.48     216.48
@@ -258,7 +261,8 @@
 ## 6       206     1 93529    528.79     528.79</code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Monetary unit sampling</span>
-<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>population <span class="op">=</span> <span class="va">BuildIt</span>, sampleSize <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'mus'</span>, algorithm <span class="op">=</span> <span class="st">'cell'</span>, bookValues <span class="op">=</span> <span class="st">'bookValue'</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'mus'</span>, method <span class="op">=</span> <span class="st">'cell'</span>, values <span class="op">=</span> <span class="st">'bookValue'</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
 <pre><code>##   rowNumber count    ID bookValue auditValue
 ## 1        53     1 40775     96.61      96.61

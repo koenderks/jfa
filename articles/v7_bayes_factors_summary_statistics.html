@@ -38,7 +38,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">jfa</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.5.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.0</span>
       </span>
     </div>
 
@@ -180,15 +180,15 @@
 <a href="#bayes-factor-after-stage-1" class="anchor"></a>Bayes factor after stage 1</h2>
 <p>Using the <code><a href="../reference/auditBF.html">auditBF()</a></code> function the auditor can create the prior distribution and calculate the Bayes factor in favor of acceptance of the lot versus rejection of the lot. In this case, the Bayes factor in favor of acceptance (<span class="math inline">\(BF_{-+}\)</span>) is 0.665 and represents only anecdotal evidence in favor of rejection (see also the vignette <a href="https://koenderks.github.io/jfa/articles/v6_testing_misstatement.html">Testing misstatement</a>).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/auditBF.html">auditBF</a></span><span class="op">(</span><span class="va">tolerance</span>, n <span class="op">=</span> <span class="fl">32</span>, k <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] 0.6648668</code></pre>
+<code class="sourceCode R"><span class="fu"><a href="../reference/auditBF.html">auditBF</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">2</span>, n <span class="op">=</span> <span class="fl">31</span>, materiality <span class="op">=</span> <span class="va">tolerance</span><span class="op">)</span></code></pre></div>
+<pre><code>## [1] 0.6278047</code></pre>
 </div>
 <div id="bayes-factor-after-stage-2" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bayes-factor-after-stage-2" class="anchor"></a>Bayes factor after stage 2</h2>
 <p>The Bayes factor in favor of acceptance after the second sample of items is 6.24 which represents moderate evidence in favor of acceptance.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/auditBF.html">auditBF</a></span><span class="op">(</span><span class="va">tolerance</span>, n <span class="op">=</span> <span class="fl">32</span> <span class="op">+</span> <span class="fl">50</span>, k <span class="op">=</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">0</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/auditBF.html">auditBF</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">0</span>, n <span class="op">=</span> <span class="fl">32</span> <span class="op">+</span> <span class="fl">50</span>, materiality <span class="op">=</span> <span class="va">tolerance</span><span class="op">)</span></code></pre></div>
 <pre><code>## [1] 6.24126</code></pre>
 </div>
 </div>
