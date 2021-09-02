@@ -8,7 +8,7 @@
 #' @usage evaluation(materiality = NULL, min.precision = NULL, method = 'binomial',
 #'            conf.level = 0.95, data = NULL, values = NULL, values.audit = NULL,
 #'            times = NULL, x = NULL, n = NULL, N.units = NULL, N.items = NULL,
-#'            r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5
+#'            r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5,
 #'            prior = FALSE)
 #'
 #' @param materiality   a numeric value between 0 and 1 specifying the performance materiality (maximum tolerable error) as a fraction of the total size of the population. If specified, the function also returns the conclusion of the analysis with respect to the performance materiality. The value is discarded when \code{direct}, \code{difference}, \code{quotient}, or \code{regression} method is chosen.

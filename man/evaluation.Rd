@@ -7,7 +7,7 @@
 evaluation(materiality = NULL, min.precision = NULL, method = 'binomial',
            conf.level = 0.95, data = NULL, values = NULL, values.audit = NULL,
            times = NULL, x = NULL, n = NULL, N.units = NULL, N.items = NULL,
-           r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5
+           r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5,
            prior = FALSE)
 }
 \arguments{
