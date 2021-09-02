@@ -31,9 +31,8 @@ sample <- selection(data = BuildIt, size = 100, method = 'interval',
                     units = 'mus', values = 'bookValue')$sample
 
 # Evaluate using the Stringer bound
-result <- evaluation(confidence = 0.95, materiality = 0.05, 
-                     method = 'stringer', data = sample, 
-                     values = 'bookValue', values.audit = 'auditValue')
+result <- evaluation(conf.level = 0.95, materiality = 0.05, method = 'stringer',
+                     data = sample, values = 'bookValue', values.audit = 'auditValue')
 
 \dontrun{ 
  report(result) 

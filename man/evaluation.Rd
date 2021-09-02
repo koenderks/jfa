@@ -23,6 +23,8 @@ evaluation(materiality = NULL, min.precision = NULL, method = 'binomial',
 
 \item{values}{a character specifying the column name for the book values in the \code{data}.}
 
+\item{values.audit}{a character specifying the column name for the audit values in the \code{data}.}
+
 \item{times}{a integer vector specifying the number of times each item in the \code{data} should be counted in the evaluation (due to it being selected multiple times for the sample).}
 
 \item{x}{a numeric value larger than 0 specifying the sum of errors found in the sample. If specified, overrides the \code{data}, \code{values} and \code{values.audit} arguments and assumes that the data come from summary statistics specified by both \code{x} and \code{n}.}
@@ -44,8 +46,6 @@ evaluation(materiality = NULL, min.precision = NULL, method = 'binomial',
 \item{cs.mu}{if \code{method = "coxsnell"}, a numeric value between 0 and 1 specifying the mean of the prior distribution on the mean taint. Defaults to 0.5 as recommended by Cox and Snell (1979).}
 
 \item{prior}{a logical specifying if a prior distribution must be used, or an object of class \code{jfaPrior} or \code{jfaPosterior} containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a negligible prior distribution is chosen by default, but can be adjusted using the `kPrior` and `nPrior` arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
-
-\item{auditValues}{a character specifying the column name for the audit values in the \code{data}.}
 }
 \value{
 An object of class \code{jfaEvaluation} containing:

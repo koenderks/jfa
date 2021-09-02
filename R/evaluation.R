@@ -17,7 +17,7 @@
 #' @param conf.level    a numeric value between 0 and 1 specifying the confidence level used in the evaluation. Defaults to 0.95 for 95\% confidence.
 #' @param data          a data frame containing the sample to be evaluated. The sample must at least contain a column of book values and a column of audit (true) values.
 #' @param values        a character specifying the column name for the book values in the \code{data}.
-#' @param auditValues   a character specifying the column name for the audit values in the \code{data}.
+#' @param values.audit  a character specifying the column name for the audit values in the \code{data}.
 #' @param times         a integer vector specifying the number of times each item in the \code{data} should be counted in the evaluation (due to it being selected multiple times for the sample).
 #' @param x             a numeric value larger than 0 specifying the sum of errors found in the sample. If specified, overrides the \code{data}, \code{values} and \code{values.audit} arguments and assumes that the data come from summary statistics specified by both \code{x} and \code{n}.
 #' @param n             an integer larger than 0 specifying the number of items in the sample. If specified, overrides the \code{data}, \code{values} and \code{values.audit} arguments and assumes that the data come from summary statistics specified by both \code{x} and \code{n}.
