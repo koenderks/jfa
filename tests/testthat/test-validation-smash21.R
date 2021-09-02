@@ -5,11 +5,11 @@ context("13. Benchmark against SMASH21 + SMASH21-Bayes")
 
 test_that(desc = "(id: f13-v0.5.3-t1) Test frequentist sample sizes", {
   theta <- c(1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000) / 20000 # materiality / N
-  expectedError <- c(100, 200, 300, 400, 500, 600) / 20000 # exp.error / N
-  sampleSizeMatrix <- matrix(NA, nrow = length(expectedError), ncol = length(theta))
+  expected <- c(100, 200, 300, 400, 500, 600) / 20000 # exp.error / N
+  sampleSizeMatrix <- matrix(NA, nrow = length(expected), ncol = length(theta))
   for (i in 1:nrow(sampleSizeMatrix)) {
     for (j in 1:ncol(sampleSizeMatrix)) {
-      plan <- planning(confidence = 0.95, materiality = theta[j], expectedError = expectedError[i], likelihood = "poisson")
+      plan <- planning(conf.level = 0.95, materiality = theta[j], expected = expected[i], likelihood = "poisson")
       sampleSizeMatrix[i, j] <- plan[["sampleSize"]]
     }
   }
@@ -20,7 +20,7 @@ test_that(desc = "(id: f13-v0.5.3-t1) Test frequentist sample sizes", {
                            231, 53, 29, 20, 15, 12, 10, 9, 8, 7, # 2.5%
                            357, 60, 31, 21, 16, 13, 11, 9, 8, 7), # 3%
                          byrow = TRUE,
-                         nrow = length(expectedError),
+                         nrow = length(expected),
                          ncol = length(theta))
   expect_equal(sampleSizeMatrix, smash_matrix)
 })
@@ -32,13 +32,13 @@ test_that(desc = "(id: f13-v0.5.3-t2) Test Bayesian sample sizes (N = 20,000)", 
   
   N <- 20000
   materiality <- 2000 / N
-  expectedError <- c(300, 500, 700, 900, 1000) / N # 1.5%, 2.5%, 3.5%, 4.5%, 5%
+  expected <- c(300, 500, 700, 900, 1000) / N # 1.5%, 2.5%, 3.5%, 4.5%, 5%
   ub <- c(5000, 10000, 15000, 18000, 19000) / N # 25%, 50%, 75%, 90%, 95%
-  sampleSizeMatrix <- matrix(NA, nrow = length(expectedError), ncol = length(ub))
+  sampleSizeMatrix <- matrix(NA, nrow = length(expected), ncol = length(ub))
   for (i in 1:nrow(sampleSizeMatrix)) {
     for (j in 1:ncol(sampleSizeMatrix)) {
-      prior <- auditPrior(confidence = 0.95, materiality = materiality, likelihood = "poisson", method = "bram", expectedError = expectedError[i], ub = ub[j])
-      plan <- planning(confidence = 0.95, materiality = materiality, expectedError = expectedError[i], prior = prior)
+      prior <- auditPrior(conf.level = 0.95, materiality = materiality, likelihood = "poisson", method = "bram", expected = expected[i], ub = ub[j])
+      plan <- planning(conf.level = 0.95, materiality = materiality, expected = expected[i], prior = prior)
       sampleSizeMatrix[i, j] <- plan[["sampleSize"]]
     }
   }
@@ -49,7 +49,7 @@ test_that(desc = "(id: f13-v0.5.3-t2) Test Bayesian sample sizes (N = 20,000)", 
                            79, 89, 92, 93, 93, # 4.5%
                            98 - 1, 109, 111, 112, 112), # 5% --> SMASH gives 98 for ub = 25%, jfa gives 97
                          byrow = TRUE,
-                         nrow = length(expectedError),
+                         nrow = length(expected),
                          ncol = length(ub))
   expect_equal(sampleSizeMatrix, smash_matrix)
   
@@ -59,13 +59,13 @@ test_that(desc = "(id: f13-v0.5.3-t3) Test Bayesian sample sizes (N = 100,000)",
   
   N <- 100000
   materiality <- 6000 / N
-  expectedError <- c(1000, 2000, 3000, 4000, 5000) / N # 1%, 2%, 3%, 4%, 5%
+  expected <- c(1000, 2000, 3000, 4000, 5000) / N # 1%, 2%, 3%, 4%, 5%
   ub <- c(9000, 10000, 12000, 20000, 30000) / N # 9%, 10%, 12%, 20%, 30% 
-  sampleSizeMatrix <- matrix(NA, nrow = length(expectedError), ncol = length(ub))
+  sampleSizeMatrix <- matrix(NA, nrow = length(expected), ncol = length(ub))
   for (i in 1:nrow(sampleSizeMatrix)) {
     for (j in 1:ncol(sampleSizeMatrix)) {
-      prior <- auditPrior(confidence = 0.95, materiality = materiality, likelihood = "poisson", method = "bram", expectedError = expectedError[i], ub = ub[j])
-      plan <- planning(confidence = 0.95, materiality = materiality, expectedError = expectedError[i], prior = prior)
+      prior <- auditPrior(conf.level = 0.95, materiality = materiality, likelihood = "poisson", method = "bram", expected = expected[i], ub = ub[j])
+      plan <- planning(conf.level = 0.95, materiality = materiality, expected = expected[i], prior = prior)
       sampleSizeMatrix[i, j] <- plan[["sampleSize"]]
     }
   }
@@ -76,7 +76,7 @@ test_that(desc = "(id: f13-v0.5.3-t3) Test Bayesian sample sizes (N = 100,000)",
                            288 + 33, 312 + 33, 338 + 33, 370 + 32, 380 + 32, # 4% --> SMASH gives lower sample sizes for all thetas
                            310 + 1193, 282 + 1267, 251 + 1342, 225 + 1413, 456 + 1194), # 5% --> SMASH gives lower sample sizes for all thetas
                          byrow = TRUE,
-                         nrow = length(expectedError),
+                         nrow = length(expected),
                          ncol = length(ub))
   expect_equal(sampleSizeMatrix, smash_matrix)
   

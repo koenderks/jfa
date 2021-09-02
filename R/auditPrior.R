@@ -1,29 +1,27 @@
-#' Create a prior distribution for audit sampling
+#' Prior Distributions for Audit Sampling
 #'
 #' @description This function creates a prior distribution with audit information to be used in the \code{planning()} and \code{evaluation()} functions via their \code{prior} argument. The function returns an object of class \code{jfaPrior} which can be used with associated \code{summary()} and \code{plot()} methods.
 #'
 #' For more details on how to use this function, see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
-#' @usage auditPrior(method = 'none', likelihood = 'binomial', expectedError = 0, 
-#'            confidence = 0.95, materiality = NULL, N = NULL, 
-#'            ir = 1, cr = 1, ub = NULL, pHmin = NULL, pHplus = NULL, 
-#'            sampleN = 0, sampleK = 0, factor = 1,
-#'            alpha = NULL, beta = NULL)
+#' @usage auditPrior(method = 'none', likelihood = 'binomial', expected = 0, 
+#'            confl.evel = 0.95, materiality = NULL, N.units = NULL, 
+#'            ir = NULL, cr = NULL, ub = NULL, p.min = NULL, 
+#'            x = NULL, n = NULL, factor = NULL, alpha = NULL, beta = NULL)
 #' 
 #' @param method          a character specifying the method by which the prior distribution is constructed. Defaults to \code{none} which incorporates no existing information. Other options are \code{arm}, \code{bram}, \code{median}, \code{hypotheses}, \code{sample}, and \code{factor}. See the details section for more information about the available methods.
 #' @param likelihood      a character specifying the likelihood assumed when updating the prior distribution. This can be either \code{binomial} for the binomial likelihood and beta prior distribution, \code{poisson} for the Poisson likelihood and gamma prior distribution, or \code{hypergeometric} for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.
-#' @param expectedError   a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a numeric value (>= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.
-#' @param confidence      a numeric value between 0 and 1 specifying the confidence level to be used in the planning. Defaults to 0.95 for 95\% confidence.
+#' @param expected        a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a numeric value (>= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.
+#' @param conf.level      a numeric value between 0 and 1 specifying the confidence level to be used in the planning. Defaults to 0.95 for 95\% confidence.
 #' @param materiality     a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum upper limit) as a fraction of the total population size. Can be \code{NULL} for some methods.
-#' @param N               an numeric value larger than 0 specifying the total population size. Optional unless \code{likelihood = 'hypergeometric'}.
+#' @param N.units         an numeric value larger than 0 specifying the total number of units in the population. Optional unless \code{likelihood = 'hypergeometric'}.
 #' @param ir              if \code{method = 'arm'}, a numeric value between 0 and 1 specifying the inherent risk in the audit risk model. Defaults to 1 for 100\% risk.
 #' @param cr              if \code{method = 'arm'}, a numeric value between 0 and 1 specifying the internal control risk in the audit risk model. Defaults to 1 for 100\% risk.
 #' @param ub              if \code{method = 'bram'}, a numeric value between 0 and 1 specifying the upper bound for the prior distribution as a fraction of the population size.
-#' @param pHmin           if \code{method = 'hypotheses'}, a numeric value between 0 and 1 specifying the prior probability of the hypothesis \eqn{\theta <} materiality.
-#' @param pHplus          if \code{method = 'hypotheses'}, a numeric value between 0 and 1 specifying the prior probability of the hypothesis \eqn{\theta >} materiality.
-#' @param sampleN         if \code{method = 'sample'} or \code{method = 'factor'}, an integer larger than, or equal to, 0 specifying the sample size of the sample equivalent to the prior information.
-#' @param sampleK         if \code{method = 'sample'} or \code{method = 'factor'}, a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.
+#' @param p.min           if \code{method = 'hypotheses'}, a numeric value between 0 and 1 specifying the prior probability of the hypothesis of tolerable misstatement (\eqn{\theta <} materiality).
+#' @param x               if \code{method = 'sample'} or \code{method = 'factor'}, a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.
+#' @param n               if \code{method = 'sample'} or \code{method = 'factor'}, an integer larger than, or equal to, 0 specifying the sample size of the sample equivalent to the prior information.
 #' @param factor          if \code{method = 'factor'}, a numeric value between 0 and 1 specifying the weighting factor for the results of the sample equivalent to the prior information.
 #' @param alpha           if \code{method = 'custom'}, a numeric value specifying the \eqn{\alpha} parameter of the prior distribution.
 #' @param beta            if \code{method = 'custom'}, a numeric value specifying the \eqn{\beta} parameter of the prior distribution.
@@ -35,7 +33,7 @@
 #'  \item{\code{arm}:               This method constructs a prior distribution by translating the risks of material misstatement (inherent risk and internal control risk) from the audit risk model to an implicit sample. The method requires specification of the \code{ir} (inherent risk) and \code{cr} (internal control risk) arguments.}
 #'  \item{\code{bram}:              This method constructs a prior distribution using the Bayesian audit risk assessment model (BRAM) in which the expected most likely error and expected upper bound of the misstatement must be specified. The method requires specification of the \code{ub} argument.}
 #'  \item{\code{median}:            This method constructs a prior distribution so that the prior probability of tolerable misstatement (\eqn{\theta <} materiality) is equal to the prior probability of intolerable misstatement (\eqn{\theta >} materiality).}
-#'  \item{\code{hypotheses}:        This method constructs a prior distribution with custom prior probabilities for the hypotheses of tolerable misstatement (\eqn{\theta <} materiality) and intolerable misstatement (\eqn{\theta >} materiality). This method requires specification of the \code{pHmin} and \code{pHplus} arguments.}
+#'  \item{\code{hypotheses}:        This method constructs a prior distribution with custom prior probabilities for the hypotheses of tolerable misstatement (\eqn{\theta <} materiality) and intolerable misstatement (\eqn{\theta >} materiality). This method requires specification of the \code{pHmin} argument.}
 #'  \item{\code{sample}:            This method constructs a prior distribution on the basis of an earlier sample. This method requires specification of the \code{sampleN} and \code{sampleK} arguments.}
 #'  \item{\code{factor}:            This method constructs a prior distribution on the basis of an earlier sample in combination with a weighting factor. This method requires specification of the \code{sampleN}, \code{sampleK}, and \code{factor} arguments.}
 #'  \item{\code{custom}:            This method constructs a prior distribution on the basis of user specified \eqn{\alpha} and \eqn{\beta} parameters.}
@@ -51,16 +49,17 @@
 #'
 #' @return An object of class \code{jfaPrior} containing:
 #' 
-#' \item{confidence}{a numeric value between 0 and 1 indicating the confidence level used.}
-#' \item{materiality}{if \code{materiality} is specified, a numeric value between 0 and 1 indicating the materiality used to construct the prior distribution.}
-#' \item{expectedError}{a numeric value larger than, or equal to, 0 indicating the input for the number of expected errors.}
-#' \item{method}{a character indicating the method by which the prior distribution is constructed.}
-#' \item{likelihood}{a character indicating the assumed likelihood.}
-#' \item{N}{if \code{N} is specified, an integer larger than 0 indicating the population size.}
+#' \item{prior}{a string describing the functional form of the prior distribution.}
 #' \item{description}{a list containing a description of the prior distribution, including the parameters of the prior distribution and the implicit sample on which the prior distribution is based.}
 #' \item{statistics}{a list containing statistics of the prior distribution, including the mean, mode, median, and upper bound of the prior distribution.}
 #' \item{specifics}{a list containing specifics of the prior distribution that vary depending on the \code{method}.}
 #' \item{hypotheses}{if \code{materiality} is specified, a list containing information about the hypotheses, including prior probabilities and odds for the hypothesis of tolerable misstatement (H-) and the hypothesis of intolerable misstatement (H+).}
+#' \item{method}{a character indicating the method by which the prior distribution is constructed.}
+#' \item{likelihood}{a character indicating the assumed likelihood.}
+#' \item{materiality}{if \code{materiality} is specified, a numeric value between 0 and 1 indicating the materiality used to construct the prior distribution.}
+#' \item{expected}{a numeric value larger than, or equal to, 0 indicating the input for the number of expected errors.}
+#' \item{conf.level}{a numeric value between 0 and 1 indicating the confidence level used.}
+#' \item{N.units}{if \code{N} is specified, an integer larger than 0 indicating the population size.}
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #' 
@@ -73,251 +72,214 @@
 #'
 #' @examples  
 #' # Translate inherent risk (ir) and control risk (cr) to a prior distribution
-#' auditPrior(method = 'arm', likelihood = 'binomial', expectedError = 0.025,
+#' auditPrior(method = 'arm', likelihood = 'binomial', expected = 0.025,
 #'            materiality = 0.05, ir = 1, cr = 0.6)
 #' @export
 
-auditPrior <- function(method = 'none', likelihood = 'binomial', expectedError = 0, 
-                       confidence = 0.95, materiality = NULL, N = NULL, 
-                       ir = 1, cr = 1, ub = NULL, pHmin = NULL, pHplus = NULL, 
-                       sampleN = 0, sampleK = 0, factor = 1,
-                       alpha = NULL, beta = NULL) {
-  
-  if (!(method %in% c("none", "median", "hypotheses", "arm", "bram", "sample", "factor", "custom"))) # Check if the method has a valid input
+auditPrior <- function(method = 'none', likelihood = 'binomial', expected = 0, 
+                       conf.level = 0.95, materiality = NULL, N.units = NULL, 
+                       ir = NULL, cr = NULL, ub = NULL, p.min = NULL,
+                       x = NULL, n = NULL, factor = NULL, alpha = NULL, beta = NULL) {
+  if (!(method %in% c("none", "median", "hypotheses", "arm", "bram", "sample", "factor", "custom")) || length(method) != 1)
     stop("'method' should be one of 'none', 'median', 'hypotheses', 'arm', 'bram', 'sample', 'factor', 'custom'")
-  
-  if (!(likelihood %in% c("poisson", "binomial", "hypergeometric"))) # Check if the likelihood has a valid input
+  if (!(likelihood %in% c("poisson", "binomial", "hypergeometric")) || length(likelihood) != 1)
     stop("'likelihood' should be one of 'binomial', 'poisson', 'hypergeometric'")
-  
-  if (confidence >= 1 || confidence <= 0 || is.null(confidence)) # Check if the confidence has a valid input
-    stop("'confidence' must be a single number between 0 and 1")
-  
-  if (is.null(materiality) && method %in% c("median", "hypotheses", "arm")) # Materiality is required for these methods
+  if (is.null(conf.level))
+    stop("'conf.level' is missing for prior construction")
+  if (conf.level >= 1 || conf.level <= 0 || length(conf.level) != 1)
+    stop("'conf.level' must be a single number between 0 and 1")
+  if (expected < 0)
+    stop("'expected' must be a single number equal to or larger than 0")
+  if (is.null(materiality) && method %in% c("median", "hypotheses", "arm"))
     stop("'materiality' is missing for prior construction")
-  
-  if (likelihood == "hypergeometric" && (is.null(N) || N <= 0)) # Check if N is specified if hypergeometric is specified
-    stop("'N' is missing for prior construction")
-  
-  if (expectedError < 0) # Check if the expected errors has a valid input
-    stop("'expectedError' must be a single number equal to or larger than 0")
-  
-  if (!is.null(materiality) && expectedError >= materiality && expectedError < 1) # Check if the expected errors do not exceed the materiality
-    stop("'expectedError' must be a single number smaller than 'materiality'")
-  
-  if (expectedError >= 1 && !(method %in% c('none', 'sample', 'factor', 'custom'))) # Check if the expected errors are consistent with the method
-    stop(paste0("'expectedError' must be a single number equal to or larger than 0 for 'method = ", method, "'"))
-  
+  if (!is.null(materiality) && expected >= materiality && expected < 1)
+    stop("'expected' must be a single number smaller than 'materiality'")
+  if (expected >= 1 && !(method %in% c('none', 'sample', 'factor', 'custom')))
+    stop(paste0("'expected' must be a single number between 0 and 1 for 'method = ", method, "'"))
+  if (likelihood == 'hypergeometric') {
+    if (is.null(N.units))
+      stop("'N.units' is missing for prior construction")
+    if (N.units <= 0)
+      stop("'N.units' must be a positive value")
+    if (N.units%%1 != 0)
+      N.units <- ceiling(N.units)
+  }
   if (method == "none") { # Method 1: Noninformative prior distribution
-    
-    nPrior <- 0 # No earlier observations
-    kPrior <- 0 # No earlier errors
-    
+    prior.n <- 0 # No earlier observations
+    prior.x <- 0 # No earlier errors
   } else if (method == "arm") { # Method 2: Translate risks from the audit risk model
-    
     if (is.null(cr))
       stop("'cr' is missing for prior construction")
+    if (cr < 0 || cr > 1)
+      stop("'cr' must be a single value between 0 and 1")
     if (is.null(ir))
       stop("'ir' is missing for prior construction")
-    
-    alpha  <- (1 - confidence) / (ir * cr) # Calculate the required detection risk from the audit risk model
-    usedPopSize <- if (likelihood == 'hypergeometric') N else NULL
-    nPlus  <- planning(confidence = confidence, likelihood = likelihood, expectedError = expectedError, N = usedPopSize, materiality = materiality, prior = TRUE)$sampleSize # Calculate the sample size for the full detection risk  
-    nMin   <- planning(confidence = 1 - alpha, likelihood = likelihood, expectedError = expectedError, N = usedPopSize, materiality = materiality, prior = TRUE)$sampleSize # Calculated the sample size for the adjusted detection risk
-    nPrior <- nPlus - nMin # Calculate the sample size equivalent to the increase in detection risk
-    kPrior <- (nPlus * expectedError) - (nMin * expectedError) # Calculate errors equivalent to the increase in detection risk
-    
+    if (ir < 0 || ir > 1)
+      stop("'ir' must be a single value between 0 and 1")
+    dr      <- (1 - conf.level) / (ir * cr) # Calculate the required detection risk from the audit risk model
+    population.n <- if (likelihood == 'hypergeometric') N.units else NULL
+    n.plus  <- planning(conf.level = conf.level, likelihood = likelihood, expected = expected, N = population.n, materiality = materiality, prior = TRUE)$n # Calculate the sample size for the full detection risk  
+    n.min   <- planning(conf.level = 1 - dr, likelihood = likelihood, expected = expected, N = population.n, materiality = materiality, prior = TRUE)$n # Calculated the sample size for the adjusted detection risk
+    prior.n <- n.plus - n.min # Calculate the sample size equivalent to the increase in detection risk
+    prior.x <- (n.plus * expected) - (n.min * expected) # Calculate errors equivalent to the increase in detection risk
   } else if (method == 'bram') { # Method 3: Bayesian risk assessment model
-    
     if (is.null(ub)) # Check if the value for the upper bound is present
       stop("'ub' is missing for prior construction")
-    
-    if (ub <= 0 || ub >= 1 || ub <= expectedError) # Check if the value for the upper bound is valid
-      stop("'ub' must be a single number between 0 and 1 and higher than 'expectedError'")
-    
-    if (likelihood == 'poisson' && expectedError > 0) { # Perform approximation described in Stewart (2013) on p. 45.
-      
-      r      <- expectedError / ub
-      q      <- stats::qnorm(confidence)
-      kPrior <- ((( (q * r) + sqrt(3 + ((r / 3) * (4 * q^2 - 10)) - ((r^2 / 3) * (q^2 - 1) ))) / (2 * (1 - r) ))^2 + (1 / 4)) - 1
-      nPrior <- kPrior / expectedError
-      
+    if (ub <= 0 || ub >= 1 || ub <= expected) # Check if the value for the upper bound is valid
+      stop("'ub' must be a single number between 0 and 1 and higher than or equal to 'expected'")
+    if (likelihood == 'poisson' && expected > 0) { # Perform approximation described in Stewart (2013) on p. 45.
+      r <- expected / ub
+      q <- stats::qnorm(conf.level)
+      prior.x <- ((( (q * r) + sqrt(3 + ((r / 3) * (4 * q^2 - 10)) - ((r^2 / 3) * (q^2 - 1) ))) / (2 * (1 - r) ))^2 + (1 / 4)) - 1
+      prior.n <- prior.x / expected
     } else { # Approximation through iteration over one of the parameters
-      
       bound  <- Inf
-      kPrior <- 0
-      nPrior <- 0
-      
+      prior.x <- 0
+      prior.n <- 0
       while (bound > ub) {
-        
-        if (expectedError == 0) { # In this case, iterate over nPrior because kPrior is zero
-          nPrior <- nPrior + 0.001 # Increase of 0.001 (time intensive?)
+        if (expected == 0) { # In this case, iterate over nPrior because kPrior is zero
+          prior.n <- prior.n + 0.001 # Increase of 0.001 (time intensive?)
         } else { # In this case, iterate over kPrior to save computation time
-          kPrior <- kPrior + 0.0001 # Increase of 0.0001 (time intensive?)
-          nPrior <- kPrior / expectedError
+          prior.x <- prior.x + 0.0001 # Increase of 0.0001 (time intensive?)
+          prior.n <- prior.x / expected
         }
-        
         bound <- switch(likelihood, 
-                        "binomial" = stats::qbeta(p = confidence, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior),
-                        "poisson" = stats::qgamma(p = confidence, shape = 1 + kPrior, rate = nPrior),
-                        "hypergeometric" = .qBetaBinom(p = confidence, N = N, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior) / N)
+                        "binomial" = stats::qbeta(p = conf.level, shape1 = 1 + prior.x, shape2 = 1 + prior.n - prior.x),
+                        "poisson" = stats::qgamma(p = conf.level, shape = 1 + prior.x, rate = prior.n),
+                        "hypergeometric" = .qBetaBinom(p = conf.level, N = N.units, shape1 = 1 + prior.x, shape2 = 1 + prior.n - prior.x) / N.units)
       }
-      
     }
   } else if (method == "median" || method == "hypotheses") {
-    
     if(method == "median") { # Method 4: Equal prior probabilities
-      
-      probH0 <- probH1 <- 0.5
-      
+      p.h0 <- p.h1 <- 0.5
     } else if (method == "hypotheses") { # Method 5: Custom prior probabilities
-      
-      if (is.null(pHmin) && is.null(pHplus)) # Must have the prior probabilities and materiality
-        stop("'pHmin' or 'pHplus' is missing for prior construction")
-      
-      if ((!is.null(pHmin) && !is.null(pHplus)) && pHmin + pHplus != 1) # Check for valid prior probabilities
-        stop("'pHmin' and 'pHplus' should sum to one")  
-      
-      if (!is.null(pHmin) && is.null(pHplus)) { # Adjust p(H1) for user input
-        probH1 <- 1 - pHmin
-      } else {
-        probH1 <- pHplus
-      }
-      
-      probH0 <- 1 - probH1 # Calculate p(H0)
+      if (is.null(p.min)) # Must have the prior probabilities and materiality
+        stop("'p.hmin' is missing for prior construction")
+      p.h1 <- 1 - p.min
+      p.h0 <- 1 - p.h1 # Calculate p(H0)
     }
-    
-    if (expectedError == 0) { # Formulas for zero expected errors
-      
-      nPrior <- switch(likelihood,
-                       "poisson" = -(log(probH1) / materiality),
-                       "binomial" = log(probH1) / log(1 - materiality) - 1,
-                       "hypergeometric" = log(probH1) / log(1 - materiality) - 1)
-      kPrior <- 0
-      
+    if (expected == 0) { # Formulas for zero expected errors
+      prior.n <- switch(likelihood,
+                        "poisson" = -(log(p.h1) / materiality),
+                        "binomial" = log(p.h1) / log(1 - materiality) - 1,
+                        "hypergeometric" = log(p.h1) / log(1 - materiality) - 1)
+      prior.x <- 0
     } else { # Approximation through iteration over alpha parameter = more accurate than approximation through formulas
-      
       median <- Inf
-      kPrior <- 0
-      
+      prior.x <- 0
       while (median > materiality) {
-        kPrior <- kPrior + 0.0001 # Increase of 0.0001 (time intensive?)
-        nPrior <- kPrior / expectedError # Express beta in terms of alpha
+        prior.x <- prior.x + 0.0001 # Increase of 0.0001 (time intensive?)
+        prior.n <- prior.x / expected # Express beta in terms of alpha
         median <- switch(likelihood, # Calculate the median for the current parameters
-                         "binomial" = stats::qbeta(p = probH0, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior),
-                         "poisson" = stats::qgamma(p = probH0, shape = 1 + kPrior, rate = nPrior),
-                         "hypergeometric" = .qBetaBinom(p = probH0, N = N, shape1 = 1 + kPrior, shape2 = 1 + nPrior - kPrior) / N)
+                         "binomial" = stats::qbeta(p = p.h0, shape1 = 1 + prior.x, shape2 = 1 + prior.n - prior.x),
+                         "poisson" = stats::qgamma(p = p.h0, shape = 1 + prior.x, rate = prior.n),
+                         "hypergeometric" = .qBetaBinom(p = p.h0, N = N.units, shape1 = 1 + prior.x, shape2 = 1 + prior.n - prior.x) / N.units)
       }
     }
-    
   } else if (method == 'sample' || method == 'factor') { # Method 6: Earlier sample & Method 7: Weighted earlier sample
-    
-    if (is.null(sampleN))
-      stop("'sampleN' is missing for prior construction")
-    if (is.null(sampleK))
-      stop("'sampleK' is missing for prior construction")
+    if (is.null(n))
+      stop("'n' is missing for prior construction")
+    if (is.null(x))
+      stop("'x' is missing for prior construction")
     if (method == 'factor') {
       if (is.null(factor))
         stop("'factor' is missing for prior construction")
     } else {
       factor <- 1
     }
-    
-    nPrior <- sampleN * factor # Earlier sample size
-    kPrior <- sampleK * factor # Earlier errors
-    
+    prior.n <- n * factor # Earlier sample size
+    prior.x <- x * factor # Earlier errors
   } else if (method == 'custom') { # User specified prior distribution
-    
     if (is.null(alpha))
       stop("'alpha' is missing for prior construction")
     if (is.null(beta))
       stop("'beta' is missing for prior construction")
-    
-    kPrior <- alpha - 1
-    nPrior <- switch(likelihood, 'binomial' = beta + kPrior - 1, 'poisson' = beta, 'hypergeometric' = beta + kPrior - 1) 
-    
+    prior.x <- alpha - 1
+    prior.n <- switch(likelihood, 'binomial' = beta + prior.x - 1, 'poisson' = beta, 'hypergeometric' = beta + prior.x - 1) 
   }
-  
-  # Create the main result object	
-  result <- list()
-  result[["confidence"]]            <- as.numeric(confidence)
-  if (!is.null(materiality))
-    result[["materiality"]]         <- as.numeric(materiality)
-  result[["expectedError"]]         <- as.numeric(expectedError)
-  result[["method"]]                <- as.character(method)
-  result[["likelihood"]]            <- as.character(likelihood)
-  result[["N"]]                     <- as.numeric(N)
-  
-  # Create the description section
-  result[["description"]]           <- list()
-  result[["description"]]$density   <- switch(likelihood, "poisson" = "gamma", "binomial" = "beta", "hypergeometric" = "beta-binomial")
-  result[["description"]]$implicitk <- as.numeric(kPrior)
-  result[["description"]]$implicitn <- as.numeric(nPrior)
-  result[["description"]]$alpha     <- as.numeric(1 + kPrior)
-  result[["description"]]$beta      <- switch(likelihood, "poisson" = nPrior, "binomial" = 1 + nPrior - kPrior, "hypergeometric" = 1 + nPrior - kPrior)
-  
+  # Create the description output
+  description                 <- list()
+  description[["density"]]    <- switch(likelihood, "poisson" = "gamma", "binomial" = "beta", "hypergeometric" = "beta-binomial")
+  description[["alpha"]]      <- as.numeric(1 + prior.x)
+  description[["beta"]]       <- switch(likelihood, "poisson" = prior.n, "binomial" = 1 + prior.n - prior.x, "hypergeometric" = 1 + prior.n - prior.x)
+  description[["implicit.x"]] <- as.numeric(prior.x)
+  description[["implicit.n"]] <- as.numeric(prior.n)
+  # Create the prior string
+  prior.string <- switch(likelihood, 
+                         "poisson" = paste0("gamma(\u03B1 = ", round(description[["alpha"]], 3), ", \u03B2 = ", round(description[["beta"]], 3), ")"),
+                         "binomial" = paste0("beta(\u03B1 = ", round(description[["alpha"]], 3), ", \u03B2 = ", round(description[["beta"]], 3), ")"),
+                         "hypergeometric" = paste0("beta-binomial(N = ", N.units, ", \u03B1 = ", round(description[["alpha"]], 3), ", \u03B2 = ", round(description[["alpha"]], 3), ")"))
   # Create the statistics section
-  result[["statistics"]]            <- list()
-  result[["statistics"]]$mode       <- switch(likelihood, 
-                                              "poisson" = (result[["description"]]$alpha - 1) / result[["description"]]$beta,
-                                              "binomial" = (result[["description"]]$alpha - 1) / (result[["description"]]$alpha + result[["description"]]$beta - 2),
-                                              "hypergeometric" = .modeBetaBinom(N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta))
-  result[["statistics"]]$mean       <- switch(likelihood, 
-                                              "poisson" = result[["description"]]$alpha / result[["description"]]$beta,
-                                              "binomial" = result[["description"]]$alpha / (result[["description"]]$alpha + result[["description"]]$beta),
-                                              "hypergeometric" = result[["description"]]$alpha / (result[["description"]]$alpha + result[["description"]]$beta) * result[["N"]])
-  result[["statistics"]]$median     <- switch(likelihood, 
-                                              "poisson" = stats::qgamma(0.5, shape = result[["description"]]$alpha, rate = result[["description"]]$beta),
-                                              "binomial" = stats::qbeta(0.5, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta),
-                                              "hypergeometric" = .qBetaBinom(0.5, N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta))
-  result[["statistics"]]$ub         <- switch(likelihood, 
-                                              "poisson" = stats::qgamma(confidence, shape = result[["description"]]$alpha, rate = result[["description"]]$beta),
-                                              "binomial" = stats::qbeta(confidence, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta),
-                                              "hypergeometric" = .qBetaBinom(confidence, N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta))									
-  result[["statistics"]]$precision  <- result[["statistics"]]$ub - result[["statistics"]]$mode
-  
+  statistics           <- list()
+  statistics[["mode"]] <- switch(likelihood, 
+                                 "poisson" = (description[["alpha"]] - 1) / description[["beta"]],
+                                 "binomial" = (description[["alpha"]] - 1) / (description[["alpha"]] + description[["beta"]] - 2),
+                                 "hypergeometric" = .modeBetaBinom(N = N.units, shape1 = description[["alpha"]], shape2 = description[["beta"]]))
+  statistics[["mean"]] <- switch(likelihood, 
+                                 "poisson" = description[["alpha"]] / description[["beta"]],
+                                 "binomial" = description[["alpha"]] / (description[["alpha"]] + description[["beta"]]),
+                                 "hypergeometric" = description[["alpha"]] / (description[["alpha"]] + description[["beta"]]) * N.units)
+  statistics[["median"]] <- switch(likelihood, 
+                                   "poisson" = stats::qgamma(0.5, shape = description[["alpha"]], rate = description[["beta"]]),
+                                   "binomial" = stats::qbeta(0.5, shape1 = description[["alpha"]], shape2 = description[["beta"]]),
+                                   "hypergeometric" = .qBetaBinom(0.5, N = N.units, shape1 = description[["alpha"]], shape2 = description[["beta"]]))
+  statistics[["ub"]] <- switch(likelihood, 
+                               "poisson" = stats::qgamma(conf.level, shape = description[["alpha"]], rate = description[["beta"]]),
+                               "binomial" = stats::qbeta(conf.level, shape1 = description[["alpha"]], shape2 = description[["beta"]]),
+                               "hypergeometric" = .qBetaBinom(conf.level, N = N.units, shape1 = description[["alpha"]], shape2 = description[["beta"]]))									
+  statistics[["precision"]] <- statistics[["ub"]] - statistics[["mode"]]
   # Create the specifics section
   if (method != "none")
-    result[["specifics"]]           <- list()
+    specifics             <- list()
   if (method == "median" || method == "hypotheses") {
-    result[["specifics"]]$pHmin     <- as.numeric(probH0)
-    result[["specifics"]]$pHplus    <- as.numeric(probH1)
+    specifics[["p.min"]]  <- as.numeric(p.h0)
+    specifics[["p.plus"]] <- as.numeric(p.h1)
   } else if (method == "sample" || method == "factor") {
-    result[["specifics"]]$sampleN   <- as.numeric(sampleN)
-    result[["specifics"]]$sampleK   <- as.numeric(sampleK)
-    result[["specifics"]]$factor    <- as.numeric(factor)    
+    specifics[["x"]]      <- as.numeric(x)
+    specifics[["n"]]      <- as.numeric(n)
+    specifics[["factor"]] <- as.numeric(factor)    
   } else if (method == "arm") {
-    result[["specifics"]]$ir        <- as.numeric(ir)
-    result[["specifics"]]$cr        <- as.numeric(cr)  
+    specifics[["ir"]]     <- as.numeric(ir)
+    specifics[["cr"]]     <- as.numeric(cr)  
   } else if (method == "bram") {
-    result[["specifics"]]$mode      <- result[["expectedError"]]
-    result[["specifics"]]$ub        <- as.numeric(ub)
+    specifics[["mode"]]   <- as.numeric(expected)
+    specifics[["ub"]]     <- as.numeric(ub)
   } else if (method == 'custom') {
-    result[["specifics"]]$alpha     <- alpha
-    result[["specifics"]]$beta      <- beta
+    specifics[["alpha"]]  <- alpha
+    specifics[["beta"]]   <- beta
   }
-  
   # Create the hypotheses section
-  if (!is.null(result[["materiality"]])) {
-    result[["hypotheses"]]              <- list()
-    result[["hypotheses"]]$hypotheses   <- c(paste0("H-: \u0398 < ", materiality), paste0("H+: \u0398 > ", materiality))
-    result[["hypotheses"]]$pHmin        <- .restrictprob(switch(likelihood, 
-                                                                "poisson" = stats::pgamma(materiality, shape = result[["description"]]$alpha, rate = result[["description"]]$beta),
-                                                                "binomial" = stats::pbeta(materiality, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta),
-                                                                "hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N"]]), N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta)))
-    result[["hypotheses"]]$pHplus       <- .restrictprob(switch(likelihood, 
-                                                                "poisson" = stats::pgamma(materiality, shape = result[["description"]]$alpha, rate = result[["description"]]$beta, lower.tail = FALSE),
-                                                                "binomial" = stats::pbeta(materiality, shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta, lower.tail = FALSE),
-                                                                "hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N"]]), N = result[["N"]], shape1 = result[["description"]]$alpha, shape2 = result[["description"]]$beta, lower.tail = FALSE)))
-    result[["hypotheses"]]$oddsHmin     <- result[["hypotheses"]]$pHmin / result[["hypotheses"]]$pHplus
-    result[["hypotheses"]]$oddsHplus    <- 1 / result[["hypotheses"]]$oddsHmin
-  }
-  
+  if (!is.null(materiality)) {
+    hypotheses                 <- list()
+    hypotheses[["hypotheses"]] <- c(paste0("H-: \u0398 < ", materiality), paste0("H+: \u0398 > ", materiality))
+    hypotheses[["p.min"]]      <- .restrictprob(switch(likelihood, 
+                                                       "poisson" = stats::pgamma(materiality, shape = description[["alpha"]], rate = description[["beta"]]),
+                                                       "binomial" = stats::pbeta(materiality, shape1 = description[["alpha"]], shape2 = description[["beta"]]),
+                                                       "hypergeometric" = .pBetaBinom(ceiling(materiality * N.units), N = N.units, shape1 = description[["alpha"]], shape2 = description[["beta"]])))
+    hypotheses[["p.plus"]]     <- .restrictprob(switch(likelihood, 
+                                                       "poisson" = stats::pgamma(materiality, shape = description[["alpha"]], rate = description[["beta"]], lower.tail = FALSE),
+                                                       "binomial" = stats::pbeta(materiality, shape1 = description[["alpha"]], shape2 = description[["beta"]], lower.tail = FALSE),
+                                                       "hypergeometric" = .pBetaBinom(ceiling(materiality * N.units), N = N.units, shape1 = description[["alpha"]], shape2 = description[["beta"]], lower.tail = FALSE)))
+    hypotheses[["odds.min"]]   <- hypotheses[["p.min"]] / hypotheses[["p.plus"]]
+    hypotheses[["odds.plus"]]  <- 1 / hypotheses[["odds.min"]]
+  }	
+  # Create the main result object	
+  result <- list()
   # Functional form of the prior distribution
-  result[["prior"]] <- switch(likelihood, 
-                              "poisson" = paste0("gamma(\u03B1 = ", round(result[["description"]]$alpha, 3), ", \u03B2 = ", round(result[["description"]]$beta, 3), ")"),
-                              "binomial" = paste0("beta(\u03B1 = ", round(result[["description"]]$alpha, 3), ", \u03B2 = ", round(result[["description"]]$beta, 3), ")"),
-                              "hypergeometric" = paste0("beta-binomial(N = ", result[["N"]], ", \u03B1 = ", round(result[["description"]]$alpha, 3), ", \u03B2 = ", round(result[["description"]]$beta, 3), ")"))	
-  
+  result[["prior"]]         <- prior.string
+  result[["description"]]   <- description
+  result[["statistics"]]    <- statistics
+  if (method != "none")
+    result[["specifics"]]   <- specifics
+  if (!is.null(materiality))
+    result[["hypotheses"]]    <- hypotheses
+  result[["method"]]        <- as.character(method)
+  result[["likelihood"]]    <- as.character(likelihood)
+  if (!is.null(materiality))
+    result[["materiality"]] <- as.numeric(materiality)
+  result[["expected"]]      <- as.numeric(expected)
+  result[["conf.level"]]    <- as.numeric(conf.level)
+  result[["N.units"]]       <- as.numeric(N.units)
   # Add class 'jfaPrior' to the result
   class(result) <- "jfaPrior"
   return(result)

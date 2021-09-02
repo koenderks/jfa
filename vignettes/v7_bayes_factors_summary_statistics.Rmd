@@ -81,7 +81,7 @@ To calculate the Bayes factor the auditor must first specify the prior distribut
 Using the `auditBF()` function the auditor can create the prior distribution and calculate the Bayes factor in favor of acceptance of the lot versus rejection of the lot. In this case, the Bayes factor in favor of acceptance ($BF_{-+}$) is 0.665 and represents only anecdotal evidence in favor of rejection (see also the vignette [Testing misstatement](https://koenderks.github.io/jfa/articles/v6_testing_misstatement.html)).
 
 ```{r}
-auditBF(tolerance, n = 32, k = 2)
+auditBF(x = 2, n = 31, materiality = tolerance)
 ```
 
 ## Bayes factor after stage 2
@@ -89,7 +89,7 @@ auditBF(tolerance, n = 32, k = 2)
 The Bayes factor in favor of acceptance after the second sample of items is 6.24 which represents moderate evidence in favor of acceptance.
 
 ```{r}
-auditBF(tolerance, n = 32 + 50, k = 2 + 0)
+auditBF(x = 2 + 0, n = 32 + 50, materiality = tolerance)
 ```
 
 # References

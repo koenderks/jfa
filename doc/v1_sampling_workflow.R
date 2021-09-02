@@ -4,9 +4,9 @@ data("BuildIt")
 
 ## -----------------------------------------------------------------------------
 # Specify the confidence, materiality, and expected errors.
-confidence    <- 0.95   # 95%
-materiality   <- 0.05   # 5%
-expectedError <- 0.025  # 2.5%
+confidence  <- 0.95   # 95%
+materiality <- 0.05   # 5%
+expected    <- 0.025  # 2.5%
 
 ## -----------------------------------------------------------------------------
 # Specify the inherent risk (ir) and control risk (cr).
@@ -15,25 +15,23 @@ cr <- 0.6   # 60%
 
 ## -----------------------------------------------------------------------------
 # Adjust the required confidence for a frequentist analysis.
-adjustedConfidence <- 1 - ((1 - confidence) / (ir * cr))
+c.adj <- 1 - ((1 - confidence) / (ir * cr))
 # Step 1: Calculate the required sample size.
-planningResult <- planning(materiality = materiality, expectedError = expectedError, 
-                           confidence = adjustedConfidence)
+stage1 <- planning(materiality = materiality, expected = expected, conf.level = c.adj)
 
 ## -----------------------------------------------------------------------------
-summary(planningResult)
+summary(stage1)
 
 ## -----------------------------------------------------------------------------
 # Step 2: Draw a sample from the financial statements.
-samplingResult <- selection(population = BuildIt, sampleSize = planningResult, 
-                            units = "mus", bookValues = "bookValue")
+stage2 <- selection(data = BuildIt, size = stage1, units = "mus", values = "bookValue")
 
 ## -----------------------------------------------------------------------------
-summary(samplingResult)
+summary(stage2)
 
 ## -----------------------------------------------------------------------------
 # Step 3: Isolate the sample for execution of the audit.
-sample <- samplingResult$sample
+sample <- stage2$sample
 
 # To write the sample to a .csv file:
 # write.csv(x = sample, file = "auditSample.csv", row.names = FALSE)
@@ -43,10 +41,9 @@ sample <- samplingResult$sample
 
 ## -----------------------------------------------------------------------------
 # Step 4: Evaluate the sample
-evaluationResult <- evaluation(materiality = materiality, confidence = adjustedConfidence, 
-                               sample = sample, bookValues = 'bookValue', 
-                               auditValues = 'auditValue')
+stage4 <- evaluation(materiality = materiality, conf.level = c.adj, data = sample, 
+                     values = 'bookValue', values.audit = 'auditValue')
 
 ## -----------------------------------------------------------------------------
-summary(evaluationResult)
+summary(stage4)
 

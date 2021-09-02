@@ -2,32 +2,32 @@
 % Please edit documentation in R/auditBF.R
 \name{auditBF}
 \alias{auditBF}
-\title{Function to compute Bayes factors for audit sampling}
+\title{Bayes Factors for Audit Sampling}
 \usage{
-auditBF(materiality, n, k, expectedError = 0, likelihood = 'binomial', 
-        nPrior = NULL, kPrior = NULL, N = NULL, log = FALSE)
+auditBF(x, n, materiality, likelihood = 'binomial', BF10 = TRUE,
+        log = FALSE, N.units = NULL, alpha = NULL, beta = NULL)
 }
 \arguments{
+\item{x}{a number larger than zero specifying the observed proportional error (i.e., sum of taints) in the sample.}
+
+\item{n}{an integer larger than 0 specifying the number of items in the sample (i.e., the sample size).}
+
 \item{materiality}{a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum upper limit) as a fraction of the total population size. Can be \code{NULL} for some methods.}
-
-\item{n}{an integer larger than 0 specifying the number of items in the sample.}
-
-\item{k}{a number larger than zero specifying the observed proportional error (i.e., sum of taints) in the sample.}
-
-\item{expectedError}{a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a numeric value (>= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.}
 
 \item{likelihood}{a character specifying the likelihood assumed when updating the prior distribution. This can be either \code{binomial} for the binomial likelihood and beta prior distribution, \code{poisson} for the Poisson likelihood and gamma prior distribution, or \code{hypergeometric} for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.}
 
-\item{nPrior}{numeric value larger than, or equal to, 0 specifying the sample size of the sample equivalent to the prior information.}
+\item{BF10}{logical; if \code{TRUE}, the Bayes factor computed is in favor or tolerable misstatement. If \code{FALSE}, the Bayes factor is in favor of intolerable misstatement.}
 
-\item{kPrior}{a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.}
+\item{log}{logical; if \code{TRUE}, the Bayes factor is given as log(bf).}
 
-\item{N}{an integer larger than 0 specifying the total population size. Only required when \code{likelihood = 'hypergeometric'}.}
+\item{N.units}{an integer larger than 0 specifying the total number of sampling units in the population. Only required when \code{likelihood = 'hypergeometric'}.}
 
-\item{log}{logical; if TRUE, the Bayes factor is given as log(bf).}
+\item{alpha}{a numeric value specifying the \eqn{\alpha} parameter of the prior distribution. If specified, overrides the default parameters from the impartial prior distribution.}
+
+\item{beta}{a numeric value specifying the \eqn{\beta} parameter of the prior distribution. If specified, overrides the default parameters from the impartial prior distribution.}
 }
 \value{
-A value for the Bayes factor in favor of the hypothesis of tolerable misstatement against the hypothesis of intolerable misstatement.
+A numeric value for the Bayes factor.
 }
 \description{
 This function computes Bayes factors for audit sampling from summary statistics of an audit sample. By default, the Bayes factor is computed using an impartial prior distribution on the misstatement (Derks et al., 2021). However, the arguments \code{nPrior} and \code{kPrior} can be used to specify an alternative prior distribution (Derks et al., 2021).
@@ -49,10 +49,10 @@ This section elaborates on the available likelihoods and corresponding prior dis
 \examples{
  
 # Compute a default Bayes factor from an impartial prior
-auditBF(materiality = 0.05, n = 50, k = 1)
+auditBF(x = 1, n = 50, materiality = 0.05)
 
 # Compute a Bayes factor from a negligible prior
-auditBF(materiality = 0.05, n = 50, k = 1, nPrior = 0, kPrior = 0)
+auditBF(x = 1, n = 50, materiality = 0.05, alpha = 1, beta = 1)
 
 }
 \references{

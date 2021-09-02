@@ -33,8 +33,8 @@ test_that(desc = "(id: f9-v0.4.0-t1) Test sample sizes for 5 percent risk of ove
         next
       if(i == 11 && j > 26)
         next
-      jfaRes <- planning(confidence = 0.95, expectedError = expectedDeviationRate[j], likelihood = "binomial", materiality = tolerableDeivationRate[i])  
-      sampleSizeMatrix[j, i] <- jfaRes[["sampleSize"]]
+      jfaRes <- planning(conf.level = 0.95, expected = expectedDeviationRate[j], likelihood = "binomial", materiality = tolerableDeivationRate[i])  
+      sampleSizeMatrix[j, i] <- jfaRes[["n"]]
     }
   }
   
@@ -86,8 +86,8 @@ test_that(desc = "(id: f9-v0.4.0-t2) Test sample sizes for 10 percent risk of ov
         next
       if(i == 11 && j > 26)
         next
-      jfaRes <- planning(confidence = 0.90, expectedError = expectedDeviationRate[j], likelihood = "binomial", materiality = tolerableDeivationRate[i])  
-      sampleSizeMatrix[j, i] <- jfaRes[["sampleSize"]]
+      jfaRes <- planning(conf.level = 0.90, expected = expectedDeviationRate[j], likelihood = "binomial", materiality = tolerableDeivationRate[i])  
+      sampleSizeMatrix[j, i] <- jfaRes[["n"]]
     }
   }
   
@@ -120,8 +120,8 @@ test_that(desc = "(id: f9-v0.4.0-t3) Test upper bounds for 5 percent risk of ove
   colnames(evaluationMatrix) <- numberOfDeviations
   for(i in 1:length(numberOfDeviations)){
     for(j in 1:length(sampleSize)){
-      jfaRes <- evaluation(confidence = 0.95, method = "binomial", materiality = 0.05, nSumstats = sampleSize[j], kSumstats = numberOfDeviations[i]) 
-      evaluationMatrix[j, i] <- ceiling(jfaRes[["confBound"]] * 100 * 10) / 10
+      jfaRes <- evaluation(conf.level = 0.95, method = "binomial", materiality = 0.05, n = sampleSize[j], x = numberOfDeviations[i]) 
+      evaluationMatrix[j, i] <- ceiling(jfaRes[["ub"]] * 100 * 10) / 10
     }
   }
   
@@ -162,8 +162,8 @@ test_that(desc = "(id: f9-v0.4.0-t4) Test upper bounds for 10 percent risk of ov
   colnames(evaluationMatrix) <- numberOfDeviations
   for(i in 1:length(numberOfDeviations)){
     for(j in 1:length(sampleSize)){
-      jfaRes <- evaluation(confidence = 0.90, method = "binomial", materiality = 0.05, nSumstats = sampleSize[j], kSumstats = numberOfDeviations[i]) 
-      evaluationMatrix[j, i] <- ceiling(jfaRes[["confBound"]] * 100 * 10) / 10
+      jfaRes <- evaluation(conf.level = 0.90, method = "binomial", materiality = 0.05, n = sampleSize[j], x = numberOfDeviations[i]) 
+      evaluationMatrix[j, i] <- ceiling(jfaRes[["ub"]] * 100 * 10) / 10
     }
   }
   

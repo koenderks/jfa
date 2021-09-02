@@ -1,22 +1,22 @@
-#' Function to compute Bayes factors for audit sampling
+#' Bayes Factors for Audit Sampling
 #'
 #' @description This function computes Bayes factors for audit sampling from summary statistics of an audit sample. By default, the Bayes factor is computed using an impartial prior distribution on the misstatement (Derks et al., 2021). However, the arguments \code{nPrior} and \code{kPrior} can be used to specify an alternative prior distribution (Derks et al., 2021).
 #'
 #' For more details on how to use this function, see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
-#' @usage auditBF(materiality, n, k, expectedError = 0, likelihood = 'binomial', 
-#'         nPrior = NULL, kPrior = NULL, N = NULL, log = FALSE)
+#' @usage auditBF(x, n, materiality, likelihood = 'binomial', BF10 = TRUE,
+#'         log = FALSE, N.units = NULL, alpha = NULL, beta = NULL)
 #' 
+#' @param x             a number larger than zero specifying the observed proportional error (i.e., sum of taints) in the sample.
+#' @param n             an integer larger than 0 specifying the number of items in the sample (i.e., the sample size).
 #' @param materiality   a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum upper limit) as a fraction of the total population size. Can be \code{NULL} for some methods.
-#' @param n             an integer larger than 0 specifying the number of items in the sample.
-#' @param k             a number larger than zero specifying the observed proportional error (i.e., sum of taints) in the sample.
-#' @param expectedError a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a numeric value (>= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.
 #' @param likelihood    a character specifying the likelihood assumed when updating the prior distribution. This can be either \code{binomial} for the binomial likelihood and beta prior distribution, \code{poisson} for the Poisson likelihood and gamma prior distribution, or \code{hypergeometric} for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.
-#' @param nPrior        numeric value larger than, or equal to, 0 specifying the sample size of the sample equivalent to the prior information.
-#' @param kPrior        a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.
-#' @param N             an integer larger than 0 specifying the total population size. Only required when \code{likelihood = 'hypergeometric'}.
-#' @param log           logical; if TRUE, the Bayes factor is given as log(bf).
+#' @param BF10          logical; if \code{TRUE}, the Bayes factor computed is in favor or tolerable misstatement. If \code{FALSE}, the Bayes factor is in favor of intolerable misstatement.
+#' @param log           logical; if \code{TRUE}, the Bayes factor is given as log(bf).
+#' @param N.units       an integer larger than 0 specifying the total number of sampling units in the population. Only required when \code{likelihood = 'hypergeometric'}.
+#' @param alpha         a numeric value specifying the \eqn{\alpha} parameter of the prior distribution. If specified, overrides the default parameters from the impartial prior distribution.
+#' @param beta          a numeric value specifying the \eqn{\beta} parameter of the prior distribution. If specified, overrides the default parameters from the impartial prior distribution.
 #'
 #' @details The Bayes Factor \eqn{BF_{-+}} quantifies how much more likely the data are to be observed under \eqn{H_{-}: \theta < \theta_{max}} than under \eqn{H_{+}: \theta > \theta_{max}}. Therefore, \eqn{BF_{-+}} can be interpreted as the relative support in the observed data for \eqn{H_{-}} versus \eqn{H_{+}}. If \eqn{BF_{-+}} is 1, there is no preference for either \eqn{H_{-}} or \eqn{H_{+}}. If \eqn{BF_{-+}} is larger than 1, \eqn{H_{-}} is preferred. If \eqn{BF_{-+}} is between 0 and 1, \eqn{H_{+}} is preferred.
 #'
@@ -28,7 +28,7 @@
 #'  \item{\code{hypergeometric}:   The hypergeometric likelihood is used as a likelihood for sampling \emph{without} replacement. The likelihood function is defined as: \deqn{p(x = k) = \frac{{K \choose k} {N - K \choose n - k}}{{N \choose n}}} The conjugate \emph{beta-binomial(\eqn{\alpha, \beta})} prior (Dyer and Pierce, 1993) has probability density function: \deqn{f(k | n, \alpha, \beta) = {n \choose k} \frac{B(k + \alpha, n - k + \beta)}{B(\alpha, \beta)}} }
 #' }
 #'
-#' @return A value for the Bayes factor in favor of the hypothesis of tolerable misstatement against the hypothesis of intolerable misstatement.
+#' @return A numeric value for the Bayes factor.
 #' 
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #' 
@@ -40,48 +40,40 @@
 #'
 #' @examples  
 #' # Compute a default Bayes factor from an impartial prior
-#' auditBF(materiality = 0.05, n = 50, k = 1)
+#' auditBF(x = 1, n = 50, materiality = 0.05)
 #' 
 #' # Compute a Bayes factor from a negligible prior
-#' auditBF(materiality = 0.05, n = 50, k = 1, nPrior = 0, kPrior = 0)
+#' auditBF(x = 1, n = 50, materiality = 0.05, alpha = 1, beta = 1)
 #' 
 #' @export
 
-auditBF <- function(materiality, n, k, expectedError = 0, likelihood = 'binomial', 
-                    nPrior = NULL, kPrior = NULL, N = NULL, log = FALSE) {
-  
+auditBF <- function(x, n, materiality, likelihood = 'binomial', BF10 = TRUE,
+                    log = FALSE, N.units = NULL, alpha = NULL, beta = NULL) {
   if(materiality <= 0 || materiality >= 1)
     stop("'materiality' must be a single number between 0 and 1")
-  
   if(n <= 0 || !(n%%1 == 0))
     stop("'n' must be a single number larger than 0")
-  
-  if(k < 0)
+  if(x < 0)
     stop("'k' must be a single number equal to or larger than 0")
-  
-  if(k > n)
+  if(x > n)
     stop("'k' must be a single number equal to or smaller than 'n'")
-  
-  if(is.null(nPrior) && !is.null(kPrior))
-    stop("'kPrior' will not be used")
-
-  if(!is.null(nPrior) && is.null(kPrior))
-    stop("'nPrior' will not be used")
-    
-  if(!is.null(nPrior) && !is.null(kPrior)) {
-    # Create a prior distribution on the basis of an earlier sample (Derks et al., 2021)
-    prior <- jfa::auditPrior(materiality = materiality, expectedError = expectedError, method = 'sample', likelihood = likelihood, sampleN = nPrior, sampleK = kPrior, N = N)
+  if(is.null(alpha) && !is.null(beta))
+    stop("'alpha' is missing for evaluation")
+  if(!is.null(alpha) && is.null(beta))
+    stop("'beta' is missing for evaluation")
+  if(!is.null(alpha) && !is.null(beta)) {
+    # Create a prior distribution on the basis of the raw parameters
+    prior <- auditPrior(materiality = materiality, method = 'custom', likelihood = likelihood, alpha = alpha, beta = beta, N.units = N.units)
   } else {
     # Create the impartial prior distribution (Derks et al., 2021)
-    prior <- jfa::auditPrior(materiality = materiality, expectedError = expectedError, method = 'median', likelihood = likelihood, N = N)
+    prior <- auditPrior(materiality = materiality, method = 'median', likelihood = likelihood, N.units = N.units)
   }
-  
   # Compute the Bayes factor in favor of tolerable misstatement
-  bfminplus <- jfa::evaluation(materiality = materiality, nSumstats = n, kSumstats = k, prior = prior, N = N)$posterior$hypotheses$bf
-  
+  bf <- evaluation(materiality = materiality, x = x, n = n, prior = prior, N.units = N.units)$posterior$hypotheses$bf
+  if (!BF10)
+    bf <- 1 / bf
   # Transform to logarithm if the user wants to
   if(log)
-    bfminplus <- log(bfminplus)
-  
-  return(bfminplus)
+    bf <- log(bf)
+  return(bf)
 }

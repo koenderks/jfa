@@ -7,31 +7,35 @@ data(BuildIt)
 
 ## -----------------------------------------------------------------------------
 # Record sampling
-sample <- jfa::selection(population = BuildIt, sampleSize = 100, units = 'records', algorithm = 'random')
+set.seed(1)
+sample <- selection(data = BuildIt, size = 100, units = 'items', method = 'random')
 head(sample$sample, n = 6)
 
 ## -----------------------------------------------------------------------------
 # Monetary unit sampling
-sample <- jfa::selection(population = BuildIt, sampleSize = 100, units = 'mus', algorithm = 'random', bookValues = 'bookValue')
+set.seed(1)
+sample <- selection(data = BuildIt, size = 100, units = 'mus', method = 'random', values = 'bookValue')
 head(sample$sample, n = 6)
 
 ## -----------------------------------------------------------------------------
 # Record sampling
-sample <- jfa::selection(population = BuildIt, sampleSize = 100, units = 'records', algorithm = 'interval', intervalStartingPoint = 1)
+sample <- selection(data = BuildIt, size = 100, units = 'items', method = 'interval', start = 1)
 head(sample$sample, n = 6)
 
 ## -----------------------------------------------------------------------------
 # Monetary unit sampling
-sample <- jfa::selection(population = BuildIt, sampleSize = 100, units = 'mus', algorithm = 'interval', bookValues = 'bookValue', intervalStartingPoint = 1)
+sample <- selection(data = BuildIt, size = 100, units = 'mus', method = 'interval', values = 'bookValue', start = 1)
 head(sample$sample, n = 6)
 
 ## -----------------------------------------------------------------------------
 # Record sampling
-sample <- jfa::selection(population = BuildIt, sampleSize = 100, units = 'records', algorithm = 'cell')
+set.seed(1)
+sample <- selection(data = BuildIt, size = 100, units = 'items', method = 'cell')
 head(sample$sample, n = 6)
 
 ## -----------------------------------------------------------------------------
 # Monetary unit sampling
-sample <- jfa::selection(population = BuildIt, sampleSize = 100, units = 'mus', algorithm = 'cell', bookValues = 'bookValue')
+set.seed(1)
+sample <- selection(data = BuildIt, size = 100, units = 'mus', method = 'cell', values = 'bookValue')
 head(sample$sample, n = 6)
 

@@ -180,22 +180,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2>Constructing a prior distribution</h2>
 <p>What information can be incorporated into the prior distribution depends on what type of information is available, the quality of that information, and the situation at hand. When the auditor has decided what kind of information they want to incorporate into a prior distribution, they can use the <code>auditPrior()</code> function to calculate the corresponding parameters of the prior distribution. Below we discuss the various types of audit information that <code>jfa</code> is able to incorporate into a prior distribution.</p>
 <p>First, we set some default options for the confidence, performance materiality, the likelihood, and the expected errors in the sample.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>confidence    <span class="ot">&lt;-</span> <span class="fl">0.95</span>       <span class="co"># 95% confidence</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>likelihood    <span class="ot">&lt;-</span> <span class="st">&#39;binomial&#39;</span> <span class="co"># Binomial likelihood</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>materiality   <span class="ot">&lt;-</span> <span class="fl">0.05</span>       <span class="co"># Performance materiality of 5%</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>expectedError <span class="ot">&lt;-</span> <span class="fl">0.01</span>       <span class="co"># 1% errors expected in sample</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>confidence  <span class="ot">&lt;-</span> <span class="fl">0.95</span>       <span class="co"># 95% confidence</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>likelihood  <span class="ot">&lt;-</span> <span class="st">&#39;binomial&#39;</span> <span class="co"># Binomial likelihood</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>materiality <span class="ot">&lt;-</span> <span class="fl">0.05</span>       <span class="co"># Performance materiality of 5%</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>expected    <span class="ot">&lt;-</span> <span class="fl">0.01</span>       <span class="co"># 1% errors expected in sample</span></span></code></pre></div>
 <div id="default-no-explicit-information-method-none" class="section level3">
 <h3>[Default] No explicit information (<code>method = &#39;none&#39;</code>)</h3>
 <p>You can refrain from incorporating explicit information in the prior distribution using <code>method = &#39;none&#39;</code>. As an example, the code below incorporates no explicit information into a prior distribution</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>prior1 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(<span class="at">method =</span> <span class="st">&#39;none&#39;</span>, <span class="at">likelihood =</span> likelihood, </span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">expectedError =</span> expectedError, <span class="at">confidence =</span> confidence)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior1)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>prior1 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(<span class="at">method =</span> <span class="st">&#39;none&#39;</span>, <span class="at">likelihood =</span> likelihood, <span class="at">expected =</span> expected, <span class="at">conf.level =</span> confidence)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior1)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
 ## # ------------------------------------------------------------
 ## # Input:
 ## #
-## # Confidence:                    95% 
+## # Confidence level:              95% 
 ## # Expected sample errors:        1% 
 ## # Likelihood:                    binomial 
 ## # Specifics:                     None 
@@ -221,16 +220,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="audit-risk-model-method-arm" class="section level3">
 <h3>Audit Risk Model (<code>method = &#39;arm&#39;</code>)</h3>
 <p>You can translate the risk assessments from the Audit Risk Model (inherent risk and internal control risk) into a prior distribution using <code>method = &#39;arm&#39;</code> in combination with the <code>ir</code> and <code>cr</code> arguments. As an example, the code below incorporates the information that the inherent risk is equal to 90% and that the internal control risk is equal to 60% into a prior distribution.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>prior2 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(<span class="at">method =</span> <span class="st">&#39;arm&#39;</span>, <span class="at">likelihood =</span> likelihood, </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">expectedError =</span> expectedError, <span class="at">confidence =</span> confidence,</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">materiality =</span> materiality, <span class="at">ir =</span> <span class="fl">0.9</span>, <span class="at">cr =</span> <span class="fl">0.6</span>)</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior2)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>prior2 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(<span class="at">method =</span> <span class="st">&#39;arm&#39;</span>, <span class="at">likelihood =</span> likelihood, <span class="at">expected =</span> expected, <span class="at">conf.level =</span> confidence,</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">materiality =</span> materiality, <span class="at">ir =</span> <span class="fl">0.9</span>, <span class="at">cr =</span> <span class="fl">0.6</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior2)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
 ## # ------------------------------------------------------------
 ## # Input:
 ## #
-## # Confidence:                    95% 
+## # Confidence level:              95% 
 ## # Expected sample errors:        1% 
 ## # Likelihood:                    binomial 
 ## # Specifics:                     IR = 0.9; ICR = 0.6; DR = 0.093 
@@ -256,16 +254,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="bayesian-risk-assessment-model-method-bram" class="section level3">
 <h3>Bayesian Risk Assessment Model (<code>method = &#39;bram&#39;</code>)</h3>
 <p>You can incorporate information about the expected errors (mode) and the upper confidence bound of the prior distribution according to the Bayesian Risk Assessment Model (BRAM) using <code>method = &#39;bram&#39;</code>. As an example, the code below incorporates the information that the mode of the prior distribution is 1% and the upper bound is 60%.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>prior3 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(<span class="at">method =</span> <span class="st">&#39;bram&#39;</span>, <span class="at">likelihood =</span> likelihood, </span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">expectedError =</span> expectedError, <span class="at">confidence =</span> confidence,</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">materiality =</span> materiality, <span class="at">ub =</span> <span class="fl">0.6</span>)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior3)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>prior3 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(<span class="at">method =</span> <span class="st">&#39;bram&#39;</span>, <span class="at">likelihood =</span> likelihood, <span class="at">expected =</span> expected, <span class="at">conf.level =</span> confidence, </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">materiality =</span> materiality, <span class="at">ub =</span> <span class="fl">0.6</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior3)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
 ## # ------------------------------------------------------------
 ## # Input:
 ## #
-## # Confidence:                    95% 
+## # Confidence level:              95% 
 ## # Expected sample errors:        1% 
 ## # Likelihood:                    binomial 
 ## # Specifics:                     Mode = 0.01; Upper bound = 0.6 
@@ -292,16 +289,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3>Equal prior probabilities (<code>method = &#39;median&#39;</code>)</h3>
 <p>You can incorporate the assumption that tolerable misstatement is equally likely as intolerable misstatement using <code>method = &#39;median&#39;</code>. As an example, the code below incorporates this assumption into a prior distribution.</p>
 <p><em>Note: This method requires that you specify a value for the <code>materiality</code>.</em></p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>prior4 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(<span class="at">method =</span> <span class="st">&#39;median&#39;</span>, <span class="at">likelihood =</span> likelihood, </span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">expectedError =</span> expectedError, <span class="at">confidence =</span> confidence,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">materiality =</span> materiality)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior4)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>prior4 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(<span class="at">method =</span> <span class="st">&#39;median&#39;</span>, <span class="at">likelihood =</span> likelihood, <span class="at">expected =</span> expected, <span class="at">conf.level =</span> confidence, </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">materiality =</span> materiality)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior4)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
 ## # ------------------------------------------------------------
 ## # Input:
 ## #
-## # Confidence:                    95% 
+## # Confidence level:              95% 
 ## # Expected sample errors:        1% 
 ## # Likelihood:                    binomial 
 ## # Specifics:                     p(T &lt; 0.05) = p(T &gt; 0.05) = 0.5 
@@ -326,18 +322,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="custom-prior-probabilities-method-hypotheses" class="section level3">
 <h3>Custom prior probabilities (<code>method = &#39;hypotheses&#39;</code>)</h3>
-<p>You can assign custom probabilities to the hypothesis of tolerable misstatement (using <code>pHmin</code>) and/or the hypotheses of intolerable misstatement (using <code>pHplus</code>) in combination with <code>method = &#39;hypotheses&#39;</code>. As an example, the code below incorporates the information that the hypothesis of tolerable misstatement has a probability of 60% into a prior distribution.</p>
+<p>You can assign custom probabilities to the hypothesis of tolerable misstatement (using <code>p.min</code>) and/or the hypotheses of intolerable misstatement (using 1 - <code>p.min</code>) in combination with <code>method = &#39;hypotheses&#39;</code>. As an example, the code below incorporates the information that the hypothesis of tolerable misstatement has a probability of 60% into a prior distribution.</p>
 <p><em>Note: This method requires that you specify a value for the <code>materiality</code>.</em></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>prior5 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(<span class="at">method =</span> <span class="st">&#39;hypotheses&#39;</span>, <span class="at">likelihood =</span> likelihood, </span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">expectedError =</span> expectedError, <span class="at">confidence =</span> confidence,</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">materiality =</span> materiality, <span class="at">pHmin =</span> <span class="fl">0.6</span>)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior5)</span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>prior5 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(<span class="at">method =</span> <span class="st">&#39;hypotheses&#39;</span>, <span class="at">likelihood =</span> likelihood, <span class="at">expected =</span> expected, <span class="at">conf.level =</span> confidence,</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">materiality =</span> materiality, <span class="at">p.min =</span> <span class="fl">0.6</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior5)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
 ## # ------------------------------------------------------------
 ## # Input:
 ## #
-## # Confidence:                    95% 
+## # Confidence level:              95% 
 ## # Expected sample errors:        1% 
 ## # Likelihood:                    binomial 
 ## # Specifics:                     p(T &lt; 0.05) = 0.6; p(T &gt; 0.05) = 0.4 
@@ -362,17 +357,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="earlier-sample-method-sample" class="section level3">
 <h3>Earlier sample (<code>method = &#39;sample&#39;</code>)</h3>
-<p>You can incorporate information from an earlier sample into the prior distribution using <code>method = &#39;sample&#39;</code> in combination with <code>sampleN</code> and <code>sampleK</code>. As an example, the code below incorporates the information from an earlier sample of 30 items in which 0 misstatements were found into a prior distribution.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>prior6 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(<span class="at">method =</span> <span class="st">&#39;sample&#39;</span>, <span class="at">likelihood =</span> likelihood, </span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">expectedError =</span> expectedError, <span class="at">confidence =</span> confidence,</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">materiality =</span> materiality, <span class="at">sampleN =</span> <span class="dv">30</span>, <span class="at">sampleK =</span> <span class="dv">0</span>)</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior6)</span></code></pre></div>
+<p>You can incorporate information from an earlier sample into the prior distribution using <code>method = &#39;sample&#39;</code> in combination with <code>x</code> and <code>n</code>. As an example, the code below incorporates the information from an earlier sample of 30 items in which 0 misstatements were found into a prior distribution.</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>prior6 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(<span class="at">method =</span> <span class="st">&#39;sample&#39;</span>, <span class="at">likelihood =</span> likelihood, <span class="at">expected =</span> expected, <span class="at">conf.level =</span> confidence,</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">materiality =</span> materiality, <span class="at">x =</span> <span class="dv">0</span>, <span class="at">n =</span> <span class="dv">30</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior6)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
 ## # ------------------------------------------------------------
 ## # Input:
 ## #
-## # Confidence:                    95% 
+## # Confidence level:              95% 
 ## # Expected sample errors:        1% 
 ## # Likelihood:                    binomial 
 ## # Specifics:                     Earlier sample of 30 items with 0 errors 
@@ -397,17 +391,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="weighted-earlier-sample-method-factor" class="section level3">
 <h3>Weighted earlier sample (<code>method = &#39;factor&#39;</code>)</h3>
-<p>You can incorporate information from last years results, weighted by a factor, into the prior distribution using <code>method = &#39;factor&#39;</code> in combination with <code>sampleN</code> and <code>sampleK</code>. As an example, the code below incorporates the information from a last years results (a sample of 58 items in which 0 misstatements were found), weighted by a factor 0.7, into a prior distribution.</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>prior7 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(<span class="at">method =</span> <span class="st">&#39;factor&#39;</span>, <span class="at">likelihood =</span> likelihood, </span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">expectedError =</span> expectedError, <span class="at">confidence =</span> confidence,</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">materiality =</span> materiality, <span class="at">sampleN =</span> <span class="dv">58</span>, <span class="at">sampleK =</span> <span class="dv">0</span>, <span class="at">factor =</span> <span class="fl">0.7</span>)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior7)</span></code></pre></div>
+<p>You can incorporate information from last years results, weighted by a factor, into the prior distribution using <code>method = &#39;factor&#39;</code> in combination with <code>x</code> and <code>n</code>. As an example, the code below incorporates the information from a last years results (a sample of 58 items in which 0 misstatements were found), weighted by a factor 0.7, into a prior distribution.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>prior7 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(<span class="at">method =</span> <span class="st">&#39;factor&#39;</span>, <span class="at">likelihood =</span> likelihood, <span class="at">expected =</span> expected, <span class="at">conf.level =</span> confidence,</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">materiality =</span> materiality, <span class="at">x =</span> <span class="dv">0</span>, <span class="at">n =</span> <span class="dv">58</span>, <span class="at">factor =</span> <span class="fl">0.7</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior7)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
 ## # ------------------------------------------------------------
 ## # Input:
 ## #
-## # Confidence:                    95% 
+## # Confidence level:              95% 
 ## # Expected sample errors:        1% 
 ## # Likelihood:                    binomial 
 ## # Specifics:                     Earlier sample of 58 items with 0 errors weighted by 0.7 
@@ -432,36 +425,36 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="custom-prior-distribution" class="section level3">
 <h3>Custom prior distribution</h3>
-<p>You can manually specify the <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> parameters of the prior distribution using <code>method = &#39;custom&#39;</code> in combination with the <code>alpha</code> and <code>beta</code> arguments. As an example, the code below creates a beta(2, 5) prior distribution.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>prior8 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(<span class="at">method =</span> <span class="st">&#39;custom&#39;</span>, <span class="at">likelihood =</span> likelihood, <span class="at">alpha =</span> <span class="dv">1</span>, <span class="at">beta =</span> <span class="dv">5</span>)</span>
+<p>You can manually specify the <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> parameters of the prior distribution using <code>method = &#39;custom&#39;</code> in combination with the <code>alpha</code> and <code>beta</code> arguments. As an example, the code below creates a beta(2, 10) prior distribution.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>prior8 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(<span class="at">method =</span> <span class="st">&#39;custom&#39;</span>, <span class="at">likelihood =</span> likelihood, <span class="at">alpha =</span> <span class="dv">2</span>, <span class="at">beta =</span> <span class="dv">10</span>)</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior8)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)
 ## # ------------------------------------------------------------
 ## # Input:
 ## #
-## # Confidence:                    95% 
+## # Confidence level:              95% 
 ## # Expected sample errors:        0% 
 ## # Likelihood:                    binomial 
-## # Specifics:                     a = 1; ß = 5 
+## # Specifics:                     a = 2; ß = 10 
 ## # ------------------------------------------------------------
 ## # Output: 
 ## #
-## # Prior distribution:            beta(a = 1, ß = 5) 
-## # Implicit sample size:          4 
-## # Implicit errors:               0 
+## # Prior distribution:            beta(a = 2, ß = 10) 
+## # Implicit sample size:          10 
+## # Implicit errors:               1 
 ## # ------------------------------------------------------------
 ## # Statistics: 
 ## #
-## # Upper bound:                   0.451 
-## # Precision:                     0.451 
-## # Mode:                          0 
+## # Upper bound:                   0.364 
+## # Precision:                     0.264 
+## # Mode:                          0.1 
 ## # Mean:                          0.167 
-## # Median:                        0.129 
+## # Median:                        0.148 
 ## # ------------------------------------------------------------</code></pre>
 <p>You can visually inspect the prior distribution using the <code>plot()</code> function.</p>
 <div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(prior8)</span></code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
 </div>
 <div id="using-a-prior-distribution" class="section level2">
@@ -469,18 +462,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Bayesian statistics allows the auditor to build on their existing information. Therefore, the objects returned by the <code>auditPrior()</code> function can be used as input for the <code>prior</code> argument in the <code>planning()</code> and <code>evaluation()</code> functions.</p>
 <div id="combining-auditprior-with-planning" class="section level3">
 <h3>Combining <code>auditPrior()</code> with <code>planning()</code></h3>
-<p>The prior distribution can be used the planning stage to calculate a minimum sample size by providing the objected returned by the <code>auditPrior()</code> function to the <code>planning()</code> function. For example, the code below calculates the minimum sample size to test the misstatement in the population against a performance materiality of 5%, while incorporating the information in <code>prior7</code>.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>jfa<span class="sc">::</span><span class="fu">planning</span>(<span class="at">materiality =</span> materiality, <span class="at">expectedError =</span> expectedError, </span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">confidence =</span> confidence, <span class="at">prior =</span> prior7)</span></code></pre></div>
-<pre><code>## Minimum sample size: 27 
-## Sample size obtained in 29 iteration(s) via method &#39;binomial&#39;</code></pre>
+<p>The prior distribution can be used the planning stage to calculate a minimum sample size by providing the objected returned by the <code>auditPrior()</code> function to the <code>planning()</code> function. For example, the code below calculates the minimum sample size to test the misstatement in the population against a performance materiality of 5%, while incorporating the information in <code>prior8</code>.</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>jfa<span class="sc">::</span><span class="fu">planning</span>(<span class="at">materiality =</span> materiality, <span class="at">expected =</span> expected, <span class="at">conf.level =</span> confidence, <span class="at">prior =</span> prior8)</span></code></pre></div>
+<pre><code>## Minimum sample size: 119 
+## Sample size obtained in 121 iteration(s) via method &#39;binomial&#39;</code></pre>
 </div>
 <div id="combining-auditprior-with-evaluation" class="section level3">
 <h3>Combining <code>auditPrior()</code> with <code>evaluation()</code></h3>
-<p>The prior distribution can be used the evaluation stage by providing the objected returned by the <code>auditPrior()</code> function to the <code>evaluation()</code> function. For example, the code below evaluates the misstatement in the population with respect to the performance materiality of 5% after seeing a sample of 60 items with 1 misstatement, while incorporating the information in <code>prior7</code>.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>jfa<span class="sc">::</span><span class="fu">evaluation</span>(<span class="at">materiality =</span> materiality, <span class="at">confidence =</span> confidence, </span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>                <span class="at">nSumstats =</span> <span class="dv">60</span>, <span class="at">kSumstats =</span> <span class="dv">1</span>, <span class="at">prior =</span> prior7)</span></code></pre></div>
-<pre><code>## Most likely error: 0.994% | 95% Upper bound: 4.584% | Precision: 3.59% | BF-+: 3.745 
+<p>The prior distribution can be used the evaluation stage by providing the objected returned by the <code>auditPrior()</code> function to the <code>evaluation()</code> function. For example, the code below evaluates the misstatement in the population with respect to the performance materiality of 5% after seeing a sample of 60 items with 1 misstatement, while incorporating the information in <code>prior8</code>.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>jfa<span class="sc">::</span><span class="fu">evaluation</span>(<span class="at">materiality =</span> materiality, <span class="at">conf.level =</span> confidence, <span class="at">x =</span> <span class="dv">1</span>, <span class="at">n =</span> <span class="dv">60</span>, <span class="at">prior =</span> prior8)</span></code></pre></div>
+<pre><code>## Most likely error: 2.857% | 95% Upper bound: 8.603% | Precision: 5.746% | BF-+: 20.131 
 ## Estimates obtained via method &#39;binomial&#39;</code></pre>
 </div>
 </div>

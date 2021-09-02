@@ -13,7 +13,7 @@ test_that(desc = "(id: f12-v0.5.4-t1) Test Sample sizes for poisson distribution
   for (j in 1:length(m)) {
     for (i in 1:length(e)) {
       ss_MUS[i, j]   <- MUS::MUS.calc.n.conservative(confidence.level = 0.95, tolerable.error = m[j], expected.error = e[i], book.value = sum(data$book.value)) # MUS::calc.n.conservative is used in MUS::MUS.planning()
-      ss_jfa[i, j]   <- jfa::planning(confidence = 0.95, materiality = m[j] / sum(data$book.value), expectedError = e[i] / sum(data$book.value), likelihood = "poisson")$sampleSize
+      ss_jfa[i, j]   <- jfa::planning(conf.level = 0.95, materiality = m[j] / sum(data$book.value), expected = e[i] / sum(data$book.value), likelihood = "poisson")$n
     }
   }
   
@@ -47,12 +47,11 @@ test_that(desc = "(id: f12-v0.5.4-t2) Test most likely error and upper bound usi
       audited <- cbind(extract$sample, audit.value = audited)
       # Evaluate the sample, cache and print it
       e_MUS <- MUS::MUS.evaluation(extract = extract, filled.sample = audited)
-      e_jfa <- jfa::evaluation(confidence = 0.95, materiality = m[j] / sum(data$book.value), method = "stringer",
-                               sample = audited, bookValues = "book.value", auditValues = "audit.value")
+      e_jfa <- jfa::evaluation(conf.level = 0.95, materiality = m[j] / sum(data$book.value), method = "stringer", data = audited, values = "book.value", values.audit = "audit.value")
       mle_MUS[i, j] <- as.numeric(e_MUS$MLE.final / sum(data$book.value))
       ub_MUS[i, j] <- as.numeric(e_MUS$UEL.low.error.rate / sum(data$book.value))
       mle_jfa[i, j] <- e_jfa$mle
-      ub_jfa[i, j] <- e_jfa$confBound
+      ub_jfa[i, j] <- e_jfa$ub
     }
   }
   

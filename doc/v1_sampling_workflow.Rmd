@@ -31,9 +31,9 @@ In statistical terms, Laura wants to make a statement that, with 95% confidence,
 
 ```{r}
 # Specify the confidence, materiality, and expected errors.
-confidence    <- 0.95   # 95%
-materiality   <- 0.05   # 5%
-expectedError <- 0.025  # 2.5%
+confidence  <- 0.95   # 95%
+materiality <- 0.05   # 5%
+expected    <- 0.025  # 2.5%
 ```
 
 Many audits are performed according to the *audit risk model (ARM)*, which determines that the uncertainty about Laura's statement as a whole (1 - her confidence) is a factor of three terms: the inherent risk, the control risk, and the detection risk. Inherent risk is the risk posed by an error in BuildIt's financial statement that could be material, before consideration of any related control systems (e.g., computer systems). Control risk is the risk that a material misstatement is not prevented or detected by BuildIt's internal control systems. Detection risk is the risk that Laura will fail to find material misstatements that exist in an BuildIt's financial statements. The *ARM* is practically useful because for a given level of audit risk, the tolerable detection risk bears an inverse relation to the other two risks. The *ARM* is useful for Laura because it enables her to incorporate prior knowledge on BuildIt's organization to increase the required risk that she will fail to find material misstatements. According to the *ARM*, the audit risk will then be retained.
@@ -54,34 +54,32 @@ Laura can choose to either perform a frequentist analysis, where she uses the in
 
 ```{r}
 # Adjust the required confidence for a frequentist analysis.
-adjustedConfidence <- 1 - ((1 - confidence) / (ir * cr))
+c.adj <- 1 - ((1 - confidence) / (ir * cr))
 # Step 1: Calculate the required sample size.
-planningResult <- planning(materiality = materiality, expectedError = expectedError, 
-                           confidence = adjustedConfidence)
+stage1 <- planning(materiality = materiality, expected = expected, conf.level = c.adj)
 ```
 
 Laura can then inspect the result from her planning procedure by using the `summary()` function. Her result tells her that, given her prior distribution she needs to audit a sample of 190 transactions so that, when at most 5 errors are found, she can conclude with 91.66% confidence that the maximum error in BuildIt's financial statements is lower the materiality of 5%. 
 
 ```{r}
-summary(planningResult)
+summary(stage1)
 ```
 
 ## Stage 2: Selecting a sample
 
-Laura is now ready to select the required 190 transactions from the financial statements. She can choose to do this according to one of two statistical methods. In *record sampling* (`units = "records"`), inclusion probabilities are assigned on the transaction level, treating transactions with a high value and a low value the same, a transaction of $5,000 is equally likely to be selected as a transaction of $1,000. In *monetary unit sampling* (`units = "mus"`), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the transaction that includes that dollar is selected. This favors higher transactions, as a transaction of \$5,000 is five times more likely to be selected than a transaction of \$1,000. 
+Laura is now ready to select the required 190 transactions from the financial statements. She can choose to do this according to one of two statistical methods. In *record sampling* (`units = "items"`), inclusion probabilities are assigned on the transaction level, treating transactions with a high value and a low value the same, a transaction of $5,000 is equally likely to be selected as a transaction of $1,000. In *monetary unit sampling* (`units = "mus"`), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the transaction that includes that dollar is selected. This favors higher transactions, as a transaction of \$5,000 is five times more likely to be selected than a transaction of \$1,000. 
 
-Laura chooses to use *monetary unit sampling*, as she wants to include more high-valued transactions. The `selection()` function allows her to sample from the financial statements. She uses the `planningResult` object as an input for the `selection()` function.
+Laura chooses to use *monetary unit sampling*, as she wants to include more high-valued transactions. The `selection()` function allows her to sample from the financial statements. She uses the `stage1` object as an input for the `selection()` function.
 
 ```{r}
 # Step 2: Draw a sample from the financial statements.
-samplingResult <- selection(population = BuildIt, sampleSize = planningResult, 
-                            units = "mus", bookValues = "bookValue")
+stage2 <- selection(data = BuildIt, size = stage1, units = "mus", values = "bookValue")
 ```
 
 Laura can inspect the outcomes of her sampling procedure by using the `summary()` function.
 
 ```{r}
-summary(samplingResult)
+summary(stage2)
 ```
 
 ## Stage 3: Executing the audit
@@ -90,7 +88,7 @@ The selected sample can be isolated by indexing the `sample` object from the sam
 
 ```{r}
 # Step 3: Isolate the sample for execution of the audit.
-sample <- samplingResult$sample
+sample <- stage2$sample
 
 # To write the sample to a .csv file:
 # write.csv(x = sample, file = "auditSample.csv", row.names = FALSE)
@@ -107,15 +105,14 @@ Using her annotated sample, Laura can perform her inference with the `evaluation
 
 ```{r}
 # Step 4: Evaluate the sample
-evaluationResult <- evaluation(materiality = materiality, confidence = adjustedConfidence, 
-                               sample = sample, bookValues = 'bookValue', 
-                               auditValues = 'auditValue')
+stage4 <- evaluation(materiality = materiality, conf.level = c.adj, data = sample, 
+                     values = 'bookValue', values.audit = 'auditValue')
 ```
 
 Laura can inspect the outcomes of her inference by using the `summary()` function. Her resulting 91.66% upper bound is 1.299%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.
 
 ```{r}
-summary(evaluationResult)
+summary(stage4)
 ```
 
 ## Conclusion

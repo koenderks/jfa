@@ -13,10 +13,10 @@ test_that(desc = "(id f10-v0.4.0-t1) Test Monetary Unit Sample Sizes for 5 perce
   sampleSizeMatrix[, 2] <- ratioOfExpectedToTolerableMisstatement
   for(i in 1:nrow(sampleSizeMatrix)){
     for(j in 1:length(tolerableMisstatement)){
-      jfaRes <- planning(confidence = (1 - sampleSizeMatrix[i, 1]), expectedError = tolerableMisstatement[j] * sampleSizeMatrix[i, 2], likelihood = "poisson", materiality = tolerableMisstatement[j])  
-      sampleSizeMatrix[i, j+2] <- jfaRes[["sampleSize"]]   
+      jfaRes <- planning(conf.level = (1 - sampleSizeMatrix[i, 1]), expected = tolerableMisstatement[j] * sampleSizeMatrix[i, 2], likelihood = "poisson", materiality = tolerableMisstatement[j])  
+      sampleSizeMatrix[i, j+2] <- jfaRes[["n"]]   
     }
-    sampleSizeMatrix[i, 14] <- ceiling(jfaRes[["expectedSampleError"]] * 100) / 100
+    sampleSizeMatrix[i, 14] <- ceiling(jfaRes[["x"]] * 100) / 100
   }
   
   aicpaMatrix <- matrix(data = NA, nrow = length(riskOfIncorrectAcceptance), ncol = length(tolerableMisstatement) + 3, byrow = FALSE)

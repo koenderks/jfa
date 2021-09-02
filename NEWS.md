@@ -1,14 +1,21 @@
-# jfa 0.5.8
+# jfa 0.6.0
 
 **New features**
 
 - Added `method = 'custom'` to function `auditPrior()` which takes as input the raw `alpha` and `beta` parameters of the prior distribution.
 - Added a new vignette that describes the sampling methodology implemented in `jfa`.
 
+**Major changes**
+
+- `nPrior` and `kPrior` have been removed from the `planning()` function. All prior distributions must now be specified using `prior = TRUE` (noninformative priors) or from an object resulting from a call to `auditPrior()`
+- Changed the name of the `maxSize` argument in the `planning()` function to `max`.
+- Changed the name of the `increase` argument in the `planning()` function to `by`.
+- Changed the name of the `withReplacement` argument in the `selection()` function to `replace` to be consistent with general `R` style.
+
 **Minor changes**
 
-- Changed the name of the `withReplacement` argument in the `selection()` function to `replace` to be consistent with general `R` style.
 - It is now allowed for `nSumstats` and `kSumstats` to have the same value.
+- Added argument `BF10` in the `auditPrior()` function that computes Bayes factors in favor of intolerable misstatement.
 
 # jfa 0.5.7
 

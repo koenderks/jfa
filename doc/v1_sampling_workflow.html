@@ -166,9 +166,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2>Setting up the audit</h2>
 <p>In statistical terms, Laura wants to make a statement that, with 95% confidence, the maximum error in the financial statements is lower than what is considered <em>material</em>. She therefore determines that <em>materiality</em>, the maximum tolerable error in the financial statements, as 5%. Based on last year’s audit at BuildIt, where the maximum error turned out to be 2.5%, she expects at most 2.5% errors in the sample that she will inspect. Laura can therefore re-formulate her statistical statement as that she wants to conclude that, when 2.5% errors are found in her sample, she can conclude with 95% confidence, that the misstatement in the population is lower than the materiality of 5%. Below, Laura defines the materiality, confidence, and expected errors.</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify the confidence, materiality, and expected errors.</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>confidence    <span class="ot">&lt;-</span> <span class="fl">0.95</span>   <span class="co"># 95%</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>materiality   <span class="ot">&lt;-</span> <span class="fl">0.05</span>   <span class="co"># 5%</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>expectedError <span class="ot">&lt;-</span> <span class="fl">0.025</span>  <span class="co"># 2.5%</span></span></code></pre></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>confidence  <span class="ot">&lt;-</span> <span class="fl">0.95</span>   <span class="co"># 95%</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>materiality <span class="ot">&lt;-</span> <span class="fl">0.05</span>   <span class="co"># 5%</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>expected    <span class="ot">&lt;-</span> <span class="fl">0.025</span>  <span class="co"># 2.5%</span></span></code></pre></div>
 <p>Many audits are performed according to the <em>audit risk model (ARM)</em>, which determines that the uncertainty about Laura’s statement as a whole (1 - her confidence) is a factor of three terms: the inherent risk, the control risk, and the detection risk. Inherent risk is the risk posed by an error in BuildIt’s financial statement that could be material, before consideration of any related control systems (e.g., computer systems). Control risk is the risk that a material misstatement is not prevented or detected by BuildIt’s internal control systems. Detection risk is the risk that Laura will fail to find material misstatements that exist in an BuildIt’s financial statements. The <em>ARM</em> is practically useful because for a given level of audit risk, the tolerable detection risk bears an inverse relation to the other two risks. The <em>ARM</em> is useful for Laura because it enables her to incorporate prior knowledge on BuildIt’s organization to increase the required risk that she will fail to find material misstatements. According to the <em>ARM</em>, the audit risk will then be retained.</p>
 <p><span class="math display">\[ \text{Audit risk} = \text{Inherent risk} \,\times\, \text{Control risk} \,\times\, \text{Detection risk}\]</span></p>
 <p>Usually the auditor judges inherent risk and control risk on a three-point scale consisting of low, medium, and high. Different audit firms handle different standard percentages for these categories. Laura’s firm defines the probabilities of low, medium, and high respectively as 50%, 60%, and 100%. Because Laura performed testing of BuildIt’s computer systems, she assesses the control risk as medium (60%).</p>
@@ -180,18 +180,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2>Stage 1: Planning an audit sample</h2>
 <p>Laura can choose to either perform a frequentist analysis, where she uses the increased detection risk as her level of uncertainty, or perform a Bayesian analysis, where she captures the information in the control risk in a prior distribution. For this example, we will show how Laura performs a frequentist analysis. In a frequentist audit, Laura immediately uses the adjusted confidence to calculate the sample size using the <code>planning()</code> function.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust the required confidence for a frequentist analysis.</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>adjustedConfidence <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> ((<span class="dv">1</span> <span class="sc">-</span> confidence) <span class="sc">/</span> (ir <span class="sc">*</span> cr))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>c.adj <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> ((<span class="dv">1</span> <span class="sc">-</span> confidence) <span class="sc">/</span> (ir <span class="sc">*</span> cr))</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Calculate the required sample size.</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>planningResult <span class="ot">&lt;-</span> <span class="fu">planning</span>(<span class="at">materiality =</span> materiality, <span class="at">expectedError =</span> expectedError, </span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                           <span class="at">confidence =</span> adjustedConfidence)</span></code></pre></div>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>stage1 <span class="ot">&lt;-</span> <span class="fu">planning</span>(<span class="at">materiality =</span> materiality, <span class="at">expected =</span> expected, <span class="at">conf.level =</span> c.adj)</span></code></pre></div>
 <p>Laura can then inspect the result from her planning procedure by using the <code>summary()</code> function. Her result tells her that, given her prior distribution she needs to audit a sample of 190 transactions so that, when at most 5 errors are found, she can conclude with 91.66% confidence that the maximum error in BuildIt’s financial statements is lower the materiality of 5%.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(planningResult)</span></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage1)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------ 
 ## #              jfa Planning Summary (Classical)
 ## # ------------------------------------------------------------ 
 ## # Input:
 ## # 
-## # Confidence:                    91.667% 
+## # Confidence level:              91.667% 
 ## # Materiality:                   5% 
 ## # Minimum precision:             Not specified 
 ## # Likelihood:                    binomial  
@@ -211,19 +210,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="stage-2-selecting-a-sample" class="section level2">
 <h2>Stage 2: Selecting a sample</h2>
-<p>Laura is now ready to select the required 190 transactions from the financial statements. She can choose to do this according to one of two statistical methods. In <em>record sampling</em> (<code>units = &quot;records&quot;</code>), inclusion probabilities are assigned on the transaction level, treating transactions with a high value and a low value the same, a transaction of $5,000 is equally likely to be selected as a transaction of $1,000. In <em>monetary unit sampling</em> (<code>units = &quot;mus&quot;</code>), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the transaction that includes that dollar is selected. This favors higher transactions, as a transaction of $5,000 is five times more likely to be selected than a transaction of $1,000.</p>
-<p>Laura chooses to use <em>monetary unit sampling</em>, as she wants to include more high-valued transactions. The <code>selection()</code> function allows her to sample from the financial statements. She uses the <code>planningResult</code> object as an input for the <code>selection()</code> function.</p>
+<p>Laura is now ready to select the required 190 transactions from the financial statements. She can choose to do this according to one of two statistical methods. In <em>record sampling</em> (<code>units = &quot;items&quot;</code>), inclusion probabilities are assigned on the transaction level, treating transactions with a high value and a low value the same, a transaction of $5,000 is equally likely to be selected as a transaction of $1,000. In <em>monetary unit sampling</em> (<code>units = &quot;mus&quot;</code>), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the transaction that includes that dollar is selected. This favors higher transactions, as a transaction of $5,000 is five times more likely to be selected than a transaction of $1,000.</p>
+<p>Laura chooses to use <em>monetary unit sampling</em>, as she wants to include more high-valued transactions. The <code>selection()</code> function allows her to sample from the financial statements. She uses the <code>stage1</code> object as an input for the <code>selection()</code> function.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Draw a sample from the financial statements.</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>samplingResult <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">population =</span> BuildIt, <span class="at">sampleSize =</span> planningResult, </span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">units =</span> <span class="st">&quot;mus&quot;</span>, <span class="at">bookValues =</span> <span class="st">&quot;bookValue&quot;</span>)</span></code></pre></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>stage2 <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> stage1, <span class="at">units =</span> <span class="st">&quot;mus&quot;</span>, <span class="at">values =</span> <span class="st">&quot;bookValue&quot;</span>)</span></code></pre></div>
 <p>Laura can inspect the outcomes of her sampling procedure by using the <code>summary()</code> function.</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(samplingResult)</span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage2)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #                  jfa Selection Summary
 ## # ------------------------------------------------------------
 ## # Input:
 ## #      
-## # Population size:               3500 
+## # Population size:               1403221 
 ## # Requested sample size:         190 
 ## # Sampling units:                Monetary units 
 ## # Algorithm:                     Random sampling   
@@ -236,14 +234,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # Statistics:
 ## #
 ## # Proportion n/N:                0.054 
-## # Percentage of value:           5.779% 
+## # Percentage of value:           0.014% 
 ## # ------------------------------------------------------------</code></pre>
 </div>
 <div id="stage-3-executing-the-audit" class="section level2">
 <h2>Stage 3: Executing the audit</h2>
 <p>The selected sample can be isolated by indexing the <code>sample</code> object from the sampling result. Now Laura can execute her audit by annotating the sample with their audit value (for exampling by writing the sample to a <em>.csv</em> file using <code>write.csv()</code>. She can then load her annotated sample back into R for further evaluation.</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: Isolate the sample for execution of the audit.</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> samplingResult<span class="sc">$</span>sample</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> stage2<span class="sc">$</span>sample</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co"># To write the sample to a .csv file:</span></span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co"># write.csv(x = sample, file = &quot;auditSample.csv&quot;, row.names = FALSE)</span></span>
@@ -256,31 +254,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2>Stage 4: Evaluating the sample</h2>
 <p>Using her annotated sample, Laura can perform her inference with the <code>evaluation()</code> function.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 4: Evaluate the sample</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>evaluationResult <span class="ot">&lt;-</span> <span class="fu">evaluation</span>(<span class="at">materiality =</span> materiality, <span class="at">confidence =</span> adjustedConfidence, </span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                               <span class="at">sample =</span> sample, <span class="at">bookValues =</span> <span class="st">&#39;bookValue&#39;</span>, </span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>                               <span class="at">auditValues =</span> <span class="st">&#39;auditValue&#39;</span>)</span></code></pre></div>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>stage4 <span class="ot">&lt;-</span> <span class="fu">evaluation</span>(<span class="at">materiality =</span> materiality, <span class="at">conf.level =</span> c.adj, <span class="at">data =</span> sample, </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">values =</span> <span class="st">&#39;bookValue&#39;</span>, <span class="at">values.audit =</span> <span class="st">&#39;auditValue&#39;</span>)</span></code></pre></div>
 <p>Laura can inspect the outcomes of her inference by using the <code>summary()</code> function. Her resulting 91.66% upper bound is 1.299%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(evaluationResult)</span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage4)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------ 
 ## #             jfa Evaluation Summary (Classical)
 ## # ------------------------------------------------------------ 
 ## # Input:
 ## #
-## # Confidence:                    91.667% 
+## # Confidence level:              91.667% 
 ## # Materiality:                   5% 
 ## # Minimum precision:             Not specified 
 ## # Population size:               Not specified 
 ## # Sample size:                   190 
-## # Sample errors:                 0 
-## # Sum of taints:                 0 
+## # Sample errors:                 7 
+## # Sum of taints:                 4.2 
 ## # Method:                        binomial   
 ## # ------------------------------------------------------------
 ## # Output:
 ## #  
-## # Most likely error:             0%
-## # Upper bound:                   1.299%
-## # Precision:                     1.299%  
-## # Conclusion:                    Approve population 
+## # Most likely error:             2.211%
+## # Upper bound:                   4.459%
+## # Precision:                     2.248%  
+## # Sufficient evidence:           TRUE 
 ## # ------------------------------------------------------------</code></pre>
 </div>
 <div id="conclusion" class="section level2">

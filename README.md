@@ -105,10 +105,10 @@ The `auditPrior()` function creates a prior distribution according to one of sev
 *Full function with default arguments:*
 
 ```r
-auditPrior(method = 'none', likelihood = 'binomial', expectedError = 0, 
-           confidence = 0.95, materiality = NULL, N = NULL, 
-           ir = 1, cr = 1, ub = NULL, pHmin = NULL, pHplus = NULL, 
-           sampleN = 0, sampleK = 0, factor = 1)
+auditPrior(method = 'none', likelihood = 'binomial', expected = 0, 
+           conf.level = 0.95, materiality = NULL, N.units = NULL, 
+           ir = NULL, cr = NULL, ub = NULL, p.min = NULL,
+           x = NULL, n = NULL, factor = NULL, alpha = NULL, beta = NULL)
 ```
 
 *Supported options for the `method` argument:*
@@ -119,9 +119,10 @@ auditPrior(method = 'none', likelihood = 'binomial', expectedError = 0,
 | `arm` | Translates risk assessments (ARM) | `ir` and `cr` | Derks et al. (2021) |
 | `bram` | Bayesian risk assessment model (BRAM) | `ub` | Touw and Hoogduin (2011) |
 | `median` | Equal prior probabilities for (in)tolerable misstatement | | Derks et al. (2021) |
-| `hypotheses` | Custom prior probabilities for (in)tolerable misstatement | `pHmin` or `pHplus` | Derks et al. (2021) |
-| `sample` | Earlier sample | `sampleN` and `sampleK` | Derks et al. (2021) |
-| `factor` | Weighted earlier sample | `sampleN`, `sampleK`, and `factor` | Derks et al. (2021) |
+| `hypotheses` | Custom prior probabilities for (in)tolerable misstatement | `p.min` | Derks et al. (2021) |
+| `sample` | Earlier sample | `x` and `n` | Derks et al. (2021) |
+| `factor` | Weighted earlier sample | `x`, `n`, and `factor` | Derks et al. (2021) |
+| `custom` | Custom prior distribution | `alpha` and `beta` | |
 
 *Supported options for the `likelihood` argument:*
 
@@ -149,10 +150,9 @@ The `planning()` function calculates the minimum sample size for a statistical a
 *Full function with default arguments:*
 
 ```r
-planning(materiality = NULL, minPrecision = NULL, expectedError = 0, 
-         likelihood = 'binomial', confidence = 0.95, N = NULL, 
-         prior = FALSE, nPrior = 0, kPrior = 0, 
-         increase = 1, maxSize = 5000)
+planning(materiality = NULL, min.precision = NULL, expected = 0,
+         likelihood = 'binomial', conf.level = 0.95, N.units = NULL,
+         by = 1, max = 5000, prior = FALSE)
 ```
 
 *Supported options for the `likelihood` argument:*
@@ -167,7 +167,7 @@ planning(materiality = NULL, minPrecision = NULL, expectedError = 0,
 
 ```r
 # Planning using binomial likelihood
-x <- planning(materiality = 0.03, likelihood = 'binomial', confidence = 0.95, N = 500)
+x <- planning(materiality = 0.03, likelihood = 'binomial', conf.level = 0.95, N.units = 500)
 
 summary(x) # Prints information about the planning
 ```
@@ -176,36 +176,35 @@ summary(x) # Prints information about the planning
 
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
-The `selection()` function takes a data frame and performs statistical sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. The function returns an object of class `jfaSelection` which can be used with associated `summary()` and `plot()` methods. The input for the `sampleSize` argument can be an object of class `jfaPlanning` as returned by the `planning()` function.
+The `selection()` function takes a data frame and performs statistical sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. The function returns an object of class `jfaSelection` which can be used with associated `summary()` and `plot()` methods. The input for the `size` argument can be an object of class `jfaPlanning` as returned by the `planning()` function.
 
 *Full function with default arguments:*
 
 ```r
-selection(population, sampleSize, units = 'records', algorithm = 'random', 
-          bookValues = NULL, intervalStartingPoint = 1, ordered = TRUE, 
-          ascending = TRUE, replace = FALSE, seed = 1)
+selection(data, size, units = 'items', method = 'random', values = NULL,
+          start = 1, order = TRUE, decreasing = FALSE, replace = FALSE)
 ```
 
 *Supported options for the `units` argument:*
 
 | `units` | Description | Required arguments |  Reference |
 | :----------- | :----------- | :----------- | :----------- |
-| `records` | Sampling units are items | |Leslie, Teitlebaum, and Anderson (1979) |
+| `items` | Sampling units are items | | Leslie, Teitlebaum, and Anderson (1979) |
 | `mus` | Sampling units are monetary units | `bookValues` | Leslie, Teitlebaum, and Anderson (1979) |
 
-*Supported options for the `algorithm` argument:*
+*Supported options for the `method` argument:*
 
-| `algorithm` | Description | Required arguments |
+| `method` | Description | Required arguments |
 | :----------- | :----------- | :----------- |
 | `random` | Select random units without the use of an interval | |
 | `cell` | Select a random unit from every interval | |
-| `interval` | Select a fixed unit from every interval | `intervalStartingPoint` |
+| `interval` | Select a fixed unit from every interval | `start` |
 
 *Example usage:*
 
 ```r
 # Selection using fixed interval record sampling
-x <- selection(population = BuildIt, sampleSize = 100, units = 'records', algorithm = 'interval')
+x <- selection(data = BuildIt, size = 100, units = 'records', method = 'interval')
 
 summary(x) # Prints information about the selection
 ```
@@ -219,13 +218,11 @@ The `evaluation()` function takes a sample or summary statistics of the sample a
 *Full function with default arguments:*
 
 ```r
-evaluation(materiality = NULL, minPrecision = NULL, method = 'binomial', 
-           confidence = 0.95, sample = NULL, bookValues = NULL, auditValues = NULL, 
-           counts = NULL, nSumstats = NULL, kSumstats = NULL, 
-           N = NULL, populationBookValue = NULL, 
-           prior = FALSE, nPrior = 0, kPrior = 0, 
-           rohrbachDelta = 2.7, momentPoptype = 'accounts', 
-           csA = 1, csB = 3, csMu = 0.5)
+evaluation(materiality = NULL, min.precision = NULL, method = 'binomial',
+           conf.level = 0.95, data = NULL, values = NULL, values.audit = NULL,
+           times = NULL, x = NULL, n = NULL, N.units = NULL, N.items = NULL, 
+           r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5, 
+           prior = FALSE)
 ```
 
 *Supported options for the `method` argument:*
@@ -234,24 +231,24 @@ evaluation(materiality = NULL, minPrecision = NULL, method = 'binomial',
 | :----------- | :----------- | :----------- | :----------- |
 | `binomial` | Binomial likelihood | | Stewart (2012) |
 | `poisson` | Poisson likelihood | | Stewart (2012) |
-| `hypergeometric` | Hypergeometric likelihood | | Stewart (2012) |
+| `hypergeometric` | Hypergeometric likelihood | `N.units` | Stewart (2012) |
 | `stringer` | Classical Stringer bound | | Bickel (1992) |
-| `stringer-meikle` | Stringer bound with Meikle's correction | | Meikle (1972) |
-| `stringer-lta` | Stringer bound with LTA correction | | Leslie, Teitlebaum, & Anderson (1979) |
-| `stringer-pvz` | Modified Stringer bound | | Pap and van Zuijlen (1996) |
-| `rohrbach` | Rohrbach's augmented variance estimator | `rohrbachDelta` | Rohrbach (1993) |
-| `moment` | Modified moment bound | `momentPoptype` | Dworin and Grimlund (1984) |
-| `coxsnell` | Cox and Snell bound | `csA`, `csB`, and `csMu` | Cox and Snell (1979) |
-| `direct` | Direct estimator | `populationBookValue` | Touw and Hoogduin (2011) |
-| `difference` | Difference estimator | `populationBookValue` | Touw and Hoogduin (2011) |
-| `quotient` | Quotient estimator | `populationBookValue` | Touw and Hoogduin (2011) |
-| `regression` | Regression estimator | `populationBookValue` | Touw and Hoogduin (2011) |
+| `stringer.meikle` | Stringer bound with Meikle's correction | | Meikle (1972) |
+| `stringer.lta` | Stringer bound with LTA correction | | Leslie, Teitlebaum, & Anderson (1979) |
+| `stringer.pvz` | Modified Stringer bound | | Pap and van Zuijlen (1996) |
+| `rohrbach` | Rohrbach's augmented variance estimator | `r.delta` | Rohrbach (1993) |
+| `moment` | Modified moment bound | `m.type` | Dworin and Grimlund (1984) |
+| `coxsnell` | Cox and Snell bound | `cs.a`, `cs.b`, and `cs.mu` | Cox and Snell (1979) |
+| `direct` | Direct estimator | `N.items` and `N.units` | Touw and Hoogduin (2011) |
+| `difference` | Difference estimator | `N.items` | Touw and Hoogduin (2011) |
+| `quotient` | Quotient estimator | `N.items` | Touw and Hoogduin (2011) |
+| `regression` | Regression estimator | `N.items` and `N.units` | Touw and Hoogduin (2011) |
 
 *Example usage:*
 
 ```r
 # Binomial evaluation using summary statistics from a sample
-x <- evaluation(materiality = 0.03, confidence = 0.95, nSumstats = 100, kSumstats = 1, method = 'binomial')
+x <- evaluation(materiality = 0.03, conf.level = 0.95, x = 1, n = 100, method = 'binomial')
 
 summary(x) # Prints information about the evaluation
 ```
@@ -281,7 +278,7 @@ For an example report, see the following [link](https://github.com/koenderks/jfa
 
 - Bickel, P. J. (1992). Inference and auditing: The Stringer bound. *International Statistical Review*, 60(2), 197–209. - [View online](https://www.jstor.org/stable/1403650)
 - Cox, D. R., & Snell, E. J. (1979). On sampling and the estimation of rare errors. *Biometrika*, 66(1), 125-132. - [View online](https://doi.org/10.1093/biomet/66.1.125)
-- Derks, K. (2021). jfa: Bayesian and classical audit sampling. R package version 0.5.7. - [View online](https://cran.r-project.org/package=jfa)
+- Derks, K. (2021). jfa: Bayesian and classical audit sampling. R package version 0.6.0. - [View online](https://cran.r-project.org/package=jfa)
 - Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., & Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. *International Journal of Auditing*, 1-16. - [View online](https://doi.org/10.1111/ijau.12240)
 - Dworin, L. D. and Grimlund, R. A. (1984). Dollar-unit sampling for accounts receivable and inventory. *The Accounting Review*, 59(2), 218–241. - [View online](https://www.jstor.org/stable/247296)
 - Dyer, D., & Pierce, R. L. (1993). On the choice of the prior distribution in hypergeometric sampling. *Communications in Statistics - Theory and Methods*, 22(8), 2125-2146. - [View online](https://www.tandfonline.com/doi/abs/10.1080/03610929308831139)

@@ -2,26 +2,25 @@
 % Please edit documentation in R/auditPrior.R
 \name{auditPrior}
 \alias{auditPrior}
-\title{Create a prior distribution for audit sampling}
+\title{Prior Distributions for Audit Sampling}
 \usage{
-auditPrior(method = 'none', likelihood = 'binomial', expectedError = 0, 
-           confidence = 0.95, materiality = NULL, N = NULL, 
-           ir = 1, cr = 1, ub = NULL, pHmin = NULL, pHplus = NULL, 
-           sampleN = 0, sampleK = 0, factor = 1,
-           alpha = NULL, beta = NULL)
+auditPrior(method = 'none', likelihood = 'binomial', expected = 0, 
+           confl.evel = 0.95, materiality = NULL, N.units = NULL, 
+           ir = NULL, cr = NULL, ub = NULL, p.min = NULL, 
+           x = NULL, n = NULL, factor = NULL, alpha = NULL, beta = NULL)
 }
 \arguments{
 \item{method}{a character specifying the method by which the prior distribution is constructed. Defaults to \code{none} which incorporates no existing information. Other options are \code{arm}, \code{bram}, \code{median}, \code{hypotheses}, \code{sample}, and \code{factor}. See the details section for more information about the available methods.}
 
 \item{likelihood}{a character specifying the likelihood assumed when updating the prior distribution. This can be either \code{binomial} for the binomial likelihood and beta prior distribution, \code{poisson} for the Poisson likelihood and gamma prior distribution, or \code{hypergeometric} for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.}
 
-\item{expectedError}{a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a numeric value (>= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.}
+\item{expected}{a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a numeric value (>= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.}
 
-\item{confidence}{a numeric value between 0 and 1 specifying the confidence level to be used in the planning. Defaults to 0.95 for 95\% confidence.}
+\item{conf.level}{a numeric value between 0 and 1 specifying the confidence level to be used in the planning. Defaults to 0.95 for 95\% confidence.}
 
 \item{materiality}{a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum upper limit) as a fraction of the total population size. Can be \code{NULL} for some methods.}
 
-\item{N}{an numeric value larger than 0 specifying the total population size. Optional unless \code{likelihood = 'hypergeometric'}.}
+\item{N.units}{an numeric value larger than 0 specifying the total number of units in the population. Optional unless \code{likelihood = 'hypergeometric'}.}
 
 \item{ir}{if \code{method = 'arm'}, a numeric value between 0 and 1 specifying the inherent risk in the audit risk model. Defaults to 1 for 100\% risk.}
 
@@ -29,13 +28,11 @@ auditPrior(method = 'none', likelihood = 'binomial', expectedError = 0,
 
 \item{ub}{if \code{method = 'bram'}, a numeric value between 0 and 1 specifying the upper bound for the prior distribution as a fraction of the population size.}
 
-\item{pHmin}{if \code{method = 'hypotheses'}, a numeric value between 0 and 1 specifying the prior probability of the hypothesis \eqn{\theta <} materiality.}
+\item{p.min}{if \code{method = 'hypotheses'}, a numeric value between 0 and 1 specifying the prior probability of the hypothesis of tolerable misstatement (\eqn{\theta <} materiality).}
 
-\item{pHplus}{if \code{method = 'hypotheses'}, a numeric value between 0 and 1 specifying the prior probability of the hypothesis \eqn{\theta >} materiality.}
+\item{x}{if \code{method = 'sample'} or \code{method = 'factor'}, a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.}
 
-\item{sampleN}{if \code{method = 'sample'} or \code{method = 'factor'}, an integer larger than, or equal to, 0 specifying the sample size of the sample equivalent to the prior information.}
-
-\item{sampleK}{if \code{method = 'sample'} or \code{method = 'factor'}, a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.}
+\item{n}{if \code{method = 'sample'} or \code{method = 'factor'}, an integer larger than, or equal to, 0 specifying the sample size of the sample equivalent to the prior information.}
 
 \item{factor}{if \code{method = 'factor'}, a numeric value between 0 and 1 specifying the weighting factor for the results of the sample equivalent to the prior information.}
 
@@ -46,16 +43,17 @@ auditPrior(method = 'none', likelihood = 'binomial', expectedError = 0,
 \value{
 An object of class \code{jfaPrior} containing:
 
-\item{confidence}{a numeric value between 0 and 1 indicating the confidence level used.}
-\item{materiality}{if \code{materiality} is specified, a numeric value between 0 and 1 indicating the materiality used to construct the prior distribution.}
-\item{expectedError}{a numeric value larger than, or equal to, 0 indicating the input for the number of expected errors.}
-\item{method}{a character indicating the method by which the prior distribution is constructed.}
-\item{likelihood}{a character indicating the assumed likelihood.}
-\item{N}{if \code{N} is specified, an integer larger than 0 indicating the population size.}
+\item{prior}{a string describing the functional form of the prior distribution.}
 \item{description}{a list containing a description of the prior distribution, including the parameters of the prior distribution and the implicit sample on which the prior distribution is based.}
 \item{statistics}{a list containing statistics of the prior distribution, including the mean, mode, median, and upper bound of the prior distribution.}
 \item{specifics}{a list containing specifics of the prior distribution that vary depending on the \code{method}.}
 \item{hypotheses}{if \code{materiality} is specified, a list containing information about the hypotheses, including prior probabilities and odds for the hypothesis of tolerable misstatement (H-) and the hypothesis of intolerable misstatement (H+).}
+\item{method}{a character indicating the method by which the prior distribution is constructed.}
+\item{likelihood}{a character indicating the assumed likelihood.}
+\item{materiality}{if \code{materiality} is specified, a numeric value between 0 and 1 indicating the materiality used to construct the prior distribution.}
+\item{expected}{a numeric value larger than, or equal to, 0 indicating the input for the number of expected errors.}
+\item{conf.level}{a numeric value between 0 and 1 indicating the confidence level used.}
+\item{N.units}{if \code{N} is specified, an integer larger than 0 indicating the population size.}
 }
 \description{
 This function creates a prior distribution with audit information to be used in the \code{planning()} and \code{evaluation()} functions via their \code{prior} argument. The function returns an object of class \code{jfaPrior} which can be used with associated \code{summary()} and \code{plot()} methods.
@@ -71,7 +69,7 @@ This section elaborates on the available options for the \code{method} argument.
  \item{\code{arm}:               This method constructs a prior distribution by translating the risks of material misstatement (inherent risk and internal control risk) from the audit risk model to an implicit sample. The method requires specification of the \code{ir} (inherent risk) and \code{cr} (internal control risk) arguments.}
  \item{\code{bram}:              This method constructs a prior distribution using the Bayesian audit risk assessment model (BRAM) in which the expected most likely error and expected upper bound of the misstatement must be specified. The method requires specification of the \code{ub} argument.}
  \item{\code{median}:            This method constructs a prior distribution so that the prior probability of tolerable misstatement (\eqn{\theta <} materiality) is equal to the prior probability of intolerable misstatement (\eqn{\theta >} materiality).}
- \item{\code{hypotheses}:        This method constructs a prior distribution with custom prior probabilities for the hypotheses of tolerable misstatement (\eqn{\theta <} materiality) and intolerable misstatement (\eqn{\theta >} materiality). This method requires specification of the \code{pHmin} and \code{pHplus} arguments.}
+ \item{\code{hypotheses}:        This method constructs a prior distribution with custom prior probabilities for the hypotheses of tolerable misstatement (\eqn{\theta <} materiality) and intolerable misstatement (\eqn{\theta >} materiality). This method requires specification of the \code{pHmin} argument.}
  \item{\code{sample}:            This method constructs a prior distribution on the basis of an earlier sample. This method requires specification of the \code{sampleN} and \code{sampleK} arguments.}
  \item{\code{factor}:            This method constructs a prior distribution on the basis of an earlier sample in combination with a weighting factor. This method requires specification of the \code{sampleN}, \code{sampleK}, and \code{factor} arguments.}
  \item{\code{custom}:            This method constructs a prior distribution on the basis of user specified \eqn{\alpha} and \eqn{\beta} parameters.}
@@ -88,7 +86,7 @@ This section elaborates on the available likelihoods and corresponding prior dis
 \examples{
  
 # Translate inherent risk (ir) and control risk (cr) to a prior distribution
-auditPrior(method = 'arm', likelihood = 'binomial', expectedError = 0.025,
+auditPrior(method = 'arm', likelihood = 'binomial', expected = 0.025,
            materiality = 0.05, ir = 1, cr = 0.6)
 }
 \references{

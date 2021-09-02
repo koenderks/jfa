@@ -80,14 +80,14 @@ data("BuildIt")
 ############################################
 
 # Stage 1: Planning
-stage1 <- planning(materiality = 0.03, expectedError = 0.01, 
-                   likelihood = "poisson", confidence = 0.95)
+stage1 <- planning(materiality = 0.03, expected = 0.01, 
+                   likelihood = "poisson", conf.level = 0.95)
 summary(stage1)
 
 # Stage 2: Selection
-stage2 <- selection(population = BuildIt, sampleSize = stage1,
-                    units = "mus", bookValues = "bookValue",
-                    algorithm = "interval", intervalStartingPoint = 1)
+stage2 <- selection(data = BuildIt, size = stage1,
+                    units = "mus", values = "bookValue",
+                    method = "interval", start = 1)
 summary(stage2)
 
 # Stage 3: Execution
@@ -95,8 +95,8 @@ sample <- stage2[["sample"]]
 
 # Stage 4: Evaluation
 stage4 <- evaluation(materiality = 0.03, method = "stringer",
-                     confidence = 0.95, sample = sample,
-                     bookValues = "bookValue", auditValues = "auditValue")
+                     conf.level = 0.95, data = sample,
+                     values = "bookValue", values.audit = "auditValue")
 summary(stage4)
 
 ######################################################################
@@ -108,22 +108,22 @@ prior <- auditPrior(method = "none", likelihood = "poisson")
 summary(prior)
 
 # Stage 1: Planning
-stage1 <- planning(materiality = 0.03, expectedError = 0.01,
-                   likelihood = "poisson", confidence = 0.95, prior = prior)
+stage1 <- planning(materiality = 0.03, expected = 0.01,
+                   likelihood = "poisson", conf.level = 0.95, prior = prior)
 summary(stage1)
 
 # Stage 2: Selection
-stage2 <- selection(population = BuildIt, sampleSize = stage1,
-                    units = "mus", bookValues = "bookValue",
-                    algorithm = "interval", intervalStartingPoint = 1)
+stage2 <- selection(data = BuildIt, size = stage1,
+                    units = "mus", values = "bookValue",
+                    method = "interval", start = 1)
 summary(stage2)
 
 # Stage 3: Execution
 sample <- stage2[["sample"]]
 
 # Stage 4: Evaluation
-stage4 <- evaluation(materiality = 0.03, confidence = 0.95, sample = sample,
-                     bookValues = "bookValue", auditValues = "auditValue",
+stage4 <- evaluation(materiality = 0.03, conf.level = 0.95, data = sample,
+                     values = "bookValue", values.audit = "auditValue",
                      prior = prior)
 summary(stage4)
 
@@ -133,26 +133,26 @@ summary(stage4)
 
 # Create the prior distribution
 prior <- auditPrior(method = "arm", likelihood = "poisson",
-                    expectedError = 0.01, materiality = 0.03, cr = 0.6)
+                    expected = 0.01, materiality = 0.03, cr = 0.6)
 summary(prior)
 
 # Stage 1: Planning
-stage1 <- planning(materiality = 0.03, expectedError = 0.01,
-                   likelihood = "poisson", confidence = 0.95, prior = prior)
+stage1 <- planning(materiality = 0.03, expected = 0.01,
+                   likelihood = "poisson", conf.level = 0.95, prior = prior)
 summary(stage1)
 
 # Stage 2: Selection
-stage2 <- selection(population = BuildIt, sampleSize = stage1,
-                    units = "mus", bookValues = "bookValue",
-                    algorithm = "interval", intervalStartingPoint = 1)
+stage2 <- selection(data = BuildIt, size = stage1,
+                    units = "mus", values = "bookValue",
+                    method = "interval", start = 1)
 summary(stage2)
 
 # Stage 3: Execution
 sample <- stage2[["sample"]]
 
 # Stage 4: Evaluation
-stage4 <- evaluation(materiality = 0.03, confidence = 0.95, sample = sample,
-                     bookValues = "bookValue", auditValues = "auditValue",
+stage4 <- evaluation(materiality = 0.03, conf.level = 0.95, data = sample,
+                     values = "bookValue", values.audit = "auditValue",
                      prior = prior)
 summary(stage4)
 }

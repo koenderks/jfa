@@ -204,14 +204,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>First, we take a look at how you can use the <code>planning()</code> function to construct a sample with the objective of testing the misstatement in the population against a performance materiality. In this example, we will set the performance materiality at 5% of the total value of the population.</p>
 <p>Sampling objective: <em>Calculate a minimal sample size such that, when no misstatements are found in the sample, you have obtained 95% assurance that the misstatement in the population is lower than 5% of the total value.</em></p>
 <p>Planning a sample with this objective in mind can be done using the code below (specifically by specifying the <code>materiality</code> argument). Next, a summary of the results can be obtained using the <code>summary()</code> function. As you can see below, the minimal sample size to achieve 95% assurance with respect to the performance materiality of 5% is 60 monetary units.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>stage1 <span class="ot">&lt;-</span> <span class="fu">planning</span>(<span class="at">materiality =</span> <span class="fl">0.05</span>, <span class="at">expectedError =</span> <span class="dv">0</span>, <span class="at">likelihood =</span> <span class="st">&#39;poisson&#39;</span>, <span class="at">confidence =</span> <span class="fl">0.95</span>)</span>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>stage1 <span class="ot">&lt;-</span> <span class="fu">planning</span>(<span class="at">materiality =</span> <span class="fl">0.05</span>, <span class="at">expected =</span> <span class="dv">0</span>, <span class="at">likelihood =</span> <span class="st">&#39;poisson&#39;</span>, <span class="at">conf.level =</span> <span class="fl">0.95</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage1)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------ 
 ## #              jfa Planning Summary (Classical)
 ## # ------------------------------------------------------------ 
 ## # Input:
 ## # 
-## # Confidence:                    95% 
+## # Confidence level:              95% 
 ## # Materiality:                   5% 
 ## # Minimum precision:             Not specified 
 ## # Likelihood:                    poisson  
@@ -233,15 +233,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3>Obtaining a minimum precision</h3>
 <p>Next, we take a look at how you can use the <code>planning()</code> function to construct a sample with the objective of estimating the misstatement in the population with a minimum precision. The precision is defined as the difference between the most likely misstatement and the upper confidence bound on the misstatement and is an indication of the accuracy of your estimate. For this example, we will set the minimum precision to 2% of the population value.</p>
 <p>Sampling objective: <em>Calculate a minimal sample size such that, when zero misstatements are found in the sample, you have obtained 95% assurance that the misstatement in the population is at most 2% above the most likely misstatement.</em></p>
-<p>Planning a sample with this objective can be done using the code below (specifically by specifying the <code>minPrecision</code> argument). As you can see below, the minimal sample size for to achieve a precision of at least 2% is 150 monetary units.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>stage1 <span class="ot">&lt;-</span> <span class="fu">planning</span>(<span class="at">minPrecision =</span> <span class="fl">0.02</span>, <span class="at">expectedError =</span> <span class="dv">0</span>, <span class="at">likelihood =</span> <span class="st">&#39;poisson&#39;</span>, <span class="at">confidence =</span> <span class="fl">0.95</span>)</span>
+<p>Planning a sample with this objective can be done using the code below (specifically by specifying the <code>min.precision</code> argument). As you can see below, the minimal sample size for to achieve a precision of at least 2% is 150 monetary units.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>stage1 <span class="ot">&lt;-</span> <span class="fu">planning</span>(<span class="at">min.precision =</span> <span class="fl">0.02</span>, <span class="at">expected =</span> <span class="dv">0</span>, <span class="at">likelihood =</span> <span class="st">&#39;poisson&#39;</span>, <span class="at">conf.level =</span> <span class="fl">0.95</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage1)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------ 
 ## #              jfa Planning Summary (Classical)
 ## # ------------------------------------------------------------ 
 ## # Input:
 ## # 
-## # Confidence:                    95% 
+## # Confidence level:              95% 
 ## # Materiality:                   Not specified 
 ## # Minimum precision:             2% 
 ## # Likelihood:                    poisson  
@@ -262,12 +262,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="using-selection-the-basics" class="section level2">
 <h2>Using <code>selection()</code>: The basics</h2>
-<p>Selecting a sample using the <code>selection()</code> function requires knowledge of the sampling units (i.e., units of inference) in the population. Items can be selected from the population using <em>record sampling</em> (also known as attribute sampling) using <code>units = &#39;records&#39;</code>, or using <em>monetary unit sampling (MUS)</em> using <code>units = &#39;mus&#39;</code>. Selection also requires knowledge of the sampling algorithm. Sampling units can be selected with a <em>random sampling</em> scheme using <code>algorithm = &#39;random&#39;</code>, with a <em>cell sampling</em> scheme using <code>algorithm = &#39;cell&#39;</code>, or with a <em>fixed interval sampling</em> (also known as systematic sampling) scheme using <code>algorithm = &#39;interval&#39;</code>.</p>
+<p>Selecting a sample using the <code>selection()</code> function requires knowledge of the sampling units (i.e., units of inference) in the population. Items can be selected from the population using <em>record sampling</em> (also known as attribute sampling or item sampling) using <code>units = &#39;items&#39;</code>, or using <em>monetary unit sampling (MUS)</em> using <code>units = &#39;mus&#39;</code>. Selection also requires knowledge of the sampling algorithm. Sampling units can be selected with a <em>random sampling</em> scheme using <code>method = &#39;random&#39;</code>, with a <em>cell sampling</em> scheme using <code>method = &#39;cell&#39;</code>, or with a <em>fixed interval sampling</em> (also known as systematic sampling) scheme using <code>method = &#39;interval&#39;</code>.</p>
 <p>See the vignette <a href="https://koenderks.github.io/jfa/articles/v4_selection_methodology.html">Selection: Sampling methodology</a> for a more detailed explanation the selection algorithms implemented in <code>jfa</code>.</p>
 <div id="record-sampling" class="section level3">
 <h3>Record sampling</h3>
 <p>First, we take a look at how you can use the <code>selection()</code> function to perform random sampling from the items in the population. As an example, the code below samples 60 invoices from the <code>BuildIt</code> data set using a <em>random record sampling</em> scheme.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>stage2 <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">population =</span> BuildIt, <span class="at">sampleSize =</span> <span class="dv">60</span>, <span class="at">units =</span> <span class="st">&#39;records&#39;</span>, <span class="at">algorithm =</span> <span class="st">&#39;random&#39;</span>)</span>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>stage2 <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">60</span>, <span class="at">units =</span> <span class="st">&#39;items&#39;</span>, <span class="at">method =</span> <span class="st">&#39;random&#39;</span>)</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage2)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #                  jfa Selection Summary
@@ -276,7 +276,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## #      
 ## # Population size:               3500 
 ## # Requested sample size:         60 
-## # Sampling units:                Records 
+## # Sampling units:                Items 
 ## # Algorithm:                     Random sampling   
 ## # ------------------------------------------------------------ 
 ## # Output:
@@ -292,14 +292,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="monetary-unit-sampling-mus" class="section level3">
 <h3>Monetary unit sampling (MUS)</h3>
 <p>Next, we take a look at how you can use the <code>selection()</code> function to perform fixed interval sampling using the monetary units in the population as sampling units. As an example, the code below samples 150 monetary units from the <code>BuildIt</code> data set using a <em>fixed interval monetary unit sampling</em> scheme.</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>stage2 <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">population =</span> BuildIt, <span class="at">sampleSize =</span> <span class="dv">150</span>, <span class="at">units =</span> <span class="st">&#39;mus&#39;</span>, <span class="at">algorithm =</span> <span class="st">&#39;interval&#39;</span>, <span class="at">bookValues =</span> <span class="st">&#39;bookValue&#39;</span>)</span>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>stage2 <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">150</span>, <span class="at">units =</span> <span class="st">&#39;mus&#39;</span>, <span class="at">method =</span> <span class="st">&#39;interval&#39;</span>, <span class="at">values =</span> <span class="st">&#39;bookValue&#39;</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage2)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #                  jfa Selection Summary
 ## # ------------------------------------------------------------
 ## # Input:
 ## #      
-## # Population size:               3500 
+## # Population size:               1403221 
 ## # Requested sample size:         150 
 ## # Sampling units:                Monetary units 
 ## # Algorithm:                     Fixed interval sampling 
@@ -314,27 +314,27 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # Statistics:
 ## #
 ## # Proportion n/N:                0.043 
-## # Percentage of value:           5.294% 
+## # Percentage of value:           0.011% 
 ## # ------------------------------------------------------------</code></pre>
 </div>
 <div id="extracting-the-sample" class="section level3">
 <h3>Extracting the sample</h3>
 <p>The selected sample is stored in the object that is returned by the <code>selection()</code> function. It can be accesses or extracted by indexing it via <code>$sample</code>. The first 10 invoices in the previously selected sample of 60 invoices are displayed below. After this step it is up to the auditor to annotate the sample with their audit values.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>stage2 <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">population =</span> BuildIt, <span class="at">sampleSize =</span> <span class="dv">60</span>, <span class="at">units =</span> <span class="st">&#39;records&#39;</span>, <span class="at">algorithm =</span> <span class="st">&#39;random&#39;</span>)</span>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>stage2 <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">60</span>, <span class="at">units =</span> <span class="st">&#39;items&#39;</span>, <span class="at">method =</span> <span class="st">&#39;random&#39;</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> stage2<span class="sc">$</span>sample</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample, <span class="at">n =</span> <span class="dv">10</span>)</span></code></pre></div>
 <pre><code>##    rowNumber count    ID bookValue auditValue
-## 1       1017     1 50755    618.24     618.24
-## 2        679     1 20237    669.75     669.75
-## 3       2177     1  9517    454.02     454.02
-## 4        930     1 85674    257.82     257.82
-## 5       1533     1 31051    308.53     308.53
-## 6        471     1 84375    824.66     824.66
-## 7       2347     1 75616    623.70     623.70
-## 8        270     1 82033    352.75     352.75
-## 9       1211     1 12877     52.89      52.89
-## 10      3379     1 85322    330.24     330.24</code></pre>
+## 1       1058     1 54677    199.77     199.77
+## 2       2180     1 79968    544.51     544.51
+## 3        530     1  4838    701.64     701.64
+## 4        584     1  6993    809.95     809.95
+## 5       1236     1 19732    258.86     258.86
+## 6       1679     1 16014    123.00     123.00
+## 7        208     1 53255    402.35     402.35
+## 8       3117     1 53751    320.10     320.10
+## 9       2801     1 27915    339.79     339.79
+## 10      1326     1 76335    221.43     221.43</code></pre>
 </div>
 </div>
 <div id="using-evaluation-the-basics" class="section level2">
@@ -342,16 +342,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>After saving the sample and annotating the invoices in the sample with their audit values you can it to perform statistical inference about the misstatement in the population with the <code>evaluation()</code> function. Next to a data sample as input, this function can also be used when you only have access to summary statistics from a data sample (e.g., sample size and number of errors). For an elaborate explanation of how to use this function in the context of each sampling objective, see the package vignettes <a href="https://koenderks.github.io/jfa/articles/v6_testing_misstatement.html">Evaluation: Testing misstatement</a> and <a href="https://koenderks.github.io/jfa/articles/v5_estimating_misstatement.html">Evaluation: Estimating misstatement</a>.</p>
 <div id="summary-statistics-from-the-sample" class="section level3">
 <h3>Summary statistics from the sample</h3>
-<p>First, let’s take a look at how you can use the <code>evaluation()</code> function to evaluate the misstatement in the population using summary statistics from a sample. Suppose that in the previously selected sample of 60 invoices you have found that 1 invoice is missing. Using <code>nSumstats = 60</code> and <code>kSumstats = 1</code> you can provide these summary statistics of the sample to the <code>evaluation()</code> function. Don’t forget to also specify the sampling objectives using the <code>materiality</code> or <code>minPrecision</code> arguments. In the following example, a performance materiality of 5% again applies. Also note that these data (<span class="math inline">\(n\)</span>, <span class="math inline">\(k\)</span>) are best described using a binomial distribution, which is why we specify <code>method = &#39;binomial&#39;</code>.</p>
+<p>First, let’s take a look at how you can use the <code>evaluation()</code> function to evaluate the misstatement in the population using summary statistics from a sample. Suppose that in the previously selected sample of 60 invoices you have found that 1 invoice is missing. Using <code>x = 1</code> and <code>n = 60</code> you can provide these summary statistics of the sample to the <code>evaluation()</code> function. Don’t forget to also specify the sampling objectives using the <code>materiality</code> or <code>min.precision</code> arguments. In the following example, a performance materiality of 5% again applies. Also note that these data (<span class="math inline">\(n\)</span>, <span class="math inline">\(x\)</span>) are best described using a binomial distribution, which is why we specify <code>method = &#39;binomial&#39;</code>.</p>
 <p>Sampling objective: <em>Evaluate, on the basis of summary statistics of a sample, whether the misstatement in the population exceeds the performance materiality such that there is a 5% ‘chance’ of incorrectly concluding that the population is free of material misstatement.</em></p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>stage4 <span class="ot">&lt;-</span> <span class="fu">evaluation</span>(<span class="at">materiality =</span> <span class="fl">0.05</span>, <span class="at">method =</span> <span class="st">&#39;binomial&#39;</span>, <span class="at">confidence =</span> <span class="fl">0.95</span>, <span class="at">nSumstats =</span> <span class="dv">60</span>, <span class="at">kSumstats =</span> <span class="dv">1</span>)</span>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>stage4 <span class="ot">&lt;-</span> <span class="fu">evaluation</span>(<span class="at">materiality =</span> <span class="fl">0.05</span>, <span class="at">method =</span> <span class="st">&#39;binomial&#39;</span>, <span class="at">conf.level =</span> <span class="fl">0.95</span>, <span class="at">x =</span> <span class="dv">1</span>, <span class="at">n =</span> <span class="dv">60</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage4)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------ 
 ## #             jfa Evaluation Summary (Classical)
 ## # ------------------------------------------------------------ 
 ## # Input:
 ## #
-## # Confidence:                    95% 
+## # Confidence level:              95% 
 ## # Materiality:                   5% 
 ## # Minimum precision:             Not specified 
 ## # Population size:               Not specified 
@@ -365,7 +365,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # Most likely error:             1.667%
 ## # Upper bound:                   7.664%
 ## # Precision:                     5.997%  
-## # Conclusion:                    Do not approve population 
+## # Sufficient evidence:           FALSE 
 ## # ------------------------------------------------------------</code></pre>
 <p>As you can see above, the 95% upper bound for the misstatement is higher than 5% and therefore the sample does not provide sufficient evidence to conclude that the misstatement is lower than 5%.</p>
 </div>
@@ -374,41 +374,41 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Next, we take a look at how you can use the <code>evaluation()</code> function to evaluate the misstatement using an annotated sample. Returning to our annotated sample from the <code>selection()</code> function, suppose that you have audited these 60 invoices and have found that they contain 1 misstatement.</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>sample<span class="sc">$</span>auditValue    <span class="ot">&lt;-</span> sample<span class="sc">$</span>bookValue</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>sample<span class="sc">$</span>auditValue[<span class="dv">1</span>] <span class="ot">&lt;-</span> sample<span class="sc">$</span>auditValue[<span class="dv">1</span>] <span class="sc">-</span> <span class="dv">100</span></span></code></pre></div>
-<p>You can evaluate the misstatement in the annotated sample using the <code>sample</code>, <code>bookValues</code>, <code>auditValues</code>, and <code>counts</code> arguments. For example, the code below evaluates the misstatement in the population with respect to the performance materiality of 5% using the commonly used Stringer bound. You can find more information about which evaluation methods are implemented on the <a href="https://koenderks.github.io/jfa/">home page</a>.</p>
+<p>You can evaluate the misstatement in the annotated sample using the <code>data</code>, <code>values</code>, <code>values.audit</code>, and <code>times</code> arguments. For example, the code below evaluates the misstatement in the population with respect to the performance materiality of 5% using the commonly used Stringer bound. You can find more information about which evaluation methods are implemented on the <a href="https://koenderks.github.io/jfa/">home page</a>.</p>
 <p>Sampling objective: <em>Evaluate, on the basis of an annotated sample, whether the misstatement in the population exceeds the allocated performance materiality such that there is a 5% ‘chance’ of incorrectly concluding that the population is free of material misstatement.</em></p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>stage4 <span class="ot">&lt;-</span> <span class="fu">evaluation</span>(<span class="at">materiality =</span> <span class="fl">0.05</span>, <span class="at">method =</span> <span class="st">&#39;stringer&#39;</span>, <span class="at">confidence =</span> <span class="fl">0.95</span>,</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">sample =</span> sample, <span class="at">bookValues =</span> <span class="st">&#39;bookValue&#39;</span>, <span class="at">auditValues =</span> <span class="st">&#39;auditValue&#39;</span>,</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">counts =</span> sample<span class="sc">$</span>count)</span>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>stage4 <span class="ot">&lt;-</span> <span class="fu">evaluation</span>(<span class="at">materiality =</span> <span class="fl">0.05</span>, <span class="at">method =</span> <span class="st">&#39;stringer&#39;</span>, <span class="at">conf.level =</span> <span class="fl">0.95</span>,</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">data =</span> sample, <span class="at">values =</span> <span class="st">&#39;bookValue&#39;</span>, <span class="at">values.audit =</span> <span class="st">&#39;auditValue&#39;</span>,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">times =</span> sample<span class="sc">$</span>count)</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage4)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------ 
 ## #             jfa Evaluation Summary (Classical)
 ## # ------------------------------------------------------------ 
 ## # Input:
 ## #
-## # Confidence:                    95% 
+## # Confidence level:              95% 
 ## # Materiality:                   5% 
 ## # Minimum precision:             Not specified 
 ## # Population size:               Not specified 
 ## # Sample size:                   60 
 ## # Sample errors:                 1 
-## # Sum of taints:                 0.162 
+## # Sum of taints:                 0.501 
 ## # Method:                        stringer   
 ## # ------------------------------------------------------------
 ## # Output:
 ## #  
-## # Most likely error:             0.27%
-## # Upper bound:                   5.322%
-## # Precision:                     5.053%  
-## # Conclusion:                    Do not approve population 
+## # Most likely error:             0.834%
+## # Upper bound:                   6.269%
+## # Precision:                     5.434%  
+## # Sufficient evidence:           FALSE 
 ## # ------------------------------------------------------------</code></pre>
 </div>
 </div>
 <div id="using-report-the-basics" class="section level2">
 <h2>Using <code>report()</code>: The basics</h2>
 <p>With the results from the <code>evaluation()</code> function in hand, you can use the <code>report()</code> function to automatically generate a report containing the data, the statistical results and their interpretation, and the conclusion of the sampling procedure with respect to the sampling objectives. The report can be generated by providing the object returned by the <code>evaluation()</code> function to the <code>report()</code> function.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>stage4 <span class="ot">&lt;-</span> <span class="fu">evaluation</span>(<span class="at">materiality =</span> <span class="fl">0.05</span>, <span class="at">method =</span> <span class="st">&#39;stringer&#39;</span>, <span class="at">confidence =</span> <span class="fl">0.95</span>,</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">sample =</span> sample, <span class="at">bookValues =</span> <span class="st">&#39;bookValue&#39;</span>, <span class="at">auditValues =</span> <span class="st">&#39;auditValue&#39;</span>,</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">counts =</span> sample<span class="sc">$</span>count)</span>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>stage4 <span class="ot">&lt;-</span> <span class="fu">evaluation</span>(<span class="at">materiality =</span> <span class="fl">0.05</span>, <span class="at">method =</span> <span class="st">&#39;stringer&#39;</span>, <span class="at">conf.level =</span> <span class="fl">0.95</span>,</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">data =</span> sample, <span class="at">values =</span> <span class="st">&#39;bookValue&#39;</span>, <span class="at">values.audit =</span> <span class="st">&#39;auditValue&#39;</span>,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">times =</span> sample<span class="sc">$</span>count)</span>
 <span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">report</span>(stage4, <span class="at">file =</span> <span class="st">&#39;report.html&#39;</span>, <span class="at">format =</span> <span class="st">&#39;html_document&#39;</span>) <span class="co"># Generates .html report</span></span></code></pre></div>
 </div>

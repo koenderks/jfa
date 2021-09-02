@@ -1,38 +1,34 @@
 #' Evaluate a statistical audit sample
 #'
-#' @description This function takes a data frame (using \code{sample}, \code{bookValues}, and \code{auditValues}) or summary statistics (using \code{nSumstats} and \code{kSumstats}) and performs inference on the misstatement in the sample. The function returns an object of class \code{jfaEvaluation} which can be used with associated \code{summary()} and \code{plot()} methods.
+#' @description This function takes a data frame (using \code{data}, \code{values}, and \code{values.audit}) or summary statistics (using \code{x} and \code{n}) and performs inference on the misstatement in the sample. The function returns an object of class \code{jfaEvaluation} which can be used with associated \code{summary()} and \code{plot()} methods.
 #'
 #' For more details on how to use this function, see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
-#' @usage evaluation(materiality = NULL, minPrecision = NULL, method = 'binomial',
-#'            confidence = 0.95, sample = NULL, bookValues = NULL, auditValues = NULL, 
-#'            counts = NULL, nSumstats = NULL, kSumstats = NULL,
-#'            N = NULL, populationBookValue = NULL,
-#'            prior = FALSE, nPrior = 0, kPrior = 0, 
-#'            rohrbachDelta = 2.7, momentPoptype = 'accounts',
-#'            csA = 1, csB = 3, csMu = 0.5) 
+#' @usage evaluation(materiality = NULL, min.precision = NULL, method = 'binomial',
+#'            conf.level = 0.95, data = NULL, values = NULL, values.audit = NULL,
+#'            times = NULL, x = NULL, n = NULL, N.units = NULL, N.items = NULL,
+#'            r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5
+#'            prior = FALSE)
 #'
 #' @param materiality   a numeric value between 0 and 1 specifying the performance materiality (maximum tolerable error) as a fraction of the total size of the population. If specified, the function also returns the conclusion of the analysis with respect to the performance materiality. The value is discarded when \code{direct}, \code{difference}, \code{quotient}, or \code{regression} method is chosen.
-#' @param minPrecision  a numeric value between 0 and 1 specifying the required minimum precision (upper bound minus most likely error) as a fraction of the total size of the population. If specified, the function also returns the conclusion of the analysis with respect to the required minimum precision.
-#' @param method        a character specifying the method to be used in the evaluation. Possible options are \code{poisson}, \code{binomial} (default), \code{hypergeometric}, \code{mpu}, \code{stringer}, \code{stringer-meikle}, \code{stringer-lta}, \code{stringer-pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}. See the details section for more information.
-#' @param confidence   	a numeric value between 0 and 1 specifying the confidence level used in the evaluation. Defaults to 0.95 for 95\% confidence.
-#' @param sample        a data frame containing the sample to be evaluated. The sample must at least contain a column of book values and a column of audit (true) values.
-#' @param bookValues    a character specifying the column name for the book values in the \code{sample}.
-#' @param auditValues   a character specifying the column name for the audit values in the \code{sample}.
-#' @param counts        a integer vector specifying the number of times each item in the sample should be counted in the evaluation (due to it being selected multiple times for the sample).
-#' @param nSumstats     an integer larger than 0 specifying the number of items in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data come from summary statistics specified by both \code{nSumstats} and \code{kSumstats}.
-#' @param kSumstats     a numeric value larger than 0 specifying the sum of errors found in the sample. If specified, overrides the \code{sample}, \code{bookValues} and \code{auditValues} arguments and assumes that the data come from summary statistics specified by both \code{kSumstats} and \code{nSumstats}.
-#' @param N             an integer larger than 0 specifying the total number of units or items in the population (i.e., the population size). Only required when \code{likelihood = 'hypergeometric'}.
-#' @param populationBookValue if \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value specifying the total value of the items in the population. This argument is optional otherwise.
+#' @param min.precision a numeric value between 0 and 1 specifying the required minimum precision (upper bound minus most likely error) as a fraction of the total size of the population. If specified, the function also returns the conclusion of the analysis with respect to the required minimum precision.
+#' @param method        a character specifying the method to be used in the evaluation. Possible options are \code{poisson}, \code{binomial} (default), \code{hypergeometric}, \code{mpu}, \code{stringer}, \code{stringer.meikle}, \code{stringer.lta}, \code{stringer.pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}. See the details section for more information.
+#' @param conf.level    a numeric value between 0 and 1 specifying the confidence level used in the evaluation. Defaults to 0.95 for 95\% confidence.
+#' @param data          a data frame containing the sample to be evaluated. The sample must at least contain a column of book values and a column of audit (true) values.
+#' @param values        a character specifying the column name for the book values in the \code{data}.
+#' @param auditValues   a character specifying the column name for the audit values in the \code{data}.
+#' @param times         a integer vector specifying the number of times each item in the \code{data} should be counted in the evaluation (due to it being selected multiple times for the sample).
+#' @param x             a numeric value larger than 0 specifying the sum of errors found in the sample. If specified, overrides the \code{data}, \code{values} and \code{values.audit} arguments and assumes that the data come from summary statistics specified by both \code{x} and \code{n}.
+#' @param n             an integer larger than 0 specifying the number of items in the sample. If specified, overrides the \code{data}, \code{values} and \code{values.audit} arguments and assumes that the data come from summary statistics specified by both \code{x} and \code{n}.
+#' @param N.units       an integer larger than 0 specifying the total number of sampling units in the population (i.e., the population size / value). Only required if \code{method} is one of \code{'hypergeometric'}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}.
+#' @param N.items       an integer larger than 0 specifying the total number of items in the population. Only required if \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}.
+#' @param r.delta       if \code{method = 'rohrbach'}, a numeric value specifying \eqn{\Delta} in Rohrbach's augmented variance bound (Rohrbach, 1993).
+#' @param m.type        if \code{method = 'moment'}, a character specifying the type of population (Dworin and Grimlund, 1984). Possible options are \code{accounts} and \code{inventory}. This argument affects the calculation of the central moments in the bound.
+#' @param cs.a          if \code{method = "coxsnell"}, a numeric value specifying the \eqn{\alpha} parameter of the prior distribution on the mean taint. Defaults to 1 as recommended by Cox and Snell (1979).
+#' @param cs.b          if \code{method = "coxsnell"}, a numeric value specifying the \eqn{\beta} parameter of the prior distribution on the mean taint. Defaults to 3 as recommended by Cox and Snell (1979).
+#' @param cs.mu         if \code{method = "coxsnell"}, a numeric value between 0 and 1 specifying the mean of the prior distribution on the mean taint. Defaults to 0.5 as recommended by Cox and Snell (1979).
 #' @param prior         a logical specifying if a prior distribution must be used, or an object of class \code{jfaPrior} or \code{jfaPosterior} containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a negligible prior distribution is chosen by default, but can be adjusted using the `kPrior` and `nPrior` arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.
-#' @param nPrior        if \code{prior = TRUE}, a numeric value larger than, or equal to, 0 specifying the sample size of the sample equivalent to the prior information.
-#' @param kPrior        if \code{prior = TRUE}, a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.
-#' @param rohrbachDelta if \code{method = 'rohrbach'}, a numeric value specifying \eqn{\Delta} in Rohrbach's augmented variance bound (Rohrbach, 1993).
-#' @param momentPoptype if \code{method = 'moment'}, a character specifying the type of population (Dworin and Grimlund, 1984). Possible options are \code{accounts} and \code{inventory}. This argument affects the calculation of the central moments in the bound.
-#' @param csA           if \code{method = "coxsnell"}, a numeric value specifying the \eqn{\alpha} parameter of the prior distribution on the mean taint. Defaults to 1 as recommended by Cox and Snell (1979).
-#' @param csB           if \code{method = "coxsnell"}, a numeric value specifying the \eqn{\beta} parameter of the prior distribution on the mean taint. Defaults to 3 as recommended by Cox and Snell (1979).
-#' @param csMu          if \code{method = "coxsnell"}, a numeric value between 0 and 1 specifying the mean of the prior distribution on the mean taint. Defaults to 0.5 as recommended by Cox and Snell (1979).
 #'
 #' @details This section lists the available options for the \code{methods} argument.
 #' 
@@ -42,9 +38,9 @@
 #'  \item{\code{hypergeometric}:   Evaluates the sample with the hypergeometric distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{beta-binomial} prior and posterior.}
 #'	\item{\code{mpu}:              Evaluates the sample with the mean-per-unit estimator.}
 #'  \item{\code{stringer}:         Evaluates the sample with the Stringer bound (Stringer, 1963).}
-#'  \item{\code{stringer-meikle}:  Evaluates the sample with the Stringer bound with Meikle's correction for understatements (Meikle, 1972).}
-#'  \item{\code{stringer-lta}:     Evaluates the sample with the Stringer bound with LTA correction for understatements (Leslie, Teitlebaum, and Anderson, 1979).}
-#'  \item{\code{stringer-pvz}:     Evaluates the sample with the Stringer bound with Pap and van Zuijlen's correction for understatements (Pap and van Zuijlen, 1996).}
+#'  \item{\code{stringer.meikle}:  Evaluates the sample with the Stringer bound with Meikle's correction for understatements (Meikle, 1972).}
+#'  \item{\code{stringer.lta}:     Evaluates the sample with the Stringer bound with LTA correction for understatements (Leslie, Teitlebaum, and Anderson, 1979).}
+#'  \item{\code{stringer.pvz}:     Evaluates the sample with the Stringer bound with Pap and van Zuijlen's correction for understatements (Pap and van Zuijlen, 1996).}
 #'  \item{\code{rohrbach}:         Evaluates the sample with Rohrbach's augmented variance bound (Rohrbach, 1993).}
 #'  \item{\code{moment}:           Evaluates the sample with the modified moment bound (Dworin and Grimlund, 1984).}
 #'  \item{\code{coxsnell}:         Evaluates the sample with the Cox and Snell bound (Cox and Snell, 1979).}
@@ -66,21 +62,21 @@
 #'
 #' @return An object of class \code{jfaEvaluation} containing:
 #' 
-#' \item{confidence}{a numeric value between 0 and 1 indicating the confidence level.}
+#' \item{conf.level}{a numeric value between 0 and 1 indicating the confidence level.}
+#' \item{mle}{a numeric value between 0 and 1 indicating the most likely error in the population as a fraction of its total size.}
+#' \item{ub}{a numeric value indicating the upper bound on the population misstatement as a fraction the total population size.}
+#' \item{precision}{a numeric value between 0 and 1 indicating the difference between the most likely error and the upper bound in the population as a fraction of the total population size.}
+#' \item{x}{an integer larger than, or equal to, 0 indicating the number of items in the sample that contained an error.}
+#' \item{t}{a value larger than, or equal to, 0, indicating the sum of observed taints.}
+#' \item{n}{an integer larger than 0 indicating the sample size.}
 #' \item{materiality}{if \code{materiality} is specified, a numeric value between 0 and 1 indicating the performance materiality as a fraction of the total population size.}
-#' \item{minPrecision}{if \code{minPrecision} is specified, a numeric value between 0 and 1 indicating the minimum required precision as a fraction of the total population size.}
+#' \item{min.precision}{if \code{min.precision} is specified, a numeric value between 0 and 1 indicating the minimum required precision as a fraction of the total population size.}
 #' \item{method}{a character indicating the evaluation method.}
 #' \item{N}{if \code{N} is specified, in integer larger than 0 indicating the population size.}
-#' \item{n}{an integer larger than 0 indicating the sample size.}
-#' \item{k}{an integer larger than, or equal to, 0 indicating the number of items in the sample that contained an error.}
-#' \item{t}{a value larger than, or equal to, 0, indicating the sum of observed taints.}
-#' \item{mle}{a numeric value between 0 and 1 indicating the most likely error in the population as a fraction of its total size.}
-#' \item{precision}{a numeric value between 0 and 1 indicating the difference between the most likely error and the upper bound in the population as a fraction of the total population size.}
 #' \item{popBookvalue}{if \code{populationBookValue} is specified, a numeric value larger than 0 indicating the total value of the population.}
 #' \item{pointEstimate}{if \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value indicating the point estimate of the population misstatement as a fraction the total population size.}
 #' \item{lowerBound}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value indicating the lower bound of the interval around the population misstatement as a fraction the total population size.}
 #' \item{upperBound}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value indicating the upper bound of the interval around the population misstatement as a fraction the total population size.}
-#' \item{confBound}{a numeric value indicating the upper bound on the population misstatement as a fraction the total population size.}
 #' \item{conclusion}{if \code{materiality} is specified, a character indicating the conclusion about whether to approve or not approve the population with respect to the performance materiality.}
 #' \item{populationK}{if \code{method = 'hypergeometric'}, an integer indicating the assumed total errors in the population.}
 #' \item{prior}{an object of class 'jfaPrior' that contains the prior distribution.}
@@ -98,377 +94,280 @@
 #'
 #' # Draw a sample of 100 monetary units from the population using
 #' # fixed interval monetary unit sampling
-#' sample <- selection(population = BuildIt, sampleSize = 100, 
-#'           algorithm = 'interval', units = 'mus', bookValues = 'bookValue')$sample
+#' sample <- selection(data = BuildIt, size = 100, units = 'mus',
+#'                     method = 'interval', values = 'bookValue')$sample
 #' 
 #' # Evaluate using the Stringer bound
-#' evaluation(materiality = 0.05, method = 'stringer', confidence = 0.95,
-#'            sample = sample, bookValues = 'bookValue', auditValues = 'auditValue')
+#' evaluation(materiality = 0.05, method = 'stringer', conf.level = 0.95,
+#'            data = sample, values = 'bookValue', values.audit = 'auditValue')
 #'
 #' @export 
 
-evaluation <- function(materiality = NULL, minPrecision = NULL, method = 'binomial', 
-                       confidence = 0.95, sample = NULL, bookValues = NULL, auditValues = NULL,
-                       counts = NULL, nSumstats = NULL, kSumstats = NULL,
-                       N = NULL, populationBookValue = NULL,
-                       prior = FALSE, nPrior = 0, kPrior = 0, 
-                       rohrbachDelta = 2.7, momentPoptype = 'accounts',
-                       csA = 1, csB = 3, csMu = 0.5) {
-  
+evaluation <- function(materiality = NULL, min.precision = NULL, method = 'binomial',
+                       conf.level = 0.95, data = NULL, values = NULL, values.audit = NULL,
+                       times = NULL, x = NULL, n = NULL, N.units = NULL, N.items = NULL, 
+                       r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5, 
+                       prior = FALSE) {
   # Import existing prior distribution with class 'jfaPrior' or 'jfaPosterior'.
   if (class(prior) %in% c("jfaPrior", "jfaPosterior")) {
-    
-    if (kPrior != 0 || nPrior != 0)
-      warning("'nPrior' and 'kPrior' will not be used")
-    
-    nPrior      <- prior[["description"]]$implicitn
-    kPrior      <- prior[["description"]]$implicitk
-    method      <- prior[["likelihood"]]
-    
-  }
-  
-  # Perform error handling with respect to incompatible input options
-  if (confidence >= 1 || confidence <= 0 || is.null(confidence))
-    stop("'confidence' must be a single number between 0 and 1")
-  
-  if (is.null(materiality) && is.null(minPrecision))
-    stop("'materiality' or `minPrecision` is missing for evaluation")
-  
-  if (!is.null(minPrecision) && (minPrecision <= 0 || minPrecision >= 1))
-    stop("'minPrecision' must be a single number between 0 and 1")
-  
-  if (!(method %in% c('binomial', 'poisson', 'hypergeometric', 'stringer', 'stringer-meikle', 'stringer-lta', 'stringer-pvz', 'rohrbach', 'moment', 'coxsnell', 'direct', 'difference', 'quotient', 'regression', 'mpu')) || length(method) != 1)
-    stop("'method' should be one of 'binomial', 'poisson', 'hypergeometric', 'stringer', 'stringer-meikle', 'stringer-lta', 'stringer-pvz', 'rohrbach', 'moment', 'coxsnell', 'direct', 'difference', 'quotient', 'regression', 'mpu'")
-  
-  if (!is.null(counts) && any(counts < 1))
-    stop("'counts' must be a vector of positive integers")
-  
-  if (((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")) && method %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
-    stop("'method' should be one of 'binomial', 'poisson', 'hypergeometric'")  
-  
-  if (class(prior) == "logical" && prior == TRUE) {
-    if (kPrior < 0)
-      stop("'kPrior' must be a single number equal to or larger than 0")
-    if (nPrior < 0)
-      stop("'nPrior' must be a single number equal to or larger than 0")
-  }
-  
-  if (!is.null(nSumstats) || !is.null(kSumstats)) {
-    
-    if (method %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "coxsnell", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
-      stop(paste0("'method = ", method, "' does not accomodate summary statistics"))
-    if (is.null(nSumstats))
-      stop("'nSumstats' is missing for evaluation")
-    if (nSumstats <= 0 || nSumstats%%1 != 0 || length(nSumstats) != 1)
-      stop("'nSumstats' must be a single integer larger than 0")
-    if (is.null(kSumstats)) 
-      stop("'kSumstats' is missing for evaluation")
-    if (kSumstats < 0 || length(kSumstats) != 1)
-      stop("'kSumstats' must be a single value equal to or larger than 0")
-    if (kSumstats > nSumstats)
-      stop("'kSumstats' must be a single value equal to or smaller than 'nSumstats'")
-    if (kSumstats%%1 != 0 && method == "hypergeometric" && !((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")))
-      stop("'kSumstats' must be a single integer equal to or larger than 0")
-    
-    n <- nSumstats
-    k <- kSumstats
-    t <- kSumstats
-    
-  } else if (!is.null(sample)) {
-    
-    if (is.null(bookValues))
-      stop("'bookValues' is missing for evaluation")
-    if (length(bookValues) != 1)
-      stop("'bookValues' must be a single character")
-    if (is.null(auditValues))
-      stop("'auditValues' is missing for evaluation")
-    if (length(auditValues) != 1)
-      stop("'auditValues' must be a single character")
-    
-    missingValues <- unique(c(which(is.na(sample[, bookValues])), which(is.na(sample[, auditValues]))))
-    
-    if (length(missingValues) == nrow(sample))
-      stop("not enough 'sample' observations")
-    
-    sample <- stats::na.omit(sample)
-    n <- nrow(sample)
-    
-    if (!is.null(counts))
-      n <- sum(counts)
-    
-    bv <- sample[, bookValues]
-    av <- sample[, auditValues]
-    taints <- (bv - av) / bv
-    k <- length(which(taints != 0))
-    
-    if (!is.null(counts))
-      taints <- taints * counts
-    
-    t <- sum(taints)
-    
+    prior.x <- prior[["description"]]$implicit.x
+    prior.n <- prior[["description"]]$implicit.n
+    method  <- prior[["likelihood"]]
+    proper  <- prior[["description"]]$beta > 0
   } else {
-    
-    stop("sample or summary statistics missing for evaluation")
-    
+    prior.n <- 0
+    prior.x <- 0
+    proper  <- TRUE
   }
-  
+  if (is.null(conf.level))
+    stop("'conf.level' is missing for evaluation")
+  if (conf.level >= 1 || conf.level <= 0 || length(conf.level) != 1)
+    stop("'conf.level' must be a single number between 0 and 1")
+  if (is.null(materiality) && is.null(min.precision))
+    stop("'materiality' or `min.precision` is missing for evaluation")
+  if (!is.null(materiality) && (materiality <= 0 || materiality >= 1))
+    stop("'materiality' must be a single number between 0 and 1")
+  if (!is.null(min.precision) && (min.precision <= 0 || min.precision >= 1))
+    stop("'min.precision' must be a single number between 0 and 1")
+  if (!(method %in% c('binomial', 'poisson', 'hypergeometric', 'stringer', 'stringer.meikle', 'stringer.lta', 'stringer.pvz', 'rohrbach', 'moment', 'coxsnell', 'direct', 'difference', 'quotient', 'regression', 'mpu')) || length(method) != 1)
+    stop("'method' should be one of 'binomial', 'poisson', 'hypergeometric', 'stringer', 'stringer.meikle', 'stringer.lta', 'stringer.pvz', 'rohrbach', 'moment', 'coxsnell', 'direct', 'difference', 'quotient', 'regression', 'mpu'")
+  if (!is.null(times) && any(times < 1))
+    stop("'times' must be a vector of integers equal to or larger than 1")
+  if (!is.null(times) && any(times%%1 != 0))
+    stop("'times' must be a vector of positive integers")
+  if (((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")) && method %in% c("stringer", "stringer.meikle", "stringer.lta", "stringer.pvz", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
+    stop("'method' should be one of 'binomial', 'poisson', 'hypergeometric'")  
+  if (!is.null(x) || !is.null(n)) { # Use summary statistics
+    if (method %in% c("stringer", "stringer.meikle", "stringer.lta", "stringer.pvz", "coxsnell", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
+      stop(paste0("'method = ", method, "' does not accomodate summary statistics using 'x' and 'n'"))
+    if (is.null(n))
+      stop("'n' is missing for evaluation")
+    if (n <= 0 || n%%1 != 0 || length(n) != 1)
+      stop("'n' must be a single integer > 0")
+    if (is.null(x)) 
+      stop("'x' is missing for evaluation")
+    if (x < 0 || length(x) != 1)
+      stop("'x' must be a single value >= 0")
+    if (x > n)
+      stop("'x' must be a positive value <= 'n'")
+    if (x%%1 != 0 && method == "hypergeometric" && !((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")))
+      stop("'x' must be a single integer >= 0")
+    n.obs <- n
+    x.obs <- x
+    t.obs <- x
+  } else if (!is.null(data)) { # Use data sample
+    if (is.null(values))
+      stop("'values' is missing for evaluation")
+    if (length(values) != 1)
+      stop("'values' must be a single character")
+    if (is.null(values.audit))
+      stop("'values.audit' is missing for evaluation")
+    if (length(values.audit) != 1)
+      stop("'values.audit' must be a single character")
+    missing <- unique(c(which(is.na(data[, values])), which(is.na(data[, values.audit]))))
+    if (length(missing) == nrow(data))
+      stop("not enough 'sample' observations")
+    data <- stats::na.omit(data)
+    n.obs <- nrow(data)
+    if (!is.null(times))
+      n.obs <- sum(times)
+    bookvalues <- data[, values]
+    auditvalues <- data[, values.audit]
+    t <- (bookvalues - auditvalues) / bookvalues
+    x.obs <- length(which(t != 0))
+    if (!is.null(times))
+      t <- t * times
+    t.obs <- sum(t)
+  } else {
+    stop("'data' or a combination of 'x' and 'n' missing for evaluation")
+  }
   # Set the materiality and the minimium precision to 1 if they are NULL
   if (is.null(materiality))
     materiality <- 1
-  if (is.null(minPrecision))
-    minPrecision <- 1
-  
+  if (is.null(min.precision))
+    min.precision <- 1
   # Define placeholders for the most likely error and the precision  
   mle       <- NULL
   precision <- NULL
-  
-  # Calculate the results depending on the specified method
+  # Calculate the results depending on the specified 'method'
   if (method == 'poisson') {
-    
     if ((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")) {
       # Bayesian evaluation using the gamma distribution
-      bound     <- stats::qgamma(p = confidence, shape = 1 + kPrior + t, rate = nPrior + n)
-      mle       <- ((1 + kPrior + t) - 1) / (nPrior + n)
-      precision <- bound - mle
+      ub        <- stats::qgamma(p = conf.level, shape = 1 + prior.x + t.obs, rate = prior.n + n.obs)
+      mle       <- ((1 + prior.x + t.obs) - 1) / (prior.n + n.obs)
+      precision <- ub - mle
     } else {
       # Classical evaluation using the Poisson distribution
-      bound     <- stats::qgamma(p = confidence, shape = 1 + t, rate = n)
-      mle       <- t / n
-      precision <- bound - mle
+      ub        <- stats::qgamma(p = conf.level, shape = 1 + t.obs, rate = n.obs)
+      mle       <- t.obs / n.obs
+      precision <- ub - mle
     }
-    
   } else if (method == 'binomial') { 
-    
     if ((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")) {
       # Bayesian evaluation using the beta distribution
-      bound     <- stats::qbeta(p = confidence, shape1 = 1 + kPrior + t, shape2 = 1 + nPrior - kPrior + n - t)
-      mle       <- (1 + kPrior + t - 1) / ((1 + kPrior + t) + (1 + nPrior - kPrior + n - t) - 2)
-      precision <- bound - mle
+      ub        <- stats::qbeta(p = conf.level, shape1 = 1 + prior.x + t.obs, shape2 = 1 + prior.n - prior.x + n.obs - t.obs)
+      mle       <- (1 + prior.x + t.obs - 1) / ((1 + prior.x + t.obs) + (1 + prior.n - prior.x + n.obs - t.obs) - 2)
+      precision <- ub - mle
     } else {
       # Classical evaluation using the binomial distribution
-      bound     <- stats::qbeta(p = confidence, shape1 = 1 + t, shape2 = n - t)
-      mle       <- t / n
-      precision <- bound - mle
+      ub        <- stats::qbeta(p = conf.level, shape1 = 1 + t.obs, shape2 = n.obs - t.obs)
+      mle       <- t.obs / n.obs
+      precision <- ub - mle
     }
-    
   } else if (method == 'hypergeometric') {
-    
-    if (is.null(N))
-      stop("'N' is missing for evaluation")
-    if (N <= 0 || N%%1 != 0)
-      stop("'N' must be a positive integer")
-    
+    if (is.null(N.units))
+      stop("'N.units' is missing for evaluation")
+    if (N.units <= 0 || N.units%%1 != 0)
+      stop("'N.units' must be a positive integer")
     if ((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")) {
       # Bayesian evaluation using the beta-binomial distribution
-      bound     <- .qBetaBinom(p = confidence, N = N - n, shape1 = 1 + kPrior + t, shape2 = 1 + nPrior - kPrior + n - t) / N
-      mle       <- .modeBetaBinom(N = N - n, shape1 = 1 + kPrior + t, shape2 = 1 + nPrior - kPrior + n - t) / N
-      precision <- bound - mle
+      ub        <- .qBetaBinom(p = conf.level, N = N.units - n.obs, shape1 = 1 + prior.x + t.obs, shape2 = 1 + prior.n - prior.x + n.obs - t.obs) / N.units
+      mle       <- .modeBetaBinom(N = N.units - n.obs, shape1 = 1 + prior.x + t.obs, shape2 = 1 + prior.n - prior.x + n.obs - t.obs) / N.units
+      precision <- ub - mle
     } else {
       # Classical evaluation using the hypergeometric distribution
-      populationK <- ceiling(materiality * N)
-      bound     <- .qHyper(p = confidence, N = N, n = n, k = k) / N
-      mle       <- k / n
-      precision <- bound - mle
+      K         <- ceiling(materiality * N.units)
+      ub        <- .qHyper(p = conf.level, N = N.units, n = n.obs, k = x.obs) / N.units
+      mle       <- x.obs / n.obs
+      precision <- ub - mle
     }
-    
   } else if (method == 'stringer') {
-    
     # Classical evaluation using the Stringer bound
-    out         <- .stringerBound(taints, confidence, n)
-    bound       <- out[["confBound"]]
+    out         <- .stringer(t, conf.level, n.obs)
+    ub          <- out[["ub"]]
     mle         <- out[["mle"]]
     precision   <- out[["precision"]]
-    
-  } else if (method == 'stringer-meikle') {
-    
+  } else if (method == 'stringer.meikle') {
     # Classical evaluation using the Stringer bound with Meikle's adjustment
-    out         <- .stringerBound(taints, confidence, n, correction = 'meikle')
-    bound       <- out[["confBound"]]
+    out         <- .stringer(t, conf.level, n.obs, correction = 'meikle')
+    ub          <- out[["ub"]]
     mle         <- out[["mle"]]
     precision   <- out[["precision"]]
-    
-  } else if (method == 'stringer-lta') {
-    
+  } else if (method == 'stringer.lta') {
     # Classical evaluation using the Stringer bound with the LTA adjustment
-    out         <- .stringerBound(taints, confidence, n, correction = 'lta')
-    bound       <- out[["confBound"]]
+    out         <- .stringer(t, conf.level, n.obs, correction = 'lta')
+    ub          <- out[["ub"]]
     mle         <- out[["mle"]]
     precision   <- out[["precision"]]
-    
-  } else if (method == 'stringer-pvz') {
-    
+  } else if (method == 'stringer.pvz') {
     # Classical evaluation using the Stringer bound with PvZ adjustment
-    out         <- .stringerBound(taints, confidence, n, correction = 'pvz')
-    bound       <- out[["confBound"]]
+    out         <- .stringer(t, conf.level, n.obs, correction = 'pvz')
+    ub          <- out[["ub"]]
     mle         <- out[["mle"]]
     precision   <- out[["precision"]]
-    
   } else if (method == 'rohrbach') {
-    
     # Classical evaluation using Rohrbachs augmented variance bound
-    out         <- .rohrbachBound(taints, confidence, n, N, rohrbachDelta = rohrbachDelta)
-    bound       <- out[["confBound"]]
+    out         <- .rohrbach(t, conf.level, n.obs, N.units, r.delta)
+    ub          <- out[["ub"]]
     mle         <- out[["mle"]]
     precision   <- out[["precision"]]
-    
   } else if (method == 'moment') {
-    
     # Classical evaluation using the Modified Moment bound
-    out         <- .momentBound(taints, confidence, n, momentPoptype = momentPoptype)
-    bound       <- out[["confBound"]]
+    out         <- .moment(t, conf.level, n.obs, m.type)
+    ub          <- out[["ub"]]
     mle         <- out[["mle"]]
     precision   <- out[["precision"]]
-    
   } else if (method == 'coxsnell') {
-    
     # Bayesian evaluation using the Cox and Snell bound 
-    out         <- .coxAndSnellBound(taints, confidence, n, csA, csB, csMu, aPrior = 1 + kPrior, bPrior = 1 + nPrior - kPrior)
-    bound       <- out[["confBound"]]
+    out         <- .coxsnell(t, conf.level, n.obs, cs.a, cs.b, cs.mu, 1 + prior.x, 1 + prior.n - prior.x)
+    ub          <- out[["ub"]]
     mle         <- out[["mle"]]
     precision   <- out[["precision"]]
-    
   } else if (method == 'mpu') {
-    
     # Classical evaluation using the Mean-per-unit estimator
-    out         <- .mpuMethod(taints, confidence, n)
-    bound       <- out[["confBound"]]
+    out         <- .mpu(t, conf.level, n.obs)
+    ub          <- out[["ub"]]
     mle         <- out[["mle"]]
     precision   <- out[["precision"]]
-    
   } else if (method == 'direct') {
-    
     # Classical evaluation using the Direct estimator
-    out         <- .directMethod(bv, av, confidence, N, n, populationBookValue)
-    mle         <- out[["pointEstimate"]]
+    out         <- .direct(bookvalues, auditvalues, conf.level, N.items, n.obs, N.units)
+    mle         <- out[["mle"]]
     precision   <- out[["precision"]]
-    
   } else if (method == 'difference') {
-    
     # Classical evaluation using the Difference estimator
-    out         <- .differenceMethod(bv, av, confidence, N, n, populationBookValue)
-    mle         <- out[["pointEstimate"]]
+    out         <- .difference(bookvalues, auditvalues, conf.level, N.items, n.obs)
+    mle         <- out[["mle"]]
     precision   <- out[["precision"]]
-    
   } else if (method == 'quotient') {
-    
     # Classical evaluation using the Quotient estimator
-    out         <- .quotientMethod(bv, av, confidence, N, n, populationBookValue)
-    mle         <- out[["pointEstimate"]]
+    out         <- .quotient(bookvalues, auditvalues, conf.level, N.items, n.obs)
+    mle         <- out[["mle"]]
     precision   <- out[["precision"]]
-    
   } else if (method == 'regression') {
-    
     # Classical evaluation using the Regression estimator
-    out         <- .regressionMethod(bv, av, confidence, N, n, populationBookValue)
-    mle         <- out[["pointEstimate"]]
+    out         <- .regression(bookvalues, auditvalues, conf.level, N.items, n.obs, N.units)
+    mle         <- out[["mle"]]
     precision   <- out[["precision"]]
-    
-  } else if (method == 'newmethod') {
-    
-    # Evaluation using a new (to be added) method
-    #
-    # out       <- .functionFromMethodsFile()
-    # bound     <- out[["confBound"]]
-    # mle       <- out[["mle"]]
-    # precision <- out[["precision"]]
-    
   }
-  
   # Create the main results object
-  result                     <- list()
-  result[["confidence"]]     <- as.numeric(confidence)
-  result[["materiality"]]    <- as.numeric(materiality)
-  result[["minPrecision"]]   <- as.numeric(minPrecision)
-  result[["method"]]         <- as.character(method)
-  result[["N"]]              <- N
-  result[["n"]]              <- as.numeric(n)
-  result[["k"]]              <- as.numeric(k)
-  result[["t"]]              <- as.numeric(t)
-  
+  result                    <- list()
+  result[["conf.level"]]    <- as.numeric(conf.level)
   if (!is.null(mle))
-    result[["mle"]]          <- as.numeric(mle)
-  
-  if (!is.null(precision))
-    result[["precision"]]    <- as.numeric(precision)
-  
-  if (!is.null(populationBookValue))
-    result[["popBookvalue"]] <- as.numeric(populationBookValue)
-  
-  if (method %in% c("direct", "difference", "quotient", "regression")) {
-    # These methods yield an interval instead of a bound
-    result[["lowerBound"]]   <- as.numeric(out[["lowerBound"]])
-    result[["upperBound"]]   <- as.numeric(out[["upperBound"]])
+    result[["mle"]]         <- as.numeric(mle)
+  if (!(method %in% c("direct", "difference", "quotient", "regression"))) {
+    result[["ub"]]          <- as.numeric(ub)
   } else {
-    # These methods yield an upper bound
-    result[["confBound"]]    <- as.numeric(bound) 
-    if (method == "coxsnell") {
-      # This method yields extra statistics
-      result[["multiplicationFactor"]] <- as.numeric(out[["multiplicationFactor"]])
-      result[["df1"]]                  <- as.numeric(out[["df1"]])
-      result[["df2"]]                  <- as.numeric(out[["df2"]])
-    }
+    result[["ub"]]          <- as.numeric(out[["ub"]])
+    result[["lb"]]          <- as.numeric(out[["lb"]])
   }
-  
+  if (!is.null(precision))
+    result[["precision"]]   <- as.numeric(precision)
+  result[["x"]]             <- as.numeric(x.obs)
+  result[["t"]]             <- as.numeric(t.obs)
+  result[["n"]]             <- as.numeric(n.obs)
+  result[["materiality"]]   <- as.numeric(materiality)
+  result[["min.precision"]] <- as.numeric(min.precision)
+  result[["method"]]        <- as.character(method)
+  if (!is.null(N.units))
+    result[["N.units"]]     <- as.numeric(N.units)
+  if (!is.null(N.items))
+    result[["N.items"]]     <- N.items
   if (method == 'hypergeometric' && is.logical(prior) && prior == FALSE)
-    result[["populationK"]] <- as.numeric(populationK)
-  
+    result[["K"]] <- as.numeric(K)
   # Has the minimum precision objective (if applicable) been achieved?
-  approvePrecision <- TRUE
-  if (minPrecision != 1) {
+  approve.p <- TRUE
+  if (min.precision != 1) {
     if (method %in% c("direct", "difference", "quotient", "regression")) {
-      approvePrecision <- (result[["precision"]] / populationBookValue) < minPrecision
+      approve.p <- (result[["precision"]] / N.units) < min.precision
     } else {
-      approvePrecision <- result[["precision"]] < minPrecision
+      approve.p <- result[["precision"]] < min.precision
     }
   }
-  
   # Has the materiality objective (if applicable) been achieved?
-  approveMateriality <- TRUE
+  approve.m <- TRUE
   if (materiality != 1) {
     if (method %in% c("direct", "difference", "quotient", "regression")) {
-      approveMateriality <- (result[["upperBound"]] / populationBookValue) < materiality
+      approve.m <- (result[["ub"]] / N.units) < materiality
     } else {
-      approveMateriality <- result[["confBound"]] < materiality
+      approve.m <- result[["ub"]] < materiality
     }
   }
-  
   # Provide a conclusion with respect to the objectives
-  result[["conclusion"]] <- ifelse(approveMateriality && approvePrecision, 
-                                   yes = "Approve population",
-                                   no = "Do not approve population")
-  
+  result[["sufficient"]] <- approve.m && approve.p
   # Create the prior distribution object	
   if (((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior"))) {
     if (class(prior) == "jfaPrior" && !is.null(prior[["hypotheses"]])) {
       result[["prior"]]           <- prior
     } else {
-      result[["prior"]]           <- auditPrior(confidence = confidence, 
-                                                likelihood = method, 
-                                                method = "sample", 
-                                                expectedError = 0, 
-                                                N = result[["N"]], 
-                                                materiality = result[["materiality"]], 
-                                                sampleN = nPrior, 
-                                                sampleK = kPrior)
+      result[["prior"]]           <- auditPrior(method = "sample", likelihood = method, N = result[["N.units"]], 
+                                                materiality = result[["materiality"]], x = prior.x, n = prior.n)
     }
   }
-  
   if (!is.null(result[["prior"]])) {
     # Create the posterior distribution object
     result[["posterior"]] <- list()
-    
     # Functional form of the posterior distribution
     result[["posterior"]]$posterior <- switch(method, 
                                               "poisson" = paste0("gamma(\u03B1 = ", round(result[["prior"]][["description"]]$alpha + result[["t"]], 3), ", \u03B2 = ", round(result[["prior"]][["description"]]$beta + result[["n"]], 3), ")"),
                                               "binomial" = paste0("beta(\u03B1 = ", round(result[["prior"]][["description"]]$alpha + result[["t"]], 3), ", \u03B2 = ", round(result[["prior"]][["description"]]$beta + result[["n"]] - result[["t"]], 3), ")"),
-                                              "hypergeometric" = paste0("beta-binomial(N = ", result[["N"]] - result[["n"]], ", \u03B1 = ", round(result[["prior"]][["description"]]$alpha + result[["t"]], 3), ", \u03B2 = ", round(result[["prior"]][["description"]]$beta + result[["n"]] - result[["t"]], 3), ")"))
+                                              "hypergeometric" = paste0("beta-binomial(N = ", result[["N.units"]] - result[["n"]], ", \u03B1 = ", round(result[["prior"]][["description"]]$alpha + result[["t"]], 3), ", \u03B2 = ", round(result[["prior"]][["description"]]$beta + result[["n"]] - result[["t"]], 3), ")"))
     result[["posterior"]]$likelihood <- method
-    
     # Create the description section
     result[["posterior"]][["description"]]           <- list()
     result[["posterior"]][["description"]]$density   <- switch(method, "poisson" = "gamma", "binomial" = "beta", "hypergeometric" = "beta-binomial")
     result[["posterior"]][["description"]]$n         <- result[["n"]]
-    result[["posterior"]][["description"]]$k         <- result[["t"]]
+    result[["posterior"]][["description"]]$x         <- result[["t"]]
     result[["posterior"]][["description"]]$alpha     <- switch(method,
                                                                "poisson" = result[["prior"]][["description"]]$alpha + result[["t"]],
                                                                "binomial" = result[["prior"]][["description"]]$alpha + result[["t"]],
@@ -477,68 +376,64 @@ evaluation <- function(materiality = NULL, minPrecision = NULL, method = 'binomi
                                                                "poisson" = result[["prior"]][["description"]]$beta + result[["n"]], 
                                                                "binomial" = result[["prior"]][["description"]]$beta + result[["n"]] - result[["t"]], 
                                                                "hypergeometric" = result[["prior"]][["description"]]$beta + result[["n"]] - result[["t"]])
-    result[["posterior"]][["description"]]$implicitk <- result[["posterior"]][["description"]]$alpha - 1
-    result[["posterior"]][["description"]]$implicitn <- switch(method,
+    result[["posterior"]][["description"]]$implicit.x <- result[["posterior"]][["description"]]$alpha - 1
+    result[["posterior"]][["description"]]$implicit.n <- switch(method,
                                                                "poisson" = result[["posterior"]][["description"]]$beta, 
                                                                "binomial" = result[["posterior"]][["description"]]$beta - 1 + result[["t"]], 
                                                                "hypergeometric" = result[["posterior"]][["description"]]$beta - 1 + result[["t"]])
-    
-    
     # Create the statistics section
     result[["posterior"]][["statistics"]]           <- list()
     result[["posterior"]][["statistics"]]$mode      <- switch(method,
                                                               "poisson" = (result[["posterior"]][["description"]]$alpha - 1) / result[["posterior"]][["description"]]$beta,
                                                               "binomial" = (result[["posterior"]][["description"]]$alpha - 1) / (result[["posterior"]][["description"]]$alpha + result[["posterior"]][["description"]]$beta - 2),
-                                                              "hypergeometric" = .modeBetaBinom(N = result[["N"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta))
+                                                              "hypergeometric" = .modeBetaBinom(N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta))
     result[["posterior"]][["statistics"]]$mean      <- switch(method, 
                                                               "poisson" = result[["posterior"]][["description"]]$alpha / result[["posterior"]][["description"]]$beta,
                                                               "binomial" = result[["posterior"]][["description"]]$alpha / (result[["posterior"]][["description"]]$alpha + result[["posterior"]][["description"]]$beta),
-                                                              "hypergeometric" = result[["posterior"]][["description"]]$alpha / (result[["posterior"]][["description"]]$alpha + result[["posterior"]][["description"]]$beta) * result[["N"]])
+                                                              "hypergeometric" = result[["posterior"]][["description"]]$alpha / (result[["posterior"]][["description"]]$alpha + result[["posterior"]][["description"]]$beta) * result[["N.units"]])
     result[["posterior"]][["statistics"]]$median    <- switch(method, 
                                                               "poisson" = stats::qgamma(0.5, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
                                                               "binomial" = stats::qbeta(0.5, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
-                                                              "hypergeometric" = .qBetaBinom(0.5, N = result[["N"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta))
+                                                              "hypergeometric" = .qBetaBinom(0.5, N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta))
     result[["posterior"]][["statistics"]]$ub        <- switch(method, 
-                                                              "poisson" = stats::qgamma(confidence, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
-                                                              "binomial" = stats::qbeta(confidence, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
-                                                              "hypergeometric" = .qBetaBinom(confidence, N = result[["N"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta))									
+                                                              "poisson" = stats::qgamma(conf.level, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
+                                                              "binomial" = stats::qbeta(conf.level, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
+                                                              "hypergeometric" = .qBetaBinom(conf.level, N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta))									
     result[["posterior"]][["statistics"]]$precision <- result[["posterior"]][["statistics"]]$ub - result[["posterior"]][["statistics"]]$mode
-    
     # Create the hypotheses section
     if (result[["materiality"]] != 1) {
       result[["posterior"]][["hypotheses"]]             <- list()
       result[["posterior"]][["hypotheses"]]$hypotheses  <- c(paste0("H-: \u0398 < ", materiality), paste0("H+: \u0398 > ", materiality))
-      result[["posterior"]][["hypotheses"]]$pHmin       <- .restrictprob(switch(method, 
+      result[["posterior"]][["hypotheses"]]$p.min       <- .restrictprob(switch(method, 
                                                                                 "poisson" = stats::pgamma(materiality, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
                                                                                 "binomial" = stats::pbeta(materiality, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
-                                                                                "hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N"]]), N = result[["N"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta)))
-      result[["posterior"]][["hypotheses"]]$pHplus      <- .restrictprob(switch(method, 
+                                                                                "hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N.units"]]), N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta)))
+      result[["posterior"]][["hypotheses"]]$p.plus      <- .restrictprob(switch(method, 
                                                                                 "poisson" = stats::pgamma(materiality, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta, lower.tail = FALSE),
                                                                                 "binomial" = stats::pbeta(materiality, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta, lower.tail = FALSE),
-                                                                                "hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N"]]), N = result[["N"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta, lower.tail = FALSE)))
-      result[["posterior"]][["hypotheses"]]$oddsHmin    <- result[["posterior"]][["hypotheses"]]$pHmin / result[["posterior"]][["hypotheses"]]$pHplus
-      result[["posterior"]][["hypotheses"]]$oddsHplus   <- 1 / result[["posterior"]][["hypotheses"]]$oddsHmin
-      result[["posterior"]][["hypotheses"]]$bf          <- result[["posterior"]][["hypotheses"]]$oddsHmin / result[["prior"]][["hypotheses"]]$oddsHmin
+                                                                                "hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N.units"]]), N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta, lower.tail = FALSE)))
+      result[["posterior"]][["hypotheses"]]$odds.min    <- result[["posterior"]][["hypotheses"]]$p.min / result[["posterior"]][["hypotheses"]]$p.plus
+      result[["posterior"]][["hypotheses"]]$odds.plus   <- 1 / result[["posterior"]][["hypotheses"]]$odds.min
+      # For improper priors we take the posterior odds as Bayes factor
+      result[["posterior"]][["hypotheses"]]$bf          <- result[["posterior"]][["hypotheses"]]$odds.min
+      if (proper) # The prior is proper, so we divide by the prior odds
+        result[["posterior"]][["hypotheses"]]$bf        <- result[["posterior"]][["hypotheses"]]$bf / result[["prior"]][["hypotheses"]]$odds.min
     }
-    
-    result[["posterior"]][["N"]] <- result[["N"]]
-    
+    result[["posterior"]][["N.units"]] <- result[["N.units"]]
     # Add class 'jfaPosterior' to the posterior distribution object.
     class(result[["posterior"]]) <- "jfaPosterior"
   }
-  
   # Add the data and taints to the output
-  if (!is.null(sample)) {
-    indexa                <- which(colnames(sample) == auditValues)
-    indexb                <- which(colnames(sample) == bookValues)
-    frame                 <- as.data.frame(sample[, c(indexb, indexa)])
+  if (!is.null(data)) {
+    indexa                <- which(colnames(data) == values.audit)
+    indexb                <- which(colnames(data) == values)
+    frame                 <- as.data.frame(data[, c(indexb, indexa)])
     frame                 <- cbind(as.numeric(rownames(frame)), frame)
     frame[["difference"]] <- frame[, 2] - frame[, 3]
     frame[["taint"]]      <- frame[, 4] / frame[, 2]
-    colnames(frame)       <- c("Row", bookValues, auditValues, "Difference", "Taint")
+    colnames(frame)       <- c("Row", values, values.audit, "Difference", "Taint")
     result[["data"]]      <- frame
   }
-  
   # Add class 'jfaEvaluation' to the result.
   class(result) <- "jfaEvaluation"
   return(result)

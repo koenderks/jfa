@@ -59,7 +59,7 @@ The output below shows that $BF_{-+}=30.28$, implying that there is very strong 
 
 ```{r}
 prior <- auditPrior(materiality = 0.05, method = "none", likelihood = "binomial")
-stage4 <- evaluation(materiality = 0.05, nSumstats = 40, kSumstats = 1, prior = prior)
+stage4 <- evaluation(materiality = 0.05, x = 1, n = 40, prior = prior)
 summary(stage4)
 ```
 
@@ -71,6 +71,6 @@ The output below shows that $BF_{-+}=3.08$, implying that there is anecdotal evi
 
 ```{r}
 prior <- auditPrior(materiality = 0.05, method = "median", likelihood = "binomial")
-stage4 <- evaluation(materiality = 0.05, nSumstats = 40, kSumstats = 1, prior = prior)
+stage4 <- evaluation(materiality = 0.05, x = 1, n = 40, prior = prior)
 summary(stage4)
 ```

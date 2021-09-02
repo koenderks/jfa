@@ -29,7 +29,7 @@ This vignette outlines the most commonly used sampling methodology for auditing 
 
 Selecting a subset from the population requires knowledge of the sampling units; physical representations of the population that needs to be audited. Generally, the auditor has to choose between two types of sampling units: individual items in the population or individual monetary units in the population. In order to perform statistical selection, the population must be divided into individual sampling units that can be assigned a probability to be included in the sample. The total collection of all sampling units which have been assigned a selection probability is called the sampling frame.
 
-#### Records
+#### Items
 
 A sampling unit for record (i.e., attributes) sampling is generally a characteristic of an item in the population. For example, suppose that you inspect a population of receipts. A possible sampling unit for record sampling can be the date of payment of the receipt. When a sampling unit (e.g., date of payment) is selected by the sampling algorithm, the population item that corresponds to the sampled unit is included in the sample.
 
@@ -57,7 +57,7 @@ Random sampling is the most simple and straight-forward selection algorithm. The
 
 $$p(x) = \frac{1}{N},$$
 
-where $N$ is the number of units in the population. To clarify this procedure, Figure 1 provides an illustration of the simple random sampling algorithm.
+where $N$ is the number of units in the population. To clarify this procedure, Figure 1 provides an illustration of the random sampling algorithm.
 
 <center>
 
@@ -69,17 +69,19 @@ where $N$ is the number of units in the population. To clarify this procedure, F
 
 **Disadvantages:** Because the selection probabilities are equal for all sampling units there is no guarantee that items with a large monetary value in the population will be included in the sample.
 
-As an example, the code below shows how to apply the random sampling algorithm in a record sampling and a monetary unit sampling setting.
+As an example, the code below shows how to apply the random sampling algorithm in a record sampling and a monetary unit sampling setting. It is important to set a seed to make results reproducible.
 
 ```{r}
 # Record sampling
-sample <- jfa::selection(population = BuildIt, sampleSize = 100, units = 'records', algorithm = 'random')
+set.seed(1)
+sample <- selection(data = BuildIt, size = 100, units = 'items', method = 'random')
 head(sample$sample, n = 6)
 ```
 
 ```{r}
 # Monetary unit sampling
-sample <- jfa::selection(population = BuildIt, sampleSize = 100, units = 'mus', algorithm = 'random', bookValues = 'bookValue')
+set.seed(1)
+sample <- selection(data = BuildIt, size = 100, units = 'mus', method = 'random', values = 'bookValue')
 head(sample$sample, n = 6)
 ```
 
@@ -97,7 +99,7 @@ If the space between the selected sampling units is equal, the selection probabi
 
 $$p(x) = \frac{1}{I},$$
 
-with the property that the space between selected units $i$ is the same as the interval $I$, see Figure 2. However, in practice the selection is deterministic and completely depends on the chosen `intervalStartingPoint`.
+with the property that the space between selected units $i$ is the same as the interval $I$, see Figure 2. However, in practice the selection is deterministic and completely depends on the chosen starting points (using `start`).
 
 <center>
 
@@ -111,17 +113,17 @@ The fixed interval algorithm, like the random sampling algorithm, yields a sampl
 
 **Disadvantages:** A pattern in the population can coincide with the selected interval, rendering the sample less representative. What is sometimes seen as an added complication for this algorithm is that the sample is hard to extend after drawing the initial sample. This is due to the chance of selecting the same sampling unit. However, by removing the already selected sampling units from the population and redrawing the intervals this problem can be efficiently solved.
 
-As an example, the code below shows how to apply the fixed interval sampling algorithm in a record sampling and a monetary unit sampling setting. Note that, by default, the first sampling unit from each interval is selected. However, this can be changed by setting the argument `intervalStartingPoint = 1` to a different value.
+As an example, the code below shows how to apply the fixed interval sampling algorithm in a record sampling and a monetary unit sampling setting. Note that, by default, the first sampling unit from each interval is selected. However, this can be changed by setting the argument `start = 1` to a different value.
 
 ```{r}
 # Record sampling
-sample <- jfa::selection(population = BuildIt, sampleSize = 100, units = 'records', algorithm = 'interval', intervalStartingPoint = 1)
+sample <- selection(data = BuildIt, size = 100, units = 'items', method = 'interval', start = 1)
 head(sample$sample, n = 6)
 ```
 
 ```{r}
 # Monetary unit sampling
-sample <- jfa::selection(population = BuildIt, sampleSize = 100, units = 'mus', algorithm = 'interval', bookValues = 'bookValue', intervalStartingPoint = 1)
+sample <- selection(data = BuildIt, size = 100, units = 'mus', method = 'interval', values = 'bookValue', start = 1)
 head(sample$sample, n = 6)
 ```
 
@@ -145,16 +147,18 @@ The cell sampling algorithm has the property that all items in the population wi
 
 **Disadvantages:** A disadvantage of this sampling algorithm is that not all items in the population with a monetary value larger than the interval have a selection probability of one. Besides, population items can be in two adjacent cells, thereby creating the possibility that an items is included in the sample twice.
 
-As an example, the code below shows how to apply the cell sampling algorithm in a record sampling and a monetary unit sampling setting.
+As an example, the code below shows how to apply the cell sampling algorithm in a record sampling and a monetary unit sampling setting. It is important to set a seed to make the results reproducible.
 
 ```{r}
 # Record sampling
-sample <- jfa::selection(population = BuildIt, sampleSize = 100, units = 'records', algorithm = 'cell')
+set.seed(1)
+sample <- selection(data = BuildIt, size = 100, units = 'items', method = 'cell')
 head(sample$sample, n = 6)
 ```
 
 ```{r}
 # Monetary unit sampling
-sample <- jfa::selection(population = BuildIt, sampleSize = 100, units = 'mus', algorithm = 'cell', bookValues = 'bookValue')
+set.seed(1)
+sample <- selection(data = BuildIt, size = 100, units = 'mus', method = 'cell', values = 'bookValue')
 head(sample$sample, n = 6)
 ```

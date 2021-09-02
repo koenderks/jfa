@@ -23,8 +23,8 @@ test_that(desc = "(id: f11-v0.4.0-t1) Test Sample sizes for binomial distributio
         next
       if(i == 6 && j > 18)
         next
-      jfaRes <- planning(confidence = 0.90, expectedError = expectedDeviationRate[j], likelihood = "binomial", materiality = tolerableDeivationRate[i])  
-      sampleSizeMatrix[j, i] <- jfaRes[["sampleSize"]]
+      jfaRes <- planning(conf.level = 0.90, expected = expectedDeviationRate[j], likelihood = "binomial", materiality = tolerableDeivationRate[i])  
+      sampleSizeMatrix[j, i] <- jfaRes[["n"]]
     }
   }
   
@@ -58,10 +58,10 @@ test_that(desc = "(id: f11-v0.4.0-t1) Test Sample sizes for Hypergeometric distr
   sampleSizeMatrix[, 3] <- tolerableErrorRate
   sampleSizeMatrix[, 4] <- confidenceLevel
   for(i in 1:nrow(sampleSizeMatrix)){
-    jfaRes <- planning(confidence = sampleSizeMatrix[i, 4], expectedError = sampleSizeMatrix[i, 2], likelihood = "hypergeometric", N = sampleSizeMatrix[i, 1], materiality = sampleSizeMatrix[i, 3])  
-    sampleSizeMatrix[i, 5] <- jfaRes[["sampleSize"]]  
-    jfaRes <- planning(confidence = sampleSizeMatrix[i, 4], expectedError = sampleSizeMatrix[i, 2], likelihood = "binomial", N = sampleSizeMatrix[i, 1], materiality = sampleSizeMatrix[i, 3])  
-    sampleSizeMatrix[i, 6] <- jfaRes[["sampleSize"]]  
+    jfaRes <- planning(conf.level = sampleSizeMatrix[i, 4], expected = sampleSizeMatrix[i, 2], likelihood = "hypergeometric", N.units = sampleSizeMatrix[i, 1], materiality = sampleSizeMatrix[i, 3])  
+    sampleSizeMatrix[i, 5] <- jfaRes[["n"]]  
+    jfaRes <- planning(conf.level = sampleSizeMatrix[i, 4], expected = sampleSizeMatrix[i, 2], likelihood = "binomial", N.units = sampleSizeMatrix[i, 1], materiality = sampleSizeMatrix[i, 3])  
+    sampleSizeMatrix[i, 6] <- jfaRes[["n"]]  
     sampleSizeMatrix[i, 7] <- sampleSizeMatrix[i, 6] - sampleSizeMatrix[i, 5]
   }
   
