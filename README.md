@@ -9,7 +9,7 @@
 
 <img src='https://github.com/koenderks/jfa/raw/development/man/figures/logo.png' width='149' height='173' alt='logo' align='right' margin-left='20' margin-right='20'/>
 
-`jfa` is an R package for statistical audit sampling. The package provides functions for planning, performing, evaluating, and reporting an audit sample. Specifically, these functions implement standard audit sampling techniques for calculating sample sizes, selecting items from a population, and evaluating the misstatement from a data sample or from summary statistics. Additionally, the `jfa` package allows the user to create a prior probability distribution to perform Bayesian audit sampling using these functions.
+`jfa` is an R package for statistical audit sampling. The package provides functions for planning, performing, evaluating, and reporting an audit sample compliant with the International Standards on Auditing (IAASB, 2018). Specifically, these functions implement standard audit sampling techniques for calculating sample sizes, selecting items from a population, and evaluating the misstatement from a data sample or from summary statistics. Additionally, the `jfa` package allows the user to create a prior probability distribution to perform Bayesian audit sampling using these functions.
 
 The package and its intended workflow are also implemented with a graphical user interface in the Audit module of [JASP](https://jasp-stats.org), a free and open-source statistical software program.
 
@@ -282,6 +282,7 @@ For an example report, see the following [link](https://github.com/koenderks/jfa
 - Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., & Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. *International Journal of Auditing*, 1-16. - [View online](https://doi.org/10.1111/ijau.12240)
 - Dworin, L. D. and Grimlund, R. A. (1984). Dollar-unit sampling for accounts receivable and inventory. *The Accounting Review*, 59(2), 218–241. - [View online](https://www.jstor.org/stable/247296)
 - Dyer, D., & Pierce, R. L. (1993). On the choice of the prior distribution in hypergeometric sampling. *Communications in Statistics - Theory and Methods*, 22(8), 2125-2146. - [View online](https://www.tandfonline.com/doi/abs/10.1080/03610929308831139)
+- International Auditing and Assurance Standards Board (IAASB). (2018). *Handbook of international quality control, auditing review, other assurance, and related services pronouncements (Vol. I)*. New York: International Federation of Accountants.
 - Meikle, G. R. (1972). *Statistical Sampling in an Audit Context*. Canadian Institute of Chartered Accountants.
 - Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). *Dollar-unit Sampling: A Practical Guide for Auditors*. London: Pitman.
 - Pap, G., & van Zuijlen, M. C. (1996). On the asymptotic behaviour of the Stringer bound. *Statistica Neerlandica*, 50(3), 367-389. - [View online](https://doi.org/10.1111/j.1467-9574.1996.tb01503.x)
