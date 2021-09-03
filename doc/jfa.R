@@ -13,6 +13,7 @@ stage1 <- planning(min.precision = 0.02, expected = 0, likelihood = 'poisson', c
 summary(stage1)
 
 ## -----------------------------------------------------------------------------
+set.seed(1)
 stage2 <- selection(data = BuildIt, size = 60, units = 'items', method = 'random')
 summary(stage2)
 
@@ -21,6 +22,7 @@ stage2 <- selection(data = BuildIt, size = 150, units = 'mus', method = 'interva
 summary(stage2)
 
 ## -----------------------------------------------------------------------------
+set.seed(1)
 stage2 <- selection(data = BuildIt, size = 60, units = 'items', method = 'random')
 
 sample <- stage2$sample

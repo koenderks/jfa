@@ -55,7 +55,7 @@ print.jfaEvaluation <- function(x, ...) {
     if (!is.null(x[["prior"]]) && x[["materiality"]] != 1) {
       cat("Most likely error:", paste0(round(x[["mle"]] * 100, 3), "%"), "|", paste0(round(x[["conf.level"]] * 100, 3), "%"), "Upper bound:", paste0(round(x[["ub"]] * 100, 3), "%"), "| Precision:", paste0(round(x[["precision"]] * 100, 3), "%"), "| BF-+:", round(x[["posterior"]][["hypotheses"]]$bf, 3), "\nEstimates obtained via method", paste0("'", x[["method"]], "'\n"))
     } else {
-      cat("Most likely error:", paste0(round(x[["mle"]] * 100, 3), "%"), "|", paste0(round(x[["conf.level"]] * 100, 3), "%"), "Upper bound:", paste0(round(x[["ub"]] * 100, 3), "%"), "| Precision:", paste0(round(x[["precision"]] * 100, 3), "%"), "\nEstimates obtained via method", paste0("'", x[["method"]], "'\n"))
+      cat("Most likely error:", paste0(round(x[["mle"]] * 100, 3), "%"), "|", paste0(round(x[["conf.level"]] * 100, 3), "%"), "Upper bound:", paste0(round(x[["ub"]] * 100, 3), "%"), "| Precision:", paste0(round(x[["precision"]] * 100, 3), "%"), if (x[["method"]] %in% c('binomial', 'poisson', 'hypergeometric')) paste0("| p value: ", format(x[["p.value"]], digits = 3, eps = 0.01)) else NULL, "\nEstimates obtained via method", paste0("'", x[["method"]], "'\n"))
     }
   }
 }
@@ -153,7 +153,8 @@ print.summary.jfaPlanning <- function(x, ...) {
 # Expected most likely error:   ", paste0(x[["mle"]] * 100, "%"),"
 # Expected upper bound:         ", paste0(x[["ub"]] * 100, "%"),"
 # Expected precision:           ", paste0(x[["precision"]] * 100, "%"),
-      ifelse(x[["type"]] == "Bayesian", no = "", yes = paste0("
+      ifelse(x[["type"]] == "Bayesian", no = paste0("
+# Expected p value:              ", ifelse(x[["materiality"]] == 1, yes = "Requires materiality", no = x[["p.value"]])), yes = paste0("
 # Expected Bayes factor-+:       ", ifelse(x[["materiality"]] == 1, yes = "Requires materiality", no = x[["bf"]]))),"
 # ------------------------------------------------------------ ")
 }
@@ -227,7 +228,8 @@ print.summary.jfaEvaluation <- function(x, ...) {
 # Lower bound:                   ", x[["lb"]],"
 # Upper bound:                   ", x[["ub"]],"
 # Precision:                     ", x[["precision"]])),
-      ifelse(x[["type"]] == "Bayesian", no = "", yes = paste0("
+      ifelse(x[["type"]] == "Bayesian", no = paste0("
+# p Value:                       ", ifelse(x[["materiality"]] == 1, yes = "Requires materiality", no = if (x[["method"]] %in% c('binomial', 'poisson', 'hypergeometric')) x[["p.value"]] else "Requires likelihood")), yes = paste0("
 # Bayes factor-+:                ", ifelse(x[["materiality"]] == 1, yes = "Requires materiality", no = x[["bf"]]))),"
 # Sufficient evidence:          ", x[["sufficient"]], "
 # ------------------------------------------------------------ ")
@@ -306,6 +308,8 @@ summary.jfaPlanning <- function(object, digits = 3, ...) {
                     "ub" = round(object[["ub"]], digits + 2),
                     "precision" = round(object[["precision"]], digits + 2),
                     stringsAsFactors = FALSE)
+  if (!is.null(object[["p.value"]]))
+    out[["p.value"]] <- format.pval(object[["p.value"]], digits, eps = 0.01)
   if (!is.null(object[["N.units"]]))
     out[["N.units"]] <- object[["N.units"]]
   if (inherits(object[["prior"]], "jfaPrior")) {
@@ -360,6 +364,8 @@ summary.jfaEvaluation <- function(object, digits = 3, ...) {
                     "precision" = round(object[["precision"]], digits + 2),
                     "sufficient" = object[["sufficient"]],
                     stringsAsFactors = FALSE)
+  if (!is.null(object[["p.value"]]))
+    out[["p.value"]] <- object[["p.value"]]
   if (!is.null(object[["N.units"]]))
     out[["N.units"]] <- object[["N.units"]]
   if (object[["method"]] %in% c("direct", "difference", "quotient", "regression")) {

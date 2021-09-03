@@ -66,6 +66,7 @@
 #' \item{mle}{a numeric value between 0 and 1 indicating the most likely error in the population as a fraction of its total size.}
 #' \item{ub}{a numeric value indicating the upper bound on the population misstatement as a fraction the total population size.}
 #' \item{precision}{a numeric value between 0 and 1 indicating the difference between the most likely error and the upper bound in the population as a fraction of the total population size.}
+#' \item{p.value}{a numeric value indicating the one-sided p value.}
 #' \item{x}{an integer larger than, or equal to, 0 indicating the number of items in the sample that contained an error.}
 #' \item{t}{a value larger than, or equal to, 0, indicating the sum of observed taints.}
 #' \item{n}{an integer larger than 0 indicating the sample size.}
@@ -108,6 +109,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'binom
                        times = NULL, x = NULL, n = NULL, N.units = NULL, N.items = NULL, 
                        r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5, 
                        prior = FALSE) {
+  bayesian <- (class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")
   # Import existing prior distribution with class 'jfaPrior' or 'jfaPosterior'.
   if (class(prior) %in% c("jfaPrior", "jfaPosterior")) {
     prior.x <- prior[["description"]]$implicit.x
@@ -186,24 +188,28 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'binom
     materiality <- 1
   if (is.null(min.precision))
     min.precision <- 1
+  if (materiality == 1 && min.precision == 1)
+    stop("'materiality' or `min.precision` must be smaller than 1")
   # Define placeholders for the most likely error and the precision  
   mle       <- NULL
   precision <- NULL
   # Calculate the results depending on the specified 'method'
   if (method == 'poisson') {
-    if ((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")) {
+    if (bayesian) {
       # Bayesian evaluation using the gamma distribution
       ub        <- stats::qgamma(p = conf.level, shape = 1 + prior.x + t.obs, rate = prior.n + n.obs)
       mle       <- ((1 + prior.x + t.obs) - 1) / (prior.n + n.obs)
-      precision <- ub - mle
+      precision <- stats::pgamma(q = )
     } else {
       # Classical evaluation using the Poisson distribution
       ub        <- stats::qgamma(p = conf.level, shape = 1 + t.obs, rate = n.obs)
       mle       <- t.obs / n.obs
       precision <- ub - mle
+      if (materiality < 1)
+        p.val   <- stats::pgamma(q = materiality, shape = 1 + t.obs, rate = n.obs, lower.tail = FALSE)
     }
   } else if (method == 'binomial') { 
-    if ((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")) {
+    if (bayesian) {
       # Bayesian evaluation using the beta distribution
       ub        <- stats::qbeta(p = conf.level, shape1 = 1 + prior.x + t.obs, shape2 = 1 + prior.n - prior.x + n.obs - t.obs)
       mle       <- (1 + prior.x + t.obs - 1) / ((1 + prior.x + t.obs) + (1 + prior.n - prior.x + n.obs - t.obs) - 2)
@@ -213,13 +219,15 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'binom
       ub        <- stats::qbeta(p = conf.level, shape1 = 1 + t.obs, shape2 = n.obs - t.obs)
       mle       <- t.obs / n.obs
       precision <- ub - mle
+      if (materiality < 1)
+        p.val   <- stats::pbeta(q = materiality, shape1 = 1 + t.obs, shape2 = n.obs - t.obs, lower.tail = FALSE)
     }
   } else if (method == 'hypergeometric') {
     if (is.null(N.units))
       stop("'N.units' is missing for evaluation")
     if (N.units <= 0 || N.units%%1 != 0)
       stop("'N.units' must be a positive integer")
-    if ((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")) {
+    if (bayesian) {
       # Bayesian evaluation using the beta-binomial distribution
       ub        <- .qBetaBinom(p = conf.level, N = N.units - n.obs, shape1 = 1 + prior.x + t.obs, shape2 = 1 + prior.n - prior.x + n.obs - t.obs) / N.units
       mle       <- .modeBetaBinom(N = N.units - n.obs, shape1 = 1 + prior.x + t.obs, shape2 = 1 + prior.n - prior.x + n.obs - t.obs) / N.units
@@ -230,6 +238,8 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'binom
       ub        <- .qHyper(p = conf.level, N = N.units, n = n.obs, k = x.obs) / N.units
       mle       <- x.obs / n.obs
       precision <- ub - mle
+      if (materiality < 1)
+        p.val   <- stats::phyper(q = x.obs, m = K, n = N.units - K, k = n.obs)
     }
   } else {
     out <- switch(method,
@@ -265,9 +275,12 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'binom
   }
   if (!is.null(precision))
     result[["precision"]]   <- as.numeric(precision)
+  if (!bayesian && materiality < 1 && method %in% c('binomial', 'poisson', 'hypergeometric'))
+    result[["p.value"]]     <- as.numeric(p.val)
   result[["x"]]             <- as.numeric(x.obs)
   result[["t"]]             <- as.numeric(t.obs)
   result[["n"]]             <- as.numeric(n.obs)
+
   result[["materiality"]]   <- as.numeric(materiality)
   result[["min.precision"]] <- as.numeric(min.precision)
   result[["method"]]        <- as.character(method)

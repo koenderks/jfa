@@ -226,7 +226,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## #
 ## # Expected most likely error:    0% 
 ## # Expected upper bound:          4.993% 
-## # Expected precision:            4.993%  
+## # Expected precision:            4.993% 
+## # Expected p value:              0.0498 
 ## # ------------------------------------------------------------</code></pre>
 </div>
 <div id="obtaining-a-minimum-precision" class="section level3">
@@ -256,7 +257,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## #
 ## # Expected most likely error:    0% 
 ## # Expected upper bound:          1.997% 
-## # Expected precision:            1.997%  
+## # Expected precision:            1.997% 
+## # Expected p value:              Requires materiality 
 ## # ------------------------------------------------------------</code></pre>
 </div>
 </div>
@@ -267,8 +269,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="record-sampling" class="section level3">
 <h3>Record sampling</h3>
 <p>First, we take a look at how you can use the <code>selection()</code> function to perform random sampling from the items in the population. As an example, the code below samples 60 invoices from the <code>BuildIt</code> data set using a <em>random record sampling</em> scheme.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>stage2 <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">60</span>, <span class="at">units =</span> <span class="st">&#39;items&#39;</span>, <span class="at">method =</span> <span class="st">&#39;random&#39;</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage2)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>stage2 <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">60</span>, <span class="at">units =</span> <span class="st">&#39;items&#39;</span>, <span class="at">method =</span> <span class="st">&#39;random&#39;</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage2)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #                  jfa Selection Summary
 ## # ------------------------------------------------------------
@@ -320,21 +323,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="extracting-the-sample" class="section level3">
 <h3>Extracting the sample</h3>
 <p>The selected sample is stored in the object that is returned by the <code>selection()</code> function. It can be accesses or extracted by indexing it via <code>$sample</code>. The first 10 invoices in the previously selected sample of 60 invoices are displayed below. After this step it is up to the auditor to annotate the sample with their audit values.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>stage2 <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">60</span>, <span class="at">units =</span> <span class="st">&#39;items&#39;</span>, <span class="at">method =</span> <span class="st">&#39;random&#39;</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> stage2<span class="sc">$</span>sample</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample, <span class="at">n =</span> <span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>stage2 <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">60</span>, <span class="at">units =</span> <span class="st">&#39;items&#39;</span>, <span class="at">method =</span> <span class="st">&#39;random&#39;</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> stage2<span class="sc">$</span>sample</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample, <span class="at">n =</span> <span class="dv">10</span>)</span></code></pre></div>
 <pre><code>##    rowNumber count    ID bookValue auditValue
-## 1       1058     1 54677    199.77     199.77
-## 2       2180     1 79968    544.51     544.51
-## 3        530     1  4838    701.64     701.64
-## 4        584     1  6993    809.95     809.95
-## 5       1236     1 19732    258.86     258.86
-## 6       1679     1 16014    123.00     123.00
-## 7        208     1 53255    402.35     402.35
-## 8       3117     1 53751    320.10     320.10
-## 9       2801     1 27915    339.79     339.79
-## 10      1326     1 76335    221.43     221.43</code></pre>
+## 1       1017     1 50755    618.24     618.24
+## 2        679     1 20237    669.75     669.75
+## 3       2177     1  9517    454.02     454.02
+## 4        930     1 85674    257.82     257.82
+## 5       1533     1 31051    308.53     308.53
+## 6        471     1 84375    824.66     824.66
+## 7       2347     1 75616    623.70     623.70
+## 8        270     1 82033    352.75     352.75
+## 9       1211     1 12877     52.89      52.89
+## 10      3379     1 85322    330.24     330.24</code></pre>
 </div>
 </div>
 <div id="using-evaluation-the-basics" class="section level2">
@@ -364,7 +368,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## #  
 ## # Most likely error:             1.667%
 ## # Upper bound:                   7.664%
-## # Precision:                     5.997%  
+## # Precision:                     5.997% 
+## # p Value:                       0.191553374735222 
 ## # Sufficient evidence:           FALSE 
 ## # ------------------------------------------------------------</code></pre>
 <p>As you can see above, the 95% upper bound for the misstatement is higher than 5% and therefore the sample does not provide sufficient evidence to conclude that the misstatement is lower than 5%.</p>
@@ -391,14 +396,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # Population size:               Not specified 
 ## # Sample size:                   60 
 ## # Sample errors:                 1 
-## # Sum of taints:                 0.501 
+## # Sum of taints:                 0.162 
 ## # Method:                        stringer   
 ## # ------------------------------------------------------------
 ## # Output:
 ## #  
-## # Most likely error:             0.834%
-## # Upper bound:                   6.269%
-## # Precision:                     5.434%  
+## # Most likely error:             0.27%
+## # Upper bound:                   5.322%
+## # Precision:                     5.053% 
+## # p Value:                       Requires likelihood 
 ## # Sufficient evidence:           FALSE 
 ## # ------------------------------------------------------------</code></pre>
 </div>

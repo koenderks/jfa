@@ -54,6 +54,7 @@ An object of class \code{jfaEvaluation} containing:
 \item{mle}{a numeric value between 0 and 1 indicating the most likely error in the population as a fraction of its total size.}
 \item{ub}{a numeric value indicating the upper bound on the population misstatement as a fraction the total population size.}
 \item{precision}{a numeric value between 0 and 1 indicating the difference between the most likely error and the upper bound in the population as a fraction of the total population size.}
+\item{p.value}{a numeric value indicating the one-sided p value.}
 \item{x}{an integer larger than, or equal to, 0 indicating the number of items in the sample that contained an error.}
 \item{t}{a value larger than, or equal to, 0, indicating the sum of observed taints.}
 \item{n}{an integer larger than 0 indicating the sample size.}

@@ -82,6 +82,7 @@ See the vignette [Selection: Sampling methodology](https://koenderks.github.io/j
 First, we take a look at how you can use the `selection()` function to perform random sampling from the items in the population. As an example, the code below samples 60 invoices from the `BuildIt` data set using a *random record sampling* scheme.
 
 ```{r}
+set.seed(1)
 stage2 <- selection(data = BuildIt, size = 60, units = 'items', method = 'random')
 summary(stage2)
 ```
@@ -100,6 +101,7 @@ summary(stage2)
 The selected sample is stored in the object that is returned by the `selection()` function. It can be accesses or extracted by indexing it via `$sample`. The first 10 invoices in the previously selected sample of 60 invoices are displayed below. After this step it is up to the auditor to annotate the sample with their audit values.
 
 ```{r}
+set.seed(1)
 stage2 <- selection(data = BuildIt, size = 60, units = 'items', method = 'random')
 
 sample <- stage2$sample

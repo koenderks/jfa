@@ -34,6 +34,7 @@
 #' \item{n}{an integer larger than 0 indicating the required sample size.}
 #' \item{ub}{a numeric value between 0 and 1 indicating the expected upper bound if the sample goes according to plan.}
 #' \item{precision}{a numeric value between 0 and 1 indicating the expected precision if the sample goes according to plan.}
+#' \item{p.value}{a numeric value indicating the one-sided p value.}
 #' \item{K}{if \code{likelihood = 'hypergeometric'}, an integer larger than 0 indicating the assumed population errors.}
 #' \item{N.units}{an integer larger than 0 indicating the population size (only returned if \code{N} is specified).}
 #' \item{materiality}{a numeric value between 0 and 1 indicating the specified materiality.}
@@ -72,6 +73,7 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
                      likelihood = 'binomial', conf.level = 0.95, N.units = NULL,
                      by = 1, max = 5000, prior = FALSE) {
   proper <- TRUE
+  bayesian <- (class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")
   # Import existing prior distribution with class 'jfaPrior' or 'jfaPosterior'
   if (class(prior) %in% c("jfaPrior", "jfaPosterior")) {
     prior.n      <- prior[["description"]]$implicit.n
@@ -108,6 +110,8 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
     materiality <- 1
   if (is.null(min.precision))
     min.precision <- 1
+  if (materiality == 1 && min.precision == 1)
+    stop("'materiality' or `min.precision` must be smaller than 1")
   # Requirements for the hypergeometric distribution
   if (likelihood == 'hypergeometric') {
     if (is.null(N.units))
@@ -138,7 +142,7 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
       sframe <- sframe[-iter]
       i <- sframe[iter]
     }
-    if ((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")) { # Bayesian planning
+    if (bayesian) { # Bayesian planning
       alpha <- switch(likelihood, "poisson" = 1 + prior.x + x, "binomial" = 1 + prior.x + x, "hypergeometric" = 1 + prior.x + x)
       beta <- switch(likelihood, "poisson" = prior.n + i, "binomial" = 1 + prior.n - prior.x + i - x, "hypergeometric" = 1 + prior.n - prior.x + i - x)
       bound <- switch(likelihood, 
@@ -157,6 +161,11 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
                       "binomial" = stats::qbeta(p = conf.level, shape1 = 1 + x, shape2 = i - x),
                       "hypergeometric" = .qHyper(p = conf.level, N = N.units, n = i, k = x) / N.units)
       mle <- x / i
+      if (materiality < 1)
+        p.val <- switch(likelihood,
+                        'poisson' = stats::pgamma(q = materiality, shape = 1 + x, rate = i, lower.tail = FALSE),
+                        'binomial' = stats::pbeta(q = materiality, shape1 = 1 + x, shape2 = i - x, lower.tail = FALSE),
+                        'hypergeometric' = stats::phyper(q = x, m = population.x, n = N.units - population.x, k = i))
     }
     sufficient <- bound < materiality && (bound - mle) < min.precision # Sufficient work done?
     if (sufficient)
@@ -175,6 +184,8 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
   result[["n"]]                     <- as.numeric(ceiling(n))
   result[["ub"]]                    <- as.numeric(bound)
   result[["precision"]]             <- as.numeric(bound - mle)
+  if (!bayesian && materiality < 1)
+    result[["p.value"]]             <- as.numeric(p.val)
   result[["N.units"]]               <- N.units
   if (likelihood == "hypergeometric")
     result[["K"]]                   <- as.numeric(population.x)
@@ -185,7 +196,7 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
   result[["errorType"]]             <- as.character(errorType)
   result[["iterations"]]            <- as.numeric(iter)
   # Create the prior distribution object	
-  if (((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior"))) {
+  if (bayesian) {
     if (class(prior) == "jfaPrior" && !is.null(prior[["hypotheses"]])) {
       result[["prior"]] <- prior
     } else {

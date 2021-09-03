@@ -35,6 +35,7 @@ An object of class \code{jfaPlanning} containing:
 \item{n}{an integer larger than 0 indicating the required sample size.}
 \item{ub}{a numeric value between 0 and 1 indicating the expected upper bound if the sample goes according to plan.}
 \item{precision}{a numeric value between 0 and 1 indicating the expected precision if the sample goes according to plan.}
+\item{p.value}{a numeric value indicating the one-sided p value.}
 \item{K}{if \code{likelihood = 'hypergeometric'}, an integer larger than 0 indicating the assumed population errors.}
 \item{N.units}{an integer larger than 0 indicating the population size (only returned if \code{N} is specified).}
 \item{materiality}{a numeric value between 0 and 1 indicating the specified materiality.}
