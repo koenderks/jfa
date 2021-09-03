@@ -207,15 +207,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="bayes-factor-after-stage-1" class="section level2">
 <h2>Bayes factor after stage 1</h2>
-<p>Using the <code>auditBF()</code> function the auditor can create the prior distribution and calculate the Bayes factor in favor of acceptance of the lot versus rejection of the lot. In this case, the Bayes factor in favor of acceptance (<span class="math inline">\(BF_{-+}\)</span>) is 0.665 and represents only anecdotal evidence in favor of rejection (see also the vignette <a href="https://koenderks.github.io/jfa/articles/v6_testing_misstatement.html">Testing misstatement</a>).</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">auditBF</span>(<span class="at">x =</span> <span class="dv">2</span>, <span class="at">n =</span> <span class="dv">31</span>, <span class="at">materiality =</span> tolerance)</span></code></pre></div>
-<pre><code>## [1] 0.6362107</code></pre>
+<p>Using the <code>auditBF()</code> function the auditor can create the prior distribution and calculate the Bayes factor in favor of acceptance of the lot versus rejection of the lot. In this case, the Bayes factor in favor of acceptance (<span class="math inline">\(BF_{-+}\)</span>) is 0.277 and represents only anecdotal evidence in favor of rejection (see also the vignette <a href="https://koenderks.github.io/jfa/articles/v6_testing_misstatement.html">Testing misstatement</a>).</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">evaluation</span>(<span class="at">materiality =</span> tolerance, <span class="at">x =</span> <span class="dv">2</span>, <span class="at">n =</span> <span class="dv">32</span>, <span class="at">prior =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## Most likely error: 6.25% | 95% Upper bound: 19.674% | Precision: 13.424% | BF-+: 0.277 
+## Estimates obtained via method &#39;poisson&#39;</code></pre>
 </div>
 <div id="bayes-factor-after-stage-2" class="section level2">
 <h2>Bayes factor after stage 2</h2>
-<p>The Bayes factor in favor of acceptance after the second sample of items is 6.24 which represents moderate evidence in favor of acceptance.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">auditBF</span>(<span class="at">x =</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">0</span>, <span class="at">n =</span> <span class="dv">32</span> <span class="sc">+</span> <span class="dv">50</span>, <span class="at">materiality =</span> tolerance)</span></code></pre></div>
-<pre><code>## [1] 5.983718</code></pre>
+<p>The Bayes factor in favor of acceptance after the second sample of items is 3.468 which represents moderate evidence in favor of acceptance.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">evaluation</span>(<span class="at">materiality =</span> tolerance, <span class="at">x =</span> <span class="dv">2</span> <span class="sc">+</span> <span class="dv">0</span>, <span class="at">n =</span> <span class="dv">32</span> <span class="sc">+</span> <span class="dv">50</span>, <span class="at">prior =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>## Most likely error: 2.439% | 95% Upper bound: 7.678% | Precision: 5.239% | BF-+: 3.468 
+## Estimates obtained via method &#39;poisson&#39;</code></pre>
 </div>
 </div>
 <div id="references" class="section level1">
