@@ -188,9 +188,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'binom
     materiality <- 1
   if (is.null(min.precision))
     min.precision <- 1
-  if (materiality == 1 && min.precision == 1)
-    stop("'materiality' or `min.precision` must be smaller than 1")
-  # Define placeholders for the most likely error and the precision  
+  # Define placeholders for the most likely error and the precision
   mle       <- NULL
   precision <- NULL
   # Calculate the results depending on the specified 'method'

@@ -110,8 +110,6 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
     materiality <- 1
   if (is.null(min.precision))
     min.precision <- 1
-  if (materiality == 1 && min.precision == 1)
-    stop("'materiality' or `min.precision` must be smaller than 1")
   # Requirements for the hypergeometric distribution
   if (likelihood == 'hypergeometric') {
     if (is.null(N.units))
