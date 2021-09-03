@@ -414,9 +414,9 @@ For documentation on jfa itself, including the manual and user guide
 <span class='va'>stage4</span> <span class='op'>&lt;-</span> <span class='fu'><a href='evaluation.html'>evaluation</a></span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.03</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, data <span class='op'>=</span> <span class='va'>sample</span>,
                      values <span class='op'>=</span> <span class='st'>"bookValue"</span>, values.audit <span class='op'>=</span> <span class='st'>"auditValue"</span>,
                      prior <span class='op'>=</span> <span class='va'>prior</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in stats::pgamma(q = ): argument "q" is missing, with no default</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage4</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage4</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; # ------------------------------------------------------------ 
-#&gt; #             jfa Evaluation Summary (Classical)
+#&gt; #             jfa Evaluation Summary (Bayesian)
 #&gt; # ------------------------------------------------------------ 
 #&gt; # Input:
 #&gt; #
@@ -427,14 +427,16 @@ For documentation on jfa itself, including the manual and user guide
 #&gt; # Sample size:                   220 
 #&gt; # Sample errors:                 2 
 #&gt; # Sum of taints:                 1.2 
-#&gt; # Method:                        stringer   
+#&gt; # Method:                        poisson  
+#&gt; # Prior distribution:            gamma(α = 1, β = 0) 
 #&gt; # ------------------------------------------------------------
 #&gt; # Output:
-#&gt; #  
+#&gt; # 
+#&gt; # Posterior distribution:        gamma(α = 2.2, β = 220) 
 #&gt; # Most likely error:             0.545%
-#&gt; # Upper bound:                   2.241%
-#&gt; # Precision:                     1.696% 
-#&gt; # p Value:                       Requires likelihood 
+#&gt; # Upper bound:                   2.302%
+#&gt; # Precision:                     1.757% 
+#&gt; # Bayes factor-+:                69.896 
 #&gt; # Sufficient evidence:           TRUE 
 #&gt; # ------------------------------------------------------------ </div><div class='input'>
 <span class='co'>###################################################################</span>
@@ -530,9 +532,9 @@ For documentation on jfa itself, including the manual and user guide
 <span class='va'>stage4</span> <span class='op'>&lt;-</span> <span class='fu'><a href='evaluation.html'>evaluation</a></span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.03</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, data <span class='op'>=</span> <span class='va'>sample</span>,
                      values <span class='op'>=</span> <span class='st'>"bookValue"</span>, values.audit <span class='op'>=</span> <span class='st'>"auditValue"</span>,
                      prior <span class='op'>=</span> <span class='va'>prior</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='error'>Error in stats::pgamma(q = ): argument "q" is missing, with no default</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage4</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage4</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; # ------------------------------------------------------------ 
-#&gt; #             jfa Evaluation Summary (Classical)
+#&gt; #             jfa Evaluation Summary (Bayesian)
 #&gt; # ------------------------------------------------------------ 
 #&gt; # Input:
 #&gt; #
@@ -540,17 +542,19 @@ For documentation on jfa itself, including the manual and user guide
 #&gt; # Materiality:                   3% 
 #&gt; # Minimum precision:             Not specified 
 #&gt; # Population size:               Not specified 
-#&gt; # Sample size:                   220 
-#&gt; # Sample errors:                 2 
-#&gt; # Sum of taints:                 1.2 
-#&gt; # Method:                        stringer   
+#&gt; # Sample size:                   174 
+#&gt; # Sample errors:                 0 
+#&gt; # Sum of taints:                 0 
+#&gt; # Method:                        poisson  
+#&gt; # Prior distribution:            gamma(α = 1.46, β = 46) 
 #&gt; # ------------------------------------------------------------
 #&gt; # Output:
-#&gt; #  
-#&gt; # Most likely error:             0.545%
-#&gt; # Upper bound:                   2.241%
-#&gt; # Precision:                     1.696% 
-#&gt; # p Value:                       Requires likelihood 
+#&gt; # 
+#&gt; # Posterior distribution:        gamma(α = 1.46, β = 220) 
+#&gt; # Most likely error:             0.209%
+#&gt; # Upper bound:                   1.744%
+#&gt; # Precision:                     1.535% 
+#&gt; # Bayes factor-+:                181.942 
 #&gt; # Sufficient evidence:           TRUE 
 #&gt; # ------------------------------------------------------------ </div></pre>
   </div>
