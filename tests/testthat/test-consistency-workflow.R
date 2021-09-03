@@ -32,7 +32,7 @@ test_that(desc = "(id: f8-v0.1.0-t1) Test for use of jfaPrior and jfaPosterior",
   conf.level <- 0.90 # 90% conf.level
   tolerance  <- 0.05 # 5% tolerance (materiality)
   # Construct a prior distribution
-  prior <- auditPrior(conf.level = conf.level, materiality = tolerance, method = 'median')
+  prior <- auditPrior(conf.level = conf.level, materiality = tolerance, method = 'median', likelihood = 'binomial')
   # Use the prior distribution for planning
   plan <- planning(conf.level = conf.level, materiality = tolerance, expected = 0, prior = prior)
   # Use the prior distribution for evaluation

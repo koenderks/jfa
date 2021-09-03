@@ -1624,9 +1624,9 @@ test_that(desc = "(id: f7-v0.5.5-t41) Statistical Sampling Results based on the 
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns])
+      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns], likelihood = 'binomial')
       # Via workflow
-      prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median")
+      prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = 'binomial')
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
@@ -1676,9 +1676,9 @@ test_that(desc = "(id: f7-v0.5.5-t42) Statistical Sampling Results based on the 
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns])
+      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns], likelihood = 'binomial')
       # Via workflow
-      prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median")
+      prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = 'binomial')
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
@@ -1728,9 +1728,9 @@ test_that(desc = "(id: f7-v0.5.5-t43) Statistical Sampling Results based on the 
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns])
+      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns], likelihood = 'binomial')
       # Via workflow
-      prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median")
+      prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = 'binomial')
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
@@ -1780,9 +1780,9 @@ test_that(desc = "(id: f7-v0.5.5-t44) Statistical Sampling Results based on the 
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns])
+      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns], likelihood = 'binomial')
       # Via workflow
-      prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median")
+      prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = 'binomial')
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }

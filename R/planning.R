@@ -6,7 +6,7 @@
 #' \code{vignette('jfa', package = 'jfa')}
 #'
 #' @usage planning(materiality = NULL, min.precision = NULL, expected = 0,
-#'          likelihood = 'binomial', conf.level = 0.95, N.units = NULL,
+#'          likelihood = 'poisson', conf.level = 0.95, N.units = NULL,
 #'          by = 1, max = 5000, prior = FALSE)
 #'
 #' @param materiality   a numeric value between 0 and 1 specifying the performance materiality (i.e., maximum upper limit) as a fraction of the total population size. Can be \code{NULL}, but \code{min.precision} should be specified in that case.

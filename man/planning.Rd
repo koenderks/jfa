@@ -5,7 +5,7 @@
 \title{Plan a Statistical Audit Sample}
 \usage{
 planning(materiality = NULL, min.precision = NULL, expected = 0,
-         likelihood = 'binomial', conf.level = 0.95, N.units = NULL,
+         likelihood = 'poisson', conf.level = 0.95, N.units = NULL,
          by = 1, max = 5000, prior = FALSE)
 }
 \arguments{
