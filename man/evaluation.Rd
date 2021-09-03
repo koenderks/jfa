@@ -4,7 +4,7 @@
 \alias{evaluation}
 \title{Evaluate a statistical audit sample}
 \usage{
-evaluation(materiality = NULL, min.precision = NULL, method = 'binomial',
+evaluation(materiality = NULL, min.precision = NULL, method = 'poisson',
            conf.level = 0.95, data = NULL, values = NULL, values.audit = NULL,
            times = NULL, x = NULL, n = NULL, N.units = NULL, N.items = NULL,
            r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5,
@@ -45,7 +45,7 @@ evaluation(materiality = NULL, min.precision = NULL, method = 'binomial',
 
 \item{cs.mu}{if \code{method = "coxsnell"}, a numeric value between 0 and 1 specifying the mean of the prior distribution on the mean taint. Defaults to 0.5 as recommended by Cox and Snell (1979).}
 
-\item{prior}{a logical specifying if a prior distribution must be used, or an object of class \code{jfaPrior} or \code{jfaPosterior} containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a negligible prior distribution is chosen by default, but can be adjusted using the `kPrior` and `nPrior` arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
+\item{prior}{a logical specifying if a prior distribution must be used, or an object of class \code{jfaPrior} or \code{jfaPosterior} containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a noninformative prior distribution is chosen by default, but can be adjusted using the `kPrior` and `nPrior` arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
 }
 \value{
 An object of class \code{jfaEvaluation} containing:
@@ -105,9 +105,23 @@ data('BuildIt')
 sample <- selection(data = BuildIt, size = 100, units = 'mus',
                     method = 'interval', values = 'bookValue')$sample
 
-# Evaluate using the Stringer bound
+# Classical evaluation using the Stringer bound
 evaluation(materiality = 0.05, method = 'stringer', conf.level = 0.95,
            data = sample, values = 'bookValue', values.audit = 'auditValue')
+
+# Classical evaluation using the Poisson likelihood
+evaluation(materiality = 0.05, method = 'poisson', conf.level = 0.95,
+           data = sample, values = 'bookValue', values.audit = 'auditValue')
+
+# Bayesian evaluation using a noninformative gamma prior distribution
+evaluation(materiality = 0.05, method = 'poisson', conf.level = 0.95,
+           data = sample, values = 'bookValue', values.audit = 'auditValue',
+           prior = TRUE)
+
+# Bayesian evaluation using an informed prior distribution
+evaluation(materiality = 0.05, method = 'poisson', conf.level = 0.95,
+           data = sample, values = 'bookValue', values.audit = 'auditValue',
+           prior = auditPrior(method = 'custom', alpha = 1, beta = 10))
 
 }
 \references{

@@ -19,7 +19,7 @@ c.adj <- 1 - ((1 - confidence) / (ir * cr))
 
 ## -----------------------------------------------------------------------------
 # Step 0: Create a prior distribution according to the audit risk model.
-prior <- auditPrior(method = "arm", likelihood = "binomial", expected = expected,
+prior <- auditPrior(method = "arm", likelihood = "poisson", expected = expected,
                     materiality = materiality, ir = ir, cr = cr)
 
 ## -----------------------------------------------------------------------------

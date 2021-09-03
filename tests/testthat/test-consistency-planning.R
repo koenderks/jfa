@@ -93,28 +93,28 @@ test_that(desc = "(id: f5-v0.1.0-t17) Bayesian hypergeometric 5% materiality 2.5
 })
 
 test_that(desc = "(id: f5-v0.1.0-t19) Bayesian binomial 2% precision 5% materiality 2.5% errors median prior", {
-  jfaPrior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "median", expected = 0.025)
+  jfaPrior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "median", expected = 0.025, likelihood = "binomial")
   jfaRes <- planning(materiality = 0.05, min.precision = 0.02, conf.level = 0.95, expected = 0.025, likelihood = "binomial", N.units = 1000, prior = jfaPrior)
   expect_equal(jfaRes[["n"]], 284)
   expect_equal(jfaRes[["x"]], 7.1, tolerance = 0.001)
 })
 
 test_that(desc = "(id: f5-v0.1.0-t20) Bayesian binomial 5% materiality 1% errors hypotheses prior", {
-  jfaPrior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "hypotheses", p.min = 0.7)
+  jfaPrior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "hypotheses", p.min = 0.7, likelihood = "binomial")
   jfaRes <- planning(materiality = 0.05, conf.level = 0.95, expected = 0.01, likelihood = "binomial", N.units = 1000, prior = jfaPrior)
   expect_equal(jfaRes[["n"]], 55)
   expect_equal(jfaRes[["x"]], 0.55, tolerance = 0.001)
 })
 
 test_that(desc = "(id: f5-v0.1.0-t21) Bayesian poisson 5% materiality 1% errors factor prior", {
-  jfaPrior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "factor", factor = 0.6, n = 58, x = 0, expected = 0.025)
+  jfaPrior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "factor", factor = 0.6, n = 58, x = 0, expected = 0.025, likelihood = "binomial")
   jfaRes <- planning(materiality = 0.05, conf.level = 0.95, expected = 0.01, likelihood = "binomial", N.units = 1000, prior = jfaPrior)
   expect_equal(jfaRes[["n"]], 36)
   expect_equal(jfaRes[["x"]], 0.36, tolerance = 0.001)
 })
 
 test_that(desc = "(id: f5-v0.1.0-t22) Bayesian poisson 3% materiality 1.3% errors sample prior", {
-  jfaPrior <- auditPrior(materiality = 0.03, conf.level = 0.95, method = "sample", n = 58, x = 0, expected = 0.025)
+  jfaPrior <- auditPrior(materiality = 0.03, conf.level = 0.95, method = "sample", n = 58, x = 0, expected = 0.025, likelihood = "binomial")
   jfaRes <- planning(materiality = 0.03, conf.level = 0.95, expected = 0.013, likelihood = "binomial", N.units = 1000, prior = jfaPrior)
   expect_equal(jfaRes[["n"]], 140)
   expect_equal(jfaRes[["x"]], 1.82, tolerance = 0.001)

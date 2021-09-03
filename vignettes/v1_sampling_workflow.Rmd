@@ -59,7 +59,7 @@ c.adj <- 1 - ((1 - confidence) / (ir * cr))
 stage1 <- planning(materiality = materiality, expected = expected, conf.level = c.adj)
 ```
 
-Laura can then inspect the result from her planning procedure by using the `summary()` function. Her result tells her that, given her prior distribution she needs to audit a sample of 190 transactions so that, when at most 5 errors are found, she can conclude with 91.66% confidence that the maximum error in BuildIt's financial statements is lower the materiality of 5%. 
+Laura can then inspect the result from her planning procedure by using the `summary()` function. Her result tells her that, given her prior distribution she needs to audit a sample of 178 transactions so that, when at most 4.45 errors are found, she can conclude with 91.66% confidence that the maximum error in BuildIt's financial statements is lower the materiality of 5%. 
 
 ```{r}
 summary(stage1)
@@ -67,7 +67,7 @@ summary(stage1)
 
 ## Stage 2: Selecting a sample
 
-Laura is now ready to select the required 190 transactions from the financial statements. She can choose to do this according to one of two statistical methods. In *record sampling* (`units = "items"`), inclusion probabilities are assigned on the transaction level, treating transactions with a high value and a low value the same, a transaction of $5,000 is equally likely to be selected as a transaction of $1,000. In *monetary unit sampling* (`units = "mus"`), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the transaction that includes that dollar is selected. This favors higher transactions, as a transaction of \$5,000 is five times more likely to be selected than a transaction of \$1,000. 
+Laura is now ready to select the required 178 transactions from the financial statements. She can choose to do this according to one of two statistical methods. In *record sampling* (`units = "items"`), inclusion probabilities are assigned on the transaction level, treating transactions with a high value and a low value the same, a transaction of $5,000 is equally likely to be selected as a transaction of $1,000. In *monetary unit sampling* (`units = "mus"`), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the transaction that includes that dollar is selected. This favors higher transactions, as a transaction of \$5,000 is five times more likely to be selected than a transaction of \$1,000. 
 
 Laura chooses to use *monetary unit sampling*, as she wants to include more high-valued transactions. The `selection()` function allows her to sample from the financial statements. She uses the `stage1` object as an input for the `selection()` function.
 
@@ -109,7 +109,7 @@ stage4 <- evaluation(materiality = materiality, conf.level = c.adj, data = sampl
                      values = 'bookValue', values.audit = 'auditValue')
 ```
 
-Laura can inspect the outcomes of her inference by using the `summary()` function. Her resulting 91.66% upper bound is 1.299%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.
+Laura can inspect the outcomes of her inference by using the `summary()` function. Her resulting 91.66% upper bound is 2.997%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.
 
 ```{r}
 summary(stage4)

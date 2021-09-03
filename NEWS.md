@@ -7,6 +7,7 @@
 
 **Major changes**
 
+- `poisson` is now the default likelihood for all functions.
 - `nPrior` and `kPrior` have been removed from the `planning()` and `evaluation()` functions. All prior distributions must now be specified using `prior = TRUE` (noninformative priors) or using a call to `auditPrior()`.
 - From `jfa` 0.5.7 to `jfa` 0.6.0 there has been a major overhaul in the names of function arguments. This is done so that the calls integrate better with general R syntax. The following names have been changed:
     - `sampleK` -> `x` (in `auditPrior()`)

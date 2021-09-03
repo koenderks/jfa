@@ -4,7 +4,7 @@
 \alias{auditBF}
 \title{Bayes Factors for Audit Sampling}
 \usage{
-auditBF(x, n, materiality, likelihood = 'binomial', BF10 = TRUE,
+auditBF(x, n, materiality, likelihood = 'poisson', BF10 = TRUE,
         log = FALSE, N.units = NULL, alpha = NULL, beta = NULL)
 }
 \arguments{
@@ -30,7 +30,7 @@ auditBF(x, n, materiality, likelihood = 'binomial', BF10 = TRUE,
 A numeric value for the Bayes factor.
 }
 \description{
-This function computes Bayes factors for audit sampling from summary statistics of an audit sample. By default, the Bayes factor is computed using an impartial prior distribution on the misstatement (Derks et al., 2021). However, the arguments \code{nPrior} and \code{kPrior} can be used to specify an alternative prior distribution (Derks et al., 2021).
+This function computes Bayes factors for audit sampling from summary statistics of an audit sample. By default, the Bayes factor is computed using an impartial prior distribution on the misstatement (Derks et al., 2021). However, the arguments \code{alpha} and \code{beta} can be used to specify an alternative prior distribution.
 
 For more details on how to use this function, see the package vignette:
 \code{vignette('jfa', package = 'jfa')}
@@ -41,17 +41,17 @@ The Bayes Factor \eqn{BF_{-+}} quantifies how much more likely the data are to b
 This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
 
 \itemize{
- \item{\code{binomial}:         The binomial likelihood is often used as a likelihood for attributes sampling \emph{with} replacement. The likelihood function is defined as: \deqn{p(x) = {n \choose k} p^k (1 - p)^{n - k}} The conjugate \emph{beta(\eqn{\alpha, \beta})} prior has probability density function: \deqn{f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}}}
  \item{\code{poisson}:          The Poisson likelihood is often used as a likelihood for monetary unit sampling (MUS). The likelihood function is defined as: \deqn{p(x) = \frac{\lambda^x e^{-\lambda}}{x!}} The conjugate \emph{gamma(\eqn{\alpha, \beta})} prior has probability density function: \deqn{f(x; \alpha, \beta) = \frac{\beta^\alpha x^{\alpha - 1} e^{-\beta x}}{\Gamma(\alpha)}}}
+ \item{\code{binomial}:         The binomial likelihood is often used as a likelihood for attributes sampling \emph{with} replacement. The likelihood function is defined as: \deqn{p(x) = {n \choose k} p^k (1 - p)^{n - k}} The conjugate \emph{beta(\eqn{\alpha, \beta})} prior has probability density function: \deqn{f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}}}
  \item{\code{hypergeometric}:   The hypergeometric likelihood is used as a likelihood for sampling \emph{without} replacement. The likelihood function is defined as: \deqn{p(x = k) = \frac{{K \choose k} {N - K \choose n - k}}{{N \choose n}}} The conjugate \emph{beta-binomial(\eqn{\alpha, \beta})} prior (Dyer and Pierce, 1993) has probability density function: \deqn{f(k | n, \alpha, \beta) = {n \choose k} \frac{B(k + \alpha, n - k + \beta)}{B(\alpha, \beta)}} }
 }
 }
 \examples{
  
-# Compute a default Bayes factor from an impartial prior
+# Compute a default Bayes factor from an impartial gamma prior
 auditBF(x = 1, n = 50, materiality = 0.05)
 
-# Compute a Bayes factor from a negligible prior
+# Compute a Bayes factor from a noninformative gamma prior
 auditBF(x = 1, n = 50, materiality = 0.05, alpha = 1, beta = 1)
 
 }

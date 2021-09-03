@@ -4,7 +4,7 @@
 \alias{auditPrior}
 \title{Prior Distributions for Audit Sampling}
 \usage{
-auditPrior(method = 'none', likelihood = 'binomial', expected = 0, 
+auditPrior(method = 'none', likelihood = 'poisson', expected = 0, 
            conf.level = 0.95, materiality = NULL, N.units = NULL, 
            ir = NULL, cr = NULL, ub = NULL, p.min = NULL, 
            x = NULL, n = NULL, factor = NULL, alpha = NULL, beta = NULL)
@@ -12,7 +12,7 @@ auditPrior(method = 'none', likelihood = 'binomial', expected = 0,
 \arguments{
 \item{method}{a character specifying the method by which the prior distribution is constructed. Defaults to \code{none} which incorporates no existing information. Other options are \code{arm}, \code{bram}, \code{median}, \code{hypotheses}, \code{sample}, and \code{factor}. See the details section for more information about the available methods.}
 
-\item{likelihood}{a character specifying the likelihood assumed when updating the prior distribution. This can be either \code{binomial} for the binomial likelihood and beta prior distribution, \code{poisson} for the Poisson likelihood and gamma prior distribution, or \code{hypergeometric} for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.}
+\item{likelihood}{a character specifying the likelihood assumed when updating the prior distribution. This can be either \code{poisson} (default) for the Poisson likelihood and gamma prior distribution, \code{biomial} for the binomial likelihood and beta prior distribution, or \code{hypergeometric} for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.}
 
 \item{expected}{a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a numeric value (>= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.}
 
@@ -86,8 +86,15 @@ This section elaborates on the available likelihoods and corresponding prior dis
 \examples{
  
 # Translate inherent risk (ir) and control risk (cr) to a prior distribution
-auditPrior(method = 'arm', likelihood = 'binomial', expected = 0.025,
+auditPrior(method = 'arm', likelihood = 'poisson', expected = 0.025,
            materiality = 0.05, ir = 1, cr = 0.6)
+
+# Equal prior probabilities
+auditPrior(method = 'median', likelihood = 'poisson', materiality = 0.05)
+
+# Custom prior distribution
+auditPrior(method = 'custom', likelihood = 'poisson', alpha = 1, beta = 10)
+
 }
 \references{
 Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., & Wetzels, R. (2019). JASP for audit: Bayesian tools for the auditing practice.

@@ -68,20 +68,20 @@ Below you can find several informative tables that contain statistical sample si
 
 *Sample sizes*
 
-- [Sample sizes based on the binomial distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaBinomialSampleSizes.pdf)
 - [Sample sizes based on the Poisson distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaPoissonSampleSizes.pdf)
+- [Sample sizes based on the binomial distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaBinomialSampleSizes.pdf)
 - [Sample sizes based on the hypergeometric distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaHypergeometricSampleSizes.pdf)
 
 *Upper limits*
 
-- [Upper limits based on the binomial distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaBinomialUpperBounds.pdf)
 - [Upper limits based on the Poisson distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaPoissonUpperBounds.pdf)
+- [Upper limits based on the binomial distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaBinomialUpperBounds.pdf)
 - [Upper limits based on the hypergeometric distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaHypergeometricUpperBounds.pdf)
 
 *Bayes factors*
 
-- [Bayes factors based on the beta distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaBinomialBayesFactors.pdf)
 - [Bayes factors based on the gamma distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaPoissonBayesFactors.pdf)
+- [Bayes factors based on the beta distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaBinomialBayesFactors.pdf)
 - [Bayes factors based on the beta-binomial distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaHypergeometricBayesFactors.pdf)
 
 ## 5. Intended workflow
@@ -105,7 +105,7 @@ The `auditPrior()` function creates a prior distribution according to one of sev
 *Full function with default arguments:*
 
 ```r
-auditPrior(method = 'none', likelihood = 'binomial', expected = 0, 
+auditPrior(method = 'none', likelihood = 'poisson', expected = 0, 
            conf.level = 0.95, materiality = NULL, N.units = NULL, 
            ir = NULL, cr = NULL, ub = NULL, p.min = NULL,
            x = NULL, n = NULL, factor = NULL, alpha = NULL, beta = NULL)
@@ -128,15 +128,18 @@ auditPrior(method = 'none', likelihood = 'binomial', expected = 0,
 
 | `likelihood` | Description | Reference |
 | :----------- | :----------- | :----------- |
-| `binomial` | Beta prior distribution (+ binomial likelihood) | Steele (1992) |
 | `poisson` | Gamma prior distribution (+ Poisson likelihood) | Stewart (2013) |
+| `binomial` | Beta prior distribution (+ binomial likelihood) | Steele (1992) |
 | `hypergeometric` | Beta-binomial prior distribution (+ hypergeometric likelihood) | Dyer and Pierce (1991) |
 
 *Example usage:*
 
 ```r
-# A uniform beta prior distribution 
-x <- auditPrior(method = 'none', likelihood = 'binomial')
+# A noninformative gamma prior distribution 
+x <- auditPrior(method = 'none', likelihood = 'poisson')
+
+# A beta(1, 10) prior distribution 
+x <- auditPrior(method = 'custom', likelihood = 'binomial', alpha = 1, beta = 10)
 
 summary(x) # Prints information about the prior distribution
 ```
@@ -151,7 +154,7 @@ The `planning()` function calculates the minimum sample size for a statistical a
 
 ```r
 planning(materiality = NULL, min.precision = NULL, expected = 0,
-         likelihood = 'binomial', conf.level = 0.95, N.units = NULL,
+         likelihood = 'poisson', conf.level = 0.95, N.units = NULL,
          by = 1, max = 5000, prior = FALSE)
 ```
 
@@ -159,15 +162,21 @@ planning(materiality = NULL, min.precision = NULL, expected = 0,
 
 | `likelihood` | Description | Reference |
 | :----------- | :----------- | :----------- |
-| `binomial` | Binomial likelihood | Stewart (2012) |
 | `poisson` | Poisson likelihood | Stewart (2012) |
+| `binomial` | Binomial likelihood | Stewart (2012) |
 | `hypergeometric` | Hypergeometric likelihood | Stewart (2012) |
 
 *Example usage:*
 
 ```r
-# Planning using binomial likelihood
-x <- planning(materiality = 0.03, likelihood = 'binomial', conf.level = 0.95, N.units = 500)
+# Classical planning using Poisson likelihood
+x <- planning(materiality = 0.03, likelihood = 'poisson', conf.level = 0.95)
+
+# Bayesian planning using noninformative gamma prior
+x <- planning(materiality = 0.03, likelihood = 'poisson', conf.level = 0.95, prior = TRUE)
+
+# Bayesian planning using a beta(1, 10) prior (the 'likelihood' is taken over from the prior)
+x <- planning(materiality = 0.03, conf.level = 0.95, prior = auditPrior(method = 'custom', alpha = 1, beta = 10))
 
 summary(x) # Prints information about the planning
 ```
@@ -203,8 +212,11 @@ selection(data, size, units = 'items', method = 'random', values = NULL,
 *Example usage:*
 
 ```r
-# Selection using fixed interval record sampling
-x <- selection(data = BuildIt, size = 100, units = 'records', method = 'interval')
+# Selection using random record sampling
+x <- selection(data = BuildIt, size = 100, units = 'items', method = 'random')
+
+# Selection using fixed interval MUS
+x <- selection(data = BuildIt, size = 100, units = 'mus', method = 'interval')
 
 summary(x) # Prints information about the selection
 ```
@@ -218,7 +230,7 @@ The `evaluation()` function takes a sample or summary statistics of the sample a
 *Full function with default arguments:*
 
 ```r
-evaluation(materiality = NULL, min.precision = NULL, method = 'binomial',
+evaluation(materiality = NULL, min.precision = NULL, method = 'poisson',
            conf.level = 0.95, data = NULL, values = NULL, values.audit = NULL,
            times = NULL, x = NULL, n = NULL, N.units = NULL, N.items = NULL, 
            r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5, 
@@ -229,8 +241,8 @@ evaluation(materiality = NULL, min.precision = NULL, method = 'binomial',
 
 | `method` | Description | Required arguments | Reference |
 | :----------- | :----------- | :----------- | :----------- |
-| `binomial` | Binomial likelihood | | Stewart (2012) |
 | `poisson` | Poisson likelihood | | Stewart (2012) |
+| `binomial` | Binomial likelihood | | Stewart (2012) |
 | `hypergeometric` | Hypergeometric likelihood | `N.units` | Stewart (2012) |
 | `stringer` | Classical Stringer bound | | Bickel (1992) |
 | `stringer.meikle` | Stringer bound with Meikle's correction | | Meikle (1972) |
@@ -247,8 +259,15 @@ evaluation(materiality = NULL, min.precision = NULL, method = 'binomial',
 *Example usage:*
 
 ```r
-# Binomial evaluation using summary statistics from a sample
-x <- evaluation(materiality = 0.03, conf.level = 0.95, x = 1, n = 100, method = 'binomial')
+# Classical evaluation using the Poisson likelihood (and summary statistics)
+x <- evaluation(materiality = 0.03, conf.level = 0.95, x = 1, n = 100, method = 'poisson')
+
+# Bayesian evaluation using a noninformative gamma prior (and summary statistics)
+x <- evaluation(materiality = 0.03, conf.level = 0.95, x = 1, n = 100, method = 'poisson', prior = TRUE)
+
+# Bayesian evaluation using a beta(1, 10) prior ('method' is taken over from the prior)
+x <- evaluation(materiality = 0.03, conf.level = 0.95, x = 1, n = 100, 
+                prior = auditPrior(method = 'custom', alpha = 1, beta = 10))
 
 summary(x) # Prints information about the evaluation
 ```

@@ -57,11 +57,11 @@ Laura can choose to either perform a frequentist analysis, where she uses the in
 c.adj <- 1 - ((1 - confidence) / (ir * cr))
 ```
 
-However, in a Bayesian audit, Laura starts at step 0 by defining the prior distribution that corresponds to her assessment of the control risk. She assumes the likelihood for a sample of $n$ observations, in which $k$ were in error, to be $\text{binomial}(n, k)$. Using the `auditPrior()` function, she can create a prior distribution that incorporates the information in the risk assessments from the *ARM*. For more information on how this is done, see Derks et al. (2019).
+However, in a Bayesian audit, Laura starts at step 0 by defining the prior distribution that corresponds to her assessment of the control risk. She assumes the likelihood for a sample of $n$ observations, in which $k$ were in error, to be `poisson`. Using the `auditPrior()` function, she can create a prior distribution that incorporates the information in the risk assessments from the *ARM*. For more information on how this is done, see Derks et al. (2019).
 
 ```{r}
 # Step 0: Create a prior distribution according to the audit risk model.
-prior <- auditPrior(method = "arm", likelihood = "binomial", expected = expected,
+prior <- auditPrior(method = "arm", likelihood = "poisson", expected = expected,
                     materiality = materiality, ir = ir, cr = cr)
 ```
 
@@ -84,13 +84,13 @@ Now that the prior distribution is specified, Laura can calculate the required s
 stage1 <- planning(materiality = materiality, expected = expected, conf.level = confidence, prior = prior)
 ```
 
-Laura can then inspect the result from her planning procedure by using the `summary()` function. Her result tells her that, given her prior distribution she needs to audit a sample of 169 transactions so that, when at most 4.225 errors are found, she can conclude with 95% confidence that the maximum error in BuildIt's financial statements is lower the materiality of 5%. 
+Laura can then inspect the result from her planning procedure by using the `summary()` function. Her result tells her that, given her prior distribution she needs to audit a sample of 178 transactions so that, when at most 4.45 errors are found, she can conclude with 95% confidence that the maximum error in BuildIt's financial statements is lower the materiality of 5%. 
 
 ```{r}
 summary(stage1)
 ```
 
-Laura can inspect how the prior distribution compares to the expected posterior distribution by using the `plot()` function. The expected posterior distribution is the posterior distribution that would occur if Laura actually observed a sample of 169 transactions, from which 4.225 were in error.
+Laura can inspect how the prior distribution compares to the expected posterior distribution by using the `plot()` function. The expected posterior distribution is the posterior distribution that would occur if Laura actually observed a sample of 178 transactions, from which 4.45 were in error.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(stage1)
@@ -98,7 +98,7 @@ plot(stage1)
 
 ## Stage 2: Selecting a sample
 
-Laura is now ready to select the required 169 transactions from the financial statements. She can choose to do this according to one of two statistical methods. In *record sampling* (`units = "items"`), inclusion probabilities are assigned on the transaction level, treating transactions with a high value and a low value the same, a transaction of $5,000 is equally likely to be selected as a transaction of $1,000. In *monetary unit sampling* (`units = "mus"`), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the transaction that includes that dollar is selected. This favors higher transactions, as a transaction of \$5,000 is five times more likely to be selected than a transaction of \$1,000. 
+Laura is now ready to select the required 178 transactions from the financial statements. She can choose to do this according to one of two statistical methods. In *record sampling* (`units = "items"`), inclusion probabilities are assigned on the transaction level, treating transactions with a high value and a low value the same, a transaction of $5,000 is equally likely to be selected as a transaction of $1,000. In *monetary unit sampling* (`units = "mus"`), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the transaction that includes that dollar is selected. This favors higher transactions, as a transaction of \$5,000 is five times more likely to be selected than a transaction of \$1,000. 
 
 Laura chooses to use *monetary unit sampling*, as she wants to include more high-valued transactions. The `selection()` function allows her to sample from the financial statements. She uses the `stage1` object as an input for the `selection()` function.
 
@@ -140,13 +140,13 @@ stage4 <- evaluation(materiality = materiality, conf.level = confidence, data = 
                      values = "bookValue", values.audit = "auditValue", prior = prior)
 ```
 
-Laura can inspect the outcomes of her inference by using the `summary()` function. Her resulting upper bound is 2.325%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.
+Laura can inspect the outcomes of her inference by using the `summary()` function. Her resulting upper bound is 3.433%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.
 
 ```{r}
 summary(stage4)
 ```
 
-She can inspect the prior and posterior distribution by using the `plot()` function. The shaded area quantifies the area under the posterior distribution that contains 95% of the probability, which ends at 2.325%. Therefore, Laura can state that there is a 95% probability that the misstatement in BuildIt's population is lower than 2.325%.
+She can inspect the prior and posterior distribution by using the `plot()` function. The shaded area quantifies the area under the posterior distribution that contains 95% of the probability, which ends at 4.433%. Therefore, Laura can state that there is a 95% probability that the misstatement in BuildIt's population is lower than 4.433%.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(stage4)

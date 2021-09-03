@@ -183,7 +183,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>c.adj <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> ((<span class="dv">1</span> <span class="sc">-</span> confidence) <span class="sc">/</span> (ir <span class="sc">*</span> cr))</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Calculate the required sample size.</span></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>stage1 <span class="ot">&lt;-</span> <span class="fu">planning</span>(<span class="at">materiality =</span> materiality, <span class="at">expected =</span> expected, <span class="at">conf.level =</span> c.adj)</span></code></pre></div>
-<p>Laura can then inspect the result from her planning procedure by using the <code>summary()</code> function. Her result tells her that, given her prior distribution she needs to audit a sample of 190 transactions so that, when at most 5 errors are found, she can conclude with 91.66% confidence that the maximum error in BuildIt’s financial statements is lower the materiality of 5%.</p>
+<p>Laura can then inspect the result from her planning procedure by using the <code>summary()</code> function. Her result tells her that, given her prior distribution she needs to audit a sample of 178 transactions so that, when at most 4.45 errors are found, she can conclude with 91.66% confidence that the maximum error in BuildIt’s financial statements is lower the materiality of 5%.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage1)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------ 
 ## #              jfa Planning Summary (Classical)
@@ -193,25 +193,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # Confidence level:              91.667% 
 ## # Materiality:                   5% 
 ## # Minimum precision:             Not specified 
-## # Likelihood:                    binomial  
+## # Likelihood:                    poisson  
 ## # Population size:               Not specified 
-## # Expected sample errors:        5 
+## # Expected sample errors:        4.45 
 ## # ------------------------------------------------------------
 ## # Output:
 ## #
-## # Sample size:                   190  
+## # Sample size:                   178  
 ## # ------------------------------------------------------------
 ## # Statistics:
 ## #
-## # Expected most likely error:    2.632% 
-## # Expected upper bound:          4.997% 
-## # Expected precision:            2.365% 
-## # Expected p value:              0.0831 
+## # Expected most likely error:    2.5% 
+## # Expected upper bound:          4.999% 
+## # Expected precision:            2.499% 
+## # Expected p value:              0.0832 
 ## # ------------------------------------------------------------</code></pre>
 </div>
 <div id="stage-2-selecting-a-sample" class="section level2">
 <h2>Stage 2: Selecting a sample</h2>
-<p>Laura is now ready to select the required 190 transactions from the financial statements. She can choose to do this according to one of two statistical methods. In <em>record sampling</em> (<code>units = &quot;items&quot;</code>), inclusion probabilities are assigned on the transaction level, treating transactions with a high value and a low value the same, a transaction of $5,000 is equally likely to be selected as a transaction of $1,000. In <em>monetary unit sampling</em> (<code>units = &quot;mus&quot;</code>), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the transaction that includes that dollar is selected. This favors higher transactions, as a transaction of $5,000 is five times more likely to be selected than a transaction of $1,000.</p>
+<p>Laura is now ready to select the required 178 transactions from the financial statements. She can choose to do this according to one of two statistical methods. In <em>record sampling</em> (<code>units = &quot;items&quot;</code>), inclusion probabilities are assigned on the transaction level, treating transactions with a high value and a low value the same, a transaction of $5,000 is equally likely to be selected as a transaction of $1,000. In <em>monetary unit sampling</em> (<code>units = &quot;mus&quot;</code>), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the transaction that includes that dollar is selected. This favors higher transactions, as a transaction of $5,000 is five times more likely to be selected than a transaction of $1,000.</p>
 <p>Laura chooses to use <em>monetary unit sampling</em>, as she wants to include more high-valued transactions. The <code>selection()</code> function allows her to sample from the financial statements. She uses the <code>stage1</code> object as an input for the <code>selection()</code> function.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Draw a sample from the financial statements.</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>stage2 <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> stage1, <span class="at">units =</span> <span class="st">&quot;mus&quot;</span>, <span class="at">values =</span> <span class="st">&quot;bookValue&quot;</span>)</span></code></pre></div>
@@ -223,19 +223,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # Input:
 ## #      
 ## # Population size:               1403221 
-## # Requested sample size:         190 
+## # Requested sample size:         178 
 ## # Sampling units:                Monetary units 
 ## # Algorithm:                     Random sampling   
 ## # ------------------------------------------------------------ 
 ## # Output:
 ## #
-## # Obtained sampling units:       190 
-## # Obtained sample items:         190 
+## # Obtained sampling units:       178 
+## # Obtained sample items:         178 
 ## # ------------------------------------------------------------
 ## # Statistics:
 ## #
-## # Proportion n/N:                0.054 
-## # Percentage of value:           0.014% 
+## # Proportion n/N:                0.051 
+## # Percentage of value:           0.013% 
 ## # ------------------------------------------------------------</code></pre>
 </div>
 <div id="stage-3-executing-the-audit" class="section level2">
@@ -257,7 +257,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 4: Evaluate the sample</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>stage4 <span class="ot">&lt;-</span> <span class="fu">evaluation</span>(<span class="at">materiality =</span> materiality, <span class="at">conf.level =</span> c.adj, <span class="at">data =</span> sample, </span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">values =</span> <span class="st">&#39;bookValue&#39;</span>, <span class="at">values.audit =</span> <span class="st">&#39;auditValue&#39;</span>)</span></code></pre></div>
-<p>Laura can inspect the outcomes of her inference by using the <code>summary()</code> function. Her resulting 91.66% upper bound is 1.299%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.</p>
+<p>Laura can inspect the outcomes of her inference by using the <code>summary()</code> function. Her resulting 91.66% upper bound is 2.997%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage4)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------ 
 ## #             jfa Evaluation Summary (Classical)
@@ -268,17 +268,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # Materiality:                   5% 
 ## # Minimum precision:             Not specified 
 ## # Population size:               Not specified 
-## # Sample size:                   190 
-## # Sample errors:                 5 
-## # Sum of taints:                 3 
-## # Method:                        binomial   
+## # Sample size:                   178 
+## # Sample errors:                 4 
+## # Sum of taints:                 2.4 
+## # Method:                        poisson   
 ## # ------------------------------------------------------------
 ## # Output:
 ## #  
-## # Most likely error:             1.579%
-## # Upper bound:                   3.63%
-## # Precision:                     2.051% 
-## # p Value:                       0.0132 
+## # Most likely error:             1.348%
+## # Upper bound:                   3.453%
+## # Precision:                     2.104% 
+## # p Value:                       0.0114 
 ## # Sufficient evidence:           TRUE 
 ## # ------------------------------------------------------------</code></pre>
 </div>
