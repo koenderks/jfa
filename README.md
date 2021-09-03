@@ -200,7 +200,7 @@ selection(data, size, units = 'items', method = 'random', values = NULL,
 | `units` | Description | Required arguments |  Reference |
 | :----------- | :----------- | :----------- | :----------- |
 | `items` | Sampling units are items | | Leslie, Teitlebaum, and Anderson (1979) |
-| `mus` | Sampling units are monetary units | `bookValues` | Leslie, Teitlebaum, and Anderson (1979) |
+| `mus` | Sampling units are monetary units | `values` | Leslie, Teitlebaum, and Anderson (1979) |
 
 *Supported options for the `method` argument:*
 
