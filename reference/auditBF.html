@@ -47,7 +47,7 @@
 
 
 <meta property="og:title" content="Bayes Factors for Audit Sampling — auditBF" />
-<meta property="og:description" content="This function computes Bayes factors for audit sampling from summary statistics of an audit sample. By default, the Bayes factor is computed using an impartial prior distribution on the misstatement (Derks et al., 2021). However, the arguments nPrior and kPrior can be used to specify an alternative prior distribution (Derks et al., 2021).
+<meta property="og:description" content="This function computes Bayes factors for audit sampling from summary statistics of an audit sample. By default, the Bayes factor is computed using an impartial prior distribution on the misstatement (Derks et al., 2021). However, the arguments alpha and beta can be used to specify an alternative prior distribution.
 For more details on how to use this function, see the package vignette:
 vignette('jfa', package = 'jfa')" />
 <meta property="og:image" content="/logo.png" />
@@ -160,12 +160,12 @@ vignette('jfa', package = 'jfa')" />
     </div>
 
     <div class="ref-description">
-    <p>This function computes Bayes factors for audit sampling from summary statistics of an audit sample. By default, the Bayes factor is computed using an impartial prior distribution on the misstatement (Derks et al., 2021). However, the arguments <code>nPrior</code> and <code>kPrior</code> can be used to specify an alternative prior distribution (Derks et al., 2021).</p>
+    <p>This function computes Bayes factors for audit sampling from summary statistics of an audit sample. By default, the Bayes factor is computed using an impartial prior distribution on the misstatement (Derks et al., 2021). However, the arguments <code>alpha</code> and <code>beta</code> can be used to specify an alternative prior distribution.</p>
 <p>For more details on how to use this function, see the package vignette:
 <code><a href='../articles/jfa.html'>vignette('jfa', package = 'jfa')</a></code></p>
     </div>
 
-    <pre class="usage"><span class='fu'>auditBF</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>materiality</span>, likelihood <span class='op'>=</span> <span class='st'>'binomial'</span>, BF10 <span class='op'>=</span> <span class='cn'>TRUE</span>,
+    <pre class="usage"><span class='fu'>auditBF</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>n</span>, <span class='va'>materiality</span>, likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, BF10 <span class='op'>=</span> <span class='cn'>TRUE</span>,
         log <span class='op'>=</span> <span class='cn'>FALSE</span>, N.units <span class='op'>=</span> <span class='cn'>NULL</span>, alpha <span class='op'>=</span> <span class='cn'>NULL</span>, beta <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -217,8 +217,8 @@ vignette('jfa', package = 'jfa')" />
     <p>The Bayes Factor \(BF_{-+}\) quantifies how much more likely the data are to be observed under \(H_{-}: \theta &lt; \theta_{max}\) than under \(H_{+}: \theta &gt; \theta_{max}\). Therefore, \(BF_{-+}\) can be interpreted as the relative support in the observed data for \(H_{-}\) versus \(H_{+}\). If \(BF_{-+}\) is 1, there is no preference for either \(H_{-}\) or \(H_{+}\). If \(BF_{-+}\) is larger than 1, \(H_{-}\) is preferred. If \(BF_{-+}\) is between 0 and 1, \(H_{+}\) is preferred.</p>
 <p>This section elaborates on the available likelihoods and corresponding prior distributions for the <code>likelihood</code> argument.</p>
 <ul>
-<li><p><code>binomial</code>:         The binomial likelihood is often used as a likelihood for attributes sampling <em>with</em> replacement. The likelihood function is defined as: $$p(x) = {n \choose k} p^k (1 - p)^{n - k}$$ The conjugate <em>beta(\(\alpha, \beta\))</em> prior has probability density function: $$f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}$$</p></li>
 <li><p><code>poisson</code>:          The Poisson likelihood is often used as a likelihood for monetary unit sampling (MUS). The likelihood function is defined as: $$p(x) = \frac{\lambda^x e^{-\lambda}}{x!}$$ The conjugate <em>gamma(\(\alpha, \beta\))</em> prior has probability density function: $$f(x; \alpha, \beta) = \frac{\beta^\alpha x^{\alpha - 1} e^{-\beta x}}{\Gamma(\alpha)}$$</p></li>
+<li><p><code>binomial</code>:         The binomial likelihood is often used as a likelihood for attributes sampling <em>with</em> replacement. The likelihood function is defined as: $$p(x) = {n \choose k} p^k (1 - p)^{n - k}$$ The conjugate <em>beta(\(\alpha, \beta\))</em> prior has probability density function: $$f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}$$</p></li>
 <li><p><code>hypergeometric</code>:   The hypergeometric likelihood is used as a likelihood for sampling <em>without</em> replacement. The likelihood function is defined as: $$p(x = k) = \frac{{K \choose k} {N - K \choose n - k}}{{N \choose n}}$$ The conjugate <em>beta-binomial(\(\alpha, \beta\))</em> prior (Dyer and Pierce, 1993) has probability density function: $$f(k | n, \alpha, \beta) = {n \choose k} \frac{B(k + \alpha, n - k + \beta)}{B(\alpha, \beta)}$$</p></li>
 </ul>
 
@@ -234,12 +234,12 @@ vignette('jfa', package = 'jfa')" />
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'> 
-<span class='co'># Compute a default Bayes factor from an impartial prior</span>
+<span class='co'># Compute a default Bayes factor from an impartial gamma prior</span>
 <span class='fu'>auditBF</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span>, n <span class='op'>=</span> <span class='fl'>50</span>, materiality <span class='op'>=</span> <span class='fl'>0.05</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 4.985202</div><div class='input'>
-<span class='co'># Compute a Bayes factor from a negligible prior</span>
+</div><div class='output co'>#&gt; [1] 4.810668</div><div class='input'>
+<span class='co'># Compute a Bayes factor from a noninformative gamma prior</span>
 <span class='fu'>auditBF</span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span>, n <span class='op'>=</span> <span class='fl'>50</span>, materiality <span class='op'>=</span> <span class='fl'>0.05</span>, alpha <span class='op'>=</span> <span class='fl'>1</span>, beta <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] 51.55134</div><div class='input'>
+</div><div class='output co'>#&gt; [1] 50.85974</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

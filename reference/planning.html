@@ -47,7 +47,7 @@
 
 
 <meta property="og:title" content="Plan a Statistical Audit Sample — planning" />
-<meta property="og:description" content="This function calculates the minimum sample size for a statistical audit sample based on the binomial, Poisson, or hypergeometric likelihood. The function returns an object of class jfaPlanning which can be used with associated summary() and plot() methods.
+<meta property="og:description" content="This function calculates the minimum sample size for a statistical audit sample based on the Poisson, binomial, or hypergeometric likelihood. The function returns an object of class jfaPlanning which can be used with associated summary() and plot() methods.
 For more details on how to use this function, see the package vignette:
 vignette('jfa', package = 'jfa')" />
 <meta property="og:image" content="/logo.png" />
@@ -160,7 +160,7 @@ vignette('jfa', package = 'jfa')" />
     </div>
 
     <div class="ref-description">
-    <p>This function calculates the minimum sample size for a statistical audit sample based on the binomial, Poisson, or hypergeometric likelihood. The function returns an object of class <code>jfaPlanning</code> which can be used with associated <code><a href='https://rdrr.io/r/base/summary.html'>summary()</a></code> and <code><a href='https://rdrr.io/r/graphics/plot.default.html'>plot()</a></code> methods.</p>
+    <p>This function calculates the minimum sample size for a statistical audit sample based on the Poisson, binomial, or hypergeometric likelihood. The function returns an object of class <code>jfaPlanning</code> which can be used with associated <code><a href='https://rdrr.io/r/base/summary.html'>summary()</a></code> and <code><a href='https://rdrr.io/r/graphics/plot.default.html'>plot()</a></code> methods.</p>
 <p>For more details on how to use this function, see the package vignette:
 <code><a href='../articles/jfa.html'>vignette('jfa', package = 'jfa')</a></code></p>
     </div>
@@ -186,7 +186,7 @@ vignette('jfa', package = 'jfa')" />
     </tr>
     <tr>
       <th>likelihood</th>
-      <td><p>a character specifying the likelihood assumed in the calculation. This can be either <code>binomial</code> for the binomial likelihood, <code>poisson</code> for the Poisson likelihood, or <code>hypergeometric</code> for the hypergeometric likelihood. See the details section for more information about the available likelihoods.</p></td>
+      <td><p>a character specifying the likelihood assumed in the calculation. This can be either <code>poisson</code> (default) for the Poisson likelihood, <code>binomial</code> for the binomial likelihood, or <code>hypergeometric</code> for the hypergeometric likelihood. See the details section for more information about the available likelihoods.</p></td>
     </tr>
     <tr>
       <th>conf.level</th>
@@ -206,7 +206,7 @@ vignette('jfa', package = 'jfa')" />
     </tr>
     <tr>
       <th>prior</th>
-      <td><p>a logical specifying whether to use a prior distribution when planning, or an object of class <code>jfaPrior</code> or <code>jfaPosterior</code> containing the prior distribution. Defaults to <code>FALSE</code> for frequentist planning. If <code>TRUE</code>, a negligible prior distribution is used. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.</p></td>
+      <td><p>a logical specifying whether to use a prior distribution when planning, or an object of class <code>jfaPrior</code> or <code>jfaPosterior</code> containing the prior distribution. Defaults to <code>FALSE</code> for frequentist planning. If <code>TRUE</code>, a noninformative prior distribution is used. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.</p></td>
     </tr>
     </table>
 
@@ -234,8 +234,8 @@ vignette('jfa', package = 'jfa')" />
 
     <p>This section elaborates on the available likelihoods and corresponding prior distributions for the <code>likelihood</code> argument.</p>
 <ul>
-<li><p><code>binomial</code>:         The binomial likelihood is often used as a likelihood for attributes sampling <em>with</em> replacement. The likelihood function is defined as: $$p(x) = {n \choose k} p^k (1 - p)^{n - k}$$ The conjugate <em>beta(\(\alpha, \beta\))</em> prior has probability density function: $$f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}$$</p></li>
 <li><p><code>poisson</code>:          The Poisson likelihood is often used as a likelihood for monetary unit sampling (MUS). The likelihood function is defined as: $$p(x) = \frac{\lambda^x e^{-\lambda}}{x!}$$ The conjugate <em>gamma(\(\alpha, \beta\))</em> prior has probability density function: $$f(x; \alpha, \beta) = \frac{\beta^\alpha x^{\alpha - 1} e^{-\beta x}}{\Gamma(\alpha)}$$</p></li>
+<li><p><code>binomial</code>:         The binomial likelihood is often used as a likelihood for attributes sampling <em>with</em> replacement. The likelihood function is defined as: $$p(x) = {n \choose k} p^k (1 - p)^{n - k}$$ The conjugate <em>beta(\(\alpha, \beta\))</em> prior has probability density function: $$f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}$$</p></li>
 <li><p><code>hypergeometric</code>:   The hypergeometric likelihood is used as a likelihood for sampling <em>without</em> replacement. The likelihood function is defined as: $$p(x = k) = \frac{{K \choose k} {N - K \choose n - k}}{{N \choose n}}$$ The conjugate <em>beta-binomial(\(\alpha, \beta\))</em> prior (Dyer and Pierce, 1993) has probability density function: $$f(k | n, \alpha, \beta) = {n \choose k} \frac{B(k + \alpha, n - k + \beta)}{B(\alpha, \beta)}$$</p></li>
 </ul>
 
@@ -251,20 +251,20 @@ vignette('jfa', package = 'jfa')" />
     <p>Koen Derks, <a href='mailto:k.derks@nyenrode.nl'>k.derks@nyenrode.nl</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='co'># Frequentist planning using a binomial likelihood</span>
-<span class='fu'>planning</span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.05</span>, expected <span class='op'>=</span> <span class='fl'>0.025</span>, likelihood <span class='op'>=</span> <span class='st'>'binomial'</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Minimum sample size: 234 
-#&gt; Sample size obtained in 236 iteration(s) via method 'binomial'</div><div class='input'>
-<span class='co'># Bayesian planning using a negligible beta prior</span>
-<span class='fu'>planning</span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.05</span>, expected <span class='op'>=</span> <span class='fl'>0.025</span>, likelihood <span class='op'>=</span> <span class='st'>'binomial'</span>, 
+    <pre class="examples"><div class='input'><span class='co'># Classical planning using a Poisson likelihood</span>
+<span class='fu'>planning</span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.05</span>, expected <span class='op'>=</span> <span class='fl'>0.025</span>, likelihood <span class='op'>=</span> <span class='st'>'poisson'</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Minimum sample size: 231 
+#&gt; Sample size obtained in 233 iteration(s) via method 'poisson'</div><div class='input'>
+<span class='co'># Bayesian planning using a noninformative gamma prior distribution</span>
+<span class='fu'>planning</span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.05</span>, expected <span class='op'>=</span> <span class='fl'>0.025</span>, likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, 
          prior <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Minimum sample size: 220 
-#&gt; Sample size obtained in 222 iteration(s) via method 'binomial'</div><div class='input'>
-<span class='co'># Bayesian planning using an informed beta prior</span>
-<span class='fu'>planning</span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.05</span>, expected <span class='op'>=</span> <span class='fl'>0.025</span>, likelihood <span class='op'>=</span> <span class='st'>'binomial'</span>, 
+</div><div class='output co'>#&gt; Minimum sample size: 231 
+#&gt; Sample size obtained in 233 iteration(s) via method 'poisson'</div><div class='input'>
+<span class='co'># Bayesian planning using an informed gamma prior distribution</span>
+<span class='fu'>planning</span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.05</span>, expected <span class='op'>=</span> <span class='fl'>0.025</span>, likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, 
          prior <span class='op'>=</span> <span class='fu'><a href='auditPrior.html'>auditPrior</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'median'</span>, materiality <span class='op'>=</span> <span class='fl'>0.05</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Minimum sample size: 182 
-#&gt; Sample size obtained in 184 iteration(s) via method 'binomial'</div><div class='input'>
+</div><div class='output co'>#&gt; Minimum sample size: 189 
+#&gt; Sample size obtained in 191 iteration(s) via method 'poisson'</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

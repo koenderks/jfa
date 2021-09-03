@@ -165,7 +165,7 @@ vignette('jfa', package = 'jfa')" />
 <code><a href='../articles/jfa.html'>vignette('jfa', package = 'jfa')</a></code></p>
     </div>
 
-    <pre class="usage"><span class='fu'>auditPrior</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'none'</span>, likelihood <span class='op'>=</span> <span class='st'>'binomial'</span>, expected <span class='op'>=</span> <span class='fl'>0</span>, 
+    <pre class="usage"><span class='fu'>auditPrior</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'none'</span>, likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, expected <span class='op'>=</span> <span class='fl'>0</span>, 
            conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, materiality <span class='op'>=</span> <span class='cn'>NULL</span>, N.units <span class='op'>=</span> <span class='cn'>NULL</span>, 
            ir <span class='op'>=</span> <span class='cn'>NULL</span>, cr <span class='op'>=</span> <span class='cn'>NULL</span>, ub <span class='op'>=</span> <span class='cn'>NULL</span>, p.min <span class='op'>=</span> <span class='cn'>NULL</span>, 
            x <span class='op'>=</span> <span class='cn'>NULL</span>, n <span class='op'>=</span> <span class='cn'>NULL</span>, factor <span class='op'>=</span> <span class='cn'>NULL</span>, alpha <span class='op'>=</span> <span class='cn'>NULL</span>, beta <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
@@ -179,7 +179,7 @@ vignette('jfa', package = 'jfa')" />
     </tr>
     <tr>
       <th>likelihood</th>
-      <td><p>a character specifying the likelihood assumed when updating the prior distribution. This can be either <code>binomial</code> for the binomial likelihood and beta prior distribution, <code>poisson</code> for the Poisson likelihood and gamma prior distribution, or <code>hypergeometric</code> for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.</p></td>
+      <td><p>a character specifying the likelihood assumed when updating the prior distribution. This can be either <code>poisson</code> (default) for the Poisson likelihood and gamma prior distribution, <code>biomial</code> for the binomial likelihood and beta prior distribution, or <code>hypergeometric</code> for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.</p></td>
     </tr>
     <tr>
       <th>expected</th>
@@ -285,10 +285,19 @@ vignette('jfa', package = 'jfa')" />
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'> 
 <span class='co'># Translate inherent risk (ir) and control risk (cr) to a prior distribution</span>
-<span class='fu'>auditPrior</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'arm'</span>, likelihood <span class='op'>=</span> <span class='st'>'binomial'</span>, expected <span class='op'>=</span> <span class='fl'>0.025</span>,
+<span class='fu'>auditPrior</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'arm'</span>, likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, expected <span class='op'>=</span> <span class='fl'>0.025</span>,
            materiality <span class='op'>=</span> <span class='fl'>0.05</span>, ir <span class='op'>=</span> <span class='fl'>1</span>, cr <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Probability distribution for audit sampling: beta(α = 2.275, β = 50.725) 
-#&gt; Distribution obtained via method 'arm'</div></pre>
+</div><div class='output co'>#&gt; Probability distribution for audit sampling: gamma(α = 2.325, β = 53) 
+#&gt; Distribution obtained via method 'arm'</div><div class='input'>
+<span class='co'># Equal prior probabilities</span>
+<span class='fu'>auditPrior</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'median'</span>, likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, materiality <span class='op'>=</span> <span class='fl'>0.05</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Probability distribution for audit sampling: gamma(α = 1, β = 13.863) 
+#&gt; Distribution obtained via method 'median'</div><div class='input'>
+<span class='co'># Custom prior distribution</span>
+<span class='fu'>auditPrior</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'custom'</span>, likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, alpha <span class='op'>=</span> <span class='fl'>1</span>, beta <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Probability distribution for audit sampling: gamma(α = 1, β = 10) 
+#&gt; Distribution obtained via method 'custom'</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
