@@ -30,7 +30,7 @@ planning(materiality = NULL, min.precision = NULL, expected = 0,
 \value{
 An object of class \code{jfaPlanning} containing:
 
-\item{conf.level}{a numeric value between 0 and 1 indicating the confidence level.}
+\item{conf.level}{a numeric value between 0 and 1 indicating the confidence level used.}
 \item{x}{a numeric value larger than, or equal to, 0 indicating the number of tolerable errors in the sample.}
 \item{n}{an integer larger than 0 indicating the required sample size.}
 \item{ub}{a numeric value between 0 and 1 indicating the expected upper bound if the sample goes according to plan.}

@@ -89,18 +89,18 @@ auditPrior <- function(method = 'none', likelihood = 'binomial', expected = 0,
   if (conf.level >= 1 || conf.level <= 0 || length(conf.level) != 1)
     stop("'conf.level' must be a single number between 0 and 1")
   if (expected < 0)
-    stop("'expected' must be a single number equal to or larger than 0")
+    stop("'expected' must be a single number >= 0")
   if (is.null(materiality) && method %in% c("median", "hypotheses", "arm"))
     stop("'materiality' is missing for prior construction")
   if (!is.null(materiality) && expected >= materiality && expected < 1)
-    stop("'expected' must be a single number smaller than 'materiality'")
+    stop("'expected' must be a single number < 'materiality'")
   if (expected >= 1 && !(method %in% c('none', 'sample', 'factor', 'custom')))
     stop(paste0("'expected' must be a single number between 0 and 1 for 'method = ", method, "'"))
   if (likelihood == 'hypergeometric') {
     if (is.null(N.units))
       stop("'N.units' is missing for prior construction")
     if (N.units <= 0)
-      stop("'N.units' must be a positive value")
+      stop("'N.units' must be a nonnegative")
     if (N.units%%1 != 0)
       N.units <- ceiling(N.units)
   }
@@ -125,7 +125,7 @@ auditPrior <- function(method = 'none', likelihood = 'binomial', expected = 0,
     if (is.null(ub)) # Check if the value for the upper bound is present
       stop("'ub' is missing for prior construction")
     if (ub <= 0 || ub >= 1 || ub <= expected) # Check if the value for the upper bound is valid
-      stop("'ub' must be a single number between 0 and 1 and higher than or equal to 'expected'")
+      stop("'ub' must be a single number between 0 and 1 and >= 'expected'")
     if (likelihood == 'poisson' && expected > 0) { # Perform approximation described in Stewart (2013) on p. 45.
       r <- expected / ub
       q <- stats::qnorm(conf.level)

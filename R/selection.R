@@ -74,7 +74,7 @@ selection <- function(data, size, units = 'items', method = 'random', values = N
   if (units == "items" && size > nrow(data) && !replace) # Check if the sample size is valid (< N)
     stop("cannot take a sample larger than the population when 'replace = FALSE'")
   if (!(method %in% c("random", "cell", "interval")) || length(method) != 1) # Check if the algorithm has a valid input
-    stop("'algorithm' should be one of 'random', 'cell', 'interval'")
+    stop("'method' should be one of 'random', 'cell', 'interval'")
   if (!(units %in% c("items", "mus")) || length(units) != 1) # Check if the units have a valid input
     stop("'units' should be one of 'items', 'mus'")
   if (units == "mus" && is.null(values)) # Check if the book values have a valid input
@@ -84,7 +84,7 @@ selection <- function(data, size, units = 'items', method = 'random', values = N
   if (!is.null(values) && !(values %in% colnames(data))) # Check if the book values column can be found in the population
     stop(paste0("'", values, "' is not a column in 'data'"))
   if (method == 'interval' && start < 1)
-    stop("'start' must be an integer larger than 1")
+    stop("'start' must be an integer > 1")
   interval       <- NULL # Placeholder for interval
   bookvalues     <- NULL # Placeholder for book values
   data           <- as.data.frame(data) # Convert the population to a data frame
@@ -98,7 +98,7 @@ selection <- function(data, size, units = 'items', method = 'random', values = N
     bookvalues <- data[, values]
   }
   if (!is.null(bookvalues) && any(bookvalues < 0)) { # Remove the negative book values from the population
-    warning("'values' contains negative values which are removed from the data before selection")
+    warning("'values' contains negative values which are removed before selection")
     negvals <- which(bookvalues < 0)
     data <- data[-negvals, ]
     bookvalues <- data[, values]

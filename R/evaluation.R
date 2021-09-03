@@ -62,9 +62,10 @@
 #'
 #' @return An object of class \code{jfaEvaluation} containing:
 #' 
-#' \item{conf.level}{a numeric value between 0 and 1 indicating the confidence level.}
+#' \item{conf.level}{a numeric value between 0 and 1 indicating the confidence level used.}
 #' \item{mle}{a numeric value between 0 and 1 indicating the most likely error in the population as a fraction of its total size.}
-#' \item{ub}{a numeric value indicating the upper bound on the population misstatement as a fraction the total population size.}
+#' \item{lb}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value indicating the lower bound of the interval around the population misstatement as a fraction the total population size.}
+#' \item{ub}{a numeric value indicating the upper bound on the population misstatement as a fraction the total population size. If method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value indicating the upper bound of the interval around the population misstatement as a fraction the total population size.}
 #' \item{precision}{a numeric value between 0 and 1 indicating the difference between the most likely error and the upper bound in the population as a fraction of the total population size.}
 #' \item{p.value}{a numeric value indicating the one-sided p value.}
 #' \item{x}{an integer larger than, or equal to, 0 indicating the number of items in the sample that contained an error.}
@@ -73,16 +74,13 @@
 #' \item{materiality}{if \code{materiality} is specified, a numeric value between 0 and 1 indicating the performance materiality as a fraction of the total population size.}
 #' \item{min.precision}{if \code{min.precision} is specified, a numeric value between 0 and 1 indicating the minimum required precision as a fraction of the total population size.}
 #' \item{method}{a character indicating the evaluation method.}
-#' \item{N.units}{if \code{N.units} is specified, in integer larger than 0 indicating the population size.}
-#' \item{popBookvalue}{if \code{populationBookValue} is specified, a numeric value larger than 0 indicating the total value of the population.}
-#' \item{pointEstimate}{if \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value indicating the point estimate of the population misstatement as a fraction the total population size.}
-#' \item{lowerBound}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value indicating the lower bound of the interval around the population misstatement as a fraction the total population size.}
-#' \item{upperBound}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value indicating the upper bound of the interval around the population misstatement as a fraction the total population size.}
-#' \item{conclusion}{if \code{materiality} is specified, a character indicating the conclusion about whether to approve or not approve the population with respect to the performance materiality.}
-#' \item{populationK}{if \code{method = 'hypergeometric'}, an integer indicating the assumed total errors in the population.}
+#' \item{N.units}{if \code{N.units} is specified, in integer larger than 0 indicating the total number of units in the population.}
+#' \item{N.items}{if \code{N.items} is specified, in integer larger than 0 indicating the total number of items in the population.}
+#' \item{K}{if \code{method = 'hypergeometric'}, an integer indicating the assumed total errors in the population.}
+#' \item{sufficient}{if \code{materiality} is specified, a character indicating the conclusion about whether to approve or not approve the population with respect to the performance materiality.}
 #' \item{prior}{an object of class 'jfaPrior' that contains the prior distribution.}
 #' \item{posterior}{an object of class 'jfaPosterior' that contains the posterior distribution.}
-#' \item{data}{a data frame containing the relevant columns from the \code{sample}.}
+#' \item{data}{a data frame containing the relevant columns from the \code{data}.}
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
@@ -134,10 +132,10 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'binom
   if (!(method %in% c('binomial', 'poisson', 'hypergeometric', 'stringer', 'stringer.meikle', 'stringer.lta', 'stringer.pvz', 'rohrbach', 'moment', 'coxsnell', 'direct', 'difference', 'quotient', 'regression', 'mpu')) || length(method) != 1)
     stop("'method' should be one of 'binomial', 'poisson', 'hypergeometric', 'stringer', 'stringer.meikle', 'stringer.lta', 'stringer.pvz', 'rohrbach', 'moment', 'coxsnell', 'direct', 'difference', 'quotient', 'regression', 'mpu'")
   if (!is.null(times) && any(times < 1))
-    stop("'times' must be a vector of integers equal to or larger than 1")
+    stop("'times' must be a vector of integers >= 1")
   if (!is.null(times) && any(times%%1 != 0))
-    stop("'times' must be a vector of positive integers")
-  if (((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")) && method %in% c("stringer", "stringer.meikle", "stringer.lta", "stringer.pvz", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
+    stop("'times' must be a vector of nonnegative integers")
+  if (bayesian && method %in% c("stringer", "stringer.meikle", "stringer.lta", "stringer.pvz", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
     stop("'method' should be one of 'binomial', 'poisson', 'hypergeometric'")  
   if (!is.null(x) || !is.null(n)) { # Use summary statistics
     if (method %in% c("stringer", "stringer.meikle", "stringer.lta", "stringer.pvz", "coxsnell", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
@@ -152,7 +150,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'binom
       stop("'x' must be a single value >= 0")
     if (x > n)
       stop("'x' must be a positive value <= 'n'")
-    if (x%%1 != 0 && method == "hypergeometric" && !((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")))
+    if (x%%1 != 0 && method == "hypergeometric" && !bayesian)
       stop("'x' must be a single integer >= 0")
     n.obs <- n
     x.obs <- x
@@ -168,7 +166,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'binom
       stop("'values.audit' must be a single character")
     missing <- unique(c(which(is.na(data[, values])), which(is.na(data[, values.audit]))))
     if (length(missing) == nrow(data))
-      stop("not enough 'sample' observations")
+      stop("not enough 'data' observations")
     data <- stats::na.omit(data)
     n.obs <- nrow(data)
     if (!is.null(times))
@@ -224,7 +222,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'binom
     if (is.null(N.units))
       stop("'N.units' is missing for evaluation")
     if (N.units <= 0 || N.units%%1 != 0)
-      stop("'N.units' must be a positive integer")
+      stop("'N.units' must be a nonnegative integer")
     if (bayesian) {
       # Bayesian evaluation using the beta-binomial distribution
       ub        <- .qBetaBinom(p = conf.level, N = N.units - n.obs, shape1 = 1 + prior.x + t.obs, shape2 = 1 + prior.n - prior.x + n.obs - t.obs) / N.units

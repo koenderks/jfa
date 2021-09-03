@@ -29,7 +29,7 @@
 #'
 #' @return An object of class \code{jfaPlanning} containing:
 #' 
-#' \item{conf.level}{a numeric value between 0 and 1 indicating the confidence level.}
+#' \item{conf.level}{a numeric value between 0 and 1 indicating the confidence level used.}
 #' \item{x}{a numeric value larger than, or equal to, 0 indicating the number of tolerable errors in the sample.}
 #' \item{n}{an integer larger than 0 indicating the required sample size.}
 #' \item{ub}{a numeric value between 0 and 1 indicating the expected upper bound if the sample goes according to plan.}
@@ -99,11 +99,11 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
   if (expected >= 0 && expected < 1) {
     errorType <- "percentage"
     if (!is.null(materiality) && expected >= materiality)
-      stop("'expected' must be a single number smaller than 'materiality'")
+      stop("'expected' must be a single number < 'materiality'")
   } else if (expected >= 1) {
     errorType <- "integer"
-    if (expected%%1 != 0 && likelihood %in% c("binomial", "hypergeometric") && !((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")))
-      stop("'expected' must be a single integer")
+    if (expected%%1 != 0 && likelihood %in% c("binomial", "hypergeometric") && !bayesian)
+      stop("'expected' must be a nonnegative and integer")
   }
   # Set the materiality and the minimium precision to 1 if they are not specified
   if (is.null(materiality))
@@ -115,11 +115,11 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
     if (is.null(N.units))
       stop("'N.units' is missing for planning")
     if (N.units <= 0 || N.units%%1 != 0)
-      stop("'N.units' must be a positive integer")
+      stop("'N.units' must be nonegative and integer")
     if (!is.null(materiality) && expected >= 1 && expected >= ceiling(materiality * N.units))
-      stop("'expected' / 'N.units' must be smaller than 'materiality'")
+      stop("'expected' / 'N.units' must be < 'materiality'")
     if (!is.null(materiality) && expected < 1 && ceiling(expected * N.units) >= ceiling(materiality * N.units))
-      stop("'expected' * 'N.units' must be smaller than 'materiality' * 'N.units'")
+      stop("'expected' * 'N.units' must be < 'materiality' * 'N.units'")
   }
   # Define the sampling frame (the possible sample sizes)
   sframe <- seq(from = 0, to = max, by = by)

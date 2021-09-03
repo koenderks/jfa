@@ -50,9 +50,10 @@ evaluation(materiality = NULL, min.precision = NULL, method = 'binomial',
 \value{
 An object of class \code{jfaEvaluation} containing:
 
-\item{conf.level}{a numeric value between 0 and 1 indicating the confidence level.}
+\item{conf.level}{a numeric value between 0 and 1 indicating the confidence level used.}
 \item{mle}{a numeric value between 0 and 1 indicating the most likely error in the population as a fraction of its total size.}
-\item{ub}{a numeric value indicating the upper bound on the population misstatement as a fraction the total population size.}
+\item{lb}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value indicating the lower bound of the interval around the population misstatement as a fraction the total population size.}
+\item{ub}{a numeric value indicating the upper bound on the population misstatement as a fraction the total population size. If method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value indicating the upper bound of the interval around the population misstatement as a fraction the total population size.}
 \item{precision}{a numeric value between 0 and 1 indicating the difference between the most likely error and the upper bound in the population as a fraction of the total population size.}
 \item{p.value}{a numeric value indicating the one-sided p value.}
 \item{x}{an integer larger than, or equal to, 0 indicating the number of items in the sample that contained an error.}
@@ -61,16 +62,13 @@ An object of class \code{jfaEvaluation} containing:
 \item{materiality}{if \code{materiality} is specified, a numeric value between 0 and 1 indicating the performance materiality as a fraction of the total population size.}
 \item{min.precision}{if \code{min.precision} is specified, a numeric value between 0 and 1 indicating the minimum required precision as a fraction of the total population size.}
 \item{method}{a character indicating the evaluation method.}
-\item{N.units}{if \code{N.units} is specified, in integer larger than 0 indicating the population size.}
-\item{popBookvalue}{if \code{populationBookValue} is specified, a numeric value larger than 0 indicating the total value of the population.}
-\item{pointEstimate}{if \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value indicating the point estimate of the population misstatement as a fraction the total population size.}
-\item{lowerBound}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value indicating the lower bound of the interval around the population misstatement as a fraction the total population size.}
-\item{upperBound}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value indicating the upper bound of the interval around the population misstatement as a fraction the total population size.}
-\item{conclusion}{if \code{materiality} is specified, a character indicating the conclusion about whether to approve or not approve the population with respect to the performance materiality.}
-\item{populationK}{if \code{method = 'hypergeometric'}, an integer indicating the assumed total errors in the population.}
+\item{N.units}{if \code{N.units} is specified, in integer larger than 0 indicating the total number of units in the population.}
+\item{N.items}{if \code{N.items} is specified, in integer larger than 0 indicating the total number of items in the population.}
+\item{K}{if \code{method = 'hypergeometric'}, an integer indicating the assumed total errors in the population.}
+\item{sufficient}{if \code{materiality} is specified, a character indicating the conclusion about whether to approve or not approve the population with respect to the performance materiality.}
 \item{prior}{an object of class 'jfaPrior' that contains the prior distribution.}
 \item{posterior}{an object of class 'jfaPosterior' that contains the posterior distribution.}
-\item{data}{a data frame containing the relevant columns from the \code{sample}.}
+\item{data}{a data frame containing the relevant columns from the \code{data}.}
 }
 \description{
 This function takes a data frame (using \code{data}, \code{values}, and \code{values.audit}) or summary statistics (using \code{x} and \code{n}) and performs inference on the misstatement in the sample. The function returns an object of class \code{jfaEvaluation} which can be used with associated \code{summary()} and \code{plot()} methods.
