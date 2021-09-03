@@ -251,9 +251,10 @@ vignette('jfa', package = 'jfa')" />
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>An object of class <code>jfaEvaluation</code> containing:</p>
-<dt>conf.level</dt><dd><p>a numeric value between 0 and 1 indicating the confidence level.</p></dd>
+<dt>conf.level</dt><dd><p>a numeric value between 0 and 1 indicating the confidence level used.</p></dd>
 <dt>mle</dt><dd><p>a numeric value between 0 and 1 indicating the most likely error in the population as a fraction of its total size.</p></dd>
-<dt>ub</dt><dd><p>a numeric value indicating the upper bound on the population misstatement as a fraction the total population size.</p></dd>
+<dt>lb</dt><dd><p>if method is one of <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code>, a numeric value indicating the lower bound of the interval around the population misstatement as a fraction the total population size.</p></dd>
+<dt>ub</dt><dd><p>a numeric value indicating the upper bound on the population misstatement as a fraction the total population size. If method is one of <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code>, a numeric value indicating the upper bound of the interval around the population misstatement as a fraction the total population size.</p></dd>
 <dt>precision</dt><dd><p>a numeric value between 0 and 1 indicating the difference between the most likely error and the upper bound in the population as a fraction of the total population size.</p></dd>
 <dt>p.value</dt><dd><p>a numeric value indicating the one-sided p value.</p></dd>
 <dt>x</dt><dd><p>an integer larger than, or equal to, 0 indicating the number of items in the sample that contained an error.</p></dd>
@@ -262,16 +263,13 @@ vignette('jfa', package = 'jfa')" />
 <dt>materiality</dt><dd><p>if <code>materiality</code> is specified, a numeric value between 0 and 1 indicating the performance materiality as a fraction of the total population size.</p></dd>
 <dt>min.precision</dt><dd><p>if <code>min.precision</code> is specified, a numeric value between 0 and 1 indicating the minimum required precision as a fraction of the total population size.</p></dd>
 <dt>method</dt><dd><p>a character indicating the evaluation method.</p></dd>
-<dt>N.units</dt><dd><p>if <code>N.units</code> is specified, in integer larger than 0 indicating the population size.</p></dd>
-<dt>popBookvalue</dt><dd><p>if <code>populationBookValue</code> is specified, a numeric value larger than 0 indicating the total value of the population.</p></dd>
-<dt>pointEstimate</dt><dd><p>if <code>method</code> is one of <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code>, a numeric value indicating the point estimate of the population misstatement as a fraction the total population size.</p></dd>
-<dt>lowerBound</dt><dd><p>if method is one of <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code>, a numeric value indicating the lower bound of the interval around the population misstatement as a fraction the total population size.</p></dd>
-<dt>upperBound</dt><dd><p>if method is one of <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code>, a numeric value indicating the upper bound of the interval around the population misstatement as a fraction the total population size.</p></dd>
-<dt>conclusion</dt><dd><p>if <code>materiality</code> is specified, a character indicating the conclusion about whether to approve or not approve the population with respect to the performance materiality.</p></dd>
-<dt>populationK</dt><dd><p>if <code>method = 'hypergeometric'</code>, an integer indicating the assumed total errors in the population.</p></dd>
+<dt>N.units</dt><dd><p>if <code>N.units</code> is specified, in integer larger than 0 indicating the total number of units in the population.</p></dd>
+<dt>N.items</dt><dd><p>if <code>N.items</code> is specified, in integer larger than 0 indicating the total number of items in the population.</p></dd>
+<dt>K</dt><dd><p>if <code>method = 'hypergeometric'</code>, an integer indicating the assumed total errors in the population.</p></dd>
+<dt>sufficient</dt><dd><p>if <code>materiality</code> is specified, a character indicating the conclusion about whether to approve or not approve the population with respect to the performance materiality.</p></dd>
 <dt>prior</dt><dd><p>an object of class 'jfaPrior' that contains the prior distribution.</p></dd>
 <dt>posterior</dt><dd><p>an object of class 'jfaPosterior' that contains the posterior distribution.</p></dd>
-<dt>data</dt><dd><p>a data frame containing the relevant columns from the <code>sample</code>.</p></dd>
+<dt>data</dt><dd><p>a data frame containing the relevant columns from the <code>data</code>.</p></dd>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
