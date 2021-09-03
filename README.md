@@ -170,13 +170,13 @@ planning(materiality = NULL, min.precision = NULL, expected = 0,
 
 ```r
 # Classical planning using Poisson likelihood
-x <- planning(materiality = 0.03, likelihood = 'poisson', conf.level = 0.95)
+x <- planning(materiality = 0.03, likelihood = 'poisson')
 
 # Bayesian planning using noninformative gamma prior
-x <- planning(materiality = 0.03, likelihood = 'poisson', conf.level = 0.95, prior = TRUE)
+x <- planning(materiality = 0.03, likelihood = 'poisson', prior = TRUE)
 
 # Bayesian planning using a beta(1, 10) prior (the 'likelihood' is taken over from the prior)
-x <- planning(materiality = 0.03, conf.level = 0.95, prior = auditPrior(method = 'custom', alpha = 1, beta = 10))
+x <- planning(materiality = 0.03, prior = auditPrior(method = 'custom', alpha = 1, beta = 10))
 
 summary(x) # Prints information about the planning
 ```
@@ -260,14 +260,13 @@ evaluation(materiality = NULL, min.precision = NULL, method = 'poisson',
 
 ```r
 # Classical evaluation using the Poisson likelihood (and summary statistics)
-x <- evaluation(materiality = 0.03, conf.level = 0.95, x = 1, n = 100, method = 'poisson')
+x <- evaluation(materiality = 0.03, x = 1, n = 100, method = 'poisson')
 
 # Bayesian evaluation using a noninformative gamma prior (and summary statistics)
-x <- evaluation(materiality = 0.03, conf.level = 0.95, x = 1, n = 100, method = 'poisson', prior = TRUE)
+x <- evaluation(materiality = 0.03, x = 1, n = 100, method = 'poisson', prior = TRUE)
 
 # Bayesian evaluation using a beta(1, 10) prior ('method' is taken over from the prior)
-x <- evaluation(materiality = 0.03, conf.level = 0.95, x = 1, n = 100, 
-                prior = auditPrior(method = 'custom', alpha = 1, beta = 10))
+x <- evaluation(materiality = 0.03, x = 1, n = 100, prior = auditPrior(method = 'custom', alpha = 1, beta = 10))
 
 summary(x) # Prints information about the evaluation
 ```
