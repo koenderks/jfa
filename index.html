@@ -369,7 +369,7 @@
 <span class="co"># Bayesian planning using noninformative gamma prior</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, likelihood <span class="op">=</span> <span class="st">'poisson'</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
-<span class="co"># Bayesian planning using a beta(1, 10) prior (the 'likelihood' is taken over from the prior)</span>
+<span class="co"># Bayesian planning using a beta(1, 10) prior</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, 
               prior <span class="op">=</span> <span class="fu"><a href="reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'custom'</span>, likelihood <span class="op">=</span> <span class="st">'binomial'</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
 
@@ -572,10 +572,10 @@
 <code class="sourceCode R"><span class="co"># Classical evaluation using the Poisson likelihood (and summary statistics)</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, method <span class="op">=</span> <span class="st">'poisson'</span><span class="op">)</span>
 
-<span class="co"># Bayesian evaluation using a noninformative gamma prior (and summary statistics)</span>
+<span class="co"># Bayesian evaluation using a noninformative gamma prior</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, method <span class="op">=</span> <span class="st">'poisson'</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
-<span class="co"># Bayesian evaluation using a beta(1, 10) prior ('method' is taken over from the prior)</span>
+<span class="co"># Bayesian evaluation using a beta(1, 10) prior</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, 
                 prior <span class="op">=</span> <span class="fu"><a href="reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'custom'</span>, likelihood <span class="op">=</span> <span class="st">'binomial'</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
 
