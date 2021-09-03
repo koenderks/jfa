@@ -7,10 +7,35 @@
 
 **Major changes**
 
-- `nPrior` and `kPrior` have been removed from the `planning()` function. All prior distributions must now be specified using `prior = TRUE` (noninformative priors) or from an object resulting from a call to `auditPrior()`
-- Changed the name of the `maxSize` argument in the `planning()` function to `max`.
-- Changed the name of the `increase` argument in the `planning()` function to `by`.
-- Changed the name of the `withReplacement` argument in the `selection()` function to `replace` to be consistent with general `R` style.
+- `nPrior` and `kPrior` have been removed from the `planning()` and `evaluation()` functions. All prior distributions must now be specified using `prior = TRUE` (noninformative priors) or using a call to `auditPrior()`.
+- From `jfa` 0.5.7 to `jfa` 0.6.0 there has been a major overhaul in the names of function arguments. This is done so that the calls integrate better with general R syntax. The following names have been changed:
+    - `sampleK` -> `x` (in `auditPrior()`)
+    - `sampleN` -> `n` (in `auditPrior()`)
+    - `N` -> `N.units` (in `auditPrior()`)
+    - `maxSize` -> `max` (in `planning()`)
+    - `increase` -> `by` (in `planning()`)
+    - `withReplacement`-> `replace` (in `selection()`)
+    - `ordered` -> `order` (in `selection()`)
+    - `ascending` -> `decreasing` (in `selection()`)
+    - `intervalStartingPoint` -> `start` (in `selection()`)
+    - `algorithm` -> `method` (in `selection()`)
+    - `expectedErrors` -> `expected` (in `auditPrior()` and `planning()`)
+    - `confidence` -> `conf.level` (in `auditPrior()`, `planning()`, and `evaluation()`)
+    - `pHmin` -> `p.min` (in `auditPrior()`)
+    - `minPrecision` -> `min.precision` (in `auditPrior()`, `planning()`, and `evaluation()`)
+    - `population` -> `data` (in `selection()`)
+    - `kSumstats` -> `x` (in `evaluation()`)
+    - `nSumstats` -> `n` (in `evaluation()`)
+    - `sample` -> `data` (in `evaluation()`)
+    - `bookValues` -> `values` (in `selection()` and `evaluation()`)
+    - `auditValues` -> `values.audit` (in `evaluation()`)
+    - `counts` -> `times` (in `evaluation()`)
+    - `popBookValues` -> `N.units` (in `evaluation()`)
+    - `rohrbachDelta` -> `r.delta` (in `evaluation()`)
+    - `momentPopType` -> `m.type` (in `evaluation()`)
+    - `csA` -> `cs.a` (in `evaluation()`)
+    - `csB` -> `cs.b` (in `evaluation()`)
+    - `csMu` -> `cs.mu` (in `evaluation()`)
 
 **Minor changes**
 

@@ -229,7 +229,7 @@ test_that(desc = "(id: f3-v0.4.0-t1) Bayes factors", {
   jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "binomial", times = samp$count, prior = TRUE)
   expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf, 44957.32, tolerance = 0.001)
   jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "poisson", times = samp$count, prior = TRUE)
-  expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf, Inf, tolerance = 0.001)
+  expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf, 1822.754944, tolerance = 0.001)
   jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "hypergeometric", times = samp$count, prior = TRUE, N.units = 1000)
   expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf, 295149, tolerance = 0.001)
 })
