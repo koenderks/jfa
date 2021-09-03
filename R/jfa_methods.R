@@ -229,7 +229,7 @@ print.summary.jfaEvaluation <- function(x, ...) {
 # Upper bound:                   ", x[["ub"]],"
 # Precision:                     ", x[["precision"]])),
       ifelse(x[["type"]] == "Bayesian", no = paste0("
-# p Value:                       ", ifelse(x[["materiality"]] == 1, yes = "Requires materiality", no = if (x[["method"]] %in% c('binomial', 'poisson', 'hypergeometric')) x[["p.value"]] else "Requires likelihood")), yes = paste0("
+# p Value:                       ", ifelse(x[["materiality"]] == 1, yes = "Requires materiality", no = if (x[["method"]] %in% c('binomial', 'poisson', 'hypergeometric')) format.pval(x[["p.value"]], digits = 3, eps = 0.01) else "Requires likelihood")), yes = paste0("
 # Bayes factor-+:                ", ifelse(x[["materiality"]] == 1, yes = "Requires materiality", no = x[["bf"]]))),"
 # Sufficient evidence:          ", x[["sufficient"]], "
 # ------------------------------------------------------------ ")
