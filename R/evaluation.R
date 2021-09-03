@@ -117,7 +117,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'binom
   } else {
     prior.n <- 0
     prior.x <- 0
-    proper  <- TRUE
+    proper <- method != 'poisson' # gamma(1,0) is improper
   }
   if (is.null(conf.level))
     stop("'conf.level' is missing for evaluation")

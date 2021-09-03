@@ -84,6 +84,7 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
   } else if (prior) {
     prior.n <- 0
     prior.x <- 0
+    proper <- likelihood != 'poisson' # gamma(1,0) is improper
   }
   if (is.null(materiality) && is.null(min.precision))
     stop("'materiality' or `min.precision` is missing for planning")
