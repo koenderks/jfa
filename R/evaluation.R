@@ -197,7 +197,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'binom
       # Bayesian evaluation using the gamma distribution
       ub        <- stats::qgamma(p = conf.level, shape = 1 + prior.x + t.obs, rate = prior.n + n.obs)
       mle       <- ((1 + prior.x + t.obs) - 1) / (prior.n + n.obs)
-      precision <- stats::pgamma(q = )
+      precision <- ub - mle
     } else {
       # Classical evaluation using the Poisson distribution
       ub        <- stats::qgamma(p = conf.level, shape = 1 + t.obs, rate = n.obs)
