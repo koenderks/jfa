@@ -262,9 +262,10 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
       result[["posterior"]][["hypotheses"]]$odds.hmin   <- result[["posterior"]][["hypotheses"]]$p.hmin / result[["posterior"]][["hypotheses"]]$p.hplus
       result[["posterior"]][["hypotheses"]]$odds.hplus  <- 1 / result[["posterior"]][["hypotheses"]]$odds.hmin
       # For improper priors we take the posterior odds as Bayes factor
-      result[["posterior"]][["hypotheses"]]$bf          <- result[["posterior"]][["hypotheses"]]$odds.hmin
+      result[["posterior"]][["hypotheses"]]$bf.hmin     <- result[["posterior"]][["hypotheses"]]$odds.hmin
       if (proper) # The prior is proper, so we divide by the prior odds
-        result[["posterior"]][["hypotheses"]]$bf        <- result[["posterior"]][["hypotheses"]]$bf / result[["prior"]][["hypotheses"]]$odds.hmin
+        result[["posterior"]][["hypotheses"]]$bf.hmin   <- result[["posterior"]][["hypotheses"]]$bf.hmin / result[["prior"]][["hypotheses"]]$odds.hmin
+      result[["posterior"]][["hypotheses"]]$bf.hplus    <- 1 / result[["posterior"]][["hypotheses"]]$bf.hmin
     }
     result[["posterior"]][["N.units"]] <- result[["N.units"]]
     # Add class 'jfaPosterior' to the posterior distribution object

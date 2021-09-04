@@ -53,7 +53,7 @@ print.jfaEvaluation <- function(x, ...) {
     cat("Most likely error:", round(x[["mle"]], 3), "|", paste0(round(x[["conf.level"]] * 100, 3), "%"), "Interval:", paste0("[", round(x[["lb"]], 3), "; ", round(x[["ub"]], 3), "]"), "| Precision:", round(x[["precision"]], 3), "\nEstimates obtained via method", paste0("'", x[["method"]], "'\n"))
   } else {
     if (!is.null(x[["prior"]]) && x[["materiality"]] != 1) {
-      cat("Most likely error:", paste0(round(x[["mle"]] * 100, 3), "%"), "|", paste0(round(x[["conf.level"]] * 100, 3), "%"), "Upper bound:", paste0(round(x[["ub"]] * 100, 3), "%"), "| Precision:", paste0(round(x[["precision"]] * 100, 3), "%"), "| BF-+:", round(x[["posterior"]][["hypotheses"]]$bf, 3), "\nEstimates obtained via method", paste0("'", x[["method"]], "'\n"))
+      cat("Most likely error:", paste0(round(x[["mle"]] * 100, 3), "%"), "|", paste0(round(x[["conf.level"]] * 100, 3), "%"), "Upper bound:", paste0(round(x[["ub"]] * 100, 3), "%"), "| Precision:", paste0(round(x[["precision"]] * 100, 3), "%"), "| BF-+:", round(x[["posterior"]][["hypotheses"]]$bf.hmin, 3), "\nEstimates obtained via method", paste0("'", x[["method"]], "'\n"))
     } else {
       cat("Most likely error:", paste0(round(x[["mle"]] * 100, 3), "%"), "|", paste0(round(x[["conf.level"]] * 100, 3), "%"), "Upper bound:", paste0(round(x[["ub"]] * 100, 3), "%"), "| Precision:", paste0(round(x[["precision"]] * 100, 3), "%"), if (x[["method"]] %in% c('binomial', 'poisson', 'hypergeometric')) paste0("| p value: ", format(x[["p.value"]], digits = 3, eps = 0.01)) else NULL, "\nEstimates obtained via method", paste0("'", x[["method"]], "'\n"))
     }
@@ -155,7 +155,7 @@ print.summary.jfaPlanning <- function(x, ...) {
 # Expected precision:           ", paste0(x[["precision"]] * 100, "%"),
       ifelse(x[["type"]] == "Bayesian", no = paste0("
 # Expected p value:              ", ifelse(x[["materiality"]] == 1, yes = "Requires materiality", no = x[["p.value"]])), yes = paste0("
-# Expected Bayes factor-+:       ", ifelse(x[["materiality"]] == 1, yes = "Requires materiality", no = x[["bf"]]))),"
+# Expected Bayes factor-+:       ", ifelse(x[["materiality"]] == 1, yes = "Requires materiality", no = x[["bf.hmin"]]))),"
 # ------------------------------------------------------------ ")
 }
 
@@ -230,7 +230,7 @@ print.summary.jfaEvaluation <- function(x, ...) {
 # Precision:                     ", x[["precision"]])),
       ifelse(x[["type"]] == "Bayesian", no = paste0("
 # p Value:                       ", ifelse(x[["materiality"]] == 1, yes = "Requires materiality", no = if (x[["method"]] %in% c('binomial', 'poisson', 'hypergeometric')) format.pval(x[["p.value"]], digits = 3, eps = 0.01) else "Requires likelihood")), yes = paste0("
-# Bayes factor-+:                ", ifelse(x[["materiality"]] == 1, yes = "Requires materiality", no = x[["bf"]]))),"
+# Bayes factor-+:                ", ifelse(x[["materiality"]] == 1, yes = "Requires materiality", no = x[["bf.hmin"]]))),"
 # Sufficient evidence:          ", x[["sufficient"]], "
 # ------------------------------------------------------------ ")
 }
@@ -317,7 +317,7 @@ summary.jfaPlanning <- function(object, digits = 3, ...) {
     out[["posterior"]] <- object[["posterior"]]$posterior
     out[["mle"]] <- round(object[["posterior"]][["statistics"]]$mode, digits + 2)
     if (object[["materiality"]] != 1)
-      out[["bf"]] <- round(object[["posterior"]][["hypotheses"]]$bf, digits)
+      out[["bf.hmin"]] <- round(object[["posterior"]][["hypotheses"]]$bf.hmin, digits)
   } else {
     out[["mle"]] <- round(object[["x"]] / object[["n"]], digits + 2)
   }
@@ -380,7 +380,7 @@ summary.jfaEvaluation <- function(object, digits = 3, ...) {
       out[["prior"]] <- object[["prior"]][["prior"]]
       out[["posterior"]] <- object[["posterior"]][["posterior"]]
       if (object[["materiality"]] != 1)
-        out[["bf"]] <- round(object[["posterior"]][["hypotheses"]]$bf, digits)
+        out[["bf.hmin"]] <- round(object[["posterior"]][["hypotheses"]]$bf.hmin, digits)
     } else {
       out[["type"]] <- "Classical"
     }

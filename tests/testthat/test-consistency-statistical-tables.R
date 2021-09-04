@@ -1623,7 +1623,7 @@ test_that(desc = "(id: f7-v0.5.5-t41) Statistical Sampling Results based on the 
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = 'binomial')
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
-      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
+      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
   }
   tableWorkflow <- as.data.frame(tabWorkflow)
@@ -1659,7 +1659,7 @@ test_that(desc = "(id: f7-v0.5.5-t42) Statistical Sampling Results based on the 
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = 'binomial')
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
-      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
+      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
   }
   tableWorkflow <- as.data.frame(tabWorkflow)
@@ -1695,7 +1695,7 @@ test_that(desc = "(id: f7-v0.5.5-t43) Statistical Sampling Results based on the 
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = 'binomial')
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
-      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
+      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
   }
   tableWorkflow <- as.data.frame(tabWorkflow)
@@ -1731,7 +1731,7 @@ test_that(desc = "(id: f7-v0.5.5-t44) Statistical Sampling Results based on the 
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = 'binomial')
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
-      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
+      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
   }
   tableWorkflow <- as.data.frame(tabWorkflow)
@@ -1769,7 +1769,7 @@ test_that(desc = "(id: f7-v0.5.5-t45) Statistical Sampling Results based on the 
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "poisson")
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
-      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
+      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
   }  
   tableWorkflow <- as.data.frame(tabWorkflow)
@@ -1806,7 +1806,7 @@ test_that(desc = "(id: f7-v0.5.5-t46) Statistical Sampling Results based on the 
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "poisson")
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
-      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
+      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
   }
   tableWorkflow <- as.data.frame(tabWorkflow)
@@ -1842,7 +1842,7 @@ test_that(desc = "(id: f7-v0.5.5-t47) Statistical Sampling Results based on the 
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "poisson")
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
-      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
+      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
   }
   tableWorkflow <- as.data.frame(tabWorkflow)
@@ -1878,7 +1878,7 @@ test_that(desc = "(id: f7-v0.5.5-t48) Statistical Sampling Results based on the 
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "poisson")
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
-      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
+      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
   }
   tableWorkflow <- as.data.frame(tabWorkflow)
@@ -1919,7 +1919,7 @@ test_that(desc = "(id: f7-v0.5.5-t49) Statistical Sampling Results based on the 
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N.units = N)
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior, N.units = N)
-      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
+      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
   }
   tableWorkflow <- as.data.frame(tabWorkflow)
@@ -1959,7 +1959,7 @@ test_that(desc = "(id: f7-v0.5.5-t50) Statistical Sampling Results based on the 
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N.units = N)
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior, N.units = N)
-      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
+      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
   }
   tableWorkflow <- as.data.frame(tabWorkflow)
@@ -2008,7 +2008,7 @@ test_that(desc = "(id: f7-v0.5.5-t51) Statistical Sampling Results based on the 
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N.units = N)
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior, N.units = N)
-      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
+      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
   }
   tableWorkflow <- as.data.frame(tabWorkflow)
@@ -2047,7 +2047,7 @@ test_that(desc = "(id: f7-v0.5.5-t52) Statistical Sampling Results based on the 
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N.units = N)
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior, N.units = N)
-      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
+      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
   }
   tableWorkflow <- as.data.frame(tabWorkflow)
@@ -2086,7 +2086,7 @@ test_that(desc = "(id: f7-v0.5.5-t53) Statistical Sampling Results based on the 
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N.units = N)
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior, N.units = N)
-      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
+      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
   }
   tableWorkflow <- as.data.frame(tabWorkflow)
@@ -2125,7 +2125,7 @@ test_that(desc = "(id: f7-v0.5.5-t54) Statistical Sampling Results based on the 
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N.units = N)
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior, N.units = N)
-      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
+      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
   }
   tableWorkflow <- as.data.frame(tabWorkflow)
@@ -2164,7 +2164,7 @@ test_that(desc = "(id: f7-v0.5.5-t55) Statistical Sampling Results based on the 
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N.units = N)
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior, N.units = N)
-      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
+      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
   }
   tableWorkflow <- as.data.frame(tabWorkflow)
@@ -2203,7 +2203,7 @@ test_that(desc = "(id: f7-v0.5.5-t56) Statistical Sampling Results based on the 
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N.units = N)
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior, N.units = N)
-      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
+      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
   }
   tableWorkflow <- as.data.frame(tabWorkflow)
@@ -2242,7 +2242,7 @@ test_that(desc = "(id: f7-v0.5.5-t57) Statistical Sampling Results based on the 
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N.units = N)
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior, N.units = N)
-      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
+      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
   }
   tableWorkflow <- as.data.frame(tabWorkflow)
@@ -2281,7 +2281,7 @@ test_that(desc = "(id: f7-v0.5.5-t58) Statistical Sampling Results based on the 
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N.units = N)
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior, N.units = N)
-      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
+      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
   }
   tableWorkflow <- as.data.frame(tabWorkflow)
@@ -2320,7 +2320,7 @@ test_that(desc = "(id: f7-v0.5.5-t59) Statistical Sampling Results based on the 
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N.units = N)
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior, N.units = N)
-      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
+      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
   }
   tableWorkflow <- as.data.frame(tabWorkflow)
@@ -2359,7 +2359,7 @@ test_that(desc = "(id: f7-v0.5.5-t60) Statistical Sampling Results based on the 
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N.units = N)
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior, N.units = N)
-      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
+      tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
   }
   tableWorkflow <- as.data.frame(tabWorkflow)
