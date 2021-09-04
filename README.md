@@ -116,10 +116,10 @@ auditPrior(method = 'none', likelihood = 'poisson', expected = 0,
 | `method` | Description | Required arguments | Reference |
 | :----------- | :----------- | :----------- | :----------- |
 | `none` | No prior information | | Derks et al. (2021) |
-| `arm` | Translates risk assessments (ARM) | `ir` and `cr` | Derks et al. (2021) |
+| `arm` | Translates risk assessments (ARM) | `materiality`, `ir` and `cr` | Derks et al. (2021) |
 | `bram` | Bayesian risk assessment model (BRAM) | `ub` | Touw and Hoogduin (2011) |
-| `median` | Equal prior probabilities for (in)tolerable misstatement | | Derks et al. (2021) |
-| `hypotheses` | Custom prior probabilities for (in)tolerable misstatement | `p.hmin` | Derks et al. (2021) |
+| `median` | Equal prior probabilities for (in)tolerable misstatement | `materiality` | Derks et al. (2021) |
+| `hypotheses` | Custom prior probabilities for (in)tolerable misstatement | `materiality` and `p.hmin` | Derks et al. (2021) |
 | `sample` | Earlier sample | `x` and `n` | Derks et al. (2021) |
 | `factor` | Weighted earlier sample | `x`, `n`, and `factor` | Derks et al. (2021) |
 | `custom` | Manually set the prior parameters | `alpha` and `beta` | |
@@ -199,7 +199,7 @@ selection(data, size, units = 'items', method = 'random', values = NULL,
 
 | `units` | Description | Required arguments |  Reference |
 | :----------- | :----------- | :----------- | :----------- |
-| `items` | Sampling units are items | | Leslie, Teitlebaum, and Anderson (1979) |
+| `items` | Sampling units are items (rows) | | Leslie, Teitlebaum, and Anderson (1979) |
 | `mus` | Sampling units are monetary units | `values` | Leslie, Teitlebaum, and Anderson (1979) |
 
 *Supported options for the `method` argument:*
