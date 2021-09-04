@@ -166,11 +166,7 @@
 </ul>
 <p><strong>Major changes</strong></p>
 <ul>
-<li>
-<code>poisson</code> is now the default likelihood for all functions.</li>
-<li>
-<code>nPrior</code> and <code>kPrior</code> have been removed from the <code><a href="../reference/planning.html">planning()</a></code> and <code><a href="../reference/evaluation.html">evaluation()</a></code> functions. All prior distributions must now be specified using <code>prior = TRUE</code> (noninformative priors) or using a call to <code><a href="../reference/auditPrior.html">auditPrior()</a></code>.</li>
-<li>From <code>jfa</code> 0.5.7 to <code>jfa</code> 0.6.0 there has been a major overhaul in the names of function arguments. This is done so that the calls integrate better with general R syntax. The following names have been changed:
+<li>From <code>jfa</code> 0.5.7 to <code>jfa</code> 0.6.0 there has been a major overhaul in the names of function arguments. This is done so that the calls integrate better with general R syntax. I apologive for any inconvenience this may cause. The following names have been changed:
 <ul>
 <li>
 <code>sampleK</code> -&gt; <code>x</code> (in <code><a href="../reference/auditPrior.html">auditPrior()</a></code>)</li>
@@ -197,7 +193,7 @@
 <li>
 <code>confidence</code> -&gt; <code>conf.level</code> (in <code><a href="../reference/auditPrior.html">auditPrior()</a></code>, <code><a href="../reference/planning.html">planning()</a></code>, and <code><a href="../reference/evaluation.html">evaluation()</a></code>)</li>
 <li>
-<code>pHmin</code> -&gt; <code>p.min</code> (in <code><a href="../reference/auditPrior.html">auditPrior()</a></code>)</li>
+<code>pHmin</code> -&gt; <code>p.hmin</code> (in <code><a href="../reference/auditPrior.html">auditPrior()</a></code>)</li>
 <li>
 <code>minPrecision</code> -&gt; <code>min.precision</code> (in <code><a href="../reference/auditPrior.html">auditPrior()</a></code>, <code><a href="../reference/planning.html">planning()</a></code>, and <code><a href="../reference/evaluation.html">evaluation()</a></code>)</li>
 <li>
@@ -228,11 +224,16 @@
 <code>csMu</code> -&gt; <code>cs.mu</code> (in <code><a href="../reference/evaluation.html">evaluation()</a></code>)</li>
 </ul>
 </li>
+<li>
+<code>poisson</code> is now the default likelihood for all functions.</li>
+<li>
+<code>nPrior</code> and <code>kPrior</code> have been removed from the <code><a href="../reference/planning.html">planning()</a></code> and <code><a href="../reference/evaluation.html">evaluation()</a></code> functions. All prior distributions must now be specified using <code>prior = TRUE</code> (noninformative priors) or using a call to <code><a href="../reference/auditPrior.html">auditPrior()</a></code>.</li>
+<li>Removed the <code>auditBF()</code> function since its value is available through <code><a href="https://rdrr.io/r/base/print.html">print(evaluation(materiality = x, prior = auditPrior(method = 'median', materiality = x)))</a></code>
+</li>
 </ul>
 <p><strong>Minor changes</strong></p>
 <ul>
-<li>It is now allowed for <code>nSumstats</code> and <code>kSumstats</code> to have the same value.</li>
-<li>Added argument <code>BF10</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function that computes Bayes factors in favor of intolerable misstatement.</li>
+<li>It is now allowed for <code>x</code> and <code>n</code> to have the same value.</li>
 </ul>
 </div>
     <div id="jfa-057" class="section level1">
@@ -262,7 +263,7 @@
 <ul>
 <li>The <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> functions now return a more concise description of the relevant output.</li>
 <li>Added <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> functions for all returned objects that take over the former (elaborate) output of the <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> functions.</li>
-<li>Implemented a new function <code><a href="../reference/auditBF.html">auditBF()</a></code> which computes Bayes factors from summary statistics of an audit sample.</li>
+<li>Implemented a new function <code>auditBF()</code> which computes Bayes factors from summary statistics of an audit sample.</li>
 </ul>
 <p><strong>Bug fixes</strong></p>
 <ul>

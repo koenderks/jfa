@@ -167,7 +167,7 @@ vignette('jfa', package = 'jfa')" />
 
     <pre class="usage"><span class='fu'>auditPrior</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'none'</span>, likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, expected <span class='op'>=</span> <span class='fl'>0</span>, 
            conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, materiality <span class='op'>=</span> <span class='cn'>NULL</span>, N.units <span class='op'>=</span> <span class='cn'>NULL</span>, 
-           ir <span class='op'>=</span> <span class='cn'>NULL</span>, cr <span class='op'>=</span> <span class='cn'>NULL</span>, ub <span class='op'>=</span> <span class='cn'>NULL</span>, p.min <span class='op'>=</span> <span class='cn'>NULL</span>, 
+           ir <span class='op'>=</span> <span class='cn'>NULL</span>, cr <span class='op'>=</span> <span class='cn'>NULL</span>, ub <span class='op'>=</span> <span class='cn'>NULL</span>, p.hmin <span class='op'>=</span> <span class='cn'>NULL</span>, 
            x <span class='op'>=</span> <span class='cn'>NULL</span>, n <span class='op'>=</span> <span class='cn'>NULL</span>, factor <span class='op'>=</span> <span class='cn'>NULL</span>, alpha <span class='op'>=</span> <span class='cn'>NULL</span>, beta <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -210,8 +210,8 @@ vignette('jfa', package = 'jfa')" />
       <td><p>if <code>method = 'bram'</code>, a numeric value between 0 and 1 specifying the upper bound for the prior distribution as a fraction of the population size.</p></td>
     </tr>
     <tr>
-      <th>p.min</th>
-      <td><p>if <code>method = 'hypotheses'</code>, a numeric value between 0 and 1 specifying the prior probability of the hypothesis of tolerable misstatement (\(\theta &lt;\) materiality).</p></td>
+      <th>p.hmin</th>
+      <td><p>if <code>method = 'hypotheses'</code>, a numeric value between 0 and 1 specifying the prior probability of the hypothesis of tolerable misstatement (H-: \(\theta &lt;\) materiality).</p></td>
     </tr>
     <tr>
       <th>x</th>
@@ -277,7 +277,7 @@ vignette('jfa', package = 'jfa')" />
 <p>Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., &amp; Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. <em>International Journal of Auditing</em>, 1-16.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='planning.html'>planning</a></code> <code><a href='selection.html'>selection</a></code> <code><a href='evaluation.html'>evaluation</a></code> <code><a href='report.html'>report</a></code> <code><a href='auditBF.html'>auditBF</a></code></p></div>
+    <div class='dont-index'><p><code><a href='planning.html'>planning</a></code> <code><a href='selection.html'>selection</a></code> <code><a href='evaluation.html'>evaluation</a></code> <code><a href='report.html'>report</a></code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Koen Derks, <a href='mailto:k.derks@nyenrode.nl'>k.derks@nyenrode.nl</a></p>

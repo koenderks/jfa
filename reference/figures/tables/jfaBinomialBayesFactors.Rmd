@@ -38,7 +38,7 @@ k <- 0:10
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
 for(rows in 1:length(n)){
   for(columns in 1:length(k)){
-    tab[rows, columns] <- auditBF(materiality = 0.10, n = n[rows], x = k[columns])
+    tab[rows, columns] <- evaluation(materiality = 0.10, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.10, likelihood = 'binomial'))$posterior$hypotheses$bf
   }
 }
 
@@ -85,7 +85,7 @@ k <- 0:10
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
 for(rows in 1:length(n)){
   for(columns in 1:length(k)){
-    tab[rows, columns] <- auditBF(materiality = 0.05, n = n[rows], x = k[columns])
+    tab[rows, columns] <- evaluation(materiality = 0.05, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.05, likelihood = 'binomial'))$posterior$hypotheses$$bf
   }
 }
 
@@ -131,7 +131,7 @@ k <- 0:10
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
 for(rows in 1:length(n)){
   for(columns in 1:length(k)){
-    tab[rows, columns] <- auditBF(materiality = 0.02, n = n[rows], x = k[columns])
+    tab[rows, columns] <- evaluation(materiality = 0.02, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.02, likelihood = 'binomial'))$posterior$hypotheses$$bf
   }
 }
 
@@ -177,7 +177,7 @@ k <- 0:10
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
 for(rows in 1:length(n)){
   for(columns in 1:length(k)){
-    tab[rows, columns] <- auditBF(materiality = 0.01, n = n[rows], x = k[columns])
+    tab[rows, columns] <- evaluation(materiality = 0.01, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.01, likelihood = 'binomial'))$posterior$hypotheses$$bf
   }
 }
 
