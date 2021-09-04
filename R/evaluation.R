@@ -155,7 +155,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
     stop("'method' should be one of 'binomial', 'poisson', 'hypergeometric'")  
   if (!is.null(x) || !is.null(n)) { # Use summary statistics
     if (method %in% c("stringer", "stringer.meikle", "stringer.lta", "stringer.pvz", "coxsnell", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
-      stop(paste0("'method = ", method, "' does not accomodate summary statistics using 'x' and 'n'"))
+      stop(paste0("'method = ", method, "' is missing 'data' for evaluation"))
     if (is.null(n))
       stop("'n' is missing for evaluation")
     if (n <= 0 || n%%1 != 0 || length(n) != 1)
@@ -168,6 +168,8 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
       stop("'x' must be a positive value <= 'n'")
     if (x%%1 != 0 && method == "hypergeometric" && !bayesian)
       stop("'x' must be a single integer >= 0")
+    if (!is.null(data))
+      warning("'x' and 'n' are used while 'data' is specified")
     n.obs <- n
     x.obs <- x
     t.obs <- x
@@ -180,6 +182,8 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
       stop("'values.audit' is missing for evaluation")
     if (length(values.audit) != 1)
       stop("'values.audit' must be a single character")
+    if (!is.null(x) || !is.null(n))
+      warning("'data' is used while 'x' or 'n' is specified")
     missing <- unique(c(which(is.na(data[, values])), which(is.na(data[, values.audit]))))
     if (length(missing) == nrow(data))
       stop("not enough 'data' observations")
@@ -195,7 +199,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
       t <- t * times
     t.obs <- sum(t)
   } else {
-    stop("'data' or a combination of 'x' and 'n' missing for evaluation")
+    stop("'data' or a combination of 'x' and 'n' is missing for evaluation")
   }
   # Set the materiality and the minimium precision to 1 if they are NULL
   if (is.null(materiality))
@@ -402,7 +406,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
     class(result[["posterior"]]) <- "jfaPosterior"
   }
   # Add the data and taints to the output
-  if (!is.null(data)) {
+  if (!is.null(data) && !is.null(values) && !is.null(values.audit)) {
     indexa                <- which(colnames(data) == values.audit)
     indexb                <- which(colnames(data) == values)
     frame                 <- as.data.frame(data[, c(indexb, indexa)])
