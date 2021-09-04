@@ -122,7 +122,7 @@ auditPrior(method = 'none', likelihood = 'poisson', expected = 0,
 | `hypotheses` | Custom prior probabilities for (in)tolerable misstatement | `p.hmin` | Derks et al. (2021) |
 | `sample` | Earlier sample | `x` and `n` | Derks et al. (2021) |
 | `factor` | Weighted earlier sample | `x`, `n`, and `factor` | Derks et al. (2021) |
-| `custom` | Custom prior distribution | `alpha` and `beta` | |
+| `custom` | Manually set the prior parameters | `alpha` and `beta` | |
 
 *Supported options for the `likelihood` argument:*
 
