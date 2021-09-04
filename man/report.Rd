@@ -40,7 +40,7 @@ result <- evaluation(conf.level = 0.95, materiality = 0.05, method = 'stringer',
 
 }
 \seealso{
-\code{\link{auditPrior}} \code{\link{planning}} \code{\link{selection}} \code{\link{evaluation}} \code{\link{auditBF}}
+\code{\link{auditPrior}} \code{\link{planning}} \code{\link{selection}} \code{\link{evaluation}}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}

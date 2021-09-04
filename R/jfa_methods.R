@@ -75,7 +75,7 @@ print.summary.jfaPrior <- function(x, ...) {
 # Specifics:                    ", switch(x[["method"]],
                                           "none" = "None",
                                           "median" = paste0("p(\u0398 < ", x[["materiality"]], ") = p(\u0398 > ", x[["materiality"]], ") = 0.5"),
-                                          "hypotheses" = paste0("p(\u0398 < ", x[["materiality"]], ") = ", x[["p.min"]],"; p(\u0398 > ", x[["materiality"]],") = ", x[["p.plus"]]),
+                                          "hypotheses" = paste0("p(\u0398 < ", x[["materiality"]], ") = ", x[["p.hmin"]],"; p(\u0398 > ", x[["materiality"]],") = ", x[["p.hplus"]]),
                                           "arm" = paste0("IR = ", x[["ir"]], "; ICR = ", x[["icr"]], "; DR = ", x[["dr"]]),
                                           "bram" = paste0("Mode = ", x[["mode.prior"]], "; Upper bound = ", x[["ub.prior"]]),
                                           "sample" = paste0("Earlier sample of ", x[["n.prior"]], " items with ", x[["x.prior"]], " errors"),
@@ -265,8 +265,8 @@ summary.jfaPrior <- function(object, digits = 3, ...) {
     out[["ub.prior"]] <- round(object[["specifics"]]$ub, digits)
   } else if (object[["method"]] == "hypotheses") {
     out[["materiality"]] <- round(object[["materiality"]], digits + 2)
-    out[["p.min"]] <- round(object[["specifics"]]$p.min, digits)
-    out[["p.plus"]] <- round(object[["specifics"]]$p.plus, digits)
+    out[["p.hmin"]] <- round(object[["specifics"]]$p.hmin, digits)
+    out[["p.hplus"]] <- round(object[["specifics"]]$p.hplus, digits)
   } else if (object[["method"]] == "sample" || object[["method"]] == "factor") {
     out[["n.prior"]] <- object[["specifics"]]$n
     out[["x.prior"]] <- object[["specifics"]]$x

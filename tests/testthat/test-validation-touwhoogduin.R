@@ -1,4 +1,4 @@
-context("14. Benchmark against Touw and Hoogduin (2011)")
+context("Benchmark against Touw and Hoogduin (2011)")
 
 # Touw, P., and Hoogduin, L. (2011). Statistiek voor audit en controlling. Boom uitgevers, Amsterdam.
 

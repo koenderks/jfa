@@ -107,7 +107,7 @@ The `auditPrior()` function creates a prior distribution according to one of sev
 ```r
 auditPrior(method = 'none', likelihood = 'poisson', expected = 0, 
            conf.level = 0.95, materiality = NULL, N.units = NULL, 
-           ir = NULL, cr = NULL, ub = NULL, p.min = NULL,
+           ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL,
            x = NULL, n = NULL, factor = NULL, alpha = NULL, beta = NULL)
 ```
 
@@ -119,7 +119,7 @@ auditPrior(method = 'none', likelihood = 'poisson', expected = 0,
 | `arm` | Translates risk assessments (ARM) | `ir` and `cr` | Derks et al. (2021) |
 | `bram` | Bayesian risk assessment model (BRAM) | `ub` | Touw and Hoogduin (2011) |
 | `median` | Equal prior probabilities for (in)tolerable misstatement | | Derks et al. (2021) |
-| `hypotheses` | Custom prior probabilities for (in)tolerable misstatement | `p.min` | Derks et al. (2021) |
+| `hypotheses` | Custom prior probabilities for (in)tolerable misstatement | `p.hmin` | Derks et al. (2021) |
 | `sample` | Earlier sample | `x` and `n` | Derks et al. (2021) |
 | `factor` | Weighted earlier sample | `x`, `n`, and `factor` | Derks et al. (2021) |
 | `custom` | Custom prior distribution | `alpha` and `beta` | |

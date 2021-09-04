@@ -79,7 +79,7 @@ Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). \emph{Dollar-unit Sa
 Wampler, B., & McEacharn, M. (2005). Monetary-unit sampling using Microsoft Excel. \emph{The CPA journal}, 75(5), 36.
 }
 \seealso{
-\code{\link{auditPrior}} \code{\link{planning}} \code{\link{evaluation}} \code{\link{report}} \code{\link{auditBF}}
+\code{\link{auditPrior}} \code{\link{planning}} \code{\link{evaluation}} \code{\link{report}}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}

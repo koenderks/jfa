@@ -322,10 +322,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="custom-prior-probabilities-method-hypotheses" class="section level3">
 <h3>Custom prior probabilities (<code>method = &#39;hypotheses&#39;</code>)</h3>
-<p>You can assign custom probabilities to the hypothesis of tolerable misstatement (using <code>p.min</code>) and/or the hypotheses of intolerable misstatement (using 1 - <code>p.min</code>) in combination with <code>method = &#39;hypotheses&#39;</code>. As an example, the code below incorporates the information that the hypothesis of tolerable misstatement has a probability of 60% into a prior distribution.</p>
+<p>You can assign custom probabilities to the hypothesis of tolerable misstatement (using <code>p.hmin</code>) and/or the hypotheses of intolerable misstatement (using 1 - <code>p.hmin</code>) in combination with <code>method = &#39;hypotheses&#39;</code>. As an example, the code below incorporates the information that the hypothesis of tolerable misstatement has a probability of 60% into a prior distribution.</p>
 <p><em>Note: This method requires that you specify a value for the <code>materiality</code>.</em></p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>prior5 <span class="ot">&lt;-</span> <span class="fu">auditPrior</span>(<span class="at">method =</span> <span class="st">&#39;hypotheses&#39;</span>, <span class="at">likelihood =</span> likelihood, <span class="at">expected =</span> expected, <span class="at">conf.level =</span> confidence,</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">materiality =</span> materiality, <span class="at">p.min =</span> <span class="fl">0.6</span>)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">materiality =</span> materiality, <span class="at">p.hmin =</span> <span class="fl">0.6</span>)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(prior5)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #         jfa Prior Distribution Summary (Bayesian)

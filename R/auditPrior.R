@@ -7,7 +7,7 @@
 #'
 #' @usage auditPrior(method = 'none', likelihood = 'poisson', expected = 0, 
 #'            conf.level = 0.95, materiality = NULL, N.units = NULL, 
-#'            ir = NULL, cr = NULL, ub = NULL, p.min = NULL, 
+#'            ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL, 
 #'            x = NULL, n = NULL, factor = NULL, alpha = NULL, beta = NULL)
 #' 
 #' @param method          a character specifying the method by which the prior distribution is constructed. Defaults to \code{none} which incorporates no existing information. Other options are \code{arm}, \code{bram}, \code{median}, \code{hypotheses}, \code{sample}, and \code{factor}. See the details section for more information about the available methods.
@@ -19,7 +19,7 @@
 #' @param ir              if \code{method = 'arm'}, a numeric value between 0 and 1 specifying the inherent risk in the audit risk model. Defaults to 1 for 100\% risk.
 #' @param cr              if \code{method = 'arm'}, a numeric value between 0 and 1 specifying the internal control risk in the audit risk model. Defaults to 1 for 100\% risk.
 #' @param ub              if \code{method = 'bram'}, a numeric value between 0 and 1 specifying the upper bound for the prior distribution as a fraction of the population size.
-#' @param p.min           if \code{method = 'hypotheses'}, a numeric value between 0 and 1 specifying the prior probability of the hypothesis of tolerable misstatement (\eqn{\theta <} materiality).
+#' @param p.hmin          if \code{method = 'hypotheses'}, a numeric value between 0 and 1 specifying the prior probability of the hypothesis of tolerable misstatement (H-: \eqn{\theta <} materiality).
 #' @param x               if \code{method = 'sample'} or \code{method = 'factor'}, a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.
 #' @param n               if \code{method = 'sample'} or \code{method = 'factor'}, an integer larger than, or equal to, 0 specifying the sample size of the sample equivalent to the prior information.
 #' @param factor          if \code{method = 'factor'}, a numeric value between 0 and 1 specifying the weighting factor for the results of the sample equivalent to the prior information.
@@ -63,7 +63,7 @@
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #' 
-#' @seealso \code{\link{planning}} \code{\link{selection}} \code{\link{evaluation}} \code{\link{report}} \code{\link{auditBF}}
+#' @seealso \code{\link{planning}} \code{\link{selection}} \code{\link{evaluation}} \code{\link{report}}
 #' 
 #' @references Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., & Wetzels, R. (2019). JASP for audit: Bayesian tools for the auditing practice.
 #' @references Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., & Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. \emph{International Journal of Auditing}, 1-16.
@@ -85,7 +85,7 @@
 
 auditPrior <- function(method = 'none', likelihood = 'poisson', expected = 0, 
                        conf.level = 0.95, materiality = NULL, N.units = NULL, 
-                       ir = NULL, cr = NULL, ub = NULL, p.min = NULL,
+                       ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL,
                        x = NULL, n = NULL, factor = NULL, alpha = NULL, beta = NULL) {
   if (!(method %in% c("none", "median", "hypotheses", "arm", "bram", "sample", "factor", "custom")) || length(method) != 1)
     stop("'method' should be one of 'none', 'median', 'hypotheses', 'arm', 'bram', 'sample', 'factor', 'custom'")
@@ -159,9 +159,9 @@ auditPrior <- function(method = 'none', likelihood = 'poisson', expected = 0,
     if(method == "median") { # Method 4: Equal prior probabilities
       p.h0 <- p.h1 <- 0.5
     } else if (method == "hypotheses") { # Method 5: Custom prior probabilities
-      if (is.null(p.min)) # Must have the prior probabilities and materiality
+      if (is.null(p.hmin)) # Must have the prior probabilities and materiality
         stop("'p.hmin' is missing for prior construction")
-      p.h1 <- 1 - p.min
+      p.h1 <- 1 - p.hmin
       p.h0 <- 1 - p.h1 # Calculate p(H0)
     }
     if (expected == 0) { # Formulas for zero expected errors
@@ -238,8 +238,8 @@ auditPrior <- function(method = 'none', likelihood = 'poisson', expected = 0,
   if (method != "none")
     specifics             <- list()
   if (method == "median" || method == "hypotheses") {
-    specifics[["p.min"]]  <- as.numeric(p.h0)
-    specifics[["p.plus"]] <- as.numeric(p.h1)
+    specifics[["p.hmin"]]  <- as.numeric(p.h0)
+    specifics[["p.hplus"]] <- as.numeric(p.h1)
   } else if (method == "sample" || method == "factor") {
     specifics[["x"]]      <- as.numeric(x)
     specifics[["n"]]      <- as.numeric(n)
@@ -258,16 +258,16 @@ auditPrior <- function(method = 'none', likelihood = 'poisson', expected = 0,
   if (!is.null(materiality)) {
     hypotheses                 <- list()
     hypotheses[["hypotheses"]] <- c(paste0("H-: \u0398 < ", materiality), paste0("H+: \u0398 > ", materiality))
-    hypotheses[["p.min"]]      <- .restrictprob(switch(likelihood, 
+    hypotheses[["p.hmin"]]      <- .restrictprob(switch(likelihood, 
                                                        "poisson" = stats::pgamma(materiality, shape = description[["alpha"]], rate = description[["beta"]]),
                                                        "binomial" = stats::pbeta(materiality, shape1 = description[["alpha"]], shape2 = description[["beta"]]),
                                                        "hypergeometric" = .pBetaBinom(ceiling(materiality * N.units), N = N.units, shape1 = description[["alpha"]], shape2 = description[["beta"]])))
-    hypotheses[["p.plus"]]     <- .restrictprob(switch(likelihood, 
+    hypotheses[["p.hplus"]]     <- .restrictprob(switch(likelihood, 
                                                        "poisson" = stats::pgamma(materiality, shape = description[["alpha"]], rate = description[["beta"]], lower.tail = FALSE),
                                                        "binomial" = stats::pbeta(materiality, shape1 = description[["alpha"]], shape2 = description[["beta"]], lower.tail = FALSE),
                                                        "hypergeometric" = .pBetaBinom(ceiling(materiality * N.units), N = N.units, shape1 = description[["alpha"]], shape2 = description[["beta"]], lower.tail = FALSE)))
-    hypotheses[["odds.min"]]   <- hypotheses[["p.min"]] / hypotheses[["p.plus"]]
-    hypotheses[["odds.plus"]]  <- 1 / hypotheses[["odds.min"]]
+    hypotheses[["odds.hmin"]]   <- hypotheses[["p.hmin"]] / hypotheses[["p.hplus"]]
+    hypotheses[["odds.hplus"]]  <- 1 / hypotheses[["odds.hmin"]]
   }	
   # Create the main result object	
   result <- list()
@@ -278,14 +278,14 @@ auditPrior <- function(method = 'none', likelihood = 'poisson', expected = 0,
   if (method != "none")
     result[["specifics"]]   <- specifics
   if (!is.null(materiality))
-    result[["hypotheses"]]    <- hypotheses
-  result[["method"]]        <- as.character(method)
-  result[["likelihood"]]    <- as.character(likelihood)
+    result[["hypotheses"]]  <- hypotheses
+  result[["method"]]        <- method
+  result[["likelihood"]]    <- likelihood
   if (!is.null(materiality))
-    result[["materiality"]] <- as.numeric(materiality)
-  result[["expected"]]      <- as.numeric(expected)
-  result[["conf.level"]]    <- as.numeric(conf.level)
-  result[["N.units"]]       <- as.numeric(N.units)
+    result[["materiality"]] <- materiality
+  result[["expected"]]      <- expected
+  result[["conf.level"]]    <- conf.level
+  result[["N.units"]]       <- N.units
   # Add class 'jfaPrior' to the result
   class(result) <- "jfaPrior"
   return(result)

@@ -1,4 +1,4 @@
-context("5. Test consistency of function planning()")
+context("Test consistency of function planning()")
 
 # jfa version 0.1.0
 
@@ -100,7 +100,7 @@ test_that(desc = "(id: f5-v0.1.0-t19) Bayesian binomial 2% precision 5% material
 })
 
 test_that(desc = "(id: f5-v0.1.0-t20) Bayesian binomial 5% materiality 1% errors hypotheses prior", {
-  jfaPrior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "hypotheses", p.min = 0.7, likelihood = "binomial")
+  jfaPrior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "hypotheses", p.hmin = 0.7, likelihood = "binomial")
   jfaRes <- planning(materiality = 0.05, conf.level = 0.95, expected = 0.01, likelihood = "binomial", N.units = 1000, prior = jfaPrior)
   expect_equal(jfaRes[["n"]], 55)
   expect_equal(jfaRes[["x"]], 0.55, tolerance = 0.001)

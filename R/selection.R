@@ -50,7 +50,7 @@
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
-#' @seealso \code{\link{auditPrior}} \code{\link{planning}} \code{\link{evaluation}} \code{\link{report}} \code{\link{auditBF}}
+#' @seealso \code{\link{auditPrior}} \code{\link{planning}} \code{\link{evaluation}} \code{\link{report}}
 #'
 #' @references Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). \emph{Dollar-unit Sampling: A Practical Guide for Auditors}. Copp Clark Pitman; Belmont, Calif.: distributed by Fearon-Pitman.
 #' @references Wampler, B., & McEacharn, M. (2005). Monetary-unit sampling using Microsoft Excel. \emph{The CPA journal}, 75(5), 36.
@@ -155,18 +155,18 @@ selection <- function(data, size, units = 'items', method = 'random', values = N
   result <- list()
   result[["data"]]       <- as.data.frame(data)
   result[["sample"]]     <- as.data.frame(sample)
-  result[["n.req"]]      <- as.numeric(size)
-  result[["n.units"]]    <- as.numeric(sum(sample[["count"]]))
-  result[["n.items"]]    <- as.numeric(nrow(sample))
-  result[["N.units"]]    <- if (units == 'items') as.numeric(nrow(data)) else as.numeric(ceiling(sum(bookvalues)))
+  result[["n.req"]]      <- size
+  result[["n.units"]]    <- sum(sample[["count"]])
+  result[["n.items"]]    <- nrow(sample)
+  result[["N.units"]]    <- if (units == 'items') nrow(data) else ceiling(sum(bookvalues))
   result[["N.items"]]    <- as.numeric(nrow(data))
   if (!is.null(interval))
     result[["interval"]] <- as.numeric(interval)
-  result[["units"]]      <- as.character(units)
-  result[["method"]]     <- as.character(method)
-  result[["values"]]     <- as.character(values)
+  result[["units"]]      <- units
+  result[["method"]]     <- method
+  result[["values"]]     <- values
   if (method == 'interval')
-    result[["start"]]    <- as.numeric(start)
+    result[["start"]]    <- start
   # Add class 'jfaSelection' to the result
   class(result) <- "jfaSelection"
   return(result)

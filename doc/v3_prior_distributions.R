@@ -41,7 +41,7 @@ plot(prior4)
 
 ## -----------------------------------------------------------------------------
 prior5 <- auditPrior(method = 'hypotheses', likelihood = likelihood, expected = expected, conf.level = confidence,
-                     materiality = materiality, p.min = 0.6)
+                     materiality = materiality, p.hmin = 0.6)
 summary(prior5)
 
 ## -----------------------------------------------------------------------------

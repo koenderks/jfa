@@ -144,7 +144,7 @@ Stringer, K. W. (1963). Practical aspects of statistical sampling in auditing. \
 Touw, P., and Hoogduin, L. (2011). \emph{Statistiek voor Audit en Controlling}. Boom uitgevers Amsterdam.
 }
 \seealso{
-\code{\link{auditPrior}} \code{\link{planning}} \code{\link{selection}} \code{\link{report}} \code{\link{auditBF}}
+\code{\link{auditPrior}} \code{\link{planning}} \code{\link{selection}} \code{\link{report}}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}

@@ -6,7 +6,7 @@
 \usage{
 auditPrior(method = 'none', likelihood = 'poisson', expected = 0, 
            conf.level = 0.95, materiality = NULL, N.units = NULL, 
-           ir = NULL, cr = NULL, ub = NULL, p.min = NULL, 
+           ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL, 
            x = NULL, n = NULL, factor = NULL, alpha = NULL, beta = NULL)
 }
 \arguments{
@@ -28,7 +28,7 @@ auditPrior(method = 'none', likelihood = 'poisson', expected = 0,
 
 \item{ub}{if \code{method = 'bram'}, a numeric value between 0 and 1 specifying the upper bound for the prior distribution as a fraction of the population size.}
 
-\item{p.min}{if \code{method = 'hypotheses'}, a numeric value between 0 and 1 specifying the prior probability of the hypothesis of tolerable misstatement (\eqn{\theta <} materiality).}
+\item{p.hmin}{if \code{method = 'hypotheses'}, a numeric value between 0 and 1 specifying the prior probability of the hypothesis of tolerable misstatement (H-: \eqn{\theta <} materiality).}
 
 \item{x}{if \code{method = 'sample'} or \code{method = 'factor'}, a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.}
 
@@ -102,7 +102,7 @@ Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., & Wetzels, R. (2019). JA
 Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., & Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. \emph{International Journal of Auditing}, 1-16.
 }
 \seealso{
-\code{\link{planning}} \code{\link{selection}} \code{\link{evaluation}} \code{\link{report}} \code{\link{auditBF}}
+\code{\link{planning}} \code{\link{selection}} \code{\link{evaluation}} \code{\link{report}}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}

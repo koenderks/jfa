@@ -1,4 +1,4 @@
-context("2. Test consistency of function auditPrior()")
+context("Test consistency of function auditPrior()")
 
 # jfa version 0.2.0
 
@@ -31,15 +31,15 @@ test_that(desc = "(id: f2-v0.1.0-t2) Test for method = 'median'", {
 })
 
 test_that(desc = "(id: f2-v0.1.0-t3) Test for method = 'hypotheses'", {
-  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "hypotheses", likelihood = "binomial", p.min = 0.3)
+  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "hypotheses", likelihood = "binomial", p.hmin = 0.3)
   expect_equal(prior[["description"]]$alpha, 1)
   expect_equal(prior[["description"]]$beta, 6.954, tolerance = 0.001)
   
-  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "hypotheses", likelihood = "binomial", p.min = 1 - 0.3)
+  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "hypotheses", likelihood = "binomial", p.hmin = 1 - 0.3)
   expect_equal(prior[["description"]]$alpha, 1)
   expect_equal(prior[["description"]]$beta, 23.47232, tolerance = 0.001)
   
-  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "hypotheses", likelihood = "poisson", p.min = 0.3)
+  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "hypotheses", likelihood = "poisson", p.hmin = 0.3)
   expect_equal(prior[["description"]]$alpha, 1)
   expect_equal(prior[["description"]]$beta, 7.133, tolerance = 0.001) 
 })

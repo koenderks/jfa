@@ -1,4 +1,4 @@
-context("6. Test consistency of function selection()")
+context("Test consistency of function selection()")
 
 # jfa version 0.1.0
 

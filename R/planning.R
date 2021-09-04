@@ -48,7 +48,7 @@
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
-#' @seealso \code{\link{auditPrior}} \code{\link{selection}} \code{\link{evaluation}} \code{\link{report}} \code{\link{auditBF}}
+#' @seealso \code{\link{auditPrior}} \code{\link{selection}} \code{\link{evaluation}} \code{\link{report}}
 #'
 #' @references Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., & Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. \emph{International Journal of Auditing}, 1-16.
 #' @references Dyer, D. and Pierce, R.L. (1993). On the choice of the prior distribution in hypergeometric sampling. \emph{Communications in Statistics - Theory and Methods}, 22(8), 2125 - 2146.
@@ -79,8 +79,9 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
     prior.n      <- prior[["description"]]$implicit.n
     prior.x      <- prior[["description"]]$implicit.x
     likelihood   <- prior[["likelihood"]]
-    if (prior[["description"]]$beta == 0)
-      proper <- FALSE
+    if (!is.null(prior[['N.units']]))
+      N.units <- prior[['N.units']]
+    proper  <- prior[["description"]]$beta > 0
   } else if (prior) {
     prior.n <- 0
     prior.x <- 0
@@ -178,22 +179,22 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
     warning("the sample size is larger than 'N.units'")
   # Create the main results object
   result <- list()
-  result[["conf.level"]]            <- as.numeric(conf.level)
-  result[["x"]]                     <- as.numeric(x)
-  result[["n"]]                     <- as.numeric(ceiling(n))
-  result[["ub"]]                    <- as.numeric(bound)
-  result[["precision"]]             <- as.numeric(bound - mle)
+  result[["conf.level"]]    <- conf.level
+  result[["x"]]             <- x
+  result[["n"]]             <- n
+  result[["ub"]]            <- bound
+  result[["precision"]]     <- bound - mle
   if (!bayesian && materiality < 1)
-    result[["p.value"]]             <- as.numeric(p.val)
-  result[["N.units"]]               <- N.units
+    result[["p.value"]]     <- p.val
+  result[["N.units"]]       <- N.units
   if (likelihood == "hypergeometric")
-    result[["K"]]                   <- as.numeric(population.x)
-  result[["materiality"]]           <- as.numeric(materiality)
-  result[["min.precision"]]         <- as.numeric(min.precision)
-  result[["expected"]]              <- as.numeric(expected)
-  result[["likelihood"]]            <- as.character(likelihood)
-  result[["errorType"]]             <- as.character(errorType)
-  result[["iterations"]]            <- as.numeric(iter)
+    result[["K"]]           <- population.x
+  result[["materiality"]]   <- materiality
+  result[["min.precision"]] <- min.precision
+  result[["expected"]]      <- expected
+  result[["likelihood"]]    <- likelihood
+  result[["errorType"]]     <- errorType
+  result[["iterations"]]    <- iter
   # Create the prior distribution object	
   if (bayesian) {
     if (class(prior) == "jfaPrior" && !is.null(prior[["hypotheses"]])) {
@@ -250,20 +251,20 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
     if (result[["materiality"]] != 1) {
       result[["posterior"]][["hypotheses"]]             <- list()
       result[["posterior"]][["hypotheses"]]$hypotheses  <- c(paste0("H-: \u0398 < ", materiality), paste0("H+: \u0398 > ", materiality))
-      result[["posterior"]][["hypotheses"]]$p.min       <- .restrictprob(switch(likelihood, 
+      result[["posterior"]][["hypotheses"]]$p.hmin      <- .restrictprob(switch(likelihood, 
                                                                                 "poisson" = stats::pgamma(materiality, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
                                                                                 "binomial" = stats::pbeta(materiality, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
                                                                                 "hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N.units"]]), N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta)))
-      result[["posterior"]][["hypotheses"]]$p.plus      <- .restrictprob(switch(likelihood, 
+      result[["posterior"]][["hypotheses"]]$p.hplus     <- .restrictprob(switch(likelihood, 
                                                                                 "poisson" = stats::pgamma(materiality, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta, lower.tail = FALSE),
                                                                                 "binomial" = stats::pbeta(materiality, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta, lower.tail = FALSE),
                                                                                 "hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N.units"]]), N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta, lower.tail = FALSE)))
-      result[["posterior"]][["hypotheses"]]$odds.min    <- result[["posterior"]][["hypotheses"]]$p.min / result[["posterior"]][["hypotheses"]]$p.plus
-      result[["posterior"]][["hypotheses"]]$odds.plus   <- 1 / result[["posterior"]][["hypotheses"]]$odds.min
+      result[["posterior"]][["hypotheses"]]$odds.hmin   <- result[["posterior"]][["hypotheses"]]$p.hmin / result[["posterior"]][["hypotheses"]]$p.hplus
+      result[["posterior"]][["hypotheses"]]$odds.hplus  <- 1 / result[["posterior"]][["hypotheses"]]$odds.hmin
       # For improper priors we take the posterior odds as Bayes factor
-      result[["posterior"]][["hypotheses"]]$bf          <- result[["posterior"]][["hypotheses"]]$odds.min
+      result[["posterior"]][["hypotheses"]]$bf          <- result[["posterior"]][["hypotheses"]]$odds.hmin
       if (proper) # The prior is proper, so we divide by the prior odds
-        result[["posterior"]][["hypotheses"]]$bf        <- result[["posterior"]][["hypotheses"]]$bf / result[["prior"]][["hypotheses"]]$odds.min
+        result[["posterior"]][["hypotheses"]]$bf        <- result[["posterior"]][["hypotheses"]]$bf / result[["prior"]][["hypotheses"]]$odds.hmin
     }
     result[["posterior"]][["N.units"]] <- result[["N.units"]]
     # Add class 'jfaPosterior' to the posterior distribution object

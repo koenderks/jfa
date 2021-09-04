@@ -108,13 +108,13 @@ plot(prior4)
 
 ### Custom prior probabilities (`method = 'hypotheses'`)
 
-You can assign custom probabilities to the hypothesis of tolerable misstatement (using `p.min`) and/or the hypotheses of intolerable misstatement (using 1 - `p.min`) in combination with `method = 'hypotheses'`. As an example, the code below incorporates the information that the hypothesis of tolerable misstatement has a probability of 60% into a prior distribution.
+You can assign custom probabilities to the hypothesis of tolerable misstatement (using `p.hmin`) and/or the hypotheses of intolerable misstatement (using 1 - `p.hmin`) in combination with `method = 'hypotheses'`. As an example, the code below incorporates the information that the hypothesis of tolerable misstatement has a probability of 60% into a prior distribution.
 
 *Note: This method requires that you specify a value for the `materiality`.*
 
 ```{r}
 prior5 <- auditPrior(method = 'hypotheses', likelihood = likelihood, expected = expected, conf.level = confidence,
-                     materiality = materiality, p.min = 0.6)
+                     materiality = materiality, p.hmin = 0.6)
 summary(prior5)
 ```
 

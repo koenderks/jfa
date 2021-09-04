@@ -84,7 +84,7 @@
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
-#' @seealso \code{\link{auditPrior}} \code{\link{planning}} \code{\link{selection}} \code{\link{report}} \code{\link{auditBF}}
+#' @seealso \code{\link{auditPrior}} \code{\link{planning}} \code{\link{selection}} \code{\link{report}}
 #'
 #' @keywords evaluation confidence bound audit
 #'
@@ -127,6 +127,8 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
     prior.x <- prior[["description"]]$implicit.x
     prior.n <- prior[["description"]]$implicit.n
     method  <- prior[["likelihood"]]
+    if (!is.null(prior[['N.units']]))
+      N.units <- prior[['N.units']]
     proper  <- prior[["description"]]$beta > 0
   } else {
     prior.n <- 0
@@ -274,32 +276,32 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
   }
   # Create the main results object
   result                    <- list()
-  result[["conf.level"]]    <- as.numeric(conf.level)
+  result[["conf.level"]]    <- conf.level
   if (!is.null(mle))
-    result[["mle"]]         <- as.numeric(mle)
+    result[["mle"]]         <- mle
   if (!(method %in% c("direct", "difference", "quotient", "regression"))) {
-    result[["ub"]]          <- as.numeric(ub)
+    result[["ub"]]          <- ub
   } else {
-    result[["ub"]]          <- as.numeric(ub)
-    result[["lb"]]          <- as.numeric(lb)
+    result[["ub"]]          <- ub
+    result[["lb"]]          <- lb
   }
   if (!is.null(precision))
-    result[["precision"]]   <- as.numeric(precision)
+    result[["precision"]]   <- precision
   if (!bayesian && materiality < 1 && method %in% c('binomial', 'poisson', 'hypergeometric'))
-    result[["p.value"]]     <- as.numeric(p.val)
-  result[["x"]]             <- as.numeric(x.obs)
-  result[["t"]]             <- as.numeric(t.obs)
-  result[["n"]]             <- as.numeric(n.obs)
+    result[["p.value"]]     <- p.val
+  result[["x"]]             <- x.obs
+  result[["t"]]             <- t.obs
+  result[["n"]]             <- n.obs
 
-  result[["materiality"]]   <- as.numeric(materiality)
-  result[["min.precision"]] <- as.numeric(min.precision)
-  result[["method"]]        <- as.character(method)
+  result[["materiality"]]   <- materiality
+  result[["min.precision"]] <- min.precision
+  result[["method"]]        <- method
   if (!is.null(N.units))
-    result[["N.units"]]     <- as.numeric(N.units)
+    result[["N.units"]]     <- N.units
   if (!is.null(N.items))
     result[["N.items"]]     <- N.items
   if (method == 'hypergeometric' && is.logical(prior) && prior == FALSE)
-    result[["K"]] <- as.numeric(K)
+    result[["K"]]           <- K
   # Has the minimum precision objective (if applicable) been achieved?
   approve.p <- TRUE
   if (min.precision != 1) {
@@ -379,20 +381,20 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
     if (result[["materiality"]] != 1) {
       result[["posterior"]][["hypotheses"]]             <- list()
       result[["posterior"]][["hypotheses"]]$hypotheses  <- c(paste0("H-: \u0398 < ", materiality), paste0("H+: \u0398 > ", materiality))
-      result[["posterior"]][["hypotheses"]]$p.min       <- .restrictprob(switch(method, 
+      result[["posterior"]][["hypotheses"]]$p.hmin      <- .restrictprob(switch(method, 
                                                                                 "poisson" = stats::pgamma(materiality, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
                                                                                 "binomial" = stats::pbeta(materiality, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
                                                                                 "hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N.units"]]), N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta)))
-      result[["posterior"]][["hypotheses"]]$p.plus      <- .restrictprob(switch(method, 
+      result[["posterior"]][["hypotheses"]]$p.hplus     <- .restrictprob(switch(method, 
                                                                                 "poisson" = stats::pgamma(materiality, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta, lower.tail = FALSE),
                                                                                 "binomial" = stats::pbeta(materiality, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta, lower.tail = FALSE),
                                                                                 "hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N.units"]]), N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta, lower.tail = FALSE)))
-      result[["posterior"]][["hypotheses"]]$odds.min    <- result[["posterior"]][["hypotheses"]]$p.min / result[["posterior"]][["hypotheses"]]$p.plus
-      result[["posterior"]][["hypotheses"]]$odds.plus   <- 1 / result[["posterior"]][["hypotheses"]]$odds.min
+      result[["posterior"]][["hypotheses"]]$odds.hmin   <- result[["posterior"]][["hypotheses"]]$p.hmin / result[["posterior"]][["hypotheses"]]$p.hplus
+      result[["posterior"]][["hypotheses"]]$odds.hplus  <- 1 / result[["posterior"]][["hypotheses"]]$oddsh.min
       # For improper priors we take the posterior odds as Bayes factor
-      result[["posterior"]][["hypotheses"]]$bf          <- result[["posterior"]][["hypotheses"]]$odds.min
+      result[["posterior"]][["hypotheses"]]$bf          <- result[["posterior"]][["hypotheses"]]$odds.hmin
       if (proper) # The prior is proper, so we divide by the prior odds
-        result[["posterior"]][["hypotheses"]]$bf        <- result[["posterior"]][["hypotheses"]]$bf / result[["prior"]][["hypotheses"]]$odds.min
+        result[["posterior"]][["hypotheses"]]$bf        <- result[["posterior"]][["hypotheses"]]$bf / result[["prior"]][["hypotheses"]]$odds.hmin
     }
     result[["posterior"]][["N.units"]] <- result[["N.units"]]
     # Add class 'jfaPosterior' to the posterior distribution object.

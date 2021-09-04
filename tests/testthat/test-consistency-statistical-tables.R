@@ -1,4 +1,4 @@
-context("7. Test consistency of statistical tables")
+context("Test consistency of statistical tables")
 
 ###################
 ## Sample sizes ###
@@ -1614,41 +1614,25 @@ test_that(desc = "(id: f7-v0.5.5-t41) Statistical Sampling Results based on the 
                         0, 0, 0.01, 0.02, 0.04, 0.07, 0.12, 0.19, 0.28, 0.4, 0.56, 0.76, 1.01, 1.34, 1.76, 2.3, 3, 11.28, 46.25, 1124.09, 2000012.39, 8.253381e+09, 5.496438e+13, 
                         0, 0, 0, 0.01, 0.02, 0.03, 0.06, 0.09, 0.14, 0.21, 0.3, 0.42, 0.57, 0.77, 1.01, 1.32, 1.71, 6.04, 22.28, 428.29, 521815.53, 1.631971e+09, 8.743609e+12, 
                         0, 0, 0, 0, 0.01, 0.01, 0.02, 0.04, 0.07, 0.11, 0.16, 0.23, 0.33, 0.44, 0.59, 0.78, 1.01, 3.45, 11.71, 181.08, 151524.15, 3.591450e+08, 1.547769e+12), ncol = 12)
-  
   materiality <- 0.10
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
-  
-  tabFunction <- matrix(NA, nrow = length(n), ncol = length(k))
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
-      # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns], likelihood = 'binomial')
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = 'binomial')
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
-  
-  tableFunction <- as.data.frame(tabFunction)
-  tableFunction <- cbind(n = n, tableFunction)
-  tableFunction <- round(tableFunction, 2)
-  
   tableWorkflow <- as.data.frame(tabWorkflow)
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
-  
   for(i in 2:12){
-    tableFunction[, i] <- ifelse(tableFunction[, i] > 10000000, yes = format(tableFunction[, i], scientific = T), no = tableFunction[, i])
     tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
   }
-  
-  tableFunction <- matrix(as.numeric(unlist(tableFunction)), ncol = 12)
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
-  
-  expect_equal(tableFunction, reference)
   expect_equal(tableWorkflow, reference)
 })
 
@@ -1666,41 +1650,25 @@ test_that(desc = "(id: f7-v0.5.5-t42) Statistical Sampling Results based on the 
                         0, 0, 0, 0, 0, 0, 0, 0.01, 0.01, 0.02, 0.02, 0.03, 0.05, 0.06, 0.08, 0.1, 0.13, 0.35, 0.76, 2.92, 41.48, 905.57, 29373.42, 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.01, 0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.19, 0.43, 1.69, 20.44, 355.88, 9440.25, 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.01, 0.01, 0.02, 0.03, 0.1, 0.25, 1.01, 10.96, 154.78, 3368.61), ncol = 12)
-  
   materiality <- 0.05
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
-  
-  tabFunction <- matrix(NA, nrow = length(n), ncol = length(k))
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
-      # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns], likelihood = 'binomial')
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = 'binomial')
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
-  
-  tableFunction <- as.data.frame(tabFunction)
-  tableFunction <- cbind(n = n, tableFunction)
-  tableFunction <- round(tableFunction, 2)
-  
   tableWorkflow <- as.data.frame(tabWorkflow)
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
-  
   for(i in 2:12){
-    tableFunction[, i] <- ifelse(tableFunction[, i] > 10000000, yes = format(tableFunction[, i], scientific = T), no = tableFunction[, i])
     tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
   }
-  
-  tableFunction <- matrix(as.numeric(unlist(tableFunction)), ncol = 12)
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
-  
-  expect_equal(tableFunction, reference)
   expect_equal(tableWorkflow, reference)
 })
 
@@ -1718,41 +1686,25 @@ test_that(desc = "(id: f7-v0.5.5-t43) Statistical Sampling Results based on the 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.01, 0.05, 0.3, 1.01, 2.87, 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.02, 0.16, 0.59, 1.68, 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.08, 0.34, 1.01), ncol = 12)
-  
   materiality <- 0.02
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
-  
-  tabFunction <- matrix(NA, nrow = length(n), ncol = length(k))
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
-      # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns], likelihood = 'binomial')
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = 'binomial')
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
-  
-  tableFunction <- as.data.frame(tabFunction)
-  tableFunction <- cbind(n = n, tableFunction)
-  tableFunction <- round(tableFunction, 2)
-  
   tableWorkflow <- as.data.frame(tabWorkflow)
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
-  
   for(i in 2:12){
-    tableFunction[, i] <- ifelse(tableFunction[, i] > 10000000, yes = format(tableFunction[, i], scientific = T), no = tableFunction[, i])
     tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
   }
-  
-  tableFunction <- matrix(as.numeric(unlist(tableFunction)), ncol = 12)
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
-  
-  expect_equal(tableFunction, reference)
   expect_equal(tableWorkflow, reference)
 })
 
@@ -1770,41 +1722,25 @@ test_that(desc = "(id: f7-v0.5.5-t44) Statistical Sampling Results based on the 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.05, 0.14, 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.02, 0.07, 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.03), ncol = 12)
-  
   materiality <- 0.01
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
-  
-  tabFunction <- matrix(NA, nrow = length(n), ncol = length(k))
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
-      # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns], likelihood = 'binomial')
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = 'binomial')
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
-  
-  tableFunction <- as.data.frame(tabFunction)
-  tableFunction <- cbind(n = n, tableFunction)
-  tableFunction <- round(tableFunction, 2)
-  
   tableWorkflow <- as.data.frame(tabWorkflow)
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
-  
   for(i in 2:12){
-    tableFunction[, i] <- ifelse(tableFunction[, i] > 10000000, yes = format(tableFunction[, i], scientific = T), no = tableFunction[, i])
     tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
   }
-  
-  tableFunction <- matrix(as.numeric(unlist(tableFunction)), ncol = 12)
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
-  
-  expect_equal(tableFunction, reference)
   expect_equal(tableWorkflow, reference)
 })
 
@@ -1824,41 +1760,25 @@ test_that(desc = "(id: f7-v0.5.5-t45) Statistical Sampling Results based on the 
                         0, 0.01, 0.01, 0.03, 0.05, 0.09, 0.14, 0.21, 0.3, 0.42, 0.57, 0.77, 1.01, 1.32, 1.71, 2.21, 2.84, 9.96, 37.52, 741.84, 820235.09, 2.042278e+09, 8.107642e+12, 
                         0, 0, 0, 0.01, 0.02, 0.04, 0.07, 0.11, 0.16, 0.23, 0.33, 0.44, 0.59, 0.78, 1.01, 1.3, 1.67, 5.52, 18.88, 300.02, 230614.49, 4.384529e+08, 1.406737e+12, 
                         0, 0, 0, 0, 0.01, 0.02, 0.03, 0.05, 0.08, 0.13, 0.18, 0.26, 0.35, 0.46, 0.61, 0.79, 1.01, 3.25, 10.3, 133.94, 71923.52, 1.045010e+08, 2.710605e+11), ncol = 12)
-  
   materiality <- 0.10
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
-  
-  tabFunction <- matrix(NA, nrow = length(n), ncol = length(k))
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
-      # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns], likelihood = "poisson")
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "poisson")
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
-  }
-  
-  tableFunction <- as.data.frame(tabFunction)
-  tableFunction <- cbind(n = n, tableFunction)
-  tableFunction <- round(tableFunction, 2)
-  
+  }  
   tableWorkflow <- as.data.frame(tabWorkflow)
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
-  
   for(i in 2:12){
-    tableFunction[, i] <- ifelse(tableFunction[, i] > 10000000, yes = format(tableFunction[, i], scientific = T), no = tableFunction[, i])
     tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
   }
-  
-  tableFunction <- matrix(as.numeric(unlist(tableFunction)), ncol = 12)
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
-  
-  expect_equal(tableFunction, reference)
   expect_equal(tableWorkflow, reference)
 })
 
@@ -1880,37 +1800,22 @@ test_that(desc = "(id: f7-v0.5.5-t46) Statistical Sampling Results based on the 
   materiality <- 0.05
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
-  
-  tabFunction <- matrix(NA, nrow = length(n), ncol = length(k))
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
-      # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns], likelihood = "poisson")
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "poisson")
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
-  
-  tableFunction <- as.data.frame(tabFunction)
-  tableFunction <- cbind(n = n, tableFunction)
-  tableFunction <- round(tableFunction, 2)
-  
   tableWorkflow <- as.data.frame(tabWorkflow)
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
-  
   for(i in 2:12){
-    tableFunction[, i] <- ifelse(tableFunction[, i] > 10000000, yes = format(tableFunction[, i], scientific = T), no = tableFunction[, i])
     tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
   }
-  
-  tableFunction <- matrix(as.numeric(unlist(tableFunction)), ncol = 12)
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
-  
-  expect_equal(tableFunction, reference)
   expect_equal(tableWorkflow, reference)
 })
 
@@ -1928,41 +1833,25 @@ test_that(desc = "(id: f7-v0.5.5-t47) Statistical Sampling Results based on the 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.01, 0.05, 0.3, 1.01, 2.84, 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.02, 0.16, 0.59, 1.67, 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.08, 0.35, 1.01), ncol = 12)
-  
   materiality <- 0.02
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
-  
-  tabFunction <- matrix(NA, nrow = length(n), ncol = length(k))
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
-      # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns], likelihood = "poisson")
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "poisson")
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
-  
-  tableFunction <- as.data.frame(tabFunction)
-  tableFunction <- cbind(n = n, tableFunction)
-  tableFunction <- round(tableFunction, 2)
-  
   tableWorkflow <- as.data.frame(tabWorkflow)
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
-  
   for(i in 2:12){
-    tableFunction[, i] <- ifelse(tableFunction[, i] > 10000000, yes = format(tableFunction[, i], scientific = T), no = tableFunction[, i])
     tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
   }
-  
-  tableFunction <- matrix(as.numeric(unlist(tableFunction)), ncol = 12)
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
-  
-  expect_equal(tableFunction, reference)
   expect_equal(tableWorkflow, reference)
 })
 
@@ -1980,41 +1869,25 @@ test_that(desc = "(id: f7-v0.5.5-t48) Statistical Sampling Results based on the 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.05, 0.14, 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.02, 0.07, 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.03), ncol = 12)
-  
   materiality <- 0.01
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
-  
-  tabFunction <- matrix(NA, nrow = length(n), ncol = length(k))
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
-      # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns], likelihood = "poisson")
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "poisson")
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
-  
-  tableFunction <- as.data.frame(tabFunction)
-  tableFunction <- cbind(n = n, tableFunction)
-  tableFunction <- round(tableFunction, 2)
-  
   tableWorkflow <- as.data.frame(tabWorkflow)
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
-  
   for(i in 2:12){
-    tableFunction[, i] <- ifelse(tableFunction[, i] > 10000000, yes = format(tableFunction[, i], scientific = T), no = tableFunction[, i])
     tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
   }
-  
-  tableFunction <- matrix(as.numeric(unlist(tableFunction)), ncol = 12)
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
-  
-  expect_equal(tableFunction, reference)
   expect_equal(tableWorkflow, reference)
 })
 
@@ -2034,44 +1907,28 @@ test_that(desc = "(id: f7-v0.5.5-t49) Statistical Sampling Results based on the 
                         0.02, 0.06, 0.16, 0.36, 0.77, 1.61, 3.44, 8.02, 21.66, 73.3, 344.91, 2652.34, 45136.96, 3638641.03, Inf, Inf, NA, NA, NA, NA, NA, NA, NA, 
                         0.01, 0.03, 0.09, 0.22, 0.49, 1.05, 2.26, 5.16, 13.42, 43.22, 192.16, 1393.57, 22391.29, 1708209.64, Inf, Inf, NA, NA, NA, NA, NA, NA, NA, 
                         0, 0.01, 0.05, 0.13, 0.32, 0.7, 1.53, 3.46, 8.74, 26.91, 113.37, 775.78, 11765.47, 848989.11, Inf, Inf, NA, NA, NA, NA, NA, NA, NA), ncol = 12)
-  
   materiality <- 0.10
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
   N <- 100
-  
-  tabFunction <- matrix(NA, nrow = length(n), ncol = length(k))
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       if(n[rows] >= N)
         next
-      # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns], likelihood = "hypergeometric", N.units = N)
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N.units = N)
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior, N.units = N)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
-  
-  tableFunction <- as.data.frame(tabFunction)
-  tableFunction <- cbind(n = n, tableFunction)
-  tableFunction <- round(tableFunction, 2)
-  
   tableWorkflow <- as.data.frame(tabWorkflow)
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
-  
   for(i in 2:12){
-    tableFunction[, i] <- ifelse(tableFunction[, i] > 10000000, yes = format(tableFunction[, i], scientific = T), no = tableFunction[, i])
     tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
   }
-  
-  tableFunction <- matrix(as.numeric(unlist(tableFunction)), ncol = 12)
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
-  
-  expect_equal(tableFunction, reference)
   expect_equal(tableWorkflow, reference)
 })
 
@@ -2089,55 +1946,39 @@ test_that(desc = "(id: f7-v0.5.5-t50) Statistical Sampling Results based on the 
                         0, 0.01, 0.02, 0.04, 0.08, 0.14, 0.24, 0.38, 0.57, 0.83, 1.2, 1.72, 2.43, 3.45, 4.92, 7.04, 10.19, 79.65, 959.66, 587772.03, 1.164044e+14, 5.897822e+14, NA, 
                         0, 0, 0.01, 0.02, 0.04, 0.07, 0.13, 0.21, 0.33, 0.49, 0.72, 1.03, 1.46, 2.05, 2.89, 4.08, 5.79, 39.6, 410.41, 192886.15, 6.965931e+13, Inf, NA, 
                         0, 0, 0, 0.01, 0.02, 0.03, 0.06, 0.11, 0.18, 0.29, 0.43, 0.63, 0.9, 1.27, 1.77, 2.48, 3.48, 21.34, 191.83, 69297.44, 1.701295e+13, 5.203960e+14, NA), ncol = 12)
-  
   materiality <- 0.10
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
   N <- 500
-  
   tabFunction <- matrix(NA, nrow = length(n), ncol = length(k))
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       if(n[rows] >= N)
         next
-      # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns], likelihood = "hypergeometric", N.units = N)
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N.units = N)
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior, N.units = N)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
-  
-  tableFunction <- as.data.frame(tabFunction)
-  tableFunction <- cbind(n = n, tableFunction)
-  tableFunction <- round(tableFunction, 2)
-  
   tableWorkflow <- as.data.frame(tabWorkflow)
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
-  
   for(i in 2:12){
-    tableFunction[, i] <- ifelse(tableFunction[, i] > 10000000, yes = format(tableFunction[, i], scientific = T), no = tableFunction[, i])
     tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
   }
-  
-  tableFunction <- matrix(as.numeric(unlist(tableFunction)), ncol = 12)
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
-  
   if(Sys.info()['sysname'] == "Linux") { # TODO: Need to figure out why this happens on Linux
-    reference[88] <- tableFunction[88] <- tableWorkflow[88] <- NA
-    reference[89] <- tableFunction[89] <- tableWorkflow[89] <- NA
-    reference[181] <- tableFunction[181] <- tableWorkflow[181] <- NA
-    reference[182] <- tableFunction[182] <- tableWorkflow[182] <- NA
-    reference[205] <- tableFunction[205] <- tableWorkflow[205] <- NA
-    reference[228] <- tableFunction[228] <- tableWorkflow[228] <- NA
-    reference[251] <- tableFunction[251] <- tableWorkflow[251] <- NA
-    reference[274] <- tableFunction[274] <- tableWorkflow[274] <- NA
+    reference[88] <- tableWorkflow[88] <- NA
+    reference[89] <- tableWorkflow[89] <- NA
+    reference[181] <- tableWorkflow[181] <- NA
+    reference[182] <- tableWorkflow[182] <- NA
+    reference[205] <- tableWorkflow[205] <- NA
+    reference[228] <- tableWorkflow[228] <- NA
+    reference[251] <- tableWorkflow[251] <- NA
+    reference[274] <- tableWorkflow[274] <- NA
   }
-  
-  expect_equal(tableFunction, reference)
   expect_equal(tableWorkflow, reference)
 })
 
@@ -2155,44 +1996,28 @@ test_that(desc = "(id: f7-v0.5.5-t51) Statistical Sampling Results based on the 
                         0, 0, 0.01, 0.03, 0.06, 0.1, 0.17, 0.27, 0.4, 0.58, 0.82, 1.13, 1.55, 2.11, 2.87, 3.89, 5.3, 26.83, 169.61, 14114.6, 1.277075e+09, 3.187928e+14, Inf, 
                         0, 0, 0, 0.01, 0.02, 0.05, 0.08, 0.14, 0.22, 0.32, 0.47, 0.66, 0.91, 1.24, 1.68, 2.26, 3.04, 13.94, 77.25, 4982.88, 3.068627e+08, Inf, Inf, 
                         0, 0, 0, 0, 0.01, 0.02, 0.04, 0.07, 0.12, 0.18, 0.27, 0.39, 0.54, 0.75, 1.01, 1.37, 1.83, 7.81, 38.52, 1939.62, 8.131636e+07, 8.582884e+13, Inf), ncol = 12)
-  
   materiality <- 0.10
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
   N <- 1000
-  
-  tabFunction <- matrix(NA, nrow = length(n), ncol = length(k))
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       if(n[rows] >= N)
         next
-      # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns], likelihood = "hypergeometric", N.units = N)
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N.units = N)
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior, N.units = N)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
-  
-  tableFunction <- as.data.frame(tabFunction)
-  tableFunction <- cbind(n = n, tableFunction)
-  tableFunction <- round(tableFunction, 2)
-  
   tableWorkflow <- as.data.frame(tabWorkflow)
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
-  
   for(i in 2:12){
-    tableFunction[, i] <- ifelse(tableFunction[, i] > 10000000, yes = format(tableFunction[, i], scientific = T), no = tableFunction[, i])
     tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
   }
-  
-  tableFunction <- matrix(as.numeric(unlist(tableFunction)), ncol = 12)
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
-  
-  expect_equal(tableFunction, reference)
   expect_equal(tableWorkflow, reference)
 })
 
@@ -2210,44 +2035,28 @@ test_that(desc = "(id: f7-v0.5.5-t52) Statistical Sampling Results based on the 
                         0, 0.01, 0.03, 0.07, 0.14, 0.26, 0.47, 0.83, 1.5, 2.87, 6.01, 14.87, 48.85, 268.86, 4558.45, Inf, NA, NA, NA, NA, NA, NA, NA, 
                         0, 0.01, 0.01, 0.04, 0.08, 0.17, 0.31, 0.58, 1.07, 2.05, 4.25, 10.32, 32.89, 174.2, 2830.7, Inf, NA, NA, NA, NA, NA, NA, NA, 
                         0, 0, 0.01, 0.02, 0.05, 0.11, 0.21, 0.41, 0.77, 1.5, 3.11, 7.42, 23.03, 117.56, 1831.46, Inf, NA, NA, NA, NA, NA, NA, NA), ncol = 12)
-  
   materiality <- 0.05
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
   N <- 100
-  
-  tabFunction <- matrix(NA, nrow = length(n), ncol = length(k))
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       if(n[rows] >= N)
         next
-      # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns], likelihood = "hypergeometric", N.units = N)
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N.units = N)
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior, N.units = N)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
-  
-  tableFunction <- as.data.frame(tabFunction)
-  tableFunction <- cbind(n = n, tableFunction)
-  tableFunction <- round(tableFunction, 2)
-  
   tableWorkflow <- as.data.frame(tabWorkflow)
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
-  
   for(i in 2:12){
-    tableFunction[, i] <- ifelse(tableFunction[, i] > 10000000, yes = format(tableFunction[, i], scientific = T), no = tableFunction[, i])
     tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
   }
-  
-  tableFunction <- matrix(as.numeric(unlist(tableFunction)), ncol = 12)
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
-  
-  expect_equal(tableFunction, reference)
   expect_equal(tableWorkflow, reference)
 })
 
@@ -2265,44 +2074,28 @@ test_that(desc = "(id: f7-v0.5.5-t53) Statistical Sampling Results based on the 
                         0, 0, 0, 0, 0, 0.01, 0.02, 0.03, 0.04, 0.06, 0.09, 0.12, 0.16, 0.22, 0.28, 0.37, 0.47, 1.42, 4.14, 49.83, 200414.31, 1.168384e+13, NA, 
                         0, 0, 0, 0, 0, 0, 0.01, 0.01, 0.02, 0.03, 0.04, 0.06, 0.09, 0.12, 0.16, 0.21, 0.28, 0.89, 2.57, 27.4, 78888.98, 3.133663e+12, NA, 
                         0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.01, 0.02, 0.03, 0.04, 0.06, 0.09, 0.12, 0.16, 0.57, 1.66, 16.12, 33561.12, 1.033501e+12, NA), ncol = 12)
-  
   materiality <- 0.05
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
   N <- 500
-  
-  tabFunction <- matrix(NA, nrow = length(n), ncol = length(k))
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       if(n[rows] >= N)
         next
-      # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns], likelihood = "hypergeometric", N.units = N)
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N.units = N)
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior, N.units = N)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
-  
-  tableFunction <- as.data.frame(tabFunction)
-  tableFunction <- cbind(n = n, tableFunction)
-  tableFunction <- round(tableFunction, 2)
-  
   tableWorkflow <- as.data.frame(tabWorkflow)
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
-  
   for(i in 2:12){
-    tableFunction[, i] <- ifelse(tableFunction[, i] > 10000000, yes = format(tableFunction[, i], scientific = T), no = tableFunction[, i])
     tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
   }
-  
-  tableFunction <- matrix(as.numeric(unlist(tableFunction)), ncol = 12)
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
-  
-  expect_equal(tableFunction, reference)
   expect_equal(tableWorkflow, reference)
 })
 
@@ -2320,44 +2113,28 @@ test_that(desc = "(id: f7-v0.5.5-t54) Statistical Sampling Results based on the 
                         0, 0, 0, 0, 0, 0, 0.01, 0.01, 0.02, 0.03, 0.05, 0.07, 0.09, 0.12, 0.16, 0.2, 0.25, 0.7, 1.69, 9.47, 729.13, 321543.93, 1.044844e+09, 
                         0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.01, 0.02, 0.03, 0.04, 0.06, 0.08, 0.11, 0.14, 0.41, 1.03, 5.48, 322.42, 109945.71, 2.901797e+08, 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.01, 0.01, 0.02, 0.03, 0.04, 0.05, 0.07, 0.24, 0.64, 3.35, 155.45, 41099.82, 8.812093e+07), ncol = 12)
-  
   materiality <- 0.05
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
   N <- 1000
-  
-  tabFunction <- matrix(NA, nrow = length(n), ncol = length(k))
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       if(n[rows] >= N)
         next
-      # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns], likelihood = "hypergeometric", N.units = N)
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N.units = N)
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior, N.units = N)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
-  
-  tableFunction <- as.data.frame(tabFunction)
-  tableFunction <- cbind(n = n, tableFunction)
-  tableFunction <- round(tableFunction, 2)
-  
   tableWorkflow <- as.data.frame(tabWorkflow)
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
-  
   for(i in 2:12){
-    tableFunction[, i] <- ifelse(tableFunction[, i] > 10000000, yes = format(tableFunction[, i], scientific = T), no = tableFunction[, i])
     tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
   }
-  
-  tableFunction <- matrix(as.numeric(unlist(tableFunction)), ncol = 12)
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
-  
-  expect_equal(tableFunction, reference)
   expect_equal(tableWorkflow, reference)
 })
 
@@ -2375,44 +2152,28 @@ test_that(desc = "(id: f7-v0.5.5-t55) Statistical Sampling Results based on the 
                         0, 0.01, 0.01, 0.03, 0.04, 0.07, 0.12, 0.19, 0.31, 0.49, 0.81, 1.38, 2.58, 5.75, 18.55, 181.58, NA, NA, NA, NA, NA, NA, NA, 
                         0, 0, 0.01, 0.01, 0.03, 0.05, 0.08, 0.14, 0.23, 0.37, 0.62, 1.07, 2.02, 4.5, 14.35, 137.66, NA, NA, NA, NA, NA, NA, NA, 
                         0, 0, 0, 0.01, 0.02, 0.03, 0.06, 0.1, 0.17, 0.28, 0.48, 0.85, 1.61, 3.6, 11.38, 107.03, NA, NA, NA, NA, NA, NA, NA), ncol = 12)
-  
   materiality <- 0.02
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
   N <- 100
-  
-  tabFunction <- matrix(NA, nrow = length(n), ncol = length(k))
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       if(n[rows] >= N)
         next
-      # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns], likelihood = "hypergeometric", N.units = N)
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N.units = N)
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior, N.units = N)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
-  
-  tableFunction <- as.data.frame(tabFunction)
-  tableFunction <- cbind(n = n, tableFunction)
-  tableFunction <- round(tableFunction, 2)
-  
   tableWorkflow <- as.data.frame(tabWorkflow)
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
-  
   for(i in 2:12){
-    tableFunction[, i] <- ifelse(tableFunction[, i] > 10000000, yes = format(tableFunction[, i], scientific = T), no = tableFunction[, i])
     tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
   }
-  
-  tableFunction <- matrix(as.numeric(unlist(tableFunction)), ncol = 12)
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
-  
-  expect_equal(tableFunction, reference)
   expect_equal(tableWorkflow, reference)
 })
 
@@ -2430,44 +2191,28 @@ test_that(desc = "(id: f7-v0.5.5-t56) Statistical Sampling Results based on the 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.01, 0.01, 0.02, 0.02, 0.03, 0.08, 0.19, 0.8, 16.38, 7623.36, NA, 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.01, 0.01, 0.04, 0.11, 0.53, 10.59, 4065.47, NA, 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.02, 0.07, 0.36, 7.17, 2294.15, NA), ncol = 12)
-  
   materiality <- 0.02
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
   N <- 500
-  
-  tabFunction <- matrix(NA, nrow = length(n), ncol = length(k))
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       if(n[rows] >= N)
         next
-      # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns], likelihood = "hypergeometric", N.units = N)
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N.units = N)
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior, N.units = N)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
-  
-  tableFunction <- as.data.frame(tabFunction)
-  tableFunction <- cbind(n = n, tableFunction)
-  tableFunction <- round(tableFunction, 2)
-  
   tableWorkflow <- as.data.frame(tabWorkflow)
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
-  
   for(i in 2:12){
-    tableFunction[, i] <- ifelse(tableFunction[, i] > 10000000, yes = format(tableFunction[, i], scientific = T), no = tableFunction[, i])
     tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
   }
-  
-  tableFunction <- matrix(as.numeric(unlist(tableFunction)), ncol = 12)
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
-  
-  expect_equal(tableFunction, reference)
   expect_equal(tableWorkflow, reference)
 })
 
@@ -2485,44 +2230,28 @@ test_that(desc = "(id: f7-v0.5.5-t57) Statistical Sampling Results based on the 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.01, 0.02, 0.06, 0.22, 1.63, 11.28, 139.61, 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.03, 0.13, 1.05, 6.91, 75.24, 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.07, 0.69, 4.46, 43.38), ncol = 12)
-  
   materiality <- 0.02
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
   N <- 1000
-  
-  tabFunction <- matrix(NA, nrow = length(n), ncol = length(k))
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       if(n[rows] >= N)
         next
-      # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns], likelihood = "hypergeometric", N.units = N)
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N.units = N)
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior, N.units = N)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
-  
-  tableFunction <- as.data.frame(tabFunction)
-  tableFunction <- cbind(n = n, tableFunction)
-  tableFunction <- round(tableFunction, 2)
-  
   tableWorkflow <- as.data.frame(tabWorkflow)
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
-  
   for(i in 2:12){
-    tableFunction[, i] <- ifelse(tableFunction[, i] > 10000000, yes = format(tableFunction[, i], scientific = T), no = tableFunction[, i])
     tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
   }
-  
-  tableFunction <- matrix(as.numeric(unlist(tableFunction)), ncol = 12)
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
-  
-  expect_equal(tableFunction, reference)
   expect_equal(tableWorkflow, reference)
 })
 
@@ -2540,44 +2269,28 @@ test_that(desc = "(id: f7-v0.5.5-t58) Statistical Sampling Results based on the 
                         0.01, 0.01, 0.02, 0.03, 0.04, 0.06, 0.09, 0.13, 0.19, 0.28, 0.42, 0.65, 1.06, 1.92, 4.33, 18.09, NA, NA, NA, NA, NA, NA, NA, 
                         0, 0.01, 0.01, 0.02, 0.03, 0.04, 0.07, 0.1, 0.15, 0.22, 0.34, 0.52, 0.86, 1.58, 3.58, 14.89, NA, NA, NA, NA, NA, NA, NA, 
                         0, 0, 0.01, 0.01, 0.02, 0.03, 0.05, 0.07, 0.11, 0.17, 0.27, 0.43, 0.72, 1.32, 3.01, 12.48, NA, NA, NA, NA, NA, NA, NA), ncol = 12)
-  
   materiality <- 0.01
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
   N <- 100
-  
-  tabFunction <- matrix(NA, nrow = length(n), ncol = length(k))
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       if(n[rows] >= N)
         next
-      # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns], likelihood = "hypergeometric", N.units = N)
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N.units = N)
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior, N.units = N)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
-  
-  tableFunction <- as.data.frame(tabFunction)
-  tableFunction <- cbind(n = n, tableFunction)
-  tableFunction <- round(tableFunction, 2)
-  
   tableWorkflow <- as.data.frame(tabWorkflow)
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
-  
   for(i in 2:12){
-    tableFunction[, i] <- ifelse(tableFunction[, i] > 10000000, yes = format(tableFunction[, i], scientific = T), no = tableFunction[, i])
     tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
   }
-  
-  tableFunction <- matrix(as.numeric(unlist(tableFunction)), ncol = 12)
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
-  
-  expect_equal(tableFunction, reference)
   expect_equal(tableWorkflow, reference)
 })
 
@@ -2595,44 +2308,28 @@ test_that(desc = "(id: f7-v0.5.5-t59) Statistical Sampling Results based on the 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.02, 0.04, 0.15, 1.49, 36.17, NA, 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.02, 0.1, 1.08, 24.98, NA, 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.06, 0.8, 17.92, NA), ncol = 12)
-  
   materiality <- 0.01
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
   N <- 500
-  
-  tabFunction <- matrix(NA, nrow = length(n), ncol = length(k))
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       if(n[rows] >= N)
         next
-      # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns], likelihood = "hypergeometric", N.units = N)
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N.units = N)
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior, N.units = N)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
-  
-  tableFunction <- as.data.frame(tabFunction)
-  tableFunction <- cbind(n = n, tableFunction)
-  tableFunction <- round(tableFunction, 2)
-  
   tableWorkflow <- as.data.frame(tabWorkflow)
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
-  
   for(i in 2:12){
-    tableFunction[, i] <- ifelse(tableFunction[, i] > 10000000, yes = format(tableFunction[, i], scientific = T), no = tableFunction[, i])
     tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
   }
-  
-  tableFunction <- matrix(as.numeric(unlist(tableFunction)), ncol = 12)
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
-  
-  expect_equal(tableFunction, reference)
   expect_equal(tableWorkflow, reference)
 })
 
@@ -2650,43 +2347,27 @@ test_that(desc = "(id: f7-v0.5.5-t60) Statistical Sampling Results based on the 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.03, 0.19, 0.8, 3.12, 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.11, 0.53, 2.12, 
                         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.01, 0.07, 0.36, 1.49), ncol = 12)
-  
   materiality <- 0.01
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
   N <- 1000
-  
-  tabFunction <- matrix(NA, nrow = length(n), ncol = length(k))
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       if(n[rows] >= N)
         next
-      # Via auditBF function
-      tabFunction[rows, columns] <- auditBF(materiality = materiality, n = n[rows], x = k[columns], likelihood = "hypergeometric", N.units = N)
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "hypergeometric", N.units = N)
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior, N.units = N)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf
     }
   }
-  
-  tableFunction <- as.data.frame(tabFunction)
-  tableFunction <- cbind(n = n, tableFunction)
-  tableFunction <- round(tableFunction, 2)
-  
   tableWorkflow <- as.data.frame(tabWorkflow)
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
-  
   for(i in 2:12){
-    tableFunction[, i] <- ifelse(tableFunction[, i] > 10000000, yes = format(tableFunction[, i], scientific = T), no = tableFunction[, i])
     tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
   }
-  
-  tableFunction <- matrix(as.numeric(unlist(tableFunction)), ncol = 12)
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
-  
-  expect_equal(tableFunction, reference)
   expect_equal(tableWorkflow, reference)
 })

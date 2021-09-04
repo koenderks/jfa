@@ -1,4 +1,4 @@
-context("11. Benchmark against AuditSampler package")
+context("Benchmark against AuditSampler package")
 
 # AuditSampler [https://cplusglobal.wordpress.com/2015/02/14/auditsampler-statistical-audit-sampling-software/]
 # Retrieved on 28-04-2021 from https://cplusglobal.wordpress.com/2014/04/15/attributes-sampling/

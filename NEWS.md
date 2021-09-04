@@ -7,9 +7,7 @@
 
 **Major changes**
 
-- `poisson` is now the default likelihood for all functions.
-- `nPrior` and `kPrior` have been removed from the `planning()` and `evaluation()` functions. All prior distributions must now be specified using `prior = TRUE` (noninformative priors) or using a call to `auditPrior()`.
-- From `jfa` 0.5.7 to `jfa` 0.6.0 there has been a major overhaul in the names of function arguments. This is done so that the calls integrate better with general R syntax. The following names have been changed:
+- From `jfa` 0.5.7 to `jfa` 0.6.0 there has been a major overhaul in the names of function arguments. This is done so that the calls integrate better with general R syntax. I apologive for any inconvenience this may cause. The following names have been changed:
     - `sampleK` -> `x` (in `auditPrior()`)
     - `sampleN` -> `n` (in `auditPrior()`)
     - `N` -> `N.units` (in `auditPrior()`)
@@ -22,7 +20,7 @@
     - `algorithm` -> `method` (in `selection()`)
     - `expectedErrors` -> `expected` (in `auditPrior()` and `planning()`)
     - `confidence` -> `conf.level` (in `auditPrior()`, `planning()`, and `evaluation()`)
-    - `pHmin` -> `p.min` (in `auditPrior()`)
+    - `pHmin` -> `p.hmin` (in `auditPrior()`)
     - `minPrecision` -> `min.precision` (in `auditPrior()`, `planning()`, and `evaluation()`)
     - `population` -> `data` (in `selection()`)
     - `kSumstats` -> `x` (in `evaluation()`)
@@ -37,11 +35,13 @@
     - `csA` -> `cs.a` (in `evaluation()`)
     - `csB` -> `cs.b` (in `evaluation()`)
     - `csMu` -> `cs.mu` (in `evaluation()`)
+- `poisson` is now the default likelihood for all functions.
+- `nPrior` and `kPrior` have been removed from the `planning()` and `evaluation()` functions. All prior distributions must now be specified using `prior = TRUE` (noninformative priors) or using a call to `auditPrior()`.
+- Removed the `auditBF()` function since its value is available through `print(evaluation(materiality = x, prior = auditPrior(method = 'median', materiality = x)))`
 
 **Minor changes**
 
-- It is now allowed for `nSumstats` and `kSumstats` to have the same value.
-- Added argument `BF10` in the `auditPrior()` function that computes Bayes factors in favor of intolerable misstatement.
+- It is now allowed for `x` and `n` to have the same value.
 
 # jfa 0.5.7
 
