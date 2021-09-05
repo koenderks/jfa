@@ -231,6 +231,8 @@
 <li>
 <code>poisson</code> is now the default likelihood for all functions since it is the most conservative.</li>
 <li>
+<code>times</code> (former <code>counts</code>) must now be indicated as a column name in the <code>data</code> instead of a vector.</li>
+<li>
 <code>nPrior</code> and <code>kPrior</code> have been removed from the <code><a href="../reference/planning.html">planning()</a></code> and <code><a href="../reference/evaluation.html">evaluation()</a></code> functions. All prior distributions must now be specified using <code>prior = TRUE</code> (noninformative priors) or using a call to <code><a href="../reference/auditPrior.html">auditPrior()</a></code>.</li>
 <li>Removed the <code>auditBF()</code> function since its value is available through <code><a href="https://rdrr.io/r/base/print.html">print(evaluation(materiality = x, prior = auditPrior(method = 'median', materiality = x)))</a></code>
 </li>
