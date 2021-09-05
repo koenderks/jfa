@@ -25,7 +25,7 @@
 #' # Draw a sample of 100 monetary units from the population using
 #' # fixed interval monetary unit sampling
 #' sample <- selection(data = BuildIt, size = 100, method = 'interval', 
-#'                     units = 'mus', values = 'bookValue')$sample
+#'                     units = 'values', values = 'bookValue')$sample
 #' 
 #' # Evaluate using the Stringer bound
 #' result <- evaluation(conf.level = 0.95, materiality = 0.05, method = 'stringer',

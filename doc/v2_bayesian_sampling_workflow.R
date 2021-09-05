@@ -40,7 +40,7 @@ plot(stage1)
 
 ## -----------------------------------------------------------------------------
 # Step 2: Draw a sample from the financial statements.
-stage2 <- selection(data = BuildIt, size = stage1, units = "mus", values = "bookValue")
+stage2 <- selection(data = BuildIt, size = stage1, units = "values", values = "bookValue")
 
 ## -----------------------------------------------------------------------------
 summary(stage2)

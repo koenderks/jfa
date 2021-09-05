@@ -19,7 +19,7 @@ test_that(desc = "(id: f8-v0.1.0-t1) Test for workflow elements", {
   sampleSize <- planning(materiality = materiality, conf.level = conf.level, expected = expected, prior = prior, likelihood = "binomial")
   # Draw sample using random record sampling
   set.seed(1)
-  sampleResult <- selection(data = population, size = sampleSize, method = "random", units = "items")
+  sampleResult <- selection(data = population, size = sampleSize, method = "random", units = "rows")
   sample <- sampleResult$sample
   sample$trueValue <- sample$bookValue
   sample$trueValue[2] <- sample$trueValue[2] - 0.5 * sample$trueValue[2] # One overstatement is found

@@ -168,9 +168,9 @@ print.summary.jfaSelection <- function(x, ...) {
 # ------------------------------------------------------------
 # Input:
 #      
-# Population size:              ", switch(x[["units"]], "mus" = x[["N.units"]], "items" = x[["N.items"]]),"
+# Population size:              ", switch(x[["units"]], "values" = x[["N.units"]], "rows" = x[["N.items"]]),"
 # Requested sample size:        ", x[["n.req"]],"
-# Sampling units:               ", switch(x[["units"]], "mus" = "Monetary units", "items" = "Items"),"
+# Sampling units:               ", switch(x[["units"]], "values" = "Monetary units", "rows" = "Items"),"
 # Algorithm:                    ", switch(x[["method"]], "random" = "Random sampling", "interval" = "Fixed interval sampling", "cell" = "Cell sampling"), 
       ifelse(x[["method"]] == "interval" || x[["method"]] == "cell", no = "", yes = paste0("
 # Interval:                      ", x[["interval"]])),
@@ -185,7 +185,7 @@ print.summary.jfaSelection <- function(x, ...) {
 # Statistics:
 #
 # Proportion n/N:               ", x[["prop.n"]], 
-      ifelse(x[["units"]] == "mus", no = "", yes = paste0("
+      ifelse(x[["units"]] == "values", no = "", yes = paste0("
 # Percentage of value:           ", paste0(x[["prop.val"]] * 100, "%"))),"
 # ------------------------------------------------------------ ") 
 }
@@ -344,7 +344,7 @@ summary.jfaSelection <- function(object, digits = 3, ...) {
     if (object[["method"]] == "interval")
       out[["start"]] <- object[["start"]]
   }
-  if (object[["units"]] == "mus") 
+  if (object[["units"]] == "values") 
     out[["prop.val"]] <- round(object[["n.units"]] / object[["N.units"]], digits + 2)
   class(out) <- c("summary.jfaSelection", "data.frame")
   return(out)
@@ -516,7 +516,7 @@ plot.jfaPlanning <- function(x, xmax = 0.5, ...) {
 #' @method plot jfaSelection
 #' @export
 plot.jfaSelection <- function(x, ...) {
-  if (x[["units"]] == "items")
+  if (x[["units"]] == "rows")
     stop("No plotting method available for record sampling")
   name <- x[["values"]]
   graphics::hist(x[["data"]][[name]], breaks = 30, main = "Histogram of population and sample book values", xlab = "Book values", las = 1, col = "lightgray")

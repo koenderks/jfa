@@ -73,7 +73,7 @@ summary(stage1)
 
 ## Using `selection()`: The basics
 
-Selecting a sample using the `selection()` function requires knowledge of the sampling units (i.e., units of inference) in the population. Items can be selected from the population using *record sampling* (also known as attribute sampling or item sampling) using `units = 'items'`, or using *monetary unit sampling (MUS)* using `units = 'mus'`. Selection also requires knowledge of the sampling algorithm. Sampling units can be selected with a *random sampling* scheme using `method = 'random'`, with a *cell sampling* scheme using `method = 'cell'`, or with a *fixed interval sampling* (also known as systematic sampling) scheme using `method = 'interval'`.
+Selecting a sample using the `selection()` function requires knowledge of the sampling units (i.e., units of inference) in the population. Items can be selected from the population using *record sampling* (also known as attribute sampling or item sampling) using `units = 'rows'`, or using *monetary unit sampling (MUS)* using `units = 'values'`. Selection also requires knowledge of the sampling algorithm. Sampling units can be selected with a *random sampling* scheme using `method = 'random'`, with a *cell sampling* scheme using `method = 'cell'`, or with a *fixed interval sampling* (also known as systematic sampling) scheme using `method = 'interval'`.
 
 See the vignette [Selection: Sampling methodology](https://koenderks.github.io/jfa/articles/v4_selection_methodology.html) for a more detailed explanation the selection algorithms implemented in `jfa`.
 
@@ -83,7 +83,7 @@ First, we take a look at how you can use the `selection()` function to perform r
 
 ```{r}
 set.seed(1)
-stage2 <- selection(data = BuildIt, size = 60, units = 'items', method = 'random')
+stage2 <- selection(data = BuildIt, size = 60, units = 'rows', method = 'random')
 summary(stage2)
 ```
 
@@ -92,7 +92,7 @@ summary(stage2)
 Next, we take a look at how you can use the `selection()` function to perform fixed interval sampling using the monetary units in the population as sampling units. As an example, the code below samples 150 monetary units from the `BuildIt` data set using a *fixed interval monetary unit sampling* scheme.
 
 ```{r}
-stage2 <- selection(data = BuildIt, size = 150, units = 'mus', method = 'interval', values = 'bookValue')
+stage2 <- selection(data = BuildIt, size = 150, units = 'values', method = 'interval', values = 'bookValue')
 summary(stage2)
 ```
 
@@ -102,7 +102,7 @@ The selected sample is stored in the object that is returned by the `selection()
 
 ```{r}
 set.seed(1)
-stage2 <- selection(data = BuildIt, size = 60, units = 'items', method = 'random')
+stage2 <- selection(data = BuildIt, size = 60, units = 'rows', method = 'random')
 
 sample <- stage2$sample
 head(sample, n = 10)

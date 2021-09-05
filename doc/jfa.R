@@ -14,16 +14,16 @@ summary(stage1)
 
 ## -----------------------------------------------------------------------------
 set.seed(1)
-stage2 <- selection(data = BuildIt, size = 60, units = 'items', method = 'random')
+stage2 <- selection(data = BuildIt, size = 60, units = 'rows', method = 'random')
 summary(stage2)
 
 ## -----------------------------------------------------------------------------
-stage2 <- selection(data = BuildIt, size = 150, units = 'mus', method = 'interval', values = 'bookValue')
+stage2 <- selection(data = BuildIt, size = 150, units = 'values', method = 'interval', values = 'bookValue')
 summary(stage2)
 
 ## -----------------------------------------------------------------------------
 set.seed(1)
-stage2 <- selection(data = BuildIt, size = 60, units = 'items', method = 'random')
+stage2 <- selection(data = BuildIt, size = 60, units = 'rows', method = 'random')
 
 sample <- stage2$sample
 head(sample, n = 10)

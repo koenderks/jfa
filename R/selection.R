@@ -5,12 +5,12 @@
 #' For more details on how to use this function, see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
-#' @usage selection(data, size, units = 'items', method = 'random', values = NULL,
+#' @usage selection(data, size, units = 'rows', method = 'random', values = NULL,
 #'           start = 1, order = TRUE, decreasing = FALSE, replace = FALSE)
 #'
 #' @param data           a data frame containing the population of items the auditor wishes to sample from.
 #' @param size           an integer larger than 0 specifying the number of sampling units that need to be selected from the population. Can also be an object of class \code{jfaPlanning}.
-#' @param units          a character specifying the sampling units used. Possible options are \code{items} (default) for selection on the level of items or \code{mus} for selection on the level of monetary units.
+#' @param units          a character specifying the sampling units used. Possible options are \code{rows} (default) for selection on the level of items (rows0) or \code{values} for selection on the level of monetary units.
 #' @param method         a character specifying the sampling algorithm used. Possible options are \code{random} (default) for random sampling, \code{cell} for cell sampling, or \code{interval} for fixed interval sampling. 
 #' @param values         a character specifying the name of the column in the \code{data} that contains the book values of the items.
 #' @param start          if \code{method = 'interval'}, an integer larger than 0 specifying the starting point of the algorithm.
@@ -21,8 +21,8 @@
 #' @details The first part of this section elaborates on the two possible options for the \code{units} argument:
 #' 
 #' \itemize{
-#'  \item{\code{items}:       In record sampling each item in the population is seen as a sampling unit. An item of $5000 is therefore equally likely to be selected as an item of $500.}
-#'  \item{\code{mus}:         In monetary unit sampling each monetary unit in the population is seen as a sampling unit. An item of $5000 is therefore ten times more likely to be selected as an item of $500.}
+#'  \item{\code{rows}:      In record sampling each item in the population is seen as a sampling unit. An item of $5000 is therefore equally likely to be selected as an item of $500.}
+#'  \item{\code{values}:    In monetary unit sampling each monetary unit in the population is seen as a sampling unit. An item of $5000 is therefore ten times more likely to be selected as an item of $500.}
 #' }
 #' 
 #' The second part of this section elaborates on the three possible options for the \code{method} argument:
@@ -62,22 +62,22 @@
 #' 
 #' # Draw a sample of 100 monetary units from the population using
 #' # fixed interval monetary unit sampling
-#' selection(data = BuildIt, size = 100, units = 'mus',
+#' selection(data = BuildIt, size = 100, units = 'values',
 #'           method = 'interval', values = 'bookValue')
 #'
 #' @export
 
-selection <- function(data, size, units = 'items', method = 'random', values = NULL, 
+selection <- function(data, size, units = 'rows', method = 'random', values = NULL, 
                       start = 1, order = TRUE, decreasing = FALSE, replace = FALSE) {
   if (class(size) == "jfaPlanning") # If the input for 'sampleSize' is of class 'jfaPlanning', extract the planned sample size
     size <- size[["n"]]
-  if (units == "items" && size > nrow(data) && !replace) # Check if the sample size is valid (< N)
+  if (units == "rows" && size > nrow(data) && !replace) # Check if the sample size is valid (< N)
     stop("cannot take a sample larger than the population when 'replace = FALSE'")
   if (!(method %in% c("random", "cell", "interval")) || length(method) != 1) # Check if the algorithm has a valid input
     stop("'method' should be one of 'random', 'cell', 'interval'")
-  if (!(units %in% c("items", "mus")) || length(units) != 1) # Check if the units have a valid input
-    stop("'units' should be one of 'items', 'mus'")
-  if (units == "mus" && is.null(values)) # Check if the book values have a valid input
+  if (!(units %in% c("rows", "values")) || length(units) != 1) # Check if the units have a valid input
+    stop("'units' should be one of 'rows', 'values'")
+  if (units == "values" && is.null(values)) # Check if the book values have a valid input
     stop("'values' is missing for selection")
   if (!is.null(values) && length(values) != 1) # Check if the book values have a valid input
     stop("'values' must be a single character")
@@ -91,7 +91,7 @@ selection <- function(data, size, units = 'items', method = 'random', values = N
   rownames(data) <- 1:nrow(data)
   if (!is.null(values)) # Take the book values from the population
     bookvalues <- data[, values]
-  if (units == "mus" && size > sum(bookvalues)) # Check if the sample size is valid
+  if (units == "values" && size > sum(bookvalues)) # Check if the sample size is valid
     stop("cannot take a sample larger than the population value")
   if (order && !is.null(bookvalues)) { # Order the population
     data <- data[order(bookvalues, decreasing = decreasing), ]
@@ -104,15 +104,15 @@ selection <- function(data, size, units = 'items', method = 'random', values = N
     bookvalues <- data[, values]
   }
   # Sampling algorithms:
-  if (method == "random" && units == "items") {
+  if (method == "random" && units == "rows") {
     # 1. Random record sampling
     index <- sample(rownames(data), size = size, replace = replace)
-  } else if (method == "random" && units == "mus") {
+  } else if (method == "random" && units == "values") {
     # 2. Random monetary unit sampling
     if (size > nrow(data))
       replace <- TRUE
     index <- sample(rownames(data), size = size, replace = replace, prob = bookvalues)
-  } else if (method == "cell" && units == "items") {
+  } else if (method == "cell" && units == "rows") {
     # 3. Cell record sampling
     interval  <- nrow(data) / size
     intervals <- 0:size * interval
@@ -121,7 +121,7 @@ selection <- function(data, size, units = 'items', method = 'random', values = N
       int.selection <- stats::runif(min = intervals[i], max = intervals[i + 1], n = 1)
       index         <- c(index, as.numeric(rownames(data))[int.selection])
     }
-  } else if (method == "cell" && units == "mus") {
+  } else if (method == "cell" && units == "values") {
     # 4. Cell monetary unit sampling
     interval  <- sum(bookvalues) / size
     intervals <- 0:size * interval
@@ -130,13 +130,13 @@ selection <- function(data, size, units = 'items', method = 'random', values = N
       int.selection <- stats::runif(min = intervals[i], max = intervals[i + 1], n = 1)
       index         <- c(index, which(int.selection < cumsum(bookvalues))[1])
     }
-  } else if (method == "interval" && units == "items") {
+  } else if (method == "interval" && units == "rows") {
     # 5. Fixed interval record sampling
     interval      <- nrow(data) / size
     int.selection <- start + 0:(size - 1) * interval
     mat           <- as.numeric(rownames(data))
     index         <- mat[int.selection]
-  } else if (method == "interval" && units == "mus") {
+  } else if (method == "interval" && units == "values") {
     # 6. Fixed interval monetary unit sampling
     interval      <- sum(bookvalues) / size
     int.selection <- start + 0:(size - 1) * interval
@@ -158,7 +158,7 @@ selection <- function(data, size, units = 'items', method = 'random', values = N
   result[["n.req"]]      <- size
   result[["n.units"]]    <- sum(sample[["count"]])
   result[["n.items"]]    <- nrow(sample)
-  result[["N.units"]]    <- if (units == 'items') nrow(data) else ceiling(sum(bookvalues))
+  result[["N.units"]]    <- if (units == 'rows') nrow(data) else ceiling(sum(bookvalues))
   result[["N.items"]]    <- as.numeric(nrow(data))
   if (!is.null(interval))
     result[["interval"]] <- as.numeric(interval)

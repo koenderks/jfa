@@ -74,14 +74,14 @@ As an example, the code below shows how to apply the random sampling algorithm i
 ```{r}
 # Record sampling
 set.seed(1)
-sample <- selection(data = BuildIt, size = 100, units = 'items', method = 'random')
+sample <- selection(data = BuildIt, size = 100, units = 'rows', method = 'random')
 head(sample$sample, n = 6)
 ```
 
 ```{r}
 # Monetary unit sampling
 set.seed(1)
-sample <- selection(data = BuildIt, size = 100, units = 'mus', method = 'random', values = 'bookValue')
+sample <- selection(data = BuildIt, size = 100, units = 'values', method = 'random', values = 'bookValue')
 head(sample$sample, n = 6)
 ```
 
@@ -117,13 +117,13 @@ As an example, the code below shows how to apply the fixed interval sampling alg
 
 ```{r}
 # Record sampling
-sample <- selection(data = BuildIt, size = 100, units = 'items', method = 'interval', start = 1)
+sample <- selection(data = BuildIt, size = 100, units = 'rows', method = 'interval', start = 1)
 head(sample$sample, n = 6)
 ```
 
 ```{r}
 # Monetary unit sampling
-sample <- selection(data = BuildIt, size = 100, units = 'mus', method = 'interval', values = 'bookValue', start = 1)
+sample <- selection(data = BuildIt, size = 100, units = 'values', method = 'interval', values = 'bookValue', start = 1)
 head(sample$sample, n = 6)
 ```
 
@@ -152,13 +152,13 @@ As an example, the code below shows how to apply the cell sampling algorithm in 
 ```{r}
 # Record sampling
 set.seed(1)
-sample <- selection(data = BuildIt, size = 100, units = 'items', method = 'cell')
+sample <- selection(data = BuildIt, size = 100, units = 'rows', method = 'cell')
 head(sample$sample, n = 6)
 ```
 
 ```{r}
 # Monetary unit sampling
 set.seed(1)
-sample <- selection(data = BuildIt, size = 100, units = 'mus', method = 'cell', values = 'bookValue')
+sample <- selection(data = BuildIt, size = 100, units = 'values', method = 'cell', values = 'bookValue')
 head(sample$sample, n = 6)
 ```

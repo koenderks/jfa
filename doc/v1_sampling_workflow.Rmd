@@ -67,13 +67,13 @@ summary(stage1)
 
 ## Stage 2: Selecting a sample
 
-Laura is now ready to select the required 178 transactions from the financial statements. She can choose to do this according to one of two statistical methods. In *record sampling* (`units = "items"`), inclusion probabilities are assigned on the transaction level, treating transactions with a high value and a low value the same, a transaction of $5,000 is equally likely to be selected as a transaction of $1,000. In *monetary unit sampling* (`units = "mus"`), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the transaction that includes that dollar is selected. This favors higher transactions, as a transaction of \$5,000 is five times more likely to be selected than a transaction of \$1,000. 
+Laura is now ready to select the required 178 transactions from the financial statements. She can choose to do this according to one of two statistical methods. In *record sampling* (`units = "rows"`), inclusion probabilities are assigned on the transaction level, treating transactions with a high value and a low value the same, a transaction of $5,000 is equally likely to be selected as a transaction of $1,000. In *monetary unit sampling* (`units = "values"`), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the transaction that includes that dollar is selected. This favors higher transactions, as a transaction of \$5,000 is five times more likely to be selected than a transaction of \$1,000. 
 
 Laura chooses to use *monetary unit sampling*, as she wants to include more high-valued transactions. The `selection()` function allows her to sample from the financial statements. She uses the `stage1` object as an input for the `selection()` function.
 
 ```{r}
 # Step 2: Draw a sample from the financial statements.
-stage2 <- selection(data = BuildIt, size = stage1, units = "mus", values = "bookValue")
+stage2 <- selection(data = BuildIt, size = stage1, units = "values", values = "bookValue")
 ```
 
 Laura can inspect the outcomes of her sampling procedure by using the `summary()` function.

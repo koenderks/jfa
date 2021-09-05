@@ -86,7 +86,7 @@ summary(stage1)
 
 # Stage 2: Selection
 stage2 <- selection(data = BuildIt, size = stage1,
-                    units = "mus", values = "bookValue",
+                    units = "values", values = "bookValue",
                     method = "interval", start = 1)
 summary(stage2)
 
@@ -114,7 +114,7 @@ summary(stage1)
 
 # Stage 2: Selection
 stage2 <- selection(data = BuildIt, size = stage1,
-                    units = "mus", values = "bookValue",
+                    units = "values", values = "bookValue",
                     method = "interval", start = 1)
 summary(stage2)
 
@@ -143,7 +143,7 @@ summary(stage1)
 
 # Stage 2: Selection
 stage2 <- selection(data = BuildIt, size = stage1,
-                    units = "mus", values = "bookValue",
+                    units = "values", values = "bookValue",
                     method = "interval", start = 1)
 summary(stage2)
 

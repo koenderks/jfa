@@ -191,7 +191,7 @@ The `selection()` function takes a data frame and performs statistical sampling 
 *Full function with default arguments:*
 
 ```r
-selection(data, size, units = 'items', method = 'random', values = NULL,
+selection(data, size, units = 'rows', method = 'random', values = NULL,
           start = 1, order = TRUE, decreasing = FALSE, replace = FALSE)
 ```
 
@@ -199,8 +199,8 @@ selection(data, size, units = 'items', method = 'random', values = NULL,
 
 | `units` | Description | Required arguments |  Reference |
 | :----------- | :----------- | :----------- | :----------- |
-| `items` | Sampling units are items (rows) | | Leslie, Teitlebaum, and Anderson (1979) |
-| `mus` | Sampling units are monetary units | `values` | Leslie, Teitlebaum, and Anderson (1979) |
+| `rows` | Sampling units are items | | Leslie, Teitlebaum, and Anderson (1979) |
+| `values` | Sampling units are monetary units | `values` | Leslie, Teitlebaum, and Anderson (1979) |
 
 *Supported options for the `method` argument:*
 
@@ -214,10 +214,10 @@ selection(data, size, units = 'items', method = 'random', values = NULL,
 
 ```r
 # Selection using random record sampling
-x <- selection(data = BuildIt, size = 100, units = 'items', method = 'random')
+x <- selection(data = BuildIt, size = 100, units = 'rows', method = 'random')
 
 # Selection using fixed interval MUS
-x <- selection(data = BuildIt, size = 100, units = 'mus', method = 'interval')
+x <- selection(data = BuildIt, size = 100, units = 'values', method = 'interval')
 
 summary(x) # Prints information about the selection
 ```

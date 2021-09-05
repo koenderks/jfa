@@ -4,7 +4,7 @@
 \alias{selection}
 \title{Select a Statistical Audit Sample}
 \usage{
-selection(data, size, units = 'items', method = 'random', values = NULL,
+selection(data, size, units = 'rows', method = 'random', values = NULL,
           start = 1, order = TRUE, decreasing = FALSE, replace = FALSE)
 }
 \arguments{
@@ -12,7 +12,7 @@ selection(data, size, units = 'items', method = 'random', values = NULL,
 
 \item{size}{an integer larger than 0 specifying the number of sampling units that need to be selected from the population. Can also be an object of class \code{jfaPlanning}.}
 
-\item{units}{a character specifying the sampling units used. Possible options are \code{items} (default) for selection on the level of items or \code{mus} for selection on the level of monetary units.}
+\item{units}{a character specifying the sampling units used. Possible options are \code{rows} (default) for selection on the level of items (rows0) or \code{values} for selection on the level of monetary units.}
 
 \item{method}{a character specifying the sampling algorithm used. Possible options are \code{random} (default) for random sampling, \code{cell} for cell sampling, or \code{interval} for fixed interval sampling.}
 
@@ -52,8 +52,8 @@ For more details on how to use this function, see the package vignette:
 The first part of this section elaborates on the two possible options for the \code{units} argument:
 
 \itemize{
- \item{\code{items}:       In record sampling each item in the population is seen as a sampling unit. An item of $5000 is therefore equally likely to be selected as an item of $500.}
- \item{\code{mus}:         In monetary unit sampling each monetary unit in the population is seen as a sampling unit. An item of $5000 is therefore ten times more likely to be selected as an item of $500.}
+ \item{\code{rows}:      In record sampling each item in the population is seen as a sampling unit. An item of $5000 is therefore equally likely to be selected as an item of $500.}
+ \item{\code{values}:    In monetary unit sampling each monetary unit in the population is seen as a sampling unit. An item of $5000 is therefore ten times more likely to be selected as an item of $500.}
 }
 
 The second part of this section elaborates on the three possible options for the \code{method} argument:
@@ -69,7 +69,7 @@ data('BuildIt')
 
 # Draw a sample of 100 monetary units from the population using
 # fixed interval monetary unit sampling
-selection(data = BuildIt, size = 100, units = 'mus',
+selection(data = BuildIt, size = 100, units = 'values',
           method = 'interval', values = 'bookValue')
 
 }
