@@ -39,13 +39,13 @@ sample$auditValue[1] <- sample$auditValue[1] - 100
 ## -----------------------------------------------------------------------------
 stage4 <- evaluation(materiality = 0.05, method = 'stringer', conf.level = 0.95,
                      data = sample, values = 'bookValue', values.audit = 'auditValue',
-                     times = sample$count)
+                     times = 'times')
 summary(stage4)
 
 ## ---- eval = FALSE------------------------------------------------------------
 #  stage4 <- evaluation(materiality = 0.05, method = 'stringer', conf.level = 0.95,
 #                       data = sample, values = 'bookValue', values.audit = 'auditValue',
-#                       times = sample$count)
+#                       times = 'times')
 #  
 #  report(stage4, file = 'report.html', format = 'html_document') # Generates .html report
 

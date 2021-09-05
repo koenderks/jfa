@@ -194,24 +194,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;rows&#39;</span>, <span class="at">method =</span> <span class="st">&#39;random&#39;</span>)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample<span class="sc">$</span>sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
-<pre><code>##   rowNumber count    ID bookValue auditValue
-## 1      1017     1 50755    618.24     618.24
-## 2       679     1 20237    669.75     669.75
-## 3      2177     1  9517    454.02     454.02
-## 4       930     1 85674    257.82     257.82
-## 5      1533     1 31051    308.53     308.53
-## 6       471     1 84375    824.66     824.66</code></pre>
+<pre><code>##    row times    ID bookValue auditValue
+## 1 1017     1 50755    618.24     618.24
+## 2  679     1 20237    669.75     669.75
+## 3 2177     1  9517    454.02     454.02
+## 4  930     1 85674    257.82     257.82
+## 5 1533     1 31051    308.53     308.53
+## 6  471     1 84375    824.66     824.66</code></pre>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Monetary unit sampling</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;values&#39;</span>, <span class="at">method =</span> <span class="st">&#39;random&#39;</span>, <span class="at">values =</span> <span class="st">&#39;bookValue&#39;</span>)</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample<span class="sc">$</span>sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
-<pre><code>##   rowNumber count    ID bookValue auditValue
-## 1      2174     1 57702    428.87     428.87
-## 2      2928     1 81225    593.87     593.87
-## 3      1627     1 13574    346.87     346.87
-## 4      2532     1 84419    494.53     494.53
-## 5       147     1 45361    125.35     125.35
-## 6      3056     1 98879    638.36     638.36</code></pre>
+<pre><code>##    row times    ID bookValue auditValue
+## 1 2174     1 57702    428.87     428.87
+## 2 2928     1 81225    593.87     593.87
+## 3 1627     1 13574    346.87     346.87
+## 4 2532     1 84419    494.53     494.53
+## 5  147     1 45361    125.35     125.35
+## 6 3056     1 98879    638.36     638.36</code></pre>
 </div>
 <div id="fixed-interval-sampling-systematic-sampling" class="section level4">
 <h4>Fixed interval sampling (Systematic sampling)</h4>
@@ -235,23 +235,23 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Record sampling</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;rows&#39;</span>, <span class="at">method =</span> <span class="st">&#39;interval&#39;</span>, <span class="at">start =</span> <span class="dv">1</span>)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample<span class="sc">$</span>sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
-<pre><code>##   rowNumber count    ID bookValue auditValue
-## 1         1     1 82884    242.61     242.61
-## 2        36     1 80125    118.58     118.58
-## 3        71     1 27566    481.44     481.44
-## 4       106     1 88261    266.66     266.66
-## 5       141     1 58999    568.60     568.60
-## 6       176     1 27801    314.65     314.65</code></pre>
+<pre><code>##   row times    ID bookValue auditValue
+## 1   1     1 82884    242.61     242.61
+## 2  36     1 80125    118.58     118.58
+## 3  71     1 27566    481.44     481.44
+## 4 106     1 88261    266.66     266.66
+## 5 141     1 58999    568.60     568.60
+## 6 176     1 27801    314.65     314.65</code></pre>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Monetary unit sampling</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;values&#39;</span>, <span class="at">method =</span> <span class="st">&#39;interval&#39;</span>, <span class="at">values =</span> <span class="st">&#39;bookValue&#39;</span>, <span class="at">start =</span> <span class="dv">1</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample<span class="sc">$</span>sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
-<pre><code>##   rowNumber count    ID bookValue auditValue
-## 1         1     1 30568     14.47      14.47
-## 2       146     1 63567    125.21     125.21
-## 3       246     1 95807    153.56     153.56
-## 4       332     1 64282    172.65     172.65
-## 5       410     1 43352    188.72     188.72
-## 6       482     1 94296    198.59     198.59</code></pre>
+<pre><code>##   row times    ID bookValue auditValue
+## 1   1     1 30568     14.47      14.47
+## 2 146     1 63567    125.21     125.21
+## 3 246     1 95807    153.56     153.56
+## 4 332     1 64282    172.65     172.65
+## 5 410     1 43352    188.72     188.72
+## 6 482     1 94296    198.59     198.59</code></pre>
 </div>
 <div id="cell-sampling" class="section level4">
 <h4>Cell sampling</h4>
@@ -272,24 +272,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;rows&#39;</span>, <span class="at">method =</span> <span class="st">&#39;cell&#39;</span>)</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample<span class="sc">$</span>sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
-<pre><code>##   rowNumber count    ID bookValue auditValue
-## 1         9     1 14608    216.48     216.48
-## 2        48     1 45437    347.94     139.18
-## 3        90     1 90333    241.17     241.17
-## 4       136     1 45746    440.72     440.72
-## 5       147     1 72906    677.62     677.62
-## 6       206     1 93529    528.79     528.79</code></pre>
+<pre><code>##   row times    ID bookValue auditValue
+## 1   9     1 14608    216.48     216.48
+## 2  48     1 45437    347.94     139.18
+## 3  90     1 90333    241.17     241.17
+## 4 136     1 45746    440.72     440.72
+## 5 147     1 72906    677.62     677.62
+## 6 206     1 93529    528.79     528.79</code></pre>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Monetary unit sampling</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;values&#39;</span>, <span class="at">method =</span> <span class="st">&#39;cell&#39;</span>, <span class="at">values =</span> <span class="st">&#39;bookValue&#39;</span>)</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample<span class="sc">$</span>sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
-<pre><code>##   rowNumber count    ID bookValue auditValue
-## 1        53     1 40775     96.61      96.61
-## 2       186     1 68230    137.18     137.18
-## 3       297     1 71669    164.20     164.20
-## 4       403     1 42205    186.66     186.66
-## 5       425     1 16965    190.50     190.50
-## 6       544     1 16989    208.21     208.21</code></pre>
+<pre><code>##   row times    ID bookValue auditValue
+## 1  53     1 40775     96.61      96.61
+## 2 186     1 68230    137.18     137.18
+## 3 297     1 71669    164.20     164.20
+## 4 403     1 42205    186.66     186.66
+## 5 425     1 16965    190.50     190.50
+## 6 544     1 16989    208.21     208.21</code></pre>
 </div>
 </div>
 </div>

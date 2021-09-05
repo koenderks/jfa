@@ -12,7 +12,7 @@
 #' @param size           an integer larger than 0 specifying the number of sampling units that need to be selected from the population. Can also be an object of class \code{jfaPlanning}.
 #' @param units          a character specifying the sampling units used. Possible options are \code{rows} (default) for selection on the level of items (rows0) or \code{values} for selection on the level of monetary units.
 #' @param method         a character specifying the sampling algorithm used. Possible options are \code{random} (default) for random sampling, \code{cell} for cell sampling, or \code{interval} for fixed interval sampling. 
-#' @param values         a character specifying the name of the column in the \code{data} that contains the book values of the items.
+#' @param values         a character specifying name of a column in \code{data} containing the book values of the items.
 #' @param start          if \code{method = 'interval'}, an integer larger than 0 specifying the starting point of the algorithm.
 #' @param order          a logical specifying whether to first order the items in the \code{data} according to the value of their \code{values}. Defaults to \code{TRUE}.
 #' @param decreasing     if \code{order = TRUE}, a logical specifying whether to order the population \code{values} from smallest to largest. Defaults to \code{FALSE}.
@@ -150,13 +150,13 @@ selection <- function(data, size, units = 'rows', method = 'random', values = NU
   rowNumber        <- as.numeric(unique(index))
   sample           <- cbind(rowNumber, count, data[rowNumber, ])
   rownames(sample) <- 1:nrow(sample)
-  colnames(sample) <- c("rowNumber", "count", colnames(data))
+  colnames(sample) <- c("row", "times", colnames(data))
   # Create the main results object
   result <- list()
   result[["data"]]       <- as.data.frame(data)
   result[["sample"]]     <- as.data.frame(sample)
   result[["n.req"]]      <- size
-  result[["n.units"]]    <- sum(sample[["count"]])
+  result[["n.units"]]    <- sum(sample[["times"]])
   result[["n.items"]]    <- nrow(sample)
   result[["N.units"]]    <- if (units == 'rows') nrow(data) else ceiling(sum(bookvalues))
   result[["N.items"]]    <- as.numeric(nrow(data))

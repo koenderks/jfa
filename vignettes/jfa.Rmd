@@ -141,7 +141,7 @@ Sampling objective: *Evaluate, on the basis of an annotated sample, whether the 
 ```{r}
 stage4 <- evaluation(materiality = 0.05, method = 'stringer', conf.level = 0.95,
                      data = sample, values = 'bookValue', values.audit = 'auditValue',
-                     times = sample$count)
+                     times = 'times')
 summary(stage4)
 ```
 
@@ -152,7 +152,7 @@ With the results from the `evaluation()` function in hand, you can use the `repo
 ```{r, eval = FALSE}
 stage4 <- evaluation(materiality = 0.05, method = 'stringer', conf.level = 0.95,
                      data = sample, values = 'bookValue', values.audit = 'auditValue',
-                     times = sample$count)
+                     times = 'times')
 
 report(stage4, file = 'report.html', format = 'html_document') # Generates .html report
 ```

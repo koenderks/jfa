@@ -16,7 +16,7 @@ selection(data, size, units = 'rows', method = 'random', values = NULL,
 
 \item{method}{a character specifying the sampling algorithm used. Possible options are \code{random} (default) for random sampling, \code{cell} for cell sampling, or \code{interval} for fixed interval sampling.}
 
-\item{values}{a character specifying the name of the column in the \code{data} that contains the book values of the items.}
+\item{values}{a character specifying name of a column in \code{data} containing the book values of the items.}
 
 \item{start}{if \code{method = 'interval'}, an integer larger than 0 specifying the starting point of the algorithm.}
 

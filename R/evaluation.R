@@ -16,9 +16,9 @@
 #' @param method        a character specifying the method to be used in the evaluation. Possible options are \code{poisson}, \code{binomial} (default), \code{hypergeometric}, \code{mpu}, \code{stringer}, \code{stringer.meikle}, \code{stringer.lta}, \code{stringer.pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}. See the details section for more information.
 #' @param conf.level    a numeric value between 0 and 1 specifying the confidence level used in the evaluation. Defaults to 0.95 for 95\% confidence.
 #' @param data          a data frame containing the sample to be evaluated. The sample must at least contain a column of book values and a column of audit (true) values.
-#' @param values        a character specifying the column name for the book values in the \code{data}.
-#' @param values.audit  a character specifying the column name for the audit values in the \code{data}.
-#' @param times         a integer vector specifying the number of times each item in the \code{data} should be counted in the evaluation (due to it being selected multiple times for the sample).
+#' @param values        a character specifying name of a column in \code{data} containing the book values of the items.
+#' @param values.audit  a character specifying name of a column in \code{data} containing the audit (true) values of the items.
+#' @param times         a character specifying name of a column in \code{data} containing the number of times each item in the \code{data} should be counted in the evaluation (due to it being selected multiple times for the sample).
 #' @param x             a numeric value larger than 0 specifying the sum of errors found in the sample. If specified, overrides the \code{data}, \code{values} and \code{values.audit} arguments and assumes that the data come from summary statistics specified by both \code{x} and \code{n}.
 #' @param n             an integer larger than 0 specifying the number of items in the sample. If specified, overrides the \code{data}, \code{values} and \code{values.audit} arguments and assumes that the data come from summary statistics specified by both \code{x} and \code{n}.
 #' @param N.units       an integer larger than 0 specifying the total number of sampling units in the population (i.e., the population size / value). Only required if \code{method} is one of \code{'hypergeometric'}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}.
@@ -147,10 +147,6 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
     stop("'min.precision' must be a single number between 0 and 1")
   if (!(method %in% c('binomial', 'poisson', 'hypergeometric', 'stringer', 'stringer.meikle', 'stringer.lta', 'stringer.pvz', 'rohrbach', 'moment', 'coxsnell', 'direct', 'difference', 'quotient', 'regression', 'mpu')) || length(method) != 1)
     stop("'method' should be one of 'binomial', 'poisson', 'hypergeometric', 'stringer', 'stringer.meikle', 'stringer.lta', 'stringer.pvz', 'rohrbach', 'moment', 'coxsnell', 'direct', 'difference', 'quotient', 'regression', 'mpu'")
-  if (!is.null(times) && any(times < 1))
-    stop("'times' must be a vector of integers >= 1")
-  if (!is.null(times) && any(times%%1 != 0))
-    stop("'times' must be a vector of nonnegative integers")
   if (bayesian && method %in% c("stringer", "stringer.meikle", "stringer.lta", "stringer.pvz", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
     stop("'method' should be one of 'binomial', 'poisson', 'hypergeometric'")  
   if (!is.null(x) || !is.null(n)) { # Use summary statistics
@@ -178,19 +174,32 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
       stop("'values' is missing for evaluation")
     if (length(values) != 1)
       stop("'values' must be a single character")
+    if (!(values %in% colnames(data)))
+      stop(paste0("'", values, "' is not a column in 'data'"))
     if (is.null(values.audit))
       stop("'values.audit' is missing for evaluation")
     if (length(values.audit) != 1)
       stop("'values.audit' must be a single character")
+    if (!(values.audit %in% colnames(data)))
+      stop(paste0("'", values.audit, "' is not a column in 'data'"))
     if (!is.null(x) || !is.null(n))
       warning("'data' is used while 'x' or 'n' is specified")
     missing <- unique(c(which(is.na(data[, values])), which(is.na(data[, values.audit]))))
     if (length(missing) == nrow(data))
       stop("not enough 'data' observations")
     data <- stats::na.omit(data)
-    n.obs <- nrow(data)
-    if (!is.null(times))
+    if (!is.null(times)) {
+      if (!(times %in% colnames(data)))
+        stop(paste0("'", values, "' is not a column in 'data'"))
+      times <- data[, times]
+      if (!is.null(times) && any(times < 1))
+        stop("'times' must be a vector of integers >= 1")
+      if (!is.null(times) && any(times%%1 != 0))
+        stop("'times' must be a vector of nonnegative integers")
       n.obs <- sum(times)
+    } else {
+      n.obs <- nrow(data)
+    }
     bookvalues <- data[, values]
     auditvalues <- data[, values.audit]
     t <- (bookvalues - auditvalues) / bookvalues

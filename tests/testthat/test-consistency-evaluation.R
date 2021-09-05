@@ -214,7 +214,8 @@ test_that(desc = "(id: f3-v0.3.0-t1) Evaluation with counts and stringer method"
   samp$auditValue <- samp[["bookValue"]]
   samp$auditValue[1:3] <- samp$bookValue[1:3] * 0.4
   counts <- c(2, 2, 3, rep(1, nrow(samp) - 3))
-  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "stringer", times = counts)
+  samp <- cbind(samp, counts)
+  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "stringer", times = 'counts')
   expect_equal(jfaEval[["ub"]], 0.0326619, tolerance = 0.001)
 })
 
@@ -226,11 +227,11 @@ test_that(desc = "(id: f3-v0.4.0-t1) Bayes factors", {
   data("BuildIt")
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, expected = 0.025, likelihood = 'poisson')
   samp <- selection(BuildIt, size = jfaRes, units = "rows", method = "interval", order = TRUE)$sample
-  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "binomial", times = samp$count, prior = TRUE)
+  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "binomial", times = 'times', prior = TRUE)
   expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf.hmin, 44957.32, tolerance = 0.001)
-  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "poisson", times = samp$count, prior = TRUE)
+  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "poisson", times = 'times', prior = TRUE)
   expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf.hmin, 1822.754944, tolerance = 0.001)
-  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "hypergeometric", times = samp$count, prior = TRUE, N.units = 1000)
+  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "hypergeometric", times = 'times', prior = TRUE, N.units = 1000)
   expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf.hmin, 295149, tolerance = 0.001)
 })
 

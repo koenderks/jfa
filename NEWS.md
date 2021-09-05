@@ -38,6 +38,7 @@
     - `records` -> `rows` (in `selection()`)
     - `mus` -> `values` (in `selection()`)
 - `poisson` is now the default likelihood for all functions since it is the most conservative.
+- `times` (former `counts`) must now be indicated as a column name in the `data` instead of a vector.
 - `nPrior` and `kPrior` have been removed from the `planning()` and `evaluation()` functions. All prior distributions must now be specified using `prior = TRUE` (noninformative priors) or using a call to `auditPrior()`.
 - Removed the `auditBF()` function since its value is available through `print(evaluation(materiality = x, prior = auditPrior(method = 'median', materiality = x)))`
 
