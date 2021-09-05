@@ -221,7 +221,7 @@ selection(data, size, units = 'rows', method = 'random', values = NULL,
 x <- selection(data = BuildIt, size = 100, units = 'rows', method = 'random')
 
 # Selection using fixed interval MUS
-x <- selection(data = BuildIt, size = 100, units = 'values', method = 'interval')
+x <- selection(data = BuildIt, size = 100, units = 'values', method = 'interval', values = 'bookValues')
 
 summary(x) # Prints information about the selection
 ```
