@@ -422,7 +422,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
     frame                 <- cbind(as.numeric(rownames(frame)), frame)
     frame[["difference"]] <- frame[, 2] - frame[, 3]
     frame[["taint"]]      <- frame[, 4] / frame[, 2]
-    colnames(frame)       <- c("Row", values, values.audit, "Difference", "Taint")
+    colnames(frame)       <- c("row", values, values.audit, "difference", "taint")
     result[["data"]]      <- frame
   }
   # Add class 'jfaEvaluation' to the result.
