@@ -112,7 +112,7 @@
 #' # Bayesian evaluation using an informed prior distribution
 #' evaluation(materiality = 0.05, method = 'poisson', conf.level = 0.95,
 #'            data = sample, values = 'bookValue', values.audit = 'auditValue',
-#'            prior = auditPrior(method = 'custom', alpha = 1, beta = 10))
+#'            prior = auditPrior(method = 'param', alpha = 1, beta = 10))
 #'
 #' @export 
 
@@ -131,9 +131,9 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
       N.units <- prior[['N.units']]
     proper  <- prior[["description"]]$beta > 0
   } else {
-    prior.n <- 0
+    prior.n <- if (method == 'poisson') 0 else -1
     prior.x <- 0
-    proper <- method != 'poisson' # gamma(1,0) is improper
+    proper <- FALSE # gamma(1,0), beta(1,0), and beta-binomial(1,0) are improper
   }
   if (is.null(conf.level))
     stop("'conf.level' is missing for evaluation")

@@ -43,7 +43,7 @@ expected    <- 0.01       # 1% errors expected in sample
 
 ### [Default] No explicit information (`method = 'none'`)
 
-You can refrain from incorporating explicit information in the prior distribution using `method = 'none'`. As an example, the code below incorporates no explicit information into a prior distribution
+You can refrain from incorporating explicit information in the prior distribution using `method = 'none'`. As an example, the code below incorporates no explicit information into a prior distribution. The prior distribution that is constructed is improper but yields similar results to that of classical methodology with respect to sample sizes upper limits, and evidence.
 
 ```{r}
 prior1 <- auditPrior(method = 'none', likelihood = likelihood, expected = expected, conf.level = confidence)
@@ -56,13 +56,12 @@ You can visually inspect the prior distribution using the `plot()` function.
 plot(prior1)
 ```
 
-### Audit Risk Model (`method = 'arm'`)
+### Custom prior distribution
 
-You can translate the risk assessments from the Audit Risk Model (inherent risk and internal control risk) into a prior distribution using `method = 'arm'` in combination with the `ir` and `cr` arguments. As an example, the code below incorporates the information that the inherent risk is equal to 90% and that the internal control risk is equal to 60% into a prior distribution. 
+You can manually specify the $\alpha$ and $\beta$ parameters of the prior distribution using `method = 'param'` in combination with the `alpha` and `beta` arguments. As an example, the code below creates a beta(2, 10) prior distribution.
 
 ```{r}
-prior2 <- auditPrior(method = 'arm', likelihood = likelihood, expected = expected, conf.level = confidence,
-                     materiality = materiality, ir = 0.9, cr = 0.6)
+prior2 <- auditPrior(method = 'param', likelihood = likelihood, alpha = 2, beta = 10)
 summary(prior2)
 ```
 
@@ -72,20 +71,19 @@ You can visually inspect the prior distribution using the `plot()` function.
 plot(prior2)
 ```
 
-### Bayesian Risk Assessment Model (`method = 'bram'`)
+### Uniform prior distribution
 
-You can incorporate information about the expected errors (mode) and the upper confidence bound of the prior distribution according to the Bayesian Risk Assessment Model (BRAM) using `method = 'bram'`. As an example, the code below incorporates the information that the mode of the prior distribution is 1% and the upper bound is 60%.
+You can specify a uniform prior distribution on the misstatement via `method = 'uniform'`. As an example, the code below creates a uniform beta(1, 1) prior distribution. The posterior distribution from a uniform prior distribution also has a close relation with classical methodology, as the posterior mode is equal to the observed misstatement (proportion).
 
 ```{r}
-prior3 <- auditPrior(method = 'bram', likelihood = likelihood, expected = expected, conf.level = confidence, 
-                     materiality = materiality, ub = 0.6)
-summary(prior3)
+prior2 <- auditPrior(method = 'uniform', likelihood = likelihood)
+summary(prior2)
 ```
 
 You can visually inspect the prior distribution using the `plot()` function.
 
 ```{r}
-plot(prior3)
+plot(prior2)
 ```
 
 ### Equal prior probabilities (`method = 'median'`)
@@ -95,8 +93,26 @@ You can incorporate the assumption that tolerable misstatement is equally likely
 *Note: This method requires that you specify a value for the `materiality`.*
 
 ```{r}
-prior4 <- auditPrior(method = 'median', likelihood = likelihood, expected = expected, conf.level = confidence, 
+prior3 <- auditPrior(method = 'median', likelihood = likelihood, expected = expected, conf.level = confidence, 
                      materiality = materiality)
+summary(prior3)
+```
+
+You can visually inspect the prior distribution using the `plot()` function.
+
+```{r}
+plot(prior3)
+```
+
+### Manual prior probabilities (`method = 'hyp'`)
+
+You can manually assign prior probabilities to the hypothesis of tolerable misstatement and the hypotheses of intolerable misstatement (using `p.hmin`) in combination with `method = 'hyp'`. As an example, the code below incorporates the information that the hypothesis of tolerable misstatement has a probability of 60% into a prior distribution.
+
+*Note: This method requires that you specify a value for the `materiality`.*
+
+```{r}
+prior4 <- auditPrior(method = 'hyp', likelihood = likelihood, expected = expected, conf.level = confidence,
+                     materiality = materiality, p.hmin = 0.6)
 summary(prior4)
 ```
 
@@ -106,15 +122,13 @@ You can visually inspect the prior distribution using the `plot()` function.
 plot(prior4)
 ```
 
-### Custom prior probabilities (`method = 'hypotheses'`)
+### Audit Risk Model (`method = 'arm'`)
 
-You can assign custom probabilities to the hypothesis of tolerable misstatement (using `p.hmin`) and/or the hypotheses of intolerable misstatement (using 1 - `p.hmin`) in combination with `method = 'hypotheses'`. As an example, the code below incorporates the information that the hypothesis of tolerable misstatement has a probability of 60% into a prior distribution.
-
-*Note: This method requires that you specify a value for the `materiality`.*
+You can translate the risk assessments from the Audit Risk Model (inherent risk and internal control risk) into a prior distribution using `method = 'arm'` in combination with the `ir` and `cr` arguments. As an example, the code below incorporates the information that the inherent risk is equal to 90% and that the internal control risk is equal to 60% into a prior distribution. 
 
 ```{r}
-prior5 <- auditPrior(method = 'hypotheses', likelihood = likelihood, expected = expected, conf.level = confidence,
-                     materiality = materiality, p.hmin = 0.6)
+prior5 <- auditPrior(method = 'arm', likelihood = likelihood, expected = expected, conf.level = confidence,
+                     materiality = materiality, ir = 0.9, cr = 0.6)
 summary(prior5)
 ```
 
@@ -124,13 +138,13 @@ You can visually inspect the prior distribution using the `plot()` function.
 plot(prior5)
 ```
 
-### Earlier sample (`method = 'sample'`)
+### Bayesian Risk Assessment Model (`method = 'bram'`)
 
-You can incorporate information from an earlier sample into the prior distribution using `method = 'sample'` in combination with `x` and `n`. As an example, the code below incorporates the information from an earlier sample of 30 items in which 0 misstatements were found into a prior distribution.
+You can incorporate information about the expected errors (mode) and the upper confidence bound of the prior distribution according to the Bayesian Risk Assessment Model (BRAM) using `method = 'bram'`. As an example, the code below incorporates the information that the mode of the prior distribution is 1% and the upper bound is 60%.
 
 ```{r}
-prior6 <- auditPrior(method = 'sample', likelihood = likelihood, expected = expected, conf.level = confidence,
-                     materiality = materiality, x = 0, n = 30)
+prior6 <- auditPrior(method = 'bram', likelihood = likelihood, expected = expected, conf.level = confidence, 
+                     materiality = materiality, ub = 0.6)
 summary(prior6)
 ```
 
@@ -140,13 +154,13 @@ You can visually inspect the prior distribution using the `plot()` function.
 plot(prior6)
 ```
 
-### Weighted earlier sample (`method = 'factor'`)
+### Earlier sample (`method = 'sample'`)
 
-You can incorporate information from last years results, weighted by a factor, into the prior distribution using `method = 'factor'` in combination with `x` and `n`. As an example, the code below incorporates the information from a last years results (a sample of 58 items in which 0 misstatements were found), weighted by a factor 0.7, into a prior distribution.
+You can incorporate information from an earlier sample into the prior distribution using `method = 'sample'` in combination with `x` and `n`. As an example, the code below incorporates the information from an earlier sample of 30 items in which 0 misstatements were found into a prior distribution.
 
 ```{r}
-prior7 <- auditPrior(method = 'factor', likelihood = likelihood, expected = expected, conf.level = confidence,
-                     materiality = materiality, x = 0, n = 58, factor = 0.7)
+prior7 <- auditPrior(method = 'sample', likelihood = likelihood, expected = expected, conf.level = confidence,
+                     materiality = materiality, x = 0, n = 30)
 summary(prior7)
 ```
 
@@ -156,12 +170,13 @@ You can visually inspect the prior distribution using the `plot()` function.
 plot(prior7)
 ```
 
-### Custom prior distribution
+### Weighted earlier sample (`method = 'factor'`)
 
-You can manually specify the $\alpha$ and $\beta$ parameters of the prior distribution using `method = 'custom'` in combination with the `alpha` and `beta` arguments. As an example, the code below creates a beta(2, 10) prior distribution.
+You can incorporate information from last years results, weighted by a factor, into the prior distribution using `method = 'factor'` in combination with `x` and `n`. As an example, the code below incorporates the information from a last years results (a sample of 58 items in which 0 misstatements were found), weighted by a factor 0.7, into a prior distribution.
 
 ```{r}
-prior8 <- auditPrior(method = 'custom', likelihood = likelihood, alpha = 2, beta = 10)
+prior8 <- auditPrior(method = 'factor', likelihood = likelihood, expected = expected, conf.level = confidence,
+                     materiality = materiality, x = 0, n = 58, factor = 0.7)
 summary(prior8)
 ```
 

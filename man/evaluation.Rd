@@ -121,7 +121,7 @@ evaluation(materiality = 0.05, method = 'poisson', conf.level = 0.95,
 # Bayesian evaluation using an informed prior distribution
 evaluation(materiality = 0.05, method = 'poisson', conf.level = 0.95,
            data = sample, values = 'bookValue', values.audit = 'auditValue',
-           prior = auditPrior(method = 'custom', alpha = 1, beta = 10))
+           prior = auditPrior(method = 'param', alpha = 1, beta = 10))
 
 }
 \references{

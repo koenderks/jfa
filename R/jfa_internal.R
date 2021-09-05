@@ -7,6 +7,8 @@
 
 # Consistent with JASP: https://github.com/jasp-stats/jaspDistributions/raw/master/R/ldBetaBinomial.R
 .qBetaBinom <- function(p, N, shape1, shape2, lower.tail = TRUE, log.p = FALSE) {
+  if (shape1 < 1 || shape2 < 1)
+    return(Inf)
   if(log.p) p <- exp(p)
   if(!lower.tail) p <- 1-p
   .q <- function(p, N, shape1, shape2) {
@@ -43,6 +45,8 @@
 # beta-binomial distribution by checking if p(k = i) < p(k = i + 1)
 .modeBetaBinom <- function(N, shape1, shape2) {
   if(shape1 == 1 && shape2 == 1)
+    return(NA)
+  if (shape2 < 1 || shape2 < 1)
     return(NA)
   index <- pcount <- pnextcount <- -1
   while (pnextcount >= pcount) {

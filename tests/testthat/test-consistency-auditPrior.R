@@ -5,7 +5,7 @@ context("Test consistency of function auditPrior()")
 test_that(desc = "(id: f2-v0.1.0-t1) Test for method = 'none'", {
   prior <- auditPrior(conf.level = 0.95, likelihood = "binomial", method = "none")
   expect_equal(prior[["description"]]$alpha, 1)
-  expect_equal(prior[["description"]]$beta, 1)
+  expect_equal(prior[["description"]]$beta, 0)
   
   prior <- auditPrior(conf.level = 0.95, likelihood = "poisson", method = "none")
   expect_equal(prior[["description"]]$alpha, 1)
@@ -13,7 +13,7 @@ test_that(desc = "(id: f2-v0.1.0-t1) Test for method = 'none'", {
   
   prior <- auditPrior(conf.level = 0.95, likelihood = "hypergeometric", method = "none", N.units = 3500)
   expect_equal(prior[["description"]]$alpha, 1)
-  expect_equal(prior[["description"]]$beta, 1)
+  expect_equal(prior[["description"]]$beta, 0)
 })
 
 test_that(desc = "(id: f2-v0.1.0-t2) Test for method = 'median'", {
@@ -30,16 +30,16 @@ test_that(desc = "(id: f2-v0.1.0-t2) Test for method = 'median'", {
   expect_equal(prior[["description"]]$beta, 13.86294, tolerance = 0.001)  
 })
 
-test_that(desc = "(id: f2-v0.1.0-t3) Test for method = 'hypotheses'", {
-  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "hypotheses", likelihood = "binomial", p.hmin = 0.3)
+test_that(desc = "(id: f2-v0.1.0-t3) Test for method = 'hyp'", {
+  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "hyp", likelihood = "binomial", p.hmin = 0.3)
   expect_equal(prior[["description"]]$alpha, 1)
   expect_equal(prior[["description"]]$beta, 6.954, tolerance = 0.001)
   
-  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "hypotheses", likelihood = "binomial", p.hmin = 1 - 0.3)
+  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "hyp", likelihood = "binomial", p.hmin = 1 - 0.3)
   expect_equal(prior[["description"]]$alpha, 1)
   expect_equal(prior[["description"]]$beta, 23.47232, tolerance = 0.001)
   
-  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "hypotheses", likelihood = "poisson", p.hmin = 0.3)
+  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "hyp", likelihood = "poisson", p.hmin = 0.3)
   expect_equal(prior[["description"]]$alpha, 1)
   expect_equal(prior[["description"]]$beta, 7.133, tolerance = 0.001) 
 })
@@ -116,7 +116,7 @@ test_that(desc = "(id: f2-v0.5.0-t1) Test for summary and print function", {
   invisible(capture.output(print(prior)))
   invisible(capture.output(summary(prior)))
   expect_equal(prior[["description"]]$alpha, 1)
-  expect_equal(prior[["description"]]$beta, 1)
+  expect_equal(prior[["description"]]$beta, 0)
 })
 
 test_that(desc = "(id: f2-v0.5.0-t2) Test for plot function", {
@@ -169,20 +169,20 @@ test_that(desc = "(id: f2-v0.5.3-t2) Test for bram method poisson", {
 
 # jfa version 0.6.0
 
-test_that(desc = "(id: f2-v0.6.0-t1) Test for custom method binomial", {
-  prior <- auditPrior(materiality = 0.05, likelihood = "binomial", method = "custom", alpha = 5, beta = 10)
+test_that(desc = "(id: f2-v0.6.0-t1) Test for param method binomial", {
+  prior <- auditPrior(materiality = 0.05, likelihood = "binomial", method = "param", alpha = 5, beta = 10)
   expect_equal(prior[["description"]]$alpha, 5)
   expect_equal(prior[["description"]]$beta, 10)
 })
 
-test_that(desc = "(id: f2-v0.6.0-t2) Test for custom method poisson", {
-  prior <- auditPrior(materiality = 0.05, likelihood = "poisson", method = "custom", alpha = 5, beta = 10)
+test_that(desc = "(id: f2-v0.6.0-t2) Test for param method poisson", {
+  prior <- auditPrior(materiality = 0.05, likelihood = "poisson", method = "param", alpha = 5, beta = 10)
   expect_equal(prior[["description"]]$alpha, 5)
   expect_equal(prior[["description"]]$beta, 10)
 })
 
-test_that(desc = "(id: f2-v0.6.0-t1) Test for custom method hypergeometric", {
-  prior <- auditPrior(materiality = 0.05, likelihood = "hypergeometric", method = "custom", alpha = 5, beta = 10, N = 100)
+test_that(desc = "(id: f2-v0.6.0-t1) Test for param method hypergeometric", {
+  prior <- auditPrior(materiality = 0.05, likelihood = "hypergeometric", method = "param", alpha = 5, beta = 10, N = 100)
   expect_equal(prior[["description"]]$alpha, 5)
   expect_equal(prior[["description"]]$beta, 10)
 })

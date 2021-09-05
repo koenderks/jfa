@@ -16,55 +16,62 @@ summary(prior1)
 plot(prior1)
 
 ## -----------------------------------------------------------------------------
-prior2 <- auditPrior(method = 'arm', likelihood = likelihood, expected = expected, conf.level = confidence,
-                     materiality = materiality, ir = 0.9, cr = 0.6)
+prior2 <- auditPrior(method = 'param', likelihood = likelihood, alpha = 2, beta = 10)
 summary(prior2)
 
 ## -----------------------------------------------------------------------------
 plot(prior2)
 
 ## -----------------------------------------------------------------------------
-prior3 <- auditPrior(method = 'bram', likelihood = likelihood, expected = expected, conf.level = confidence, 
-                     materiality = materiality, ub = 0.6)
+prior2 <- auditPrior(method = 'uniform', likelihood = likelihood)
+summary(prior2)
+
+## -----------------------------------------------------------------------------
+plot(prior2)
+
+## -----------------------------------------------------------------------------
+prior3 <- auditPrior(method = 'median', likelihood = likelihood, expected = expected, conf.level = confidence, 
+                     materiality = materiality)
 summary(prior3)
 
 ## -----------------------------------------------------------------------------
 plot(prior3)
 
 ## -----------------------------------------------------------------------------
-prior4 <- auditPrior(method = 'median', likelihood = likelihood, expected = expected, conf.level = confidence, 
-                     materiality = materiality)
+prior4 <- auditPrior(method = 'hyp', likelihood = likelihood, expected = expected, conf.level = confidence,
+                     materiality = materiality, p.hmin = 0.6)
 summary(prior4)
 
 ## -----------------------------------------------------------------------------
 plot(prior4)
 
 ## -----------------------------------------------------------------------------
-prior5 <- auditPrior(method = 'hypotheses', likelihood = likelihood, expected = expected, conf.level = confidence,
-                     materiality = materiality, p.hmin = 0.6)
+prior5 <- auditPrior(method = 'arm', likelihood = likelihood, expected = expected, conf.level = confidence,
+                     materiality = materiality, ir = 0.9, cr = 0.6)
 summary(prior5)
 
 ## -----------------------------------------------------------------------------
 plot(prior5)
 
 ## -----------------------------------------------------------------------------
-prior6 <- auditPrior(method = 'sample', likelihood = likelihood, expected = expected, conf.level = confidence,
-                     materiality = materiality, x = 0, n = 30)
+prior6 <- auditPrior(method = 'bram', likelihood = likelihood, expected = expected, conf.level = confidence, 
+                     materiality = materiality, ub = 0.6)
 summary(prior6)
 
 ## -----------------------------------------------------------------------------
 plot(prior6)
 
 ## -----------------------------------------------------------------------------
-prior7 <- auditPrior(method = 'factor', likelihood = likelihood, expected = expected, conf.level = confidence,
-                     materiality = materiality, x = 0, n = 58, factor = 0.7)
+prior7 <- auditPrior(method = 'sample', likelihood = likelihood, expected = expected, conf.level = confidence,
+                     materiality = materiality, x = 0, n = 30)
 summary(prior7)
 
 ## -----------------------------------------------------------------------------
 plot(prior7)
 
 ## -----------------------------------------------------------------------------
-prior8 <- auditPrior(method = 'custom', likelihood = likelihood, alpha = 2, beta = 10)
+prior8 <- auditPrior(method = 'factor', likelihood = likelihood, expected = expected, conf.level = confidence,
+                     materiality = materiality, x = 0, n = 58, factor = 0.7)
 summary(prior8)
 
 ## -----------------------------------------------------------------------------

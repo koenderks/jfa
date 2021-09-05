@@ -105,24 +105,25 @@ The `auditPrior()` function creates a prior distribution according to one of sev
 *Full function with default arguments:*
 
 ```r
-auditPrior(method = 'none', likelihood = 'poisson', expected = 0, 
-           conf.level = 0.95, materiality = NULL, N.units = NULL, 
-           ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL,
-           x = NULL, n = NULL, factor = NULL, alpha = NULL, beta = NULL)
+auditPrior(method = 'none', likelihood = 'poisson', N.units = NULL,
+           alpha = NULL, beta = NULL, materiality = NULL, expected = 0, 
+           ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL, x = NULL, 
+           n = NULL, factor = NULL, conf.level = 0.95)
 ```
 
 *Supported options for the `method` argument:*
 
 | `method` | Description | Required arguments | Reference |
 | :----------- | :----------- | :----------- | :----------- |
-| `none` | No prior information | | Derks et al. (2021) |
-| `arm` | Translates risk assessments (ARM) | `materiality`, `ir` and `cr` | Derks et al. (2021) |
-| `bram` | Bayesian risk assessment model (BRAM) | `ub` | Touw and Hoogduin (2011) |
-| `median` | Equal prior probabilities for (in)tolerable misstatement | `materiality` | Derks et al. (2021) |
-| `hypotheses` | Custom prior probabilities for (in)tolerable misstatement | `materiality` and `p.hmin` | Derks et al. (2021) |
+| `none` | No prior information (classical properties) | | |
+| `param` | Manual prior parameters | `alpha` and `beta` | |
+| `uniform` | Uniform prior distribution | | Derks et al. (2021) |
+| `median` | Equal prior probabilities | `materiality` | Derks et al. (2021) |
+| `hyp` | Manual prior probabilities | `materiality` and `p.hmin` | Derks et al. (2021) |
+| `arm` | Translate risk assessments (ARM) | `materiality`, `ir` and `cr` | Derks et al. (2021) |
+| `bram` | Specify prior upper bound | `ub` | Touw and Hoogduin (2011) |
 | `sample` | Earlier sample | `x` and `n` | Derks et al. (2021) |
 | `factor` | Weighted earlier sample | `x`, `n`, and `factor` | Derks et al. (2021) |
-| `custom` | Manually set the prior parameters | `alpha` and `beta` | |
 
 *Supported options for the `likelihood` argument:*
 
@@ -139,7 +140,10 @@ auditPrior(method = 'none', likelihood = 'poisson', expected = 0,
 x <- auditPrior(method = 'none', likelihood = 'poisson')
 
 # A beta(1, 10) prior distribution 
-x <- auditPrior(method = 'custom', likelihood = 'binomial', alpha = 1, beta = 10)
+x <- auditPrior(method = 'param', likelihood = 'binomial', alpha = 1, beta = 10)
+
+# A beta prior distribution which incorporates inherent risk (70%) and control risk (50%)
+x <- auditPrior(method = 'arm', likelihood = 'binomial', materiality = 0.05, ir = 0.7, cr = 0.5)
 
 summary(x) # Prints information about the prior distribution
 ```
@@ -177,7 +181,7 @@ x <- planning(materiality = 0.03, likelihood = 'poisson', prior = TRUE)
 
 # Bayesian planning using a beta(1, 10) prior
 x <- planning(materiality = 0.03, 
-              prior = auditPrior(method = 'custom', likelihood = 'binomial', alpha = 1, beta = 10))
+              prior = auditPrior(method = 'param', likelihood = 'binomial', alpha = 1, beta = 10))
 
 summary(x) # Prints information about the planning
 ```
@@ -268,7 +272,7 @@ x <- evaluation(materiality = 0.03, x = 1, n = 100, method = 'poisson', prior = 
 
 # Bayesian evaluation using a beta(1, 10) prior
 x <- evaluation(materiality = 0.03, x = 1, n = 100, 
-                prior = auditPrior(method = 'custom', likelihood = 'binomial', alpha = 1, beta = 10))
+                prior = auditPrior(method = 'param', likelihood = 'binomial', alpha = 1, beta = 10))
 
 summary(x) # Prints information about the evaluation
 ```
