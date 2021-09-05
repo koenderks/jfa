@@ -165,37 +165,41 @@ vignette('jfa', package = 'jfa')" />
 <code><a href='../articles/jfa.html'>vignette('jfa', package = 'jfa')</a></code></p>
     </div>
 
-    <pre class="usage"><span class='fu'>auditPrior</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'none'</span>, likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, expected <span class='op'>=</span> <span class='fl'>0</span>, 
-           conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, materiality <span class='op'>=</span> <span class='cn'>NULL</span>, N.units <span class='op'>=</span> <span class='cn'>NULL</span>, 
-           ir <span class='op'>=</span> <span class='cn'>NULL</span>, cr <span class='op'>=</span> <span class='cn'>NULL</span>, ub <span class='op'>=</span> <span class='cn'>NULL</span>, p.hmin <span class='op'>=</span> <span class='cn'>NULL</span>, 
-           x <span class='op'>=</span> <span class='cn'>NULL</span>, n <span class='op'>=</span> <span class='cn'>NULL</span>, factor <span class='op'>=</span> <span class='cn'>NULL</span>, alpha <span class='op'>=</span> <span class='cn'>NULL</span>, beta <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>auditPrior</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'none'</span>, likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, N.units <span class='op'>=</span> <span class='cn'>NULL</span>,
+           alpha <span class='op'>=</span> <span class='cn'>NULL</span>, beta <span class='op'>=</span> <span class='cn'>NULL</span>, materiality <span class='op'>=</span> <span class='cn'>NULL</span>, expected <span class='op'>=</span> <span class='fl'>0</span>, 
+           ir <span class='op'>=</span> <span class='cn'>NULL</span>, cr <span class='op'>=</span> <span class='cn'>NULL</span>, ub <span class='op'>=</span> <span class='cn'>NULL</span>, p.hmin <span class='op'>=</span> <span class='cn'>NULL</span>, x <span class='op'>=</span> <span class='cn'>NULL</span>, 
+           n <span class='op'>=</span> <span class='cn'>NULL</span>, factor <span class='op'>=</span> <span class='cn'>NULL</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>method</th>
-      <td><p>a character specifying the method by which the prior distribution is constructed. Defaults to <code>none</code> which incorporates no existing information. Other options are <code>arm</code>, <code>bram</code>, <code>median</code>, <code>hypotheses</code>, <code>sample</code>, and <code>factor</code>. See the details section for more information about the available methods.</p></td>
+      <td><p>a character specifying the method by which the prior distribution is constructed. Defaults to <code>none</code> which incorporates no existing information. Other options are <code>arm</code>, <code>bram</code>, <code>median</code>, <code>hyp</code>, <code>sample</code>, and <code>factor</code>. See the details section for more information about the available methods.</p></td>
     </tr>
     <tr>
       <th>likelihood</th>
       <td><p>a character specifying the likelihood assumed when updating the prior distribution. This can be either <code>poisson</code> (default) for the Poisson likelihood and gamma prior distribution, <code>biomial</code> for the binomial likelihood and beta prior distribution, or <code>hypergeometric</code> for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.</p></td>
     </tr>
     <tr>
-      <th>expected</th>
-      <td><p>a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a numeric value (&gt;= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.</p></td>
+      <th>N.units</th>
+      <td><p>an numeric value larger than 0 specifying the total number of units in the population. Optional unless <code>likelihood = 'hypergeometric'</code>.</p></td>
     </tr>
     <tr>
-      <th>conf.level</th>
-      <td><p>a numeric value between 0 and 1 specifying the confidence level to be used in the planning. Defaults to 0.95 for 95% confidence.</p></td>
+      <th>alpha</th>
+      <td><p>if <code>method = 'param'</code>, a numeric value specifying the \(\alpha\) parameter of the prior distribution.</p></td>
+    </tr>
+    <tr>
+      <th>beta</th>
+      <td><p>if <code>method = 'param'</code>, a numeric value specifying the \(\beta\) parameter of the prior distribution.</p></td>
     </tr>
     <tr>
       <th>materiality</th>
       <td><p>a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum upper limit) as a fraction of the total population size. Can be <code>NULL</code> for some methods.</p></td>
     </tr>
     <tr>
-      <th>N.units</th>
-      <td><p>an numeric value larger than 0 specifying the total number of units in the population. Optional unless <code>likelihood = 'hypergeometric'</code>.</p></td>
+      <th>expected</th>
+      <td><p>a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a numeric value (&gt;= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.</p></td>
     </tr>
     <tr>
       <th>ir</th>
@@ -211,7 +215,7 @@ vignette('jfa', package = 'jfa')" />
     </tr>
     <tr>
       <th>p.hmin</th>
-      <td><p>if <code>method = 'hypotheses'</code>, a numeric value between 0 and 1 specifying the prior probability of the hypothesis of tolerable misstatement (H-: \(\theta &lt;\) materiality).</p></td>
+      <td><p>if <code>method = 'hyp'</code>, a numeric value between 0 and 1 specifying the prior probability of the hypothesis of tolerable misstatement (H-: \(\theta &lt;\) materiality).</p></td>
     </tr>
     <tr>
       <th>x</th>
@@ -226,12 +230,8 @@ vignette('jfa', package = 'jfa')" />
       <td><p>if <code>method = 'factor'</code>, a numeric value between 0 and 1 specifying the weighting factor for the results of the sample equivalent to the prior information.</p></td>
     </tr>
     <tr>
-      <th>alpha</th>
-      <td><p>if <code>method = 'custom'</code>, a numeric value specifying the \(\alpha\) parameter of the prior distribution.</p></td>
-    </tr>
-    <tr>
-      <th>beta</th>
-      <td><p>if <code>method = 'custom'</code>, a numeric value specifying the \(\beta\) parameter of the prior distribution.</p></td>
+      <th>conf.level</th>
+      <td><p>a numeric value between 0 and 1 specifying the confidence level to be used in the planning. Defaults to 0.95 for 95% confidence. Used to calculate the upper bound of the prior distribution.</p></td>
     </tr>
     </table>
 
@@ -254,14 +254,15 @@ vignette('jfa', package = 'jfa')" />
 
     <p>This section elaborates on the available options for the <code>method</code> argument.</p>
 <ul>
-<li><p><code>none</code>:              This method constructs a prior distribution that incorporates negligible information about the possible values of the misstatement.</p></li>
+<li><p><code>none</code>:              This method constructs a prior distribution that incorporates negligible information about the possible values of the misstatement. These prior distributions are the default because they yield the same sample sizes and upper limits as classical techniques. However, these prior distributions are improper (i.e., reach to infinity).</p></li>
+<li><p><code>param</code>:             This method constructs a prior distribution on the basis of user specified \(\alpha\) and \(\beta\) parameters.</p></li>
+<li><p><code>uniform</code>:           This method constructs a prior distribution that incorporates uniform information about the possible values of the misstatement.</p></li>
+<li><p><code>median</code>:            This method constructs a prior distribution under which the prior probability of tolerable misstatement (\(\theta &lt;\) materiality) is equal to the prior probability of intolerable misstatement (\(\theta &gt;\) materiality).</p></li>
+<li><p><code>hyp</code>:               This method constructs a prior distribution with manual prior probabilities for the hypotheses of tolerable misstatement (\(\theta &lt;\) materiality) and intolerable misstatement (\(\theta &gt;\) materiality). This method requires specification of the <code>pHmin</code> argument.</p></li>
 <li><p><code>arm</code>:               This method constructs a prior distribution by translating the risks of material misstatement (inherent risk and internal control risk) from the audit risk model to an implicit sample. The method requires specification of the <code>ir</code> (inherent risk) and <code>cr</code> (internal control risk) arguments.</p></li>
 <li><p><code>bram</code>:              This method constructs a prior distribution using the Bayesian audit risk assessment model (BRAM) in which the expected most likely error and expected upper bound of the misstatement must be specified. The method requires specification of the <code>ub</code> argument.</p></li>
-<li><p><code>median</code>:            This method constructs a prior distribution so that the prior probability of tolerable misstatement (\(\theta &lt;\) materiality) is equal to the prior probability of intolerable misstatement (\(\theta &gt;\) materiality).</p></li>
-<li><p><code>hypotheses</code>:        This method constructs a prior distribution with custom prior probabilities for the hypotheses of tolerable misstatement (\(\theta &lt;\) materiality) and intolerable misstatement (\(\theta &gt;\) materiality). This method requires specification of the <code>pHmin</code> argument.</p></li>
-<li><p><code>sample</code>:            This method constructs a prior distribution on the basis of an earlier sample. This method requires specification of the <code>sampleN</code> and <code>sampleK</code> arguments.</p></li>
+<li><p><code>sample</code>:            This method constructs a prior distribution on the basis of an earlier observed sample. This method requires specification of the <code>sampleN</code> and <code>sampleK</code> arguments.</p></li>
 <li><p><code>factor</code>:            This method constructs a prior distribution on the basis of an earlier sample in combination with a weighting factor. This method requires specification of the <code>sampleN</code>, <code>sampleK</code>, and <code>factor</code> arguments.</p></li>
-<li><p><code>custom</code>:            This method constructs a prior distribution on the basis of user specified \(\alpha\) and \(\beta\) parameters.</p></li>
 </ul>
 
 <p>This section elaborates on the available likelihoods and corresponding prior distributions for the <code>likelihood</code> argument.</p>
@@ -294,9 +295,9 @@ vignette('jfa', package = 'jfa')" />
 </div><div class='output co'>#&gt; Probability distribution for audit sampling: gamma(α = 1, β = 13.863) 
 #&gt; Distribution obtained via method 'median'</div><div class='input'>
 <span class='co'># Custom prior distribution</span>
-<span class='fu'>auditPrior</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'custom'</span>, likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, alpha <span class='op'>=</span> <span class='fl'>1</span>, beta <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
+<span class='fu'>auditPrior</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'param'</span>, likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, alpha <span class='op'>=</span> <span class='fl'>1</span>, beta <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Probability distribution for audit sampling: gamma(α = 1, β = 10) 
-#&gt; Distribution obtained via method 'custom'</div><div class='input'>
+#&gt; Distribution obtained via method 'param'</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

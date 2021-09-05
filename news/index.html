@@ -161,7 +161,8 @@
 </h1>
 <p><strong>New features</strong></p>
 <ul>
-<li>Added <code>method = 'custom'</code> to function <code><a href="../reference/auditPrior.html">auditPrior()</a></code> which takes as input the raw <code>alpha</code> and <code>beta</code> parameters of the prior distribution.</li>
+<li>Added <code>method = 'param'</code> to function <code><a href="../reference/auditPrior.html">auditPrior()</a></code> which takes as input the raw <code>alpha</code> and <code>beta</code> parameters of the prior distribution.</li>
+<li>Added <code>method = 'uniform'</code> to function <code><a href="../reference/auditPrior.html">auditPrior()</a></code> which constructs a uniform prior distribution (only available for the <code>binomial</code> and <code>hypergeometric</code> likelihood.)</li>
 <li>Added a new vignette that describes the sampling methodology implemented in <code>jfa</code>.</li>
 </ul>
 <p><strong>Major changes</strong></p>
@@ -226,12 +227,14 @@
 <code>records</code> -&gt; <code>rows</code> (in <code><a href="../reference/selection.html">selection()</a></code>)</li>
 <li>
 <code>mus</code> -&gt; <code>values</code> (in <code><a href="../reference/selection.html">selection()</a></code>)</li>
+<li>
+<code>hypotheses</code> -&gt; <code>hyp</code> (in <code><a href="../reference/auditPrior.html">auditPrior()</a></code>)</li>
 </ul>
 </li>
 <li>
 <code>poisson</code> is now the default likelihood for all functions since it is the most conservative.</li>
-<li>
-<code>times</code> (former <code>counts</code>) must now be indicated as a column name in the <code>data</code> instead of a vector.</li>
+<li>The default prior distributions used when <code>method = 'none'</code> or <code>prior = FALSE</code> are now set to priors (<code><a href="https://rdrr.io/r/base/Special.html">gamma(1, 0)</a></code>, <code><a href="https://rdrr.io/r/base/Special.html">beta(1,0)</a></code>, <code>beta-binomial(1, 0)</code>) that yield the same results (with respect to sample sizes and upper limits) as classical procedures.</li>
+<li>The <code>times</code> (former <code>counts</code>) argument in <code><a href="../reference/evaluation.html">evaluation()</a></code> must now be indicated as a column name in the <code>data</code> instead of a vector.</li>
 <li>
 <code>nPrior</code> and <code>kPrior</code> have been removed from the <code><a href="../reference/planning.html">planning()</a></code> and <code><a href="../reference/evaluation.html">evaluation()</a></code> functions. All prior distributions must now be specified using <code>prior = TRUE</code> (noninformative priors) or using a call to <code><a href="../reference/auditPrior.html">auditPrior()</a></code>.</li>
 <li>Removed the <code>auditBF()</code> function since its value is available through <code><a href="https://rdrr.io/r/base/print.html">print(evaluation(materiality = x, prior = auditPrior(method = 'median', materiality = x)))</a></code>
