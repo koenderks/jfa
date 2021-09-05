@@ -166,7 +166,7 @@
 </ul>
 <p><strong>Major changes</strong></p>
 <ul>
-<li>From <code>jfa</code> 0.5.7 to <code>jfa</code> 0.6.0 there has been a major overhaul in the names of function arguments. This is done so that the calls integrate better with general R syntax. I apologive for any inconvenience this may cause. The following names have been changed:
+<li>From <code>jfa</code> 0.5.7 to <code>jfa</code> 0.6.0 there has been a major overhaul in the names of function arguments. This is done so that the calls integrate better with general R syntax and the package gets more user-friendly. I apologive for any inconvenience this may cause. The following names have been changed:
 <ul>
 <li>
 <code>sampleK</code> -&gt; <code>x</code> (in <code><a href="../reference/auditPrior.html">auditPrior()</a></code>)</li>
@@ -222,10 +222,14 @@
 <code>csB</code> -&gt; <code>cs.b</code> (in <code><a href="../reference/evaluation.html">evaluation()</a></code>)</li>
 <li>
 <code>csMu</code> -&gt; <code>cs.mu</code> (in <code><a href="../reference/evaluation.html">evaluation()</a></code>)</li>
+<li>
+<code>records</code> -&gt; <code>rows</code> (in <code><a href="../reference/selection.html">selection()</a></code>)</li>
+<li>
+<code>mus</code> -&gt; <code>values</code> (in <code><a href="../reference/selection.html">selection()</a></code>)</li>
 </ul>
 </li>
 <li>
-<code>poisson</code> is now the default likelihood for all functions.</li>
+<code>poisson</code> is now the default likelihood for all functions since it is the most conservative.</li>
 <li>
 <code>nPrior</code> and <code>kPrior</code> have been removed from the <code><a href="../reference/planning.html">planning()</a></code> and <code><a href="../reference/evaluation.html">evaluation()</a></code> functions. All prior distributions must now be specified using <code>prior = TRUE</code> (noninformative priors) or using a call to <code><a href="../reference/auditPrior.html">auditPrior()</a></code>.</li>
 <li>Removed the <code>auditBF()</code> function since its value is available through <code><a href="https://rdrr.io/r/base/print.html">print(evaluation(materiality = x, prior = auditPrior(method = 'median', materiality = x)))</a></code>

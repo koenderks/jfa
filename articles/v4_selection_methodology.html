@@ -168,7 +168,7 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Record sampling</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'items'</span>, method <span class="op">=</span> <span class="st">'random'</span><span class="op">)</span>
+<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'rows'</span>, method <span class="op">=</span> <span class="st">'random'</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
 <pre><code>##   rowNumber count    ID bookValue auditValue
 ## 1      1017     1 50755    618.24     618.24
@@ -180,7 +180,7 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Monetary unit sampling</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'mus'</span>, method <span class="op">=</span> <span class="st">'random'</span>, values <span class="op">=</span> <span class="st">'bookValue'</span><span class="op">)</span>
+<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'values'</span>, method <span class="op">=</span> <span class="st">'random'</span>, values <span class="op">=</span> <span class="st">'bookValue'</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
 <pre><code>##   rowNumber count    ID bookValue auditValue
 ## 1      2174     1 57702    428.87     428.87
@@ -211,7 +211,7 @@
 <p>As an example, the code below shows how to apply the fixed interval sampling algorithm in a record sampling and a monetary unit sampling setting. Note that, by default, the first sampling unit from each interval is selected. However, this can be changed by setting the argument <code>start = 1</code> to a different value.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Record sampling</span>
-<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'items'</span>, method <span class="op">=</span> <span class="st">'interval'</span>, start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'rows'</span>, method <span class="op">=</span> <span class="st">'interval'</span>, start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
 <pre><code>##   rowNumber count    ID bookValue auditValue
 ## 1         1     1 82884    242.61     242.61
@@ -222,7 +222,7 @@
 ## 6       176     1 27801    314.65     314.65</code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Monetary unit sampling</span>
-<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'mus'</span>, method <span class="op">=</span> <span class="st">'interval'</span>, values <span class="op">=</span> <span class="st">'bookValue'</span>, start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
+<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'values'</span>, method <span class="op">=</span> <span class="st">'interval'</span>, values <span class="op">=</span> <span class="st">'bookValue'</span>, start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
 <pre><code>##   rowNumber count    ID bookValue auditValue
 ## 1         1     1 30568     14.47      14.47
@@ -250,7 +250,7 @@
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Record sampling</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'items'</span>, method <span class="op">=</span> <span class="st">'cell'</span><span class="op">)</span>
+<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'rows'</span>, method <span class="op">=</span> <span class="st">'cell'</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
 <pre><code>##   rowNumber count    ID bookValue auditValue
 ## 1         9     1 14608    216.48     216.48
@@ -262,7 +262,7 @@
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Monetary unit sampling</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'mus'</span>, method <span class="op">=</span> <span class="st">'cell'</span>, values <span class="op">=</span> <span class="st">'bookValue'</span><span class="op">)</span>
+<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'values'</span>, method <span class="op">=</span> <span class="st">'cell'</span>, values <span class="op">=</span> <span class="st">'bookValue'</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
 <pre><code>##   rowNumber count    ID bookValue auditValue
 ## 1        53     1 40775     96.61      96.61

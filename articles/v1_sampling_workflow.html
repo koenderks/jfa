@@ -187,11 +187,11 @@
 <div id="stage-2-selecting-a-sample" class="section level2">
 <h2 class="hasAnchor">
 <a href="#stage-2-selecting-a-sample" class="anchor"></a>Stage 2: Selecting a sample</h2>
-<p>Laura is now ready to select the required 178 transactions from the financial statements. She can choose to do this according to one of two statistical methods. In <em>record sampling</em> (<code>units = "items"</code>), inclusion probabilities are assigned on the transaction level, treating transactions with a high value and a low value the same, a transaction of $5,000 is equally likely to be selected as a transaction of $1,000. In <em>monetary unit sampling</em> (<code>units = "mus"</code>), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the transaction that includes that dollar is selected. This favors higher transactions, as a transaction of $5,000 is five times more likely to be selected than a transaction of $1,000.</p>
+<p>Laura is now ready to select the required 178 transactions from the financial statements. She can choose to do this according to one of two statistical methods. In <em>record sampling</em> (<code>units = "rows"</code>), inclusion probabilities are assigned on the transaction level, treating transactions with a high value and a low value the same, a transaction of $5,000 is equally likely to be selected as a transaction of $1,000. In <em>monetary unit sampling</em> (<code>units = "values"</code>), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the transaction that includes that dollar is selected. This favors higher transactions, as a transaction of $5,000 is five times more likely to be selected than a transaction of $1,000.</p>
 <p>Laura chooses to use <em>monetary unit sampling</em>, as she wants to include more high-valued transactions. The <code><a href="../reference/selection.html">selection()</a></code> function allows her to sample from the financial statements. She uses the <code>stage1</code> object as an input for the <code><a href="../reference/selection.html">selection()</a></code> function.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Step 2: Draw a sample from the financial statements.</span>
-<span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="va">stage1</span>, units <span class="op">=</span> <span class="st">"mus"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span><span class="op">)</span></code></pre></div>
+<span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="va">stage1</span>, units <span class="op">=</span> <span class="st">"values"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span><span class="op">)</span></code></pre></div>
 <p>Laura can inspect the outcomes of her sampling procedure by using the <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> function.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">stage2</span><span class="op">)</span></code></pre></div>
@@ -252,15 +252,15 @@
 ## # Minimum precision:             Not specified 
 ## # Population size:               Not specified 
 ## # Sample size:                   178 
-## # Sample errors:                 2 
-## # Sum of taints:                 1.2 
+## # Sample errors:                 3 
+## # Sum of taints:                 1.8 
 ## # Method:                        poisson   
 ## # ------------------------------------------------------------
 ## # Output:
 ## #  
-## # Most likely error:             0.674%
-## # Upper bound:                   2.483%
-## # Precision:                     1.809% 
+## # Most likely error:             1.011%
+## # Upper bound:                   2.977%
+## # Precision:                     1.965% 
 ## # p Value:                       &lt;0.01 
 ## # Sufficient evidence:           TRUE 
 ## # ------------------------------------------------------------</code></pre>
