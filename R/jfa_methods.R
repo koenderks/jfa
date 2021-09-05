@@ -42,7 +42,7 @@ print.jfaPlanning <- function(x, ...) {
 #' @method print jfaSelection
 #' @export
 print.jfaSelection <- function(x, ...) {
-  cat("Obtained sampling units:", x[["n.units"]], "| Obtained sample items:", x[["n.items"]], "\nSample obtained via methods", paste0("'", x[["units"]], "' + '", x[["method"]], "'\n"))
+  cat("Obtained sampling units:", x[["n.units"]], "| Obtained items:", x[["n.items"]], "\nSample obtained via method", paste0("'", x[["units"]], "' + '", x[["method"]], "'\n"))
 }
 
 #' @rdname jfa-methods
@@ -170,8 +170,8 @@ print.summary.jfaSelection <- function(x, ...) {
 #      
 # Population size:              ", switch(x[["units"]], "values" = x[["N.units"]], "rows" = x[["N.items"]]),"
 # Requested sample size:        ", x[["n.req"]],"
-# Sampling units:               ", switch(x[["units"]], "values" = "Monetary units", "rows" = "Items"),"
-# Algorithm:                    ", switch(x[["method"]], "random" = "Random sampling", "interval" = "Fixed interval sampling", "cell" = "Cell sampling"), 
+# Sampling units:               ", switch(x[["units"]], "values" = "Monetary units", "rows" = "Rows"),"
+# Method:                       ", switch(x[["method"]], "random" = "Random sampling", "interval" = "Fixed interval sampling", "cell" = "Cell sampling"), 
       ifelse(x[["method"]] == "interval" || x[["method"]] == "cell", no = "", yes = paste0("
 # Interval:                      ", x[["interval"]])),
       ifelse(x[["method"]] == "interval", no = "", yes = paste0("
@@ -180,7 +180,7 @@ print.summary.jfaSelection <- function(x, ...) {
 # Output:
 #
 # Obtained sampling units:      ", x[["n.units"]],"
-# Obtained sample items:        ", x[["n.items"]],"
+# Obtained items:               ", x[["n.items"]],"
 # ------------------------------------------------------------
 # Statistics:
 #
