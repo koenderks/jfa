@@ -245,12 +245,12 @@
 ## # Population size:               1403221 
 ## # Requested sample size:         178 
 ## # Sampling units:                Monetary units 
-## # Algorithm:                     Random sampling   
+## # Method:                        Random sampling   
 ## # ------------------------------------------------------------ 
 ## # Output:
 ## #
 ## # Obtained sampling units:       178 
-## # Obtained sample items:         178 
+## # Obtained items:                178 
 ## # ------------------------------------------------------------
 ## # Statistics:
 ## #
@@ -294,18 +294,18 @@
 ## # Minimum precision:             Not specified 
 ## # Population size:               Not specified 
 ## # Sample size:                   178 
-## # Sample errors:                 0 
-## # Sum of taints:                 0 
+## # Sample errors:                 2 
+## # Sum of taints:                 1.2 
 ## # Method:                        poisson  
 ## # Prior distribution:            gamma(α = 2.325, β = 53) 
 ## # ------------------------------------------------------------
 ## # Output:
 ## # 
-## # Posterior distribution:        gamma(α = 2.325, β = 231) 
-## # Most likely error:             0.574%
-## # Upper bound:                   2.278%
-## # Precision:                     1.704% 
-## # Bayes factor-+:                2179.847 
+## # Posterior distribution:        gamma(α = 3.525, β = 231) 
+## # Most likely error:             1.093%
+## # Upper bound:                   3.061%
+## # Precision:                     1.968% 
+## # Bayes factor-+:                298.28 
 ## # Sufficient evidence:           TRUE 
 ## # ------------------------------------------------------------</code></pre>
 <p>She can inspect the prior and posterior distribution by using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function. The shaded area quantifies the area under the posterior distribution that contains 95% of the probability, which ends at 4.433%. Therefore, Laura can state that there is a 95% probability that the misstatement in BuildIt’s population is lower than 4.433%.</p>
