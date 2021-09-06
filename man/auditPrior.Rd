@@ -66,8 +66,8 @@ This section elaborates on the available options for the \code{method} argument.
 
 \itemize{
  \item{\code{none}:              This method constructs a prior distribution that incorporates negligible information about the possible values of the misstatement. These prior distributions are the default because they yield the same sample sizes and upper limits as classical techniques. However, these prior distributions are improper (i.e., reach to infinity).}
- \item{\code{param}:             This method constructs a prior distribution on the basis of user specified \eqn{\alpha} and \eqn{\beta} parameters.}
  \item{\code{uniform}:           This method constructs a prior distribution that incorporates uniform information about the possible values of the misstatement.}
+ \item{\code{param}:             This method constructs a prior distribution on the basis of user specified \eqn{\alpha} and \eqn{\beta} parameters.}
  \item{\code{median}:            This method constructs a prior distribution under which the prior probability of tolerable misstatement (\eqn{\theta <} materiality) is equal to the prior probability of intolerable misstatement (\eqn{\theta >} materiality).}
  \item{\code{hyp}:               This method constructs a prior distribution with manual prior probabilities for the hypotheses of tolerable misstatement (\eqn{\theta <} materiality) and intolerable misstatement (\eqn{\theta >} materiality). This method requires specification of the \code{pHmin} argument.}
  \item{\code{arm}:               This method constructs a prior distribution by translating the risks of material misstatement (inherent risk and internal control risk) from the audit risk model to an implicit sample. The method requires specification of the \code{ir} (inherent risk) and \code{cr} (internal control risk) arguments.}

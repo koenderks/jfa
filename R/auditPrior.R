@@ -30,8 +30,8 @@
 #'
 #' \itemize{
 #'  \item{\code{none}:              This method constructs a prior distribution that incorporates negligible information about the possible values of the misstatement. These prior distributions are the default because they yield the same sample sizes and upper limits as classical techniques. However, these prior distributions are improper (i.e., reach to infinity).}
-#'  \item{\code{param}:             This method constructs a prior distribution on the basis of user specified \eqn{\alpha} and \eqn{\beta} parameters.}
 #'  \item{\code{uniform}:           This method constructs a prior distribution that incorporates uniform information about the possible values of the misstatement.}
+#'  \item{\code{param}:             This method constructs a prior distribution on the basis of user specified \eqn{\alpha} and \eqn{\beta} parameters.}
 #'  \item{\code{median}:            This method constructs a prior distribution under which the prior probability of tolerable misstatement (\eqn{\theta <} materiality) is equal to the prior probability of intolerable misstatement (\eqn{\theta >} materiality).}
 #'  \item{\code{hyp}:               This method constructs a prior distribution with manual prior probabilities for the hypotheses of tolerable misstatement (\eqn{\theta <} materiality) and intolerable misstatement (\eqn{\theta >} materiality). This method requires specification of the \code{pHmin} argument.}
 #'  \item{\code{arm}:               This method constructs a prior distribution by translating the risks of material misstatement (inherent risk and internal control risk) from the audit risk model to an implicit sample. The method requires specification of the \code{ir} (inherent risk) and \code{cr} (internal control risk) arguments.}
@@ -88,8 +88,8 @@ auditPrior <- function(method = 'none', likelihood = 'poisson', N.units = NULL,
                        alpha = NULL, beta = NULL, materiality = NULL, expected = 0, 
                        ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL, x = NULL, 
                        n = NULL, factor = NULL, conf.level = 0.95) {
-  if (!(method %in% c("none", "param", 'uniform', "median", "hyp", "arm", "bram", "sample", "factor")) || length(method) != 1)
-    stop("'method' should be one of 'none', 'param', 'uniform', 'median', 'hyp', 'arm', 'bram', 'sample', 'factor'")
+  if (!(method %in% c("none", "uniform", 'param', "median", "hyp", "arm", "bram", "sample", "factor")) || length(method) != 1)
+    stop("'method' should be one of 'none', 'uniform', 'param', 'median', 'hyp', 'arm', 'bram', 'sample', 'factor'")
   if (!(likelihood %in% c("poisson", "binomial", "hypergeometric")) || length(likelihood) != 1)
     stop("'likelihood' should be one of 'binomial', 'poisson', 'hypergeometric'")
   if (is.null(conf.level))
