@@ -41,9 +41,9 @@ expected    <- 0.01       # 1% errors expected in sample
 ```
 
 
-### [Default] No explicit information (`method = 'none'`)
+### Default prior distributions (`method = 'none'`)
 
-You can refrain from incorporating explicit information in the prior distribution using `method = 'none'`. As an example, the code below incorporates no explicit information into a prior distribution. The prior distribution that is constructed is improper but yields similar results to that of classical methodology with respect to sample sizes upper limits, and evidence.
+You can refrain from incorporating explicit information in the prior distribution using `method = 'none'`. As an example, the code below incorporates no explicit information into a prior distribution. The prior distribution that is constructed is improper but yields similar results to that of classical methodology with respect to sample sizes, upper limits, and evidence.
 
 ```{r}
 prior1 <- auditPrior(method = 'none', likelihood = likelihood, expected = expected, conf.level = confidence)
@@ -56,7 +56,7 @@ You can visually inspect the prior distribution using the `plot()` function.
 plot(prior1)
 ```
 
-### Uniform prior distribution
+### Uniform prior distributions (`method = 'uniform'`)
 
 You can specify a uniform prior distribution on the misstatement via `method = 'uniform'`. As an example, the code below creates a uniform beta(1, 1) prior distribution. The posterior distribution from a uniform prior distribution also has a close relation with classical methodology, as the posterior mode is equal to the observed misstatement (proportion).
 
@@ -71,7 +71,7 @@ You can visually inspect the prior distribution using the `plot()` function.
 plot(prior2)
 ```
 
-### Custom prior distribution
+### Custom prior distributions (`method = 'param'`)
 
 You can manually specify the $\alpha$ and $\beta$ parameters of the prior distribution using `method = 'param'` in combination with the `alpha` and `beta` arguments. As an example, the code below creates a beta(2, 10) prior distribution.
 
@@ -86,7 +86,7 @@ You can visually inspect the prior distribution using the `plot()` function.
 plot(prior3)
 ```
 
-### Equal prior probabilities (`method = 'median'`)
+### Prior distributions with equal prior probabilities (`method = 'median'`)
 
 You can incorporate the assumption that tolerable misstatement is equally likely as intolerable misstatement using `method = 'median'`. As an example, the code below incorporates this assumption into a prior distribution.
 
@@ -104,7 +104,7 @@ You can visually inspect the prior distribution using the `plot()` function.
 plot(prior4)
 ```
 
-### Manual prior probabilities (`method = 'hyp'`)
+### Prior distributions with custom prior probabilities (`method = 'hyp'`)
 
 You can manually assign prior probabilities to the hypothesis of tolerable misstatement and the hypotheses of intolerable misstatement (using `p.hmin`) in combination with `method = 'hyp'`. As an example, the code below incorporates the information that the hypothesis of tolerable misstatement has a probability of 60% into a prior distribution.
 
@@ -122,7 +122,7 @@ You can visually inspect the prior distribution using the `plot()` function.
 plot(prior5)
 ```
 
-### Audit Risk Model (`method = 'arm'`)
+### Prior distributions using the Audit Risk Model (`method = 'arm'`)
 
 You can translate the risk assessments from the Audit Risk Model (inherent risk and internal control risk) into a prior distribution using `method = 'arm'` in combination with the `ir` and `cr` arguments. As an example, the code below incorporates the information that the inherent risk is equal to 90% and that the internal control risk is equal to 60% into a prior distribution. 
 
@@ -138,7 +138,7 @@ You can visually inspect the prior distribution using the `plot()` function.
 plot(prior6)
 ```
 
-### Bayesian Risk Assessment Model (`method = 'bram'`)
+### Prior distributions using the Bayesian Risk Assessment Model (`method = 'bram'`)
 
 You can incorporate information about the expected errors (mode) and the upper confidence bound of the prior distribution according to the Bayesian Risk Assessment Model (BRAM) using `method = 'bram'`. As an example, the code below incorporates the information that the mode of the prior distribution is 1% and the upper bound is 60%.
 
@@ -154,7 +154,7 @@ You can visually inspect the prior distribution using the `plot()` function.
 plot(prior7)
 ```
 
-### Earlier sample (`method = 'sample'`)
+### Prior distributions from an earlier sample (`method = 'sample'`)
 
 You can incorporate information from an earlier sample into the prior distribution using `method = 'sample'` in combination with `x` and `n`. As an example, the code below incorporates the information from an earlier sample of 30 items in which 0 misstatements were found into a prior distribution.
 
@@ -170,7 +170,7 @@ You can visually inspect the prior distribution using the `plot()` function.
 plot(prior8)
 ```
 
-### Weighted earlier sample (`method = 'factor'`)
+### Prior distributions from a weighted earlier sample (`method = 'factor'`)
 
 You can incorporate information from last years results, weighted by a factor, into the prior distribution using `method = 'factor'` in combination with `x` and `n`. As an example, the code below incorporates the information from a last years results (a sample of 58 items in which 0 misstatements were found), weighted by a factor 0.7, into a prior distribution.
 
@@ -186,7 +186,7 @@ You can visually inspect the prior distribution using the `plot()` function.
 plot(prior9)
 ```
 
-## Using a prior distribution
+## Using a prior distribution in other functions
 
 Bayesian statistics allows the auditor to build on their existing information. Therefore, the objects returned by the `auditPrior()` function can be used as input for the `prior` argument in the `planning()` and `evaluation()` functions.
 
