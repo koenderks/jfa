@@ -499,14 +499,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The prior distribution can be used the planning stage to calculate a minimum sample size by providing the objected returned by the <code>auditPrior()</code> function to the <code>planning()</code> function. For example, the code below calculates the minimum sample size to test the misstatement in the population against a performance materiality of 5%, while incorporating the information in <code>prior9</code>.</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>jfa<span class="sc">::</span><span class="fu">planning</span>(<span class="at">materiality =</span> materiality, <span class="at">expected =</span> expected, <span class="at">conf.level =</span> confidence, <span class="at">prior =</span> prior9)</span></code></pre></div>
 <pre><code>## Minimum sample size: 27 
-## Sample size obtained in 29 iteration(s) via method &#39;binomial&#39;</code></pre>
+## Sample size obtained in 29 iteration(s) via method &#39;binomial&#39; + &#39;prior&#39;</code></pre>
 </div>
 <div id="combining-auditprior-with-evaluation" class="section level3">
 <h3>Combining <code>auditPrior()</code> with <code>evaluation()</code></h3>
 <p>The prior distribution can be used the evaluation stage by providing the objected returned by the <code>auditPrior()</code> function to the <code>evaluation()</code> function. For example, the code below evaluates the misstatement in the population with respect to the performance materiality of 5% after seeing a sample of 60 items with 1 misstatement, while incorporating the information in <code>prior8</code>.</p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>jfa<span class="sc">::</span><span class="fu">evaluation</span>(<span class="at">materiality =</span> materiality, <span class="at">conf.level =</span> confidence, <span class="at">x =</span> <span class="dv">1</span>, <span class="at">n =</span> <span class="dv">60</span>, <span class="at">prior =</span> prior9)</span></code></pre></div>
 <pre><code>## Most likely error: 0.994% | 95% Upper bound: 4.584% | Precision: 3.59% | BF-+: 3.745 
-## Estimates obtained via method &#39;binomial&#39;</code></pre>
+## Estimates obtained via method &#39;binomial&#39; + &#39;prior&#39;</code></pre>
 </div>
 </div>
 
