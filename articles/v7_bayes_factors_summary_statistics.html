@@ -182,7 +182,7 @@
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">tolerance</span>, x <span class="op">=</span> <span class="fl">2</span>, n <span class="op">=</span> <span class="fl">32</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <pre><code>## Most likely error: 6.25% | 95% Upper bound: 19.674% | Precision: 13.424% | BF-+: 0.277 
-## Estimates obtained via method 'poisson'</code></pre>
+## Estimates obtained via method 'poisson' + 'prior'</code></pre>
 </div>
 <div id="bayes-factor-after-stage-2" class="section level2">
 <h2 class="hasAnchor">
@@ -191,7 +191,7 @@
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">tolerance</span>, x <span class="op">=</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">0</span>, n <span class="op">=</span> <span class="fl">32</span> <span class="op">+</span> <span class="fl">50</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
 <pre><code>## Most likely error: 2.439% | 95% Upper bound: 7.678% | Precision: 5.239% | BF-+: 3.468 
-## Estimates obtained via method 'poisson'</code></pre>
+## Estimates obtained via method 'poisson' + 'prior'</code></pre>
 </div>
 </div>
 <div id="references" class="section level1">

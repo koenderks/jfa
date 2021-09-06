@@ -487,7 +487,7 @@
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, prior <span class="op">=</span> <span class="va">prior9</span><span class="op">)</span></code></pre></div>
 <pre><code>## Minimum sample size: 27 
-## Sample size obtained in 29 iteration(s) via method 'binomial'</code></pre>
+## Sample size obtained in 29 iteration(s) via method 'binomial' + 'prior'</code></pre>
 </div>
 <div id="combining-auditprior-with-evaluation" class="section level3">
 <h3 class="hasAnchor">
@@ -497,7 +497,7 @@
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">60</span>, prior <span class="op">=</span> <span class="va">prior9</span><span class="op">)</span></code></pre></div>
 <pre><code>## Most likely error: 0.994% | 95% Upper bound: 4.584% | Precision: 3.59% | BF-+: 3.745 
-## Estimates obtained via method 'binomial'</code></pre>
+## Estimates obtained via method 'binomial' + 'prior'</code></pre>
 </div>
 </div>
   </div>
