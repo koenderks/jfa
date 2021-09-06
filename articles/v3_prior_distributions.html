@@ -142,10 +142,10 @@
 <span class="va">likelihood</span>  <span class="op">&lt;-</span> <span class="st">'binomial'</span> <span class="co"># Binomial likelihood</span>
 <span class="va">materiality</span> <span class="op">&lt;-</span> <span class="fl">0.05</span>       <span class="co"># Performance materiality of 5%</span>
 <span class="va">expected</span>    <span class="op">&lt;-</span> <span class="fl">0.01</span>       <span class="co"># 1% errors expected in sample</span></code></pre></div>
-<div id="default-no-explicit-information-method-none" class="section level3">
+<div id="default-prior-distributions-method-none" class="section level3">
 <h3 class="hasAnchor">
-<a href="#default-no-explicit-information-method-none" class="anchor"></a>[Default] No explicit information (<code>method = 'none'</code>)</h3>
-<p>You can refrain from incorporating explicit information in the prior distribution using <code>method = 'none'</code>. As an example, the code below incorporates no explicit information into a prior distribution. The prior distribution that is constructed is improper but yields similar results to that of classical methodology with respect to sample sizes upper limits, and evidence.</p>
+<a href="#default-prior-distributions-method-none" class="anchor"></a>Default prior distributions (<code>method = 'none'</code>)</h3>
+<p>You can refrain from incorporating explicit information in the prior distribution using <code>method = 'none'</code>. As an example, the code below incorporates no explicit information into a prior distribution. The prior distribution that is constructed is improper but yields similar results to that of classical methodology with respect to sample sizes, upper limits, and evidence.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">prior1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'none'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">prior1</span><span class="op">)</span></code></pre></div>
@@ -178,9 +178,9 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior1</span><span class="op">)</span></code></pre></div>
 <p><img src="v3_prior_distributions_files/figure-html/unnamed-chunk-3-1.png" width="576"></p>
 </div>
-<div id="uniform-prior-distribution" class="section level3">
+<div id="uniform-prior-distributions-method-uniform" class="section level3">
 <h3 class="hasAnchor">
-<a href="#uniform-prior-distribution" class="anchor"></a>Uniform prior distribution</h3>
+<a href="#uniform-prior-distributions-method-uniform" class="anchor"></a>Uniform prior distributions (<code>method = 'uniform'</code>)</h3>
 <p>You can specify a uniform prior distribution on the misstatement via <code>method = 'uniform'</code>. As an example, the code below creates a uniform beta(1, 1) prior distribution. The posterior distribution from a uniform prior distribution also has a close relation with classical methodology, as the posterior mode is equal to the observed misstatement (proportion).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">prior2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'uniform'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span><span class="op">)</span>
@@ -214,9 +214,9 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior2</span><span class="op">)</span></code></pre></div>
 <p><img src="v3_prior_distributions_files/figure-html/unnamed-chunk-5-1.png" width="576"></p>
 </div>
-<div id="custom-prior-distribution" class="section level3">
+<div id="custom-prior-distributions-method-param" class="section level3">
 <h3 class="hasAnchor">
-<a href="#custom-prior-distribution" class="anchor"></a>Custom prior distribution</h3>
+<a href="#custom-prior-distributions-method-param" class="anchor"></a>Custom prior distributions (<code>method = 'param'</code>)</h3>
 <p>You can manually specify the <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> parameters of the prior distribution using <code>method = 'param'</code> in combination with the <code>alpha</code> and <code>beta</code> arguments. As an example, the code below creates a beta(2, 10) prior distribution.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">prior3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'param'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, alpha <span class="op">=</span> <span class="fl">2</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
@@ -250,9 +250,9 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior3</span><span class="op">)</span></code></pre></div>
 <p><img src="v3_prior_distributions_files/figure-html/unnamed-chunk-7-1.png" width="576"></p>
 </div>
-<div id="equal-prior-probabilities-method-median" class="section level3">
+<div id="prior-distributions-with-equal-prior-probabilities-method-median" class="section level3">
 <h3 class="hasAnchor">
-<a href="#equal-prior-probabilities-method-median" class="anchor"></a>Equal prior probabilities (<code>method = 'median'</code>)</h3>
+<a href="#prior-distributions-with-equal-prior-probabilities-method-median" class="anchor"></a>Prior distributions with equal prior probabilities (<code>method = 'median'</code>)</h3>
 <p>You can incorporate the assumption that tolerable misstatement is equally likely as intolerable misstatement using <code>method = 'median'</code>. As an example, the code below incorporates this assumption into a prior distribution.</p>
 <p><em>Note: This method requires that you specify a value for the <code>materiality</code>.</em></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -288,9 +288,9 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior4</span><span class="op">)</span></code></pre></div>
 <p><img src="v3_prior_distributions_files/figure-html/unnamed-chunk-9-1.png" width="576"></p>
 </div>
-<div id="manual-prior-probabilities-method-hyp" class="section level3">
+<div id="prior-distributions-with-custom-prior-probabilities-method-hyp" class="section level3">
 <h3 class="hasAnchor">
-<a href="#manual-prior-probabilities-method-hyp" class="anchor"></a>Manual prior probabilities (<code>method = 'hyp'</code>)</h3>
+<a href="#prior-distributions-with-custom-prior-probabilities-method-hyp" class="anchor"></a>Prior distributions with custom prior probabilities (<code>method = 'hyp'</code>)</h3>
 <p>You can manually assign prior probabilities to the hypothesis of tolerable misstatement and the hypotheses of intolerable misstatement (using <code>p.hmin</code>) in combination with <code>method = 'hyp'</code>. As an example, the code below incorporates the information that the hypothesis of tolerable misstatement has a probability of 60% into a prior distribution.</p>
 <p><em>Note: This method requires that you specify a value for the <code>materiality</code>.</em></p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
@@ -326,9 +326,9 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior5</span><span class="op">)</span></code></pre></div>
 <p><img src="v3_prior_distributions_files/figure-html/unnamed-chunk-11-1.png" width="576"></p>
 </div>
-<div id="audit-risk-model-method-arm" class="section level3">
+<div id="prior-distributions-using-the-audit-risk-model-method-arm" class="section level3">
 <h3 class="hasAnchor">
-<a href="#audit-risk-model-method-arm" class="anchor"></a>Audit Risk Model (<code>method = 'arm'</code>)</h3>
+<a href="#prior-distributions-using-the-audit-risk-model-method-arm" class="anchor"></a>Prior distributions using the Audit Risk Model (<code>method = 'arm'</code>)</h3>
 <p>You can translate the risk assessments from the Audit Risk Model (inherent risk and internal control risk) into a prior distribution using <code>method = 'arm'</code> in combination with the <code>ir</code> and <code>cr</code> arguments. As an example, the code below incorporates the information that the inherent risk is equal to 90% and that the internal control risk is equal to 60% into a prior distribution.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">prior6</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'arm'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>,
@@ -363,9 +363,9 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior6</span><span class="op">)</span></code></pre></div>
 <p><img src="v3_prior_distributions_files/figure-html/unnamed-chunk-13-1.png" width="576"></p>
 </div>
-<div id="bayesian-risk-assessment-model-method-bram" class="section level3">
+<div id="prior-distributions-using-the-bayesian-risk-assessment-model-method-bram" class="section level3">
 <h3 class="hasAnchor">
-<a href="#bayesian-risk-assessment-model-method-bram" class="anchor"></a>Bayesian Risk Assessment Model (<code>method = 'bram'</code>)</h3>
+<a href="#prior-distributions-using-the-bayesian-risk-assessment-model-method-bram" class="anchor"></a>Prior distributions using the Bayesian Risk Assessment Model (<code>method = 'bram'</code>)</h3>
 <p>You can incorporate information about the expected errors (mode) and the upper confidence bound of the prior distribution according to the Bayesian Risk Assessment Model (BRAM) using <code>method = 'bram'</code>. As an example, the code below incorporates the information that the mode of the prior distribution is 1% and the upper bound is 60%.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">prior7</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'bram'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, 
@@ -400,9 +400,9 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior7</span><span class="op">)</span></code></pre></div>
 <p><img src="v3_prior_distributions_files/figure-html/unnamed-chunk-15-1.png" width="576"></p>
 </div>
-<div id="earlier-sample-method-sample" class="section level3">
+<div id="prior-distributions-from-an-earlier-sample-method-sample" class="section level3">
 <h3 class="hasAnchor">
-<a href="#earlier-sample-method-sample" class="anchor"></a>Earlier sample (<code>method = 'sample'</code>)</h3>
+<a href="#prior-distributions-from-an-earlier-sample-method-sample" class="anchor"></a>Prior distributions from an earlier sample (<code>method = 'sample'</code>)</h3>
 <p>You can incorporate information from an earlier sample into the prior distribution using <code>method = 'sample'</code> in combination with <code>x</code> and <code>n</code>. As an example, the code below incorporates the information from an earlier sample of 30 items in which 0 misstatements were found into a prior distribution.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">prior8</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'sample'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>,
@@ -437,9 +437,9 @@
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior8</span><span class="op">)</span></code></pre></div>
 <p><img src="v3_prior_distributions_files/figure-html/unnamed-chunk-17-1.png" width="576"></p>
 </div>
-<div id="weighted-earlier-sample-method-factor" class="section level3">
+<div id="prior-distributions-from-a-weighted-earlier-sample-method-factor" class="section level3">
 <h3 class="hasAnchor">
-<a href="#weighted-earlier-sample-method-factor" class="anchor"></a>Weighted earlier sample (<code>method = 'factor'</code>)</h3>
+<a href="#prior-distributions-from-a-weighted-earlier-sample-method-factor" class="anchor"></a>Prior distributions from a weighted earlier sample (<code>method = 'factor'</code>)</h3>
 <p>You can incorporate information from last years results, weighted by a factor, into the prior distribution using <code>method = 'factor'</code> in combination with <code>x</code> and <code>n</code>. As an example, the code below incorporates the information from a last years results (a sample of 58 items in which 0 misstatements were found), weighted by a factor 0.7, into a prior distribution.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">prior9</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'factor'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>,
@@ -475,9 +475,9 @@
 <p><img src="v3_prior_distributions_files/figure-html/unnamed-chunk-19-1.png" width="576"></p>
 </div>
 </div>
-<div id="using-a-prior-distribution" class="section level2">
+<div id="using-a-prior-distribution-in-other-functions" class="section level2">
 <h2 class="hasAnchor">
-<a href="#using-a-prior-distribution" class="anchor"></a>Using a prior distribution</h2>
+<a href="#using-a-prior-distribution-in-other-functions" class="anchor"></a>Using a prior distribution in other functions</h2>
 <p>Bayesian statistics allows the auditor to build on their existing information. Therefore, the objects returned by the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function can be used as input for the <code>prior</code> argument in the <code><a href="../reference/planning.html">planning()</a></code> and <code><a href="../reference/evaluation.html">evaluation()</a></code> functions.</p>
 <div id="combining-auditprior-with-planning" class="section level3">
 <h3 class="hasAnchor">
