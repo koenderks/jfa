@@ -1,12 +1,12 @@
 ---
-title: "Statistical Sampling Results"
+title: "Logarithmic Impartial Bayes Factors"
 output: 
   html_document:
     theme: journal
 ---
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = FALSE}
@@ -38,8 +38,7 @@ k <- 0:10
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
 for(rows in 1:length(n)){
   for(columns in 1:length(k)){
-      ss <- jfa::evaluation(conf.level = 0.90, n = n[rows], x = k[columns], materiality = 1, method = "binomial")
-      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
+    tab[rows, columns] <- log(evaluation(materiality = 0.10, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.10, likelihood = 'binomial'))$posterior$hypotheses$bf.hmin)
   }
 }
 
@@ -52,15 +51,15 @@ colnames(table) <- c('Sample Size', k)
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 1: Statistical Sampling Results based on the Binomial Distribution — <br>Upper Limits at 10 Percent Risk of Overreliance</center>",
+                       caption = "<center>Table 1: Statistical Sampling Results based on the Beta Distribution — <br>Logarithmic Impartial Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 10 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
                        format.args = list(big.mark = ",", scientific = FALSE),
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
-ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents upper limits (body of table) as percentages")
+ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and no expected errors\nBF = e^log(BF)")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -69,7 +68,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -80,8 +79,7 @@ k <- 0:10
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
 for(rows in 1:length(n)){
   for(columns in 1:length(k)){
-      ss <- jfa::evaluation(conf.level = 0.95, n = n[rows], x = k[columns], materiality = 1, method = "binomial")
-      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
+    tab[rows, columns] <- log(evaluation(materiality = 0.05, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.05, likelihood = 'binomial'))$posterior$hypotheses$bf.hmin)
   }
 }
 
@@ -94,15 +92,15 @@ colnames(table) <- c('Sample Size', k)
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 2: Statistical Sampling Results based on the Binomial Distribution — <br>Upper Limits at 5 Percent Risk of Overreliance</center>",
+                       caption = "<center>Table 2: Statistical Sampling Results based on the Beta Distribution — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 5 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
                        format.args = list(big.mark = ",", scientific = FALSE),
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
-ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents upper limits (body of table) as percentages")
+ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and no expected errors\nBF = e^log(BF)")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -111,7 +109,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -122,8 +120,7 @@ k <- 0:10
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
 for(rows in 1:length(n)){
   for(columns in 1:length(k)){
-      ss <- jfa::evaluation(conf.level = 0.975, n = n[rows], x = k[columns], materiality = 1, method = "binomial")
-      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
+    tab[rows, columns] <- log(evaluation(materiality = 0.02, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.02, likelihood = 'binomial'))$posterior$hypotheses$bf.hmin)
   }
 }
 
@@ -136,15 +133,15 @@ colnames(table) <- c('Sample Size', k)
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 3: Statistical Sampling Results based on the Binomial Distribution — <br>Upper Limits at 2.5 Percent Risk of Overreliance</center>",
+                       caption = "<center>Table 3: Statistical Sampling Results based on the Beta Distribution — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 2 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
                        format.args = list(big.mark = ",", scientific = FALSE),
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
-ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents upper limits (body of table) as percentages")
+ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and no expected errors\nBF = e^log(BF)")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -153,7 +150,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -164,8 +161,7 @@ k <- 0:10
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
 for(rows in 1:length(n)){
   for(columns in 1:length(k)){
-      ss <- jfa::evaluation(conf.level = 0.95, n = n[rows], x = k[columns], materiality = 1, method = "binomial")
-      tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
+    tab[rows, columns] <- log(evaluation(materiality = 0.01, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.01, likelihood = 'binomial'))$posterior$hypotheses$bf.hmin)
   }
 }
 
@@ -178,15 +174,15 @@ colnames(table) <- c('Sample Size', k)
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 4: Statistical Sampling Results based on the Binomial Distribution — <br>Upper Limits at 1 Percent Risk of Overreliance</center>",
+                       caption = "<center>Table 4: Statistical Sampling Results based on the Beta Distribution — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 1 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
                        format.args = list(big.mark = ",", scientific = FALSE),
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
-ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents upper limits (body of table) as percentages")
+ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and no expected errors\nBF = e^log(BF)")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 

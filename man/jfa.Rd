@@ -29,23 +29,33 @@
 
   \emph{Sample sizes}
   \itemize{
-  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaBinomialSampleSizes.pdf}{Sample sizes based on the binomial distribution}
-  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaPoissonSampleSizes.pdf}{Sample sizes based on the Poisson distribution}
-  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaHypergeometricSampleSizes.pdf}{Sample sizes based on the hypergeometric distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.ss.pdf}{Sample sizes based on the Poisson distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.ss.pdf}{Sample sizes based on the binomial distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.ss.pdf}{Sample sizes based on the hypergeometric distribution}
   }
 
   \emph{Upper limits}
   \itemize{
-  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaBinomialUpperBounds.pdf}{Upper limits based on the binomial distribution}
-  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaPoissonUpperBounds.pdf}{Upper limits based on the Poisson distribution}
-  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaHypergeometricUpperBounds.pdf}{Upper limits based on the hypergeometric distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.ub.pdf}{Upper limits based on the Poisson distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.ub.pdf}{Upper limits based on the binomial distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.ub.pdf}{Upper limits based on the hypergeometric distribution}
+  }
+
+  \emph{One-sided p values}
+  \itemize{
+  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.p.pdf}{One sided p values based on the Poisson distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.p.pdf}{One sided p values based on the binomial distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.p.pdf}{One sided p values based on the hypergeometric distribution}
   }
 
   \emph{Bayes factors}
   \itemize{
-  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaBinomialBayesFactors.pdf}{Bayes factors based on the beta distribution}
-  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaPoissonBayesFactors.pdf}{Bayes factors based on the gamma distribution}
-  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaHypergeometricBayesFactors.pdf}{Bayes factors based on the beta-binomial distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.lbfd.pdf}{Default Bayes factors based on the gamma distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.lbfd.pdf}{Default Bayes factors based on the beta distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.lbfd.pdf}{Default Bayes factors based on the beta-binomial distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.lbfi.pdf}{Impartial Bayes factors based on the gamma distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.lbfi.pdf}{Impartial Bayes factors based on the beta distribution}
+  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.lbfi.pdf}{Impartial Bayes factors based on the beta-binomial distribution}
   }
 }
 

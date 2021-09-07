@@ -41,7 +41,7 @@ Visit the [package website](https://koenderks.github.io/jfa) to learn more!
 
 ```{r echo=FALSE}
 df <- data.frame("n" = object[["n"]], "k" = object[["x"]], "t" = object[["t"]])
-colnames(df) <- c("Sample size", "Deviations", "Total taint")
+colnames(df) <- c("Sample size", "Misstatements", "Total taint")
 tab <- knitr::kable(df, digits = 2, caption = "Table 1: Summary of the sampling results.", format = "html",
                     row.names = FALSE, format.args = list(big.mark = ",", scientific = FALSE),
                     table.attr = "style='width:40%;'", align = "c")

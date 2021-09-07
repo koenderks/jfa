@@ -6,7 +6,7 @@ output:
 ---
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = FALSE}
@@ -53,7 +53,7 @@ for(rows in 1:length(expected)){
 
 table <- as.data.frame(tab, stringsAsFactors = F)
 table <- cbind(expected = paste0(round(expected * 100, 2), "%"), table)
-colnames(table) <- c('Expected Deviation Rate', paste0(round(m * 100, 2), "%"))
+colnames(table) <- c('Expected Misstatement Rate', paste0(round(m * 100, 2), "%"))
 table[is.na(table)] <- ""
 
 ```
@@ -69,7 +69,7 @@ ktable <- knitr::kable(table,
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Performance Materiality" = 12))
-ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown.")
+ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -78,7 +78,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -104,7 +104,7 @@ for(rows in 1:length(expected)){
 
 table <- as.data.frame(tab, stringsAsFactors = F)
 table <- cbind(expected = paste0(round(expected * 100, 2), "%"), table)
-colnames(table) <- c('Expected Deviation Rate', paste0(round(m * 100, 2), "%"))
+colnames(table) <- c('Expected Misstatement Rate', paste0(round(m * 100, 2), "%"))
 table[is.na(table)] <- ""
 
 ```
@@ -120,7 +120,7 @@ ktable <- knitr::kable(table,
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Performance Materiality" = 12))
-ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown.")
+ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -129,7 +129,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -155,7 +155,7 @@ for(rows in 1:length(expected)){
 
 table <- as.data.frame(tab, stringsAsFactors = F)
 table <- cbind(expected = paste0(round(expected * 100, 2), "%"), table)
-colnames(table) <- c('Expected Deviation Rate', paste0(round(m * 100, 2), "%"))
+colnames(table) <- c('Expected Misstatement Rate', paste0(round(m * 100, 2), "%"))
 table[is.na(table)] <- ""
 
 ```
@@ -171,7 +171,7 @@ ktable <- knitr::kable(table,
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Performance Materiality" = 12))
-ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown.")
+ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -180,7 +180,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -206,7 +206,7 @@ for(rows in 1:length(expected)){
 
 table <- as.data.frame(tab, stringsAsFactors = F)
 table <- cbind(expected = paste0(round(expected * 100, 2), "%"), table)
-colnames(table) <- c('Expected Deviation Rate', paste0(round(m * 100, 2), "%"))
+colnames(table) <- c('Expected Misstatement Rate', paste0(round(m * 100, 2), "%"))
 table[is.na(table)] <- ""
 
 ```
@@ -222,7 +222,7 @@ ktable <- knitr::kable(table,
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Performance Materiality" = 12))
-ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown.")
+ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -231,7 +231,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -257,7 +257,7 @@ for(rows in 1:length(expected)){
 
 table <- as.data.frame(tab, stringsAsFactors = F)
 table <- cbind(expected = paste0(round(expected * 100, 2), "%"), table)
-colnames(table) <- c('Expected Deviation Rate', paste0(round(m * 100, 2), "%"))
+colnames(table) <- c('Expected Misstatement Rate', paste0(round(m * 100, 2), "%"))
 table[is.na(table)] <- ""
 
 ```
@@ -273,7 +273,7 @@ ktable <- knitr::kable(table,
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Performance Materiality" = 12))
-ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown.")
+ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -282,7 +282,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -308,7 +308,7 @@ for(rows in 1:length(expected)){
 
 table <- as.data.frame(tab, stringsAsFactors = F)
 table <- cbind(expected = paste0(round(expected * 100, 2), "%"), table)
-colnames(table) <- c('Expected Deviation Rate', paste0(round(m * 100, 2), "%"))
+colnames(table) <- c('Expected Misstatement Rate', paste0(round(m * 100, 2), "%"))
 table[is.na(table)] <- ""
 
 ```
@@ -324,7 +324,7 @@ ktable <- knitr::kable(table,
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Performance Materiality" = 12))
-ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown.")
+ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -333,7 +333,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -359,7 +359,7 @@ for(rows in 1:length(expected)){
 
 table <- as.data.frame(tab, stringsAsFactors = F)
 table <- cbind(expected = paste0(round(expected * 100, 2), "%"), table)
-colnames(table) <- c('Expected Deviation Rate', paste0(round(m * 100, 2), "%"))
+colnames(table) <- c('Expected Misstatement Rate', paste0(round(m * 100, 2), "%"))
 table[is.na(table)] <- ""
 
 ```
@@ -375,7 +375,7 @@ ktable <- knitr::kable(table,
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Performance Materiality" = 12))
-ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown.")
+ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -384,7 +384,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -410,7 +410,7 @@ for(rows in 1:length(expected)){
 
 table <- as.data.frame(tab, stringsAsFactors = F)
 table <- cbind(expected = paste0(round(expected * 100, 2), "%"), table)
-colnames(table) <- c('Expected Deviation Rate', paste0(round(m * 100, 2), "%"))
+colnames(table) <- c('Expected Misstatement Rate', paste0(round(m * 100, 2), "%"))
 table[is.na(table)] <- ""
 
 ```
@@ -426,7 +426,7 @@ ktable <- knitr::kable(table,
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Performance Materiality" = 12))
-ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown.")
+ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -435,7 +435,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -461,7 +461,7 @@ for(rows in 1:length(expected)){
 
 table <- as.data.frame(tab, stringsAsFactors = F)
 table <- cbind(expected = paste0(round(expected * 100, 2), "%"), table)
-colnames(table) <- c('Expected Deviation Rate', paste0(round(m * 100, 2), "%"))
+colnames(table) <- c('Expected Misstatement Rate', paste0(round(m * 100, 2), "%"))
 table[is.na(table)] <- ""
 
 ```
@@ -477,7 +477,7 @@ ktable <- knitr::kable(table,
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Performance Materiality" = 12))
-ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown.")
+ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -486,7 +486,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -512,7 +512,7 @@ for(rows in 1:length(expected)){
 
 table <- as.data.frame(tab, stringsAsFactors = F)
 table <- cbind(expected = paste0(round(expected * 100, 2), "%"), table)
-colnames(table) <- c('Expected Deviation Rate', paste0(round(m * 100, 2), "%"))
+colnames(table) <- c('Expected Misstatement Rate', paste0(round(m * 100, 2), "%"))
 table[is.na(table)] <- ""
 
 ```
@@ -528,7 +528,7 @@ ktable <- knitr::kable(table,
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Performance Materiality" = 12))
-ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown.")
+ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -537,7 +537,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -563,7 +563,7 @@ for(rows in 1:length(expected)){
 
 table <- as.data.frame(tab, stringsAsFactors = F)
 table <- cbind(expected = paste0(round(expected * 100, 2), "%"), table)
-colnames(table) <- c('Expected Deviation Rate', paste0(round(m * 100, 2), "%"))
+colnames(table) <- c('Expected Misstatement Rate', paste0(round(m * 100, 2), "%"))
 table[is.na(table)] <- ""
 
 ```
@@ -579,7 +579,7 @@ ktable <- knitr::kable(table,
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Performance Materiality" = 12))
-ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown.")
+ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -588,7 +588,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -614,7 +614,7 @@ for(rows in 1:length(expected)){
 
 table <- as.data.frame(tab, stringsAsFactors = F)
 table <- cbind(expected = paste0(round(expected * 100, 2), "%"), table)
-colnames(table) <- c('Expected Deviation Rate', paste0(round(m * 100, 2), "%"))
+colnames(table) <- c('Expected Misstatement Rate', paste0(round(m * 100, 2), "%"))
 table[is.na(table)] <- ""
 
 ```
@@ -630,7 +630,7 @@ ktable <- knitr::kable(table,
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Performance Materiality" = 12))
-ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown.")
+ktable <- kableExtra::footnote(ktable, general = "Sample sizes over 5000 items are not shown")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 

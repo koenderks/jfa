@@ -1,12 +1,12 @@
 ---
-title: "Default Bayes Factors"
+title: "Logarithmic Impartial Bayes Factors"
 output: 
   html_document:
     theme: journal
 ---
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = FALSE}
@@ -18,6 +18,7 @@ colorize <- function(x, color) {
       x)
   } else x
 }
+options(knitr.kable.NA = '')
 library(jfa)
 ```
 
@@ -41,35 +42,28 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- evaluation(materiality = 0.10, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.10, likelihood = 'hypergeometric', N.units = N))
+      tab[rows, columns] <- log(evaluation(materiality = 0.10, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.10, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
 colnames(table) <- c('Sample Size', k)
-table <- round(table, 2)
-
-for(i in 2:12){
-  table[, i] <- ifelse(table[, i] > 10000000, yes = format(table[, i], scientific = T), no = table[, i])
-}
-
-table[is.na(table)] <- ""
 
 ```
 
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 1: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 100) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 10 Percent</center>",
+                       caption = "<center>Table 1: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 100) — <br>Logarithmic Impartial Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 10 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
                        format.args = list(big.mark = ",", scientific = FALSE),
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
-ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and zero expected errors.")
+ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and no expected errors\nBF = e^log(BF)")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -78,7 +72,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -92,35 +86,28 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- evaluation(materiality = 0.10, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.10, likelihood = 'hypergeometric', N.units = N))
+      tab[rows, columns] <- log(evaluation(materiality = 0.10, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.10, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
 colnames(table) <- c('Sample Size', k)
-table <- round(table, 2)
-
-for(i in 2:12){
-  table[, i] <- ifelse(table[, i] > 10000000, yes = format(table[, i], scientific = T), no = table[, i])
-}
-
-table[is.na(table)] <- ""
 
 ```
 
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 2: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 500) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 10 Percent</center>",
+                       caption = "<center>Table 2: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 500) — <br>Logarithmic Impartial Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 10 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
                        format.args = list(big.mark = ",", scientific = FALSE),
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
-ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and zero expected errors.")
+ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and no expected errors\nBF = e^log(BF)")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -129,7 +116,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -143,35 +130,28 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- evaluation(materiality = 0.10, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.10, likelihood = 'hypergeometric', N.units = N))
+      tab[rows, columns] <- log(evaluation(materiality = 0.10, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.10, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
 colnames(table) <- c('Sample Size', k)
-table <- round(table, 2)
-
-for(i in 2:12){
-  table[, i] <- ifelse(table[, i] > 10000000, yes = format(table[, i], scientific = T), no = table[, i])
-}
-
-table[is.na(table)] <- ""
 
 ```
 
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 3: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 1000) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 10 Percent</center>",
+                       caption = "<center>Table 3: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 1000) — <br>Logarithmic Impartial Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 10 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
                        format.args = list(big.mark = ",", scientific = FALSE),
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
-ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and zero expected errors.")
+ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and no expected errors\nBF = e^log(BF)")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -180,7 +160,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -196,35 +176,28 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- evaluation(materiality = 0.05, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.05, likelihood = 'hypergeometric', N.units = N))
+      tab[rows, columns] <- log(evaluation(materiality = 0.05, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.05, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
 colnames(table) <- c('Sample Size', k)
-table <- round(table, 2)
-
-for(i in 2:12){
-  table[, i] <- ifelse(table[, i] > 10000000, yes = format(table[, i], scientific = T), no = table[, i])
-}
-
-table[is.na(table)] <- ""
 
 ```
 
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 4: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 100) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 5 Percent</center>",
+                       caption = "<center>Table 4: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 100) — <br>Logarithmic Impartial Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 5 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
                        format.args = list(big.mark = ",", scientific = FALSE),
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
-ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and zero expected errors.")
+ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and no expected errors\nBF = e^log(BF)")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -233,7 +206,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -247,35 +220,28 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- evaluation(materiality = 0.05, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.05, likelihood = 'hypergeometric', N.units = N))
+      tab[rows, columns] <- log(evaluation(materiality = 0.05, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.05, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
 colnames(table) <- c('Sample Size', k)
-table <- round(table, 2)
-
-for(i in 2:12){
-  table[, i] <- ifelse(table[, i] > 10000000, yes = format(table[, i], scientific = T), no = table[, i])
-}
-
-table[is.na(table)] <- ""
 
 ```
 
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 5: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 500) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 5 Percent</center>",
+                       caption = "<center>Table 5: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 500) — <br>Logarithmic Impartial Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 5 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
                        format.args = list(big.mark = ",", scientific = FALSE),
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
-ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and zero expected errors.")
+ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and no expected errors\nBF = e^log(BF)")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -284,7 +250,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -298,35 +264,28 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- evaluation(materiality = 0.05, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.05, likelihood = 'hypergeometric', N.units = N))
+      tab[rows, columns] <- log(evaluation(materiality = 0.05, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.05, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
 colnames(table) <- c('Sample Size', k)
-table <- round(table, 2)
-
-for(i in 2:12){
-  table[, i] <- ifelse(table[, i] > 10000000, yes = format(table[, i], scientific = T), no = table[, i])
-}
-
-table[is.na(table)] <- ""
 
 ```
 
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 6: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 1000) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 5 Percent</center>",
+                       caption = "<center>Table 6: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 1000) — <br>Logarithmic Impartial Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 5 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
                        format.args = list(big.mark = ",", scientific = FALSE),
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
-ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and zero expected errors.")
+ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and no expected errors\nBF = e^log(BF)")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -335,7 +294,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -349,35 +308,28 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- evaluation(materiality = 0.02, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.02, likelihood = 'hypergeometric', N.units = N))
+      tab[rows, columns] <- log(evaluation(materiality = 0.02, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.02, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
 colnames(table) <- c('Sample Size', k)
-table <- round(table, 2)
-
-for(i in 2:12){
-  table[, i] <- ifelse(table[, i] > 10000000, yes = format(table[, i], scientific = T), no = table[, i])
-}
-
-table[is.na(table)] <- ""
 
 ```
 
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 7: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 100) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 2 Percent</center>",
+                       caption = "<center>Table 7: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 100) — <br>Logarithmic Impartial Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 2 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
                        format.args = list(big.mark = ",", scientific = FALSE),
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
-ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and zero expected errors.")
+ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and no expected errors\nBF = e^log(BF)")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -386,7 +338,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -400,35 +352,28 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- evaluation(materiality = 0.02, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.02, likelihood = 'hypergeometric', N.units = N))
+      tab[rows, columns] <- log(evaluation(materiality = 0.02, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.02, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
 colnames(table) <- c('Sample Size', k)
-table <- round(table, 2)
-
-for(i in 2:12){
-  table[, i] <- ifelse(table[, i] > 10000000, yes = format(table[, i], scientific = T), no = table[, i])
-}
-
-table[is.na(table)] <- ""
 
 ```
 
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 8: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 500) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 2 Percent</center>",
+                       caption = "<center>Table 8: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 500) — <br>Logarithmic Impartial Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 2 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
                        format.args = list(big.mark = ",", scientific = FALSE),
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
-ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and zero expected errors.")
+ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and no expected errors\nBF = e^log(BF)")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -437,7 +382,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -451,35 +396,28 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- evaluation(materiality = 0.02, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.02, likelihood = 'hypergeometric', N.units = N))
+      tab[rows, columns] <- log(evaluation(materiality = 0.02, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.02, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
 colnames(table) <- c('Sample Size', k)
-table <- round(table, 2)
-
-for(i in 2:12){
-  table[, i] <- ifelse(table[, i] > 10000000, yes = format(table[, i], scientific = T), no = table[, i])
-}
-
-table[is.na(table)] <- ""
 
 ```
 
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 9: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 1000) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 2 Percent</center>",
+                       caption = "<center>Table 9: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 1000) — <br>Logarithmic Impartial Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 2 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
                        format.args = list(big.mark = ",", scientific = FALSE),
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
-ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and zero expected errors.")
+ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and no expected errors\nBF = e^log(BF)")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -488,7 +426,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -502,35 +440,28 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- evaluation(materiality = 0.01, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.01, likelihood = 'hypergeometric', N.units = N))
+      tab[rows, columns] <- log(evaluation(materiality = 0.01, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.01, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
 colnames(table) <- c('Sample Size', k)
-table <- round(table, 2)
-
-for(i in 2:12){
-  table[, i] <- ifelse(table[, i] > 10000000, yes = format(table[, i], scientific = T), no = table[, i])
-}
-
-table[is.na(table)] <- ""
 
 ```
 
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 10: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 100) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 1 Percent</center>",
+                       caption = "<center>Table 10: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 100) — <br>Logarithmic Impartial Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 1 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
                        format.args = list(big.mark = ",", scientific = FALSE),
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
-ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and zero expected errors.")
+ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and no expected errors\nBF = e^log(BF)")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -539,7 +470,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -553,35 +484,28 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- evaluation(materiality = 0.01, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.01, likelihood = 'hypergeometric', N.units = N))
+      tab[rows, columns] <- log(evaluation(materiality = 0.01, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.01, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
 colnames(table) <- c('Sample Size', k)
-table <- round(table, 2)
-
-for(i in 2:12){
-  table[, i] <- ifelse(table[, i] > 10000000, yes = format(table[, i], scientific = T), no = table[, i])
-}
-
-table[is.na(table)] <- ""
 
 ```
 
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 11: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 500) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 1 Percent</center>",
+                       caption = "<center>Table 11: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 500) — <br>Logarithmic Impartial Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 1 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
                        format.args = list(big.mark = ",", scientific = FALSE),
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
-ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and zero expected errors.")
+ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and no expected errors\nBF = e^log(BF)")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
@@ -590,7 +514,7 @@ kableExtra::kable_paper(ktable, "striped")
 \newpage
 
 <p align="center">
-  <img src="jfaLogo.png" alt="logo" width="200" height="231">
+  <img src="logo.png" alt="logo" width="200" height="231">
 </p>
 
 ```{r, include = F}
@@ -604,35 +528,28 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- evaluation(materiality = 0.01, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.01, likelihood = 'hypergeometric', N.units = N))
+      tab[rows, columns] <- log(evaluation(materiality = 0.01, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.01, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
 colnames(table) <- c('Sample Size', k)
-table <- round(table, 2)
-
-for(i in 2:12){
-  table[, i] <- ifelse(table[, i] > 10000000, yes = format(table[, i], scientific = T), no = table[, i])
-}
-
-table[is.na(table)] <- ""
 
 ```
 
 ```{r, echo = FALSE}
 ktable <- knitr::kable(table, 
                        digits = 2, 
-                       caption = "<center>Table 12: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 1000) — <br>Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 1 Percent</center>",
+                       caption = "<center>Table 12: Statistical Sampling Results based on the Beta-Binomial Distribution (N = 1000) — <br>Logarithmic Impartial Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 1 Percent</center>",
                        align = "l", 
                        format = "html", 
                        row.names = FALSE, 
                        format.args = list(big.mark = ",", scientific = FALSE),
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
-ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Deviations Found" = 11))
-ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and zero expected errors.")
+ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
+ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on equal prior probabilities and no expected errors\nBF = e^log(BF)")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
 kableExtra::kable_paper(ktable, "striped") 
