@@ -124,9 +124,9 @@
 <ol>
 <li><a href="#1-installation">Installation</a></li>
 <li><a href="#2-cheat-sheet">Cheat sheet</a></li>
-<li><a href="#3-benchmarks">Benchmarks</a></li>
-<li><a href="#4-statistical-tables">Statistical tables</a></li>
-<li><a href="#5-intended-workflow">Intended workflow</a></li>
+<li><a href="#3-intended-workflow">Intended workflow</a></li>
+<li><a href="#4-benchmarks">Benchmarks</a></li>
+<li><a href="#5-statistical-tables">Statistical tables</a></li>
 <li><a href="#6-references">References</a></li>
 <li><a href="#7-package-statistics">Package statistics</a></li>
 <li><a href="#8-contributing">Contributing</a></li>
@@ -152,46 +152,9 @@
 <p align="center">
 <img src="https://github.com/koenderks/jfa/raw/development/man/figures/cheatsheet/cheatsheet.png" alt="cheatsheet" width="1000"></p>
 </div>
-<div id="3-benchmarks" class="section level2">
+<div id="3-intended-workflow" class="section level2">
 <h2 class="hasAnchor">
-<a href="#3-benchmarks" class="anchor"></a>3. Benchmarks</h2>
-<p>To validate the statistical results, <code>jfa</code>’s automated <a href="https://github.com/koenderks/jfa/tree/development/tests/testthat">unit tests</a> regularly verify the main output from the package against the following benchmarks:</p>
-<ul>
-<li>
-<a href="https://future.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL">Audit Sampling: Audit Guide</a> (Appendix A and Appendix C)</li>
-<li><a href="https://cplusglobal.wordpress.com/solutions/auditsampler-statistical-sampling-software/">AuditSampler</a></li>
-<li>
-<a href="https://cran.r-project.org/package=MUS">MUS</a> (R package version 0.1.6)</li>
-<li>Touw, P., and Hoogduin, L. (2011). <em>Statistiek voor audit en controlling</em>. Boom uitgevers, Amsterdam.</li>
-<li><a href="https://steekproeven.eu/">SMASH21 + SMASH21-Bayes</a></li>
-</ul>
-</div>
-<div id="4-statistical-tables" class="section level2">
-<h2 class="hasAnchor">
-<a href="#4-statistical-tables" class="anchor"></a>4. Statistical tables</h2>
-<p>Below you can find several informative tables that contain statistical sample sizes, upper limits, and Bayes factors. These tables are created using the <code><a href="reference/planning.html">planning()</a></code> and <code><a href="reference/evaluation.html">evaluation()</a></code> functions provided in the package.</p>
-<p><em>Sample sizes</em></p>
-<ul>
-<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaPoissonSampleSizes.pdf">Sample sizes based on the Poisson distribution</a></li>
-<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaBinomialSampleSizes.pdf">Sample sizes based on the binomial distribution</a></li>
-<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaHypergeometricSampleSizes.pdf">Sample sizes based on the hypergeometric distribution</a></li>
-</ul>
-<p><em>Upper limits</em></p>
-<ul>
-<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaPoissonUpperBounds.pdf">Upper limits based on the Poisson distribution</a></li>
-<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaBinomialUpperBounds.pdf">Upper limits based on the binomial distribution</a></li>
-<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaHypergeometricUpperBounds.pdf">Upper limits based on the hypergeometric distribution</a></li>
-</ul>
-<p><em>Bayes factors</em></p>
-<ul>
-<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaPoissonBayesFactors.pdf">Bayes factors based on the gamma distribution</a></li>
-<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaBinomialBayesFactors.pdf">Bayes factors based on the beta distribution</a></li>
-<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/jfaHypergeometricBayesFactors.pdf">Bayes factors based on the beta-binomial distribution</a></li>
-</ul>
-</div>
-<div id="5-intended-workflow" class="section level2">
-<h2 class="hasAnchor">
-<a href="#5-intended-workflow" class="anchor"></a>5. Intended workflow</h2>
+<a href="#3-intended-workflow" class="anchor"></a>3. Intended workflow</h2>
 <p align="center">
 <img src="https://github.com/koenderks/jfa/raw/development/man/figures/readme/banner/jfaBanner.png" alt="banner"></p>
 <p>Below you can find an explanation of the available functions in <code>jfa</code>, sorted by their occurrence in the standard audit sampling workflow. For detailed examples of how to use these functions, visit the <a href="https://koenderks.github.io/jfa/articles/jfa.html">Get started</a> section on the package website.</p>
@@ -606,6 +569,52 @@
 <span class="fu"><a href="reference/report.html">report</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">x</span>, file <span class="op">=</span> <span class="st">'myReport.html'</span><span class="op">)</span></code></pre></div>
 <p>For an example report, see the following <a href="https://github.com/koenderks/jfa/raw/development/man/figures/readme/report/report.pdf">link</a>.</p>
 </div>
+</div>
+<div id="4-benchmarks" class="section level2">
+<h2 class="hasAnchor">
+<a href="#4-benchmarks" class="anchor"></a>4. Benchmarks</h2>
+<p>To validate the statistical results, <code>jfa</code>’s automated <a href="https://github.com/koenderks/jfa/tree/development/tests/testthat">unit tests</a> regularly verify the main output from the package against the following benchmarks:</p>
+<ul>
+<li>
+<a href="https://future.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL">Audit Sampling: Audit Guide</a> (Appendix A and Appendix C)</li>
+<li><a href="https://cplusglobal.wordpress.com/solutions/auditsampler-statistical-sampling-software/">AuditSampler</a></li>
+<li>
+<a href="https://cran.r-project.org/package=MUS">MUS</a> (R package version 0.1.6)</li>
+<li>Touw, P., and Hoogduin, L. (2011). <em>Statistiek voor audit en controlling</em>. Boom uitgevers, Amsterdam.</li>
+<li><a href="https://steekproeven.eu/">SMASH21 + SMASH21-Bayes</a></li>
+</ul>
+</div>
+<div id="5-statistical-tables" class="section level2">
+<h2 class="hasAnchor">
+<a href="#5-statistical-tables" class="anchor"></a>5. Statistical tables</h2>
+<p>Below you can find several informative tables that contain statistical sample sizes, upper limits, one-sided <em>p</em> values, and Bayes factors. These tables are created using the <code><a href="reference/planning.html">planning()</a></code> and <code><a href="reference/evaluation.html">evaluation()</a></code> functions provided in the package.</p>
+<p><em>Sample sizes</em></p>
+<ul>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.ss.pdf">Sample sizes based on the Poisson distribution</a></li>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.ss.pdf">Sample sizes based on the binomial distribution</a></li>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/pdf/tables/hyper.ss.pdf">Sample sizes based on the hypergeometric distribution</a></li>
+</ul>
+<p><em>Upper limits</em></p>
+<ul>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.ub.pdf">Upper limits based on the Poisson distribution</a></li>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.ub.pdf">Upper limits based on the binomial distribution</a></li>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/pdf/tables/hyper.ub.pdf">Upper limits based on the hypergeometric distribution</a></li>
+</ul>
+<p><em>One-sided p values</em></p>
+<ul>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.p.pdf">One-sided <em>p</em> values based on the Poisson distribution</a></li>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.p.pdf">One-sided <em>p</em> values based on the binomial distribution</a></li>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/pdf/tables/hyper.p.pdf">One-sided <em>p</em> values based on the hypergeometric distribution</a></li>
+</ul>
+<p><em>Bayes factors</em></p>
+<ul>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.lbfd.pdf">Default Bayes factors based on the gamma distribution</a></li>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.lbfd.pdf">Default Bayes factors based on the beta distribution</a></li>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.lbfd.pdf">Default Bayes factors based on the beta-binomial distribution</a></li>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.lbfi.pdf">Impartial Bayes factors based on the gamma distribution</a></li>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.lbfi.pdf">Impartial Bayes factors based on the beta distribution</a></li>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.lbfi.pdf">Impartial Bayes factors based on the beta-binomial distribution</a></li>
+</ul>
 </div>
 <div id="6-references" class="section level2">
 <h2 class="hasAnchor">
