@@ -61,7 +61,7 @@ ktable <- knitr::kable(table,
                        format.args = list(big.mark = ",", scientific = FALSE),
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
-ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
+ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Sum of Taints Found" = 11))
 ktable <- kableExtra::footnote(ktable, general = "This table presents one-sided p values against the null hypothesis \u03B8 = 0.1")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
@@ -104,7 +104,7 @@ ktable <- knitr::kable(table,
                        format.args = list(big.mark = ",", scientific = FALSE),
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
-ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
+ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Sum of Taints Found" = 11))
 ktable <- kableExtra::footnote(ktable, general = "This table presents one-sided p values against the null hypothesis \u03B8 = 0.05")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
@@ -147,7 +147,7 @@ ktable <- knitr::kable(table,
                        format.args = list(big.mark = ",", scientific = FALSE),
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
-ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
+ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Sum of Taints Found" = 11))
 ktable <- kableExtra::footnote(ktable, general = "This table presents one-sided p values against the null hypothesis \u03B8 = 0.02")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
@@ -190,7 +190,7 @@ ktable <- knitr::kable(table,
                        format.args = list(big.mark = ",", scientific = FALSE),
                        table.attr = "style='width:150%;'")
 ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
-ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
+ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Sum of Taints Found" = 11))
 ktable <- kableExtra::footnote(ktable, general = "This table presents one-sided p values against the null hypothesis \u03B8 = 0.01")
 ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
