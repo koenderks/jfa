@@ -305,7 +305,6 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
   result[["x"]]             <- x.obs
   result[["t"]]             <- t.obs
   result[["n"]]             <- n.obs
-
   result[["materiality"]]   <- materiality
   result[["min.precision"]] <- min.precision
   result[["method"]]        <- method

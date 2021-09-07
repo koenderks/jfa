@@ -220,6 +220,7 @@ auditPrior <- function(method = 'none', likelihood = 'poisson', N.units = NULL,
   description[["beta"]]       <- switch(likelihood, "poisson" = prior.n, "binomial" = 1 + prior.n - prior.x, "hypergeometric" = 1 + prior.n - prior.x)
   description[["implicit.x"]] <- as.numeric(prior.x)
   description[["implicit.n"]] <- as.numeric(prior.n)
+  description[["proper"]]     <- description[["beta"]] > 0
   # Create the prior string
   prior.string <- switch(likelihood, 
                          "poisson" = paste0("gamma(\u03B1 = ", round(description[["alpha"]], 3), ", \u03B2 = ", round(description[["beta"]], 3), ")"),
