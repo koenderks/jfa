@@ -67,7 +67,7 @@
 #'
 #' @export
 
-selection <- function(data, size, units = 'rows', method = 'random', values = NULL, 
+selection <- function(data, size, units = 'rows', method = 'interval', values = NULL, 
                       start = 1, order = FALSE, decreasing = FALSE, replace = FALSE) {
   if (class(size) == "jfaPlanning") # If the input for 'sampleSize' is of class 'jfaPlanning', extract the planned sample size
     size <- size[["n"]]
