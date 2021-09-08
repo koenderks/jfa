@@ -158,12 +158,12 @@ summary(x) # Prints information about the planning
 
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
-The `selection()` function takes a data frame and performs statistical sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. The function returns an object of class `jfaSelection` which can be used with associated `summary()` and `plot()` methods. The input for the `size` argument can be an object of class `jfaPlanning` as returned by the `planning()` function.
+The `selection()` function takes a data frame and performs statistical sampling according to one of three algorithms: fixed interval sampling, cell sampling, or random sampling in combination with either record sampling or monetary unit sampling. The function returns an object of class `jfaSelection` which can be used with associated `summary()` and `plot()` methods. The input for the `size` argument can be an object of class `jfaPlanning` as returned by the `planning()` function.
 
 *Full function with default arguments:*
 
 ```r
-selection(data, size, units = 'rows', method = 'random', values = NULL,
+selection(data, size, units = 'rows', method = 'interval', values = NULL,
           start = 1, order = TRUE, decreasing = FALSE, replace = FALSE)
 ```
 
@@ -178,9 +178,9 @@ selection(data, size, units = 'rows', method = 'random', values = NULL,
 
 | `method` | Description | Required arguments |
 | :----------- | :----------- | :----------- |
-| `random` | Select random units without the use of an interval | |
-| `cell` | Select a random unit from every interval | |
 | `interval` | Select a fixed unit from every interval | `start` |
+| `cell` | Select a random unit from every interval | |
+| `random` | Select random units without the use of an interval | |
 
 *Example usage:*
 

@@ -51,43 +51,9 @@ The next section discusses which sampling algorithms are available in `jfa`. To 
 data(BuildIt)
 ```
 
-#### Random sampling
-
-Random sampling is the most simple and straight-forward selection algorithm. The random sampling algorithm provides a method that allows every sampling unit in the population an equal chance of being selected, meaning that every combination of sampling units has the same probability of being selected as every other combination of the same number of sampling units. Simply put, the algorithm draws a random selection of size $n$ of the sampling units. Therefore, the selection probability for each sampling unit is defined as:
-
-$$p(x) = \frac{1}{N},$$
-
-where $N$ is the number of units in the population. To clarify this procedure, Figure 1 provides an illustration of the random sampling algorithm.
-
-<center>
-
-![Figure 1: Illustration of random sampling](img/randomSampling.png)
-
-</center>
-
-**Advantages:** The random sampling algorithm yields an optimal random selection, with the additional advantage that the sample can be easily extended by applying the same algorithm again.
-
-**Disadvantages:** Because the selection probabilities are equal for all sampling units there is no guarantee that items with a large monetary value in the population will be included in the sample.
-
-As an example, the code below shows how to apply the random sampling algorithm in a record sampling and a monetary unit sampling setting. It is important to set a seed to make results reproducible.
-
-```{r}
-# Record sampling
-set.seed(1)
-sample <- selection(data = BuildIt, size = 100, units = 'rows', method = 'random')
-head(sample$sample, n = 6)
-```
-
-```{r}
-# Monetary unit sampling
-set.seed(1)
-sample <- selection(data = BuildIt, size = 100, units = 'values', method = 'random', values = 'bookValue')
-head(sample$sample, n = 6)
-```
-
 #### Fixed interval sampling (Systematic sampling)
 
-Fixed interval sampling is an algorithm designed for yielding more representative samples than random sampling. The algorithm determines a uniform interval on the (optionally ranked) sampling units. Next, a starting point is handpicked or randomly selected in the first interval and a sampling unit is selected throughout the population at each of the uniform intervals from the starting point. For example, if the interval has a width of 10 sampling units and sampling unit number 5 is chosen as the starting point, the sampling units 5, 15, 20, etc. are selected to be included in the sample.
+Fixed interval sampling is an algorithm designed for yielding representative samples from monetary populations. The algorithm determines a uniform interval on the (optionally ranked) sampling units. Next, a starting point is handpicked or randomly selected in the first interval and a sampling unit is selected throughout the population at each of the uniform intervals from the starting point. For example, if the interval has a width of 10 sampling units and sampling unit number 5 is chosen as the starting point, the sampling units 5, 15, 20, etc. are selected to be included in the sample.
 
 The number of required intervals $I$ can be determined by dividing the number of sampling units in the population by the required sample size:
 
@@ -99,15 +65,15 @@ If the space between the selected sampling units is equal, the selection probabi
 
 $$p(x) = \frac{1}{I},$$
 
-with the property that the space between selected units $i$ is the same as the interval $I$, see Figure 2. However, in practice the selection is deterministic and completely depends on the chosen starting points (using `start`).
+with the property that the space between selected units $i$ is the same as the interval $I$, see Figure 1. However, in practice the selection is deterministic and completely depends on the chosen starting points (using `start`).
 
 <center>
 
-![Figure 2: Illustration of fixed interval sampling](img/fixedIntervalSampling.png)
+![Figure 1: Illustration of fixed interval sampling](img/fixedIntervalSampling.png)
 
 </center>
 
-The fixed interval algorithm, like the random sampling algorithm, yields a sample that allows every sampling unit in the population an equal chance of being selected. However, the systematic sampling algorithm has the property that all items in the population with a monetary value larger than the interval $I$ have an selection probability of one because one of these items' sampling units are always selected from the interval. Note that, if the population is arranged randomly with respect to its deviation pattern, fixed interval sampling is equivalent to random selection.
+The fixed interval algorithm yields a sample that allows every sampling unit in the population an equal chance of being selected. However, the systematic sampling algorithm has the property that all items in the population with a monetary value larger than the interval $I$ have an selection probability of one because one of these items' sampling units are always selected from the interval. Note that, if the population is arranged randomly with respect to its deviation pattern, fixed interval sampling is equivalent to random selection.
 
 **Advantages:** The advantage of the fixed interval sampling algorithm is that it is often simple to understand and fast to perform. Another advantage is that, in monetary unit sampling, all items that are greater than the calculated interval will be included in the sample. In record sampling, since units can be ranked on the basis of value, there is also a guarantee that some large items will be in the sample.
 
@@ -137,7 +103,7 @@ $$p(x) = \frac{1}{I}.$$
 
 <center>
 
-![Figure 3: Illustration of cell sampling](img/cellSampling.png)
+![Figure 2: Illustration of cell sampling](img/cellSampling.png)
 
 </center>
 
@@ -160,5 +126,39 @@ head(sample$sample, n = 6)
 # Monetary unit sampling
 set.seed(1)
 sample <- selection(data = BuildIt, size = 100, units = 'values', method = 'cell', values = 'bookValue')
+head(sample$sample, n = 6)
+```
+
+#### Random sampling
+
+Random sampling is the most simple and straight-forward selection algorithm. The random sampling algorithm provides a method that allows every sampling unit in the population an equal chance of being selected, meaning that every combination of sampling units has the same probability of being selected as every other combination of the same number of sampling units. Simply put, the algorithm draws a random selection of size $n$ of the sampling units. Therefore, the selection probability for each sampling unit is defined as:
+
+$$p(x) = \frac{1}{N},$$
+
+where $N$ is the number of units in the population. To clarify this procedure, Figure 3 provides an illustration of the random sampling algorithm.
+
+<center>
+
+![Figure 3: Illustration of random sampling](img/randomSampling.png)
+
+</center>
+
+**Advantages:** The random sampling algorithm yields an optimal random selection, with the additional advantage that the sample can be easily extended by applying the same algorithm again.
+
+**Disadvantages:** Because the selection probabilities are equal for all sampling units there is no guarantee that items with a large monetary value in the population will be included in the sample.
+
+As an example, the code below shows how to apply the random sampling algorithm in a record sampling and a monetary unit sampling setting. It is important to set a seed to make results reproducible.
+
+```{r}
+# Record sampling
+set.seed(1)
+sample <- selection(data = BuildIt, size = 100, units = 'rows', method = 'random')
+head(sample$sample, n = 6)
+```
+
+```{r}
+# Monetary unit sampling
+set.seed(1)
+sample <- selection(data = BuildIt, size = 100, units = 'values', method = 'random', values = 'bookValue')
 head(sample$sample, n = 6)
 ```

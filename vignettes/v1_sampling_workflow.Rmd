@@ -73,7 +73,7 @@ Laura chooses to use *monetary unit sampling*, as she wants to include more high
 
 ```{r}
 # Step 2: Draw a sample from the financial statements.
-stage2 <- selection(data = BuildIt, size = stage1, units = "values", values = "bookValue")
+stage2 <- selection(data = BuildIt, size = stage1, units = "values", values = "bookValue", method = 'interval')
 ```
 
 Laura can inspect the outcomes of her sampling procedure by using the `summary()` function.
@@ -109,7 +109,7 @@ stage4 <- evaluation(materiality = materiality, conf.level = c.adj, data = sampl
                      values = 'bookValue', values.audit = 'auditValue')
 ```
 
-Laura can inspect the outcomes of her inference by using the `summary()` function. Her resulting 91.66% upper bound is 2.997%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.
+Laura can inspect the outcomes of her inference by using the `summary()` function. Her resulting 91.66% upper bound is 1.396%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.
 
 ```{r}
 summary(stage4)
@@ -117,4 +117,4 @@ summary(stage4)
 
 ## Conclusion
 
-Since the 91.66% upper confidence bound on the misstatement in population is lower than the performance materiality Laura can conclude that there is less than 5% risk that the population contains material misstatement.
+Since the 91.66% upper confidence bound on the misstatement in population is lower than the performance materiality Laura has obtained sufficient evidence to conclude that there is less than 5% risk that the population contains material misstatement.

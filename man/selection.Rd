@@ -4,8 +4,8 @@
 \alias{selection}
 \title{Select a Statistical Audit Sample}
 \usage{
-selection(data, size, units = 'rows', method = 'random', values = NULL,
-          start = 1, order = TRUE, decreasing = FALSE, replace = FALSE)
+selection(data, size, units = 'rows', method = 'interval', values = NULL,
+          start = 1, order = FALSE, decreasing = FALSE, replace = FALSE)
 }
 \arguments{
 \item{data}{a data frame containing the population of items the auditor wishes to sample from.}
@@ -14,13 +14,13 @@ selection(data, size, units = 'rows', method = 'random', values = NULL,
 
 \item{units}{a character specifying the sampling units used. Possible options are \code{rows} (default) for selection on the level of items (rows0) or \code{values} for selection on the level of monetary units.}
 
-\item{method}{a character specifying the sampling algorithm used. Possible options are \code{random} (default) for random sampling, \code{cell} for cell sampling, or \code{interval} for fixed interval sampling.}
+\item{method}{a character specifying the sampling algorithm used. Possible options are \code{interval} (default) for fixed interval sampling, \code{cell} for cell sampling, or \code{random} for random.}
 
 \item{values}{a character specifying name of a column in \code{data} containing the book values of the items.}
 
 \item{start}{if \code{method = 'interval'}, an integer larger than 0 specifying the starting point of the algorithm.}
 
-\item{order}{a logical specifying whether to first order the items in the \code{data} according to the value of their \code{values}. Defaults to \code{TRUE}.}
+\item{order}{a logical specifying whether to first order the items in the \code{data} according to the value of their \code{values}. Defaults to \code{FALSE}.}
 
 \item{decreasing}{if \code{order = TRUE}, a logical specifying whether to order the population \code{values} from smallest to largest. Defaults to \code{FALSE}.}
 
@@ -59,9 +59,9 @@ The first part of this section elaborates on the two possible options for the \c
 The second part of this section elaborates on the three possible options for the \code{method} argument:
 
 \itemize{
- \item{\code{random}:      In random sampling each sampling unit in the population is drawn with equal probability.}
+ \item{\code{interval}:    In fixed interval sampling the sampling units in the population are divided into a number (equal to the sample size) of intervals. From each interval one sampling unit is selected according to a fixed starting point (specified by \code{start}).}
  \item{\code{cell}:        In cell sampling the sampling units in the population are divided into a number (equal to the sample size) of intervals. From each interval one sampling unit is selected with equal probability.}
- \item{\code{interval}:    In fixed interval sampling the sampling units in the population are divided into a number (equal to the sample size) of intervals. From each interval one sampling unit is selected according to a fixed starting point (specified by \code{intervalStartingPoint}).}
+ \item{\code{random}:      In random sampling each sampling unit in the population is drawn with equal probability.}
 }
 }
 \examples{

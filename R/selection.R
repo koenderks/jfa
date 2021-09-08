@@ -5,16 +5,16 @@
 #' For more details on how to use this function, see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
-#' @usage selection(data, size, units = 'rows', method = 'random', values = NULL,
-#'           start = 1, order = TRUE, decreasing = FALSE, replace = FALSE)
+#' @usage selection(data, size, units = 'rows', method = 'interval', values = NULL,
+#'           start = 1, order = FALSE, decreasing = FALSE, replace = FALSE)
 #'
 #' @param data           a data frame containing the population of items the auditor wishes to sample from.
 #' @param size           an integer larger than 0 specifying the number of sampling units that need to be selected from the population. Can also be an object of class \code{jfaPlanning}.
 #' @param units          a character specifying the sampling units used. Possible options are \code{rows} (default) for selection on the level of items (rows0) or \code{values} for selection on the level of monetary units.
-#' @param method         a character specifying the sampling algorithm used. Possible options are \code{random} (default) for random sampling, \code{cell} for cell sampling, or \code{interval} for fixed interval sampling. 
+#' @param method         a character specifying the sampling algorithm used. Possible options are \code{interval} (default) for fixed interval sampling, \code{cell} for cell sampling, or \code{random} for random. 
 #' @param values         a character specifying name of a column in \code{data} containing the book values of the items.
 #' @param start          if \code{method = 'interval'}, an integer larger than 0 specifying the starting point of the algorithm.
-#' @param order          a logical specifying whether to first order the items in the \code{data} according to the value of their \code{values}. Defaults to \code{TRUE}.
+#' @param order          a logical specifying whether to first order the items in the \code{data} according to the value of their \code{values}. Defaults to \code{FALSE}.
 #' @param decreasing     if \code{order = TRUE}, a logical specifying whether to order the population \code{values} from smallest to largest. Defaults to \code{FALSE}.
 #' @param replace        if \code{method = 'random'}, a logical specifying whether sampling should be performed with replacement. Defaults to \code{FALSE}.
 #' 
@@ -28,9 +28,9 @@
 #' The second part of this section elaborates on the three possible options for the \code{method} argument:
 #' 
 #' \itemize{
-#'  \item{\code{random}:      In random sampling each sampling unit in the population is drawn with equal probability.}
+#'  \item{\code{interval}:    In fixed interval sampling the sampling units in the population are divided into a number (equal to the sample size) of intervals. From each interval one sampling unit is selected according to a fixed starting point (specified by \code{start}).}
 #'  \item{\code{cell}:        In cell sampling the sampling units in the population are divided into a number (equal to the sample size) of intervals. From each interval one sampling unit is selected with equal probability.}
-#'  \item{\code{interval}:    In fixed interval sampling the sampling units in the population are divided into a number (equal to the sample size) of intervals. From each interval one sampling unit is selected according to a fixed starting point (specified by \code{intervalStartingPoint}).}
+#'  \item{\code{random}:      In random sampling each sampling unit in the population is drawn with equal probability.}
 #' }
 #'
 #' @return An object of class \code{jfaSelection} containing:
@@ -68,7 +68,7 @@
 #' @export
 
 selection <- function(data, size, units = 'rows', method = 'random', values = NULL, 
-                      start = 1, order = TRUE, decreasing = FALSE, replace = FALSE) {
+                      start = 1, order = FALSE, decreasing = FALSE, replace = FALSE) {
   if (class(size) == "jfaPlanning") # If the input for 'sampleSize' is of class 'jfaPlanning', extract the planned sample size
     size <- size[["n"]]
   if (units == "rows" && size > nrow(data) && !replace) # Check if the sample size is valid (< N)

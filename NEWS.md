@@ -40,6 +40,7 @@
     - `mus` -> `values` (in `selection()`)
     - `hypotheses` -> `hyp` (in `auditPrior()`)
 - `poisson` is now the default likelihood for all functions since it is the most conservative.
+- `method = 'interval'` is now the default selection method.
 - The default prior distributions used when `method = 'none'` or `prior = FALSE` are now set to priors (`gamma(1, 0)`, `beta(1,0)`, `beta-binomial(1, 0)`) that yield the same results (with respect to sample sizes and upper limits) as classical procedures.
 - The `times` (former `counts`) argument in `evaluation()` must now be indicated as a column name in the `data` instead of a vector.
 - `nPrior` and `kPrior` have been removed from the `planning()` and `evaluation()` functions. All prior distributions must now be specified using `prior = TRUE` (noninformative priors) or using a call to `auditPrior()`.

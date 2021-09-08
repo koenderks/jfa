@@ -176,65 +176,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In statistical sampling, every sampling unit <span class="math inline">\(x_i\)</span> in the population must receive a selection probability <span class="math inline">\(p(x_i)\)</span>. The purpose of the sampling algorithm is to provide a framework to assign selection probabilities to each of the sampling units, and subsequently draw sampling units from the population until a set of size <span class="math inline">\(n\)</span> has been created.</p>
 <p>The next section discusses which sampling algorithms are available in <code>jfa</code>. To illustrate the outcomes for different sampling algorithms we will use the <code>BuildIt</code> data set that can be loaded using the code below.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(BuildIt)</span></code></pre></div>
-<div id="random-sampling" class="section level4">
-<h4>Random sampling</h4>
-<p>Random sampling is the most simple and straight-forward selection algorithm. The random sampling algorithm provides a method that allows every sampling unit in the population an equal chance of being selected, meaning that every combination of sampling units has the same probability of being selected as every other combination of the same number of sampling units. Simply put, the algorithm draws a random selection of size <span class="math inline">\(n\)</span> of the sampling units. Therefore, the selection probability for each sampling unit is defined as:</p>
-<p><span class="math display">\[p(x) = \frac{1}{N},\]</span></p>
-<p>where <span class="math inline">\(N\)</span> is the number of units in the population. To clarify this procedure, Figure 1 provides an illustration of the random sampling algorithm.</p>
-<center>
-<div class="figure">
-<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAdsAAAA+CAMAAABUWkGDAAAAUVBMVEX///+Hh4c/Pz/Nzc0GBgbb29taWloAAAC7u7vv7+/4+PhYWFhnZ2cODg7T09N6enqkpKSWlpZQUFDs7OwqKioaGhpra2vg4OBfX1/ExMSBgYGRs/oRAAADS0lEQVR4Ae2b7W6yUBCEFbD4+Sp+2/u/0FdqTYxu3J09ZNKY4UeFddh5dk5IaaCjkTYloASUgBJQAkpACSgBJaAElIASUAJKQAl8dALzNTTe5gLJb2LQI+HQn5JCS3q9P40z73uG/ttJ42seFOfxw0F0F/SItn3SpdCeegxzyJnXZwU5UgGCHj60qUihmZ1Ki5x5fUqQ4+vvXrcpND+ghALMNOEQOwXkSAUIesTAX1QptJcuQxQ48/qkIEcqQNDDhzYVKTSzU2mRM69PCXKkAgQ9fGhTkUIzO5UWOfP6lCBHKkDQw4c2FSk0s1NpkTOvTwlypAIEPXxoU5FCMzuVFjnz+pQgRypA0MOHNhUpNLNTaZEzr08JcqQCBD18aFORQjM7lRY58/qUIEcqQNDDhzYVKTSzU2mRM69PCXKkAgQ9fGhTkUIzO5UWOfP6lCBHKkDQw4c2FSk0s1NpkTOvTwlypAIEPXxoU5FCMzuVFjnz+pQgRypA0MOHNhUpNLNTaZEzr08JcqQCBD18aFORQjM7lRY5876lrNaz3+e3p+PirbL/sttOrz9/AtxU/W5owzxCLV9FObTXPgNUKPMGOKfVYdw/m58fV+fa1e++D9WkX9vLft/NXfmvAPOIdn3S5dCemgxzSJk3hFrvz5NmXlW7kHr+vaq/xtO2C6nvIszjfhb4mUMDTWJyyrwRlNl+2Xxtw1fh5lAtVugbU6BHBNvQpNCMPuUlzrwBztOqPVx/60a3Y9PgL16AHlGWJ10K7anHMIeceQOs63YTUN0lu9Xhvgt8Yh5A40dpDu2xw2D7lHkDtHULXLaj0RZ75fUGAHoEqC1JCs1qVFzjzBvAxBZr499QG56Yh9EgUsqhRTrDGsq8MJVOUAJKQAkoASWgBJSAElACSkAJKAEloASUwIAJdF3s8dyAlmpFSODSTUdN+4/gJAt2Atcnr6NWa8uOneK3bBdaW0rSfBOtLT9zlqPWlpU030dry8+c5Xhb226q7fMS2P7cSzWttk9MoL9P1vaZCfRre5lp+7wEzvr7lnVrQ/fRfTI9cpqh1pYWNd1Ia0uPnGaotaVFTTdatnoORA+dZNhft3Ud/v9KEpVshkjgVJ+GaKMefzOB/zXbSvPrJ1xpAAAAAElFTkSuQmCC" alt />
-<p class="caption">Figure 1: Illustration of random sampling</p>
-</div>
-</center>
-<p><strong>Advantages:</strong> The random sampling algorithm yields an optimal random selection, with the additional advantage that the sample can be easily extended by applying the same algorithm again.</p>
-<p><strong>Disadvantages:</strong> Because the selection probabilities are equal for all sampling units there is no guarantee that items with a large monetary value in the population will be included in the sample.</p>
-<p>As an example, the code below shows how to apply the random sampling algorithm in a record sampling and a monetary unit sampling setting. It is important to set a seed to make results reproducible.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Record sampling</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;rows&#39;</span>, <span class="at">method =</span> <span class="st">&#39;random&#39;</span>)</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample<span class="sc">$</span>sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
-<pre><code>##    row times    ID bookValue auditValue
-## 1 1017     1 50755    618.24     618.24
-## 2  679     1 20237    669.75     669.75
-## 3 2177     1  9517    454.02     454.02
-## 4  930     1 85674    257.82     257.82
-## 5 1533     1 31051    308.53     308.53
-## 6  471     1 84375    824.66     824.66</code></pre>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Monetary unit sampling</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;values&#39;</span>, <span class="at">method =</span> <span class="st">&#39;random&#39;</span>, <span class="at">values =</span> <span class="st">&#39;bookValue&#39;</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample<span class="sc">$</span>sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
-<pre><code>##    row times    ID bookValue auditValue
-## 1 2174     1 57702    428.87     428.87
-## 2 2928     1 81225    593.87     593.87
-## 3 1627     1 13574    346.87     346.87
-## 4 2532     1 84419    494.53     494.53
-## 5  147     1 45361    125.35     125.35
-## 6 3056     1 98879    638.36     638.36</code></pre>
-</div>
 <div id="fixed-interval-sampling-systematic-sampling" class="section level4">
 <h4>Fixed interval sampling (Systematic sampling)</h4>
-<p>Fixed interval sampling is an algorithm designed for yielding more representative samples than random sampling. The algorithm determines a uniform interval on the (optionally ranked) sampling units. Next, a starting point is handpicked or randomly selected in the first interval and a sampling unit is selected throughout the population at each of the uniform intervals from the starting point. For example, if the interval has a width of 10 sampling units and sampling unit number 5 is chosen as the starting point, the sampling units 5, 15, 20, etc. are selected to be included in the sample.</p>
+<p>Fixed interval sampling is an algorithm designed for yielding representative samples from monetary populations. The algorithm determines a uniform interval on the (optionally ranked) sampling units. Next, a starting point is handpicked or randomly selected in the first interval and a sampling unit is selected throughout the population at each of the uniform intervals from the starting point. For example, if the interval has a width of 10 sampling units and sampling unit number 5 is chosen as the starting point, the sampling units 5, 15, 20, etc. are selected to be included in the sample.</p>
 <p>The number of required intervals <span class="math inline">\(I\)</span> can be determined by dividing the number of sampling units in the population by the required sample size:</p>
 <p><span class="math display">\[I = \frac{N}{n},\]</span></p>
 <p>in which <span class="math inline">\(n\)</span> is the required sample size and <span class="math inline">\(N\)</span> is the total number of sampling units in the population.</p>
 <p>If the space between the selected sampling units is equal, the selection probability for each sampling unit is theoretically defined as:</p>
 <p><span class="math display">\[p(x) = \frac{1}{I},\]</span></p>
-<p>with the property that the space between selected units <span class="math inline">\(i\)</span> is the same as the interval <span class="math inline">\(I\)</span>, see Figure 2. However, in practice the selection is deterministic and completely depends on the chosen starting points (using <code>start</code>).</p>
+<p>with the property that the space between selected units <span class="math inline">\(i\)</span> is the same as the interval <span class="math inline">\(I\)</span>, see Figure 1. However, in practice the selection is deterministic and completely depends on the chosen starting points (using <code>start</code>).</p>
 <center>
 <div class="figure">
 <img src="data:image/png;base64,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" alt />
-<p class="caption">Figure 2: Illustration of fixed interval sampling</p>
+<p class="caption">Figure 1: Illustration of fixed interval sampling</p>
 </div>
 </center>
-<p>The fixed interval algorithm, like the random sampling algorithm, yields a sample that allows every sampling unit in the population an equal chance of being selected. However, the systematic sampling algorithm has the property that all items in the population with a monetary value larger than the interval <span class="math inline">\(I\)</span> have an selection probability of one because one of these items’ sampling units are always selected from the interval. Note that, if the population is arranged randomly with respect to its deviation pattern, fixed interval sampling is equivalent to random selection.</p>
+<p>The fixed interval algorithm yields a sample that allows every sampling unit in the population an equal chance of being selected. However, the systematic sampling algorithm has the property that all items in the population with a monetary value larger than the interval <span class="math inline">\(I\)</span> have an selection probability of one because one of these items’ sampling units are always selected from the interval. Note that, if the population is arranged randomly with respect to its deviation pattern, fixed interval sampling is equivalent to random selection.</p>
 <p><strong>Advantages:</strong> The advantage of the fixed interval sampling algorithm is that it is often simple to understand and fast to perform. Another advantage is that, in monetary unit sampling, all items that are greater than the calculated interval will be included in the sample. In record sampling, since units can be ranked on the basis of value, there is also a guarantee that some large items will be in the sample.</p>
 <p><strong>Disadvantages:</strong> A pattern in the population can coincide with the selected interval, rendering the sample less representative. What is sometimes seen as an added complication for this algorithm is that the sample is hard to extend after drawing the initial sample. This is due to the chance of selecting the same sampling unit. However, by removing the already selected sampling units from the population and redrawing the intervals this problem can be efficiently solved.</p>
 <p>As an example, the code below shows how to apply the fixed interval sampling algorithm in a record sampling and a monetary unit sampling setting. Note that, by default, the first sampling unit from each interval is selected. However, this can be changed by setting the argument <code>start = 1</code> to a different value.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Record sampling</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;rows&#39;</span>, <span class="at">method =</span> <span class="st">&#39;interval&#39;</span>, <span class="at">start =</span> <span class="dv">1</span>)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample<span class="sc">$</span>sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Record sampling</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;rows&#39;</span>, <span class="at">method =</span> <span class="st">&#39;interval&#39;</span>, <span class="at">start =</span> <span class="dv">1</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample<span class="sc">$</span>sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
 <pre><code>##   row times    ID bookValue auditValue
 ## 1   1     1 82884    242.61     242.61
 ## 2  36     1 80125    118.58     118.58
@@ -242,16 +205,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4 106     1 88261    266.66     266.66
 ## 5 141     1 58999    568.60     568.60
 ## 6 176     1 27801    314.65     314.65</code></pre>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Monetary unit sampling</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;values&#39;</span>, <span class="at">method =</span> <span class="st">&#39;interval&#39;</span>, <span class="at">values =</span> <span class="st">&#39;bookValue&#39;</span>, <span class="at">start =</span> <span class="dv">1</span>)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample<span class="sc">$</span>sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Monetary unit sampling</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;values&#39;</span>, <span class="at">method =</span> <span class="st">&#39;interval&#39;</span>, <span class="at">values =</span> <span class="st">&#39;bookValue&#39;</span>, <span class="at">start =</span> <span class="dv">1</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample<span class="sc">$</span>sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
 <pre><code>##   row times    ID bookValue auditValue
-## 1   1     1 30568     14.47      14.47
-## 2 146     1 63567    125.21     125.21
-## 3 246     1 95807    153.56     153.56
-## 4 332     1 64282    172.65     172.65
-## 5 410     1 43352    188.72     188.72
-## 6 482     1 94296    198.59     198.59</code></pre>
+## 1   1     1 82884    242.61     242.61
+## 2  38     1 57172    329.30     329.30
+## 3  73     1 90160    205.69     205.69
+## 4 110     1  4756    295.96     295.96
+## 5 146     1 90183    333.28     333.28
+## 6 183     1 96080    449.07     449.07</code></pre>
 </div>
 <div id="cell-sampling" class="section level4">
 <h4>Cell sampling</h4>
@@ -261,17 +224,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <center>
 <div class="figure">
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAdsAAACJCAMAAABTlWJOAAABnlBMVEX///+rq6sAAACpKiqBgf/fv58gICCB/4H/gYH/+YGpoSoqKqkqqSqJaEh+AAAAfgBePh4AAH5+dgCJ/4mJif//iYnhxaf/+YmHh4daWloGBwX+/v7b29uNjY0ODg4ZGRlYWFjNzc3z8/Ofn59lZWVLS0v8+vqTk5P29vgDAwN5eXmDg4PT0tIpKSnGxsavr6+mpqY8PDxubWozMzObm5u3t7fj5ePZ2dnr6+u+vr7/+ZD+//X26N5ycnLg3d1SUlL+mprP/8/V1f//wsL//dTn5+dcXlwgFAzr1sGZ/ZmYmJipqanv7/NIRULfwaGo/6iUlP+Dg///+YMYZgCJiYnp4WnexKn+8vF493j/+6dpaelkAAD3eHhiXADjya0ZAD/v/+84LAv/+7UTOwDw2tiUjysaGprjx6vy8v/RsZF6WjpaWpekpP+IKioamhr/qak7O7oAAGn/g4PlzbNONBgAADChMjKFblrRs5MQACK//7+1tf+rq/+hmyKTclSzs/+3/7eTclKzqzRAhUAwpTAsqyyZmd/f25X/ra2xqzTInQRDAAALh0lEQVR4Ae1djUPbxhUX1wKh65JtQAAL2xiMweYjgIHwmfBdEggBykayks/SwtZ02dJu3bJkXbvP/tc7SZats3VCT3dPCt07gq27e+/d7/1+OkmWLsYwqBADxAAxQAwQA8QAMUAMEAPEADFADBADxAAx8H/EwGbPXf3ZDtze1B80fESUnIThE05QwCKvlNikvDNiz26KzUd01eKGkZMALOkEBTDSiplb7pV2Ru0wR6ajuurwQ8lJAJZwggKWgIppBnRG7cKICcCCkpMwfsIJClioQgwQAz8WBszhka10QXM25ng+P6o5JiAcSk7C+AknKGCRV8x8breYlvdH6hmfKixnhyO56nBCyUkAlnCCAhZ5ZajJ2GR98v4oPcODppEvJjdxMXISeEg6QQGMtGLyT7YTbETaH6ljgH/8GUvpPtCHhoKSkzB6wgkKWOSV2SHDuKd7io30G+PstnxQ5B6UnATMCScoYAmszLJyYH+kzjybieSnyQklJwFbwgkKWOSV7iKfu5rLcCab2CHZSgUjJ4GipBMUwMgrY8U5eWfEngm2HNFTjxtGTgKypBMUwMgqZs46Mw5p/sAyyEaNuQHZmNjtODkJqJNNUIASUBlhN4x+zc+BhlNj/Lh4I2BU3C6MnATESScogJFX7hWHjSHNU2w8VTIKk8mdcTFyEhhMOkEBjLxSyhijeXl3pJ65TNpcHo/kqsUJIycBWNIJCmDklf5ST0nz2dYw5vu2knwyj5KTQGHCCQpYqEIMEAPEADFADBADxAAxQAwQA8QAMUAM/HgYmNsBFJ+nQzcA7uFNfe5y9Ib3xrKcbVx/PNMkG2y80TjuvSbXAii5BnRmGeAe3tRnhcZEeG8sS58nHYPSsXTftG2gnhoSYyD5aZtY6jQwMUAMQBkwd6Eegr2iuxAruNKf3BPfAGAgVCDjgEHDds1mwlr62im6+8b0b8zrX5TnPxCoFYQKZAyC4W/cm/JvD9mq6B5yFMuspxtgHJspCBXIWEMKiuIougMSiJuYcNBAqEDG4cYPtFIUR9E9EJrYGTcx4uiyGggVyFg2IqBdURxFdwDQuIkJBw2ECmQcbvxAK0VxFN0DoYmdcRMjji6rgVCBjGUjAtoVxVF0BwCNm5hw0ECoQMbhxg+0UhRH0T0QmtgZNzHi6LIaCBXIWDYioF1RHEV3ANC4iQkHDYQKZBxu/EArRXEU3QOhiZ1xEyOOLquBUIGMZSMC2hXFUXQHAI2bmHDQQKhAxuHGD7RSFEfRPRCa2Bk3MeLoshoIFchYNiKgXVEcRXcA0LiJCQcNhApkHG78QCtFcRTdA6GJnXETI44uq4FQgYxlIwLaFcVRdAcAjZuYcNBAqEDG4cYPtFIUR9E9EJrYGTcx4uiyGggVyFg2Yrj2GeuxvCPOps9ywouCKLpfFL7Wf9NeeGcTUxhP9Du1a5gMA4QKZOwdJeK2OZnhX4VkaTubT8HX4im6A0A3ZSb5f8Xm2po7Y9nGBZaASDpNQahAxlpQjg9mc1zbmczUrShr8RTdw6fQn85OmT3dw4NjO4UoQMOPBLEEoQIZQ1DIbYeyM6n5TORv8lJ0l+Oq6zE3y1M9I/du99e1J1sFoQIZ68krnS1mfRZShw2u6B52GMOYa8lmy+/cajgQKpBxeGYCLCfZVkDvhV2K7hfGrxrMsNTNauWd2QChAhnrSLGJKV2dKLoDMhgbBBjHZgpCBTLWkMJui1IQRXfA2Muav+YKMHSAKQgVyDhg0NBdt0Jb+hoquvvG9G3cfLcupCoYQahAxr4kUCMxQAwQA8QAMUAMEAPEADFADMgYMM/X3ux3vK+lHHTsf7tWd5P+dH2l89UVLaWz8+X6sZCHubjxcKGrTUs5XFh4vlEHfvXvd9pb9ZT29vuvn9aBP90+u96spexd/2p7qQ68cf5XLap6gnSseW7nnq5oUdUT5OVxLYXF51pU9QRZ8Kq7qk1Yd/e471G3sL2nRVY3yN7emajuWodHFV2bL84r+2fhpUcUXZud6+7ev6Fpxnq0bWtbWHTCm+Z9VxGN7+2rLvglTTPWldZ+/6oyrVpabhprHQe6BPXG6Tg3j1qWzYL2SevsH+tmvwV+41AQRVdlYdEscfCLdzRK6gn12uDgZ40lvZPWVfjs2ODgDVYcXUNRlqu8f17if54PSdorV9Z3GRvd0CVmfZyFxSkOHkna1tZVDn52yRVD8/ve44IFnrHcvneyad1+w7Vd13UUboxzyrXFmbWW0A/zrO+1Z6pp3pxl7BbGAdnZTbY5eK7tv7XKKQZbZn3u1fEJ10bnLw+3wth/6qebvvrhN2xLs57ecHcY+5Xm6eoNZ8/b4q9FObTWfl/80tW2cdopt5ykUr/Up2VDpM9S/6iI8YC/6/y1wj5IFf/sFUPz9jfWvP0jqrapPykr6B/APgR88gxR264fUv+saKv7zd5PPv3oN5r19Ib7W5Fr+wRV27+85y+NjtaTk08eIWrb9sOn/9Itqifeg4+fYWr73Udc2z98/hO88vmTq+8hlquP3r79AO3ns4+vfYhXfnft658ilt9a2v4ctTy5iloe/QKzPLqGWr7+GWZ5hj5vx7Dn7Qdo5S3uvP0whnkb0/nWuvaxivvu2ao2VTdqVtWm6oYTxomFe779Hv98u4dT+EWVfb7FvU4uCtdSNYGqW40bAcJaxu4v3zpBvU5u+756nWxd19ofgjS92OFwr5O/s66TUT/ffsG+7PRMNGezKmdDj2cy+/Q1NJ0whnmdXPl8awvrucBV33R2FYb/+Rb1vtQXxR5bkSA5GyQL3YB9X6rYp66jJMKD1jjuS7Fch9ZbUd5gL0qsJ+B+squ4++4V1W1z3+untNXO7yfnGu4maWt4mC/24N5P7sW76Vi5nzy65pVD5/b+MH9WYNaeA9V08qpY2Q7orOtyq9jPgazb7bXnQArnXMvV+2vNZec5EM4jvubmx4U8P9+Wy70Gkrj8+e1Qmf9BcUdcR5Haa22rKrTdZL349DlGToezvV7oL5f581ttE1UI1HVsHHHwlee3trCSw2uk5tfm03IZ8/mtBd4uKE9w989Nw174omPdhVdUW9pX6zy29c9EeTjvrrswFjHWXbSuctw2NxjrLvbcdReOuOff6jwWW7EO+HopG701wGnjxbIz9+zXBt1C9L2srYYzj7Wvlzrc8Cz2Wq0dl60pWpvCYbcaJvb9p1VmDN3rpZqbz5YcTauvfJ3ji46Dg/e1/OvYf7NW920ES/9d6ex89aqT/1jF3nRfK41CW9XE7rReao6dK+vHzl7vwj9+/rCr61BP6eLrHOvAW+sc21srP+G3qi6uq/VurXMUwJuLp9uPr2sqZ9Y6x9qO4/BjmnX5uLRFfK8cjiN6X+jWgN/g+PX8s6JcOL6SQV14ZKqUoJIzMUAMEAPEADFADBADxAAxQAwQA8QAMUAMEAPEADFADBADURm4OT2w07QzMT1fd080arw6v4npiZ2miYHpXZTwBL6ObrGaO1pOFTNbpQjfaS8G8q2ZQyOTrDg5lcb5vr5cd6l4ecGjMu/IYWYY5l9yT7Ms3mMYs3CJwRvIzHN5c4xhfjHxIF+jhFdyrHiZwaMyz1nnEwuPe2vfvIsYnsAHkos9sVD3TQIfpC2fWNNB/Yp96BOLwMsVuuSnWzoqyKXFP93SxJKwj3tIswalM5aE+kv+CYJnRadbqbSX+5DG0+Kn2155dso9g6xHOYY8AIGXc8N7cA/6dFSQk4/LvDUuTSwp+5f6qMCzookllfZyH9J4Wuj75pacO+UeAh9IIe5Bn44KcvJxmbfGRT3dmnxi4T6lQbwIv9TgDeNGOs9Y+e4EzoPzWwOlMcZKA/zPiWMUAh/EqtndnU4PpbtHdoOsIvfNjxzx6EfdCn85OWBsAh9ADnURA8QAMUAMEAPEADFADBADxAAxQAwQA8QAMZAEA/8DbbdP1CGNOvAAAAAASUVORK5CYII=" alt />
-<p class="caption">Figure 3: Illustration of cell sampling</p>
+<p class="caption">Figure 2: Illustration of cell sampling</p>
 </div>
 </center>
 <p>The cell sampling algorithm has the property that all items in the population with a monetary value larger than twice the interval <span class="math inline">\(I\)</span> have a selection probability of one.</p>
 <p><strong>Advantages:</strong> More sets of samples are possible than in fixed interval sampling, as there is no systematic interval <span class="math inline">\(i\)</span> to determine the selections. It is argued that the cell sampling algorithm offers a solution to the pattern problem in fixed interval sampling.</p>
 <p><strong>Disadvantages:</strong> A disadvantage of this sampling algorithm is that not all items in the population with a monetary value larger than the interval have a selection probability of one. Besides, population items can be in two adjacent cells, thereby creating the possibility that an items is included in the sample twice.</p>
 <p>As an example, the code below shows how to apply the cell sampling algorithm in a record sampling and a monetary unit sampling setting. It is important to set a seed to make the results reproducible.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Record sampling</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;rows&#39;</span>, <span class="at">method =</span> <span class="st">&#39;cell&#39;</span>)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample<span class="sc">$</span>sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Record sampling</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;rows&#39;</span>, <span class="at">method =</span> <span class="st">&#39;cell&#39;</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample<span class="sc">$</span>sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
 <pre><code>##   row times    ID bookValue auditValue
 ## 1   9     1 14608    216.48     216.48
 ## 2  48     1 45437    347.94     139.18
@@ -279,17 +242,54 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4 136     1 45746    440.72     440.72
 ## 5 147     1 72906    677.62     677.62
 ## 6 206     1 93529    528.79     528.79</code></pre>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Monetary unit sampling</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;values&#39;</span>, <span class="at">method =</span> <span class="st">&#39;cell&#39;</span>, <span class="at">values =</span> <span class="st">&#39;bookValue&#39;</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample<span class="sc">$</span>sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
+<pre><code>##   row times    ID bookValue auditValue
+## 1   8     1 81460    295.20     295.20
+## 2  53     1 80645    677.88     677.88
+## 3  92     1 75133    355.16     355.16
+## 4 142     1 68676    612.46     612.46
+## 5 153     1 63777    552.83     552.83
+## 6 214     1 25379   1021.07    1021.07</code></pre>
+</div>
+<div id="random-sampling" class="section level4">
+<h4>Random sampling</h4>
+<p>Random sampling is the most simple and straight-forward selection algorithm. The random sampling algorithm provides a method that allows every sampling unit in the population an equal chance of being selected, meaning that every combination of sampling units has the same probability of being selected as every other combination of the same number of sampling units. Simply put, the algorithm draws a random selection of size <span class="math inline">\(n\)</span> of the sampling units. Therefore, the selection probability for each sampling unit is defined as:</p>
+<p><span class="math display">\[p(x) = \frac{1}{N},\]</span></p>
+<p>where <span class="math inline">\(N\)</span> is the number of units in the population. To clarify this procedure, Figure 3 provides an illustration of the random sampling algorithm.</p>
+<center>
+<div class="figure">
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAdsAAAA+CAMAAABUWkGDAAAAUVBMVEX///+Hh4c/Pz/Nzc0GBgbb29taWloAAAC7u7vv7+/4+PhYWFhnZ2cODg7T09N6enqkpKSWlpZQUFDs7OwqKioaGhpra2vg4OBfX1/ExMSBgYGRs/oRAAADS0lEQVR4Ae2b7W6yUBCEFbD4+Sp+2/u/0FdqTYxu3J09ZNKY4UeFddh5dk5IaaCjkTYloASUgBJQAkpACSgBJaAElIASUAJKQAl8dALzNTTe5gLJb2LQI+HQn5JCS3q9P40z73uG/ttJ42seFOfxw0F0F/SItn3SpdCeegxzyJnXZwU5UgGCHj60qUihmZ1Ki5x5fUqQ4+vvXrcpND+ghALMNOEQOwXkSAUIesTAX1QptJcuQxQ48/qkIEcqQNDDhzYVKTSzU2mRM69PCXKkAgQ9fGhTkUIzO5UWOfP6lCBHKkDQw4c2FSk0s1NpkTOvTwlypAIEPXxoU5FCMzuVFjnz+pQgRypA0MOHNhUpNLNTaZEzr08JcqQCBD18aFORQjM7lRY58/qUIEcqQNDDhzYVKTSzU2mRM69PCXKkAgQ9fGhTkUIzO5UWOfP6lCBHKkDQw4c2FSk0s1NpkTOvTwlypAIEPXxoU5FCMzuVFjnz+pQgRypA0MOHNhUpNLNTaZEzr08JcqQCBD18aFORQjM7lRY5876lrNaz3+e3p+PirbL/sttOrz9/AtxU/W5owzxCLV9FObTXPgNUKPMGOKfVYdw/m58fV+fa1e++D9WkX9vLft/NXfmvAPOIdn3S5dCemgxzSJk3hFrvz5NmXlW7kHr+vaq/xtO2C6nvIszjfhb4mUMDTWJyyrwRlNl+2Xxtw1fh5lAtVugbU6BHBNvQpNCMPuUlzrwBztOqPVx/60a3Y9PgL16AHlGWJ10K7anHMIeceQOs63YTUN0lu9Xhvgt8Yh5A40dpDu2xw2D7lHkDtHULXLaj0RZ75fUGAHoEqC1JCs1qVFzjzBvAxBZr499QG56Yh9EgUsqhRTrDGsq8MJVOUAJKQAkoASWgBJSAElACSkAJKAEloASUwIAJdF3s8dyAlmpFSODSTUdN+4/gJAt2Atcnr6NWa8uOneK3bBdaW0rSfBOtLT9zlqPWlpU030dry8+c5Xhb226q7fMS2P7cSzWttk9MoL9P1vaZCfRre5lp+7wEzvr7lnVrQ/fRfTI9cpqh1pYWNd1Ia0uPnGaotaVFTTdatnoORA+dZNhft3Ud/v9KEpVshkjgVJ+GaKMefzOB/zXbSvPrJ1xpAAAAAElFTkSuQmCC" alt />
+<p class="caption">Figure 3: Illustration of random sampling</p>
+</div>
+</center>
+<p><strong>Advantages:</strong> The random sampling algorithm yields an optimal random selection, with the additional advantage that the sample can be easily extended by applying the same algorithm again.</p>
+<p><strong>Disadvantages:</strong> Because the selection probabilities are equal for all sampling units there is no guarantee that items with a large monetary value in the population will be included in the sample.</p>
+<p>As an example, the code below shows how to apply the random sampling algorithm in a record sampling and a monetary unit sampling setting. It is important to set a seed to make results reproducible.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Record sampling</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;rows&#39;</span>, <span class="at">method =</span> <span class="st">&#39;random&#39;</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample<span class="sc">$</span>sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
+<pre><code>##    row times    ID bookValue auditValue
+## 1 1017     1 50755    618.24     618.24
+## 2  679     1 20237    669.75     669.75
+## 3 2177     1  9517    454.02     454.02
+## 4  930     1 85674    257.82     257.82
+## 5 1533     1 31051    308.53     308.53
+## 6  471     1 84375    824.66     824.66</code></pre>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Monetary unit sampling</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;values&#39;</span>, <span class="at">method =</span> <span class="st">&#39;cell&#39;</span>, <span class="at">values =</span> <span class="st">&#39;bookValue&#39;</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;values&#39;</span>, <span class="at">method =</span> <span class="st">&#39;random&#39;</span>, <span class="at">values =</span> <span class="st">&#39;bookValue&#39;</span>)</span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample<span class="sc">$</span>sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
-<pre><code>##   row times    ID bookValue auditValue
-## 1  53     1 40775     96.61      96.61
-## 2 186     1 68230    137.18     137.18
-## 3 297     1 71669    164.20     164.20
-## 4 403     1 42205    186.66     186.66
-## 5 425     1 16965    190.50     190.50
-## 6 544     1 16989    208.21     208.21</code></pre>
+<pre><code>##    row times    ID bookValue auditValue
+## 1 2174     1 90260    625.98     625.98
+## 2 2928     1 68595    548.21     548.21
+## 3 1627     1 98301    429.07     429.07
+## 4  700     1 29683    239.26     239.26
+## 5  147     1 72906    677.62     677.62
+## 6 3056     1 86317    246.22     246.22</code></pre>
 </div>
 </div>
 </div>
