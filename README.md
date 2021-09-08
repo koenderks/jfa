@@ -188,7 +188,7 @@ selection(data, size, units = 'rows', method = 'interval', values = NULL,
 # Selection using random record sampling
 x <- selection(data = BuildIt, size = 100, units = 'rows', method = 'random')
 
-# Selection using fixed interval MUS
+# Selection using fixed interval MUS (using column 'bookValues' in BuildIt)
 x <- selection(data = BuildIt, size = 100, units = 'values', method = 'interval', values = 'bookValues')
 
 summary(x) # Prints information about the selection
