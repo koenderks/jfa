@@ -233,7 +233,7 @@
 <p>Laura chooses to use <em>monetary unit sampling</em>, as she wants to include more high-valued transactions. The <code><a href="../reference/selection.html">selection()</a></code> function allows her to sample from the financial statements. She uses the <code>stage1</code> object as an input for the <code><a href="../reference/selection.html">selection()</a></code> function.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Step 2: Draw a sample from the financial statements.</span>
-<span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="va">stage1</span>, units <span class="op">=</span> <span class="st">"values"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span><span class="op">)</span></code></pre></div>
+<span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="va">stage1</span>, units <span class="op">=</span> <span class="st">"values"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, method <span class="op">=</span> <span class="st">'interval'</span><span class="op">)</span></code></pre></div>
 <p>Laura can inspect the outcomes of her sampling procedure by using the <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> function.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">stage2</span><span class="op">)</span></code></pre></div>
@@ -245,7 +245,9 @@
 ## # Population size:               1403221 
 ## # Requested sample size:         178 
 ## # Sampling units:                Monetary units 
-## # Method:                        Random sampling   
+## # Method:                        Fixed interval sampling 
+## # Interval:                      7883.263 
+## # Starting point:                1 
 ## # ------------------------------------------------------------ 
 ## # Output:
 ## #
@@ -281,7 +283,7 @@
 <code class="sourceCode R"><span class="co"># Step 4: Evaluate the sample.</span>
 <span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, data <span class="op">=</span> <span class="va">sample</span>, 
                      values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></code></pre></div>
-<p>Laura can inspect the outcomes of her inference by using the <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> function. Her resulting upper bound is 3.433%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.</p>
+<p>Laura can inspect the outcomes of her inference by using the <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> function. Her resulting upper bound is 2.278%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------ 
@@ -294,21 +296,21 @@
 ## # Minimum precision:             Not specified 
 ## # Population size:               Not specified 
 ## # Sample size:                   178 
-## # Sample errors:                 8 
-## # Sum of taints:                 4.8 
+## # Sample errors:                 0 
+## # Sum of taints:                 0 
 ## # Method:                        poisson  
 ## # Prior distribution:            gamma(α = 2.325, β = 53) 
 ## # ------------------------------------------------------------
 ## # Output:
 ## # 
-## # Posterior distribution:        gamma(α = 7.125, β = 231) 
-## # Most likely error:             2.652%
-## # Upper bound:                   5.198%
-## # Precision:                     2.546% 
-## # Bayes factor-+:                7.418 
-## # Sufficient evidence:           FALSE 
+## # Posterior distribution:        gamma(α = 2.325, β = 231) 
+## # Most likely error:             0.574%
+## # Upper bound:                   2.278%
+## # Precision:                     1.704% 
+## # Bayes factor-+:                2179.847 
+## # Sufficient evidence:           TRUE 
 ## # ------------------------------------------------------------</code></pre>
-<p>She can inspect the prior and posterior distribution by using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function. The shaded area quantifies the area under the posterior distribution that contains 95% of the probability, which ends at 4.433%. Therefore, Laura can state that there is a 95% probability that the misstatement in BuildIt’s population is lower than 4.433%.</p>
+<p>She can inspect the prior and posterior distribution by using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function. The shaded area quantifies the area under the posterior distribution that contains 95% of the probability, which ends at 2.278%. Therefore, Laura can state that there is a 95% probability that the misstatement in BuildIt’s population is lower than 2.278%.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></code></pre></div>
 <p><img src="v2_bayesian_sampling_workflow_files/figure-html/unnamed-chunk-16-1.png" width="576" style="display: block; margin: auto;"></p>
@@ -316,7 +318,7 @@
 <div id="conclusion" class="section level2">
 <h2 class="hasAnchor">
 <a href="#conclusion" class="anchor"></a>Conclusion</h2>
-<p>Since the 95% upper confidence bound on the misstatement in population is lower than the performance materiality Laura can conclude that there is less than 5% risk that the population contains material misstatement.</p>
+<p>Since the 95% upper confidence bound on the misstatement in population is lower than the performance materiality Laura has obtained sufficient evidence to conclude that there is less than 5% risk that the population contains material misstatement.</p>
 </div>
   </div>
 

@@ -353,10 +353,10 @@
 <h3 class="hasAnchor">
 <a href="#select-items-with-the-selection-function" class="anchor"></a>Select items with the <code>selection()</code> function</h3>
 <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
-<p>The <code><a href="reference/selection.html">selection()</a></code> function takes a data frame and performs statistical sampling according to one of three algorithms: random sampling, cell sampling, or fixed interval sampling in combination with either record sampling or monetary unit sampling. The function returns an object of class <code>jfaSelection</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. The input for the <code>size</code> argument can be an object of class <code>jfaPlanning</code> as returned by the <code><a href="reference/planning.html">planning()</a></code> function.</p>
+<p>The <code><a href="reference/selection.html">selection()</a></code> function takes a data frame and performs statistical sampling according to one of three algorithms: fixed interval sampling, cell sampling, or random sampling in combination with either record sampling or monetary unit sampling. The function returns an object of class <code>jfaSelection</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. The input for the <code>size</code> argument can be an object of class <code>jfaPlanning</code> as returned by the <code><a href="reference/planning.html">planning()</a></code> function.</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/selection.html">selection</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">size</span>, units <span class="op">=</span> <span class="st">'rows'</span>, method <span class="op">=</span> <span class="st">'random'</span>, values <span class="op">=</span> <span class="cn">NULL</span>,
+<code class="sourceCode R"><span class="fu"><a href="reference/selection.html">selection</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">size</span>, units <span class="op">=</span> <span class="st">'rows'</span>, method <span class="op">=</span> <span class="st">'interval'</span>, values <span class="op">=</span> <span class="cn">NULL</span>,
           start <span class="op">=</span> <span class="fl">1</span>, order <span class="op">=</span> <span class="cn">TRUE</span>, decreasing <span class="op">=</span> <span class="cn">FALSE</span>, replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><em>Supported options for the <code>units</code> argument:</em></p>
 <table class="table">
@@ -396,9 +396,9 @@
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td align="left"><code>random</code></td>
-<td align="left">Select random units without the use of an interval</td>
-<td align="left"></td>
+<td align="left"><code>interval</code></td>
+<td align="left">Select a fixed unit from every interval</td>
+<td align="left"><code>start</code></td>
 </tr>
 <tr class="even">
 <td align="left"><code>cell</code></td>
@@ -406,9 +406,9 @@
 <td align="left"></td>
 </tr>
 <tr class="odd">
-<td align="left"><code>interval</code></td>
-<td align="left">Select a fixed unit from every interval</td>
-<td align="left"><code>start</code></td>
+<td align="left"><code>random</code></td>
+<td align="left">Select random units without the use of an interval</td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>
