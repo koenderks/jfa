@@ -156,7 +156,7 @@ selection <- function(data, size, units = 'rows', method = 'interval', values = 
   result[["data"]]       <- as.data.frame(data)
   result[["sample"]]     <- as.data.frame(sample)
   result[["n.req"]]      <- size
-  result[["n.units"]]    <- sum(sample[["times"]])
+  result[["n.units"]]    <- sum(count)
   result[["n.items"]]    <- nrow(sample)
   result[["N.units"]]    <- if (units == 'rows') nrow(data) else ceiling(sum(bookvalues))
   result[["N.items"]]    <- as.numeric(nrow(data))
