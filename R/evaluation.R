@@ -145,10 +145,10 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
     stop("'materiality' must be a single number between 0 and 1")
   if (!is.null(min.precision) && (min.precision <= 0 || min.precision >= 1))
     stop("'min.precision' must be a single number between 0 and 1")
-  if (!(method %in% c('binomial', 'poisson', 'hypergeometric', 'stringer', 'stringer.meikle', 'stringer.lta', 'stringer.pvz', 'rohrbach', 'moment', 'coxsnell', 'direct', 'difference', 'quotient', 'regression', 'mpu')) || length(method) != 1)
-    stop("'method' should be one of 'binomial', 'poisson', 'hypergeometric', 'stringer', 'stringer.meikle', 'stringer.lta', 'stringer.pvz', 'rohrbach', 'moment', 'coxsnell', 'direct', 'difference', 'quotient', 'regression', 'mpu'")
+  if (!(method %in% c('poisson', 'binomial', 'hypergeometric', 'stringer', 'stringer.meikle', 'stringer.lta', 'stringer.pvz', 'rohrbach', 'moment', 'coxsnell', 'direct', 'difference', 'quotient', 'regression', 'mpu')) || length(method) != 1)
+    stop("'method' should be one of 'poisson', 'binomial', 'hypergeometric', 'stringer', 'stringer.meikle', 'stringer.lta', 'stringer.pvz', 'rohrbach', 'moment', 'coxsnell', 'direct', 'difference', 'quotient', 'regression', 'mpu'")
   if (bayesian && method %in% c("stringer", "stringer.meikle", "stringer.lta", "stringer.pvz", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
-    stop("'method' should be one of 'binomial', 'poisson', 'hypergeometric'")  
+    stop("'method' should be one of 'poisson', 'binomial', 'hypergeometric'")  
   if (!is.null(x) || !is.null(n)) { # Use summary statistics
     if (method %in% c("stringer", "stringer.meikle", "stringer.lta", "stringer.pvz", "coxsnell", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
       stop(paste0("'method = ", method, "' is missing 'data' for evaluation"))
@@ -190,12 +190,12 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
     data <- stats::na.omit(data)
     if (!is.null(times)) {
       if (!(times %in% colnames(data)))
-        stop(paste0("'", values, "' is not a column in 'data'"))
+        stop(paste0("'", times, "' is not a column in 'data'"))
       times <- data[, times]
       if (!is.null(times) && any(times < 1))
-        stop("'times' must be a vector of integers >= 1")
+        stop("column 'times' in 'data' must be a vector of integers >= 1")
       if (!is.null(times) && any(times%%1 != 0))
-        stop("'times' must be a vector of nonnegative integers")
+        stop("column 'times' in 'data' must be a vector of nonnegative integers")
       n.obs <- sum(times)
     } else {
       n.obs <- nrow(data)

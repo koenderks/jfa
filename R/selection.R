@@ -73,8 +73,8 @@ selection <- function(data, size, units = 'rows', method = 'interval', values = 
     size <- size[["n"]]
   if (units == "rows" && size > nrow(data) && !replace) # Check if the sample size is valid (< N)
     stop("cannot take a sample larger than the population when 'replace = FALSE'")
-  if (!(method %in% c("random", "cell", "interval")) || length(method) != 1) # Check if the algorithm has a valid input
-    stop("'method' should be one of 'random', 'cell', 'interval'")
+  if (!(method %in% c("interval", "cell", "random")) || length(method) != 1) # Check if the algorithm has a valid input
+    stop("'method' should be one of 'interval', 'cell', 'random'")
   if (!(units %in% c("rows", "values")) || length(units) != 1) # Check if the units have a valid input
     stop("'units' should be one of 'rows', 'values'")
   if (units == "values" && is.null(values)) # Check if the book values have a valid input

@@ -91,8 +91,8 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
     stop("'materiality' or `min.precision` is missing for planning")
   if (conf.level >= 1 || conf.level <= 0 || is.null(conf.level) || length(conf.level) != 1)
     stop("'conf.level' must be a single number between 0 and 1")
-  if (!(likelihood %in% c("binomial", "poisson", "hypergeometric")) || length(likelihood) != 1)
-    stop("'likelihood' should be one of 'binomial', 'poisson', 'hypergeometric'")
+  if (!(likelihood %in% c("poisson", "binomial", "hypergeometric")) || length(likelihood) != 1)
+    stop("'likelihood' should be one of 'poisson', 'binomial', 'hypergeometric'")
   if (!is.null(min.precision) && (min.precision <= 0 || min.precision >= 1))
     stop("'min.precision' must be a single number between 0 and 1")
   # Define a placeholder for the sample size 

@@ -91,7 +91,7 @@ auditPrior <- function(method = 'none', likelihood = 'poisson', N.units = NULL,
   if (!(method %in% c("none", "uniform", 'param', "median", "hyp", "arm", "bram", "sample", "factor")) || length(method) != 1)
     stop("'method' should be one of 'none', 'uniform', 'param', 'median', 'hyp', 'arm', 'bram', 'sample', 'factor'")
   if (!(likelihood %in% c("poisson", "binomial", "hypergeometric")) || length(likelihood) != 1)
-    stop("'likelihood' should be one of 'binomial', 'poisson', 'hypergeometric'")
+    stop("'likelihood' should be one of 'poisson', 'binomial', 'hypergeometric'")
   if (is.null(conf.level))
     stop("'conf.level' is missing for prior construction")
   if (conf.level >= 1 || conf.level <= 0 || length(conf.level) != 1)
