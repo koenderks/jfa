@@ -216,10 +216,10 @@ auditPrior <- function(method = 'none', likelihood = 'poisson', N.units = NULL,
   # Create the description output
   description                 <- list()
   description[["density"]]    <- switch(likelihood, "poisson" = "gamma", "binomial" = "beta", "hypergeometric" = "beta-binomial")
-  description[["alpha"]]      <- as.numeric(1 + prior.x)
+  description[["alpha"]]      <- 1 + prior.x
   description[["beta"]]       <- switch(likelihood, "poisson" = prior.n, "binomial" = 1 + prior.n - prior.x, "hypergeometric" = 1 + prior.n - prior.x)
-  description[["implicit.x"]] <- as.numeric(prior.x)
-  description[["implicit.n"]] <- as.numeric(prior.n)
+  description[["implicit.x"]] <- prior.x
+  description[["implicit.n"]] <- prior.n
   description[["proper"]]     <- description[["beta"]] > 0
   # Create the prior string
   prior.string <- switch(likelihood, 
@@ -249,18 +249,18 @@ auditPrior <- function(method = 'none', likelihood = 'poisson', N.units = NULL,
   if (method != "none" && method != "uniform")
     specifics             <- list()
   if (method == "median" || method == "hyp") {
-    specifics[["p.hmin"]]  <- as.numeric(p.h0)
-    specifics[["p.hplus"]] <- as.numeric(p.h1)
+    specifics[["p.hmin"]]  <- p.h0
+    specifics[["p.hplus"]] <- p.h1
   } else if (method == "sample" || method == "factor") {
-    specifics[["x"]]      <- as.numeric(x)
-    specifics[["n"]]      <- as.numeric(n)
-    specifics[["factor"]] <- as.numeric(factor)    
+    specifics[["x"]]      <- x
+    specifics[["n"]]      <- n
+    specifics[["factor"]] <- factor   
   } else if (method == "arm") {
-    specifics[["ir"]]     <- as.numeric(ir)
-    specifics[["cr"]]     <- as.numeric(cr)  
+    specifics[["ir"]]     <- ir
+    specifics[["cr"]]     <- cr
   } else if (method == "bram") {
-    specifics[["mode"]]   <- as.numeric(expected)
-    specifics[["ub"]]     <- as.numeric(ub)
+    specifics[["mode"]]   <- expected
+    specifics[["ub"]]     <- ub
   } else if (method == 'param') {
     specifics[["alpha"]]  <- alpha
     specifics[["beta"]]   <- beta
