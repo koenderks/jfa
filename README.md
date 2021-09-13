@@ -325,6 +325,7 @@ Below you can find several informative tables that contain statistical sample si
 - Stewart, T. R. (2013). *A Bayesian Audit Assurance Model with Application to the Component Materiality problem in Group Audits.* VU University, Amsterdam. - [View online](https://research.vu.nl/en/publications/a-bayesian-audit-assurance-model-with-application-to-the-componen)
 - Talens, E. (2005). *Statistical Auditing and the AOQL-method*. University of Groningen, Groningen. - [View online](https://research.rug.nl/en/publications/statistical-auditing-and-the-aoql-method)
 - Touw, P., and Hoogduin, L. (2011). *Statistiek voor Audit en Controlling*. Boom uitgevers, Amsterdam.
+- Weiler, H. (1965). The use of incomplete beta functions for prior distributions in binomial sampling. *Technometrics*, 7(3), 335-347. - [View online](https://www.tandfonline.com/doi/abs/10.1080/00401706.1965.10490267)
 
 ## 7. Package statistics
 
