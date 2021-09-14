@@ -158,10 +158,10 @@ selection <- function(data, size, units = 'rows', method = 'interval', values = 
   result[["n.req"]]      <- size
   result[["n.units"]]    <- sum(count)
   result[["n.items"]]    <- nrow(sample)
-  result[["N.units"]]    <- if (units == 'rows') nrow(data) else ceiling(sum(bookvalues))
-  result[["N.items"]]    <- as.numeric(nrow(data))
+  result[["N.units"]]    <- if (units == 'rows') nrow(data) else sum(bookvalues)
+  result[["N.items"]]    <- nrow(data)
   if (!is.null(interval))
-    result[["interval"]] <- as.numeric(interval)
+    result[["interval"]] <- interval
   result[["units"]]      <- units
   result[["method"]]     <- method
   result[["values"]]     <- values
