@@ -47,7 +47,7 @@ test_that(desc = "(id: f2-v0.1.0-t3) Test for method = 'hyp'", {
 test_that(desc = "(id: f2-v0.1.0-t4) Test for method = 'arm'", {
   prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "arm", likelihood = "binomial", ir = 0.6, cr = 0.6)
   expect_equal(prior[["description"]]$alpha, 1)
-  expect_equal(prior[["description"]]$beta, 21, tolerance = 0.001)
+  expect_equal(prior[["description"]]$beta, 20, tolerance = 0.001)
   
   prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "arm", likelihood = "poisson", ir = 0.6, cr = 0.6)
   expect_equal(prior[["description"]]$alpha, 1)
@@ -55,13 +55,13 @@ test_that(desc = "(id: f2-v0.1.0-t4) Test for method = 'arm'", {
   
   prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "arm", likelihood = "hypergeometric", ir = 0.6, cr = 0.6, N.units = 3500)
   expect_equal(prior[["description"]]$alpha, 1)
-  expect_equal(prior[["description"]]$beta, 21, tolerance = 0.001)
+  expect_equal(prior[["description"]]$beta, 20, tolerance = 0.001)
 })
 
 test_that(desc = "(id: f2-v0.1.0-t5) Test for method = 'sample'", {
   prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "sample", likelihood = "binomial", n = 30, x = 1)
   expect_equal(prior[["description"]]$alpha, 2)
-  expect_equal(prior[["description"]]$beta, 30)
+  expect_equal(prior[["description"]]$beta, 29)
   
   prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "sample", likelihood = "poisson", n = 30, x = 1)
   expect_equal(prior[["description"]]$alpha, 2)
@@ -69,13 +69,13 @@ test_that(desc = "(id: f2-v0.1.0-t5) Test for method = 'sample'", {
   
   prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "sample", likelihood = "hypergeometric", n = 30, x = 1, N.units = 3500)
   expect_equal(prior[["description"]]$alpha, 2)
-  expect_equal(prior[["description"]]$beta, 30)
+  expect_equal(prior[["description"]]$beta, 29)
 })
 
 test_that(desc = "(id: f2-v0.1.0-t6) Test for method = 'factor'", {
   prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "factor", likelihood = "binomial", n = 30, x = 1, factor = 0.6)
   expect_equal(prior[["description"]]$alpha, 1.6, tolerance = 0.001)
-  expect_equal(prior[["description"]]$beta, 18.4, tolerance = 0.001)
+  expect_equal(prior[["description"]]$beta, 17.4, tolerance = 0.001)
   
   prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "factor", likelihood = "poisson", n = 30, x = 1, factor = 0.6)
   expect_equal(prior[["description"]]$alpha, 1.6, tolerance = 0.001)
@@ -83,7 +83,7 @@ test_that(desc = "(id: f2-v0.1.0-t6) Test for method = 'factor'", {
   
   prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "factor", likelihood = "hypergeometric", n = 30, x = 1, N.units = 3500, factor = 0.6)
   expect_equal(prior[["description"]]$alpha, 1.6, tolerance = 0.001)
-  expect_equal(prior[["description"]]$beta, 18.4, tolerance = 0.001)
+  expect_equal(prior[["description"]]$beta, 17.4, tolerance = 0.001)
 })
 
 # jfa version 0.3.0 - 0.3.1

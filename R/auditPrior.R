@@ -1,6 +1,6 @@
 #' Prior Distributions for Audit Sampling
 #'
-#' @description This function creates a prior distribution with audit information to be used in the \code{planning()} and \code{evaluation()} functions via their \code{prior} argument. The function returns an object of class \code{jfaPrior} which can be used with associated \code{summary()} and \code{plot()} methods.
+#' @description This function creates a prior distribution for the misstatement parameter \eqn{\theta} in an audit sampling model. The prior can be used in the \code{planning()} and \code{evaluation()} functions via their \code{prior} argument. The function returns an object of class \code{jfaPrior} which can be used with associated \code{summary()} and \code{plot()} methods.
 #'
 #' For more details on how to use this function, see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
@@ -28,14 +28,14 @@
 #' 
 #' @details \code{auditPrior} is used to define prior distributions for parameters in \code{jfa} models. To perform Bayesian audit sampling, you must assign a prior distribution to the misstatement parameter \eqn{\theta}. 
 #'          The prior is a probability distribution that reflects the existing information about the parameter before seeing a sample. To keep the priors proper, the \code{default} priors used by \code{jfa} are very diffuse,
-#'          meaning they contain almost no information. It is strongly recommended to use an informed prior distribution when possible.
+#'          meaning they contain minimal prior information. However, it is strongly recommended to use an informed prior distribution when possible.
 #'
 #' @details This section elaborates on the available options for the \code{method} argument.
 #'
 #' \itemize{
-#'  \item{\code{default}:    This method produces \emph{gamma(1, 1)}, \emph{beta(1, 1)}, and \emph{beta-binomial(N, 1, 1)} prior distributions which incorporate negligible information about the possible values of the misstatement.}
-#'  \item{\code{strict}:     This method produces \emph{gamma(1, 0)}, \emph{beta(1, 0)}, and \emph{beta-binomial(N, 1, 0)} prior distributions. Note that these prior distributions are improper and therefore they yields the same sample sizes and upper limits as classical techniques.}
-#'  \item{\code{param}:      This method constructs a prior distribution on the basis of user specified \eqn{\alpha} and \eqn{\beta} parameters.}
+#'  \item{\code{default}:    This method produces \emph{gamma(1, 1)}, \emph{beta(1, 1)}, and \emph{beta-binomial(N, 1, 1)} prior distributions which incorporate minimal information about the possible values of the misstatement.}
+#'  \item{\code{strict}:     This method produces \emph{gamma(1, 0)}, \emph{beta(1, 0)}, and \emph{beta-binomial(N, 1, 0)} prior distributions. Note that these prior distributions are improper and yield the same sample sizes and upper limits as classical techniques.}
+#'  \item{\code{param}:      This method constructs a prior distribution on the basis of manually specified \eqn{\alpha} and \eqn{\beta} parameters.}
 #'  \item{\code{impartial}:  This method constructs a prior distribution under which the prior probability of tolerable misstatement (\eqn{\theta <} materiality) is equal to the prior probability of intolerable misstatement (\eqn{\theta >} materiality).}
 #'  \item{\code{hyp}:        This method constructs a prior distribution with manual prior probabilities for the hypotheses of tolerable misstatement (\eqn{\theta <} materiality) and intolerable misstatement (\eqn{\theta >} materiality). This method requires specification of the \code{p.hmin} argument.}
 #'  \item{\code{arm}:        This method constructs a prior distribution by translating the risks of material misstatement (inherent risk and internal control risk) from the audit risk model to an implicit sample. The method requires specification of the \code{ir} (inherent risk) and \code{cr} (internal control risk) arguments.}
@@ -47,8 +47,8 @@
 #' @details This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
 #' 
 #' \itemize{
-#'  \item{\code{binomial}:         The binomial likelihood is often used as a likelihood for attributes sampling \emph{with} replacement. The likelihood function is defined as: \deqn{p(x) = {n \choose k} p^k (1 - p)^{n - k}} The conjugate \emph{beta(\eqn{\alpha, \beta})} prior has probability density function: \deqn{f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}}}
 #'  \item{\code{poisson}:          The Poisson likelihood is often used as a likelihood for monetary unit sampling (MUS). The likelihood function is defined as: \deqn{p(x) = \frac{\lambda^x e^{-\lambda}}{x!}} The conjugate \emph{gamma(\eqn{\alpha, \beta})} prior has probability density function: \deqn{f(x; \alpha, \beta) = \frac{\beta^\alpha x^{\alpha - 1} e^{-\beta x}}{\Gamma(\alpha)}}}
+#'  \item{\code{binomial}:         The binomial likelihood is often used as a likelihood for attributes sampling \emph{with} replacement. The likelihood function is defined as: \deqn{p(x) = {n \choose k} p^k (1 - p)^{n - k}} The conjugate \emph{beta(\eqn{\alpha, \beta})} prior has probability density function: \deqn{f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}}}
 #'  \item{\code{hypergeometric}:   The hypergeometric likelihood is used as a likelihood for sampling \emph{without} replacement. The likelihood function is defined as: \deqn{p(x = k) = \frac{{K \choose k} {N - K \choose n - k}}{{N \choose n}}} The conjugate \emph{beta-binomial(\eqn{\alpha, \beta})} prior (Dyer and Pierce, 1993) has probability density function: \deqn{f(k | n, \alpha, \beta) = {n \choose k} \frac{B(k + \alpha, n - k + \beta)}{B(\alpha, \beta)}} }
 #' }
 #'
@@ -116,13 +116,13 @@ auditPrior <- function(method = 'default', likelihood = 'poisson', N.units = NUL
     if (N.units%%1 != 0)
       N.units <- ceiling(N.units)
   }
-  if (method == "default") { # Method 1: Noninformative prior distribution
-	prior.n <- if (likelihood == 'poisson') 1 else 0 # Single earlier observation
+  if (method == "default") { # Method 1: Minimum prior observations to make the prior proper
+	prior.n <- 1 # Single earlier observation
     prior.x <- 0 # No earlier errors
-  } else if (method == 'strict') { # Method 1.1: Improper prior distribution
-    prior.n <- if (likelihood == 'poisson') 0 else -1 # Improper prior observations
-    prior.x <- 0 # Improper prior observations
-  } else if (method == "arm") { # Method 2: Translate risks from the audit risk model
+  } else if (method == 'strict') { # Method 2: Improper prior distribution (with classical properties)
+    prior.n <- 0 # Single earlier observation
+    prior.x <- 0 # Single earlier error
+  } else if (method == "arm") { # Method 3: Translate risks from the audit risk model
     if (is.null(cr))
       stop("'cr' is missing for prior construction")
     if (cr < 0 || cr > 1)
@@ -136,7 +136,7 @@ auditPrior <- function(method = 'default', likelihood = 'poisson', N.units = NUL
     n.min   <- planning(conf.level = 1 - dr, likelihood = likelihood, expected = expected, N.units = N.units, materiality = materiality, prior = TRUE)$n # Calculated the sample size for the adjusted detection risk
     prior.n <- n.plus - n.min # Calculate the sample size equivalent to the increase in detection risk
     prior.x <- (n.plus * expected) - (n.min * expected) # Calculate errors equivalent to the increase in detection risk
-  } else if (method == 'bram') { # Method 3: Bayesian risk assessment model
+  } else if (method == 'bram') { # Method 4: Bayesian risk assessment model
     if (is.null(ub)) # Check if the value for the upper bound is present
       stop("'ub' is missing for prior construction")
     if (ub <= 0 || ub >= 1 || ub <= expected) # Check if the value for the upper bound is valid
@@ -149,24 +149,24 @@ auditPrior <- function(method = 'default', likelihood = 'poisson', N.units = NUL
     } else { # Approximation through iteration over one of the parameters
       bound  <- Inf
       prior.x <- 0
-      prior.n <- 0
+      prior.n <- 1
       while (bound > ub) {
         if (expected == 0) { # In this case, iterate over nPrior because kPrior is zero
           prior.n <- prior.n + 0.001 # Increase of 0.001 (time intensive?)
         } else { # In this case, iterate over kPrior to save computation time
           prior.x <- prior.x + 0.0001 # Increase of 0.0001 (time intensive?)
-          prior.n <- prior.x / expected
+          prior.n <- if (likelihood == "poisson") prior.x / expected else 1 + prior.x / expected # Express beta in terms of alpha
         }
         bound <- switch(likelihood, 
-                        "binomial" = stats::qbeta(p = conf.level, shape1 = 1 + prior.x, shape2 = 1 + prior.n - prior.x),
+                        "binomial" = stats::qbeta(p = conf.level, shape1 = 1 + prior.x, shape2 = prior.n - prior.x),
                         "poisson" = stats::qgamma(p = conf.level, shape = 1 + prior.x, rate = prior.n),
-                        "hypergeometric" = .qbbinom(p = conf.level, N = N.units, shape1 = 1 + prior.x, shape2 = 1 + prior.n - prior.x) / N.units)
+                        "hypergeometric" = .qbbinom(p = conf.level, N = N.units, shape1 = 1 + prior.x, shape2 = prior.n - prior.x) / N.units)
       }
     }
   } else if (method == "impartial" || method == "hyp") {
-    if(method == "impartial") { # Method 4: Equal prior probabilities
+    if(method == "impartial") { # Method 5: Equal prior probabilities
       p.h0 <- p.h1 <- 0.5
-    } else if (method == "hyp") { # Method 5: Custom prior probabilities
+    } else if (method == "hyp") { # Method 6: Custom prior probabilities
       if (is.null(p.hmin)) # Must have the prior probabilities and materiality
         stop("'p.hmin' is missing for prior construction")
       p.h1 <- 1 - p.hmin
@@ -175,22 +175,22 @@ auditPrior <- function(method = 'default', likelihood = 'poisson', N.units = NUL
     if (expected == 0) { # Formulas for zero expected errors
       prior.n <- switch(likelihood,
                         "poisson" = -(log(p.h1) / materiality),
-                        "binomial" = log(p.h1) / log(1 - materiality) - 1,
-                        "hypergeometric" = log(p.h1) / log(1 - materiality) - 1)
+                        "binomial" = log(p.h1) / log(1 - materiality),
+                        "hypergeometric" = log(p.h1) / log(1 - materiality))
       prior.x <- 0
     } else { # Approximation through iteration over alpha parameter = more accurate than approximation through formulas
       median <- Inf
       prior.x <- 0
       while (median > materiality) {
         prior.x <- prior.x + 0.0001 # Increase of 0.0001 (time intensive?)
-        prior.n <- prior.x / expected # Express beta in terms of alpha
+        prior.n <- if (likelihood == "poisson") prior.x / expected else 1 + prior.x / expected # Express beta in terms of alpha
         median <- switch(likelihood, # Calculate the median for the current parameters
-                         "binomial" = stats::qbeta(p = p.h0, shape1 = 1 + prior.x, shape2 = 1 + prior.n - prior.x),
+                         "binomial" = stats::qbeta(p = p.h0, shape1 = 1 + prior.x, shape2 = prior.n - prior.x),
                          "poisson" = stats::qgamma(p = p.h0, shape = 1 + prior.x, rate = prior.n),
-                         "hypergeometric" = .qbbinom(p = p.h0, N = N.units, shape1 = 1 + prior.x, shape2 = 1 + prior.n - prior.x) / N.units)
+                         "hypergeometric" = .qbbinom(p = p.h0, N = N.units, shape1 = 1 + prior.x, shape2 = prior.n - prior.x) / N.units)
       }
     }
-  } else if (method == 'sample' || method == 'factor') { # Method 6: Earlier sample & Method 7: Weighted earlier sample
+  } else if (method == 'sample' || method == 'factor') { # Method 7: Earlier sample & Method 8: Weighted earlier sample
     if (is.null(n))
       stop("'n' is missing for prior construction")
     if (is.null(x))
@@ -203,7 +203,7 @@ auditPrior <- function(method = 'default', likelihood = 'poisson', N.units = NUL
     }
     prior.n <- n * factor # Earlier sample size
     prior.x <- x * factor # Earlier errors
-  } else if (method == 'param') { # User specified prior distribution
+  } else if (method == 'param') { # Method 9: User specified prior distribution
     if (is.null(alpha))
       stop("'alpha' is missing for prior construction")
     if (alpha <= 0)
@@ -213,13 +213,13 @@ auditPrior <- function(method = 'default', likelihood = 'poisson', N.units = NUL
     if (beta < 0)
       stop("'beta' must be a single value >= 0")
     prior.x <- alpha - 1
-    prior.n <- switch(likelihood, 'binomial' = beta + prior.x - 1, 'poisson' = beta, 'hypergeometric' = beta + prior.x - 1) 
+    prior.n <- switch(likelihood, 'binomial' = beta + prior.x, 'poisson' = beta, 'hypergeometric' = beta + prior.x) 
   }
   # Create the description output
   description                 <- list()
   description[["density"]]    <- switch(likelihood, "poisson" = "gamma", "binomial" = "beta", "hypergeometric" = "beta-binomial")
   description[["alpha"]]      <- 1 + prior.x
-  description[["beta"]]       <- switch(likelihood, "poisson" = prior.n, "binomial" = 1 + prior.n - prior.x, "hypergeometric" = 1 + prior.n - prior.x)
+  description[["beta"]]       <- switch(likelihood, "poisson" = prior.n, "binomial" = prior.n - prior.x, "hypergeometric" = prior.n - prior.x)
   description[["implicit.x"]] <- prior.x
   description[["implicit.n"]] <- prior.n
   description[["proper"]]     <- description[["alpha"]] != 0 && description[["beta"]] != 0

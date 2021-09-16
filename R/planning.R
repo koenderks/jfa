@@ -83,7 +83,7 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
       N.units <- prior[['N.units']]
     proper <- prior[["description"]]$alpha != 0 && prior[["description"]]$beta != 0
   } else if (prior) {
-	prior.n <- if (likelihood == 'poisson') 1 else 0
+	prior.n <- 1
     prior.x <- 0
   }
   if (is.null(materiality) && is.null(min.precision))
@@ -142,8 +142,8 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
       i <- sframe[iter]
     }
     if (bayesian) { # Bayesian planning
-      alpha <- switch(likelihood, "poisson" = 1 + prior.x + x, "binomial" = 1 + prior.x + x, "hypergeometric" = 1 + prior.x + x)
-      beta <- switch(likelihood, "poisson" = prior.n + i, "binomial" = 1 + prior.n - prior.x + i - x, "hypergeometric" = 1 + prior.n - prior.x + i - x)
+      alpha <- 1 + prior.x + x
+      beta <- switch(likelihood, "poisson" = prior.n + i, "binomial" = prior.n - prior.x + i - x, "hypergeometric" = prior.n - prior.x + i - x)
       bound <- switch(likelihood, 
                       "poisson" = stats::qgamma(conf.level, shape = alpha, rate = beta),
                       "binomial" = stats::qbeta(conf.level, shape1 = alpha, shape2 = beta),
@@ -225,8 +225,8 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
     result[["posterior"]][["description"]]$implicit.x <- result[["expectedPosterior"]][["description"]]$alpha - 1
     result[["posterior"]][["description"]]$implicit.n <- switch(likelihood,
                                                                 "poisson" = result[["posterior"]][["description"]]$beta, 
-                                                                "binomial" = result[["posterior"]][["description"]]$beta - 1 + result[["posterior"]][["description"]]$implicit.x,
-                                                                "hypergeometric" = result[["posterior"]][["description"]]$beta - 1 + result[["posterior"]][["description"]]$implicit.x)
+                                                                "binomial" = result[["posterior"]][["description"]]$beta - result[["posterior"]][["description"]]$implicit.x,
+                                                                "hypergeometric" = result[["posterior"]][["description"]]$beta - result[["posterior"]][["description"]]$implicit.x)
     # Create the statistics section
     result[["posterior"]][["statistics"]]           <- list()
     result[["posterior"]][["statistics"]]$mode      <- switch(likelihood, 

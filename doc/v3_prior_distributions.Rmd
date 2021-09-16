@@ -41,9 +41,9 @@ expected    <- 0.01       # 1% errors expected in sample
 ```
 
 
-### Noninformative prior distributions (`method = 'default'`)
+### Minimal information priors (`method = 'default'`)
 
-You can refrain from incorporating explicit information in the prior distribution using `method = 'default'`. As an example, the code below incorporates no explicit information into a prior distribution.
+You can construct a prior distribution from minimal information using `method = 'default'`. As an example, the code below incorporates minimal information into a prior distribution.
 
 ```{r}
 prior1 <- auditPrior(method = 'default', likelihood = likelihood, expected = expected, conf.level = confidence)
@@ -58,7 +58,7 @@ plot(prior1)
 
 ### Prior distributions with classical properties (`method = 'strict'`)
 
-You can construct an improper prior distribution using `method = 'strict'`. The prior distribution that is constructed is improper but yields similar results to that of classical methodology with respect to sample sizes, upper limits, and evidence.
+You can construct a prior distribution on the basis of no existing information using `method = 'strict'`. The prior distribution that is constructed is improper but yields exactly the same results as the classical methodology with respect to sample sizes, upper limits, and evidence.
 
 ```{r}
 prior2 <- auditPrior(method = 'strict', likelihood = likelihood)

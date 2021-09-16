@@ -132,7 +132,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
       N.units <- prior[['N.units']]
     proper <- prior[["description"]]$alpha != 0 && prior[["description"]]$beta != 0
   } else {
-	prior.n <- if (method == 'poisson') 1 else 0
+	prior.n <- 1
     prior.x <- 0
   }
   if (is.null(conf.level))
@@ -236,8 +236,8 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
   } else if (method == 'binomial') { 
     if (bayesian) {
       # Bayesian evaluation using the beta distribution
-      ub        <- stats::qbeta(p = conf.level, shape1 = 1 + prior.x + t.obs, shape2 = 1 + prior.n - prior.x + n.obs - t.obs)
-      mle       <- (1 + prior.x + t.obs - 1) / ((1 + prior.x + t.obs) + (1 + prior.n - prior.x + n.obs - t.obs) - 2)
+      ub        <- stats::qbeta(p = conf.level, shape1 = 1 + prior.x + t.obs, shape2 = prior.n - prior.x + n.obs - t.obs)
+      mle       <- (1 + prior.x + t.obs - 1) / ((1 + prior.x + t.obs) + (prior.n - prior.x + n.obs - t.obs) - 2)
       precision <- ub - mle
     } else {
       # Classical evaluation using the binomial distribution
@@ -254,8 +254,8 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
       stop("'N.units' must be a nonnegative integer")
     if (bayesian) {
       # Bayesian evaluation using the beta-binomial distribution
-      ub        <- .qbbinom(p = conf.level, N = N.units - n.obs, shape1 = 1 + prior.x + t.obs, shape2 = 1 + prior.n - prior.x + n.obs - t.obs) / N.units
-      mle       <- .modebbinom(N = N.units - n.obs, shape1 = 1 + prior.x + t.obs, shape2 = 1 + prior.n - prior.x + n.obs - t.obs) / N.units
+      ub        <- .qbbinom(p = conf.level, N = N.units - n.obs, shape1 = 1 + prior.x + t.obs, shape2 = prior.n - prior.x + n.obs - t.obs) / N.units
+      mle       <- .modebbinom(N = N.units - n.obs, shape1 = 1 + prior.x + t.obs, shape2 = prior.n - prior.x + n.obs - t.obs) / N.units
       precision <- ub - mle
     } else {
       # Classical evaluation using the hypergeometric distribution
@@ -365,8 +365,8 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
     result[["posterior"]][["description"]]$implicit.x <- result[["posterior"]][["description"]]$alpha - 1
     result[["posterior"]][["description"]]$implicit.n <- switch(method,
                                                                 "poisson" = result[["posterior"]][["description"]]$beta, 
-                                                                "binomial" = result[["posterior"]][["description"]]$beta - 1 + result[["t"]], 
-                                                                "hypergeometric" = result[["posterior"]][["description"]]$beta - 1 + result[["t"]])
+                                                                "binomial" = result[["posterior"]][["description"]]$beta - result[["t"]], 
+                                                                "hypergeometric" = result[["posterior"]][["description"]]$beta - result[["t"]])
     # Create the statistics section
     result[["posterior"]][["statistics"]]           <- list()
     result[["posterior"]][["statistics"]]$mode      <- switch(method,

@@ -56,7 +56,7 @@ An object of class \code{jfaPrior} containing:
 \item{N.units}{if \code{N} is specified, an integer larger than 0 indicating the population size.}
 }
 \description{
-This function creates a prior distribution with audit information to be used in the \code{planning()} and \code{evaluation()} functions via their \code{prior} argument. The function returns an object of class \code{jfaPrior} which can be used with associated \code{summary()} and \code{plot()} methods.
+This function creates a prior distribution for the misstatement parameter \eqn{\theta} in an audit sampling model. The prior can be used in the \code{planning()} and \code{evaluation()} functions via their \code{prior} argument. The function returns an object of class \code{jfaPrior} which can be used with associated \code{summary()} and \code{plot()} methods.
 
 For more details on how to use this function, see the package vignette:
 \code{vignette('jfa', package = 'jfa')}
@@ -64,14 +64,14 @@ For more details on how to use this function, see the package vignette:
 \details{
 \code{auditPrior} is used to define prior distributions for parameters in \code{jfa} models. To perform Bayesian audit sampling, you must assign a prior distribution to the misstatement parameter \eqn{\theta}. 
          The prior is a probability distribution that reflects the existing information about the parameter before seeing a sample. To keep the priors proper, the \code{default} priors used by \code{jfa} are very diffuse,
-         meaning they contain almost no information. It is strongly recommended to use an informed prior distribution when possible.
+         meaning they contain minimal prior information. However, it is strongly recommended to use an informed prior distribution when possible.
 
 This section elaborates on the available options for the \code{method} argument.
 
 \itemize{
- \item{\code{default}:    This method produces \emph{gamma(1, 1)}, \emph{beta(1, 1)}, and \emph{beta-binomial(N, 1, 1)} prior distributions which incorporate negligible information about the possible values of the misstatement.}
- \item{\code{strict}:     This method produces \emph{gamma(1, 0)}, \emph{beta(1, 0)}, and \emph{beta-binomial(N, 1, 0)} prior distributions. Note that these prior distributions are improper and therefore they yields the same sample sizes and upper limits as classical techniques.}
- \item{\code{param}:      This method constructs a prior distribution on the basis of user specified \eqn{\alpha} and \eqn{\beta} parameters.}
+ \item{\code{default}:    This method produces \emph{gamma(1, 1)}, \emph{beta(1, 1)}, and \emph{beta-binomial(N, 1, 1)} prior distributions which incorporate minimal information about the possible values of the misstatement.}
+ \item{\code{strict}:     This method produces \emph{gamma(1, 0)}, \emph{beta(1, 0)}, and \emph{beta-binomial(N, 1, 0)} prior distributions. Note that these prior distributions are improper and yield the same sample sizes and upper limits as classical techniques.}
+ \item{\code{param}:      This method constructs a prior distribution on the basis of manually specified \eqn{\alpha} and \eqn{\beta} parameters.}
  \item{\code{impartial}:  This method constructs a prior distribution under which the prior probability of tolerable misstatement (\eqn{\theta <} materiality) is equal to the prior probability of intolerable misstatement (\eqn{\theta >} materiality).}
  \item{\code{hyp}:        This method constructs a prior distribution with manual prior probabilities for the hypotheses of tolerable misstatement (\eqn{\theta <} materiality) and intolerable misstatement (\eqn{\theta >} materiality). This method requires specification of the \code{p.hmin} argument.}
  \item{\code{arm}:        This method constructs a prior distribution by translating the risks of material misstatement (inherent risk and internal control risk) from the audit risk model to an implicit sample. The method requires specification of the \code{ir} (inherent risk) and \code{cr} (internal control risk) arguments.}
@@ -83,8 +83,8 @@ This section elaborates on the available options for the \code{method} argument.
 This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
 
 \itemize{
- \item{\code{binomial}:         The binomial likelihood is often used as a likelihood for attributes sampling \emph{with} replacement. The likelihood function is defined as: \deqn{p(x) = {n \choose k} p^k (1 - p)^{n - k}} The conjugate \emph{beta(\eqn{\alpha, \beta})} prior has probability density function: \deqn{f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}}}
  \item{\code{poisson}:          The Poisson likelihood is often used as a likelihood for monetary unit sampling (MUS). The likelihood function is defined as: \deqn{p(x) = \frac{\lambda^x e^{-\lambda}}{x!}} The conjugate \emph{gamma(\eqn{\alpha, \beta})} prior has probability density function: \deqn{f(x; \alpha, \beta) = \frac{\beta^\alpha x^{\alpha - 1} e^{-\beta x}}{\Gamma(\alpha)}}}
+ \item{\code{binomial}:         The binomial likelihood is often used as a likelihood for attributes sampling \emph{with} replacement. The likelihood function is defined as: \deqn{p(x) = {n \choose k} p^k (1 - p)^{n - k}} The conjugate \emph{beta(\eqn{\alpha, \beta})} prior has probability density function: \deqn{f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}}}
  \item{\code{hypergeometric}:   The hypergeometric likelihood is used as a likelihood for sampling \emph{without} replacement. The likelihood function is defined as: \deqn{p(x = k) = \frac{{K \choose k} {N - K \choose n - k}}{{N \choose n}}} The conjugate \emph{beta-binomial(\eqn{\alpha, \beta})} prior (Dyer and Pierce, 1993) has probability density function: \deqn{f(k | n, \alpha, \beta) = {n \choose k} \frac{B(k + \alpha, n - k + \beta)}{B(\alpha, \beta)}} }
 }
 }
