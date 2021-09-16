@@ -162,7 +162,7 @@
 ## # Output: 
 ## #
 ## # Prior distribution:            beta(α = 1, β = 1) 
-## # Implicit sample size:          0 
+## # Implicit sample size:          1 
 ## # Implicit errors:               0 
 ## # ------------------------------------------------------------
 ## # Statistics: 
@@ -198,7 +198,7 @@
 ## # Output: 
 ## #
 ## # Prior distribution:            beta(α = 1, β = 0) 
-## # Implicit sample size:          -1 
+## # Implicit sample size:          0 
 ## # Implicit errors:               0 
 ## # ------------------------------------------------------------
 ## # Statistics: 
@@ -234,7 +234,7 @@
 ## # Output: 
 ## #
 ## # Prior distribution:            beta(α = 2, β = 10) 
-## # Implicit sample size:          10 
+## # Implicit sample size:          11 
 ## # Implicit errors:               1 
 ## # ------------------------------------------------------------
 ## # Statistics: 
@@ -272,7 +272,7 @@
 ## # Output: 
 ## #
 ## # Prior distribution:            beta(α = 1.155, β = 16.385) 
-## # Implicit sample size:          15.54 
+## # Implicit sample size:          16.54 
 ## # Implicit errors:               0.155 
 ## # ------------------------------------------------------------
 ## # Statistics: 
@@ -310,7 +310,7 @@
 ## # Output: 
 ## #
 ## # Prior distribution:            beta(α = 1.217, β = 22.493) 
-## # Implicit sample size:          21.71 
+## # Implicit sample size:          22.71 
 ## # Implicit errors:               0.217 
 ## # ------------------------------------------------------------
 ## # Statistics: 
@@ -346,17 +346,17 @@
 ## # ------------------------------------------------------------
 ## # Output: 
 ## #
-## # Prior distribution:            beta(α = 1.21, β = 21.79) 
+## # Prior distribution:            beta(α = 1.21, β = 20.79) 
 ## # Implicit sample size:          21 
 ## # Implicit errors:               0.21 
 ## # ------------------------------------------------------------
 ## # Statistics: 
 ## #
-## # Upper bound:                   0.143 
-## # Precision:                     0.133 
+## # Upper bound:                   0.15 
+## # Precision:                     0.139 
 ## # Mode:                          0.01 
-## # Mean:                          0.053 
-## # Median:                        0.04 
+## # Mean:                          0.055 
+## # Median:                        0.042 
 ## # ------------------------------------------------------------</code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
@@ -384,7 +384,7 @@
 ## # Output: 
 ## #
 ## # Prior distribution:            beta(α = 1.023, β = 3.317) 
-## # Implicit sample size:          2.34 
+## # Implicit sample size:          3.34 
 ## # Implicit errors:               0.023 
 ## # ------------------------------------------------------------
 ## # Statistics: 
@@ -420,17 +420,17 @@
 ## # ------------------------------------------------------------
 ## # Output: 
 ## #
-## # Prior distribution:            beta(α = 1, β = 31) 
+## # Prior distribution:            beta(α = 1, β = 30) 
 ## # Implicit sample size:          30 
 ## # Implicit errors:               0 
 ## # ------------------------------------------------------------
 ## # Statistics: 
 ## #
-## # Upper bound:                   0.092 
-## # Precision:                     0.092 
+## # Upper bound:                   0.095 
+## # Precision:                     0.095 
 ## # Mode:                          0 
-## # Mean:                          0.031 
-## # Median:                        0.022 
+## # Mean:                          0.032 
+## # Median:                        0.023 
 ## # ------------------------------------------------------------</code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
@@ -457,16 +457,16 @@
 ## # ------------------------------------------------------------
 ## # Output: 
 ## #
-## # Prior distribution:            beta(α = 1, β = 41.6) 
+## # Prior distribution:            beta(α = 1, β = 40.6) 
 ## # Implicit sample size:          40.6 
 ## # Implicit errors:               0 
 ## # ------------------------------------------------------------
 ## # Statistics: 
 ## #
-## # Upper bound:                   0.069 
-## # Precision:                     0.069 
+## # Upper bound:                   0.071 
+## # Precision:                     0.071 
 ## # Mode:                          0 
-## # Mean:                          0.023 
+## # Mean:                          0.024 
 ## # Median:                        0.017 
 ## # ------------------------------------------------------------</code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function.</p>
@@ -486,8 +486,8 @@
 <p>The prior distribution can be used the planning stage to calculate a minimum sample size by providing the objected returned by the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function to the <code><a href="../reference/planning.html">planning()</a></code> function. For example, the code below calculates the minimum sample size to test the misstatement in the population against a performance materiality of 5%, while incorporating the information in <code>prior9</code>.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, prior <span class="op">=</span> <span class="va">prior9</span><span class="op">)</span></code></pre></div>
-<pre><code>## Minimum sample size: 27 
-## Sample size obtained in 29 iteration(s) via method 'binomial' + 'prior'</code></pre>
+<pre><code>## Minimum sample size: 29 
+## Sample size obtained in 31 iteration(s) via method 'binomial' + 'prior'</code></pre>
 </div>
 <div id="combining-auditprior-with-evaluation" class="section level3">
 <h3 class="hasAnchor">
@@ -496,7 +496,7 @@
 <p>The prior distribution can be used the evaluation stage by providing the objected returned by the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function to the <code><a href="../reference/evaluation.html">evaluation()</a></code> function. For example, the code below evaluates the misstatement in the population with respect to the performance materiality of 5% after seeing a sample of 60 items with 1 misstatement, while incorporating the information in <code>prior8</code>.</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">60</span>, prior <span class="op">=</span> <span class="va">prior9</span><span class="op">)</span></code></pre></div>
-<pre><code>## Most likely error: 0.994% | 95% Upper bound: 4.584% | Precision: 3.59% | BF-+: 3.745 
+<pre><code>## Most likely error: 1.004% | 95% Upper bound: 4.629% | Precision: 3.625% | BF-+: 3.797 
 ## Estimates obtained via method 'binomial' + 'prior'</code></pre>
 </div>
 </div>
