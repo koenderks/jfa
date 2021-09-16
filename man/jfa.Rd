@@ -114,7 +114,7 @@ summary(stage4)
 ######################################################################
 
 # Create the prior distribution
-prior <- auditPrior(method = "none", likelihood = "poisson")
+prior <- auditPrior(method = "default", likelihood = "poisson")
 summary(prior)
 
 # Stage 1: Planning

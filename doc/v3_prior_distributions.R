@@ -9,7 +9,7 @@ materiality <- 0.05       # Performance materiality of 5%
 expected    <- 0.01       # 1% errors expected in sample
 
 ## -----------------------------------------------------------------------------
-prior1 <- auditPrior(method = 'none', likelihood = likelihood, expected = expected, conf.level = confidence)
+prior1 <- auditPrior(method = 'default', likelihood = likelihood, expected = expected, conf.level = confidence)
 summary(prior1)
 
 ## -----------------------------------------------------------------------------

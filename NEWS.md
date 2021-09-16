@@ -41,7 +41,7 @@
     - `hypotheses` -> `hyp` (in `auditPrior()`)
 - `poisson` is now the default likelihood for all functions since it is the most conservative.
 - `method = 'interval'` is now the default selection method.
-- The default prior distributions used when `method = 'none'` or `prior = TRUE` are now set to the `gamma(1, 1)`, `beta(1,1)`, and `beta-binomial(1, 1)` priors.
+- The default prior distributions used when `method = 'default'` or `prior = TRUE` are now set to the `gamma(1, 1)`, `beta(1,1)`, and `beta-binomial(1, 1)` priors.
 - The `times` (former `counts`) argument in `evaluation()` must now be indicated as a column name in the `data` instead of a vector.
 - `nPrior` and `kPrior` have been removed from the `planning()` and `evaluation()` functions. All prior distributions must now be specified using `prior = TRUE` (noninformative priors) or using a call to `auditPrior()`.
 - Removed the `auditBF()` function since its value is available through `print(evaluation(materiality = x, prior = auditPrior(method = 'median', materiality = x)))`
@@ -198,7 +198,7 @@
 
 **New features**
 
-- Implemented prior construction methods `none`, `median`, `hypotheses`, `sample`, and `factor` in the `auditPrior()` function. In addition to the already supported `arm` method, these methods allow the auditor to incorporate more sources of audit information into the prior distribution.  
+- Implemented prior construction methods `default`, `median`, `hypotheses`, `sample`, and `factor` in the `auditPrior()` function. In addition to the already supported `arm` method, these methods allow the auditor to incorporate more sources of audit information into the prior distribution.  
 - Implemented `minPrecision` argument in the `planning()` function that allows auditors to calculate a sample size so that the difference between the posterior upper confidence bound and the most likely error is lower than the set minimum precision. Also implemented in the `evaluation()` function as a requirement to approve the population.
 - Return the value `mle` from the `evaluation()` function, which quantifies the most likely error. Also return the value of the `precision` from this function.
 - Implemented `increase` argument in the `planning()` function that allows the user to increase the sample size with a set amount each step of the iterations.

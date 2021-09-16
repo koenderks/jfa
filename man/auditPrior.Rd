@@ -4,13 +4,13 @@
 \alias{auditPrior}
 \title{Prior Distributions for Audit Sampling}
 \usage{
-auditPrior(method = 'none', likelihood = 'poisson', N.units = NULL,
+auditPrior(method = 'default', likelihood = 'poisson', N.units = NULL,
            alpha = NULL, beta = NULL, materiality = NULL, expected = 0, 
            ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL, x = NULL, 
            n = NULL, factor = NULL, conf.level = 0.95)
 }
 \arguments{
-\item{method}{a character specifying the method by which the prior distribution is constructed. Defaults to \code{none} which incorporates no existing information. Other options are \code{strict}, \code{arm}, \code{bram}, \code{median}, \code{hyp}, \code{sample}, and \code{factor}. See the details section for more information about the available methods.}
+\item{method}{a character specifying the method by which the prior distribution is constructed. Defaults to \code{default} which incorporates no existing information. Other options are \code{strict}, \code{arm}, \code{bram}, \code{median}, \code{hyp}, \code{sample}, and \code{factor}. See the details section for more information about the available methods.}
 
 \item{likelihood}{a character specifying the likelihood assumed when updating the prior distribution. This can be either \code{poisson} (default) for the Poisson likelihood and gamma prior distribution, \code{biomial} for the binomial likelihood and beta prior distribution, or \code{hypergeometric} for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.}
 
@@ -65,7 +65,7 @@ For more details on how to use this function, see the package vignette:
 This section elaborates on the available options for the \code{method} argument.
 
 \itemize{
- \item{\code{none}:       This method constructs a prior distribution that incorporates negligible information about the possible values of the misstatement.}
+ \item{\code{default}:    This method constructs a prior distribution that incorporates negligible information about the possible values of the misstatement.}
  \item{\code{strict}:     This method constructs an improper (i.e., reach to infinity) prior distribution. These priors yield the same sample sizes and upper limits as classical techniques.}
  \item{\code{param}:      This method constructs a prior distribution on the basis of user specified \eqn{\alpha} and \eqn{\beta} parameters.}
  \item{\code{median}:     This method constructs a prior distribution under which the prior probability of tolerable misstatement (\eqn{\theta <} materiality) is equal to the prior probability of intolerable misstatement (\eqn{\theta >} materiality).}

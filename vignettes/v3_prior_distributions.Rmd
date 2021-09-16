@@ -41,12 +41,12 @@ expected    <- 0.01       # 1% errors expected in sample
 ```
 
 
-### Noninformative prior distributions (`method = 'none'`)
+### Noninformative prior distributions (`method = 'default'`)
 
-You can refrain from incorporating explicit information in the prior distribution using `method = 'none'`. As an example, the code below incorporates no explicit information into a prior distribution.
+You can refrain from incorporating explicit information in the prior distribution using `method = 'default'`. As an example, the code below incorporates no explicit information into a prior distribution.
 
 ```{r}
-prior1 <- auditPrior(method = 'none', likelihood = likelihood, expected = expected, conf.level = confidence)
+prior1 <- auditPrior(method = 'default', likelihood = likelihood, expected = expected, conf.level = confidence)
 summary(prior1)
 ```
 

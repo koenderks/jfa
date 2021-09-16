@@ -2,16 +2,16 @@ context("Consistency of function auditPrior()")
 
 # jfa version 0.2.0
 
-test_that(desc = "(id: f2-v0.1.0-t1) Test for method = 'none'", {
-  prior <- auditPrior(conf.level = 0.95, likelihood = "binomial", method = "none")
+test_that(desc = "(id: f2-v0.1.0-t1) Test for method = 'default'", {
+  prior <- auditPrior(conf.level = 0.95, likelihood = "binomial", method = "default")
   expect_equal(prior[["description"]]$alpha, 1)
   expect_equal(prior[["description"]]$beta, 1)
   
-  prior <- auditPrior(conf.level = 0.95, likelihood = "poisson", method = "none")
+  prior <- auditPrior(conf.level = 0.95, likelihood = "poisson", method = "default")
   expect_equal(prior[["description"]]$alpha, 1)
   expect_equal(prior[["description"]]$beta, 1)
   
-  prior <- auditPrior(conf.level = 0.95, likelihood = "hypergeometric", method = "none", N.units = 3500)
+  prior <- auditPrior(conf.level = 0.95, likelihood = "hypergeometric", method = "default", N.units = 3500)
   expect_equal(prior[["description"]]$alpha, 1)
   expect_equal(prior[["description"]]$beta, 1)
 })
@@ -112,7 +112,7 @@ test_that(desc = "(id: f2-v0.4.0-t1) Test for method = 'median' with expected er
 # jfa version 0.5.0
 
 test_that(desc = "(id: f2-v0.5.0-t1) Test for summary and print function", {
-  prior <- auditPrior(conf.level = 0.95, likelihood = "binomial", method = "none")
+  prior <- auditPrior(conf.level = 0.95, likelihood = "binomial", method = "default")
   invisible(capture.output(print(prior)))
   invisible(capture.output(summary(prior)))
   expect_equal(prior[["description"]]$alpha, 1)
@@ -120,15 +120,15 @@ test_that(desc = "(id: f2-v0.5.0-t1) Test for summary and print function", {
 })
 
 test_that(desc = "(id: f2-v0.5.0-t2) Test for plot function", {
-  prior <- auditPrior(conf.level = 0.95, likelihood = "binomial", method = "none", materiality = 0.05)
+  prior <- auditPrior(conf.level = 0.95, likelihood = "binomial", method = "default", materiality = 0.05)
   invisible(capture.output(plot(prior)))
   expect_equal(prior[["description"]]$alpha, 1)
   
-  prior <- auditPrior(conf.level = 0.95, likelihood = "hypergeometric", method = "none", N.units = 1000)
+  prior <- auditPrior(conf.level = 0.95, likelihood = "hypergeometric", method = "default", N.units = 1000)
   invisible(capture.output(plot(prior)))
   expect_equal(prior[["description"]]$alpha, 1)
   
-  prior <- auditPrior(conf.level = 0.95, likelihood = "poisson", method = "none", materiality = 0.05)
+  prior <- auditPrior(conf.level = 0.95, likelihood = "poisson", method = "default", materiality = 0.05)
   invisible(capture.output(plot(prior)))
   expect_equal(prior[["description"]]$alpha, 1)
 })

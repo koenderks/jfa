@@ -5,12 +5,12 @@
 #' For more details on how to use this function, see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
-#' @usage auditPrior(method = 'none', likelihood = 'poisson', N.units = NULL,
+#' @usage auditPrior(method = 'default', likelihood = 'poisson', N.units = NULL,
 #'            alpha = NULL, beta = NULL, materiality = NULL, expected = 0, 
 #'            ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL, x = NULL, 
 #'            n = NULL, factor = NULL, conf.level = 0.95)
 #' 
-#' @param method          a character specifying the method by which the prior distribution is constructed. Defaults to \code{none} which incorporates no existing information. Other options are \code{strict}, \code{arm}, \code{bram}, \code{median}, \code{hyp}, \code{sample}, and \code{factor}. See the details section for more information about the available methods.
+#' @param method          a character specifying the method by which the prior distribution is constructed. Defaults to \code{default} which incorporates no existing information. Other options are \code{strict}, \code{arm}, \code{bram}, \code{median}, \code{hyp}, \code{sample}, and \code{factor}. See the details section for more information about the available methods.
 #' @param likelihood      a character specifying the likelihood assumed when updating the prior distribution. This can be either \code{poisson} (default) for the Poisson likelihood and gamma prior distribution, \code{biomial} for the binomial likelihood and beta prior distribution, or \code{hypergeometric} for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.
 #' @param expected        a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a numeric value (>= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.
 #' @param conf.level      a numeric value between 0 and 1 specifying the confidence level to be used in the planning. Defaults to 0.95 for 95\% confidence. Used to calculate the upper bound of the prior distribution.
@@ -29,7 +29,7 @@
 #' @details This section elaborates on the available options for the \code{method} argument.
 #'
 #' \itemize{
-#'  \item{\code{none}:       This method constructs a prior distribution that incorporates negligible information about the possible values of the misstatement.}
+#'  \item{\code{default}:    This method constructs a prior distribution that incorporates negligible information about the possible values of the misstatement.}
 #'  \item{\code{strict}:     This method constructs an improper (i.e., reach to infinity) prior distribution. These priors yield the same sample sizes and upper limits as classical techniques.}
 #'  \item{\code{param}:      This method constructs a prior distribution on the basis of user specified \eqn{\alpha} and \eqn{\beta} parameters.}
 #'  \item{\code{median}:     This method constructs a prior distribution under which the prior probability of tolerable misstatement (\eqn{\theta <} materiality) is equal to the prior probability of intolerable misstatement (\eqn{\theta >} materiality).}
@@ -84,12 +84,12 @@
 #'
 #' @export
 
-auditPrior <- function(method = 'none', likelihood = 'poisson', N.units = NULL,
+auditPrior <- function(method = 'default', likelihood = 'poisson', N.units = NULL,
                        alpha = NULL, beta = NULL, materiality = NULL, expected = 0, 
                        ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL, x = NULL, 
                        n = NULL, factor = NULL, conf.level = 0.95) {
-  if (!(method %in% c("none", "strict", 'param', "median", "hyp", "arm", "bram", "sample", "factor")) || length(method) != 1)
-    stop("'method' should be one of 'none', 'strict', 'param', 'median', 'hyp', 'arm', 'bram', 'sample', 'factor'")
+  if (!(method %in% c("default", "strict", 'param', "median", "hyp", "arm", "bram", "sample", "factor")) || length(method) != 1)
+    stop("'method' should be one of 'default', 'strict', 'param', 'median', 'hyp', 'arm', 'bram', 'sample', 'factor'")
   if (!(likelihood %in% c("poisson", "binomial", "hypergeometric")) || length(likelihood) != 1)
     stop("'likelihood' should be one of 'poisson', 'binomial', 'hypergeometric'")
   if (is.null(conf.level))
@@ -102,7 +102,7 @@ auditPrior <- function(method = 'none', likelihood = 'poisson', N.units = NULL,
     stop("'materiality' is missing for prior construction")
   if (!is.null(materiality) && expected >= materiality && expected < 1)
     stop("'expected' must be a single number < 'materiality'")
-  if (expected >= 1 && !(method %in% c('none', 'sample', 'factor', 'param', 'strict')))
+  if (expected >= 1 && !(method %in% c('default', 'sample', 'factor', 'param', 'strict')))
     stop(paste0("'expected' must be a single number between 0 and 1 for 'method = ", method, "'"))
   if (likelihood == 'hypergeometric') {
     if (is.null(N.units))
@@ -112,7 +112,7 @@ auditPrior <- function(method = 'none', likelihood = 'poisson', N.units = NULL,
     if (N.units%%1 != 0)
       N.units <- ceiling(N.units)
   }
-  if (method == "none") { # Method 1: Noninformative prior distribution
+  if (method == "default") { # Method 1: Noninformative prior distribution
 	prior.n <- if (likelihood == 'poisson') 1 else 0 # Single earlier observation
     prior.x <- 0 # No earlier errors
   } else if (method == 'strict') { # Method 1.1: Improper prior distribution
@@ -244,7 +244,7 @@ auditPrior <- function(method = 'none', likelihood = 'poisson', N.units = NULL,
                                "hypergeometric" = .qbbinom(conf.level, N = N.units, shape1 = description[["alpha"]], shape2 = description[["beta"]]))									
   statistics[["precision"]] <- statistics[["ub"]] - statistics[["mode"]]
   # Create the specifics section
-  if (method != "none" && method != "strict")
+  if (method != "default" && method != "strict")
     specifics             <- list()
   if (method == "median" || method == "hyp") {
     specifics[["p.hmin"]]  <- p.h0
@@ -284,7 +284,7 @@ auditPrior <- function(method = 'none', likelihood = 'poisson', N.units = NULL,
   result[["prior"]]         <- prior.string
   result[["description"]]   <- description
   result[["statistics"]]    <- statistics
-  if (method != "none" && method != "strict")
+  if (method != "default" && method != "strict")
     result[["specifics"]]   <- specifics
   if (!is.null(materiality))
     result[["hypotheses"]]  <- hypotheses

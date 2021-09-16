@@ -73,7 +73,7 @@ The `auditPrior()` function creates a prior probability distribution according t
 *Full function with default arguments:*
 
 ```r
-auditPrior(method = 'none', likelihood = 'poisson', N.units = NULL,
+auditPrior(method = 'default', likelihood = 'poisson', N.units = NULL,
            alpha = NULL, beta = NULL, materiality = NULL, expected = 0, 
            ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL, x = NULL, 
            n = NULL, factor = NULL, conf.level = 0.95)
@@ -83,7 +83,7 @@ auditPrior(method = 'none', likelihood = 'poisson', N.units = NULL,
 
 | `method` | Description | Required arguments | Reference |
 | :----------- | :----------- | :----------- | :----------- |
-| `none` | Noninformative prior distribution | | Derks et al. (2021) |
+| `default` | Noninformative prior distribution | | Derks et al. (2021) |
 | `strict` | Strict prior distribution (classical properties) | | |
 | `param` | Manual prior parameters | `alpha` and `beta` | |
 | `median` | Equal prior probabilities | `materiality` | Derks et al. (2021) |
@@ -105,7 +105,7 @@ auditPrior(method = 'none', likelihood = 'poisson', N.units = NULL,
 
 ```r
 # A default gamma prior distribution 
-x <- auditPrior(method = 'none', likelihood = 'poisson')
+x <- auditPrior(method = 'default', likelihood = 'poisson')
 
 # A beta(1, 10) prior distribution 
 x <- auditPrior(method = 'param', likelihood = 'binomial', alpha = 1, beta = 10)
