@@ -346,21 +346,21 @@ For documentation on jfa itself, including the manual and user guide
 #&gt; # Confidence level:              95% 
 #&gt; # Expected sample errors:        0% 
 #&gt; # Likelihood:                    poisson 
-#&gt; # Specifics:                     Default 
+#&gt; # Specifics:                     Noninformative 
 #&gt; # ------------------------------------------------------------
 #&gt; # Output: 
 #&gt; #
-#&gt; # Prior distribution:            gamma(α = 1, β = 0) 
-#&gt; # Implicit sample size:          0 
+#&gt; # Prior distribution:            gamma(α = 1, β = 1) 
+#&gt; # Implicit sample size:          1 
 #&gt; # Implicit errors:               0 
 #&gt; # ------------------------------------------------------------
 #&gt; # Statistics: 
 #&gt; #
-#&gt; # Upper bound:                   Inf 
-#&gt; # Precision:                     NaN 
-#&gt; # Mode:                          NaN 
-#&gt; # Mean:                          Inf 
-#&gt; # Median:                        Inf 
+#&gt; # Upper bound:                   2.996 
+#&gt; # Precision:                     2.996 
+#&gt; # Mode:                          0 
+#&gt; # Mean:                          1 
+#&gt; # Median:                        0.693 
 #&gt; # ------------------------------------------------------------</div><div class='input'>
 <span class='co'># Stage 1: Planning</span>
 <span class='va'>stage1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='planning.html'>planning</a></span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.03</span>, expected <span class='op'>=</span> <span class='fl'>0.01</span>,
@@ -376,18 +376,18 @@ For documentation on jfa itself, including the manual and user guide
 #&gt; # Minimum precision:             Not specified 
 #&gt; # Likelihood:                    poisson  
 #&gt; # Population size:               Not specified 
-#&gt; # Expected sample errors:        2.2 
+#&gt; # Expected sample errors:        2.18 
 #&gt; # ------------------------------------------------------------
 #&gt; # Output:
 #&gt; #
-#&gt; # Sample size:                   220  
+#&gt; # Sample size:                   218  
 #&gt; # ------------------------------------------------------------
 #&gt; # Statistics:
 #&gt; #
-#&gt; # Expected most likely error:    1% 
+#&gt; # Expected most likely error:    0.995% 
 #&gt; # Expected upper bound:          2.997% 
-#&gt; # Expected precision:            1.997% 
-#&gt; # Expected Bayes factor-+:       19.096 
+#&gt; # Expected precision:            2.002% 
+#&gt; # Expected Bayes factor-+:       626.855 
 #&gt; # ------------------------------------------------------------ </div><div class='input'>
 <span class='co'># Stage 2: Selection</span>
 <span class='va'>stage2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='selection.html'>selection</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>BuildIt</span>, size <span class='op'>=</span> <span class='va'>stage1</span>,
@@ -400,20 +400,20 @@ For documentation on jfa itself, including the manual and user guide
 #&gt; # Input:
 #&gt; #      
 #&gt; # Population size:               1403221 
-#&gt; # Requested sample size:         220 
+#&gt; # Requested sample size:         218 
 #&gt; # Sampling units:                Monetary units 
 #&gt; # Method:                        Fixed interval sampling 
-#&gt; # Interval:                      6378.276 
+#&gt; # Interval:                      6436.793 
 #&gt; # Starting point:                1 
 #&gt; # ------------------------------------------------------------ 
 #&gt; # Output:
 #&gt; #
-#&gt; # Obtained sampling units:       220 
-#&gt; # Obtained items:                220 
+#&gt; # Obtained sampling units:       218 
+#&gt; # Obtained items:                218 
 #&gt; # ------------------------------------------------------------
 #&gt; # Statistics:
 #&gt; #
-#&gt; # Proportion n/N:                0.063 
+#&gt; # Proportion n/N:                0.062 
 #&gt; # Percentage of value:           0.016% 
 #&gt; # ------------------------------------------------------------ </div><div class='input'>
 <span class='co'># Stage 3: Execution</span>
@@ -433,19 +433,19 @@ For documentation on jfa itself, including the manual and user guide
 #&gt; # Materiality:                   3% 
 #&gt; # Minimum precision:             Not specified 
 #&gt; # Population size:               Not specified 
-#&gt; # Sample size:                   220 
-#&gt; # Sample errors:                 5 
-#&gt; # Sum of taints:                 3 
+#&gt; # Sample size:                   218 
+#&gt; # Sample errors:                 4 
+#&gt; # Sum of taints:                 2.4 
 #&gt; # Method:                        poisson  
-#&gt; # Prior distribution:            gamma(α = 1, β = 0) 
+#&gt; # Prior distribution:            gamma(α = 1, β = 1) 
 #&gt; # ------------------------------------------------------------
 #&gt; # Output:
 #&gt; # 
-#&gt; # Posterior distribution:        gamma(α = 4, β = 220) 
-#&gt; # Most likely error:             1.364%
-#&gt; # Upper bound:                   3.524%
-#&gt; # Precision:                     2.161% 
-#&gt; # Bayes factor-+:                8.51 
+#&gt; # Posterior distribution:        gamma(α = 3.4, β = 219) 
+#&gt; # Most likely error:             1.096%
+#&gt; # Upper bound:                   3.145%
+#&gt; # Precision:                     2.049% 
+#&gt; # Bayes factor-+:                493.503 
 #&gt; # Sufficient evidence:           FALSE 
 #&gt; # ------------------------------------------------------------ </div><div class='input'>
 <span class='co'>###################################################################</span>

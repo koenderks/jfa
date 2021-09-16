@@ -178,19 +178,19 @@
 <div id="bayes-factor-after-stage-1" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bayes-factor-after-stage-1" class="anchor"></a>Bayes factor after stage 1</h2>
-<p>Using the <code><a href="../reference/evaluation.html">evaluation()</a></code> function the auditor can create the prior distribution and calculate the Bayes factor in favor of acceptance of the lot versus rejection of the lot. In this case, the Bayes factor in favor of acceptance (<span class="math inline">\(BF_{-+}\)</span>) is 0.277 and represents only anecdotal evidence in favor of rejection (see also the vignette <a href="https://koenderks.github.io/jfa/articles/v6_testing_misstatement.html">Testing misstatement</a>).</p>
+<p>Using the <code><a href="../reference/evaluation.html">evaluation()</a></code> function the auditor can create the prior distribution and calculate the Bayes factor in favor of acceptance of the lot versus rejection of the lot. In this case, the Bayes factor in favor of acceptance (<span class="math inline">\(BF_{-+}\)</span>) is 5.814 and represents only moderate evidence in favor of acceptance (see also the vignette <a href="https://koenderks.github.io/jfa/articles/v6_testing_misstatement.html">Testing misstatement</a>).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">tolerance</span>, x <span class="op">=</span> <span class="fl">2</span>, n <span class="op">=</span> <span class="fl">32</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<pre><code>## Most likely error: 6.25% | 95% Upper bound: 19.674% | Precision: 13.424% | BF-+: 0.277 
+<pre><code>## Most likely error: 6.061% | 95% Upper bound: 19.078% | Precision: 13.018% | BF-+: 5.814 
 ## Estimates obtained via method 'poisson' + 'prior'</code></pre>
 </div>
 <div id="bayes-factor-after-stage-2" class="section level2">
 <h2 class="hasAnchor">
 <a href="#bayes-factor-after-stage-2" class="anchor"></a>Bayes factor after stage 2</h2>
-<p>The Bayes factor in favor of acceptance after the second sample of items is 3.468 which represents moderate evidence in favor of acceptance.</p>
+<p>The Bayes factor in favor of acceptance after the second sample of items is 70.402 which represents strong evidence in favor of acceptance.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">tolerance</span>, x <span class="op">=</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">0</span>, n <span class="op">=</span> <span class="fl">32</span> <span class="op">+</span> <span class="fl">50</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
-<pre><code>## Most likely error: 2.439% | 95% Upper bound: 7.678% | Precision: 5.239% | BF-+: 3.468 
+<pre><code>## Most likely error: 2.41% | 95% Upper bound: 7.585% | Precision: 5.176% | BF-+: 70.402 
 ## Estimates obtained via method 'poisson' + 'prior'</code></pre>
 </div>
 </div>
