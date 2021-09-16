@@ -170,6 +170,8 @@
 <li>From <code>jfa</code> 0.5.7 to <code>jfa</code> 0.6.0 there has been a major overhaul in the names of function arguments. This is done so that the calls integrate better with general R syntax and the package gets more user-friendly. I apologive for any inconvenience this may cause. The following names have been changed:
 <ul>
 <li>
+<code>median</code> -&gt; <code>impartial</code> (in <code><a href="../reference/auditPrior.html">auditPrior()</a></code>)</li>
+<li>
 <code>sampleK</code> -&gt; <code>x</code> (in <code><a href="../reference/auditPrior.html">auditPrior()</a></code>)</li>
 <li>
 <code>sampleN</code> -&gt; <code>n</code> (in <code><a href="../reference/auditPrior.html">auditPrior()</a></code>)</li>
@@ -239,7 +241,7 @@
 <li>The <code>times</code> (former <code>counts</code>) argument in <code><a href="../reference/evaluation.html">evaluation()</a></code> must now be indicated as a column name in the <code>data</code> instead of a vector.</li>
 <li>
 <code>nPrior</code> and <code>kPrior</code> have been removed from the <code><a href="../reference/planning.html">planning()</a></code> and <code><a href="../reference/evaluation.html">evaluation()</a></code> functions. All prior distributions must now be specified using <code>prior = TRUE</code> (noninformative priors) or using a call to <code><a href="../reference/auditPrior.html">auditPrior()</a></code>.</li>
-<li>Removed the <code>auditBF()</code> function since its value is available through <code><a href="https://rdrr.io/r/base/print.html">print(evaluation(materiality = x, prior = auditPrior(method = 'median', materiality = x)))</a></code>
+<li>Removed the <code>auditBF()</code> function since its value is available through <code><a href="https://rdrr.io/r/base/print.html">print(evaluation(materiality = x, prior = auditPrior(method = 'impartial', materiality = x)))</a></code>
 </li>
 </ul>
 <p><strong>Minor changes</strong></p>
@@ -315,7 +317,7 @@
 <p><strong>New features</strong></p>
 <ul>
 <li>Made <code>expectedErrors &gt; 0</code> available for <code>method = 'hypotheses'</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function.</li>
-<li>Made <code>method = 'hypotheses'</code> and <code>method = 'median'</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function available for <code>likelihood = 'hypergeometric'</code>.</li>
+<li>Made <code>method = 'hypotheses'</code> and <code>method = 'impartial'</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function available for <code>likelihood = 'hypergeometric'</code>.</li>
 <li>Added <code>bram</code> as a method for the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function. <code>method = 'bram'</code> computes a prior distribution with a given mode (<code>expectedError</code>) and upper bound (<code>ub</code>).</li>
 </ul>
 <p><strong>Bug fixes</strong></p>
@@ -390,7 +392,7 @@
 </ul>
 <p><strong>Bug fixes</strong></p>
 <ul>
-<li>Implemented improved calculation of prior parameters in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function for <code>method = median</code> when <code>expectedErrors &gt; 0</code>.</li>
+<li>Implemented improved calculation of prior parameters in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function for <code>method = impartial</code> when <code>expectedErrors &gt; 0</code>.</li>
 </ul>
 <p><strong>Major changes</strong></p>
 <ul>
@@ -430,7 +432,7 @@
 </h1>
 <p><strong>New features</strong></p>
 <ul>
-<li>Implemented prior construction methods <code>default</code>, <code>median</code>, <code>hypotheses</code>, <code>sample</code>, and <code>factor</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function. In addition to the already supported <code>arm</code> method, these methods allow the auditor to incorporate more sources of audit information into the prior distribution.<br>
+<li>Implemented prior construction methods <code>default</code>, <code>impartial</code>, <code>hypotheses</code>, <code>sample</code>, and <code>factor</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function. In addition to the already supported <code>arm</code> method, these methods allow the auditor to incorporate more sources of audit information into the prior distribution.<br>
 </li>
 <li>Implemented <code>minPrecision</code> argument in the <code><a href="../reference/planning.html">planning()</a></code> function that allows auditors to calculate a sample size so that the difference between the posterior upper confidence bound and the most likely error is lower than the set minimum precision. Also implemented in the <code><a href="../reference/evaluation.html">evaluation()</a></code> function as a requirement to approve the population.</li>
 <li>Return the value <code>mle</code> from the <code><a href="../reference/evaluation.html">evaluation()</a></code> function, which quantifies the most likely error. Also return the value of the <code>precision</code> from this function.</li>

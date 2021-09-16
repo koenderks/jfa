@@ -175,7 +175,7 @@ vignette('jfa', package = 'jfa')" />
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>method</th>
-      <td><p>a character specifying the method by which the prior distribution is constructed. Defaults to <code>default</code> which incorporates no existing information. Other options are <code>strict</code>, <code>arm</code>, <code>bram</code>, <code>median</code>, <code>hyp</code>, <code>sample</code>, and <code>factor</code>. See the details section for more information about the available methods.</p></td>
+      <td><p>a character specifying the method by which the prior distribution is constructed. Defaults to <code>default</code> which incorporates no existing information. Other options are <code>strict</code>, <code>arm</code>, <code>bram</code>, <code>impartial</code>, <code>hyp</code>, <code>sample</code>, and <code>factor</code>. See the details section for more information about the available methods.</p></td>
     </tr>
     <tr>
       <th>likelihood</th>
@@ -252,12 +252,15 @@ vignette('jfa', package = 'jfa')" />
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This section elaborates on the available options for the <code>method</code> argument.</p>
+    <p><code>auditPrior</code> is used to define prior distributions for parameters in <code>jfa</code> models. To perform Bayesian audit sampling, you must assign a prior distribution to the misstatement parameter \(\theta\). 
+         The prior is a probability distribution that reflects the existing information about the parameter before seeing a sample. To keep the priors proper, the <code>default</code> priors used by <code>jfa</code> are very diffuse,
+         meaning they contain almost no information. It is strongly recommended to use an informed prior distribution when possible.</p>
+<p>This section elaborates on the available options for the <code>method</code> argument.</p>
 <ul>
-<li><p><code>default</code>:    This method constructs a prior distribution that incorporates negligible information about the possible values of the misstatement.</p></li>
-<li><p><code>strict</code>:     This method constructs an improper (i.e., reach to infinity) prior distribution. These priors yield the same sample sizes and upper limits as classical techniques.</p></li>
+<li><p><code>default</code>:    This method produces <em>gamma(1, 1)</em>, <em>beta(1, 1)</em>, and <em>beta-binomial(N, 1, 1)</em> prior distributions which incorporate negligible information about the possible values of the misstatement.</p></li>
+<li><p><code>strict</code>:     This method produces <em>gamma(1, 0)</em>, <em>beta(1, 0)</em>, and <em>beta-binomial(N, 1, 0)</em> prior distributions. Note that these prior distributions are improper and therefore they yields the same sample sizes and upper limits as classical techniques.</p></li>
 <li><p><code>param</code>:      This method constructs a prior distribution on the basis of user specified \(\alpha\) and \(\beta\) parameters.</p></li>
-<li><p><code>median</code>:     This method constructs a prior distribution under which the prior probability of tolerable misstatement (\(\theta &lt;\) materiality) is equal to the prior probability of intolerable misstatement (\(\theta &gt;\) materiality).</p></li>
+<li><p><code>impartial</code>:  This method constructs a prior distribution under which the prior probability of tolerable misstatement (\(\theta &lt;\) materiality) is equal to the prior probability of intolerable misstatement (\(\theta &gt;\) materiality).</p></li>
 <li><p><code>hyp</code>:        This method constructs a prior distribution with manual prior probabilities for the hypotheses of tolerable misstatement (\(\theta &lt;\) materiality) and intolerable misstatement (\(\theta &gt;\) materiality). This method requires specification of the <code>pHmin</code> argument.</p></li>
 <li><p><code>arm</code>:        This method constructs a prior distribution by translating the risks of material misstatement (inherent risk and internal control risk) from the audit risk model to an implicit sample. The method requires specification of the <code>ir</code> (inherent risk) and <code>cr</code> (internal control risk) arguments.</p></li>
 <li><p><code>bram</code>:       This method constructs a prior distribution using the Bayesian audit risk assessment model (BRAM) in which the expected most likely error and expected upper bound of the misstatement must be specified. The method requires specification of the <code>ub</code> argument.</p></li>
@@ -291,9 +294,9 @@ vignette('jfa', package = 'jfa')" />
 </div><div class='output co'>#&gt; Probability distribution for audit sampling: gamma(α = 2.325, β = 53) 
 #&gt; Distribution obtained via method 'arm'</div><div class='input'>
 <span class='co'># Equal prior probabilities</span>
-<span class='fu'>auditPrior</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'median'</span>, likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, materiality <span class='op'>=</span> <span class='fl'>0.05</span><span class='op'>)</span>
+<span class='fu'>auditPrior</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'impartial'</span>, likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, materiality <span class='op'>=</span> <span class='fl'>0.05</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Probability distribution for audit sampling: gamma(α = 1, β = 13.863) 
-#&gt; Distribution obtained via method 'median'</div><div class='input'>
+#&gt; Distribution obtained via method 'impartial'</div><div class='input'>
 <span class='co'># Custom prior distribution</span>
 <span class='fu'>auditPrior</span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'param'</span>, likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, alpha <span class='op'>=</span> <span class='fl'>1</span>, beta <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Probability distribution for audit sampling: gamma(α = 1, β = 10) 
