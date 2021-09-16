@@ -30,7 +30,7 @@ summary(prior3)
 plot(prior3)
 
 ## -----------------------------------------------------------------------------
-prior4 <- auditPrior(method = 'median', likelihood = likelihood, expected = expected, conf.level = confidence, 
+prior4 <- auditPrior(method = 'impartial', likelihood = likelihood, expected = expected, conf.level = confidence, 
                      materiality = materiality)
 summary(prior4)
 

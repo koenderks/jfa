@@ -342,7 +342,7 @@ test_that(desc = "(id: f3-v0.6.0-t1) Test Bayes factors for beta prior", {
   # Compute a default Bayes factor from an impartial beta prior
   # Derks, K., de Swart, J., Wagenmakers, E-.J., and Wetzels, R. (2021). A default Bayesian hypothesis test for audit sampling.
   # BF-+ = 4.98
-  BF <- evaluation(materiality = 0.05, n = 50, x = 1, prior = auditPrior(method = 'median', materiality = 0.05, likelihood = 'binomial'))$posterior$hypotheses$bf.hmin
+  BF <- evaluation(materiality = 0.05, n = 50, x = 1, prior = auditPrior(method = 'impartial', materiality = 0.05, likelihood = 'binomial'))$posterior$hypotheses$bf.hmin
   expect_equal(BF, 4.9852019781149854)
 
   # Compute a default Bayes factor from an improper beta prior
@@ -362,7 +362,7 @@ test_that(desc = "(id: f3-v0.6.0-t2) Test Bayes factors for gamma prior", {
   expect_equal(BF, 2.48071256)
   
   # Compute a default Bayes factor from an impartial gamma prior
-  BF <- evaluation(materiality = 0.05, n = 50, x = 1, prior = auditPrior(method = 'median', materiality = 0.05, likelihood = 'poisson'))$posterior$hypotheses$bf.hmin
+  BF <- evaluation(materiality = 0.05, n = 50, x = 1, prior = auditPrior(method = 'impartial', materiality = 0.05, likelihood = 'poisson'))$posterior$hypotheses$bf.hmin
   expect_equal(BF, 4.810668425)
 })
 
@@ -377,6 +377,6 @@ test_that(desc = "(id: f3-v0.6.0-t3) Test Bayes factors for beta-binomial prior"
   expect_equal(BF, 58.37849102)
 
   # Compute a default Bayes factor from an impartial beta-binomial prior
-  BF <- evaluation(materiality = 0.05, n = 50, x = 1, prior = auditPrior(method = 'median', materiality = 0.05, likelihood = "hypergeometric", N.units = 1000))$posterior$hypotheses$bf.hmin
+  BF <- evaluation(materiality = 0.05, n = 50, x = 1, prior = auditPrior(method = 'impartial', materiality = 0.05, likelihood = "hypergeometric", N.units = 1000))$posterior$hypotheses$bf.hmin
   expect_equal(BF, 5.676959268)
 })

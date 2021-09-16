@@ -72,7 +72,7 @@ planning(materiality = 0.05, expected = 0.025, likelihood = 'poisson',
 
 # Bayesian planning using an informed gamma prior distribution
 planning(materiality = 0.05, expected = 0.025, likelihood = 'poisson', 
-         prior = auditPrior(method = 'median', materiality = 0.05))
+         prior = auditPrior(method = 'impartial', materiality = 0.05))
 
 }
 \references{

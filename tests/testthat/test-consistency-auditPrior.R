@@ -16,16 +16,16 @@ test_that(desc = "(id: f2-v0.1.0-t1) Test for method = 'default'", {
   expect_equal(prior[["description"]]$beta, 1)
 })
 
-test_that(desc = "(id: f2-v0.1.0-t2) Test for method = 'median'", {
-  prior <- auditPrior(conf.level = 0.95, likelihood = "binomial", method = "median", materiality = 0.05)
+test_that(desc = "(id: f2-v0.1.0-t2) Test for method = 'impartial'", {
+  prior <- auditPrior(conf.level = 0.95, likelihood = "binomial", method = "impartial", materiality = 0.05)
   expect_equal(prior[["description"]]$alpha, 1)
   expect_equal(prior[["description"]]$beta, 13.51341, tolerance = 0.001)
   
-  prior <- auditPrior(conf.level = 0.95, likelihood = "binomial", method = "median", expected = 0.02, materiality = 0.05)
+  prior <- auditPrior(conf.level = 0.95, likelihood = "binomial", method = "impartial", expected = 0.02, materiality = 0.05)
   expect_equal(prior[["description"]]$alpha, 1.4114, tolerance = 0.001)
   expect_equal(prior[["description"]]$beta, 21.1586, tolerance = 0.001)
   
-  prior <- auditPrior(conf.level = 0.95, likelihood = "poisson", method = "median", materiality = 0.05)
+  prior <- auditPrior(conf.level = 0.95, likelihood = "poisson", method = "impartial", materiality = 0.05)
   expect_equal(prior[["description"]]$alpha, 1)
   expect_equal(prior[["description"]]$beta, 13.86294, tolerance = 0.001)  
 })
@@ -91,20 +91,20 @@ test_that(desc = "(id: f2-v0.1.0-t6) Test for method = 'factor'", {
 
 # jfa version 0.4.0
 
-test_that(desc = "(id: f2-v0.4.0-t1) Test for method = 'median' with expected errors > 0", {
-  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "median", likelihood = "binomial", expected = 0.01)
+test_that(desc = "(id: f2-v0.4.0-t1) Test for method = 'impartial' with expected errors > 0", {
+  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "impartial", likelihood = "binomial", expected = 0.01)
   expect_equal(prior[["description"]]$alpha, 1.1554, tolerance = 0.001)
   expect_equal(prior[["description"]]$beta, 16.3846, tolerance = 0.001)
   
-  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "median", likelihood = "binomial", expected = 0.025)
+  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "impartial", likelihood = "binomial", expected = 0.025)
   expect_equal(prior[["description"]]$alpha, 1.6146, tolerance = 0.001)
   expect_equal(prior[["description"]]$beta, 24.9694, tolerance = 0.001)
   
-  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "median", likelihood = "poisson", expected = 0.01)
+  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "impartial", likelihood = "poisson", expected = 0.01)
   expect_equal(prior[["description"]]$alpha, 1.1722, tolerance = 0.001)
   expect_equal(prior[["description"]]$beta, 17.22, tolerance = 0.001)
   
-  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "median", likelihood = "poisson", expected = 0.025)
+  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "impartial", likelihood = "poisson", expected = 0.025)
   expect_equal(prior[["description"]]$alpha, 1.681, tolerance = 0.001)
   expect_equal(prior[["description"]]$beta, 27.24, tolerance = 0.001)
 })

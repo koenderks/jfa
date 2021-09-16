@@ -42,7 +42,7 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- log(evaluation(materiality = 0.10, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.10, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
+      tab[rows, columns] <- log(evaluation(materiality = 0.10, n = n[rows], x = k[columns], prior = auditPrior(method = 'impartial', materiality = 0.10, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
   }
 }
 
@@ -86,7 +86,7 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- log(evaluation(materiality = 0.10, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.10, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
+      tab[rows, columns] <- log(evaluation(materiality = 0.10, n = n[rows], x = k[columns], prior = auditPrior(method = 'impartial', materiality = 0.10, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
   }
 }
 
@@ -130,7 +130,7 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- log(evaluation(materiality = 0.10, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.10, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
+      tab[rows, columns] <- log(evaluation(materiality = 0.10, n = n[rows], x = k[columns], prior = auditPrior(method = 'impartial', materiality = 0.10, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
   }
 }
 
@@ -176,7 +176,7 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- log(evaluation(materiality = 0.05, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.05, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
+      tab[rows, columns] <- log(evaluation(materiality = 0.05, n = n[rows], x = k[columns], prior = auditPrior(method = 'impartial', materiality = 0.05, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
   }
 }
 
@@ -220,7 +220,7 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- log(evaluation(materiality = 0.05, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.05, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
+      tab[rows, columns] <- log(evaluation(materiality = 0.05, n = n[rows], x = k[columns], prior = auditPrior(method = 'impartial', materiality = 0.05, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
   }
 }
 
@@ -264,7 +264,7 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- log(evaluation(materiality = 0.05, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.05, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
+      tab[rows, columns] <- log(evaluation(materiality = 0.05, n = n[rows], x = k[columns], prior = auditPrior(method = 'impartial', materiality = 0.05, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
   }
 }
 
@@ -308,7 +308,7 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- log(evaluation(materiality = 0.02, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.02, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
+      tab[rows, columns] <- log(evaluation(materiality = 0.02, n = n[rows], x = k[columns], prior = auditPrior(method = 'impartial', materiality = 0.02, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
   }
 }
 
@@ -352,7 +352,7 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- log(evaluation(materiality = 0.02, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.02, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
+      tab[rows, columns] <- log(evaluation(materiality = 0.02, n = n[rows], x = k[columns], prior = auditPrior(method = 'impartial', materiality = 0.02, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
   }
 }
 
@@ -396,7 +396,7 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- log(evaluation(materiality = 0.02, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.02, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
+      tab[rows, columns] <- log(evaluation(materiality = 0.02, n = n[rows], x = k[columns], prior = auditPrior(method = 'impartial', materiality = 0.02, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
   }
 }
 
@@ -440,7 +440,7 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- log(evaluation(materiality = 0.01, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.01, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
+      tab[rows, columns] <- log(evaluation(materiality = 0.01, n = n[rows], x = k[columns], prior = auditPrior(method = 'impartial', materiality = 0.01, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
   }
 }
 
@@ -484,7 +484,7 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- log(evaluation(materiality = 0.01, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.01, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
+      tab[rows, columns] <- log(evaluation(materiality = 0.01, n = n[rows], x = k[columns], prior = auditPrior(method = 'impartial', materiality = 0.01, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
   }
 }
 
@@ -528,7 +528,7 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      tab[rows, columns] <- log(evaluation(materiality = 0.01, n = n[rows], x = k[columns], prior = auditPrior(method = 'median', materiality = 0.01, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
+      tab[rows, columns] <- log(evaluation(materiality = 0.01, n = n[rows], x = k[columns], prior = auditPrior(method = 'impartial', materiality = 0.01, likelihood = 'hypergeometric', N.units = N))$posterior$hypotheses$bf.hmin)
   }
 }
 

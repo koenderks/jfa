@@ -65,12 +65,12 @@ summary(stage4)
 
 ### Sensitivity to the prior distribution
 
-In audit sampling, the Bayes factor is dependent on the prior distribution for $\theta$. As a rule of thumb, when the prior distribution is very uninformative (such as `method = 'default'`) with respect to the misstatement parameter $\theta$, the Bayes factor overestimates the evidence in favor of $H_-$. You can mitigate this dependency using `method = "median"` in the `auditPrior()` function, which constructs a prior distribution that is impartial with respect to the hypotheses $H_-$ and $H_+$.
+In audit sampling, the Bayes factor is dependent on the prior distribution for $\theta$. As a rule of thumb, when the prior distribution is very uninformative (such as `method = 'default'`) with respect to the misstatement parameter $\theta$, the Bayes factor overestimates the evidence in favor of $H_-$. You can mitigate this dependency using `method = "impartial"` in the `auditPrior()` function, which constructs a prior distribution that is impartial with respect to the hypotheses $H_-$ and $H_+$.
 
 The output below shows that $BF_{-+}=3.08$, implying that there is anecdotal evidence for $H_-$, the hypothesis that the population contains misstatements lower than 5 percent of the population. 
 
 ```{r}
-prior <- auditPrior(materiality = 0.05, method = "median", likelihood = "binomial")
+prior <- auditPrior(materiality = 0.05, method = "impartial", likelihood = "binomial")
 stage4 <- evaluation(materiality = 0.05, x = 1, n = 40, prior = prior)
 summary(stage4)
 ```

@@ -86,7 +86,7 @@ auditPrior(method = 'default', likelihood = 'poisson', N.units = NULL,
 | `default` | Noninformative prior distribution | | Derks et al. (2021) |
 | `strict` | Strict prior distribution (classical properties) | | |
 | `param` | Manual prior parameters | `alpha` and `beta` | |
-| `median` | Equal prior probabilities | `materiality` | Derks et al. (2021) |
+| `impartial` | Equal prior probabilities | `materiality` | Derks et al. (2021) |
 | `hyp` | Manual prior probabilities | `materiality` and `p.hmin` | Derks et al. (2021) |
 | `arm` | Translate risk assessments (ARM) | `materiality`, `ir` and `cr` | Derks et al. (2021) |
 | `bram` | Specify prior upper bound | `ub` | Touw and Hoogduin (2011) |

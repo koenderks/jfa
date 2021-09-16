@@ -9,6 +9,7 @@
 **Major changes**
 
 - From `jfa` 0.5.7 to `jfa` 0.6.0 there has been a major overhaul in the names of function arguments. This is done so that the calls integrate better with general R syntax and the package gets more user-friendly. I apologive for any inconvenience this may cause. The following names have been changed:
+    - `median` -> `impartial` (in `auditPrior()`)
     - `sampleK` -> `x` (in `auditPrior()`)
     - `sampleN` -> `n` (in `auditPrior()`)
     - `N` -> `N.units` (in `auditPrior()`)
@@ -44,7 +45,7 @@
 - The default prior distributions used when `method = 'default'` or `prior = TRUE` are now set to the `gamma(1, 1)`, `beta(1,1)`, and `beta-binomial(1, 1)` priors.
 - The `times` (former `counts`) argument in `evaluation()` must now be indicated as a column name in the `data` instead of a vector.
 - `nPrior` and `kPrior` have been removed from the `planning()` and `evaluation()` functions. All prior distributions must now be specified using `prior = TRUE` (noninformative priors) or using a call to `auditPrior()`.
-- Removed the `auditBF()` function since its value is available through `print(evaluation(materiality = x, prior = auditPrior(method = 'median', materiality = x)))`
+- Removed the `auditBF()` function since its value is available through `print(evaluation(materiality = x, prior = auditPrior(method = 'impartial', materiality = x)))`
 
 **Minor changes**
 
@@ -104,7 +105,7 @@
 **New features**
 
 - Made `expectedErrors > 0` available for `method = 'hypotheses'` in the `auditPrior()` function.
-- Made `method = 'hypotheses'` and `method = 'median'` in the `auditPrior()` function available for `likelihood = 'hypergeometric'`.
+- Made `method = 'hypotheses'` and `method = 'impartial'` in the `auditPrior()` function available for `likelihood = 'hypergeometric'`.
 - Added `bram` as a method for the `auditPrior()` function. `method = 'bram'` computes a prior distribution with a given mode (`expectedError`) and upper bound (`ub`).
 
 **Bug fixes**
@@ -167,7 +168,7 @@
 
 **Bug fixes**
 
-- Implemented improved calculation of prior parameters in the `auditPrior()` function for `method = median` when `expectedErrors > 0`.
+- Implemented improved calculation of prior parameters in the `auditPrior()` function for `method = impartial` when `expectedErrors > 0`.
 
 **Major changes**
 
@@ -198,7 +199,7 @@
 
 **New features**
 
-- Implemented prior construction methods `default`, `median`, `hypotheses`, `sample`, and `factor` in the `auditPrior()` function. In addition to the already supported `arm` method, these methods allow the auditor to incorporate more sources of audit information into the prior distribution.  
+- Implemented prior construction methods `default`, `impartial`, `hypotheses`, `sample`, and `factor` in the `auditPrior()` function. In addition to the already supported `arm` method, these methods allow the auditor to incorporate more sources of audit information into the prior distribution.  
 - Implemented `minPrecision` argument in the `planning()` function that allows auditors to calculate a sample size so that the difference between the posterior upper confidence bound and the most likely error is lower than the set minimum precision. Also implemented in the `evaluation()` function as a requirement to approve the population.
 - Return the value `mle` from the `evaluation()` function, which quantifies the most likely error. Also return the value of the `precision` from this function.
 - Implemented `increase` argument in the `planning()` function that allows the user to increase the sample size with a set amount each step of the iterations.

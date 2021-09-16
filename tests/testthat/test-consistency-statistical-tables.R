@@ -1621,7 +1621,7 @@ test_that(desc = "(id: f7-v0.5.5-t41) Statistical Sampling Results based on the 
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       # Via workflow
-      prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = 'binomial')
+      prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "impartial", likelihood = 'binomial')
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
@@ -1657,7 +1657,7 @@ test_that(desc = "(id: f7-v0.5.5-t42) Statistical Sampling Results based on the 
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       # Via workflow
-      prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = 'binomial')
+      prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "impartial", likelihood = 'binomial')
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
@@ -1693,7 +1693,7 @@ test_that(desc = "(id: f7-v0.5.5-t43) Statistical Sampling Results based on the 
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       # Via workflow
-      prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = 'binomial')
+      prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "impartial", likelihood = 'binomial')
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
@@ -1729,7 +1729,7 @@ test_that(desc = "(id: f7-v0.5.5-t44) Statistical Sampling Results based on the 
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       # Via workflow
-      prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = 'binomial')
+      prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "impartial", likelihood = 'binomial')
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
@@ -1767,7 +1767,7 @@ test_that(desc = "(id: f7-v0.5.5-t45) Statistical Sampling Results based on the 
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       # Via workflow
-      prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "poisson")
+      prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "impartial", likelihood = "poisson")
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
@@ -1804,7 +1804,7 @@ test_that(desc = "(id: f7-v0.5.5-t46) Statistical Sampling Results based on the 
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       # Via workflow
-      prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "poisson")
+      prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "impartial", likelihood = "poisson")
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
@@ -1840,7 +1840,7 @@ test_that(desc = "(id: f7-v0.5.5-t47) Statistical Sampling Results based on the 
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       # Via workflow
-      prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "poisson")
+      prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "impartial", likelihood = "poisson")
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }
@@ -1876,7 +1876,7 @@ test_that(desc = "(id: f7-v0.5.5-t48) Statistical Sampling Results based on the 
   for(rows in 1:length(n)){
     for(columns in 1:length(k)){
       # Via workflow
-      prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "median", likelihood = "poisson")
+      prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "impartial", likelihood = "poisson")
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
       tabWorkflow[rows, columns] <- result$posterior$hypotheses$bf.hmin
     }

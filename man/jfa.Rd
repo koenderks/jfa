@@ -65,7 +65,7 @@
   }
  
   Please use the citation provided by \R when citing this package. 
-  A BibTex entry is available from \code{citation("jfa")}.
+  A BibTex entry is available from \code{citation('jfa')}.
 }
 
 \seealso{
@@ -83,7 +83,7 @@ Useful links:
 library(jfa)
 
 # Load the BuildIt population
-data("BuildIt")
+data('BuildIt')
 
 ############################################
 ### Example 1: Classical audit sampling ####
@@ -91,22 +91,22 @@ data("BuildIt")
 
 # Stage 1: Planning
 stage1 <- planning(materiality = 0.03, expected = 0.01, 
-                   likelihood = "poisson", conf.level = 0.95)
+                   likelihood = 'poisson', conf.level = 0.95)
 summary(stage1)
 
 # Stage 2: Selection
 stage2 <- selection(data = BuildIt, size = stage1,
-                    units = "values", values = "bookValue",
-                    method = "interval", start = 1)
+                    units = 'values', values = 'bookValue',
+                    method = 'interval', start = 1)
 summary(stage2)
 
 # Stage 3: Execution
-sample <- stage2[["sample"]]
+sample <- stage2[['sample']]
 
 # Stage 4: Evaluation
-stage4 <- evaluation(materiality = 0.03, method = "stringer",
+stage4 <- evaluation(materiality = 0.03, method = 'stringer',
                      conf.level = 0.95, data = sample,
-                     values = "bookValue", values.audit = "auditValue")
+                     values = 'bookValue', values.audit = 'auditValue')
 summary(stage4)
 
 ######################################################################
@@ -114,26 +114,26 @@ summary(stage4)
 ######################################################################
 
 # Create the prior distribution
-prior <- auditPrior(method = "default", likelihood = "poisson")
+prior <- auditPrior(method = 'default', likelihood = 'poisson')
 summary(prior)
 
 # Stage 1: Planning
 stage1 <- planning(materiality = 0.03, expected = 0.01,
-                   likelihood = "poisson", conf.level = 0.95, prior = prior)
+                   likelihood = 'poisson', conf.level = 0.95, prior = prior)
 summary(stage1)
 
 # Stage 2: Selection
 stage2 <- selection(data = BuildIt, size = stage1,
-                    units = "values", values = "bookValue",
-                    method = "interval", start = 1)
+                    units = 'values', values = 'bookValue',
+                    method = 'interval', start = 1)
 summary(stage2)
 
 # Stage 3: Execution
-sample <- stage2[["sample"]]
+sample <- stage2[['sample']]
 
 # Stage 4: Evaluation
 stage4 <- evaluation(materiality = 0.03, conf.level = 0.95, data = sample,
-                     values = "bookValue", values.audit = "auditValue",
+                     values = 'bookValue', values.audit = 'auditValue',
                      prior = prior)
 summary(stage4)
 
@@ -142,27 +142,27 @@ summary(stage4)
 ###################################################################
 
 # Create the prior distribution
-prior <- auditPrior(method = "arm", likelihood = "poisson",
+prior <- auditPrior(method = 'arm', likelihood = 'poisson',
                     expected = 0.01, materiality = 0.03, cr = 0.6, ir = 1)
 summary(prior)
 
 # Stage 1: Planning
 stage1 <- planning(materiality = 0.03, expected = 0.01,
-                   likelihood = "poisson", conf.level = 0.95, prior = prior)
+                   likelihood = 'poisson', conf.level = 0.95, prior = prior)
 summary(stage1)
 
 # Stage 2: Selection
 stage2 <- selection(data = BuildIt, size = stage1,
-                    units = "values", values = "bookValue",
-                    method = "interval", start = 1)
+                    units = 'values', values = 'bookValue',
+                    method = 'interval', start = 1)
 summary(stage2)
 
 # Stage 3: Execution
-sample <- stage2[["sample"]]
+sample <- stage2[['sample']]
 
 # Stage 4: Evaluation
 stage4 <- evaluation(materiality = 0.03, conf.level = 0.95, data = sample,
-                     values = "bookValue", values.audit = "auditValue",
+                     values = 'bookValue', values.audit = 'auditValue',
                      prior = prior)
 summary(stage4)
 }

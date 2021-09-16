@@ -94,8 +94,8 @@ test_that(desc = "(id: f5-v0.1.0-t17) Bayesian hypergeometric 5% materiality 2.5
   expect_equal(jfaRes[["x"]], 5, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f5-v0.1.0-t19) Bayesian binomial 2% precision 5% materiality 2.5% errors median prior", {
-  jfaPrior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "median", expected = 0.025, likelihood = "binomial")
+test_that(desc = "(id: f5-v0.1.0-t19) Bayesian binomial 2% precision 5% materiality 2.5% errors impartial prior", {
+  jfaPrior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "impartial", expected = 0.025, likelihood = "binomial")
   jfaRes <- planning(materiality = 0.05, min.precision = 0.02, conf.level = 0.95, expected = 0.025, likelihood = "binomial", N.units = 1000, prior = jfaPrior)
   expect_equal(jfaRes[["n"]], 284)
   expect_equal(jfaRes[["x"]], 7.1, tolerance = 0.001)
@@ -182,12 +182,12 @@ test_that(desc = "(id: f5-v0.4.0-t2) Expected Bayes factors for expected errors 
   expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.hmin, 1619.812, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f5-v0.4.0-t3) Expected Bayes factors for median priors", {
-  prior <- auditPrior(materiality = 0.02, conf.level = 0.95, method = "median", likelihood = "poisson")
+test_that(desc = "(id: f5-v0.4.0-t3) Expected Bayes factors for impartial priors", {
+  prior <- auditPrior(materiality = 0.02, conf.level = 0.95, method = "impartial", likelihood = "poisson")
   jfaRes <- planning(conf.level = 0.95, materiality = 0.02, prior = prior)
   expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.hmin, 19.35135, tolerance = 0.001)
   
-  prior <- auditPrior(materiality = 0.02, conf.level = 0.95, method = "median", likelihood = "binomial")
+  prior <- auditPrior(materiality = 0.02, conf.level = 0.95, method = "impartial", likelihood = "binomial")
   jfaRes <- planning(conf.level = 0.95, materiality = 0.02, prior = prior)
   expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.hmin, 19.01047, tolerance = 0.001)
 })

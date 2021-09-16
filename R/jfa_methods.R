@@ -75,7 +75,7 @@ print.summary.jfaPrior <- function(x, ...) {
 # Specifics:                    ", switch(x[["method"]],
                                           "default" = "Noninformative",
                                           "strict" = "Classical properties",
-                                          "median" = paste0("p(\u0398 < ", x[["materiality"]], ") = p(\u0398 > ", x[["materiality"]], ") = 0.5"),
+                                          "impartial" = paste0("p(\u0398 < ", x[["materiality"]], ") = p(\u0398 > ", x[["materiality"]], ") = 0.5"),
                                           "hyp" = paste0("p(\u0398 < ", x[["materiality"]], ") = ", x[["p.hmin"]],"; p(\u0398 > ", x[["materiality"]],") = ", x[["p.hplus"]]),
                                           "arm" = paste0("IR = ", x[["ir"]], "; ICR = ", x[["icr"]], "; DR = ", x[["dr"]]),
                                           "bram" = paste0("Mode = ", x[["mode.prior"]], "; Upper bound = ", x[["ub.prior"]]),
@@ -255,7 +255,7 @@ summary.jfaPrior <- function(object, digits = 3, ...) {
                     "mean" = round(object[["statistics"]]$mean, digits),
                     "median" = round(object[["statistics"]]$median, digits),
                     stringsAsFactors = FALSE)
-  if (object[["method"]] == "median") {
+  if (object[["method"]] == "impartial") {
     out[["materiality"]] <- round(object[["materiality"]], digits + 2)
   } else if (object[["method"]] == "arm") {
     out[["ir"]] <- round(object[["specifics"]]$ir, digits)

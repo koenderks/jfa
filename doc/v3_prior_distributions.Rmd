@@ -86,14 +86,14 @@ You can visually inspect the prior distribution using the `plot()` function.
 plot(prior3)
 ```
 
-### Prior distributions with equal prior probabilities (`method = 'median'`)
+### Prior distributions with equal prior probabilities (`method = 'impartial'`)
 
-You can incorporate the assumption that tolerable misstatement is equally likely as intolerable misstatement using `method = 'median'`. As an example, the code below incorporates this assumption into a prior distribution.
+You can incorporate the assumption that tolerable misstatement is equally likely as intolerable misstatement using `method = 'impartial'`. As an example, the code below incorporates this assumption into a prior distribution.
 
 *Note: This method requires that you specify a value for the `materiality`.*
 
 ```{r}
-prior4 <- auditPrior(method = 'median', likelihood = likelihood, expected = expected, conf.level = confidence, 
+prior4 <- auditPrior(method = 'impartial', likelihood = likelihood, expected = expected, conf.level = confidence, 
                      materiality = materiality)
 summary(prior4)
 ```
