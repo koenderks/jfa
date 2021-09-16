@@ -404,7 +404,7 @@ plot.jfaPrior <- function(x, xmax = 0.5, ...) {
   } else if (x[["description"]]$density == "beta-binomial") {
     xlim <- ceiling(xmax * x[["N.units"]])
     xseq <- seq(0, xlim, by = 1)
-    d    <- .dBetaBinom(x = xseq, N = x[["N.units"]], shape1 = x[["description"]]$alpha, shape2 = x[["description"]]$beta)
+    d    <- extraDistr::dbbinom(x = xseq, size = x[["N.units"]], alpha = x[["description"]]$alpha, beta = x[["description"]]$beta)
   }
   if (x[["description"]]$density == "gamma" || x[["description"]]$density == "beta") {
     mainLab <- switch(x[["description"]]$density,
@@ -435,7 +435,7 @@ plot.jfaPosterior <- function(x, xmax = 0.5, ...) {
   } else if (x[["description"]]$density == "beta-binomial") {
     xlim <- ceiling(xmax * x[["N.units"]])
     xseq <- seq(0, xlim, by = 1)
-    d    <- c(rep(0, x[["description"]]$x), .dBetaBinom(x = xseq, N = x[["N.units"]] - x[["description"]]$n, shape1 = x[["description"]]$alpha, shape2 = x[["description"]]$beta))
+    d    <- c(rep(0, x[["description"]]$x), extraDistr::dbbinom(x = xseq, size = x[["N.units"]] - x[["description"]]$n, alpha = x[["description"]]$alpha, beta = x[["description"]]$beta))
   }
   if (x[["description"]]$density == "gamma" || x[["description"]]$density == "beta") {
     mainLab <- switch(x[["description"]]$density,
@@ -471,9 +471,9 @@ plot.jfaPlanning <- function(x, xmax = 0.5, ...) {
       xseq_prior <- seq(0, xlim_prior, by = 1)
       xlim_post  <- min(xlim_prior, x[["N.units"]] - x[["n"]])
       xseq_post  <- seq(0, xlim_post, by = 1)
-      d          <- .dBetaBinom(x = xseq_prior, N = x[["N.units"]], shape1 = x[["prior"]][["description"]]$alpha, shape2 = x[["prior"]][["description"]]$beta)
-      d1         <- c(rep(0, x[["x"]]), .dBetaBinom(x = xseq_post, N = x[["N.units"]] - x[["n"]], shape1 = x[["posterior"]][["description"]]$alpha, shape2 = x[["posterior"]][["description"]]$beta))
-      bound      <- .qBetaBinom(p = x[["conf.level"]], N = x[["N.units"]] - x[["n"]], shape1 = x[["posterior"]][["description"]]$alpha, shape2 = x[["posterior"]][["description"]]$beta)
+      d          <- extraDistr::dbbinom(x = xseq_prior, size = x[["N.units"]], alpha = x[["prior"]][["description"]]$alpha, beta = x[["prior"]][["description"]]$beta)
+      d1         <- c(rep(0, x[["x"]]), extraDistr::dbbinom(x = xseq_post, size = x[["N.units"]] - x[["n"]], alpha = x[["posterior"]][["description"]]$alpha, beta = x[["posterior"]][["description"]]$beta))
+      bound      <- .qbbinom(p = x[["conf.level"]], N = x[["N.units"]] - x[["n"]], shape1 = x[["posterior"]][["description"]]$alpha, shape2 = x[["posterior"]][["description"]]$beta)
     }
     if (x$likelihood == "poisson" || x$likelihood == "binomial") {
       graphics::plot(x = xseq, y = d1, type = "l", lwd = 2, bty = "n", xlab = expression(theta), ylab = "Density", las = 1, ylim = c(0, max(d1)),
@@ -565,9 +565,9 @@ plot.jfaEvaluation <- function(x, xmax = 0.5, ...) {
         xseq_prior <- seq(0, xlim_prior, by = 1)
         xlim_post  <- min(xlim_prior, x[["N.units"]] - x[["n"]])
         xseq_post  <- seq(0, xlim_post, by = 1)
-        d          <- .dBetaBinom(x = xseq_prior, N = x[["N.units"]], shape1 = x[["prior"]][["description"]]$alpha, shape2 = x[["prior"]][["description"]]$beta)
-        d1         <- c(rep(0, x[["x"]]), .dBetaBinom(x = xseq_post, N = x[["N.units"]] - x[["n"]], shape1 = x[["posterior"]][["description"]]$alpha, shape2 = x[["posterior"]][["description"]]$beta))
-        bound      <- .qBetaBinom(p = x[["conf.level"]], N = x[["N.units"]] - x[["n"]], shape1 = x[["posterior"]][["description"]]$alpha, shape2 = x[["posterior"]][["description"]]$beta)
+        d          <- extraDistr::dbbinom(x = xseq_prior, size = x[["N.units"]], alpha = x[["prior"]][["description"]]$alpha, beta = x[["prior"]][["description"]]$beta)
+        d1         <- c(rep(0, x[["x"]]), extraDistr::dbbinom(x = xseq_post, size = x[["N.units"]] - x[["n"]], alpha = x[["posterior"]][["description"]]$alpha, beta = x[["posterior"]][["description"]]$beta))
+        bound      <- .qbbinom(p = x[["conf.level"]], N = x[["N.units"]] - x[["n"]], shape1 = x[["posterior"]][["description"]]$alpha, shape2 = x[["posterior"]][["description"]]$beta)
       }
       if (x[["method"]] == "poisson" || x[["method"]] == "binomial") {
         graphics::plot(x = xseq, y = d1, type = "l", lwd = 2, bty = "n", xlab = expression(theta), ylab = "Density", las = 1, ylim = c(0, max(d1)),

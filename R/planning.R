@@ -126,7 +126,7 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
   # Define the sampling frame (the possible sample sizes)
   sframe <- seq(from = 0, to = max, by = by)
   sframe[1] <- 1
-  # Set up couters
+  # Set up counters
   iter <- 1
   sufficient <- FALSE
   # Start iterating over the sampling frame
@@ -148,18 +148,18 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
       bound <- switch(likelihood, 
                       "poisson" = stats::qgamma(conf.level, shape = alpha, rate = beta),
                       "binomial" = stats::qbeta(conf.level, shape1 = alpha, shape2 = beta),
-                      "hypergeometric" = .qBetaBinom(p = conf.level, N = N.units - i, shape1 = alpha, shape2 = beta) / N.units)
+                      "hypergeometric" = .qbbinom(p = conf.level, N = N.units - i, shape1 = alpha, shape2 = beta) / N.units)
       mle <- switch(likelihood,
                     "poisson" = (alpha - 1) / beta,
                     "binomial" = (alpha - 1) / (alpha + beta - 2),
-                    "hypergeometric" = .modeBetaBinom(N = N.units - i, shape1 = alpha, shape2 = beta) / N.units)
+                    "hypergeometric" = .modebbinom(N = N.units - i, shape1 = alpha, shape2 = beta) / N.units)
     } else { # Classical planning
       if (likelihood == "binomial") 
         x <- ceiling(x) # Convert to an integer in the case of a binomial likelihood
       bound <- switch(likelihood, 
                       "poisson" = stats::qgamma(p = conf.level, shape = 1 + x, rate = i),
                       "binomial" = stats::qbeta(p = conf.level, shape1 = 1 + x, shape2 = i - x),
-                      "hypergeometric" = .qHyper(p = conf.level, N = N.units, n = i, k = x) / N.units)
+                      "hypergeometric" = .qhyper(p = conf.level, N = N.units, n = i, k = x) / N.units)
       mle <- x / i
       if (materiality < 1)
         p.val <- switch(likelihood,
@@ -233,7 +233,7 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
     result[["posterior"]][["statistics"]]$mode      <- switch(likelihood, 
                                                               "poisson" = (result[["posterior"]][["description"]]$alpha - 1) / result[["posterior"]][["description"]]$beta,
                                                               "binomial" = (result[["posterior"]][["description"]]$alpha - 1) / (result[["posterior"]][["description"]]$alpha + result[["posterior"]][["description"]]$beta - 2),
-                                                              "hypergeometric" = .modeBetaBinom(N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta))
+                                                              "hypergeometric" = .modebbinom(N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta))
     result[["posterior"]][["statistics"]]$mean      <- switch(likelihood, 
                                                               "poisson" = result[["posterior"]][["description"]]$alpha / result[["posterior"]][["description"]]$beta,
                                                               "binomial" = result[["posterior"]][["description"]]$alpha / (result[["posterior"]][["description"]]$alpha + result[["posterior"]][["description"]]$beta),
@@ -241,24 +241,24 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
     result[["posterior"]][["statistics"]]$median    <- switch(likelihood, 
                                                               "poisson" = stats::qgamma(0.5, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
                                                               "binomial" = stats::qbeta(0.5, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
-                                                              "hypergeometric" = .qBetaBinom(0.5, N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta))
+                                                              "hypergeometric" = .qbbinom(0.5, N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta))
     result[["posterior"]][["statistics"]]$ub        <- switch(likelihood, 
                                                               "poisson" = stats::qgamma(conf.level, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
                                                               "binomial" = stats::qbeta(conf.level, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
-                                                              "hypergeometric" = .qBetaBinom(conf.level, N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta))									
+                                                              "hypergeometric" = .qbbinom(conf.level, N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta))									
     result[["posterior"]][["statistics"]]$precision <- result[["posterior"]][["statistics"]]$ub - result[["posterior"]][["statistics"]]$mode
     # Create the hypotheses section
     if (result[["materiality"]] != 1) {
       result[["posterior"]][["hypotheses"]]             <- list()
       result[["posterior"]][["hypotheses"]]$hypotheses  <- c(paste0("H-: \u0398 < ", materiality), paste0("H+: \u0398 > ", materiality))
-      result[["posterior"]][["hypotheses"]]$p.hmin      <- .restrictprob(switch(likelihood, 
-                                                                                "poisson" = stats::pgamma(materiality, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
-                                                                                "binomial" = stats::pbeta(materiality, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
-                                                                                "hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N.units"]]), N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta)))
-      result[["posterior"]][["hypotheses"]]$p.hplus     <- .restrictprob(switch(likelihood, 
-                                                                                "poisson" = stats::pgamma(materiality, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta, lower.tail = FALSE),
-                                                                                "binomial" = stats::pbeta(materiality, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta, lower.tail = FALSE),
-                                                                                "hypergeometric" = .pBetaBinom(ceiling(materiality * result[["N.units"]]), N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta, lower.tail = FALSE)))
+      result[["posterior"]][["hypotheses"]]$p.hmin      <- switch(likelihood, 
+                                                                  "poisson" = stats::pgamma(materiality, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
+                                                                  "binomial" = stats::pbeta(materiality, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
+                                                                  "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * result[["N.units"]]), size = result[["N.units"]] - result[["n"]], alpha = result[["posterior"]][["description"]]$alpha, beta = result[["posterior"]][["description"]]$beta))
+      result[["posterior"]][["hypotheses"]]$p.hplus     <- switch(likelihood, 
+                                                                  "poisson" = stats::pgamma(materiality, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta, lower.tail = FALSE),
+                                                                  "binomial" = stats::pbeta(materiality, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta, lower.tail = FALSE),
+                                                                  "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * result[["N.units"]]), size = result[["N.units"]] - result[["n"]], alpha = result[["posterior"]][["description"]]$alpha, beta = result[["posterior"]][["description"]]$beta, lower.tail = FALSE))
       result[["posterior"]][["hypotheses"]]$odds.hmin   <- result[["posterior"]][["hypotheses"]]$p.hmin / result[["posterior"]][["hypotheses"]]$p.hplus
       result[["posterior"]][["hypotheses"]]$odds.hplus  <- 1 / result[["posterior"]][["hypotheses"]]$odds.hmin
       # For improper priors we take the posterior odds as Bayes factor

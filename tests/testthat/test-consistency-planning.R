@@ -1,4 +1,4 @@
-context("Test consistency of function planning()")
+context("Consistency of function planning()")
 
 # jfa version 0.1.0
 
