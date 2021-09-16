@@ -58,7 +58,7 @@ test_that(desc = "(id: f3-v0.1.0-t6) Evaluation with hypergeometric method with 
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "poisson")
   samp <- selection(population, size = jfaRes, units = "rows", method = "random", order = TRUE)$sample
   samp$auditValue <- samp[["bookValue"]]
-  prior <- auditPrior(method = 'uniform', likelihood = 'hypergeometric', N.units = 1000)
+  prior <- auditPrior(method = 'none', likelihood = 'hypergeometric', N.units = 1000)
   jfaEval <- evaluation(conf.level = 0.95, data = samp, values = "bookValue", values.audit = "auditValue", prior = prior, materiality = 0.05)
   expect_equal(jfaEval[["ub"]], 0.047, tolerance = 0.001)
 })
@@ -228,12 +228,13 @@ test_that(desc = "(id: f3-v0.4.0-t1) Bayes factors", {
   data("BuildIt")
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, expected = 0.025, likelihood = 'poisson')
   samp <- selection(BuildIt, size = jfaRes, units = "rows", method = "interval", order = TRUE)$sample
-  prior <- auditPrior(method = 'uniform', likelihood = 'binomial')
+  prior <- auditPrior(method = 'none', likelihood = 'binomial')
   jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "binomial", times = 'times', prior = prior)
   expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf.hmin, 44957.32, tolerance = 0.001)
-  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "poisson", times = 'times', prior = TRUE)
+  prior <- auditPrior(method = 'strict', likelihood = 'poisson')
+  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "poisson", times = 'times', prior = prior)
   expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf.hmin, 1822.754944, tolerance = 0.001)
-  prior <- auditPrior(method = 'uniform', likelihood = 'hypergeometric', N.units = 1000)
+  prior <- auditPrior(method = 'none', likelihood = 'hypergeometric', N.units = 1000)
   jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "hypergeometric", times = 'times', prior = prior, N.units = 1000)
   expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf.hmin, 295149, tolerance = 0.001)
 })
@@ -314,7 +315,7 @@ test_that(desc = "(id: f3-v0.2.0-t4) Test for Bayesian plot function", {
   invisible(capture.output(plot(jfaEval[["posterior"]])))
   jfaEval <- evaluation(conf.level = 0.95, data = samp, values = "bookValue", values.audit = "auditValue", method = "poisson", prior = TRUE, materiality = 0.05)
   invisible(capture.output(plot(jfaEval)))
-  prior <- auditPrior(method = 'uniform', likelihood = 'hypergeometric', N.units = nrow(population))
+  prior <- auditPrior(method = 'none', likelihood = 'hypergeometric', N.units = nrow(population))
   jfaEval <- evaluation(conf.level = 0.95, data = samp, values = "bookValue", values.audit = "auditValue", method = "hypergeometric", prior = prior, materiality = 0.05, N.units = nrow(population))
   invisible(capture.output(plot(jfaEval)))
   expect_equal(jfaEval[["ub"]], 0.028, tolerance = 0.001)
@@ -353,11 +354,11 @@ test_that(desc = "(id: f3-v0.6.0-t1) Test Bayes factors for beta prior", {
 test_that(desc = "(id: f3-v0.6.0-t2) Test Bayes factors for gamma prior", {
   
   # Compute a Bayes factor from a noninformative gamma(1, 0) prior
-  BF <- evaluation(materiality = 0.03, n = 160, x = 1, prior = auditPrior(method = 'none', likelihood = 'poisson'))$posterior$hypotheses$bf.hmin
+  BF <- evaluation(materiality = 0.03, n = 160, x = 1, prior = auditPrior(method = 'strict', likelihood = 'poisson'))$posterior$hypotheses$bf.hmin
   expect_equal(BF, 19.95007199)
 
     # Compute a Bayes factor from a noninformative gamma(1, 0) prior
-  BF <- evaluation(materiality = 0.05, n = 50, x = 1, prior = auditPrior(method = 'none', likelihood = 'poisson'))$posterior$hypotheses$bf.hmin
+  BF <- evaluation(materiality = 0.05, n = 50, x = 1, prior = auditPrior(method = 'strict', likelihood = 'poisson'))$posterior$hypotheses$bf.hmin
   expect_equal(BF, 2.48071256)
   
   # Compute a default Bayes factor from an impartial gamma prior
@@ -368,11 +369,11 @@ test_that(desc = "(id: f3-v0.6.0-t2) Test Bayes factors for gamma prior", {
 test_that(desc = "(id: f3-v0.6.0-t3) Test Bayes factors for beta-binomial prior", {
   
   # Compute a Bayes factor from a noninformative beta-binomial prior
-  BF <- evaluation(materiality = 0.03, n = 160, x = 1, prior = auditPrior(method = 'uniform', likelihood = "hypergeometric", N.units = 1000))$posterior$hypotheses$bf.hmin
+  BF <- evaluation(materiality = 0.03, n = 160, x = 1, prior = auditPrior(method = 'none', likelihood = "hypergeometric", N.units = 1000))$posterior$hypotheses$bf.hmin
   expect_equal(BF, 1248.71551)
   
   # Compute a Bayes factor from a noninformative beta-binomial prior
-  BF <- evaluation(materiality = 0.05, n = 50, x = 1, prior = auditPrior(method = 'uniform', likelihood = "hypergeometric", N.units = 1000))$posterior$hypotheses$bf.hmin
+  BF <- evaluation(materiality = 0.05, n = 50, x = 1, prior = auditPrior(method = 'none', likelihood = "hypergeometric", N.units = 1000))$posterior$hypotheses$bf.hmin
   expect_equal(BF, 58.37849102)
 
   # Compute a default Bayes factor from an impartial beta-binomial prior

@@ -121,6 +121,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
                        times = NULL, x = NULL, n = NULL, N.units = NULL, N.items = NULL, 
                        r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5, 
                        prior = FALSE) {
+  proper <- TRUE
   bayesian <- (class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")
   # Import existing prior distribution with class 'jfaPrior' or 'jfaPosterior'.
   if (class(prior) %in% c("jfaPrior", "jfaPosterior")) {
@@ -129,11 +130,10 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
     method  <- prior[["likelihood"]]
     if (!is.null(prior[['N.units']]))
       N.units <- prior[['N.units']]
-    proper  <- prior[["description"]]$beta > 0
+    proper <- prior[["description"]]$alpha != 0 && prior[["description"]]$beta != 0
   } else {
-    prior.n <- if (method == 'poisson') 0 else -1
+	prior.n <- if (method == 'poisson') 1 else 0
     prior.x <- 0
-    proper <- FALSE # gamma(1,0), beta(1,0), and beta-binomial(1,0) are improper
   }
   if (is.null(conf.level))
     stop("'conf.level' is missing for evaluation")

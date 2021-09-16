@@ -10,7 +10,7 @@
 #'            ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL, x = NULL, 
 #'            n = NULL, factor = NULL, conf.level = 0.95)
 #' 
-#' @param method          a character specifying the method by which the prior distribution is constructed. Defaults to \code{none} which incorporates no existing information. Other options are \code{arm}, \code{bram}, \code{median}, \code{hyp}, \code{sample}, and \code{factor}. See the details section for more information about the available methods.
+#' @param method          a character specifying the method by which the prior distribution is constructed. Defaults to \code{none} which incorporates no existing information. Other options are \code{strict}, \code{arm}, \code{bram}, \code{median}, \code{hyp}, \code{sample}, and \code{factor}. See the details section for more information about the available methods.
 #' @param likelihood      a character specifying the likelihood assumed when updating the prior distribution. This can be either \code{poisson} (default) for the Poisson likelihood and gamma prior distribution, \code{biomial} for the binomial likelihood and beta prior distribution, or \code{hypergeometric} for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.
 #' @param expected        a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a numeric value (>= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.
 #' @param conf.level      a numeric value between 0 and 1 specifying the confidence level to be used in the planning. Defaults to 0.95 for 95\% confidence. Used to calculate the upper bound of the prior distribution.
@@ -29,15 +29,15 @@
 #' @details This section elaborates on the available options for the \code{method} argument.
 #'
 #' \itemize{
-#'  \item{\code{none}:              This method constructs a prior distribution that incorporates negligible information about the possible values of the misstatement. These prior distributions are the default because they yield the same sample sizes and upper limits as classical techniques. However, these prior distributions are improper (i.e., reach to infinity).}
-#'  \item{\code{uniform}:           This method constructs a prior distribution that incorporates uniform information about the possible values of the misstatement.}
-#'  \item{\code{param}:             This method constructs a prior distribution on the basis of user specified \eqn{\alpha} and \eqn{\beta} parameters.}
-#'  \item{\code{median}:            This method constructs a prior distribution under which the prior probability of tolerable misstatement (\eqn{\theta <} materiality) is equal to the prior probability of intolerable misstatement (\eqn{\theta >} materiality).}
-#'  \item{\code{hyp}:               This method constructs a prior distribution with manual prior probabilities for the hypotheses of tolerable misstatement (\eqn{\theta <} materiality) and intolerable misstatement (\eqn{\theta >} materiality). This method requires specification of the \code{pHmin} argument.}
-#'  \item{\code{arm}:               This method constructs a prior distribution by translating the risks of material misstatement (inherent risk and internal control risk) from the audit risk model to an implicit sample. The method requires specification of the \code{ir} (inherent risk) and \code{cr} (internal control risk) arguments.}
-#'  \item{\code{bram}:              This method constructs a prior distribution using the Bayesian audit risk assessment model (BRAM) in which the expected most likely error and expected upper bound of the misstatement must be specified. The method requires specification of the \code{ub} argument.}
-#'  \item{\code{sample}:            This method constructs a prior distribution on the basis of an earlier observed sample. This method requires specification of the \code{sampleN} and \code{sampleK} arguments.}
-#'  \item{\code{factor}:            This method constructs a prior distribution on the basis of an earlier sample in combination with a weighting factor. This method requires specification of the \code{sampleN}, \code{sampleK}, and \code{factor} arguments.}
+#'  \item{\code{none}:       This method constructs a prior distribution that incorporates negligible information about the possible values of the misstatement.}
+#'  \item{\code{strict}:     This method constructs an improper (i.e., reach to infinity) prior distribution. These priors yield the same sample sizes and upper limits as classical techniques.}
+#'  \item{\code{param}:      This method constructs a prior distribution on the basis of user specified \eqn{\alpha} and \eqn{\beta} parameters.}
+#'  \item{\code{median}:     This method constructs a prior distribution under which the prior probability of tolerable misstatement (\eqn{\theta <} materiality) is equal to the prior probability of intolerable misstatement (\eqn{\theta >} materiality).}
+#'  \item{\code{hyp}:        This method constructs a prior distribution with manual prior probabilities for the hypotheses of tolerable misstatement (\eqn{\theta <} materiality) and intolerable misstatement (\eqn{\theta >} materiality). This method requires specification of the \code{pHmin} argument.}
+#'  \item{\code{arm}:        This method constructs a prior distribution by translating the risks of material misstatement (inherent risk and internal control risk) from the audit risk model to an implicit sample. The method requires specification of the \code{ir} (inherent risk) and \code{cr} (internal control risk) arguments.}
+#'  \item{\code{bram}:       This method constructs a prior distribution using the Bayesian audit risk assessment model (BRAM) in which the expected most likely error and expected upper bound of the misstatement must be specified. The method requires specification of the \code{ub} argument.}
+#'  \item{\code{sample}:     This method constructs a prior distribution on the basis of an earlier observed sample. This method requires specification of the \code{sampleN} and \code{sampleK} arguments.}
+#'  \item{\code{factor}:     This method constructs a prior distribution on the basis of an earlier sample in combination with a weighting factor. This method requires specification of the \code{sampleN}, \code{sampleK}, and \code{factor} arguments.}
 #' }
 #'
 #' @details This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
@@ -88,8 +88,8 @@ auditPrior <- function(method = 'none', likelihood = 'poisson', N.units = NULL,
                        alpha = NULL, beta = NULL, materiality = NULL, expected = 0, 
                        ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL, x = NULL, 
                        n = NULL, factor = NULL, conf.level = 0.95) {
-  if (!(method %in% c("none", "uniform", 'param', "median", "hyp", "arm", "bram", "sample", "factor")) || length(method) != 1)
-    stop("'method' should be one of 'none', 'uniform', 'param', 'median', 'hyp', 'arm', 'bram', 'sample', 'factor'")
+  if (!(method %in% c("none", "strict", 'param', "median", "hyp", "arm", "bram", "sample", "factor")) || length(method) != 1)
+    stop("'method' should be one of 'none', 'strict', 'param', 'median', 'hyp', 'arm', 'bram', 'sample', 'factor'")
   if (!(likelihood %in% c("poisson", "binomial", "hypergeometric")) || length(likelihood) != 1)
     stop("'likelihood' should be one of 'poisson', 'binomial', 'hypergeometric'")
   if (is.null(conf.level))
@@ -102,7 +102,7 @@ auditPrior <- function(method = 'none', likelihood = 'poisson', N.units = NULL,
     stop("'materiality' is missing for prior construction")
   if (!is.null(materiality) && expected >= materiality && expected < 1)
     stop("'expected' must be a single number < 'materiality'")
-  if (expected >= 1 && !(method %in% c('none', 'sample', 'factor', 'param', 'uniform')))
+  if (expected >= 1 && !(method %in% c('none', 'sample', 'factor', 'param', 'strict')))
     stop(paste0("'expected' must be a single number between 0 and 1 for 'method = ", method, "'"))
   if (likelihood == 'hypergeometric') {
     if (is.null(N.units))
@@ -112,14 +112,12 @@ auditPrior <- function(method = 'none', likelihood = 'poisson', N.units = NULL,
     if (N.units%%1 != 0)
       N.units <- ceiling(N.units)
   }
-  if (method == "none") { # Method 1: Default (improper) prior distribution
+  if (method == "none") { # Method 1: Noninformative prior distribution
+	prior.n <- if (likelihood == 'poisson') 1 else 0 # Single earlier observation
+    prior.x <- 0 # No earlier errors
+  } else if (method == 'strict') { # Method 1.1: Improper prior distribution
     prior.n <- if (likelihood == 'poisson') 0 else -1 # Improper prior observations
     prior.x <- 0 # Improper prior observations
-  } else if (method == 'uniform') { # Method 1.1 Uniform prior distribution
-    if (likelihood == 'poisson')
-      stop("'likelihood' must be one of 'binomial', 'hypergeometric'")
-    prior.n <- 0 # No earlier observations
-    prior.x <- 0 # No earlier errors
   } else if (method == "arm") { # Method 2: Translate risks from the audit risk model
     if (is.null(cr))
       stop("'cr' is missing for prior construction")
@@ -130,9 +128,8 @@ auditPrior <- function(method = 'none', likelihood = 'poisson', N.units = NULL,
     if (ir < 0 || ir > 1)
       stop("'ir' must be a single value between 0 and 1")
     dr      <- (1 - conf.level) / (ir * cr) # Calculate the required detection risk from the audit risk model
-	tmp_p   <- auditPrior(method = if (likelihood == "poisson") "none" else "uniform", likelihood = likelihood, N.units = N.units) # Use a uniform prior when beta(-binomial) because otherwise we get errors, doesnt matter for results
-    n.plus  <- planning(conf.level = conf.level, likelihood = likelihood, expected = expected, N.units = N.units, materiality = materiality, prior = tmp_p)$n # Calculate the sample size for the full detection risk  
-    n.min   <- planning(conf.level = 1 - dr, likelihood = likelihood, expected = expected, N.units = N.units, materiality = materiality, prior = tmp_p)$n # Calculated the sample size for the adjusted detection risk
+    n.plus  <- planning(conf.level = conf.level, likelihood = likelihood, expected = expected, N.units = N.units, materiality = materiality, prior = TRUE)$n # Calculate the sample size for the full detection risk  
+    n.min   <- planning(conf.level = 1 - dr, likelihood = likelihood, expected = expected, N.units = N.units, materiality = materiality, prior = TRUE)$n # Calculated the sample size for the adjusted detection risk
     prior.n <- n.plus - n.min # Calculate the sample size equivalent to the increase in detection risk
     prior.x <- (n.plus * expected) - (n.min * expected) # Calculate errors equivalent to the increase in detection risk
   } else if (method == 'bram') { # Method 3: Bayesian risk assessment model
@@ -221,7 +218,7 @@ auditPrior <- function(method = 'none', likelihood = 'poisson', N.units = NULL,
   description[["beta"]]       <- switch(likelihood, "poisson" = prior.n, "binomial" = 1 + prior.n - prior.x, "hypergeometric" = 1 + prior.n - prior.x)
   description[["implicit.x"]] <- prior.x
   description[["implicit.n"]] <- prior.n
-  description[["proper"]]     <- description[["beta"]] > 0
+  description[["proper"]]     <- description[["alpha"]] != 0 && description[["beta"]] != 0
   # Create the prior string
   prior.string <- switch(likelihood, 
                          "poisson" = paste0("gamma(\u03B1 = ", round(description[["alpha"]], 3), ", \u03B2 = ", round(description[["beta"]], 3), ")"),
@@ -247,7 +244,7 @@ auditPrior <- function(method = 'none', likelihood = 'poisson', N.units = NULL,
                                "hypergeometric" = .qbbinom(conf.level, N = N.units, shape1 = description[["alpha"]], shape2 = description[["beta"]]))									
   statistics[["precision"]] <- statistics[["ub"]] - statistics[["mode"]]
   # Create the specifics section
-  if (method != "none" && method != "uniform")
+  if (method != "none" && method != "strict")
     specifics             <- list()
   if (method == "median" || method == "hyp") {
     specifics[["p.hmin"]]  <- p.h0
@@ -287,7 +284,7 @@ auditPrior <- function(method = 'none', likelihood = 'poisson', N.units = NULL,
   result[["prior"]]         <- prior.string
   result[["description"]]   <- description
   result[["statistics"]]    <- statistics
-  if (method != "none" && method != "uniform")
+  if (method != "none" && method != "strict")
     result[["specifics"]]   <- specifics
   if (!is.null(materiality))
     result[["hypotheses"]]  <- hypotheses

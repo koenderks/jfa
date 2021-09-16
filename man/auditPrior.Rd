@@ -10,7 +10,7 @@ auditPrior(method = 'none', likelihood = 'poisson', N.units = NULL,
            n = NULL, factor = NULL, conf.level = 0.95)
 }
 \arguments{
-\item{method}{a character specifying the method by which the prior distribution is constructed. Defaults to \code{none} which incorporates no existing information. Other options are \code{arm}, \code{bram}, \code{median}, \code{hyp}, \code{sample}, and \code{factor}. See the details section for more information about the available methods.}
+\item{method}{a character specifying the method by which the prior distribution is constructed. Defaults to \code{none} which incorporates no existing information. Other options are \code{strict}, \code{arm}, \code{bram}, \code{median}, \code{hyp}, \code{sample}, and \code{factor}. See the details section for more information about the available methods.}
 
 \item{likelihood}{a character specifying the likelihood assumed when updating the prior distribution. This can be either \code{poisson} (default) for the Poisson likelihood and gamma prior distribution, \code{biomial} for the binomial likelihood and beta prior distribution, or \code{hypergeometric} for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.}
 
@@ -65,15 +65,15 @@ For more details on how to use this function, see the package vignette:
 This section elaborates on the available options for the \code{method} argument.
 
 \itemize{
- \item{\code{none}:              This method constructs a prior distribution that incorporates negligible information about the possible values of the misstatement. These prior distributions are the default because they yield the same sample sizes and upper limits as classical techniques. However, these prior distributions are improper (i.e., reach to infinity).}
- \item{\code{uniform}:           This method constructs a prior distribution that incorporates uniform information about the possible values of the misstatement.}
- \item{\code{param}:             This method constructs a prior distribution on the basis of user specified \eqn{\alpha} and \eqn{\beta} parameters.}
- \item{\code{median}:            This method constructs a prior distribution under which the prior probability of tolerable misstatement (\eqn{\theta <} materiality) is equal to the prior probability of intolerable misstatement (\eqn{\theta >} materiality).}
- \item{\code{hyp}:               This method constructs a prior distribution with manual prior probabilities for the hypotheses of tolerable misstatement (\eqn{\theta <} materiality) and intolerable misstatement (\eqn{\theta >} materiality). This method requires specification of the \code{pHmin} argument.}
- \item{\code{arm}:               This method constructs a prior distribution by translating the risks of material misstatement (inherent risk and internal control risk) from the audit risk model to an implicit sample. The method requires specification of the \code{ir} (inherent risk) and \code{cr} (internal control risk) arguments.}
- \item{\code{bram}:              This method constructs a prior distribution using the Bayesian audit risk assessment model (BRAM) in which the expected most likely error and expected upper bound of the misstatement must be specified. The method requires specification of the \code{ub} argument.}
- \item{\code{sample}:            This method constructs a prior distribution on the basis of an earlier observed sample. This method requires specification of the \code{sampleN} and \code{sampleK} arguments.}
- \item{\code{factor}:            This method constructs a prior distribution on the basis of an earlier sample in combination with a weighting factor. This method requires specification of the \code{sampleN}, \code{sampleK}, and \code{factor} arguments.}
+ \item{\code{none}:       This method constructs a prior distribution that incorporates negligible information about the possible values of the misstatement.}
+ \item{\code{strict}:     This method constructs an improper (i.e., reach to infinity) prior distribution. These priors yield the same sample sizes and upper limits as classical techniques.}
+ \item{\code{param}:      This method constructs a prior distribution on the basis of user specified \eqn{\alpha} and \eqn{\beta} parameters.}
+ \item{\code{median}:     This method constructs a prior distribution under which the prior probability of tolerable misstatement (\eqn{\theta <} materiality) is equal to the prior probability of intolerable misstatement (\eqn{\theta >} materiality).}
+ \item{\code{hyp}:        This method constructs a prior distribution with manual prior probabilities for the hypotheses of tolerable misstatement (\eqn{\theta <} materiality) and intolerable misstatement (\eqn{\theta >} materiality). This method requires specification of the \code{pHmin} argument.}
+ \item{\code{arm}:        This method constructs a prior distribution by translating the risks of material misstatement (inherent risk and internal control risk) from the audit risk model to an implicit sample. The method requires specification of the \code{ir} (inherent risk) and \code{cr} (internal control risk) arguments.}
+ \item{\code{bram}:       This method constructs a prior distribution using the Bayesian audit risk assessment model (BRAM) in which the expected most likely error and expected upper bound of the misstatement must be specified. The method requires specification of the \code{ub} argument.}
+ \item{\code{sample}:     This method constructs a prior distribution on the basis of an earlier observed sample. This method requires specification of the \code{sampleN} and \code{sampleK} arguments.}
+ \item{\code{factor}:     This method constructs a prior distribution on the basis of an earlier sample in combination with a weighting factor. This method requires specification of the \code{sampleN}, \code{sampleK}, and \code{factor} arguments.}
 }
 
 This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.

@@ -41,9 +41,9 @@ expected    <- 0.01       # 1% errors expected in sample
 ```
 
 
-### Default prior distributions (`method = 'none'`)
+### Noninformative prior distributions (`method = 'none'`)
 
-You can refrain from incorporating explicit information in the prior distribution using `method = 'none'`. As an example, the code below incorporates no explicit information into a prior distribution. The prior distribution that is constructed is improper but yields similar results to that of classical methodology with respect to sample sizes, upper limits, and evidence.
+You can refrain from incorporating explicit information in the prior distribution using `method = 'none'`. As an example, the code below incorporates no explicit information into a prior distribution.
 
 ```{r}
 prior1 <- auditPrior(method = 'none', likelihood = likelihood, expected = expected, conf.level = confidence)
@@ -56,12 +56,12 @@ You can visually inspect the prior distribution using the `plot()` function.
 plot(prior1)
 ```
 
-### Uniform prior distributions (`method = 'uniform'`)
+### Prior distributions with classical properties (`method = 'strict'`)
 
-You can specify a uniform prior distribution on the misstatement via `method = 'uniform'`. As an example, the code below creates a uniform beta(1, 1) prior distribution. The posterior distribution from a uniform prior distribution also has a close relation with classical methodology, as the posterior mode is equal to the observed misstatement (proportion).
+You can construct an improper prior distribution using `method = 'strict'`. The prior distribution that is constructed is improper but yields similar results to that of classical methodology with respect to sample sizes, upper limits, and evidence.
 
 ```{r}
-prior2 <- auditPrior(method = 'uniform', likelihood = likelihood)
+prior2 <- auditPrior(method = 'strict', likelihood = likelihood)
 summary(prior2)
 ```
 

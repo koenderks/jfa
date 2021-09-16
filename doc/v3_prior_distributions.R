@@ -16,7 +16,7 @@ summary(prior1)
 plot(prior1)
 
 ## -----------------------------------------------------------------------------
-prior2 <- auditPrior(method = 'uniform', likelihood = likelihood)
+prior2 <- auditPrior(method = 'strict', likelihood = likelihood)
 summary(prior2)
 
 ## -----------------------------------------------------------------------------

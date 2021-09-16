@@ -73,8 +73,8 @@ print.summary.jfaPrior <- function(x, ...) {
 # Expected sample errors:       ", paste0(x[["x"]] * 100, "%"),"
 # Likelihood:                   ", x[["likelihood"]],"
 # Specifics:                    ", switch(x[["method"]],
-                                          "none" = "Default",
-                                          "uniform" = "Uniform",
+                                          "none" = "Noninformative",
+                                          "strict" = "Classical properties",
                                           "median" = paste0("p(\u0398 < ", x[["materiality"]], ") = p(\u0398 > ", x[["materiality"]], ") = 0.5"),
                                           "hyp" = paste0("p(\u0398 < ", x[["materiality"]], ") = ", x[["p.hmin"]],"; p(\u0398 > ", x[["materiality"]],") = ", x[["p.hplus"]]),
                                           "arm" = paste0("IR = ", x[["ir"]], "; ICR = ", x[["icr"]], "; DR = ", x[["dr"]]),

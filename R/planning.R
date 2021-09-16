@@ -81,11 +81,10 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
     likelihood   <- prior[["likelihood"]]
     if (!is.null(prior[['N.units']]))
       N.units <- prior[['N.units']]
-    proper  <- prior[["description"]]$beta > 0
+    proper <- prior[["description"]]$alpha != 0 && prior[["description"]]$beta != 0
   } else if (prior) {
-    prior.n <- if (likelihood == 'poisson') 0 else -1
+	prior.n <- if (likelihood == 'poisson') 1 else 0
     prior.x <- 0
-    proper <- FALSE # gamma(1,0), beta(1,0), and beta-binomial(1,0) are improper
   }
   if (is.null(materiality) && is.null(min.precision))
     stop("'materiality' or `min.precision` is missing for planning")

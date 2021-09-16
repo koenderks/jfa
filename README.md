@@ -83,8 +83,8 @@ auditPrior(method = 'none', likelihood = 'poisson', N.units = NULL,
 
 | `method` | Description | Required arguments | Reference |
 | :----------- | :----------- | :----------- | :----------- |
-| `none` | No prior information (classical properties) | | |
-| `uniform` | Uniform prior distribution | | Derks et al. (2021) |
+| `none` | Noninformative prior distribution | | Derks et al. (2021) |
+| `strict` | Strict prior distribution (classical properties) | | |
 | `param` | Manual prior parameters | `alpha` and `beta` | |
 | `median` | Equal prior probabilities | `materiality` | Derks et al. (2021) |
 | `hyp` | Manual prior probabilities | `materiality` and `p.hmin` | Derks et al. (2021) |

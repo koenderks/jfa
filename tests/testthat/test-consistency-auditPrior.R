@@ -5,15 +5,15 @@ context("Consistency of function auditPrior()")
 test_that(desc = "(id: f2-v0.1.0-t1) Test for method = 'none'", {
   prior <- auditPrior(conf.level = 0.95, likelihood = "binomial", method = "none")
   expect_equal(prior[["description"]]$alpha, 1)
-  expect_equal(prior[["description"]]$beta, 0)
+  expect_equal(prior[["description"]]$beta, 1)
   
   prior <- auditPrior(conf.level = 0.95, likelihood = "poisson", method = "none")
   expect_equal(prior[["description"]]$alpha, 1)
-  expect_equal(prior[["description"]]$beta, 0)
+  expect_equal(prior[["description"]]$beta, 1)
   
   prior <- auditPrior(conf.level = 0.95, likelihood = "hypergeometric", method = "none", N.units = 3500)
   expect_equal(prior[["description"]]$alpha, 1)
-  expect_equal(prior[["description"]]$beta, 0)
+  expect_equal(prior[["description"]]$beta, 1)
 })
 
 test_that(desc = "(id: f2-v0.1.0-t2) Test for method = 'median'", {
@@ -116,7 +116,7 @@ test_that(desc = "(id: f2-v0.5.0-t1) Test for summary and print function", {
   invisible(capture.output(print(prior)))
   invisible(capture.output(summary(prior)))
   expect_equal(prior[["description"]]$alpha, 1)
-  expect_equal(prior[["description"]]$beta, 0)
+  expect_equal(prior[["description"]]$beta, 1)
 })
 
 test_that(desc = "(id: f2-v0.5.0-t2) Test for plot function", {

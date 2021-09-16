@@ -3,7 +3,7 @@
 **New features**
 
 - Added `method = 'param'` to function `auditPrior()` which takes as input the raw `alpha` and `beta` parameters of the prior distribution.
-- Added `method = 'uniform'` to function `auditPrior()` which constructs a uniform prior distribution (only available for the `binomial` and `hypergeometric` likelihood.)
+- Added `method = 'strict'` to function `auditPrior()` which constructs a prior distribution that yields the same results (with respect to sample sizes and upper limits) as classical procedures.
 - Added a new vignette that describes the sampling methodology implemented in `jfa`.
 
 **Major changes**
@@ -41,7 +41,7 @@
     - `hypotheses` -> `hyp` (in `auditPrior()`)
 - `poisson` is now the default likelihood for all functions since it is the most conservative.
 - `method = 'interval'` is now the default selection method.
-- The default prior distributions used when `method = 'none'` or `prior = FALSE` are now set to priors (`gamma(1, 0)`, `beta(1,0)`, `beta-binomial(1, 0)`) that yield the same results (with respect to sample sizes and upper limits) as classical procedures.
+- The default prior distributions used when `method = 'none'` or `prior = TRUE` are now set to the `gamma(1, 1)`, `beta(1,1)`, and `beta-binomial(1, 1)` priors.
 - The `times` (former `counts`) argument in `evaluation()` must now be indicated as a column name in the `data` instead of a vector.
 - `nPrior` and `kPrior` have been removed from the `planning()` and `evaluation()` functions. All prior distributions must now be specified using `prior = TRUE` (noninformative priors) or using a call to `auditPrior()`.
 - Removed the `auditBF()` function since its value is available through `print(evaluation(materiality = x, prior = auditPrior(method = 'median', materiality = x)))`
