@@ -47,7 +47,7 @@
 
 
 <meta property="og:title" content="Prior Distributions for Audit Sampling — auditPrior" />
-<meta property="og:description" content="This function creates a prior distribution with audit information to be used in the planning() and evaluation() functions via their prior argument. The function returns an object of class jfaPrior which can be used with associated summary() and plot() methods.
+<meta property="og:description" content="This function creates a prior distribution for the misstatement parameter \(\theta\) in an audit sampling model. The prior can be used in the planning() and evaluation() functions via their prior argument. The function returns an object of class jfaPrior which can be used with associated summary() and plot() methods.
 For more details on how to use this function, see the package vignette:
 vignette('jfa', package = 'jfa')" />
 <meta property="og:image" content="/logo.png" />
@@ -160,7 +160,7 @@ vignette('jfa', package = 'jfa')" />
     </div>
 
     <div class="ref-description">
-    <p>This function creates a prior distribution with audit information to be used in the <code><a href='planning.html'>planning()</a></code> and <code><a href='evaluation.html'>evaluation()</a></code> functions via their <code>prior</code> argument. The function returns an object of class <code>jfaPrior</code> which can be used with associated <code><a href='https://rdrr.io/r/base/summary.html'>summary()</a></code> and <code><a href='https://rdrr.io/r/graphics/plot.default.html'>plot()</a></code> methods.</p>
+    <p>This function creates a prior distribution for the misstatement parameter \(\theta\) in an audit sampling model. The prior can be used in the <code><a href='planning.html'>planning()</a></code> and <code><a href='evaluation.html'>evaluation()</a></code> functions via their <code>prior</code> argument. The function returns an object of class <code>jfaPrior</code> which can be used with associated <code><a href='https://rdrr.io/r/base/summary.html'>summary()</a></code> and <code><a href='https://rdrr.io/r/graphics/plot.default.html'>plot()</a></code> methods.</p>
 <p>For more details on how to use this function, see the package vignette:
 <code><a href='../articles/jfa.html'>vignette('jfa', package = 'jfa')</a></code></p>
     </div>
@@ -254,12 +254,12 @@ vignette('jfa', package = 'jfa')" />
 
     <p><code>auditPrior</code> is used to define prior distributions for parameters in <code>jfa</code> models. To perform Bayesian audit sampling, you must assign a prior distribution to the misstatement parameter \(\theta\). 
          The prior is a probability distribution that reflects the existing information about the parameter before seeing a sample. To keep the priors proper, the <code>default</code> priors used by <code>jfa</code> are very diffuse,
-         meaning they contain almost no information. It is strongly recommended to use an informed prior distribution when possible.</p>
+         meaning they contain minimal prior information. However, it is strongly recommended to use an informed prior distribution when possible.</p>
 <p>This section elaborates on the available options for the <code>method</code> argument.</p>
 <ul>
-<li><p><code>default</code>:    This method produces <em>gamma(1, 1)</em>, <em>beta(1, 1)</em>, and <em>beta-binomial(N, 1, 1)</em> prior distributions which incorporate negligible information about the possible values of the misstatement.</p></li>
-<li><p><code>strict</code>:     This method produces <em>gamma(1, 0)</em>, <em>beta(1, 0)</em>, and <em>beta-binomial(N, 1, 0)</em> prior distributions. Note that these prior distributions are improper and therefore they yields the same sample sizes and upper limits as classical techniques.</p></li>
-<li><p><code>param</code>:      This method constructs a prior distribution on the basis of user specified \(\alpha\) and \(\beta\) parameters.</p></li>
+<li><p><code>default</code>:    This method produces <em>gamma(1, 1)</em>, <em>beta(1, 1)</em>, and <em>beta-binomial(N, 1, 1)</em> prior distributions which incorporate minimal information about the possible values of the misstatement.</p></li>
+<li><p><code>strict</code>:     This method produces <em>gamma(1, 0)</em>, <em>beta(1, 0)</em>, and <em>beta-binomial(N, 1, 0)</em> prior distributions. Note that these prior distributions are improper and yield the same sample sizes and upper limits as classical techniques.</p></li>
+<li><p><code>param</code>:      This method constructs a prior distribution on the basis of manually specified \(\alpha\) and \(\beta\) parameters.</p></li>
 <li><p><code>impartial</code>:  This method constructs a prior distribution under which the prior probability of tolerable misstatement (\(\theta &lt;\) materiality) is equal to the prior probability of intolerable misstatement (\(\theta &gt;\) materiality).</p></li>
 <li><p><code>hyp</code>:        This method constructs a prior distribution with manual prior probabilities for the hypotheses of tolerable misstatement (\(\theta &lt;\) materiality) and intolerable misstatement (\(\theta &gt;\) materiality). This method requires specification of the <code>p.hmin</code> argument.</p></li>
 <li><p><code>arm</code>:        This method constructs a prior distribution by translating the risks of material misstatement (inherent risk and internal control risk) from the audit risk model to an implicit sample. The method requires specification of the <code>ir</code> (inherent risk) and <code>cr</code> (internal control risk) arguments.</p></li>
@@ -270,8 +270,8 @@ vignette('jfa', package = 'jfa')" />
 
 <p>This section elaborates on the available likelihoods and corresponding prior distributions for the <code>likelihood</code> argument.</p>
 <ul>
-<li><p><code>binomial</code>:         The binomial likelihood is often used as a likelihood for attributes sampling <em>with</em> replacement. The likelihood function is defined as: $$p(x) = {n \choose k} p^k (1 - p)^{n - k}$$ The conjugate <em>beta(\(\alpha, \beta\))</em> prior has probability density function: $$f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}$$</p></li>
 <li><p><code>poisson</code>:          The Poisson likelihood is often used as a likelihood for monetary unit sampling (MUS). The likelihood function is defined as: $$p(x) = \frac{\lambda^x e^{-\lambda}}{x!}$$ The conjugate <em>gamma(\(\alpha, \beta\))</em> prior has probability density function: $$f(x; \alpha, \beta) = \frac{\beta^\alpha x^{\alpha - 1} e^{-\beta x}}{\Gamma(\alpha)}$$</p></li>
+<li><p><code>binomial</code>:         The binomial likelihood is often used as a likelihood for attributes sampling <em>with</em> replacement. The likelihood function is defined as: $$p(x) = {n \choose k} p^k (1 - p)^{n - k}$$ The conjugate <em>beta(\(\alpha, \beta\))</em> prior has probability density function: $$f(x; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} x^{\alpha - 1} (1 - x)^{\beta - 1}$$</p></li>
 <li><p><code>hypergeometric</code>:   The hypergeometric likelihood is used as a likelihood for sampling <em>without</em> replacement. The likelihood function is defined as: $$p(x = k) = \frac{{K \choose k} {N - K \choose n - k}}{{N \choose n}}$$ The conjugate <em>beta-binomial(\(\alpha, \beta\))</em> prior (Dyer and Pierce, 1993) has probability density function: $$f(k | n, \alpha, \beta) = {n \choose k} \frac{B(k + \alpha, n - k + \beta)}{B(\alpha, \beta)}$$</p></li>
 </ul>
 
