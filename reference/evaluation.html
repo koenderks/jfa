@@ -326,10 +326,10 @@ vignette('jfa', package = 'jfa')" />
 #&gt; 	Classical Audit Sample Evaluation
 #&gt; 
 #&gt; data:  sample
-#&gt; number of misstatements = 4, number of items = 100, taint = 2.4
+#&gt; number of errors = 4, number of samples = 100, taint = 2.4
 #&gt; 95 percent confidence interval:
 #&gt;  0.00000000 0.06532286
-#&gt; misstatement rate:
+#&gt; estimate:
 #&gt;  0.0239999 
 #&gt; estimates obtained via method 'stringer'</div><div class='input'>
 <span class='co'># Classical evaluation using the Poisson likelihood</span>
@@ -339,12 +339,12 @@ vignette('jfa', package = 'jfa')" />
 #&gt; 	Classical Audit Sample Evaluation
 #&gt; 
 #&gt; data:  sample
-#&gt; number of misstatements = 4, number of items = 100, taint = 2.4,
-#&gt; p-value = 0.1747
-#&gt; alternative hypothesis: true probability of misstatement is less than 0.05
+#&gt; number of errors = 4, number of samples = 100, taint = 2.4, p-value =
+#&gt; 0.1747
+#&gt; alternative hypothesis: true misstatement rate is less than 0.05
 #&gt; 95 percent confidence interval:
 #&gt;  0.00000000 0.06887548
-#&gt; misstatement rate:
+#&gt; estimate:
 #&gt;  0.0239999 
 #&gt; estimates obtained via method 'poisson'</div><div class='input'>
 <span class='co'># Bayesian evaluation using a noninformative gamma prior distribution</span>
@@ -355,12 +355,12 @@ vignette('jfa', package = 'jfa')" />
 #&gt; 	Bayesian Audit Sample Evaluation
 #&gt; 
 #&gt; data:  sample
-#&gt; number of misstatements = 4, number of items = 100, taint = 2.4, BF-+ =
+#&gt; number of errors = 4, number of samples = 100, taint = 2.4, BF-+ =
 #&gt; 95.641
-#&gt; alternative hypothesis: true probability of misstatement is less than 0.05
+#&gt; alternative hypothesis: true misstatement rate is less than 0.05
 #&gt; 95 percent credible interval:
 #&gt;  0.00000000 0.06819355
-#&gt; misstatement rate:
+#&gt; estimate:
 #&gt;  0.02376227 
 #&gt; estimates obtained via method 'poisson' + 'prior'</div><div class='input'>
 <span class='co'># Bayesian evaluation using an informed prior distribution</span>
@@ -371,12 +371,12 @@ vignette('jfa', package = 'jfa')" />
 #&gt; 	Bayesian Audit Sample Evaluation
 #&gt; 
 #&gt; data:  sample
-#&gt; number of misstatements = 4, number of items = 100, taint = 2.4, BF-+ =
+#&gt; number of errors = 4, number of samples = 100, taint = 2.4, BF-+ =
 #&gt; 10.548
-#&gt; alternative hypothesis: true probability of misstatement is less than 0.05
+#&gt; alternative hypothesis: true misstatement rate is less than 0.05
 #&gt; 95 percent credible interval:
 #&gt;  0.00000000 0.06261408
-#&gt; misstatement rate:
+#&gt; estimate:
 #&gt;  0.02181809 
 #&gt; estimates obtained via method 'poisson' + 'prior'</div><div class='input'>
 </div></pre>

@@ -152,17 +152,19 @@
 <pre><code>## 
 ##  Prior Distribution Summary
 ## 
-## Likelihood:                 binomial 
-## Specifics:                  noninformative 
-## Functional form:            beta(α = 1, β = 1) 
-## Equivalent sample size:     1 
-## Equivalent errors:          0 
+## Options:
+##   Likelihood:                    binomial 
+##   Specifics:                     noninformative 
 ## 
-## Mode:                       NaN 
-## Mean:                       0.5 
-## Median:                     0.5 
-## 95 percent upper bound:     0.95 
-## Precision:                  NaN</code></pre>
+## Results:
+##   Functional form:               beta(α = 1, β = 1) 
+##   Equivalent sample size:        1 
+##   Equivalent errors:             0 
+##   Mode:                          NaN 
+##   Mean:                          0.5 
+##   Median:                        0.5 
+##   95 percent upper bound:        0.95 
+##   Precision:                     NaN</code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior1</span><span class="op">)</span></code></pre></div>
@@ -178,17 +180,19 @@
 <pre><code>## 
 ##  Prior Distribution Summary
 ## 
-## Likelihood:                 binomial 
-## Specifics:                  classical properties 
-## Functional form:            beta(α = 1, β = 0) 
-## Equivalent sample size:     0 
-## Equivalent errors:          0 
+## Options:
+##   Likelihood:                    binomial 
+##   Specifics:                     classical properties 
 ## 
-## Mode:                       0 
-## Mean:                       1 
-## Median:                     1 
-## 95 percent upper bound:     1 
-## Precision:                  1</code></pre>
+## Results:
+##   Functional form:               beta(α = 1, β = 0) 
+##   Equivalent sample size:        0 
+##   Equivalent errors:             0 
+##   Mode:                          0 
+##   Mean:                          1 
+##   Median:                        1 
+##   95 percent upper bound:        1 
+##   Precision:                     1</code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior2</span><span class="op">)</span></code></pre></div>
@@ -204,17 +208,19 @@
 <pre><code>## 
 ##  Prior Distribution Summary
 ## 
-## Likelihood:                 binomial 
-## Specifics:                  α = 2; β = 10 
-## Functional form:            beta(α = 2, β = 10) 
-## Equivalent sample size:     11 
-## Equivalent errors:          1 
+## Options:
+##   Likelihood:                    binomial 
+##   Specifics:                     α = 2; β = 10 
 ## 
-## Mode:                       0.1 
-## Mean:                       0.167 
-## Median:                     0.148 
-## 95 percent upper bound:     0.364 
-## Precision:                  0.264</code></pre>
+## Results:
+##   Functional form:               beta(α = 2, β = 10) 
+##   Equivalent sample size:        11 
+##   Equivalent errors:             1 
+##   Mode:                          0.1 
+##   Mean:                          0.16667 
+##   Median:                        0.14796 
+##   95 percent upper bound:        0.36436 
+##   Precision:                     0.26436</code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior3</span><span class="op">)</span></code></pre></div>
@@ -232,17 +238,19 @@
 <pre><code>## 
 ##  Prior Distribution Summary
 ## 
-## Likelihood:                 binomial 
-## Specifics:                  p(Θ &lt; 0.05) = p(Θ &gt; 0.05) = 0.5 
-## Functional form:            beta(α = 1.155, β = 16.385) 
-## Equivalent sample size:     16.54 
-## Equivalent errors:          0.155 
+## Options:
+##   Likelihood:                    binomial 
+##   Specifics:                     p(Θ &lt; 0.05) = p(Θ &gt; 0.05) = 0.5 
 ## 
-## Mode:                       0.01 
-## Mean:                       0.066 
-## Median:                     0.05 
-## 95 percent upper bound:     0.181 
-## Precision:                  0.171</code></pre>
+## Results:
+##   Functional form:               beta(α = 1.155, β = 16.385) 
+##   Equivalent sample size:        16.54 
+##   Equivalent errors:             0.1554 
+##   Mode:                          0.01 
+##   Mean:                          0.065872 
+##   Median:                        0.049999 
+##   95 percent upper bound:        0.18118 
+##   Precision:                     0.17118</code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior4</span><span class="op">)</span></code></pre></div>
@@ -260,17 +268,19 @@
 <pre><code>## 
 ##  Prior Distribution Summary
 ## 
-## Likelihood:                 binomial 
-## Specifics:                  p(Θ &lt; 0.05) = 0.6; p(Θ &gt; 0.05) = 0.4 
-## Functional form:            beta(α = 1.217, β = 22.493) 
-## Equivalent sample size:     22.71 
-## Equivalent errors:          0.217 
+## Options:
+##   Likelihood:                    binomial 
+##   Specifics:                     p(Θ &lt; 0.05) = 0.6; p(Θ &gt; 0.05) = 0.4 
 ## 
-## Mode:                       0.01 
-## Mean:                       0.051 
-## Median:                     0.039 
-## 95 percent upper bound:     0.14 
-## Precision:                  0.13</code></pre>
+## Results:
+##   Functional form:               beta(α = 1.217, β = 22.493) 
+##   Equivalent sample size:        22.71 
+##   Equivalent errors:             0.2171 
+##   Mode:                          0.01 
+##   Mean:                          0.051333 
+##   Median:                        0.039239 
+##   95 percent upper bound:        0.13983 
+##   Precision:                     0.12983</code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior5</span><span class="op">)</span></code></pre></div>
@@ -287,17 +297,19 @@
 <pre><code>## 
 ##  Prior Distribution Summary
 ## 
-## Likelihood:                 binomial 
-## Specifics:                  ir = 0.9; cr = 0.6; dr = 0.093 
-## Functional form:            beta(α = 1.21, β = 20.79) 
-## Equivalent sample size:     21 
-## Equivalent errors:          0.21 
+## Options:
+##   Likelihood:                    binomial 
+##   Specifics:                     ir = 0.9; cr = 0.6; dr = 0.0925926 
 ## 
-## Mode:                       0.01 
-## Mean:                       0.055 
-## Median:                     0.042 
-## 95 percent upper bound:     0.15 
-## Precision:                  0.139</code></pre>
+## Results:
+##   Functional form:               beta(α = 1.21, β = 20.79) 
+##   Equivalent sample size:        21 
+##   Equivalent errors:             0.21 
+##   Mode:                          0.0105 
+##   Mean:                          0.055 
+##   Median:                        0.042056 
+##   95 percent upper bound:        0.14982 
+##   Precision:                     0.13932</code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior6</span><span class="op">)</span></code></pre></div>
@@ -314,17 +326,19 @@
 <pre><code>## 
 ##  Prior Distribution Summary
 ## 
-## Likelihood:                 binomial 
-## Specifics:                  mode = 0.01; upper bound = 0.6 
-## Functional form:            beta(α = 1.023, β = 3.317) 
-## Equivalent sample size:     3.34 
-## Equivalent errors:          0.023 
+## Options:
+##   Likelihood:                    binomial 
+##   Specifics:                     mode = 0.01; upper bound = 0.6 
 ## 
-## Mode:                       0.01 
-## Mean:                       0.236 
-## Median:                     0.194 
-## 95 percent upper bound:     0.599 
-## Precision:                  0.589</code></pre>
+## Results:
+##   Functional form:               beta(α = 1.023, β = 3.317) 
+##   Equivalent sample size:        3.34 
+##   Equivalent errors:             0.0234 
+##   Mode:                          0.01 
+##   Mean:                          0.23581 
+##   Median:                        0.19356 
+##   95 percent upper bound:        0.5991 
+##   Precision:                     0.5891</code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior7</span><span class="op">)</span></code></pre></div>
@@ -341,17 +355,19 @@
 <pre><code>## 
 ##  Prior Distribution Summary
 ## 
-## Likelihood:                 binomial 
-## Specifics:                  earlier sample of 30 items with 0 errors 
-## Functional form:            beta(α = 1, β = 30) 
-## Equivalent sample size:     30 
-## Equivalent errors:          0 
+## Options:
+##   Likelihood:                    binomial 
+##   Specifics:                     earlier sample of 30 items with 0 errors 
 ## 
-## Mode:                       0 
-## Mean:                       0.032 
-## Median:                     0.023 
-## 95 percent upper bound:     0.095 
-## Precision:                  0.095</code></pre>
+## Results:
+##   Functional form:               beta(α = 1, β = 30) 
+##   Equivalent sample size:        30 
+##   Equivalent errors:             0 
+##   Mode:                          0 
+##   Mean:                          0.032258 
+##   Median:                        0.02284 
+##   95 percent upper bound:        0.095034 
+##   Precision:                     0.095034</code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior8</span><span class="op">)</span></code></pre></div>
@@ -368,17 +384,19 @@
 <pre><code>## 
 ##  Prior Distribution Summary
 ## 
-## Likelihood:                 binomial 
-## Specifics:                  earlier sample of 58 items with 0 errors weighted by 0.7 
-## Functional form:            beta(α = 1, β = 40.6) 
-## Equivalent sample size:     40.6 
-## Equivalent errors:          0 
+## Options:
+##   Likelihood:                    binomial 
+##   Specifics:                     earlier sample of 58 items with 0 errors weighted by 0.7 
 ## 
-## Mode:                       0 
-## Mean:                       0.024 
-## Median:                     0.017 
-## 95 percent upper bound:     0.071 
-## Precision:                  0.071</code></pre>
+## Results:
+##   Functional form:               beta(α = 1, β = 40.6) 
+##   Equivalent sample size:        40.6 
+##   Equivalent errors:             0 
+##   Mode:                          0 
+##   Mean:                          0.024039 
+##   Median:                        0.016928 
+##   95 percent upper bound:        0.07113 
+##   Precision:                     0.07113</code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">prior9</span><span class="op">)</span></code></pre></div>
@@ -413,12 +431,11 @@
 ##  Bayesian Audit Sample Evaluation
 ## 
 ## data:  1 and 60
-## number of misstatements = 1, number of items = 60, taint = 1, BF-+ =
-## 3.7968
-## alternative hypothesis: true probability of misstatement is less than 0.05
+## number of errors = 1, number of samples = 60, taint = 1, BF-+ = 3.7968
+## alternative hypothesis: true misstatement rate is less than 0.05
 ## 95 percent credible interval:
 ##  0.00000000 0.04628728
-## misstatement rate:
+## estimate:
 ##  0.01004016 
 ## estimates obtained via method 'binomial' + 'prior'</code></pre>
 </div>

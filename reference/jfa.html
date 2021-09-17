@@ -254,18 +254,19 @@ For documentation on jfa itself, including the manual and user guide
 </div><div class='output co'>#&gt; 
 #&gt; 	Classical Audit Sample Planning Summary
 #&gt; 
-#&gt; Confidence level:           0.95 
-#&gt; Materiality:                0.03 
-#&gt; Min. precision:             not specified 
-#&gt; Likelihood:                 poisson 
-#&gt; Expected sample errors:     2.2 
+#&gt; Options:
+#&gt;   Confidence level:              0.95 
+#&gt;   Materiality:                   0.03 
+#&gt;   Expected:                      0.01 
+#&gt;   Likelihood:                    poisson 
 #&gt; 
-#&gt; Minimum sample size:        220 
-#&gt; 
-#&gt; Expected most likely error: 0.01 
-#&gt; Expected upper bound:       0.02997 
-#&gt; Expected precision:         0.01997 
-#&gt; Expected p-value:           &lt; 2.22e-16 </div><div class='input'>
+#&gt; Results:
+#&gt;   Minimum sample size:           220 
+#&gt;   Tolerable errors:              2.2 
+#&gt;   Expected most likely error:    0.01 
+#&gt;   Expected upper bound:          0.02997 
+#&gt;   Expected precision:            0.01997 
+#&gt;   Expected p-value:              &lt; 2.22e-16 </div><div class='input'>
 <span class='co'># Stage 2: Selection</span>
 <span class='va'>stage2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='selection.html'>selection</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>BuildIt</span>, size <span class='op'>=</span> <span class='va'>stage1</span>,
                     units <span class='op'>=</span> <span class='st'>'values'</span>, values <span class='op'>=</span> <span class='st'>'bookValue'</span>,
@@ -274,17 +275,22 @@ For documentation on jfa itself, including the manual and user guide
 </div><div class='output co'>#&gt; 
 #&gt; 	Audit Sample Selection Summary
 #&gt; 
-#&gt; Population size:            1403221 
-#&gt; Requested sample size:      220 
-#&gt; Sampling units:             monetary units 
-#&gt; Method:                     fixed interval sampling 
-#&gt; Interval:                   6378.3 
-#&gt; Starting point:             1 
+#&gt; Options:
+#&gt;   Requested sample size:         220 
+#&gt;   Sampling units:                monetary units 
+#&gt;   Method:                        fixed interval sampling 
+#&gt;   Starting point:                1 
 #&gt; 
-#&gt; Selected sampling units:    220 
-#&gt; Selected items:             220 
-#&gt; Proportion n/N:             0.063 
-#&gt; Proportion of value:      0.00016 </div><div class='input'>
+#&gt; Data:
+#&gt;   Population size:               3500 
+#&gt;   Population value:              1403221 
+#&gt;   Selection interval:            6378.3 
+#&gt; 
+#&gt; Results:
+#&gt;   Selected sampling units:       220 
+#&gt;   Proportion of value:           0.0001568 
+#&gt;   Selected items:                220 
+#&gt;   Proportion of size:            0.062857 </div><div class='input'>
 <span class='co'># Stage 3: Execution</span>
 <span class='va'>sample</span> <span class='op'>&lt;-</span> <span class='va'>stage2</span><span class='op'>[[</span><span class='st'>'sample'</span><span class='op'>]</span><span class='op'>]</span>
 
@@ -293,28 +299,24 @@ For documentation on jfa itself, including the manual and user guide
                      conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, data <span class='op'>=</span> <span class='va'>sample</span>,
                      values <span class='op'>=</span> <span class='st'>'bookValue'</span>, values.audit <span class='op'>=</span> <span class='st'>'auditValue'</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage4</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; # ------------------------------------------------------------ 
-#&gt; #             jfa Evaluation Summary (Classical)
-#&gt; # ------------------------------------------------------------ 
-#&gt; # Input:
-#&gt; #
-#&gt; # Confidence level:              95% 
-#&gt; # Materiality:                   3% 
-#&gt; # Minimum precision:             Not specified 
-#&gt; # Population size:               Not specified 
-#&gt; # Sample size:                   220 
-#&gt; # Sample errors:                 5 
-#&gt; # Sum of taints:                 3 
-#&gt; # Method:                        stringer   
-#&gt; # ------------------------------------------------------------
-#&gt; # Output:
-#&gt; #  
-#&gt; # Most likely error:             1.364%
-#&gt; # Upper bound:                   3.372%
-#&gt; # Precision:                     2.009% 
-#&gt; # p-value:                       Requires likelihood 
-#&gt; # Sufficient evidence:           FALSE 
-#&gt; # ------------------------------------------------------------ </div><div class='input'>
+</div><div class='output co'>#&gt; 
+#&gt; 	Classical Audit Sample Evaluation Summary
+#&gt; 
+#&gt; Options:
+#&gt;   Confidence level:              0.95 
+#&gt;   Materiality:                   0.03 
+#&gt;   Method:                        stringer 
+#&gt; 
+#&gt; Data:
+#&gt;   Sample size:                   220 
+#&gt;   Number of errors:              5 
+#&gt;   Sum of taints:                 2.9999929 
+#&gt; 
+#&gt; Results:
+#&gt;   Most likely error:             0.013636 
+#&gt;   One-sided confidence interval: [0, 0.033724] 
+#&gt;   Precision:                     0.020087 
+#&gt;   Sufficient evidence:           FALSE </div><div class='input'>
 <span class='co'>######################################################################</span>
 <span class='co'>### Example 2: Bayesian audit sampling using a non-informed prior ####</span>
 <span class='co'>######################################################################</span>
@@ -325,17 +327,19 @@ For documentation on jfa itself, including the manual and user guide
 </div><div class='output co'>#&gt; 
 #&gt; 	Prior Distribution Summary
 #&gt; 
-#&gt; Likelihood:                 poisson 
-#&gt; Specifics:                  noninformative 
-#&gt; Functional form:            gamma(α = 1, β = 1) 
-#&gt; Equivalent sample size:     1 
-#&gt; Equivalent errors:          0 
+#&gt; Options:
+#&gt;   Likelihood:                    poisson 
+#&gt;   Specifics:                     noninformative 
 #&gt; 
-#&gt; Mode:                       0 
-#&gt; Mean:                       1 
-#&gt; Median:                     0.693 
-#&gt; 95 percent upper bound:     2.996 
-#&gt; Precision:                  2.996 </div><div class='input'>
+#&gt; Results:
+#&gt;   Functional form:               gamma(α = 1, β = 1) 
+#&gt;   Equivalent sample size:        1 
+#&gt;   Equivalent errors:             0 
+#&gt;   Mode:                          0 
+#&gt;   Mean:                          1 
+#&gt;   Median:                        0.69315 
+#&gt;   95 percent upper bound:        2.9957 
+#&gt;   Precision:                     2.9957 </div><div class='input'>
 <span class='co'># Stage 1: Planning</span>
 <span class='va'>stage1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='planning.html'>planning</a></span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.03</span>, expected <span class='op'>=</span> <span class='fl'>0.01</span>,
                    likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, prior <span class='op'>=</span> <span class='va'>prior</span><span class='op'>)</span>
@@ -343,20 +347,21 @@ For documentation on jfa itself, including the manual and user guide
 </div><div class='output co'>#&gt; 
 #&gt; 	Bayesian Audit Sample Planning Summary
 #&gt; 
-#&gt; Confidence level:           0.95 
-#&gt; Materiality:                0.03 
-#&gt; Min. precision:             not specified 
-#&gt; Likelihood:                 poisson 
-#&gt; Prior distribution:         gamma(α = 1, β = 1) 
-#&gt; Expected sample errors:     2.18 
+#&gt; Options:
+#&gt;   Confidence level:              0.95 
+#&gt;   Materiality:                   0.03 
+#&gt;   Expected:                      0.01 
+#&gt;   Likelihood:                    poisson 
+#&gt;   Prior distribution:            gamma(α = 1, β = 1) 
 #&gt; 
-#&gt; Minimum sample size:        218 
-#&gt; Posterior distribution:     gamma(α = 3.18, β = 219) 
-#&gt; 
-#&gt; Expected most likely error: 0.00995 
-#&gt; Expected upper bound:       0.02997 
-#&gt; Expected precision:         0.02002 
-#&gt; Expected BF-+:              626.86 </div><div class='input'>
+#&gt; Results:
+#&gt;   Minimum sample size:           218 
+#&gt;   Tolerable errors:              2.18 
+#&gt;   Posterior distribution:        gamma(α = 3.18, β = 219) 
+#&gt;   Expected most likely error:    0.0099543 
+#&gt;   Expected upper bound:          0.029971 
+#&gt;   Expected precision:            0.020017 
+#&gt;   Expected Bayes factor-+:       626.86 </div><div class='input'>
 <span class='co'># Stage 2: Selection</span>
 <span class='va'>stage2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='selection.html'>selection</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>BuildIt</span>, size <span class='op'>=</span> <span class='va'>stage1</span>,
                     units <span class='op'>=</span> <span class='st'>'values'</span>, values <span class='op'>=</span> <span class='st'>'bookValue'</span>,
@@ -365,17 +370,22 @@ For documentation on jfa itself, including the manual and user guide
 </div><div class='output co'>#&gt; 
 #&gt; 	Audit Sample Selection Summary
 #&gt; 
-#&gt; Population size:            1403221 
-#&gt; Requested sample size:      218 
-#&gt; Sampling units:             monetary units 
-#&gt; Method:                     fixed interval sampling 
-#&gt; Interval:                   6436.8 
-#&gt; Starting point:             1 
+#&gt; Options:
+#&gt;   Requested sample size:         218 
+#&gt;   Sampling units:                monetary units 
+#&gt;   Method:                        fixed interval sampling 
+#&gt;   Starting point:                1 
 #&gt; 
-#&gt; Selected sampling units:    218 
-#&gt; Selected items:             218 
-#&gt; Proportion n/N:             0.062 
-#&gt; Proportion of value:      0.00016 </div><div class='input'>
+#&gt; Data:
+#&gt;   Population size:               3500 
+#&gt;   Population value:              1403221 
+#&gt;   Selection interval:            6436.8 
+#&gt; 
+#&gt; Results:
+#&gt;   Selected sampling units:       218 
+#&gt;   Proportion of value:           0.0001554 
+#&gt;   Selected items:                218 
+#&gt;   Proportion of size:            0.062286 </div><div class='input'>
 <span class='co'># Stage 3: Execution</span>
 <span class='va'>sample</span> <span class='op'>&lt;-</span> <span class='va'>stage2</span><span class='op'>[[</span><span class='st'>'sample'</span><span class='op'>]</span><span class='op'>]</span>
 
@@ -384,30 +394,26 @@ For documentation on jfa itself, including the manual and user guide
                      values <span class='op'>=</span> <span class='st'>'bookValue'</span>, values.audit <span class='op'>=</span> <span class='st'>'auditValue'</span>,
                      prior <span class='op'>=</span> <span class='va'>prior</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage4</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; # ------------------------------------------------------------ 
-#&gt; #             jfa Evaluation Summary (Bayesian)
-#&gt; # ------------------------------------------------------------ 
-#&gt; # Input:
-#&gt; #
-#&gt; # Confidence level:              95% 
-#&gt; # Materiality:                   3% 
-#&gt; # Minimum precision:             Not specified 
-#&gt; # Population size:               Not specified 
-#&gt; # Sample size:                   218 
-#&gt; # Sample errors:                 4 
-#&gt; # Sum of taints:                 2.4 
-#&gt; # Method:                        poisson  
-#&gt; # Prior distribution:            gamma(α = 1, β = 1) 
-#&gt; # ------------------------------------------------------------
-#&gt; # Output:
-#&gt; # 
-#&gt; # Posterior distribution:        gamma(α = 3.4, β = 219) 
-#&gt; # Most likely error:             1.096%
-#&gt; # Upper bound:                   3.145%
-#&gt; # Precision:                     2.049% 
-#&gt; # Bayes factor-+:                493.503 
-#&gt; # Sufficient evidence:           FALSE 
-#&gt; # ------------------------------------------------------------ </div><div class='input'>
+</div><div class='output co'>#&gt; 
+#&gt; 	Bayesian Audit Sample Evaluation Summary
+#&gt; 
+#&gt; Options:
+#&gt;   Confidence level:              0.95 
+#&gt;   Materiality:                   0.03 
+#&gt;   Method:                        poisson 
+#&gt;   Prior distribution:            gamma(α = 1, β = 1) 
+#&gt; 
+#&gt; Data:
+#&gt;   Sample size:                   218 
+#&gt;   Number of errors:              4 
+#&gt;   Sum of taints:                 2.4000172 
+#&gt; 
+#&gt; Results:
+#&gt;   Most likely error:             0.010959 
+#&gt;   One-sided credible interval:   [0, 0.03145] 
+#&gt;   Precision:                     0.020491 
+#&gt;   Bayes factor-+:                493.5 
+#&gt;   Sufficient evidence:           FALSE </div><div class='input'>
 <span class='co'>###################################################################</span>
 <span class='co'>### Example 3: Bayesian audit sampling using an informed prior ####</span>
 <span class='co'>###################################################################</span>
@@ -419,17 +425,19 @@ For documentation on jfa itself, including the manual and user guide
 </div><div class='output co'>#&gt; 
 #&gt; 	Prior Distribution Summary
 #&gt; 
-#&gt; Likelihood:                 poisson 
-#&gt; Specifics:                  ir = 1; cr = 0.6; dr = 0.083 
-#&gt; Functional form:            gamma(α = 1.46, β = 46) 
-#&gt; Equivalent sample size:     46 
-#&gt; Equivalent errors:          0.46 
+#&gt; Options:
+#&gt;   Likelihood:                    poisson 
+#&gt;   Specifics:                     ir = 1; cr = 0.6; dr = 0.0833333 
 #&gt; 
-#&gt; Mode:                       0.01 
-#&gt; Mean:                       0.032 
-#&gt; Median:                     0.025 
-#&gt; 95 percent upper bound:     0.083 
-#&gt; Precision:                  0.073 </div><div class='input'>
+#&gt; Results:
+#&gt;   Functional form:               gamma(α = 1.46, β = 46) 
+#&gt;   Equivalent sample size:        46 
+#&gt;   Equivalent errors:             0.46 
+#&gt;   Mode:                          0.01 
+#&gt;   Mean:                          0.031739 
+#&gt;   Median:                        0.024859 
+#&gt;   95 percent upper bound:        0.08343 
+#&gt;   Precision:                     0.07343 </div><div class='input'>
 <span class='co'># Stage 1: Planning</span>
 <span class='va'>stage1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='planning.html'>planning</a></span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.03</span>, expected <span class='op'>=</span> <span class='fl'>0.01</span>,
                    likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, prior <span class='op'>=</span> <span class='va'>prior</span><span class='op'>)</span>
@@ -437,20 +445,21 @@ For documentation on jfa itself, including the manual and user guide
 </div><div class='output co'>#&gt; 
 #&gt; 	Bayesian Audit Sample Planning Summary
 #&gt; 
-#&gt; Confidence level:           0.95 
-#&gt; Materiality:                0.03 
-#&gt; Min. precision:             not specified 
-#&gt; Likelihood:                 poisson 
-#&gt; Prior distribution:         gamma(α = 1.46, β = 46) 
-#&gt; Expected sample errors:     1.74 
+#&gt; Options:
+#&gt;   Confidence level:              0.95 
+#&gt;   Materiality:                   0.03 
+#&gt;   Expected:                      0.01 
+#&gt;   Likelihood:                    poisson 
+#&gt;   Prior distribution:            gamma(α = 1.46, β = 46) 
 #&gt; 
-#&gt; Minimum sample size:        174 
-#&gt; Posterior distribution:     gamma(α = 3.2, β = 220) 
-#&gt; 
-#&gt; Expected most likely error: 0.01 
-#&gt; Expected upper bound:       0.02997 
-#&gt; Expected precision:         0.01997 
-#&gt; Expected BF-+:              13.593 </div><div class='input'>
+#&gt; Results:
+#&gt;   Minimum sample size:           174 
+#&gt;   Tolerable errors:              1.74 
+#&gt;   Posterior distribution:        gamma(α = 3.2, β = 220) 
+#&gt;   Expected most likely error:    0.01 
+#&gt;   Expected upper bound:          0.02997 
+#&gt;   Expected precision:            0.01997 
+#&gt;   Expected Bayes factor-+:       13.593 </div><div class='input'>
 <span class='co'># Stage 2: Selection</span>
 <span class='va'>stage2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='selection.html'>selection</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>BuildIt</span>, size <span class='op'>=</span> <span class='va'>stage1</span>,
                     units <span class='op'>=</span> <span class='st'>'values'</span>, values <span class='op'>=</span> <span class='st'>'bookValue'</span>,
@@ -459,17 +468,22 @@ For documentation on jfa itself, including the manual and user guide
 </div><div class='output co'>#&gt; 
 #&gt; 	Audit Sample Selection Summary
 #&gt; 
-#&gt; Population size:            1403221 
-#&gt; Requested sample size:      174 
-#&gt; Sampling units:             monetary units 
-#&gt; Method:                     fixed interval sampling 
-#&gt; Interval:                   8064.5 
-#&gt; Starting point:             1 
+#&gt; Options:
+#&gt;   Requested sample size:         174 
+#&gt;   Sampling units:                monetary units 
+#&gt;   Method:                        fixed interval sampling 
+#&gt;   Starting point:                1 
 #&gt; 
-#&gt; Selected sampling units:    174 
-#&gt; Selected items:             174 
-#&gt; Proportion n/N:             0.05 
-#&gt; Proportion of value:      0.00012 </div><div class='input'>
+#&gt; Data:
+#&gt;   Population size:               3500 
+#&gt;   Population value:              1403221 
+#&gt;   Selection interval:            8064.5 
+#&gt; 
+#&gt; Results:
+#&gt;   Selected sampling units:       174 
+#&gt;   Proportion of value:           0.000124 
+#&gt;   Selected items:                174 
+#&gt;   Proportion of size:            0.049714 </div><div class='input'>
 <span class='co'># Stage 3: Execution</span>
 <span class='va'>sample</span> <span class='op'>&lt;-</span> <span class='va'>stage2</span><span class='op'>[[</span><span class='st'>'sample'</span><span class='op'>]</span><span class='op'>]</span>
 
@@ -478,30 +492,26 @@ For documentation on jfa itself, including the manual and user guide
                      values <span class='op'>=</span> <span class='st'>'bookValue'</span>, values.audit <span class='op'>=</span> <span class='st'>'auditValue'</span>,
                      prior <span class='op'>=</span> <span class='va'>prior</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage4</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; # ------------------------------------------------------------ 
-#&gt; #             jfa Evaluation Summary (Bayesian)
-#&gt; # ------------------------------------------------------------ 
-#&gt; # Input:
-#&gt; #
-#&gt; # Confidence level:              95% 
-#&gt; # Materiality:                   3% 
-#&gt; # Minimum precision:             Not specified 
-#&gt; # Population size:               Not specified 
-#&gt; # Sample size:                   174 
-#&gt; # Sample errors:                 4 
-#&gt; # Sum of taints:                 2.4 
-#&gt; # Method:                        poisson  
-#&gt; # Prior distribution:            gamma(α = 1.46, β = 46) 
-#&gt; # ------------------------------------------------------------
-#&gt; # Output:
-#&gt; # 
-#&gt; # Posterior distribution:        gamma(α = 3.86, β = 220) 
-#&gt; # Most likely error:             1.3%
-#&gt; # Upper bound:                   3.433%
-#&gt; # Precision:                     2.133% 
-#&gt; # Bayes factor-+:                6.902 
-#&gt; # Sufficient evidence:           FALSE 
-#&gt; # ------------------------------------------------------------ </div></pre>
+</div><div class='output co'>#&gt; 
+#&gt; 	Bayesian Audit Sample Evaluation Summary
+#&gt; 
+#&gt; Options:
+#&gt;   Confidence level:              0.95 
+#&gt;   Materiality:                   0.03 
+#&gt;   Method:                        poisson 
+#&gt;   Prior distribution:            gamma(α = 1.46, β = 46) 
+#&gt; 
+#&gt; Data:
+#&gt;   Sample size:                   174 
+#&gt;   Number of errors:              4 
+#&gt;   Sum of taints:                 2.4000247 
+#&gt; 
+#&gt; Results:
+#&gt;   Most likely error:             0.013 
+#&gt;   One-sided credible interval:   [0, 0.034335] 
+#&gt;   Precision:                     0.021335 
+#&gt;   Bayes factor-+:                6.9023 
+#&gt;   Sufficient evidence:           FALSE </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
