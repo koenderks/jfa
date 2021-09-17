@@ -4,7 +4,8 @@
 \alias{selection}
 \title{Select a Statistical Audit Sample}
 \usage{
-selection(data, size, units = 'items', method = 'interval', values = NULL,
+selection(data, size, units = c('items', 'values'), 
+          method = c('interval', 'cell', 'random'), values = NULL,
           start = 1, order = FALSE, decreasing = FALSE, replace = FALSE)
 }
 \arguments{

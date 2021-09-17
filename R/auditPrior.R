@@ -5,8 +5,8 @@
 #' For more details on how to use this function, see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
-#' @usage auditPrior(method = 'default', likelihood = 'poisson', N.units = NULL,
-#'            alpha = NULL, beta = NULL, materiality = NULL, expected = 0, 
+#' @usage auditPrior(method = 'default', likelihood = c('poisson', 'binomial', 'hypergeometric'), 
+#'            N.units = NULL, alpha = NULL, beta = NULL, materiality = NULL, expected = 0, 
 #'            ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL, x = NULL, 
 #'            n = NULL, factor = NULL, conf.level = 0.95)
 #' 
@@ -88,14 +88,13 @@
 #'
 #' @export
 
-auditPrior <- function(method = 'default', likelihood = 'poisson', N.units = NULL,
-                       alpha = NULL, beta = NULL, materiality = NULL, expected = 0, 
+auditPrior <- function(method = 'default', likelihood = c('poisson', 'binomial', 'hypergeometric'), 
+                       N.units = NULL, alpha = NULL, beta = NULL, materiality = NULL, expected = 0, 
                        ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL, x = NULL, 
                        n = NULL, factor = NULL, conf.level = 0.95) {
+  likelihood <- match.arg(likelihood)
   if (!(method %in% c("default", "strict", 'param', "impartial", "hyp", "arm", "bram", "sample", "factor")) || length(method) != 1)
     stop("'method' should be one of 'default', 'strict', 'param', 'impartial', 'hyp', 'arm', 'bram', 'sample', 'factor'")
-  if (!(likelihood %in% c("poisson", "binomial", "hypergeometric")) || length(likelihood) != 1)
-    stop("'likelihood' should be one of 'poisson', 'binomial', 'hypergeometric'")
   if (is.null(conf.level))
     stop("'conf.level' is missing for prior construction")
   if (conf.level >= 1 || conf.level <= 0 || length(conf.level) != 1)

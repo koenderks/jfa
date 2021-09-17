@@ -5,7 +5,8 @@
 #' For more details on how to use this function, see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
-#' @usage selection(data, size, units = 'items', method = 'interval', values = NULL,
+#' @usage selection(data, size, units = c('items', 'values'), 
+#'           method = c('interval', 'cell', 'random'), values = NULL,
 #'           start = 1, order = FALSE, decreasing = FALSE, replace = FALSE)
 #'
 #' @param data           a data frame containing the population of items the auditor wishes to sample from.
@@ -68,17 +69,15 @@
 #'
 #' @export
 
-selection <- function(data, size, units = 'items', method = 'interval', values = NULL, 
+selection <- function(data, size, units = c('items', 'values'), 
+                      method = c('interval', 'cell', 'random'), values = NULL, 
                       start = 1, order = FALSE, decreasing = FALSE, replace = FALSE) {
-  dname <- deparse(substitute(data))
+  method <- match.arg(method)
+  units <- match.arg(units)
   if (class(size) == "jfaPlanning") # If the input for 'sampleSize' is of class 'jfaPlanning', extract the planned sample size
     size <- size[["n"]]
   if (units == "items" && size > nrow(data) && !replace) # Check if the sample size is valid (< N)
     stop("cannot take a sample larger than the population when 'replace = FALSE'")
-  if (!(method %in% c("interval", "cell", "random")) || length(method) != 1) # Check if the algorithm has a valid input
-    stop("'method' should be one of 'interval', 'cell', 'random'")
-  if (!(units %in% c("items", "values")) || length(units) != 1) # Check if the units have a valid input
-    stop("'units' should be one of 'items', 'values'")
   if (units == "values" && is.null(values)) # Check if the book values have a valid input
     stop("'values' is missing for selection")
   if (!is.null(values) && length(values) != 1) # Check if the book values have a valid input
@@ -89,6 +88,7 @@ selection <- function(data, size, units = 'items', method = 'interval', values =
     stop("'start' must be an integer > 1")
   interval       <- NULL # Placeholder for interval
   bookvalues     <- NULL # Placeholder for book values
+  dname          <- deparse(substitute(data))
   data           <- as.data.frame(data) # Convert the population to a data frame
   rownames(data) <- 1:nrow(data)
   if (!is.null(values)) # Take the book values from the population

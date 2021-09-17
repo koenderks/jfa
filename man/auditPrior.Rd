@@ -4,8 +4,8 @@
 \alias{auditPrior}
 \title{Prior Distributions for Audit Sampling}
 \usage{
-auditPrior(method = 'default', likelihood = 'poisson', N.units = NULL,
-           alpha = NULL, beta = NULL, materiality = NULL, expected = 0, 
+auditPrior(method = 'default', likelihood = c('poisson', 'binomial', 'hypergeometric'), 
+           N.units = NULL, alpha = NULL, beta = NULL, materiality = NULL, expected = 0, 
            ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL, x = NULL, 
            n = NULL, factor = NULL, conf.level = 0.95)
 }
