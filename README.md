@@ -291,9 +291,6 @@ Below you can find several informative tables that contain statistical sample si
 
 *Bayes factors*
 
-- [Default Bayes factors based on the gamma distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.lbfd.pdf)
-- [Default Bayes factors based on the beta distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.lbfd.pdf)
-- [Default Bayes factors based on the beta-binomial distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.lbfd.pdf)
 - [Impartial Bayes factors based on the gamma distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.lbfi.pdf)
 - [Impartial Bayes factors based on the beta distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.lbfi.pdf)
 - [Impartial Bayes factors based on the beta-binomial distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.lbfi.pdf)
