@@ -122,9 +122,9 @@ The `planning()` function calculates the minimum sample size for a statistical a
 
 ```r
 planning(materiality = NULL, min.precision = NULL, expected = 0,
-        likelihood = c('poisson', 'binomial', 'hypergeometric'), 
-        conf.level = 0.95, N.units = NULL, by = 1, max = 5000, 
-        prior = FALSE)
+         likelihood = c('poisson', 'binomial', 'hypergeometric'), 
+         conf.level = 0.95, N.units = NULL, by = 1, max = 5000, 
+         prior = FALSE)
 ```
 
 *Supported options for the `likelihood` argument:*
