@@ -110,7 +110,7 @@ head(sample, n = 10)
 
 ## Using `evaluation()`: The basics
 
-After saving the sample and annotating the invoices in the sample with their audit values you can it to perform statistical inference about the misstatement in the population with the `evaluation()` function. Next to a data sample as input, this function can also be used when you only have access to summary statistics from a data sample (e.g., sample size and number of errors). For an elaborate explanation of how to use this function in the context of each sampling objective, see the package vignettes [Evaluation: Testing misstatement](https://koenderks.github.io/jfa/articles/v6_testing_misstatement.html) and [Evaluation: Estimating misstatement](https://koenderks.github.io/jfa/articles/v5_estimating_misstatement.html).
+After saving the sample and annotating the invoices in the sample with their audit values you can perform statistical inference about the misstatement in the population with the `evaluation()` function. Next to a data sample as input, this function can also be used when you only have access to summary statistics from a data sample (e.g., sample size and number of errors). For an elaborate explanation of how to use this function in the context of each sampling objective, see the package vignettes [Evaluation: Testing misstatement](https://koenderks.github.io/jfa/articles/v6_testing_misstatement.html) and [Evaluation: Estimating misstatement](https://koenderks.github.io/jfa/articles/v5_estimating_misstatement.html).
 
 ### Summary statistics from the sample
 
