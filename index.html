@@ -177,119 +177,38 @@
            ir <span class="op">=</span> <span class="cn">NULL</span>, cr <span class="op">=</span> <span class="cn">NULL</span>, ub <span class="op">=</span> <span class="cn">NULL</span>, p.hmin <span class="op">=</span> <span class="cn">NULL</span>, x <span class="op">=</span> <span class="cn">NULL</span>, 
            n <span class="op">=</span> <span class="cn">NULL</span>, factor <span class="op">=</span> <span class="cn">NULL</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></code></pre></div>
 <p><em>Supported options for the <code>method</code> argument:</em></p>
-<table class="table">
-<colgroup>
-<col width="25%">
-<col width="25%">
-<col width="25%">
-<col width="25%">
-</colgroup>
-<thead><tr class="header">
-<th align="left"><code>method</code></th>
-<th align="left">Description</th>
-<th align="left">Required arguments</th>
-<th align="left">Reference</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left"><code>default</code></td>
-<td align="left">Noninformative prior distribution</td>
-<td align="left"></td>
-<td align="left">Derks et al. (2021)</td>
-</tr>
-<tr class="even">
-<td align="left"><code>strict</code></td>
-<td align="left">Strict prior distribution (classical properties)</td>
-<td align="left"></td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>param</code></td>
-<td align="left">Manual prior parameters</td>
-<td align="left">
-<code>alpha</code> and <code>beta</code>
-</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left"><code>impartial</code></td>
-<td align="left">Equal prior probabilities</td>
-<td align="left"><code>materiality</code></td>
-<td align="left">Derks et al. (2021)</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>hyp</code></td>
-<td align="left">Manual prior probabilities</td>
-<td align="left">
-<code>materiality</code> and <code>p.hmin</code>
-</td>
-<td align="left">Derks et al. (2021)</td>
-</tr>
-<tr class="even">
-<td align="left"><code>arm</code></td>
-<td align="left">Translate risk assessments (ARM)</td>
-<td align="left">
-<code>materiality</code>, <code>ir</code> and <code>cr</code>
-</td>
-<td align="left">Derks et al. (2021)</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>bram</code></td>
-<td align="left">Specify prior upper bound</td>
-<td align="left"><code>ub</code></td>
-<td align="left">Touw and Hoogduin (2011)</td>
-</tr>
-<tr class="even">
-<td align="left"><code>sample</code></td>
-<td align="left">Earlier sample</td>
-<td align="left">
-<code>x</code> and <code>n</code>
-</td>
-<td align="left">Derks et al. (2021)</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>factor</code></td>
-<td align="left">Weighted earlier sample</td>
-<td align="left">
-<code>x</code>, <code>n</code>, and <code>factor</code>
-</td>
-<td align="left">Derks et al. (2021)</td>
-</tr>
-</tbody>
-</table>
+<ul>
+<li>
+<code>default</code>: Noninformative prior distribution based on minimal information.</li>
+<li>
+<code>strict</code>: Strict prior distribution (with classical properties).</li>
+<li>
+<code>param</code>: Manual prior parameters.</li>
+<li>
+<code>impartial</code>: Equal prior probabilities for (in)tolerable misstatement (Derks et al., 2021).</li>
+<li>
+<code>hyp</code>: Manual prior probability for tolerable misstatement (Derks et al., 2021).</li>
+<li>
+<code>arm</code>: Assessments of inherent risk and internal control risk (Derks et al., 2021).</li>
+<li>
+<code>bram</code>: x-% upper bound for the prior distribution (Touw &amp; Hoogduin, 2011).</li>
+<li>
+<code>sample</code>: Information from an earlier sample (Derks et al., 2021).</li>
+<li>
+<code>factor</code>: Weigh information from an earlier sample (Derks et al., 2021).</li>
+</ul>
 <p><em>Supported options for the <code>likelihood</code> argument:</em></p>
-<table class="table">
-<colgroup>
-<col width="33%">
-<col width="33%">
-<col width="33%">
-</colgroup>
-<thead><tr class="header">
-<th align="left"><code>likelihood</code></th>
-<th align="left">Description</th>
-<th align="left">Reference</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left"><code>poisson</code></td>
-<td align="left">Gamma prior distribution (+ Poisson likelihood)</td>
-<td align="left">Stewart (2013)</td>
-</tr>
-<tr class="even">
-<td align="left"><code>binomial</code></td>
-<td align="left">Beta prior distribution (+ binomial likelihood)</td>
-<td align="left">Steele (1992)</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>hypergeometric</code></td>
-<td align="left">Beta-binomial prior distribution (+ hypergeometric likelihood)</td>
-<td align="left">Dyer and Pierce (1991)</td>
-</tr>
-</tbody>
-</table>
+<ul>
+<li>
+<code>poisson</code>: Poisson likelihood and conjugate gamma prior distribution (Stewart, 2013).</li>
+<li>
+<code>binomial</code>: Binomial likelihood and conjugate beta prior distribution (Steele, 1992).</li>
+<li>
+<code>hypergeometric</code>: Hypergeometric likelihood and conjugate beta-binomial prior distribution (Dyer &amp; Pierce, 1991).</li>
+</ul>
 <p><em>Example usage:</em></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># A default gamma prior distribution </span>
+<code class="sourceCode R"><span class="co"># A gamma prior distribution based on minimal information</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'default'</span>, likelihood <span class="op">=</span> <span class="st">'poisson'</span><span class="op">)</span>
 
 <span class="co"># A beta(1, 10) prior distribution </span>
@@ -311,30 +230,14 @@
          likelihood <span class="op">=</span> <span class="st">'poisson'</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, N.units <span class="op">=</span> <span class="cn">NULL</span>,
          by <span class="op">=</span> <span class="fl">1</span>, max <span class="op">=</span> <span class="fl">5000</span>, prior <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><em>Supported options for the <code>likelihood</code> argument:</em></p>
-<table class="table">
-<thead><tr class="header">
-<th align="left"><code>likelihood</code></th>
-<th align="left">Description</th>
-<th align="left">Reference</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left"><code>poisson</code></td>
-<td align="left">Poisson likelihood</td>
-<td align="left">Stewart (2012)</td>
-</tr>
-<tr class="even">
-<td align="left"><code>binomial</code></td>
-<td align="left">Binomial likelihood</td>
-<td align="left">Stewart (2012)</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>hypergeometric</code></td>
-<td align="left">Hypergeometric likelihood</td>
-<td align="left">Stewart (2012)</td>
-</tr>
-</tbody>
-</table>
+<ul>
+<li>
+<code>poisson</code>: Poisson likelihood (Stewart, 2012)</li>
+<li>
+<code>binomial</code>: Binomial likelihood (Stewart, 2012)</li>
+<li>
+<code>hypergeometric</code>: Hypergeometric likelihood (Stewart, 2012)</li>
+</ul>
 <p><em>Example usage:</em></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Classical planning using Poisson likelihood</span>
@@ -359,59 +262,21 @@
 <code class="sourceCode R"><span class="fu"><a href="reference/selection.html">selection</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">size</span>, units <span class="op">=</span> <span class="st">'items'</span>, method <span class="op">=</span> <span class="st">'interval'</span>, values <span class="op">=</span> <span class="cn">NULL</span>,
           start <span class="op">=</span> <span class="fl">1</span>, order <span class="op">=</span> <span class="cn">TRUE</span>, decreasing <span class="op">=</span> <span class="cn">FALSE</span>, replace <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><em>Supported options for the <code>units</code> argument:</em></p>
-<table class="table">
-<colgroup>
-<col width="25%">
-<col width="25%">
-<col width="25%">
-<col width="25%">
-</colgroup>
-<thead><tr class="header">
-<th align="left"><code>units</code></th>
-<th align="left">Description</th>
-<th align="left">Required arguments</th>
-<th align="left">Reference</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left"><code>items</code></td>
-<td align="left">Sampling units are items (rows)</td>
-<td align="left"></td>
-<td align="left">Leslie, Teitlebaum, and Anderson (1979)</td>
-</tr>
-<tr class="even">
-<td align="left"><code>values</code></td>
-<td align="left">Sampling units are monetary units</td>
-<td align="left"><code>values</code></td>
-<td align="left">Leslie, Teitlebaum, and Anderson (1979)</td>
-</tr>
-</tbody>
-</table>
+<ul>
+<li>
+<code>items</code>: Sampling units are items (rows) (Leslie, Teitlebaum, &amp; Anderson, 1979).</li>
+<li>
+<code>values</code>: Sampling units are monetary units (Leslie, Teitlebaum, &amp; Anderson, 1979).</li>
+</ul>
 <p><em>Supported options for the <code>method</code> argument:</em></p>
-<table class="table">
-<thead><tr class="header">
-<th align="left"><code>method</code></th>
-<th align="left">Description</th>
-<th align="left">Required arguments</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left"><code>interval</code></td>
-<td align="left">Select a fixed unit from every interval</td>
-<td align="left"><code>start</code></td>
-</tr>
-<tr class="even">
-<td align="left"><code>cell</code></td>
-<td align="left">Select a random unit from every interval</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left"><code>random</code></td>
-<td align="left">Select random units without the use of an interval</td>
-<td align="left"></td>
-</tr>
-</tbody>
-</table>
+<ul>
+<li>
+<code>interval</code>: Select a fixed sampling unit from each interval.</li>
+<li>
+<code>cell</code>: Select a random sampling unit from each interval.</li>
+<li>
+<code>random</code>: Select random sampling units.</li>
+</ul>
 <p><em>Example usage:</em></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Selection using random record sampling</span>
@@ -435,112 +300,38 @@
            r.delta <span class="op">=</span> <span class="fl">2.7</span>, m.type <span class="op">=</span> <span class="st">'accounts'</span>, cs.a <span class="op">=</span> <span class="fl">1</span>, cs.b <span class="op">=</span> <span class="fl">3</span>, cs.mu <span class="op">=</span> <span class="fl">0.5</span>, 
            prior <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><em>Supported options for the <code>method</code> argument:</em></p>
-<table class="table">
-<colgroup>
-<col width="25%">
-<col width="25%">
-<col width="25%">
-<col width="25%">
-</colgroup>
-<thead><tr class="header">
-<th align="left"><code>method</code></th>
-<th align="left">Description</th>
-<th align="left">Required arguments</th>
-<th align="left">Reference</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left"><code>poisson</code></td>
-<td align="left">Poisson likelihood</td>
-<td align="left"></td>
-<td align="left">Stewart (2012)</td>
-</tr>
-<tr class="even">
-<td align="left"><code>binomial</code></td>
-<td align="left">Binomial likelihood</td>
-<td align="left"></td>
-<td align="left">Stewart (2012)</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>hypergeometric</code></td>
-<td align="left">Hypergeometric likelihood</td>
-<td align="left"><code>N.units</code></td>
-<td align="left">Stewart (2012)</td>
-</tr>
-<tr class="even">
-<td align="left"><code>stringer</code></td>
-<td align="left">Classical Stringer bound</td>
-<td align="left"></td>
-<td align="left">Bickel (1992)</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>stringer.meikle</code></td>
-<td align="left">Stringer bound with Meikle’s correction</td>
-<td align="left"></td>
-<td align="left">Meikle (1972)</td>
-</tr>
-<tr class="even">
-<td align="left"><code>stringer.lta</code></td>
-<td align="left">Stringer bound with LTA correction</td>
-<td align="left"></td>
-<td align="left">Leslie, Teitlebaum, &amp; Anderson (1979)</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>stringer.pvz</code></td>
-<td align="left">Modified Stringer bound</td>
-<td align="left"></td>
-<td align="left">Pap and van Zuijlen (1996)</td>
-</tr>
-<tr class="even">
-<td align="left"><code>rohrbach</code></td>
-<td align="left">Rohrbach’s augmented variance estimator</td>
-<td align="left"><code>r.delta</code></td>
-<td align="left">Rohrbach (1993)</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>moment</code></td>
-<td align="left">Modified moment bound</td>
-<td align="left"><code>m.type</code></td>
-<td align="left">Dworin and Grimlund (1984)</td>
-</tr>
-<tr class="even">
-<td align="left"><code>coxsnell</code></td>
-<td align="left">Cox and Snell bound</td>
-<td align="left">
-<code>cs.a</code>, <code>cs.b</code>, and <code>cs.mu</code>
-</td>
-<td align="left">Cox and Snell (1979)</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>direct</code></td>
-<td align="left">Direct estimator</td>
-<td align="left">
-<code>N.items</code> and <code>N.units</code>
-</td>
-<td align="left">Touw and Hoogduin (2011)</td>
-</tr>
-<tr class="even">
-<td align="left"><code>difference</code></td>
-<td align="left">Difference estimator</td>
-<td align="left"><code>N.items</code></td>
-<td align="left">Touw and Hoogduin (2011)</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>quotient</code></td>
-<td align="left">Quotient estimator</td>
-<td align="left"><code>N.items</code></td>
-<td align="left">Touw and Hoogduin (2011)</td>
-</tr>
-<tr class="even">
-<td align="left"><code>regression</code></td>
-<td align="left">Regression estimator</td>
-<td align="left">
-<code>N.items</code> and <code>N.units</code>
-</td>
-<td align="left">Touw and Hoogduin (2011)</td>
-</tr>
-</tbody>
-</table>
+<ul>
+<li>
+<code>poisson</code>: Poisson likelihood (Stewart, 2012).</li>
+<li>
+<code>binomial</code>: Binomial likelihood (Stewart, 2012).</li>
+<li>
+<code>hypergeometric</code>: Hypergeometric likelihood (Stewart, 2012).</li>
+<li>
+<code>stringer</code>: Stringer bound (Bickel, 1992).</li>
+<li>
+<code>stringer.meikle</code>: Stringer bound with Meikle’s correction (Meikle, 1972).</li>
+<li>
+<code>stringer.lta</code>: Stringer bound with LTA correction (Leslie, Teitlebaum, &amp; Anderson, 1979).</li>
+<li>
+<code>stringer.pvz</code>: Modified Stringer bound (Pap &amp; van Zuijlen, 1996).</li>
+<li>
+<code>rohrbach</code>: Rohrbach’s augmented variance estimator (Rohrbach, 1993).</li>
+<li>
+<code>moment</code>: Modified moment bound (Dworing &amp; Grimlund, 1984).</li>
+<li>
+<code>coxsnell</code>: Cox and Snell bound (Cox &amp; Snell, 1979).</li>
+<li>
+<code>mpu</code>: Mean-per-unit estimator (Touw &amp; Hoogduin, 2011).</li>
+<li>
+<code>direct</code>: Direct estimator (Touw &amp; Hoogduin, 2011).</li>
+<li>
+<code>difference</code>: Difference estimator (Touw &amp; Hoogduin, 2011).</li>
+<li>
+<code>quotient</code>: Quotient (ratio) estimator (Touw &amp; Hoogduin, 2011).</li>
+<li>
+<code>regression</code>: Regression estimator (Touw &amp; Hoogduin, 2011).</li>
+</ul>
 <p><em>Example usage:</em></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Classical evaluation using the Poisson likelihood (and summary statistics)</span>
