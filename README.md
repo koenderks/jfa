@@ -93,9 +93,9 @@ auditPrior(method = 'default', likelihood = 'poisson', N.units = NULL,
 
 *Supported options for the `likelihood` argument:*
 
-- `poisson`: Poisson likelihood and conjugate gamma prior distribution with parameters shape (alpha) and rate (beta) (Stewart, 2013).
-- `binomial`: Binomial likelihood and conjugate beta prior distribution with parameters alpha and beta (Steele, 1992).
-- `hypergeometric`: Hypergeometric likelihood and conjugate beta-binomial prior distribution with parameters alpha and beta (Dyer & Pierce, 1991).
+- `poisson`: Poisson likelihood and conjugate gamma prior distribution (Stewart, 2013).
+- `binomial`: Binomial likelihood and conjugate beta prior distribution (Steele, 1992).
+- `hypergeometric`: Hypergeometric likelihood and conjugate beta-binomial prior distribution (Dyer & Pierce, 1991).
 
 *Example usage:*
 
