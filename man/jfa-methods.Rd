@@ -42,17 +42,17 @@
 
 \method{print}{summary.jfaSelection}(x, digits = getOption("digits"), ...)
 
-\method{print}{summary.jfaEvaluation}(x, ...)
+\method{print}{summary.jfaEvaluation}(x, digits = getOption("digits"), ...)
 
-\method{summary}{jfaPrior}(object, digits = 3, ...)
+\method{summary}{jfaPrior}(object, digits = getOption("digits"), ...)
 
-\method{summary}{jfaPosterior}(object, digits = 3, ...)
+\method{summary}{jfaPosterior}(object, digits = getOption("digits"), ...)
 
-\method{summary}{jfaPlanning}(object, digits = 3, ...)
+\method{summary}{jfaPlanning}(object, digits = getOption("digits"), ...)
 
-\method{summary}{jfaSelection}(object, digits = 3, ...)
+\method{summary}{jfaSelection}(object, digits = getOption("digits"), ...)
 
-\method{summary}{jfaEvaluation}(object, digits = 3, ...)
+\method{summary}{jfaEvaluation}(object, digits = getOption("digits"), ...)
 
 \method{plot}{jfaPrior}(x, xmax = 0.5, ...)
 

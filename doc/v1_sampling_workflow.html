@@ -185,60 +185,50 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>stage1 <span class="ot">&lt;-</span> <span class="fu">planning</span>(<span class="at">materiality =</span> materiality, <span class="at">expected =</span> expected, <span class="at">conf.level =</span> c.adj)</span></code></pre></div>
 <p>Laura can then inspect the result from her planning procedure by using the <code>summary()</code> function. Her result tells her that, given her prior distribution she needs to audit a sample of 178 transactions so that, when at most 4.45 errors are found, she can conclude with 91.66% confidence that the maximum error in BuildIt’s financial statements is lower the materiality of 5%.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage1)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------ 
-## #              jfa Planning Summary (Classical)
-## # ------------------------------------------------------------ 
-## # Input:
-## # 
-## # Confidence level:              91.667% 
-## # Materiality:                   5% 
-## # Minimum precision:             Not specified 
-## # Likelihood:                    poisson  
-## # Population size:               Not specified 
-## # Expected sample errors:        4.45 
-## # ------------------------------------------------------------
-## # Output:
-## #
-## # Sample size:                   178  
-## # ------------------------------------------------------------
-## # Statistics:
-## #
-## # Expected most likely error:    2.5% 
-## # Expected upper bound:          4.999% 
-## # Expected precision:            2.499% 
-## # Expected p-value:              0.0832 
-## # ------------------------------------------------------------</code></pre>
+<pre><code>## 
+##  Classical Audit Sample Planning Summary
+## 
+## Options:
+##   Confidence level:              0.91667 
+##   Materiality:                   0.05 
+##   Expected:                      0.025 
+##   Likelihood:                    poisson 
+## 
+## Results:
+##   Minimum sample size:           178 
+##   Tolerable errors:              4.45 
+##   Expected most likely error:    0.025 
+##   Expected upper bound:          0.049986 
+##   Expected precision:            0.024986 
+##   Expected p-value:              &lt; 2.22e-16</code></pre>
 </div>
 <div id="stage-2-selecting-a-sample" class="section level2">
 <h2>Stage 2: Selecting a sample</h2>
-<p>Laura is now ready to select the required 178 transactions from the financial statements. She can choose to do this according to one of two statistical methods. In <em>record sampling</em> (<code>units = &quot;rows&quot;</code>), inclusion probabilities are assigned on the transaction level, treating transactions with a high value and a low value the same, a transaction of $5,000 is equally likely to be selected as a transaction of $1,000. In <em>monetary unit sampling</em> (<code>units = &quot;values&quot;</code>), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the transaction that includes that dollar is selected. This favors higher transactions, as a transaction of $5,000 is five times more likely to be selected than a transaction of $1,000.</p>
+<p>Laura is now ready to select the required 178 transactions from the financial statements. She can choose to do this according to one of two statistical methods. In <em>record sampling</em> (<code>units = &quot;items&quot;</code>), inclusion probabilities are assigned on the transaction level, treating transactions with a high value and a low value the same, a transaction of $5,000 is equally likely to be selected as a transaction of $1,000. In <em>monetary unit sampling</em> (<code>units = &quot;values&quot;</code>), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the transaction that includes that dollar is selected. This favors higher transactions, as a transaction of $5,000 is five times more likely to be selected than a transaction of $1,000.</p>
 <p>Laura chooses to use <em>monetary unit sampling</em>, as she wants to include more high-valued transactions. The <code>selection()</code> function allows her to sample from the financial statements. She uses the <code>stage1</code> object as an input for the <code>selection()</code> function.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Draw a sample from the financial statements.</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>stage2 <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> stage1, <span class="at">units =</span> <span class="st">&quot;values&quot;</span>, <span class="at">values =</span> <span class="st">&quot;bookValue&quot;</span>, <span class="at">method =</span> <span class="st">&#39;interval&#39;</span>)</span></code></pre></div>
 <p>Laura can inspect the outcomes of her sampling procedure by using the <code>summary()</code> function.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage2)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------
-## #                  jfa Selection Summary
-## # ------------------------------------------------------------
-## # Input:
-## #      
-## # Population size:               1403221 
-## # Requested sample size:         178 
-## # Sampling units:                Monetary units 
-## # Method:                        Fixed interval sampling 
-## # Interval:                      7883.263 
-## # Starting point:                1 
-## # ------------------------------------------------------------ 
-## # Output:
-## #
-## # Obtained sampling units:       178 
-## # Obtained items:                178 
-## # ------------------------------------------------------------
-## # Statistics:
-## #
-## # Proportion n/N:                0.051 
-## # Percentage of value:           0.013% 
-## # ------------------------------------------------------------</code></pre>
+<pre><code>## 
+##  Audit Sample Selection Summary
+## 
+## Options:
+##   Requested sample size:         178 
+##   Sampling units:                monetary units 
+##   Method:                        fixed interval sampling 
+##   Starting point:                1 
+## 
+## Data:
+##   Population size:               3500 
+##   Population value:              1403221 
+##   Selection interval:            7883.3 
+## 
+## Results:
+##   Selected sampling units:       178 
+##   Proportion of value:           0.0001269 
+##   Selected items:                178 
+##   Proportion of size:            0.050857</code></pre>
 </div>
 <div id="stage-3-executing-the-audit" class="section level2">
 <h2>Stage 3: Executing the audit</h2>
@@ -261,28 +251,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">values =</span> <span class="st">&#39;bookValue&#39;</span>, <span class="at">values.audit =</span> <span class="st">&#39;auditValue&#39;</span>)</span></code></pre></div>
 <p>Laura can inspect the outcomes of her inference by using the <code>summary()</code> function. Her resulting 91.66% upper bound is 1.396%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage4)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------ 
-## #             jfa Evaluation Summary (Classical)
-## # ------------------------------------------------------------ 
-## # Input:
-## #
-## # Confidence level:              91.667% 
-## # Materiality:                   5% 
-## # Minimum precision:             Not specified 
-## # Population size:               Not specified 
-## # Sample size:                   178 
-## # Sample errors:                 0 
-## # Sum of taints:                 0 
-## # Method:                        poisson   
-## # ------------------------------------------------------------
-## # Output:
-## #  
-## # Most likely error:             0%
-## # Upper bound:                   1.396%
-## # Precision:                     1.396% 
-## # p-value:                       &lt;0.01 
-## # Sufficient evidence:           TRUE 
-## # ------------------------------------------------------------</code></pre>
+<pre><code>## 
+##  Classical Audit Sample Evaluation Summary
+## 
+## Options:
+##   Confidence level:              0.91667 
+##   Materiality:                   0.05 
+##   Method:                        poisson 
+## 
+## Data:
+##   Sample size:                   178 
+##   Number of errors:              0 
+##   Sum of taints:                 0 
+## 
+## Results:
+##   Most likely error:             0 
+##   One-sided confidence interval: [0, 0.01396] 
+##   Precision:                     0.01396 
+##   p-value:                       0.00013639 
+##   Sufficient evidence:           TRUE</code></pre>
 </div>
 <div id="conclusion" class="section level2">
 <h2>Conclusion</h2>

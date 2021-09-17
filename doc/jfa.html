@@ -206,29 +206,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Planning a sample with this objective in mind can be done using the code below (specifically by specifying the <code>materiality</code> argument). Next, a summary of the results can be obtained using the <code>summary()</code> function. As you can see below, the minimal sample size to achieve 95% assurance with respect to the performance materiality of 5% is 60 monetary units.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>stage1 <span class="ot">&lt;-</span> <span class="fu">planning</span>(<span class="at">materiality =</span> <span class="fl">0.05</span>, <span class="at">expected =</span> <span class="dv">0</span>, <span class="at">likelihood =</span> <span class="st">&#39;poisson&#39;</span>, <span class="at">conf.level =</span> <span class="fl">0.95</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage1)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------ 
-## #              jfa Planning Summary (Classical)
-## # ------------------------------------------------------------ 
-## # Input:
-## # 
-## # Confidence level:              95% 
-## # Materiality:                   5% 
-## # Minimum precision:             Not specified 
-## # Likelihood:                    poisson  
-## # Population size:               Not specified 
-## # Expected sample errors:        0 
-## # ------------------------------------------------------------
-## # Output:
-## #
-## # Sample size:                   60  
-## # ------------------------------------------------------------
-## # Statistics:
-## #
-## # Expected most likely error:    0% 
-## # Expected upper bound:          4.993% 
-## # Expected precision:            4.993% 
-## # Expected p-value:              0.0498 
-## # ------------------------------------------------------------</code></pre>
+<pre><code>## 
+##  Classical Audit Sample Planning Summary
+## 
+## Options:
+##   Confidence level:              0.95 
+##   Materiality:                   0.05 
+##   Expected:                      0 
+##   Likelihood:                    poisson 
+## 
+## Results:
+##   Minimum sample size:           60 
+##   Tolerable errors:              0 
+##   Expected most likely error:    0 
+##   Expected upper bound:          0.049929 
+##   Expected precision:            0.049929 
+##   Expected p-value:              &lt; 2.22e-16</code></pre>
 </div>
 <div id="obtaining-a-minimum-precision" class="section level3">
 <h3>Obtaining a minimum precision</h3>
@@ -237,94 +230,79 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Planning a sample with this objective can be done using the code below (specifically by specifying the <code>min.precision</code> argument). As you can see below, the minimal sample size for to achieve a precision of at least 2% is 150 monetary units.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>stage1 <span class="ot">&lt;-</span> <span class="fu">planning</span>(<span class="at">min.precision =</span> <span class="fl">0.02</span>, <span class="at">expected =</span> <span class="dv">0</span>, <span class="at">likelihood =</span> <span class="st">&#39;poisson&#39;</span>, <span class="at">conf.level =</span> <span class="fl">0.95</span>)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage1)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------ 
-## #              jfa Planning Summary (Classical)
-## # ------------------------------------------------------------ 
-## # Input:
-## # 
-## # Confidence level:              95% 
-## # Materiality:                   Not specified 
-## # Minimum precision:             2% 
-## # Likelihood:                    poisson  
-## # Population size:               Not specified 
-## # Expected sample errors:        0 
-## # ------------------------------------------------------------
-## # Output:
-## #
-## # Sample size:                   150  
-## # ------------------------------------------------------------
-## # Statistics:
-## #
-## # Expected most likely error:    0% 
-## # Expected upper bound:          1.997% 
-## # Expected precision:            1.997% 
-## # Expected p-value:              Requires materiality 
-## # ------------------------------------------------------------</code></pre>
+<pre><code>## 
+##  Classical Audit Sample Planning Summary
+## 
+## Options:
+##   Confidence level:              0.95 
+##   Min. precision:                0.02 
+##   Expected:                      0 
+##   Likelihood:                    poisson 
+## 
+## Results:
+##   Minimum sample size:           150 
+##   Tolerable errors:              0 
+##   Expected most likely error:    0 
+##   Expected upper bound:          0.019971 
+##   Expected precision:            0.019971</code></pre>
 </div>
 </div>
 <div id="using-selection-the-basics" class="section level2">
 <h2>Using <code>selection()</code>: The basics</h2>
-<p>Selecting a sample using the <code>selection()</code> function requires knowledge of the sampling units (i.e., units of inference) in the population. Items can be selected from the population using <em>record sampling</em> (also known as attribute sampling or item sampling) using <code>units = &#39;rows&#39;</code>, or using <em>monetary unit sampling (MUS)</em> using <code>units = &#39;values&#39;</code>. Selection also requires knowledge of the sampling algorithm. Sampling units can be selected with a <em>random sampling</em> scheme using <code>method = &#39;random&#39;</code>, with a <em>cell sampling</em> scheme using <code>method = &#39;cell&#39;</code>, or with a <em>fixed interval sampling</em> (also known as systematic sampling) scheme using <code>method = &#39;interval&#39;</code>.</p>
+<p>Selecting a sample using the <code>selection()</code> function requires knowledge of the sampling units (i.e., units of inference) in the population. Items can be selected from the population using <em>record sampling</em> (also known as attribute sampling or item sampling) using <code>units = &#39;items&#39;</code>, or using <em>monetary unit sampling (MUS)</em> using <code>units = &#39;values&#39;</code>. Selection also requires knowledge of the sampling algorithm. Sampling units can be selected with a <em>random sampling</em> scheme using <code>method = &#39;random&#39;</code>, with a <em>cell sampling</em> scheme using <code>method = &#39;cell&#39;</code>, or with a <em>fixed interval sampling</em> (also known as systematic sampling) scheme using <code>method = &#39;interval&#39;</code>.</p>
 <p>See the vignette <a href="https://koenderks.github.io/jfa/articles/v4_selection_methodology.html">Selection: Sampling methodology</a> for a more detailed explanation the selection algorithms implemented in <code>jfa</code>.</p>
 <div id="record-sampling" class="section level3">
 <h3>Record sampling</h3>
 <p>First, we take a look at how you can use the <code>selection()</code> function to perform random sampling from the items in the population. As an example, the code below samples 60 invoices from the <code>BuildIt</code> data set using a <em>random record sampling</em> scheme.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>stage2 <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">60</span>, <span class="at">units =</span> <span class="st">&#39;rows&#39;</span>, <span class="at">method =</span> <span class="st">&#39;random&#39;</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>stage2 <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">60</span>, <span class="at">units =</span> <span class="st">&#39;items&#39;</span>, <span class="at">method =</span> <span class="st">&#39;random&#39;</span>)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage2)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------
-## #                  jfa Selection Summary
-## # ------------------------------------------------------------
-## # Input:
-## #      
-## # Population size:               3500 
-## # Requested sample size:         60 
-## # Sampling units:                Rows 
-## # Method:                        Random sampling   
-## # ------------------------------------------------------------ 
-## # Output:
-## #
-## # Obtained sampling units:       60 
-## # Obtained items:                60 
-## # ------------------------------------------------------------
-## # Statistics:
-## #
-## # Proportion n/N:                0.017  
-## # ------------------------------------------------------------</code></pre>
+<pre><code>## 
+##  Audit Sample Selection Summary
+## 
+## Options:
+##   Requested sample size:         60 
+##   Sampling units:                items 
+##   Method:                        random sampling 
+## 
+## Data:
+##   Population size:               3500 
+## 
+## Results:
+##   Selected sampling units:       60 
+##   Selected items:                60 
+##   Proportion of size:            0.017143</code></pre>
 </div>
 <div id="monetary-unit-sampling-mus" class="section level3">
 <h3>Monetary unit sampling (MUS)</h3>
 <p>Next, we take a look at how you can use the <code>selection()</code> function to perform fixed interval sampling using the monetary units in the population as sampling units. As an example, the code below samples 150 monetary units from the <code>BuildIt</code> data set using a <em>fixed interval monetary unit sampling</em> scheme.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>stage2 <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">150</span>, <span class="at">units =</span> <span class="st">&#39;values&#39;</span>, <span class="at">method =</span> <span class="st">&#39;interval&#39;</span>, <span class="at">values =</span> <span class="st">&#39;bookValue&#39;</span>)</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage2)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------
-## #                  jfa Selection Summary
-## # ------------------------------------------------------------
-## # Input:
-## #      
-## # Population size:               1403221 
-## # Requested sample size:         150 
-## # Sampling units:                Monetary units 
-## # Method:                        Fixed interval sampling 
-## # Interval:                      9354.805 
-## # Starting point:                1 
-## # ------------------------------------------------------------ 
-## # Output:
-## #
-## # Obtained sampling units:       150 
-## # Obtained items:                150 
-## # ------------------------------------------------------------
-## # Statistics:
-## #
-## # Proportion n/N:                0.043 
-## # Percentage of value:           0.011% 
-## # ------------------------------------------------------------</code></pre>
+<pre><code>## 
+##  Audit Sample Selection Summary
+## 
+## Options:
+##   Requested sample size:         150 
+##   Sampling units:                monetary units 
+##   Method:                        fixed interval sampling 
+##   Starting point:                1 
+## 
+## Data:
+##   Population size:               3500 
+##   Population value:              1403221 
+##   Selection interval:            9354.8 
+## 
+## Results:
+##   Selected sampling units:       150 
+##   Proportion of value:           0.0001069 
+##   Selected items:                150 
+##   Proportion of size:            0.042857</code></pre>
 </div>
 <div id="extracting-the-sample" class="section level3">
 <h3>Extracting the sample</h3>
 <p>The selected sample is stored in the object that is returned by the <code>selection()</code> function. It can be accesses or extracted by indexing it via <code>$sample</code>. The first 10 invoices in the previously selected sample of 60 invoices are displayed below. After this step it is up to the auditor to annotate the sample with their audit values.</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>stage2 <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">60</span>, <span class="at">units =</span> <span class="st">&#39;rows&#39;</span>, <span class="at">method =</span> <span class="st">&#39;random&#39;</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>stage2 <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">60</span>, <span class="at">units =</span> <span class="st">&#39;items&#39;</span>, <span class="at">method =</span> <span class="st">&#39;random&#39;</span>)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> stage2<span class="sc">$</span>sample</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample, <span class="at">n =</span> <span class="dv">10</span>)</span></code></pre></div>
@@ -350,28 +328,25 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Sampling objective: <em>Evaluate, on the basis of summary statistics of a sample, whether the misstatement in the population exceeds the performance materiality such that there is a 5% ‘chance’ of incorrectly concluding that the population is free of material misstatement.</em></p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>stage4 <span class="ot">&lt;-</span> <span class="fu">evaluation</span>(<span class="at">materiality =</span> <span class="fl">0.05</span>, <span class="at">method =</span> <span class="st">&#39;binomial&#39;</span>, <span class="at">conf.level =</span> <span class="fl">0.95</span>, <span class="at">x =</span> <span class="dv">1</span>, <span class="at">n =</span> <span class="dv">60</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage4)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------ 
-## #             jfa Evaluation Summary (Classical)
-## # ------------------------------------------------------------ 
-## # Input:
-## #
-## # Confidence level:              95% 
-## # Materiality:                   5% 
-## # Minimum precision:             Not specified 
-## # Population size:               Not specified 
-## # Sample size:                   60 
-## # Sample errors:                 1 
-## # Sum of taints:                 1 
-## # Method:                        binomial   
-## # ------------------------------------------------------------
-## # Output:
-## #  
-## # Most likely error:             1.667%
-## # Upper bound:                   7.664%
-## # Precision:                     5.997% 
-## # p-value:                       0.192 
-## # Sufficient evidence:           FALSE 
-## # ------------------------------------------------------------</code></pre>
+<pre><code>## 
+##  Classical Audit Sample Evaluation Summary
+## 
+## Options:
+##   Confidence level:              0.95 
+##   Materiality:                   0.05 
+##   Method:                        binomial 
+## 
+## Data:
+##   Sample size:                   60 
+##   Number of errors:              1 
+##   Sum of taints:                 1 
+## 
+## Results:
+##   Most likely error:             0.016667 
+##   One-sided confidence interval: [0, 0.07664] 
+##   Precision:                     0.059973 
+##   p-value:                       0.19155 
+##   Sufficient evidence:           FALSE</code></pre>
 <p>As you can see above, the 95% upper bound for the misstatement is higher than 5% and therefore the sample does not provide sufficient evidence to conclude that the misstatement is lower than 5%.</p>
 </div>
 <div id="annotated-sample" class="section level3">
@@ -385,28 +360,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">data =</span> sample, <span class="at">values =</span> <span class="st">&#39;bookValue&#39;</span>, <span class="at">values.audit =</span> <span class="st">&#39;auditValue&#39;</span>,</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">times =</span> <span class="st">&#39;times&#39;</span>)</span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(stage4)</span></code></pre></div>
-<pre><code>## # ------------------------------------------------------------ 
-## #             jfa Evaluation Summary (Classical)
-## # ------------------------------------------------------------ 
-## # Input:
-## #
-## # Confidence level:              95% 
-## # Materiality:                   5% 
-## # Minimum precision:             Not specified 
-## # Population size:               Not specified 
-## # Sample size:                   60 
-## # Sample errors:                 1 
-## # Sum of taints:                 0.162 
-## # Method:                        stringer   
-## # ------------------------------------------------------------
-## # Output:
-## #  
-## # Most likely error:             0.27%
-## # Upper bound:                   5.322%
-## # Precision:                     5.053% 
-## # p-value:                       Requires likelihood 
-## # Sufficient evidence:           FALSE 
-## # ------------------------------------------------------------</code></pre>
+<pre><code>## 
+##  Classical Audit Sample Evaluation Summary
+## 
+## Options:
+##   Confidence level:              0.95 
+##   Materiality:                   0.05 
+##   Method:                        stringer 
+## 
+## Data:
+##   Sample size:                   60 
+##   Number of errors:              1 
+##   Sum of taints:                 0.1617495 
+## 
+## Results:
+##   Most likely error:             0.0026958 
+##   One-sided confidence interval: [0, 0.053222] 
+##   Precision:                     0.050526 
+##   Sufficient evidence:           FALSE</code></pre>
 </div>
 </div>
 <div id="using-report-the-basics" class="section level2">
