@@ -5,7 +5,7 @@
 #' For more details on how to use this function, see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
-#' @usage report(object, file = 'report.html', format = 'html_document')
+#' @usage report(object, file = 'report.html', format = c('html_document', 'pdf_document'))
 #'
 #' @param object an object of class \code{jfaEvaluation} as returned by the \code{evaluation()} function.
 #' @param file a character specifying the name of the report (e.g. \code{report.html}). By default, the report is created in your current working directory.          
@@ -37,30 +37,24 @@
 #'
 #' @export
 
-report <- function(object, file = 'report.html', format = 'html_document'){
-  
+report <- function(object, file = 'report.html', format = c('html_document', 'pdf_document')){
   if (!class(object) == 'jfaEvaluation')
     stop("'object' must be of class 'jfaEvaluation'")
-  
   if (!requireNamespace('rmarkdown', quietly = TRUE))
     stop('package \"rmarkdown\" needed for this function to work, please install it', call. = FALSE)
-  
   if (!requireNamespace('knitr', quietly = TRUE))
     stop('package \"knitr\" needed for this function to work, please install it', call. = FALSE)
-  
   if (!requireNamespace('kableExtra', quietly = TRUE))
     stop('package \"kableExtra\" needed for this function to work, please install it', call. = FALSE)
-  
   # Determine the template
   theFile <- system.file('rmd/report.Rmd', package = 'jfa')
-  
   # Process the function arguments
+  format             <- match.arg(format)
   args               <- list()
   args$input         <- theFile
   args$output_dir    <- getwd()
   args$output_format <- format
   args$output_file   <- file
-  
   # Start the renderer via rmarkdown
   outputFileName <- do.call(.getfun('rmarkdown::render'), args = args)
   invisible(outputFileName)

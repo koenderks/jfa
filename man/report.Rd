@@ -4,7 +4,7 @@
 \alias{report}
 \title{Create a statistical audit sampling report}
 \usage{
-report(object, file = 'report.html', format = 'html_document')
+report(object, file = 'report.html', format = c('html_document', 'pdf_document'))
 }
 \arguments{
 \item{object}{an object of class \code{jfaEvaluation} as returned by the \code{evaluation()} function.}
