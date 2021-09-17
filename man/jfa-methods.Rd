@@ -32,7 +32,7 @@
 
 \method{print}{jfaSelection}(x, ...)
 
-\method{print}{jfaEvaluation}(x, ...)
+\method{print}{jfaEvaluation}(x, digits = getOption("digits"), ...)
 
 \method{print}{summary.jfaPrior}(x, ...)
 
@@ -67,9 +67,9 @@
 \arguments{
 \item{...}{further arguments, currently ignored.}
 
-\item{object, x}{an object of class \code{jfaPrior}, \code{jfaPosterior}, \code{jfaPlanning}, \code{jfaSelection}, or \code{jfaEvaluation}.}
-
 \item{digits}{an integer specifying the number of digits to which output should be rounded. Used in \code{summary}.}
+
+\item{object, x}{an object of class \code{jfaPrior}, \code{jfaPosterior}, \code{jfaPlanning}, \code{jfaSelection}, or \code{jfaEvaluation}.}
 
 \item{xmax}{a number between 0 and 1 specifying the x-axis limits of the plot. Used in \code{plot}.}
 }

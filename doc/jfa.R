@@ -14,7 +14,7 @@ summary(stage1)
 
 ## -----------------------------------------------------------------------------
 set.seed(1)
-stage2 <- selection(data = BuildIt, size = 60, units = 'rows', method = 'random')
+stage2 <- selection(data = BuildIt, size = 60, units = 'items', method = 'random')
 summary(stage2)
 
 ## -----------------------------------------------------------------------------
@@ -23,7 +23,7 @@ summary(stage2)
 
 ## -----------------------------------------------------------------------------
 set.seed(1)
-stage2 <- selection(data = BuildIt, size = 60, units = 'rows', method = 'random')
+stage2 <- selection(data = BuildIt, size = 60, units = 'items', method = 'random')
 
 sample <- stage2$sample
 head(sample, n = 10)

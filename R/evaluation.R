@@ -64,8 +64,8 @@
 #' 
 #' \item{conf.level}{a numeric value between 0 and 1 indicating the confidence level used.}
 #' \item{mle}{a numeric value between 0 and 1 indicating the most likely error in the population as a fraction of its total size.}
-#' \item{lb}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value indicating the lower bound of the interval around the population misstatement as a fraction the total population size.}
-#' \item{ub}{a numeric value indicating the upper bound on the population misstatement as a fraction the total population size. If method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value indicating the upper bound of the interval around the population misstatement as a fraction the total population size.}
+#' \item{ub}{a numeric value indicating the upper bound on the (probability of) misstatement.}
+#' \item{lb}{a numeric value indicating the lower bound of the interval around the (probability of) misstatement.}
 #' \item{precision}{a numeric value between 0 and 1 indicating the difference between the most likely error and the upper bound in the population as a fraction of the total population size.}
 #' \item{p.value}{a numeric value indicating the one-sided p-value.}
 #' \item{x}{an integer larger than, or equal to, 0 indicating the number of items in the sample that contained an error.}
@@ -81,6 +81,7 @@
 #' \item{prior}{an object of class 'jfaPrior' that contains the prior distribution.}
 #' \item{posterior}{an object of class 'jfaPosterior' that contains the posterior distribution.}
 #' \item{data}{a data frame containing the relevant columns from the \code{data}.}
+#' \item{data.name}{a character string giving the name(s) of the data.}
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
@@ -170,6 +171,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
     x.obs <- x
     t.obs <- x
   } else if (!is.null(data)) { # Use data sample
+    dname <- deparse(substitute(data))
     if (is.null(values))
       stop("'values' is missing for evaluation")
     if (length(values) != 1)
@@ -293,8 +295,11 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
   if (!is.null(mle))
     result[["mle"]]         <- mle
   result[["ub"]]            <- ub
-  if (method %in% c("direct", "difference", "quotient", "regression"))
+  if (method %in% c("direct", "difference", "quotient", "regression")) {
     result[["lb"]]          <- lb
+  } else {
+	result[["lb"]]          <- 0
+  }
   if (!is.null(precision))
     result[["precision"]]   <- precision
   if (!bayesian && materiality < 1 && method %in% c('binomial', 'poisson', 'hypergeometric'))
@@ -420,6 +425,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
     frame[["taint"]]      <- frame[, 4] / frame[, 2]
     colnames(frame)       <- c("row", values, values.audit, "difference", "taint")
     result[["data"]]      <- frame
+	result[["data.name"]] <- dname
   }
   # Add class 'jfaEvaluation' to the result.
   class(result) <- "jfaEvaluation"

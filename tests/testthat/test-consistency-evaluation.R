@@ -6,7 +6,7 @@ test_that(desc = "(id: f3-v0.1.0-t1) Evaluation with Poisson method", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "poisson")
-  samp <- selection(population, size = jfaRes, units = "rows", method = "random", order = TRUE)$sample
+  samp <- selection(population, size = jfaRes, units = "items", method = "random", order = TRUE)$sample
   samp$auditValue <- samp[["bookValue"]]
   jfaEval <- evaluation(conf.level = 0.95, data = samp, values = "bookValue", values.audit = "auditValue", method = "poisson", materiality = 0.05)
   expect_equal(jfaEval[["ub"]], 0.04992887, tolerance = 0.001)
@@ -16,7 +16,7 @@ test_that(desc = "(id: f3-v0.1.0-t2) Evaluation with Poisson method with prior",
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "poisson")
-  samp <- selection(population, size = jfaRes, units = "rows", method = "random", order = TRUE)$sample
+  samp <- selection(population, size = jfaRes, units = "items", method = "random", order = TRUE)$sample
   samp$auditValue <- samp[["bookValue"]]
   jfaEval <- evaluation(conf.level = 0.95, data = samp, values = "bookValue", values.audit = "auditValue", method = "poisson", prior = TRUE, materiality = 0.05)
   expect_equal(jfaEval[["ub"]], 0.04911037, tolerance = 0.001)
@@ -26,7 +26,7 @@ test_that(desc = "(id: f3-v0.1.0-t3) Evaluation with binomial method", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "poisson")
-  samp <- selection(population, size = jfaRes, units = "rows", method = "random", order = TRUE)$sample
+  samp <- selection(population, size = jfaRes, units = "items", method = "random", order = TRUE)$sample
   samp$auditValue <- samp[["bookValue"]]
   jfaEval <- evaluation(conf.level = 0.95, data = samp, values = "bookValue", values.audit = "auditValue", method = "binomial", materiality = 0.05)
   expect_equal(jfaEval[["ub"]], 0.04870291, tolerance = 0.001)
@@ -36,7 +36,7 @@ test_that(desc = "(id: f3-v0.1.0-t4) Evaluation with binomial method with prior"
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "poisson")
-  samp <- selection(population, size = jfaRes, units = "rows", method = "random", order = TRUE)$sample
+  samp <- selection(population, size = jfaRes, units = "items", method = "random", order = TRUE)$sample
   samp$auditValue <- samp[["bookValue"]]
   jfaEval <- evaluation(conf.level = 0.95, data = samp, values = "bookValue", values.audit = "auditValue", method = "binomial", prior = TRUE, materiality = 0.05)
   expect_equal(jfaEval[["ub"]], 0.04792395, tolerance = 0.001)
@@ -46,7 +46,7 @@ test_that(desc = "(id: f3-v0.1.0-t5) Evaluation with hypergeometric method", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "hypergeometric", N = nrow(population))
-  samp <- selection(population, size = jfaRes, units = "rows", method = "random", order = TRUE)$sample
+  samp <- selection(population, size = jfaRes, units = "items", method = "random", order = TRUE)$sample
   samp$auditValue <- samp[["bookValue"]]
   jfaEval <- evaluation(conf.level = 0.95, data = samp, values = "bookValue", values.audit = "auditValue", method = "hypergeometric", N.units = 1000, materiality = 0.05)
   expect_equal(jfaEval[["ub"]], 0.049, tolerance = 0.001)
@@ -56,7 +56,7 @@ test_that(desc = "(id: f3-v0.1.0-t6) Evaluation with hypergeometric method with 
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "poisson")
-  samp <- selection(population, size = jfaRes, units = "rows", method = "random", order = TRUE)$sample
+  samp <- selection(population, size = jfaRes, units = "items", method = "random", order = TRUE)$sample
   samp$auditValue <- samp[["bookValue"]]
   prior <- auditPrior(method = 'default', likelihood = 'hypergeometric', N.units = 1000)
   jfaEval <- evaluation(conf.level = 0.95, data = samp, values = "bookValue", values.audit = "auditValue", prior = prior, materiality = 0.05)
@@ -67,7 +67,7 @@ test_that(desc = "(id: f3-v0.1.0-t7) Evaluation with stringer method", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "poisson")
-  samp <- selection(population, size = jfaRes, units = "rows", method = "random", order = TRUE)$sample
+  samp <- selection(population, size = jfaRes, units = "items", method = "random", order = TRUE)$sample
   samp$auditValue <- samp[["bookValue"]]
   jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "stringer")
   expect_equal(jfaEval[["ub"]], 0.04870291, tolerance = 0.001)
@@ -77,7 +77,7 @@ test_that(desc = "(id: f3-v0.1.0-t8) Evaluation with stringer.meikle method", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "poisson")
-  samp <- selection(population, size = jfaRes, units = "rows", method = "random", order = TRUE)$sample
+  samp <- selection(population, size = jfaRes, units = "items", method = "random", order = TRUE)$sample
   samp$auditValue <- samp[["bookValue"]]
   samp$auditValue[1] <- samp[["bookValue"]][1] + (0.5 * samp[["bookValue"]][1]) # Add an understatement
   samp$auditValue[2] <- samp[["bookValue"]][2] + (0.5 * samp[["bookValue"]][2]) # Add an understatement
@@ -93,7 +93,7 @@ test_that(desc = "(id: f3-v0.1.0-t9) Evaluation with stringer.lta method", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "poisson")
-  samp <- selection(population, size = jfaRes, units = "rows", method = "random", order = TRUE)$sample
+  samp <- selection(population, size = jfaRes, units = "items", method = "random", order = TRUE)$sample
   samp$auditValue <- samp[["bookValue"]]
   samp$auditValue[1] <- samp[["bookValue"]][1] + (0.5 * samp[["bookValue"]][1]) # Add an understatement
   samp$auditValue[2] <- samp[["bookValue"]][2] + (0.5 * samp[["bookValue"]][2]) # Add an understatement
@@ -109,7 +109,7 @@ test_that(desc = "(id: f3-v0.1.0-t10) Evaluation with stringer.pvz method", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "poisson")
-  samp <- selection(population, size = jfaRes, units = "rows", method = "random", order = TRUE)$sample
+  samp <- selection(population, size = jfaRes, units = "items", method = "random", order = TRUE)$sample
   samp$auditValue <- samp[["bookValue"]]
   samp$auditValue[1] <- samp[["bookValue"]][1] + (0.5 * samp[["bookValue"]][1]) # Add an understatement
   samp$auditValue[2] <- samp[["bookValue"]][2] + (0.5 * samp[["bookValue"]][2]) # Add an understatement
@@ -125,7 +125,7 @@ test_that(desc = "(id: f3-v0.1.0-t11) Evaluation with rohrbach method", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "poisson")
-  samp <- selection(population, size = jfaRes, units = "rows", method = "random", order = TRUE)$sample
+  samp <- selection(population, size = jfaRes, units = "items", method = "random", order = TRUE)$sample
   samp$auditValue <- samp[["bookValue"]]
   jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "rohrbach", N.units = 1000)
   expect_equal(jfaEval[["ub"]], 0.0308821, tolerance = 0.001)
@@ -135,7 +135,7 @@ test_that(desc = "(id: f3-v0.1.0-t12) Evaluation with moment method", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "poisson")
-  samp <- selection(population, size = jfaRes, units = "rows", method = "random", order = TRUE)$sample
+  samp <- selection(population, size = jfaRes, units = "items", method = "random", order = TRUE)$sample
   samp$auditValue <- samp[["bookValue"]]
   jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "moment", N.units = 1000, m.type = "accounts")
   expect_equal(jfaEval[["ub"]], 0.04916021, tolerance = 0.001)
@@ -195,7 +195,7 @@ test_that(desc = "(id: f3-v0.1.0-t17) Evaluation with Cox and Snell method", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, expected = 0.025)
-  samp <- selection(population, size = jfaRes, units = "rows", method = "random", order = TRUE)$sample
+  samp <- selection(population, size = jfaRes, units = "items", method = "random", order = TRUE)$sample
   samp$auditValue <- samp$bookValue
   samp$auditValue[1:3] <- samp$bookValue[1:3] * 0.4
   jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "coxsnell")
@@ -211,7 +211,7 @@ test_that(desc = "(id: f3-v0.3.0-t1) Evaluation with counts and stringer method"
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, expected = 0.025)
-  samp <- selection(population, size = jfaRes, units = "rows", method = "random", order = TRUE)$sample
+  samp <- selection(population, size = jfaRes, units = "items", method = "random", order = TRUE)$sample
   samp$auditValue <- samp[["bookValue"]]
   samp$auditValue[1:3] <- samp$bookValue[1:3] * 0.4
   counts <- c(2, 2, 3, rep(1, nrow(samp) - 3))
@@ -227,7 +227,7 @@ test_that(desc = "(id: f3-v0.3.0-t1) Evaluation with counts and stringer method"
 test_that(desc = "(id: f3-v0.4.0-t1) Bayes factors", {
   data("BuildIt")
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, expected = 0.025, likelihood = 'poisson')
-  samp <- selection(BuildIt, size = jfaRes, units = "rows", method = "interval", order = TRUE)$sample
+  samp <- selection(BuildIt, size = jfaRes, units = "items", method = "interval", order = TRUE)$sample
   prior <- auditPrior(method = 'default', likelihood = 'binomial')
   jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "binomial", times = 'times', prior = prior)
   expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf.hmin, 44957.32, tolerance = 0.001)
@@ -256,7 +256,7 @@ test_that(desc = "(id: f3-v0.5.0-t1) Test for frequentist summary and print func
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "poisson")
-  samp <- selection(population, size = jfaRes, units = "rows", method = "random", order = TRUE)$sample
+  samp <- selection(population, size = jfaRes, units = "items", method = "random", order = TRUE)$sample
   samp$auditValue <- samp[["bookValue"]]
   jfaEval <- evaluation(conf.level = 0.95, data = samp, values = "bookValue", values.audit = "auditValue", method = "poisson", materiality = 0.05)
   invisible(capture.output(print(jfaEval)))
@@ -275,7 +275,7 @@ test_that(desc = "(id: f3-v0.2.0-t2) Test for Bayesian summary function", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "poisson")
-  samp <- selection(population, size = jfaRes, units = "rows", method = "random", order = TRUE)$sample
+  samp <- selection(population, size = jfaRes, units = "items", method = "random", order = TRUE)$sample
   samp$auditValue <- samp[["bookValue"]]
   jfaEval <- evaluation(conf.level = 0.95, data = samp, values = "bookValue", values.audit = "auditValue", method = "binomial", prior = TRUE, materiality = 0.05)
   invisible(capture.output(print(jfaEval)))
@@ -289,7 +289,7 @@ test_that(desc = "(id: f3-v0.2.0-t3) Test for frequentist plot function", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "poisson")
-  samp <- selection(population, size = jfaRes, units = "rows", method = "random", order = TRUE)$sample
+  samp <- selection(population, size = jfaRes, units = "items", method = "random", order = TRUE)$sample
   samp$auditValue <- samp[["bookValue"]]
   jfaEval <- evaluation(conf.level = 0.95, data = samp, values = "bookValue", values.audit = "auditValue", method = "poisson", materiality = 0.05)
   invisible(capture.output(plot(jfaEval)))
@@ -308,7 +308,7 @@ test_that(desc = "(id: f3-v0.2.0-t3) Test for frequentist plot function", {
 test_that(desc = "(id: f3-v0.2.0-t4) Test for Bayesian plot function", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
-  samp <- selection(population, size = 100, units = "rows", method = "random", order = TRUE)$sample
+  samp <- selection(population, size = 100, units = "items", method = "random", order = TRUE)$sample
   samp$auditValue <- samp[["bookValue"]]
   jfaEval <- evaluation(conf.level = 0.95, data = samp, values = "bookValue", values.audit = "auditValue", method = "binomial", prior = TRUE, materiality = 0.05)
   invisible(capture.output(plot(jfaEval)))

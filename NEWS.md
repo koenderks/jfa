@@ -37,7 +37,7 @@
     - `csA` -> `cs.a` (in `evaluation()`)
     - `csB` -> `cs.b` (in `evaluation()`)
     - `csMu` -> `cs.mu` (in `evaluation()`)
-    - `records` -> `rows` (in `selection()`)
+    - `records` -> `items` (in `selection()`)
     - `mus` -> `values` (in `selection()`)
     - `hypotheses` -> `hyp` (in `auditPrior()`)
 - `poisson` is now the default likelihood for all functions since it is the most conservative.

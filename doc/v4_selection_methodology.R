@@ -7,7 +7,7 @@ data(BuildIt)
 
 ## -----------------------------------------------------------------------------
 # Record sampling
-sample <- selection(data = BuildIt, size = 100, units = 'rows', method = 'interval', start = 1)
+sample <- selection(data = BuildIt, size = 100, units = 'items', method = 'interval', start = 1)
 head(sample$sample, n = 6)
 
 ## -----------------------------------------------------------------------------
@@ -18,7 +18,7 @@ head(sample$sample, n = 6)
 ## -----------------------------------------------------------------------------
 # Record sampling
 set.seed(1)
-sample <- selection(data = BuildIt, size = 100, units = 'rows', method = 'cell')
+sample <- selection(data = BuildIt, size = 100, units = 'items', method = 'cell')
 head(sample$sample, n = 6)
 
 ## -----------------------------------------------------------------------------
@@ -30,7 +30,7 @@ head(sample$sample, n = 6)
 ## -----------------------------------------------------------------------------
 # Record sampling
 set.seed(1)
-sample <- selection(data = BuildIt, size = 100, units = 'rows', method = 'random')
+sample <- selection(data = BuildIt, size = 100, units = 'items', method = 'random')
 head(sample$sample, n = 6)
 
 ## -----------------------------------------------------------------------------

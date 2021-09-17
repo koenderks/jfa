@@ -4,7 +4,7 @@
 \alias{selection}
 \title{Select a Statistical Audit Sample}
 \usage{
-selection(data, size, units = 'rows', method = 'interval', values = NULL,
+selection(data, size, units = 'items', method = 'interval', values = NULL,
           start = 1, order = FALSE, decreasing = FALSE, replace = FALSE)
 }
 \arguments{
@@ -12,7 +12,7 @@ selection(data, size, units = 'rows', method = 'interval', values = NULL,
 
 \item{size}{an integer larger than 0 specifying the number of sampling units that need to be selected from the population. Can also be an object of class \code{jfaPlanning}.}
 
-\item{units}{a character specifying the sampling units used. Possible options are \code{rows} (default) for selection on the level of items (rows0) or \code{values} for selection on the level of monetary units.}
+\item{units}{a character specifying the sampling units used. Possible options are \code{items} (default) for selection on the level of items (rows) or \code{values} for selection on the level of monetary units.}
 
 \item{method}{a character specifying the sampling algorithm used. Possible options are \code{interval} (default) for fixed interval sampling, \code{cell} for cell sampling, or \code{random} for random.}
 
@@ -41,6 +41,7 @@ An object of class \code{jfaSelection} containing:
 \item{method}{a character indicating the the algorithm that was used to create the selection.}
 \item{values}{if \code{values} is specified, a character indicating the name of the book value column.}
 \item{start}{if \code{method = 'interval'}, an integer indicating the starting point in the interval.}
+\item{data.name}{a character string giving the name(s) of the data.}
 }
 \description{
 This function takes a data frame and performs statistical sampling according to one of three algorithms: random sampling, cell sampling, and fixed interval sampling. Sampling is done on the level of two possible sampling units: items (records) or monetary units. The function returns an object of class \code{jfaSelection} which can be used with associated \code{summary()} and a \code{plot()} methods.
@@ -52,7 +53,7 @@ For more details on how to use this function, see the package vignette:
 The first part of this section elaborates on the two possible options for the \code{units} argument:
 
 \itemize{
- \item{\code{rows}:      In record sampling each item in the population is seen as a sampling unit. An item of $5000 is therefore equally likely to be selected as an item of $500.}
+ \item{\code{items}:     In record sampling each item in the population is seen as a sampling unit. An item of $5000 is therefore equally likely to be selected as an item of $500.}
  \item{\code{values}:    In monetary unit sampling each monetary unit in the population is seen as a sampling unit. An item of $5000 is therefore ten times more likely to be selected as an item of $500.}
 }
 

@@ -2,10 +2,10 @@ context("Consistency of function selection()")
 
 # jfa version 0.1.0
 
-test_that(desc = "(id: f6-v0.1.0-t1) Test for units = 'rows' and method = 'random'", {
+test_that(desc = "(id: f6-v0.1.0-t1) Test for units = 'items' and method = 'random'", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
-  jfaRes <- selection(population, size = 100, units = "rows", method = "random", order = TRUE)
+  jfaRes <- selection(population, size = 100, units = "items", method = "random", order = TRUE)
   expect_equal(ncol(jfaRes[["sample"]]), 4)
   expect_equal(nrow(jfaRes[["sample"]]), 100)
 })
@@ -18,10 +18,10 @@ test_that(desc = "(id: f6-v0.1.0-t2) Test for units = 'values' and method = 'ran
   expect_equal(nrow(jfaRes[["sample"]]), 100)
 })
 
-test_that(desc = "(id: f6-v0.1.0-t3) Test for units = 'rows' and method = 'cell'", {
+test_that(desc = "(id: f6-v0.1.0-t3) Test for units = 'items' and method = 'cell'", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
-  jfaRes <- selection(population, size = 100, units = "rows", method = "cell")
+  jfaRes <- selection(population, size = 100, units = "items", method = "cell")
   expect_equal(ncol(jfaRes[["sample"]]), 4)
   expect_equal(nrow(jfaRes[["sample"]]), 100)
 })
@@ -34,10 +34,10 @@ test_that(desc = "(id: f6-v0.1.0-t4) Test for units = 'values' and method = 'cel
   expect_equal(nrow(jfaRes[["sample"]]), 100)
 })
 
-test_that(desc = "(id: f6-v0.1.0-t5) Test for units = 'rows' and method = 'interval'", {
+test_that(desc = "(id: f6-v0.1.0-t5) Test for units = 'items' and method = 'interval'", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
-  jfaRes <- selection(population, size = 100, units = "rows", method = "interval", start = 3)
+  jfaRes <- selection(population, size = 100, units = "items", method = "interval", start = 3)
   expect_equal(ncol(jfaRes[["sample"]]), 4)
   expect_equal(nrow(jfaRes[["sample"]]), 100)
 })
@@ -72,7 +72,7 @@ test_that(desc = "(id: f6-v0.5.0-t1) Test for summary and print function", {
   invisible(capture.output(summary(jfaRes)))
   expect_equal(ncol(jfaRes[["sample"]]), 4)
   expect_equal(nrow(jfaRes[["sample"]]), 100)
-  jfaRes <- selection(population, size = 100, units = "rows", method = "random", order = TRUE)
+  jfaRes <- selection(population, size = 100, units = "items", method = "random", order = TRUE)
   invisible(capture.output(print(jfaRes)))
   invisible(capture.output(summary(jfaRes)))
   expect_equal(ncol(jfaRes[["sample"]]), 4)

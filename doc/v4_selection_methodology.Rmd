@@ -83,7 +83,7 @@ As an example, the code below shows how to apply the fixed interval sampling alg
 
 ```{r}
 # Record sampling
-sample <- selection(data = BuildIt, size = 100, units = 'rows', method = 'interval', start = 1)
+sample <- selection(data = BuildIt, size = 100, units = 'items', method = 'interval', start = 1)
 head(sample$sample, n = 6)
 ```
 
@@ -118,7 +118,7 @@ As an example, the code below shows how to apply the cell sampling algorithm in 
 ```{r}
 # Record sampling
 set.seed(1)
-sample <- selection(data = BuildIt, size = 100, units = 'rows', method = 'cell')
+sample <- selection(data = BuildIt, size = 100, units = 'items', method = 'cell')
 head(sample$sample, n = 6)
 ```
 
@@ -152,7 +152,7 @@ As an example, the code below shows how to apply the random sampling algorithm i
 ```{r}
 # Record sampling
 set.seed(1)
-sample <- selection(data = BuildIt, size = 100, units = 'rows', method = 'random')
+sample <- selection(data = BuildIt, size = 100, units = 'items', method = 'random')
 head(sample$sample, n = 6)
 ```
 

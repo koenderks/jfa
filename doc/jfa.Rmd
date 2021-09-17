@@ -73,7 +73,7 @@ summary(stage1)
 
 ## Using `selection()`: The basics
 
-Selecting a sample using the `selection()` function requires knowledge of the sampling units (i.e., units of inference) in the population. Items can be selected from the population using *record sampling* (also known as attribute sampling or item sampling) using `units = 'rows'`, or using *monetary unit sampling (MUS)* using `units = 'values'`. Selection also requires knowledge of the sampling algorithm. Sampling units can be selected with a *random sampling* scheme using `method = 'random'`, with a *cell sampling* scheme using `method = 'cell'`, or with a *fixed interval sampling* (also known as systematic sampling) scheme using `method = 'interval'`.
+Selecting a sample using the `selection()` function requires knowledge of the sampling units (i.e., units of inference) in the population. Items can be selected from the population using *record sampling* (also known as attribute sampling or item sampling) using `units = 'items'`, or using *monetary unit sampling (MUS)* using `units = 'values'`. Selection also requires knowledge of the sampling algorithm. Sampling units can be selected with a *random sampling* scheme using `method = 'random'`, with a *cell sampling* scheme using `method = 'cell'`, or with a *fixed interval sampling* (also known as systematic sampling) scheme using `method = 'interval'`.
 
 See the vignette [Selection: Sampling methodology](https://koenderks.github.io/jfa/articles/v4_selection_methodology.html) for a more detailed explanation the selection algorithms implemented in `jfa`.
 
@@ -83,7 +83,7 @@ First, we take a look at how you can use the `selection()` function to perform r
 
 ```{r}
 set.seed(1)
-stage2 <- selection(data = BuildIt, size = 60, units = 'rows', method = 'random')
+stage2 <- selection(data = BuildIt, size = 60, units = 'items', method = 'random')
 summary(stage2)
 ```
 
@@ -102,7 +102,7 @@ The selected sample is stored in the object that is returned by the `selection()
 
 ```{r}
 set.seed(1)
-stage2 <- selection(data = BuildIt, size = 60, units = 'rows', method = 'random')
+stage2 <- selection(data = BuildIt, size = 60, units = 'items', method = 'random')
 
 sample <- stage2$sample
 head(sample, n = 10)

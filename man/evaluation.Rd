@@ -52,8 +52,8 @@ An object of class \code{jfaEvaluation} containing:
 
 \item{conf.level}{a numeric value between 0 and 1 indicating the confidence level used.}
 \item{mle}{a numeric value between 0 and 1 indicating the most likely error in the population as a fraction of its total size.}
-\item{lb}{if method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value indicating the lower bound of the interval around the population misstatement as a fraction the total population size.}
-\item{ub}{a numeric value indicating the upper bound on the population misstatement as a fraction the total population size. If method is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}, a numeric value indicating the upper bound of the interval around the population misstatement as a fraction the total population size.}
+\item{ub}{a numeric value indicating the upper bound on the (probability of) misstatement.}
+\item{lb}{a numeric value indicating the lower bound of the interval around the (probability of) misstatement.}
 \item{precision}{a numeric value between 0 and 1 indicating the difference between the most likely error and the upper bound in the population as a fraction of the total population size.}
 \item{p.value}{a numeric value indicating the one-sided p-value.}
 \item{x}{an integer larger than, or equal to, 0 indicating the number of items in the sample that contained an error.}
@@ -69,6 +69,7 @@ An object of class \code{jfaEvaluation} containing:
 \item{prior}{an object of class 'jfaPrior' that contains the prior distribution.}
 \item{posterior}{an object of class 'jfaPosterior' that contains the posterior distribution.}
 \item{data}{a data frame containing the relevant columns from the \code{data}.}
+\item{data.name}{a character string giving the name(s) of the data.}
 }
 \description{
 This function takes a data frame (using \code{data}, \code{values}, and \code{values.audit}) or summary statistics (using \code{x} and \code{n}) and performs inference on the misstatement in the sample. The function returns an object of class \code{jfaEvaluation} which can be used with associated \code{summary()} and \code{plot()} methods.
