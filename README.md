@@ -73,8 +73,8 @@ The `auditPrior()` function creates a prior probability distribution according t
 *Full function with default arguments:*
 
 ```r
-auditPrior(method = 'default', likelihood = 'poisson', N.units = NULL,
-           alpha = NULL, beta = NULL, materiality = NULL, expected = 0, 
+auditPrior(method = 'default', likelihood = c('poisson', 'binomial', 'hypergeometric'), 
+           N.units = NULL, alpha = NULL, beta = NULL, materiality = NULL, expected = 0, 
            ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL, x = NULL, 
            n = NULL, factor = NULL, conf.level = 0.95)
 ```
@@ -122,8 +122,9 @@ The `planning()` function calculates the minimum sample size for a statistical a
 
 ```r
 planning(materiality = NULL, min.precision = NULL, expected = 0,
-         likelihood = 'poisson', conf.level = 0.95, N.units = NULL,
-         by = 1, max = 5000, prior = FALSE)
+        likelihood = c('poisson', 'binomial', 'hypergeometric'), 
+        conf.level = 0.95, N.units = NULL, by = 1, max = 5000, 
+        prior = FALSE)
 ```
 
 *Supported options for the `likelihood` argument:*
@@ -157,8 +158,9 @@ The `selection()` function takes a data frame and performs statistical sampling 
 *Full function with default arguments:*
 
 ```r
-selection(data, size, units = 'items', method = 'interval', values = NULL,
-          start = 1, order = TRUE, decreasing = FALSE, replace = FALSE)
+selection(data, size, units = c('items', 'values'), 
+          method = c('interval', 'cell', 'random'), values = NULL, 
+          start = 1, order = FALSE, decreasing = FALSE, replace = FALSE)
 ```
 
 *Supported options for the `units` argument:*
@@ -243,7 +245,7 @@ The `report()` function takes an object of class `jfaEvaluation` as returned by 
 *Full function with default arguments:*
 
 ```r
-report(object, file = 'report.html', format = 'html_document')
+report(object, file = 'report.html', format = c('html_document', 'pdf_document'))
 ```
 
 *Example usage:*
