@@ -171,7 +171,7 @@ selection(data, size, units = 'items', method = 'interval', values = NULL,
 
 | `units` | Description | Required arguments |  Reference |
 | :----------- | :----------- | :----------- | :----------- |
-| `items` | Sampling units are items | | Leslie, Teitlebaum, and Anderson (1979) |
+| `items` | Sampling units are items (rows) | | Leslie, Teitlebaum, and Anderson (1979) |
 | `values` | Sampling units are monetary units | `values` | Leslie, Teitlebaum, and Anderson (1979) |
 
 *Supported options for the `method` argument:*
