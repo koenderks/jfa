@@ -81,30 +81,26 @@ auditPrior(method = 'default', likelihood = 'poisson', N.units = NULL,
 
 *Supported options for the `method` argument:*
 
-| `method` | Description | Required arguments | Reference |
-| :----------- | :----------- | :----------- | :----------- |
-| `default` | Noninformative prior distribution | | Derks et al. (2021) |
-| `strict` | Strict prior distribution (classical properties) | | |
-| `param` | Manual prior parameters | `alpha` and `beta` | |
-| `impartial` | Equal prior probabilities | `materiality` | Derks et al. (2021) |
-| `hyp` | Manual prior probabilities | `materiality` and `p.hmin` | Derks et al. (2021) |
-| `arm` | Translate risk assessments (ARM) | `materiality`, `ir` and `cr` | Derks et al. (2021) |
-| `bram` | Specify prior upper bound | `ub` | Touw and Hoogduin (2011) |
-| `sample` | Earlier sample | `x` and `n` | Derks et al. (2021) |
-| `factor` | Weighted earlier sample | `x`, `n`, and `factor` | Derks et al. (2021) |
+- `default`: Noninformative prior distribution based on minimal information.
+- `strict`: Strict prior distribution (with classical properties).
+- `param`: Manual prior parameters.
+- `impartial`: Equal prior probabilities for (in)tolerable misstatement (Derks et al., 2021).
+- `hyp`: Manual prior probability for tolerable misstatement (Derks et al., 2021).
+- `arm`: Assessments of inherent risk and internal control risk (Derks et al., 2021).
+- `bram`: x-% upper bound for the prior distribution (Touw & Hoogduin, 2011).
+- `sample`: Information from an earlier sample (Derks et al., 2021).
+- `factor`: Weigh information from an earlier sample (Derks et al., 2021).
 
 *Supported options for the `likelihood` argument:*
 
-| `likelihood` | Description | Reference |
-| :----------- | :----------- | :----------- |
-| `poisson` | Gamma prior distribution (+ Poisson likelihood) | Stewart (2013) |
-| `binomial` | Beta prior distribution (+ binomial likelihood) | Steele (1992) |
-| `hypergeometric` | Beta-binomial prior distribution (+ hypergeometric likelihood) | Dyer and Pierce (1991) |
+- `poisson`: Poisson likelihood and conjugate gamma prior distribution with parameters shape (alpha) and rate (beta) (Stewart, 2013).
+- `binomial`: Binomial likelihood and conjugate beta prior distribution with parameters alpha and beta (Steele, 1992).
+- `hypergeometric`: Hypergeometric likelihood and conjugate beta-binomial prior distribution with parameters alpha and beta (Dyer & Pierce, 1991).
 
 *Example usage:*
 
 ```r
-# A default gamma prior distribution 
+# A gamma prior distribution based on minimal information
 x <- auditPrior(method = 'default', likelihood = 'poisson')
 
 # A beta(1, 10) prior distribution 
@@ -132,11 +128,9 @@ planning(materiality = NULL, min.precision = NULL, expected = 0,
 
 *Supported options for the `likelihood` argument:*
 
-| `likelihood` | Description | Reference |
-| :----------- | :----------- | :----------- |
-| `poisson` | Poisson likelihood | Stewart (2012) |
-| `binomial` | Binomial likelihood | Stewart (2012) |
-| `hypergeometric` | Hypergeometric likelihood | Stewart (2012) |
+- `poisson`: Poisson likelihood (Stewart, 2012)
+- `binomial`: Binomial likelihood (Stewart, 2012)
+- `hypergeometric`: Hypergeometric likelihood (Stewart, 2012)
 
 *Example usage:*
 
@@ -169,18 +163,14 @@ selection(data, size, units = 'items', method = 'interval', values = NULL,
 
 *Supported options for the `units` argument:*
 
-| `units` | Description | Required arguments |  Reference |
-| :----------- | :----------- | :----------- | :----------- |
-| `items` | Sampling units are items (rows) | | Leslie, Teitlebaum, and Anderson (1979) |
-| `values` | Sampling units are monetary units | `values` | Leslie, Teitlebaum, and Anderson (1979) |
+- `items`: Sampling units are items (rows) (Leslie, Teitlebaum, & Anderson, 1979).
+- `values`: Sampling units are monetary units (Leslie, Teitlebaum, & Anderson, 1979).
 
 *Supported options for the `method` argument:*
 
-| `method` | Description | Required arguments |
-| :----------- | :----------- | :----------- |
-| `interval` | Select a fixed unit from every interval | `start` |
-| `cell` | Select a random unit from every interval | |
-| `random` | Select random units without the use of an interval | |
+- `interval`: Select a fixed sampling unit from each interval.
+- `cell`: Select a random sampling unit from each interval.
+- `random`: Select random sampling units.
 
 *Example usage:*
 
@@ -212,22 +202,21 @@ evaluation(materiality = NULL, min.precision = NULL, method = 'poisson',
 
 *Supported options for the `method` argument:*
 
-| `method` | Description | Required arguments | Reference |
-| :----------- | :----------- | :----------- | :----------- |
-| `poisson` | Poisson likelihood | | Stewart (2012) |
-| `binomial` | Binomial likelihood | | Stewart (2012) |
-| `hypergeometric` | Hypergeometric likelihood | `N.units` | Stewart (2012) |
-| `stringer` | Classical Stringer bound | | Bickel (1992) |
-| `stringer.meikle` | Stringer bound with Meikle's correction | | Meikle (1972) |
-| `stringer.lta` | Stringer bound with LTA correction | | Leslie, Teitlebaum, & Anderson (1979) |
-| `stringer.pvz` | Modified Stringer bound | | Pap and van Zuijlen (1996) |
-| `rohrbach` | Rohrbach's augmented variance estimator | `r.delta` | Rohrbach (1993) |
-| `moment` | Modified moment bound | `m.type` | Dworin and Grimlund (1984) |
-| `coxsnell` | Cox and Snell bound | `cs.a`, `cs.b`, and `cs.mu` | Cox and Snell (1979) |
-| `direct` | Direct estimator | `N.items` and `N.units` | Touw and Hoogduin (2011) |
-| `difference` | Difference estimator | `N.items` | Touw and Hoogduin (2011) |
-| `quotient` | Quotient estimator | `N.items` | Touw and Hoogduin (2011) |
-| `regression` | Regression estimator | `N.items` and `N.units` | Touw and Hoogduin (2011) |
+- `poisson`: Poisson likelihood (Stewart, 2012).
+- `binomial`: Binomial likelihood (Stewart, 2012).
+- `hypergeometric`: Hypergeometric likelihood (Stewart, 2012).
+- `stringer`: Stringer bound (Bickel, 1992).
+- `stringer.meikle`: Stringer bound with Meikle's correction (Meikle, 1972).
+- `stringer.lta`: Stringer bound with LTA correction (Leslie, Teitlebaum, & Anderson, 1979).
+- `stringer.pvz`: Modified Stringer bound (Pap & van Zuijlen, 1996).
+- `rohrbach`: Rohrbach's augmented variance estimator (Rohrbach, 1993).
+- `moment`: Modified moment bound (Dworing & Grimlund, 1984).
+- `coxsnell`: Cox and Snell bound (Cox & Snell, 1979).
+- `mpu`: Mean-per-unit estimator (Touw & Hoogduin, 2011).
+- `direct`: Direct estimator (Touw & Hoogduin, 2011).
+- `difference`: Difference estimator (Touw & Hoogduin, 2011).
+- `quotient`: Quotient (ratio) estimator (Touw & Hoogduin, 2011).
+- `regression`: Regression estimator (Touw & Hoogduin, 2011).
 
 *Example usage:*
 
