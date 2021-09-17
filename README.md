@@ -103,7 +103,7 @@ auditPrior(method = 'default', likelihood = c('poisson', 'binomial', 'hypergeome
 # A gamma prior distribution based on minimal information
 x <- auditPrior(method = 'default', likelihood = 'poisson')
 
-# A beta(1, 10) prior distribution 
+# A custom beta(1, 10) prior distribution 
 x <- auditPrior(method = 'param', likelihood = 'binomial', alpha = 1, beta = 10)
 
 # A beta prior distribution which incorporates inherent risk (70%) and control risk (50%)
@@ -136,13 +136,13 @@ planning(materiality = NULL, min.precision = NULL, expected = 0,
 *Example usage:*
 
 ```r
-# Classical planning using Poisson likelihood
+# Classical planning using the Poisson likelihood
 x <- planning(materiality = 0.03, likelihood = 'poisson')
 
-# Bayesian planning using a default gamma prior
+# Bayesian planning using a default minimal information prior
 x <- planning(materiality = 0.03, likelihood = 'poisson', prior = TRUE)
 
-# Bayesian planning using a beta(1, 10) prior
+# Bayesian planning using a custom beta(1, 10) prior
 x <- planning(materiality = 0.03, 
               prior = auditPrior(method = 'param', likelihood = 'binomial', alpha = 1, beta = 10))
 
@@ -153,7 +153,7 @@ summary(x) # Prints information about the planning
 
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
-The `selection()` function takes a data frame and performs statistical sampling according to one of three algorithms: fixed interval sampling, cell sampling, or random sampling in combination with either record sampling or monetary unit sampling. The function returns an object of class `jfaSelection` which can be used with associated `summary()` and `plot()` methods. The input for the `size` argument can be an object of class `jfaPlanning` as returned by the `planning()` function.
+The `selection()` function takes a data frame and performs statistical sampling according to one of three algorithms: fixed interval sampling, cell sampling, or random sampling in combination with either record (attributes) sampling or monetary unit sampling (MUS). The function returns an object of class `jfaSelection` which can be used with associated `summary()` and `plot()` methods. The input for the `size` argument can be an object of class `jfaPlanning` as returned by the `planning()` function.
 
 *Full function with default arguments:*
 
@@ -177,10 +177,10 @@ selection(data, size, units = c('items', 'values'),
 *Example usage:*
 
 ```r
-# Selection using random record sampling
+# Selection using random record (attributes) sampling
 x <- selection(data = BuildIt, size = 100, units = 'items', method = 'random')
 
-# Selection using fixed interval MUS (using column 'bookValues' in BuildIt)
+# Selection using fixed interval monetary unit sampling (using column 'bookValues' in BuildIt)
 x <- selection(data = BuildIt, size = 100, units = 'values', method = 'interval', values = 'bookValues')
 
 summary(x) # Prints information about the selection
@@ -226,10 +226,10 @@ evaluation(materiality = NULL, min.precision = NULL, method = 'poisson',
 # Classical evaluation using the Poisson likelihood (and summary statistics)
 x <- evaluation(materiality = 0.03, x = 1, n = 100, method = 'poisson')
 
-# Bayesian evaluation using a default gamma prior (and summary statistics)
+# Bayesian evaluation using a default minimal information prior (and summary statistics)
 x <- evaluation(materiality = 0.03, x = 1, n = 100, method = 'poisson', prior = TRUE)
 
-# Bayesian evaluation using a beta(1, 10) prior (and summary statistics)
+# Bayesian evaluation using a custom beta(1, 10) prior (and summary statistics)
 x <- evaluation(materiality = 0.03, x = 1, n = 100, 
                 prior = auditPrior(method = 'param', likelihood = 'binomial', alpha = 1, beta = 10))
 
