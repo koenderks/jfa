@@ -176,8 +176,8 @@
 ## # Output: 
 ## #
 ## # Prior distribution:            gamma(α = 2.325, β = 53) 
-## # Implicit sample size:          53 
-## # Implicit errors:               1.325 
+## # Equivalent sample size:        53 
+## # Equivalent errors:             1.325 
 ## # ------------------------------------------------------------
 ## # Statistics: 
 ## #
@@ -229,7 +229,7 @@
 <div id="stage-2-selecting-a-sample" class="section level2">
 <h2 class="hasAnchor">
 <a href="#stage-2-selecting-a-sample" class="anchor"></a>Stage 2: Selecting a sample</h2>
-<p>Laura is now ready to select the required 178 transactions from the financial statements. She can choose to do this according to one of two statistical methods. In <em>record sampling</em> (<code>units = "rows"</code>), inclusion probabilities are assigned on the transaction level, treating transactions with a high value and a low value the same, a transaction of $5,000 is equally likely to be selected as a transaction of $1,000. In <em>monetary unit sampling</em> (<code>units = "values"</code>), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the transaction that includes that dollar is selected. This favors higher transactions, as a transaction of $5,000 is five times more likely to be selected than a transaction of $1,000.</p>
+<p>Laura is now ready to select the required 178 transactions from the financial statements. She can choose to do this according to one of two statistical methods. In <em>record sampling</em> (<code>units = "items"</code>), inclusion probabilities are assigned on the transaction level, treating transactions with a high value and a low value the same, a transaction of $5,000 is equally likely to be selected as a transaction of $1,000. In <em>monetary unit sampling</em> (<code>units = "values"</code>), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the transaction that includes that dollar is selected. This favors higher transactions, as a transaction of $5,000 is five times more likely to be selected than a transaction of $1,000.</p>
 <p>Laura chooses to use <em>monetary unit sampling</em>, as she wants to include more high-valued transactions. The <code><a href="../reference/selection.html">selection()</a></code> function allows her to sample from the financial statements. She uses the <code>stage1</code> object as an input for the <code><a href="../reference/selection.html">selection()</a></code> function.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Step 2: Draw a sample from the financial statements.</span>

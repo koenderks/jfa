@@ -228,7 +228,7 @@
 <div id="using-selection-the-basics" class="section level2">
 <h2 class="hasAnchor">
 <a href="#using-selection-the-basics" class="anchor"></a>Using <code>selection()</code>: The basics</h2>
-<p>Selecting a sample using the <code><a href="../reference/selection.html">selection()</a></code> function requires knowledge of the sampling units (i.e., units of inference) in the population. Items can be selected from the population using <em>record sampling</em> (also known as attribute sampling or item sampling) using <code>units = 'rows'</code>, or using <em>monetary unit sampling (MUS)</em> using <code>units = 'values'</code>. Selection also requires knowledge of the sampling algorithm. Sampling units can be selected with a <em>random sampling</em> scheme using <code>method = 'random'</code>, with a <em>cell sampling</em> scheme using <code>method = 'cell'</code>, or with a <em>fixed interval sampling</em> (also known as systematic sampling) scheme using <code>method = 'interval'</code>.</p>
+<p>Selecting a sample using the <code><a href="../reference/selection.html">selection()</a></code> function requires knowledge of the sampling units (i.e., units of inference) in the population. Items can be selected from the population using <em>record sampling</em> (also known as attribute sampling or item sampling) using <code>units = 'items'</code>, or using <em>monetary unit sampling (MUS)</em> using <code>units = 'values'</code>. Selection also requires knowledge of the sampling algorithm. Sampling units can be selected with a <em>random sampling</em> scheme using <code>method = 'random'</code>, with a <em>cell sampling</em> scheme using <code>method = 'cell'</code>, or with a <em>fixed interval sampling</em> (also known as systematic sampling) scheme using <code>method = 'interval'</code>.</p>
 <p>See the vignette <a href="https://koenderks.github.io/jfa/articles/v4_selection_methodology.html">Selection: Sampling methodology</a> for a more detailed explanation the selection algorithms implemented in <code>jfa</code>.</p>
 <div id="record-sampling" class="section level3">
 <h3 class="hasAnchor">
@@ -236,7 +236,7 @@
 <p>First, we take a look at how you can use the <code><a href="../reference/selection.html">selection()</a></code> function to perform random sampling from the items in the population. As an example, the code below samples 60 invoices from the <code>BuildIt</code> data set using a <em>random record sampling</em> scheme.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-<span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">60</span>, units <span class="op">=</span> <span class="st">'rows'</span>, method <span class="op">=</span> <span class="st">'random'</span><span class="op">)</span>
+<span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">60</span>, units <span class="op">=</span> <span class="st">'items'</span>, method <span class="op">=</span> <span class="st">'random'</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">stage2</span><span class="op">)</span></code></pre></div>
 <pre><code>## # ------------------------------------------------------------
 ## #                  jfa Selection Summary
@@ -245,7 +245,7 @@
 ## #      
 ## # Population size:               3500 
 ## # Requested sample size:         60 
-## # Sampling units:                Rows 
+## # Sampling units:                Items 
 ## # Method:                        Random sampling   
 ## # ------------------------------------------------------------ 
 ## # Output:
@@ -294,7 +294,7 @@
 <p>The selected sample is stored in the object that is returned by the <code><a href="../reference/selection.html">selection()</a></code> function. It can be accesses or extracted by indexing it via <code>$sample</code>. The first 10 invoices in the previously selected sample of 60 invoices are displayed below. After this step it is up to the auditor to annotate the sample with their audit values.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
-<span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">60</span>, units <span class="op">=</span> <span class="st">'rows'</span>, method <span class="op">=</span> <span class="st">'random'</span><span class="op">)</span>
+<span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">60</span>, units <span class="op">=</span> <span class="st">'items'</span>, method <span class="op">=</span> <span class="st">'random'</span><span class="op">)</span>
 
 <span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">stage2</span><span class="op">$</span><span class="va">sample</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></code></pre></div>

@@ -253,8 +253,8 @@ vignette('jfa', package = 'jfa')" />
     <p>An object of class <code>jfaEvaluation</code> containing:</p>
 <dt>conf.level</dt><dd><p>a numeric value between 0 and 1 indicating the confidence level used.</p></dd>
 <dt>mle</dt><dd><p>a numeric value between 0 and 1 indicating the most likely error in the population as a fraction of its total size.</p></dd>
-<dt>lb</dt><dd><p>if method is one of <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code>, a numeric value indicating the lower bound of the interval around the population misstatement as a fraction the total population size.</p></dd>
-<dt>ub</dt><dd><p>a numeric value indicating the upper bound on the population misstatement as a fraction the total population size. If method is one of <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code>, a numeric value indicating the upper bound of the interval around the population misstatement as a fraction the total population size.</p></dd>
+<dt>ub</dt><dd><p>a numeric value indicating the upper bound on the (probability of) misstatement.</p></dd>
+<dt>lb</dt><dd><p>a numeric value indicating the lower bound of the interval around the (probability of) misstatement.</p></dd>
 <dt>precision</dt><dd><p>a numeric value between 0 and 1 indicating the difference between the most likely error and the upper bound in the population as a fraction of the total population size.</p></dd>
 <dt>p.value</dt><dd><p>a numeric value indicating the one-sided p-value.</p></dd>
 <dt>x</dt><dd><p>an integer larger than, or equal to, 0 indicating the number of items in the sample that contained an error.</p></dd>
@@ -270,6 +270,7 @@ vignette('jfa', package = 'jfa')" />
 <dt>prior</dt><dd><p>an object of class 'jfaPrior' that contains the prior distribution.</p></dd>
 <dt>posterior</dt><dd><p>an object of class 'jfaPosterior' that contains the posterior distribution.</p></dd>
 <dt>data</dt><dd><p>a data frame containing the relevant columns from the <code>data</code>.</p></dd>
+<dt>data.name</dt><dd><p>a character string giving the name(s) of the data.</p></dd>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
@@ -321,25 +322,63 @@ vignette('jfa', package = 'jfa')" />
 <span class='co'># Classical evaluation using the Stringer bound</span>
 <span class='fu'>evaluation</span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.05</span>, method <span class='op'>=</span> <span class='st'>'stringer'</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>,
            data <span class='op'>=</span> <span class='va'>sample</span>, values <span class='op'>=</span> <span class='st'>'bookValue'</span>, values.audit <span class='op'>=</span> <span class='st'>'auditValue'</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Most likely error: 2.4% | 95% Upper bound: 6.532% | Precision: 4.132% 
-#&gt; Estimates obtained via method 'stringer'</div><div class='input'>
+</div><div class='output co'>#&gt; 
+#&gt; 	Classical Audit Sample Evaluation
+#&gt; 
+#&gt; data:  sample
+#&gt; number of misstatements = 4, number of items = 100, taint = 2.4
+#&gt; 95 percent confidence interval:
+#&gt;  0.00000000 0.06532286
+#&gt; misstatement rate:
+#&gt;  0.0239999 
+#&gt; estimates obtained via method 'stringer'</div><div class='input'>
 <span class='co'># Classical evaluation using the Poisson likelihood</span>
 <span class='fu'>evaluation</span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.05</span>, method <span class='op'>=</span> <span class='st'>'poisson'</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>,
            data <span class='op'>=</span> <span class='va'>sample</span>, values <span class='op'>=</span> <span class='st'>'bookValue'</span>, values.audit <span class='op'>=</span> <span class='st'>'auditValue'</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Most likely error: 2.4% | 95% Upper bound: 6.888% | Precision: 4.488% | p-value: 0.175 
-#&gt; Estimates obtained via method 'poisson'</div><div class='input'>
+</div><div class='output co'>#&gt; 
+#&gt; 	Classical Audit Sample Evaluation
+#&gt; 
+#&gt; data:  sample
+#&gt; number of misstatements = 4, number of items = 100, taint = 2.4,
+#&gt; p-value = 0.1747
+#&gt; alternative hypothesis: true probability of misstatement is less than 0.05
+#&gt; 95 percent confidence interval:
+#&gt;  0.00000000 0.06887548
+#&gt; misstatement rate:
+#&gt;  0.0239999 
+#&gt; estimates obtained via method 'poisson'</div><div class='input'>
 <span class='co'># Bayesian evaluation using a noninformative gamma prior distribution</span>
 <span class='fu'>evaluation</span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.05</span>, method <span class='op'>=</span> <span class='st'>'poisson'</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>,
            data <span class='op'>=</span> <span class='va'>sample</span>, values <span class='op'>=</span> <span class='st'>'bookValue'</span>, values.audit <span class='op'>=</span> <span class='st'>'auditValue'</span>,
            prior <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Most likely error: 2.376% | 95% Upper bound: 6.819% | Precision: 4.443% | BF-+: 95.641 
-#&gt; Estimates obtained via method 'poisson' + 'prior'</div><div class='input'>
+</div><div class='output co'>#&gt; 
+#&gt; 	Bayesian Audit Sample Evaluation
+#&gt; 
+#&gt; data:  sample
+#&gt; number of misstatements = 4, number of items = 100, taint = 2.4, BF-+ =
+#&gt; 95.641
+#&gt; alternative hypothesis: true probability of misstatement is less than 0.05
+#&gt; 95 percent credible interval:
+#&gt;  0.00000000 0.06819355
+#&gt; misstatement rate:
+#&gt;  0.02376227 
+#&gt; estimates obtained via method 'poisson' + 'prior'</div><div class='input'>
 <span class='co'># Bayesian evaluation using an informed prior distribution</span>
 <span class='fu'>evaluation</span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.05</span>, method <span class='op'>=</span> <span class='st'>'poisson'</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>,
            data <span class='op'>=</span> <span class='va'>sample</span>, values <span class='op'>=</span> <span class='st'>'bookValue'</span>, values.audit <span class='op'>=</span> <span class='st'>'auditValue'</span>,
            prior <span class='op'>=</span> <span class='fu'><a href='auditPrior.html'>auditPrior</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'param'</span>, alpha <span class='op'>=</span> <span class='fl'>1</span>, beta <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; Most likely error: 2.182% | 95% Upper bound: 6.261% | Precision: 4.08% | BF-+: 10.548 
-#&gt; Estimates obtained via method 'poisson' + 'prior'</div><div class='input'>
+</div><div class='output co'>#&gt; 
+#&gt; 	Bayesian Audit Sample Evaluation
+#&gt; 
+#&gt; data:  sample
+#&gt; number of misstatements = 4, number of items = 100, taint = 2.4, BF-+ =
+#&gt; 10.548
+#&gt; alternative hypothesis: true probability of misstatement is less than 0.05
+#&gt; 95 percent credible interval:
+#&gt;  0.00000000 0.06261408
+#&gt; misstatement rate:
+#&gt;  0.02181809 
+#&gt; estimates obtained via method 'poisson' + 'prior'</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

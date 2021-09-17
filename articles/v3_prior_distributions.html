@@ -162,8 +162,8 @@
 ## # Output: 
 ## #
 ## # Prior distribution:            beta(α = 1, β = 1) 
-## # Implicit sample size:          1 
-## # Implicit errors:               0 
+## # Equivalent sample size:        1 
+## # Equivalent errors:             0 
 ## # ------------------------------------------------------------
 ## # Statistics: 
 ## #
@@ -198,8 +198,8 @@
 ## # Output: 
 ## #
 ## # Prior distribution:            beta(α = 1, β = 0) 
-## # Implicit sample size:          0 
-## # Implicit errors:               0 
+## # Equivalent sample size:        0 
+## # Equivalent errors:             0 
 ## # ------------------------------------------------------------
 ## # Statistics: 
 ## #
@@ -234,8 +234,8 @@
 ## # Output: 
 ## #
 ## # Prior distribution:            beta(α = 2, β = 10) 
-## # Implicit sample size:          11 
-## # Implicit errors:               1 
+## # Equivalent sample size:        11 
+## # Equivalent errors:             1 
 ## # ------------------------------------------------------------
 ## # Statistics: 
 ## #
@@ -272,8 +272,8 @@
 ## # Output: 
 ## #
 ## # Prior distribution:            beta(α = 1.155, β = 16.385) 
-## # Implicit sample size:          16.54 
-## # Implicit errors:               0.155 
+## # Equivalent sample size:        16.54 
+## # Equivalent errors:             0.155 
 ## # ------------------------------------------------------------
 ## # Statistics: 
 ## #
@@ -310,8 +310,8 @@
 ## # Output: 
 ## #
 ## # Prior distribution:            beta(α = 1.217, β = 22.493) 
-## # Implicit sample size:          22.71 
-## # Implicit errors:               0.217 
+## # Equivalent sample size:        22.71 
+## # Equivalent errors:             0.217 
 ## # ------------------------------------------------------------
 ## # Statistics: 
 ## #
@@ -347,8 +347,8 @@
 ## # Output: 
 ## #
 ## # Prior distribution:            beta(α = 1.21, β = 20.79) 
-## # Implicit sample size:          21 
-## # Implicit errors:               0.21 
+## # Equivalent sample size:        21 
+## # Equivalent errors:             0.21 
 ## # ------------------------------------------------------------
 ## # Statistics: 
 ## #
@@ -384,8 +384,8 @@
 ## # Output: 
 ## #
 ## # Prior distribution:            beta(α = 1.023, β = 3.317) 
-## # Implicit sample size:          3.34 
-## # Implicit errors:               0.023 
+## # Equivalent sample size:        3.34 
+## # Equivalent errors:             0.023 
 ## # ------------------------------------------------------------
 ## # Statistics: 
 ## #
@@ -421,8 +421,8 @@
 ## # Output: 
 ## #
 ## # Prior distribution:            beta(α = 1, β = 30) 
-## # Implicit sample size:          30 
-## # Implicit errors:               0 
+## # Equivalent sample size:        30 
+## # Equivalent errors:             0 
 ## # ------------------------------------------------------------
 ## # Statistics: 
 ## #
@@ -458,8 +458,8 @@
 ## # Output: 
 ## #
 ## # Prior distribution:            beta(α = 1, β = 40.6) 
-## # Implicit sample size:          40.6 
-## # Implicit errors:               0 
+## # Equivalent sample size:        40.6 
+## # Equivalent errors:             0 
 ## # ------------------------------------------------------------
 ## # Statistics: 
 ## #
@@ -486,8 +486,11 @@
 <p>The prior distribution can be used the planning stage to calculate a minimum sample size by providing the objected returned by the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function to the <code><a href="../reference/planning.html">planning()</a></code> function. For example, the code below calculates the minimum sample size to test the misstatement in the population against a performance materiality of 5%, while incorporating the information in <code>prior9</code>.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, prior <span class="op">=</span> <span class="va">prior9</span><span class="op">)</span></code></pre></div>
-<pre><code>## Minimum sample size: 29 
-## Sample size obtained in 31 iteration(s) via method 'binomial' + 'prior'</code></pre>
+<pre><code>## 
+##  Bayesian Audit Sample Planning
+## 
+## minimum sample size = 29 
+## sample size obtained in 31 iteration(s) via method 'binomial' + 'prior'</code></pre>
 </div>
 <div id="combining-auditprior-with-evaluation" class="section level3">
 <h3 class="hasAnchor">
@@ -496,8 +499,18 @@
 <p>The prior distribution can be used the evaluation stage by providing the objected returned by the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function to the <code><a href="../reference/evaluation.html">evaluation()</a></code> function. For example, the code below evaluates the misstatement in the population with respect to the performance materiality of 5% after seeing a sample of 60 items with 1 misstatement, while incorporating the information in <code>prior8</code>.</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">60</span>, prior <span class="op">=</span> <span class="va">prior9</span><span class="op">)</span></code></pre></div>
-<pre><code>## Most likely error: 1.004% | 95% Upper bound: 4.629% | Precision: 3.625% | BF-+: 3.797 
-## Estimates obtained via method 'binomial' + 'prior'</code></pre>
+<pre><code>## 
+##  Bayesian Audit Sample Evaluation
+## 
+## data:  1 and 60
+## number of misstatements = 1, number of items = 60, taint = 1, BF-+ =
+## 3.7968
+## alternative hypothesis: true probability of misstatement is less than 0.05
+## 95 percent credible interval:
+##  0.00000000 0.04628728
+## misstatement rate:
+##  0.01004016 
+## estimates obtained via method 'binomial' + 'prior'</code></pre>
 </div>
 </div>
   </div>
