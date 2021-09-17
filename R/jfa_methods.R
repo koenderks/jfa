@@ -22,7 +22,7 @@ NULL
 #' @export
 print.jfaPrior <- function(x, ...) {
   cat("\n")
-  cat(strwrap("Probability Distribution for Audit Sampling", prefix = "\t"), sep = "\n")
+  cat(strwrap("Prior Distribution", prefix = "\t"), sep = "\n")
   cat("\n")
   cat("functional form:", x[["prior"]], "\nparameters obtained via method", paste0("'", x[["method"]], "'\n"))
 }
@@ -32,7 +32,7 @@ print.jfaPrior <- function(x, ...) {
 #' @export
 print.jfaPosterior <- function(x, ...) {
   cat("\n")
-  cat(strwrap("Probability Distribution for Audit Sampling", prefix = "\t"), sep = "\n")
+  cat(strwrap("Posterior Distribution", prefix = "\t"), sep = "\n")
   cat("\n")
   cat("functional form:", x[["posterior"]], "\nparameters obtained via method 'sample'\n")
 }
@@ -88,63 +88,45 @@ print.jfaEvaluation <- function(x, digits = getOption("digits"), ...) {
 #' @rdname jfa-methods
 #' @method print summary.jfaPrior
 #' @export
-print.summary.jfaPrior <- function(x, ...) {
-  cat("# ------------------------------------------------------------
-#         jfa Prior Distribution Summary (Bayesian)
-# ------------------------------------------------------------
-# Input:
-#
-# Confidence level:             ", paste0(x[["conf.level"]] * 100, "%"),"
-# Expected sample errors:       ", paste0(x[["x"]] * 100, "%"),"
-# Likelihood:                   ", x[["likelihood"]],"
-# Specifics:                    ", switch(x[["method"]],
-                                          "default" = "Noninformative",
-                                          "strict" = "Classical properties",
+print.summary.jfaPrior <- function(x, digits = getOption("digits"), ...) {
+  cat("\n")
+  cat(strwrap("Prior Distribution Summary", prefix = "\t"), sep = "\n")
+  cat("\n")
+  cat(paste("Likelihood:                ", x[["likelihood"]]), "\n")
+  cat(paste("Specifics:                 ", switch(x[["method"]],
+                                          "default" = "noninformative",
+                                          "strict" = "classical properties",
                                           "impartial" = paste0("p(\u0398 < ", x[["materiality"]], ") = p(\u0398 > ", x[["materiality"]], ") = 0.5"),
                                           "hyp" = paste0("p(\u0398 < ", x[["materiality"]], ") = ", x[["p.hmin"]],"; p(\u0398 > ", x[["materiality"]],") = ", x[["p.hplus"]]),
-                                          "arm" = paste0("IR = ", x[["ir"]], "; ICR = ", x[["icr"]], "; DR = ", x[["dr"]]),
-                                          "bram" = paste0("Mode = ", x[["mode.prior"]], "; Upper bound = ", x[["ub.prior"]]),
-                                          "sample" = paste0("Earlier sample of ", x[["n.prior"]], " items with ", x[["x.prior"]], " errors"),
-                                          "factor" = paste0("Earlier sample of ", x[["n.prior"]], " items with ", x[["x.prior"]], " errors weighted by ", x[["factor"]]),
-                                          "param" = paste0("\u03B1 = ", x[["alpha"]], "; \u03B2 = ", x[["beta"]])), "
-# ------------------------------------------------------------
-# Output: 
-#
-# Prior distribution:           ", x[["prior"]],"
-# Equivalent sample size:       ", x[["implicit.n"]],"
-# Equivalent errors:            ", x[["implicit.x"]],"
-# ------------------------------------------------------------
-# Statistics: 
-#
-# Upper bound:                  ", x[["ub"]],"
-# Precision:                    ", x[["precision"]],"
-# Mode:                         ", x[["mode"]],"
-# Mean:                         ", x[["mean"]],"
-# Median:                       ", x[["median"]],"
-# ------------------------------------------------------------"
-  )
+                                          "arm" = paste0("ir = ", x[["ir"]], "; cr = ", x[["icr"]], "; dr = ", x[["dr"]]),
+                                          "bram" = paste0("mode = ", x[["mode.prior"]], "; upper bound = ", x[["ub.prior"]]),
+                                          "sample" = paste0("earlier sample of ", x[["n.prior"]], " items with ", x[["x.prior"]], " errors"),
+                                          "factor" = paste0("earlier sample of ", x[["n.prior"]], " items with ", x[["x.prior"]], " errors weighted by ", x[["factor"]]),
+                                          "param" = paste0("\u03B1 = ", x[["alpha"]], "; \u03B2 = ", x[["beta"]]))), "\n")
+  cat(paste("Functional form:           ", x[["prior"]]), "\n")
+  cat(paste("Equivalent sample size:    ", format(x[["implicit.n"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste("Equivalent errors:         ", format(x[["implicit.x"]], digits = max(1L, digits - 2L))), "\n")
+  cat("\n")
+  cat(paste("Mode:                      ", format(x[["mode"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste("Mean:                      ", format(x[["mean"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste("Median:                    ", format(x[["median"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste(format(x[["conf.level"]] * 100), "percent upper bound:    ", format(x[["ub"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste("Precision:                 ", format(x[["precision"]], digits = max(1L, digits - 2L))), "\n")
 }
 
 #' @rdname jfa-methods
 #' @method print summary.jfaPosterior
 #' @export
-print.summary.jfaPosterior <- function(x, ...) {
-  cat("# ------------------------------------------------------------
-#             jfa Posterior Distribution (Bayesian)
-# ------------------------------------------------------------
-# Input: 
-#
-# Posterior distribution:       ", x[["posterior"]],"
-# ------------------------------------------------------------
-# Statistics:
-#
-# Upper bound:                  ", x[["ub"]],"
-# Precision:                    ", x[["precision"]],"
-# Mode:                         ", x[["mode"]],"
-# Mean:                         ", x[["mean"]],"
-# Median:                       ", x[["median"]],"
-# ------------------------------------------------------------"
-  )
+print.summary.jfaPosterior <- function(x, digits = getOption("digits"), ...) {
+  cat("\n")
+  cat(strwrap("Posterior Distribution Summary", prefix = "\t"), sep = "\n")
+  cat("\n")
+  cat(paste("Functional form:           ", x[["posterior"]]), "\n")
+  cat("\n")
+  cat(paste("Mode:                      ", format(x[["mode"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste("Mean:                      ", format(x[["mean"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste("Median:                    ", format(x[["median"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste("Precision:                 ", format(x[["precision"]], digits = max(1L, digits - 2L))), "\n")
 }
 
 #' @rdname jfa-methods

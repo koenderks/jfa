@@ -34,9 +34,9 @@
 
 \method{print}{jfaEvaluation}(x, digits = getOption("digits"), ...)
 
-\method{print}{summary.jfaPrior}(x, ...)
+\method{print}{summary.jfaPrior}(x, digits = getOption("digits"), ...)
 
-\method{print}{summary.jfaPosterior}(x, ...)
+\method{print}{summary.jfaPosterior}(x, digits = getOption("digits"), ...)
 
 \method{print}{summary.jfaPlanning}(x, ...)
 
