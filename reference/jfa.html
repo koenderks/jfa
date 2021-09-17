@@ -338,30 +338,20 @@ For documentation on jfa itself, including the manual and user guide
 <span class='co'># Create the prior distribution</span>
 <span class='va'>prior</span> <span class='op'>&lt;-</span> <span class='fu'><a href='auditPrior.html'>auditPrior</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'default'</span>, likelihood <span class='op'>=</span> <span class='st'>'poisson'</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>prior</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; # ------------------------------------------------------------
-#&gt; #         jfa Prior Distribution Summary (Bayesian)
-#&gt; # ------------------------------------------------------------
-#&gt; # Input:
-#&gt; #
-#&gt; # Confidence level:              95% 
-#&gt; # Expected sample errors:        0% 
-#&gt; # Likelihood:                    poisson 
-#&gt; # Specifics:                     Noninformative 
-#&gt; # ------------------------------------------------------------
-#&gt; # Output: 
-#&gt; #
-#&gt; # Prior distribution:            gamma(α = 1, β = 1) 
-#&gt; # Equivalent sample size:        1 
-#&gt; # Equivalent errors:             0 
-#&gt; # ------------------------------------------------------------
-#&gt; # Statistics: 
-#&gt; #
-#&gt; # Upper bound:                   2.996 
-#&gt; # Precision:                     2.996 
-#&gt; # Mode:                          0 
-#&gt; # Mean:                          1 
-#&gt; # Median:                        0.693 
-#&gt; # ------------------------------------------------------------</div><div class='input'>
+</div><div class='output co'>#&gt; 
+#&gt; 	Prior Distribution Summary
+#&gt; 
+#&gt; Likelihood:                 poisson 
+#&gt; Specifics:                  noninformative 
+#&gt; Functional form:            gamma(α = 1, β = 1) 
+#&gt; Equivalent sample size:     1 
+#&gt; Equivalent errors:          0 
+#&gt; 
+#&gt; Mode:                       0 
+#&gt; Mean:                       1 
+#&gt; Median:                     0.693 
+#&gt; 95 percent upper bound:     2.996 
+#&gt; Precision:                  2.996 </div><div class='input'>
 <span class='co'># Stage 1: Planning</span>
 <span class='va'>stage1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='planning.html'>planning</a></span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.03</span>, expected <span class='op'>=</span> <span class='fl'>0.01</span>,
                    likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, prior <span class='op'>=</span> <span class='va'>prior</span><span class='op'>)</span>
@@ -456,30 +446,20 @@ For documentation on jfa itself, including the manual and user guide
 <span class='va'>prior</span> <span class='op'>&lt;-</span> <span class='fu'><a href='auditPrior.html'>auditPrior</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'arm'</span>, likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>,
                     expected <span class='op'>=</span> <span class='fl'>0.01</span>, materiality <span class='op'>=</span> <span class='fl'>0.03</span>, cr <span class='op'>=</span> <span class='fl'>0.6</span>, ir <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>prior</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; # ------------------------------------------------------------
-#&gt; #         jfa Prior Distribution Summary (Bayesian)
-#&gt; # ------------------------------------------------------------
-#&gt; # Input:
-#&gt; #
-#&gt; # Confidence level:              95% 
-#&gt; # Expected sample errors:        1% 
-#&gt; # Likelihood:                    poisson 
-#&gt; # Specifics:                     IR = 1; ICR = 0.6; DR = 0.083 
-#&gt; # ------------------------------------------------------------
-#&gt; # Output: 
-#&gt; #
-#&gt; # Prior distribution:            gamma(α = 1.46, β = 46) 
-#&gt; # Equivalent sample size:        46 
-#&gt; # Equivalent errors:             0.46 
-#&gt; # ------------------------------------------------------------
-#&gt; # Statistics: 
-#&gt; #
-#&gt; # Upper bound:                   0.083 
-#&gt; # Precision:                     0.073 
-#&gt; # Mode:                          0.01 
-#&gt; # Mean:                          0.032 
-#&gt; # Median:                        0.025 
-#&gt; # ------------------------------------------------------------</div><div class='input'>
+</div><div class='output co'>#&gt; 
+#&gt; 	Prior Distribution Summary
+#&gt; 
+#&gt; Likelihood:                 poisson 
+#&gt; Specifics:                  ir = 1; cr = 0.6; dr = 0.083 
+#&gt; Functional form:            gamma(α = 1.46, β = 46) 
+#&gt; Equivalent sample size:     46 
+#&gt; Equivalent errors:          0.46 
+#&gt; 
+#&gt; Mode:                       0.01 
+#&gt; Mean:                       0.032 
+#&gt; Median:                     0.025 
+#&gt; 95 percent upper bound:     0.083 
+#&gt; Precision:                  0.073 </div><div class='input'>
 <span class='co'># Stage 1: Planning</span>
 <span class='va'>stage1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='planning.html'>planning</a></span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.03</span>, expected <span class='op'>=</span> <span class='fl'>0.01</span>,
                    likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, prior <span class='op'>=</span> <span class='va'>prior</span><span class='op'>)</span>
