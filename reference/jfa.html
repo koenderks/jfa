@@ -251,56 +251,40 @@ For documentation on jfa itself, including the manual and user guide
 <span class='va'>stage1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='planning.html'>planning</a></span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.03</span>, expected <span class='op'>=</span> <span class='fl'>0.01</span>, 
                    likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; # ------------------------------------------------------------ 
-#&gt; #              jfa Planning Summary (Classical)
-#&gt; # ------------------------------------------------------------ 
-#&gt; # Input:
-#&gt; # 
-#&gt; # Confidence level:              95% 
-#&gt; # Materiality:                   3% 
-#&gt; # Minimum precision:             Not specified 
-#&gt; # Likelihood:                    poisson  
-#&gt; # Population size:               Not specified 
-#&gt; # Expected sample errors:        2.2 
-#&gt; # ------------------------------------------------------------
-#&gt; # Output:
-#&gt; #
-#&gt; # Sample size:                   220  
-#&gt; # ------------------------------------------------------------
-#&gt; # Statistics:
-#&gt; #
-#&gt; # Expected most likely error:    1% 
-#&gt; # Expected upper bound:          2.997% 
-#&gt; # Expected precision:            1.997% 
-#&gt; # Expected p-value:              0.0498 
-#&gt; # ------------------------------------------------------------ </div><div class='input'>
+</div><div class='output co'>#&gt; 
+#&gt; 	Classical Audit Sample Planning Summary
+#&gt; 
+#&gt; Confidence level:           0.95 
+#&gt; Materiality:                0.03 
+#&gt; Min. precision:             not specified 
+#&gt; Likelihood:                 poisson 
+#&gt; Expected sample errors:     2.2 
+#&gt; 
+#&gt; Minimum sample size:        220 
+#&gt; 
+#&gt; Expected most likely error: 0.01 
+#&gt; Expected upper bound:       0.02997 
+#&gt; Expected precision:         0.01997 
+#&gt; Expected p-value:           &lt; 2.22e-16 </div><div class='input'>
 <span class='co'># Stage 2: Selection</span>
 <span class='va'>stage2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='selection.html'>selection</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>BuildIt</span>, size <span class='op'>=</span> <span class='va'>stage1</span>,
                     units <span class='op'>=</span> <span class='st'>'values'</span>, values <span class='op'>=</span> <span class='st'>'bookValue'</span>,
                     method <span class='op'>=</span> <span class='st'>'interval'</span>, start <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; # ------------------------------------------------------------
-#&gt; #                  jfa Selection Summary
-#&gt; # ------------------------------------------------------------
-#&gt; # Input:
-#&gt; #      
-#&gt; # Population size:               1403221 
-#&gt; # Requested sample size:         220 
-#&gt; # Sampling units:                Monetary units 
-#&gt; # Method:                        Fixed interval sampling 
-#&gt; # Interval:                      6378.276 
-#&gt; # Starting point:                1 
-#&gt; # ------------------------------------------------------------ 
-#&gt; # Output:
-#&gt; #
-#&gt; # Obtained sampling units:       220 
-#&gt; # Obtained items:                220 
-#&gt; # ------------------------------------------------------------
-#&gt; # Statistics:
-#&gt; #
-#&gt; # Proportion n/N:                0.063 
-#&gt; # Percentage of value:           0.016% 
-#&gt; # ------------------------------------------------------------ </div><div class='input'>
+</div><div class='output co'>#&gt; 
+#&gt; 	Audit Sample Selection Summary
+#&gt; 
+#&gt; Population size:            1403221 
+#&gt; Requested sample size:      220 
+#&gt; Sampling units:             monetary units 
+#&gt; Method:                     fixed interval sampling 
+#&gt; Interval:                   6378.3 
+#&gt; Starting point:             1 
+#&gt; 
+#&gt; Selected sampling units:    220 
+#&gt; Selected items:             220 
+#&gt; Proportion n/N:             0.063 
+#&gt; Proportion of value:      0.00016 </div><div class='input'>
 <span class='co'># Stage 3: Execution</span>
 <span class='va'>sample</span> <span class='op'>&lt;-</span> <span class='va'>stage2</span><span class='op'>[[</span><span class='st'>'sample'</span><span class='op'>]</span><span class='op'>]</span>
 
@@ -356,56 +340,42 @@ For documentation on jfa itself, including the manual and user guide
 <span class='va'>stage1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='planning.html'>planning</a></span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.03</span>, expected <span class='op'>=</span> <span class='fl'>0.01</span>,
                    likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, prior <span class='op'>=</span> <span class='va'>prior</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; # ------------------------------------------------------------ 
-#&gt; #              jfa Planning Summary (Bayesian)
-#&gt; # ------------------------------------------------------------ 
-#&gt; # Input:
-#&gt; # 
-#&gt; # Confidence level:              95% 
-#&gt; # Materiality:                   3% 
-#&gt; # Minimum precision:             Not specified 
-#&gt; # Likelihood:                    poisson  
-#&gt; # Population size:               Not specified 
-#&gt; # Expected sample errors:        2.18 
-#&gt; # ------------------------------------------------------------
-#&gt; # Output:
-#&gt; #
-#&gt; # Sample size:                   218  
-#&gt; # ------------------------------------------------------------
-#&gt; # Statistics:
-#&gt; #
-#&gt; # Expected most likely error:    0.995% 
-#&gt; # Expected upper bound:          2.997% 
-#&gt; # Expected precision:            2.002% 
-#&gt; # Expected Bayes factor-+:       626.855 
-#&gt; # ------------------------------------------------------------ </div><div class='input'>
+</div><div class='output co'>#&gt; 
+#&gt; 	Bayesian Audit Sample Planning Summary
+#&gt; 
+#&gt; Confidence level:           0.95 
+#&gt; Materiality:                0.03 
+#&gt; Min. precision:             not specified 
+#&gt; Likelihood:                 poisson 
+#&gt; Prior distribution:         gamma(α = 1, β = 1) 
+#&gt; Expected sample errors:     2.18 
+#&gt; 
+#&gt; Minimum sample size:        218 
+#&gt; Posterior distribution:     gamma(α = 3.18, β = 219) 
+#&gt; 
+#&gt; Expected most likely error: 0.00995 
+#&gt; Expected upper bound:       0.02997 
+#&gt; Expected precision:         0.02002 
+#&gt; Expected BF-+:              626.86 </div><div class='input'>
 <span class='co'># Stage 2: Selection</span>
 <span class='va'>stage2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='selection.html'>selection</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>BuildIt</span>, size <span class='op'>=</span> <span class='va'>stage1</span>,
                     units <span class='op'>=</span> <span class='st'>'values'</span>, values <span class='op'>=</span> <span class='st'>'bookValue'</span>,
                     method <span class='op'>=</span> <span class='st'>'interval'</span>, start <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; # ------------------------------------------------------------
-#&gt; #                  jfa Selection Summary
-#&gt; # ------------------------------------------------------------
-#&gt; # Input:
-#&gt; #      
-#&gt; # Population size:               1403221 
-#&gt; # Requested sample size:         218 
-#&gt; # Sampling units:                Monetary units 
-#&gt; # Method:                        Fixed interval sampling 
-#&gt; # Interval:                      6436.793 
-#&gt; # Starting point:                1 
-#&gt; # ------------------------------------------------------------ 
-#&gt; # Output:
-#&gt; #
-#&gt; # Obtained sampling units:       218 
-#&gt; # Obtained items:                218 
-#&gt; # ------------------------------------------------------------
-#&gt; # Statistics:
-#&gt; #
-#&gt; # Proportion n/N:                0.062 
-#&gt; # Percentage of value:           0.016% 
-#&gt; # ------------------------------------------------------------ </div><div class='input'>
+</div><div class='output co'>#&gt; 
+#&gt; 	Audit Sample Selection Summary
+#&gt; 
+#&gt; Population size:            1403221 
+#&gt; Requested sample size:      218 
+#&gt; Sampling units:             monetary units 
+#&gt; Method:                     fixed interval sampling 
+#&gt; Interval:                   6436.8 
+#&gt; Starting point:             1 
+#&gt; 
+#&gt; Selected sampling units:    218 
+#&gt; Selected items:             218 
+#&gt; Proportion n/N:             0.062 
+#&gt; Proportion of value:      0.00016 </div><div class='input'>
 <span class='co'># Stage 3: Execution</span>
 <span class='va'>sample</span> <span class='op'>&lt;-</span> <span class='va'>stage2</span><span class='op'>[[</span><span class='st'>'sample'</span><span class='op'>]</span><span class='op'>]</span>
 
@@ -464,56 +434,42 @@ For documentation on jfa itself, including the manual and user guide
 <span class='va'>stage1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='planning.html'>planning</a></span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.03</span>, expected <span class='op'>=</span> <span class='fl'>0.01</span>,
                    likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, prior <span class='op'>=</span> <span class='va'>prior</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; # ------------------------------------------------------------ 
-#&gt; #              jfa Planning Summary (Bayesian)
-#&gt; # ------------------------------------------------------------ 
-#&gt; # Input:
-#&gt; # 
-#&gt; # Confidence level:              95% 
-#&gt; # Materiality:                   3% 
-#&gt; # Minimum precision:             Not specified 
-#&gt; # Likelihood:                    poisson  
-#&gt; # Population size:               Not specified 
-#&gt; # Expected sample errors:        1.74 
-#&gt; # ------------------------------------------------------------
-#&gt; # Output:
-#&gt; #
-#&gt; # Sample size:                   174  
-#&gt; # ------------------------------------------------------------
-#&gt; # Statistics:
-#&gt; #
-#&gt; # Expected most likely error:    1% 
-#&gt; # Expected upper bound:          2.997% 
-#&gt; # Expected precision:            1.997% 
-#&gt; # Expected Bayes factor-+:       13.593 
-#&gt; # ------------------------------------------------------------ </div><div class='input'>
+</div><div class='output co'>#&gt; 
+#&gt; 	Bayesian Audit Sample Planning Summary
+#&gt; 
+#&gt; Confidence level:           0.95 
+#&gt; Materiality:                0.03 
+#&gt; Min. precision:             not specified 
+#&gt; Likelihood:                 poisson 
+#&gt; Prior distribution:         gamma(α = 1.46, β = 46) 
+#&gt; Expected sample errors:     1.74 
+#&gt; 
+#&gt; Minimum sample size:        174 
+#&gt; Posterior distribution:     gamma(α = 3.2, β = 220) 
+#&gt; 
+#&gt; Expected most likely error: 0.01 
+#&gt; Expected upper bound:       0.02997 
+#&gt; Expected precision:         0.01997 
+#&gt; Expected BF-+:              13.593 </div><div class='input'>
 <span class='co'># Stage 2: Selection</span>
 <span class='va'>stage2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='selection.html'>selection</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>BuildIt</span>, size <span class='op'>=</span> <span class='va'>stage1</span>,
                     units <span class='op'>=</span> <span class='st'>'values'</span>, values <span class='op'>=</span> <span class='st'>'bookValue'</span>,
                     method <span class='op'>=</span> <span class='st'>'interval'</span>, start <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; # ------------------------------------------------------------
-#&gt; #                  jfa Selection Summary
-#&gt; # ------------------------------------------------------------
-#&gt; # Input:
-#&gt; #      
-#&gt; # Population size:               1403221 
-#&gt; # Requested sample size:         174 
-#&gt; # Sampling units:                Monetary units 
-#&gt; # Method:                        Fixed interval sampling 
-#&gt; # Interval:                      8064.487 
-#&gt; # Starting point:                1 
-#&gt; # ------------------------------------------------------------ 
-#&gt; # Output:
-#&gt; #
-#&gt; # Obtained sampling units:       174 
-#&gt; # Obtained items:                174 
-#&gt; # ------------------------------------------------------------
-#&gt; # Statistics:
-#&gt; #
-#&gt; # Proportion n/N:                0.05 
-#&gt; # Percentage of value:           0.012% 
-#&gt; # ------------------------------------------------------------ </div><div class='input'>
+</div><div class='output co'>#&gt; 
+#&gt; 	Audit Sample Selection Summary
+#&gt; 
+#&gt; Population size:            1403221 
+#&gt; Requested sample size:      174 
+#&gt; Sampling units:             monetary units 
+#&gt; Method:                     fixed interval sampling 
+#&gt; Interval:                   8064.5 
+#&gt; Starting point:             1 
+#&gt; 
+#&gt; Selected sampling units:    174 
+#&gt; Selected items:             174 
+#&gt; Proportion n/N:             0.05 
+#&gt; Proportion of value:      0.00012 </div><div class='input'>
 <span class='co'># Stage 3: Execution</span>
 <span class='va'>sample</span> <span class='op'>&lt;-</span> <span class='va'>stage2</span><span class='op'>[[</span><span class='st'>'sample'</span><span class='op'>]</span><span class='op'>]</span>
 
