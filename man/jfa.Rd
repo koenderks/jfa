@@ -50,9 +50,6 @@
 
   \emph{Bayes factors}
   \itemize{
-  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.lbfd.pdf}{Default Bayes factors based on the gamma distribution}
-  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.lbfd.pdf}{Default Bayes factors based on the beta distribution}
-  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.lbfd.pdf}{Default Bayes factors based on the beta-binomial distribution}
   \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.lbfi.pdf}{Impartial Bayes factors based on the gamma distribution}
   \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.lbfi.pdf}{Impartial Bayes factors based on the beta distribution}
   \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.lbfi.pdf}{Impartial Bayes factors based on the beta-binomial distribution}
