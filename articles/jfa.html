@@ -173,6 +173,7 @@
 ## Options:
 ##   Confidence level:              0.95 
 ##   Materiality:                   0.05 
+##   Hypotheses:                    H₀: Θ &gt;= 0.05 vs. H₁: Θ &lt; 0.05 
 ##   Expected:                      0 
 ##   Likelihood:                    poisson 
 ## 
@@ -305,21 +306,22 @@
 ##  Classical Audit Sample Evaluation Summary
 ## 
 ## Options:
-##   Confidence level:              0.95 
-##   Materiality:                   0.05 
-##   Method:                        binomial 
+##   Confidence level:               0.95 
+##   Materiality:                    0.05 
+##   Materiality:                    0.05 
+##   Hypotheses:                     H₀: Θ &gt;= 0.05 vs. H₁: Θ &lt; 0.05 
+##   Method:                         binomial 
 ## 
 ## Data:
-##   Sample size:                   60 
-##   Number of errors:              1 
-##   Sum of taints:                 1 
+##   Sample size:                    60 
+##   Number of errors:               1 
+##   Sum of taints:                  1 
 ## 
 ## Results:
-##   Most likely error:             0.016667 
-##   One-sided confidence interval: [0, 0.07664] 
-##   Precision:                     0.059973 
-##   p-value:                       0.19155 
-##   Sufficient evidence:           FALSE</code></pre>
+##   Most likely error:              0.016667 
+##   95 percent confidence interval: [0, 0.07664] 
+##   Precision:                      0.059973 
+##   p-value:                        0.19155</code></pre>
 <p>As you can see above, the 95% upper bound for the misstatement is higher than 5% and therefore the sample does not provide sufficient evidence to conclude that the misstatement is lower than 5%.</p>
 </div>
 <div id="annotated-sample" class="section level3">
@@ -340,20 +342,19 @@
 ##  Classical Audit Sample Evaluation Summary
 ## 
 ## Options:
-##   Confidence level:              0.95 
-##   Materiality:                   0.05 
-##   Method:                        stringer 
+##   Confidence level:               0.95 
+##   Materiality:                    0.05 
+##   Method:                         stringer 
 ## 
 ## Data:
-##   Sample size:                   60 
-##   Number of errors:              1 
-##   Sum of taints:                 0.1617495 
+##   Sample size:                    60 
+##   Number of errors:               1 
+##   Sum of taints:                  0.1617495 
 ## 
 ## Results:
-##   Most likely error:             0.0026958 
-##   One-sided confidence interval: [0, 0.053222] 
-##   Precision:                     0.050526 
-##   Sufficient evidence:           FALSE</code></pre>
+##   Most likely error:              0.0026958 
+##   95 percent confidence interval: [0, 0.053222] 
+##   Precision:                      0.050526</code></pre>
 </div>
 </div>
 <div id="using-report-the-basics" class="section level2">
