@@ -23,19 +23,22 @@ For more details on how to use this function, see the package vignette:
 \code{vignette('jfa', package = 'jfa')}
 }
 \examples{
-data('BuildIt')
+data("BuildIt")
 
 # Draw a sample of 100 monetary units from the population using
 # fixed interval monetary unit sampling
-sample <- selection(data = BuildIt, size = 100, method = 'interval', 
-                    units = 'values', values = 'bookValue')$sample
+sample <- selection(
+  data = BuildIt, size = 100, method = "interval",
+  units = "values", values = "bookValue"
+)$sample
 
 # Evaluate using the Stringer bound
-result <- evaluation(conf.level = 0.95, materiality = 0.05, method = 'stringer',
-                     data = sample, values = 'bookValue', values.audit = 'auditValue')
-
-\dontrun{ 
- report(result) 
+result <- evaluation(
+  conf.level = 0.95, materiality = 0.05, method = "stringer",
+  data = sample, values = "bookValue", values.audit = "auditValue"
+)
+\dontrun{
+report(result)
 }
 
 }

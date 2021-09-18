@@ -8,7 +8,7 @@
 #' @usage report(object, file = 'report.html', format = c('html_document', 'pdf_document'))
 #'
 #' @param object an object of class \code{jfaEvaluation} as returned by the \code{evaluation()} function.
-#' @param file a character specifying the name of the report (e.g. \code{report.html}). By default, the report is created in your current working directory.          
+#' @param file a character specifying the name of the report (e.g. \code{report.html}). By default, the report is created in your current working directory.
 #' @param format a character specifying the output format of the report. Possible options are \code{html_document} (default) and \code{pdf_document}, but compiling to \code{pdf} format requires a local version of MikTex.
 #'
 #' @return A \code{html} or \code{pdf} file containing a report of the evaluation.
@@ -20,42 +20,49 @@
 #' @keywords evaluation report audit
 #'
 #' @examples
-#' data('BuildIt')
+#' data("BuildIt")
 #'
 #' # Draw a sample of 100 monetary units from the population using
 #' # fixed interval monetary unit sampling
-#' sample <- selection(data = BuildIt, size = 100, method = 'interval', 
-#'                     units = 'values', values = 'bookValue')$sample
-#' 
-#' # Evaluate using the Stringer bound
-#' result <- evaluation(conf.level = 0.95, materiality = 0.05, method = 'stringer',
-#'                      data = sample, values = 'bookValue', values.audit = 'auditValue')
+#' sample <- selection(
+#'   data = BuildIt, size = 100, method = "interval",
+#'   units = "values", values = "bookValue"
+#' )$sample
 #'
-#' \dontrun{ 
-#'  report(result) 
+#' # Evaluate using the Stringer bound
+#' result <- evaluation(
+#'   conf.level = 0.95, materiality = 0.05, method = "stringer",
+#'   data = sample, values = "bookValue", values.audit = "auditValue"
+#' )
+#' \dontrun{
+#' report(result)
 #' }
 #'
 #' @export
 
-report <- function(object, file = 'report.html', format = c('html_document', 'pdf_document')){
-  if (!class(object) == 'jfaEvaluation')
+report <- function(object, file = "report.html", format = c("html_document", "pdf_document")) {
+  if (!class(object) == "jfaEvaluation") {
     stop("'object' must be of class 'jfaEvaluation'")
-  if (!requireNamespace('rmarkdown', quietly = TRUE))
+  }
+  if (!requireNamespace("rmarkdown", quietly = TRUE)) {
     stop('package \"rmarkdown\" needed for this function to work, please install it', call. = FALSE)
-  if (!requireNamespace('knitr', quietly = TRUE))
+  }
+  if (!requireNamespace("knitr", quietly = TRUE)) {
     stop('package \"knitr\" needed for this function to work, please install it', call. = FALSE)
-  if (!requireNamespace('kableExtra', quietly = TRUE))
+  }
+  if (!requireNamespace("kableExtra", quietly = TRUE)) {
     stop('package \"kableExtra\" needed for this function to work, please install it', call. = FALSE)
+  }
   # Determine the template
-  theFile <- system.file('rmd/report.Rmd', package = 'jfa')
+  theFile <- system.file("rmd/report.Rmd", package = "jfa")
   # Process the function arguments
-  format             <- match.arg(format)
-  args               <- list()
-  args$input         <- theFile
-  args$output_dir    <- getwd()
+  format <- match.arg(format)
+  args <- list()
+  args$input <- theFile
+  args$output_dir <- getwd()
   args$output_format <- format
-  args$output_file   <- file
+  args$output_file <- file
   # Start the renderer via rmarkdown
-  outputFileName <- do.call(.getfun('rmarkdown::render'), args = args)
+  outputFileName <- do.call(.getfun("rmarkdown::render"), args = args)
   invisible(outputFileName)
 }

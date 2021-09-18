@@ -4,7 +4,7 @@
 \alias{selection}
 \title{Select a Statistical Audit Sample}
 \usage{
-selection(data, size, units = c('items', 'values'), 
+selection(data, size, units = c('items', 'values'),
           method = c('interval', 'cell', 'random'), values = NULL,
           start = 1, order = FALSE, decreasing = FALSE, replace = FALSE)
 }
@@ -67,13 +67,14 @@ The second part of this section elaborates on the three possible options for the
 }
 }
 \examples{
-data('BuildIt')
+data("BuildIt")
 
 # Draw a sample of 100 monetary units from the population using
 # fixed interval monetary unit sampling
-selection(data = BuildIt, size = 100, units = 'values',
-          method = 'interval', values = 'bookValue')
-
+selection(
+  data = BuildIt, size = 100, units = "values",
+  method = "interval", values = "bookValue"
+)
 }
 \references{
 Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). \emph{Dollar-unit Sampling: A Practical Guide for Auditors}. Copp Clark Pitman; Belmont, Calif.: distributed by Fearon-Pitman.

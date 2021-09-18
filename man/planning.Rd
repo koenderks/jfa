@@ -5,8 +5,8 @@
 \title{Plan a Statistical Audit Sample}
 \usage{
 planning(materiality = NULL, min.precision = NULL, expected = 0,
-         likelihood = c('poisson', 'binomial', 'hypergeometric'), 
-         conf.level = 0.95, N.units = NULL, by = 1, max = 5000, 
+         likelihood = c('poisson', 'binomial', 'hypergeometric'),
+         conf.level = 0.95, N.units = NULL, by = 1, max = 5000,
          prior = FALSE)
 }
 \arguments{
@@ -65,16 +65,19 @@ This section elaborates on the available likelihoods and corresponding prior dis
 }
 \examples{
 # Classical planning using a Poisson likelihood
-planning(materiality = 0.05, expected = 0.025, likelihood = 'poisson')
+planning(materiality = 0.05, expected = 0.025, likelihood = "poisson")
 
 # Bayesian planning using a noninformative gamma prior distribution
-planning(materiality = 0.05, expected = 0.025, likelihood = 'poisson', 
-         prior = TRUE)
+planning(
+  materiality = 0.05, expected = 0.025, likelihood = "poisson",
+  prior = TRUE
+)
 
 # Bayesian planning using an informed gamma prior distribution
-planning(materiality = 0.05, expected = 0.025, likelihood = 'poisson', 
-         prior = auditPrior(method = 'impartial', materiality = 0.05))
-
+planning(
+  materiality = 0.05, expected = 0.025, likelihood = "poisson",
+  prior = auditPrior(method = "impartial", materiality = 0.05)
+)
 }
 \references{
 Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., & Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. \emph{International Journal of Auditing}, 1-16.

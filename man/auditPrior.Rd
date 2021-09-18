@@ -4,9 +4,9 @@
 \alias{auditPrior}
 \title{Prior Distributions for Audit Sampling}
 \usage{
-auditPrior(method = 'default', likelihood = c('poisson', 'binomial', 'hypergeometric'), 
-           N.units = NULL, alpha = NULL, beta = NULL, materiality = NULL, expected = 0, 
-           ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL, x = NULL, 
+auditPrior(method = 'default', likelihood = c('poisson', 'binomial', 'hypergeometric'),
+           N.units = NULL, alpha = NULL, beta = NULL, materiality = NULL, expected = 0,
+           ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL, x = NULL,
            n = NULL, factor = NULL, conf.level = 0.95)
 }
 \arguments{
@@ -47,7 +47,7 @@ An object of class \code{jfaPrior} containing:
 \item{description}{a list containing a description of the prior distribution, including the parameters of the prior distribution and the implicit sample on which the prior distribution is based.}
 \item{statistics}{a list containing statistics of the prior distribution, including the mean, mode, median, and upper bound of the prior distribution.}
 \item{specifics}{a list containing specifics of the prior distribution that vary depending on the \code{method}.}
-\item{hypotheses}{if \code{materiality} is specified, a list containing information about the hypotheses, including prior probabilities and odds for the hypothesis of tolerable misstatement (H\u2081) and the hypothesis of intolerable misstatement (H\u2080).}
+\item{hypotheses}{if \code{materiality} is specified, a list containing information about the hypotheses, including prior probabilities and odds for the hypothesis of tolerable misstatement (H1) and the hypothesis of intolerable misstatement (H0).}
 \item{method}{a character indicating the method by which the prior distribution is constructed.}
 \item{likelihood}{a character indicating the assumed likelihood.}
 \item{materiality}{if \code{materiality} is specified, a numeric value between 0 and 1 indicating the materiality used to construct the prior distribution.}
@@ -62,7 +62,7 @@ For more details on how to use this function, see the package vignette:
 \code{vignette('jfa', package = 'jfa')}
 }
 \details{
-\code{auditPrior} is used to define prior distributions for parameters in \code{jfa} models. To perform Bayesian audit sampling, you must assign a prior distribution to the misstatement parameter \eqn{\theta}. 
+\code{auditPrior} is used to define prior distributions for parameters in \code{jfa} models. To perform Bayesian audit sampling, you must assign a prior distribution to the misstatement parameter \eqn{\theta}.
          The prior is a probability distribution that reflects the existing information about the parameter before seeing a sample. To keep the priors proper, the \code{default} priors used by \code{jfa} are very diffuse,
          meaning they contain minimal prior information. However, it is strongly recommended to use an informed prior distribution when possible.
 
@@ -89,17 +89,17 @@ This section elaborates on the available likelihoods and corresponding prior dis
 }
 }
 \examples{
- 
 # Translate inherent risk (ir) and control risk (cr) to a prior distribution
-auditPrior(method = 'arm', likelihood = 'poisson', expected = 0.025,
-           materiality = 0.05, ir = 1, cr = 0.6)
+auditPrior(
+  method = "arm", likelihood = "poisson", expected = 0.025,
+  materiality = 0.05, ir = 1, cr = 0.6
+)
 
 # Equal prior probabilities
-auditPrior(method = 'impartial', likelihood = 'poisson', materiality = 0.05)
+auditPrior(method = "impartial", likelihood = "poisson", materiality = 0.05)
 
 # Custom prior distribution
-auditPrior(method = 'param', likelihood = 'poisson', alpha = 1, beta = 10)
-
+auditPrior(method = "param", likelihood = "poisson", alpha = 1, beta = 10)
 }
 \references{
 Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., & Wetzels, R. (2019). JASP for audit: Bayesian tools for the auditing practice.

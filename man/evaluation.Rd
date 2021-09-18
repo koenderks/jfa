@@ -5,7 +5,7 @@
 \title{Evaluate a statistical audit sample}
 \usage{
 evaluation(materiality = NULL, min.precision = NULL, method = 'poisson',
-           alternative = c('less', 'two.sided', 'greater'), conf.level = 0.95, 
+           alternative = c('less', 'two.sided', 'greater'), conf.level = 0.95,
            data = NULL, values = NULL, values.audit = NULL, times = NULL,
            x = NULL, n = NULL, N.units = NULL, N.items = NULL,
            r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5,
@@ -87,7 +87,7 @@ This section lists the available options for the \code{methods} argument.
  \item{\code{poisson}:          Evaluates the sample with the Poisson distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{gamma} prior and posterior.}
  \item{\code{binomial}:         Evaluates the sample with the binomial distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{beta} prior and posterior.}
  \item{\code{hypergeometric}:   Evaluates the sample with the hypergeometric distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{beta-binomial} prior and posterior.}
-\item{\code{mpu}:              Evaluates the sample with the mean-per-unit estimator.}
+	\item{\code{mpu}:              Evaluates the sample with the mean-per-unit estimator.}
  \item{\code{stringer}:         Evaluates the sample with the Stringer bound (Stringer, 1963).}
  \item{\code{stringer.meikle}:  Evaluates the sample with the Stringer bound with Meikle's correction for understatements (Meikle, 1972).}
  \item{\code{stringer.lta}:     Evaluates the sample with the Stringer bound with LTA correction for understatements (Leslie, Teitlebaum, and Anderson, 1979).}
@@ -102,31 +102,40 @@ This section lists the available options for the \code{methods} argument.
 }
 }
 \examples{
-data('BuildIt')
+data("BuildIt")
 
 # Draw a sample of 100 monetary units from the population using
 # fixed interval monetary unit sampling
-sample <- selection(data = BuildIt, size = 100, units = 'values',
-                    method = 'interval', values = 'bookValue')$sample
+sample <- selection(
+  data = BuildIt, size = 100, units = "values",
+  method = "interval", values = "bookValue"
+)$sample
 
 # Classical evaluation using the Stringer bound
-evaluation(materiality = 0.05, method = 'stringer', conf.level = 0.95,
-           data = sample, values = 'bookValue', values.audit = 'auditValue')
+evaluation(
+  materiality = 0.05, method = "stringer", conf.level = 0.95,
+  data = sample, values = "bookValue", values.audit = "auditValue"
+)
 
 # Classical evaluation using the Poisson likelihood
-evaluation(materiality = 0.05, method = 'poisson', conf.level = 0.95,
-           data = sample, values = 'bookValue', values.audit = 'auditValue')
+evaluation(
+  materiality = 0.05, method = "poisson", conf.level = 0.95,
+  data = sample, values = "bookValue", values.audit = "auditValue"
+)
 
 # Bayesian evaluation using a noninformative gamma prior distribution
-evaluation(materiality = 0.05, method = 'poisson', conf.level = 0.95,
-           data = sample, values = 'bookValue', values.audit = 'auditValue',
-           prior = TRUE)
+evaluation(
+  materiality = 0.05, method = "poisson", conf.level = 0.95,
+  data = sample, values = "bookValue", values.audit = "auditValue",
+  prior = TRUE
+)
 
 # Bayesian evaluation using an informed prior distribution
-evaluation(materiality = 0.05, method = 'poisson', conf.level = 0.95,
-           data = sample, values = 'bookValue', values.audit = 'auditValue',
-           prior = auditPrior(method = 'param', alpha = 1, beta = 10))
-
+evaluation(
+  materiality = 0.05, method = "poisson", conf.level = 0.95,
+  data = sample, values = "bookValue", values.audit = "auditValue",
+  prior = auditPrior(method = "param", alpha = 1, beta = 10)
+)
 }
 \references{
 Cox, D. and Snell, E. (1979). On sampling and the estimation of rare errors. \emph{Biometrika}, 66(1), 125-132.
