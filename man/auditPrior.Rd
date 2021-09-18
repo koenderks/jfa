@@ -30,7 +30,7 @@ auditPrior(method = 'default', likelihood = c('poisson', 'binomial', 'hypergeome
 
 \item{ub}{if \code{method = 'bram'}, a numeric value between 0 and 1 specifying the upper bound for the prior distribution as a fraction of the population size.}
 
-\item{p.hmin}{if \code{method = 'hyp'}, a numeric value between 0 and 1 specifying the prior probability of the hypothesis of tolerable misstatement (H-: \eqn{\theta <} materiality).}
+\item{p.hmin}{if \code{method = 'hyp'}, a numeric value between 0 and 1 specifying the prior probability of the hypothesis of tolerable misstatement (H1: \eqn{\theta <} materiality).}
 
 \item{x}{if \code{method = 'sample'} or \code{method = 'factor'}, a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.}
 
@@ -47,7 +47,7 @@ An object of class \code{jfaPrior} containing:
 \item{description}{a list containing a description of the prior distribution, including the parameters of the prior distribution and the implicit sample on which the prior distribution is based.}
 \item{statistics}{a list containing statistics of the prior distribution, including the mean, mode, median, and upper bound of the prior distribution.}
 \item{specifics}{a list containing specifics of the prior distribution that vary depending on the \code{method}.}
-\item{hypotheses}{if \code{materiality} is specified, a list containing information about the hypotheses, including prior probabilities and odds for the hypothesis of tolerable misstatement (H-) and the hypothesis of intolerable misstatement (H+).}
+\item{hypotheses}{if \code{materiality} is specified, a list containing information about the hypotheses, including prior probabilities and odds for the hypothesis of tolerable misstatement (H\u2081) and the hypothesis of intolerable misstatement (H\u2080).}
 \item{method}{a character indicating the method by which the prior distribution is constructed.}
 \item{likelihood}{a character indicating the assumed likelihood.}
 \item{materiality}{if \code{materiality} is specified, a numeric value between 0 and 1 indicating the materiality used to construct the prior distribution.}

@@ -19,7 +19,7 @@
 #' @param ir              if \code{method = 'arm'}, a numeric value between 0 and 1 specifying the inherent risk in the audit risk model. Defaults to 1 for 100\% risk.
 #' @param cr              if \code{method = 'arm'}, a numeric value between 0 and 1 specifying the internal control risk in the audit risk model. Defaults to 1 for 100\% risk.
 #' @param ub              if \code{method = 'bram'}, a numeric value between 0 and 1 specifying the upper bound for the prior distribution as a fraction of the population size.
-#' @param p.hmin          if \code{method = 'hyp'}, a numeric value between 0 and 1 specifying the prior probability of the hypothesis of tolerable misstatement (H-: \eqn{\theta <} materiality).
+#' @param p.hmin          if \code{method = 'hyp'}, a numeric value between 0 and 1 specifying the prior probability of the hypothesis of tolerable misstatement (H1: \eqn{\theta <} materiality).
 #' @param x               if \code{method = 'sample'} or \code{method = 'factor'}, a numeric value larger than, or equal to, 0 specifying the sum of errors in the sample equivalent to the prior information.
 #' @param n               if \code{method = 'sample'} or \code{method = 'factor'}, an integer larger than, or equal to, 0 specifying the sample size of the sample equivalent to the prior information.
 #' @param factor          if \code{method = 'factor'}, a numeric value between 0 and 1 specifying the weighting factor for the results of the sample equivalent to the prior information.
@@ -58,7 +58,7 @@
 #' \item{description}{a list containing a description of the prior distribution, including the parameters of the prior distribution and the implicit sample on which the prior distribution is based.}
 #' \item{statistics}{a list containing statistics of the prior distribution, including the mean, mode, median, and upper bound of the prior distribution.}
 #' \item{specifics}{a list containing specifics of the prior distribution that vary depending on the \code{method}.}
-#' \item{hypotheses}{if \code{materiality} is specified, a list containing information about the hypotheses, including prior probabilities and odds for the hypothesis of tolerable misstatement (H-) and the hypothesis of intolerable misstatement (H+).}
+#' \item{hypotheses}{if \code{materiality} is specified, a list containing information about the hypotheses, including prior probabilities and odds for the hypothesis of tolerable misstatement (H\u2081) and the hypothesis of intolerable misstatement (H\u2080).}
 #' \item{method}{a character indicating the method by which the prior distribution is constructed.}
 #' \item{likelihood}{a character indicating the assumed likelihood.}
 #' \item{materiality}{if \code{materiality} is specified, a numeric value between 0 and 1 indicating the materiality used to construct the prior distribution.}
@@ -241,10 +241,14 @@ auditPrior <- function(method = 'default', likelihood = c('poisson', 'binomial',
                                    "poisson" = stats::qgamma(0.5, shape = description[["alpha"]], rate = description[["beta"]]),
                                    "binomial" = stats::qbeta(0.5, shape1 = description[["alpha"]], shape2 = description[["beta"]]),
                                    "hypergeometric" = .qbbinom(0.5, N = N.units, shape1 = description[["alpha"]], shape2 = description[["beta"]]))
+  statistics[["var"]] <- switch(likelihood, 
+                                "poisson" = description[["alpha"]] / description[["beta"]]^2,
+                                "binomial" = (description[["alpha"]] * description[["beta"]]) / ((description[["alpha"]] + description[["beta"]])^2 * (description[["alpha"]] + description[["beta"]] + 1)),
+                                "hypergeometric" = ((N.units * description[["alpha"]] * description[["beta"]]) * (description[["alpha"]] + description[["beta"]] + N.units)) / ((description[["alpha"]] + description[["beta"]])^2 * (description[["alpha"]] + description[["beta"]] + 1)))
   statistics[["ub"]] <- switch(likelihood, 
                                "poisson" = stats::qgamma(conf.level, shape = description[["alpha"]], rate = description[["beta"]]),
                                "binomial" = stats::qbeta(conf.level, shape1 = description[["alpha"]], shape2 = description[["beta"]]),
-                               "hypergeometric" = .qbbinom(conf.level, N = N.units, shape1 = description[["alpha"]], shape2 = description[["beta"]]))									
+                               "hypergeometric" = .qbbinom(conf.level, N = N.units, shape1 = description[["alpha"]], shape2 = description[["beta"]]))
   statistics[["precision"]] <- statistics[["ub"]] - statistics[["mode"]]
   # Create the specifics section
   if (method != "default" && method != "strict")
@@ -269,7 +273,7 @@ auditPrior <- function(method = 'default', likelihood = c('poisson', 'binomial',
   # Create the hypotheses section
   if (!is.null(materiality)) {
     hypotheses                 <- list()
-    hypotheses[["hypotheses"]] <- c(paste0("H-: \u0398 < ", materiality), paste0("H+: \u0398 > ", materiality))
+    hypotheses[["hypotheses"]] <- c(paste0("H\u2081: \u0398 < ", materiality), paste0("H\u2080: \u0398 > ", materiality))
     hypotheses[["p.h1"]]      <- switch(likelihood, 
                                         "poisson" = stats::pgamma(materiality, shape = description[["alpha"]], rate = description[["beta"]]),
                                         "binomial" = stats::pbeta(materiality, shape1 = description[["alpha"]], shape2 = description[["beta"]]),
@@ -302,6 +306,7 @@ auditPrior <- function(method = 'default', likelihood = c('poisson', 'binomial',
       predictive[["statistics"]][["mode"]] <- if (predictive[["description"]][["r"]] <= 1) 0 else (predictive[["description"]][["p"]] * (predictive[["description"]][["r"]] - 1)) / (1 - predictive[["description"]][["p"]])
       predictive[["statistics"]][["mean"]] <- (predictive[["description"]][["r"]] * predictive[["description"]][["p"]]) / (1 - predictive[["description"]][["p"]])
       predictive[["statistics"]][["median"]] <- stats::qnbinom(0.5, size = predictive[["description"]][["r"]], prob = predictive[["description"]][["p"]])
+      predictive[["statistics"]][["var"]] <- (predictive[["description"]][["p"]] * predictive[["description"]][["r"]]) / (1 - predictive[["description"]][["p"]])^2
       predictive[["statistics"]][["ub"]] <- stats::qnbinom(conf.level, size = predictive[["description"]][["r"]], prob = predictive[["description"]][["p"]])
     } else {
       predictive[["description"]]$density  <- "beta-binomial"
@@ -310,6 +315,7 @@ auditPrior <- function(method = 'default', likelihood = c('poisson', 'binomial',
       predictive[["statistics"]][["mode"]] <- .modebbinom(N = N.units, shape1 = predictive[["description"]][["alpha"]], shape2 = predictive[["description"]][["beta"]])
       predictive[["statistics"]][["mean"]] <- predictive[["description"]][["alpha"]] / (predictive[["description"]][["alpha"]] + predictive[["description"]][["beta"]]) * N.units
       predictive[["statistics"]][["median"]] <- .qbbinom(0.5, N = N.units, shape1 = predictive[["description"]][["alpha"]], shape2 = predictive[["description"]][["beta"]])
+      predictive[["statistics"]][["var"]] <- ((N.units * predictive[["description"]][["alpha"]] * predictive[["description"]][["beta"]]) * (predictive[["description"]][["alpha"]] + predictive[["description"]][["beta"]] + N.units)) / ((predictive[["description"]][["alpha"]] + predictive[["description"]][["beta"]])^2 * (predictive[["description"]][["alpha"]] + predictive[["description"]][["beta"]] + 1))
       predictive[["statistics"]][["ub"]] <- .qbbinom(conf.level, N = N.units, shape1 = predictive[["description"]][["alpha"]], shape2 = predictive[["description"]][["beta"]])
     }
     predictive[["statistics"]][["precision"]] <- predictive[["statistics"]][["ub"]] - predictive[["statistics"]][["mode"]]
