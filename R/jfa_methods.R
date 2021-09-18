@@ -126,6 +126,7 @@ print.summary.jfaPrior <- function(x, digits = getOption("digits"), ...) {
   cat(paste("  Mean:                         ", format(x[["mean"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Median:                       ", format(x[["median"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Variance:                     ", format(x[["var"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste("  Skewness:                     ", format(x[["skewness"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste(" ", format(x[["conf.level"]] * 100), "percent upper bound:       ", format(x[["ub"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Precision:                    ", format(x[["precision"]], digits = max(1L, digits - 2L))), "\n")
 }
@@ -142,6 +143,7 @@ print.summary.jfaPosterior <- function(x, digits = getOption("digits"), ...) {
   cat(paste("  Mean:                         ", format(x[["mean"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Median:                       ", format(x[["median"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Variance:                     ", format(x[["var"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste("  Skewness:                     ", format(x[["skewness"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Precision:                    ", format(x[["precision"]], digits = max(1L, digits - 2L))), "\n")
 }
 
@@ -157,6 +159,7 @@ print.summary.jfaPredictive <- function(x, digits = getOption("digits"), ...) {
   cat(paste("  Mean:                         ", format(x[["mean"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Median:                       ", format(x[["median"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Variance:                     ", format(x[["var"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste("  Skewness:                     ", format(x[["skewness"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste(" ", format(x[["conf.level"]] * 100), "percent upper bound:       ", format(x[["ub"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Precision:                    ", format(x[["precision"]], digits = max(1L, digits - 2L))), "\n")
 }
@@ -281,7 +284,8 @@ summary.jfaPrior <- function(object, digits = getOption("digits"), ...) {
                     "mode" = round(object[["statistics"]]$mode, digits),
                     "mean" = round(object[["statistics"]]$mean, digits),
                     "median" = round(object[["statistics"]]$median, digits),
-					"var" = round(object[["statistics"]]$var, digits),
+                    "var" = round(object[["statistics"]]$var, digits),
+                    "skewness" = round(object[["statistics"]]$skewness, digits),
                     stringsAsFactors = FALSE)
   if (object[["method"]] == "impartial") {
     out[["materiality"]] <- round(object[["materiality"]], digits)
@@ -319,7 +323,8 @@ summary.jfaPosterior <- function(object, digits = getOption("digits"), ...) {
                     "mode" = round(object[["statistics"]]$mode, digits),
                     "mean" = round(object[["statistics"]]$mean, digits),
                     "median" = round(object[["statistics"]]$median, digits),
-					"var" = round(object[["statistics"]]$var, digits),
+                    "var" = round(object[["statistics"]]$var, digits),
+                    "skewness" = round(object[["statistics"]]$skewness, digits),
                     stringsAsFactors = FALSE)
   class(out) <- c("summary.jfaPosterior", "data.frame")
   return(out)
@@ -335,7 +340,8 @@ summary.jfaPredictive <- function(object, digits = getOption("digits"), ...) {
                     "mode" = round(object[["statistics"]]$mode, digits),
                     "mean" = round(object[["statistics"]]$mean, digits),
                     "median" = round(object[["statistics"]]$median, digits),
-					"var" = round(object[["statistics"]]$var, digits),
+                    "var" = round(object[["statistics"]]$var, digits),
+                    "skewness" = round(object[["statistics"]]$skewness, digits),
                     conf.level = object[["conf.level"]],
                     stringsAsFactors = FALSE)
   class(out) <- c("summary.jfaPredictive", "data.frame")

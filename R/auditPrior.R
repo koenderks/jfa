@@ -245,6 +245,10 @@ auditPrior <- function(method = 'default', likelihood = c('poisson', 'binomial',
                                 "poisson" = description[["alpha"]] / description[["beta"]]^2,
                                 "binomial" = (description[["alpha"]] * description[["beta"]]) / ((description[["alpha"]] + description[["beta"]])^2 * (description[["alpha"]] + description[["beta"]] + 1)),
                                 "hypergeometric" = ((N.units * description[["alpha"]] * description[["beta"]]) * (description[["alpha"]] + description[["beta"]] + N.units)) / ((description[["alpha"]] + description[["beta"]])^2 * (description[["alpha"]] + description[["beta"]] + 1)))
+  statistics[["skewness"]] <- switch(likelihood, 
+                                     "poisson" = 2 / sqrt(description[["alpha"]]),
+                                     "binomial" = ((2 * (description[["beta"]] - description[["alpha"]])) * sqrt(description[["alpha"]] + description[["beta"]] + 1)) / ((description[["alpha"]] + description[["beta"]] + 2) * sqrt(description[["alpha"]] * description[["beta"]])),
+                                     "hypergeometric" = (((description[["alpha"]] + description[["beta"]] + 2 * N.units) * (description[["beta"]] - description[["alpha"]])) / (description[["alpha"]] + description[["beta"]] + 2)) * sqrt((1 + description[["alpha"]] + description[["beta"]]) / (N.units * description[["alpha"]] * description[["beta"]] * (N.units + description[["alpha"]] + description[["beta"]]))))
   statistics[["ub"]] <- switch(likelihood, 
                                "poisson" = stats::qgamma(conf.level, shape = description[["alpha"]], rate = description[["beta"]]),
                                "binomial" = stats::qbeta(conf.level, shape1 = description[["alpha"]], shape2 = description[["beta"]]),
@@ -307,6 +311,7 @@ auditPrior <- function(method = 'default', likelihood = c('poisson', 'binomial',
       predictive[["statistics"]]$mean <- (predictive[["description"]]$r * predictive[["description"]]$p) / (1 - predictive[["description"]]$p)
       predictive[["statistics"]]$median <- stats::qnbinom(0.5, size = predictive[["description"]]$r, prob = predictive[["description"]]$p)
       predictive[["statistics"]]$var <- (predictive[["description"]]$p * predictive[["description"]]$r) / (1 - predictive[["description"]]$p)^2
+      predictive[["statistics"]]$skewness <- (1 + predictive[["description"]]$p) / sqrt(predictive[["description"]]$p * predictive[["description"]]$r)
       predictive[["statistics"]]$ub <- stats::qnbinom(conf.level, size = predictive[["description"]]$r, prob = predictive[["description"]]$p)
     } else {
       predictive[["description"]]$density  <- "beta-binomial"
@@ -316,6 +321,7 @@ auditPrior <- function(method = 'default', likelihood = c('poisson', 'binomial',
       predictive[["statistics"]]$mean <- predictive[["description"]]$alpha / (predictive[["description"]]$alpha + predictive[["description"]]$beta) * N.units
       predictive[["statistics"]]$median <- .qbbinom(0.5, N = N.units, shape1 = predictive[["description"]]$alpha, shape2 = predictive[["description"]]$beta)
       predictive[["statistics"]]$var <- ((N.units * predictive[["description"]]$alpha * predictive[["description"]]$beta) * (predictive[["description"]]$alpha + predictive[["description"]]$beta + N.units)) / ((predictive[["description"]]$alpha + predictive[["description"]]$beta)^2 * (predictive[["description"]]$alpha + predictive[["description"]]$beta + 1))
+      predictive[["statistics"]]$skewness <- (((predictive[["description"]]$alpha + predictive[["description"]]$beta + 2 * N.units) * (predictive[["description"]]$beta - predictive[["description"]]$alpha)) / (predictive[["description"]]$alpha + predictive[["description"]]$beta + 2)) * sqrt((1 + predictive[["description"]]$alpha + predictive[["description"]]$beta) / (N.units * predictive[["description"]]$alpha * predictive[["description"]]$beta * (N.units + predictive[["description"]]$alpha + predictive[["description"]]$beta)))
       predictive[["statistics"]]$ub <- .qbbinom(conf.level, N = N.units, shape1 = predictive[["description"]]$alpha, shape2 = predictive[["description"]]$beta)
     }
     predictive[["statistics"]][["precision"]] <- predictive[["statistics"]]$ub - predictive[["statistics"]]$mode
