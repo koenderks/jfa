@@ -252,7 +252,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
                    "greater" = stats::qgamma(p = 1 - conf.level, shape = t.obs, rate = n.obs))	  
       if (materiality < 1)
         p.val <- switch(alternative, 
-                        "two.sided" = stats::pgamma(q = materiality, shape = t.obs, rate = n.obs),
+                        "two.sided" = stats::poisson.test(x = ceiling(t.obs), T = n.obs, r = materiality, alternative = "two.sided")$p.value,
                         "less" = stats::pgamma(q = materiality, shape = 1 + t.obs, rate = n.obs, lower.tail = FALSE),
                         "greater" = stats::pgamma(q = materiality, shape = t.obs, rate = n.obs))
     }
@@ -281,7 +281,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
                    "greater" = stats::qbeta(p = 1 - conf.level, shape1 = t.obs, shape2 = 1 + n.obs - t.obs))	  
       if (materiality < 1)
         p.val <- switch(alternative, 
-                        "two.sided" = stats::pbeta(q = materiality, shape1 = t.obs, shape2 = 1 + n.obs - t.obs),
+                        "two.sided" = stats::binom.test(x = ceiling(t.obs), n = n.obs, p = materiality, alternative = "two.sided")$p.value,
                         "less" = stats::pbeta(q = materiality, shape1 = 1 + t.obs, shape2 = n.obs - t.obs, lower.tail = FALSE),
                         "greater" = stats::pbeta(q = materiality, shape1 = t.obs, shape2 = 1 + n.obs - t.obs))
     }
