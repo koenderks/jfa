@@ -63,15 +63,15 @@
 
 \method{summary}{jfaEvaluation}(object, digits = getOption("digits"), ...)
 
-\method{plot}{jfaPrior}(x, xmax = 0.5, ...)
+\method{plot}{jfaPrior}(x, xlim = c(0, 1), ...)
 
-\method{plot}{jfaPosterior}(x, xmax = 0.5, ...)
+\method{plot}{jfaPosterior}(x, xlim = c(0, 1), ...)
 
-\method{plot}{jfaPlanning}(x, xmax = 0.5, ...)
+\method{plot}{jfaPlanning}(x, xlim = c(0, 1), ...)
 
 \method{plot}{jfaSelection}(x, ...)
 
-\method{plot}{jfaEvaluation}(x, xmax = 0.5, ...)
+\method{plot}{jfaEvaluation}(x, xlim = c(0, 1), ...)
 }
 \arguments{
 \item{...}{further arguments, currently ignored.}
@@ -80,7 +80,7 @@
 
 \item{object, x}{an object of class \code{jfaPrior}, \code{jfaPosterior}, \code{jfaPredictive}, \code{jfaPlanning}, \code{jfaSelection}, or \code{jfaEvaluation}.}
 
-\item{xmax}{a number between 0 and 1 specifying the x-axis limits of the plot. Used in \code{plot}.}
+\item{xlim}{used in \code{plot}. Specifies the x limits (x1, x2) of the plot.}
 }
 \value{
 The \code{summary} methods return a \code{data.frame} which contains the input and output.
