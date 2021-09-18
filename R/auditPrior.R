@@ -294,7 +294,9 @@ auditPrior <- function(method = 'default', likelihood = c('poisson', 'binomial',
     predictive[["conf.level"]] <- conf.level
     predictive[["description"]] <- list()
     predictive[["statistics"]] <- list()
+    predictive[["description"]][["N.units"]] <- N.units
     if (likelihood == "poisson") {
+      predictive[["description"]]$density  <- "negative-binomial"
       predictive[["description"]][["r"]] <- description[["alpha"]]
       predictive[["description"]][["p"]] <- 1 / (1 + description[["beta"]])
       predictive[["statistics"]][["mode"]] <- if (predictive[["description"]][["r"]] <= 1) 0 else (predictive[["description"]][["p"]] * (predictive[["description"]][["r"]] - 1)) / (1 - predictive[["description"]][["p"]])
@@ -302,9 +304,9 @@ auditPrior <- function(method = 'default', likelihood = c('poisson', 'binomial',
       predictive[["statistics"]][["median"]] <- stats::qnbinom(0.5, size = predictive[["description"]][["r"]], prob = predictive[["description"]][["p"]])
       predictive[["statistics"]][["ub"]] <- stats::qnbinom(conf.level, size = predictive[["description"]][["r"]], prob = predictive[["description"]][["p"]])
     } else {
+      predictive[["description"]]$density  <- "beta-binomial"
       predictive[["description"]][["alpha"]] <- description[["alpha"]]
       predictive[["description"]][["beta"]] <- description[["beta"]]
-      predictive[["description"]][["N.units"]] <- description[["N.units"]]
       predictive[["statistics"]][["mode"]] <- .modebbinom(N = N.units, shape1 = predictive[["description"]][["alpha"]], shape2 = predictive[["description"]][["beta"]])
       predictive[["statistics"]][["mean"]] <- predictive[["description"]][["alpha"]] / (predictive[["description"]][["alpha"]] + predictive[["description"]][["beta"]]) * N.units
       predictive[["statistics"]][["median"]] <- .qbbinom(0.5, N = N.units, shape1 = predictive[["description"]][["alpha"]], shape2 = predictive[["description"]][["beta"]])

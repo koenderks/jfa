@@ -22,6 +22,7 @@
 \alias{summary.jfaEvaluation}
 \alias{plot.jfaPrior}
 \alias{plot.jfaPosterior}
+\alias{plot.jfaPredictive}
 \alias{plot.jfaPlanning}
 \alias{plot.jfaSelection}
 \alias{plot.jfaEvaluation}
@@ -66,6 +67,8 @@
 \method{plot}{jfaPrior}(x, xlim = c(0, 1), ...)
 
 \method{plot}{jfaPosterior}(x, xlim = c(0, 1), ...)
+
+\method{plot}{jfaPredictive}(x, xlim = c(0, 1), ...)
 
 \method{plot}{jfaPlanning}(x, xlim = c(0, 1), ...)
 

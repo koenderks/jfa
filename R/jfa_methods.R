@@ -330,7 +330,7 @@ summary.jfaPredictive <- function(object, digits = getOption("digits"), ...) {
                     "mode" = round(object[["statistics"]]$mode, digits),
                     "mean" = round(object[["statistics"]]$mean, digits),
                     "median" = round(object[["statistics"]]$median, digits),
-					conf.level = object[["conf.level"]],
+                    conf.level = object[["conf.level"]],
                     stringsAsFactors = FALSE)
   class(out) <- c("summary.jfaPredictive", "data.frame")
   return(out)
@@ -492,6 +492,21 @@ plot.jfaPosterior <- function(x, xlim = c(0, 1), ...) {
     graphics::axis(1, at = pretty(xseq, min.n = 4) + 0.5, labels = pretty(xseq, min.n = 4))
     graphics::axis(2, at = c(0, yMax), labels = FALSE, las = 1, lwd.ticks = 0) 
   }
+}
+
+#' @rdname jfa-methods
+#' @method plot jfaPredictive
+#' @export
+plot.jfaPredictive <- function(x, xlim = c(0, 1), ...) {
+  if (x[["description"]]$density == "negative-binomial") {
+    d <- stats::dnbinom(0:x[["description"]][["N.units"]], size = x[["description"]]$r, prob = x[["description"]]$p)
+  } else {
+    d <- extraDistr::dbbinom(x = 0:x[["description"]][["N.units"]], size = x[["description"]][["N.units"]], alpha = x[["description"]]$alpha, beta = x[["description"]]$beta)
+  }
+  yMax <- if (is.infinite(max(d))) 10 else max(d)
+  graphics::barplot(d, bty = "n", xlab = "k", ylab = "Probability", las = 1, xlim = xlim, ylim = c(0, yMax), width = 1, space = 0, main = x[["predictive"]], axes = FALSE, col = "darkgray")
+  graphics::axis(1, at = pretty(xlim, min.n = 4) + 0.5, labels = pretty(xlim, min.n = 4))
+  graphics::axis(2, at = pretty(c(0, yMax), min.n = 4), las = 1) 
 }
 
 #' @rdname jfa-methods

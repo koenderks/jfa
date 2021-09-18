@@ -276,7 +276,9 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
       result[["posterior"]][["predictive"]][["conf.level"]] <- conf.level
       result[["posterior"]][["predictive"]][["description"]] <- list()
       result[["posterior"]][["predictive"]][["statistics"]] <- list()
+      result[["posterior"]][["predictive"]][["description"]][["N.units"]] <- result[["N.units"]]
       if (likelihood == "poisson") {
+        result[["posterior"]][["predictive"]][["description"]]$density  <- "negative-binomial"
         result[["posterior"]][["predictive"]][["description"]][["r"]] <- result[["posterior"]][["description"]][["alpha"]]
         result[["posterior"]][["predictive"]][["description"]][["p"]] <- 1 / (1 + result[["posterior"]][["description"]][["beta"]])
         result[["posterior"]][["predictive"]][["statistics"]][["mode"]] <- if (result[["posterior"]][["predictive"]][["description"]][["r"]] <= 1) 0 else (result[["posterior"]][["predictive"]][["description"]][["p"]] * (result[["posterior"]][["predictive"]][["description"]][["r"]] - 1)) / (1 - result[["posterior"]][["predictive"]][["description"]][["p"]])
@@ -284,9 +286,9 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
         result[["posterior"]][["predictive"]][["statistics"]][["median"]] <- stats::qnbinom(0.5, size = result[["posterior"]][["predictive"]][["description"]][["r"]], prob = result[["posterior"]][["predictive"]][["description"]][["p"]])
         result[["posterior"]][["predictive"]][["statistics"]][["ub"]] <- stats::qnbinom(conf.level, size = result[["posterior"]][["predictive"]][["description"]][["r"]], prob = result[["posterior"]][["predictive"]][["description"]][["p"]])
       } else {
+        result[["posterior"]][["predictive"]][["description"]]$density  <- "beta-binomial"
         result[["posterior"]][["predictive"]][["description"]][["alpha"]] <- result[["posterior"]][["description"]][["alpha"]]
         result[["posterior"]][["predictive"]][["description"]][["beta"]] <- result[["posterior"]][["description"]][["beta"]]
-        result[["posterior"]][["predictive"]][["description"]][["N.units"]] <- result[["posterior"]][["N.units"]]
         result[["posterior"]][["predictive"]][["statistics"]][["mode"]] <- .modebbinom(N = result[["posterior"]][["predictive"]][["description"]][["N.units"]], shape1 = result[["posterior"]][["predictive"]][["description"]][["alpha"]], shape2 = result[["posterior"]][["predictive"]][["description"]][["beta"]])
         result[["posterior"]][["predictive"]][["statistics"]][["mean"]] <- result[["posterior"]][["predictive"]][["description"]][["alpha"]] / (result[["posterior"]][["predictive"]][["description"]][["alpha"]] + result[["posterior"]][["predictive"]][["description"]][["beta"]]) * N.units
         result[["posterior"]][["predictive"]][["statistics"]][["median"]] <- .qbbinom(0.5, N = result[["posterior"]][["predictive"]][["description"]][["N.units"]], shape1 = result[["posterior"]][["predictive"]][["description"]][["alpha"]], shape2 = result[["posterior"]][["predictive"]][["description"]][["beta"]])
