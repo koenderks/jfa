@@ -46,6 +46,7 @@
   }
   result                <- list()
   result[["ub"]]        <- bound
+  result[["lb"]]        <- 0
   result[["mle"]]       <- mle
   result[["precision"]] <- result[["ub"]] - result[["mle"]]
   return(result)

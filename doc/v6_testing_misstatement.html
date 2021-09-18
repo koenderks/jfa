@@ -234,22 +234,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  Bayesian Audit Sample Evaluation Summary
 ## 
 ## Options:
-##   Confidence level:              0.95 
-##   Materiality:                   0.05 
-##   Method:                        binomial 
-##   Prior distribution:            beta(a = 1, ß = 1) 
+##   Confidence level:               0.95 
+##   Materiality:                    0.05 
+##   Materiality:                    0.05 
+##   Hypotheses:                     H0: T &gt; 0.05 vs. H1: T &lt; 0.05 
+##   Method:                         binomial 
+##   Prior distribution:             beta(a = 1, ß = 1) 
 ## 
 ## Data:
-##   Sample size:                   40 
-##   Number of errors:              1 
-##   Sum of taints:                 1 
+##   Sample size:                    40 
+##   Number of errors:               1 
+##   Sum of taints:                  1 
 ## 
 ## Results:
-##   Most likely error:             0.025 
-##   One-sided credible interval:   [0, 0.11055] 
-##   Precision:                     0.085553 
-##   Bayes factor-+:                30.282 
-##   Sufficient evidence:           FALSE</code></pre>
+##   Posterior distribution:         beta(a = 2, ß = 40) 
+##   Most likely error:              0.025 
+##   95 percent credible interval:   [0, 0.11055] 
+##   Precision:                      0.085553 
+##   BF10:                            30.282</code></pre>
 </div>
 <div id="sensitivity-to-the-prior-distribution" class="section level3">
 <h3>Sensitivity to the prior distribution</h3>
@@ -262,22 +264,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  Bayesian Audit Sample Evaluation Summary
 ## 
 ## Options:
-##   Confidence level:              0.95 
-##   Materiality:                   0.05 
-##   Method:                        binomial 
-##   Prior distribution:            beta(a = 1, ß = 13.513) 
+##   Confidence level:               0.95 
+##   Materiality:                    0.05 
+##   Materiality:                    0.05 
+##   Hypotheses:                     H0: T &gt; 0.05 vs. H1: T &lt; 0.05 
+##   Method:                         binomial 
+##   Prior distribution:             beta(a = 1, ß = 13.513) 
 ## 
 ## Data:
-##   Sample size:                   40 
-##   Number of errors:              1 
-##   Sum of taints:                 1 
+##   Sample size:                    40 
+##   Number of errors:               1 
+##   Sum of taints:                  1 
 ## 
 ## Results:
-##   Most likely error:             0.019043 
-##   One-sided credible interval:   [0, 0.085607] 
-##   Precision:                     0.066564 
-##   Bayes factor-+:                3.0778 
-##   Sufficient evidence:           FALSE</code></pre>
+##   Posterior distribution:         beta(a = 2, ß = 52.513) 
+##   Most likely error:              0.019043 
+##   95 percent credible interval:   [0, 0.085607] 
+##   Precision:                      0.066564 
+##   BF10:                            3.0778</code></pre>
 </div>
 </div>
 

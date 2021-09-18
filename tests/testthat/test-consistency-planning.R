@@ -157,39 +157,39 @@ test_that(desc = "(id: f5-v0.2.0-t3) Bayesian poisson 100% materiality 1% errors
 test_that(desc = "(id: f5-v0.4.0-t1) Expected Bayes factors for zero expected errors", {
   prior <- auditPrior(method = 'strict', likelihood = 'poisson')
   jfaRes <- planning(conf.level = 0.95, materiality = 0.02, expected = 0, likelihood = "poisson", prior = prior)
-  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.hmin, 19.08554, tolerance = 0.001)
+  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.h1, 19.08554, tolerance = 0.001)
   
   prior <- auditPrior(method = 'default', likelihood = 'binomial')
   jfaRes <- planning(conf.level = 0.95, materiality = 0.02, expected = 0, likelihood = "binomial", prior = prior)
-  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.hmin, 945.2848, tolerance = 0.001)
+  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.h1, 945.2848, tolerance = 0.001)
   
   prior <- auditPrior(method = 'default', likelihood = 'hypergeometric', N.units = 1000)
   jfaRes <- planning(conf.level = 0.95, materiality = 0.02, expected = 0, likelihood = "hypergeometric", prior = prior, N.units = 1000)
-  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.hmin, 1247.05, tolerance = 0.001)
+  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.h1, 1247.05, tolerance = 0.001)
 })
 
 test_that(desc = "(id: f5-v0.4.0-t2) Expected Bayes factors for expected errors > 0", {
   prior <- auditPrior(method = 'strict', likelihood = 'poisson')
   jfaRes <- planning(conf.level = 0.95, materiality = 0.02, expected = 0.01, likelihood = "poisson", prior = prior)
-  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.hmin, 19.01191777, tolerance = 0.001)
+  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.h1, 19.01191777, tolerance = 0.001)
   
   prior <- auditPrior(method = 'default', likelihood = 'binomial')
   jfaRes <- planning(conf.level = 0.95, materiality = 0.02, expected = 0.01, likelihood = "binomial", prior = prior)
-  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.hmin, 933.3458, tolerance = 0.001)
+  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.h1, 933.3458, tolerance = 0.001)
   
   prior <- auditPrior(method = 'default', likelihood = 'hypergeometric', N.units = 1000)
   jfaRes <- planning(conf.level = 0.95, materiality = 0.02, expected = 0.01, likelihood = "hypergeometric", prior = prior, N.units = 1000)
-  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.hmin, 1619.812, tolerance = 0.001)
+  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.h1, 1619.812, tolerance = 0.001)
 })
 
 test_that(desc = "(id: f5-v0.4.0-t3) Expected Bayes factors for impartial priors", {
   prior <- auditPrior(materiality = 0.02, conf.level = 0.95, method = "impartial", likelihood = "poisson")
   jfaRes <- planning(conf.level = 0.95, materiality = 0.02, prior = prior)
-  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.hmin, 19.35135, tolerance = 0.001)
+  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.h1, 19.35135, tolerance = 0.001)
   
   prior <- auditPrior(materiality = 0.02, conf.level = 0.95, method = "impartial", likelihood = "binomial")
   jfaRes <- planning(conf.level = 0.95, materiality = 0.02, prior = prior)
-  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.hmin, 19.01047, tolerance = 0.001)
+  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.h1, 19.01047, tolerance = 0.001)
 })
 
 # jfa version 0.5.0

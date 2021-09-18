@@ -212,6 +212,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## Options:
 ##   Confidence level:              0.95 
 ##   Materiality:                   0.05 
+##   Hypotheses:                    H0: T &gt;= 0.05 vs. H1: T &lt; 0.05 
 ##   Expected:                      0 
 ##   Likelihood:                    poisson 
 ## 
@@ -321,7 +322,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="using-evaluation-the-basics" class="section level2">
 <h2>Using <code>evaluation()</code>: The basics</h2>
-<p>After saving the sample and annotating the invoices in the sample with their audit values you can it to perform statistical inference about the misstatement in the population with the <code>evaluation()</code> function. Next to a data sample as input, this function can also be used when you only have access to summary statistics from a data sample (e.g., sample size and number of errors). For an elaborate explanation of how to use this function in the context of each sampling objective, see the package vignettes <a href="https://koenderks.github.io/jfa/articles/v6_testing_misstatement.html">Evaluation: Testing misstatement</a> and <a href="https://koenderks.github.io/jfa/articles/v5_estimating_misstatement.html">Evaluation: Estimating misstatement</a>.</p>
+<p>After saving the sample and annotating the invoices in the sample with their audit values you can perform statistical inference about the misstatement in the population with the <code>evaluation()</code> function. Next to a data sample as input, this function can also be used when you only have access to summary statistics from a data sample (e.g., sample size and number of errors). For an elaborate explanation of how to use this function in the context of each sampling objective, see the package vignettes <a href="https://koenderks.github.io/jfa/articles/v6_testing_misstatement.html">Evaluation: Testing misstatement</a> and <a href="https://koenderks.github.io/jfa/articles/v5_estimating_misstatement.html">Evaluation: Estimating misstatement</a>.</p>
 <div id="summary-statistics-from-the-sample" class="section level3">
 <h3>Summary statistics from the sample</h3>
 <p>First, let’s take a look at how you can use the <code>evaluation()</code> function to evaluate the misstatement in the population using summary statistics from a sample. Suppose that in the previously selected sample of 60 invoices you have found that 1 invoice is missing. Using <code>x = 1</code> and <code>n = 60</code> you can provide these summary statistics of the sample to the <code>evaluation()</code> function. Don’t forget to also specify the sampling objectives using the <code>materiality</code> or <code>min.precision</code> arguments. In the following example, a performance materiality of 5% again applies. Also note that these data (<span class="math inline">\(n\)</span>, <span class="math inline">\(x\)</span>) are best described using a binomial distribution, which is why we specify <code>method = &#39;binomial&#39;</code>.</p>
@@ -332,21 +333,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  Classical Audit Sample Evaluation Summary
 ## 
 ## Options:
-##   Confidence level:              0.95 
-##   Materiality:                   0.05 
-##   Method:                        binomial 
+##   Confidence level:               0.95 
+##   Materiality:                    0.05 
+##   Materiality:                    0.05 
+##   Hypotheses:                     H0: T &gt;= 0.05 vs. H1: T &lt; 0.05 
+##   Method:                         binomial 
 ## 
 ## Data:
-##   Sample size:                   60 
-##   Number of errors:              1 
-##   Sum of taints:                 1 
+##   Sample size:                    60 
+##   Number of errors:               1 
+##   Sum of taints:                  1 
 ## 
 ## Results:
-##   Most likely error:             0.016667 
-##   One-sided confidence interval: [0, 0.07664] 
-##   Precision:                     0.059973 
-##   p-value:                       0.19155 
-##   Sufficient evidence:           FALSE</code></pre>
+##   Most likely error:              0.016667 
+##   95 percent confidence interval: [0, 0.07664] 
+##   Precision:                      0.059973 
+##   p-value:                        0.19155</code></pre>
 <p>As you can see above, the 95% upper bound for the misstatement is higher than 5% and therefore the sample does not provide sufficient evidence to conclude that the misstatement is lower than 5%.</p>
 </div>
 <div id="annotated-sample" class="section level3">
@@ -364,20 +366,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ##  Classical Audit Sample Evaluation Summary
 ## 
 ## Options:
-##   Confidence level:              0.95 
-##   Materiality:                   0.05 
-##   Method:                        stringer 
+##   Confidence level:               0.95 
+##   Materiality:                    0.05 
+##   Method:                         stringer 
 ## 
 ## Data:
-##   Sample size:                   60 
-##   Number of errors:              1 
-##   Sum of taints:                 0.1617495 
+##   Sample size:                    60 
+##   Number of errors:               1 
+##   Sum of taints:                  0.1617495 
 ## 
 ## Results:
-##   Most likely error:             0.0026958 
-##   One-sided confidence interval: [0, 0.053222] 
-##   Precision:                     0.050526 
-##   Sufficient evidence:           FALSE</code></pre>
+##   Most likely error:              0.0026958 
+##   95 percent confidence interval: [0, 0.053222] 
+##   Precision:                      0.050526</code></pre>
 </div>
 </div>
 <div id="using-report-the-basics" class="section level2">

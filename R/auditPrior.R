@@ -168,14 +168,14 @@ auditPrior <- function(method = 'default', likelihood = c('poisson', 'binomial',
     } else if (method == "hyp") { # Method 6: Custom prior probabilities
       if (is.null(p.hmin)) # Must have the prior probabilities and materiality
         stop("'p.hmin' is missing for prior construction")
-      p.h1 <- 1 - p.hmin
-      p.h0 <- 1 - p.h1 # Calculate p(H0)
+      p.h1 <- p.hmin
+      p.h0 <- 1 - p.h1 # Calculate p(H+)
     }
     if (expected == 0) { # Formulas for zero expected errors
       prior.n <- switch(likelihood,
-                        "poisson" = -(log(p.h1) / materiality),
-                        "binomial" = log(p.h1) / log(1 - materiality),
-                        "hypergeometric" = log(p.h1) / log(1 - materiality))
+                        "poisson" = -(log(p.h0) / materiality),
+                        "binomial" = log(p.h0) / log(1 - materiality),
+                        "hypergeometric" = log(p.h0) / log(1 - materiality))
       prior.x <- 0
     } else { # Approximation through iteration over alpha parameter = more accurate than approximation through formulas
       median <- Inf
@@ -184,9 +184,9 @@ auditPrior <- function(method = 'default', likelihood = c('poisson', 'binomial',
         prior.x <- prior.x + 0.0001 # Increase of 0.0001 (time intensive?)
         prior.n <- if (likelihood == "poisson") prior.x / expected else 1 + prior.x / expected # Express beta in terms of alpha
         median <- switch(likelihood, # Calculate the median for the current parameters
-                         "binomial" = stats::qbeta(p = p.h0, shape1 = 1 + prior.x, shape2 = prior.n - prior.x),
-                         "poisson" = stats::qgamma(p = p.h0, shape = 1 + prior.x, rate = prior.n),
-                         "hypergeometric" = .qbbinom(p = p.h0, N = N.units, shape1 = 1 + prior.x, shape2 = prior.n - prior.x) / N.units)
+                         "binomial" = stats::qbeta(p = p.h1, shape1 = 1 + prior.x, shape2 = prior.n - prior.x),
+                         "poisson" = stats::qgamma(p = p.h1, shape = 1 + prior.x, rate = prior.n),
+                         "hypergeometric" = .qbbinom(p = p.h1, N = N.units, shape1 = 1 + prior.x, shape2 = prior.n - prior.x) / N.units)
       }
     }
   } else if (method == 'sample' || method == 'factor') { # Method 7: Earlier sample & Method 8: Weighted earlier sample
@@ -250,8 +250,8 @@ auditPrior <- function(method = 'default', likelihood = c('poisson', 'binomial',
   if (method != "default" && method != "strict")
     specifics             <- list()
   if (method == "impartial" || method == "hyp") {
-    specifics[["p.hmin"]]  <- p.h0
-    specifics[["p.hplus"]] <- p.h1
+    specifics[["p.h1"]] <- p.h1
+    specifics[["p.h0"]] <- p.h0
   } else if (method == "sample" || method == "factor") {
     specifics[["x"]]      <- x
     specifics[["n"]]      <- n
@@ -270,16 +270,16 @@ auditPrior <- function(method = 'default', likelihood = c('poisson', 'binomial',
   if (!is.null(materiality)) {
     hypotheses                 <- list()
     hypotheses[["hypotheses"]] <- c(paste0("H-: \u0398 < ", materiality), paste0("H+: \u0398 > ", materiality))
-    hypotheses[["p.hmin"]]      <- switch(likelihood, 
-                                          "poisson" = stats::pgamma(materiality, shape = description[["alpha"]], rate = description[["beta"]]),
-                                          "binomial" = stats::pbeta(materiality, shape1 = description[["alpha"]], shape2 = description[["beta"]]),
-                                          "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * N.units), size = N.units, alpha = description[["alpha"]], beta = description[["beta"]]))
-    hypotheses[["p.hplus"]]     <- switch(likelihood, 
-                                          "poisson" = stats::pgamma(materiality, shape = description[["alpha"]], rate = description[["beta"]], lower.tail = FALSE),
-                                          "binomial" = stats::pbeta(materiality, shape1 = description[["alpha"]], shape2 = description[["beta"]], lower.tail = FALSE),
-                                          "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * N.units), size = N.units, alpha = description[["alpha"]], beta = description[["beta"]], lower.tail = FALSE))
-    hypotheses[["odds.hmin"]]   <- hypotheses[["p.hmin"]] / hypotheses[["p.hplus"]]
-    hypotheses[["odds.hplus"]]  <- 1 / hypotheses[["odds.hmin"]]
+    hypotheses[["p.h1"]]      <- switch(likelihood, 
+                                        "poisson" = stats::pgamma(materiality, shape = description[["alpha"]], rate = description[["beta"]]),
+                                        "binomial" = stats::pbeta(materiality, shape1 = description[["alpha"]], shape2 = description[["beta"]]),
+                                        "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * N.units), size = N.units, alpha = description[["alpha"]], beta = description[["beta"]]))
+    hypotheses[["p.h0"]]     <- switch(likelihood, 
+                                       "poisson" = stats::pgamma(materiality, shape = description[["alpha"]], rate = description[["beta"]], lower.tail = FALSE),
+                                       "binomial" = stats::pbeta(materiality, shape1 = description[["alpha"]], shape2 = description[["beta"]], lower.tail = FALSE),
+                                       "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * N.units), size = N.units, alpha = description[["alpha"]], beta = description[["beta"]], lower.tail = FALSE))
+    hypotheses[["odds.h1"]]   <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
+    hypotheses[["odds.h0"]]  <- 1 / hypotheses[["odds.h1"]]
     hypotheses[["density"]]     <- switch(likelihood,
                                           "poisson" = stats::dgamma(materiality, shape = description[["alpha"]], rate = description[["beta"]]),
                                           "binomial" = stats::dbeta(materiality, shape1 = description[["alpha"]], shape2 = description[["beta"]]),

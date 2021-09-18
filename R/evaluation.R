@@ -364,6 +364,8 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
   if (((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior"))) {
     if (class(prior) == "jfaPrior" && !is.null(prior[["hypotheses"]])) {
       result[["prior"]] <- prior
+	  if (alternative == "greater") # The prior uses alternative = 'less' for p.h1 and p.h0
+		result[["prior"]][["hypotheses"]]$odds.h1 <- 1 / result[["prior"]][["hypotheses"]]$odds.h1
     } else {
       result[["prior"]] <- auditPrior(method = "sample", likelihood = method, N.units = result[["N.units"]], 
                                       materiality = result[["materiality"]], x = prior.x, n = prior.n)
@@ -437,7 +439,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
     if (result[["materiality"]] != 1) {
       result[["posterior"]][["hypotheses"]]             <- list()
       if (alternative == "two.sided") {
-        result[["posterior"]][["hypotheses"]]$hypotheses  <- c(paste0("H0: \u0398 = ", materiality), paste0("H1: \u0398 \u2260 ", materiality))
+        result[["posterior"]][["hypotheses"]]$hypotheses  <- c(paste0("H\u2080: \u0398 = ", materiality), paste0("H\u2081: \u0398 \u2260 ", materiality))
         result[["posterior"]][["hypotheses"]]$density     <- switch(method,
                                                                     "poisson" = stats::dgamma(materiality, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
                                                                     "binomial" = stats::dbeta(materiality, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
@@ -445,22 +447,34 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
         result[["posterior"]][["hypotheses"]]$bf.h0       <- result[["posterior"]][["hypotheses"]]$density / result[["prior"]][["hypotheses"]]$density
         result[["posterior"]][["hypotheses"]]$bf.h1       <- 1 / result[["posterior"]][["hypotheses"]]$bf.h0
       } else {
-        result[["posterior"]][["hypotheses"]]$hypotheses  <- c(paste0("H-: \u0398 < ", materiality), paste0("H+: \u0398 > ", materiality))
-        result[["posterior"]][["hypotheses"]]$p.hmin      <- switch(method, 
+        if (alternative == "less") {
+          result[["posterior"]][["hypotheses"]]$hypotheses <- c(paste0("H\u2081: \u0398 < ", materiality), paste0("H\u2080: \u0398 > ", materiality))
+          result[["posterior"]][["hypotheses"]]$p.h1      <- switch(method, 
                                                                     "poisson" = stats::pgamma(materiality, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
                                                                     "binomial" = stats::pbeta(materiality, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
                                                                     "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * result[["N.units"]]), size = result[["N.units"]] - result[["n"]], alpha = result[["posterior"]][["description"]]$alpha, beta = result[["posterior"]][["description"]]$beta))
-        result[["posterior"]][["hypotheses"]]$p.hplus     <- switch(method, 
-                                                                    "poisson" = stats::pgamma(materiality, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta, lower.tail = FALSE),
-                                                                    "binomial" = stats::pbeta(materiality, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta, lower.tail = FALSE),
-                                                                    "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * result[["N.units"]]), size = result[["N.units"]] - result[["n"]], alpha = result[["posterior"]][["description"]]$alpha, beta = result[["posterior"]][["description"]]$beta, lower.tail = FALSE))
-        result[["posterior"]][["hypotheses"]]$odds.hmin   <- result[["posterior"]][["hypotheses"]]$p.hmin / result[["posterior"]][["hypotheses"]]$p.hplus
-        result[["posterior"]][["hypotheses"]]$odds.hplus  <- 1 / result[["posterior"]][["hypotheses"]]$odds.hmin
+          result[["posterior"]][["hypotheses"]]$p.h0     <- switch(method, 
+                                                                   "poisson" = stats::pgamma(materiality, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta, lower.tail = FALSE),
+                                                                   "binomial" = stats::pbeta(materiality, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta, lower.tail = FALSE),
+                                                                   "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * result[["N.units"]]), size = result[["N.units"]] - result[["n"]], alpha = result[["posterior"]][["description"]]$alpha, beta = result[["posterior"]][["description"]]$beta, lower.tail = FALSE))
+        } else {
+          result[["posterior"]][["hypotheses"]]$hypotheses <- c(paste0("H\u2081: \u0398 > ", materiality), paste0("H\u2080: \u0398 < ", materiality))
+          result[["posterior"]][["hypotheses"]]$p.h0      <- switch(method, 
+                                                                    "poisson" = stats::pgamma(materiality, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
+                                                                    "binomial" = stats::pbeta(materiality, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
+                                                                    "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * result[["N.units"]]), size = result[["N.units"]] - result[["n"]], alpha = result[["posterior"]][["description"]]$alpha, beta = result[["posterior"]][["description"]]$beta))
+          result[["posterior"]][["hypotheses"]]$p.h1     <- switch(method, 
+                                                                   "poisson" = stats::pgamma(materiality, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta, lower.tail = FALSE),
+                                                                   "binomial" = stats::pbeta(materiality, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta, lower.tail = FALSE),
+                                                                   "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * result[["N.units"]]), size = result[["N.units"]] - result[["n"]], alpha = result[["posterior"]][["description"]]$alpha, beta = result[["posterior"]][["description"]]$beta, lower.tail = FALSE))
+        }
+        result[["posterior"]][["hypotheses"]]$odds.h1   <- result[["posterior"]][["hypotheses"]]$p.h1 / result[["posterior"]][["hypotheses"]]$p.h0
+        result[["posterior"]][["hypotheses"]]$odds.h0  <- 1 / result[["posterior"]][["hypotheses"]]$odds.h1
         # For improper priors we take the posterior odds as Bayes factor
-        result[["posterior"]][["hypotheses"]]$bf.hmin     <- result[["posterior"]][["hypotheses"]]$odds.hmin
+        result[["posterior"]][["hypotheses"]]$bf.h1     <- result[["posterior"]][["hypotheses"]]$odds.h1
         if (proper) # The prior is proper, so we divide by the prior odds
-          result[["posterior"]][["hypotheses"]]$bf.hmin   <- result[["posterior"]][["hypotheses"]]$bf.hmin / result[["prior"]][["hypotheses"]]$odds.hmin
-        result[["posterior"]][["hypotheses"]]$bf.hplus    <- 1 / result[["posterior"]][["hypotheses"]]$bf.hmin
+          result[["posterior"]][["hypotheses"]]$bf.h1   <- result[["posterior"]][["hypotheses"]]$bf.h1 / result[["prior"]][["hypotheses"]]$odds.h1
+        result[["posterior"]][["hypotheses"]]$bf.h0    <- 1 / result[["posterior"]][["hypotheses"]]$bf.h1
       }
     }
     result[["posterior"]][["N.units"]] <- result[["N.units"]]
