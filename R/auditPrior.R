@@ -284,7 +284,35 @@ auditPrior <- function(method = 'default', likelihood = c('poisson', 'binomial',
                                           "poisson" = stats::dgamma(materiality, shape = description[["alpha"]], rate = description[["beta"]]),
                                           "binomial" = stats::dbeta(materiality, shape1 = description[["alpha"]], shape2 = description[["beta"]]),
                                           "hypergeometric" = extraDistr::dbbinom(ceiling(materiality * N.units), size = N.units, alpha = description[["alpha"]], beta = description[["beta"]]))
-  }	
+  }
+  # Create the prior predictive section
+  if (likelihood != "hypergeometric" && !is.null(N.units)) {
+    predictive <- list()
+    predictive[["predictive"]] <- switch(likelihood, 
+                                         "poisson" = paste0("Negative-binomial(r = ", round(description[["alpha"]], 3), ", p = ", round(1 / (1 + description[["beta"]]), 3), ")"),
+                                         "binomial" = paste0("Beta-binomial(N = ", ceiling(N.units), ", \u03B1 = ", round(description[["alpha"]], 3), ", \u03B2 = ", round(description[["beta"]], 3), ")"))
+    predictive[["conf.level"]] <- conf.level
+    predictive[["description"]] <- list()
+    predictive[["statistics"]] <- list()
+    if (likelihood == "poisson") {
+      predictive[["description"]][["r"]] <- description[["alpha"]]
+      predictive[["description"]][["p"]] <- 1 / (1 + description[["beta"]])
+      predictive[["statistics"]][["mode"]] <- if (predictive[["description"]][["r"]] <= 1) 0 else (predictive[["description"]][["p"]] * (predictive[["description"]][["r"]] - 1)) / (1 - predictive[["description"]][["p"]])
+      predictive[["statistics"]][["mean"]] <- (predictive[["description"]][["r"]] * predictive[["description"]][["p"]]) / (1 - predictive[["description"]][["p"]])
+      predictive[["statistics"]][["median"]] <- stats::qnbinom(0.5, size = predictive[["description"]][["r"]], prob = predictive[["description"]][["p"]])
+      predictive[["statistics"]][["ub"]] <- stats::qnbinom(conf.level, size = predictive[["description"]][["r"]], prob = predictive[["description"]][["p"]])
+    } else {
+      predictive[["description"]][["alpha"]] <- description[["alpha"]]
+      predictive[["description"]][["beta"]] <- description[["beta"]]
+      predictive[["description"]][["N.units"]] <- description[["N.units"]]
+      predictive[["statistics"]][["mode"]] <- .modebbinom(N = N.units, shape1 = predictive[["description"]][["alpha"]], shape2 = predictive[["description"]][["beta"]])
+      predictive[["statistics"]][["mean"]] <- predictive[["description"]][["alpha"]] / (predictive[["description"]][["alpha"]] + predictive[["description"]][["beta"]]) * N.units
+      predictive[["statistics"]][["median"]] <- .qbbinom(0.5, N = N.units, shape1 = predictive[["description"]][["alpha"]], shape2 = predictive[["description"]][["beta"]])
+      predictive[["statistics"]][["ub"]] <- .qbbinom(conf.level, N = N.units, shape1 = predictive[["description"]][["alpha"]], shape2 = predictive[["description"]][["beta"]])
+    }
+    predictive[["statistics"]][["precision"]] <- predictive[["statistics"]][["ub"]] - predictive[["statistics"]][["mode"]]
+    class(predictive) <- "jfaPredictive"
+  }
   # Create the main result object	
   result <- list()
   # Functional form of the prior distribution
@@ -295,6 +323,8 @@ auditPrior <- function(method = 'default', likelihood = c('poisson', 'binomial',
     result[["specifics"]]   <- specifics
   if (!is.null(materiality))
     result[["hypotheses"]]  <- hypotheses
+  if (likelihood != "hypergeometric" && !is.null(N.units))
+    result[["predictive"]]  <- predictive
   result[["method"]]        <- method
   result[["likelihood"]]    <- likelihood
   if (!is.null(materiality))

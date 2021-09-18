@@ -364,8 +364,8 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
   if (((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior"))) {
     if (class(prior) == "jfaPrior" && !is.null(prior[["hypotheses"]])) {
       result[["prior"]] <- prior
-	  if (alternative == "greater") # The prior uses alternative = 'less' for p.h1 and p.h0
-		result[["prior"]][["hypotheses"]]$odds.h1 <- 1 / result[["prior"]][["hypotheses"]]$odds.h1
+      if (alternative == "greater") # The prior uses alternative = 'less' for p.h1 and p.h0
+        result[["prior"]][["hypotheses"]]$odds.h1 <- 1 / result[["prior"]][["hypotheses"]]$odds.h1
     } else {
       result[["prior"]] <- auditPrior(method = "sample", likelihood = method, N.units = result[["N.units"]], 
                                       materiality = result[["materiality"]], x = prior.x, n = prior.n)
@@ -476,6 +476,34 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
           result[["posterior"]][["hypotheses"]]$bf.h1   <- result[["posterior"]][["hypotheses"]]$bf.h1 / result[["prior"]][["hypotheses"]]$odds.h1
         result[["posterior"]][["hypotheses"]]$bf.h0    <- 1 / result[["posterior"]][["hypotheses"]]$bf.h1
       }
+    }
+    # Create the posterior predictive section
+    if (method != "hypergeometric" && !is.null(result[["N.units"]])) {
+      result[["posterior"]][["predictive"]] <- list()
+      result[["posterior"]][["predictive"]] [["predictive"]] <- switch(method, 
+                                                                       "poisson" = paste0("Negative-binomial(r = ", round(result[["posterior"]][["description"]][["alpha"]], 3), ", p = ", round(1 / (1 + result[["posterior"]][["description"]][["beta"]]), 3), ")"),
+                                                                       "binomial" = paste0("Beta-binomial(N = ", ceiling(result[["N.units"]]), ", \u03B1 = ", round(result[["posterior"]][["description"]][["alpha"]], 3), ", \u03B2 = ", round(result[["posterior"]][["description"]][["beta"]], 3), ")"))
+      result[["posterior"]][["predictive"]][["conf.level"]] <- conf.level
+      result[["posterior"]][["predictive"]][["description"]] <- list()
+      result[["posterior"]][["predictive"]][["statistics"]] <- list()
+      if (method == "poisson") {
+        result[["posterior"]][["predictive"]][["description"]][["r"]] <- result[["posterior"]][["description"]][["alpha"]]
+        result[["posterior"]][["predictive"]][["description"]][["p"]] <- 1 / (1 + result[["posterior"]][["description"]][["beta"]])
+        result[["posterior"]][["predictive"]][["statistics"]][["mode"]] <- if (result[["posterior"]][["predictive"]][["description"]][["r"]] <= 1) 0 else (result[["posterior"]][["predictive"]][["description"]][["p"]] * (result[["posterior"]][["predictive"]][["description"]][["r"]] - 1)) / (1 - result[["posterior"]][["predictive"]][["description"]][["p"]])
+        result[["posterior"]][["predictive"]][["statistics"]][["mean"]] <- (result[["posterior"]][["predictive"]][["description"]][["r"]] * result[["posterior"]][["predictive"]][["description"]][["p"]]) / (1 - result[["posterior"]][["predictive"]][["description"]][["p"]])
+        result[["posterior"]][["predictive"]][["statistics"]][["median"]] <- stats::qnbinom(0.5, size = result[["posterior"]][["predictive"]][["description"]][["r"]], prob = result[["posterior"]][["predictive"]][["description"]][["p"]])
+        result[["posterior"]][["predictive"]][["statistics"]][["ub"]] <- stats::qnbinom(conf.level, size = result[["posterior"]][["predictive"]][["description"]][["r"]], prob = result[["posterior"]][["predictive"]][["description"]][["p"]])
+      } else {
+        result[["posterior"]][["predictive"]][["description"]][["alpha"]] <- result[["posterior"]][["description"]][["alpha"]]
+        result[["posterior"]][["predictive"]][["description"]][["beta"]] <- result[["posterior"]][["description"]][["beta"]]
+        result[["posterior"]][["predictive"]][["description"]][["N.units"]] <- result[["N.units"]]
+        result[["posterior"]][["predictive"]][["statistics"]][["mode"]] <- .modebbinom(N = result[["posterior"]][["predictive"]][["description"]][["N.units"]], shape1 = result[["posterior"]][["predictive"]][["description"]][["alpha"]], shape2 = result[["posterior"]][["predictive"]][["description"]][["beta"]])
+        result[["posterior"]][["predictive"]][["statistics"]][["mean"]] <- result[["posterior"]][["predictive"]][["description"]][["alpha"]] / (result[["posterior"]][["predictive"]][["description"]][["alpha"]] + result[["posterior"]][["predictive"]][["description"]][["beta"]]) * N.units
+        result[["posterior"]][["predictive"]][["statistics"]][["median"]] <- .qbbinom(0.5, N = result[["posterior"]][["predictive"]][["description"]][["N.units"]], shape1 = result[["posterior"]][["predictive"]][["description"]][["alpha"]], shape2 = result[["posterior"]][["predictive"]][["description"]][["beta"]])
+        result[["posterior"]][["predictive"]][["statistics"]][["ub"]] <- .qbbinom(conf.level, N = result[["posterior"]][["predictive"]][["description"]][["N.units"]], shape1 = result[["posterior"]][["predictive"]][["description"]][["alpha"]], shape2 = result[["posterior"]][["predictive"]][["description"]][["beta"]])
+      }
+      result[["posterior"]][["predictive"]][["statistics"]][["precision"]] <- result[["posterior"]][["predictive"]][["statistics"]][["ub"]] - result[["posterior"]][["predictive"]][["statistics"]][["mode"]]
+      class(result[["posterior"]][["predictive"]]) <- "jfaPredictive"
     }
     result[["posterior"]][["N.units"]] <- result[["N.units"]]
     # Add class 'jfaPosterior' to the posterior distribution object.

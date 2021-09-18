@@ -2,7 +2,7 @@
 #'
 #' Methods defined for objects returned from the \code{\link{auditPrior}}, \code{\link{planning}}, \code{\link{selection}}, and \code{\link{evaluation}} functions.
 #'
-#' @param object,x   an object of class \code{jfaPrior}, \code{jfaPosterior}, \code{jfaPlanning}, \code{jfaSelection}, or \code{jfaEvaluation}.
+#' @param object,x   an object of class \code{jfaPrior}, \code{jfaPosterior}, \code{jfaPredictive}, \code{jfaPlanning}, \code{jfaSelection}, or \code{jfaEvaluation}.
 #' @param digits     an integer specifying the number of digits to which output should be rounded. Used in \code{summary}.
 #' @param xmax       a number between 0 and 1 specifying the x-axis limits of the plot. Used in \code{plot}.
 #' @param ...        further arguments, currently ignored.
@@ -35,6 +35,16 @@ print.jfaPosterior <- function(x, ...) {
   cat(strwrap("Posterior Distribution from Audit Sampling", prefix = "\t"), sep = "\n")
   cat("\n")
   cat("functional form:", x[["posterior"]], "\nparameters obtained via method 'sample'\n")
+}
+
+#' @rdname jfa-methods
+#' @method print jfaPredictive
+#' @export
+print.jfaPredictive <- function(x, ...) {
+  cat("\n")
+  cat(strwrap("Predictive Distribution for Audit Sampling", prefix = "\t"), sep = "\n")
+  cat("\n")
+  cat("functional form:", x[["predictive"]], "\nparameters obtained via method 'sample'\n")
 }
 
 #' @rdname jfa-methods
@@ -130,6 +140,21 @@ print.summary.jfaPosterior <- function(x, digits = getOption("digits"), ...) {
   cat(paste("  Mode:                         ", format(x[["mode"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Mean:                         ", format(x[["mean"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Median:                       ", format(x[["median"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste("  Precision:                    ", format(x[["precision"]], digits = max(1L, digits - 2L))), "\n")
+}
+
+#' @rdname jfa-methods
+#' @method print summary.jfaPredictive
+#' @export
+print.summary.jfaPredictive <- function(x, digits = getOption("digits"), ...) {
+  cat("\n")
+  cat(strwrap("Predictive Distribution Summary", prefix = "\t"), sep = "\n")
+  cat("\nResults:\n")
+  cat(paste("  Functional form:              ", x[["predictive"]]), "\n")
+  cat(paste("  Mode:                         ", format(x[["mode"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste("  Mean:                         ", format(x[["mean"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste("  Median:                       ", format(x[["median"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste(" ", format(x[["conf.level"]] * 100), "percent upper bound:       ", format(x[["ub"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Precision:                    ", format(x[["precision"]], digits = max(1L, digits - 2L))), "\n")
 }
 
@@ -292,6 +317,22 @@ summary.jfaPosterior <- function(object, digits = getOption("digits"), ...) {
                     "median" = round(object[["statistics"]]$median, digits),
                     stringsAsFactors = FALSE)
   class(out) <- c("summary.jfaPosterior", "data.frame")
+  return(out)
+}
+
+#' @rdname jfa-methods
+#' @method summary jfaPredictive
+#' @export 
+summary.jfaPredictive <- function(object, digits = getOption("digits"), ...) {
+  out <- data.frame("predictive" = object[["predictive"]],
+                    "ub" = round(object[["statistics"]]$ub, digits),
+                    "precision" = round(object[["statistics"]]$precision, digits),
+                    "mode" = round(object[["statistics"]]$mode, digits),
+                    "mean" = round(object[["statistics"]]$mean, digits),
+                    "median" = round(object[["statistics"]]$median, digits),
+					conf.level = object[["conf.level"]],
+                    stringsAsFactors = FALSE)
+  class(out) <- c("summary.jfaPredictive", "data.frame")
   return(out)
 }
 

@@ -4,16 +4,19 @@
 \alias{jfa-methods}
 \alias{print.jfaPrior}
 \alias{print.jfaPosterior}
+\alias{print.jfaPredictive}
 \alias{print.jfaPlanning}
 \alias{print.jfaSelection}
 \alias{print.jfaEvaluation}
 \alias{print.summary.jfaPrior}
 \alias{print.summary.jfaPosterior}
+\alias{print.summary.jfaPredictive}
 \alias{print.summary.jfaPlanning}
 \alias{print.summary.jfaSelection}
 \alias{print.summary.jfaEvaluation}
 \alias{summary.jfaPrior}
 \alias{summary.jfaPosterior}
+\alias{summary.jfaPredictive}
 \alias{summary.jfaPlanning}
 \alias{summary.jfaSelection}
 \alias{summary.jfaEvaluation}
@@ -28,6 +31,8 @@
 
 \method{print}{jfaPosterior}(x, ...)
 
+\method{print}{jfaPredictive}(x, ...)
+
 \method{print}{jfaPlanning}(x, ...)
 
 \method{print}{jfaSelection}(x, ...)
@@ -38,6 +43,8 @@
 
 \method{print}{summary.jfaPosterior}(x, digits = getOption("digits"), ...)
 
+\method{print}{summary.jfaPredictive}(x, digits = getOption("digits"), ...)
+
 \method{print}{summary.jfaPlanning}(x, digits = getOption("digits"), ...)
 
 \method{print}{summary.jfaSelection}(x, digits = getOption("digits"), ...)
@@ -47,6 +54,8 @@
 \method{summary}{jfaPrior}(object, digits = getOption("digits"), ...)
 
 \method{summary}{jfaPosterior}(object, digits = getOption("digits"), ...)
+
+\method{summary}{jfaPredictive}(object, digits = getOption("digits"), ...)
 
 \method{summary}{jfaPlanning}(object, digits = getOption("digits"), ...)
 
@@ -69,7 +78,7 @@
 
 \item{digits}{an integer specifying the number of digits to which output should be rounded. Used in \code{summary}.}
 
-\item{object, x}{an object of class \code{jfaPrior}, \code{jfaPosterior}, \code{jfaPlanning}, \code{jfaSelection}, or \code{jfaEvaluation}.}
+\item{object, x}{an object of class \code{jfaPrior}, \code{jfaPosterior}, \code{jfaPredictive}, \code{jfaPlanning}, \code{jfaSelection}, or \code{jfaEvaluation}.}
 
 \item{xmax}{a number between 0 and 1 specifying the x-axis limits of the plot. Used in \code{plot}.}
 }
