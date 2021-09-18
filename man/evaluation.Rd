@@ -5,8 +5,9 @@
 \title{Evaluate a statistical audit sample}
 \usage{
 evaluation(materiality = NULL, min.precision = NULL, method = 'poisson',
-           conf.level = 0.95, data = NULL, values = NULL, values.audit = NULL,
-           times = NULL, x = NULL, n = NULL, N.units = NULL, N.items = NULL,
+           alternative = c('less', 'two.sided', 'greater'), conf.level = 0.95, 
+           data = NULL, values = NULL, values.audit = NULL, times = NULL,
+           x = NULL, n = NULL, N.units = NULL, N.items = NULL,
            r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5,
            prior = FALSE)
 }
@@ -16,6 +17,8 @@ evaluation(materiality = NULL, min.precision = NULL, method = 'poisson',
 \item{min.precision}{a numeric value between 0 and 1 specifying the required minimum precision (upper bound minus most likely error) as a fraction of the total size of the population. If specified, the function also returns the conclusion of the analysis with respect to the required minimum precision.}
 
 \item{method}{a character specifying the method to be used in the evaluation. Possible options are \code{poisson}, \code{binomial} (default), \code{hypergeometric}, \code{mpu}, \code{stringer}, \code{stringer.meikle}, \code{stringer.lta}, \code{stringer.pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}. See the details section for more information.}
+
+\item{alternative}{a character indicating the alternative hypothesis to be tested (and the type of interval to be produced). This must be one of \code{less} (default), \code{two.sided}, or \code{greater}. You can specify just the initial letter.}
 
 \item{conf.level}{a numeric value between 0 and 1 specifying the confidence level used in the evaluation. Defaults to 0.95 for 95\% confidence.}
 
@@ -61,11 +64,11 @@ An object of class \code{jfaEvaluation} containing:
 \item{n}{an integer larger than 0 indicating the sample size.}
 \item{materiality}{if \code{materiality} is specified, a numeric value between 0 and 1 indicating the performance materiality as a fraction of the total population size.}
 \item{min.precision}{if \code{min.precision} is specified, a numeric value between 0 and 1 indicating the minimum required precision as a fraction of the total population size.}
+\item{alternative}{a character indicating the alternative hypothesis.}
 \item{method}{a character indicating the evaluation method.}
 \item{N.units}{if \code{N.units} is specified, in integer larger than 0 indicating the total number of units in the population.}
 \item{N.items}{if \code{N.items} is specified, in integer larger than 0 indicating the total number of items in the population.}
 \item{K}{if \code{method = 'hypergeometric'}, an integer indicating the assumed total errors in the population.}
-\item{sufficient}{if \code{materiality} is specified, a character indicating the conclusion about whether to approve or not approve the population with respect to the performance materiality.}
 \item{prior}{an object of class 'jfaPrior' that contains the prior distribution.}
 \item{posterior}{an object of class 'jfaPosterior' that contains the posterior distribution.}
 \item{data}{a data frame containing the relevant columns from the \code{data}.}

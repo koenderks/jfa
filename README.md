@@ -196,8 +196,9 @@ The `evaluation()` function takes a sample or summary statistics of the sample a
 
 ```r
 evaluation(materiality = NULL, min.precision = NULL, method = 'poisson',
-           conf.level = 0.95, data = NULL, values = NULL, values.audit = NULL,
-           times = NULL, x = NULL, n = NULL, N.units = NULL, N.items = NULL, 
+           alternative = c('less', 'two.sided', 'greater'), conf.level = 0.95, 
+           data = NULL, values = NULL, values.audit = NULL, times = NULL, 
+           x = NULL, n = NULL, N.units = NULL, N.items = NULL, 
            r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5, 
            prior = FALSE)
 ```

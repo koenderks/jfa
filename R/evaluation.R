@@ -6,14 +6,16 @@
 #' \code{vignette('jfa', package = 'jfa')}
 #'
 #' @usage evaluation(materiality = NULL, min.precision = NULL, method = 'poisson',
-#'            conf.level = 0.95, data = NULL, values = NULL, values.audit = NULL,
-#'            times = NULL, x = NULL, n = NULL, N.units = NULL, N.items = NULL,
+#'            alternative = c('less', 'two.sided', 'greater'), conf.level = 0.95, 
+#'            data = NULL, values = NULL, values.audit = NULL, times = NULL,
+#'            x = NULL, n = NULL, N.units = NULL, N.items = NULL,
 #'            r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5,
 #'            prior = FALSE)
 #'
 #' @param materiality   a numeric value between 0 and 1 specifying the performance materiality (maximum tolerable error) as a fraction of the total size of the population. If specified, the function also returns the conclusion of the analysis with respect to the performance materiality. The value is discarded when \code{direct}, \code{difference}, \code{quotient}, or \code{regression} method is chosen.
 #' @param min.precision a numeric value between 0 and 1 specifying the required minimum precision (upper bound minus most likely error) as a fraction of the total size of the population. If specified, the function also returns the conclusion of the analysis with respect to the required minimum precision.
 #' @param method        a character specifying the method to be used in the evaluation. Possible options are \code{poisson}, \code{binomial} (default), \code{hypergeometric}, \code{mpu}, \code{stringer}, \code{stringer.meikle}, \code{stringer.lta}, \code{stringer.pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}. See the details section for more information.
+#' @param alternative   a character indicating the alternative hypothesis to be tested (and the type of interval to be produced). This must be one of \code{less} (default), \code{two.sided}, or \code{greater}. You can specify just the initial letter.
 #' @param conf.level    a numeric value between 0 and 1 specifying the confidence level used in the evaluation. Defaults to 0.95 for 95\% confidence.
 #' @param data          a data frame containing the sample to be evaluated. The sample must at least contain a column of book values and a column of audit (true) values.
 #' @param values        a character specifying name of a column in \code{data} containing the book values of the items.
@@ -73,11 +75,11 @@
 #' \item{n}{an integer larger than 0 indicating the sample size.}
 #' \item{materiality}{if \code{materiality} is specified, a numeric value between 0 and 1 indicating the performance materiality as a fraction of the total population size.}
 #' \item{min.precision}{if \code{min.precision} is specified, a numeric value between 0 and 1 indicating the minimum required precision as a fraction of the total population size.}
+#' \item{alternative}{a character indicating the alternative hypothesis.}
 #' \item{method}{a character indicating the evaluation method.}
 #' \item{N.units}{if \code{N.units} is specified, in integer larger than 0 indicating the total number of units in the population.}
 #' \item{N.items}{if \code{N.items} is specified, in integer larger than 0 indicating the total number of items in the population.}
 #' \item{K}{if \code{method = 'hypergeometric'}, an integer indicating the assumed total errors in the population.}
-#' \item{sufficient}{if \code{materiality} is specified, a character indicating the conclusion about whether to approve or not approve the population with respect to the performance materiality.}
 #' \item{prior}{an object of class 'jfaPrior' that contains the prior distribution.}
 #' \item{posterior}{an object of class 'jfaPosterior' that contains the posterior distribution.}
 #' \item{data}{a data frame containing the relevant columns from the \code{data}.}
@@ -118,11 +120,13 @@
 #' @export 
 
 evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poisson',
-                       conf.level = 0.95, data = NULL, values = NULL, values.audit = NULL,
-                       times = NULL, x = NULL, n = NULL, N.units = NULL, N.items = NULL, 
+                       alternative = c('less', 'two.sided', 'greater'), conf.level = 0.95, 
+                       data = NULL, values = NULL, values.audit = NULL, times = NULL, 
+                       x = NULL, n = NULL, N.units = NULL, N.items = NULL, 
                        r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5, 
                        prior = FALSE) {
   proper <- TRUE
+  alternative <- match.arg(alternative)
   bayesian <- (class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")
   # Import existing prior distribution with class 'jfaPrior' or 'jfaPosterior'.
   if (class(prior) %in% c("jfaPrior", "jfaPosterior")) {
@@ -133,7 +137,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
       N.units <- prior[['N.units']]
     proper <- prior[["description"]]$alpha != 0 && prior[["description"]]$beta != 0
   } else {
-	prior.n <- 1
+    prior.n <- 1
     prior.x <- 0
   }
   if (is.null(conf.level))
@@ -149,7 +153,9 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
   if (!(method %in% c('poisson', 'binomial', 'hypergeometric', 'stringer', 'stringer.meikle', 'stringer.lta', 'stringer.pvz', 'rohrbach', 'moment', 'coxsnell', 'direct', 'difference', 'quotient', 'regression', 'mpu')) || length(method) != 1)
     stop("'method' should be one of 'poisson', 'binomial', 'hypergeometric', 'stringer', 'stringer.meikle', 'stringer.lta', 'stringer.pvz', 'rohrbach', 'moment', 'coxsnell', 'direct', 'difference', 'quotient', 'regression', 'mpu'")
   if (bayesian && method %in% c("stringer", "stringer.meikle", "stringer.lta", "stringer.pvz", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
-    stop("'method' should be one of 'poisson', 'binomial', 'hypergeometric'")  
+    stop("'method' should be one of 'poisson', 'binomial', 'hypergeometric'")
+  if (alternative %in% c("two.sided", "greater") && method %in% c("stringer", "stringer.meikle", "stringer.lta", "stringer.pvz"))
+    stop(paste0("'method = ", method, "' does not work with 'alternative = ", alternative, "'"))
   if (!is.null(x) || !is.null(n)) { # Use summary statistics
     if (method %in% c("stringer", "stringer.meikle", "stringer.lta", "stringer.pvz", "coxsnell", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
       stop(paste0("'method = ", method, "' is missing 'data' for evaluation"))
@@ -224,30 +230,60 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
   if (method == 'poisson') {
     if (bayesian) {
       # Bayesian evaluation using the gamma distribution
-      ub        <- stats::qgamma(p = conf.level, shape = 1 + prior.x + t.obs, rate = prior.n + n.obs)
-      mle       <- ((1 + prior.x + t.obs) - 1) / (prior.n + n.obs)
-      precision <- ub - mle
+      mle <- ((1 + prior.x + t.obs) - 1) / (prior.n + n.obs)
+      ub <- switch(alternative, 
+                   "two.sided" = stats::qgamma(p = conf.level + (1 - conf.level)/2, shape = 1 + prior.x + t.obs, rate = prior.n + n.obs),
+                   "less" = stats::qgamma(p = conf.level, shape = 1 + prior.x + t.obs, rate = prior.n + n.obs),
+                   "greater" = 1)
+      lb <- switch(alternative, 
+                   "two.sided" = stats::qgamma(p = (1 - conf.level)/2, shape = 1 + prior.x + t.obs, rate = prior.n + n.obs),
+                   "less" = 0,
+                   "greater" = stats::qgamma(p = 1 - conf.level, shape = 1 + prior.x + t.obs, rate = prior.n + n.obs))
     } else {
       # Classical evaluation using the Poisson distribution
-      ub        <- stats::qgamma(p = conf.level, shape = 1 + t.obs, rate = n.obs)
-      mle       <- t.obs / n.obs
-      precision <- ub - mle
+      mle <- t.obs / n.obs
+      ub <- switch(alternative, 
+                   "two.sided" = stats::qgamma(p = conf.level + (1 - conf.level)/2, shape = 1 + t.obs, rate = n.obs),
+                   "less" = stats::qgamma(p = conf.level, shape = 1 + t.obs, rate = n.obs),
+                   "greater" = Inf)
+      lb <- switch(alternative, 
+                   "two.sided" = stats::qgamma(p = (1 - conf.level)/2, shape = t.obs, rate = n.obs),
+                   "less" = 0,
+                   "greater" = stats::qgamma(p = 1 - conf.level, shape = t.obs, rate = n.obs))	  
       if (materiality < 1)
-        p.val   <- stats::pgamma(q = materiality, shape = 1 + t.obs, rate = n.obs, lower.tail = FALSE)
+        p.val <- switch(alternative, 
+                        "two.sided" = stats::poisson.test(x = x.obs, T = n, r = materiality, alternative = "two.sided")$p.value,
+                        "less" = stats::pgamma(q = materiality, shape = 1 + t.obs, rate = n.obs, lower.tail = FALSE),
+                        "greater" = stats::pgamma(q = materiality, shape = t.obs, rate = n.obs))
     }
   } else if (method == 'binomial') { 
     if (bayesian) {
       # Bayesian evaluation using the beta distribution
-      ub        <- stats::qbeta(p = conf.level, shape1 = 1 + prior.x + t.obs, shape2 = prior.n - prior.x + n.obs - t.obs)
-      mle       <- (1 + prior.x + t.obs - 1) / ((1 + prior.x + t.obs) + (prior.n - prior.x + n.obs - t.obs) - 2)
-      precision <- ub - mle
+      mle <- (1 + prior.x + t.obs - 1) / ((1 + prior.x + t.obs) + (prior.n - prior.x + n.obs - t.obs) - 2)
+      ub <- switch(alternative, 
+                   "two.sided" = stats::qbeta(p = conf.level + (1 - conf.level)/2, shape1 = 1 + prior.x + t.obs, shape2 = prior.n - prior.x + n.obs - t.obs),
+                   "less" = stats::qbeta(p = conf.level, shape1 = 1 + prior.x + t.obs, shape2 = prior.n - prior.x + n.obs - t.obs),
+                   "greater" = 1)
+      lb <- switch(alternative, 
+                   "two.sided" = stats::qbeta(p = (1 - conf.level)/2, shape1 = 1 + prior.x + t.obs, shape2 = prior.n - prior.x + n.obs - t.obs),
+                   "less" = 0,
+                   "greater" = stats::qbeta(p = 1 - conf.level, shape1 = 1 + prior.x + t.obs, shape2 = prior.n - prior.x + n.obs - t.obs))
     } else {
       # Classical evaluation using the binomial distribution
-      ub        <- stats::qbeta(p = conf.level, shape1 = 1 + t.obs, shape2 = n.obs - t.obs)
-      mle       <- t.obs / n.obs
-      precision <- ub - mle
+      mle <- t.obs / n.obs
+      ub <- switch(alternative, 
+                   "two.sided" = stats::qbeta(p = conf.level + (1 - conf.level)/2, shape1 = 1 + t.obs, shape2 = n.obs - t.obs),
+                   "less" = stats::qbeta(p = conf.level, shape1 = 1 + t.obs, shape2 = n.obs - t.obs),
+                   "greater" = 1)
+      lb <- switch(alternative, 
+                   "two.sided" = stats::qbeta(p = (1 - conf.level)/2, shape1 = t.obs, shape2 = 1 + n.obs - t.obs),
+                   "less" = 0,
+                   "greater" = stats::qbeta(p = 1 - conf.level, shape1 = t.obs, shape2 = 1 + n.obs - t.obs))	  
       if (materiality < 1)
-        p.val   <- stats::pbeta(q = materiality, shape1 = 1 + t.obs, shape2 = n.obs - t.obs, lower.tail = FALSE)
+        p.val <- switch(alternative, 
+                        "two.sided" = stats::binom.test(x = x.obs, n = n, p = materiality, alternative = "two.sided")$p.value,
+                        "less" = stats::pbeta(q = materiality, shape1 = 1 + t.obs, shape2 = n.obs - t.obs, lower.tail = FALSE),
+                        "greater" = stats::pbeta(q = materiality, shape1 = t.obs, shape2 = 1 + n.obs - t.obs))
     }
   } else if (method == 'hypergeometric') {
     if (is.null(N.units))
@@ -256,17 +292,32 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
       stop("'N.units' must be a nonnegative integer")
     if (bayesian) {
       # Bayesian evaluation using the beta-binomial distribution
-      ub        <- .qbbinom(p = conf.level, N = N.units - n.obs, shape1 = 1 + prior.x + t.obs, shape2 = prior.n - prior.x + n.obs - t.obs) / N.units
-      mle       <- .modebbinom(N = N.units - n.obs, shape1 = 1 + prior.x + t.obs, shape2 = prior.n - prior.x + n.obs - t.obs) / N.units
-      precision <- ub - mle
+      mle <- .modebbinom(N = N.units - n.obs, shape1 = 1 + prior.x + t.obs, shape2 = prior.n - prior.x + n.obs - t.obs) / N.units
+      ub <- switch(alternative, 
+                   "two.sided" = .qbbinom(p = conf.level + (1 - conf.level)/2, N = N.units - n.obs, shape1 = 1 + prior.x + t.obs, shape2 = prior.n - prior.x + n.obs - t.obs) / N.units,
+                   "less" = .qbbinom(p = conf.level, N = N.units - n.obs, shape1 = 1 + prior.x + t.obs, shape2 = prior.n - prior.x + n.obs - t.obs) / N.units,
+                   "greater" = 1)
+      lb <- switch(alternative, 
+                   "two.sided" = .qbbinom(p = (1 - conf.level)/2, N = N.units - n.obs, shape1 = 1 + prior.x + t.obs, shape2 = prior.n - prior.x + n.obs - t.obs) / N.units,
+                   "less" = 0,
+                   "greater" = .qbbinom(p = 1 - conf.level, N = N.units - n.obs, shape1 = 1 + prior.x + t.obs, shape2 = prior.n - prior.x + n.obs - t.obs) / N.units)
     } else {
       # Classical evaluation using the hypergeometric distribution
-      K         <- ceiling(materiality * N.units)
-      ub        <- .qhyper(p = conf.level, N = N.units, n = n.obs, k = x.obs) / N.units
-      mle       <- x.obs / n.obs
-      precision <- ub - mle
+      K <- ceiling(materiality * N.units)
+      mle <- x.obs / n.obs
+      ub <- switch(alternative, 
+                   "two.sided" = .qhyper(p = conf.level + (1 - conf.level)/2, N = N.units, n = n.obs, k = x.obs) / N.units,
+                   "less" = .qhyper(p = conf.level, N = N.units, n = n.obs, k = x.obs) / N.units,
+                   "greater" = 1)
+      lb <- switch(alternative, 
+                   "two.sided" = .qhyper(p = (1 - conf.level)/2, N = N.units, n = n.obs, k = x.obs) / N.units,
+                   "less" = 0,
+                   "greater" = .qhyper(p = 1 - conf.level, N = N.units, n = n.obs, k = x.obs) / N.units)	  
       if (materiality < 1)
-        p.val   <- stats::phyper(q = x.obs, m = K, n = N.units - K, k = n.obs)
+        p.val <- switch(alternative, 
+                        "two.sided" = stats::phyper(q = x.obs, m = K, n = N.units - K, k = n.obs, lower.tail = FALSE) * 2,
+                        "less" = stats::phyper(q = x.obs, m = K, n = N.units - K, k = n.obs),
+                        "greater" = stats::phyper(q = x.obs, m = K, n = N.units - K, k = n.obs, lower.tail = FALSE))
     }
   } else {
     out <- switch(method,
@@ -274,34 +325,26 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
                   'stringer.meikle' = .stringer(t, conf.level, n.obs, correction = 'meikle'), # Classical evaluation using the Stringer bound with Meikle's adjustment
                   'stringer.lta' = .stringer(t, conf.level, n.obs, correction = 'lta'), # Classical evaluation using the Stringer bound with the LTA adjustment
                   'stringer.pvz' = .stringer(t, conf.level, n.obs, correction = 'pvz'), # Classical evaluation using the Stringer bound with PvZ adjustment
-                  'rohrbach' = .rohrbach(t, conf.level, n.obs, N.units, r.delta), # Classical evaluation using Rohrbachs augmented variance bound
-                  'moment' = .moment(t, conf.level, n.obs, m.type), # Classical evaluation using the Modified Moment bound
-                  'coxsnell' = .coxsnell(t, conf.level, n.obs, cs.a, cs.b, cs.mu, 1 + prior.x, 1 + prior.n - prior.x), # Bayesian evaluation using the Cox and Snell bound
-                  'mpu' = .mpu(t, conf.level, n.obs), # Classical evaluation using the Mean-per-unit estimator
-                  'direct' = .direct(bookvalues, auditvalues, conf.level, N.items, n.obs, N.units), # Classical evaluation using the Direct estimator
-                  'difference' = .difference(bookvalues, auditvalues, conf.level, N.items, n.obs), # Classical evaluation using the Difference estimator
-                  'quotient' = .quotient(bookvalues, auditvalues, conf.level, N.items, n.obs), # Classical evaluation using the Quotient estimator
-                  'regression' = .regression(bookvalues, auditvalues, conf.level, N.items, n.obs, N.units), # Classical evaluation using the Regression estimator
+                  'rohrbach' = .rohrbach(t, conf.level, n.obs, alternative, N.units, r.delta), # Classical evaluation using Rohrbachs augmented variance bound
+                  'moment' = .moment(t, conf.level, n.obs, alternative, m.type), # Classical evaluation using the Modified Moment bound
+                  'coxsnell' = .coxsnell(t, conf.level, n.obs, alternative, cs.a, cs.b, cs.mu, 1 + prior.x, 1 + prior.n - prior.x), # Bayesian evaluation using the Cox and Snell bound
+                  'mpu' = .mpu(t, conf.level, alternative, n.obs), # Classical evaluation using the Mean-per-unit estimator
+                  'direct' = .direct(bookvalues, auditvalues, conf.level, alternative, N.items, n.obs, N.units), # Classical evaluation using the Direct estimator
+                  'difference' = .difference(bookvalues, auditvalues, conf.level, alternative, N.items, n.obs), # Classical evaluation using the Difference estimator
+                  'quotient' = .quotient(bookvalues, auditvalues, conf.level, alternative, N.items, n.obs), # Classical evaluation using the Quotient estimator
+                  'regression' = .regression(bookvalues, auditvalues, conf.level, alternative, N.items, n.obs, N.units), # Classical evaluation using the Regression estimator
                   'newmethod' = NULL) # Add new method here
     mle <- out[["mle"]]
     ub <- out[["ub"]]
-    precision <- out[["precision"]]
-    if (!is.null(out[["lb"]]))
-      lb <- out[["lb"]]
+    lb <- out[["lb"]]
   }
   # Create the main results object
   result                    <- list()
   result[["conf.level"]]    <- conf.level
-  if (!is.null(mle))
-    result[["mle"]]         <- mle
+  result[["mle"]]           <- mle
   result[["ub"]]            <- ub
-  if (method %in% c("direct", "difference", "quotient", "regression")) {
-    result[["lb"]]          <- lb
-  } else {
-	result[["lb"]]          <- 0
-  }
-  if (!is.null(precision))
-    result[["precision"]]   <- precision
+  result[["lb"]]            <- lb
+  result[["precision"]]     <- if (alternative == "greater") result[["mle"]] - result[["lb"]] else result[["ub"]] - result[["mle"]]
   if (!bayesian && materiality < 1 && method %in% c('binomial', 'poisson', 'hypergeometric'))
     result[["p.value"]]     <- p.val
   result[["x"]]             <- x.obs
@@ -309,6 +352,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
   result[["n"]]             <- n.obs
   result[["materiality"]]   <- materiality
   result[["min.precision"]] <- min.precision
+  result[["alternative"]]   <- alternative
   result[["method"]]        <- method
   if (!is.null(N.units))
     result[["N.units"]]     <- N.units
@@ -316,33 +360,13 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
     result[["N.items"]]     <- N.items
   if (method == 'hypergeometric' && is.logical(prior) && prior == FALSE)
     result[["K"]]           <- K
-  # Has the minimum precision objective (if applicable) been achieved?
-  approve.p <- TRUE
-  if (min.precision != 1) {
-    if (method %in% c("direct", "difference", "quotient", "regression")) {
-      approve.p <- (result[["precision"]] / N.units) < min.precision
-    } else {
-      approve.p <- result[["precision"]] < min.precision
-    }
-  }
-  # Has the materiality objective (if applicable) been achieved?
-  approve.m <- TRUE
-  if (materiality != 1) {
-    if (method %in% c("direct", "difference", "quotient", "regression")) {
-      approve.m <- (result[["ub"]] / N.units) < materiality
-    } else {
-      approve.m <- result[["ub"]] < materiality
-    }
-  }
-  # Provide a conclusion with respect to the objectives
-  result[["sufficient"]] <- approve.m && approve.p
   # Create the prior distribution object	
   if (((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior"))) {
     if (class(prior) == "jfaPrior" && !is.null(prior[["hypotheses"]])) {
-      result[["prior"]]           <- prior
+      result[["prior"]] <- prior
     } else {
-      result[["prior"]]           <- auditPrior(method = "sample", likelihood = method, N.units = result[["N.units"]], 
-                                                materiality = result[["materiality"]], x = prior.x, n = prior.n)
+      result[["prior"]] <- auditPrior(method = "sample", likelihood = method, N.units = result[["N.units"]], 
+                                      materiality = result[["materiality"]], x = prior.x, n = prior.n)
     }
   }
   if (!is.null(result[["prior"]])) {
@@ -386,30 +410,58 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
                                                               "poisson" = stats::qgamma(0.5, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
                                                               "binomial" = stats::qbeta(0.5, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
                                                               "hypergeometric" = .qbbinom(0.5, N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta))
-    result[["posterior"]][["statistics"]]$ub        <- switch(method, 
-                                                              "poisson" = stats::qgamma(conf.level, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
-                                                              "binomial" = stats::qbeta(conf.level, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
-                                                              "hypergeometric" = .qbbinom(conf.level, N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta))
-    result[["posterior"]][["statistics"]]$precision <- result[["posterior"]][["statistics"]]$ub - result[["posterior"]][["statistics"]]$mode
+    if (alternative == 'less') {
+      result[["posterior"]][["statistics"]]$ub        <- switch(method, 
+                                                                "poisson" = stats::qgamma(conf.level, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
+                                                                "binomial" = stats::qbeta(conf.level, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
+                                                                "hypergeometric" = .qbbinom(conf.level, N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta))
+      result[["posterior"]][["statistics"]]$lb        <- 0
+    } else if (alternative == "two.sided") {
+      result[["posterior"]][["statistics"]]$ub        <- switch(method, 
+                                                                "poisson" = stats::qgamma(conf.level + (1 - conf.level)/2, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
+                                                                "binomial" = stats::qbeta(conf.level + (1 - conf.level)/2, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
+                                                                "hypergeometric" = .qbbinom(conf.level + (1 - conf.level)/2, N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta))
+      result[["posterior"]][["statistics"]]$lb        <- switch(method, 
+                                                                "poisson" = stats::qgamma((1 - conf.level)/2, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
+                                                                "binomial" = stats::qbeta((1 - conf.level)/2, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
+                                                                "hypergeometric" = .qbbinom((1 - conf.level)/2, N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta))
+    } else if (alternative == "greater") {
+      result[["posterior"]][["statistics"]]$ub        <- if (method == "poisson") Inf else 1
+      result[["posterior"]][["statistics"]]$lb        <- switch(method, 
+                                                                "poisson" = stats::qgamma(1 - conf.level, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
+                                                                "binomial" = stats::qbeta(1 - conf.level, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
+                                                                "hypergeometric" = .qbbinom(1 - conf.level, N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta))	
+    }
+    result[["posterior"]][["statistics"]]$precision <- if (alternative == "greater") result[["posterior"]][["statistics"]]$mode - result[["posterior"]][["statistics"]]$lb else result[["posterior"]][["statistics"]]$ub - result[["posterior"]][["statistics"]]$mode
     # Create the hypotheses section
     if (result[["materiality"]] != 1) {
       result[["posterior"]][["hypotheses"]]             <- list()
-      result[["posterior"]][["hypotheses"]]$hypotheses  <- c(paste0("H-: \u0398 < ", materiality), paste0("H+: \u0398 > ", materiality))
-      result[["posterior"]][["hypotheses"]]$p.hmin      <- switch(method, 
-                                                                  "poisson" = stats::pgamma(materiality, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
-                                                                  "binomial" = stats::pbeta(materiality, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
-                                                                  "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * result[["N.units"]]), size = result[["N.units"]] - result[["n"]], alpha = result[["posterior"]][["description"]]$alpha, beta = result[["posterior"]][["description"]]$beta))
-      result[["posterior"]][["hypotheses"]]$p.hplus     <- switch(method, 
-                                                                  "poisson" = stats::pgamma(materiality, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta, lower.tail = FALSE),
-                                                                  "binomial" = stats::pbeta(materiality, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta, lower.tail = FALSE),
-                                                                  "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * result[["N.units"]]), size = result[["N.units"]] - result[["n"]], alpha = result[["posterior"]][["description"]]$alpha, beta = result[["posterior"]][["description"]]$beta, lower.tail = FALSE))
-      result[["posterior"]][["hypotheses"]]$odds.hmin   <- result[["posterior"]][["hypotheses"]]$p.hmin / result[["posterior"]][["hypotheses"]]$p.hplus
-      result[["posterior"]][["hypotheses"]]$odds.hplus  <- 1 / result[["posterior"]][["hypotheses"]]$oddsh.min
-      # For improper priors we take the posterior odds as Bayes factor
-      result[["posterior"]][["hypotheses"]]$bf.hmin     <- result[["posterior"]][["hypotheses"]]$odds.hmin
-      if (proper) # The prior is proper, so we divide by the prior odds
-        result[["posterior"]][["hypotheses"]]$bf.hmin   <- result[["posterior"]][["hypotheses"]]$bf.hmin / result[["prior"]][["hypotheses"]]$odds.hmin
-      result[["posterior"]][["hypotheses"]]$bf.hplus    <- 1 / result[["posterior"]][["hypotheses"]]$bf.hmin
+      if (alternative == "two.sided") {
+        result[["posterior"]][["hypotheses"]]$hypotheses  <- c(paste0("H0: \u0398 = ", materiality), paste0("H1: \u0398 \u2260 ", materiality))
+        result[["posterior"]][["hypotheses"]]$density     <- switch(method,
+                                                                    "poisson" = stats::dgamma(materiality, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
+                                                                    "binomial" = stats::dbeta(materiality, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
+                                                                    "hypergeometric" = extraDistr::dbbinom(ceiling(materiality * N.units), size = N.units, alpha = result[["posterior"]][["description"]]$alpha, beta = result[["posterior"]][["description"]]$beta))
+        result[["posterior"]][["hypotheses"]]$bf.h0       <- result[["posterior"]][["hypotheses"]]$density / result[["prior"]][["hypotheses"]]$density
+        result[["posterior"]][["hypotheses"]]$bf.h1       <- 1 / result[["posterior"]][["hypotheses"]]$bf.h0
+      } else {
+        result[["posterior"]][["hypotheses"]]$hypotheses  <- c(paste0("H-: \u0398 < ", materiality), paste0("H+: \u0398 > ", materiality))
+        result[["posterior"]][["hypotheses"]]$p.hmin      <- switch(method, 
+                                                                    "poisson" = stats::pgamma(materiality, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
+                                                                    "binomial" = stats::pbeta(materiality, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
+                                                                    "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * result[["N.units"]]), size = result[["N.units"]] - result[["n"]], alpha = result[["posterior"]][["description"]]$alpha, beta = result[["posterior"]][["description"]]$beta))
+        result[["posterior"]][["hypotheses"]]$p.hplus     <- switch(method, 
+                                                                    "poisson" = stats::pgamma(materiality, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta, lower.tail = FALSE),
+                                                                    "binomial" = stats::pbeta(materiality, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta, lower.tail = FALSE),
+                                                                    "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * result[["N.units"]]), size = result[["N.units"]] - result[["n"]], alpha = result[["posterior"]][["description"]]$alpha, beta = result[["posterior"]][["description"]]$beta, lower.tail = FALSE))
+        result[["posterior"]][["hypotheses"]]$odds.hmin   <- result[["posterior"]][["hypotheses"]]$p.hmin / result[["posterior"]][["hypotheses"]]$p.hplus
+        result[["posterior"]][["hypotheses"]]$odds.hplus  <- 1 / result[["posterior"]][["hypotheses"]]$odds.hmin
+        # For improper priors we take the posterior odds as Bayes factor
+        result[["posterior"]][["hypotheses"]]$bf.hmin     <- result[["posterior"]][["hypotheses"]]$odds.hmin
+        if (proper) # The prior is proper, so we divide by the prior odds
+          result[["posterior"]][["hypotheses"]]$bf.hmin   <- result[["posterior"]][["hypotheses"]]$bf.hmin / result[["prior"]][["hypotheses"]]$odds.hmin
+        result[["posterior"]][["hypotheses"]]$bf.hplus    <- 1 / result[["posterior"]][["hypotheses"]]$bf.hmin
+      }
     }
     result[["posterior"]][["N.units"]] <- result[["N.units"]]
     # Add class 'jfaPosterior' to the posterior distribution object.
@@ -425,7 +477,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
     frame[["taint"]]      <- frame[, 4] / frame[, 2]
     colnames(frame)       <- c("row", values, values.audit, "difference", "taint")
     result[["data"]]      <- frame
-	result[["data.name"]] <- dname
+    result[["data.name"]] <- dname
   }
   # Add class 'jfaEvaluation' to the result.
   class(result) <- "jfaEvaluation"

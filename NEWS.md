@@ -2,6 +2,7 @@
 
 **New features**
 
+- Added argument `alternative` with possible options `less` (default), `two.sided`, and `greater` that allows control over the type of hypothesis test to perform and the type of confidence / credible interval to calculate.
 - Added `method = 'param'` to function `auditPrior()` which takes as input the raw `alpha` and `beta` parameters of the prior distribution.
 - Added `method = 'strict'` to function `auditPrior()` which constructs a prior distribution that yields the same results (with respect to sample sizes and upper limits) as classical procedures.
 - Added a new vignette that describes the sampling methodology implemented in `jfa`.

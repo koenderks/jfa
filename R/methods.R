@@ -51,20 +51,27 @@
   return(result)
 }
 
-.rohrbach <- function(taints, conf.level, n, N.units = NULL, r.delta) {
+.rohrbach <- function(taints, conf.level, n, alternative, N.units = NULL, r.delta) {
   if (is.null(N.units))
     stop("'N.units' missing for evaluation")
   w                     <- 1 - taints
   mu                    <- mean(taints)
   vars                  <- sum(w^2) / n - (2 - (r.delta / n)) * ((1 / 2) * ((sum(w^2) / n) - stats::var(w)))
   result                <- list()
-  result[["ub"]]        <- mu + stats::qnorm(p = conf.level) * sqrt((1 - (n / N.units)) * (vars / n))
   result[["mle"]]       <- sum(taints) / n
-  result[["precision"]] <- result[["ub"]] - result[["mle"]]
+  result[["ub"]]        <- switch(alternative,
+                                  "two.sided" = mu + stats::qnorm(p = conf.level + ((1 - conf.level) / 2)) * sqrt((1 - (n / N.units)) * (vars / n)),
+                                  "less" = mu + stats::qnorm(p = conf.level) * sqrt((1 - (n / N.units)) * (vars / n)),
+                                  "greater" = 1)
+  result[["lb"]]        <- switch(alternative,
+                                  "two.sided" = mu + stats::qnorm(p = ((1 - conf.level) / 2)) * sqrt((1 - (n / N.units)) * (vars / n)),
+                                  "less" = 0,
+                                  "greater" = mu + stats::qnorm(p = 1 - conf.level) * sqrt((1 - (n / N.units)) * (vars / n)))
+  result[["precision"]] <- if (alternative == "greater") result[["mle"]] - result[["lb"]] else result[["ub"]] - result[["mle"]]
   return(result)
 }
 
-.moment <- function(taints, conf.level, n, m.type) {
+.moment <- function(taints, conf.level, n, alternative, m.type) {
   if (!(m.type %in% c("inventory", "accounts")))
     stop("Specify a valid population type. Either inventory or accounts.")
   tall <- subset(taints, taints != 0)
@@ -93,13 +100,20 @@
   B      <- cm3_t / (2 * cm2_t)
   G      <- ncm1_t - ((2 * cm2_t^2)/cm3_t)
   result                <- list()
-  result[["ub"]]        <- G + (A * B * (1 + (stats::qnorm(conf.level, mean = 0, sd = 1)/ sqrt(9 * A)) - (1 / (9 * A)))^3)
   result[["mle"]]       <- sum(taints) / n
-  result[["precision"]] <- result[["ub"]] - result[["mle"]]
+  result[["ub"]]        <- switch(alternative,
+                                  "two.sided" = G + (A * B * (1 + (stats::qnorm(conf.level + ((1 - conf.level) / 2))/ sqrt(9 * A)) - (1 / (9 * A)))^3),
+                                  "less" = G + (A * B * (1 + (stats::qnorm(conf.level)/ sqrt(9 * A)) - (1 / (9 * A)))^3),
+                                  "greater" = 1)
+  result[["lb"]]        <- switch(alternative,
+                                  "two.sided" = G + (A * B * (1 + (stats::qnorm(((1 - conf.level) / 2))/ sqrt(9 * A)) - (1 / (9 * A)))^3),
+                                  "less" = 0,
+                                  "greater" = G + (A * B * (1 + (stats::qnorm(1 - conf.level)/ sqrt(9 * A)) - (1 / (9 * A)))^3))
+  result[["precision"]] <- if (alternative == "greater") result[["mle"]] - result[["lb"]] else result[["ub"]] - result[["mle"]]
   return(result)
 }
 
-.coxsnell <- function(taints, conf.level, n, cs.a = 1, cs.b = 3, cs.mu = 0.5, a = 1, b = 1) {
+.coxsnell <- function(taints, conf.level, n, alternative, cs.a = 1, cs.b = 3, cs.mu = 0.5, a = 1, b = 1) {
   pi.prior   <- a / (a + b)
   taints    <- subset(taints, taints > 0)
   M         <- length(taints)
@@ -110,63 +124,72 @@
   result[["mf"]]        <- ((M + cs.a) / (M + cs.b)) * ((cs.mu * (cs.b - 1)) + (M * t_bar)) / (n + (cs.a / pi.prior))
   result[["df1"]]       <- 2 * (M + cs.a)
   result[["df2"]]       <- 2 * (M + cs.b)
-  result[["ub"]]        <- result[["mf"]] * stats::qf(p = conf.level, df1 = result[["df1"]], df2 = result[["df2"]])
   result[["mle"]]       <- result[["mf"]] * (((result[["df1"]]-2)/result[["df1"]]) * (result[["df2"]] / (result[["df2"]] + 2)))
-  result[["precision"]] <- result[["ub"]] - result[["mle"]]
+  result[["ub"]]        <- switch(alternative,
+                                  "two.sided" = result[["mf"]] * stats::qf(p = conf.level + ((1 - conf.level) / 2), df1 = result[["df1"]], df2 = result[["df2"]]),
+                                  "less" = result[["mf"]] * stats::qf(p = conf.level, df1 = result[["df1"]], df2 = result[["df2"]]),
+                                  "greater" = 1)
+  result[["lb"]]        <- switch(alternative,
+                                  "two.sided" = result[["mf"]] * stats::qf(p = ((1 - conf.level) / 2), df1 = result[["df1"]], df2 = result[["df2"]]),
+                                  "less" = 0,
+                                  "greater" = result[["mf"]] * stats::qf(p = 1 - conf.level, df1 = result[["df1"]], df2 = result[["df2"]]))
+  result[["precision"]] <- if (alternative == "greater") result[["mle"]] - result[["lb"]] else result[["ub"]] - result[["mle"]]
   return(result)
 }
 
-.mpu <- function(t, conf.level, n) {
+.mpu <- function(t, conf.level, alternative, n) {
   result                <- list()
-  result[["ub"]]        <- mean(t) + stats::qnorm(p = conf.level) * (stats::sd(t) / sqrt(n))
+  zVal                  <- if (alternative == "two.sided") stats::qnorm(p = conf.level + ((1 - conf.level) / 2)) else stats::qnorm(p = conf.level)
   result[["mle"]]       <- sum(t) / n
-  result[["precision"]] <- result[["ub"]] - result[["mle"]]
+  result[["lb"]]        <- if (alternative == "less") 0 else mean(t) - zVal * (stats::sd(t) / sqrt(n))
+  result[["ub"]]        <- if (alternative == "greater") 1 else mean(t) + zVal * (stats::sd(t) / sqrt(n))
+  result[["precision"]] <- if (alternative == "greater") result[["mle"]] - result[["lb"]] else result[["ub"]] - result[["mle"]]
   return(result)	
 }
 
-.direct <- function(bookvalues, auditvalues, conf.level, N.items = NULL, n, N.units = NULL, correction = FALSE) {
+.direct <- function(bookvalues, auditvalues, conf.level, alternative, N.items = NULL, n, N.units = NULL, correction = FALSE) {
   if (is.null(N.items))
     stop("'N.items' is missing for evaluation")
   if (is.null(N.units))
     stop("'N.units' is missing for evaluation")
   w                <- mean(auditvalues)
   s                <- stats::sd(auditvalues)
-  tVal             <- stats::qt(p = conf.level + ((1 - conf.level) / 2), df = n - 1)
+  tVal             <- if (alternative == "two.sided") stats::qt(p = conf.level + ((1 - conf.level) / 2), df = n - 1) else stats::qt(p = conf.level, df = n - 1)
   errorMargin      <- tVal * (s / sqrt(n))
   result           <- list()
   result[["mle"]]  <- N.units - N.items * w
   if (correction) {
-    result[["lb"]] <- N.units - N.items * (w + errorMargin * sqrt((N.items - n) / (N.items - 1)))
-    result[["ub"]] <- N.units - N.items * (w - errorMargin * sqrt((N.items - n) / (N.items - 1)))
+    result[["lb"]] <- if (alternative == "less") -Inf else N.units - N.items * (w + errorMargin * sqrt((N.items - n) / (N.items - 1)))
+    result[["ub"]] <- if (alternative == "greater") Inf else N.units - N.items * (w - errorMargin * sqrt((N.items - n) / (N.items - 1)))
   } else {
-    result[["lb"]] <- N.units - N.items * (w + errorMargin)
-    result[["ub"]] <- N.units - N.items * (w - errorMargin)
+    result[["lb"]] <- if (alternative == "less") -Inf else N.units - N.items * (w + errorMargin)
+    result[["ub"]] <- if (alternative == "greater") Inf else N.units - N.items * (w - errorMargin)
   }
-  result[["precision"]] <- N.items * errorMargin
+  result[["precision"]] <- if (alternative == "greater") result[["mle"]] - result[["lb"]] else result[["ub"]] - result[["mle"]]
   return(result)
 }
 
-.difference <- function(bookvalues, auditvalues, conf.level, N.items = NULL, n, correction = FALSE) {
+.difference <- function(bookvalues, auditvalues, conf.level, alternative, N.items = NULL, n, correction = FALSE) {
   if (is.null(N.items))
     stop("'N.items' is missing for evaluation")
   we          <- mean(bookvalues - auditvalues)
   s           <- stats::sd(bookvalues - auditvalues)
-  tVal        <- stats::qt(p = conf.level + ((1 - conf.level) / 2), df = n - 1)
+  tVal        <- if (alternative == "two.sided") stats::qt(p = conf.level + ((1 - conf.level) / 2), df = n - 1) else stats::qt(p = conf.level, df = n - 1)
   errorMargin <- tVal * (s / sqrt(n))
   result                    <- list()
   result[["mle"]] <- N.items * we
   if (correction) {
-    result[["lb"]] <- N.items * (we - errorMargin * sqrt((N.items - n) / (N.items - 1)))
-    result[["ub"]] <- N.items * (we + errorMargin * sqrt((N.items - n) / (N.items - 1)))
+    result[["lb"]] <- if (alternative == "less") -Inf else N.items * (we - errorMargin * sqrt((N.items - n) / (N.items - 1)))
+    result[["ub"]] <- if (alternative == "greater") Inf else N.items * (we + errorMargin * sqrt((N.items - n) / (N.items - 1)))
   } else {
-    result[["lb"]] <- N.items * (we - errorMargin)
-    result[["ub"]] <- N.items * (we + errorMargin)
+    result[["lb"]] <- if (alternative == "less") -Inf else N.items * (we - errorMargin)
+    result[["ub"]] <- if (alternative == "greater") Inf else N.items * (we + errorMargin)
   }
-  result[["precision"]] <- N.items * errorMargin
+  result[["precision"]] <- if (alternative == "greater") result[["mle"]] - result[["lb"]] else result[["ub"]] - result[["mle"]]
   return(result)
 }
 
-.quotient <- function(bookvalues, auditvalues, conf.level, N.items = NULL, n, correction = FALSE) {
+.quotient <- function(bookvalues, auditvalues, conf.level, alternative, N.items = NULL, n, correction = FALSE) {
   if (is.null(N.items))
     stop("'N.items' is missing for evaluation")
   w           <- mean(auditvalues)
@@ -176,22 +199,22 @@
   r           <- stats::cor(bookvalues, auditvalues)
   q           <- w / b
   s           <- sqrt( sw^2 - 2 * q * r * sb * sw + q^2 * sb^2 )
-  tVal        <- stats::qt(p = conf.level + ((1 - conf.level) / 2), df = n - 1)
+  tVal        <- if (alternative == "two.sided") stats::qt(p = conf.level + ((1 - conf.level) / 2), df = n - 1) else stats::qt(p = conf.level, df = n - 1)
   errorMargin <- tVal * (s / sqrt(n))
   result                    <- list()
   result[["mle"]] <- N.items * ((1 - q) * b)
   if (correction) {
-    result[["lb"]] <- N.items * ((1 - q) * b - errorMargin * sqrt((N.items - n) / (N.items - 1)))
-    result[["ub"]] <- N.items * ((1 - q) * b + errorMargin * sqrt((N.items - n) / (N.items - 1)))
+    result[["lb"]] <- if (alternative == "less") -Inf else N.items * ((1 - q) * b - errorMargin * sqrt((N.items - n) / (N.items - 1)))
+    result[["ub"]] <- if (alternative == "greater") Inf else N.items * ((1 - q) * b + errorMargin * sqrt((N.items - n) / (N.items - 1)))
   } else {
-    result[["lb"]] <- N.items * ((1 - q) * b - errorMargin)
-    result[["ub"]] <- N.items * ((1 - q) * b + errorMargin)
+    result[["lb"]] <- if (alternative == "less") -Inf else N.items * ((1 - q) * b - errorMargin)
+    result[["ub"]] <- if (alternative == "greater") Inf else N.items * ((1 - q) * b + errorMargin)
   }
-  result[["precision"]] <- N.items * errorMargin
+  result[["precision"]] <- if (alternative == "greater") result[["mle"]] - result[["lb"]] else result[["ub"]] - result[["mle"]]
   return(result)
 }
 
-.regression <- function(bookvalues, auditvalues, conf.level, N.items = NULL, n, N.units = NULL, correction = FALSE) {
+.regression <- function(bookvalues, auditvalues, conf.level, alternative, N.items = NULL, n, N.units = NULL, correction = FALSE) {
   if (is.null(N.items))
     stop("'N.items' is missing for evaluation")
   if (is.null(N.units))
@@ -203,17 +226,17 @@
   coefs       <- stats::coef(stats::lm(auditvalues ~ bookvalues))
   b1          <- as.numeric(coefs[2])
   s           <- sw * sqrt(1 - r^2)
-  tVal        <- stats::qt(p = conf.level + ((1 - conf.level) / 2), df = n - 1)
+  tVal        <- if (alternative == "two.sided") stats::qt(p = conf.level + ((1 - conf.level) / 2), df = n - 1) else stats::qt(p = conf.level, df = n - 1)
   errorMargin <- tVal * (s / sqrt(n))
-  result                    <- list()
+  result      <- list()
   result[["mle"]] <- N.units - (N.items * w + b1 * (N.units - N.items * b))
   if (correction) {
-    result[["lb"]] <- result[["mle"]] - N.items * errorMargin * sqrt((N.items - n) / (N.items - 1))
-    result[["ub"]] <- result[["mle"]] + N.items * errorMargin * sqrt((N.items - n) / (N.items - 1))
+    result[["lb"]] <- if (alternative == "less") -Inf else result[["mle"]] - N.items * errorMargin * sqrt((N.items - n) / (N.items - 1))
+    result[["ub"]] <- if (alternative == "greater") Inf else result[["mle"]] + N.items * errorMargin * sqrt((N.items - n) / (N.items - 1))
   } else {
-    result[["lb"]] <- result[["mle"]] - N.items * errorMargin
-    result[["ub"]] <- result[["mle"]] + N.items * errorMargin
+    result[["lb"]] <- if (alternative == "less") -Inf else result[["mle"]] - N.items * errorMargin
+    result[["ub"]] <- if (alternative == "greater") Inf else result[["mle"]] + N.items * errorMargin
   }
-  result[["precision"]] <- N.items * errorMargin
+  result[["precision"]] <- if (alternative == "greater") result[["mle"]] - result[["lb"]] else result[["ub"]] - result[["mle"]]
   return(result)
 }

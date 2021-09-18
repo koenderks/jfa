@@ -116,7 +116,7 @@ auditPrior <- function(method = 'default', likelihood = c('poisson', 'binomial',
       N.units <- ceiling(N.units)
   }
   if (method == "default") { # Method 1: Minimum prior observations to make the prior proper
-	prior.n <- 1 # Single earlier observation
+    prior.n <- 1 # Single earlier observation
     prior.x <- 0 # No earlier errors
   } else if (method == 'strict') { # Method 2: Improper prior distribution (with classical properties)
     prior.n <- 0 # Single earlier observation
@@ -280,6 +280,10 @@ auditPrior <- function(method = 'default', likelihood = c('poisson', 'binomial',
                                           "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * N.units), size = N.units, alpha = description[["alpha"]], beta = description[["beta"]], lower.tail = FALSE))
     hypotheses[["odds.hmin"]]   <- hypotheses[["p.hmin"]] / hypotheses[["p.hplus"]]
     hypotheses[["odds.hplus"]]  <- 1 / hypotheses[["odds.hmin"]]
+    hypotheses[["density"]]     <- switch(likelihood,
+                                          "poisson" = stats::dgamma(materiality, shape = description[["alpha"]], rate = description[["beta"]]),
+                                          "binomial" = stats::dbeta(materiality, shape1 = description[["alpha"]], shape2 = description[["beta"]]),
+                                          "hypergeometric" = extraDistr::dbbinom(ceiling(materiality * N.units), size = N.units, alpha = description[["alpha"]], beta = description[["beta"]]))
   }	
   # Create the main result object	
   result <- list()
