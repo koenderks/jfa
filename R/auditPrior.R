@@ -298,27 +298,27 @@ auditPrior <- function(method = 'default', likelihood = c('poisson', 'binomial',
     predictive[["conf.level"]] <- conf.level
     predictive[["description"]] <- list()
     predictive[["statistics"]] <- list()
-    predictive[["description"]][["N.units"]] <- N.units
+    predictive[["description"]]$N.units <- N.units
     if (likelihood == "poisson") {
       predictive[["description"]]$density  <- "negative-binomial"
-      predictive[["description"]][["r"]] <- description[["alpha"]]
-      predictive[["description"]][["p"]] <- 1 / (1 + description[["beta"]])
-      predictive[["statistics"]][["mode"]] <- if (predictive[["description"]][["r"]] <= 1) 0 else (predictive[["description"]][["p"]] * (predictive[["description"]][["r"]] - 1)) / (1 - predictive[["description"]][["p"]])
-      predictive[["statistics"]][["mean"]] <- (predictive[["description"]][["r"]] * predictive[["description"]][["p"]]) / (1 - predictive[["description"]][["p"]])
-      predictive[["statistics"]][["median"]] <- stats::qnbinom(0.5, size = predictive[["description"]][["r"]], prob = predictive[["description"]][["p"]])
-      predictive[["statistics"]][["var"]] <- (predictive[["description"]][["p"]] * predictive[["description"]][["r"]]) / (1 - predictive[["description"]][["p"]])^2
-      predictive[["statistics"]][["ub"]] <- stats::qnbinom(conf.level, size = predictive[["description"]][["r"]], prob = predictive[["description"]][["p"]])
+      predictive[["description"]]$r <- description[["alpha"]]
+      predictive[["description"]]$p <- 1 / (1 + description[["beta"]])
+      predictive[["statistics"]]$mode <- if (predictive[["description"]]$r <= 1) 0 else (predictive[["description"]]$p * (predictive[["description"]]$r - 1)) / (1 - predictive[["description"]]$p)
+      predictive[["statistics"]]$mean <- (predictive[["description"]]$r * predictive[["description"]]$p) / (1 - predictive[["description"]]$p)
+      predictive[["statistics"]]$median <- stats::qnbinom(0.5, size = predictive[["description"]]$r, prob = predictive[["description"]]$p)
+      predictive[["statistics"]]$var <- (predictive[["description"]]$p * predictive[["description"]]$r) / (1 - predictive[["description"]]$p)^2
+      predictive[["statistics"]]$ub <- stats::qnbinom(conf.level, size = predictive[["description"]]$r, prob = predictive[["description"]]$p)
     } else {
       predictive[["description"]]$density  <- "beta-binomial"
-      predictive[["description"]][["alpha"]] <- description[["alpha"]]
-      predictive[["description"]][["beta"]] <- description[["beta"]]
-      predictive[["statistics"]][["mode"]] <- .modebbinom(N = N.units, shape1 = predictive[["description"]][["alpha"]], shape2 = predictive[["description"]][["beta"]])
-      predictive[["statistics"]][["mean"]] <- predictive[["description"]][["alpha"]] / (predictive[["description"]][["alpha"]] + predictive[["description"]][["beta"]]) * N.units
-      predictive[["statistics"]][["median"]] <- .qbbinom(0.5, N = N.units, shape1 = predictive[["description"]][["alpha"]], shape2 = predictive[["description"]][["beta"]])
-      predictive[["statistics"]][["var"]] <- ((N.units * predictive[["description"]][["alpha"]] * predictive[["description"]][["beta"]]) * (predictive[["description"]][["alpha"]] + predictive[["description"]][["beta"]] + N.units)) / ((predictive[["description"]][["alpha"]] + predictive[["description"]][["beta"]])^2 * (predictive[["description"]][["alpha"]] + predictive[["description"]][["beta"]] + 1))
-      predictive[["statistics"]][["ub"]] <- .qbbinom(conf.level, N = N.units, shape1 = predictive[["description"]][["alpha"]], shape2 = predictive[["description"]][["beta"]])
+      predictive[["description"]]$alpha <- description[["alpha"]]
+      predictive[["description"]]$beta <- description[["beta"]]
+      predictive[["statistics"]]$mode <- .modebbinom(N = N.units, shape1 = predictive[["description"]]$alpha, shape2 = predictive[["description"]]$beta)
+      predictive[["statistics"]]$mean <- predictive[["description"]]$alpha / (predictive[["description"]]$alpha + predictive[["description"]]$beta) * N.units
+      predictive[["statistics"]]$median <- .qbbinom(0.5, N = N.units, shape1 = predictive[["description"]]$alpha, shape2 = predictive[["description"]]$beta)
+      predictive[["statistics"]]$var <- ((N.units * predictive[["description"]]$alpha * predictive[["description"]]$beta) * (predictive[["description"]]$alpha + predictive[["description"]]$beta + N.units)) / ((predictive[["description"]]$alpha + predictive[["description"]]$beta)^2 * (predictive[["description"]]$alpha + predictive[["description"]]$beta + 1))
+      predictive[["statistics"]]$ub <- .qbbinom(conf.level, N = N.units, shape1 = predictive[["description"]]$alpha, shape2 = predictive[["description"]]$beta)
     }
-    predictive[["statistics"]][["precision"]] <- predictive[["statistics"]][["ub"]] - predictive[["statistics"]][["mode"]]
+    predictive[["statistics"]][["precision"]] <- predictive[["statistics"]]$ub - predictive[["statistics"]]$mode
     class(predictive) <- "jfaPredictive"
   }
   # Create the main result object	
