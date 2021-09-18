@@ -315,9 +315,9 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = 'poiss
                    "greater" = .qhyper(p = 1 - conf.level, N = N.units, n = n.obs, k = x.obs) / N.units)	  
       if (materiality < 1)
         p.val <- switch(alternative, 
-                        "two.sided" = stats::phyper(q = x.obs, m = K, n = N.units - K, k = n.obs, lower.tail = FALSE) * 2,
+                        "two.sided" = stats::fisher.test(matrix(c(x.obs, n.obs-x.obs, K - x.obs, N.units - n.obs - K + x.obs), nrow = 2), alternative = "two.sided")$p.value,
                         "less" = stats::phyper(q = x.obs, m = K, n = N.units - K, k = n.obs),
-                        "greater" = stats::phyper(q = x.obs, m = K, n = N.units - K, k = n.obs, lower.tail = FALSE))
+                        "greater" = stats::phyper(q = x.obs - 1, m = K, n = N.units - K, k = n.obs, lower.tail = FALSE))
     }
   } else {
     out <- switch(method,
