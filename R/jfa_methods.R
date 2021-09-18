@@ -447,19 +447,20 @@ plot.jfaPrior <- function(x, xlim = c(0, 1), ...) {
     xseq <- seq(0, x[["N.units"]], by = 1)
     d <- extraDistr::dbbinom(x = xseq, size = x[["N.units"]], alpha = x[["description"]]$alpha, beta = x[["description"]]$beta)
   }
+  yMax <- if (is.infinite(max(d))) 10 else max(d)
   if (x[["description"]]$density == "gamma" || x[["description"]]$density == "beta") {
     mainLab <- switch(x[["description"]]$density,
                       "gamma" = paste0("gamma prior distribution (shape = ", round(x[["description"]]$alpha, 3), ", rate = ", round(x[["description"]]$beta, 3), ")"),
                       "beta" = paste0("beta prior distribution (alpha = ", round(x[["description"]]$alpha, 3), ", beta = ", round(x[["description"]]$beta, 3), ")"))
-    graphics::plot(x = xseq, y = d, type = "l", lwd = 2, bty = "n", xlab = expression(theta), ylab = "Density", las = 1, ylim = c(0, max(d)), main = mainLab, axes = FALSE, lty = 2)
+    graphics::plot(x = xseq, y = d, type = "l", lwd = 2, bty = "n", xlab = expression(theta), ylab = "Density", las = 1, ylim = c(0, yMax), main = mainLab, axes = FALSE, lty = 2)
     graphics::axis(1, at = pretty(xseq, min.n = 4), labels = round(pretty(xseq, min.n = 4), 2))
-    graphics::axis(2, at = c(0, max(d)), labels = FALSE, las = 1, lwd.ticks = 0)
+    graphics::axis(2, at = c(0, yMax), labels = FALSE, las = 1, lwd.ticks = 0)
     graphics::legend("topright", legend = "Prior", lty = 2, bty = "n", cex = 1.2, lwd = 2)
   } else {
     mainLab <- paste0("beta-binomial prior distribution (N = ", x[["N.units"]], ", alpha = ", round(x[["description"]]$alpha, 3), ", beta = ", round(x[["description"]]$beta, 3), ")")
-    graphics::barplot(d, bty = "n", xlab = "K", ylab = "Probability", las = 1, ylim = c(0, max(d)), width = 1, space = 0, main = mainLab, axes = FALSE, col = "darkgray")
+    graphics::barplot(d, bty = "n", xlab = "K", ylab = "Probability", las = 1, ylim = c(0, yMax), width = 1, space = 0, main = mainLab, axes = FALSE, col = "darkgray")
     graphics::axis(1, at = pretty(xseq, min.n = 4) + 0.5, labels = pretty(xseq, min.n = 4))
-    graphics::axis(2, at = c(0, max(d)), labels = FALSE, las = 1, lwd.ticks = 0)
+    graphics::axis(2, at = c(0, yMax), labels = FALSE, las = 1, lwd.ticks = 0)
     graphics::legend("topright", legend = "Prior", fill = "lightgray", bty = "n", cex = 1.2) 
   }
 }
@@ -477,18 +478,19 @@ plot.jfaPosterior <- function(x, xlim = c(0, 1), ...) {
     xseq <- seq(0, x[["N.units"]], by = 1)
     d <- c(rep(0, x[["description"]]$x), extraDistr::dbbinom(x = xseq, size = x[["N.units"]] - x[["description"]]$n, alpha = x[["description"]]$alpha, beta = x[["description"]]$beta))
   }
+  yMax <- if (is.infinite(max(d))) 10 else max(d)
   if (x[["description"]]$density == "gamma" || x[["description"]]$density == "beta") {
     mainLab <- switch(x[["description"]]$density,
                       "gamma" = paste0("gamma posterior distribution (shape = ", round(x[["description"]]$alpha, 3), ", rate = ", round(x[["description"]]$beta, 3), ")"),
                       "beta" = paste0("beta posterior distribution (alpha = ", round(x[["description"]]$alpha, 3), ", beta = ", round(x[["description"]]$beta, 3), ")"))
-    graphics::plot(x = xseq, y = d, type = "l", lwd = 2, bty = "n", xlab = expression(theta), ylab = "Density", las = 1, ylim = c(0, max(d)), main = mainLab, axes = FALSE, lty = 2)
+    graphics::plot(x = xseq, y = d, type = "l", lwd = 2, bty = "n", xlab = expression(theta), ylab = "Density", las = 1, ylim = c(0, yMax), main = mainLab, axes = FALSE, lty = 2)
     graphics::axis(1, at = pretty(xseq, min.n = 4), labels = round(pretty(xseq, min.n = 4), 2))
-    graphics::axis(2, at = c(0, max(d)), labels = FALSE, las = 1, lwd.ticks = 0)
+    graphics::axis(2, at = c(0, yMax), labels = FALSE, las = 1, lwd.ticks = 0)
   } else {
     mainLab <- paste0("beta-binomial posterior distribution (N = ", x[["N.units"]] - x[["description"]]$n, ", alpha = ", round(x[["description"]]$alpha, 3), ", beta = ", round(x[["description"]]$beta, 3), ")")
-    graphics::barplot(d, bty = "n", xlab = "K", ylab = "Probability", las = 1, ylim = c(0, max(d)), width = 1, space = 0, main = mainLab, axes = FALSE, col = "darkgray")
+    graphics::barplot(d, bty = "n", xlab = "K", ylab = "Probability", las = 1, ylim = c(0, yMax), width = 1, space = 0, main = mainLab, axes = FALSE, col = "darkgray")
     graphics::axis(1, at = pretty(xseq, min.n = 4) + 0.5, labels = pretty(xseq, min.n = 4))
-    graphics::axis(2, at = c(0, max(d)), labels = FALSE, las = 1, lwd.ticks = 0) 
+    graphics::axis(2, at = c(0, yMax), labels = FALSE, las = 1, lwd.ticks = 0) 
   }
 }
 
