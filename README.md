@@ -276,19 +276,19 @@ Below you can find several informative tables that contain statistical sample si
 
 - [Sample sizes based on the Poisson distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.ss.pdf)
 - [Sample sizes based on the binomial distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.ss.pdf)
-- [Sample sizes based on the hypergeometric distribution](https://github.com/koenderks/jfa/raw/development/man/figures/pdf/tables/hyper.ss.pdf)
+- [Sample sizes based on the hypergeometric distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.ss.pdf)
 
 *Upper limits*
 
 - [Upper limits based on the Poisson distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.ub.pdf)
 - [Upper limits based on the binomial distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.ub.pdf)
-- [Upper limits based on the hypergeometric distribution](https://github.com/koenderks/jfa/raw/development/man/figures/pdf/tables/hyper.ub.pdf)
+- [Upper limits based on the hypergeometric distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables//pdf/hyper.ub.pdf)
 
 *One-sided p values*
 
 - [One-sided *p* values based on the Poisson distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.p.pdf)
 - [One-sided *p* values based on the binomial distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.p.pdf)
-- [One-sided *p* values based on the hypergeometric distribution](https://github.com/koenderks/jfa/raw/development/man/figures/pdf/tables/hyper.p.pdf)
+- [One-sided *p* values based on the hypergeometric distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.p.pdf)
 
 *Bayes factors*
 
