@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>BuildIt Construction Financial Statements — BuildIt • jfa</title>
+<title>Carrier Company Financial Statements — carrier • jfa</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,8 +46,8 @@
 
 
 
-<meta property="og:title" content="BuildIt Construction Financial Statements — BuildIt" />
-<meta property="og:description" content="Fictional data from a construction company in the United States, containing 3500 observations identification numbers, book values, and audit values. The audit values are added for illustrative purposes, as these would need to be assessed by the auditor in the execution stage of the audit." />
+<meta property="og:title" content="Carrier Company Financial Statements — carrier" />
+<meta property="og:description" content="Fictional data from a carrier company in Europe, containing 202 ledger items across 10 company entities." />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -152,33 +152,33 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>BuildIt Construction Financial Statements</h1>
-    <small class="dont-index">Source: <a href='https://github.com/koenderks/jfa/blob/master/R/BuildIt-data.R'><code>R/BuildIt-data.R</code></a></small>
-    <div class="hidden name"><code>BuildIt.Rd</code></div>
+    <h1>Carrier Company Financial Statements</h1>
+    <small class="dont-index">Source: <a href='https://github.com/koenderks/jfa/blob/master/R/carrier-data.R'><code>R/carrier-data.R</code></a></small>
+    <div class="hidden name"><code>carrier.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Fictional data from a construction company in the United States, containing 3500 observations identification numbers, book values, and audit values. The audit values are added for illustrative purposes, as these would need to be assessed by the auditor in the execution stage of the audit.</p>
+    <p>Fictional data from a carrier company in Europe, containing 202 ledger items across 10 company entities.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>BuildIt</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>carrier</span><span class='op'>)</span></pre>
 
 
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 
-    <p>A data frame with 3500 rows and 3 variables.</p><dl>
-  <dt>ID</dt><dd><p>unique record identification number.</p></dd>
-  <dt>bookValue</dt><dd><p>book value in US dollars ($14.47--$2,224.40).</p></dd>
-  <dt>auditValue</dt><dd><p>true value in US dollars ($14.47--$2,224.40).</p></dd>
+    <p>A data frame with 202 rows and 12 variables.</p><dl>
+  <dt>description</dt><dd><p>description of the ledger item.</p></dd>
+  <dt>entity1 - entity 10</dt><dd><p>recorded values for entity 1 - 10, in US dollars.</p></dd>
+  <dt>total</dt><dd><p>total value, in US dollars.</p></dd>
 
 </dl>
 
-    <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
+    <h2 class="hasAnchor" id="source"><a class="anchor" href="#source"></a>Source</h2>
 
-    <p>Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., &amp; Wetzels, R. (2019). JASP for audit: Bayesian tools for the auditing practice.</p>
+    <p><a href='https://towardsdatascience.com/data-driven-audit-1-automated-sampling-using-python-52e83347add5'>https://towardsdatascience.com/data-driven-audit-1-automated-sampling-using-python-52e83347add5</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>BuildIt</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>carrier</span><span class='op'>)</span>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
