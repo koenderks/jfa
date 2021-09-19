@@ -72,7 +72,7 @@ An object of class \code{jfaEvaluation} containing:
 \item{prior}{an object of class 'jfaPrior' that contains the prior distribution.}
 \item{posterior}{an object of class 'jfaPosterior' that contains the posterior distribution.}
 \item{data}{a data frame containing the relevant columns from the \code{data}.}
-\item{data.name}{a character string giving the name(s) of the data.}
+\item{data.name}{a character string giving the name of the data.}
 }
 \description{
 This function takes a data frame (using \code{data}, \code{values}, and \code{values.audit}) or summary statistics (using \code{x} and \code{n}) and performs inference on the misstatement in the sample. The function returns an object of class \code{jfaEvaluation} which can be used with associated \code{summary()} and \code{plot()} methods.

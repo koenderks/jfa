@@ -88,5 +88,14 @@ test_that(desc = "(id: f6-v0.5.0-t2) Test for plot function", {
   expect_equal(nrow(jfaRes[["sample"]]), 100)
 })
 
-# jfa version 0.5.1 - 0.6.0
+# jfa version 0.5.1 - 0.5.7
 # No changes to be benchmarked
+
+# jfa 0.6.0
+
+test_that(desc = "(id: f6-v0.1.0-t5) Test for units = 'values' and method = 'sieve'", {
+  set.seed(1)
+  population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
+  jfaRes <- selection(population, size = 100, units = "values", method = "sieve", values = "bookValue")
+  expect_equal(nrow(jfaRes[["sample"]]), 100)
+})

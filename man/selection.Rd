@@ -5,7 +5,7 @@
 \title{Select a Statistical Audit Sample}
 \usage{
 selection(data, size, units = c('items', 'values'),
-          method = c('interval', 'cell', 'random'), values = NULL,
+          method = c('interval', 'cell', 'random', 'sieve'), values = NULL,
           start = 1, order = FALSE, decreasing = FALSE, replace = FALSE)
 }
 \arguments{
@@ -15,7 +15,7 @@ selection(data, size, units = c('items', 'values'),
 
 \item{units}{a character specifying the sampling units used. Possible options are \code{items} (default) for selection on the level of items (rows) or \code{values} for selection on the level of monetary units.}
 
-\item{method}{a character specifying the sampling algorithm used. Possible options are \code{interval} (default) for fixed interval sampling, \code{cell} for cell sampling, or \code{random} for random.}
+\item{method}{a character specifying the sampling algorithm used. Possible options are \code{interval} (default) for fixed interval sampling, \code{cell} for cell sampling, \code{random} for random sampling, or \code{sieve} for modified sieve sampling.}
 
 \item{values}{a character specifying name of a column in \code{data} containing the book values of the items.}
 
@@ -42,10 +42,10 @@ An object of class \code{jfaSelection} containing:
 \item{method}{a character indicating the the algorithm that was used to create the selection.}
 \item{values}{if \code{values} is specified, a character indicating the name of the book value column.}
 \item{start}{if \code{method = 'interval'}, an integer indicating the starting point in the interval.}
-\item{data.name}{a character string giving the name(s) of the data.}
+\item{data.name}{a character string giving the name of the data.}
 }
 \description{
-This function takes a data frame and performs statistical sampling according to one of three algorithms: random sampling, cell sampling, and fixed interval sampling. Sampling is done on the level of two possible sampling units: items (records) or monetary units. The function returns an object of class \code{jfaSelection} which can be used with associated \code{summary()} and a \code{plot()} methods.
+This function takes a data frame and performs statistical selection according to one of four algorithms: fixed interval sampling, cell sampling, random sampling, and modified sieve sampling. Selection is done on the level of two possible sampling units: items (records / rows) or monetary units. The function returns an object of class \code{jfaSelection} which can be used with associated \code{summary()} and a \code{plot()} methods.
 
 For more details on how to use this function, see the package vignette:
 \code{vignette('jfa', package = 'jfa')}
@@ -64,6 +64,7 @@ The second part of this section elaborates on the three possible options for the
  \item{\code{interval}:    In fixed interval sampling the sampling units in the population are divided into a number (equal to the sample size) of intervals. From each interval one sampling unit is selected according to a fixed starting point (specified by \code{start}).}
  \item{\code{cell}:        In cell sampling the sampling units in the population are divided into a number (equal to the sample size) of intervals. From each interval one sampling unit is selected with equal probability.}
  \item{\code{random}:      In random sampling each sampling unit in the population is drawn with equal probability.}
+ \item{\code{sieve}:       In modified sieve sampling each item in the population is selected proportional to its value (Hoogduin, Hall, & Tsay, 2010).}
 }
 }
 \examples{
@@ -77,6 +78,8 @@ selection(
 )
 }
 \references{
+Hoogduin, L. A., Hall, T. W., & Tsay, J. J. (2010). Modified sieve sampling: A method for single-and multi-stage probability-proportional-to-size sampling. \emph{Auditing: A Journal of Practice & Theory}, 29(1), 125-148.
+
 Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). \emph{Dollar-unit Sampling: A Practical Guide for Auditors}. Copp Clark Pitman; Belmont, Calif.: distributed by Fearon-Pitman.
 
 Wampler, B., & McEacharn, M. (2005). Monetary-unit sampling using Microsoft Excel. \emph{The CPA journal}, 75(5), 36.

@@ -83,7 +83,7 @@
 #' \item{prior}{an object of class 'jfaPrior' that contains the prior distribution.}
 #' \item{posterior}{an object of class 'jfaPosterior' that contains the posterior distribution.}
 #' \item{data}{a data frame containing the relevant columns from the \code{data}.}
-#' \item{data.name}{a character string giving the name(s) of the data.}
+#' \item{data.name}{a character string giving the name of the data.}
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
@@ -172,7 +172,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = "poiss
     stop("'method' should be one of 'poisson', 'binomial', 'hypergeometric'")
   }
   if (alternative %in% c("two.sided", "greater") && method %in% c("stringer", "stringer.meikle", "stringer.lta", "stringer.pvz")) {
-    stop(paste0("'method = ", method, "' does not work with 'alternative = ", alternative, "'"))
+    stop(paste0("'method = ", method, "' does not accomodate 'alternative = ", alternative, "'"))
   }
   if (!is.null(x) || !is.null(n)) { # Use summary statistics
     if (method %in% c("stringer", "stringer.meikle", "stringer.lta", "stringer.pvz", "coxsnell", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu")) {

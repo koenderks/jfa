@@ -1,18 +1,18 @@
 #' Select a Statistical Audit Sample
 #'
-#' @description This function takes a data frame and performs statistical sampling according to one of three algorithms: random sampling, cell sampling, and fixed interval sampling. Sampling is done on the level of two possible sampling units: items (records) or monetary units. The function returns an object of class \code{jfaSelection} which can be used with associated \code{summary()} and a \code{plot()} methods.
+#' @description This function takes a data frame and performs statistical selection according to one of four algorithms: fixed interval sampling, cell sampling, random sampling, and modified sieve sampling. Selection is done on the level of two possible sampling units: items (records / rows) or monetary units. The function returns an object of class \code{jfaSelection} which can be used with associated \code{summary()} and a \code{plot()} methods.
 #'
 #' For more details on how to use this function, see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
 #' @usage selection(data, size, units = c('items', 'values'),
-#'           method = c('interval', 'cell', 'random'), values = NULL,
+#'           method = c('interval', 'cell', 'random', 'sieve'), values = NULL,
 #'           start = 1, order = FALSE, decreasing = FALSE, replace = FALSE)
 #'
 #' @param data           a data frame containing the population of items the auditor wishes to sample from.
 #' @param size           an integer larger than 0 specifying the number of sampling units that need to be selected from the population. Can also be an object of class \code{jfaPlanning}.
 #' @param units          a character specifying the sampling units used. Possible options are \code{items} (default) for selection on the level of items (rows) or \code{values} for selection on the level of monetary units.
-#' @param method         a character specifying the sampling algorithm used. Possible options are \code{interval} (default) for fixed interval sampling, \code{cell} for cell sampling, or \code{random} for random.
+#' @param method         a character specifying the sampling algorithm used. Possible options are \code{interval} (default) for fixed interval sampling, \code{cell} for cell sampling, \code{random} for random sampling, or \code{sieve} for modified sieve sampling.
 #' @param values         a character specifying name of a column in \code{data} containing the book values of the items.
 #' @param start          if \code{method = 'interval'}, an integer larger than 0 specifying the starting point of the algorithm.
 #' @param order          a logical specifying whether to first order the items in the \code{data} according to the value of their \code{values}. Defaults to \code{FALSE}.
@@ -32,6 +32,7 @@
 #'  \item{\code{interval}:    In fixed interval sampling the sampling units in the population are divided into a number (equal to the sample size) of intervals. From each interval one sampling unit is selected according to a fixed starting point (specified by \code{start}).}
 #'  \item{\code{cell}:        In cell sampling the sampling units in the population are divided into a number (equal to the sample size) of intervals. From each interval one sampling unit is selected with equal probability.}
 #'  \item{\code{random}:      In random sampling each sampling unit in the population is drawn with equal probability.}
+#'  \item{\code{sieve}:       In modified sieve sampling each item in the population is selected proportional to its value (Hoogduin, Hall, & Tsay, 2010).}
 #' }
 #'
 #' @return An object of class \code{jfaSelection} containing:
@@ -48,12 +49,13 @@
 #' \item{method}{a character indicating the the algorithm that was used to create the selection.}
 #' \item{values}{if \code{values} is specified, a character indicating the name of the book value column.}
 #' \item{start}{if \code{method = 'interval'}, an integer indicating the starting point in the interval.}
-#' \item{data.name}{a character string giving the name(s) of the data.}
+#' \item{data.name}{a character string giving the name of the data.}
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
 #' @seealso \code{\link{auditPrior}} \code{\link{planning}} \code{\link{evaluation}} \code{\link{report}}
 #'
+#' @references Hoogduin, L. A., Hall, T. W., & Tsay, J. J. (2010). Modified sieve sampling: A method for single-and multi-stage probability-proportional-to-size sampling. \emph{Auditing: A Journal of Practice & Theory}, 29(1), 125-148.
 #' @references Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). \emph{Dollar-unit Sampling: A Practical Guide for Auditors}. Copp Clark Pitman; Belmont, Calif.: distributed by Fearon-Pitman.
 #' @references Wampler, B., & McEacharn, M. (2005). Monetary-unit sampling using Microsoft Excel. \emph{The CPA journal}, 75(5), 36.
 #'
@@ -71,7 +73,7 @@
 #' @export
 
 selection <- function(data, size, units = c("items", "values"),
-                      method = c("interval", "cell", "random"), values = NULL,
+                      method = c("interval", "cell", "random", "sieve"), values = NULL,
                       start = 1, order = FALSE, decreasing = FALSE, replace = FALSE) {
   method <- match.arg(method)
   units <- match.arg(units)
@@ -156,6 +158,14 @@ selection <- function(data, size, units = c("items", "values"),
     for (i in 1:size) {
       index <- c(index, which(int.selection[i] < cumsum(bookvalues))[1])
     }
+  } else if (method == "sieve" && units == "items") {
+	stop("'method = sieve' does not accomodate 'units = items'")
+  } else if (method == "sieve" && units == "values") {
+	# 7. Modified sieve sampling (Hoogduin, Hall, & Tsay, 2010)
+	rn <- stats::runif(length(bookvalues), min = 0, max = 1)
+	ri <- bookvalues / rn
+	index <- as.numeric(rownames(data))[order(-ri)]
+	index <- index[1:size]
   }
   # Gather output
   count <- as.numeric(table(index))
