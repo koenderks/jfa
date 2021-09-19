@@ -68,7 +68,7 @@ Below you can find an explanation of the available functions in `jfa` sorted by 
 
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
-The `auditPrior()` function creates a prior probability distribution according to one of several methods, including a translation of the assessments of the inherent risk and control risk from the audit risk model. The function returns an object of class `jfaPrior` which can be used with associated `summary()` and `plot()` methods. Objects with class `jfaPrior` can also be used as input for the `prior` argument in other functions.
+The `auditPrior()` function creates a prior probability distribution according to one of several methods, including a translation of the assessments of the inherent risk and control risk from the audit risk model. The function returns an object of class `jfaPrior` which can be used with associated `summary()` and `plot()` methods. Objects with class `jfaPrior` can also be used as input for the `prior` argument in other functions. Moreover, `jfaPrior` object have a corresponding `predict()` function to produce the predictions of the prior distribution on the data level.
 
 *Full function with default arguments:*
 
