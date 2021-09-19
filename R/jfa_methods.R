@@ -498,6 +498,32 @@ summary.jfaEvaluation <- function(object, digits = getOption("digits"), ...) {
   return(out)
 }
 
+# Predict methods
+
+#' @rdname jfa-methods
+#' @method predict jfaPrior
+#' @export
+predict.jfaPrior <- function(object, n) {
+  if (object[["description"]]$density == "gamma") {
+    q <- stats::qnbinom(c(0, 0.25, 0.5, 0.75, 0.99), size = object[["description"]]$alpha, prob = 1 / (1 + object[["description"]]$beta))
+    q <- ifelse(q > n, yes = n, no = q)
+  } else {
+    q <- NULL
+    for (i in c(0, 0.25, 0.5, 0.75, 0.99)) {
+      q[length(q) + 1] <- .qbbinom(i, N = n, shape1 = object[["description"]]$alpha, shape2 = object[["description"]]$beta)
+    }
+  }
+  names(q) <- c("0%", "25%", "50%", "75%", "99%")
+  return(q)
+}
+
+#' @rdname jfa-methods
+#' @method predict jfaPosterior
+#' @export
+predict.jfaPosterior <- function(object, n) {
+  predict.jfaPrior(object, n)
+}
+
 # Plot methods
 
 #' @rdname jfa-methods

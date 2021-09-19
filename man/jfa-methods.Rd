@@ -20,6 +20,8 @@
 \alias{summary.jfaPlanning}
 \alias{summary.jfaSelection}
 \alias{summary.jfaEvaluation}
+\alias{predict.jfaPrior}
+\alias{predict.jfaPosterior}
 \alias{plot.jfaPrior}
 \alias{plot.jfaPosterior}
 \alias{plot.jfaPredictive}
@@ -63,6 +65,10 @@
 \method{summary}{jfaSelection}(object, digits = getOption("digits"), ...)
 
 \method{summary}{jfaEvaluation}(object, digits = getOption("digits"), ...)
+
+\method{predict}{jfaPrior}(object, n)
+
+\method{predict}{jfaPosterior}(object, n)
 
 \method{plot}{jfaPrior}(x, xlim = c(0, 1), ...)
 

@@ -327,7 +327,7 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
       result[["posterior"]][["hypotheses"]]$bf.h0 <- 1 / result[["posterior"]][["hypotheses"]]$bf.h1
     }
     # Create the posterior predictive section
-    if (likelihood != "hypergeometric" && !is.null(result[["posterior"]][["N.units"]])) {
+    if (likelihood != "hypergeometric" && !is.null(result[["N.units"]])) {
       result[["posterior"]][["predictive"]] <- list()
       result[["posterior"]][["predictive"]]$predictive <- switch(likelihood,
         "poisson" = paste0("Negative-binomial(r = ", round(result[["posterior"]][["description"]]$alpha, 3), ", p = ", round(1 / (1 + result[["posterior"]][["description"]]$beta), 3), ")"),
