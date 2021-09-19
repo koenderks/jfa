@@ -158,8 +158,8 @@ The `selection()` function takes a data frame and performs statistical sampling 
 *Full function with default arguments:*
 
 ```r
-selection(data, size, units = c('items', 'values'), 
-          method = c('interval', 'cell', 'random'), values = NULL, 
+selection(data, size, units = c('items', 'values'),
+          method = c('interval', 'cell', 'random', 'sieve'), values = NULL,
           start = 1, order = FALSE, decreasing = FALSE, replace = FALSE)
 ```
 

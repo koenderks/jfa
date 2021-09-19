@@ -70,10 +70,12 @@ The second part of this section elaborates on the three possible options for the
 \examples{
 data("BuildIt")
 
-# Draw a sample of 100 monetary units from the population using
-# fixed interval monetary unit sampling
+# Select 100 items using random sampling
+selection(data = BuildIt, size = 100, method = "random")
+
+# Select 150 monetary units using fixed interval sampling
 selection(
-  data = BuildIt, size = 100, units = "values",
+  data = BuildIt, size = 150, units = "values",
   method = "interval", values = "bookValue"
 )
 }
