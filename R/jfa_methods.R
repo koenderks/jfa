@@ -227,7 +227,7 @@ print.summary.jfaSelection <- function(x, digits = getOption("digits"), ...) {
     "random" = "random sampling",
     "interval" = "fixed interval sampling",
     "cell" = "cell sampling",
-	"sieve" = "modified sieve sampling"
+    "sieve" = "modified sieve sampling"
   )), "\n")
   if (x[["method"]] == "interval") {
     cat(paste("  Starting point:               ", x[["start"]]), "\n")

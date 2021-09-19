@@ -161,13 +161,13 @@ selection <- function(data, size, units = c("items", "values"),
       index <- c(index, which(int.selection[i] < cumsum(bookvalues))[1])
     }
   } else if (method == "sieve" && units == "items") {
-	stop("'method = sieve' does not accomodate 'units = items'")
+    stop("'method = sieve' does not accomodate 'units = items'")
   } else if (method == "sieve" && units == "values") {
-	# 7. Modified sieve sampling (Hoogduin, Hall, & Tsay, 2010)
-	rn <- stats::runif(length(bookvalues), min = 0, max = 1)
-	ri <- bookvalues / rn
-	index <- as.numeric(rownames(data))[order(-ri)]
-	index <- index[1:size]
+    # 7. Modified sieve sampling (Hoogduin, Hall, & Tsay, 2010)
+    rn <- stats::runif(length(bookvalues), min = 0, max = 1)
+    ri <- bookvalues / rn
+    index <- as.numeric(rownames(data))[order(-ri)]
+    index <- index[1:size]
   }
   # Gather output
   count <- as.numeric(table(index))
