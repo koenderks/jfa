@@ -6,7 +6,7 @@
   if (log.p) p <- exp(p)
   if (!lower.tail) p <- 1 - p
   x <- extraDistr::dbbinom(x = 0:N, size = N, alpha = shape1, beta = shape2)
-  q <- which(cumsum(x) > p)[1]
+  q <- which(cumsum(x) > p)[1] - 1
   return(q)
 }
 
