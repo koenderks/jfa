@@ -110,6 +110,7 @@ x <- auditPrior(method = 'param', likelihood = 'binomial', alpha = 1, beta = 10)
 x <- auditPrior(method = 'arm', likelihood = 'binomial', materiality = 0.05, ir = 0.7, cr = 0.5)
 
 summary(x) # Prints information about the prior distribution
+predict(x, n = 60) # Predictions for a sample of n = 60
 ```
 
 ### Plan a sample with the `planning()` function
