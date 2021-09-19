@@ -1,4 +1,4 @@
-#' BuildIt Construction financial statements
+#' BuildIt Construction Financial Statements
 #'
 #' Fictional data from a construction company in the United States, containing 3500 observations identification numbers, book values, and audit values. The audit values are added for illustrative purposes, as these would need to be assessed by the auditor in the execution stage of the audit.
 #'

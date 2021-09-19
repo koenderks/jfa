@@ -3,7 +3,7 @@
 \docType{data}
 \name{BuildIt}
 \alias{BuildIt}
-\title{BuildIt Construction financial statements}
+\title{BuildIt Construction Financial Statements}
 \format{
 A data frame with 3500 rows and 3 variables.
 \describe{
