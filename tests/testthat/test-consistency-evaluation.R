@@ -60,7 +60,7 @@ test_that(desc = "(id: f3-v0.1.0-t6) Evaluation with hypergeometric method with 
   samp$auditValue <- samp[["bookValue"]]
   prior <- auditPrior(method = "default", likelihood = "hypergeometric", N.units = 1000)
   jfaEval <- evaluation(conf.level = 0.95, data = samp, values = "bookValue", values.audit = "auditValue", prior = prior, materiality = 0.05)
-  expect_equal(jfaEval[["ub"]], 0.047, tolerance = 0.001)
+  expect_equal(jfaEval[["ub"]], 0.046, tolerance = 0.001)
 })
 
 test_that(desc = "(id: f3-v0.1.0-t7) Evaluation with stringer method", {
@@ -318,7 +318,7 @@ test_that(desc = "(id: f3-v0.2.0-t4) Test for Bayesian plot function", {
   prior <- auditPrior(method = "default", likelihood = "hypergeometric", N.units = nrow(population))
   jfaEval <- evaluation(conf.level = 0.95, data = samp, values = "bookValue", values.audit = "auditValue", method = "hypergeometric", prior = prior, materiality = 0.05, N.units = nrow(population))
   invisible(capture.output(plot(jfaEval)))
-  expect_equal(jfaEval[["ub"]], 0.028, tolerance = 0.001)
+  expect_equal(jfaEval[["ub"]], 0.027, tolerance = 0.001)
 })
 
 # jfa version 0.5.1 - 0.5.7

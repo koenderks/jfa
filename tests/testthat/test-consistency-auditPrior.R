@@ -55,7 +55,7 @@ test_that(desc = "(id: f2-v0.1.0-t4) Test for method = 'arm'", {
 
   prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "arm", likelihood = "hypergeometric", ir = 0.6, cr = 0.6, N.units = 3500)
   expect_equal(prior[["description"]]$alpha, 1)
-  expect_equal(prior[["description"]]$beta, 20, tolerance = 0.001)
+  expect_equal(prior[["description"]]$beta, 19, tolerance = 0.001)
 })
 
 test_that(desc = "(id: f2-v0.1.0-t5) Test for method = 'sample'", {
