@@ -525,7 +525,7 @@ predict.jfaPrior <- function(object, n, lim = NULL, cumulative = FALSE, ...) {
       } else {
         p <- extraDistr::dbbinom(lim, size = n, alpha = object[["description"]]$alpha, beta = object[["description"]]$beta)
       }
-      names(p) <- if (object[["description"]]$density == "gamma") paste0("n<=", lim) else paste0("x<=", lim)
+      names(p) <- if (object[["description"]]$density == "gamma") paste0("n=", lim) else paste0("x=", lim)
     }
   } else {
     if (cumulative) {
@@ -542,7 +542,7 @@ predict.jfaPrior <- function(object, n, lim = NULL, cumulative = FALSE, ...) {
       } else {
         p <- extraDistr::dbbinom(0:n, size = n, alpha = object[["description"]]$alpha, beta = object[["description"]]$beta)
       }
-      names(p) <- if (object[["description"]]$density == "gamma") paste0("n<=", 0:n) else paste0("x<=", 0:n)
+      names(p) <- if (object[["description"]]$density == "gamma") paste0("n=", 0:n) else paste0("x=", 0:n)
     }
   }
   return(p)
