@@ -177,26 +177,54 @@
            ir <span class="op">=</span> <span class="cn">NULL</span>, cr <span class="op">=</span> <span class="cn">NULL</span>, ub <span class="op">=</span> <span class="cn">NULL</span>, p.hmin <span class="op">=</span> <span class="cn">NULL</span>, x <span class="op">=</span> <span class="cn">NULL</span>, 
            n <span class="op">=</span> <span class="cn">NULL</span>, factor <span class="op">=</span> <span class="cn">NULL</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></code></pre></div>
 <p><em>Supported options for the <code>method</code> argument:</em></p>
-<ul>
-<li>
-<code>default</code>: Noninformative prior distribution based on minimal information.</li>
-<li>
-<code>strict</code>: Strict prior distribution (with classical properties).</li>
-<li>
-<code>param</code>: Manual prior parameters.</li>
-<li>
-<code>impartial</code>: Equal prior probabilities for (in)tolerable misstatement (Derks et al., 2021).</li>
-<li>
-<code>hyp</code>: Manual prior probability for tolerable misstatement (Derks et al., 2021).</li>
-<li>
-<code>arm</code>: Assessments of inherent risk and internal control risk (Derks et al., 2021).</li>
-<li>
-<code>bram</code>: x-% upper bound for the prior distribution (Touw &amp; Hoogduin, 2011).</li>
-<li>
-<code>sample</code>: Information from an earlier sample (Derks et al., 2021).</li>
-<li>
-<code>factor</code>: Weigh information from an earlier sample (Derks et al., 2021).</li>
-</ul>
+<table class="table">
+<colgroup>
+<col width="50%">
+<col width="50%">
+</colgroup>
+<thead><tr class="header">
+<th><code>method</code></th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>default</code></td>
+<td>Noninformative prior distribution based on minimal information</td>
+</tr>
+<tr class="even">
+<td><code>strict</code></td>
+<td>Strict prior distribution (with classical properties)</td>
+</tr>
+<tr class="odd">
+<td><code>param</code></td>
+<td>Manual prior parameters</td>
+</tr>
+<tr class="even">
+<td><code>impartial</code></td>
+<td>Equal prior probabilities for (in)tolerable misstatement (Derks et al., 2021)</td>
+</tr>
+<tr class="odd">
+<td><code>hyp</code></td>
+<td>Manual prior probability for tolerable misstatement (Derks et al., 2021)</td>
+</tr>
+<tr class="even">
+<td><code>arm</code></td>
+<td>Assessments of inherent risk and internal control risk (Derks et al., 2021)</td>
+</tr>
+<tr class="odd">
+<td><code>bram</code></td>
+<td>x-% upper bound for the prior distribution (Touw &amp; Hoogduin, 2011)</td>
+</tr>
+<tr class="even">
+<td><code>sample</code></td>
+<td>Information from an earlier sample (Derks et al., 2021)</td>
+</tr>
+<tr class="odd">
+<td><code>factor</code></td>
+<td>Weigh information from an earlier sample (Derks et al., 2021)</td>
+</tr>
+</tbody>
+</table>
 <p><em>Supported options for the <code>likelihood</code> argument:</em></p>
 <ul>
 <li>
