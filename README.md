@@ -81,15 +81,17 @@ auditPrior(method = 'default', likelihood = c('poisson', 'binomial', 'hypergeome
 
 *Supported options for the `method` argument:*
 
-- `default`: Noninformative prior distribution based on minimal information.
-- `strict`: Strict prior distribution (with classical properties).
-- `param`: Manual prior parameters.
-- `impartial`: Equal prior probabilities for (in)tolerable misstatement (Derks et al., 2021).
-- `hyp`: Manual prior probability for tolerable misstatement (Derks et al., 2021).
-- `arm`: Assessments of inherent risk and internal control risk (Derks et al., 2021).
-- `bram`: x-% upper bound for the prior distribution (Touw & Hoogduin, 2011).
-- `sample`: Information from an earlier sample (Derks et al., 2021).
-- `factor`: Weigh information from an earlier sample (Derks et al., 2021).
+| `method` | Description | 
+| -- | -- | 
+| `default` | Noninformative prior distribution based on minimal information |
+| `strict`  | Strict prior distribution (with classical properties) |
+| `param` | Manual prior parameters |
+| `impartial` | Equal prior probabilities for (in)tolerable misstatement (Derks et al., 2021) |
+| `hyp` | Manual prior probability for tolerable misstatement (Derks et al., 2021) |
+| `arm` | Assessments of inherent risk and internal control risk (Derks et al., 2021) |
+| `bram`| x-% upper bound for the prior distribution (Touw & Hoogduin, 2011) |
+| `sample` | Information from an earlier sample (Derks et al., 2021) |
+| `factor` | Weigh information from an earlier sample (Derks et al., 2021) |
 
 *Supported options for the `likelihood` argument:*
 
