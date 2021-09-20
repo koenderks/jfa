@@ -2,11 +2,13 @@
 #'
 #' Methods defined for objects returned from the \code{\link{auditPrior}}, \code{\link{planning}}, \code{\link{selection}}, and \code{\link{evaluation}} functions.
 #'
-#' @param object,x   an object of class \code{jfaPrior}, \code{jfaPosterior}, \code{jfaPredictive}, \code{jfaPlanning}, \code{jfaSelection}, or \code{jfaEvaluation}.
-#' @param digits     an integer specifying the number of digits to which output should be rounded. Used in \code{summary}.
-#' @param xlim       used in \code{plot}. Specifies the x limits (x1, x2) of the plot.
-#' @param n          used in \code{predict}. Specifies the sample size for which predictions should be made.
-#' @param ...        further arguments, currently ignored.
+#' @param object,x    an object of class \code{jfaPrior}, \code{jfaPosterior}, \code{jfaPredictive}, \code{jfaPlanning}, \code{jfaSelection}, or \code{jfaEvaluation}.
+#' @param digits      an integer specifying the number of digits to which output should be rounded. Used in \code{summary}.
+#' @param xlim        used in \code{plot}. Specifies the x limits (x1, x2) of the plot.
+#' @param n           used in \code{predict}. Specifies the sample size for which predictions should be made.
+#' @param x           used in \code{predict}. Limits the number of errors for which predictions should be made.
+#' @param cumulative  used in \code{predict}. Specifies whether cumulative probabilities should be shown.
+#' @param ...         further arguments, currently ignored.
 #'
 #' @return
 #' The \code{summary} methods return a \code{data.frame} which contains the input and output.
@@ -504,25 +506,53 @@ summary.jfaEvaluation <- function(object, digits = getOption("digits"), ...) {
 #' @rdname jfa-methods
 #' @method predict jfaPrior
 #' @export
-predict.jfaPrior <- function(object, n) {
-  if (object[["description"]]$density == "gamma") {
-    q <- stats::qnbinom(c(0, 0.25, 0.5, 0.75, 0.99), size = object[["description"]]$alpha, prob = 1 / (1 + object[["description"]]$beta))
-    q <- ifelse(q > n, yes = n, no = q)
+predict.jfaPrior <- function(object, n, x = NULL, cumulative = FALSE) {
+  if (!is.null(x)) {
+    if (cumulative) {
+      if (length(x) > 1 || any(x < 0)) {
+        stop("'x' must be a single value >= 0")
+      }
+      if (object[["description"]]$density == "gamma") {
+        p <- stats::dnbinom(0:x, size = object[["description"]]$alpha, prob = 1 / (1 + object[["description"]]$beta))
+      } else {
+        p <- extraDistr::dbbinom(0:x, size = n, alpha = object[["description"]]$alpha, beta = object[["description"]]$beta)
+      }
+      p <- cumsum(p)
+      names(p) <- paste0("x<=", 0:x)
+    } else {
+      if (object[["description"]]$density == "gamma") {
+        p <- stats::dnbinom(x, size = object[["description"]]$alpha, prob = 1 / (1 + object[["description"]]$beta))
+      } else {
+        p <- extraDistr::dbbinom(x, size = n, alpha = object[["description"]]$alpha, beta = object[["description"]]$beta)
+      }
+      names(p) <- paste0("x=", 0:n)
+    }
   } else {
-    q <- NULL
-    for (i in c(0, 0.25, 0.5, 0.75, 0.99)) {
-      q[length(q) + 1] <- .qbbinom(i, N = n, shape1 = object[["description"]]$alpha, shape2 = object[["description"]]$beta)
+    if (cumulative) {
+      if (object[["description"]]$density == "gamma") {
+        p <- stats::dnbinom(0:n, size = object[["description"]]$alpha, prob = 1 / (1 + object[["description"]]$beta))
+      } else {
+        p <- extraDistr::dbbinom(0:n, size = n, alpha = object[["description"]]$alpha, beta = object[["description"]]$beta)
+      }
+      p <- cumsum(p)
+      names(p) <- paste0("x<=", 0:n)
+    } else {
+      if (object[["description"]]$density == "gamma") {
+        p <- stats::dnbinom(0:n, size = object[["description"]]$alpha, prob = 1 / (1 + object[["description"]]$beta))
+      } else {
+        p <- extraDistr::dbbinom(0:n, size = n, alpha = object[["description"]]$alpha, beta = object[["description"]]$beta)
+      }
+      names(p) <- paste0("x=", 0:n)
     }
   }
-  names(q) <- c("0%", "25%", "50%", "75%", "99%")
-  return(q)
+  return(p)
 }
 
 #' @rdname jfa-methods
 #' @method predict jfaPosterior
 #' @export
-predict.jfaPosterior <- function(object, n) {
-  predict.jfaPrior(object, n)
+predict.jfaPosterior <- function(object, n, x = NULL, cumulative = FALSE) {
+  predict.jfaPrior(object, n, x, cumulative)
 }
 
 # Plot methods

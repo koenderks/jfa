@@ -66,9 +66,9 @@
 
 \method{summary}{jfaEvaluation}(object, digits = getOption("digits"), ...)
 
-\method{predict}{jfaPrior}(object, n)
+\method{predict}{jfaPrior}(object, n, x = NULL, cumulative = FALSE)
 
-\method{predict}{jfaPosterior}(object, n)
+\method{predict}{jfaPosterior}(object, n, x = NULL, cumulative = FALSE)
 
 \method{plot}{jfaPrior}(x, xlim = c(0, 1), ...)
 
@@ -83,6 +83,8 @@
 \method{plot}{jfaEvaluation}(x, xlim = c(0, 1), ...)
 }
 \arguments{
+\item{x}{used in \code{predict}. Limits the number of errors for which predictions should be made.}
+
 \item{...}{further arguments, currently ignored.}
 
 \item{digits}{an integer specifying the number of digits to which output should be rounded. Used in \code{summary}.}
@@ -90,6 +92,8 @@
 \item{object, x}{an object of class \code{jfaPrior}, \code{jfaPosterior}, \code{jfaPredictive}, \code{jfaPlanning}, \code{jfaSelection}, or \code{jfaEvaluation}.}
 
 \item{n}{used in \code{predict}. Specifies the sample size for which predictions should be made.}
+
+\item{cumulative}{used in \code{predict}. Specifies whether cumulative probabilities should be shown.}
 
 \item{xlim}{used in \code{plot}. Specifies the x limits (x1, x2) of the plot.}
 }
