@@ -216,10 +216,10 @@
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>object</span>, digits <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>getOption</a></span><span class='op'>(</span><span class='st'>"digits"</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for jfaPrior</span>
-<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>n</span>, x <span class='op'>=</span> <span class='cn'>NULL</span>, cumulative <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>n</span>, lim <span class='op'>=</span> <span class='cn'>NULL</span>, cumulative <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for jfaPosterior</span>
-<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>n</span>, x <span class='op'>=</span> <span class='cn'>NULL</span>, cumulative <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/stats/predict.html'>predict</a></span><span class='op'>(</span><span class='va'>object</span>, <span class='va'>n</span>, lim <span class='op'>=</span> <span class='cn'>NULL</span>, cumulative <span class='op'>=</span> <span class='cn'>FALSE</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for jfaPrior</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, xlim <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span>, <span class='va'>...</span><span class='op'>)</span>
@@ -243,10 +243,6 @@
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>x</th>
-      <td><p>used in <code>predict</code>. Limits the number of errors for which predictions should be made.</p></td>
-    </tr>
-    <tr>
       <th>...</th>
       <td><p>further arguments, currently ignored.</p></td>
     </tr>
@@ -261,6 +257,10 @@
     <tr>
       <th>n</th>
       <td><p>used in <code>predict</code>. Specifies the sample size for which predictions should be made.</p></td>
+    </tr>
+    <tr>
+      <th>lim</th>
+      <td><p>used in <code>predict</code>. Limits the number of errors for which predictions should be made.</p></td>
     </tr>
     <tr>
       <th>cumulative</th>
