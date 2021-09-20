@@ -198,8 +198,9 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
     sufficient <- bound < materiality && (bound - mle) < min.precision # Sufficient work done?
     if (sufficient) {
       n <- i
+    } else {
+      iter <- iter + 1
     }
-    iter <- iter + 1
   }
   # No sample size could be calculated, throw an error
   if (is.null(n)) {

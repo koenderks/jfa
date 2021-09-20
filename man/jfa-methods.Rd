@@ -89,6 +89,8 @@
 
 \item{object, x}{an object of class \code{jfaPrior}, \code{jfaPosterior}, \code{jfaPredictive}, \code{jfaPlanning}, \code{jfaSelection}, or \code{jfaEvaluation}.}
 
+\item{n}{used in \code{predict}. Specifies the sample size for which predictions should be made.}
+
 \item{xlim}{used in \code{plot}. Specifies the x limits (x1, x2) of the plot.}
 }
 \value{

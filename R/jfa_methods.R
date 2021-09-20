@@ -5,6 +5,7 @@
 #' @param object,x   an object of class \code{jfaPrior}, \code{jfaPosterior}, \code{jfaPredictive}, \code{jfaPlanning}, \code{jfaSelection}, or \code{jfaEvaluation}.
 #' @param digits     an integer specifying the number of digits to which output should be rounded. Used in \code{summary}.
 #' @param xlim       used in \code{plot}. Specifies the x limits (x1, x2) of the plot.
+#' @param n          used in \code{predict}. Specifies the sample size for which predictions should be made.
 #' @param ...        further arguments, currently ignored.
 #'
 #' @return
