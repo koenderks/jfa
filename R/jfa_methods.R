@@ -6,7 +6,7 @@
 #' @param digits      an integer specifying the number of digits to which output should be rounded. Used in \code{summary}.
 #' @param xlim        used in \code{plot}. Specifies the x limits (x1, x2) of the plot.
 #' @param n           used in \code{predict}. Specifies the sample size for which predictions should be made.
-#' @param x           used in \code{predict}. Limits the number of errors for which predictions should be made.
+#' @param lim         used in \code{predict}. Limits the number of errors for which predictions should be made.
 #' @param cumulative  used in \code{predict}. Specifies whether cumulative probabilities should be shown.
 #' @param ...         further arguments, currently ignored.
 #'
@@ -506,26 +506,26 @@ summary.jfaEvaluation <- function(object, digits = getOption("digits"), ...) {
 #' @rdname jfa-methods
 #' @method predict jfaPrior
 #' @export
-predict.jfaPrior <- function(object, n, x = NULL, cumulative = FALSE) {
-  if (!is.null(x)) {
+predict.jfaPrior <- function(object, n, lim = NULL, cumulative = FALSE, ...) {
+  if (!is.null(lim)) {
     if (cumulative) {
-      if (length(x) > 1 || any(x < 0)) {
-        stop("'x' must be a single value >= 0")
+      if (length(lim) > 1 || any(lim < 0)) {
+        stop("'lim' must be a single value >= 0")
       }
       if (object[["description"]]$density == "gamma") {
-        p <- stats::dnbinom(0:x, size = object[["description"]]$alpha, prob = 1 / (1 + object[["description"]]$beta))
+        p <- stats::dnbinom(0:lim, size = object[["description"]]$alpha, prob = 1 / (1 + object[["description"]]$beta))
       } else {
-        p <- extraDistr::dbbinom(0:x, size = n, alpha = object[["description"]]$alpha, beta = object[["description"]]$beta)
+        p <- extraDistr::dbbinom(0:lim, size = n, alpha = object[["description"]]$alpha, beta = object[["description"]]$beta)
       }
       p <- cumsum(p)
-      names(p) <- if (object[["description"]]$density == "gamma") paste0("n<=", 0:x) else paste0("x<=", 0:x)
+      names(p) <- if (object[["description"]]$density == "gamma") paste0("n<=", 0:lim) else paste0("x<=", 0:lim)
     } else {
       if (object[["description"]]$density == "gamma") {
-        p <- stats::dnbinom(x, size = object[["description"]]$alpha, prob = 1 / (1 + object[["description"]]$beta))
+        p <- stats::dnbinom(lim, size = object[["description"]]$alpha, prob = 1 / (1 + object[["description"]]$beta))
       } else {
-        p <- extraDistr::dbbinom(x, size = n, alpha = object[["description"]]$alpha, beta = object[["description"]]$beta)
+        p <- extraDistr::dbbinom(lim, size = n, alpha = object[["description"]]$alpha, beta = object[["description"]]$beta)
       }
-      names(p) <- if (object[["description"]]$density == "gamma") paste0("n<=", x) else paste0("x<=", x)
+      names(p) <- if (object[["description"]]$density == "gamma") paste0("n<=", lim) else paste0("x<=", lim)
     }
   } else {
     if (cumulative) {
@@ -551,8 +551,8 @@ predict.jfaPrior <- function(object, n, x = NULL, cumulative = FALSE) {
 #' @rdname jfa-methods
 #' @method predict jfaPosterior
 #' @export
-predict.jfaPosterior <- function(object, n, x = NULL, cumulative = FALSE) {
-  predict.jfaPrior(object, n, x, cumulative)
+predict.jfaPosterior <- function(object, n, lim = NULL, cumulative = FALSE, ...) {
+  predict.jfaPrior(object, n, lim, cumulative, ...)
 }
 
 # Plot methods
