@@ -518,14 +518,14 @@ predict.jfaPrior <- function(object, n, x = NULL, cumulative = FALSE) {
         p <- extraDistr::dbbinom(0:x, size = n, alpha = object[["description"]]$alpha, beta = object[["description"]]$beta)
       }
       p <- cumsum(p)
-      names(p) <- paste0("x<=", 0:x)
+      names(p) <- if (object[["description"]]$density == "gamma") paste0("n<=", 0:x) else paste0("x<=", 0:x)
     } else {
       if (object[["description"]]$density == "gamma") {
         p <- stats::dnbinom(x, size = object[["description"]]$alpha, prob = 1 / (1 + object[["description"]]$beta))
       } else {
         p <- extraDistr::dbbinom(x, size = n, alpha = object[["description"]]$alpha, beta = object[["description"]]$beta)
       }
-      names(p) <- paste0("x=", 0:n)
+      names(p) <- if (object[["description"]]$density == "gamma") paste0("n<=", x) else paste0("x<=", x)
     }
   } else {
     if (cumulative) {
@@ -535,14 +535,14 @@ predict.jfaPrior <- function(object, n, x = NULL, cumulative = FALSE) {
         p <- extraDistr::dbbinom(0:n, size = n, alpha = object[["description"]]$alpha, beta = object[["description"]]$beta)
       }
       p <- cumsum(p)
-      names(p) <- paste0("x<=", 0:n)
+      names(p) <- if (object[["description"]]$density == "gamma") paste0("n<=", 0:n) else paste0("x<=", 0:n)
     } else {
       if (object[["description"]]$density == "gamma") {
         p <- stats::dnbinom(0:n, size = object[["description"]]$alpha, prob = 1 / (1 + object[["description"]]$beta))
       } else {
         p <- extraDistr::dbbinom(0:n, size = n, alpha = object[["description"]]$alpha, beta = object[["description"]]$beta)
       }
-      names(p) <- paste0("x=", 0:n)
+      names(p) <- if (object[["description"]]$density == "gamma") paste0("n<=", 0:n) else paste0("x<=", 0:n)
     }
   }
   return(p)
