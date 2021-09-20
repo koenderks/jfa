@@ -165,7 +165,7 @@ test_that(desc = "(id: f5-v0.4.0-t1) Expected Bayes factors for zero expected er
 
   prior <- auditPrior(method = "default", likelihood = "hypergeometric", N.units = 1000)
   jfaRes <- planning(conf.level = 0.95, materiality = 0.02, expected = 0, likelihood = "hypergeometric", prior = prior, N.units = 1000)
-  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.h1, 1041.47, tolerance = 0.001)
+  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.h1, 933.7705249, tolerance = 0.001)
 })
 
 test_that(desc = "(id: f5-v0.4.0-t2) Expected Bayes factors for expected errors > 0", {
@@ -179,7 +179,7 @@ test_that(desc = "(id: f5-v0.4.0-t2) Expected Bayes factors for expected errors 
 
   prior <- auditPrior(method = "default", likelihood = "hypergeometric", N.units = 1000)
   jfaRes <- planning(conf.level = 0.95, materiality = 0.02, expected = 0.01, likelihood = "hypergeometric", prior = prior, N.units = 1000)
-  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.h1, 1193.141, tolerance = 0.001)
+  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.h1, 948.2315255, tolerance = 0.001)
 })
 
 test_that(desc = "(id: f5-v0.4.0-t3) Expected Bayes factors for impartial priors", {

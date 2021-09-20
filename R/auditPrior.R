@@ -329,12 +329,12 @@ auditPrior <- function(method = "default", likelihood = c("poisson", "binomial",
     hypotheses[["p.h1"]] <- switch(likelihood,
       "poisson" = stats::pgamma(materiality, shape = description[["alpha"]], rate = description[["beta"]]),
       "binomial" = stats::pbeta(materiality, shape1 = description[["alpha"]], shape2 = description[["beta"]]),
-      "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * N.units), size = N.units, alpha = description[["alpha"]], beta = description[["beta"]])
+      "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * N.units) - 1, size = N.units, alpha = description[["alpha"]], beta = description[["beta"]])
     )
     hypotheses[["p.h0"]] <- switch(likelihood,
       "poisson" = stats::pgamma(materiality, shape = description[["alpha"]], rate = description[["beta"]], lower.tail = FALSE),
       "binomial" = stats::pbeta(materiality, shape1 = description[["alpha"]], shape2 = description[["beta"]], lower.tail = FALSE),
-      "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * N.units), size = N.units, alpha = description[["alpha"]], beta = description[["beta"]], lower.tail = FALSE)
+      "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * N.units) - 1, size = N.units, alpha = description[["alpha"]], beta = description[["beta"]], lower.tail = FALSE)
     )
     hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
     hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]

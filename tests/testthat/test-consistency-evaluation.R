@@ -236,7 +236,7 @@ test_that(desc = "(id: f3-v0.4.0-t1) Bayes factors", {
   expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf.h1, 1822.754944, tolerance = 0.001)
   prior <- auditPrior(method = "default", likelihood = "hypergeometric", N.units = 1000)
   jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "hypergeometric", times = "times", prior = prior, N.units = 1000)
-  expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf.h1, 295149, tolerance = 0.001)
+  expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf.h1, 235810.5921, tolerance = 0.001)
 })
 
 # jfa version 0.5.0
@@ -370,13 +370,13 @@ test_that(desc = "(id: f3-v0.6.0-t3) Test Bayes factors for beta-binomial prior"
 
   # Compute a Bayes factor from a noninformative beta-binomial prior
   BF <- evaluation(materiality = 0.03, n = 160, x = 1, prior = auditPrior(method = "default", likelihood = "hypergeometric", N.units = 1000))$posterior$hypotheses$bf.h1
-  expect_equal(BF, 1248.71551)
+  expect_equal(BF, 1103.766987)
 
   # Compute a Bayes factor from a noninformative beta-binomial prior
   BF <- evaluation(materiality = 0.05, n = 50, x = 1, prior = auditPrior(method = "default", likelihood = "hypergeometric", N.units = 1000))$posterior$hypotheses$bf.h1
-  expect_equal(BF, 58.37849102)
+  expect_equal(BF, 56.53423054)
 
   # Compute a default Bayes factor from an impartial beta-binomial prior
   BF <- evaluation(materiality = 0.05, n = 50, x = 1, prior = auditPrior(method = "impartial", materiality = 0.05, likelihood = "hypergeometric", N.units = 1000))$posterior$hypotheses$bf.h1
-  expect_equal(BF, 5.676959268)
+  expect_equal(BF, 5.491157852)
 })
