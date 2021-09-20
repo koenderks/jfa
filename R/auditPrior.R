@@ -191,24 +191,25 @@ auditPrior <- function(method = "default", likelihood = c("poisson", "binomial",
       p.h0 <- 1 - p.h1 # Calculate p(H+)
     }
     if (expected == 0) { # Formulas for zero expected errors
-      prior.n <- switch(likelihood,
-        "poisson" = -(log(p.h0) / materiality),
-        "binomial" = log(p.h0) / log(1 - materiality),
-        "hypergeometric" = log(p.h0) / log(1 - materiality)
-      )
-      prior.x <- 0
-      if (likelihood == "hypergeometric") {
-        median <- 0
-        prior.n <- prior.n + 1
-        while (median < materiality) {
-          prior.n <- prior.n - 0.001 # Increase of 0.001 (time intensive?)
-          median <- .qbbinom(p = p.h1, N = N.units, shape1 = 1 + prior.x, shape2 = prior.n - prior.x) / N.units
+      if (likelihood != "hypergeometric") {
+        prior.n <- switch(likelihood,
+          "poisson" = -(log(p.h0) / materiality),
+          "binomial" = log(p.h0) / log(1 - materiality),
+          "hypergeometric" = log(p.h0) / log(1 - materiality)
+        )
+      } else {
+        median <- Inf
+        prior.n <- 1
+        while (median >= materiality) {
+          prior.n <- prior.n + 0.001 # Increase of 0.001 (time intensive?)
+          median <- .qbbinom(p = p.h1, N = N.units, shape1 = 1, shape2 = prior.n) / N.units
         }
       }
+      prior.x <- 0
     } else { # Approximation through iteration over alpha parameter = more accurate than approximation through formulas
       median <- Inf
       prior.x <- 0
-      while (median > materiality) {
+      while (median >= materiality) {
         prior.x <- prior.x + 0.0001 # Increase of 0.0001 (time intensive?)
         prior.n <- if (likelihood == "poisson") prior.x / expected else 1 + prior.x / expected # Express beta in terms of alpha
         median <- switch(likelihood, # Calculate the median for the current parameters
