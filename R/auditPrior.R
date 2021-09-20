@@ -197,6 +197,14 @@ auditPrior <- function(method = "default", likelihood = c("poisson", "binomial",
         "hypergeometric" = log(p.h0) / log(1 - materiality)
       )
       prior.x <- 0
+      if (likelihood == "hypergeometric") {
+        median <- 0
+        prior.n <- prior.n + 1
+        while (median < materiality) {
+          prior.n <- prior.n - 0.001 # Increase of 0.001 (time intensive?)
+          median <- .qbbinom(p = p.h1, N = N.units, shape1 = 1 + prior.x, shape2 = prior.n - prior.x) / N.units
+        }
+      }
     } else { # Approximation through iteration over alpha parameter = more accurate than approximation through formulas
       median <- Inf
       prior.x <- 0
