@@ -2,55 +2,59 @@
 
 **New features**
 
-- Added argument `alternative` with possible options `less` (default), `two.sided`, and `greater` that allows control over the type of hypothesis test to perform and the type of confidence / credible interval to calculate.
+- Added argument `alternative` with possible options `less` (default), `two.sided`, and `greater` to the `evaluation()` function that allows control over the type of hypothesis test to perform and the type of confidence / credible interval to calculate.
+- Added `predict.jfaPrior()` and `predict.jfaPosterior()` that produce predictions for the data under the prior or posterior distribution.
 - Added `method = 'param'` to function `auditPrior()` which takes as input the raw `alpha` and `beta` parameters of the prior distribution.
-- Added `method = 'strict'` to function `auditPrior()` which constructs a prior distribution that yields the same results (with respect to sample sizes and upper limits) as classical procedures.
+- Added `method = 'strict'` to function `auditPrior()` which constructs an (improper) prior distribution that yields the same results (with respect to sample sizes and upper limits) as classical procedures.
+- Added the modified seed sampling algorithm (`method = 'sieve')` to `selection()`.
 - Added a new vignette that describes the sampling methodology implemented in `jfa`.
+- objects from `auditPrior()`, `planning()`, and `evaluation()` now contain information about the posterior predictive distribution when `N.units` is specified.
 
 **Major changes**
 
 - From `jfa` 0.5.7 to `jfa` 0.6.0 there has been a major overhaul in the names of function arguments. This is done so that the calls integrate better with general R syntax and the package gets more user-friendly. I apologive for any inconvenience this may cause. The following names have been changed:
-    - `median` -> `impartial` (in `auditPrior()`)
-    - `sampleK` -> `x` (in `auditPrior()`)
-    - `sampleN` -> `n` (in `auditPrior()`)
-    - `N` -> `N.units` (in `auditPrior()`)
-    - `maxSize` -> `max` (in `planning()`)
-    - `increase` -> `by` (in `planning()`)
-    - `withReplacement`-> `replace` (in `selection()`)
-    - `ordered` -> `order` (in `selection()`)
-    - `ascending` -> `decreasing` (in `selection()`)
-    - `intervalStartingPoint` -> `start` (in `selection()`)
-    - `algorithm` -> `method` (in `selection()`)
-    - `expectedErrors` -> `expected` (in `auditPrior()` and `planning()`)
-    - `confidence` -> `conf.level` (in `auditPrior()`, `planning()`, and `evaluation()`)
-    - `pHmin` -> `p.hmin` (in `auditPrior()`)
-    - `minPrecision` -> `min.precision` (in `auditPrior()`, `planning()`, and `evaluation()`)
-    - `population` -> `data` (in `selection()`)
-    - `kSumstats` -> `x` (in `evaluation()`)
-    - `nSumstats` -> `n` (in `evaluation()`)
-    - `sample` -> `data` (in `evaluation()`)
-    - `bookValues` -> `values` (in `selection()` and `evaluation()`)
-    - `auditValues` -> `values.audit` (in `evaluation()`)
-    - `counts` -> `times` (in `evaluation()`)
-    - `popBookValues` -> `N.units` (in `evaluation()`)
-    - `rohrbachDelta` -> `r.delta` (in `evaluation()`)
-    - `momentPopType` -> `m.type` (in `evaluation()`)
-    - `csA` -> `cs.a` (in `evaluation()`)
-    - `csB` -> `cs.b` (in `evaluation()`)
-    - `csMu` -> `cs.mu` (in `evaluation()`)
-    - `records` -> `items` (in `selection()`)
-    - `mus` -> `values` (in `selection()`)
-    - `hypotheses` -> `hyp` (in `auditPrior()`)
-- `poisson` is now the default likelihood for all functions since it is the most conservative.
+  - `median` -> `impartial` (in `auditPrior()`)
+  - `sampleK` -> `x` (in `auditPrior()`)
+  - `sampleN` -> `n` (in `auditPrior()`)
+  - `N` -> `N.units` (in `auditPrior()`)
+  - `maxSize` -> `max` (in `planning()`)
+  - `increase` -> `by` (in `planning()`)
+  - `withReplacement`-> `replace` (in `selection()`)
+  - `ordered` -> `order` (in `selection()`)
+  - `ascending` -> `decreasing` (in `selection()`)
+  - `intervalStartingPoint` -> `start` (in `selection()`)
+  - `algorithm` -> `method` (in `selection()`)
+  - `expectedErrors` -> `expected` (in `auditPrior()` and `planning()`)
+  - `confidence` -> `conf.level` (in `auditPrior()`, `planning()`, and `evaluation()`)
+  - `pHmin` -> `p.hmin` (in `auditPrior()`)
+  - `minPrecision` -> `min.precision` (in `auditPrior()`, `planning()`, and `evaluation()`)
+  - `population` -> `data` (in `selection()`)
+  - `kSumstats` -> `x` (in `evaluation()`)
+  - `nSumstats` -> `n` (in `evaluation()`)
+  - `sample` -> `data` (in `evaluation()`)
+  - `bookValues` -> `values` (in `selection()` and `evaluation()`)
+  - `auditValues` -> `values.audit` (in `evaluation()`)
+  - `counts` -> `times` (in `evaluation()`)
+  - `popBookValues` -> `N.units` (in `evaluation()`)
+  - `rohrbachDelta` -> `r.delta` (in `evaluation()`)
+  - `momentPopType` -> `m.type` (in `evaluation()`)
+  - `csA` -> `cs.a` (in `evaluation()`)
+  - `csB` -> `cs.b` (in `evaluation()`)
+  - `csMu` -> `cs.mu` (in `evaluation()`)
+  - `records` -> `items` (in `selection()`)
+  - `mus` -> `values` (in `selection()`)
+  - `hypotheses` -> `hyp` (in `auditPrior()`)
+- `poisson` is now the default likelihood / method for all functions since it is the most conservative.
 - `method = 'interval'` is now the default selection method.
 - The default prior distributions used when `method = 'default'` or `prior = TRUE` are now set to the `gamma(1, 1)`, `beta(1,1)`, and `beta-binomial(1, 1)` priors.
 - The `times` (former `counts`) argument in `evaluation()` must now be indicated as a column name in the `data` instead of a vector.
 - `nPrior` and `kPrior` have been removed from the `planning()` and `evaluation()` functions. All prior distributions must now be specified using `prior = TRUE` (noninformative priors) or using a call to `auditPrior()`.
-- Removed the `auditBF()` function since its value is available through `print(evaluation(materiality = x, prior = auditPrior(method = 'impartial', materiality = x)))`
+- Removed the `auditBF()` function since its value is available through `evaluation(materiality = x, prior = auditPrior(method = 'impartial', materiality = x))`
 
 **Minor changes**
 
-- It is now allowed for `x` and `n` to have the same value.
+- It is now allowed for `x` and `n` to have the same value in `evaluation()`.
+- The parameters for an impartial beta-binomial prior are now calculated more efficiently in the case of zero expected errors.
 
 # jfa 0.5.7
 
