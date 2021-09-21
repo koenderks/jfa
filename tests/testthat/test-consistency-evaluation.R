@@ -378,5 +378,5 @@ test_that(desc = "(id: f3-v0.6.0-t3) Test Bayes factors for beta-binomial prior"
 
   # Compute a default Bayes factor from an impartial beta-binomial prior
   BF <- evaluation(materiality = 0.05, n = 50, x = 1, prior = auditPrior(method = "impartial", materiality = 0.05, likelihood = "hypergeometric", N.units = 1000))$posterior$hypotheses$bf.h1
-  expect_equal(BF, 5.460624001)
+  expect_equal(BF, 5.491157852)
 })
