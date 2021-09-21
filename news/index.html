@@ -161,10 +161,13 @@
 </h1>
 <p><strong>New features</strong></p>
 <ul>
-<li>Added argument <code>alternative</code> with possible options <code>less</code> (default), <code>two.sided</code>, and <code>greater</code> that allows control over the type of hypothesis test to perform and the type of confidence / credible interval to calculate.</li>
+<li>Added argument <code>alternative</code> with possible options <code>less</code> (default), <code>two.sided</code>, and <code>greater</code> to the <code><a href="../reference/evaluation.html">evaluation()</a></code> function that allows control over the type of hypothesis test to perform and the type of confidence / credible interval to calculate.</li>
+<li>Added <code><a href="../reference/jfa-methods.html">predict.jfaPrior()</a></code> and <code><a href="../reference/jfa-methods.html">predict.jfaPosterior()</a></code> that produce predictions for the data under the prior or posterior distribution.</li>
 <li>Added <code>method = 'param'</code> to function <code><a href="../reference/auditPrior.html">auditPrior()</a></code> which takes as input the raw <code>alpha</code> and <code>beta</code> parameters of the prior distribution.</li>
-<li>Added <code>method = 'strict'</code> to function <code><a href="../reference/auditPrior.html">auditPrior()</a></code> which constructs a prior distribution that yields the same results (with respect to sample sizes and upper limits) as classical procedures.</li>
+<li>Added <code>method = 'strict'</code> to function <code><a href="../reference/auditPrior.html">auditPrior()</a></code> which constructs an (improper) prior distribution that yields the same results (with respect to sample sizes and upper limits) as classical procedures.</li>
+<li>Added the modified seed sampling algorithm (<code>method = 'sieve')</code> to <code><a href="../reference/selection.html">selection()</a></code>.</li>
 <li>Added a new vignette that describes the sampling methodology implemented in <code>jfa</code>.</li>
+<li>objects from <code><a href="../reference/auditPrior.html">auditPrior()</a></code>, <code><a href="../reference/planning.html">planning()</a></code>, and <code><a href="../reference/evaluation.html">evaluation()</a></code> now contain information about the posterior predictive distribution when <code>N.units</code> is specified.</li>
 </ul>
 <p><strong>Major changes</strong></p>
 <ul>
@@ -235,19 +238,20 @@
 </ul>
 </li>
 <li>
-<code>poisson</code> is now the default likelihood for all functions since it is the most conservative.</li>
+<code>poisson</code> is now the default likelihood / method for all functions since it is the most conservative.</li>
 <li>
 <code>method = 'interval'</code> is now the default selection method.</li>
 <li>The default prior distributions used when <code>method = 'default'</code> or <code>prior = TRUE</code> are now set to the <code><a href="https://rdrr.io/r/base/Special.html">gamma(1, 1)</a></code>, <code><a href="https://rdrr.io/r/base/Special.html">beta(1,1)</a></code>, and <code>beta-binomial(1, 1)</code> priors.</li>
 <li>The <code>times</code> (former <code>counts</code>) argument in <code><a href="../reference/evaluation.html">evaluation()</a></code> must now be indicated as a column name in the <code>data</code> instead of a vector.</li>
 <li>
 <code>nPrior</code> and <code>kPrior</code> have been removed from the <code><a href="../reference/planning.html">planning()</a></code> and <code><a href="../reference/evaluation.html">evaluation()</a></code> functions. All prior distributions must now be specified using <code>prior = TRUE</code> (noninformative priors) or using a call to <code><a href="../reference/auditPrior.html">auditPrior()</a></code>.</li>
-<li>Removed the <code>auditBF()</code> function since its value is available through <code><a href="https://rdrr.io/r/base/print.html">print(evaluation(materiality = x, prior = auditPrior(method = 'impartial', materiality = x)))</a></code>
+<li>Removed the <code>auditBF()</code> function since its value is available through <code><a href="../reference/evaluation.html">evaluation(materiality = x, prior = auditPrior(method = 'impartial', materiality = x))</a></code>
 </li>
 </ul>
 <p><strong>Minor changes</strong></p>
 <ul>
-<li>It is now allowed for <code>x</code> and <code>n</code> to have the same value.</li>
+<li>It is now allowed for <code>x</code> and <code>n</code> to have the same value in <code><a href="../reference/evaluation.html">evaluation()</a></code>.</li>
+<li>The parameters for an impartial beta-binomial prior are now calculated more efficiently in the case of zero expected errors.</li>
 </ul>
 </div>
     <div id="jfa-057" class="section level1">
