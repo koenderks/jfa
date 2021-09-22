@@ -249,7 +249,7 @@ vignette('jfa', package = 'jfa')" />
     </tr>
     <tr>
       <th>prior</th>
-      <td><p>a logical specifying if a prior distribution must be used, or an object of class <code>jfaPrior</code> or <code>jfaPosterior</code> containing the prior distribution. Defaults to <code>FALSE</code> for frequentist planning. If <code>TRUE</code>, a noninformative prior distribution is chosen by default, but can be adjusted using the `kPrior` and `nPrior` arguments. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.</p></td>
+      <td><p>a logical specifying if a prior distribution must be used, or an object of class <code>jfaPrior</code> or <code>jfaPosterior</code> containing the prior distribution. Defaults to <code>FALSE</code> for frequentist planning. If <code>TRUE</code>, a minimal information prior is chosen by default. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.</p></td>
     </tr>
     </table>
 
