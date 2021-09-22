@@ -12,7 +12,7 @@
 
 **Major changes**
 
-- From `jfa` 0.5.7 to `jfa` 0.6.0 there has been a major overhaul in the names of function arguments. This is done so that the calls integrate better with general R syntax and the package gets more user-friendly. I apologive for any inconvenience this may cause. The following names have been changed:
+- From `jfa` 0.5.7 to `jfa` 0.6.0 there has been a major overhaul in the names of function arguments. This is done so that the calls integrate better with general R syntax and the package gets more user-friendly. I apologize for any inconvenience this may cause. The following names have been changed:
   - `median` -> `impartial` (in `auditPrior()`)
   - `sampleK` -> `x` (in `auditPrior()`)
   - `sampleN` -> `n` (in `auditPrior()`)

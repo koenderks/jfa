@@ -26,7 +26,7 @@ planning(materiality = NULL, min.precision = NULL, expected = 0,
 
 \item{max}{an integer larger than 0 specifying the maximum sample size that is considered in the calculation. Defaults to 5000 for efficiency. Increase this value if the sample size cannot be found due to it being too large (e.g., for a low materiality).}
 
-\item{prior}{a logical specifying whether to use a prior distribution when planning, or an object of class \code{jfaPrior} or \code{jfaPosterior} containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a noninformative prior distribution is used. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
+\item{prior}{a logical specifying whether to use a prior distribution when planning, or an object of class \code{jfaPrior} or \code{jfaPosterior} containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a minimal information prior is chosen by default. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
 }
 \value{
 An object of class \code{jfaPlanning} containing:
