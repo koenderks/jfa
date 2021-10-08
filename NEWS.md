@@ -1,3 +1,9 @@
+# jfa 0.6.1
+
+**Minor changes**
+
+- Adjusted an error in the text of the selection vignette.
+
 # jfa 0.6.0
 
 **New features**

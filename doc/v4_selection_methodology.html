@@ -171,14 +171,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="sampling-algorithms" class="section level3">
 <h3>Sampling algorithms</h3>
-<p>This section discusses the three sampling algorithms implemented in <code>jfa</code>. First, for notation, let the the population <span class="math inline">\(N\)</span> be defined as the total set of individual sampling units <span class="math inline">\(x_i\)</span>.</p>
+<p>This section discusses the four sampling algorithms implemented in <code>jfa</code>. First, for notation, let the the population <span class="math inline">\(N\)</span> be defined as the total set of individual sampling units <span class="math inline">\(x_i\)</span>.</p>
 <p><span class="math display">\[N = \{x_1, x_2, \dots, x_N\}.\]</span></p>
 <p>In statistical sampling, every sampling unit <span class="math inline">\(x_i\)</span> in the population must receive a selection probability <span class="math inline">\(p(x_i)\)</span>. The purpose of the sampling algorithm is to provide a framework to assign selection probabilities to each of the sampling units, and subsequently draw sampling units from the population until a set of size <span class="math inline">\(n\)</span> has been created.</p>
 <p>The next section discusses which sampling algorithms are available in <code>jfa</code>. To illustrate the outcomes for different sampling algorithms we will use the <code>BuildIt</code> data set that can be loaded using the code below.</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(BuildIt)</span></code></pre></div>
 <div id="fixed-interval-sampling-systematic-sampling" class="section level4">
 <h4>Fixed interval sampling (Systematic sampling)</h4>
-<p>Fixed interval sampling is an algorithm designed for yielding representative samples from monetary populations. The algorithm determines a uniform interval on the (optionally ranked) sampling units. Next, a starting point is handpicked or randomly selected in the first interval and a sampling unit is selected throughout the population at each of the uniform intervals from the starting point. For example, if the interval has a width of 10 sampling units and sampling unit number 5 is chosen as the starting point, the sampling units 5, 15, 20, etc. are selected to be included in the sample.</p>
+<p>Fixed interval sampling is an algorithm designed for yielding representative samples from monetary populations. The algorithm determines a uniform interval on the (optionally ranked) sampling units. Next, a starting point is handpicked or randomly selected in the first interval and a sampling unit is selected throughout the population at each of the uniform intervals from the starting point. For example, if the interval has a width of 10 sampling units and sampling unit number 5 is chosen as the starting point, the sampling units 5, 15, 25, etc. are selected to be included in the sample.</p>
 <p>The number of required intervals <span class="math inline">\(I\)</span> can be determined by dividing the number of sampling units in the population by the required sample size:</p>
 <p><span class="math display">\[I = \frac{N}{n},\]</span></p>
 <p>in which <span class="math inline">\(n\)</span> is the required sample size and <span class="math inline">\(N\)</span> is the total number of sampling units in the population.</p>
@@ -290,6 +290,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 4  700     1 29683    239.26     239.26
 ## 5  147     1 72906    677.62     677.62
 ## 6 3056     1 86317    246.22     246.22</code></pre>
+</div>
+<div id="modified-sieve-sampling" class="section level4">
+<h4>Modified Sieve Sampling</h4>
+<p>The fourth option for the sampling algorithm is modified sieve sampling (Hoogduin, Hall, &amp; Tsay, 2010). This algorithm starts by selecting a standard uniform random number <span class="math inline">\(R_i\)</span> between 0 and 1 for each item in the population. Next, the sieve ratio:</p>
+<p><span class="math display">\[S_i = \frac{Y_i}{R_i}\]</span></p>
+<p>is computed for each item by dividing the book value of that item by the random number. Lastly, the items in the population are sorted by their sieve ratio <span class="math inline">\(S\)</span> (in decreasing order) and the top <span class="math inline">\(n\)</span> items are selected for inspection. In contrast to the classical sieve sampling algorithm (Rietveld, 1978), the modified sieve sampling algorithm provides precise control over sample sizes.</p>
+<p>As an example, the code below shows how to apply the modified sieve sampling algorithm in a monetary unit sampling setting. It is important to set a seed to make results reproducible.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Monetary unit sampling</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="fu">selection</span>(<span class="at">data =</span> BuildIt, <span class="at">size =</span> <span class="dv">100</span>, <span class="at">units =</span> <span class="st">&#39;values&#39;</span>, <span class="at">method =</span> <span class="st">&#39;sieve&#39;</span>, <span class="at">values =</span> <span class="st">&#39;bookValue&#39;</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(sample<span class="sc">$</span>sample, <span class="at">n =</span> <span class="dv">6</span>)</span></code></pre></div>
+<pre><code>##    row times    ID bookValue auditValue
+## 1 2329     1 29919    681.10     681.10
+## 2 2883     1 59402    279.29     279.29
+## 3 1949     1 56012    581.22     581.22
+## 4 3065     1 47482    621.73     621.73
+## 5 1072     1 79901    789.97     789.97
+## 6  488     1 50811    651.35     651.35</code></pre>
 </div>
 </div>
 </div>

@@ -39,7 +39,7 @@ A sampling unit for monetary unit sampling is different than a sampling unit for
 
 ### Sampling algorithms
 
-This section discusses the three sampling algorithms implemented in `jfa`. First, for notation, let the the population $N$ be defined as the total set of individual sampling units $x_i$.
+This section discusses the four sampling algorithms implemented in `jfa`. First, for notation, let the the population $N$ be defined as the total set of individual sampling units $x_i$.
 
 $$N = \{x_1, x_2, \dots, x_N\}.$$
 
@@ -53,7 +53,7 @@ data(BuildIt)
 
 #### Fixed interval sampling (Systematic sampling)
 
-Fixed interval sampling is an algorithm designed for yielding representative samples from monetary populations. The algorithm determines a uniform interval on the (optionally ranked) sampling units. Next, a starting point is handpicked or randomly selected in the first interval and a sampling unit is selected throughout the population at each of the uniform intervals from the starting point. For example, if the interval has a width of 10 sampling units and sampling unit number 5 is chosen as the starting point, the sampling units 5, 15, 20, etc. are selected to be included in the sample.
+Fixed interval sampling is an algorithm designed for yielding representative samples from monetary populations. The algorithm determines a uniform interval on the (optionally ranked) sampling units. Next, a starting point is handpicked or randomly selected in the first interval and a sampling unit is selected throughout the population at each of the uniform intervals from the starting point. For example, if the interval has a width of 10 sampling units and sampling unit number 5 is chosen as the starting point, the sampling units 5, 15, 25, etc. are selected to be included in the sample.
 
 The number of required intervals $I$ can be determined by dividing the number of sampling units in the population by the required sample size:
 
@@ -160,5 +160,23 @@ head(sample$sample, n = 6)
 # Monetary unit sampling
 set.seed(1)
 sample <- selection(data = BuildIt, size = 100, units = 'values', method = 'random', values = 'bookValue')
+head(sample$sample, n = 6)
+```
+
+#### Modified Sieve Sampling
+
+The fourth option for the sampling algorithm is modified sieve sampling (Hoogduin, Hall, & Tsay, 2010). This algorithm starts by selecting a standard uniform random number $R_i$ between 0 and 1 for each item in the population. Next, the sieve ratio:
+
+$$S_i = \frac{Y_i}{R_i}$$
+
+is computed for each item by dividing the book value of that item by the random number. Lastly, the items in the population are sorted by their sieve ratio $S$ (in decreasing order) and the top $n$ items are selected for inspection. In contrast to the classical sieve sampling algorithm (Rietveld, 1978), the modified sieve sampling algorithm provides
+precise control over sample sizes. 
+
+As an example, the code below shows how to apply the modified sieve sampling algorithm in a monetary unit sampling setting. It is important to set a seed to make results reproducible.
+
+```{r}
+# Monetary unit sampling
+set.seed(1)
+sample <- selection(data = BuildIt, size = 100, units = 'values', method = 'sieve', values = 'bookValue')
 head(sample$sample, n = 6)
 ```

@@ -53,7 +53,7 @@ data(BuildIt)
 
 #### Fixed interval sampling (Systematic sampling)
 
-Fixed interval sampling is an algorithm designed for yielding representative samples from monetary populations. The algorithm determines a uniform interval on the (optionally ranked) sampling units. Next, a starting point is handpicked or randomly selected in the first interval and a sampling unit is selected throughout the population at each of the uniform intervals from the starting point. For example, if the interval has a width of 10 sampling units and sampling unit number 5 is chosen as the starting point, the sampling units 5, 15, 20, etc. are selected to be included in the sample.
+Fixed interval sampling is an algorithm designed for yielding representative samples from monetary populations. The algorithm determines a uniform interval on the (optionally ranked) sampling units. Next, a starting point is handpicked or randomly selected in the first interval and a sampling unit is selected throughout the population at each of the uniform intervals from the starting point. For example, if the interval has a width of 10 sampling units and sampling unit number 5 is chosen as the starting point, the sampling units 5, 15, 25, etc. are selected to be included in the sample.
 
 The number of required intervals $I$ can be determined by dividing the number of sampling units in the population by the required sample size:
 

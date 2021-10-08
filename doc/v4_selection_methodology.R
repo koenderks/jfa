@@ -39,3 +39,9 @@ set.seed(1)
 sample <- selection(data = BuildIt, size = 100, units = 'values', method = 'random', values = 'bookValue')
 head(sample$sample, n = 6)
 
+## -----------------------------------------------------------------------------
+# Monetary unit sampling
+set.seed(1)
+sample <- selection(data = BuildIt, size = 100, units = 'values', method = 'sieve', values = 'bookValue')
+head(sample$sample, n = 6)
+
