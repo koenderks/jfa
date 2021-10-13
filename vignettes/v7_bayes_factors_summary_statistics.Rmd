@@ -96,6 +96,6 @@ evaluation(materiality = tolerance, x = 2 + 0, n = 32 + 50, prior = TRUE)
 
 * Derks, K., de Swart, J., Wagenmakers, E.-J., and Wetzels, R. (2021). A default Bayesian hypothesis test for audit sampling. *Working paper*.
 
-* Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., and Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. *International Journal of Auditing*, 1-16.
+* Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., and Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. *International Journal of Auditing*, 25(3), 621-636.
 
 * Göb R. & Lurz, K. (2014). Shortest two-sided confidence intervals for a probability under prior information. *Metrika: International Journal for Theoretical and Applied Statistics*, 77 (3), 389-413.
