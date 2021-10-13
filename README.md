@@ -130,9 +130,9 @@ planning(materiality = NULL, min.precision = NULL, expected = 0,
 
 *Supported options for the `likelihood` argument:*
 
-- `poisson`: Poisson likelihood (Stewart, 2012)
-- `binomial`: Binomial likelihood (Stewart, 2012)
-- `hypergeometric`: Hypergeometric likelihood (Stewart, 2012)
+- `poisson`: Poisson likelihood (Stewart, 2012).
+- `binomial`: Binomial likelihood (Stewart, 2012).
+- `hypergeometric`: Hypergeometric likelihood (Stewart, 2012).
 
 *Example usage:*
 
