@@ -11,7 +11,10 @@ test_that(desc = "(id: f14-v0.5.1-t1) Test Sample sizes on page 17", {
   for (i in 1:length(SR)) {
     n[i] <- jfa::planning(conf.level = 1 - SR[i], materiality = materiality, likelihood = "poisson")$n
   }
-  expect_equal(n, c(300, 230 + 1, 140 - 1, 90 + 2, 70)) # Table on page 17 is inconsistent with the rest of the book.
+  expect_equal(n, c(300, 230 + 1, 140 - 1, 90 + 2, 70))
+  # Second entry: 230 --> 231 as qgamma(p = 0.90, shape = 1, rate = 230) > 0.1
+  # Third entry:  140 --> 139 as qgamma(p = 0.75, shape = 1, rate = 139) < 0.1
+  # Fourth entry: 90  --> 92 as qgamma(p = 0.6, shape = 1, rate = 90) > 0.1
 })
 
 # Example on page 23

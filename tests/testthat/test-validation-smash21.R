@@ -16,11 +16,11 @@ test_that(desc = "(id: f13-v0.5.3-t1) Test frequentist sample sizes", {
   smash_matrix <- matrix(c(
     74, 34, 22, 16, 13, 11, 9, 8, 7, 7, # 0.5%
     93, 37, 23, 17, 13, 11, 10, 8, 7, 7, # 1%
-    120, 41 + 1, 25, 18, 14, 12, 10, 9, 8, 7, # 1.5% --> SMASH gives 41 for theta = 0.1, jfa gives 42
+    120, 41 + 1, 25, 18, 14, 12, 10, 9, 8, 7, # 1.5%: 41 --> 42 as qgamma(p = 0.95, shape = 1 + 0.015 * 41, rate = 41) > 0.1
     162, 47, 27, 19, 15, 12, 10, 9, 8, 7, # 2%
     231, 53, 29, 20, 15, 12, 10, 9, 8, 7, # 2.5%
-    357, 60, 31, 21, 16, 13, 11, 9, 8, 7
-  ), # 3%
+    357, 60, 31, 21, 16, 13, 11, 9, 8, 7 # 3%
+  ),
   byrow = TRUE,
   nrow = length(expected),
   ncol = length(theta)
@@ -50,8 +50,8 @@ test_that(desc = "(id: f13-v0.5.3-t2) Test Bayesian sample sizes (N = 20,000)", 
     38, 46, 49, 49, 50, # 2.5%
     54, 63, 65, 66, 66, # 3.5%
     79, 89, 92, 93, 93, # 4.5%
-    98 - 1, 109, 111, 112, 112
-  ), # 5% --> SMASH gives 98 for ub = 25%, jfa gives 97
+    98 - 1, 109, 111, 112, 112 # 5% --> SMASH gives 98 for ub = 25%, jfa gives 97
+  ),
   byrow = TRUE,
   nrow = length(expected),
   ncol = length(ub)
@@ -78,8 +78,8 @@ test_that(desc = "(id: f13-v0.5.3-t3) Test Bayesian sample sizes (N = 100,000)",
     56, 64, 75, 92, 99, # 2%
     120, 133, 149, 172, 181, # 3%
     288 + 33, 312 + 33, 338 + 33, 370 + 32, 380 + 32, # 4% --> SMASH gives lower sample sizes for all thetas
-    310 + 1193, 282 + 1267, 251 + 1342, 225 + 1413, 456 + 1194
-  ), # 5% --> SMASH gives lower sample sizes for all thetas
+    310 + 1193, 282 + 1267, 251 + 1342, 225 + 1413, 456 + 1194 # 5% --> SMASH gives lower sample sizes for all thetas
+  ),
   byrow = TRUE,
   nrow = length(expected),
   ncol = length(ub)
