@@ -145,7 +145,7 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
   iter <- 1
   sufficient <- FALSE
   # Start iterating over the sampling frame
-  while (!sufficient && iter < max) {
+  while (!sufficient && iter <= length(sframe)) {
     i <- sframe[iter]
     # Find the expected errors in the sample
     x <- switch(errorType,
