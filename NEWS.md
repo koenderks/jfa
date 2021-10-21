@@ -1,5 +1,9 @@
 # jfa 0.6.1
 
+**Bug fixes**
+
+- Fixed a bug where the maximum sample size was not reachted (i.e., `planning` stopped at `max` - 1).
+
 **Minor changes**
 
 - Adjusted an error in the text of the selection vignette.
