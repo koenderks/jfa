@@ -134,27 +134,27 @@
 <div id="items" class="section level4">
 <h4 class="hasAnchor">
 <a href="#items" class="anchor"></a>Items</h4>
-<p>A sampling unit for record (i.e., attributes) sampling is generally a characteristic of an item in the population. For example, suppose that you inspect a population of receipts. A possible sampling unit for record sampling can be the date of payment of the receipt. When a sampling unit (e.g., date of payment) is selected by the sampling algorithm, the population item that corresponds to the sampled unit is included in the sample.</p>
+<p>A sampling unit for record (i.e., attributes) sampling is generally a characteristic of an item in the population. For example, suppose that you inspect a population of receipts. A possible sampling unit for record sampling can be the date of payment of the receipt. When a sampling unit (e.g., date of payment) is selected by the sampling method, the population item that corresponds to the sampled unit is included in the sample.</p>
 </div>
 <div id="monetary-units" class="section level4">
 <h4 class="hasAnchor">
 <a href="#monetary-units" class="anchor"></a>Monetary units</h4>
-<p>A sampling unit for monetary unit sampling is different than a sampling unit for record sampling in that it is an individual monetary unit within an item or transaction, like an individual dollar. For example, a single sampling unit can be the 10<span class="math inline">\(^{th}\)</span> dollar from a specific receipt in the population. When a sampling unit (e.g., individual dollar) is selected by the sampling algorithm, the population item that includes the sampling unit is included in the sample.</p>
+<p>A sampling unit for monetary unit sampling is different than a sampling unit for record sampling in that it is an individual monetary unit within an item or transaction, like an individual dollar. For example, a single sampling unit can be the 10<span class="math inline">\(^{th}\)</span> dollar from a specific receipt in the population. When a sampling unit (e.g., individual dollar) is selected by the sampling method, the population item that includes the sampling unit is included in the sample.</p>
 </div>
 </div>
-<div id="sampling-algorithms" class="section level3">
+<div id="sampling-methods" class="section level3">
 <h3 class="hasAnchor">
-<a href="#sampling-algorithms" class="anchor"></a>Sampling algorithms</h3>
-<p>This section discusses the four sampling algorithms implemented in <code>jfa</code>. First, for notation, let the the population <span class="math inline">\(N\)</span> be defined as the total set of individual sampling units <span class="math inline">\(x_i\)</span>.</p>
+<a href="#sampling-methods" class="anchor"></a>Sampling methods</h3>
+<p>This section discusses the four sampling methods implemented in <code>jfa</code>. First, for notation, let the the population <span class="math inline">\(N\)</span> be defined as the total set of individual sampling units <span class="math inline">\(x_i\)</span>.</p>
 <p><span class="math display">\[N = \{x_1, x_2, \dots, x_N\}.\]</span></p>
-<p>In statistical sampling, every sampling unit <span class="math inline">\(x_i\)</span> in the population must receive a selection probability <span class="math inline">\(p(x_i)\)</span>. The purpose of the sampling algorithm is to provide a framework to assign selection probabilities to each of the sampling units, and subsequently draw sampling units from the population until a set of size <span class="math inline">\(n\)</span> has been created.</p>
-<p>The next section discusses which sampling algorithms are available in <code>jfa</code>. To illustrate the outcomes for different sampling algorithms we will use the <code>BuildIt</code> data set that can be loaded using the code below.</p>
+<p>In statistical sampling, every sampling unit <span class="math inline">\(x_i\)</span> in the population must receive a selection probability <span class="math inline">\(p(x_i)\)</span>. The purpose of the sampling method is to provide a framework to assign selection probabilities to each of the sampling units, and subsequently draw sampling units from the population until a set of size <span class="math inline">\(n\)</span> has been created.</p>
+<p>The next section discusses which sampling methods are available in <code>jfa</code>. To illustrate the outcomes for different sampling methods, we will use the <code>BuildIt</code> data set that can be loaded using the code below.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="va">BuildIt</span><span class="op">)</span></code></pre></div>
 <div id="fixed-interval-sampling-systematic-sampling" class="section level4">
 <h4 class="hasAnchor">
 <a href="#fixed-interval-sampling-systematic-sampling" class="anchor"></a>Fixed interval sampling (Systematic sampling)</h4>
-<p>Fixed interval sampling is an algorithm designed for yielding representative samples from monetary populations. The algorithm determines a uniform interval on the (optionally ranked) sampling units. Next, a starting point is handpicked or randomly selected in the first interval and a sampling unit is selected throughout the population at each of the uniform intervals from the starting point. For example, if the interval has a width of 10 sampling units and sampling unit number 5 is chosen as the starting point, the sampling units 5, 15, 25, etc. are selected to be included in the sample.</p>
+<p>Fixed interval sampling is a method designed for yielding representative samples from monetary populations. The algorithm determines a uniform interval on the (optionally ranked) sampling units. Next, a starting point is handpicked or randomly selected in the first interval and a sampling unit is selected throughout the population at each of the uniform intervals from the starting point. For example, if the interval has a width of 10 sampling units and sampling unit number 5 is chosen as the starting point, the sampling units 5, 15, 25, etc. are selected to be included in the sample.</p>
 <p>The number of required intervals <span class="math inline">\(I\)</span> can be determined by dividing the number of sampling units in the population by the required sample size:</p>
 <p><span class="math display">\[I = \frac{N}{n},\]</span></p>
 <p>in which <span class="math inline">\(n\)</span> is the required sample size and <span class="math inline">\(N\)</span> is the total number of sampling units in the population.</p>
@@ -166,10 +166,10 @@
 <img src="img/fixedIntervalSampling.png" alt=""><p class="caption">Figure 1: Illustration of fixed interval sampling</p>
 </div>
 </center>
-<p>The fixed interval algorithm yields a sample that allows every sampling unit in the population an equal chance of being selected. However, the systematic sampling algorithm has the property that all items in the population with a monetary value larger than the interval <span class="math inline">\(I\)</span> have an selection probability of one because one of these items’ sampling units are always selected from the interval. Note that, if the population is arranged randomly with respect to its deviation pattern, fixed interval sampling is equivalent to random selection.</p>
-<p><strong>Advantages:</strong> The advantage of the fixed interval sampling algorithm is that it is often simple to understand and fast to perform. Another advantage is that, in monetary unit sampling, all items that are greater than the calculated interval will be included in the sample. In record sampling, since units can be ranked on the basis of value, there is also a guarantee that some large items will be in the sample.</p>
-<p><strong>Disadvantages:</strong> A pattern in the population can coincide with the selected interval, rendering the sample less representative. What is sometimes seen as an added complication for this algorithm is that the sample is hard to extend after drawing the initial sample. This is due to the chance of selecting the same sampling unit. However, by removing the already selected sampling units from the population and redrawing the intervals this problem can be efficiently solved.</p>
-<p>As an example, the code below shows how to apply the fixed interval sampling algorithm in a record sampling and a monetary unit sampling setting. Note that, by default, the first sampling unit from each interval is selected. However, this can be changed by setting the argument <code>start = 1</code> to a different value.</p>
+<p>The fixed interval method yields a sample that allows every sampling unit in the population an equal chance of being selected. However, the fixed interval method has the property that all items in the population with a monetary value larger than the interval <span class="math inline">\(I\)</span> have an selection probability of one because one of these items’ sampling units are always selected from the interval. Note that, if the population is arranged randomly with respect to its deviation pattern, fixed interval sampling is equivalent to random selection.</p>
+<p><strong>Advantage(s):</strong> The advantage of the fixed interval sampling method is that it is often simple to understand and fast to perform. Another advantage is that, in monetary unit sampling, all items that are greater than the calculated interval will be included in the sample. In record sampling, since units can be ranked on the basis of value, there is also a guarantee that some large items will be in the sample.</p>
+<p><strong>Disadvantage(s):</strong> A pattern in the population can coincide with the selected interval, rendering the sample less representative. What is sometimes seen as an added complication for this method is that the sample is hard to extend after drawing the initial sample. This is due to the chance of selecting the same sampling unit. However, by removing the already selected sampling units from the population and redrawing the intervals this problem can be efficiently solved.</p>
+<p>As an example, the code below shows how to apply the fixed interval sampling method in a record sampling and a monetary unit sampling setting. Note that, by default, the first sampling unit from each interval is selected. However, this can be changed by setting the argument <code>start = 1</code> to a different value.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Record sampling</span>
 <span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'items'</span>, method <span class="op">=</span> <span class="st">'interval'</span>, start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
@@ -196,18 +196,18 @@
 <div id="cell-sampling" class="section level4">
 <h4 class="hasAnchor">
 <a href="#cell-sampling" class="anchor"></a>Cell sampling</h4>
-<p>In the case of cell sampling, the algorithm, like in fixed interval sampling, is again dividing the (optionally ranked) population into a set of intervals <span class="math inline">\(I\)</span> that are computed through the previously given equations. The difference is that in cell sampling, within each interval, a sampling unit is selected by randomly drawing a number within the interval range <span class="math inline">\(I\)</span>. This causes the space <span class="math inline">\(i\)</span> between the sampling units to vary.</p>
-<p>Like in the fixed interval sampling algorithm, the selection probability for each sampling unit is defined as:</p>
+<p>The cell sampling method divides the (optionally ranked) population into a set of intervals <span class="math inline">\(I\)</span> that are computed through the previously given equations. Within each interval, a sampling unit is selected by randomly drawing a number between 1 and the interval range <span class="math inline">\(I\)</span>. This causes the space <span class="math inline">\(i\)</span> between the sampling units to vary.</p>
+<p>Like in the fixed interval sampling method, the selection probability for each sampling unit is defined as:</p>
 <p><span class="math display">\[p(x) = \frac{1}{I}.\]</span></p>
 <center>
 <div class="figure">
 <img src="img/cellSampling.png" alt=""><p class="caption">Figure 2: Illustration of cell sampling</p>
 </div>
 </center>
-<p>The cell sampling algorithm has the property that all items in the population with a monetary value larger than twice the interval <span class="math inline">\(I\)</span> have a selection probability of one.</p>
-<p><strong>Advantages:</strong> More sets of samples are possible than in fixed interval sampling, as there is no systematic interval <span class="math inline">\(i\)</span> to determine the selections. It is argued that the cell sampling algorithm offers a solution to the pattern problem in fixed interval sampling.</p>
-<p><strong>Disadvantages:</strong> A disadvantage of this sampling algorithm is that not all items in the population with a monetary value larger than the interval have a selection probability of one. Besides, population items can be in two adjacent cells, thereby creating the possibility that an items is included in the sample twice.</p>
-<p>As an example, the code below shows how to apply the cell sampling algorithm in a record sampling and a monetary unit sampling setting. It is important to set a seed to make the results reproducible.</p>
+<p>The cell sampling method has the property that all items in the population with a monetary value larger than twice the interval <span class="math inline">\(I\)</span> have a selection probability of one.</p>
+<p><strong>Advantage(s):</strong> More sets of samples are possible than in fixed interval sampling, as there is no systematic interval <span class="math inline">\(i\)</span> to determine the selections. It is argued that the cell sampling algorithm offers a solution to the pattern problem in fixed interval sampling.</p>
+<p><strong>Disadvantage(s):</strong> A disadvantage of this sampling method is that not all items in the population with a monetary value larger than the interval have a selection probability of one. Besides, population items can be in two adjacent cells, thereby creating the possibility that an items is included in the sample twice.</p>
+<p>As an example, the code below shows how to apply the cell sampling method in a record sampling and a monetary unit sampling setting. It is important to set a seed to make the results reproducible.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Record sampling</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
@@ -236,17 +236,17 @@
 <div id="random-sampling" class="section level4">
 <h4 class="hasAnchor">
 <a href="#random-sampling" class="anchor"></a>Random sampling</h4>
-<p>Random sampling is the most simple and straight-forward selection algorithm. The random sampling algorithm provides a method that allows every sampling unit in the population an equal chance of being selected, meaning that every combination of sampling units has the same probability of being selected as every other combination of the same number of sampling units. Simply put, the algorithm draws a random selection of size <span class="math inline">\(n\)</span> of the sampling units. Therefore, the selection probability for each sampling unit is defined as:</p>
+<p>Random sampling is the most simple and straight-forward selection method The random sampling method provides a method that allows every sampling unit in the population an equal chance of being selected, meaning that every combination of sampling units has the same probability of being selected as every other combination of the same number of sampling units. Simply put, the algorithm draws a random selection of size <span class="math inline">\(n\)</span> of the sampling units. Therefore, the selection probability for each sampling unit is defined as:</p>
 <p><span class="math display">\[p(x) = \frac{1}{N},\]</span></p>
-<p>where <span class="math inline">\(N\)</span> is the number of units in the population. To clarify this procedure, Figure 3 provides an illustration of the random sampling algorithm.</p>
+<p>where <span class="math inline">\(N\)</span> is the number of units in the population. To clarify this procedure, Figure 3 provides an illustration of the random sampling method.</p>
 <center>
 <div class="figure">
 <img src="img/randomSampling.png" alt=""><p class="caption">Figure 3: Illustration of random sampling</p>
 </div>
 </center>
-<p><strong>Advantages:</strong> The random sampling algorithm yields an optimal random selection, with the additional advantage that the sample can be easily extended by applying the same algorithm again.</p>
+<p><strong>Advantage(s):</strong> The random sampling method yields an optimal random selection, with the additional advantage that the sample can be easily extended by applying the same method again.</p>
 <p><strong>Disadvantages:</strong> Because the selection probabilities are equal for all sampling units there is no guarantee that items with a large monetary value in the population will be included in the sample.</p>
-<p>As an example, the code below shows how to apply the random sampling algorithm in a record sampling and a monetary unit sampling setting. It is important to set a seed to make results reproducible.</p>
+<p>As an example, the code below shows how to apply the random sampling method in a record sampling and a monetary unit sampling setting. It is important to set a seed to make results reproducible.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Record sampling</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
@@ -275,10 +275,10 @@
 <div id="modified-sieve-sampling" class="section level4">
 <h4 class="hasAnchor">
 <a href="#modified-sieve-sampling" class="anchor"></a>Modified Sieve Sampling</h4>
-<p>The fourth option for the sampling algorithm is modified sieve sampling (Hoogduin, Hall, &amp; Tsay, 2010). This algorithm starts by selecting a standard uniform random number <span class="math inline">\(R_i\)</span> between 0 and 1 for each item in the population. Next, the sieve ratio:</p>
+<p>The fourth option for the sampling method is modified sieve sampling (Hoogduin, Hall, &amp; Tsay, 2010). The algorithm starts by selecting a standard uniform random number <span class="math inline">\(R_i\)</span> between 0 and 1 for each item in the population. Next, the sieve ratio:</p>
 <p><span class="math display">\[S_i = \frac{Y_i}{R_i}\]</span></p>
-<p>is computed for each item by dividing the book value of that item by the random number. Lastly, the items in the population are sorted by their sieve ratio <span class="math inline">\(S\)</span> (in decreasing order) and the top <span class="math inline">\(n\)</span> items are selected for inspection. In contrast to the classical sieve sampling algorithm (Rietveld, 1978), the modified sieve sampling algorithm provides precise control over sample sizes.</p>
-<p>As an example, the code below shows how to apply the modified sieve sampling algorithm in a monetary unit sampling setting. It is important to set a seed to make results reproducible.</p>
+<p>is computed for each item by dividing the book value of that item by the random number. Lastly, the items in the population are sorted by their sieve ratio <span class="math inline">\(S\)</span> (in decreasing order) and the top <span class="math inline">\(n\)</span> items are selected for inspection. In contrast to the classical sieve sampling method (Rietveld, 1978), the modified sieve sampling method provides precise control over sample sizes.</p>
+<p>As an example, the code below shows how to apply the modified sieve sampling method in a monetary unit sampling setting. It is important to set a seed to make results reproducible.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Monetary unit sampling</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
