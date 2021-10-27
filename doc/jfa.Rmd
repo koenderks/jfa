@@ -1,7 +1,7 @@
 ---
 title: "Get started"
 author: Koen Derks
-date: "last modified: 29-06-2021"
+date: "last modified: 27-10-2021"
 output: 
   rmarkdown::html_vignette:
     toc: true
@@ -14,7 +14,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-Welcome to the 'Get started' vignette of the `jfa` package. In this vignette, you are able to find simple examples of how the functions provided by the package facilitate the statistical audit sampling workflow. See the topic-specific vignettes for a more detailed explanation of these functions.
+Welcome to the 'Get started' vignette of the `jfa` package. This vignette provides a simple explanation of the functions in the package and how they facilitate the statistical audit sampling workflow. See the other vignettes for a more detailed explanation of the functionality of the package.
 
 ## Example data
 
