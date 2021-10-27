@@ -29,7 +29,7 @@ sample <- stage2$sample
 head(sample, n = 10)
 
 ## -----------------------------------------------------------------------------
-stage4 <- evaluation(materiality = 0.05, method = 'binomial', conf.level = 0.95, x = 1, n = 60)
+stage4 <- evaluation(materiality = 0.05, method = 'poisson', conf.level = 0.95, x = 1, n = 60)
 summary(stage4)
 
 ## -----------------------------------------------------------------------------
