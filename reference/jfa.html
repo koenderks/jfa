@@ -222,7 +222,7 @@ For documentation on jfa itself, including the manual and user guide
 
  
 <p>Please use the citation provided by <span style="R">R</span> when citing this package. 
-  A BibTex entry is available from <code><a href='https://rdrr.io/r/utils/citation.html'>citation('jfa')</a></code>.</p>
+  A BibTex entry is available from <code>citation('jfa')</code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Useful links:</p><ul>
@@ -233,292 +233,303 @@ For documentation on jfa itself, including the manual and user guide
 </div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'># Load the jfa package</span>
-<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://koenderks.github.io/jfa/'>jfa</a></span><span class='op'>)</span>
-
-<span class='co'># Load the BuildIt population</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>'BuildIt'</span><span class='op'>)</span>
-
-<span class='co'>############################################</span>
-<span class='co'>### Example 1: Classical audit sampling ####</span>
-<span class='co'>############################################</span>
-
-<span class='co'># Stage 1: Planning</span>
-<span class='va'>stage1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='planning.html'>planning</a></span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.03</span>, expected <span class='op'>=</span> <span class='fl'>0.01</span>, 
-                   likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; 	Classical Audit Sample Planning Summary
-#&gt; 
-#&gt; Options:
-#&gt;   Confidence level:              0.95 
-#&gt;   Materiality:                   0.03 
-#&gt;   Hypotheses:                    H₀: Θ &gt;= 0.03 vs. H₁: Θ &lt; 0.03 
-#&gt;   Expected:                      0.01 
-#&gt;   Likelihood:                    poisson 
-#&gt; 
-#&gt; Results:
-#&gt;   Minimum sample size:           220 
-#&gt;   Tolerable errors:              2.2 
-#&gt;   Expected most likely error:    0.01 
-#&gt;   Expected upper bound:          0.02997 
-#&gt;   Expected precision:            0.01997 
-#&gt;   Expected p-value:              &lt; 2.22e-16 </div><div class='input'>
-<span class='co'># Stage 2: Selection</span>
-<span class='va'>stage2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='selection.html'>selection</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>BuildIt</span>, size <span class='op'>=</span> <span class='va'>stage1</span>,
-                    units <span class='op'>=</span> <span class='st'>'values'</span>, values <span class='op'>=</span> <span class='st'>'bookValue'</span>,
-                    method <span class='op'>=</span> <span class='st'>'interval'</span>, start <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; 	Audit Sample Selection Summary
-#&gt; 
-#&gt; Options:
-#&gt;   Requested sample size:         220 
-#&gt;   Sampling units:                monetary units 
-#&gt;   Method:                        fixed interval sampling 
-#&gt;   Starting point:                1 
-#&gt; 
-#&gt; Data:
-#&gt;   Population size:               3500 
-#&gt;   Population value:              1403221 
-#&gt;   Selection interval:            6378.3 
-#&gt; 
-#&gt; Results:
-#&gt;   Selected sampling units:       220 
-#&gt;   Proportion of value:           0.0001568 
-#&gt;   Selected items:                220 
-#&gt;   Proportion of size:            0.062857 </div><div class='input'>
-<span class='co'># Stage 3: Execution</span>
-<span class='va'>sample</span> <span class='op'>&lt;-</span> <span class='va'>stage2</span><span class='op'>[[</span><span class='st'>'sample'</span><span class='op'>]</span><span class='op'>]</span>
-
-<span class='co'># Stage 4: Evaluation</span>
-<span class='va'>stage4</span> <span class='op'>&lt;-</span> <span class='fu'><a href='evaluation.html'>evaluation</a></span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.03</span>, method <span class='op'>=</span> <span class='st'>'stringer'</span>,
-                     conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, data <span class='op'>=</span> <span class='va'>sample</span>,
-                     values <span class='op'>=</span> <span class='st'>'bookValue'</span>, values.audit <span class='op'>=</span> <span class='st'>'auditValue'</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage4</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; 	Classical Audit Sample Evaluation Summary
-#&gt; 
-#&gt; Options:
-#&gt;   Confidence level:               0.95 
-#&gt;   Materiality:                    0.03 
-#&gt;   Method:                         stringer 
-#&gt; 
-#&gt; Data:
-#&gt;   Sample size:                    220 
-#&gt;   Number of errors:               5 
-#&gt;   Sum of taints:                  2.9999929 
-#&gt; 
-#&gt; Results:
-#&gt;   Most likely error:              0.013636 
-#&gt;   95 percent confidence interval: [0, 0.033724] 
-#&gt;   Precision:                      0.020087 </div><div class='input'>
-<span class='co'>######################################################################</span>
-<span class='co'>### Example 2: Bayesian audit sampling using a non-informed prior ####</span>
-<span class='co'>######################################################################</span>
-
-<span class='co'># Create the prior distribution</span>
-<span class='va'>prior</span> <span class='op'>&lt;-</span> <span class='fu'><a href='auditPrior.html'>auditPrior</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'default'</span>, likelihood <span class='op'>=</span> <span class='st'>'poisson'</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>prior</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; 	Prior Distribution Summary
-#&gt; 
-#&gt; Options:
-#&gt;   Likelihood:                    poisson 
-#&gt;   Specifics:                     noninformative 
-#&gt; 
-#&gt; Results:
-#&gt;   Functional form:               gamma(α = 1, β = 1) 
-#&gt;   Equivalent sample size:        1 
-#&gt;   Equivalent errors:             0 
-#&gt;   Mode:                          0 
-#&gt;   Mean:                          1 
-#&gt;   Median:                        0.69315 
-#&gt;   Variance:                      1 
-#&gt;   Skewness:                      2 
-#&gt;   95 percent upper bound:        2.9957 
-#&gt;   Precision:                     2.9957 </div><div class='input'>
-<span class='co'># Stage 1: Planning</span>
-<span class='va'>stage1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='planning.html'>planning</a></span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.03</span>, expected <span class='op'>=</span> <span class='fl'>0.01</span>,
-                   likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, prior <span class='op'>=</span> <span class='va'>prior</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; 	Bayesian Audit Sample Planning Summary
-#&gt; 
-#&gt; Options:
-#&gt;   Confidence level:              0.95 
-#&gt;   Materiality:                   0.03 
-#&gt;   Hypotheses:                    H₀: Θ &gt; 0.03 vs. H₁: Θ &lt; 0.03 
-#&gt;   Expected:                      0.01 
-#&gt;   Likelihood:                    poisson 
-#&gt;   Prior distribution:            gamma(α = 1, β = 1) 
-#&gt; 
-#&gt; Results:
-#&gt;   Minimum sample size:           218 
-#&gt;   Tolerable errors:              2.18 
-#&gt;   Posterior distribution:        gamma(α = 3.18, β = 219) 
-#&gt;   Expected most likely error:    0.0099543 
-#&gt;   Expected upper bound:          0.029971 
-#&gt;   Expected precision:            0.020017 
-#&gt;   Expected BF₁₀:	                 626.86 </div><div class='input'>
-<span class='co'># Stage 2: Selection</span>
-<span class='va'>stage2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='selection.html'>selection</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>BuildIt</span>, size <span class='op'>=</span> <span class='va'>stage1</span>,
-                    units <span class='op'>=</span> <span class='st'>'values'</span>, values <span class='op'>=</span> <span class='st'>'bookValue'</span>,
-                    method <span class='op'>=</span> <span class='st'>'interval'</span>, start <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; 	Audit Sample Selection Summary
-#&gt; 
-#&gt; Options:
-#&gt;   Requested sample size:         218 
-#&gt;   Sampling units:                monetary units 
-#&gt;   Method:                        fixed interval sampling 
-#&gt;   Starting point:                1 
-#&gt; 
-#&gt; Data:
-#&gt;   Population size:               3500 
-#&gt;   Population value:              1403221 
-#&gt;   Selection interval:            6436.8 
-#&gt; 
-#&gt; Results:
-#&gt;   Selected sampling units:       218 
-#&gt;   Proportion of value:           0.0001554 
-#&gt;   Selected items:                218 
-#&gt;   Proportion of size:            0.062286 </div><div class='input'>
-<span class='co'># Stage 3: Execution</span>
-<span class='va'>sample</span> <span class='op'>&lt;-</span> <span class='va'>stage2</span><span class='op'>[[</span><span class='st'>'sample'</span><span class='op'>]</span><span class='op'>]</span>
-
-<span class='co'># Stage 4: Evaluation</span>
-<span class='va'>stage4</span> <span class='op'>&lt;-</span> <span class='fu'><a href='evaluation.html'>evaluation</a></span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.03</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, data <span class='op'>=</span> <span class='va'>sample</span>,
-                     values <span class='op'>=</span> <span class='st'>'bookValue'</span>, values.audit <span class='op'>=</span> <span class='st'>'auditValue'</span>,
-                     prior <span class='op'>=</span> <span class='va'>prior</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage4</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; 	Bayesian Audit Sample Evaluation Summary
-#&gt; 
-#&gt; Options:
-#&gt;   Confidence level:               0.95 
-#&gt;   Materiality:                    0.03 
-#&gt;   Materiality:                    0.03 
-#&gt;   Hypotheses:                     H₀: Θ &gt; 0.03 vs. H₁: Θ &lt; 0.03 
-#&gt;   Method:                         poisson 
-#&gt;   Prior distribution:             gamma(α = 1, β = 1) 
-#&gt; 
-#&gt; Data:
-#&gt;   Sample size:                    218 
-#&gt;   Number of errors:               4 
-#&gt;   Sum of taints:                  2.4000172 
-#&gt; 
-#&gt; Results:
-#&gt;   Posterior distribution:         gamma(α = 3.4, β = 219) 
-#&gt;   Most likely error:              0.010959 
-#&gt;   95 percent credible interval:   [0, 0.03145] 
-#&gt;   Precision:                      0.020491 
-#&gt;   BF₁₀:	                          493.5 </div><div class='input'>
-<span class='co'>###################################################################</span>
-<span class='co'>### Example 3: Bayesian audit sampling using an informed prior ####</span>
-<span class='co'>###################################################################</span>
-
-<span class='co'># Create the prior distribution</span>
-<span class='va'>prior</span> <span class='op'>&lt;-</span> <span class='fu'><a href='auditPrior.html'>auditPrior</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'arm'</span>, likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>,
-                    expected <span class='op'>=</span> <span class='fl'>0.01</span>, materiality <span class='op'>=</span> <span class='fl'>0.03</span>, cr <span class='op'>=</span> <span class='fl'>0.6</span>, ir <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>prior</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; 	Prior Distribution Summary
-#&gt; 
-#&gt; Options:
-#&gt;   Likelihood:                    poisson 
-#&gt;   Specifics:                     ir = 1; cr = 0.6; dr = 0.0833333 
-#&gt; 
-#&gt; Results:
-#&gt;   Functional form:               gamma(α = 1.46, β = 46) 
-#&gt;   Equivalent sample size:        46 
-#&gt;   Equivalent errors:             0.46 
-#&gt;   Mode:                          0.01 
-#&gt;   Mean:                          0.031739 
-#&gt;   Median:                        0.024859 
-#&gt;   Variance:                      0.00069 
-#&gt;   Skewness:                      1.6552 
-#&gt;   95 percent upper bound:        0.08343 
-#&gt;   Precision:                     0.07343 </div><div class='input'>
-<span class='co'># Stage 1: Planning</span>
-<span class='va'>stage1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='planning.html'>planning</a></span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.03</span>, expected <span class='op'>=</span> <span class='fl'>0.01</span>,
-                   likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, prior <span class='op'>=</span> <span class='va'>prior</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage1</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; 	Bayesian Audit Sample Planning Summary
-#&gt; 
-#&gt; Options:
-#&gt;   Confidence level:              0.95 
-#&gt;   Materiality:                   0.03 
-#&gt;   Hypotheses:                    H₀: Θ &gt; 0.03 vs. H₁: Θ &lt; 0.03 
-#&gt;   Expected:                      0.01 
-#&gt;   Likelihood:                    poisson 
-#&gt;   Prior distribution:            gamma(α = 1.46, β = 46) 
-#&gt; 
-#&gt; Results:
-#&gt;   Minimum sample size:           174 
-#&gt;   Tolerable errors:              1.74 
-#&gt;   Posterior distribution:        gamma(α = 3.2, β = 220) 
-#&gt;   Expected most likely error:    0.01 
-#&gt;   Expected upper bound:          0.02997 
-#&gt;   Expected precision:            0.01997 
-#&gt;   Expected BF₁₀:	                 13.593 </div><div class='input'>
-<span class='co'># Stage 2: Selection</span>
-<span class='va'>stage2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='selection.html'>selection</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>BuildIt</span>, size <span class='op'>=</span> <span class='va'>stage1</span>,
-                    units <span class='op'>=</span> <span class='st'>'values'</span>, values <span class='op'>=</span> <span class='st'>'bookValue'</span>,
-                    method <span class='op'>=</span> <span class='st'>'interval'</span>, start <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; 	Audit Sample Selection Summary
-#&gt; 
-#&gt; Options:
-#&gt;   Requested sample size:         174 
-#&gt;   Sampling units:                monetary units 
-#&gt;   Method:                        fixed interval sampling 
-#&gt;   Starting point:                1 
-#&gt; 
-#&gt; Data:
-#&gt;   Population size:               3500 
-#&gt;   Population value:              1403221 
-#&gt;   Selection interval:            8064.5 
-#&gt; 
-#&gt; Results:
-#&gt;   Selected sampling units:       174 
-#&gt;   Proportion of value:           0.000124 
-#&gt;   Selected items:                174 
-#&gt;   Proportion of size:            0.049714 </div><div class='input'>
-<span class='co'># Stage 3: Execution</span>
-<span class='va'>sample</span> <span class='op'>&lt;-</span> <span class='va'>stage2</span><span class='op'>[[</span><span class='st'>'sample'</span><span class='op'>]</span><span class='op'>]</span>
-
-<span class='co'># Stage 4: Evaluation</span>
-<span class='va'>stage4</span> <span class='op'>&lt;-</span> <span class='fu'><a href='evaluation.html'>evaluation</a></span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.03</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, data <span class='op'>=</span> <span class='va'>sample</span>,
-                     values <span class='op'>=</span> <span class='st'>'bookValue'</span>, values.audit <span class='op'>=</span> <span class='st'>'auditValue'</span>,
-                     prior <span class='op'>=</span> <span class='va'>prior</span><span class='op'>)</span>
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage4</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; 	Bayesian Audit Sample Evaluation Summary
-#&gt; 
-#&gt; Options:
-#&gt;   Confidence level:               0.95 
-#&gt;   Materiality:                    0.03 
-#&gt;   Materiality:                    0.03 
-#&gt;   Hypotheses:                     H₀: Θ &gt; 0.03 vs. H₁: Θ &lt; 0.03 
-#&gt;   Method:                         poisson 
-#&gt;   Prior distribution:             gamma(α = 1.46, β = 46) 
-#&gt; 
-#&gt; Data:
-#&gt;   Sample size:                    174 
-#&gt;   Number of errors:               4 
-#&gt;   Sum of taints:                  2.4000247 
-#&gt; 
-#&gt; Results:
-#&gt;   Posterior distribution:         gamma(α = 3.86, β = 220) 
-#&gt;   Most likely error:              0.013 
-#&gt;   95 percent credible interval:   [0, 0.034335] 
-#&gt;   Precision:                      0.021335 
-#&gt;   BF₁₀:	                          6.9023 </div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='co'># Load the jfa package</span></span>
+<span class='r-in'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://koenderks.github.io/jfa/'>jfa</a></span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Load the BuildIt population</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>'BuildIt'</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>############################################</span></span>
+<span class='r-in'><span class='co'>### Example 1: Classical audit sampling ####</span></span>
+<span class='r-in'><span class='co'>############################################</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Stage 1: Planning</span></span>
+<span class='r-in'><span class='va'>stage1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='planning.html'>planning</a></span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.03</span>, expected <span class='op'>=</span> <span class='fl'>0.01</span>, </span>
+<span class='r-in'>                   likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage1</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 	Classical Audit Sample Planning Summary</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Options:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Confidence level:              0.95 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Materiality:                   0.03 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Hypotheses:                    H₀: Θ &gt;= 0.03 vs. H₁: Θ &lt; 0.03 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Expected:                      0.01 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Likelihood:                    poisson </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Results:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Minimum sample size:           220 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Tolerable errors:              2.2 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Expected most likely error:    0.01 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Expected upper bound:          0.02997 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Expected precision:            0.01997 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Expected p-value:              &lt; 2.22e-16 </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Stage 2: Selection</span></span>
+<span class='r-in'><span class='va'>stage2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='selection.html'>selection</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>BuildIt</span>, size <span class='op'>=</span> <span class='va'>stage1</span>,</span>
+<span class='r-in'>                    units <span class='op'>=</span> <span class='st'>'values'</span>, values <span class='op'>=</span> <span class='st'>'bookValue'</span>,</span>
+<span class='r-in'>                    method <span class='op'>=</span> <span class='st'>'interval'</span>, start <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 	Audit Sample Selection Summary</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Options:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Requested sample size:         220 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Sampling units:                monetary units </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Method:                        fixed interval sampling </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Starting point:                1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Data:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Population size:               3500 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Population value:              1403221 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Selection interval:            6378.3 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Results:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Selected sampling units:       220 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Proportion of value:           0.0001568 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Selected items:                220 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Proportion of size:            0.062857 </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Stage 3: Execution</span></span>
+<span class='r-in'><span class='va'>sample</span> <span class='op'>&lt;-</span> <span class='va'>stage2</span><span class='op'>[[</span><span class='st'>'sample'</span><span class='op'>]</span><span class='op'>]</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Stage 4: Evaluation</span></span>
+<span class='r-in'><span class='va'>stage4</span> <span class='op'>&lt;-</span> <span class='fu'><a href='evaluation.html'>evaluation</a></span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.03</span>, method <span class='op'>=</span> <span class='st'>'stringer'</span>,</span>
+<span class='r-in'>                     conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, data <span class='op'>=</span> <span class='va'>sample</span>,</span>
+<span class='r-in'>                     values <span class='op'>=</span> <span class='st'>'bookValue'</span>, values.audit <span class='op'>=</span> <span class='st'>'auditValue'</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage4</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 	Classical Audit Sample Evaluation Summary</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Options:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Confidence level:               0.95 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Materiality:                    0.03 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Method:                         stringer </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Data:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Sample size:                    220 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Number of errors:               5 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Sum of taints:                  2.9999929 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Results:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Most likely error:              0.013636 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   95 percent confidence interval: [0, 0.033724] </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Precision:                      0.020087 </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>######################################################################</span></span>
+<span class='r-in'><span class='co'>### Example 2: Bayesian audit sampling using a non-informed prior ####</span></span>
+<span class='r-in'><span class='co'>######################################################################</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Create the prior distribution</span></span>
+<span class='r-in'><span class='va'>prior</span> <span class='op'>&lt;-</span> <span class='fu'><a href='auditPrior.html'>auditPrior</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'default'</span>, likelihood <span class='op'>=</span> <span class='st'>'poisson'</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>prior</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 	Prior Distribution Summary</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Options:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Likelihood:                    poisson </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Specifics:                     noninformative </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Results:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Functional form:               gamma(α = 1, β = 1) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Equivalent sample size:        1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Equivalent errors:             0 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mode:                          0 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean:                          1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Median:                        0.69315 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Variance:                      1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Skewness:                      2 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   95 percent upper bound:        2.9957 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Precision:                     2.9957 </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Stage 1: Planning</span></span>
+<span class='r-in'><span class='va'>stage1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='planning.html'>planning</a></span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.03</span>, expected <span class='op'>=</span> <span class='fl'>0.01</span>,</span>
+<span class='r-in'>                   likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, prior <span class='op'>=</span> <span class='va'>prior</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage1</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 	Bayesian Audit Sample Planning Summary</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Options:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Confidence level:              0.95 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Materiality:                   0.03 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Hypotheses:                    H₀: Θ &gt; 0.03 vs. H₁: Θ &lt; 0.03 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Expected:                      0.01 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Likelihood:                    poisson </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Prior distribution:            gamma(α = 1, β = 1) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Results:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Minimum sample size:           218 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Tolerable errors:              2.18 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Posterior distribution:        gamma(α = 3.18, β = 219) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Expected most likely error:    0.0099543 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Expected upper bound:          0.029971 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Expected precision:            0.020017 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Expected BF₁₀:	                 626.86 </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Stage 2: Selection</span></span>
+<span class='r-in'><span class='va'>stage2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='selection.html'>selection</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>BuildIt</span>, size <span class='op'>=</span> <span class='va'>stage1</span>,</span>
+<span class='r-in'>                    units <span class='op'>=</span> <span class='st'>'values'</span>, values <span class='op'>=</span> <span class='st'>'bookValue'</span>,</span>
+<span class='r-in'>                    method <span class='op'>=</span> <span class='st'>'interval'</span>, start <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 	Audit Sample Selection Summary</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Options:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Requested sample size:         218 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Sampling units:                monetary units </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Method:                        fixed interval sampling </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Starting point:                1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Data:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Population size:               3500 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Population value:              1403221 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Selection interval:            6436.8 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Results:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Selected sampling units:       218 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Proportion of value:           0.0001554 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Selected items:                218 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Proportion of size:            0.062286 </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Stage 3: Execution</span></span>
+<span class='r-in'><span class='va'>sample</span> <span class='op'>&lt;-</span> <span class='va'>stage2</span><span class='op'>[[</span><span class='st'>'sample'</span><span class='op'>]</span><span class='op'>]</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Stage 4: Evaluation</span></span>
+<span class='r-in'><span class='va'>stage4</span> <span class='op'>&lt;-</span> <span class='fu'><a href='evaluation.html'>evaluation</a></span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.03</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, data <span class='op'>=</span> <span class='va'>sample</span>,</span>
+<span class='r-in'>                     values <span class='op'>=</span> <span class='st'>'bookValue'</span>, values.audit <span class='op'>=</span> <span class='st'>'auditValue'</span>,</span>
+<span class='r-in'>                     prior <span class='op'>=</span> <span class='va'>prior</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage4</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 	Bayesian Audit Sample Evaluation Summary</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Options:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Confidence level:               0.95 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Materiality:                    0.03 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Materiality:                    0.03 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Hypotheses:                     H₀: Θ &gt; 0.03 vs. H₁: Θ &lt; 0.03 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Method:                         poisson </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Prior distribution:             gamma(α = 1, β = 1) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Data:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Sample size:                    218 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Number of errors:               4 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Sum of taints:                  2.4000172 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Results:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Posterior distribution:         gamma(α = 3.4, β = 219) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Most likely error:              0.010959 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   95 percent credible interval:   [0, 0.03145] </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Precision:                      0.020491 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   BF₁₀:	                          493.5 </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'>###################################################################</span></span>
+<span class='r-in'><span class='co'>### Example 3: Bayesian audit sampling using an informed prior ####</span></span>
+<span class='r-in'><span class='co'>###################################################################</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Create the prior distribution</span></span>
+<span class='r-in'><span class='va'>prior</span> <span class='op'>&lt;-</span> <span class='fu'><a href='auditPrior.html'>auditPrior</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>'arm'</span>, likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>,</span>
+<span class='r-in'>                    expected <span class='op'>=</span> <span class='fl'>0.01</span>, materiality <span class='op'>=</span> <span class='fl'>0.03</span>, cr <span class='op'>=</span> <span class='fl'>0.6</span>, ir <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>prior</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 	Prior Distribution Summary</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Options:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Likelihood:                    poisson </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Specifics:                     ir = 1; cr = 0.6; dr = 0.0833333 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Results:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Functional form:               gamma(α = 1.46, β = 46) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Equivalent sample size:        46 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Equivalent errors:             0.46 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mode:                          0.01 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Mean:                          0.031739 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Median:                        0.024859 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Variance:                      0.00069 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Skewness:                      1.6552 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   95 percent upper bound:        0.08343 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Precision:                     0.07343 </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Stage 1: Planning</span></span>
+<span class='r-in'><span class='va'>stage1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='planning.html'>planning</a></span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.03</span>, expected <span class='op'>=</span> <span class='fl'>0.01</span>,</span>
+<span class='r-in'>                   likelihood <span class='op'>=</span> <span class='st'>'poisson'</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, prior <span class='op'>=</span> <span class='va'>prior</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage1</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 	Bayesian Audit Sample Planning Summary</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Options:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Confidence level:              0.95 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Materiality:                   0.03 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Hypotheses:                    H₀: Θ &gt; 0.03 vs. H₁: Θ &lt; 0.03 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Expected:                      0.01 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Likelihood:                    poisson </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Prior distribution:            gamma(α = 1.46, β = 46) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Results:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Minimum sample size:           174 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Tolerable errors:              1.74 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Posterior distribution:        gamma(α = 3.2, β = 220) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Expected most likely error:    0.01 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Expected upper bound:          0.02997 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Expected precision:            0.01997 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Expected BF₁₀:	                 13.593 </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Stage 2: Selection</span></span>
+<span class='r-in'><span class='va'>stage2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='selection.html'>selection</a></span><span class='op'>(</span>data <span class='op'>=</span> <span class='va'>BuildIt</span>, size <span class='op'>=</span> <span class='va'>stage1</span>,</span>
+<span class='r-in'>                    units <span class='op'>=</span> <span class='st'>'values'</span>, values <span class='op'>=</span> <span class='st'>'bookValue'</span>,</span>
+<span class='r-in'>                    method <span class='op'>=</span> <span class='st'>'interval'</span>, start <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage2</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 	Audit Sample Selection Summary</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Options:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Requested sample size:         174 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Sampling units:                monetary units </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Method:                        fixed interval sampling </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Starting point:                1 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Data:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Population size:               3500 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Population value:              1403221 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Selection interval:            8064.5 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Results:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Selected sampling units:       174 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Proportion of value:           0.000124 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Selected items:                174 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Proportion of size:            0.049714 </span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Stage 3: Execution</span></span>
+<span class='r-in'><span class='va'>sample</span> <span class='op'>&lt;-</span> <span class='va'>stage2</span><span class='op'>[[</span><span class='st'>'sample'</span><span class='op'>]</span><span class='op'>]</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Stage 4: Evaluation</span></span>
+<span class='r-in'><span class='va'>stage4</span> <span class='op'>&lt;-</span> <span class='fu'><a href='evaluation.html'>evaluation</a></span><span class='op'>(</span>materiality <span class='op'>=</span> <span class='fl'>0.03</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>, data <span class='op'>=</span> <span class='va'>sample</span>,</span>
+<span class='r-in'>                     values <span class='op'>=</span> <span class='st'>'bookValue'</span>, values.audit <span class='op'>=</span> <span class='st'>'auditValue'</span>,</span>
+<span class='r-in'>                     prior <span class='op'>=</span> <span class='va'>prior</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>stage4</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 	Bayesian Audit Sample Evaluation Summary</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Options:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Confidence level:               0.95 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Materiality:                    0.03 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Materiality:                    0.03 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Hypotheses:                     H₀: Θ &gt; 0.03 vs. H₁: Θ &lt; 0.03 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Method:                         poisson </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Prior distribution:             gamma(α = 1.46, β = 46) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Data:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Sample size:                    174 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Number of errors:               4 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Sum of taints:                  2.4000247 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> Results:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Posterior distribution:         gamma(α = 3.86, β = 220) </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Most likely error:              0.013 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   95 percent credible interval:   [0, 0.034335] </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   Precision:                      0.021335 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>   BF₁₀:	                          6.9023 </span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

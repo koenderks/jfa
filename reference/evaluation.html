@@ -317,83 +317,87 @@ vignette('jfa', package = 'jfa')" />
     <p>Koen Derks, <a href='mailto:k.derks@nyenrode.nl'>k.derks@nyenrode.nl</a></p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"BuildIt"</span><span class='op'>)</span>
-
-<span class='co'># Draw a sample of 100 monetary units from the population using</span>
-<span class='co'># fixed interval monetary unit sampling</span>
-<span class='va'>sample</span> <span class='op'>&lt;-</span> <span class='fu'><a href='selection.html'>selection</a></span><span class='op'>(</span>
-  data <span class='op'>=</span> <span class='va'>BuildIt</span>, size <span class='op'>=</span> <span class='fl'>100</span>, units <span class='op'>=</span> <span class='st'>"values"</span>,
-  method <span class='op'>=</span> <span class='st'>"interval"</span>, values <span class='op'>=</span> <span class='st'>"bookValue"</span>
-<span class='op'>)</span><span class='op'>$</span><span class='va'>sample</span>
-
-<span class='co'># Classical evaluation using the Stringer bound</span>
-<span class='fu'>evaluation</span><span class='op'>(</span>
-  materiality <span class='op'>=</span> <span class='fl'>0.05</span>, method <span class='op'>=</span> <span class='st'>"stringer"</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>,
-  data <span class='op'>=</span> <span class='va'>sample</span>, values <span class='op'>=</span> <span class='st'>"bookValue"</span>, values.audit <span class='op'>=</span> <span class='st'>"auditValue"</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; 	Classical Audit Sample Evaluation
-#&gt; 
-#&gt; data:  sample
-#&gt; number of errors = 4, number of samples = 100, taint = 2.4
-#&gt; 95 percent confidence interval:
-#&gt;  0.00000000 0.06532286
-#&gt; estimate:
-#&gt;  0.0239999 
-#&gt; estimates obtained via method 'stringer'</div><div class='input'>
-<span class='co'># Classical evaluation using the Poisson likelihood</span>
-<span class='fu'>evaluation</span><span class='op'>(</span>
-  materiality <span class='op'>=</span> <span class='fl'>0.05</span>, method <span class='op'>=</span> <span class='st'>"poisson"</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>,
-  data <span class='op'>=</span> <span class='va'>sample</span>, values <span class='op'>=</span> <span class='st'>"bookValue"</span>, values.audit <span class='op'>=</span> <span class='st'>"auditValue"</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; 	Classical Audit Sample Evaluation
-#&gt; 
-#&gt; data:  sample
-#&gt; number of errors = 4, number of samples = 100, taint = 2.4, p-value =
-#&gt; 0.1747
-#&gt; alternative hypothesis: true misstatement rate is less than 0.05
-#&gt; 95 percent confidence interval:
-#&gt;  0.00000000 0.06887548
-#&gt; estimate:
-#&gt;  0.0239999 
-#&gt; estimates obtained via method 'poisson'</div><div class='input'>
-<span class='co'># Bayesian evaluation using a noninformative gamma prior distribution</span>
-<span class='fu'>evaluation</span><span class='op'>(</span>
-  materiality <span class='op'>=</span> <span class='fl'>0.05</span>, method <span class='op'>=</span> <span class='st'>"poisson"</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>,
-  data <span class='op'>=</span> <span class='va'>sample</span>, values <span class='op'>=</span> <span class='st'>"bookValue"</span>, values.audit <span class='op'>=</span> <span class='st'>"auditValue"</span>,
-  prior <span class='op'>=</span> <span class='cn'>TRUE</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; 	Bayesian Audit Sample Evaluation
-#&gt; 
-#&gt; data:  sample
-#&gt; number of errors = 4, number of samples = 100, taint = 2.4, BF₁₀ =
-#&gt; 95.641
-#&gt; alternative hypothesis: true misstatement rate is less than 0.05
-#&gt; 95 percent credible interval:
-#&gt;  0.00000000 0.06819355
-#&gt; estimate:
-#&gt;  0.02376227 
-#&gt; estimates obtained via method 'poisson' + 'prior'</div><div class='input'>
-<span class='co'># Bayesian evaluation using an informed prior distribution</span>
-<span class='fu'>evaluation</span><span class='op'>(</span>
-  materiality <span class='op'>=</span> <span class='fl'>0.05</span>, method <span class='op'>=</span> <span class='st'>"poisson"</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>,
-  data <span class='op'>=</span> <span class='va'>sample</span>, values <span class='op'>=</span> <span class='st'>"bookValue"</span>, values.audit <span class='op'>=</span> <span class='st'>"auditValue"</span>,
-  prior <span class='op'>=</span> <span class='fu'><a href='auditPrior.html'>auditPrior</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"param"</span>, alpha <span class='op'>=</span> <span class='fl'>1</span>, beta <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='output co'>#&gt; 
-#&gt; 	Bayesian Audit Sample Evaluation
-#&gt; 
-#&gt; data:  sample
-#&gt; number of errors = 4, number of samples = 100, taint = 2.4, BF₁₀ =
-#&gt; 10.548
-#&gt; alternative hypothesis: true misstatement rate is less than 0.05
-#&gt; 95 percent credible interval:
-#&gt;  0.00000000 0.06261408
-#&gt; estimate:
-#&gt;  0.02181809 
-#&gt; estimates obtained via method 'poisson' + 'prior'</div></pre>
+    <pre class="examples"><span class='r-in'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"BuildIt"</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Draw a sample of 100 monetary units from the population using</span></span>
+<span class='r-in'><span class='co'># fixed interval monetary unit sampling</span></span>
+<span class='r-in'><span class='va'>sample</span> <span class='op'>&lt;-</span> <span class='fu'><a href='selection.html'>selection</a></span><span class='op'>(</span></span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>BuildIt</span>, size <span class='op'>=</span> <span class='fl'>100</span>, units <span class='op'>=</span> <span class='st'>"values"</span>,</span>
+<span class='r-in'>  method <span class='op'>=</span> <span class='st'>"interval"</span>, values <span class='op'>=</span> <span class='st'>"bookValue"</span></span>
+<span class='r-in'><span class='op'>)</span><span class='op'>$</span><span class='va'>sample</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Classical evaluation using the Stringer bound</span></span>
+<span class='r-in'><span class='fu'>evaluation</span><span class='op'>(</span></span>
+<span class='r-in'>  materiality <span class='op'>=</span> <span class='fl'>0.05</span>, method <span class='op'>=</span> <span class='st'>"stringer"</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>sample</span>, values <span class='op'>=</span> <span class='st'>"bookValue"</span>, values.audit <span class='op'>=</span> <span class='st'>"auditValue"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 	Classical Audit Sample Evaluation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data:  sample</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> number of errors = 4, number of samples = 100, taint = 2.4</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 95 percent confidence interval:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  0.00000000 0.06532286</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> estimate:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  0.0239999 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> estimates obtained via method 'stringer'</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Classical evaluation using the Poisson likelihood</span></span>
+<span class='r-in'><span class='fu'>evaluation</span><span class='op'>(</span></span>
+<span class='r-in'>  materiality <span class='op'>=</span> <span class='fl'>0.05</span>, method <span class='op'>=</span> <span class='st'>"poisson"</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>sample</span>, values <span class='op'>=</span> <span class='st'>"bookValue"</span>, values.audit <span class='op'>=</span> <span class='st'>"auditValue"</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 	Classical Audit Sample Evaluation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data:  sample</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> number of errors = 4, number of samples = 100, taint = 2.4, p-value =</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 0.1747</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> alternative hypothesis: true misstatement rate is less than 0.05</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 95 percent confidence interval:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  0.00000000 0.06887548</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> estimate:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  0.0239999 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> estimates obtained via method 'poisson'</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Bayesian evaluation using a noninformative gamma prior distribution</span></span>
+<span class='r-in'><span class='fu'>evaluation</span><span class='op'>(</span></span>
+<span class='r-in'>  materiality <span class='op'>=</span> <span class='fl'>0.05</span>, method <span class='op'>=</span> <span class='st'>"poisson"</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>sample</span>, values <span class='op'>=</span> <span class='st'>"bookValue"</span>, values.audit <span class='op'>=</span> <span class='st'>"auditValue"</span>,</span>
+<span class='r-in'>  prior <span class='op'>=</span> <span class='cn'>TRUE</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 	Bayesian Audit Sample Evaluation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data:  sample</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> number of errors = 4, number of samples = 100, taint = 2.4, BF₁₀ =</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 95.641</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> alternative hypothesis: true misstatement rate is less than 0.05</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 95 percent credible interval:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  0.00000000 0.06819355</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> estimate:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  0.02376227 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> estimates obtained via method 'poisson' + 'prior'</span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Bayesian evaluation using an informed prior distribution</span></span>
+<span class='r-in'><span class='fu'>evaluation</span><span class='op'>(</span></span>
+<span class='r-in'>  materiality <span class='op'>=</span> <span class='fl'>0.05</span>, method <span class='op'>=</span> <span class='st'>"poisson"</span>, conf.level <span class='op'>=</span> <span class='fl'>0.95</span>,</span>
+<span class='r-in'>  data <span class='op'>=</span> <span class='va'>sample</span>, values <span class='op'>=</span> <span class='st'>"bookValue"</span>, values.audit <span class='op'>=</span> <span class='st'>"auditValue"</span>,</span>
+<span class='r-in'>  prior <span class='op'>=</span> <span class='fu'><a href='auditPrior.html'>auditPrior</a></span><span class='op'>(</span>method <span class='op'>=</span> <span class='st'>"param"</span>, alpha <span class='op'>=</span> <span class='fl'>1</span>, beta <span class='op'>=</span> <span class='fl'>10</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 	Bayesian Audit Sample Evaluation</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> data:  sample</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> number of errors = 4, number of samples = 100, taint = 2.4, BF₁₀ =</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 10.548</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> alternative hypothesis: true misstatement rate is less than 0.05</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> 95 percent credible interval:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  0.00000000 0.06261408</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> estimate:</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span>  0.02181809 </span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> estimates obtained via method 'poisson' + 'prior'</span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
