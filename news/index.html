@@ -159,6 +159,10 @@
 <h1 class="page-header" data-toc-text="0.6.1">
 <a href="#jfa-061" class="anchor"></a>jfa 0.6.1<small> Unreleased </small>
 </h1>
+<p><strong>New features</strong></p>
+<ul>
+<li>Added argument <code>randomize</code> to the <code><a href="../reference/selection.html">selection()</a></code> function, which allows the user to randomly shuffle the items in the population before selection. Note that specifying <code>randomize = TRUE</code> overrules <code>order = TRUE</code>.</li>
+</ul>
 <p><strong>Bug fixes</strong></p>
 <ul>
 <li>Fixed a bug where the maximum sample size was not reached (i.e., <code>planning</code> stopped at <code>max</code> - 1).</li>

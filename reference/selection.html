@@ -167,7 +167,8 @@ vignette('jfa', package = 'jfa')" />
 
     <pre class="usage"><span class='fu'>selection</span><span class='op'>(</span><span class='va'>data</span>, <span class='va'>size</span>, units <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'items'</span>, <span class='st'>'values'</span><span class='op'>)</span>,
           method <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>'interval'</span>, <span class='st'>'cell'</span>, <span class='st'>'random'</span>, <span class='st'>'sieve'</span><span class='op'>)</span>, values <span class='op'>=</span> <span class='cn'>NULL</span>,
-          start <span class='op'>=</span> <span class='fl'>1</span>, order <span class='op'>=</span> <span class='cn'>FALSE</span>, decreasing <span class='op'>=</span> <span class='cn'>FALSE</span>, replace <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
+          start <span class='op'>=</span> <span class='fl'>1</span>, order <span class='op'>=</span> <span class='cn'>FALSE</span>, decreasing <span class='op'>=</span> <span class='cn'>FALSE</span>, replace <span class='op'>=</span> <span class='cn'>FALSE</span>,
+          randomize <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -207,6 +208,10 @@ vignette('jfa', package = 'jfa')" />
     <tr>
       <th>replace</th>
       <td><p>if <code>method = 'random'</code>, a logical specifying whether sampling should be performed with replacement. Defaults to <code>FALSE</code>.</p></td>
+    </tr>
+    <tr>
+      <th>randomize</th>
+      <td><p>a logical specifying whether the items in the data should be randomly shuffled before selection. Defaults to <code>FALSE</code>. Note that specifying if <code>randomize = TRUE</code> overrules <code>order = TRUE</code>.</p></td>
     </tr>
     </table>
 
