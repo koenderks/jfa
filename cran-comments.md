@@ -1,9 +1,9 @@
-# jfa version 0.6.0
+# jfa version 0.6.1
 
-This is a submission for version 0.6.0. In this version I have:
+This is a submission for version 0.6.1. In this version I have:
 
-* Changed the inputs for most functions to be consistent with base R syntax.
-* Added a new vignette.
+* Fixed a few bugs in two functions.
+* Added extra functionality in one of the functions.
 
 ## Test environments
 

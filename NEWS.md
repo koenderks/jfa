@@ -1,8 +1,16 @@
 # jfa 0.6.1
 
+**New features**
+
+- Added argument `randomize` to the `selection()` function, which allows the user to randomly shuffle the items in the population before selection. Note that specifying `randomize = TRUE` overrules `order`.
+
 **Bug fixes**
 
 - Fixed a bug where the maximum sample size was not reached (i.e., `planning` stopped at `max` - 1).
+
+**Major changes**
+
+- The `order` argument in `selection()` no longer accepts a logical, but instead takes the column name of the ranking variable in the `data`.
 
 **Minor changes**
 

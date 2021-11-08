@@ -1,6 +1,6 @@
 [![CRAN](https://img.shields.io/cran/v/jfa?color=yellow&label=CRAN&logo=r)](https://cran.r-project.org/package=jfa)
 [![R_build_status](https://github.com/koenderks/jfa/workflows/Build/badge.svg)](https://github.com/koenderks/jfa/actions)
-[![Codecov](https://codecov.io/gh/koenderks/jfa/branch/development/graph/badge.svg?token=ZoxIB8p8PW)](https://codecov.io/gh/koenderks/jfa)
+[![Codecov](https://codecov.io/gh/koenderks/jfa/branch/development/graph/badge.svg?token=ZoxIB8p8PW)](https://app.codecov.io/gh/koenderks/jfa)
 [![Bugs](https://img.shields.io/github/issues/koenderks/jfa/bug?label=Bugs&logo=github&logoColor=%23FFF&color=brightgreen)](https://github.com/koenderks/jfa/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
 [![Monthly](https://cranlogs.r-pkg.org/badges/jfa?color=blue)](https://cranlogs.r-pkg.org)
 [![Total](https://cranlogs.r-pkg.org/badges/grand-total/jfa?color=blue)](https://cranlogs.r-pkg.org)
@@ -161,7 +161,8 @@ The `selection()` function takes a data frame and performs statistical sampling 
 ```r
 selection(data, size, units = c('items', 'values'),
           method = c('interval', 'cell', 'random', 'sieve'), values = NULL,
-          start = 1, order = FALSE, decreasing = FALSE, replace = FALSE)
+          order = NULL, decreasing = FALSE, randomize = FALSE,
+          replace = FALSE, start = 1)
 ```
 
 *Supported options for the `units` argument:*
@@ -264,7 +265,7 @@ For an example report, see the following [link](https://github.com/koenderks/jfa
 
 To validate the statistical results, `jfa`'s automated [unit tests](https://github.com/koenderks/jfa/tree/development/tests/testthat) regularly verify the main output from the package against the following benchmarks:
 
-- [Audit Sampling: Audit Guide](https://future.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL) (Appendix A and Appendix C)
+- [Audit Sampling: Audit Guide](https://www.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL) (Appendix A and Appendix C)
 - [AuditSampler](https://cplusglobal.wordpress.com/solutions/auditsampler-statistical-sampling-software/)
 - [MUS](https://cran.r-project.org/package=MUS) (R package version 0.1.6)
 - Touw, P., and Hoogduin, L. (2011). *Statistiek voor audit en controlling*. Boom uitgevers, Amsterdam.
@@ -315,7 +316,7 @@ Below you can find several informative tables that contain statistical sample si
 - Rietveld, C. (1978). De zeefmethode als selectiemethode voor statistische steekproeven in de controlepraktijk (1). *Compact: Computer en Accountant*, 15, 2–11.
 - Rohrbach, K. J. (1993). Variance augmentation to achieve nominal coverage probability in sampling from audit populations. *Auditing: A Journal of Practice & Theory*, 12(2), 79-97.
 - Steele, A. (1992). *Audit Risk and Audit Evidence: The Bayesian Approach to Statistical Auditing*. San Diego: Academic Press.
-- Stewart, T. R. (2012). *Technical Notes on the AICPA Audit Guide Audit Sampling*. American Institute of Certified Public Accountants, New York. - [View online](https://www.aicpa.org/content/dam/aicpa/publications/accountingauditing/keytopics/downloadabledocuments/sampling-guide-technical-notes.pdf)
+- Stewart, T. R. (2012). *Technical Notes on the AICPA Audit Guide Audit Sampling*. American Institute of Certified Public Accountants, New York. - [View online](https://us.aicpa.org/content/dam/aicpa/publications/accountingauditing/keytopics/downloadabledocuments/sampling-guide-technical-notes.pdf)
 - Stewart, T. R. (2013). *A Bayesian Audit Assurance Model with Application to the Component Materiality problem in Group Audits.* VU University, Amsterdam. - [View online](https://research.vu.nl/en/publications/a-bayesian-audit-assurance-model-with-application-to-the-componen)
 - Talens, E. (2005). *Statistical Auditing and the AOQL-method*. University of Groningen, Groningen. - [View online](https://research.rug.nl/en/publications/statistical-auditing-and-the-aoql-method)
 - Touw, P., and Hoogduin, L. (2011). *Statistiek voor Audit en Controlling*. Boom uitgevers, Amsterdam.

@@ -7,17 +7,19 @@
 #'
 #' @usage selection(data, size, units = c('items', 'values'),
 #'           method = c('interval', 'cell', 'random', 'sieve'), values = NULL,
-#'           start = 1, order = FALSE, decreasing = FALSE, replace = FALSE)
+#'           order = NULL, decreasing = FALSE, randomize = FALSE,
+#'           replace = FALSE, start = 1)
 #'
 #' @param data           a data frame containing the population of items the auditor wishes to sample from.
 #' @param size           an integer larger than 0 specifying the number of sampling units that need to be selected from the population. Can also be an object of class \code{jfaPlanning}.
 #' @param units          a character specifying the sampling units used. Possible options are \code{items} (default) for selection on the level of items (rows) or \code{values} for selection on the level of monetary units.
 #' @param method         a character specifying the sampling algorithm used. Possible options are \code{interval} (default) for fixed interval sampling, \code{cell} for cell sampling, \code{random} for random sampling, or \code{sieve} for modified sieve sampling.
-#' @param values         a character specifying name of a column in \code{data} containing the book values of the items.
-#' @param start          if \code{method = 'interval'}, an integer larger than 0 specifying the starting point of the algorithm.
-#' @param order          a logical specifying whether to first order the items in the \code{data} according to the value of their \code{values}. Defaults to \code{FALSE}.
-#' @param decreasing     if \code{order = TRUE}, a logical specifying whether to order the population \code{values} from smallest to largest. Defaults to \code{FALSE}.
+#' @param values         a character specifying the name of a column in \code{data} containing the book values of the items.
+#' @param order          a character specifying the name of a column in \code{data} containing the ranks of the items. The items in the \code{data} are ordered according to these values in the order indicated by \code{decreasing}.
+#' @param decreasing     if \code{order} is specified, a logical specifying whether to order the items from smallest to largest. Defaults to \code{FALSE}.
+#' @param randomize      a logical specifying whether the items in the data should be randomly shuffled before selection. Defaults to \code{FALSE}. Note that specifying if \code{randomize = TRUE} overrules \code{order}.
 #' @param replace        if \code{method = 'random'}, a logical specifying whether sampling should be performed with replacement. Defaults to \code{FALSE}.
+#' @param start          if \code{method = 'interval'}, an integer larger than 0 specifying the starting point of the algorithm.
 #'
 #' @details The first part of this section elaborates on the two possible options for the \code{units} argument:
 #'
@@ -26,7 +28,7 @@
 #'  \item{\code{values}:    In monetary unit sampling each monetary unit in the population is seen as a sampling unit. An item of $5000 is therefore ten times more likely to be selected as an item of $500.}
 #' }
 #'
-#' The second part of this section elaborates on the three possible options for the \code{method} argument:
+#' The second part of this section elaborates on the four possible options for the \code{method} argument:
 #'
 #' \itemize{
 #'  \item{\code{interval}:    In fixed interval sampling the sampling units in the population are divided into a number (equal to the sample size) of intervals. From each interval one sampling unit is selected according to a fixed starting point (specified by \code{start}).}
@@ -76,7 +78,8 @@
 
 selection <- function(data, size, units = c("items", "values"),
                       method = c("interval", "cell", "random", "sieve"), values = NULL,
-                      start = 1, order = FALSE, decreasing = FALSE, replace = FALSE) {
+                      order = NULL, decreasing = FALSE, randomize = FALSE,
+                      replace = FALSE, start = 1) {
   method <- match.arg(method)
   units <- match.arg(units)
   if (class(size) == "jfaPlanning") { # If the input for 'sampleSize' is of class 'jfaPlanning', extract the planned sample size
@@ -91,8 +94,11 @@ selection <- function(data, size, units = c("items", "values"),
   if (!is.null(values) && length(values) != 1) { # Check if the book values have a valid input
     stop("'values' must be a single character")
   }
-  if (!is.null(values) && !(values %in% colnames(data))) { # Check if the book values column can be found in the population
+  if (!is.null(values) && !(values %in% colnames(data))) { # Check if the book values column can be found in the data
     stop(paste0("'", values, "' is not a column in 'data'"))
+  }
+  if (!is.null(order) && !(order %in% colnames(data))) { # Check if the order column can be found in the data
+    stop(paste0("'", order, "' is not a column in 'data'"))
   }
   if (method == "interval" && start < 1) {
     stop("'start' must be an integer > 1")
@@ -100,17 +106,20 @@ selection <- function(data, size, units = c("items", "values"),
   interval <- NULL # Placeholder for interval
   bookvalues <- NULL # Placeholder for book values
   dname <- deparse(substitute(data))
-  data <- as.data.frame(data) # Convert the population to a data frame
-  rownames(data) <- 1:nrow(data)
+  data <- as.data.frame(data, row.names = 1:nrow(data)) # Convert the population to a data frame
+  if (!randomize && !is.null(order)) { # Order the population
+    data <- data[order(data[, order], decreasing = decreasing), , drop = FALSE]
+  } else if (randomize) { # Randomize the population
+    if (!is.null(order)) {
+      warning("'order' overruled by 'randomize = TRUE'")
+    }
+    data <- data[sample(1:nrow(data)), , drop = FALSE]
+  }
   if (!is.null(values)) { # Take the book values from the population
     bookvalues <- data[, values]
   }
   if (units == "values" && size > sum(bookvalues)) { # Check if the sample size is valid
     stop("cannot take a sample larger than the population value")
-  }
-  if (order && !is.null(bookvalues)) { # Order the population
-    data <- data[order(bookvalues, decreasing = decreasing), ]
-    bookvalues <- data[, values]
   }
   if (!is.null(bookvalues) && any(bookvalues < 0)) { # Remove the negative book values from the population
     warning("'values' contains negative values which are removed before selection")
@@ -118,16 +127,17 @@ selection <- function(data, size, units = c("items", "values"),
     data <- data[-negvals, ]
     bookvalues <- data[, values]
   }
+  rowNumbers <- as.numeric(rownames(data))
   # Sampling algorithms:
   if (method == "random" && units == "items") {
     # 1. Random record sampling
-    index <- sample(rownames(data), size = size, replace = replace)
+    index <- sample(rowNumbers, size = size, replace = replace)
   } else if (method == "random" && units == "values") {
     # 2. Random monetary unit sampling
     if (size > nrow(data)) {
       replace <- TRUE
     }
-    index <- sample(rownames(data), size = size, replace = replace, prob = bookvalues)
+    index <- sample(rowNumbers, size = size, replace = replace, prob = bookvalues)
   } else if (method == "cell" && units == "items") {
     # 3. Cell record sampling
     interval <- nrow(data) / size
@@ -135,7 +145,7 @@ selection <- function(data, size, units = c("items", "values"),
     index <- NULL
     for (i in 1:size) {
       int.selection <- stats::runif(min = intervals[i], max = intervals[i + 1], n = 1)
-      index <- c(index, as.numeric(rownames(data))[int.selection])
+      index <- c(index, rowNumbers[int.selection])
     }
   } else if (method == "cell" && units == "values") {
     # 4. Cell monetary unit sampling
@@ -144,41 +154,43 @@ selection <- function(data, size, units = c("items", "values"),
     index <- NULL
     for (i in 1:size) {
       int.selection <- stats::runif(min = intervals[i], max = intervals[i + 1], n = 1)
-      index <- c(index, which(int.selection < cumsum(bookvalues))[1])
+      index <- c(index, rowNumbers[which(int.selection < cumsum(bookvalues))[1]])
     }
   } else if (method == "interval" && units == "items") {
     # 5. Fixed interval record sampling
     interval <- nrow(data) / size
+    if (start > interval) {
+      stop(paste0("'start' must be an integer <= the selection interval (", interval, ")"))
+    }
     int.selection <- start + 0:(size - 1) * interval
-    mat <- as.numeric(rownames(data))
-    index <- mat[int.selection]
+    index <- rowNumbers[int.selection]
   } else if (method == "interval" && units == "values") {
     # 6. Fixed interval monetary unit sampling
     interval <- sum(bookvalues) / size
+    if (start > interval) {
+      stop(paste0("'start' must be an integer <= the selection interval (", interval, ")"))
+    }
     int.selection <- start + 0:(size - 1) * interval
     index <- NULL
     for (i in 1:size) {
-      index <- c(index, which(int.selection[i] < cumsum(bookvalues))[1])
+      index <- c(index, rowNumbers[which(int.selection[i] < cumsum(bookvalues))[1]])
     }
   } else if (method == "sieve" && units == "items") {
     stop("'method = sieve' does not accomodate 'units = items'")
   } else if (method == "sieve" && units == "values") {
     # 7. Modified sieve sampling (Hoogduin, Hall, & Tsay, 2010)
-    rn <- stats::runif(length(bookvalues), min = 0, max = 1)
-    ri <- bookvalues / rn
-    index <- as.numeric(rownames(data))[order(-ri)]
+    ri <- bookvalues / stats::runif(length(bookvalues), min = 0, max = 1)
+    index <- rowNumbers[order(-ri)]
     index <- index[1:size]
   }
   # Gather output
-  count <- as.numeric(table(index))
-  rowNumber <- as.numeric(unique(index))
-  sample <- cbind(rowNumber, count, data[rowNumber, ])
-  rownames(sample) <- 1:nrow(sample)
+  count <- as.numeric(table(index)[match(unique(index), names(table(index)))])
+  sample <- cbind(unique(index), count, data[match(unique(index), rowNumbers), ])
   colnames(sample) <- c("row", "times", colnames(data))
   # Create the main results object
   result <- list()
   result[["data"]] <- as.data.frame(data)
-  result[["sample"]] <- as.data.frame(sample)
+  result[["sample"]] <- as.data.frame(sample, row.names = 1:nrow(sample))
   result[["n.req"]] <- size
   result[["n.units"]] <- sum(count)
   result[["n.items"]] <- nrow(sample)

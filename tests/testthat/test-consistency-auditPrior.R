@@ -186,3 +186,6 @@ test_that(desc = "(id: f2-v0.6.0-t1) Test for param method hypergeometric", {
   expect_equal(prior[["description"]]$alpha, 5)
   expect_equal(prior[["description"]]$beta, 10)
 })
+
+# jfa 0.6.1
+# No changes to be benchmarked

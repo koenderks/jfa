@@ -6,7 +6,8 @@
 \usage{
 selection(data, size, units = c('items', 'values'),
           method = c('interval', 'cell', 'random', 'sieve'), values = NULL,
-          start = 1, order = FALSE, decreasing = FALSE, replace = FALSE)
+          order = NULL, decreasing = FALSE, randomize = FALSE,
+          replace = FALSE, start = 1)
 }
 \arguments{
 \item{data}{a data frame containing the population of items the auditor wishes to sample from.}
@@ -17,15 +18,17 @@ selection(data, size, units = c('items', 'values'),
 
 \item{method}{a character specifying the sampling algorithm used. Possible options are \code{interval} (default) for fixed interval sampling, \code{cell} for cell sampling, \code{random} for random sampling, or \code{sieve} for modified sieve sampling.}
 
-\item{values}{a character specifying name of a column in \code{data} containing the book values of the items.}
+\item{values}{a character specifying the name of a column in \code{data} containing the book values of the items.}
 
-\item{start}{if \code{method = 'interval'}, an integer larger than 0 specifying the starting point of the algorithm.}
+\item{order}{a character specifying the name of a column in \code{data} containing the ranks of the items. The items in the \code{data} are ordered according to these values in the order indicated by \code{decreasing}.}
 
-\item{order}{a logical specifying whether to first order the items in the \code{data} according to the value of their \code{values}. Defaults to \code{FALSE}.}
+\item{decreasing}{if \code{order} is specified, a logical specifying whether to order the items from smallest to largest. Defaults to \code{FALSE}.}
 
-\item{decreasing}{if \code{order = TRUE}, a logical specifying whether to order the population \code{values} from smallest to largest. Defaults to \code{FALSE}.}
+\item{randomize}{a logical specifying whether the items in the data should be randomly shuffled before selection. Defaults to \code{FALSE}. Note that specifying if \code{randomize = TRUE} overrules \code{order}.}
 
 \item{replace}{if \code{method = 'random'}, a logical specifying whether sampling should be performed with replacement. Defaults to \code{FALSE}.}
+
+\item{start}{if \code{method = 'interval'}, an integer larger than 0 specifying the starting point of the algorithm.}
 }
 \value{
 An object of class \code{jfaSelection} containing:
@@ -58,7 +61,7 @@ The first part of this section elaborates on the two possible options for the \c
  \item{\code{values}:    In monetary unit sampling each monetary unit in the population is seen as a sampling unit. An item of $5000 is therefore ten times more likely to be selected as an item of $500.}
 }
 
-The second part of this section elaborates on the three possible options for the \code{method} argument:
+The second part of this section elaborates on the four possible options for the \code{method} argument:
 
 \itemize{
  \item{\code{interval}:    In fixed interval sampling the sampling units in the population are divided into a number (equal to the sample size) of intervals. From each interval one sampling unit is selected according to a fixed starting point (specified by \code{start}).}

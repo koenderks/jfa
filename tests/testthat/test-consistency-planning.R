@@ -263,5 +263,5 @@ test_that(desc = "(id: f5-v0.5.2-t2) Test for change in beta-binomial mode calcu
   expect_equal(modeDist, 0)
 })
 
-# jfa version 0.5.3 - 0.5.7
+# jfa version 0.5.3 - 0.6.1
 # No changes to be benchmarked
