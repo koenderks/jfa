@@ -161,11 +161,15 @@
 </h1>
 <p><strong>New features</strong></p>
 <ul>
-<li>Added argument <code>randomize</code> to the <code><a href="../reference/selection.html">selection()</a></code> function, which allows the user to randomly shuffle the items in the population before selection. Note that specifying <code>randomize = TRUE</code> overrules <code>order = TRUE</code>.</li>
+<li>Added argument <code>randomize</code> to the <code><a href="../reference/selection.html">selection()</a></code> function, which allows the user to randomly shuffle the items in the population before selection. Note that specifying <code>randomize = TRUE</code> overrules <code>order</code>.</li>
 </ul>
 <p><strong>Bug fixes</strong></p>
 <ul>
 <li>Fixed a bug where the maximum sample size was not reached (i.e., <code>planning</code> stopped at <code>max</code> - 1).</li>
+</ul>
+<p><strong>Major changes</strong></p>
+<ul>
+<li>The <code>order</code> argument in <code><a href="../reference/selection.html">selection()</a></code> no longer accepts a logical, but instead takes the column name of the ranking variable in the <code>data</code>.</li>
 </ul>
 <p><strong>Minor changes</strong></p>
 <ul>
