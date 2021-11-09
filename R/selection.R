@@ -101,7 +101,7 @@ selection <- function(data, size, units = c("items", "values"),
     stop(paste0("'", order, "' is not a column in 'data'"))
   }
   if (method == "interval" && start < 1) {
-    stop("'start' must be an integer > 1")
+    stop("'start' must be an integer >= 1")
   }
   interval <- NULL # Placeholder for interval
   bookvalues <- NULL # Placeholder for book values
@@ -154,7 +154,7 @@ selection <- function(data, size, units = c("items", "values"),
     index <- NULL
     for (i in 1:size) {
       int.selection <- stats::runif(min = intervals[i], max = intervals[i + 1], n = 1)
-      index <- c(index, rowNumbers[which(int.selection < cumsum(bookvalues))[1]])
+      index <- c(index, rowNumbers[which(int.selection <= cumsum(bookvalues))[1]])
     }
   } else if (method == "interval" && units == "items") {
     # 5. Fixed interval record sampling
@@ -173,7 +173,7 @@ selection <- function(data, size, units = c("items", "values"),
     int.selection <- start + 0:(size - 1) * interval
     index <- NULL
     for (i in 1:size) {
-      index <- c(index, rowNumbers[which(int.selection[i] < cumsum(bookvalues))[1]])
+      index <- c(index, rowNumbers[which(int.selection[i] <= cumsum(bookvalues))[1]])
     }
   } else if (method == "sieve" && units == "items") {
     stop("'method = sieve' does not accomodate 'units = items'")
