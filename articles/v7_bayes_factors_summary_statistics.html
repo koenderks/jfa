@@ -122,18 +122,18 @@
 
     
     
-<div id="introduction" class="section level1">
-<h1 class="hasAnchor">
-<a href="#introduction" class="anchor"></a>Introduction</h1>
+<div id="introduction" class="section level2">
+<h2 class="hasAnchor">
+<a href="#introduction" class="anchor"></a>Introduction</h2>
 <p>This vignette illustrates how an auditor can use <code>jfa</code> to evaluate their sample outcomes with the Bayes factor using summary statistics alone. An example application in the context of quality control is described below.</p>
 </div>
-<div id="application" class="section level1">
-<h1 class="hasAnchor">
-<a href="#application" class="anchor"></a>Application</h1>
-<p>Two-stage sampling plans are required if an initial sample does not provide enough assurance to accept (or reject) a population definitively. In the field of quality control, ISO 28596 ‘Sampling procedures for inspection by attributes — Two-stage sampling plans for auditing and for inspection under prior information’ provides two-stage sampling plans by attributes for inspection for a proportion of nonconforming items in a target population of discrete units. For example, this standard applies for inspections of a proportion of nonconforming items in a lot of product items, or inspections of the proportion of nonconforming test characteristics of a product subject to an acceptance test.</p>
-<div id="standard-procedure" class="section level2">
+<div id="application" class="section level2">
 <h2 class="hasAnchor">
-<a href="#standard-procedure" class="anchor"></a>Standard procedure</h2>
+<a href="#application" class="anchor"></a>Application</h2>
+<p>Two-stage sampling plans are required if an initial sample does not provide enough assurance to accept (or reject) a population definitively. In the field of quality control, ISO 28596 ‘Sampling procedures for inspection by attributes — Two-stage sampling plans for auditing and for inspection under prior information’ provides two-stage sampling plans by attributes for inspection for a proportion of nonconforming items in a target population of discrete units. For example, this standard applies for inspections of a proportion of nonconforming items in a lot of product items, or inspections of the proportion of nonconforming test characteristics of a product subject to an acceptance test.</p>
+<div id="standard-procedure" class="section level3">
+<h3 class="hasAnchor">
+<a href="#standard-procedure" class="anchor"></a>Standard procedure</h3>
 <p>The idea behind the standard two-stage sampling plan is simple. In the first stage, after drawing <span class="math inline">\(n_1\)</span> items and observing <span class="math inline">\(k_1\)</span> nonconforming items, a confidence interval for the proportion of nonconforming items is calculated. The decision in the first stage proceeds according to one of the three following scenarios:</p>
 <ol style="list-style-type: decimal">
 <li>If the confidence interval completely lies below the tolerance value, the lot is accepted.</li>
@@ -146,9 +146,9 @@
 <li>If the interval contains the tolerance value, the decision is based on whether a bigger portion of the confidence interval lies below or above the tolerance value. If a larger portion of the interval lies above the tolerance value, the lot is rejected. If a larger portion of the interval lies below the tolerance value, the lot is accepted.</li>
 </ol>
 </div>
-<div id="numerical-example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#numerical-example" class="anchor"></a>Numerical example</h2>
+<div id="numerical-example" class="section level3">
+<h3 class="hasAnchor">
+<a href="#numerical-example" class="anchor"></a>Numerical example</h3>
 <p>The auditor is inspecting a lot of products and wants to make a statement with 90% confidence against a tolerance value of 5%. They formulate the hypothesis of intolerable deviations as <span class="math inline">\(H_0:\theta \geq 0.05\)</span> and the hypothesis of tolerable deviations as <span class="math inline">\(H_1: \theta &lt; 0.05\)</span>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">confidence</span> <span class="op">&lt;-</span> <span class="fl">0.90</span> <span class="co"># 90% confidence</span>
@@ -165,56 +165,58 @@
 <span class="co"># [1,] 2 0.02439024 0.006504196 0.07341118</span></code></pre></div>
 </div>
 </div>
-<div id="bayes-factors" class="section level1">
-<h1 class="hasAnchor">
-<a href="#bayes-factors" class="anchor"></a>Bayes factors</h1>
+<div id="bayes-factors" class="section level2">
+<h2 class="hasAnchor">
+<a href="#bayes-factors" class="anchor"></a>Bayes factors</h2>
 <p>The <code>jfa</code> package can be used to calculate Bayes factors for the hypothesis of tolerable deviations <span class="math inline">\(H_1\)</span> in the lot versus the hypothesis of intolerable deviations <span class="math inline">\(H_0\)</span> in the lot. The Bayes factor can provide insight into the weight of evidence in favor of acceptance of the lot versus the evidence in favor of rejection of the lot. Especially in the situation where the confidence interval contains the tolerance value the Bayes factor can provide an easy interpretation of the evidence in favor of acceptance versus rejection.</p>
 <p><span class="math display">\[BF_{10} = \underbrace{\frac{p(\text{data} | H_1)}{p(\text{data} | H_0)}}_{\text{Relative evidence}} \]</span></p>
-<div id="prior-distribution" class="section level2">
-<h2 class="hasAnchor">
-<a href="#prior-distribution" class="anchor"></a>Prior distribution</h2>
-<p>To calculate the Bayes factor the auditor must first specify the prior distribution for the proportion of nonconforming items in the lot. An appropriate prior distribution can be one that assigns equal probability to the event of acceptance and the event of rejection (Derks et al., 2021), see also the vignette <a href="https://koenderks.github.io/jfa/articles/v3_prior_distributions.html">Prior distributions</a>.</p>
-</div>
-<div id="bayes-factor-after-stage-1" class="section level2">
-<h2 class="hasAnchor">
-<a href="#bayes-factor-after-stage-1" class="anchor"></a>Bayes factor after stage 1</h2>
-<p>Using the <code><a href="../reference/evaluation.html">evaluation()</a></code> function the auditor can create the prior distribution and calculate the Bayes factor in favor of acceptance of the lot versus rejection of the lot. In this case, the Bayes factor in favor of acceptance (<span class="math inline">\(BF_{-+}\)</span>) is 5.814 and represents only moderate evidence in favor of acceptance (see also the vignette <a href="https://koenderks.github.io/jfa/articles/v6_testing_misstatement.html">Testing misstatement</a>).</p>
+<div id="prior-distribution" class="section level3">
+<h3 class="hasAnchor">
+<a href="#prior-distribution" class="anchor"></a>Prior distribution</h3>
+<p>To calculate the Bayes factor the auditor must first specify the prior distribution for the proportion of nonconforming items in the lot. An appropriate prior distribution can be one that assigns equal probability to the event of acceptance and the event of rejection (Derks et al., 2021), see also the vignette <a href="https://koenderks.github.io/jfa/articles/v3_prior_distributions.html">Prior distributions</a>. The code below creates this prior distribution.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">tolerance</span>, x <span class="op">=</span> <span class="fl">2</span>, n <span class="op">=</span> <span class="fl">32</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"impartial"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, materiality <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></code></pre></div>
+</div>
+<div id="bayes-factor-after-stage-1" class="section level3">
+<h3 class="hasAnchor">
+<a href="#bayes-factor-after-stage-1" class="anchor"></a>Bayes factor after stage 1</h3>
+<p>Using the <code><a href="../reference/evaluation.html">evaluation()</a></code> function the auditor can create the prior distribution and calculate the Bayes factor in favor of acceptance of the lot versus rejection of the lot. In this case, the Bayes factor in favor of acceptance (<span class="math inline">\(BF_{-+}\)</span>) is 0.66. This Bayes factor represents only anecdotal evidence in favor of rejection of the lot, since the data is 1 / 0.66 = 1.51 times more likely under the hypothesis <span class="math inline">\(H_0\)</span> than under the hypothesis <span class="math inline">\(H_1\)</span> (see the vignette <a href="https://koenderks.github.io/jfa/articles/v6_testing_misstatement.html">Testing misstatement</a> for the interpretation of <span class="math inline">\(BF_{-+}\)</span>).</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">tolerance</span>, x <span class="op">=</span> <span class="fl">2</span>, n <span class="op">=</span> <span class="fl">32</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ##  Bayesian Audit Sample Evaluation
 ## 
 ## data:  2 and 32
-## number of errors = 2, number of samples = 32, taint = 2, BF₁₀ = 5.8141
+## number of errors = 2, number of samples = 32, taint = 2, BF₁₀ = 0.66487
 ## alternative hypothesis: true misstatement rate is less than 0.05
 ## 95 percent credible interval:
-##  0.0000000 0.1907816
+##  0.0000000 0.1319424
 ## estimate:
-##  0.06060606 
-## estimates obtained via method 'poisson' + 'prior'</code></pre>
+##  0.04493028 
+## estimates obtained via method 'binomial' + 'prior'</code></pre>
 </div>
-<div id="bayes-factor-after-stage-2" class="section level2">
-<h2 class="hasAnchor">
-<a href="#bayes-factor-after-stage-2" class="anchor"></a>Bayes factor after stage 2</h2>
-<p>The Bayes factor in favor of acceptance after the second sample of items is 70.402 which represents strong evidence in favor of acceptance.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">tolerance</span>, x <span class="op">=</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">0</span>, n <span class="op">=</span> <span class="fl">32</span> <span class="op">+</span> <span class="fl">50</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<div id="bayes-factor-after-stage-2" class="section level3">
+<h3 class="hasAnchor">
+<a href="#bayes-factor-after-stage-2" class="anchor"></a>Bayes factor after stage 2</h3>
+<p>The Bayes factor in favor of acceptance after the second sample of items is 6.24 which represents moderate evidence in favor of acceptance. Hence, we should continue selecting and inspecting items to gather sufficient evidence for one of the two hypotheses.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">tolerance</span>, x <span class="op">=</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">0</span>, n <span class="op">=</span> <span class="fl">32</span> <span class="op">+</span> <span class="fl">50</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></code></pre></div>
 <pre><code>## 
 ##  Bayesian Audit Sample Evaluation
 ## 
 ## data:  2 and 82
-## number of errors = 2, number of samples = 82, taint = 2, BF₁₀ = 70.402
+## number of errors = 2, number of samples = 82, taint = 2, BF₁₀ = 6.2413
 ## alternative hypothesis: true misstatement rate is less than 0.05
 ## 95 percent credible interval:
-##  0.00000000 0.07585294
+##  0.00000000 0.06444852
 ## estimate:
-##  0.02409639 
-## estimates obtained via method 'poisson' + 'prior'</code></pre>
+##  0.02116102 
+## estimates obtained via method 'binomial' + 'prior'</code></pre>
 </div>
 </div>
-<div id="references" class="section level1">
-<h1 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h1>
+<div id="references" class="section level2">
+<h2 class="hasAnchor">
+<a href="#references" class="anchor"></a>References</h2>
 <ul>
 <li><p>Derks, K., de Swart, J., Wagenmakers, E.-J., and Wetzels, R. (2021). A default Bayesian hypothesis test for audit sampling. <em>Working paper</em>.</p></li>
 <li><p>Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., and Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. <em>International Journal of Auditing</em>, 25(3), 621-636.</p></li>
