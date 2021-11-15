@@ -246,7 +246,7 @@
 </center>
 <p><strong>Advantage(s):</strong> The random sampling method yields an optimal random selection, with the additional advantage that the sample can be easily extended by applying the same method again.</p>
 <p><strong>Disadvantages:</strong> Because the selection probabilities are equal for all sampling units there is no guarantee that items with a large monetary value in the population will be included in the sample.</p>
-<p>As an example, the code below shows how to apply the random sampling method in a record sampling and a monetary unit sampling setting. It is important to set a seed to make results reproducible.</p>
+<p>As an example, the code below shows how to apply the random sampling (with our without replacement using <code>replace</code>) method in a record sampling and a monetary unit sampling setting. It is important to set a seed to make results reproducible.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Record sampling</span>
 <span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
@@ -292,6 +292,36 @@
 ## 5 1072     1 79901    789.97     789.97
 ## 6  488     1 50811    651.35     651.35</code></pre>
 </div>
+</div>
+<div id="ordering-or-randomizing-the-population" class="section level3">
+<h3 class="hasAnchor">
+<a href="#ordering-or-randomizing-the-population" class="anchor"></a>Ordering or randomizing the population</h3>
+<p>The <code><a href="../reference/selection.html">selection()</a></code> function has additional arguments (<code>order</code>, <code>decreasing</code>, and <code>randomize</code>) to preprocess your population before selection. The <code>order</code> argument takes as input a column name in <code>data</code> which determines the order of the population. For example, you can order the population from lowest book value to highest book value before engaging in selection. In this case, you should use the <code>decreasing = FALSE</code> argument.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Ordering population from lowest 'bookValue' to highest 'bookValue' before MUS</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'values'</span>, values <span class="op">=</span> <span class="st">'bookValue'</span>, order <span class="op">=</span> <span class="st">'bookValue'</span>, decreasing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
+<pre><code>##    row times    ID bookValue auditValue
+## 1 2662     1 30568     14.47      14.47
+## 2 2923     1 63567    125.21     125.21
+## 3 2542     1 95807    153.56     153.56
+## 4  101     1 64282    172.65     172.65
+## 5  838     1 43352    188.72     188.72
+## 6  302     1 94296    198.59     198.59</code></pre>
+<p>The <code>randomize</code> argument can be used to randomly shuffle the items in the population before selection.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Randomly shuffle population items before MUS</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span>
+<span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'values'</span>, values <span class="op">=</span> <span class="st">'bookValue'</span>, randomize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
+<pre><code>##    row times    ID bookValue auditValue
+## 1 1017     1 50755    618.24     618.24
+## 2 2159     1  3653    492.39     492.39
+## 3 1639     1 39570    307.54     307.54
+## 4 2698     1   225    507.18     507.18
+## 5  355     1 27934    749.38     749.38
+## 6 1242     1 64071    759.34     759.34</code></pre>
 </div>
 </div>
   </div>
