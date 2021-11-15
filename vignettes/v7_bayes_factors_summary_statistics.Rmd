@@ -19,15 +19,15 @@ knitr::opts_chunk$set(echo = TRUE, fig.height=4, fig.width=6)
 library(jfa)
 ```
 
-# Introduction
+## Introduction
 
 This vignette illustrates how an auditor can use `jfa` to evaluate their sample outcomes with the Bayes factor using summary statistics alone. An example application in the context of quality control is described below.
 
-# Application
+## Application
 
 Two-stage sampling plans are required if an initial sample does not provide enough assurance to accept (or reject) a population definitively. In the field of quality control, ISO 28596 'Sampling procedures for inspection by attributes — Two-stage sampling plans for auditing and for inspection under prior information' provides two-stage sampling plans by attributes for inspection for a proportion of nonconforming items in a target population of discrete units. For example, this standard applies for inspections of a proportion of nonconforming items in a lot of product items, or inspections of the proportion of nonconforming test characteristics of a product subject to an acceptance test.
 
-## Standard procedure
+### Standard procedure
 
 The idea behind the standard two-stage sampling plan is simple. In the first stage, after drawing $n_1$ items and observing $k_1$ nonconforming items, a confidence interval for the proportion of nonconforming items is calculated. The decision in the first stage proceeds according to one of the three following scenarios:
 
@@ -40,7 +40,7 @@ In the second stage, a number $k_2$ of nonconforming items is observed in a samp
 1. If the confidence interval completely lies above or below the tolerance value, the decision for approval and rejection is analogous to that in the first stage.
 2. If the interval contains the tolerance value, the decision is based on whether a bigger portion of the confidence interval lies below or above the tolerance value. If a larger portion of the interval lies above the tolerance value, the lot is rejected. If a larger portion of the interval lies below the tolerance value, the lot is accepted.
 
-## Numerical example
+### Numerical example
 
 The auditor is inspecting a lot of products and wants to make a statement with 90% confidence against a tolerance value of 5%. They formulate the hypothesis of intolerable deviations as $H_0:\theta \geq 0.05$ and the hypothesis of tolerable deviations as $H_1: \theta < 0.05$.
 
@@ -66,33 +66,37 @@ ISO28596:::CI.binom.shortest(size = 32 + 50, x = 2 + 0, level = confidence)$boun
 # [1,] 2 0.02439024 0.006504196 0.07341118
 ```
 
-# Bayes factors
+## Bayes factors
 
 The `jfa` package can be used to calculate Bayes factors for the hypothesis of tolerable deviations $H_1$ in the lot versus the hypothesis of intolerable deviations $H_0$ in the lot. The Bayes factor can provide insight into the weight of evidence in favor of acceptance of the lot versus the evidence in favor of rejection of the lot. Especially in the situation where the confidence interval contains the tolerance value the Bayes factor can provide an easy interpretation of the evidence in favor of acceptance versus rejection.
 
 $$BF_{10} = \underbrace{\frac{p(\text{data} | H_1)}{p(\text{data} | H_0)}}_{\text{Relative evidence}} $$
 
-## Prior distribution
+### Prior distribution
 
-To calculate the Bayes factor the auditor must first specify the prior distribution for the proportion of nonconforming items in the lot. An appropriate prior distribution can be one that assigns equal probability to the event of acceptance and the event of rejection (Derks et al., 2021), see also the vignette [Prior distributions](https://koenderks.github.io/jfa/articles/v3_prior_distributions.html).
-
-## Bayes factor after stage 1
-
-Using the `evaluation()` function the auditor can create the prior distribution and calculate the Bayes factor in favor of acceptance of the lot versus rejection of the lot. In this case, the Bayes factor in favor of acceptance ($BF_{-+}$) is 5.814 and represents only moderate evidence in favor of acceptance (see also the vignette [Testing misstatement](https://koenderks.github.io/jfa/articles/v6_testing_misstatement.html)).
+To calculate the Bayes factor the auditor must first specify the prior distribution for the proportion of nonconforming items in the lot. An appropriate prior distribution can be one that assigns equal probability to the event of acceptance and the event of rejection (Derks et al., 2021), see also the vignette [Prior distributions](https://koenderks.github.io/jfa/articles/v3_prior_distributions.html). The code below creates this prior distribution.
 
 ```{r}
-evaluation(materiality = tolerance, x = 2, n = 32, prior = TRUE)
+prior <- auditPrior(method = "impartial", likelihood = "binomial", materiality = 0.05)
 ```
 
-## Bayes factor after stage 2
+### Bayes factor after stage 1
 
-The Bayes factor in favor of acceptance after the second sample of items is 70.402 which represents strong evidence in favor of acceptance.
+Using the `evaluation()` function the auditor can create the prior distribution and calculate the Bayes factor in favor of acceptance of the lot versus rejection of the lot. In this case, the Bayes factor in favor of acceptance ($BF_{-+}$) is 0.66. This Bayes factor represents only anecdotal evidence in favor of rejection of the lot, since the data is 1 / 0.66 = 1.51 times more likely under the hypothesis $H_0$ than under the hypothesis $H_1$ (see the vignette [Testing misstatement](https://koenderks.github.io/jfa/articles/v6_testing_misstatement.html) for the interpretation of $BF_{-+}$).
 
 ```{r}
-evaluation(materiality = tolerance, x = 2 + 0, n = 32 + 50, prior = TRUE)
+evaluation(materiality = tolerance, x = 2, n = 32, prior = prior)
 ```
 
-# References
+### Bayes factor after stage 2
+
+The Bayes factor in favor of acceptance after the second sample of items is 6.24 which represents moderate evidence in favor of acceptance. Hence, we should continue selecting and inspecting items to gather sufficient evidence for one of the two hypotheses.
+
+```{r}
+evaluation(materiality = tolerance, x = 2 + 0, n = 32 + 50, prior = prior)
+```
+
+## References
 
 * Derks, K., de Swart, J., Wagenmakers, E.-J., and Wetzels, R. (2021). A default Bayesian hypothesis test for audit sampling. *Working paper*.
 

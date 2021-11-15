@@ -147,7 +147,7 @@ where $N$ is the number of units in the population. To clarify this procedure, F
 
 **Disadvantages:** Because the selection probabilities are equal for all sampling units there is no guarantee that items with a large monetary value in the population will be included in the sample.
 
-As an example, the code below shows how to apply the random sampling method in a record sampling and a monetary unit sampling setting. It is important to set a seed to make results reproducible.
+As an example, the code below shows how to apply the random sampling (with our without replacement using `replace`) method in a record sampling and a monetary unit sampling setting. It is important to set a seed to make results reproducible.
 
 ```{r}
 # Record sampling
@@ -180,3 +180,29 @@ set.seed(1)
 sample <- selection(data = BuildIt, size = 100, units = 'values', method = 'sieve', values = 'bookValue')
 head(sample$sample, n = 6)
 ```
+
+### Ordering or randomizing the population
+
+The `selection()` function has additional arguments (`order`, `decreasing`, and `randomize`) to preprocess your population before selection. The `order` argument takes as input a column name in `data` which determines the order of the population. For example, you can order the population from lowest book value to highest book value before engaging in selection. In this case, you should use the `decreasing = FALSE` argument.
+
+```{r}
+# Ordering population from lowest 'bookValue' to highest 'bookValue' before MUS
+set.seed(1)
+sample <- selection(data = BuildIt, size = 100, units = 'values', values = 'bookValue', order = 'bookValue', decreasing = FALSE)
+head(sample$sample, n = 6)
+```
+
+The `randomize` argument can be used to randomly shuffle the items in the population before selection.
+
+```{r}
+# Randomly shuffle population items before MUS
+set.seed(1)
+sample <- selection(data = BuildIt, size = 100, units = 'values', values = 'bookValue', randomize = TRUE)
+head(sample$sample, n = 6)
+```
+
+## References
+
+* Hoogduin, L. A., Hall, T. W., & Tsay, J. J. (2010). Modified sieve sampling: A method for single-and multi-stage probability-proportional-to-size sampling. *Auditing: A Journal of Practice & Theory*, 29(1), 125-148.
+
+* Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). *Dollar-unit Sampling: A Practical Guide for Auditors*. London: Pitman.

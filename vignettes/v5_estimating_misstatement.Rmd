@@ -19,14 +19,48 @@ knitr::opts_chunk$set(echo = TRUE, fig.height=4, fig.width=6)
 library(jfa)
 ```
 
-## Estimation in an audit context
+## Estimation
 
-In audit sampling estimation the auditor tries to determine the unknown quantity of the misstatement $\theta$ in the population as best as possible. 
+When performing estimation the auditor tries to determine the unknown misstatement in the population on the basis of a sample. Generally, estimation implies that there is a minimal amount of assurance to be obtained about the precision / accuracy of your estimate (i.e., the most likely error - the upper bound). This inference about the population misstatement can be performed using the `evaluation()` function by specifying the `min.precision` argument and providing the sample data or summary statistics.
 
-## Frequentist estimation using the likelihood
+### Classical estimation
 
-This will be featured in a future version of `jfa`.
+Suppose your sampling objective is to estimate the misstatement with a precision of 2%. You have planned a sample of *n* = 188 items from which *x* = 1 turns out a contain an error. Standard classical evaluation using the Poisson distribution can be performed using the example code below.
 
-## Bayesian estimation using the posterior distribution
+```{r}
+result_classical <- evaluation(min.precision = 0.02, method = "poisson", n = 188, x = 1)
+```
 
-This will be featured in a future version of `jfa`.
+Calling the `summary()` function on the result from the `evaluation()` function provides the estimates for the most likely error, the 95% upper bound, and the precision.
+
+```{r}
+summary(result_classical)
+```
+
+As we can see, the most likely error in the population is 1 / 188 = 0.53% and the 95% (one-sided) confidence interval ranges from 0% to 2.52%. Consequently, the precision of the estimate is 2.52% - 0.53% = 1.99%. This means that this sample provides sufficient information to estimate the misstatement in the population with a precision of 2%.
+
+### Bayesian estimation
+
+In principle Bayesian estimation follows the same procedure as its classical counterpart, with the exception that a prior distribution must be provided to the `evaluation()` function. Therefore, the first step is to set up a prior distribution (see also the vignette [Prior distributions](https://koenderks.github.io/jfa/articles/v3_prior_distributions.html)). For illustration, we will assume a `default` *gamma(1, 1)* prior distribution.
+
+```{r}
+prior <- auditPrior(method = "default", likelihood = "poisson")
+```
+
+The sample outcomes together with the prior distribution can then be provided to the evaluation function. Once again, the `summary()` function provides the estimates for the most likely error, the 95% upper bound, and the precision. Note that, because the prior is already constructed for use with a `poisson` likelihood, the `method` argument does not need to be provided to the `evaluation()` function.
+
+```{r}
+result_bayesian <- evaluation(min.precision = 0.02, n = 188, x = 1, prior = prior)
+summary(result_bayesian)
+```
+
+As we can see, the posterior distribution is a *gamma(2, 189)* distribution. This distribution implies a most likely error in the population is 0.53% and a 95% (one-sided) confidence interval that ranges from 0% to 2.51%. Consequently, the precision of the estimate is 2.51% - 0.53% = 1.98%. Also in the Bayesian framework, this sample provides sufficient information to estimate the misstatement in the population with a precision of 2%.
+
+## References
+
+* Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., and Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. *International Journal of Auditing*, 25(3), 621-636.
+
+* Stewart, T. R. (2012). *Technical Notes on the AICPA Audit Guide Audit Sampling*. American Institute of Certified Public Accountants, New York.
+
+* Stewart, T. R. (2013). *A Bayesian Audit Assurance Model with Application to the Component Materiality problem in Group Audits.* VU University, Amsterdam.
+
