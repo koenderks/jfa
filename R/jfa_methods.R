@@ -759,7 +759,7 @@ plot.jfaEvaluation <- function(x, xlim = c(0, 1), ...) {
       }
     } else {
       if (x[["materiality"]] == 1) {
-        stop("'materiality' is missing for plotting")
+        stop("missing value for 'materiality'")
       }
       if (!(x[["method"]] %in% c("poisson", "binomial", "hypergeometric"))) {
         stop("'likelihood' should be one of 'poisson', 'binomial', 'hypergeometric'")

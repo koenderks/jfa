@@ -93,14 +93,17 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
     prior.n <- 1
     prior.x <- 0
   }
-  if (is.null(materiality) && is.null(min.precision)) {
-    stop("'materiality' or `min.precision` is missing for planning")
-  }
   if (conf.level >= 1 || conf.level <= 0 || is.null(conf.level) || length(conf.level) != 1) {
-    stop("'conf.level' must be a single number between 0 and 1")
+    stop("'conf.level' must be a single value between 0 and 1")
+  }
+  if (is.null(materiality) && is.null(min.precision)) {
+    stop("missing value for 'materiality' or `min.precision`")
+  }
+  if (!is.null(materiality) && (materiality <= 0 || materiality >= 1)) {
+    stop("'materiality' must be a single value between 0 and 1")
   }
   if (!is.null(min.precision) && (min.precision <= 0 || min.precision >= 1)) {
-    stop("'min.precision' must be a single number between 0 and 1")
+    stop("'min.precision' must be a single value between 0 and 1")
   }
   # Define a placeholder for the sample size
   n <- NULL
@@ -108,12 +111,12 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
   if (expected >= 0 && expected < 1) {
     errorType <- "percentage"
     if (!is.null(materiality) && expected >= materiality) {
-      stop("'expected' must be a single number < 'materiality'")
+      stop("'expected' must be a single value < 'materiality'")
     }
   } else if (expected >= 1) {
     errorType <- "integer"
     if (expected %% 1 != 0 && likelihood %in% c("binomial", "hypergeometric") && !bayesian) {
-      stop("'expected' must be a nonnegative and integer")
+      stop("'expected' must be an integer >= 0")
     }
   }
   # Set the materiality and the minimium precision to 1 if they are not specified
@@ -126,10 +129,10 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
   # Requirements for the hypergeometric distribution
   if (likelihood == "hypergeometric") {
     if (is.null(N.units)) {
-      stop("'N.units' is missing for planning")
+      stop("missing value for 'N.units'")
     }
-    if (N.units <= 0 || N.units %% 1 != 0) {
-      stop("'N.units' must be nonegative and integer")
+    if (N.units <= 0 || N.units %% 1 != 0 || length(N.units) != 1) {
+      stop("'N.units' must be a single integer > 0")
     }
     if (!is.null(materiality) && expected >= 1 && expected >= ceiling(materiality * N.units)) {
       stop("'expected' / 'N.units' must be < 'materiality'")

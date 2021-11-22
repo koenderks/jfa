@@ -159,10 +159,10 @@
 
 .direct <- function(bookvalues, auditvalues, conf.level, alternative, N.items = NULL, n, N.units = NULL, correction = FALSE) {
   if (is.null(N.items)) {
-    stop("'N.items' is missing for evaluation")
+    stop("missing value for 'N.items'")
   }
   if (is.null(N.units)) {
-    stop("'N.units' is missing for evaluation")
+    stop("missing value for 'N.units'")
   }
   w <- mean(auditvalues)
   s <- stats::sd(auditvalues)
@@ -183,7 +183,7 @@
 
 .difference <- function(bookvalues, auditvalues, conf.level, alternative, N.items = NULL, n, correction = FALSE) {
   if (is.null(N.items)) {
-    stop("'N.items' is missing for evaluation")
+    stop("missing value for 'N.items'")
   }
   we <- mean(bookvalues - auditvalues)
   s <- stats::sd(bookvalues - auditvalues)
@@ -204,7 +204,7 @@
 
 .quotient <- function(bookvalues, auditvalues, conf.level, alternative, N.items = NULL, n, correction = FALSE) {
   if (is.null(N.items)) {
-    stop("'N.items' is missing for evaluation")
+    stop("missing value for 'N.items'")
   }
   w <- mean(auditvalues)
   sw <- stats::sd(auditvalues)
@@ -230,10 +230,10 @@
 
 .regression <- function(bookvalues, auditvalues, conf.level, alternative, N.items = NULL, n, N.units = NULL, correction = FALSE) {
   if (is.null(N.items)) {
-    stop("'N.items' is missing for evaluation")
+    stop("missing value for 'N.items'")
   }
   if (is.null(N.units)) {
-    stop("'N.units' is missing for evaluation")
+    stop("missing value for 'N.units'")
   }
   w <- mean(auditvalues)
   sw <- stats::sd(auditvalues)

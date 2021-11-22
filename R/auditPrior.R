@@ -97,33 +97,27 @@ auditPrior <- function(method = "default", likelihood = c("poisson", "binomial",
   if (!(method %in% c("default", "strict", "param", "impartial", "hyp", "arm", "bram", "sample", "factor")) || length(method) != 1) {
     stop("'method' should be one of 'default', 'strict', 'param', 'impartial', 'hyp', 'arm', 'bram', 'sample', 'factor'")
   }
-  if (is.null(conf.level)) {
-    stop("'conf.level' is missing for prior construction")
-  }
-  if (conf.level >= 1 || conf.level <= 0 || length(conf.level) != 1) {
-    stop("'conf.level' must be a single number between 0 and 1")
+  if (conf.level >= 1 || conf.level <= 0 || is.null(conf.level) || length(conf.level) != 1) {
+    stop("'conf.level' must be a single value between 0 and 1")
   }
   if (expected < 0) {
-    stop("'expected' must be a single number >= 0")
+    stop("'expected' must be a single value >= 0")
   }
   if (is.null(materiality) && method %in% c("impartial", "hyp", "arm")) {
-    stop("'materiality' is missing for prior construction")
+    stop("missing value for 'materiality'")
   }
   if (!is.null(materiality) && expected >= materiality && expected < 1) {
-    stop("'expected' must be a single number < 'materiality'")
+    stop("'expected' must be a single value < 'materiality'")
   }
   if (expected >= 1 && !(method %in% c("default", "sample", "factor", "param", "strict"))) {
-    stop(paste0("'expected' must be a single number between 0 and 1 for 'method = ", method, "'"))
+    stop(paste0("'expected' must be a single value between 0 and 1 for 'method = ", method, "'"))
   }
   if (likelihood == "hypergeometric") {
     if (is.null(N.units)) {
-      stop("'N.units' is missing for prior construction")
+      stop("missing value for 'N.units'")
     }
-    if (N.units <= 0) {
-      stop("'N.units' must be a nonnegative")
-    }
-    if (N.units %% 1 != 0) {
-      N.units <- ceiling(N.units)
+    if (N.units <= 0 || N.units %% 1 != 0 || length(N.units) != 1) {
+      stop("'N.units' must be a single integer > 0")
     }
   }
   if (method == "default") { # Method 1: Minimum prior observations to make the prior proper
@@ -134,28 +128,31 @@ auditPrior <- function(method = "default", likelihood = c("poisson", "binomial",
     prior.x <- 0 # Single earlier error
   } else if (method == "arm") { # Method 3: Translate risks from the audit risk model
     if (is.null(cr)) {
-      stop("'cr' is missing for prior construction")
+      stop("missing value for 'cr'")
     }
     if (cr < 0 || cr > 1) {
       stop("'cr' must be a single value between 0 and 1")
     }
     if (is.null(ir)) {
-      stop("'ir' is missing for prior construction")
+      stop("missing value for 'ir'")
     }
     if (ir < 0 || ir > 1) {
       stop("'ir' must be a single value between 0 and 1")
     }
     dr <- (1 - conf.level) / (ir * cr) # Calculate the required detection risk from the audit risk model
+    if (dr >= 1) {
+      stop("ir * cr must be < 1 - conf.level")
+    }
     n.plus <- planning(conf.level = conf.level, likelihood = likelihood, expected = expected, N.units = N.units, materiality = materiality, prior = TRUE)$n # Calculate the sample size for the full detection risk
     n.min <- planning(conf.level = 1 - dr, likelihood = likelihood, expected = expected, N.units = N.units, materiality = materiality, prior = TRUE)$n # Calculated the sample size for the adjusted detection risk
     prior.n <- n.plus - n.min # Calculate the sample size equivalent to the increase in detection risk
     prior.x <- (n.plus * expected) - (n.min * expected) # Calculate errors equivalent to the increase in detection risk
   } else if (method == "bram") { # Method 4: Bayesian risk assessment model
     if (is.null(ub)) { # Check if the value for the upper bound is present
-      stop("'ub' is missing for prior construction")
+      stop("missing value for 'ub'")
     }
     if (ub <= 0 || ub >= 1 || ub <= expected) { # Check if the value for the upper bound is valid
-      stop("'ub' must be a single number between 0 and 1 and >= 'expected'")
+      stop("'ub' must be a single value between 0 and 1 and >= 'expected'")
     }
     if (likelihood == "poisson" && expected > 0) { # Perform approximation described in Stewart (2013) on p. 45.
       r <- expected / ub
@@ -185,7 +182,7 @@ auditPrior <- function(method = "default", likelihood = c("poisson", "binomial",
       p.h0 <- p.h1 <- 0.5
     } else if (method == "hyp") { # Method 6: Custom prior probabilities
       if (is.null(p.hmin)) { # Must have the prior probabilities and materiality
-        stop("'p.hmin' is missing for prior construction")
+        stop("missing value for 'p.hmin'")
       }
       p.h1 <- p.hmin
       p.h0 <- 1 - p.h1 # Calculate p(H+)
@@ -212,14 +209,14 @@ auditPrior <- function(method = "default", likelihood = c("poisson", "binomial",
     }
   } else if (method == "sample" || method == "factor") { # Method 7: Earlier sample & Method 8: Weighted earlier sample
     if (is.null(n)) {
-      stop("'n' is missing for prior construction")
+      stop("missing value for 'n'")
     }
     if (is.null(x)) {
-      stop("'x' is missing for prior construction")
+      stop("missing value for 'x'")
     }
     if (method == "factor") {
       if (is.null(factor)) {
-        stop("'factor' is missing for prior construction")
+        stop("missing value for 'factor'")
       }
     } else {
       factor <- 1
@@ -228,13 +225,13 @@ auditPrior <- function(method = "default", likelihood = c("poisson", "binomial",
     prior.x <- x * factor # Earlier errors
   } else if (method == "param") { # Method 9: User specified prior distribution
     if (is.null(alpha)) {
-      stop("'alpha' is missing for prior construction")
+      stop("missing value for 'alpha'")
     }
     if (alpha <= 0) {
       stop("'alpha' must be a single value > 0")
     }
     if (is.null(beta)) {
-      stop("'beta' is missing for prior construction")
+      stop("missing value for 'beta'")
     }
     if (beta < 0) {
       stop("'beta' must be a single value >= 0")

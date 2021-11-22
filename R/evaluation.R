@@ -150,20 +150,17 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = "poiss
     prior.n <- 1
     prior.x <- 0
   }
-  if (is.null(conf.level)) {
-    stop("'conf.level' is missing for evaluation")
-  }
-  if (conf.level >= 1 || conf.level <= 0 || length(conf.level) != 1) {
-    stop("'conf.level' must be a single number between 0 and 1")
+  if (conf.level >= 1 || conf.level <= 0 || is.null(conf.level) || length(conf.level) != 1) {
+    stop("'conf.level' must be a single value between 0 and 1")
   }
   if (is.null(materiality) && is.null(min.precision)) {
-    stop("'materiality' or `min.precision` is missing for evaluation")
+    stop("missing value for 'materiality' or `min.precision`")
   }
   if (!is.null(materiality) && (materiality <= 0 || materiality > 1)) {
-    stop("'materiality' must be a single number between 0 and 1")
+    stop("'materiality' must be a single value between 0 and 1")
   }
   if (!is.null(min.precision) && (min.precision <= 0 || min.precision >= 1)) {
-    stop("'min.precision' must be a single number between 0 and 1")
+    stop("'min.precision' must be a single value between 0 and 1")
   }
   if (!(method %in% c("poisson", "binomial", "hypergeometric", "stringer", "stringer.meikle", "stringer.lta", "stringer.pvz", "rohrbach", "moment", "coxsnell", "direct", "difference", "quotient", "regression", "mpu")) || length(method) != 1) {
     stop("'method' should be one of 'poisson', 'binomial', 'hypergeometric', 'stringer', 'stringer.meikle', 'stringer.lta', 'stringer.pvz', 'rohrbach', 'moment', 'coxsnell', 'direct', 'difference', 'quotient', 'regression', 'mpu'")
@@ -176,16 +173,16 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = "poiss
   }
   if (!is.null(x) || !is.null(n)) { # Use summary statistics
     if (method %in% c("stringer", "stringer.meikle", "stringer.lta", "stringer.pvz", "coxsnell", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu")) {
-      stop(paste0("'method = ", method, "' is missing 'data' for evaluation"))
+      stop(paste0("missing value for 'data' with 'method = ", method, "'"))
     }
     if (is.null(n)) {
-      stop("'n' is missing for evaluation")
+      stop("missing value for 'n'")
     }
     if (n <= 0 || n %% 1 != 0 || length(n) != 1) {
       stop("'n' must be a single integer > 0")
     }
     if (is.null(x)) {
-      stop("'x' is missing for evaluation")
+      stop("missing value for 'x'")
     }
     if (x < 0 || length(x) != 1) {
       stop("'x' must be a single value >= 0")
@@ -205,7 +202,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = "poiss
   } else if (!is.null(data)) { # Use data sample
     dname <- deparse(substitute(data))
     if (is.null(values)) {
-      stop("'values' is missing for evaluation")
+      stop("missing value for 'values'")
     }
     if (length(values) != 1) {
       stop("'values' must be a single character")
@@ -214,7 +211,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = "poiss
       stop(paste0("'", values, "' is not a column in 'data'"))
     }
     if (is.null(values.audit)) {
-      stop("'values.audit' is missing for evaluation")
+      stop("missing value for 'values.audit'")
     }
     if (length(values.audit) != 1) {
       stop("'values.audit' must be a single character")
@@ -227,7 +224,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = "poiss
     }
     missing <- unique(c(which(is.na(data[, values])), which(is.na(data[, values.audit]))))
     if (length(missing) == nrow(data)) {
-      stop("not enough 'data' observations")
+      stop("not enough rows in 'data'")
     }
     data <- stats::na.omit(data)
     if (!is.null(times)) {
@@ -254,7 +251,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = "poiss
     }
     t.obs <- sum(t)
   } else {
-    stop("'data' or a combination of 'x' and 'n' is missing for evaluation")
+    stop("missing value(s) for 'data' or a combination of 'x' and 'n'")
   }
   # Set the materiality and the minimium precision to 1 if they are NULL
   if (is.null(materiality)) {
@@ -339,10 +336,10 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = "poiss
     }
   } else if (method == "hypergeometric") {
     if (is.null(N.units)) {
-      stop("'N.units' is missing for evaluation")
+      stop("missing value for 'N.units'")
     }
-    if (N.units <= 0 || N.units %% 1 != 0) {
-      stop("'N.units' must be a nonnegative integer")
+    if (N.units <= 0 || N.units %% 1 != 0 || length(N.units) != 1) {
+      stop("'N.units' must be a single integer > 0")
     }
     if (bayesian) {
       # Bayesian evaluation using the beta-binomial distribution

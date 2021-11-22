@@ -89,7 +89,7 @@ selection <- function(data, size, units = c("items", "values"),
     stop("cannot take a sample larger than the population when 'replace = FALSE'")
   }
   if (units == "values" && is.null(values)) { # Check if the book values have a valid input
-    stop("'values' is missing for selection")
+    stop("missing value for 'values'")
   }
   if (!is.null(values) && length(values) != 1) { # Check if the book values have a valid input
     stop("'values' must be a single character")
