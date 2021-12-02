@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,18 +40,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">jfa</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="articles/jfa.html">Get started</a>
 </li>
@@ -92,7 +88,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/koenderks/jfa/">
+  <a href="https://github.com/koenderks/jfa/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -111,17 +107,17 @@
   <div class="contents col-md-9">
 
 
-<div id="jfa-bayesian-and-classical-audit-sampling" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#jfa-bayesian-and-classical-audit-sampling" class="anchor"></a>jfa: Bayesian and Classical Audit Sampling</h1></div>
-<p><img src="https://github.com/koenderks/jfa/raw/development/man/figures/logo.png" width="149" height="173" alt="logo" align="right" margin-left="20" margin-right="20"></p>
+<div class="section level1">
+<div class="page-header"><h1 id="jfa-bayesian-and-classical-audit-sampling">jfa: Bayesian and Classical Audit Sampling<a class="anchor" aria-label="anchor" href="#jfa-bayesian-and-classical-audit-sampling"></a>
+</h1></div>
+<p><img src="https://github.com/koenderks/jfa/raw/development/reference/figures/logo.png" width="149" height="173" alt="logo" align="right" margin-left="20" margin-right="20"></p>
 <p><code>jfa</code> is an R package for statistical audit sampling. The package provides functions for planning, performing, evaluating, and reporting an audit sample compliant with the International Standards on Auditing. Specifically, these functions implement standard audit sampling techniques for calculating sample sizes, selecting items from a population, and evaluating misstatement from a data sample or from summary statistics. Additionally, the <code>jfa</code> package allows the user to create a prior probability distribution to perform Bayesian audit sampling using these functions.</p>
-<p>The package and its intended workflow are also implemented with a graphical user interface in the <a href="https://github.com/jasp-stats/jaspAudit">Audit</a> module of <a href="https://jasp-stats.org">JASP</a>, a free and open-source statistical software program.</p>
-<div id="overview" class="section level2">
-<h2 class="hasAnchor">
-<a href="#overview" class="anchor"></a>Overview</h2>
-<p>For complete documentation of <code>jfa</code>, visit the <a href="https://koenderks.github.io/jfa/">package website</a> or download the <a href="https://cran.r-project.org/package=jfa/jfa.pdf">package manual</a>.</p>
-<ol>
+<p>The package and its intended workflow are also implemented with a graphical user interface in the <a href="https://github.com/jasp-stats/jaspAudit" class="external-link">Audit</a> module of <a href="https://jasp-stats.org" class="external-link">JASP</a>, a free and open-source statistical software program.</p>
+<div class="section level2">
+<h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
+</h2>
+<p>For complete documentation of <code>jfa</code>, visit the <a href="https://koenderks.github.io/jfa/" class="external-link">package website</a> or download the <a href="https://cran.r-project.org/package=jfa/jfa.pdf" class="external-link">package manual</a>.</p>
+<ol style="list-style-type: decimal">
 <li><a href="#1-installation">Installation</a></li>
 <li><a href="#2-cheat-sheet">Cheat sheet</a></li>
 <li><a href="#3-intended-workflow">Intended workflow</a></li>
@@ -132,32 +128,32 @@
 <li><a href="#8-contributing">Contributing</a></li>
 </ol>
 </div>
-<div id="1-installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#1-installation" class="anchor"></a>1. Installation</h2>
-<p>The most recently released version of <code>jfa</code> can be downloaded from <a href="https://cran.r-project.org/package=jfa">CRAN</a> by running the following command in R:</p>
+<div class="section level2">
+<h2 id="1-installation">1. Installation<a class="anchor" aria-label="anchor" href="#1-installation"></a>
+</h2>
+<p>The most recently released version of <code>jfa</code> can be downloaded from <a href="https://cran.r-project.org/package=jfa" class="external-link">CRAN</a> by running the following command in R:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">'jfa'</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'jfa'</span><span class="op">)</span></code></pre></div>
 <p>Alternatively, you can download the development version from GitHub using:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">'koenderks/jfa'</span><span class="op">)</span></code></pre></div>
 <p>After installation, the <code>jfa</code> package can be loaded with:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://koenderks.github.io/jfa/">jfa</a></span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://koenderks.github.io/jfa/" class="external-link">jfa</a></span><span class="op">)</span></code></pre></div>
 </div>
-<div id="2-cheat-sheet" class="section level2">
-<h2 class="hasAnchor">
-<a href="#2-cheat-sheet" class="anchor"></a>2. Cheat sheet</h2>
-<p>The cheat sheet below can help you get started with the <code>jfa</code> package and its intended workflow. You can download a <code>pdf</code> version of the cheat sheet <a href="https://github.com/koenderks/jfa/raw/development/man/figures/cheatsheet/cheatsheet.pdf">here</a>.</p>
+<div class="section level2">
+<h2 id="2-cheat-sheet">2. Cheat sheet<a class="anchor" aria-label="anchor" href="#2-cheat-sheet"></a>
+</h2>
+<p>The cheat sheet below can help you get started with the <code>jfa</code> package and its intended workflow. You can download a <code>pdf</code> version of the cheat sheet <a href="https://github.com/koenderks/jfa/raw/development/man/figures/cheatsheet/cheatsheet.pdf" class="external-link">here</a>.</p>
 <p align="center">
-<img src="https://github.com/koenderks/jfa/raw/development/man/figures/cheatsheet/cheatsheet.png" alt="cheatsheet" width="1000"></p>
+<img src="https://github.com/koenderks/jfa/raw/development/reference/figures/cheatsheet/cheatsheet.png" alt="cheatsheet" width="1000"></p>
 </div>
-<div id="3-intended-workflow" class="section level2">
-<h2 class="hasAnchor">
-<a href="#3-intended-workflow" class="anchor"></a>3. Intended workflow</h2>
+<div class="section level2">
+<h2 id="3-intended-workflow">3. Intended workflow<a class="anchor" aria-label="anchor" href="#3-intended-workflow"></a>
+</h2>
 <p align="center">
-<img src="https://github.com/koenderks/jfa/raw/development/man/figures/readme/banner/jfaBanner.png" alt="banner"></p>
-<p>Below you can find an explanation of the available functions in <code>jfa</code> sorted by their occurrence in the standard audit sampling workflow. For detailed examples of how to use these functions, visit the <a href="https://koenderks.github.io/jfa/articles/jfa.html">Get started</a> section on the package website.</p>
+<img src="https://github.com/koenderks/jfa/raw/development/reference/figures/readme/banner/jfaBanner.png" alt="banner"></p>
+<p>Below you can find an explanation of the available functions in <code>jfa</code> sorted by their occurrence in the standard audit sampling workflow. For detailed examples of how to use these functions, visit the <a href="https://koenderks.github.io/jfa/articles/jfa.html" class="external-link">Get started</a> section on the package website.</p>
 <ul>
 <li><a href="#create-a-prior-distribution-with-the-auditprior-function"><code>auditPrior()</code></a></li>
 <li><a href="#plan-a-sample-with-the-planning-function"><code>planning()</code></a></li>
@@ -165,14 +161,14 @@
 <li><a href="#evaluate-a-sample-with-the-evaluation-function"><code>evaluation()</code></a></li>
 <li><a href="#create-a-report-with-the-report-function"><code>report()</code></a></li>
 </ul>
-<div id="create-a-prior-distribution-with-the-auditprior-function" class="section level3">
-<h3 class="hasAnchor">
-<a href="#create-a-prior-distribution-with-the-auditprior-function" class="anchor"></a>Create a prior distribution with the <code>auditPrior()</code> function</h3>
-<p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
-<p>The <code><a href="reference/auditPrior.html">auditPrior()</a></code> function creates a prior probability distribution according to one of several methods, including a translation of the assessments of the inherent risk and control risk from the audit risk model. The function returns an object of class <code>jfaPrior</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. Objects with class <code>jfaPrior</code> can also be used as input for the <code>prior</code> argument in other functions. Moreover, <code>jfaPrior</code> object have a corresponding <code><a href="https://rdrr.io/r/stats/predict.html">predict()</a></code> function to produce the predictions of the prior distribution on the data level.</p>
+<div class="section level3">
+<h3 id="create-a-prior-distribution-with-the-auditprior-function">Create a prior distribution with the <code>auditPrior()</code> function<a class="anchor" aria-label="anchor" href="#create-a-prior-distribution-with-the-auditprior-function"></a>
+</h3>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
+<p>The <code><a href="reference/auditPrior.html">auditPrior()</a></code> function creates a prior probability distribution according to one of several methods, including a translation of the assessments of the inherent risk and control risk from the audit risk model. The function returns an object of class <code>jfaPrior</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods. Objects with class <code>jfaPrior</code> can also be used as input for the <code>prior</code> argument in other functions. Moreover, <code>jfaPrior</code> object have a corresponding <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> function to produce the predictions of the prior distribution on the data level.</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'default'</span>, likelihood <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'poisson'</span>, <span class="st">'binomial'</span>, <span class="st">'hypergeometric'</span><span class="op">)</span>, 
+<code class="sourceCode R"><span class="fu"><a href="reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'default'</span>, likelihood <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'poisson'</span>, <span class="st">'binomial'</span>, <span class="st">'hypergeometric'</span><span class="op">)</span>, 
            N.units <span class="op">=</span> <span class="cn">NULL</span>, alpha <span class="op">=</span> <span class="cn">NULL</span>, beta <span class="op">=</span> <span class="cn">NULL</span>, materiality <span class="op">=</span> <span class="cn">NULL</span>, expected <span class="op">=</span> <span class="fl">0</span>, 
            ir <span class="op">=</span> <span class="cn">NULL</span>, cr <span class="op">=</span> <span class="cn">NULL</span>, ub <span class="op">=</span> <span class="cn">NULL</span>, p.hmin <span class="op">=</span> <span class="cn">NULL</span>, x <span class="op">=</span> <span class="cn">NULL</span>, 
            n <span class="op">=</span> <span class="cn">NULL</span>, factor <span class="op">=</span> <span class="cn">NULL</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></code></pre></div>
@@ -217,18 +213,18 @@
 <span class="co"># A beta prior distribution which incorporates inherent risk (70%) and control risk (50%)</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'arm'</span>, likelihood <span class="op">=</span> <span class="st">'binomial'</span>, materiality <span class="op">=</span> <span class="fl">0.05</span>, ir <span class="op">=</span> <span class="fl">0.7</span>, cr <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the prior distribution</span>
-<span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span><span class="op">(</span><span class="va">x</span>, n <span class="op">=</span> <span class="fl">20</span>, cumulative <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Predictions for a sample of n = 20</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the prior distribution</span>
+<span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">x</span>, n <span class="op">=</span> <span class="fl">20</span>, cumulative <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Predictions for a sample of n = 20</span></code></pre></div>
 </div>
-<div id="plan-a-sample-with-the-planning-function" class="section level3">
-<h3 class="hasAnchor">
-<a href="#plan-a-sample-with-the-planning-function" class="anchor"></a>Plan a sample with the <code>planning()</code> function</h3>
-<p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
-<p>The <code><a href="reference/planning.html">planning()</a></code> function calculates the minimum sample size for a statistical audit sample based on the Poisson, binomial, or hypergeometric likelihood. The function returns an object of class <code>jfaPlanning</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. To perform Bayesian planning, the input for the <code>prior</code> argument can be an object of class <code>jfaPrior</code> as returned by the <code><a href="reference/auditPrior.html">auditPrior()</a></code> function, or an object of class <code>jfaPosterior</code> as returned by the <code><a href="reference/evaluation.html">evaluation()</a></code> function.</p>
+<div class="section level3">
+<h3 id="plan-a-sample-with-the-planning-function">Plan a sample with the <code>planning()</code> function<a class="anchor" aria-label="anchor" href="#plan-a-sample-with-the-planning-function"></a>
+</h3>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
+<p>The <code><a href="reference/planning.html">planning()</a></code> function calculates the minimum sample size for a statistical audit sample based on the Poisson, binomial, or hypergeometric likelihood. The function returns an object of class <code>jfaPlanning</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods. To perform Bayesian planning, the input for the <code>prior</code> argument can be an object of class <code>jfaPrior</code> as returned by the <code><a href="reference/auditPrior.html">auditPrior()</a></code> function, or an object of class <code>jfaPosterior</code> as returned by the <code><a href="reference/evaluation.html">evaluation()</a></code> function.</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="cn">NULL</span>, min.precision <span class="op">=</span> <span class="cn">NULL</span>, expected <span class="op">=</span> <span class="fl">0</span>,
-         likelihood <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'poisson'</span>, <span class="st">'binomial'</span>, <span class="st">'hypergeometric'</span><span class="op">)</span>, 
+         likelihood <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'poisson'</span>, <span class="st">'binomial'</span>, <span class="st">'hypergeometric'</span><span class="op">)</span>, 
          conf.level <span class="op">=</span> <span class="fl">0.95</span>, N.units <span class="op">=</span> <span class="cn">NULL</span>, by <span class="op">=</span> <span class="fl">1</span>, max <span class="op">=</span> <span class="fl">5000</span>, 
          prior <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
 <p><em>Supported options for the <code>likelihood</code> argument:</em></p>
@@ -252,17 +248,17 @@
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, 
               prior <span class="op">=</span> <span class="fu"><a href="reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'param'</span>, likelihood <span class="op">=</span> <span class="st">'binomial'</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the planning</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the planning</span></code></pre></div>
 </div>
-<div id="select-items-with-the-selection-function" class="section level3">
-<h3 class="hasAnchor">
-<a href="#select-items-with-the-selection-function" class="anchor"></a>Select items with the <code>selection()</code> function</h3>
-<p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
-<p>The <code><a href="reference/selection.html">selection()</a></code> function takes a data frame and performs statistical sampling according to one of three algorithms: fixed interval sampling, cell sampling, or random sampling in combination with either record (attributes) sampling or monetary unit sampling (MUS). The function returns an object of class <code>jfaSelection</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. The input for the <code>size</code> argument can be an object of class <code>jfaPlanning</code> as returned by the <code><a href="reference/planning.html">planning()</a></code> function.</p>
+<div class="section level3">
+<h3 id="select-items-with-the-selection-function">Select items with the <code>selection()</code> function<a class="anchor" aria-label="anchor" href="#select-items-with-the-selection-function"></a>
+</h3>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
+<p>The <code><a href="reference/selection.html">selection()</a></code> function takes a data frame and performs statistical sampling according to one of three algorithms: fixed interval sampling, cell sampling, or random sampling in combination with either record (attributes) sampling or monetary unit sampling (MUS). The function returns an object of class <code>jfaSelection</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods. The input for the <code>size</code> argument can be an object of class <code>jfaPlanning</code> as returned by the <code><a href="reference/planning.html">planning()</a></code> function.</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/selection.html">selection</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">size</span>, units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'items'</span>, <span class="st">'values'</span><span class="op">)</span>,
-          method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'interval'</span>, <span class="st">'cell'</span>, <span class="st">'random'</span>, <span class="st">'sieve'</span><span class="op">)</span>, values <span class="op">=</span> <span class="cn">NULL</span>,
+<code class="sourceCode R"><span class="fu"><a href="reference/selection.html">selection</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">size</span>, units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'items'</span>, <span class="st">'values'</span><span class="op">)</span>,
+          method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'interval'</span>, <span class="st">'cell'</span>, <span class="st">'random'</span>, <span class="st">'sieve'</span><span class="op">)</span>, values <span class="op">=</span> <span class="cn">NULL</span>,
           order <span class="op">=</span> <span class="cn">NULL</span>, decreasing <span class="op">=</span> <span class="cn">FALSE</span>, randomize <span class="op">=</span> <span class="cn">FALSE</span>,
           replace <span class="op">=</span> <span class="cn">FALSE</span>, start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
 <p><em>Supported options for the <code>units</code> argument:</em></p>
@@ -291,17 +287,17 @@
 <span class="co"># Selection using fixed interval monetary unit sampling (using column 'bookValues' in BuildIt)</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'values'</span>, method <span class="op">=</span> <span class="st">'interval'</span>, values <span class="op">=</span> <span class="st">'bookValues'</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the selection</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the selection</span></code></pre></div>
 </div>
-<div id="evaluate-a-sample-with-the-evaluation-function" class="section level3">
-<h3 class="hasAnchor">
-<a href="#evaluate-a-sample-with-the-evaluation-function" class="anchor"></a>Evaluate a sample with the <code>evaluation()</code> function</h3>
-<p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
-<p>The <code><a href="reference/evaluation.html">evaluation()</a></code> function takes a sample or summary statistics of the sample and performs evaluation according to the specified method and sampling objectives. The function returns an object of class <code>jfaEvalution</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html">plot()</a></code> methods. To perform Bayesian evaluation, the input for the <code>prior</code> argument can be an object of class <code>jfaPrior</code> as returned by the <code><a href="reference/auditPrior.html">auditPrior()</a></code> function, or an object of class <code>jfaPosterior</code> as returned by the <code><a href="reference/evaluation.html">evaluation()</a></code> function.</p>
+<div class="section level3">
+<h3 id="evaluate-a-sample-with-the-evaluation-function">Evaluate a sample with the <code>evaluation()</code> function<a class="anchor" aria-label="anchor" href="#evaluate-a-sample-with-the-evaluation-function"></a>
+</h3>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
+<p>The <code><a href="reference/evaluation.html">evaluation()</a></code> function takes a sample or summary statistics of the sample and performs evaluation according to the specified method and sampling objectives. The function returns an object of class <code>jfaEvalution</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods. To perform Bayesian evaluation, the input for the <code>prior</code> argument can be an object of class <code>jfaPrior</code> as returned by the <code><a href="reference/auditPrior.html">auditPrior()</a></code> function, or an object of class <code>jfaPosterior</code> as returned by the <code><a href="reference/evaluation.html">evaluation()</a></code> function.</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="cn">NULL</span>, min.precision <span class="op">=</span> <span class="cn">NULL</span>, method <span class="op">=</span> <span class="st">'poisson'</span>,
-           alternative <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'less'</span>, <span class="st">'two.sided'</span>, <span class="st">'greater'</span><span class="op">)</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, 
+           alternative <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'less'</span>, <span class="st">'two.sided'</span>, <span class="st">'greater'</span><span class="op">)</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, 
            data <span class="op">=</span> <span class="cn">NULL</span>, values <span class="op">=</span> <span class="cn">NULL</span>, values.audit <span class="op">=</span> <span class="cn">NULL</span>, times <span class="op">=</span> <span class="cn">NULL</span>, 
            x <span class="op">=</span> <span class="cn">NULL</span>, n <span class="op">=</span> <span class="cn">NULL</span>, N.units <span class="op">=</span> <span class="cn">NULL</span>, N.items <span class="op">=</span> <span class="cn">NULL</span>, 
            r.delta <span class="op">=</span> <span class="fl">2.7</span>, m.type <span class="op">=</span> <span class="st">'accounts'</span>, cs.a <span class="op">=</span> <span class="fl">1</span>, cs.b <span class="op">=</span> <span class="fl">3</span>, cs.mu <span class="op">=</span> <span class="fl">0.5</span>, 
@@ -351,115 +347,117 @@
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, 
                 prior <span class="op">=</span> <span class="fu"><a href="reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'param'</span>, likelihood <span class="op">=</span> <span class="st">'binomial'</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the evaluation</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the evaluation</span></code></pre></div>
 </div>
-<div id="create-a-report-with-the-report-function" class="section level3">
-<h3 class="hasAnchor">
-<a href="#create-a-report-with-the-report-function" class="anchor"></a>Create a report with the <code>report()</code> function</h3>
-<p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></p>
+<div class="section level3">
+<h3 id="create-a-report-with-the-report-function">Create a report with the <code>report()</code> function<a class="anchor" aria-label="anchor" href="#create-a-report-with-the-report-function"></a>
+</h3>
+<p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></p>
 <p>The <code><a href="reference/report.html">report()</a></code> function takes an object of class <code>jfaEvaluation</code> as returned by the <code><a href="reference/evaluation.html">evaluation()</a></code> function and automatically creates a <code>html</code> or <code>pdf</code> report containing the analysis results and their interpretation.</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/report.html">report</a></span><span class="op">(</span><span class="va">object</span>, file <span class="op">=</span> <span class="st">'report.html'</span>, format <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">'html_document'</span>, <span class="st">'pdf_document'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="reference/report.html">report</a></span><span class="op">(</span><span class="va">object</span>, file <span class="op">=</span> <span class="st">'report.html'</span>, format <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'html_document'</span>, <span class="st">'pdf_document'</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><em>Example usage:</em></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Generate an automatic report</span>
 <span class="fu"><a href="reference/report.html">report</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">x</span>, file <span class="op">=</span> <span class="st">'myReport.html'</span><span class="op">)</span></code></pre></div>
-<p>For an example report, see the following <a href="https://github.com/koenderks/jfa/raw/development/man/figures/readme/report/report.pdf">link</a>.</p>
+<p>For an example report, see the following <a href="https://github.com/koenderks/jfa/raw/development/man/figures/readme/report/report.pdf" class="external-link">link</a>.</p>
 </div>
 </div>
-<div id="4-benchmarks" class="section level2">
-<h2 class="hasAnchor">
-<a href="#4-benchmarks" class="anchor"></a>4. Benchmarks</h2>
-<p>To validate the statistical results, <code>jfa</code>’s automated <a href="https://github.com/koenderks/jfa/tree/development/tests/testthat">unit tests</a> regularly verify the main output from the package against the following benchmarks:</p>
+<div class="section level2">
+<h2 id="4-benchmarks">4. Benchmarks<a class="anchor" aria-label="anchor" href="#4-benchmarks"></a>
+</h2>
+<p>To validate the statistical results, <code>jfa</code>’s automated <a href="https://github.com/koenderks/jfa/tree/development/tests/testthat" class="external-link">unit tests</a> regularly verify the main output from the package against the following benchmarks:</p>
 <ul>
 <li>
-<a href="https://www.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL">Audit Sampling: Audit Guide</a> (Appendix A and Appendix C)</li>
-<li><a href="https://cplusglobal.wordpress.com/solutions/auditsampler-statistical-sampling-software/">AuditSampler</a></li>
+<a href="https://www.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL" class="external-link">Audit Sampling: Audit Guide</a> (Appendix A and Appendix C)</li>
+<li><a href="https://cplusglobal.wordpress.com/solutions/auditsampler-statistical-sampling-software/" class="external-link">AuditSampler</a></li>
 <li>
-<a href="https://cran.r-project.org/package=MUS">MUS</a> (R package version 0.1.6)</li>
+<a href="https://cran.r-project.org/package=MUS" class="external-link">MUS</a> (R package version 0.1.6)</li>
 <li>Touw, P., and Hoogduin, L. (2011). <em>Statistiek voor audit en controlling</em>. Boom uitgevers, Amsterdam.</li>
-<li><a href="https://steekproeven.eu/">SMASH21 + SMASH21-Bayes</a></li>
+<li><a href="https://steekproeven.eu/" class="external-link">SMASH21 + SMASH21-Bayes</a></li>
 </ul>
 </div>
-<div id="5-statistical-tables" class="section level2">
-<h2 class="hasAnchor">
-<a href="#5-statistical-tables" class="anchor"></a>5. Statistical tables</h2>
+<div class="section level2">
+<h2 id="5-statistical-tables">5. Statistical tables<a class="anchor" aria-label="anchor" href="#5-statistical-tables"></a>
+</h2>
 <p>Below you can find several informative tables that contain statistical sample sizes, upper limits, one-sided <em>p</em> values, and Bayes factors. These tables are created using the <code><a href="reference/planning.html">planning()</a></code> and <code><a href="reference/evaluation.html">evaluation()</a></code> functions provided in the package.</p>
 <p><em>Sample sizes</em></p>
 <ul>
-<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.ss.pdf">Sample sizes based on the Poisson distribution</a></li>
-<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.ss.pdf">Sample sizes based on the binomial distribution</a></li>
-<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.ss.pdf">Sample sizes based on the hypergeometric distribution</a></li>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.ss.pdf" class="external-link">Sample sizes based on the Poisson distribution</a></li>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.ss.pdf" class="external-link">Sample sizes based on the binomial distribution</a></li>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.ss.pdf" class="external-link">Sample sizes based on the hypergeometric distribution</a></li>
 </ul>
 <p><em>Upper limits</em></p>
 <ul>
-<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.ub.pdf">Upper limits based on the Poisson distribution</a></li>
-<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.ub.pdf">Upper limits based on the binomial distribution</a></li>
-<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables//pdf/hyper.ub.pdf">Upper limits based on the hypergeometric distribution</a></li>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.ub.pdf" class="external-link">Upper limits based on the Poisson distribution</a></li>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.ub.pdf" class="external-link">Upper limits based on the binomial distribution</a></li>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables//pdf/hyper.ub.pdf" class="external-link">Upper limits based on the hypergeometric distribution</a></li>
 </ul>
 <p><em>One-sided p values</em></p>
 <ul>
-<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.p.pdf">One-sided <em>p</em> values based on the Poisson distribution</a></li>
-<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.p.pdf">One-sided <em>p</em> values based on the binomial distribution</a></li>
-<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.p.pdf">One-sided <em>p</em> values based on the hypergeometric distribution</a></li>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.p.pdf" class="external-link">One-sided <em>p</em> values based on the Poisson distribution</a></li>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.p.pdf" class="external-link">One-sided <em>p</em> values based on the binomial distribution</a></li>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.p.pdf" class="external-link">One-sided <em>p</em> values based on the hypergeometric distribution</a></li>
 </ul>
 <p><em>Bayes factors</em></p>
 <ul>
-<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.lbfi.pdf">Impartial Bayes factors based on the gamma distribution</a></li>
-<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.lbfi.pdf">Impartial Bayes factors based on the beta distribution</a></li>
-<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.lbfi.pdf">Impartial Bayes factors based on the beta-binomial distribution</a></li>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.lbfi.pdf" class="external-link">Impartial Bayes factors based on the gamma distribution</a></li>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.lbfi.pdf" class="external-link">Impartial Bayes factors based on the beta distribution</a></li>
+<li><a href="https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.lbfi.pdf" class="external-link">Impartial Bayes factors based on the beta-binomial distribution</a></li>
 </ul>
 </div>
-<div id="6-references" class="section level2">
-<h2 class="hasAnchor">
-<a href="#6-references" class="anchor"></a>6. References</h2>
+<div class="section level2">
+<h2 id="6-references">6. References<a class="anchor" aria-label="anchor" href="#6-references"></a>
+</h2>
 <ul>
-<li>Bickel, P. J. (1992). Inference and auditing: The Stringer bound. <em>International Statistical Review</em>, 60(2), 197–209. - <a href="https://www.jstor.org/stable/1403650">View online</a>
+<li>Bickel, P. J. (1992). Inference and auditing: The Stringer bound. <em>International Statistical Review</em>, 60(2), 197–209. - <a href="https://www.jstor.org/stable/1403650" class="external-link">View online</a>
 </li>
-<li>Cox, D. R., &amp; Snell, E. J. (1979). On sampling and the estimation of rare errors. <em>Biometrika</em>, 66(1), 125-132. - <a href="https://doi.org/10.1093/biomet/66.1.125">View online</a>
+<li>Cox, D. R., &amp; Snell, E. J. (1979). On sampling and the estimation of rare errors. <em>Biometrika</em>, 66(1), 125-132. - <a href="https://doi.org/10.1093/biomet/66.1.125" class="external-link">View online</a>
 </li>
-<li>Derks, K. (2021). jfa: Bayesian and classical audit sampling. R package version 0.6.1. - <a href="https://cran.r-project.org/package=jfa">View online</a>
+<li>Derks, K. (2021). jfa: Bayesian and classical audit sampling. R package version 0.6.1. - <a href="https://cran.r-project.org/package=jfa" class="external-link">View online</a>
 </li>
-<li>Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., &amp; Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. <em>International Journal of Auditing</em>, 25(3), 621-636. - <a href="https://doi.org/10.1111/ijau.12240">View online</a>
+<li>Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., &amp; Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. <em>International Journal of Auditing</em>, 25(3), 621-636. - <a href="https://doi.org/10.1111/ijau.12240" class="external-link">View online</a>
 </li>
-<li>Derks, K., de Swart, J., Wagenmakers, E.-J., &amp; Wetzels, R. (2021). The Bayesian Approach to Audit Evidence: Quantifying Statistical Evidence using the Bayes Factor. <em>PsyArXiv</em> - <a href="https://doi.org/10.31234/osf.io/kzqp5">View online</a>
+<li>Derks, K., de Swart, J., Wagenmakers, E.-J., &amp; Wetzels, R. (2021). The Bayesian Approach to Audit Evidence: Quantifying Statistical Evidence using the Bayes Factor. <em>PsyArXiv</em> - <a href="https://doi.org/10.31234/osf.io/kzqp5" class="external-link">View online</a>
 </li>
-<li>Dworin, L. D. and Grimlund, R. A. (1984). Dollar-unit sampling for accounts receivable and inventory. <em>The Accounting Review</em>, 59(2), 218–241. - <a href="https://www.jstor.org/stable/247296">View online</a>
+<li>Derks, K., de Swart. J., Wagenmakers, E.-J., Wille, J., &amp; Wetzels, R. (2021). JASP for Audit: Bayesian Tools for the Auditing Practice. <em>Journal of Open Source Software</em>, 6(68), 2733. - <a href="https://doi.org/10.21105/joss.02733" class="external-link">View online</a>
 </li>
-<li>Dyer, D., &amp; Pierce, R. L. (1993). On the choice of the prior distribution in hypergeometric sampling. <em>Communications in Statistics - Theory and Methods</em>, 22(8), 2125-2146. - <a href="https://www.tandfonline.com/doi/abs/10.1080/03610929308831139">View online</a>
+<li>Dworin, L. D. and Grimlund, R. A. (1984). Dollar-unit sampling for accounts receivable and inventory. <em>The Accounting Review</em>, 59(2), 218–241. - <a href="https://www.jstor.org/stable/247296" class="external-link">View online</a>
 </li>
-<li>Hoogduin, L. A., Hall, T. W., &amp; Tsay, J. J. (2010). Modified sieve sampling: A method for single-and multi-stage probability-proportional-to-size sampling. <em>Auditing: A Journal of Practice &amp; Theory</em>, 29(1), 125-148. - <a href="https://doi.org/10.2308/aud.2010.29.1.125">View online</a>
+<li>Dyer, D., &amp; Pierce, R. L. (1993). On the choice of the prior distribution in hypergeometric sampling. <em>Communications in Statistics - Theory and Methods</em>, 22(8), 2125-2146. - <a href="https://www.tandfonline.com/doi/abs/10.1080/03610929308831139" class="external-link">View online</a>
+</li>
+<li>Hoogduin, L. A., Hall, T. W., &amp; Tsay, J. J. (2010). Modified sieve sampling: A method for single-and multi-stage probability-proportional-to-size sampling. <em>Auditing: A Journal of Practice &amp; Theory</em>, 29(1), 125-148. - <a href="https://doi.org/10.2308/aud.2010.29.1.125" class="external-link">View online</a>
 </li>
 <li>International Auditing and Assurance Standards Board (IAASB). (2018). <em>Handbook of international quality control, auditing review, other assurance, and related services pronouncements (Vol. I)</em>. New York: International Federation of Accountants.</li>
 <li>Meikle, G. R. (1972). <em>Statistical Sampling in an Audit Context</em>. Canadian Institute of Chartered Accountants.</li>
 <li>Leslie, D. A., Teitlebaum, A. D., &amp; Anderson, R. J. (1979). <em>Dollar-unit Sampling: A Practical Guide for Auditors</em>. London: Pitman.</li>
-<li>Pap, G., &amp; van Zuijlen, M. C. (1996). On the asymptotic behaviour of the Stringer bound. <em>Statistica Neerlandica</em>, 50(3), 367-389. - <a href="https://doi.org/10.1111/j.1467-9574.1996.tb01503.x">View online</a>
+<li>Pap, G., &amp; van Zuijlen, M. C. (1996). On the asymptotic behaviour of the Stringer bound. <em>Statistica Neerlandica</em>, 50(3), 367-389. - <a href="https://doi.org/10.1111/j.1467-9574.1996.tb01503.x" class="external-link">View online</a>
 </li>
 <li>Rietveld, C. (1978). De zeefmethode als selectiemethode voor statistische steekproeven in de controlepraktijk (1). <em>Compact: Computer en Accountant</em>, 15, 2–11.</li>
 <li>Rohrbach, K. J. (1993). Variance augmentation to achieve nominal coverage probability in sampling from audit populations. <em>Auditing: A Journal of Practice &amp; Theory</em>, 12(2), 79-97.</li>
 <li>Steele, A. (1992). <em>Audit Risk and Audit Evidence: The Bayesian Approach to Statistical Auditing</em>. San Diego: Academic Press.</li>
-<li>Stewart, T. R. (2012). <em>Technical Notes on the AICPA Audit Guide Audit Sampling</em>. American Institute of Certified Public Accountants, New York. - <a href="https://us.aicpa.org/content/dam/aicpa/publications/accountingauditing/keytopics/downloadabledocuments/sampling-guide-technical-notes.pdf">View online</a>
+<li>Stewart, T. R. (2012). <em>Technical Notes on the AICPA Audit Guide Audit Sampling</em>. American Institute of Certified Public Accountants, New York. - <a href="https://us.aicpa.org/content/dam/aicpa/publications/accountingauditing/keytopics/downloadabledocuments/sampling-guide-technical-notes.pdf" class="external-link">View online</a>
 </li>
-<li>Stewart, T. R. (2013). <em>A Bayesian Audit Assurance Model with Application to the Component Materiality problem in Group Audits.</em> VU University, Amsterdam. - <a href="https://research.vu.nl/en/publications/a-bayesian-audit-assurance-model-with-application-to-the-componen">View online</a>
+<li>Stewart, T. R. (2013). <em>A Bayesian Audit Assurance Model with Application to the Component Materiality problem in Group Audits.</em> VU University, Amsterdam. - <a href="https://research.vu.nl/en/publications/a-bayesian-audit-assurance-model-with-application-to-the-componen" class="external-link">View online</a>
 </li>
-<li>Talens, E. (2005). <em>Statistical Auditing and the AOQL-method</em>. University of Groningen, Groningen. - <a href="https://research.rug.nl/en/publications/statistical-auditing-and-the-aoql-method">View online</a>
+<li>Talens, E. (2005). <em>Statistical Auditing and the AOQL-method</em>. University of Groningen, Groningen. - <a href="https://research.rug.nl/en/publications/statistical-auditing-and-the-aoql-method" class="external-link">View online</a>
 </li>
 <li>Touw, P., and Hoogduin, L. (2011). <em>Statistiek voor Audit en Controlling</em>. Boom uitgevers, Amsterdam.</li>
-<li>Weiler, H. (1965). The use of incomplete beta functions for prior distributions in binomial sampling. <em>Technometrics</em>, 7(3), 335-347. - <a href="https://www.tandfonline.com/doi/abs/10.1080/00401706.1965.10490267">View online</a>
+<li>Weiler, H. (1965). The use of incomplete beta functions for prior distributions in binomial sampling. <em>Technometrics</em>, 7(3), 335-347. - <a href="https://www.tandfonline.com/doi/abs/10.1080/00401706.1965.10490267" class="external-link">View online</a>
 </li>
 </ul>
 </div>
-<div id="7-package-statistics" class="section level2">
-<h2 class="hasAnchor">
-<a href="#7-package-statistics" class="anchor"></a>7. Package statistics</h2>
-<p><img src="https://github.com/koenderks/jfa/raw/development/man/figures/readme/downloads/downloads.svg" width="50%"><img src="https://github.com/koenderks/jfa/raw/development/man/figures/readme/worldmap/worldmap.svg" width="50%"></p>
+<div class="section level2">
+<h2 id="7-package-statistics">7. Package statistics<a class="anchor" aria-label="anchor" href="#7-package-statistics"></a>
+</h2>
+<p><img src="https://github.com/koenderks/jfa/raw/development/reference/figures/readme/downloads/downloads.svg" width="50%"><img src="https://github.com/koenderks/jfa/raw/development/reference/figures/readme/worldmap/worldmap.svg" width="50%"></p>
 </div>
-<div id="8-contributing" class="section level2">
-<h2 class="hasAnchor">
-<a href="#8-contributing" class="anchor"></a>8. Contributing</h2>
-<p><code>jfa</code> is an open-source project that aims to be useful for the audit community. Your help in benchmarking and extending <code>jfa</code> is therefore greatly appreciated. Contributing to <code>jfa</code> does not have to take much time or knowledge, and there is extensive information available about it on the <a href="https://github.com/koenderks/jfa/wiki">Wiki</a> of this repository.</p>
-<p>If you are willing to contribute to the improvement of the package by adding a benchmark, please check out the Wiki page on <a href="https://github.com/koenderks/jfa/wiki/Benchmarks">how to contribute a benchmark to jfa</a>. If you are willing to contribute to the improvement of the package by adding a new statistical method, please check the Wiki page on <a href="https://github.com/koenderks/jfa/wiki/Methods">how to contribute a new method to jfa</a>.</p>
+<div class="section level2">
+<h2 id="8-contributing">8. Contributing<a class="anchor" aria-label="anchor" href="#8-contributing"></a>
+</h2>
+<p><code>jfa</code> is an open-source project that aims to be useful for the audit community. Your help in benchmarking and extending <code>jfa</code> is therefore greatly appreciated. Contributing to <code>jfa</code> does not have to take much time or knowledge, and there is extensive information available about it on the <a href="https://github.com/koenderks/jfa/wiki" class="external-link">Wiki</a> of this repository.</p>
+<p>If you are willing to contribute to the improvement of the package by adding a benchmark, please check out the Wiki page on <a href="https://github.com/koenderks/jfa/wiki/Benchmarks" class="external-link">how to contribute a benchmark to jfa</a>. If you are willing to contribute to the improvement of the package by adding a new statistical method, please check the Wiki page on <a href="https://github.com/koenderks/jfa/wiki/Methods" class="external-link">how to contribute a new method to jfa</a>.</p>
 </div>
 </div>
 
@@ -467,63 +465,67 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=jfa">https://​cloud.r-project.org/​package=jfa</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/koenderks/jfa/">https://​github.com/​koenderks/​jfa/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/koenderks/jfa/issues">https://​github.com/​koenderks/​jfa/​issues</a>
-</li>
+<li><a href="https://cloud.r-project.org/package=jfa" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/koenderks/jfa/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/koenderks/jfa/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
+
 <div class="license">
-<h2>License</h2>
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://www.r-project.org/Licenses/GPL-3">GPL-3</a></li>
+<li><a href="https://www.r-project.org/Licenses/GPL-3" class="external-link">GPL-3</a></li>
 </ul>
 </div>
+
 <div class="community">
-<h2>Community</h2>
+<h2 data-toc-skip>Community</h2>
 <ul class="list-unstyled">
 <li><a href="CONTRIBUTING.html">Contributing guide</a></li>
 <li><a href="CODE_OF_CONDUCT.html">Code of conduct</a></li>
 </ul>
 </div>
+
 <div class="citation">
-<h2>Citation</h2>
+<h2 data-toc-skip>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html">Citing jfa</a></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>Koen Derks <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-5533-9349" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li><a href="authors.html#citation">Citing jfa</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
-<li><a href="https://cran.r-project.org/package=jfa"><img src="https://img.shields.io/cran/v/jfa?color=yellow&amp;label=CRAN&amp;logo=r" alt="CRAN"></a></li>
-<li><a href="https://github.com/koenderks/jfa/actions"><img src="https://github.com/koenderks/jfa/workflows/Build/badge.svg" alt="R_build_status"></a></li>
-<li><a href="https://app.codecov.io/gh/koenderks/jfa"><img src="https://codecov.io/gh/koenderks/jfa/branch/development/graph/badge.svg?token=ZoxIB8p8PW" alt="Codecov"></a></li>
-<li><a href="https://github.com/koenderks/jfa/issues?q=is%3Aopen+is%3Aissue+label%3Abug"><img src="https://img.shields.io/github/issues/koenderks/jfa/bug?label=Bugs&amp;logo=github&amp;logoColor=%23FFF&amp;color=brightgreen" alt="Bugs"></a></li>
-<li><a href="https://cranlogs.r-pkg.org"><img src="https://cranlogs.r-pkg.org/badges/jfa?color=blue" alt="Monthly"></a></li>
-<li><a href="https://cranlogs.r-pkg.org"><img src="https://cranlogs.r-pkg.org/badges/grand-total/jfa?color=blue" alt="Total"></a></li>
+<li>Koen Derks <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-5533-9349" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://cran.r-project.org/package=jfa" class="external-link"><img src="https://img.shields.io/cran/v/jfa?color=yellow&amp;label=CRAN&amp;logo=r" alt="CRAN"></a></li>
+<li><a href="https://github.com/koenderks/jfa/actions" class="external-link"><img src="https://github.com/koenderks/jfa/workflows/Build/badge.svg" alt="R_build_status"></a></li>
+<li><a href="https://app.codecov.io/gh/koenderks/jfa" class="external-link"><img src="https://codecov.io/gh/koenderks/jfa/branch/development/graph/badge.svg?token=ZoxIB8p8PW" alt="Codecov"></a></li>
+<li><a href="https://github.com/koenderks/jfa/issues?q=is%3Aopen+is%3Aissue+label%3Abug" class="external-link"><img src="https://img.shields.io/github/issues/koenderks/jfa/bug?label=Bugs&amp;logo=github&amp;logoColor=%23FFF&amp;color=brightgreen" alt="Bugs"></a></li>
+<li><a href="https://cranlogs.r-pkg.org" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/jfa?color=blue" alt="Monthly"></a></li>
+<li><a href="https://cranlogs.r-pkg.org" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/jfa?color=blue" alt="Total"></a></li>
+</ul>
 </div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by Koen Derks.</p>
+  <p></p>
+<p>Developed by Koen Derks.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
 </div>
 
       </footer>
@@ -531,6 +533,8 @@
 
   
 
+
+  
 
   </body>
 </html>

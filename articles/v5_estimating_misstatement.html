@@ -26,6 +26,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -38,18 +40,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">jfa</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.6.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.2</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="../index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="../articles/jfa.html">Get started</a>
 </li>
@@ -92,7 +88,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/koenderks/jfa/">
+  <a href="https://github.com/koenderks/jfa/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -111,86 +107,86 @@
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Evaluation: Estimating misstatement</h1>
-                        <h4 class="author">Koen Derks</h4>
+                        <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 class="date">last modified: 19-08-2021</h4>
+            <h4 data-toc-skip class="date">last modified: 19-08-2021</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/master/vignettes/v5_estimating_misstatement.Rmd"><code>vignettes/v5_estimating_misstatement.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/v5_estimating_misstatement.Rmd" class="external-link"><code>vignettes/v5_estimating_misstatement.Rmd</code></a></small>
       <div class="hidden name"><code>v5_estimating_misstatement.Rmd</code></div>
 
     </div>
 
     
     
-<div id="estimation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#estimation" class="anchor"></a>Estimation</h2>
+<div class="section level2">
+<h2 id="estimation">Estimation<a class="anchor" aria-label="anchor" href="#estimation"></a>
+</h2>
 <p>When performing estimation the auditor tries to determine the unknown misstatement in the population on the basis of a sample. Generally, estimation implies that there is a minimal amount of assurance to be obtained about the precision / accuracy of your estimate (i.e., the most likely error - the upper bound). This inference about the population misstatement can be performed using the <code><a href="../reference/evaluation.html">evaluation()</a></code> function by specifying the <code>min.precision</code> argument and providing the sample data or summary statistics.</p>
-<div id="classical-estimation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#classical-estimation" class="anchor"></a>Classical estimation</h3>
+<div class="section level3">
+<h3 id="classical-estimation">Classical estimation<a class="anchor" aria-label="anchor" href="#classical-estimation"></a>
+</h3>
 <p>Suppose your sampling objective is to estimate the misstatement with a precision of 2%. You have planned a sample of <em>n</em> = 188 items from which <em>x</em> = 1 turns out a contain an error. Standard classical evaluation using the Poisson distribution can be performed using the example code below.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">result_classical</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>min.precision <span class="op">=</span> <span class="fl">0.02</span>, method <span class="op">=</span> <span class="st">"poisson"</span>, n <span class="op">=</span> <span class="fl">188</span>, x <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
-<p>Calling the <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> function on the result from the <code><a href="../reference/evaluation.html">evaluation()</a></code> function provides the estimates for the most likely error, the 95% upper bound, and the precision.</p>
+<p>Calling the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function on the result from the <code><a href="../reference/evaluation.html">evaluation()</a></code> function provides the estimates for the most likely error, the 95% upper bound, and the precision.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">result_classical</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-##  Classical Audit Sample Evaluation Summary
-## 
-## Options:
-##   Confidence level:               0.95 
-##   Materiality:                    1 
-##   Min. precision:                 0.02 
-##   Method:                         poisson 
-## 
-## Data:
-##   Sample size:                    188 
-##   Number of errors:               1 
-##   Sum of taints:                  1 
-## 
-## Results:
-##   Most likely error:              0.0053191 
-##   95 percent confidence interval: [0, 0.025233] 
-##   Precision:                      0.019914</code></pre>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_classical</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## </span>
+<span class="co">##  Classical Audit Sample Evaluation Summary</span>
+<span class="co">## </span>
+<span class="co">## Options:</span>
+<span class="co">##   Confidence level:               0.95 </span>
+<span class="co">##   Materiality:                    1 </span>
+<span class="co">##   Min. precision:                 0.02 </span>
+<span class="co">##   Method:                         poisson </span>
+<span class="co">## </span>
+<span class="co">## Data:</span>
+<span class="co">##   Sample size:                    188 </span>
+<span class="co">##   Number of errors:               1 </span>
+<span class="co">##   Sum of taints:                  1 </span>
+<span class="co">## </span>
+<span class="co">## Results:</span>
+<span class="co">##   Most likely error:              0.0053191 </span>
+<span class="co">##   95 percent confidence interval: [0, 0.025233] </span>
+<span class="co">##   Precision:                      0.019914</span></code></pre>
 <p>As we can see, the most likely error in the population is 1 / 188 = 0.53% and the 95% (one-sided) confidence interval ranges from 0% to 2.52%. Consequently, the precision of the estimate is 2.52% - 0.53% = 1.99%. This means that this sample provides sufficient information to estimate the misstatement in the population with a precision of 2%.</p>
 </div>
-<div id="bayesian-estimation" class="section level3">
-<h3 class="hasAnchor">
-<a href="#bayesian-estimation" class="anchor"></a>Bayesian estimation</h3>
-<p>In principle Bayesian estimation follows the same procedure as its classical counterpart, with the exception that a prior distribution must be provided to the <code><a href="../reference/evaluation.html">evaluation()</a></code> function. Therefore, the first step is to set up a prior distribution (see also the vignette <a href="https://koenderks.github.io/jfa/articles/v3_prior_distributions.html">Prior distributions</a>). For illustration, we will assume a <code>default</code> <em>gamma(1, 1)</em> prior distribution.</p>
+<div class="section level3">
+<h3 id="bayesian-estimation">Bayesian estimation<a class="anchor" aria-label="anchor" href="#bayesian-estimation"></a>
+</h3>
+<p>In principle Bayesian estimation follows the same procedure as its classical counterpart, with the exception that a prior distribution must be provided to the <code><a href="../reference/evaluation.html">evaluation()</a></code> function. Therefore, the first step is to set up a prior distribution (see also the vignette <a href="https://koenderks.github.io/jfa/articles/v3_prior_distributions.html" class="external-link">Prior distributions</a>). For illustration, we will assume a <code>default</code> <em>gamma(1, 1)</em> prior distribution.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"default"</span>, likelihood <span class="op">=</span> <span class="st">"poisson"</span><span class="op">)</span></code></pre></div>
-<p>The sample outcomes together with the prior distribution can then be provided to the evaluation function. Once again, the <code><a href="https://rdrr.io/r/base/summary.html">summary()</a></code> function provides the estimates for the most likely error, the 95% upper bound, and the precision. Note that, because the prior is already constructed for use with a <code>poisson</code> likelihood, the <code>method</code> argument does not need to be provided to the <code><a href="../reference/evaluation.html">evaluation()</a></code> function.</p>
+<p>The sample outcomes together with the prior distribution can then be provided to the evaluation function. Once again, the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function provides the estimates for the most likely error, the 95% upper bound, and the precision. Note that, because the prior is already constructed for use with a <code>poisson</code> likelihood, the <code>method</code> argument does not need to be provided to the <code><a href="../reference/evaluation.html">evaluation()</a></code> function.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">result_bayesian</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>min.precision <span class="op">=</span> <span class="fl">0.02</span>, n <span class="op">=</span> <span class="fl">188</span>, x <span class="op">=</span> <span class="fl">1</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">result_bayesian</span><span class="op">)</span></code></pre></div>
-<pre><code>## 
-##  Bayesian Audit Sample Evaluation Summary
-## 
-## Options:
-##   Confidence level:               0.95 
-##   Materiality:                    1 
-##   Min. precision:                 0.02 
-##   Method:                         poisson 
-##   Prior distribution:             gamma(α = 1, β = 1) 
-## 
-## Data:
-##   Sample size:                    188 
-##   Number of errors:               1 
-##   Sum of taints:                  1 
-## 
-## Results:
-##   Posterior distribution:         gamma(α = 2, β = 189) 
-##   Most likely error:              0.005291 
-##   95 percent credible interval:   [0, 0.0251] 
-##   Precision:                      0.019809</code></pre>
+<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_bayesian</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## </span>
+<span class="co">##  Bayesian Audit Sample Evaluation Summary</span>
+<span class="co">## </span>
+<span class="co">## Options:</span>
+<span class="co">##   Confidence level:               0.95 </span>
+<span class="co">##   Materiality:                    1 </span>
+<span class="co">##   Min. precision:                 0.02 </span>
+<span class="co">##   Method:                         poisson </span>
+<span class="co">##   Prior distribution:             gamma(α = 1, β = 1) </span>
+<span class="co">## </span>
+<span class="co">## Data:</span>
+<span class="co">##   Sample size:                    188 </span>
+<span class="co">##   Number of errors:               1 </span>
+<span class="co">##   Sum of taints:                  1 </span>
+<span class="co">## </span>
+<span class="co">## Results:</span>
+<span class="co">##   Posterior distribution:         gamma(α = 2, β = 189) </span>
+<span class="co">##   Most likely error:              0.005291 </span>
+<span class="co">##   95 percent credible interval:   [0, 0.0251] </span>
+<span class="co">##   Precision:                      0.019809</span></code></pre>
 <p>As we can see, the posterior distribution is a <em>gamma(2, 189)</em> distribution. This distribution implies a most likely error in the population is 0.53% and a 95% (one-sided) confidence interval that ranges from 0% to 2.51%. Consequently, the precision of the estimate is 2.51% - 0.53% = 1.98%. Also in the Bayesian framework, this sample provides sufficient information to estimate the misstatement in the population with a precision of 2%.</p>
 </div>
 </div>
-<div id="references" class="section level2">
-<h2 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h2>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
 <ul>
 <li><p>Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., and Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. <em>International Journal of Auditing</em>, 25(3), 621-636.</p></li>
 <li><p>Stewart, T. R. (2012). <em>Technical Notes on the AICPA Audit Guide Audit Sampling</em>. American Institute of Certified Public Accountants, New York.</p></li>
@@ -210,11 +206,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Koen Derks.</p>
+  <p></p>
+<p>Developed by Koen Derks.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.0.</p>
 </div>
 
       </footer>
@@ -222,6 +220,8 @@
 
   
 
+
+  
 
   </body>
 </html>
