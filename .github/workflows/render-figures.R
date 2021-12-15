@@ -110,10 +110,10 @@ world.map <-  ggplot2::ggplot(data=world.points) +
   ggplot2::scale_fill_gradient2(low = 'white',
                                 mid = rgb(107, 146, 237, maxColorValue = 255),
                                 high = rgb(48, 68, 115, maxColorValue = 255),
-                                midpoint = 5000,
+                                midpoint = 10000,
                                 na.value = 'white',
                                 name = '',
-                                limits = c(0, 10000)) +
+                                limits = c(0, 20000)) +
   ggplot2::theme(axis.line = ggplot2::element_blank(),
                  axis.text = ggplot2::element_blank(),
                  axis.ticks = ggplot2::element_blank(),
