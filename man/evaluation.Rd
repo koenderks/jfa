@@ -9,7 +9,7 @@ evaluation(materiality = NULL, min.precision = NULL, method = 'poisson',
            data = NULL, values = NULL, values.audit = NULL, times = NULL,
            x = NULL, n = NULL, N.units = NULL, N.items = NULL,
            r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5,
-           prior = FALSE)
+           prior = FALSE, predictive = FALSE)
 }
 \arguments{
 \item{materiality}{a numeric value between 0 and 1 specifying the performance materiality (maximum tolerable error) as a fraction of the total size of the population. If specified, the function also returns the conclusion of the analysis with respect to the performance materiality. The value is discarded when \code{direct}, \code{difference}, \code{quotient}, or \code{regression} method is chosen.}
@@ -49,6 +49,8 @@ evaluation(materiality = NULL, min.precision = NULL, method = 'poisson',
 \item{cs.mu}{if \code{method = "coxsnell"}, a numeric value between 0 and 1 specifying the mean of the prior distribution on the mean taint. Defaults to 0.5 as recommended by Cox and Snell (1979).}
 
 \item{prior}{a logical specifying if a prior distribution must be used, or an object of class \code{jfaPrior} or \code{jfaPosterior} containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a minimal information prior is chosen by default. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
+
+\item{predictive}{a logical specifying whether to include the prior predictive distribution in the \code{posterior} output. Requires the use of a prior distribution.}
 }
 \value{
 An object of class \code{jfaEvaluation} containing:

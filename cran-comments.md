@@ -1,9 +1,8 @@
-# jfa version 0.6.1
+# jfa version 0.6.2
 
-This is a submission for version 0.6.1. In this version I have:
+This is a submission for version 0.6.2. In this version I have:
 
-* Fixed a few bugs in two functions.
-* Added extra functionality in one of the functions.
+* Added an argument to several functions that provides control over the output.
 
 ## Test environments
 

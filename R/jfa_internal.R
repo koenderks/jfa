@@ -15,6 +15,9 @@
   if ((shape1 == 1 && shape2 == 1) || shape1 == 0 || shape2 == 0) {
     return(NA)
   }
+  if (shape1 == 1 && shape2 > 1) {
+    return(0)
+  }
   index <- which.max(extraDistr::dbbinom(x = 0:N, size = N, alpha = shape1, beta = shape2)) - 1
   return(index)
 }

@@ -8,7 +8,7 @@
 #' @usage planning(materiality = NULL, min.precision = NULL, expected = 0,
 #'          likelihood = c('poisson', 'binomial', 'hypergeometric'),
 #'          conf.level = 0.95, N.units = NULL, by = 1, max = 5000,
-#'          prior = FALSE)
+#'          prior = FALSE, predictive = FALSE)
 #'
 #' @param materiality   a numeric value between 0 and 1 specifying the performance materiality (i.e., maximum upper limit) as a fraction of the total population size. Can be \code{NULL}, but \code{min.precision} should be specified in that case.
 #' @param min.precision a numeric value between 0 and 1 specifying the minimum precision (i.e., upper bound minus most likely error) as a fraction of the total population size. Can be \code{NULL}, but \code{materiality} should be specified in that case.
@@ -16,9 +16,10 @@
 #' @param likelihood    a character specifying the likelihood assumed in the calculation. This can be either \code{poisson} (default) for the Poisson likelihood, \code{binomial} for the binomial likelihood, or \code{hypergeometric} for the hypergeometric likelihood. See the details section for more information about the available likelihoods.
 #' @param conf.level    a numeric value between 0 and 1 specifying the confidence level used in the planning. Defaults to 0.95 for 95\% confidence.
 #' @param N.units       an integer larger than 0 specifying the total number of units or items in the population (i.e., the population size). Only required when \code{likelihood = 'hypergeometric'}.
-#' @param prior         a logical specifying whether to use a prior distribution when planning, or an object of class \code{jfaPrior} or \code{jfaPosterior} containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a minimal information prior is chosen by default. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.
 #' @param by            an integer larger than 0 specifying the desired increment for the sample size calculation.
 #' @param max           an integer larger than 0 specifying the maximum sample size that is considered in the calculation. Defaults to 5000 for efficiency. Increase this value if the sample size cannot be found due to it being too large (e.g., for a low materiality).
+#' @param prior         a logical specifying whether to use a prior distribution when planning, or an object of class \code{jfaPrior} or \code{jfaPosterior} containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a minimal information prior is chosen by default. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.
+#' @param predictive    a logical specifying whether to include the prior predictive distribution in the \code{posterior} output. Requires the use of a prior distribution.
 #'
 #' @details This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
 #'
@@ -76,7 +77,7 @@
 planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
                      likelihood = c("poisson", "binomial", "hypergeometric"),
                      conf.level = 0.95, N.units = NULL, by = 1, max = 5000,
-                     prior = FALSE) {
+                     prior = FALSE, predictive = FALSE) {
   proper <- TRUE
   bayesian <- (class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")
   likelihood <- match.arg(likelihood)
@@ -239,7 +240,7 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
     } else {
       result[["prior"]] <- auditPrior(
         conf.level = conf.level, materiality = result[["materiality"]], method = "sample",
-        likelihood = likelihood, N.units = result[["N.units"]], n = prior.n, x = prior.x
+        likelihood = likelihood, N.units = result[["N.units"]], n = prior.n, x = prior.x, predictive = predictive
       )
     }
   }
@@ -331,7 +332,7 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
       result[["posterior"]][["hypotheses"]]$bf.h0 <- 1 / result[["posterior"]][["hypotheses"]]$bf.h1
     }
     # Create the posterior predictive section
-    if (likelihood != "hypergeometric" && !is.null(result[["N.units"]])) {
+    if (predictive && likelihood != "hypergeometric" && !is.null(result[["N.units"]])) {
       result[["posterior"]][["predictive"]] <- list()
       result[["posterior"]][["predictive"]]$predictive <- switch(likelihood,
         "poisson" = paste0("Negative-binomial(r = ", round(result[["posterior"]][["description"]]$alpha, 3), ", p = ", round(1 / (1 + result[["posterior"]][["description"]]$beta), 3), ")"),

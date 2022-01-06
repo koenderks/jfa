@@ -8,12 +8,11 @@
 #' @usage auditPrior(method = 'default', likelihood = c('poisson', 'binomial', 'hypergeometric'),
 #'            N.units = NULL, alpha = NULL, beta = NULL, materiality = NULL, expected = 0,
 #'            ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL, x = NULL,
-#'            n = NULL, factor = NULL, conf.level = 0.95)
+#'            n = NULL, factor = NULL, conf.level = 0.95, predictive = FALSE)
 #'
 #' @param method          a character specifying the method by which the prior distribution is constructed. Defaults to \code{default} which incorporates no existing information. Other options are \code{strict}, \code{arm}, \code{bram}, \code{impartial}, \code{hyp}, \code{sample}, and \code{factor}. See the details section for more information about the available methods.
 #' @param likelihood      a character specifying the likelihood assumed when updating the prior distribution. This can be either \code{poisson} (default) for the Poisson likelihood and gamma prior distribution, \code{biomial} for the binomial likelihood and beta prior distribution, or \code{hypergeometric} for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.
 #' @param expected        a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a numeric value (>= 1) that represents the sum of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.
-#' @param conf.level      a numeric value between 0 and 1 specifying the confidence level to be used in the planning. Defaults to 0.95 for 95\% confidence. Used to calculate the upper bound of the prior distribution.
 #' @param materiality     a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum upper limit) as a fraction of the total population size. Can be \code{NULL} for some methods.
 #' @param N.units         an numeric value larger than 0 specifying the total number of units in the population. Optional unless \code{likelihood = 'hypergeometric'}.
 #' @param ir              if \code{method = 'arm'}, a numeric value between 0 and 1 specifying the inherent risk in the audit risk model. Defaults to 1 for 100\% risk.
@@ -25,6 +24,8 @@
 #' @param factor          if \code{method = 'factor'}, a numeric value between 0 and 1 specifying the weighting factor for the results of the sample equivalent to the prior information.
 #' @param alpha           if \code{method = 'param'}, a numeric value specifying the \eqn{\alpha} parameter of the prior distribution.
 #' @param beta            if \code{method = 'param'}, a numeric value specifying the \eqn{\beta} parameter of the prior distribution.
+#' @param conf.level      a numeric value between 0 and 1 specifying the confidence level to be used in the planning. Defaults to 0.95 for 95\% confidence. Used to calculate the upper bound of the prior distribution.
+#' @param predictive      a logical specifying whether to include the prior predictive distribution in the \code{posterior} output.
 #'
 #' @details \code{auditPrior} is used to define prior distributions for parameters in \code{jfa} models. To perform Bayesian audit sampling, you must assign a prior distribution to the misstatement parameter \eqn{\theta}.
 #'          The prior is a probability distribution that reflects the existing information about the parameter before seeing a sample. To keep the priors proper, the \code{default} priors used by \code{jfa} are very diffuse,
@@ -92,7 +93,7 @@
 auditPrior <- function(method = "default", likelihood = c("poisson", "binomial", "hypergeometric"),
                        N.units = NULL, alpha = NULL, beta = NULL, materiality = NULL, expected = 0,
                        ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL, x = NULL,
-                       n = NULL, factor = NULL, conf.level = 0.95) {
+                       n = NULL, factor = NULL, conf.level = 0.95, predictive = FALSE) {
   likelihood <- match.arg(likelihood)
   if (!(method %in% c("default", "strict", "param", "impartial", "hyp", "arm", "bram", "sample", "factor")) || length(method) != 1) {
     stop("'method' should be one of 'default', 'strict', 'param', 'impartial', 'hyp', 'arm', 'bram', 'sample', 'factor'")
@@ -342,7 +343,7 @@ auditPrior <- function(method = "default", likelihood = c("poisson", "binomial",
     )
   }
   # Create the prior predictive section
-  if (likelihood != "hypergeometric" && !is.null(N.units)) {
+  if (predictive && likelihood != "hypergeometric" && !is.null(N.units)) {
     predictive <- list()
     predictive[["predictive"]] <- switch(likelihood,
       "poisson" = paste0("Negative-binomial(r = ", round(description[["alpha"]], 3), ", p = ", round(1 / (1 + description[["beta"]]), 3), ")"),
