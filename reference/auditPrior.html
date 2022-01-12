@@ -158,7 +158,7 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="/logo.png">
     <div id="details">
     <h2>Details</h2>
     <p><code>auditPrior</code> is used to define prior distributions for parameters in <code>jfa</code> models. To perform Bayesian audit sampling, you must assign a prior distribution to the misstatement parameter \(\theta\).
-         The prior is a probability distribution that reflects the existing information about the parameter before seeing a sample. To keep the priors proper, the <code>default</code> priors used by <code>jfa</code> are very diffuse,
+         The prior is a probability distribution that reflects the existing information about the parameter before seeing a sample. To keep the priors proper, the <code>default</code> priors used by <code>jfa</code> are indifferent as much as possible,
          meaning they contain minimal prior information. However, it is strongly recommended to use an informed prior distribution when possible.</p>
 <p>This section elaborates on the available options for the <code>method</code> argument.</p>
 <ul><li><p><code>default</code>:    This method produces <em>gamma(1, 1)</em>, <em>beta(1, 1)</em>, and <em>beta-binomial(N, 1, 1)</em> prior distributions which incorporate minimal information about the possible values of the misstatement.</p></li>
