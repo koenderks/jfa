@@ -28,7 +28,7 @@
 #' @param predictive      a logical specifying whether to include the prior predictive distribution in the \code{posterior} output.
 #'
 #' @details \code{auditPrior} is used to define prior distributions for parameters in \code{jfa} models. To perform Bayesian audit sampling, you must assign a prior distribution to the misstatement parameter \eqn{\theta}.
-#'          The prior is a probability distribution that reflects the existing information about the parameter before seeing a sample. To keep the priors proper, the \code{default} priors used by \code{jfa} are very diffuse,
+#'          The prior is a probability distribution that reflects the existing information about the parameter before seeing a sample. To keep the priors proper, the \code{default} priors used by \code{jfa} are indifferent as much as possible,
 #'          meaning they contain minimal prior information. However, it is strongly recommended to use an informed prior distribution when possible.
 #'
 #' @details This section elaborates on the available options for the \code{method} argument.
@@ -259,7 +259,6 @@ auditPrior <- function(method = "default", likelihood = c("poisson", "binomial",
   )
   description[["implicit.x"]] <- prior.x
   description[["implicit.n"]] <- prior.n
-  description[["proper"]] <- description[["alpha"]] != 0 && description[["beta"]] != 0
   # Create the prior string
   prior.string <- switch(likelihood,
     "poisson" = paste0("gamma(\u03B1 = ", round(description[["alpha"]], 3), ", \u03B2 = ", round(description[["beta"]], 3), ")"),

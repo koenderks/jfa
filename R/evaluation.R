@@ -135,7 +135,6 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = "poiss
                        x = NULL, n = NULL, N.units = NULL, N.items = NULL,
                        r.delta = 2.7, m.type = "accounts", cs.a = 1, cs.b = 3, cs.mu = 0.5,
                        prior = FALSE, predictive = FALSE) {
-  proper <- TRUE
   alternative <- match.arg(alternative)
   bayesian <- (class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")
   # Import existing prior distribution with class 'jfaPrior' or 'jfaPosterior'.
@@ -146,7 +145,6 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = "poiss
     if (!is.null(prior[["N.units"]])) {
       N.units <- prior[["N.units"]]
     }
-    proper <- prior[["description"]]$alpha != 0 && prior[["description"]]$beta != 0
   } else {
     prior.n <- 1
     prior.x <- 0

@@ -78,7 +78,6 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
                      likelihood = c("poisson", "binomial", "hypergeometric"),
                      conf.level = 0.95, N.units = NULL, by = 1, max = 5000,
                      prior = FALSE, predictive = FALSE) {
-  proper <- TRUE
   bayesian <- (class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")
   likelihood <- match.arg(likelihood)
   # Import existing prior distribution with class 'jfaPrior' or 'jfaPosterior'
@@ -89,7 +88,6 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
     if (!is.null(prior[["N.units"]])) {
       N.units <- prior[["N.units"]]
     }
-    proper <- prior[["description"]]$alpha != 0 && prior[["description"]]$beta != 0
   } else if (prior) {
     prior.n <- 1
     prior.x <- 0
