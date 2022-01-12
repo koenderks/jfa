@@ -566,11 +566,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = "poiss
         }
         result[["posterior"]][["hypotheses"]]$odds.h1 <- result[["posterior"]][["hypotheses"]]$p.h1 / result[["posterior"]][["hypotheses"]]$p.h0
         result[["posterior"]][["hypotheses"]]$odds.h0 <- 1 / result[["posterior"]][["hypotheses"]]$odds.h1
-        # For improper priors we display the posterior odds
-        result[["posterior"]][["hypotheses"]]$bf.h1 <- result[["posterior"]][["hypotheses"]]$odds.h1
-        if (proper) { # The prior is proper, so we divide by the prior odds to get a Bayes factor
-          result[["posterior"]][["hypotheses"]]$bf.h1 <- result[["posterior"]][["hypotheses"]]$bf.h1 / result[["prior"]][["hypotheses"]]$odds.h1
-        }
+        result[["posterior"]][["hypotheses"]]$bf.h1 <- result[["posterior"]][["hypotheses"]]$odds.h1 / result[["prior"]][["hypotheses"]]$odds.h1
         result[["posterior"]][["hypotheses"]]$bf.h0 <- 1 / result[["posterior"]][["hypotheses"]]$bf.h1
       }
     }

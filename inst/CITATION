@@ -6,4 +6,4 @@ bibentry(bibtype = "Manual",
          year = "2022",
          note = "R package version 0.6.2",
          url = "https://CRAN.R-project.org/package=jfa",
-		 textVersion = "Derks, K. (2022). jfa: Bayesian and Classical Audit Sampling. R package version 0.6.2.")
+         textVersion = "Derks, K. (2022). jfa: Bayesian and Classical Audit Sampling. R package version 0.6.2.")

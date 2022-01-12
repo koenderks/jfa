@@ -157,7 +157,7 @@ test_that(desc = "(id: f5-v0.2.0-t3) Bayesian poisson 100% materiality 1% errors
 test_that(desc = "(id: f5-v0.4.0-t1) Expected Bayes factors for zero expected errors", {
   prior <- auditPrior(method = "strict", likelihood = "poisson")
   jfaRes <- planning(conf.level = 0.95, materiality = 0.02, expected = 0, likelihood = "poisson", prior = prior)
-  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.h1, 19.08554, tolerance = 0.001)
+  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$odds.h1, 19.08554, tolerance = 0.001)
 
   prior <- auditPrior(method = "default", likelihood = "binomial")
   jfaRes <- planning(conf.level = 0.95, materiality = 0.02, expected = 0, likelihood = "binomial", prior = prior)
@@ -171,7 +171,7 @@ test_that(desc = "(id: f5-v0.4.0-t1) Expected Bayes factors for zero expected er
 test_that(desc = "(id: f5-v0.4.0-t2) Expected Bayes factors for expected errors > 0", {
   prior <- auditPrior(method = "strict", likelihood = "poisson")
   jfaRes <- planning(conf.level = 0.95, materiality = 0.02, expected = 0.01, likelihood = "poisson", prior = prior)
-  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.h1, 19.01191777, tolerance = 0.001)
+  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$odds.h1, 19.01191777, tolerance = 0.001)
 
   prior <- auditPrior(method = "default", likelihood = "binomial")
   jfaRes <- planning(conf.level = 0.95, materiality = 0.02, expected = 0.01, likelihood = "binomial", prior = prior)
