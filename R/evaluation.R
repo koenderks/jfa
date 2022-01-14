@@ -337,9 +337,10 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = "poiss
     if (is.null(N.units)) {
       stop("missing value for 'N.units'")
     }
-    if (N.units <= 0 || N.units %% 1 != 0 || length(N.units) != 1) {
+    if (N.units <= 0 || length(N.units) != 1) {
       stop("'N.units' must be a single integer > 0")
     }
+    N.units <- ceiling(N.units)
     if (bayesian) {
       # Bayesian evaluation using the beta-binomial distribution
       mle <- .modebbinom(N = N.units - n.obs, shape1 = 1 + prior.x + t.obs, shape2 = prior.n - prior.x + n.obs - t.obs) / N.units

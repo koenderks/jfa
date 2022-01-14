@@ -117,9 +117,10 @@ auditPrior <- function(method = "default", likelihood = c("poisson", "binomial",
     if (is.null(N.units)) {
       stop("missing value for 'N.units'")
     }
-    if (N.units <= 0 || N.units %% 1 != 0 || length(N.units) != 1) {
+    if (N.units <= 0 || length(N.units) != 1) {
       stop("'N.units' must be a single integer > 0")
     }
+    N.units <- ceiling(N.units)
   }
   if (method == "default") { # Method 1: Minimum prior observations to make the prior proper
     prior.n <- 1 # Single earlier observation

@@ -130,9 +130,10 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
     if (is.null(N.units)) {
       stop("missing value for 'N.units'")
     }
-    if (N.units <= 0 || N.units %% 1 != 0 || length(N.units) != 1) {
+    if (N.units <= 0 || length(N.units) != 1) {
       stop("'N.units' must be a single integer > 0")
     }
+    N.units <- ceiling(N.units)
     if (!is.null(materiality) && expected >= 1 && expected >= ceiling(materiality * N.units)) {
       stop("'expected' / 'N.units' must be < 'materiality'")
     }
