@@ -1,12 +1,13 @@
 # jfa 0.6.2
 
-**New features**
+**Major changes**
 
-- Added argument `predictive` to the `auditPrior()`, `planning()` and `evaluation()` functions that provide control over whether to include the prior predictive distribution in the output. This may take a long time for the beta distribution.
+- Removed the output and functions related to the class `jfaPredictive`. The probabilities for the prior and posterior predictive distributions can be obtained by calling the `predict()` function.
 
 **Minor changes**
 
 - The value for `N.units` in `auditPrior()`, `planning()`, and `evaluation()` is now automatically ceiled for `likelihood`/`method` = `'hypergeometric'`.
+- Implemented a warning message when the `likelihood` in the `prior` does not match with the `likelihood`/`method` inputs for `planning()` and `evaluation()`. The likelihood from the prior is leading in these cases and will overrule the other options.
 
 # jfa 0.6.1
 

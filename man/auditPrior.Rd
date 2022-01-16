@@ -7,7 +7,7 @@
 auditPrior(method = 'default', likelihood = c('poisson', 'binomial', 'hypergeometric'),
            N.units = NULL, alpha = NULL, beta = NULL, materiality = NULL, expected = 0,
            ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL, x = NULL,
-           n = NULL, factor = NULL, conf.level = 0.95, predictive = FALSE)
+           n = NULL, factor = NULL, conf.level = 0.95)
 }
 \arguments{
 \item{method}{a character specifying the method by which the prior distribution is constructed. Defaults to \code{default} which incorporates no existing information. Other options are \code{strict}, \code{arm}, \code{bram}, \code{impartial}, \code{hyp}, \code{sample}, and \code{factor}. See the details section for more information about the available methods.}
@@ -39,8 +39,6 @@ auditPrior(method = 'default', likelihood = c('poisson', 'binomial', 'hypergeome
 \item{factor}{if \code{method = 'factor'}, a numeric value between 0 and 1 specifying the weighting factor for the results of the sample equivalent to the prior information.}
 
 \item{conf.level}{a numeric value between 0 and 1 specifying the confidence level to be used in the planning. Defaults to 0.95 for 95\% confidence. Used to calculate the upper bound of the prior distribution.}
-
-\item{predictive}{a logical specifying whether to include the prior predictive distribution in the \code{posterior} output.}
 }
 \value{
 An object of class \code{jfaPrior} containing:

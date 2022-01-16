@@ -17,7 +17,7 @@
 #'
 #' Methods defined for objects returned from the \code{\link{auditPrior}}, \code{\link{planning}}, \code{\link{selection}}, and \code{\link{evaluation}} functions.
 #'
-#' @param object,x    an object of class \code{jfaPrior}, \code{jfaPosterior}, \code{jfaPredictive}, \code{jfaPlanning}, \code{jfaSelection}, or \code{jfaEvaluation}.
+#' @param object,x    an object of class \code{jfaPrior}, \code{jfaPosterior}, \code{jfaPlanning}, \code{jfaSelection}, or \code{jfaEvaluation}.
 #' @param digits      an integer specifying the number of digits to which output should be rounded. Used in \code{summary}.
 #' @param xlim        used in \code{plot}. Specifies the x limits (x1, x2) of the plot.
 #' @param n           used in \code{predict}. Specifies the sample size for which predictions should be made.
@@ -53,16 +53,6 @@ print.jfaPosterior <- function(x, ...) {
   cat(strwrap("Posterior Distribution from Audit Sampling", prefix = "\t"), sep = "\n")
   cat("\n")
   cat("functional form:", x[["posterior"]], "\nparameters obtained via method 'sample'\n")
-}
-
-#' @rdname jfa-methods
-#' @method print jfaPredictive
-#' @export
-print.jfaPredictive <- function(x, ...) {
-  cat("\n")
-  cat(strwrap("Predictive Distribution for Audit Sampling", prefix = "\t"), sep = "\n")
-  cat("\n")
-  cat("functional form:", x[["predictive"]], "\nparameters obtained via method 'sample'\n")
 }
 
 #' @rdname jfa-methods
@@ -169,23 +159,6 @@ print.summary.jfaPosterior <- function(x, digits = getOption("digits"), ...) {
   cat(paste("  Median:                       ", format(x[["median"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Variance:                     ", format(x[["var"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Skewness:                     ", format(x[["skewness"]], digits = max(1L, digits - 2L))), "\n")
-  cat(paste("  Precision:                    ", format(x[["precision"]], digits = max(1L, digits - 2L))), "\n")
-}
-
-#' @rdname jfa-methods
-#' @method print summary.jfaPredictive
-#' @export
-print.summary.jfaPredictive <- function(x, digits = getOption("digits"), ...) {
-  cat("\n")
-  cat(strwrap("Predictive Distribution Summary", prefix = "\t"), sep = "\n")
-  cat("\nResults:\n")
-  cat(paste("  Functional form:              ", x[["predictive"]]), "\n")
-  cat(paste("  Mode:                         ", format(x[["mode"]], digits = max(1L, digits - 2L))), "\n")
-  cat(paste("  Mean:                         ", format(x[["mean"]], digits = max(1L, digits - 2L))), "\n")
-  cat(paste("  Median:                       ", format(x[["median"]], digits = max(1L, digits - 2L))), "\n")
-  cat(paste("  Variance:                     ", format(x[["var"]], digits = max(1L, digits - 2L))), "\n")
-  cat(paste("  Skewness:                     ", format(x[["skewness"]], digits = max(1L, digits - 2L))), "\n")
-  cat(paste(" ", format(x[["conf.level"]] * 100), "percent upper bound:       ", format(x[["ub"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Precision:                    ", format(x[["precision"]], digits = max(1L, digits - 2L))), "\n")
 }
 
@@ -383,26 +356,6 @@ summary.jfaPosterior <- function(object, digits = getOption("digits"), ...) {
     stringsAsFactors = FALSE
   )
   class(out) <- c("summary.jfaPosterior", "data.frame")
-  return(out)
-}
-
-#' @rdname jfa-methods
-#' @method summary jfaPredictive
-#' @export
-summary.jfaPredictive <- function(object, digits = getOption("digits"), ...) {
-  out <- data.frame(
-    "predictive" = object[["predictive"]],
-    "ub" = round(object[["statistics"]]$ub, digits),
-    "precision" = round(object[["statistics"]]$precision, digits),
-    "mode" = round(object[["statistics"]]$mode, digits),
-    "mean" = round(object[["statistics"]]$mean, digits),
-    "median" = round(object[["statistics"]]$median, digits),
-    "var" = round(object[["statistics"]]$var, digits),
-    "skewness" = round(object[["statistics"]]$skewness, digits),
-    conf.level = object[["conf.level"]],
-    stringsAsFactors = FALSE
-  )
-  class(out) <- c("summary.jfaPredictive", "data.frame")
   return(out)
 }
 
@@ -623,21 +576,6 @@ plot.jfaPosterior <- function(x, xlim = c(0, 1), ...) {
     graphics::axis(1, at = pretty(xseq, min.n = 4) + 0.5, labels = pretty(xseq, min.n = 4))
     graphics::axis(2, at = c(0, yMax), labels = FALSE, las = 1, lwd.ticks = 0)
   }
-}
-
-#' @rdname jfa-methods
-#' @method plot jfaPredictive
-#' @export
-plot.jfaPredictive <- function(x, xlim = c(0, 1), ...) {
-  if (x[["description"]]$density == "negative-binomial") {
-    d <- stats::dnbinom(0:x[["description"]][["N.units"]], size = x[["description"]]$r, prob = x[["description"]]$p)
-  } else {
-    d <- extraDistr::dbbinom(x = 0:x[["description"]][["N.units"]], size = x[["description"]][["N.units"]], alpha = x[["description"]]$alpha, beta = x[["description"]]$beta)
-  }
-  yMax <- if (is.infinite(max(d))) 10 else max(d)
-  graphics::barplot(d, bty = "n", xlab = "k", ylab = "Probability", las = 1, xlim = xlim, ylim = c(0, yMax), width = 1, space = 0, main = x[["predictive"]], axes = FALSE, col = "darkgray")
-  graphics::axis(1, at = pretty(xlim, min.n = 4) + 0.5, labels = pretty(xlim, min.n = 4))
-  graphics::axis(2, at = pretty(c(0, yMax), min.n = 4), las = 1)
 }
 
 #' @rdname jfa-methods

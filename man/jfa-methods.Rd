@@ -4,19 +4,16 @@
 \alias{jfa-methods}
 \alias{print.jfaPrior}
 \alias{print.jfaPosterior}
-\alias{print.jfaPredictive}
 \alias{print.jfaPlanning}
 \alias{print.jfaSelection}
 \alias{print.jfaEvaluation}
 \alias{print.summary.jfaPrior}
 \alias{print.summary.jfaPosterior}
-\alias{print.summary.jfaPredictive}
 \alias{print.summary.jfaPlanning}
 \alias{print.summary.jfaSelection}
 \alias{print.summary.jfaEvaluation}
 \alias{summary.jfaPrior}
 \alias{summary.jfaPosterior}
-\alias{summary.jfaPredictive}
 \alias{summary.jfaPlanning}
 \alias{summary.jfaSelection}
 \alias{summary.jfaEvaluation}
@@ -24,7 +21,6 @@
 \alias{predict.jfaPosterior}
 \alias{plot.jfaPrior}
 \alias{plot.jfaPosterior}
-\alias{plot.jfaPredictive}
 \alias{plot.jfaPlanning}
 \alias{plot.jfaSelection}
 \alias{plot.jfaEvaluation}
@@ -33,8 +29,6 @@
 \method{print}{jfaPrior}(x, ...)
 
 \method{print}{jfaPosterior}(x, ...)
-
-\method{print}{jfaPredictive}(x, ...)
 
 \method{print}{jfaPlanning}(x, ...)
 
@@ -46,8 +40,6 @@
 
 \method{print}{summary.jfaPosterior}(x, digits = getOption("digits"), ...)
 
-\method{print}{summary.jfaPredictive}(x, digits = getOption("digits"), ...)
-
 \method{print}{summary.jfaPlanning}(x, digits = getOption("digits"), ...)
 
 \method{print}{summary.jfaSelection}(x, digits = getOption("digits"), ...)
@@ -57,8 +49,6 @@
 \method{summary}{jfaPrior}(object, digits = getOption("digits"), ...)
 
 \method{summary}{jfaPosterior}(object, digits = getOption("digits"), ...)
-
-\method{summary}{jfaPredictive}(object, digits = getOption("digits"), ...)
 
 \method{summary}{jfaPlanning}(object, digits = getOption("digits"), ...)
 
@@ -74,8 +64,6 @@
 
 \method{plot}{jfaPosterior}(x, xlim = c(0, 1), ...)
 
-\method{plot}{jfaPredictive}(x, xlim = c(0, 1), ...)
-
 \method{plot}{jfaPlanning}(x, xlim = c(0, 1), ...)
 
 \method{plot}{jfaSelection}(x, ...)
@@ -87,7 +75,7 @@
 
 \item{digits}{an integer specifying the number of digits to which output should be rounded. Used in \code{summary}.}
 
-\item{object, x}{an object of class \code{jfaPrior}, \code{jfaPosterior}, \code{jfaPredictive}, \code{jfaPlanning}, \code{jfaSelection}, or \code{jfaEvaluation}.}
+\item{object, x}{an object of class \code{jfaPrior}, \code{jfaPosterior}, \code{jfaPlanning}, \code{jfaSelection}, or \code{jfaEvaluation}.}
 
 \item{n}{used in \code{predict}. Specifies the sample size for which predictions should be made.}
 

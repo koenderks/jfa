@@ -76,7 +76,7 @@ The `auditPrior()` function creates a prior probability distribution according t
 auditPrior(method = 'default', likelihood = c('poisson', 'binomial', 'hypergeometric'), 
            N.units = NULL, alpha = NULL, beta = NULL, materiality = NULL, expected = 0, 
            ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL, x = NULL, 
-           n = NULL, factor = NULL, conf.level = 0.95, predictive = FALSE)
+           n = NULL, factor = NULL, conf.level = 0.95)
 ```
 
 *Supported options for the `method` argument:*
@@ -125,7 +125,7 @@ The `planning()` function calculates the minimum sample size for a statistical a
 planning(materiality = NULL, min.precision = NULL, expected = 0,
          likelihood = c('poisson', 'binomial', 'hypergeometric'), 
          conf.level = 0.95, N.units = NULL, by = 1, max = 5000, 
-         prior = FALSE, predictive = FALSE)
+         prior = FALSE)
 ```
 
 *Supported options for the `likelihood` argument:*
@@ -203,7 +203,7 @@ evaluation(materiality = NULL, min.precision = NULL, method = 'poisson',
            data = NULL, values = NULL, values.audit = NULL, times = NULL, 
            x = NULL, n = NULL, N.units = NULL, N.items = NULL, 
            r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5, 
-           prior = FALSE, predictive = FALSE)
+           prior = FALSE)
 ```
 
 *Supported options for the `method` argument:*

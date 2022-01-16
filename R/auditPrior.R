@@ -23,7 +23,7 @@
 #' @usage auditPrior(method = 'default', likelihood = c('poisson', 'binomial', 'hypergeometric'),
 #'            N.units = NULL, alpha = NULL, beta = NULL, materiality = NULL, expected = 0,
 #'            ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL, x = NULL,
-#'            n = NULL, factor = NULL, conf.level = 0.95, predictive = FALSE)
+#'            n = NULL, factor = NULL, conf.level = 0.95)
 #'
 #' @param method          a character specifying the method by which the prior distribution is constructed. Defaults to \code{default} which incorporates no existing information. Other options are \code{strict}, \code{arm}, \code{bram}, \code{impartial}, \code{hyp}, \code{sample}, and \code{factor}. See the details section for more information about the available methods.
 #' @param likelihood      a character specifying the likelihood assumed when updating the prior distribution. This can be either \code{poisson} (default) for the Poisson likelihood and gamma prior distribution, \code{biomial} for the binomial likelihood and beta prior distribution, or \code{hypergeometric} for the hypergeometric likelihood and beta-binomial prior distribution. See the details section for more information about the available likelihoods.
@@ -40,7 +40,6 @@
 #' @param alpha           if \code{method = 'param'}, a numeric value specifying the \eqn{\alpha} parameter of the prior distribution.
 #' @param beta            if \code{method = 'param'}, a numeric value specifying the \eqn{\beta} parameter of the prior distribution.
 #' @param conf.level      a numeric value between 0 and 1 specifying the confidence level to be used in the planning. Defaults to 0.95 for 95\% confidence. Used to calculate the upper bound of the prior distribution.
-#' @param predictive      a logical specifying whether to include the prior predictive distribution in the \code{posterior} output.
 #'
 #' @details \code{auditPrior} is used to define prior distributions for parameters in \code{jfa} models. To perform Bayesian audit sampling, you must assign a prior distribution to the misstatement parameter \eqn{\theta}.
 #'          The prior is a probability distribution that reflects the existing information about the parameter before seeing a sample. To keep the priors proper, the \code{default} priors used by \code{jfa} are indifferent as much as possible,
@@ -108,7 +107,7 @@
 auditPrior <- function(method = "default", likelihood = c("poisson", "binomial", "hypergeometric"),
                        N.units = NULL, alpha = NULL, beta = NULL, materiality = NULL, expected = 0,
                        ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL, x = NULL,
-                       n = NULL, factor = NULL, conf.level = 0.95, predictive = FALSE) {
+                       n = NULL, factor = NULL, conf.level = 0.95) {
   likelihood <- match.arg(likelihood)
   if (!(method %in% c("default", "strict", "param", "impartial", "hyp", "arm", "bram", "sample", "factor")) || length(method) != 1) {
     stop("'method' should be one of 'default', 'strict', 'param', 'impartial', 'hyp', 'arm', 'bram', 'sample', 'factor'")
@@ -357,41 +356,6 @@ auditPrior <- function(method = "default", likelihood = c("poisson", "binomial",
       "hypergeometric" = extraDistr::dbbinom(ceiling(materiality * N.units), size = N.units, alpha = description[["alpha"]], beta = description[["beta"]])
     )
   }
-  # Create the prior predictive section
-  if (predictive && likelihood != "hypergeometric" && !is.null(N.units)) {
-    predictive <- list()
-    predictive[["predictive"]] <- switch(likelihood,
-      "poisson" = paste0("Negative-binomial(r = ", round(description[["alpha"]], 3), ", p = ", round(1 / (1 + description[["beta"]]), 3), ")"),
-      "binomial" = paste0("Beta-binomial(N = ", ceiling(N.units), ", \u03B1 = ", round(description[["alpha"]], 3), ", \u03B2 = ", round(description[["beta"]], 3), ")")
-    )
-    predictive[["conf.level"]] <- conf.level
-    predictive[["description"]] <- list()
-    predictive[["statistics"]] <- list()
-    predictive[["description"]]$N.units <- N.units
-    if (likelihood == "poisson") {
-      predictive[["description"]]$density <- "negative-binomial"
-      predictive[["description"]]$r <- description[["alpha"]]
-      predictive[["description"]]$p <- 1 / (1 + description[["beta"]])
-      predictive[["statistics"]]$mode <- if (predictive[["description"]]$r <= 1) 0 else (predictive[["description"]]$p * (predictive[["description"]]$r - 1)) / (1 - predictive[["description"]]$p)
-      predictive[["statistics"]]$mean <- (predictive[["description"]]$r * predictive[["description"]]$p) / (1 - predictive[["description"]]$p)
-      predictive[["statistics"]]$median <- stats::qnbinom(0.5, size = predictive[["description"]]$r, prob = predictive[["description"]]$p)
-      predictive[["statistics"]]$var <- (predictive[["description"]]$p * predictive[["description"]]$r) / (1 - predictive[["description"]]$p)^2
-      predictive[["statistics"]]$skewness <- (1 + predictive[["description"]]$p) / sqrt(predictive[["description"]]$p * predictive[["description"]]$r)
-      predictive[["statistics"]]$ub <- stats::qnbinom(conf.level, size = predictive[["description"]]$r, prob = predictive[["description"]]$p)
-    } else {
-      predictive[["description"]]$density <- "beta-binomial"
-      predictive[["description"]]$alpha <- description[["alpha"]]
-      predictive[["description"]]$beta <- description[["beta"]]
-      predictive[["statistics"]]$mode <- .modebbinom(N = N.units, shape1 = predictive[["description"]]$alpha, shape2 = predictive[["description"]]$beta)
-      predictive[["statistics"]]$mean <- predictive[["description"]]$alpha / (predictive[["description"]]$alpha + predictive[["description"]]$beta) * N.units
-      predictive[["statistics"]]$median <- .qbbinom(0.5, N = N.units, shape1 = predictive[["description"]]$alpha, shape2 = predictive[["description"]]$beta)
-      predictive[["statistics"]]$var <- ((N.units * predictive[["description"]]$alpha * predictive[["description"]]$beta) * (predictive[["description"]]$alpha + predictive[["description"]]$beta + N.units)) / ((predictive[["description"]]$alpha + predictive[["description"]]$beta)^2 * (predictive[["description"]]$alpha + predictive[["description"]]$beta + 1))
-      predictive[["statistics"]]$skewness <- (((predictive[["description"]]$alpha + predictive[["description"]]$beta + 2 * N.units) * (predictive[["description"]]$beta - predictive[["description"]]$alpha)) / (predictive[["description"]]$alpha + predictive[["description"]]$beta + 2)) * sqrt((1 + predictive[["description"]]$alpha + predictive[["description"]]$beta) / (N.units * predictive[["description"]]$alpha * predictive[["description"]]$beta * (N.units + predictive[["description"]]$alpha + predictive[["description"]]$beta)))
-      predictive[["statistics"]]$ub <- .qbbinom(conf.level, N = N.units, shape1 = predictive[["description"]]$alpha, shape2 = predictive[["description"]]$beta)
-    }
-    predictive[["statistics"]][["precision"]] <- predictive[["statistics"]]$ub - predictive[["statistics"]]$mode
-    class(predictive) <- "jfaPredictive"
-  }
   # Create the main result object
   result <- list()
   # Functional form of the prior distribution
@@ -403,9 +367,6 @@ auditPrior <- function(method = "default", likelihood = c("poisson", "binomial",
   }
   if (!is.null(materiality)) {
     result[["hypotheses"]] <- hypotheses
-  }
-  if (likelihood != "hypergeometric" && !is.null(N.units)) {
-    result[["predictive"]] <- predictive
   }
   result[["method"]] <- method
   result[["likelihood"]] <- likelihood
