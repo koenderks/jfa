@@ -2,7 +2,7 @@
 
 This is a submission for version 0.6.2. In this version I have:
 
-* Added an argument to several functions that provides control over the output.
+* Improved overall user-friendlyness of the package with minor changes.
 
 ## Test environments
 
