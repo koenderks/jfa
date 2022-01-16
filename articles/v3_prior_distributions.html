@@ -427,6 +427,8 @@
 <p>The prior distribution can be used the planning stage to calculate a minimum sample size by providing the objected returned by the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function to the <code><a href="../reference/planning.html">planning()</a></code> function. For example, the code below calculates the minimum sample size to test the misstatement in the population against a performance materiality of 5%, while incorporating the information in <code>prior9</code>.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, prior <span class="op">=</span> <span class="va">prior9</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## Warning in jfa::planning(materiality = materiality, expected = expected, : using</span>
+<span class="co">## 'likelihood = binomial' from 'prior'</span></code></pre>
 <pre><code><span class="co">## </span>
 <span class="co">##  Bayesian Audit Sample Planning</span>
 <span class="co">## </span>
@@ -437,8 +439,10 @@
 <h3 id="combining-auditprior-with-evaluation">Combining <code>auditPrior()</code> with <code>evaluation()</code><a class="anchor" aria-label="anchor" href="#combining-auditprior-with-evaluation"></a>
 </h3>
 <p>The prior distribution can be used the evaluation stage by providing the objected returned by the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function to the <code><a href="../reference/evaluation.html">evaluation()</a></code> function. For example, the code below evaluates the misstatement in the population with respect to the performance materiality of 5% after seeing a sample of 60 items with 1 misstatement, while incorporating the information in <code>prior8</code>.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">60</span>, prior <span class="op">=</span> <span class="va">prior9</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## Warning in jfa::evaluation(materiality = materiality, conf.level = confidence, :</span>
+<span class="co">## using 'method = binomial' from 'prior'</span></code></pre>
 <pre><code><span class="co">## </span>
 <span class="co">##  Bayesian Audit Sample Evaluation</span>
 <span class="co">## </span>

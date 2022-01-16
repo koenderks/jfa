@@ -179,6 +179,8 @@
 <p>Using the <code><a href="../reference/evaluation.html">evaluation()</a></code> function the auditor can create the prior distribution and calculate the Bayes factor in favor of acceptance of the lot versus rejection of the lot. In this case, the Bayes factor in favor of acceptance (<span class="math inline">\(BF_{-+}\)</span>) is 0.66. This Bayes factor represents only anecdotal evidence in favor of rejection of the lot, since the data is 1 / 0.66 = 1.51 times more likely under the hypothesis <span class="math inline">\(H_0\)</span> than under the hypothesis <span class="math inline">\(H_1\)</span> (see the vignette <a href="https://koenderks.github.io/jfa/articles/v6_testing_misstatement.html" class="external-link">Testing misstatement</a> for the interpretation of <span class="math inline">\(BF_{-+}\)</span>).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">tolerance</span>, x <span class="op">=</span> <span class="fl">2</span>, n <span class="op">=</span> <span class="fl">32</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## Warning in evaluation(materiality = tolerance, x = 2, n = 32, prior = prior):</span>
+<span class="co">## using 'method = binomial' from 'prior'</span></code></pre>
 <pre><code><span class="co">## </span>
 <span class="co">##  Bayesian Audit Sample Evaluation</span>
 <span class="co">## </span>
@@ -195,8 +197,10 @@
 <h3 id="bayes-factor-after-stage-2">Bayes factor after stage 2<a class="anchor" aria-label="anchor" href="#bayes-factor-after-stage-2"></a>
 </h3>
 <p>The Bayes factor in favor of acceptance after the second sample of items is 6.24 which represents moderate evidence in favor of acceptance. Hence, we should continue selecting and inspecting items to gather sufficient evidence for one of the two hypotheses.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">tolerance</span>, x <span class="op">=</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">0</span>, n <span class="op">=</span> <span class="fl">32</span> <span class="op">+</span> <span class="fl">50</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## Warning in evaluation(materiality = tolerance, x = 2 + 0, n = 32 + 50, prior =</span>
+<span class="co">## prior): using 'method = binomial' from 'prior'</span></code></pre>
 <pre><code><span class="co">## </span>
 <span class="co">##  Bayesian Audit Sample Evaluation</span>
 <span class="co">## </span>

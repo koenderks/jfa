@@ -229,8 +229,11 @@
 <p>The output below shows that <span class="math inline">\(BF_{10}=515\)</span>, implying that there is extreme evidence for <span class="math inline">\(H_1\)</span>, the hypothesis that the population contains misstatements lower than 5 percent of the population.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"default"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span>
-<span class="va">result_bayesian</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_bayesian</span><span class="op">)</span></code></pre></div>
+<span class="va">result_bayesian</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## Warning in evaluation(materiality = 0.05, x = 1, n = 100, prior = prior): using</span>
+<span class="co">## 'method = binomial' from 'prior'</span></code></pre>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_bayesian</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## </span>
 <span class="co">##  Bayesian Audit Sample Evaluation Summary</span>
 <span class="co">## </span>
@@ -259,10 +262,13 @@
 </h3>
 <p>In audit sampling, the Bayes factor is dependent on the prior distribution for <span class="math inline">\(\theta\)</span>. As a rule of thumb, when the prior distribution is very uninformative (as with <code>method = 'default'</code>) with respect to <span class="math inline">\(\theta\)</span>, the Bayes factor tends to overquantify the evidence in favor of <span class="math inline">\(H_1\)</span>. You can mitigate this dependency using <code>method = "impartial"</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function, which constructs a prior distribution that is impartial with respect to the hypotheses <span class="math inline">\(H_1\)</span> and <span class="math inline">\(H_0\)</span>.</p>
 <p>The output below shows that <span class="math inline">\(BF_{10}=47\)</span>, implying that there is strong evidence for <span class="math inline">\(H_1\)</span>, the hypothesis that the population contains misstatements lower than 5 percent of the population. Since the two priors both resulted in convincing Bayes factors, the results are robust to the choice of prior distribution.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"impartial"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span>
-<span class="va">result_bayesian</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_bayesian</span><span class="op">)</span></code></pre></div>
+<span class="va">result_bayesian</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></code></pre></div>
+<pre><code><span class="co">## Warning in evaluation(materiality = 0.05, x = 1, n = 100, prior = prior): using</span>
+<span class="co">## 'method = binomial' from 'prior'</span></code></pre>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_bayesian</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## </span>
 <span class="co">##  Bayesian Audit Sample Evaluation Summary</span>
 <span class="co">## </span>

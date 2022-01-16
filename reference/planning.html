@@ -91,7 +91,7 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="/logo.png">
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">planning</span><span class="op">(</span>materiality <span class="op">=</span> <span class="cn">NULL</span>, min.precision <span class="op">=</span> <span class="cn">NULL</span>, expected <span class="op">=</span> <span class="fl">0</span>,
          likelihood <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'poisson'</span>, <span class="st">'binomial'</span>, <span class="st">'hypergeometric'</span><span class="op">)</span>,
          conf.level <span class="op">=</span> <span class="fl">0.95</span>, N.units <span class="op">=</span> <span class="cn">NULL</span>, by <span class="op">=</span> <span class="fl">1</span>, max <span class="op">=</span> <span class="fl">5000</span>,
-         prior <span class="op">=</span> <span class="cn">FALSE</span>, predictive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+         prior <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -114,8 +114,6 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="/logo.png">
 <dd><p>an integer larger than 0 specifying the maximum sample size that is considered in the calculation. Defaults to 5000 for efficiency. Increase this value if the sample size cannot be found due to it being too large (e.g., for a low materiality).</p></dd>
 <dt>prior</dt>
 <dd><p>a logical specifying whether to use a prior distribution when planning, or an object of class <code>jfaPrior</code> or <code>jfaPosterior</code> containing the prior distribution. Defaults to <code>FALSE</code> for frequentist planning. If <code>TRUE</code>, a minimal information prior is chosen by default. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.</p></dd>
-<dt>predictive</dt>
-<dd><p>a logical specifying whether to include the prior predictive distribution in the <code>posterior</code> output. Requires the use of a prior distribution.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>

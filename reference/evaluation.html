@@ -93,7 +93,7 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="/logo.png">
            data <span class="op">=</span> <span class="cn">NULL</span>, values <span class="op">=</span> <span class="cn">NULL</span>, values.audit <span class="op">=</span> <span class="cn">NULL</span>, times <span class="op">=</span> <span class="cn">NULL</span>,
            x <span class="op">=</span> <span class="cn">NULL</span>, n <span class="op">=</span> <span class="cn">NULL</span>, N.units <span class="op">=</span> <span class="cn">NULL</span>, N.items <span class="op">=</span> <span class="cn">NULL</span>,
            r.delta <span class="op">=</span> <span class="fl">2.7</span>, m.type <span class="op">=</span> <span class="st">'accounts'</span>, cs.a <span class="op">=</span> <span class="fl">1</span>, cs.b <span class="op">=</span> <span class="fl">3</span>, cs.mu <span class="op">=</span> <span class="fl">0.5</span>,
-           prior <span class="op">=</span> <span class="cn">FALSE</span>, predictive <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+           prior <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -136,8 +136,6 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="/logo.png">
 <dd><p>if <code>method = "coxsnell"</code>, a numeric value between 0 and 1 specifying the mean of the prior distribution on the mean taint. Defaults to 0.5 as recommended by Cox and Snell (1979).</p></dd>
 <dt>prior</dt>
 <dd><p>a logical specifying if a prior distribution must be used, or an object of class <code>jfaPrior</code> or <code>jfaPosterior</code> containing the prior distribution. Defaults to <code>FALSE</code> for frequentist planning. If <code>TRUE</code>, a minimal information prior is chosen by default. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.</p></dd>
-<dt>predictive</dt>
-<dd><p>a logical specifying whether to include the prior predictive distribution in the <code>posterior</code> output. Requires the use of a prior distribution.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
