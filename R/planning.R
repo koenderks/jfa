@@ -136,6 +136,9 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
       stop("'expected' must be an integer >= 0")
     }
   }
+  if (expected >= max) {
+    stop("'expected' must be an integer < 'max'")
+  }
   # Set the materiality and the minimium precision to 1 if they are not specified
   if (is.null(materiality)) {
     materiality <- 1
