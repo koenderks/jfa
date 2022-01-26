@@ -208,7 +208,8 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = "poiss
       stop("'x' must be a positive value <= 'n'")
     }
     if (x %% 1 != 0 && method == "hypergeometric" && !bayesian) {
-      stop("'x' must be a single integer >= 0")
+      x <- ceiling(x)
+      warning(paste0("using 'x = ", x, "' since 'x' must be a single integer >= 0"))
     }
     if (!is.null(data)) {
       warning("'x' and 'n' are used while 'data' is specified")

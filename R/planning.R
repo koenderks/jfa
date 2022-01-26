@@ -133,7 +133,8 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
   } else if (expected >= 1) {
     errorType <- "integer"
     if (expected %% 1 != 0 && likelihood %in% c("binomial", "hypergeometric") && !bayesian) {
-      stop("'expected' must be an integer >= 0")
+      expected <- ceiling(expected)
+      warning(paste0("using 'expected = ", expected, "' since 'expected' must be a single integer >= 0"))
     }
   }
   if (expected >= max) {

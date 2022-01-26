@@ -1,6 +1,6 @@
-# jfa version 0.6.2
+# jfa version 0.6.3
 
-This is a submission for version 0.6.2. In this version I have:
+This is a submission for version 0.6.3. In this version I have:
 
 * Improved overall user-friendlyness of the package with minor changes.
 
