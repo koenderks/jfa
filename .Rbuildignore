@@ -5,7 +5,6 @@
 ^doc$
 ^man/figures/tables$
 ^man/figures/readme$
-^man/figures/poster$
 ^man/figures/cheatsheet$
 ^man/manual$
 ^Meta$

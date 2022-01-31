@@ -23,8 +23,7 @@ For complete documentation of `jfa`, visit the [package website](https://koender
 4. [Benchmarks](#4-benchmarks)
 5. [Statistical tables](#5-statistical-tables)
 6. [References](#6-references)
-7. [Package statistics](#7-package-statistics)
-8. [Contributing](#8-contributing)
+7. [Contributing](#7-contributing)
 
 ## 1. Installation
 
@@ -323,11 +322,7 @@ Below you can find several informative tables that contain statistical sample si
 - Touw, P., and Hoogduin, L. (2011). *Statistiek voor Audit en Controlling*. Boom uitgevers, Amsterdam.
 - Weiler, H. (1965). The use of incomplete beta functions for prior distributions in binomial sampling. *Technometrics*, 7(3), 335-347. - [View online](https://www.tandfonline.com/doi/abs/10.1080/00401706.1965.10490267)
 
-## 7. Package statistics
-
-<img src='https://github.com/koenderks/jfa/raw/development/man/figures/readme/downloads/downloads.svg' width='50%' /><img src='https://github.com/koenderks/jfa/raw/development/man/figures/readme/worldmap/worldmap.svg' width='50%' />
-
-## 8. Contributing
+## 7. Contributing
 
 `jfa` is an open-source project that aims to be useful for the audit community. Your help in benchmarking and extending `jfa` is therefore greatly appreciated. Contributing to `jfa` does not have to take much time or knowledge, and there is extensive information available about it on the [Wiki](https://github.com/koenderks/jfa/wiki) of this repository.
 
