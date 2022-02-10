@@ -10,6 +10,6 @@
 ^Meta$
 ^CRAN-RELEASE$
 ^docs$
-^pkgdown$
+^_pkgdown.yml$
 jfaRelease.R
 ^LICENSE\.md$
