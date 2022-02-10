@@ -1,3 +1,19 @@
+home:
+  title: jfa - Bayesian and Classical Audit Sampling
+  description: An R package for statistical audit sampling in Bayesian and classical forms
+
+authors:
+  Koen Derks:
+    href: https://koenderks.com
+
+repo:
+  url:
+    home: https://github.com/koenderks/jfa/
+    source: https://github.com/koenderks/jfa/tree/development
+    issue: https://github.com/koenderks/jfa/issues/
+    user: https://github.com/koenderks/
+  branch: development
+
 template:
   package: preferably
   bootstrap: 5
