@@ -77,9 +77,9 @@ auditPrior(method = 'default', likelihood = c('poisson', 'binomial', 'hypergeome
 
 *Supported options for the `method` argument:*
 
-- `default`: Indifferent / Noninformative prior distribution.
+- `default`: Indifferent / noninformative prior distribution.
 - `strict`: Improper prior distribution (matches classical results).
-- `impartial`: Impartial prior distribution, i.e., equal prior probabilities for (in)tolerable misstatement (Derks et al., 2021).
+- `impartial`: Impartial prior distribution (Derks et al., 2021).
 - `param`: Manually set the prior parameters.
 - `hyp`: Manually provide the prior probability for tolerable misstatement (Derks et al., 2021).
 - `arm`: Manually provide the inherent risk and internal control risk (Derks et al., 2021).
