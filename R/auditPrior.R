@@ -15,7 +15,7 @@
 
 #' Prior Distributions for Audit Sampling
 #'
-#' @description \code{auditPrior} is used to create a prior distribution for Bayesian audit sampling. The interface allows a complete customization of the prior distribution as well as a formal translation of pre-existing audit information into a prior distribution. \code{auditPrior} returns an object of class \code{jfaPrior} that can be subsequently used in the \code{planning()} and \code{evaluation()} functions via their \code{prior} argument. Objects with class \code{jfaPrior} can be used with associated \code{summary()} and \code{plot()} methods.
+#' @description \code{auditPrior()} is used to specify a prior distribution for Bayesian audit sampling. The interface allows a complete customization of the prior distribution as well as a formal translation of pre-existing audit information into a prior distribution. \code{auditPrior()} returns an object of class \code{jfaPrior} that can be subsequently used in the \code{planning()} and \code{evaluation()} functions via their \code{prior} argument. Objects with class \code{jfaPrior} can be used with associated \code{summary()} and \code{plot()} methods.
 #'
 #' For more details on how to use this function, see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
@@ -30,16 +30,16 @@
 #' @param N.units         a numeric value larger than 0 specifying the total number of units in the population. Only used for the \code{hypergeometric} likelihood.
 #' @param alpha           a numeric value specifying the \eqn{\alpha} parameter of the prior distribution. Only used for method \code{param}.
 #' @param beta            a numeric value specifying the \eqn{\beta} parameter of the prior distribution. Only used for method \code{param}.
-#' @param materiality     a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum misstatement) as a fraction of the total number of units in the population. Only used for methods \code{impartial}, \code{arm}, and \code{hyp}.
+#' @param materiality     a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum tolerable misstatement) as a fraction of the total number of units in the population. Only used for methods \code{impartial}, \code{arm}, and \code{hyp}.
 #' @param expected        a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size. Only used for methods \code{impartial}, \code{arm}, \code{bram}, and \code{hyp}.
-#' @param ir              a numeric value between 0 and 1 specifying the inherent risk in the audit risk model. Defaults to 1 for 100\% risk. Only used for method \code{arm}.
-#' @param cr              a numeric value between 0 and 1 specifying the internal control risk in the audit risk model. Defaults to 1 for 100\% risk. Only used for method \code{arm}.
+#' @param ir              a numeric value between 0 and 1 specifying the inherent risk in the audit risk model. Only used for method \code{arm}.
+#' @param cr              a numeric value between 0 and 1 specifying the internal control risk in the audit risk model. Only used for method \code{arm}.
 #' @param ub              a numeric value between 0 and 1 specifying the \code{conf.level}-\% upper bound for the prior distribution as a fraction of the total number of units in the population. Only used for method \code{bram}.
 #' @param p.hmin          a numeric value between 0 and 1 specifying the prior probability of the hypothesis of tolerable misstatement (H1: \eqn{\theta <} materiality). Only used for method \code{hyp}.
 #' @param x               a numeric value larger than, or equal to, 0 specifying the sum of proportional errors (taints) in a prior sample. Only used for methods \code{sample} and \code{factor}.
 #' @param n               a numeric value larger than 0 specifying the sample size of a prior sample. Only used for methods \code{sample} and \code{factor}.
 #' @param factor          a numeric value between 0 and 1 specifying the weight of the prior sample. Only used for method \code{factor}.
-#' @param conf.level      a numeric value between 0 and 1 specifying the confidence level. Defaults to 0.95 for 95\% confidence.
+#' @param conf.level      a numeric value between 0 and 1 specifying the confidence level.
 #'
 #' @details To perform Bayesian audit sampling you must assign a prior probability distribution to the parameter in the model, i.e., the population misstatement \eqn{\theta}.
 #'          The prior distribution can incorporate pre-existing audit information about \eqn{\theta} before seeing a sample, which consequently allows for a more efficient or more accurate estimate of \eqn{\theta}.

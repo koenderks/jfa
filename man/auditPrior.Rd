@@ -20,13 +20,13 @@ auditPrior(method = 'default', likelihood = c('poisson', 'binomial', 'hypergeome
 
 \item{beta}{a numeric value specifying the \eqn{\beta} parameter of the prior distribution. Only used for method \code{param}.}
 
-\item{materiality}{a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum misstatement) as a fraction of the total number of units in the population. Only used for methods \code{impartial}, \code{arm}, and \code{hyp}.}
+\item{materiality}{a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum tolerable misstatement) as a fraction of the total number of units in the population. Only used for methods \code{impartial}, \code{arm}, and \code{hyp}.}
 
 \item{expected}{a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size. Only used for methods \code{impartial}, \code{arm}, \code{bram}, and \code{hyp}.}
 
-\item{ir}{a numeric value between 0 and 1 specifying the inherent risk in the audit risk model. Defaults to 1 for 100\% risk. Only used for method \code{arm}.}
+\item{ir}{a numeric value between 0 and 1 specifying the inherent risk in the audit risk model. Only used for method \code{arm}.}
 
-\item{cr}{a numeric value between 0 and 1 specifying the internal control risk in the audit risk model. Defaults to 1 for 100\% risk. Only used for method \code{arm}.}
+\item{cr}{a numeric value between 0 and 1 specifying the internal control risk in the audit risk model. Only used for method \code{arm}.}
 
 \item{ub}{a numeric value between 0 and 1 specifying the \code{conf.level}-\% upper bound for the prior distribution as a fraction of the total number of units in the population. Only used for method \code{bram}.}
 
@@ -38,7 +38,7 @@ auditPrior(method = 'default', likelihood = c('poisson', 'binomial', 'hypergeome
 
 \item{factor}{a numeric value between 0 and 1 specifying the weight of the prior sample. Only used for method \code{factor}.}
 
-\item{conf.level}{a numeric value between 0 and 1 specifying the confidence level. Defaults to 0.95 for 95\% confidence.}
+\item{conf.level}{a numeric value between 0 and 1 specifying the confidence level.}
 }
 \value{
 An object of class \code{jfaPrior} containing:
@@ -56,7 +56,7 @@ An object of class \code{jfaPrior} containing:
 \item{N.units}{if \code{N.units} is specified, the number of units in the population.}
 }
 \description{
-\code{auditPrior} is used to create a prior distribution for Bayesian audit sampling. The interface allows a complete customization of the prior distribution as well as a formal translation of pre-existing audit information into a prior distribution. \code{auditPrior} returns an object of class \code{jfaPrior} that can be subsequently used in the \code{planning()} and \code{evaluation()} functions via their \code{prior} argument. Objects with class \code{jfaPrior} can be used with associated \code{summary()} and \code{plot()} methods.
+\code{auditPrior()} is used to specify a prior distribution for Bayesian audit sampling. The interface allows a complete customization of the prior distribution as well as a formal translation of pre-existing audit information into a prior distribution. \code{auditPrior()} returns an object of class \code{jfaPrior} that can be subsequently used in the \code{planning()} and \code{evaluation()} functions via their \code{prior} argument. Objects with class \code{jfaPrior} can be used with associated \code{summary()} and \code{plot()} methods.
 
 For more details on how to use this function, see the package vignette:
 \code{vignette('jfa', package = 'jfa')}

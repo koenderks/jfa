@@ -10,37 +10,37 @@ planning(materiality = NULL, min.precision = NULL, expected = 0,
          prior = FALSE)
 }
 \arguments{
-\item{materiality}{a numeric value between 0 and 1 specifying the performance materiality (i.e., maximum upper limit) as a fraction of the total population size. Can be \code{NULL}, but \code{min.precision} should be specified in that case.}
+\item{materiality}{a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum tolerable misstatement) as a fraction of the total number of units in the population. Can be \code{NULL}, but \code{min.precision} should be specified in that case.}
 
 \item{min.precision}{a numeric value between 0 and 1 specifying the minimum precision (i.e., upper bound minus most likely error) as a fraction of the total population size. Can be \code{NULL}, but \code{materiality} should be specified in that case.}
 
-\item{expected}{a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size, or a number (>= 1) that represents the number of expected errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.}
+\item{expected}{a numeric value between 0 and 1 specifying the expected / tolerable errors in the sample relative to the total sample size, or a number (>= 1) specifying the expected / tolerable number of errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.}
 
-\item{likelihood}{a character specifying the likelihood assumed in the calculation. This can be either \code{poisson} (default) for the Poisson likelihood, \code{binomial} for the binomial likelihood, or \code{hypergeometric} for the hypergeometric likelihood. See the details section for more information about the available likelihoods.}
+\item{likelihood}{a character specifying the likelihood for the data. Possible options are \code{poisson} (default) for the Poisson likelihood, \code{binomial} for the binomial likelihood, or \code{hypergeometric} for the hypergeometric likelihood. See the details section for more information about the available likelihoods.}
 
-\item{conf.level}{a numeric value between 0 and 1 specifying the confidence level used in the planning. Defaults to 0.95 for 95\% confidence.}
+\item{conf.level}{a numeric value between 0 and 1 specifying the confidence level.}
 
-\item{N.units}{an integer larger than 0 specifying the total number of units or items in the population (i.e., the population size). Only required when \code{likelihood = 'hypergeometric'}.}
+\item{N.units}{a numeric value larger than 0 specifying the total number of units in the population. Only used for the \code{hypergeometric} likelihood.}
 
-\item{by}{an integer larger than 0 specifying the desired increment for the sample size calculation.}
+\item{by}{an integer larger than 0 specifying the increment between possible sample sizes.}
 
-\item{max}{an integer larger than 0 specifying the maximum sample size that is considered in the calculation. Defaults to 5000 for efficiency. Increase this value if the sample size cannot be found due to it being too large (e.g., for a low materiality).}
+\item{max}{an integer larger than 0 specifying the sample size at which the algorithm terminates.}
 
-\item{prior}{a logical specifying whether to use a prior distribution when planning, or an object of class \code{jfaPrior} or \code{jfaPosterior} containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a minimal information prior is chosen by default. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
+\item{prior}{a logical specifying whether to use a prior distribution, or an object of class \code{jfaPrior} or \code{jfaPosterior}. If \code{FALSE} (default), performs classical planning. If \code{TRUE}, performs Bayesian planning using a default conjugate prior.}
 }
 \value{
 An object of class \code{jfaPlanning} containing:
 
-\item{conf.level}{a numeric value between 0 and 1 indicating the confidence level used.}
-\item{x}{a numeric value larger than, or equal to, 0 indicating the number of tolerable errors in the sample.}
-\item{n}{an integer larger than 0 indicating the required sample size.}
-\item{ub}{a numeric value between 0 and 1 indicating the expected upper bound if the sample goes according to plan.}
-\item{precision}{a numeric value between 0 and 1 indicating the expected precision if the sample goes according to plan.}
-\item{p.value}{a numeric value indicating the one-sided p-value.}
+\item{conf.level}{a numeric value between 0 and 1 indicating the confidence level.}
+\item{x}{a numeric value larger than, or equal to, 0 indicating (the proportional sum of) the tolerable errors in the sample.}
+\item{n}{an integer larger than 0 indicating the minimal sample size.}
+\item{ub}{a numeric value between 0 and 1 indicating the expected upper bound.}
+\item{precision}{a numeric value between 0 and 1 indicating the expected precision.}
+\item{p.value}{a numeric value indicating the expected one-sided p-value.}
 \item{K}{if \code{likelihood = 'hypergeometric'}, an integer larger than 0 indicating the assumed population errors.}
-\item{N.units}{an integer larger than 0 indicating the population size (only returned if \code{N} is specified).}
-\item{materiality}{a numeric value between 0 and 1 indicating the specified materiality.}
-\item{min.precision}{a numeric value between 0 and 1 indicating the minimum precision to be obtained.}
+\item{N.units}{an integer larger than 0 indicating the number of units in the population (only returned if \code{N.units} is specified).}
+\item{materiality}{a numeric value between 0 and 1 indicating the performance materiality if specified.}
+\item{min.precision}{a numeric value between 0 and 1 indicating the minimum precision if specified.}
 \item{expected}{a numeric value larger than, or equal to, 0 indicating the expected errors input.}
 \item{likelihood}{a character indicating the specified likelihood.}
 \item{errorType}{a character indicating whether the expected errors where specified as a percentage or as an integer.}
@@ -49,7 +49,7 @@ An object of class \code{jfaPlanning} containing:
 \item{posterior}{if a prior distribution is specified, an object of class \code{jfaPosterior} that contains information about the expected posterior distribution.}
 }
 \description{
-This function calculates the minimum sample size for a statistical audit sample based on the Poisson, binomial, or hypergeometric likelihood. The function returns an object of class \code{jfaPlanning} which can be used with associated \code{summary()} and \code{plot()} methods.
+\code{planning()} is used to calculate a minimum sample size for audit samples. It allows specification of statistical requirements for the sample with respect to the performance materiality or the precision. \code{planning()} returns an object of class \code{jfaPlanning} which can be used with associated \code{summary()} and \code{plot()} methods.
 
 For more details on how to use this function, see the package vignette:
 \code{vignette('jfa', package = 'jfa')}
@@ -65,17 +65,17 @@ This section elaborates on the available likelihoods and corresponding prior dis
 }
 \examples{
 # Classical planning using a Poisson likelihood
-planning(materiality = 0.05, expected = 0.025, likelihood = "poisson")
+planning(materiality = 0.03, expected = 0.01, likelihood = "poisson")
 
-# Bayesian planning using a noninformative gamma prior distribution
+# Bayesian planning using a noninformative beta prior distribution
 planning(
-  materiality = 0.05, expected = 0.025, likelihood = "poisson",
+  materiality = 0.05, expected = 0.025, likelihood = "binomial",
   prior = TRUE
 )
 
-# Bayesian planning using an informed gamma prior distribution
+# Bayesian planning using an impartial beta prior distribution
 planning(
-  materiality = 0.05, expected = 0.025, likelihood = "poisson",
+  materiality = 0.05, expected = 0, likelihood = "binomial",
   prior = auditPrior(method = "impartial", materiality = 0.05)
 )
 }
