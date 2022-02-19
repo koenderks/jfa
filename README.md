@@ -213,7 +213,7 @@ evaluation(materiality = NULL, min.precision = NULL, method = 'poisson',
 - `stringer.lta`: Stringer bound with LTA correction (Leslie, Teitlebaum, & Anderson, 1979).
 - `stringer.pvz`: Modified Stringer bound (Pap & van Zuijlen, 1996).
 - `rohrbach`: Rohrbach's augmented variance estimator (Rohrbach, 1993).
-- `moment`: Modified moment bound (Dworing & Grimlund, 1984).
+- `moment`: Modified moment bound (Dworin & Grimlund, 1984).
 - `coxsnell`: Cox and Snell bound (Cox & Snell, 1979).
 - `mpu`: Mean-per-unit estimator (Touw & Hoogduin, 2011).
 - `direct`: Direct estimator (Touw & Hoogduin, 2011).

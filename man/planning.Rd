@@ -73,9 +73,9 @@ planning(
   prior = TRUE
 )
 
-# Bayesian planning using an impartial beta prior distribution
+# Bayesian planning using an impartial gamma prior distribution
 planning(
-  materiality = 0.05, expected = 0, likelihood = "binomial",
+  materiality = 0.05, expected = 0, likelihood = "poisson",
   prior = auditPrior(method = "impartial", materiality = 0.05)
 )
 }

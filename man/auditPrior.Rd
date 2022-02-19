@@ -64,8 +64,8 @@ For more details on how to use this function, see the package vignette:
 \details{
 To perform Bayesian audit sampling you must assign a prior probability distribution to the parameter in the model, i.e., the population misstatement \eqn{\theta}.
          The prior distribution can incorporate pre-existing audit information about \eqn{\theta} before seeing a sample, which consequently allows for a more efficient or more accurate estimate of \eqn{\theta}.
-         However, the default priors used in \code{jfa} are purposely indifferent towards the individual values of \eqn{\theta}. For these priors, the posterior distribution is based solely on the data from the sample, i.e., the likeihood.
-         Note that the default prior is a conservative choice of prior since it assumes all possible misstatement is equally likely before seeing information from a data sample.
+         However, the default priors used in \code{jfa} are purposely indifferent towards the individual values of \eqn{\theta} in order to 'let the data speak for themselves'.
+         Note that these default priors are a conservative choice of prior since they assume all possible misstatement to be (roughly) equally likely before seeing a data sample.
          It is therefore strongly recommended to construct an informed prior distribution based on pre-existing audit information if possible.
 
 This section elaborates on the available options for the \code{method} argument.
