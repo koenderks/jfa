@@ -60,11 +60,11 @@ Below you can find an explanation of the available functions in `jfa` sorted by 
 - [`evaluation()`](#evaluate-a-sample-with-the-evaluation-function)
 - [`report()`](#create-a-report-with-the-report-function)
 
-### Create a prior distribution with the `auditPrior()` function
+### Create a prior distribution with `auditPrior()`
 
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
-The `auditPrior()` function creates a prior probability distribution according to one of several methods, including a translation of the assessments of the inherent risk and control risk from the audit risk model. The function returns an object of class `jfaPrior` which can be used with associated `summary()` and `plot()` methods. Objects with class `jfaPrior` can also be used as input for the `prior` argument in other functions. Moreover, `jfaPrior` object have a corresponding `predict()` function to produce the predictions of the prior distribution on the data level.
+The `auditPrior()` function creates a prior probability distribution according to one of several methods, including a translation of the assessments of the inherent risk and control risk from the audit risk model. The function returns an object of class `jfaPrior` which can be used with associated `summary()` and `plot()` methods. Objects with class `jfaPrior` can also be used as input for the `prior` argument in other functions. Moreover, `jfaPrior` objects have a corresponding `predict()` function to produce the predictions of the prior distribution on the data level.
 
 *Full function with default arguments:*
 
@@ -77,15 +77,15 @@ auditPrior(method = 'default', likelihood = c('poisson', 'binomial', 'hypergeome
 
 *Supported options for the `method` argument:*
 
-- `default`: Noninformative prior distribution based on minimal information.
-- `strict`: Strict prior distribution (with classical properties).
-- `param`: Manual prior parameters.
-- `impartial`: Equal prior probabilities for (in)tolerable misstatement (Derks et al., 2021).
-- `hyp`: Manual prior probability for tolerable misstatement (Derks et al., 2021).
-- `arm`: Assessments of inherent risk and internal control risk (Derks et al., 2021).
-- `bram`: x-% upper bound for the prior distribution (Touw & Hoogduin, 2011).
-- `sample`: Information from an earlier sample (Derks et al., 2021).
-- `factor`: Weigh information from an earlier sample (Derks et al., 2021).
+- `default`: Indifferent / Noninformative prior distribution.
+- `strict`: Improper prior distribution (matches classical results).
+- `impartial`: Impartial prior distribution, i.e., equal prior probabilities for (in)tolerable misstatement (Derks et al., 2021).
+- `param`: Manually set the prior parameters.
+- `hyp`: Manually provide the prior probability for tolerable misstatement (Derks et al., 2021).
+- `arm`: Manually provide the inherent risk and internal control risk (Derks et al., 2021).
+- `bram`: Manually provide the upper bound of the prior distribution (Touw & Hoogduin, 2011).
+- `sample`: Manually provide an equivalent prior sample (Derks et al., 2021).
+- `factor`: Manually provide and weigh an equivalent prior sample (Derks et al., 2021).
 
 *Supported options for the `likelihood` argument:*
 
@@ -96,20 +96,20 @@ auditPrior(method = 'default', likelihood = c('poisson', 'binomial', 'hypergeome
 *Example usage:*
 
 ```r
-# A gamma prior distribution based on minimal information
-x <- auditPrior(method = 'default', likelihood = 'poisson')
+# Default beta(1, 1) prior distribution
+x <- auditPrior(method = 'default', likelihood = 'binomial')
 
-# A custom beta(1, 10) prior distribution 
-x <- auditPrior(method = 'param', likelihood = 'binomial', alpha = 1, beta = 10)
+# Custom gamma(1, 10) prior distribution 
+x <- auditPrior(method = 'param', likelihood = 'poisson', alpha = 1, beta = 10)
 
-# A beta prior distribution which incorporates inherent risk (70%) and control risk (50%)
+# Beta prior distribution incorporating inherent risk (70%) and control risk (50%)
 x <- auditPrior(method = 'arm', likelihood = 'binomial', materiality = 0.05, ir = 0.7, cr = 0.5)
 
 summary(x) # Prints information about the prior distribution
 predict(x, n = 20, cumulative = TRUE) # Predictions for a sample of n = 20
 ```
 
-### Plan a sample with the `planning()` function
+### Plan a sample with `planning()`
 
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
@@ -136,17 +136,17 @@ planning(materiality = NULL, min.precision = NULL, expected = 0,
 # Classical planning using the Poisson likelihood
 x <- planning(materiality = 0.03, likelihood = 'poisson')
 
-# Bayesian planning using a default minimal information prior
-x <- planning(materiality = 0.03, likelihood = 'poisson', prior = TRUE)
+# Bayesian planning using a default beta(1, 1) prior and binomial likelihood
+x <- planning(materiality = 0.03, likelihood = 'binomial', prior = TRUE)
 
-# Bayesian planning using a custom beta(1, 10) prior
+# Bayesian planning using a custom beta(1, 10) prior and binomial likelihood
 x <- planning(materiality = 0.03, 
               prior = auditPrior(method = 'param', likelihood = 'binomial', alpha = 1, beta = 10))
 
 summary(x) # Prints information about the planning
 ```
 
-### Select items with the `selection()` function
+### Select sample items with `selection()`
 
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
@@ -185,7 +185,7 @@ x <- selection(data = BuildIt, size = 100, units = 'values', method = 'interval'
 summary(x) # Prints information about the selection
 ```
 
-### Evaluate a sample with the `evaluation()` function
+### Evaluate a sample with `evaluation()`
 
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
@@ -236,7 +236,7 @@ x <- evaluation(materiality = 0.03, x = 1, n = 100,
 summary(x) # Prints information about the evaluation
 ```
 
-### Create a report with the `report()` function
+### Create a report with `report()`
 
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
