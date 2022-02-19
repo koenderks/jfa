@@ -6,7 +6,6 @@
 ^man/figures/tables$
 ^man/figures/readme$
 ^man/figures/cheatsheet$
-^man/manual$
 ^Meta$
 ^CRAN-RELEASE$
 ^docs$

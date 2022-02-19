@@ -13,9 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Create a statistical audit sampling report
+#' Create an Audit Sampling Report
 #'
-#' @description This function takes an object of class \code{jfaEvaluation} as returned by the \code{evaluation()} function automatically generates a \code{html} or \code{pdf} report containing the analysis results and their interpretation.
+#' @description \code{report()} takes an object of class \code{jfaEvaluation} as returned by the \code{evaluation()} function automatically generates a \code{html} or \code{pdf} report of the results.
 #'
 #' For more details on how to use this function, see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
@@ -23,7 +23,7 @@
 #' @usage report(object, file = 'report.html', format = c('html_document', 'pdf_document'))
 #'
 #' @param object an object of class \code{jfaEvaluation} as returned by the \code{evaluation()} function.
-#' @param file a character specifying the name of the report (e.g. \code{report.html}). By default, the report is created in your current working directory.
+#' @param file   a character specifying the name of the report (e.g. \code{report.html}).
 #' @param format a character specifying the output format of the report. Possible options are \code{html_document} (default) and \code{pdf_document}, but compiling to \code{pdf} format requires a local version of MikTex.
 #'
 #' @return A \code{html} or \code{pdf} file containing a report of the evaluation.
@@ -32,7 +32,7 @@
 #'
 #' @seealso \code{\link{auditPrior}} \code{\link{planning}} \code{\link{selection}} \code{\link{evaluation}}
 #'
-#' @keywords evaluation report audit
+#' @keywords audit evaluation report
 #'
 #' @examples
 #' data("BuildIt")

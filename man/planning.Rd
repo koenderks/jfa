@@ -31,20 +31,20 @@ planning(materiality = NULL, min.precision = NULL, expected = 0,
 \value{
 An object of class \code{jfaPlanning} containing:
 
-\item{conf.level}{a numeric value between 0 and 1 indicating the confidence level.}
-\item{x}{a numeric value larger than, or equal to, 0 indicating (the proportional sum of) the tolerable errors in the sample.}
-\item{n}{an integer larger than 0 indicating the minimal sample size.}
-\item{ub}{a numeric value between 0 and 1 indicating the expected upper bound.}
-\item{precision}{a numeric value between 0 and 1 indicating the expected precision.}
-\item{p.value}{a numeric value indicating the expected one-sided p-value.}
-\item{K}{if \code{likelihood = 'hypergeometric'}, an integer larger than 0 indicating the assumed population errors.}
-\item{N.units}{an integer larger than 0 indicating the number of units in the population (only returned if \code{N.units} is specified).}
-\item{materiality}{a numeric value between 0 and 1 indicating the performance materiality if specified.}
-\item{min.precision}{a numeric value between 0 and 1 indicating the minimum precision if specified.}
-\item{expected}{a numeric value larger than, or equal to, 0 indicating the expected errors input.}
-\item{likelihood}{a character indicating the specified likelihood.}
-\item{errorType}{a character indicating whether the expected errors where specified as a percentage or as an integer.}
-\item{iterations}{a numeric value indicating the number of iterations used.}
+\item{conf.level}{a numeric value between 0 and 1 giving the confidence level.}
+\item{x}{a numeric value larger than, or equal to, 0 giving (the proportional sum of) the tolerable errors in the sample.}
+\item{n}{an integer larger than 0 giving the minimal sample size.}
+\item{ub}{a numeric value between 0 and 1 giving the expected upper bound.}
+\item{precision}{a numeric value between 0 and 1 giving the expected precision.}
+\item{p.value}{a numeric value giving the expected one-sided p-value.}
+\item{K}{if \code{likelihood = 'hypergeometric'}, an integer larger than 0 giving the assumed population errors.}
+\item{N.units}{an integer larger than 0 giving the number of units in the population (only returned if \code{N.units} is specified).}
+\item{materiality}{a numeric value between 0 and 1 giving the performance materiality if specified.}
+\item{min.precision}{a numeric value between 0 and 1 giving the minimum precision if specified.}
+\item{expected}{a numeric value larger than, or equal to, 0 giving the expected errors input.}
+\item{likelihood}{a character indicating the likelihood.}
+\item{errorType}{a character indicating whether the expected errors input type.}
+\item{iterations}{an integer giving the number of iterations of the algorithm.}
 \item{prior}{if a prior distribution is specified, an object of class \code{jfaPrior} that contains information about the prior distribution.}
 \item{posterior}{if a prior distribution is specified, an object of class \code{jfaPosterior} that contains information about the expected posterior distribution.}
 }
@@ -91,6 +91,6 @@ Dyer, D. and Pierce, R.L. (1993). On the choice of the prior distribution in hyp
 Koen Derks, \email{k.derks@nyenrode.nl}
 }
 \keyword{audit}
+\keyword{evaluation}
 \keyword{planning}
-\keyword{sample}
-\keyword{size}
+\keyword{prior}

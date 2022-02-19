@@ -2,7 +2,7 @@
 % Please edit documentation in R/evaluation.R
 \name{evaluation}
 \alias{evaluation}
-\title{Evaluate a statistical audit sample}
+\title{Evaluate a Statistical Audit Sample}
 \usage{
 evaluation(materiality = NULL, min.precision = NULL, method = 'poisson',
            alternative = c('less', 'two.sided', 'greater'), conf.level = 0.95,
@@ -12,70 +12,70 @@ evaluation(materiality = NULL, min.precision = NULL, method = 'poisson',
            prior = FALSE)
 }
 \arguments{
-\item{materiality}{a numeric value between 0 and 1 specifying the performance materiality (maximum tolerable error) as a fraction of the total size of the population. If specified, the function also returns the conclusion of the analysis with respect to the performance materiality. The value is discarded when \code{direct}, \code{difference}, \code{quotient}, or \code{regression} method is chosen.}
+\item{materiality}{a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum tolerable misstatement) as a fraction of the total number of units in the population. Can be \code{NULL}, but \code{min.precision} should be specified in that case. Not used for methods \code{direct}, \code{difference}, \code{quotient}, and \code{regression}.}
 
-\item{min.precision}{a numeric value between 0 and 1 specifying the required minimum precision (upper bound minus most likely error) as a fraction of the total size of the population. If specified, the function also returns the conclusion of the analysis with respect to the required minimum precision.}
+\item{min.precision}{a numeric value between 0 and 1 specifying the minimum precision (i.e., upper bound minus most likely error) as a fraction of the total population size. Can be \code{NULL}, but \code{materiality} should be specified in that case.}
 
-\item{method}{a character specifying the method to be used in the evaluation. Possible options are \code{poisson}, \code{binomial} (default), \code{hypergeometric}, \code{mpu}, \code{stringer}, \code{stringer.meikle}, \code{stringer.lta}, \code{stringer.pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}. See the details section for more information.}
+\item{method}{a character specifying the inference method. Possible options are \code{poisson} (default), \code{binomial}, \code{hypergeometric}, \code{mpu}, \code{stringer}, \code{stringer.meikle}, \code{stringer.lta}, \code{stringer.pvz}, \code{rohrbach}, \code{moment}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}. See the details section for more information.}
 
-\item{alternative}{a character indicating the alternative hypothesis to be tested (and the type of interval to be produced). This must be one of \code{less} (default), \code{two.sided}, or \code{greater}. You can specify just the initial letter.}
+\item{alternative}{a character indicating the alternative hypothesis and the type of confidence / credible interval. Possible options are \code{less} (default), \code{two.sided}, or \code{greater}.}
 
-\item{conf.level}{a numeric value between 0 and 1 specifying the confidence level used in the evaluation. Defaults to 0.95 for 95\% confidence.}
+\item{conf.level}{a numeric value between 0 and 1 specifying the confidence level.}
 
-\item{data}{a data frame containing the sample to be evaluated. The sample must at least contain a column of book values and a column of audit (true) values.}
+\item{data}{a data frame containing a data sample.}
 
 \item{values}{a character specifying name of a column in \code{data} containing the book values of the items.}
 
 \item{values.audit}{a character specifying name of a column in \code{data} containing the audit (true) values of the items.}
 
-\item{times}{a character specifying name of a column in \code{data} containing the number of times each item in the \code{data} should be counted in the evaluation (due to it being selected multiple times for the sample).}
+\item{times}{a character specifying name of a column in \code{data} containing the number of times each item in \code{data} should be counted (e.g., due to being selected multiple times for the sample).}
 
-\item{x}{a numeric value larger than 0 specifying the sum of errors found in the sample. If specified, overrides the \code{data}, \code{values} and \code{values.audit} arguments and assumes that the data come from summary statistics specified by both \code{x} and \code{n}.}
+\item{x}{a numeric value larger than 0 specifying the sum of (proportional) misstatements in the sample. If specified, overrides the \code{data}, \code{values} and \code{values.audit} arguments and assumes that the data come from summary statistics specified by both \code{x} and \code{n}.}
 
 \item{n}{an integer larger than 0 specifying the number of items in the sample. If specified, overrides the \code{data}, \code{values} and \code{values.audit} arguments and assumes that the data come from summary statistics specified by both \code{x} and \code{n}.}
 
-\item{N.units}{an integer larger than 0 specifying the total number of sampling units in the population (i.e., the population size / value). Only required if \code{method} is one of \code{'hypergeometric'}, \code{direct}, \code{difference}, \code{quotient}, or \code{regression}.}
+\item{N.units}{an integer larger than 0 specifying the number of units in the population. Only used for methods \code{hypergeometric}, \code{direct}, \code{difference}, \code{quotient}, and \code{regression}.}
 
-\item{N.items}{an integer larger than 0 specifying the total number of items in the population. Only required if \code{method} is one of \code{direct}, \code{difference}, \code{quotient}, or \code{regression}.}
+\item{N.items}{an integer larger than 0 specifying the number of items in the population. Only used for methods \code{direct}, \code{difference}, \code{quotient}, and \code{regression}.}
 
-\item{r.delta}{if \code{method = 'rohrbach'}, a numeric value specifying \eqn{\Delta} in Rohrbach's augmented variance bound (Rohrbach, 1993).}
+\item{r.delta}{a numeric value specifying \eqn{\Delta} in Rohrbach's augmented variance bound (Rohrbach, 1993). Only used for method \code{rohrbach}.}
 
-\item{m.type}{if \code{method = 'moment'}, a character specifying the type of population (Dworin and Grimlund, 1984). Possible options are \code{accounts} and \code{inventory}. This argument affects the calculation of the central moments in the bound.}
+\item{m.type}{a character specifying the type of population (Dworin and Grimlund, 1984). Possible options are \code{accounts} and \code{inventory}. Only used for method \code{moment}.}
 
-\item{cs.a}{if \code{method = "coxsnell"}, a numeric value specifying the \eqn{\alpha} parameter of the prior distribution on the mean taint. Defaults to 1 as recommended by Cox and Snell (1979).}
+\item{cs.a}{a numeric value specifying the \eqn{\alpha} parameter of the prior distribution on the mean taint. Only used for method \code{coxsnell}.}
 
-\item{cs.b}{if \code{method = "coxsnell"}, a numeric value specifying the \eqn{\beta} parameter of the prior distribution on the mean taint. Defaults to 3 as recommended by Cox and Snell (1979).}
+\item{cs.b}{a numeric value specifying the \eqn{\beta} parameter of the prior distribution on the mean taint. Only used for method \code{coxsnell}.}
 
-\item{cs.mu}{if \code{method = "coxsnell"}, a numeric value between 0 and 1 specifying the mean of the prior distribution on the mean taint. Defaults to 0.5 as recommended by Cox and Snell (1979).}
+\item{cs.mu}{a numeric value between 0 and 1 specifying the mean of the prior distribution on the mean taint. Only used for method \code{coxsnell}.}
 
-\item{prior}{a logical specifying if a prior distribution must be used, or an object of class \code{jfaPrior} or \code{jfaPosterior} containing the prior distribution. Defaults to \code{FALSE} for frequentist planning. If \code{TRUE}, a minimal information prior is chosen by default. Chooses a conjugate gamma distribution for the Poisson likelihood, a conjugate beta distribution for the binomial likelihood, and a conjugate beta-binomial distribution for the hypergeometric likelihood.}
+\item{prior}{a logical specifying whether to use a prior distribution, or an object of class \code{jfaPrior} or \code{jfaPosterior} containing the prior distribution. If \code{FALSE} (default), performs classical planning. If \code{TRUE}, performs Bayesian planning using a default conjugate prior.}
 }
 \value{
 An object of class \code{jfaEvaluation} containing:
 
-\item{conf.level}{a numeric value between 0 and 1 indicating the confidence level used.}
-\item{mle}{a numeric value between 0 and 1 indicating the most likely error in the population as a fraction of its total size.}
-\item{ub}{a numeric value indicating the upper bound on the (probability of) misstatement.}
-\item{lb}{a numeric value indicating the lower bound of the interval around the (probability of) misstatement.}
-\item{precision}{a numeric value between 0 and 1 indicating the difference between the most likely error and the upper bound in the population as a fraction of the total population size.}
-\item{p.value}{a numeric value indicating the one-sided p-value.}
-\item{x}{an integer larger than, or equal to, 0 indicating the number of items in the sample that contained an error.}
-\item{t}{a value larger than, or equal to, 0, indicating the sum of observed taints.}
-\item{n}{an integer larger than 0 indicating the sample size.}
-\item{materiality}{if \code{materiality} is specified, a numeric value between 0 and 1 indicating the performance materiality as a fraction of the total population size.}
-\item{min.precision}{if \code{min.precision} is specified, a numeric value between 0 and 1 indicating the minimum required precision as a fraction of the total population size.}
+\item{conf.level}{a numeric value between 0 and 1 giving the confidence level.}
+\item{mle}{a numeric value between 0 and 1 giving the most likely error in the population.}
+\item{ub}{a numeric value between 0 and 1 giving the upper bound for the population misstatement.}
+\item{lb}{{a numeric value between 0 and 1 giving the lower bound for the population misstatement.}}
+\item{precision}{a numeric value between 0 and 1 giving the difference between the most likely error and the upper bound.}
+\item{p.value}{for classical tests, a numeric value giving the one-sided p-value.}
+\item{x}{an integer larger than, or equal to, 0 giving the number of sample errors.}
+\item{t}{a value larger than, or equal to, 0, giving the sum of proportional sample errors.}
+\item{n}{an integer larger than 0 giving the sample size.}
+\item{materiality}{if \code{materiality} is specified, a numeric value between 0 and 1 giving the performance materiality as a fraction of the number of units in the population.}
+\item{min.precision}{if \code{min.precision} is specified, a numeric value between 0 and 1 giving the minimum precision as a fraction of the number of units in the population.}
 \item{alternative}{a character indicating the alternative hypothesis.}
-\item{method}{a character indicating the evaluation method.}
-\item{N.units}{if \code{N.units} is specified, in integer larger than 0 indicating the total number of units in the population.}
-\item{N.items}{if \code{N.items} is specified, in integer larger than 0 indicating the total number of items in the population.}
+\item{method}{a character indicating the inference method.}
+\item{N.units}{if \code{N.units} is specified, in integer larger than 0 indicating the number of units in the population.}
+\item{N.items}{if \code{N.items} is specified, in integer larger than 0 indicating the number of items in the population.}
 \item{K}{if \code{method = 'hypergeometric'}, an integer indicating the assumed total errors in the population.}
 \item{prior}{an object of class 'jfaPrior' that contains the prior distribution.}
 \item{posterior}{an object of class 'jfaPosterior' that contains the posterior distribution.}
 \item{data}{a data frame containing the relevant columns from the \code{data}.}
-\item{data.name}{a character string giving the name of the data.}
+\item{data.name}{a character giving the name of the data.}
 }
 \description{
-This function takes a data frame (using \code{data}, \code{values}, and \code{values.audit}) or summary statistics (using \code{x} and \code{n}) and performs inference on the misstatement in the sample. The function returns an object of class \code{jfaEvaluation} which can be used with associated \code{summary()} and \code{plot()} methods.
+\code{evaluation()} is used to perform statistical inference about the misstatement in an audit population. It allows specification of statistical requirements for the sample with respect to the performance materiality or the precision. \code{evaluation()} returns an object of class \code{jfaEvaluation} which can be used with associated \code{summary()} and \code{plot()} methods.
 
 For more details on how to use this function, see the package vignette:
 \code{vignette('jfa', package = 'jfa')}
@@ -84,21 +84,21 @@ For more details on how to use this function, see the package vignette:
 This section lists the available options for the \code{methods} argument.
 
 \itemize{
- \item{\code{poisson}:          Evaluates the sample with the Poisson distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{gamma} prior and posterior.}
- \item{\code{binomial}:         Evaluates the sample with the binomial distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{beta} prior and posterior.}
- \item{\code{hypergeometric}:   Evaluates the sample with the hypergeometric distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{beta-binomial} prior and posterior.}
-	\item{\code{mpu}:              Evaluates the sample with the mean-per-unit estimator.}
- \item{\code{stringer}:         Evaluates the sample with the Stringer bound (Stringer, 1963).}
- \item{\code{stringer.meikle}:  Evaluates the sample with the Stringer bound with Meikle's correction for understatements (Meikle, 1972).}
- \item{\code{stringer.lta}:     Evaluates the sample with the Stringer bound with LTA correction for understatements (Leslie, Teitlebaum, and Anderson, 1979).}
- \item{\code{stringer.pvz}:     Evaluates the sample with the Stringer bound with Pap and van Zuijlen's correction for understatements (Pap and van Zuijlen, 1996).}
- \item{\code{rohrbach}:         Evaluates the sample with Rohrbach's augmented variance bound (Rohrbach, 1993).}
- \item{\code{moment}:           Evaluates the sample with the modified moment bound (Dworin and Grimlund, 1984).}
- \item{\code{coxsnell}:         Evaluates the sample with the Cox and Snell bound (Cox and Snell, 1979).}
- \item{\code{direct}:           Evaluates the sample with the direct estimator (Touw and Hoogduin, 2011).}
- \item{\code{difference}:       Evaluates the sample with the difference estimator (Touw and Hoogduin, 2011).}
- \item{\code{quotient}:         Evaluates the sample with the quotient estimator (Touw and Hoogduin, 2011).}
- \item{\code{regression}:       Evaluates the sample with the regression estimator (Touw and Hoogduin, 2011).}
+ \item{\code{poisson}:         Evaluates the sample with the Poisson distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{gamma} prior and posterior.}
+ \item{\code{binomial}:        Evaluates the sample with the binomial distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{beta} prior and posterior.}
+ \item{\code{hypergeometric}:  Evaluates the sample with the hypergeometric distribution. If combined with \code{prior = TRUE}, performs Bayesian evaluation using a \emph{beta-binomial} prior and posterior.}
+	\item{\code{mpu}:             Evaluates the sample with the mean-per-unit estimator.}
+ \item{\code{stringer}:        Evaluates the sample with the Stringer bound (Stringer, 1963).}
+ \item{\code{stringer.meikle}: Evaluates the sample with the Stringer bound with Meikle's correction for understatements (Meikle, 1972).}
+ \item{\code{stringer.lta}:    Evaluates the sample with the Stringer bound with LTA correction for understatements (Leslie, Teitlebaum, and Anderson, 1979).}
+ \item{\code{stringer.pvz}:    Evaluates the sample with the Stringer bound with Pap and van Zuijlen's correction for understatements (Pap and van Zuijlen, 1996).}
+ \item{\code{rohrbach}:        Evaluates the sample with Rohrbach's augmented variance bound (Rohrbach, 1993).}
+ \item{\code{moment}:          Evaluates the sample with the modified moment bound (Dworin and Grimlund, 1984).}
+ \item{\code{coxsnell}:        Evaluates the sample with the Cox and Snell bound (Cox and Snell, 1979).}
+ \item{\code{direct}:          Evaluates the sample with the direct estimator (Touw and Hoogduin, 2011).}
+ \item{\code{difference}:      Evaluates the sample with the difference estimator (Touw and Hoogduin, 2011).}
+ \item{\code{quotient}:        Evaluates the sample with the quotient estimator (Touw and Hoogduin, 2011).}
+ \item{\code{regression}:      Evaluates the sample with the regression estimator (Touw and Hoogduin, 2011).}
 }
 }
 \examples{
@@ -163,6 +163,5 @@ Touw, P., and Hoogduin, L. (2011). \emph{Statistiek voor Audit en Controlling}. 
 Koen Derks, \email{k.derks@nyenrode.nl}
 }
 \keyword{audit}
-\keyword{bound}
-\keyword{confidence}
 \keyword{evaluation}
+\keyword{prior}

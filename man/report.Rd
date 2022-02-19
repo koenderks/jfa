@@ -2,14 +2,14 @@
 % Please edit documentation in R/report.R
 \name{report}
 \alias{report}
-\title{Create a statistical audit sampling report}
+\title{Create an Audit Sampling Report}
 \usage{
 report(object, file = 'report.html', format = c('html_document', 'pdf_document'))
 }
 \arguments{
 \item{object}{an object of class \code{jfaEvaluation} as returned by the \code{evaluation()} function.}
 
-\item{file}{a character specifying the name of the report (e.g. \code{report.html}). By default, the report is created in your current working directory.}
+\item{file}{a character specifying the name of the report (e.g. \code{report.html}).}
 
 \item{format}{a character specifying the output format of the report. Possible options are \code{html_document} (default) and \code{pdf_document}, but compiling to \code{pdf} format requires a local version of MikTex.}
 }
@@ -17,7 +17,7 @@ report(object, file = 'report.html', format = c('html_document', 'pdf_document')
 A \code{html} or \code{pdf} file containing a report of the evaluation.
 }
 \description{
-This function takes an object of class \code{jfaEvaluation} as returned by the \code{evaluation()} function automatically generates a \code{html} or \code{pdf} report containing the analysis results and their interpretation.
+\code{report()} takes an object of class \code{jfaEvaluation} as returned by the \code{evaluation()} function automatically generates a \code{html} or \code{pdf} report of the results.
 
 For more details on how to use this function, see the package vignette:
 \code{vignette('jfa', package = 'jfa')}

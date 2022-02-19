@@ -54,17 +54,17 @@ The cheat sheet below can help you get started with the `jfa` package and its in
 
 Below you can find an explanation of the available functions in `jfa` sorted by their occurrence in the standard audit sampling workflow. For detailed examples of how to use these functions, visit the [Get started](https://koenderks.github.io/jfa/articles/jfa.html) section on the package website.
 
-- [`auditPrior()`](#create-a-prior-distribution-with-the-auditprior-function)
-- [`planning()`](#plan-a-sample-with-the-planning-function)
-- [`selection()`](#select-items-with-the-selection-function)
-- [`evaluation()`](#evaluate-a-sample-with-the-evaluation-function)
-- [`report()`](#create-a-report-with-the-report-function)
+- [`auditPrior()`](#create-a-prior-distribution-with-auditprior)
+- [`planning()`](#plan-a-sample-with-planning)
+- [`selection()`](#select-sample-items-with-selection)
+- [`evaluation()`](#evaluate-a-sample-with-evaluation)
+- [`report()`](#create-a-report-with-report)
 
 ### Create a prior distribution with `auditPrior()`
 
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
-The `auditPrior()` function creates a prior probability distribution according to one of several methods, including a translation of the assessments of the inherent risk and control risk from the audit risk model. The function returns an object of class `jfaPrior` which can be used with associated `summary()` and `plot()` methods. Objects with class `jfaPrior` can also be used as input for the `prior` argument in other functions. Moreover, `jfaPrior` objects have a corresponding `predict()` function to produce the predictions of the prior distribution on the data level.
+The `auditPrior()` function is used to specify a prior distribution for Bayesian audit sampling. The interface allows a complete customization of the prior distribution as well as a formal translation of pre-existing audit information into a prior distribution. The function returns an object of class `jfaPrior` which can be used with associated `summary()` and `plot()` methods. Objects with class `jfaPrior` can also be used as input for the `prior` argument in other functions. Moreover, `jfaPrior` objects have a corresponding `predict()` function to produce the predictions of the prior distribution on the data level.
 
 *Full function with default arguments:*
 
@@ -113,7 +113,7 @@ predict(x, n = 20, cumulative = TRUE) # Predictions for a sample of n = 20
 
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
-The `planning()` function calculates the minimum sample size for a statistical audit sample based on the Poisson, binomial, or hypergeometric likelihood. The function returns an object of class `jfaPlanning` which can be used with associated `summary()` and `plot()` methods. To perform Bayesian planning, the input for the `prior` argument can be an object of class `jfaPrior` as returned by the `auditPrior()` function, or an object of class `jfaPosterior` as returned by the `evaluation()` function.
+The `planning()` function is used to calculate a minimum sample size for audit samples. It allows specification of statistical requirements for the sample with respect to the performance materiality or the precision. The function returns an object of class `jfaPlanning` which can be used with associated `summary()` and `plot()` methods. To perform Bayesian planning, the input for the `prior` argument can be an object of class `jfaPrior` as returned by the `auditPrior()` function, or an object of class `jfaPosterior` as returned by the `evaluation()` function.
 
 *Full function with default arguments:*
 
@@ -150,7 +150,7 @@ summary(x) # Prints information about the planning
 
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
-The `selection()` function takes a data frame and performs statistical sampling according to one of three algorithms: fixed interval sampling, cell sampling, or random sampling in combination with either record (attributes) sampling or monetary unit sampling (MUS). The function returns an object of class `jfaSelection` which can be used with associated `summary()` and `plot()` methods. The input for the `size` argument can be an object of class `jfaPlanning` as returned by the `planning()` function.
+The `selection()` function is used to perform statistical selection of audit samples. It offers flexible implementations of the most common audit sampling algorithms for attributes sampling and monetary unit sampling. The function returns an object of class `jfaSelection` which can be used with associated `summary()` and `plot()` methods. The input for the `size` argument can be an object of class `jfaPlanning` as returned by the `planning()` function.
 
 *Full function with default arguments:*
 
@@ -168,9 +168,9 @@ selection(data, size, units = c('items', 'values'),
 
 *Supported options for the `method` argument:*
 
-- `interval`: Select a fixed sampling unit from each interval.
-- `cell`: Select a random sampling unit from each interval.
-- `random`: Select random sampling units.
+- `interval`: Select a fixed unit from each interval.
+- `cell`: Select a random unit within each interval.
+- `random`: Select random units without an interval.
 - `sieve`: Select units using modified sieve sampling (Hoogduin, Hall, & Tsay, 2010).
 
 *Example usage:*
@@ -180,7 +180,8 @@ selection(data, size, units = c('items', 'values'),
 x <- selection(data = BuildIt, size = 100, units = 'items', method = 'random')
 
 # Selection using fixed interval monetary unit sampling (using column 'bookValues' in BuildIt)
-x <- selection(data = BuildIt, size = 100, units = 'values', method = 'interval', values = 'bookValues')
+x <- selection(data = BuildIt, size = 100, units = 'values', 
+               method = 'interval', values = 'bookValues')
 
 summary(x) # Prints information about the selection
 ```
