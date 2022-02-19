@@ -159,18 +159,18 @@
 <img src="https://github.com/koenderks/jfa/raw/development/man/figures/readme/banner/jfaBanner.png" alt="banner"></p>
 <p>Below you can find an explanation of the available functions in <code>jfa</code> sorted by their occurrence in the standard audit sampling workflow. For detailed examples of how to use these functions, visit the <a href="https://koenderks.github.io/jfa/articles/jfa.html" class="external-link">Get started</a> section on the package website.</p>
 <ul>
-<li><a href="#create-a-prior-distribution-with-the-auditprior-function"><code>auditPrior()</code></a></li>
-<li><a href="#plan-a-sample-with-the-planning-function"><code>planning()</code></a></li>
-<li><a href="#select-items-with-the-selection-function"><code>selection()</code></a></li>
-<li><a href="#evaluate-a-sample-with-the-evaluation-function"><code>evaluation()</code></a></li>
-<li><a href="#create-a-report-with-the-report-function"><code>report()</code></a></li>
+<li><a href="#create-a-prior-distribution-with-auditprior"><code>auditPrior()</code></a></li>
+<li><a href="#plan-a-sample-with-planning"><code>planning()</code></a></li>
+<li><a href="#select-sample-items-with-selection"><code>selection()</code></a></li>
+<li><a href="#evaluate-a-sample-with-evaluation"><code>evaluation()</code></a></li>
+<li><a href="#create-a-report-with-report"><code>report()</code></a></li>
 </ul>
 <div class="section level3">
 <h3 id="create-a-prior-distribution-with-auditprior">Create a prior distribution with <code>auditPrior()</code>
 <a class="anchor" aria-label="anchor" href="#create-a-prior-distribution-with-auditprior"></a>
 </h3>
 <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
-<p>The <code><a href="reference/auditPrior.html">auditPrior()</a></code> function creates a prior probability distribution according to one of several methods, including a translation of the assessments of the inherent risk and control risk from the audit risk model. The function returns an object of class <code>jfaPrior</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods. Objects with class <code>jfaPrior</code> can also be used as input for the <code>prior</code> argument in other functions. Moreover, <code>jfaPrior</code> objects have a corresponding <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> function to produce the predictions of the prior distribution on the data level.</p>
+<p>The <code><a href="reference/auditPrior.html">auditPrior()</a></code> function is used to specify a prior distribution for Bayesian audit sampling. The interface allows a complete customization of the prior distribution as well as a formal translation of pre-existing audit information into a prior distribution. The function returns an object of class <code>jfaPrior</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods. Objects with class <code>jfaPrior</code> can also be used as input for the <code>prior</code> argument in other functions. Moreover, <code>jfaPrior</code> objects have a corresponding <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> function to produce the predictions of the prior distribution on the data level.</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'default'</span>, likelihood <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'poisson'</span>, <span class="st">'binomial'</span>, <span class="st">'hypergeometric'</span><span class="op">)</span>, 
@@ -226,7 +226,7 @@
 <a class="anchor" aria-label="anchor" href="#plan-a-sample-with-planning"></a>
 </h3>
 <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
-<p>The <code><a href="reference/planning.html">planning()</a></code> function calculates the minimum sample size for a statistical audit sample based on the Poisson, binomial, or hypergeometric likelihood. The function returns an object of class <code>jfaPlanning</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods. To perform Bayesian planning, the input for the <code>prior</code> argument can be an object of class <code>jfaPrior</code> as returned by the <code><a href="reference/auditPrior.html">auditPrior()</a></code> function, or an object of class <code>jfaPosterior</code> as returned by the <code><a href="reference/evaluation.html">evaluation()</a></code> function.</p>
+<p>The <code><a href="reference/planning.html">planning()</a></code> function is used to calculate a minimum sample size for audit samples. It allows specification of statistical requirements for the sample with respect to the performance materiality or the precision. The function returns an object of class <code>jfaPlanning</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods. To perform Bayesian planning, the input for the <code>prior</code> argument can be an object of class <code>jfaPrior</code> as returned by the <code><a href="reference/auditPrior.html">auditPrior()</a></code> function, or an object of class <code>jfaPosterior</code> as returned by the <code><a href="reference/evaluation.html">evaluation()</a></code> function.</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="cn">NULL</span>, min.precision <span class="op">=</span> <span class="cn">NULL</span>, expected <span class="op">=</span> <span class="fl">0</span>,
@@ -261,7 +261,7 @@
 <a class="anchor" aria-label="anchor" href="#select-sample-items-with-selection"></a>
 </h3>
 <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
-<p>The <code><a href="reference/selection.html">selection()</a></code> function takes a data frame and performs statistical sampling according to one of three algorithms: fixed interval sampling, cell sampling, or random sampling in combination with either record (attributes) sampling or monetary unit sampling (MUS). The function returns an object of class <code>jfaSelection</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods. The input for the <code>size</code> argument can be an object of class <code>jfaPlanning</code> as returned by the <code><a href="reference/planning.html">planning()</a></code> function.</p>
+<p>The <code><a href="reference/selection.html">selection()</a></code> function is used to perform statistical selection of audit samples. It offers flexible implementations of the most common audit sampling algorithms for attributes sampling and monetary unit sampling. The function returns an object of class <code>jfaSelection</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods. The input for the <code>size</code> argument can be an object of class <code>jfaPlanning</code> as returned by the <code><a href="reference/planning.html">planning()</a></code> function.</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/selection.html">selection</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">size</span>, units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'items'</span>, <span class="st">'values'</span><span class="op">)</span>,
@@ -278,11 +278,11 @@
 <p><em>Supported options for the <code>method</code> argument:</em></p>
 <ul>
 <li>
-<code>interval</code>: Select a fixed sampling unit from each interval.</li>
+<code>interval</code>: Select a fixed unit from each interval.</li>
 <li>
-<code>cell</code>: Select a random sampling unit from each interval.</li>
+<code>cell</code>: Select a random unit within each interval.</li>
 <li>
-<code>random</code>: Select random sampling units.</li>
+<code>random</code>: Select random units without an interval.</li>
 <li>
 <code>sieve</code>: Select units using modified sieve sampling (Hoogduin, Hall, &amp; Tsay, 2010).</li>
 </ul>
@@ -292,7 +292,8 @@
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'items'</span>, method <span class="op">=</span> <span class="st">'random'</span><span class="op">)</span>
 
 <span class="co"># Selection using fixed interval monetary unit sampling (using column 'bookValues' in BuildIt)</span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'values'</span>, method <span class="op">=</span> <span class="st">'interval'</span>, values <span class="op">=</span> <span class="st">'bookValues'</span><span class="op">)</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'values'</span>, 
+               method <span class="op">=</span> <span class="st">'interval'</span>, values <span class="op">=</span> <span class="st">'bookValues'</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the selection</span></code></pre></div>
 </div>

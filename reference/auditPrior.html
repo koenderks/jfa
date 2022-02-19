@@ -151,11 +151,11 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="/logo.png">
 <dt>likelihood</dt>
 <dd><p>a character indicating the likelihood of the data.</p></dd>
 <dt>materiality</dt>
-<dd><p>if <code>materiality</code> is specified, a numeric value between 0 and 1 indicating the materiality used to construct the prior distribution.</p></dd>
+<dd><p>if <code>materiality</code> is specified, a numeric value between 0 and 1 giving the materiality used to construct the prior distribution.</p></dd>
 <dt>expected</dt>
-<dd><p>a numeric value larger than, or equal to, 0 indicating the input for the number of expected errors.</p></dd>
+<dd><p>a numeric value larger than, or equal to, 0 giving the input for the number of expected errors.</p></dd>
 <dt>conf.level</dt>
-<dd><p>a numeric value between 0 and 1 indicating the confidence level used.</p></dd>
+<dd><p>a numeric value between 0 and 1 giving the confidence level.</p></dd>
 <dt>N.units</dt>
 <dd><p>if <code>N.units</code> is specified, the number of units in the population.</p></dd>
 </dl></div>
@@ -167,19 +167,19 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="/logo.png">
          Note that the default prior is a conservative choice of prior since it assumes all possible misstatement is equally likely before seeing information from a data sample.
          It is therefore strongly recommended to construct an informed prior distribution based on pre-existing audit information if possible.</p>
 <p>This section elaborates on the available options for the <code>method</code> argument.</p>
-<ul><li><p><code>default</code>:    This method produces a <em>gamma(1, 1)</em>, <em>beta(1, 1)</em>, or <em>beta-binomial(N, 1, 1)</em> prior distribution. These priors are indifferent towards the possible values of the misstatement.</p></li>
-<li><p><code>strict</code>:     This method produces an improper <em>gamma(1, 0)</em>, <em>beta(1, 0)</em>, or <em>beta-binomial(N, 1, 0)</em> prior distribution. These prior distributions exactly match sample sizes and upper limits from classical methods.</p></li>
-<li><p><code>impartial</code>:  This method produces an impartial prior distribution. These prior distributions assume that tolerable misstatement (\(\theta &lt;\) materiality) and intolerable misstatement (\(\theta &gt;\) materiality) are equally likely.</p></li>
-<li><p><code>param</code>:      This method produces a <code>gamma(alpha, beta)</code>, <code>beta(alpha, beta)</code>, or <code>beta-binomial(N, alpha, beta)</code> prior distribution.</p></li>
-<li><p><code>hyp</code>:        This method translates an assessment of the prior probability for tolerable misstatement (\(\theta &lt;\) materiality) to a prior distribution.</p></li>
-<li><p><code>arm</code>:        This method translates an assessment of inherent risk and internal control risk (Audit Risk Model, Derks et al., 2021) to a prior distribution.</p></li>
-<li><p><code>bram</code>:       This method translates an assessment of the expected most likely error and x-% upper bound to a prior distribution.</p></li>
-<li><p><code>sample</code>:     This method translates sampling results from an earlier sample to a prior distribution.</p></li>
-<li><p><code>factor</code>:     This method translates and weighs sampling results from an earlier sample to a prior distribution.</p></li>
+<ul><li><p><code>default</code>:   This method produces a <em>gamma(1, 1)</em>, <em>beta(1, 1)</em>, or <em>beta-binomial(N, 1, 1)</em> prior distribution. These priors are indifferent towards the possible values of the misstatement.</p></li>
+<li><p><code>strict</code>:    This method produces an improper <em>gamma(1, 0)</em>, <em>beta(1, 0)</em>, or <em>beta-binomial(N, 1, 0)</em> prior distribution. These prior distributions exactly match sample sizes and upper limits from classical methods.</p></li>
+<li><p><code>impartial</code>: This method produces an impartial prior distribution. These prior distributions assume that tolerable misstatement (\(\theta &lt;\) materiality) and intolerable misstatement (\(\theta &gt;\) materiality) are equally likely.</p></li>
+<li><p><code>param</code>:     This method produces a <code>gamma(alpha, beta)</code>, <code>beta(alpha, beta)</code>, or <code>beta-binomial(N, alpha, beta)</code> prior distribution.</p></li>
+<li><p><code>hyp</code>:       This method translates an assessment of the prior probability for tolerable misstatement (\(\theta &lt;\) materiality) to a prior distribution.</p></li>
+<li><p><code>arm</code>:       This method translates an assessment of inherent risk and internal control risk (Audit Risk Model, Derks et al., 2021) to a prior distribution.</p></li>
+<li><p><code>bram</code>:      This method translates an assessment of the expected most likely error and x-% upper bound to a prior distribution.</p></li>
+<li><p><code>sample</code>:    This method translates sampling results from an earlier sample to a prior distribution.</p></li>
+<li><p><code>factor</code>:    This method translates and weighs sampling results from an earlier sample to a prior distribution.</p></li>
 </ul><p>This section elaborates on the available likelihoods and corresponding prior distributions for the <code>likelihood</code> argument.</p>
-<ul><li><p><code>poisson</code>:          The Poisson distribution is an approximation of the binomial distribution. The Poisson distribution is defined as: $$f(\theta, n) = \frac{\lambda^\theta e^{-\lambda}}{\theta!}$$ The conjugate <em>gamma(\(\alpha, \beta\))</em> prior has probability density function: $$p(\theta; \alpha, \beta) = \frac{\beta^\alpha \theta^{\alpha - 1} e^{-\beta \theta}}{\Gamma(\alpha)}$$</p></li>
-<li><p><code>binomial</code>:         The binomial distribution is an approximation of the hypergeometric distribution. The binomial distribution is defined as: $$f(\theta, n, x) = {n \choose x} \theta^x (1 - \theta)^{n - x}$$ The conjugate <em>beta(\(\alpha, \beta\))</em> prior has probability density function: $$p(\theta; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} \theta^{\alpha - 1} (1 - \theta)^{\beta - 1}$$</p></li>
-<li><p><code>hypergeometric</code>:   The hypergeometric distribution is defined as: $$f(x, n, K, N) = \frac{{K \choose x} {N - K \choose n - x}}{{N \choose n}}$$ The conjugate <em>beta-binomial(\(\alpha, \beta\))</em> prior (Dyer and Pierce, 1993) has probability mass function: $$f(x, n, \alpha, \beta) = {n \choose x} \frac{B(x + \alpha, n - x + \beta)}{B(\alpha, \beta)}$$</p></li>
+<ul><li><p><code>poisson</code>:        The Poisson distribution is an approximation of the binomial distribution. The Poisson distribution is defined as: $$f(\theta, n) = \frac{\lambda^\theta e^{-\lambda}}{\theta!}$$ The conjugate <em>gamma(\(\alpha, \beta\))</em> prior has probability density function: $$p(\theta; \alpha, \beta) = \frac{\beta^\alpha \theta^{\alpha - 1} e^{-\beta \theta}}{\Gamma(\alpha)}$$</p></li>
+<li><p><code>binomial</code>:       The binomial distribution is an approximation of the hypergeometric distribution. The binomial distribution is defined as: $$f(\theta, n, x) = {n \choose x} \theta^x (1 - \theta)^{n - x}$$ The conjugate <em>beta(\(\alpha, \beta\))</em> prior has probability density function: $$p(\theta; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} \theta^{\alpha - 1} (1 - \theta)^{\beta - 1}$$</p></li>
+<li><p><code>hypergeometric</code>: The hypergeometric distribution is defined as: $$f(x, n, K, N) = \frac{{K \choose x} {N - K \choose n - x}}{{N \choose n}}$$ The conjugate <em>beta-binomial(\(\alpha, \beta\))</em> prior (Dyer and Pierce, 1993) has probability mass function: $$f(x, n, \alpha, \beta) = {n \choose x} \frac{B(x + \alpha, n - x + \beta)}{B(\alpha, \beta)}$$</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
