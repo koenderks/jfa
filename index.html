@@ -166,10 +166,11 @@
 <li><a href="#create-a-report-with-the-report-function"><code>report()</code></a></li>
 </ul>
 <div class="section level3">
-<h3 id="create-a-prior-distribution-with-the-auditprior-function">Create a prior distribution with the <code>auditPrior()</code> function<a class="anchor" aria-label="anchor" href="#create-a-prior-distribution-with-the-auditprior-function"></a>
+<h3 id="create-a-prior-distribution-with-auditprior">Create a prior distribution with <code>auditPrior()</code>
+<a class="anchor" aria-label="anchor" href="#create-a-prior-distribution-with-auditprior"></a>
 </h3>
 <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
-<p>The <code><a href="reference/auditPrior.html">auditPrior()</a></code> function creates a prior probability distribution according to one of several methods, including a translation of the assessments of the inherent risk and control risk from the audit risk model. The function returns an object of class <code>jfaPrior</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods. Objects with class <code>jfaPrior</code> can also be used as input for the <code>prior</code> argument in other functions. Moreover, <code>jfaPrior</code> object have a corresponding <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> function to produce the predictions of the prior distribution on the data level.</p>
+<p>The <code><a href="reference/auditPrior.html">auditPrior()</a></code> function creates a prior probability distribution according to one of several methods, including a translation of the assessments of the inherent risk and control risk from the audit risk model. The function returns an object of class <code>jfaPrior</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods. Objects with class <code>jfaPrior</code> can also be used as input for the <code>prior</code> argument in other functions. Moreover, <code>jfaPrior</code> objects have a corresponding <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> function to produce the predictions of the prior distribution on the data level.</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'default'</span>, likelihood <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'poisson'</span>, <span class="st">'binomial'</span>, <span class="st">'hypergeometric'</span><span class="op">)</span>, 
@@ -179,23 +180,23 @@
 <p><em>Supported options for the <code>method</code> argument:</em></p>
 <ul>
 <li>
-<code>default</code>: Noninformative prior distribution based on minimal information.</li>
+<code>default</code>: Indifferent / Noninformative prior distribution.</li>
 <li>
-<code>strict</code>: Strict prior distribution (with classical properties).</li>
+<code>strict</code>: Improper prior distribution (matches classical results).</li>
 <li>
-<code>param</code>: Manual prior parameters.</li>
+<code>impartial</code>: Impartial prior distribution, i.e., equal prior probabilities for (in)tolerable misstatement (Derks et al., 2021).</li>
 <li>
-<code>impartial</code>: Equal prior probabilities for (in)tolerable misstatement (Derks et al., 2021).</li>
+<code>param</code>: Manually set the prior parameters.</li>
 <li>
-<code>hyp</code>: Manual prior probability for tolerable misstatement (Derks et al., 2021).</li>
+<code>hyp</code>: Manually provide the prior probability for tolerable misstatement (Derks et al., 2021).</li>
 <li>
-<code>arm</code>: Assessments of inherent risk and internal control risk (Derks et al., 2021).</li>
+<code>arm</code>: Manually provide the inherent risk and internal control risk (Derks et al., 2021).</li>
 <li>
-<code>bram</code>: x-% upper bound for the prior distribution (Touw &amp; Hoogduin, 2011).</li>
+<code>bram</code>: Manually provide the upper bound of the prior distribution (Touw &amp; Hoogduin, 2011).</li>
 <li>
-<code>sample</code>: Information from an earlier sample (Derks et al., 2021).</li>
+<code>sample</code>: Manually provide an equivalent prior sample (Derks et al., 2021).</li>
 <li>
-<code>factor</code>: Weigh information from an earlier sample (Derks et al., 2021).</li>
+<code>factor</code>: Manually provide and weigh an equivalent prior sample (Derks et al., 2021).</li>
 </ul>
 <p><em>Supported options for the <code>likelihood</code> argument:</em></p>
 <ul>
@@ -208,20 +209,21 @@
 </ul>
 <p><em>Example usage:</em></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># A gamma prior distribution based on minimal information</span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'default'</span>, likelihood <span class="op">=</span> <span class="st">'poisson'</span><span class="op">)</span>
+<code class="sourceCode R"><span class="co"># Default beta(1, 1) prior distribution</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'default'</span>, likelihood <span class="op">=</span> <span class="st">'binomial'</span><span class="op">)</span>
 
-<span class="co"># A custom beta(1, 10) prior distribution </span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'param'</span>, likelihood <span class="op">=</span> <span class="st">'binomial'</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+<span class="co"># Custom gamma(1, 10) prior distribution </span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'param'</span>, likelihood <span class="op">=</span> <span class="st">'poisson'</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
 
-<span class="co"># A beta prior distribution which incorporates inherent risk (70%) and control risk (50%)</span>
+<span class="co"># Beta prior distribution incorporating inherent risk (70%) and control risk (50%)</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'arm'</span>, likelihood <span class="op">=</span> <span class="st">'binomial'</span>, materiality <span class="op">=</span> <span class="fl">0.05</span>, ir <span class="op">=</span> <span class="fl">0.7</span>, cr <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the prior distribution</span>
 <span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">x</span>, n <span class="op">=</span> <span class="fl">20</span>, cumulative <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Predictions for a sample of n = 20</span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="plan-a-sample-with-the-planning-function">Plan a sample with the <code>planning()</code> function<a class="anchor" aria-label="anchor" href="#plan-a-sample-with-the-planning-function"></a>
+<h3 id="plan-a-sample-with-planning">Plan a sample with <code>planning()</code>
+<a class="anchor" aria-label="anchor" href="#plan-a-sample-with-planning"></a>
 </h3>
 <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
 <p>The <code><a href="reference/planning.html">planning()</a></code> function calculates the minimum sample size for a statistical audit sample based on the Poisson, binomial, or hypergeometric likelihood. The function returns an object of class <code>jfaPlanning</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods. To perform Bayesian planning, the input for the <code>prior</code> argument can be an object of class <code>jfaPrior</code> as returned by the <code><a href="reference/auditPrior.html">auditPrior()</a></code> function, or an object of class <code>jfaPosterior</code> as returned by the <code><a href="reference/evaluation.html">evaluation()</a></code> function.</p>
@@ -245,17 +247,18 @@
 <code class="sourceCode R"><span class="co"># Classical planning using the Poisson likelihood</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, likelihood <span class="op">=</span> <span class="st">'poisson'</span><span class="op">)</span>
 
-<span class="co"># Bayesian planning using a default minimal information prior</span>
-<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, likelihood <span class="op">=</span> <span class="st">'poisson'</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co"># Bayesian planning using a default beta(1, 1) prior and binomial likelihood</span>
+<span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, likelihood <span class="op">=</span> <span class="st">'binomial'</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
-<span class="co"># Bayesian planning using a custom beta(1, 10) prior</span>
+<span class="co"># Bayesian planning using a custom beta(1, 10) prior and binomial likelihood</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, 
               prior <span class="op">=</span> <span class="fu"><a href="reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'param'</span>, likelihood <span class="op">=</span> <span class="st">'binomial'</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
 
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the planning</span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="select-items-with-the-selection-function">Select items with the <code>selection()</code> function<a class="anchor" aria-label="anchor" href="#select-items-with-the-selection-function"></a>
+<h3 id="select-sample-items-with-selection">Select sample items with <code>selection()</code>
+<a class="anchor" aria-label="anchor" href="#select-sample-items-with-selection"></a>
 </h3>
 <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
 <p>The <code><a href="reference/selection.html">selection()</a></code> function takes a data frame and performs statistical sampling according to one of three algorithms: fixed interval sampling, cell sampling, or random sampling in combination with either record (attributes) sampling or monetary unit sampling (MUS). The function returns an object of class <code>jfaSelection</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods. The input for the <code>size</code> argument can be an object of class <code>jfaPlanning</code> as returned by the <code><a href="reference/planning.html">planning()</a></code> function.</p>
@@ -294,7 +297,8 @@
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the selection</span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="evaluate-a-sample-with-the-evaluation-function">Evaluate a sample with the <code>evaluation()</code> function<a class="anchor" aria-label="anchor" href="#evaluate-a-sample-with-the-evaluation-function"></a>
+<h3 id="evaluate-a-sample-with-evaluation">Evaluate a sample with <code>evaluation()</code>
+<a class="anchor" aria-label="anchor" href="#evaluate-a-sample-with-evaluation"></a>
 </h3>
 <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
 <p>The <code><a href="reference/evaluation.html">evaluation()</a></code> function takes a sample or summary statistics of the sample and performs evaluation according to the specified method and sampling objectives. The function returns an object of class <code>jfaEvalution</code> which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods. To perform Bayesian evaluation, the input for the <code>prior</code> argument can be an object of class <code>jfaPrior</code> as returned by the <code><a href="reference/auditPrior.html">auditPrior()</a></code> function, or an object of class <code>jfaPosterior</code> as returned by the <code><a href="reference/evaluation.html">evaluation()</a></code> function.</p>
@@ -354,7 +358,8 @@
 <span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the evaluation</span></code></pre></div>
 </div>
 <div class="section level3">
-<h3 id="create-a-report-with-the-report-function">Create a report with the <code>report()</code> function<a class="anchor" aria-label="anchor" href="#create-a-report-with-the-report-function"></a>
+<h3 id="create-a-report-with-report">Create a report with <code>report()</code>
+<a class="anchor" aria-label="anchor" href="#create-a-report-with-report"></a>
 </h3>
 <p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></p>
 <p>The <code><a href="reference/report.html">report()</a></code> function takes an object of class <code>jfaEvaluation</code> as returned by the <code><a href="reference/evaluation.html">evaluation()</a></code> function and automatically creates a <code>html</code> or <code>pdf</code> report containing the analysis results and their interpretation.</p>
