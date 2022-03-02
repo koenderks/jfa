@@ -264,6 +264,7 @@ To validate the statistical results, `jfa`'s automated [unit tests](https://gith
 
 - [Audit Sampling: Audit Guide](https://www.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL) (Appendix A and Appendix C)
 - [AuditSampler](https://cplusglobal.wordpress.com/solutions/auditsampler-statistical-sampling-software/)
+- [EZ-quant](https://www.dcaa.mil/Checklists-Tools/EZ-Quant-Applications/)
 - [MUS](https://cran.r-project.org/package=MUS) (R package version 0.1.6)
 - Touw, P., and Hoogduin, L. (2011). *Statistiek voor audit en controlling*. Boom uitgevers, Amsterdam.
 - [SMASH21 + SMASH21-Bayes](https://steekproeven.eu/)

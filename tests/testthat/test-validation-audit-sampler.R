@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-context("Benchmark against AuditSampler package")
+context("Benchmark against AuditSampler software")
 
 # AuditSampler [https://cplusglobal.wordpress.com/2015/02/14/auditsampler-statistical-audit-sampling-software/]
 # Retrieved on 28-04-2021 from https://cplusglobal.wordpress.com/2014/04/15/attributes-sampling/
