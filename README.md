@@ -79,7 +79,7 @@ auditPrior(method = 'default', likelihood = c('poisson', 'binomial', 'hypergeome
 
 - `default`: Indifferent / noninformative prior distribution.
 - `strict`: Improper prior distribution (matches classical results).
-- `impartial`: Impartial prior distribution (Derks et al., 2021).
+- `impartial`: Impartial prior distribution (Derks et al., 2022).
 - `param`: Manually set the prior parameters.
 - `hyp`: Manually provide the prior probability for tolerable misstatement (Derks et al., 2021).
 - `arm`: Manually provide the inherent risk and internal control risk (Derks et al., 2021).
@@ -305,6 +305,7 @@ Below you can find several informative tables that contain statistical sample si
 - Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., & Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. *International Journal of Auditing*, 25(3), 621-636. - [View online](https://doi.org/10.1111/ijau.12240)
 - Derks, K., de Swart, J., Wagenmakers, E.-J., & Wetzels, R. (2021). The Bayesian Approach to Audit Evidence: Quantifying Statistical Evidence using the Bayes Factor. *PsyArXiv* - [View online](https://doi.org/10.31234/osf.io/kzqp5)
 - Derks, K., de Swart. J., Wagenmakers, E.-J., Wille, J., & Wetzels, R. (2021). JASP for Audit: Bayesian Tools for the Auditing Practice. *Journal of Open Source Software*, 6(68), 2733. - [View online](https://doi.org/10.21105/joss.02733)
+- Derks, K., de Swart, J., Wagenmakers, E.-J., & Wetzels, R. (2022). An Impartial Bayesian Hypothesis Test for Audit Sampling. *PsyArXiv* - [View online](https://doi.org/10.31234/osf.io/8nf3e)
 - Dworin, L. D. and Grimlund, R. A. (1984). Dollar-unit sampling for accounts receivable and inventory. *The Accounting Review*, 59(2), 218–241. - [View online](https://www.jstor.org/stable/247296)
 - Dyer, D., & Pierce, R. L. (1993). On the choice of the prior distribution in hypergeometric sampling. *Communications in Statistics - Theory and Methods*, 22(8), 2125-2146. - [View online](https://www.tandfonline.com/doi/abs/10.1080/03610929308831139)
 - Hoogduin, L. A., Hall, T. W., & Tsay, J. J. (2010). Modified sieve sampling: A method for single-and multi-stage probability-proportional-to-size sampling. *Auditing: A Journal of Practice & Theory*, 29(1), 125-148. - [View online](https://doi.org/10.2308/aud.2010.29.1.125)
