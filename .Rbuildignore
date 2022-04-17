@@ -12,3 +12,5 @@
 ^_pkgdown.yml$
 jfaRelease.R
 ^LICENSE\.md$
+^CITATION\.cff$
+^\.github$
