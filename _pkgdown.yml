@@ -1,3 +1,5 @@
+url: https://koenderks.github.io/jfa
+
 home:
   title: jfa - Bayesian and Classical Audit Sampling
   description: An R package for statistical audit sampling in Bayesian and classical forms
