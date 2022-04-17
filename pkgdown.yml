@@ -10,5 +10,8 @@ articles:
   v5_estimating_misstatement: v5_estimating_misstatement.html
   v6_testing_misstatement: v6_testing_misstatement.html
   v7_bayes_factors_summary_statistics: v7_bayes_factors_summary_statistics.html
-last_built: 2022-04-17T08:51Z
+last_built: 2022-04-17T09:42Z
+urls:
+  reference: https://koenderks.github.io/jfa/reference
+  article: https://koenderks.github.io/jfa/articles
 
