@@ -97,7 +97,7 @@ selection <- function(data, size, units = c("items", "values"),
                       replace = FALSE, start = 1) {
   method <- match.arg(method)
   units <- match.arg(units)
-  if (class(size) == "jfaPlanning") { # If the input for 'sampleSize' is of class 'jfaPlanning', extract the planned sample size
+  if (inherits(size, "jfaPlanning")) { # If the input for 'sampleSize' is of class 'jfaPlanning', extract the planned sample size
     size <- size[["n"]]
   }
   if (units == "items" && size > nrow(data) && !replace) { # Check if the sample size is valid (< N)

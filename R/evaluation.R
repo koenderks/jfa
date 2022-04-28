@@ -150,9 +150,9 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = "poiss
                        r.delta = 2.7, m.type = "accounts", cs.a = 1, cs.b = 3, cs.mu = 0.5,
                        prior = FALSE) {
   alternative <- match.arg(alternative)
-  bayesian <- (class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")
+  bayesian <- (inherits(prior, "logical") && prior) || inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")
   # Import existing prior distribution with class 'jfaPrior' or 'jfaPosterior'.
-  if (class(prior) %in% c("jfaPrior", "jfaPosterior")) {
+  if (inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")) {
     if (method != prior[["likelihood"]]) {
       warning(paste0("using 'method = ", prior[["likelihood"]], "' from 'prior'"))
     }
@@ -442,8 +442,8 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = "poiss
     result[["K"]] <- K
   }
   # Create the prior distribution object
-  if (((class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior"))) {
-    if (class(prior) == "jfaPrior" && !is.null(prior[["hypotheses"]])) {
+  if ((inherits(prior, "logical") && prior) || inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")) {
+    if (inherits(prior, "jfaPrior") && !is.null(prior[["hypotheses"]])) {
       result[["prior"]] <- prior
       if (alternative == "greater") { # The prior uses alternative = 'less' for p.h1 and p.h0
         result[["prior"]][["hypotheses"]]$odds.h1 <- 1 / result[["prior"]][["hypotheses"]]$odds.h1
@@ -593,7 +593,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = "poiss
     class(result[["posterior"]]) <- "jfaPosterior"
   }
   # Add the data and taints to the output
-  if (!is.null(data) && !is.null(values) && !is.null(values.audit)) {
+  if (!is.null(data) && !is.null(values) & !is.null(values.audit)) {
     indexa <- which(colnames(data) == values.audit)
     indexb <- which(colnames(data) == values)
     frame <- as.data.frame(data[, c(indexb, indexa)])

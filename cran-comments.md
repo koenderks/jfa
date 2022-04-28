@@ -2,7 +2,7 @@
 
 This is a submission for version 0.6.3. In this version I have:
 
-* Improved overall user-friendlyness of the package with minor changes.
+* Changed some internal code for compatibility with R 4.2.1.
 
 ## Test environments
 

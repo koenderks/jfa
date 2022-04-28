@@ -1,3 +1,9 @@
+# jfa 0.6.4
+
+**Minor changes**
+
+- Improve compatibility with `R 4.2.0`.
+
 # jfa 0.6.3
 
 **Minor changes**

@@ -92,10 +92,10 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
                      likelihood = c("poisson", "binomial", "hypergeometric"),
                      conf.level = 0.95, N.units = NULL, by = 1, max = 5000,
                      prior = FALSE) {
-  bayesian <- (class(prior) == "logical" && prior == TRUE) || class(prior) %in% c("jfaPrior", "jfaPosterior")
+  bayesian <- (inherits(prior, "logical") && prior) || inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")
   likelihood <- match.arg(likelihood)
   # Import existing prior distribution with class 'jfaPrior' or 'jfaPosterior'
-  if (class(prior) %in% c("jfaPrior", "jfaPosterior")) {
+  if (inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")) {
     if (likelihood != prior[["likelihood"]]) {
       warning(paste0("using 'likelihood = ", prior[["likelihood"]], "' from 'prior'"))
     }
@@ -256,7 +256,7 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
   result[["iterations"]] <- iter
   # Create the prior distribution object
   if (bayesian) {
-    if (class(prior) == "jfaPrior" && !is.null(prior[["hypotheses"]])) {
+    if (inherits(prior, "jfaPrior") && !is.null(prior[["hypotheses"]])) {
       result[["prior"]] <- prior
     } else {
       result[["prior"]] <- auditPrior(
