@@ -36,7 +36,7 @@ preferred-citation:
 repository: https://CRAN.R-project.org/package=jfa
 repository-code: https://github.com/koenderks/jfa
 url: https://koenderks.github.io/jfa/
-date-released: '2022-04-29'
+date-released: '2022-05-30'
 contact:
 - family-names: Derks
   given-names: Koen
@@ -156,6 +156,29 @@ references:
     orcid: https://orcid.org/0000-0003-3925-190X
   year: '2022'
   url: https://CRAN.R-project.org/package=rmarkdown
+- type: software
+  title: samplingbook
+  abstract: 'samplingbook: Survey Sampling Procedures'
+  notes: Suggests
+  authors:
+  - family-names: Manitz
+    given-names: Juliane
+  - family-names: Hempelmann
+    given-names: Mark
+  - family-names: Kauermann
+    given-names: Goeran
+  - family-names: Kuechenhoff
+    given-names: Helmut
+  - family-names: Shao
+    given-names: Shuai
+  - family-names: Oberhauser
+    given-names: Cornelia
+  - family-names: Westerheide
+    given-names: Nina
+  - family-names: Wiesenfarth
+    given-names: Manuel
+  year: '2022'
+  url: https://CRAN.R-project.org/package=samplingbook
 - type: software
   title: testthat
   abstract: 'testthat: Unit Testing for R'
