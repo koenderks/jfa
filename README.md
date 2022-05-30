@@ -266,8 +266,9 @@ To validate the statistical results, `jfa`'s automated [unit tests](https://gith
 - [AuditSampler](https://cplusglobal.wordpress.com/solutions/auditsampler-statistical-sampling-software/)
 - [EZ-quant](https://www.dcaa.mil/Checklists-Tools/EZ-Quant-Applications/)
 - [MUS](https://cran.r-project.org/package=MUS) (R package version 0.1.6)
-- Touw, P., and Hoogduin, L. (2011). *Statistiek voor audit en controlling*. Boom uitgevers, Amsterdam.
+- [samplingbook](https://cran.r-project.org/package=samplingbook) (R package version 1.2.4)
 - [SMASH21 + SMASH21-Bayes](https://steekproeven.eu/)
+- Touw, P., and Hoogduin, L. (2011). *Statistiek voor audit en controlling*. Boom uitgevers, Amsterdam.
 
 ## 5. Statistical tables
 

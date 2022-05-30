@@ -1,7 +1,7 @@
 Package: jfa
 Title: Bayesian and Classical Audit Sampling
 Version: 0.6.4
-Date: 2022-04-29
+Date: 2022-05-30
 Authors@R:
     person(given = "Koen",
            family = "Derks",
@@ -12,7 +12,7 @@ Description: Provides statstical audit sampling methods as implemented in JASP f
 BugReports: https://github.com/koenderks/jfa/issues
 URL: https://koenderks.github.io/jfa/, https://github.com/koenderks/jfa
 Imports: extraDistr, graphics, stats
-Suggests: kableExtra, knitr, MUS, rmarkdown, testthat
+Suggests: kableExtra, knitr, MUS, rmarkdown, samplingbook, testthat
 Language: en-US
 License: GPL (>= 3)
 Encoding: UTF-8
