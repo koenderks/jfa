@@ -4,7 +4,7 @@
 \docType{package}
 \title{jfa --- Bayesian and Classical Audit Sampling}
 \description{
-  \if{html}{\figure{logo.png}{options: align='right' alt='logo' width='120'}}
+  \if{html}{\figure{logo.png}{options: alt='logo' width='120' style='float: right' }}
 
   \code{jfa} is an \R package for statistical audit sampling. The package provides functions for planning, 
   performing, evaluating, and reporting an audit sample. Specifically, these functions implement 
