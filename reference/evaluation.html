@@ -106,86 +106,145 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="https://koe
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>materiality</dt>
 <dd><p>a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum tolerable misstatement) as a fraction of the total number of units in the population. Can be <code>NULL</code>, but <code>min.precision</code> should be specified in that case. Not used for methods <code>direct</code>, <code>difference</code>, <code>quotient</code>, and <code>regression</code>.</p></dd>
+
+
 <dt>min.precision</dt>
 <dd><p>a numeric value between 0 and 1 specifying the minimum precision (i.e., upper bound minus most likely error) as a fraction of the total population size. Can be <code>NULL</code>, but <code>materiality</code> should be specified in that case.</p></dd>
+
+
 <dt>method</dt>
 <dd><p>a character specifying the inference method. Possible options are <code>poisson</code> (default), <code>binomial</code>, <code>hypergeometric</code>, <code>mpu</code>, <code>stringer</code>, <code>stringer.meikle</code>, <code>stringer.lta</code>, <code>stringer.pvz</code>, <code>rohrbach</code>, <code>moment</code>, <code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code>. See the details section for more information.</p></dd>
+
+
 <dt>alternative</dt>
 <dd><p>a character indicating the alternative hypothesis and the type of confidence / credible interval. Possible options are <code>less</code> (default), <code>two.sided</code>, or <code>greater</code>.</p></dd>
+
+
 <dt>conf.level</dt>
 <dd><p>a numeric value between 0 and 1 specifying the confidence level.</p></dd>
+
+
 <dt>data</dt>
 <dd><p>a data frame containing a data sample.</p></dd>
+
+
 <dt>values</dt>
 <dd><p>a character specifying name of a column in <code>data</code> containing the book values of the items.</p></dd>
+
+
 <dt>values.audit</dt>
 <dd><p>a character specifying name of a column in <code>data</code> containing the audit (true) values of the items.</p></dd>
+
+
 <dt>times</dt>
 <dd><p>a character specifying name of a column in <code>data</code> containing the number of times each item in <code>data</code> should be counted (e.g., due to being selected multiple times for the sample).</p></dd>
+
+
 <dt>x</dt>
 <dd><p>a numeric value larger than 0 specifying the sum of (proportional) misstatements in the sample. If specified, overrides the <code>data</code>, <code>values</code> and <code>values.audit</code> arguments and assumes that the data come from summary statistics specified by both <code>x</code> and <code>n</code>.</p></dd>
+
+
 <dt>n</dt>
 <dd><p>an integer larger than 0 specifying the number of items in the sample. If specified, overrides the <code>data</code>, <code>values</code> and <code>values.audit</code> arguments and assumes that the data come from summary statistics specified by both <code>x</code> and <code>n</code>.</p></dd>
+
+
 <dt>N.units</dt>
 <dd><p>an integer larger than 0 specifying the number of units in the population. Only used for methods <code>hypergeometric</code>, <code>direct</code>, <code>difference</code>, <code>quotient</code>, and <code>regression</code>.</p></dd>
+
+
 <dt>N.items</dt>
 <dd><p>an integer larger than 0 specifying the number of items in the population. Only used for methods <code>direct</code>, <code>difference</code>, <code>quotient</code>, and <code>regression</code>.</p></dd>
+
+
 <dt>r.delta</dt>
 <dd><p>a numeric value specifying \(\Delta\) in Rohrbach's augmented variance bound (Rohrbach, 1993). Only used for method <code>rohrbach</code>.</p></dd>
+
+
 <dt>m.type</dt>
 <dd><p>a character specifying the type of population (Dworin and Grimlund, 1984). Possible options are <code>accounts</code> and <code>inventory</code>. Only used for method <code>moment</code>.</p></dd>
+
+
 <dt>cs.a</dt>
 <dd><p>a numeric value specifying the \(\alpha\) parameter of the prior distribution on the mean taint. Only used for method <code>coxsnell</code>.</p></dd>
+
+
 <dt>cs.b</dt>
 <dd><p>a numeric value specifying the \(\beta\) parameter of the prior distribution on the mean taint. Only used for method <code>coxsnell</code>.</p></dd>
+
+
 <dt>cs.mu</dt>
 <dd><p>a numeric value between 0 and 1 specifying the mean of the prior distribution on the mean taint. Only used for method <code>coxsnell</code>.</p></dd>
+
+
 <dt>prior</dt>
 <dd><p>a logical specifying whether to use a prior distribution, or an object of class <code>jfaPrior</code> or <code>jfaPosterior</code> containing the prior distribution. If <code>FALSE</code> (default), performs classical planning. If <code>TRUE</code>, performs Bayesian planning using a default conjugate prior.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An object of class <code>jfaEvaluation</code> containing:</p>
+    
+
+<p>An object of class <code>jfaEvaluation</code> containing:</p>
 <dl><dt>conf.level</dt>
 <dd><p>a numeric value between 0 and 1 giving the confidence level.</p></dd>
+
 <dt>mle</dt>
 <dd><p>a numeric value between 0 and 1 giving the most likely error in the population.</p></dd>
+
 <dt>ub</dt>
 <dd><p>a numeric value between 0 and 1 giving the upper bound for the population misstatement.</p></dd>
+
 <dt>lb</dt>
 <dd><p>a numeric value between 0 and 1 giving the lower bound for the population misstatement.</p></dd>
+
 <dt>precision</dt>
 <dd><p>a numeric value between 0 and 1 giving the difference between the most likely error and the upper bound.</p></dd>
+
 <dt>p.value</dt>
 <dd><p>for classical tests, a numeric value giving the one-sided p-value.</p></dd>
+
 <dt>x</dt>
 <dd><p>an integer larger than, or equal to, 0 giving the number of sample errors.</p></dd>
+
 <dt>t</dt>
 <dd><p>a value larger than, or equal to, 0, giving the sum of proportional sample errors.</p></dd>
+
 <dt>n</dt>
 <dd><p>an integer larger than 0 giving the sample size.</p></dd>
+
 <dt>materiality</dt>
 <dd><p>if <code>materiality</code> is specified, a numeric value between 0 and 1 giving the performance materiality as a fraction of the number of units in the population.</p></dd>
+
 <dt>min.precision</dt>
 <dd><p>if <code>min.precision</code> is specified, a numeric value between 0 and 1 giving the minimum precision as a fraction of the number of units in the population.</p></dd>
+
 <dt>alternative</dt>
 <dd><p>a character indicating the alternative hypothesis.</p></dd>
+
 <dt>method</dt>
 <dd><p>a character indicating the inference method.</p></dd>
+
 <dt>N.units</dt>
 <dd><p>if <code>N.units</code> is specified, in integer larger than 0 indicating the number of units in the population.</p></dd>
+
 <dt>N.items</dt>
 <dd><p>if <code>N.items</code> is specified, in integer larger than 0 indicating the number of items in the population.</p></dd>
+
 <dt>K</dt>
 <dd><p>if <code>method = 'hypergeometric'</code>, an integer indicating the assumed total errors in the population.</p></dd>
+
 <dt>prior</dt>
 <dd><p>an object of class 'jfaPrior' that contains the prior distribution.</p></dd>
+
 <dt>posterior</dt>
 <dd><p>an object of class 'jfaPosterior' that contains the posterior distribution.</p></dd>
+
 <dt>data</dt>
 <dd><p>a data frame containing the relevant columns from the <code>data</code>.</p></dd>
+
 <dt>data.name</dt>
 <dd><p>a character giving the name of the data.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -320,7 +379,7 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="https://koe
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 

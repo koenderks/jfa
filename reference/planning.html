@@ -104,58 +104,93 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="https://koe
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>materiality</dt>
 <dd><p>a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum tolerable misstatement) as a fraction of the total number of units in the population. Can be <code>NULL</code>, but <code>min.precision</code> should be specified in that case.</p></dd>
+
+
 <dt>min.precision</dt>
 <dd><p>a numeric value between 0 and 1 specifying the minimum precision (i.e., upper bound minus most likely error) as a fraction of the total population size. Can be <code>NULL</code>, but <code>materiality</code> should be specified in that case.</p></dd>
+
+
 <dt>expected</dt>
 <dd><p>a numeric value between 0 and 1 specifying the expected / tolerable errors in the sample relative to the total sample size, or a number (&gt;= 1) specifying the expected / tolerable number of errors in the sample. It is advised to set this value conservatively to minimize the probability of the observed errors exceeding the expected errors, which would imply that insufficient work has been done in the end.</p></dd>
+
+
 <dt>likelihood</dt>
 <dd><p>a character specifying the likelihood for the data. Possible options are <code>poisson</code> (default) for the Poisson likelihood, <code>binomial</code> for the binomial likelihood, or <code>hypergeometric</code> for the hypergeometric likelihood. See the details section for more information about the available likelihoods.</p></dd>
+
+
 <dt>conf.level</dt>
 <dd><p>a numeric value between 0 and 1 specifying the confidence level.</p></dd>
+
+
 <dt>N.units</dt>
 <dd><p>a numeric value larger than 0 specifying the total number of units in the population. Only used for the <code>hypergeometric</code> likelihood.</p></dd>
+
+
 <dt>by</dt>
 <dd><p>an integer larger than 0 specifying the increment between possible sample sizes.</p></dd>
+
+
 <dt>max</dt>
 <dd><p>an integer larger than 0 specifying the sample size at which the algorithm terminates.</p></dd>
+
+
 <dt>prior</dt>
 <dd><p>a logical specifying whether to use a prior distribution, or an object of class <code>jfaPrior</code> or <code>jfaPosterior</code>. If <code>FALSE</code> (default), performs classical planning. If <code>TRUE</code>, performs Bayesian planning using a default conjugate prior.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An object of class <code>jfaPlanning</code> containing:</p>
+    
+
+<p>An object of class <code>jfaPlanning</code> containing:</p>
 <dl><dt>conf.level</dt>
 <dd><p>a numeric value between 0 and 1 giving the confidence level.</p></dd>
+
 <dt>x</dt>
 <dd><p>a numeric value larger than, or equal to, 0 giving (the proportional sum of) the tolerable errors in the sample.</p></dd>
+
 <dt>n</dt>
 <dd><p>an integer larger than 0 giving the minimal sample size.</p></dd>
+
 <dt>ub</dt>
 <dd><p>a numeric value between 0 and 1 giving the expected upper bound.</p></dd>
+
 <dt>precision</dt>
 <dd><p>a numeric value between 0 and 1 giving the expected precision.</p></dd>
+
 <dt>p.value</dt>
 <dd><p>a numeric value giving the expected one-sided p-value.</p></dd>
+
 <dt>K</dt>
 <dd><p>if <code>likelihood = 'hypergeometric'</code>, an integer larger than 0 giving the assumed population errors.</p></dd>
+
 <dt>N.units</dt>
 <dd><p>an integer larger than 0 giving the number of units in the population (only returned if <code>N.units</code> is specified).</p></dd>
+
 <dt>materiality</dt>
 <dd><p>a numeric value between 0 and 1 giving the performance materiality if specified.</p></dd>
+
 <dt>min.precision</dt>
 <dd><p>a numeric value between 0 and 1 giving the minimum precision if specified.</p></dd>
+
 <dt>expected</dt>
 <dd><p>a numeric value larger than, or equal to, 0 giving the expected errors input.</p></dd>
+
 <dt>likelihood</dt>
 <dd><p>a character indicating the likelihood.</p></dd>
+
 <dt>errorType</dt>
 <dd><p>a character indicating whether the expected errors input type.</p></dd>
+
 <dt>iterations</dt>
 <dd><p>an integer giving the number of iterations of the algorithm.</p></dd>
+
 <dt>prior</dt>
 <dd><p>if a prior distribution is specified, an object of class <code>jfaPrior</code> that contains information about the prior distribution.</p></dd>
+
 <dt>posterior</dt>
 <dd><p>if a prior distribution is specified, an object of class <code>jfaPosterior</code> that contains information about the expected posterior distribution.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -220,7 +255,7 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="https://koe
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 

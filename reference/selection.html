@@ -104,54 +104,88 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="https://koe
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>data</dt>
 <dd><p>a data frame containing the population data.</p></dd>
+
+
 <dt>size</dt>
 <dd><p>an integer larger than 0 specifying the number of units to select. Can also be an object of class <code>jfaPlanning</code>.</p></dd>
+
+
 <dt>units</dt>
 <dd><p>a character specifying the type of sampling units. Possible options are <code>items</code> (default) for selection on the level of items (rows) or <code>values</code> for selection on the level of monetary units.</p></dd>
+
+
 <dt>method</dt>
 <dd><p>a character specifying the sampling algorithm. Possible options are <code>interval</code> (default) for fixed interval sampling, <code>cell</code> for cell sampling, <code>random</code> for random sampling, or <code>sieve</code> for modified sieve sampling.</p></dd>
+
+
 <dt>values</dt>
 <dd><p>a character specifying the name of a column in <code>data</code> containing the book values of the items.</p></dd>
+
+
 <dt>order</dt>
 <dd><p>a character specifying the name of a column in <code>data</code> containing the ranks of the items. The items in the <code>data</code> are ordered according to these values in the order indicated by <code>decreasing</code>.</p></dd>
+
+
 <dt>decreasing</dt>
 <dd><p>a logical specifying whether to order the items from smallest to largest. Only used if <code>order</code> is specified.</p></dd>
+
+
 <dt>randomize</dt>
 <dd><p>a logical specifying if items should be randomly shuffled prior to selection. Note that <code>randomize = TRUE</code> overrules <code>order</code>.</p></dd>
+
+
 <dt>replace</dt>
 <dd><p>a logical specifying if sampling units should be selected with replacement. Only used for method <code>random</code>.</p></dd>
+
+
 <dt>start</dt>
 <dd><p>an integer larger than 0 specifying index of the unit that should be selected. Only used for method <code>interval</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An object of class <code>jfaSelection</code> containing:</p>
+    
+
+<p>An object of class <code>jfaSelection</code> containing:</p>
 <dl><dt>data</dt>
 <dd><p>a data frame containing the population data.</p></dd>
+
 <dt>sample</dt>
 <dd><p>a data frame containing the selected data sample.</p></dd>
+
 <dt>n.req</dt>
 <dd><p>an integer giving the requested sample size.</p></dd>
+
 <dt>n.units</dt>
 <dd><p>an integer giving the number of obtained sampling units.</p></dd>
+
 <dt>n.items</dt>
 <dd><p>an integer giving the number of obtained sample items.</p></dd>
+
 <dt>N.units</dt>
 <dd><p>an integer giving the number of sampling units in the population data.</p></dd>
+
 <dt>N.items</dt>
 <dd><p>an integer giving the number of items in the population data.</p></dd>
+
 <dt>interval</dt>
 <dd><p>if <code>method = 'interval'</code>, a numeric value giving the size of the selection interval.</p></dd>
+
 <dt>units</dt>
 <dd><p>a character indicating the type of sampling units.</p></dd>
+
 <dt>method</dt>
 <dd><p>a character indicating the sampling algorithm.</p></dd>
+
 <dt>values</dt>
 <dd><p>if <code>values</code> is specified, a character indicating the book value column.</p></dd>
+
 <dt>start</dt>
 <dd><p>if <code>method = 'interval'</code>, an integer giving the index of the selected unit in each interval.</p></dd>
+
 <dt>data.name</dt>
 <dd><p>a character indicating the name of the population data.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -214,7 +248,7 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="https://koe
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 

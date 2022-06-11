@@ -104,60 +104,102 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="https://koe
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>method</dt>
 <dd><p>a character specifying the method by which the prior distribution is constructed. Possible options are <code>default</code>, <code>strict</code>, <code>impartial</code>, <code>param</code>, <code>arm</code>, <code>bram</code>, <code>hyp</code>, <code>sample</code>, and <code>factor</code>. See the details section for more information.</p></dd>
+
+
 <dt>likelihood</dt>
 <dd><p>a character specifying the likelihood for updating the prior distribution. Possible options are <code>poisson</code> (default) for a conjugate gamma prior distribution, <code>binomial</code> for a conjugate beta prior distribution, or <code>hypergeometric</code> for a conjugate beta-binomial prior distribution. See the details section for more information.</p></dd>
+
+
 <dt>N.units</dt>
 <dd><p>a numeric value larger than 0 specifying the total number of units in the population. Only used for the <code>hypergeometric</code> likelihood.</p></dd>
+
+
 <dt>alpha</dt>
 <dd><p>a numeric value specifying the \(\alpha\) parameter of the prior distribution. Only used for method <code>param</code>.</p></dd>
+
+
 <dt>beta</dt>
 <dd><p>a numeric value specifying the \(\beta\) parameter of the prior distribution. Only used for method <code>param</code>.</p></dd>
+
+
 <dt>materiality</dt>
 <dd><p>a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum tolerable misstatement) as a fraction of the total number of units in the population. Only used for methods <code>impartial</code>, <code>arm</code>, and <code>hyp</code>.</p></dd>
+
+
 <dt>expected</dt>
 <dd><p>a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size. Only used for methods <code>impartial</code>, <code>arm</code>, <code>bram</code>, and <code>hyp</code>.</p></dd>
+
+
 <dt>ir</dt>
 <dd><p>a numeric value between 0 and 1 specifying the inherent risk in the audit risk model. Only used for method <code>arm</code>.</p></dd>
+
+
 <dt>cr</dt>
 <dd><p>a numeric value between 0 and 1 specifying the internal control risk in the audit risk model. Only used for method <code>arm</code>.</p></dd>
+
+
 <dt>ub</dt>
 <dd><p>a numeric value between 0 and 1 specifying the <code>conf.level</code>-% upper bound for the prior distribution as a fraction of the total number of units in the population. Only used for method <code>bram</code>.</p></dd>
+
+
 <dt>p.hmin</dt>
 <dd><p>a numeric value between 0 and 1 specifying the prior probability of the hypothesis of tolerable misstatement (H1: \(\theta &lt;\) materiality). Only used for method <code>hyp</code>.</p></dd>
+
+
 <dt>x</dt>
 <dd><p>a numeric value larger than, or equal to, 0 specifying the sum of proportional errors (taints) in a prior sample. Only used for methods <code>sample</code> and <code>factor</code>.</p></dd>
+
+
 <dt>n</dt>
 <dd><p>a numeric value larger than 0 specifying the sample size of a prior sample. Only used for methods <code>sample</code> and <code>factor</code>.</p></dd>
+
+
 <dt>factor</dt>
 <dd><p>a numeric value between 0 and 1 specifying the weight of the prior sample. Only used for method <code>factor</code>.</p></dd>
+
+
 <dt>conf.level</dt>
 <dd><p>a numeric value between 0 and 1 specifying the confidence level.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>An object of class <code>jfaPrior</code> containing:</p>
+    
+
+<p>An object of class <code>jfaPrior</code> containing:</p>
 <dl><dt>prior</dt>
 <dd><p>a string describing the functional form of the prior distribution.</p></dd>
+
 <dt>description</dt>
 <dd><p>a list containing a description of the prior distribution, including the parameters of the prior distribution and the implicit sample on which the prior distribution is based.</p></dd>
+
 <dt>statistics</dt>
 <dd><p>a list containing statistics of the prior distribution, including the mean, mode, median, and upper bound of the prior distribution.</p></dd>
+
 <dt>specifics</dt>
 <dd><p>a list containing specifics of the prior distribution that vary depending on the <code>method</code>.</p></dd>
+
 <dt>hypotheses</dt>
 <dd><p>if <code>materiality</code> is specified, a list containing information about the hypotheses, including prior probabilities and odds for the hypothesis of tolerable misstatement (H1) and the hypothesis of intolerable misstatement (H0).</p></dd>
+
 <dt>method</dt>
 <dd><p>a character indicating the method by which the prior distribution is constructed.</p></dd>
+
 <dt>likelihood</dt>
 <dd><p>a character indicating the likelihood of the data.</p></dd>
+
 <dt>materiality</dt>
 <dd><p>if <code>materiality</code> is specified, a numeric value between 0 and 1 giving the materiality used to construct the prior distribution.</p></dd>
+
 <dt>expected</dt>
 <dd><p>a numeric value larger than, or equal to, 0 giving the input for the number of expected errors.</p></dd>
+
 <dt>conf.level</dt>
 <dd><p>a numeric value between 0 and 1 giving the confidence level.</p></dd>
+
 <dt>N.units</dt>
 <dd><p>if <code>N.units</code> is specified, the number of units in the population.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -231,7 +273,7 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="https://koe
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 
