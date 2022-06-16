@@ -2,6 +2,7 @@
 
 **Minor changes**
 
+- Resolved CRAN note `Warning: <img> attribute "align" not allowed for HTML5`.
 - Improve compatibility with `R 4.2.0`.
 
 # jfa 0.6.3
