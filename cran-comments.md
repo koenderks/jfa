@@ -1,8 +1,8 @@
-# jfa version 0.6.4
+# jfa version 0.6.5
 
-This is a submission for version 0.6.3. In this version I have:
+This is a submission for version 0.6.5. In this version I have:
 
-* Resolved CRAN note `Warning: <img> attribute "align" not allowed for HTML5`.
+* Fixed a bug.
 
 ## Test environments
 

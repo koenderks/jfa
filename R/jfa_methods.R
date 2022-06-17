@@ -418,7 +418,7 @@ summary.jfaSelection <- function(object, digits = getOption("digits"), ...) {
     }
   }
   if (object[["units"]] == "values") {
-    out[["prop.val"]] <- round(object[["n.units"]] / object[["N.units"]], digits)
+    out[["prop.val"]] <- round(sum(abs(object[["sample"]][, object[["values.name"]]])) / object[["N.units"]], digits)
   }
   class(out) <- c("summary.jfaSelection", "data.frame")
   return(out)

@@ -221,6 +221,7 @@ selection <- function(data, size, units = c("items", "values"),
     result[["start"]] <- start
   }
   result[["data.name"]] <- dname
+  result[["values.name"]] <- values
   # Add class 'jfaSelection' to the result
   class(result) <- "jfaSelection"
   return(result)

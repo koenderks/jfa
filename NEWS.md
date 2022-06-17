@@ -1,3 +1,9 @@
+# jfa 0.6.5
+
+**Bug fixes**
+
+- Fixed a bug where the proportion of value in `summary(selection)` was displayed incorrectly.
+
 # jfa 0.6.4
 
 **Minor changes**
