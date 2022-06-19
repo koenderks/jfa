@@ -349,13 +349,13 @@ test_that(desc = "(id: f3-v0.6.0-t1) Test Bayes factors for beta prior", {
   expect_equal(BF, 696.696)
 
   # Compute a Bayes factor from a noninformative beta(1, 1) prior, n = 50, k = 1
-  # Derks, K., de Swart, J., Wagenmakers, E-.J., and Wetzels, R. (2021). A default Bayesian hypothesis test for audit sampling.
+  # Derks, K., de Swart, J., Wagenmakers, E-.J., and Wetzels, R. (2022). An impartial Bayesian hypothesis test for audit sampling.
   # BF-+ = 51.55
   BF <- evaluation(materiality = 0.05, n = 50, x = 1, prior = auditPrior(method = "param", alpha = 1, beta = 1, likelihood = "binomial"))$posterior$hypotheses$bf.h1
   expect_equal(BF, 51.551344113750538)
 
   # Compute a default Bayes factor from an impartial beta prior
-  # Derks, K., de Swart, J., Wagenmakers, E-.J., and Wetzels, R. (2021). A default Bayesian hypothesis test for audit sampling.
+  # Derks, K., de Swart, J., Wagenmakers, E-.J., and Wetzels, R. (2022). An impartial Bayesian hypothesis test for audit sampling.
   # BF-+ = 4.98
   BF <- evaluation(materiality = 0.05, n = 50, x = 1, prior = auditPrior(method = "impartial", materiality = 0.05, likelihood = "binomial"))$posterior$hypotheses$bf.h1
   expect_equal(BF, 4.9852019781149854)
