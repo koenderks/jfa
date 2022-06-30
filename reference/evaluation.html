@@ -94,16 +94,16 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="https://koe
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre><code>evaluation(materiality = NULL, min.precision = NULL, method = c(
-             "poisson", "binomial", "hypergeometric",
-             "stringer", "stringer.meikle", "stringer.lta", "stringer.pvz",
-             "rohrbach", "moment", "coxsnell",
-             "direct", "difference", "quotient", "regression", "mpu")
-           ), alternative = c('less', 'two.sided', 'greater'), conf.level = 0.95,
-           data = NULL, values = NULL, values.audit = NULL, times = NULL,
-           x = NULL, n = NULL, N.units = NULL, N.items = NULL,
-           r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5,
-           prior = FALSE)</code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">evaluation</span><span class="op">(</span>materiality <span class="op">=</span> <span class="cn">NULL</span>, min.precision <span class="op">=</span> <span class="cn">NULL</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>             <span class="st">"poisson"</span>, <span class="st">"binomial"</span>, <span class="st">"hypergeometric"</span>,</span>
+<span>             <span class="st">"stringer"</span>, <span class="st">"stringer.meikle"</span>, <span class="st">"stringer.lta"</span>, <span class="st">"stringer.pvz"</span>,</span>
+<span>             <span class="st">"rohrbach"</span>, <span class="st">"moment"</span>, <span class="st">"coxsnell"</span>,</span>
+<span>             <span class="st">"direct"</span>, <span class="st">"difference"</span>, <span class="st">"quotient"</span>, <span class="st">"regression"</span>, <span class="st">"mpu"</span></span>
+<span>           <span class="op">)</span>, alternative <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'less'</span>, <span class="st">'two.sided'</span>, <span class="st">'greater'</span><span class="op">)</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>           data <span class="op">=</span> <span class="cn">NULL</span>, values <span class="op">=</span> <span class="cn">NULL</span>, values.audit <span class="op">=</span> <span class="cn">NULL</span>, times <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>           x <span class="op">=</span> <span class="cn">NULL</span>, n <span class="op">=</span> <span class="cn">NULL</span>, N.units <span class="op">=</span> <span class="cn">NULL</span>, N.items <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>           r.delta <span class="op">=</span> <span class="fl">2.7</span>, m.type <span class="op">=</span> <span class="st">'accounts'</span>, cs.a <span class="op">=</span> <span class="fl">1</span>, cs.b <span class="op">=</span> <span class="fl">3</span>, cs.mu <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>           prior <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
