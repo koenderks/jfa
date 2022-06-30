@@ -133,55 +133,55 @@
 <p>Since BuildIt is a small company, there is only a single population upon which the financial statements are based. Therefore, laura can use the materiality for the overall financial statements as the performance materiality for the single population. Specifically, BuildIt’s population consists of 3500 items. However, before assessing the details in the population, Laura has performed a test of BuildIt internal control systems and found that they were quite reliable.</p>
 <p>In order to formulate an opinion about the misstatement in the population, Laura separates her audit workflow into four stages. First, she will plan the size of the subset she needs to inspect from the financial statements to make a well-substantiated inference about them as a whole. Second, she will select the required subset from the financial statements. Third, she will inspect the selected subset and determines the audit (true) value of the items. Fourth, she will use the information from her inspected subset to make an inference about the misstatement in the population (e.g., in this case also the financial statements as a whole). To start her workflow, Laura first loads BuildIt’s financial statements in R.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://koenderks.github.io/jfa/">jfa</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"BuildIt"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://koenderks.github.io/jfa/">jfa</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"BuildIt"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="setting-up-the-audit">Setting up the audit<a class="anchor" aria-label="anchor" href="#setting-up-the-audit"></a>
 </h2>
 <p>Laura wants to make a statement that, with 95% confidence, the misstatement in the financial statements is lower than the performance materiality of 5%. Based on last year’s audit at BuildIt, where the upper bound of the misstatement turned out to be 2.5%, she wants to tolerate at most 2.5% errors in the intended sample. Laura can therefore re-formulate her statistical statement as that she wants to conclude that, when 2.5% errors are found in her sample, she can conclude with 95% confidence, that the misstatement in the population is lower than the materiality of 5%. Below, Laura defines the materiality, confidence level, and expected errors.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Specify the confidence, materiality, and expected errors.</span>
-<span class="va">confidence</span>  <span class="op">&lt;-</span> <span class="fl">0.95</span>   <span class="co"># 95%</span>
-<span class="va">materiality</span> <span class="op">&lt;-</span> <span class="fl">0.05</span>   <span class="co"># 5%</span>
-<span class="va">expected</span>    <span class="op">&lt;-</span> <span class="fl">0.025</span>  <span class="co"># 2.5%</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Specify the confidence, materiality, and expected errors.</span></span>
+<span><span class="va">confidence</span>  <span class="op">&lt;-</span> <span class="fl">0.95</span>   <span class="co"># 95%</span></span>
+<span><span class="va">materiality</span> <span class="op">&lt;-</span> <span class="fl">0.05</span>   <span class="co"># 5%</span></span>
+<span><span class="va">expected</span>    <span class="op">&lt;-</span> <span class="fl">0.025</span>  <span class="co"># 2.5%</span></span></code></pre></div>
 <p>Many audits are performed according to the <em>audit risk model (ARM)</em>, which determines that the uncertainty about Laura’s statement as a whole (1 - her confidence) is a factor of three terms: the inherent risk, the control risk, and the detection risk. Inherent risk is the risk posed by an error in BuildIt’s financial statement that could be material, before consideration of any related control systems (e.g., computer systems). Control risk is the risk that a material misstatement is not prevented or detected by BuildIt’s internal control systems. Detection risk is the risk that Laura will fail to find material misstatements that exist in an BuildIt’s financial statements. The <em>ARM</em> is practically useful because for a given level of audit risk, the tolerable detection risk bears an inverse relation to the other two risks. The <em>ARM</em> is useful for Laura because it enables her to incorporate prior knowledge on BuildIt’s organization to increase the required risk that she will fail to find material misstatements. According to the <em>ARM</em>, the audit risk will then be retained.</p>
 <p><span class="math display">\[ \text{Audit risk} = \text{Inherent risk} \,\times\, \text{Control risk} \,\times\, \text{Detection risk}\]</span></p>
 <p>Usually the auditor judges inherent risk and control risk on a three-point scale consisting of low, medium, and high. Different audit firms handle different standard percentages for these categories. Laura’s firm defines the probabilities of low, medium, and high respectively as 50%, 60%, and 100%. Because Laura performed testing of BuildIt’s computer systems, she assesses the control risk as medium (60%).</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Specify the inherent risk (ir) and control risk (cr).</span>
-<span class="va">ir</span> <span class="op">&lt;-</span> <span class="fl">1</span>     <span class="co"># 100%</span>
-<span class="va">cr</span> <span class="op">&lt;-</span> <span class="fl">0.6</span>   <span class="co"># 60%</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Specify the inherent risk (ir) and control risk (cr).</span></span>
+<span><span class="va">ir</span> <span class="op">&lt;-</span> <span class="fl">1</span>     <span class="co"># 100%</span></span>
+<span><span class="va">cr</span> <span class="op">&lt;-</span> <span class="fl">0.6</span>   <span class="co"># 60%</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="stage-1-planning-an-audit-sample">Stage 1: Planning an audit sample<a class="anchor" aria-label="anchor" href="#stage-1-planning-an-audit-sample"></a>
 </h2>
 <p>Laura can choose to either perform a frequentist analysis, where she uses the increased detection risk as her level of uncertainty, or perform a Bayesian analysis, where she captures the information in the control risk in a prior distribution. For this example, we will show how Laura performs a frequentist analysis. In a frequentist audit, Laura immediately uses the adjusted confidence to calculate the sample size using the <code><a href="../reference/planning.html">planning()</a></code> function.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Adjust the required confidence for a frequentist analysis.</span>
-<span class="va">c.adj</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="op">(</span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">confidence</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">ir</span> <span class="op">*</span> <span class="va">cr</span><span class="op">)</span><span class="op">)</span>
-<span class="co"># Step 1: Calculate the required sample size.</span>
-<span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">c.adj</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Adjust the required confidence for a frequentist analysis.</span></span>
+<span><span class="va">c.adj</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="op">(</span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">confidence</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">ir</span> <span class="op">*</span> <span class="va">cr</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co"># Step 1: Calculate the required sample size.</span></span>
+<span><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">c.adj</span><span class="op">)</span></span></code></pre></div>
 <p>Laura can then inspect the result from her planning procedure by using the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function. Her result tells her that, given her prior distribution she needs to audit a sample of 178 items so that, when at most 4.45 errors are found, she can conclude with 91.66% confidence that the maximum error in BuildIt’s financial statements is lower the materiality of 5%.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">##  Classical Audit Sample Planning Summary</span>
-<span class="co">## </span>
-<span class="co">## Options:</span>
-<span class="co">##   Confidence level:              0.91667 </span>
-<span class="co">##   Materiality:                   0.05 </span>
-<span class="co">##   Hypotheses:                    H₀: Θ &gt;= 0.05 vs. H₁: Θ &lt; 0.05 </span>
-<span class="co">##   Expected:                      0.025 </span>
-<span class="co">##   Likelihood:                    poisson </span>
-<span class="co">## </span>
-<span class="co">## Results:</span>
-<span class="co">##   Minimum sample size:           178 </span>
-<span class="co">##   Tolerable errors:              4.45 </span>
-<span class="co">##   Expected most likely error:    0.025 </span>
-<span class="co">##   Expected upper bound:          0.049986 </span>
-<span class="co">##   Expected precision:            0.024986 </span>
-<span class="co">##   Expected p-value:              &lt; 2.22e-16</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Classical Audit Sample Planning Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Confidence level:              0.91667 </span></span>
+<span><span class="co">##   Materiality:                   0.05 </span></span>
+<span><span class="co">##   Hypotheses:                    H₀: Θ &gt;= 0.05 vs. H₁: Θ &lt; 0.05 </span></span>
+<span><span class="co">##   Expected:                      0.025 </span></span>
+<span><span class="co">##   Likelihood:                    poisson </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Minimum sample size:           178 </span></span>
+<span><span class="co">##   Tolerable errors:              4.45 </span></span>
+<span><span class="co">##   Expected most likely error:    0.025 </span></span>
+<span><span class="co">##   Expected upper bound:          0.049986 </span></span>
+<span><span class="co">##   Expected precision:            0.024986 </span></span>
+<span><span class="co">##   Expected p-value:              &lt; 2.22e-16</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="stage-2-selecting-a-sample">Stage 2: Selecting a sample<a class="anchor" aria-label="anchor" href="#stage-2-selecting-a-sample"></a>
@@ -189,44 +189,44 @@
 <p>Laura is now ready to select the required 178 items from the financial statements. She can choose to do this according to one of two statistical methods. In <em>record sampling</em> (<code>units = "items"</code>), inclusion probabilities are assigned on the item level, treating items with a high value and a low value the same, an items of $5,000 is equally likely to be selected as a item of $1,000. In <em>monetary unit sampling</em> (<code>units = "values"</code>), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the item that includes that dollar is selected. This favors higher items, as an items of $5,000 is five times more likely to be selected than a item of $1,000.</p>
 <p>Laura chooses to use <em>monetary unit sampling</em>, as she wants to include more high-valued items. The <code><a href="../reference/selection.html">selection()</a></code> function allows her to sample from the financial statements. She uses the <code>stage1</code> object as an input for the <code><a href="../reference/selection.html">selection()</a></code> function.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Step 2: Draw a sample from the financial statements.</span>
-<span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="va">stage1</span>, units <span class="op">=</span> <span class="st">"values"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, method <span class="op">=</span> <span class="st">'interval'</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Step 2: Draw a sample from the financial statements.</span></span>
+<span><span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="va">stage1</span>, units <span class="op">=</span> <span class="st">"values"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, method <span class="op">=</span> <span class="st">'interval'</span><span class="op">)</span></span></code></pre></div>
 <p>Laura can inspect the outcomes of her sampling procedure by using the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage2</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">##  Audit Sample Selection Summary</span>
-<span class="co">## </span>
-<span class="co">## Options:</span>
-<span class="co">##   Requested sample size:         178 </span>
-<span class="co">##   Sampling units:                monetary units </span>
-<span class="co">##   Method:                        fixed interval sampling </span>
-<span class="co">##   Starting point:                1 </span>
-<span class="co">## </span>
-<span class="co">## Data:</span>
-<span class="co">##   Population size:               3500 </span>
-<span class="co">##   Population value:              1403221 </span>
-<span class="co">##   Selection interval:            7883.3 </span>
-<span class="co">## </span>
-<span class="co">## Results:</span>
-<span class="co">##   Selected sampling units:       178 </span>
-<span class="co">##   Proportion of value:           0.062843 </span>
-<span class="co">##   Selected items:                178 </span>
-<span class="co">##   Proportion of size:            0.050857</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Audit Sample Selection Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Requested sample size:         178 </span></span>
+<span><span class="co">##   Sampling units:                monetary units </span></span>
+<span><span class="co">##   Method:                        fixed interval sampling </span></span>
+<span><span class="co">##   Starting point:                1 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Data:</span></span>
+<span><span class="co">##   Population size:               3500 </span></span>
+<span><span class="co">##   Population value:              1403221 </span></span>
+<span><span class="co">##   Selection interval:            7883.3 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Selected sampling units:       178 </span></span>
+<span><span class="co">##   Proportion of value:           0.062843 </span></span>
+<span><span class="co">##   Selected items:                178 </span></span>
+<span><span class="co">##   Proportion of size:            0.050857</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="stage-3-executing-the-audit">Stage 3: Executing the audit<a class="anchor" aria-label="anchor" href="#stage-3-executing-the-audit"></a>
 </h2>
 <p>The selected sample can be isolated by indexing the <code>sample</code> object from the sampling result. Now Laura can execute her audit by annotating the sample with their audit value (for exampling by writing the sample to a <em>.csv</em> file using <code><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv()</a></code>. She can then load her annotated sample back into R for further evaluation.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Step 3: Isolate the sample for execution of the audit.</span>
-<span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">stage2</span><span class="op">$</span><span class="va">sample</span>
-
-<span class="co"># To write the sample to a .csv file:</span>
-<span class="co"># write.csv(x = sample, file = "auditSample.csv", row.names = FALSE)</span>
-
-<span class="co"># To load annotated sample back into R:</span>
-<span class="co"># sample &lt;- read.csv(file = "auditSample.csv")</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Step 3: Isolate the sample for execution of the audit.</span></span>
+<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">stage2</span><span class="op">$</span><span class="va">sample</span></span>
+<span></span>
+<span><span class="co"># To write the sample to a .csv file:</span></span>
+<span><span class="co"># write.csv(x = sample, file = "auditSample.csv", row.names = FALSE)</span></span>
+<span></span>
+<span><span class="co"># To load annotated sample back into R:</span></span>
+<span><span class="co"># sample &lt;- read.csv(file = "auditSample.csv")</span></span></code></pre></div>
 <p>For this example, the audit values of the sample are already included in the <code>auditValue</code> column of the data set .</p>
 </div>
 <div class="section level2">
@@ -234,32 +234,32 @@
 </h2>
 <p>Using her annotated sample, Laura can perform her inference with the <code><a href="../reference/evaluation.html">evaluation()</a></code> function.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Step 4: Evaluate the sample</span>
-<span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, conf.level <span class="op">=</span> <span class="va">c.adj</span>, data <span class="op">=</span> <span class="va">sample</span>, 
-                     values <span class="op">=</span> <span class="st">'bookValue'</span>, values.audit <span class="op">=</span> <span class="st">'auditValue'</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Step 4: Evaluate the sample</span></span>
+<span><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, conf.level <span class="op">=</span> <span class="va">c.adj</span>, data <span class="op">=</span> <span class="va">sample</span>, </span>
+<span>                     values <span class="op">=</span> <span class="st">'bookValue'</span>, values.audit <span class="op">=</span> <span class="st">'auditValue'</span><span class="op">)</span></span></code></pre></div>
 <p>Laura can inspect the outcomes of her inference by using the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function. Her resulting 91.66% upper bound is 1.396%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">##  Classical Audit Sample Evaluation Summary</span>
-<span class="co">## </span>
-<span class="co">## Options:</span>
-<span class="co">##   Confidence level:               0.91667 </span>
-<span class="co">##   Materiality:                    0.05 </span>
-<span class="co">##   Materiality:                    0.05 </span>
-<span class="co">##   Hypotheses:                     H₀: Θ &gt;= 0.05 vs. H₁: Θ &lt; 0.05 </span>
-<span class="co">##   Method:                         poisson </span>
-<span class="co">## </span>
-<span class="co">## Data:</span>
-<span class="co">##   Sample size:                    178 </span>
-<span class="co">##   Number of errors:               0 </span>
-<span class="co">##   Sum of taints:                  0 </span>
-<span class="co">## </span>
-<span class="co">## Results:</span>
-<span class="co">##   Most likely error:              0 </span>
-<span class="co">##   91.66667 percent confidence interval: [0, 0.01396] </span>
-<span class="co">##   Precision:                      0.01396 </span>
-<span class="co">##   p-value:                        0.00013639</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Classical Audit Sample Evaluation Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Confidence level:               0.91667 </span></span>
+<span><span class="co">##   Materiality:                    0.05 </span></span>
+<span><span class="co">##   Materiality:                    0.05 </span></span>
+<span><span class="co">##   Hypotheses:                     H₀: Θ &gt;= 0.05 vs. H₁: Θ &lt; 0.05 </span></span>
+<span><span class="co">##   Method:                         poisson </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Data:</span></span>
+<span><span class="co">##   Sample size:                    178 </span></span>
+<span><span class="co">##   Number of errors:               0 </span></span>
+<span><span class="co">##   Sum of taints:                  0 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Most likely error:              0 </span></span>
+<span><span class="co">##   91.66667 percent confidence interval: [0, 0.01396] </span></span>
+<span><span class="co">##   Precision:                      0.01396 </span></span>
+<span><span class="co">##   p-value:                        0.00013639</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
@@ -279,7 +279,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 

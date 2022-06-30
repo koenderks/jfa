@@ -154,18 +154,18 @@
 </h3>
 <p>The auditor is inspecting a lot of products and wants to make a statement with 90% confidence against a tolerance value of 5%. They formulate the hypothesis of intolerable deviations as <span class="math inline">\(H_0:\theta \geq 0.05\)</span> and the hypothesis of tolerable deviations as <span class="math inline">\(H_1: \theta &lt; 0.05\)</span>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">confidence</span> <span class="op">&lt;-</span> <span class="fl">0.90</span> <span class="co"># 90% confidence</span>
-<span class="va">tolerance</span>  <span class="op">&lt;-</span> <span class="fl">0.05</span> <span class="co"># 5% tolerance</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">confidence</span> <span class="op">&lt;-</span> <span class="fl">0.90</span> <span class="co"># 90% confidence</span></span>
+<span><span class="va">tolerance</span>  <span class="op">&lt;-</span> <span class="fl">0.05</span> <span class="co"># 5% tolerance</span></span></code></pre></div>
 <p>In the first stage, the auditor inspects <span class="math inline">\(n_1 = 32\)</span> items and observes <span class="math inline">\(k_1 = 2\)</span> nonconforming items. The shortest two-sided confidence interval (Göb &amp; Lurz, 2012) for the proportion of nonconforming items is [0.0167; 0.1866]. This confidence interval contains the tolerance value and therefore no decision can be made in the first stage. The auditor therefore continues to the second stage.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">ISO28596</span><span class="fu">:::</span><span class="fu">CI.binom.shortest</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">32</span>, x <span class="op">=</span> <span class="fl">2</span>, level <span class="op">=</span> <span class="va">confidence</span><span class="op">)</span><span class="op">$</span><span class="va">bounds</span>
-<span class="co">#      x estimate      lower     upper</span>
-<span class="co"># [1,] 2   0.0625 0.01674365 0.1866428</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">ISO28596</span><span class="fu">:::</span><span class="fu">CI.binom.shortest</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">32</span>, x <span class="op">=</span> <span class="fl">2</span>, level <span class="op">=</span> <span class="va">confidence</span><span class="op">)</span><span class="op">$</span><span class="va">bounds</span></span>
+<span><span class="co">#      x estimate      lower     upper</span></span>
+<span><span class="co"># [1,] 2   0.0625 0.01674365 0.1866428</span></span></code></pre></div>
 <p>In the second stage, the auditor inspects an additional <span class="math inline">\(n_2 = 50\)</span> items and observes <span class="math inline">\(k_2 = 0\)</span> nonconforming items. After observing these data, the shortest two-sided confidence interval for the proportion of nonconforming items (using <span class="math inline">\(n = n_1 + n_2\)</span> and <span class="math inline">\(k = k_1 + k_2\)</span>) is [0.0065; 0.0734]. At this point, the confidence interval still contains the tolerance value but the auditor determines that the portion of the confidence interval that lies below the tolerance value is larger than the portion above the tolerance value. Therefore, they accept the lot.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">ISO28596</span><span class="fu">:::</span><span class="fu">CI.binom.shortest</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">32</span> <span class="op">+</span> <span class="fl">50</span>, x <span class="op">=</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">0</span>, level <span class="op">=</span> <span class="va">confidence</span><span class="op">)</span><span class="op">$</span><span class="va">bounds</span>
-<span class="co">#      x   estimate       lower      upper</span>
-<span class="co"># [1,] 2 0.02439024 0.006504196 0.07341118</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu">ISO28596</span><span class="fu">:::</span><span class="fu">CI.binom.shortest</span><span class="op">(</span>size <span class="op">=</span> <span class="fl">32</span> <span class="op">+</span> <span class="fl">50</span>, x <span class="op">=</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">0</span>, level <span class="op">=</span> <span class="va">confidence</span><span class="op">)</span><span class="op">$</span><span class="va">bounds</span></span>
+<span><span class="co">#      x   estimate       lower      upper</span></span>
+<span><span class="co"># [1,] 2 0.02439024 0.006504196 0.07341118</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level2">
@@ -178,47 +178,47 @@
 </h3>
 <p>To calculate the Bayes factor the auditor must first specify the prior distribution for the proportion of nonconforming items in the lot. An appropriate prior distribution can be one that assigns equal probability to the event of acceptance and the event of rejection (Derks et al., 2021), see also the vignette <a href="https://koenderks.github.io/jfa/articles/v3_prior_distributions.html">Prior distributions</a>. The code below creates this prior distribution.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"impartial"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, materiality <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"impartial"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, materiality <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="bayes-factor-after-stage-1">Bayes factor after stage 1<a class="anchor" aria-label="anchor" href="#bayes-factor-after-stage-1"></a>
 </h3>
 <p>Using the <code><a href="../reference/evaluation.html">evaluation()</a></code> function the auditor can create the prior distribution and calculate the Bayes factor in favor of acceptance of the lot versus rejection of the lot. In this case, the Bayes factor in favor of acceptance (<span class="math inline">\(BF_{-+}\)</span>) is 0.66. This Bayes factor represents only anecdotal evidence in favor of rejection of the lot, since the data is 1 / 0.66 = 1.51 times more likely under the hypothesis <span class="math inline">\(H_0\)</span> than under the hypothesis <span class="math inline">\(H_1\)</span> (see the vignette <a href="https://koenderks.github.io/jfa/articles/v6_testing_misstatement.html">Testing misstatement</a> for the interpretation of <span class="math inline">\(BF_{-+}\)</span>).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">tolerance</span>, x <span class="op">=</span> <span class="fl">2</span>, n <span class="op">=</span> <span class="fl">32</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning in evaluation(materiality = tolerance, x = 2, n = 32, prior = prior):</span>
-<span class="co">## using 'method = binomial' from 'prior'</span></code></pre>
-<pre><code><span class="co">## </span>
-<span class="co">##  Bayesian Audit Sample Evaluation</span>
-<span class="co">## </span>
-<span class="co">## data:  2 and 32</span>
-<span class="co">## number of errors = 2, number of samples = 32, taint = 2, BF₁₀ = 0.66487</span>
-<span class="co">## alternative hypothesis: true misstatement rate is less than 0.05</span>
-<span class="co">## 95 percent credible interval:</span>
-<span class="co">##  0.0000000 0.1319424</span>
-<span class="co">## estimate:</span>
-<span class="co">##  0.04493028 </span>
-<span class="co">## estimates obtained via method 'binomial' + 'prior'</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">tolerance</span>, x <span class="op">=</span> <span class="fl">2</span>, n <span class="op">=</span> <span class="fl">32</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning in evaluation(materiality = tolerance, x = 2, n = 32, prior = prior):</span></span>
+<span><span class="co">## using 'method = binomial' from 'prior'</span></span></code></pre>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Bayesian Audit Sample Evaluation</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## data:  2 and 32</span></span>
+<span><span class="co">## number of errors = 2, number of samples = 32, taint = 2, BF₁₀ = 0.66487</span></span>
+<span><span class="co">## alternative hypothesis: true misstatement rate is less than 0.05</span></span>
+<span><span class="co">## 95 percent credible interval:</span></span>
+<span><span class="co">##  0.0000000 0.1319424</span></span>
+<span><span class="co">## estimate:</span></span>
+<span><span class="co">##  0.04493028 </span></span>
+<span><span class="co">## estimates obtained via method 'binomial' + 'prior'</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="bayes-factor-after-stage-2">Bayes factor after stage 2<a class="anchor" aria-label="anchor" href="#bayes-factor-after-stage-2"></a>
 </h3>
 <p>The Bayes factor in favor of acceptance after the second sample of items is 6.24 which represents moderate evidence in favor of acceptance. Hence, we should continue selecting and inspecting items to gather sufficient evidence for one of the two hypotheses.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">tolerance</span>, x <span class="op">=</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">0</span>, n <span class="op">=</span> <span class="fl">32</span> <span class="op">+</span> <span class="fl">50</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning in evaluation(materiality = tolerance, x = 2 + 0, n = 32 + 50, prior =</span>
-<span class="co">## prior): using 'method = binomial' from 'prior'</span></code></pre>
-<pre><code><span class="co">## </span>
-<span class="co">##  Bayesian Audit Sample Evaluation</span>
-<span class="co">## </span>
-<span class="co">## data:  2 and 82</span>
-<span class="co">## number of errors = 2, number of samples = 82, taint = 2, BF₁₀ = 6.2413</span>
-<span class="co">## alternative hypothesis: true misstatement rate is less than 0.05</span>
-<span class="co">## 95 percent credible interval:</span>
-<span class="co">##  0.00000000 0.06444852</span>
-<span class="co">## estimate:</span>
-<span class="co">##  0.02116102 </span>
-<span class="co">## estimates obtained via method 'binomial' + 'prior'</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">tolerance</span>, x <span class="op">=</span> <span class="fl">2</span> <span class="op">+</span> <span class="fl">0</span>, n <span class="op">=</span> <span class="fl">32</span> <span class="op">+</span> <span class="fl">50</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning in evaluation(materiality = tolerance, x = 2 + 0, n = 32 + 50, prior =</span></span>
+<span><span class="co">## prior): using 'method = binomial' from 'prior'</span></span></code></pre>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Bayesian Audit Sample Evaluation</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## data:  2 and 82</span></span>
+<span><span class="co">## number of errors = 2, number of samples = 82, taint = 2, BF₁₀ = 6.2413</span></span>
+<span><span class="co">## alternative hypothesis: true misstatement rate is less than 0.05</span></span>
+<span><span class="co">## 95 percent credible interval:</span></span>
+<span><span class="co">##  0.00000000 0.06444852</span></span>
+<span><span class="co">## estimate:</span></span>
+<span><span class="co">##  0.02116102 </span></span>
+<span><span class="co">## estimates obtained via method 'binomial' + 'prior'</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -243,7 +243,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 

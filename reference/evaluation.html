@@ -94,12 +94,12 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="https://koe
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">evaluation</span><span class="op">(</span>materiality <span class="op">=</span> <span class="cn">NULL</span>, min.precision <span class="op">=</span> <span class="cn">NULL</span>, method <span class="op">=</span> <span class="st">'poisson'</span>,
-           alternative <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'less'</span>, <span class="st">'two.sided'</span>, <span class="st">'greater'</span><span class="op">)</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>,
-           data <span class="op">=</span> <span class="cn">NULL</span>, values <span class="op">=</span> <span class="cn">NULL</span>, values.audit <span class="op">=</span> <span class="cn">NULL</span>, times <span class="op">=</span> <span class="cn">NULL</span>,
-           x <span class="op">=</span> <span class="cn">NULL</span>, n <span class="op">=</span> <span class="cn">NULL</span>, N.units <span class="op">=</span> <span class="cn">NULL</span>, N.items <span class="op">=</span> <span class="cn">NULL</span>,
-           r.delta <span class="op">=</span> <span class="fl">2.7</span>, m.type <span class="op">=</span> <span class="st">'accounts'</span>, cs.a <span class="op">=</span> <span class="fl">1</span>, cs.b <span class="op">=</span> <span class="fl">3</span>, cs.mu <span class="op">=</span> <span class="fl">0.5</span>,
-           prior <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">evaluation</span><span class="op">(</span>materiality <span class="op">=</span> <span class="cn">NULL</span>, min.precision <span class="op">=</span> <span class="cn">NULL</span>, method <span class="op">=</span> <span class="st">'poisson'</span>,</span>
+<span>           alternative <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'less'</span>, <span class="st">'two.sided'</span>, <span class="st">'greater'</span><span class="op">)</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>           data <span class="op">=</span> <span class="cn">NULL</span>, values <span class="op">=</span> <span class="cn">NULL</span>, values.audit <span class="op">=</span> <span class="cn">NULL</span>, times <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>           x <span class="op">=</span> <span class="cn">NULL</span>, n <span class="op">=</span> <span class="cn">NULL</span>, N.units <span class="op">=</span> <span class="cn">NULL</span>, N.items <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>           r.delta <span class="op">=</span> <span class="fl">2.7</span>, m.type <span class="op">=</span> <span class="st">'accounts'</span>, cs.a <span class="op">=</span> <span class="fl">1</span>, cs.b <span class="op">=</span> <span class="fl">3</span>, cs.mu <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>           prior <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -288,20 +288,20 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="https://koe
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"BuildIt"</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Draw a sample of 100 monetary units from the population using</span></span>
-<span class="r-in"><span class="co"># fixed interval monetary unit sampling</span></span>
-<span class="r-in"><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="selection.html">selection</a></span><span class="op">(</span></span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">"values"</span>,</span>
-<span class="r-in">  method <span class="op">=</span> <span class="st">"interval"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span></span>
-<span class="r-in"><span class="op">)</span><span class="op">$</span><span class="va">sample</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Classical evaluation using the Stringer bound</span></span>
-<span class="r-in"><span class="fu">evaluation</span><span class="op">(</span></span>
-<span class="r-in">  materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"stringer"</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span></span>
-<span class="r-in"><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"BuildIt"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Draw a sample of 100 monetary units from the population using</span></span></span>
+<span class="r-in"><span><span class="co"># fixed interval monetary unit sampling</span></span></span>
+<span class="r-in"><span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="selection.html">selection</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">"values"</span>,</span></span>
+<span class="r-in"><span>  method <span class="op">=</span> <span class="st">"interval"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span></span></span>
+<span class="r-in"><span><span class="op">)</span><span class="op">$</span><span class="va">sample</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Classical evaluation using the Stringer bound</span></span></span>
+<span class="r-in"><span><span class="fu">evaluation</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"stringer"</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Classical Audit Sample Evaluation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -312,12 +312,12 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="https://koe
 <span class="r-out co"><span class="r-pr">#&gt;</span> estimate:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  0.0239999 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> estimates obtained via method 'stringer'</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Classical evaluation using the Poisson likelihood</span></span>
-<span class="r-in"><span class="fu">evaluation</span><span class="op">(</span></span>
-<span class="r-in">  materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"poisson"</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Classical evaluation using the Poisson likelihood</span></span></span>
+<span class="r-in"><span><span class="fu">evaluation</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"poisson"</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Classical Audit Sample Evaluation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -330,13 +330,13 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="https://koe
 <span class="r-out co"><span class="r-pr">#&gt;</span> estimate:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  0.0239999 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> estimates obtained via method 'poisson'</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Bayesian evaluation using a noninformative gamma prior distribution</span></span>
-<span class="r-in"><span class="fu">evaluation</span><span class="op">(</span></span>
-<span class="r-in">  materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"poisson"</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>,</span>
-<span class="r-in">  prior <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Bayesian evaluation using a noninformative gamma prior distribution</span></span></span>
+<span class="r-in"><span><span class="fu">evaluation</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"poisson"</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>,</span></span>
+<span class="r-in"><span>  prior <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Bayesian Audit Sample Evaluation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -349,13 +349,13 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="https://koe
 <span class="r-out co"><span class="r-pr">#&gt;</span> estimate:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  0.02376227 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> estimates obtained via method 'poisson' + 'prior'</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Bayesian evaluation using an informed prior distribution</span></span>
-<span class="r-in"><span class="fu">evaluation</span><span class="op">(</span></span>
-<span class="r-in">  materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"poisson"</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
-<span class="r-in">  data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>,</span>
-<span class="r-in">  prior <span class="op">=</span> <span class="fu"><a href="auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"param"</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span class="r-in"><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Bayesian evaluation using an informed prior distribution</span></span></span>
+<span class="r-in"><span><span class="fu">evaluation</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"poisson"</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>,</span></span>
+<span class="r-in"><span>  prior <span class="op">=</span> <span class="fu"><a href="auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"param"</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Bayesian Audit Sample Evaluation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -379,7 +379,7 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="https://koe
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 

@@ -141,38 +141,38 @@
 <p>What information can be incorporated into the prior distribution depends on what type of information is available, the quality of that information, and the situation at hand. When the auditor has decided what kind of information they want to incorporate into a prior distribution, they can use the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function to calculate the corresponding parameters of the prior distribution. Below we discuss the various types of audit information that <code>jfa</code> is able to incorporate into a prior distribution.</p>
 <p>First, we set some default options for the confidence, performance materiality, the likelihood, and the expected errors in the sample.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">confidence</span>  <span class="op">&lt;-</span> <span class="fl">0.95</span>       <span class="co"># 95% confidence</span>
-<span class="va">likelihood</span>  <span class="op">&lt;-</span> <span class="st">'binomial'</span> <span class="co"># Binomial likelihood</span>
-<span class="va">materiality</span> <span class="op">&lt;-</span> <span class="fl">0.05</span>       <span class="co"># Performance materiality of 5%</span>
-<span class="va">expected</span>    <span class="op">&lt;-</span> <span class="fl">0.01</span>       <span class="co"># 1% errors expected in sample</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">confidence</span>  <span class="op">&lt;-</span> <span class="fl">0.95</span>       <span class="co"># 95% confidence</span></span>
+<span><span class="va">likelihood</span>  <span class="op">&lt;-</span> <span class="st">'binomial'</span> <span class="co"># Binomial likelihood</span></span>
+<span><span class="va">materiality</span> <span class="op">&lt;-</span> <span class="fl">0.05</span>       <span class="co"># Performance materiality of 5%</span></span>
+<span><span class="va">expected</span>    <span class="op">&lt;-</span> <span class="fl">0.01</span>       <span class="co"># 1% errors expected in sample</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="minimal-information-priors-method-default">Minimal information priors (<code>method = 'default'</code>)<a class="anchor" aria-label="anchor" href="#minimal-information-priors-method-default"></a>
 </h3>
 <p>You can construct a prior distribution from minimal information using <code>method = 'default'</code>. As an example, the code below incorporates minimal information into a prior distribution.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'default'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior1</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">##  Prior Distribution Summary</span>
-<span class="co">## </span>
-<span class="co">## Options:</span>
-<span class="co">##   Likelihood:                    binomial </span>
-<span class="co">##   Specifics:                     noninformative </span>
-<span class="co">## </span>
-<span class="co">## Results:</span>
-<span class="co">##   Functional form:               beta(α = 1, β = 1) </span>
-<span class="co">##   Equivalent sample size:        1 </span>
-<span class="co">##   Equivalent errors:             0 </span>
-<span class="co">##   Mode:                          NaN </span>
-<span class="co">##   Mean:                          0.5 </span>
-<span class="co">##   Median:                        0.5 </span>
-<span class="co">##   Variance:                      0.083333 </span>
-<span class="co">##   Skewness:                      0 </span>
-<span class="co">##   95 percent upper bound:        0.95 </span>
-<span class="co">##   Precision:                     NaN</span></code></pre>
+<code class="sourceCode R"><span><span class="va">prior1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'default'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior1</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Prior Distribution Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Likelihood:                    binomial </span></span>
+<span><span class="co">##   Specifics:                     noninformative </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Functional form:               beta(α = 1, β = 1) </span></span>
+<span><span class="co">##   Equivalent sample size:        1 </span></span>
+<span><span class="co">##   Equivalent errors:             0 </span></span>
+<span><span class="co">##   Mode:                          NaN </span></span>
+<span><span class="co">##   Mean:                          0.5 </span></span>
+<span><span class="co">##   Median:                        0.5 </span></span>
+<span><span class="co">##   Variance:                      0.083333 </span></span>
+<span><span class="co">##   Skewness:                      0 </span></span>
+<span><span class="co">##   95 percent upper bound:        0.95 </span></span>
+<span><span class="co">##   Precision:                     NaN</span></span></code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior1</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior1</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v3_prior_distributions_files/figure-html/unnamed-chunk-3-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -180,29 +180,29 @@
 </h3>
 <p>You can construct a prior distribution on the basis of no existing information using <code>method = 'strict'</code>. The prior distribution that is constructed is improper but yields exactly the same results as the classical methodology with respect to sample sizes, upper limits, and evidence.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'strict'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior2</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">##  Prior Distribution Summary</span>
-<span class="co">## </span>
-<span class="co">## Options:</span>
-<span class="co">##   Likelihood:                    binomial </span>
-<span class="co">##   Specifics:                     classical properties </span>
-<span class="co">## </span>
-<span class="co">## Results:</span>
-<span class="co">##   Functional form:               beta(α = 1, β = 0) </span>
-<span class="co">##   Equivalent sample size:        0 </span>
-<span class="co">##   Equivalent errors:             0 </span>
-<span class="co">##   Mode:                          0 </span>
-<span class="co">##   Mean:                          1 </span>
-<span class="co">##   Median:                        1 </span>
-<span class="co">##   Variance:                      0 </span>
-<span class="co">##   Skewness:                      -Inf </span>
-<span class="co">##   95 percent upper bound:        1 </span>
-<span class="co">##   Precision:                     1</span></code></pre>
+<code class="sourceCode R"><span><span class="va">prior2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'strict'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Prior Distribution Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Likelihood:                    binomial </span></span>
+<span><span class="co">##   Specifics:                     classical properties </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Functional form:               beta(α = 1, β = 0) </span></span>
+<span><span class="co">##   Equivalent sample size:        0 </span></span>
+<span><span class="co">##   Equivalent errors:             0 </span></span>
+<span><span class="co">##   Mode:                          0 </span></span>
+<span><span class="co">##   Mean:                          1 </span></span>
+<span><span class="co">##   Median:                        1 </span></span>
+<span><span class="co">##   Variance:                      0 </span></span>
+<span><span class="co">##   Skewness:                      -Inf </span></span>
+<span><span class="co">##   95 percent upper bound:        1 </span></span>
+<span><span class="co">##   Precision:                     1</span></span></code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior2</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v3_prior_distributions_files/figure-html/unnamed-chunk-5-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -210,29 +210,29 @@
 </h3>
 <p>You can manually specify the <span class="math inline">\(\alpha\)</span> and <span class="math inline">\(\beta\)</span> parameters of the prior distribution using <code>method = 'param'</code> in combination with the <code>alpha</code> and <code>beta</code> arguments. As an example, the code below creates a beta(2, 10) prior distribution.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'param'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, alpha <span class="op">=</span> <span class="fl">2</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior3</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">##  Prior Distribution Summary</span>
-<span class="co">## </span>
-<span class="co">## Options:</span>
-<span class="co">##   Likelihood:                    binomial </span>
-<span class="co">##   Specifics:                     α = 2; β = 10 </span>
-<span class="co">## </span>
-<span class="co">## Results:</span>
-<span class="co">##   Functional form:               beta(α = 2, β = 10) </span>
-<span class="co">##   Equivalent sample size:        11 </span>
-<span class="co">##   Equivalent errors:             1 </span>
-<span class="co">##   Mode:                          0.1 </span>
-<span class="co">##   Mean:                          0.16667 </span>
-<span class="co">##   Median:                        0.14796 </span>
-<span class="co">##   Variance:                      0.010684 </span>
-<span class="co">##   Skewness:                      0.9214 </span>
-<span class="co">##   95 percent upper bound:        0.36436 </span>
-<span class="co">##   Precision:                     0.26436</span></code></pre>
+<code class="sourceCode R"><span><span class="va">prior3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'param'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, alpha <span class="op">=</span> <span class="fl">2</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior3</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Prior Distribution Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Likelihood:                    binomial </span></span>
+<span><span class="co">##   Specifics:                     α = 2; β = 10 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Functional form:               beta(α = 2, β = 10) </span></span>
+<span><span class="co">##   Equivalent sample size:        11 </span></span>
+<span><span class="co">##   Equivalent errors:             1 </span></span>
+<span><span class="co">##   Mode:                          0.1 </span></span>
+<span><span class="co">##   Mean:                          0.16667 </span></span>
+<span><span class="co">##   Median:                        0.14796 </span></span>
+<span><span class="co">##   Variance:                      0.010684 </span></span>
+<span><span class="co">##   Skewness:                      0.9214 </span></span>
+<span><span class="co">##   95 percent upper bound:        0.36436 </span></span>
+<span><span class="co">##   Precision:                     0.26436</span></span></code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior3</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior3</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v3_prior_distributions_files/figure-html/unnamed-chunk-7-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -241,30 +241,30 @@
 <p>You can incorporate the assumption that tolerable misstatement is equally likely as intolerable misstatement using <code>method = 'impartial'</code>. As an example, the code below incorporates this assumption into a prior distribution.</p>
 <p><em>Note: This method requires that you specify a value for the <code>materiality</code>.</em></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'impartial'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, 
-                     materiality <span class="op">=</span> <span class="va">materiality</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior4</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">##  Prior Distribution Summary</span>
-<span class="co">## </span>
-<span class="co">## Options:</span>
-<span class="co">##   Likelihood:                    binomial </span>
-<span class="co">##   Specifics:                     p(Θ &lt; 0.05) = p(Θ &gt; 0.05) = 0.5 </span>
-<span class="co">## </span>
-<span class="co">## Results:</span>
-<span class="co">##   Functional form:               beta(α = 1.155, β = 16.385) </span>
-<span class="co">##   Equivalent sample size:        16.54 </span>
-<span class="co">##   Equivalent errors:             0.1554 </span>
-<span class="co">##   Mode:                          0.01 </span>
-<span class="co">##   Mean:                          0.065872 </span>
-<span class="co">##   Median:                        0.049999 </span>
-<span class="co">##   Variance:                      0.0033189 </span>
-<span class="co">##   Skewness:                      1.5426 </span>
-<span class="co">##   95 percent upper bound:        0.18118 </span>
-<span class="co">##   Precision:                     0.17118</span></code></pre>
+<code class="sourceCode R"><span><span class="va">prior4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'impartial'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, </span>
+<span>                     materiality <span class="op">=</span> <span class="va">materiality</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior4</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Prior Distribution Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Likelihood:                    binomial </span></span>
+<span><span class="co">##   Specifics:                     p(Θ &lt; 0.05) = p(Θ &gt; 0.05) = 0.5 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Functional form:               beta(α = 1.155, β = 16.385) </span></span>
+<span><span class="co">##   Equivalent sample size:        16.54 </span></span>
+<span><span class="co">##   Equivalent errors:             0.1554 </span></span>
+<span><span class="co">##   Mode:                          0.01 </span></span>
+<span><span class="co">##   Mean:                          0.065872 </span></span>
+<span><span class="co">##   Median:                        0.049999 </span></span>
+<span><span class="co">##   Variance:                      0.0033189 </span></span>
+<span><span class="co">##   Skewness:                      1.5426 </span></span>
+<span><span class="co">##   95 percent upper bound:        0.18118 </span></span>
+<span><span class="co">##   Precision:                     0.17118</span></span></code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior4</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior4</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v3_prior_distributions_files/figure-html/unnamed-chunk-9-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -273,30 +273,30 @@
 <p>You can manually assign prior probabilities to the hypothesis of tolerable misstatement and the hypotheses of intolerable misstatement (using <code>p.hmin</code>) in combination with <code>method = 'hyp'</code>. As an example, the code below incorporates the information that the hypothesis of tolerable misstatement has a probability of 60% into a prior distribution.</p>
 <p><em>Note: This method requires that you specify a value for the <code>materiality</code>.</em></p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior5</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'hyp'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>,
-                     materiality <span class="op">=</span> <span class="va">materiality</span>, p.hmin <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior5</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">##  Prior Distribution Summary</span>
-<span class="co">## </span>
-<span class="co">## Options:</span>
-<span class="co">##   Likelihood:                    binomial </span>
-<span class="co">##   Specifics:                     p(Θ &lt; 0.05) = 0.6; p(Θ &gt; 0.05) = 0.4 </span>
-<span class="co">## </span>
-<span class="co">## Results:</span>
-<span class="co">##   Functional form:               beta(α = 1.217, β = 22.493) </span>
-<span class="co">##   Equivalent sample size:        22.71 </span>
-<span class="co">##   Equivalent errors:             0.2171 </span>
-<span class="co">##   Mode:                          0.01 </span>
-<span class="co">##   Mean:                          0.051333 </span>
-<span class="co">##   Median:                        0.039239 </span>
-<span class="co">##   Variance:                      0.0019708 </span>
-<span class="co">##   Skewness:                      1.5724 </span>
-<span class="co">##   95 percent upper bound:        0.13983 </span>
-<span class="co">##   Precision:                     0.12983</span></code></pre>
+<code class="sourceCode R"><span><span class="va">prior5</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'hyp'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>,</span>
+<span>                     materiality <span class="op">=</span> <span class="va">materiality</span>, p.hmin <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior5</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Prior Distribution Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Likelihood:                    binomial </span></span>
+<span><span class="co">##   Specifics:                     p(Θ &lt; 0.05) = 0.6; p(Θ &gt; 0.05) = 0.4 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Functional form:               beta(α = 1.217, β = 22.493) </span></span>
+<span><span class="co">##   Equivalent sample size:        22.71 </span></span>
+<span><span class="co">##   Equivalent errors:             0.2171 </span></span>
+<span><span class="co">##   Mode:                          0.01 </span></span>
+<span><span class="co">##   Mean:                          0.051333 </span></span>
+<span><span class="co">##   Median:                        0.039239 </span></span>
+<span><span class="co">##   Variance:                      0.0019708 </span></span>
+<span><span class="co">##   Skewness:                      1.5724 </span></span>
+<span><span class="co">##   95 percent upper bound:        0.13983 </span></span>
+<span><span class="co">##   Precision:                     0.12983</span></span></code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior5</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior5</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v3_prior_distributions_files/figure-html/unnamed-chunk-11-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -304,30 +304,30 @@
 </h3>
 <p>You can translate the risk assessments from the Audit Risk Model (inherent risk and internal control risk) into a prior distribution using <code>method = 'arm'</code> in combination with the <code>ir</code> and <code>cr</code> arguments. As an example, the code below incorporates the information that the inherent risk is equal to 90% and that the internal control risk is equal to 60% into a prior distribution.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior6</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'arm'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>,
-                     materiality <span class="op">=</span> <span class="va">materiality</span>, ir <span class="op">=</span> <span class="fl">0.9</span>, cr <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior6</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">##  Prior Distribution Summary</span>
-<span class="co">## </span>
-<span class="co">## Options:</span>
-<span class="co">##   Likelihood:                    binomial </span>
-<span class="co">##   Specifics:                     ir = 0.9; cr = 0.6; dr = 0.0925926 </span>
-<span class="co">## </span>
-<span class="co">## Results:</span>
-<span class="co">##   Functional form:               beta(α = 1.21, β = 20.79) </span>
-<span class="co">##   Equivalent sample size:        21 </span>
-<span class="co">##   Equivalent errors:             0.21 </span>
-<span class="co">##   Mode:                          0.0105 </span>
-<span class="co">##   Mean:                          0.055 </span>
-<span class="co">##   Median:                        0.042056 </span>
-<span class="co">##   Variance:                      0.0022598 </span>
-<span class="co">##   Skewness:                      1.5602 </span>
-<span class="co">##   95 percent upper bound:        0.14982 </span>
-<span class="co">##   Precision:                     0.13932</span></code></pre>
+<code class="sourceCode R"><span><span class="va">prior6</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'arm'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>,</span>
+<span>                     materiality <span class="op">=</span> <span class="va">materiality</span>, ir <span class="op">=</span> <span class="fl">0.9</span>, cr <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior6</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Prior Distribution Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Likelihood:                    binomial </span></span>
+<span><span class="co">##   Specifics:                     ir = 0.9; cr = 0.6; dr = 0.0925926 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Functional form:               beta(α = 1.21, β = 20.79) </span></span>
+<span><span class="co">##   Equivalent sample size:        21 </span></span>
+<span><span class="co">##   Equivalent errors:             0.21 </span></span>
+<span><span class="co">##   Mode:                          0.0105 </span></span>
+<span><span class="co">##   Mean:                          0.055 </span></span>
+<span><span class="co">##   Median:                        0.042056 </span></span>
+<span><span class="co">##   Variance:                      0.0022598 </span></span>
+<span><span class="co">##   Skewness:                      1.5602 </span></span>
+<span><span class="co">##   95 percent upper bound:        0.14982 </span></span>
+<span><span class="co">##   Precision:                     0.13932</span></span></code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior6</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior6</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v3_prior_distributions_files/figure-html/unnamed-chunk-13-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -335,30 +335,30 @@
 </h3>
 <p>You can incorporate information about the expected errors (mode) and the upper confidence bound of the prior distribution according to the Bayesian Risk Assessment Model (BRAM) using <code>method = 'bram'</code>. As an example, the code below incorporates the information that the mode of the prior distribution is 1% and the upper bound is 60%.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior7</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'bram'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, 
-                     materiality <span class="op">=</span> <span class="va">materiality</span>, ub <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior7</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">##  Prior Distribution Summary</span>
-<span class="co">## </span>
-<span class="co">## Options:</span>
-<span class="co">##   Likelihood:                    binomial </span>
-<span class="co">##   Specifics:                     mode = 0.01; upper bound = 0.6 </span>
-<span class="co">## </span>
-<span class="co">## Results:</span>
-<span class="co">##   Functional form:               beta(α = 1.023, β = 3.317) </span>
-<span class="co">##   Equivalent sample size:        3.34 </span>
-<span class="co">##   Equivalent errors:             0.0234 </span>
-<span class="co">##   Mode:                          0.01 </span>
-<span class="co">##   Mean:                          0.23581 </span>
-<span class="co">##   Median:                        0.19356 </span>
-<span class="co">##   Variance:                      0.033746 </span>
-<span class="co">##   Skewness:                      0.90737 </span>
-<span class="co">##   95 percent upper bound:        0.5991 </span>
-<span class="co">##   Precision:                     0.5891</span></code></pre>
+<code class="sourceCode R"><span><span class="va">prior7</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'bram'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, </span>
+<span>                     materiality <span class="op">=</span> <span class="va">materiality</span>, ub <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior7</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Prior Distribution Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Likelihood:                    binomial </span></span>
+<span><span class="co">##   Specifics:                     mode = 0.01; upper bound = 0.6 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Functional form:               beta(α = 1.023, β = 3.317) </span></span>
+<span><span class="co">##   Equivalent sample size:        3.34 </span></span>
+<span><span class="co">##   Equivalent errors:             0.0234 </span></span>
+<span><span class="co">##   Mode:                          0.01 </span></span>
+<span><span class="co">##   Mean:                          0.23581 </span></span>
+<span><span class="co">##   Median:                        0.19356 </span></span>
+<span><span class="co">##   Variance:                      0.033746 </span></span>
+<span><span class="co">##   Skewness:                      0.90737 </span></span>
+<span><span class="co">##   95 percent upper bound:        0.5991 </span></span>
+<span><span class="co">##   Precision:                     0.5891</span></span></code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior7</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior7</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v3_prior_distributions_files/figure-html/unnamed-chunk-15-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -366,30 +366,30 @@
 </h3>
 <p>You can incorporate information from an earlier sample into the prior distribution using <code>method = 'sample'</code> in combination with <code>x</code> and <code>n</code>. As an example, the code below incorporates the information from an earlier sample of 30 items in which 0 misstatements were found into a prior distribution.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior8</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'sample'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>,
-                     materiality <span class="op">=</span> <span class="va">materiality</span>, x <span class="op">=</span> <span class="fl">0</span>, n <span class="op">=</span> <span class="fl">30</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior8</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">##  Prior Distribution Summary</span>
-<span class="co">## </span>
-<span class="co">## Options:</span>
-<span class="co">##   Likelihood:                    binomial </span>
-<span class="co">##   Specifics:                     earlier sample of 30 items with 0 errors </span>
-<span class="co">## </span>
-<span class="co">## Results:</span>
-<span class="co">##   Functional form:               beta(α = 1, β = 30) </span>
-<span class="co">##   Equivalent sample size:        30 </span>
-<span class="co">##   Equivalent errors:             0 </span>
-<span class="co">##   Mode:                          0 </span>
-<span class="co">##   Mean:                          0.032258 </span>
-<span class="co">##   Median:                        0.02284 </span>
-<span class="co">##   Variance:                      0.0009755 </span>
-<span class="co">##   Skewness:                      1.8152 </span>
-<span class="co">##   95 percent upper bound:        0.095034 </span>
-<span class="co">##   Precision:                     0.095034</span></code></pre>
+<code class="sourceCode R"><span><span class="va">prior8</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'sample'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>,</span>
+<span>                     materiality <span class="op">=</span> <span class="va">materiality</span>, x <span class="op">=</span> <span class="fl">0</span>, n <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior8</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Prior Distribution Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Likelihood:                    binomial </span></span>
+<span><span class="co">##   Specifics:                     earlier sample of 30 items with 0 errors </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Functional form:               beta(α = 1, β = 30) </span></span>
+<span><span class="co">##   Equivalent sample size:        30 </span></span>
+<span><span class="co">##   Equivalent errors:             0 </span></span>
+<span><span class="co">##   Mode:                          0 </span></span>
+<span><span class="co">##   Mean:                          0.032258 </span></span>
+<span><span class="co">##   Median:                        0.02284 </span></span>
+<span><span class="co">##   Variance:                      0.0009755 </span></span>
+<span><span class="co">##   Skewness:                      1.8152 </span></span>
+<span><span class="co">##   95 percent upper bound:        0.095034 </span></span>
+<span><span class="co">##   Precision:                     0.095034</span></span></code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior8</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior8</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v3_prior_distributions_files/figure-html/unnamed-chunk-17-1.png" width="576"></p>
 </div>
 <div class="section level3">
@@ -397,30 +397,30 @@
 </h3>
 <p>You can incorporate information from last years results, weighted by a factor, into the prior distribution using <code>method = 'factor'</code> in combination with <code>x</code> and <code>n</code>. As an example, the code below incorporates the information from a last years results (a sample of 58 items in which 0 misstatements were found), weighted by a factor 0.7, into a prior distribution.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior9</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'factor'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>,
-                     materiality <span class="op">=</span> <span class="va">materiality</span>, x <span class="op">=</span> <span class="fl">0</span>, n <span class="op">=</span> <span class="fl">58</span>, factor <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior9</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">##  Prior Distribution Summary</span>
-<span class="co">## </span>
-<span class="co">## Options:</span>
-<span class="co">##   Likelihood:                    binomial </span>
-<span class="co">##   Specifics:                     earlier sample of 58 items with 0 errors weighted by 0.7 </span>
-<span class="co">## </span>
-<span class="co">## Results:</span>
-<span class="co">##   Functional form:               beta(α = 1, β = 40.6) </span>
-<span class="co">##   Equivalent sample size:        40.6 </span>
-<span class="co">##   Equivalent errors:             0 </span>
-<span class="co">##   Mode:                          0 </span>
-<span class="co">##   Mean:                          0.024039 </span>
-<span class="co">##   Median:                        0.016928 </span>
-<span class="co">##   Variance:                      0.0005507 </span>
-<span class="co">##   Skewness:                      1.8607 </span>
-<span class="co">##   95 percent upper bound:        0.07113 </span>
-<span class="co">##   Precision:                     0.07113</span></code></pre>
+<code class="sourceCode R"><span><span class="va">prior9</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'factor'</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>,</span>
+<span>                     materiality <span class="op">=</span> <span class="va">materiality</span>, x <span class="op">=</span> <span class="fl">0</span>, n <span class="op">=</span> <span class="fl">58</span>, factor <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior9</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Prior Distribution Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Likelihood:                    binomial </span></span>
+<span><span class="co">##   Specifics:                     earlier sample of 58 items with 0 errors weighted by 0.7 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Functional form:               beta(α = 1, β = 40.6) </span></span>
+<span><span class="co">##   Equivalent sample size:        40.6 </span></span>
+<span><span class="co">##   Equivalent errors:             0 </span></span>
+<span><span class="co">##   Mode:                          0 </span></span>
+<span><span class="co">##   Mean:                          0.024039 </span></span>
+<span><span class="co">##   Median:                        0.016928 </span></span>
+<span><span class="co">##   Variance:                      0.0005507 </span></span>
+<span><span class="co">##   Skewness:                      1.8607 </span></span>
+<span><span class="co">##   95 percent upper bound:        0.07113 </span></span>
+<span><span class="co">##   Precision:                     0.07113</span></span></code></pre>
 <p>You can visually inspect the prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior9</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior9</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v3_prior_distributions_files/figure-html/unnamed-chunk-19-1.png" width="576"></p>
 </div>
 </div>
@@ -433,34 +433,34 @@
 </h3>
 <p>The prior distribution can be used the planning stage to calculate a minimum sample size by providing the objected returned by the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function to the <code><a href="../reference/planning.html">planning()</a></code> function. For example, the code below calculates the minimum sample size to test the misstatement in the population against a performance materiality of 5%, while incorporating the information in <code>prior9</code>.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, prior <span class="op">=</span> <span class="va">prior9</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning in jfa::planning(materiality = materiality, expected = expected, : using</span>
-<span class="co">## 'likelihood = binomial' from 'prior'</span></code></pre>
-<pre><code><span class="co">## </span>
-<span class="co">##  Bayesian Audit Sample Planning</span>
-<span class="co">## </span>
-<span class="co">## minimum sample size = 29 </span>
-<span class="co">## sample size obtained in 30 iteration(s) via method 'binomial' + 'prior'</span></code></pre>
+<code class="sourceCode R"><span><span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, prior <span class="op">=</span> <span class="va">prior9</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning in jfa::planning(materiality = materiality, expected = expected, : using</span></span>
+<span><span class="co">## 'likelihood = binomial' from 'prior'</span></span></code></pre>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Bayesian Audit Sample Planning</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## minimum sample size = 29 </span></span>
+<span><span class="co">## sample size obtained in 30 iteration(s) via method 'binomial' + 'prior'</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="combining-auditprior-with-evaluation">Combining <code>auditPrior()</code> with <code>evaluation()</code><a class="anchor" aria-label="anchor" href="#combining-auditprior-with-evaluation"></a>
 </h3>
 <p>The prior distribution can be used the evaluation stage by providing the objected returned by the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function to the <code><a href="../reference/evaluation.html">evaluation()</a></code> function. For example, the code below evaluates the misstatement in the population with respect to the performance materiality of 5% after seeing a sample of 60 items with 1 misstatement, while incorporating the information in <code>prior8</code>.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">60</span>, prior <span class="op">=</span> <span class="va">prior9</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning in jfa::evaluation(materiality = materiality, conf.level = confidence, :</span>
-<span class="co">## using 'method = binomial' from 'prior'</span></code></pre>
-<pre><code><span class="co">## </span>
-<span class="co">##  Bayesian Audit Sample Evaluation</span>
-<span class="co">## </span>
-<span class="co">## data:  1 and 60</span>
-<span class="co">## number of errors = 1, number of samples = 60, taint = 1, BF₁₀ = 3.7968</span>
-<span class="co">## alternative hypothesis: true misstatement rate is less than 0.05</span>
-<span class="co">## 95 percent credible interval:</span>
-<span class="co">##  0.00000000 0.04628728</span>
-<span class="co">## estimate:</span>
-<span class="co">##  0.01004016 </span>
-<span class="co">## estimates obtained via method 'binomial' + 'prior'</span></code></pre>
+<code class="sourceCode R"><span><span class="fu">jfa</span><span class="fu">::</span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">60</span>, prior <span class="op">=</span> <span class="va">prior9</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning in jfa::evaluation(materiality = materiality, conf.level = confidence, :</span></span>
+<span><span class="co">## using 'method = binomial' from 'prior'</span></span></code></pre>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Bayesian Audit Sample Evaluation</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## data:  1 and 60</span></span>
+<span><span class="co">## number of errors = 1, number of samples = 60, taint = 1, BF₁₀ = 3.7968</span></span>
+<span><span class="co">## alternative hypothesis: true misstatement rate is less than 0.05</span></span>
+<span><span class="co">## 95 percent credible interval:</span></span>
+<span><span class="co">##  0.00000000 0.04628728</span></span>
+<span><span class="co">## estimate:</span></span>
+<span><span class="co">##  0.01004016 </span></span>
+<span><span class="co">## estimates obtained via method 'binomial' + 'prior'</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -484,7 +484,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 

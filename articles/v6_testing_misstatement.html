@@ -137,28 +137,28 @@
 </h2>
 <p>Classical hypothesis testing uses the <em>p</em> value to make a decision about whether to reject the hypothesis <span class="math inline">\(H_0\)</span> or not. As an example, consider that an auditor wants to verify whether the population contains less than 5 percent misstatement, implying the hypotheses <span class="math inline">\(H_1:\theta&lt;0.05\)</span> and <span class="math inline">\(H_0:\theta\geq0.05\)</span>. They have taken a sample of 100 items, of which 1 contained an error. They set the significance level for the <em>p</em> value to 0.05, implying that a <em>p</em> value &lt; 0.05 will be enough to reject the hypothesis <span class="math inline">\(H_0\)</span>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">result_classical</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_classical</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">##  Classical Audit Sample Evaluation Summary</span>
-<span class="co">## </span>
-<span class="co">## Options:</span>
-<span class="co">##   Confidence level:               0.95 </span>
-<span class="co">##   Materiality:                    0.05 </span>
-<span class="co">##   Materiality:                    0.05 </span>
-<span class="co">##   Hypotheses:                     H₀: Θ &gt;= 0.05 vs. H₁: Θ &lt; 0.05 </span>
-<span class="co">##   Method:                         poisson </span>
-<span class="co">## </span>
-<span class="co">## Data:</span>
-<span class="co">##   Sample size:                    100 </span>
-<span class="co">##   Number of errors:               1 </span>
-<span class="co">##   Sum of taints:                  1 </span>
-<span class="co">## </span>
-<span class="co">## Results:</span>
-<span class="co">##   Most likely error:              0.01 </span>
-<span class="co">##   95 percent confidence interval: [0, 0.047439] </span>
-<span class="co">##   Precision:                      0.037439 </span>
-<span class="co">##   p-value:                        0.040428</span></code></pre>
+<code class="sourceCode R"><span><span class="va">result_classical</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_classical</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Classical Audit Sample Evaluation Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Confidence level:               0.95 </span></span>
+<span><span class="co">##   Materiality:                    0.05 </span></span>
+<span><span class="co">##   Materiality:                    0.05 </span></span>
+<span><span class="co">##   Hypotheses:                     H₀: Θ &gt;= 0.05 vs. H₁: Θ &lt; 0.05 </span></span>
+<span><span class="co">##   Method:                         poisson </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Data:</span></span>
+<span><span class="co">##   Sample size:                    100 </span></span>
+<span><span class="co">##   Number of errors:               1 </span></span>
+<span><span class="co">##   Sum of taints:                  1 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Most likely error:              0.01 </span></span>
+<span><span class="co">##   95 percent confidence interval: [0, 0.047439] </span></span>
+<span><span class="co">##   Precision:                      0.037439 </span></span>
+<span><span class="co">##   p-value:                        0.040428</span></span></code></pre>
 <p>As we can see, the <em>p</em> value is lower than 0.05 implying that the hypothesis <span class="math inline">\(H_0\)</span> is rejected.</p>
 </div>
 <div class="section level2">
@@ -235,34 +235,34 @@
 <p>Again, consider the same example of an auditor who wants to verify whether the population contains less than 5 percent misstatement, implying the hypotheses <span class="math inline">\(H_1:\theta&lt;0.05\)</span> and <span class="math inline">\(H_0:\theta\geq0.05\)</span>. They have taken a sample of 100 items, of which 1 contained an error. The prior distribution is assumed to be a default <em>beta(1,1)</em> prior.</p>
 <p>The output below shows that <span class="math inline">\(BF_{10}=515\)</span>, implying that there is extreme evidence for <span class="math inline">\(H_1\)</span>, the hypothesis that the population contains misstatements lower than 5 percent of the population.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"default"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span>
-<span class="va">result_bayesian</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning in evaluation(materiality = 0.05, x = 1, n = 100, prior = prior): using</span>
-<span class="co">## 'method = binomial' from 'prior'</span></code></pre>
+<code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"default"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span>
+<span><span class="va">result_bayesian</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning in evaluation(materiality = 0.05, x = 1, n = 100, prior = prior): using</span></span>
+<span><span class="co">## 'method = binomial' from 'prior'</span></span></code></pre>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_bayesian</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">##  Bayesian Audit Sample Evaluation Summary</span>
-<span class="co">## </span>
-<span class="co">## Options:</span>
-<span class="co">##   Confidence level:               0.95 </span>
-<span class="co">##   Materiality:                    0.05 </span>
-<span class="co">##   Materiality:                    0.05 </span>
-<span class="co">##   Hypotheses:                     H₀: Θ &gt; 0.05 vs. H₁: Θ &lt; 0.05 </span>
-<span class="co">##   Method:                         binomial </span>
-<span class="co">##   Prior distribution:             beta(α = 1, β = 1) </span>
-<span class="co">## </span>
-<span class="co">## Data:</span>
-<span class="co">##   Sample size:                    100 </span>
-<span class="co">##   Number of errors:               1 </span>
-<span class="co">##   Sum of taints:                  1 </span>
-<span class="co">## </span>
-<span class="co">## Results:</span>
-<span class="co">##   Posterior distribution:         beta(α = 2, β = 100) </span>
-<span class="co">##   Most likely error:              0.01 </span>
-<span class="co">##   95 percent credible interval:   [0, 0.046107] </span>
-<span class="co">##   Precision:                      0.036107 </span>
-<span class="co">##   BF₁₀:                            515.86</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_bayesian</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Bayesian Audit Sample Evaluation Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Confidence level:               0.95 </span></span>
+<span><span class="co">##   Materiality:                    0.05 </span></span>
+<span><span class="co">##   Materiality:                    0.05 </span></span>
+<span><span class="co">##   Hypotheses:                     H₀: Θ &gt; 0.05 vs. H₁: Θ &lt; 0.05 </span></span>
+<span><span class="co">##   Method:                         binomial </span></span>
+<span><span class="co">##   Prior distribution:             beta(α = 1, β = 1) </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Data:</span></span>
+<span><span class="co">##   Sample size:                    100 </span></span>
+<span><span class="co">##   Number of errors:               1 </span></span>
+<span><span class="co">##   Sum of taints:                  1 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Posterior distribution:         beta(α = 2, β = 100) </span></span>
+<span><span class="co">##   Most likely error:              0.01 </span></span>
+<span><span class="co">##   95 percent credible interval:   [0, 0.046107] </span></span>
+<span><span class="co">##   Precision:                      0.036107 </span></span>
+<span><span class="co">##   BF₁₀:                            515.86</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="sensitivity-to-the-prior-distribution">Sensitivity to the prior distribution<a class="anchor" aria-label="anchor" href="#sensitivity-to-the-prior-distribution"></a>
@@ -270,34 +270,34 @@
 <p>In audit sampling, the Bayes factor is dependent on the prior distribution for <span class="math inline">\(\theta\)</span>. As a rule of thumb, when the prior distribution is very uninformative (as with <code>method = 'default'</code>) with respect to <span class="math inline">\(\theta\)</span>, the Bayes factor tends to overquantify the evidence in favor of <span class="math inline">\(H_1\)</span>. You can mitigate this dependency using <code>method = "impartial"</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function, which constructs a prior distribution that is impartial with respect to the hypotheses <span class="math inline">\(H_1\)</span> and <span class="math inline">\(H_0\)</span>.</p>
 <p>The output below shows that <span class="math inline">\(BF_{10}=47\)</span>, implying that there is strong evidence for <span class="math inline">\(H_1\)</span>, the hypothesis that the population contains misstatements lower than 5 percent of the population. Since the two priors both resulted in convincing Bayes factors, the results are robust to the choice of prior distribution.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"impartial"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span>
-<span class="va">result_bayesian</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## Warning in evaluation(materiality = 0.05, x = 1, n = 100, prior = prior): using</span>
-<span class="co">## 'method = binomial' from 'prior'</span></code></pre>
+<code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"impartial"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span>
+<span><span class="va">result_bayesian</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning in evaluation(materiality = 0.05, x = 1, n = 100, prior = prior): using</span></span>
+<span><span class="co">## 'method = binomial' from 'prior'</span></span></code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_bayesian</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">##  Bayesian Audit Sample Evaluation Summary</span>
-<span class="co">## </span>
-<span class="co">## Options:</span>
-<span class="co">##   Confidence level:               0.95 </span>
-<span class="co">##   Materiality:                    0.05 </span>
-<span class="co">##   Materiality:                    0.05 </span>
-<span class="co">##   Hypotheses:                     H₀: Θ &gt; 0.05 vs. H₁: Θ &lt; 0.05 </span>
-<span class="co">##   Method:                         binomial </span>
-<span class="co">##   Prior distribution:             beta(α = 1, β = 13.513) </span>
-<span class="co">## </span>
-<span class="co">## Data:</span>
-<span class="co">##   Sample size:                    100 </span>
-<span class="co">##   Number of errors:               1 </span>
-<span class="co">##   Sum of taints:                  1 </span>
-<span class="co">## </span>
-<span class="co">## Results:</span>
-<span class="co">##   Posterior distribution:         beta(α = 2, β = 112.513) </span>
-<span class="co">##   Most likely error:              0.0088878 </span>
-<span class="co">##   95 percent credible interval:   [0, 0.041108] </span>
-<span class="co">##   Precision:                      0.03222 </span>
-<span class="co">##   BF₁₀:                            47.435</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_bayesian</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Bayesian Audit Sample Evaluation Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Confidence level:               0.95 </span></span>
+<span><span class="co">##   Materiality:                    0.05 </span></span>
+<span><span class="co">##   Materiality:                    0.05 </span></span>
+<span><span class="co">##   Hypotheses:                     H₀: Θ &gt; 0.05 vs. H₁: Θ &lt; 0.05 </span></span>
+<span><span class="co">##   Method:                         binomial </span></span>
+<span><span class="co">##   Prior distribution:             beta(α = 1, β = 13.513) </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Data:</span></span>
+<span><span class="co">##   Sample size:                    100 </span></span>
+<span><span class="co">##   Number of errors:               1 </span></span>
+<span><span class="co">##   Sum of taints:                  1 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Posterior distribution:         beta(α = 2, β = 112.513) </span></span>
+<span><span class="co">##   Most likely error:              0.0088878 </span></span>
+<span><span class="co">##   95 percent credible interval:   [0, 0.041108] </span></span>
+<span><span class="co">##   Precision:                      0.03222 </span></span>
+<span><span class="co">##   BF₁₀:                            47.435</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -321,7 +321,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 

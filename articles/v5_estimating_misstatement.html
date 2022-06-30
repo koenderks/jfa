@@ -134,28 +134,28 @@
 </h3>
 <p>Suppose your sampling objective is to estimate the misstatement with a precision of 2%. You have planned a sample of <em>n</em> = 188 items from which <em>x</em> = 1 turns out a contain an error. Standard classical evaluation using the Poisson distribution can be performed using the example code below.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">result_classical</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>min.precision <span class="op">=</span> <span class="fl">0.02</span>, method <span class="op">=</span> <span class="st">"poisson"</span>, n <span class="op">=</span> <span class="fl">188</span>, x <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">result_classical</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>min.precision <span class="op">=</span> <span class="fl">0.02</span>, method <span class="op">=</span> <span class="st">"poisson"</span>, n <span class="op">=</span> <span class="fl">188</span>, x <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p>Calling the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function on the result from the <code><a href="../reference/evaluation.html">evaluation()</a></code> function provides the estimates for the most likely error, the 95% upper bound, and the precision.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_classical</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">##  Classical Audit Sample Evaluation Summary</span>
-<span class="co">## </span>
-<span class="co">## Options:</span>
-<span class="co">##   Confidence level:               0.95 </span>
-<span class="co">##   Materiality:                    1 </span>
-<span class="co">##   Min. precision:                 0.02 </span>
-<span class="co">##   Method:                         poisson </span>
-<span class="co">## </span>
-<span class="co">## Data:</span>
-<span class="co">##   Sample size:                    188 </span>
-<span class="co">##   Number of errors:               1 </span>
-<span class="co">##   Sum of taints:                  1 </span>
-<span class="co">## </span>
-<span class="co">## Results:</span>
-<span class="co">##   Most likely error:              0.0053191 </span>
-<span class="co">##   95 percent confidence interval: [0, 0.025233] </span>
-<span class="co">##   Precision:                      0.019914</span></code></pre>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_classical</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Classical Audit Sample Evaluation Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Confidence level:               0.95 </span></span>
+<span><span class="co">##   Materiality:                    1 </span></span>
+<span><span class="co">##   Min. precision:                 0.02 </span></span>
+<span><span class="co">##   Method:                         poisson </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Data:</span></span>
+<span><span class="co">##   Sample size:                    188 </span></span>
+<span><span class="co">##   Number of errors:               1 </span></span>
+<span><span class="co">##   Sum of taints:                  1 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Most likely error:              0.0053191 </span></span>
+<span><span class="co">##   95 percent confidence interval: [0, 0.025233] </span></span>
+<span><span class="co">##   Precision:                      0.019914</span></span></code></pre>
 <p>As we can see, the most likely error in the population is 1 / 188 = 0.53% and the 95% (one-sided) confidence interval ranges from 0% to 2.52%. Consequently, the precision of the estimate is 2.52% - 0.53% = 1.99%. This means that this sample provides sufficient information to estimate the misstatement in the population with a precision of 2%.</p>
 </div>
 <div class="section level3">
@@ -163,31 +163,31 @@
 </h3>
 <p>In principle Bayesian estimation follows the same procedure as its classical counterpart, with the exception that a prior distribution must be provided to the <code><a href="../reference/evaluation.html">evaluation()</a></code> function. Therefore, the first step is to set up a prior distribution (see also the vignette <a href="https://koenderks.github.io/jfa/articles/v3_prior_distributions.html">Prior distributions</a>). For illustration, we will assume a <code>default</code> <em>gamma(1, 1)</em> prior distribution.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"default"</span>, likelihood <span class="op">=</span> <span class="st">"poisson"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"default"</span>, likelihood <span class="op">=</span> <span class="st">"poisson"</span><span class="op">)</span></span></code></pre></div>
 <p>The sample outcomes together with the prior distribution can then be provided to the evaluation function. Once again, the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function provides the estimates for the most likely error, the 95% upper bound, and the precision. Note that, because the prior is already constructed for use with a <code>poisson</code> likelihood, the <code>method</code> argument does not need to be provided to the <code><a href="../reference/evaluation.html">evaluation()</a></code> function.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">result_bayesian</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>min.precision <span class="op">=</span> <span class="fl">0.02</span>, n <span class="op">=</span> <span class="fl">188</span>, x <span class="op">=</span> <span class="fl">1</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_bayesian</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## </span>
-<span class="co">##  Bayesian Audit Sample Evaluation Summary</span>
-<span class="co">## </span>
-<span class="co">## Options:</span>
-<span class="co">##   Confidence level:               0.95 </span>
-<span class="co">##   Materiality:                    1 </span>
-<span class="co">##   Min. precision:                 0.02 </span>
-<span class="co">##   Method:                         poisson </span>
-<span class="co">##   Prior distribution:             gamma(α = 1, β = 1) </span>
-<span class="co">## </span>
-<span class="co">## Data:</span>
-<span class="co">##   Sample size:                    188 </span>
-<span class="co">##   Number of errors:               1 </span>
-<span class="co">##   Sum of taints:                  1 </span>
-<span class="co">## </span>
-<span class="co">## Results:</span>
-<span class="co">##   Posterior distribution:         gamma(α = 2, β = 189) </span>
-<span class="co">##   Most likely error:              0.005291 </span>
-<span class="co">##   95 percent credible interval:   [0, 0.0251] </span>
-<span class="co">##   Precision:                      0.019809</span></code></pre>
+<code class="sourceCode R"><span><span class="va">result_bayesian</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>min.precision <span class="op">=</span> <span class="fl">0.02</span>, n <span class="op">=</span> <span class="fl">188</span>, x <span class="op">=</span> <span class="fl">1</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_bayesian</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Bayesian Audit Sample Evaluation Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Confidence level:               0.95 </span></span>
+<span><span class="co">##   Materiality:                    1 </span></span>
+<span><span class="co">##   Min. precision:                 0.02 </span></span>
+<span><span class="co">##   Method:                         poisson </span></span>
+<span><span class="co">##   Prior distribution:             gamma(α = 1, β = 1) </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Data:</span></span>
+<span><span class="co">##   Sample size:                    188 </span></span>
+<span><span class="co">##   Number of errors:               1 </span></span>
+<span><span class="co">##   Sum of taints:                  1 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Posterior distribution:         gamma(α = 2, β = 189) </span></span>
+<span><span class="co">##   Most likely error:              0.005291 </span></span>
+<span><span class="co">##   95 percent credible interval:   [0, 0.0251] </span></span>
+<span><span class="co">##   Precision:                      0.019809</span></span></code></pre>
 <p>As we can see, the posterior distribution is a <em>gamma(2, 189)</em> distribution. This distribution implies a most likely error in the population is 0.53% and a 95% (one-sided) confidence interval that ranges from 0% to 2.51%. Consequently, the precision of the estimate is 2.51% - 0.53% = 1.98%. Also in the Bayesian framework, this sample provides sufficient information to estimate the misstatement in the population with a precision of 2%.</p>
 </div>
 </div>
@@ -213,7 +213,7 @@
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 

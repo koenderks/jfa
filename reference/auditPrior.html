@@ -94,10 +94,12 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="https://koe
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">auditPrior</span><span class="op">(</span>method <span class="op">=</span> <span class="st">'default'</span>, likelihood <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'poisson'</span>, <span class="st">'binomial'</span>, <span class="st">'hypergeometric'</span><span class="op">)</span>,
-           N.units <span class="op">=</span> <span class="cn">NULL</span>, alpha <span class="op">=</span> <span class="cn">NULL</span>, beta <span class="op">=</span> <span class="cn">NULL</span>, materiality <span class="op">=</span> <span class="cn">NULL</span>, expected <span class="op">=</span> <span class="fl">0</span>,
-           ir <span class="op">=</span> <span class="cn">NULL</span>, cr <span class="op">=</span> <span class="cn">NULL</span>, ub <span class="op">=</span> <span class="cn">NULL</span>, p.hmin <span class="op">=</span> <span class="cn">NULL</span>, x <span class="op">=</span> <span class="cn">NULL</span>,
-           n <span class="op">=</span> <span class="cn">NULL</span>, factor <span class="op">=</span> <span class="cn">NULL</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">auditPrior</span><span class="op">(</span>method <span class="op">=</span> <span class="st">'default'</span>,</span>
+<span>           likelihood <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'poisson'</span>, <span class="st">'binomial'</span>, <span class="st">'hypergeometric'</span><span class="op">)</span>,</span>
+<span>           N.units <span class="op">=</span> <span class="cn">NULL</span>, alpha <span class="op">=</span> <span class="cn">NULL</span>, beta <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>           materiality <span class="op">=</span> <span class="cn">NULL</span>, expected <span class="op">=</span> <span class="fl">0</span>, ir <span class="op">=</span> <span class="cn">NULL</span>, cr <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>           ub <span class="op">=</span> <span class="cn">NULL</span>, p.hmin <span class="op">=</span> <span class="cn">NULL</span>, x <span class="op">=</span> <span class="cn">NULL</span>, n <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>           factor <span class="op">=</span> <span class="cn">NULL</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -239,24 +241,24 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="https://koe
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># Default uniform beta(1, 1) prior distribution</span></span>
-<span class="r-in"><span class="fu">auditPrior</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"default"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Default uniform beta(1, 1) prior distribution</span></span></span>
+<span class="r-in"><span><span class="fu">auditPrior</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"default"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Prior Distribution for Audit Sampling</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> functional form: beta(α = 1, β = 1) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> parameters obtained via method 'default'</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Translate inherent risk (ir) and control risk (cr) to a gamma prior distribution</span></span>
-<span class="r-in"><span class="fu">auditPrior</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"arm"</span>, expected <span class="op">=</span> <span class="fl">0.025</span>, materiality <span class="op">=</span> <span class="fl">0.05</span>, ir <span class="op">=</span> <span class="fl">1</span>, cr <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Translate inherent risk (ir) and control risk (cr) to a gamma prior distribution</span></span></span>
+<span class="r-in"><span><span class="fu">auditPrior</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"arm"</span>, expected <span class="op">=</span> <span class="fl">0.025</span>, materiality <span class="op">=</span> <span class="fl">0.05</span>, ir <span class="op">=</span> <span class="fl">1</span>, cr <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Prior Distribution for Audit Sampling</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> functional form: gamma(α = 2.325, β = 53) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> parameters obtained via method 'arm'</span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Impartial beta prior distribution (equal prior probabilities)</span></span>
-<span class="r-in"><span class="fu">auditPrior</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"impartial"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, materiality <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Impartial beta prior distribution (equal prior probabilities)</span></span></span>
+<span class="r-in"><span><span class="fu">auditPrior</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"impartial"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, materiality <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Prior Distribution for Audit Sampling</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -273,7 +275,7 @@ vignette('jfa', package = 'jfa')"><meta property="og:image" content="https://koe
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 

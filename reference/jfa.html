@@ -153,21 +153,21 @@ For documentation on jfa itself, including the manual and user guide
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="co"># Load the jfa package</span></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://koenderks.github.io/jfa/">jfa</a></span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Load the BuildIt population</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">'BuildIt'</span><span class="op">)</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">############################################</span></span>
-<span class="r-in"><span class="co">### Example 1: Classical audit sampling ####</span></span>
-<span class="r-in"><span class="co">############################################</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Stage 1: Planning</span></span>
-<span class="r-in"><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, expected <span class="op">=</span> <span class="fl">0.01</span>, </span>
-<span class="r-in">                   likelihood <span class="op">=</span> <span class="st">'poisson'</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Load the jfa package</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://koenderks.github.io/jfa/">jfa</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Load the BuildIt population</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">'BuildIt'</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">############################################</span></span></span>
+<span class="r-in"><span><span class="co">### Example 1: Classical audit sampling ####</span></span></span>
+<span class="r-in"><span><span class="co">############################################</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Stage 1: Planning</span></span></span>
+<span class="r-in"><span><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, expected <span class="op">=</span> <span class="fl">0.01</span>, </span></span>
+<span class="r-in"><span>                   likelihood <span class="op">=</span> <span class="st">'poisson'</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Classical Audit Sample Planning Summary</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -185,12 +185,12 @@ For documentation on jfa itself, including the manual and user guide
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Expected upper bound:          0.02997 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Expected precision:            0.01997 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Expected p-value:              &lt; 2.22e-16 </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Stage 2: Selection</span></span>
-<span class="r-in"><span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="va">stage1</span>,</span>
-<span class="r-in">                    units <span class="op">=</span> <span class="st">'values'</span>, values <span class="op">=</span> <span class="st">'bookValue'</span>,</span>
-<span class="r-in">                    method <span class="op">=</span> <span class="st">'interval'</span>, start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage2</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Stage 2: Selection</span></span></span>
+<span class="r-in"><span><span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="va">stage1</span>,</span></span>
+<span class="r-in"><span>                    units <span class="op">=</span> <span class="st">'values'</span>, values <span class="op">=</span> <span class="st">'bookValue'</span>,</span></span>
+<span class="r-in"><span>                    method <span class="op">=</span> <span class="st">'interval'</span>, start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Audit Sample Selection Summary</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -210,15 +210,15 @@ For documentation on jfa itself, including the manual and user guide
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Proportion of value:           0.080554 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Selected items:                220 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Proportion of size:            0.062857 </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Stage 3: Execution</span></span>
-<span class="r-in"><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">stage2</span><span class="op">[[</span><span class="st">'sample'</span><span class="op">]</span><span class="op">]</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Stage 4: Evaluation</span></span>
-<span class="r-in"><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, method <span class="op">=</span> <span class="st">'stringer'</span>,</span>
-<span class="r-in">                     conf.level <span class="op">=</span> <span class="fl">0.95</span>, data <span class="op">=</span> <span class="va">sample</span>,</span>
-<span class="r-in">                     values <span class="op">=</span> <span class="st">'bookValue'</span>, values.audit <span class="op">=</span> <span class="st">'auditValue'</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Stage 3: Execution</span></span></span>
+<span class="r-in"><span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">stage2</span><span class="op">[[</span><span class="st">'sample'</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Stage 4: Evaluation</span></span></span>
+<span class="r-in"><span><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, method <span class="op">=</span> <span class="st">'stringer'</span>,</span></span>
+<span class="r-in"><span>                     conf.level <span class="op">=</span> <span class="fl">0.95</span>, data <span class="op">=</span> <span class="va">sample</span>,</span></span>
+<span class="r-in"><span>                     values <span class="op">=</span> <span class="st">'bookValue'</span>, values.audit <span class="op">=</span> <span class="st">'auditValue'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Classical Audit Sample Evaluation Summary</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -236,14 +236,14 @@ For documentation on jfa itself, including the manual and user guide
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Most likely error:              0.013636 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   95 percent confidence interval: [0, 0.033724] </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Precision:                      0.020087 </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">######################################################################</span></span>
-<span class="r-in"><span class="co">### Example 2: Bayesian audit sampling using a non-informed prior ####</span></span>
-<span class="r-in"><span class="co">######################################################################</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Create the prior distribution</span></span>
-<span class="r-in"><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'default'</span>, likelihood <span class="op">=</span> <span class="st">'poisson'</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">######################################################################</span></span></span>
+<span class="r-in"><span><span class="co">### Example 2: Bayesian audit sampling using a non-informed prior ####</span></span></span>
+<span class="r-in"><span><span class="co">######################################################################</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Create the prior distribution</span></span></span>
+<span class="r-in"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'default'</span>, likelihood <span class="op">=</span> <span class="st">'poisson'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Prior Distribution Summary</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -262,11 +262,11 @@ For documentation on jfa itself, including the manual and user guide
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Skewness:                      2 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   95 percent upper bound:        2.9957 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Precision:                     2.9957 </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Stage 1: Planning</span></span>
-<span class="r-in"><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, expected <span class="op">=</span> <span class="fl">0.01</span>,</span>
-<span class="r-in">                   likelihood <span class="op">=</span> <span class="st">'poisson'</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Stage 1: Planning</span></span></span>
+<span class="r-in"><span><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, expected <span class="op">=</span> <span class="fl">0.01</span>,</span></span>
+<span class="r-in"><span>                   likelihood <span class="op">=</span> <span class="st">'poisson'</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Bayesian Audit Sample Planning Summary</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -286,12 +286,12 @@ For documentation on jfa itself, including the manual and user guide
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Expected upper bound:          0.029971 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Expected precision:            0.020017 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Expected BF₁₀:	                 626.86 </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Stage 2: Selection</span></span>
-<span class="r-in"><span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="va">stage1</span>,</span>
-<span class="r-in">                    units <span class="op">=</span> <span class="st">'values'</span>, values <span class="op">=</span> <span class="st">'bookValue'</span>,</span>
-<span class="r-in">                    method <span class="op">=</span> <span class="st">'interval'</span>, start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage2</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Stage 2: Selection</span></span></span>
+<span class="r-in"><span><span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="va">stage1</span>,</span></span>
+<span class="r-in"><span>                    units <span class="op">=</span> <span class="st">'values'</span>, values <span class="op">=</span> <span class="st">'bookValue'</span>,</span></span>
+<span class="r-in"><span>                    method <span class="op">=</span> <span class="st">'interval'</span>, start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Audit Sample Selection Summary</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -311,15 +311,15 @@ For documentation on jfa itself, including the manual and user guide
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Proportion of value:           0.079411 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Selected items:                218 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Proportion of size:            0.062286 </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Stage 3: Execution</span></span>
-<span class="r-in"><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">stage2</span><span class="op">[[</span><span class="st">'sample'</span><span class="op">]</span><span class="op">]</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Stage 4: Evaluation</span></span>
-<span class="r-in"><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, data <span class="op">=</span> <span class="va">sample</span>,</span>
-<span class="r-in">                     values <span class="op">=</span> <span class="st">'bookValue'</span>, values.audit <span class="op">=</span> <span class="st">'auditValue'</span>,</span>
-<span class="r-in">                     prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Stage 3: Execution</span></span></span>
+<span class="r-in"><span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">stage2</span><span class="op">[[</span><span class="st">'sample'</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Stage 4: Evaluation</span></span></span>
+<span class="r-in"><span><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, data <span class="op">=</span> <span class="va">sample</span>,</span></span>
+<span class="r-in"><span>                     values <span class="op">=</span> <span class="st">'bookValue'</span>, values.audit <span class="op">=</span> <span class="st">'auditValue'</span>,</span></span>
+<span class="r-in"><span>                     prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Bayesian Audit Sample Evaluation Summary</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -342,15 +342,15 @@ For documentation on jfa itself, including the manual and user guide
 <span class="r-out co"><span class="r-pr">#&gt;</span>   95 percent credible interval:   [0, 0.03145] </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Precision:                      0.020491 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   BF₁₀:	                          493.5 </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co">###################################################################</span></span>
-<span class="r-in"><span class="co">### Example 3: Bayesian audit sampling using an informed prior ####</span></span>
-<span class="r-in"><span class="co">###################################################################</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Create the prior distribution</span></span>
-<span class="r-in"><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'arm'</span>, likelihood <span class="op">=</span> <span class="st">'poisson'</span>,</span>
-<span class="r-in">                    expected <span class="op">=</span> <span class="fl">0.01</span>, materiality <span class="op">=</span> <span class="fl">0.03</span>, cr <span class="op">=</span> <span class="fl">0.6</span>, ir <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">###################################################################</span></span></span>
+<span class="r-in"><span><span class="co">### Example 3: Bayesian audit sampling using an informed prior ####</span></span></span>
+<span class="r-in"><span><span class="co">###################################################################</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Create the prior distribution</span></span></span>
+<span class="r-in"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'arm'</span>, likelihood <span class="op">=</span> <span class="st">'poisson'</span>,</span></span>
+<span class="r-in"><span>                    expected <span class="op">=</span> <span class="fl">0.01</span>, materiality <span class="op">=</span> <span class="fl">0.03</span>, cr <span class="op">=</span> <span class="fl">0.6</span>, ir <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Prior Distribution Summary</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -369,11 +369,11 @@ For documentation on jfa itself, including the manual and user guide
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Skewness:                      1.6552 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   95 percent upper bound:        0.08343 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Precision:                     0.07343 </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Stage 1: Planning</span></span>
-<span class="r-in"><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, expected <span class="op">=</span> <span class="fl">0.01</span>,</span>
-<span class="r-in">                   likelihood <span class="op">=</span> <span class="st">'poisson'</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Stage 1: Planning</span></span></span>
+<span class="r-in"><span><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, expected <span class="op">=</span> <span class="fl">0.01</span>,</span></span>
+<span class="r-in"><span>                   likelihood <span class="op">=</span> <span class="st">'poisson'</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Bayesian Audit Sample Planning Summary</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -393,12 +393,12 @@ For documentation on jfa itself, including the manual and user guide
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Expected upper bound:          0.02997 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Expected precision:            0.01997 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Expected BF₁₀:	                 13.593 </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Stage 2: Selection</span></span>
-<span class="r-in"><span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="va">stage1</span>,</span>
-<span class="r-in">                    units <span class="op">=</span> <span class="st">'values'</span>, values <span class="op">=</span> <span class="st">'bookValue'</span>,</span>
-<span class="r-in">                    method <span class="op">=</span> <span class="st">'interval'</span>, start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage2</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Stage 2: Selection</span></span></span>
+<span class="r-in"><span><span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="va">stage1</span>,</span></span>
+<span class="r-in"><span>                    units <span class="op">=</span> <span class="st">'values'</span>, values <span class="op">=</span> <span class="st">'bookValue'</span>,</span></span>
+<span class="r-in"><span>                    method <span class="op">=</span> <span class="st">'interval'</span>, start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Audit Sample Selection Summary</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -418,15 +418,15 @@ For documentation on jfa itself, including the manual and user guide
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Proportion of value:           0.058451 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Selected items:                174 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Proportion of size:            0.049714 </span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Stage 3: Execution</span></span>
-<span class="r-in"><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">stage2</span><span class="op">[[</span><span class="st">'sample'</span><span class="op">]</span><span class="op">]</span></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Stage 4: Evaluation</span></span>
-<span class="r-in"><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, data <span class="op">=</span> <span class="va">sample</span>,</span>
-<span class="r-in">                     values <span class="op">=</span> <span class="st">'bookValue'</span>, values.audit <span class="op">=</span> <span class="st">'auditValue'</span>,</span>
-<span class="r-in">                     prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Stage 3: Execution</span></span></span>
+<span class="r-in"><span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">stage2</span><span class="op">[[</span><span class="st">'sample'</span><span class="op">]</span><span class="op">]</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Stage 4: Evaluation</span></span></span>
+<span class="r-in"><span><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, data <span class="op">=</span> <span class="va">sample</span>,</span></span>
+<span class="r-in"><span>                     values <span class="op">=</span> <span class="st">'bookValue'</span>, values.audit <span class="op">=</span> <span class="st">'auditValue'</span>,</span></span>
+<span class="r-in"><span>                     prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Bayesian Audit Sample Evaluation Summary</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
@@ -460,7 +460,7 @@ For documentation on jfa itself, including the manual and user guide
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
   <p class="preferably">Using <a href="https://preferably.amirmasoudabdol.name/?source=footer" class="external-link">preferably</a> template.</p>
 </div>
 
