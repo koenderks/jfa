@@ -477,9 +477,7 @@ summary.jfaEvaluation <- function(object, digits = getOption("digits"), ...) {
 predict.jfaPrior <- function(object, n, lim = NULL, cumulative = FALSE, ...) {
   if (!is.null(lim)) {
     if (cumulative) {
-      if (length(lim) > 1 || any(lim < 0)) {
-        stop("'lim' must be a single value >= 0")
-      }
+      stopifnot("'lim' must be a single value >= 0" = length(lim) == 1 && lim > 0)
       if (object[["description"]]$density == "gamma") {
         p <- stats::dnbinom(0:lim, size = object[["description"]]$alpha, prob = 1 / (1 + object[["description"]]$beta))
       } else {
@@ -641,9 +639,7 @@ plot.jfaPlanning <- function(x, xlim = c(0, 1), ...) {
 #' @method plot jfaSelection
 #' @export
 plot.jfaSelection <- function(x, ...) {
-  if (x[["units"]] == "items") {
-    stop("No plotting method available for selection with units = 'items'")
-  }
+  stopifnot("No plotting method available for selection with units = 'items'" = x[["units"]] == "values")
   name <- x[["values"]]
   graphics::hist(x[["data"]][[name]], breaks = 30, main = "Histogram of population and sample book values", xlab = "Book values", las = 1, col = "lightgray")
   graphics::hist(x[["sample"]][[name]], breaks = 30, main = "Sample", xlab = "Book values", las = 1, add = TRUE, col = "darkgray")
@@ -711,12 +707,10 @@ plot.jfaEvaluation <- function(x, xlim = c(0, 1), ...) {
         graphics::legend("topright", legend = c("Prior", "Posterior"), fill = c("lightgray", "darkgray"), bty = "n", cex = 1.2)
       }
     } else {
-      if (x[["materiality"]] == 1) {
-        stop("missing value for 'materiality'")
-      }
-      if (!(x[["method"]] %in% c("poisson", "binomial", "hypergeometric"))) {
-        stop("'likelihood' should be one of 'poisson', 'binomial', 'hypergeometric'")
-      }
+      stopifnot(
+        "missing value for 'materiality'" = x[["materiality"]] != 1,
+        "'likelihood' should be one of 'poisson', 'binomial', 'hypergeometric'" = x[["method"]] %in% c("poisson", "binomial", "hypergeometric")
+      )
       xseq <- seq(xlim[1], xlim[2], by = 1)
       if (x[["method"]] == "poisson") {
         mainLab <- paste0("Poisson distribution (lambda = ", round(x[["materiality"]] * x[["n"]], 2), ")")

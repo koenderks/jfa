@@ -110,25 +110,24 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
     prior.n <- 1
     prior.x <- 0
   }
-  if (conf.level >= 1 || conf.level <= 0 || is.null(conf.level) || length(conf.level) != 1) {
-    stop("'conf.level' must be a single value between 0 and 1")
+  stopifnot(
+    "missing value for 'conf.level'" = !is.null(conf.level),
+    "'conf.level' must be a single value between 0 and 1" = is.numeric(conf.level) && length(conf.level) == 1 && conf.level > 0 && conf.level < 1,
+    "missing value for 'materiality' or `min.precision`" = !(is.null(materiality) && is.null(min.precision))
+  )
+  if (!is.null(materiality)) {
+    stopifnot("'materiality' must be a single value between 0 and 1" = is.numeric(materiality) && materiality > 0 && materiality < 1)
   }
-  if (is.null(materiality) && is.null(min.precision)) {
-    stop("missing value for 'materiality' or `min.precision`")
-  }
-  if (!is.null(materiality) && (materiality <= 0 || materiality >= 1)) {
-    stop("'materiality' must be a single value between 0 and 1")
-  }
-  if (!is.null(min.precision) && (min.precision <= 0 || min.precision >= 1)) {
-    stop("'min.precision' must be a single value between 0 and 1")
+  if (!is.null(min.precision)) {
+    stopifnot("'min.precision' must be a single value between 0 and 1" = is.numeric(min.precision) && min.precision > 0 && min.precision < 1)
   }
   # Define a placeholder for the sample size
   n <- NULL
   # Find out the type of expected errors (percentage vs. number)
   if (expected >= 0 && expected < 1) {
     errorType <- "percentage"
-    if (!is.null(materiality) && expected >= materiality) {
-      stop("'expected' must be a single value < 'materiality'")
+    if (!is.null(materiality)) {
+      stopifnot("'expected' must be a single value < 'materiality'" = is.numeric(expected) && expected < materiality)
     }
   } else if (expected >= 1) {
     errorType <- "integer"
@@ -137,9 +136,7 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
       warning(paste0("using 'expected = ", expected, "' since 'expected' must be a single integer >= 0"))
     }
   }
-  if (expected >= max) {
-    stop("'expected' must be an integer < 'max'")
-  }
+  stopifnot("'expected' must be an integer < 'max'" = expected < max)
   # Set the materiality and the minimium precision to 1 if they are not specified
   if (is.null(materiality)) {
     materiality <- 1
@@ -149,18 +146,17 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
   }
   # Requirements for the hypergeometric distribution
   if (likelihood == "hypergeometric") {
-    if (is.null(N.units)) {
-      stop("missing value for 'N.units'")
-    }
-    if (N.units <= 0 || length(N.units) != 1) {
-      stop("'N.units' must be a single integer > 0")
-    }
+    stopifnot(
+      "missing value for 'N.units'" = !is.null(N.units),
+      "'N.units' must be a single value > 0" = is.numeric(N.units) && length(N.units) == 1 && N.units > 0
+    )
     N.units <- ceiling(N.units)
-    if (!is.null(materiality) && expected >= 1 && expected >= ceiling(materiality * N.units)) {
-      stop("'expected' / 'N.units' must be < 'materiality'")
-    }
-    if (!is.null(materiality) && expected < 1 && ceiling(expected * N.units) >= ceiling(materiality * N.units)) {
-      stop("'expected' * 'N.units' must be < 'materiality' * 'N.units'")
+    if (!is.null(materiality)) {
+      if (expected >= 1) {
+        stopifnot("'expected' / 'N.units' must be < 'materiality'" = expected < ceiling(materiality * N.units))
+      } else {
+        stopifnot("'expected' * 'N.units' must be < 'materiality' * 'N.units'" = ceiling(expected * N.units) < ceiling(materiality * N.units))
+      }
     }
   }
   # Define the sampling frame (the possible sample sizes)
@@ -228,9 +224,7 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
     }
   }
   # No sample size could be calculated, throw an error
-  if (is.null(n)) {
-    stop("the sample size is lower than 'max'")
-  }
+  stopifnot("the sample size is lower than 'max'" = !is.null(n))
   if (!is.null(N.units) && n > N.units) { # The sample size is too large
     warning("the sample size is larger than 'N.units'")
   }

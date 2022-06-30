@@ -4,8 +4,12 @@
 \alias{evaluation}
 \title{Evaluate a Statistical Audit Sample}
 \usage{
-evaluation(materiality = NULL, min.precision = NULL, method = 'poisson',
-           alternative = c('less', 'two.sided', 'greater'), conf.level = 0.95,
+evaluation(materiality = NULL, min.precision = NULL, method = c(
+             "poisson", "binomial", "hypergeometric",
+             "stringer", "stringer.meikle", "stringer.lta", "stringer.pvz",
+             "rohrbach", "moment", "coxsnell",
+             "direct", "difference", "quotient", "regression", "mpu"
+           ), alternative = c('less', 'two.sided', 'greater'), conf.level = 0.95,
            data = NULL, values = NULL, values.audit = NULL, times = NULL,
            x = NULL, n = NULL, N.units = NULL, N.items = NULL,
            r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5,

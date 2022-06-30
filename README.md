@@ -70,10 +70,14 @@ The `auditPrior()` function is used to specify a prior distribution for Bayesian
 *Full function with default arguments:*
 
 ```r
-auditPrior(method = 'default', likelihood = c('poisson', 'binomial', 'hypergeometric'), 
-           N.units = NULL, alpha = NULL, beta = NULL, materiality = NULL, expected = 0, 
-           ir = NULL, cr = NULL, ub = NULL, p.hmin = NULL, x = NULL, 
-           n = NULL, factor = NULL, conf.level = 0.95)
+auditPrior(method = c(
+             "default", "strict", "param", "impartial", "hyp",
+             "arm", "bram", "sample", "factor"
+           ), likelihood = c("poisson", "binomial", "hypergeometric"),
+           N.units = NULL, alpha = NULL, beta = NULL,
+           materiality = NULL, expected = 0, ir = NULL, cr = NULL,
+           ub = NULL, p.hmin = NULL, x = NULL, n = NULL,
+           factor = NULL, conf.level = 0.95)
 ```
 
 *Supported options for the `method` argument:*
@@ -180,9 +184,9 @@ selection(data, size, units = c('items', 'values'),
 # Selection using random record (attributes) sampling
 x <- selection(data = BuildIt, size = 100, units = 'items', method = 'random')
 
-# Selection using fixed interval monetary unit sampling (using column 'bookValues' in BuildIt)
+# Selection using fixed interval monetary unit sampling (using column 'bookValue' in BuildIt)
 x <- selection(data = BuildIt, size = 100, units = 'values', 
-               method = 'interval', values = 'bookValues')
+               method = 'interval', values = 'bookValue')
 
 summary(x) # Prints information about the selection
 ```
@@ -196,11 +200,15 @@ The `evaluation()` function takes a sample or summary statistics of the sample a
 *Full function with default arguments:*
 
 ```r
-evaluation(materiality = NULL, min.precision = NULL, method = 'poisson',
-           alternative = c('less', 'two.sided', 'greater'), conf.level = 0.95, 
-           data = NULL, values = NULL, values.audit = NULL, times = NULL, 
-           x = NULL, n = NULL, N.units = NULL, N.items = NULL, 
-           r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5, 
+evaluation(materiality = NULL, min.precision = NULL, method = c(
+             "poisson", "binomial", "hypergeometric",
+             "stringer", "stringer.meikle", "stringer.lta", "stringer.pvz",
+             "rohrbach", "moment", "coxsnell",
+             "direct", "difference", "quotient", "regression", "mpu"
+           ), alternative = c("less", "two.sided", "greater"), conf.level = 0.95,
+           data = NULL, values = NULL, values.audit = NULL, times = NULL,
+           x = NULL, n = NULL, N.units = NULL, N.items = NULL,
+           r.delta = 2.7, m.type = "accounts", cs.a = 1, cs.b = 3, cs.mu = 0.5,
            prior = FALSE)
 ```
 

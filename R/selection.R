@@ -95,28 +95,28 @@ selection <- function(data, size, units = c("items", "values"),
                       method = c("interval", "cell", "random", "sieve"), values = NULL,
                       order = NULL, decreasing = FALSE, randomize = FALSE,
                       replace = FALSE, start = 1) {
-  method <- match.arg(method)
   units <- match.arg(units)
+  method <- match.arg(method)
   if (inherits(size, "jfaPlanning")) { # If the input for 'sampleSize' is of class 'jfaPlanning', extract the planned sample size
     size <- size[["n"]]
+  } else {
+    stopifnot("'size' must be a single integer > 0" = size > 0)
   }
-  if (units == "items" && size > nrow(data) && !replace) { # Check if the sample size is valid (< N)
-    stop("cannot take a sample larger than the population when 'replace = FALSE'")
-  }
-  if (units == "values" && is.null(values)) { # Check if the book values have a valid input
-    stop("missing value for 'values'")
-  }
-  if (!is.null(values) && length(values) != 1) { # Check if the book values have a valid input
-    stop("'values' must be a single character")
-  }
-  if (!is.null(values) && !(values %in% colnames(data))) { # Check if the book values column can be found in the data
-    stop(paste0("'", values, "' is not a column in 'data'"))
+  switch(units,
+    "items" = stopifnot("cannot take a sample larger than the population when 'replace = FALSE'" = !(size > nrow(data) && !replace)),
+    "values" = stopifnot("missing value for 'values'" = !is.null(values))
+  )
+  if (!is.null(values)) {
+    stopifnot("'values' must be a single character" = is.character(values) && length(values) == 1)
+    if (!(values %in% colnames(data))) { # Check if the book values column can be found in the data
+      stop(paste0("'", values, "' is not a column in 'data'"))
+    }
   }
   if (!is.null(order) && !(order %in% colnames(data))) { # Check if the order column can be found in the data
     stop(paste0("'", order, "' is not a column in 'data'"))
   }
-  if (method == "interval" && start < 1) {
-    stop("'start' must be an integer >= 1")
+  if (method == "interval") {
+    stopifnot("'start' must be an integer >= 1" = start >= 1)
   }
   interval <- NULL # Placeholder for interval
   bookvalues <- NULL # Placeholder for book values
@@ -133,8 +133,8 @@ selection <- function(data, size, units = c("items", "values"),
   if (!is.null(values)) { # Take the book values from the population
     bookvalues <- data[, values]
   }
-  if (units == "values" && size > sum(bookvalues)) { # Check if the sample size is valid
-    stop("cannot take a sample larger than the population value")
+  if (units == "values") { # Check if the sample size is valid
+    stopifnot("cannot take a sample larger than the population value" = size <= sum(bookvalues))
   }
   if (!is.null(bookvalues) && any(bookvalues < 0)) { # Remove the negative book values from the population
     warning("'values' contains negative values which are removed before selection")
@@ -190,9 +190,8 @@ selection <- function(data, size, units = c("items", "values"),
     for (i in 1:size) {
       index <- c(index, rowNumbers[which(int.selection[i] <= cumsum(bookvalues))[1]])
     }
-  } else if (method == "sieve" && units == "items") {
-    stop("'method = sieve' does not accomodate 'units = items'")
-  } else if (method == "sieve" && units == "values") {
+  } else if (method == "sieve") {
+    stopifnot("'method = sieve' does not accomodate 'units = items'" = units == "values")
     # 7. Modified sieve sampling (Hoogduin, Hall, & Tsay, 2010)
     ri <- bookvalues / stats::runif(length(bookvalues), min = 0, max = 1)
     index <- rowNumbers[order(-ri)]
@@ -209,7 +208,10 @@ selection <- function(data, size, units = c("items", "values"),
   result[["n.req"]] <- size
   result[["n.units"]] <- sum(count)
   result[["n.items"]] <- nrow(sample)
-  result[["N.units"]] <- if (units == "items") nrow(data) else sum(bookvalues)
+  result[["N.units"]] <- switch(units,
+    "items" = nrow(data),
+    "values" = sum(bookvalues)
+  )
   result[["N.items"]] <- nrow(data)
   if (!is.null(interval)) {
     result[["interval"]] <- interval

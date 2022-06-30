@@ -2,7 +2,8 @@
 
 This is a submission for version 0.6.5. In this version I have:
 
-* Fixed a bug.
+* Fixed a bug in the summary function.
+* Improved the internal error handling.
 
 ## Test environments
 

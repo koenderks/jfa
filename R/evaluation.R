@@ -20,8 +20,12 @@
 #' For more details on how to use this function, see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
-#' @usage evaluation(materiality = NULL, min.precision = NULL, method = 'poisson',
-#'            alternative = c('less', 'two.sided', 'greater'), conf.level = 0.95,
+#' @usage evaluation(materiality = NULL, min.precision = NULL, method = c(
+#'              "poisson", "binomial", "hypergeometric",
+#'              "stringer", "stringer.meikle", "stringer.lta", "stringer.pvz",
+#'              "rohrbach", "moment", "coxsnell",
+#'              "direct", "difference", "quotient", "regression", "mpu"
+#'            ), alternative = c('less', 'two.sided', 'greater'), conf.level = 0.95,
 #'            data = NULL, values = NULL, values.audit = NULL, times = NULL,
 #'            x = NULL, n = NULL, N.units = NULL, N.items = NULL,
 #'            r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5,
@@ -143,12 +147,17 @@
 #' )
 #' @export
 
-evaluation <- function(materiality = NULL, min.precision = NULL, method = "poisson",
-                       alternative = c("less", "two.sided", "greater"), conf.level = 0.95,
+evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
+                         "poisson", "binomial", "hypergeometric",
+                         "stringer", "stringer.meikle", "stringer.lta", "stringer.pvz",
+                         "rohrbach", "moment", "coxsnell",
+                         "direct", "difference", "quotient", "regression", "mpu"
+                       ), alternative = c("less", "two.sided", "greater"), conf.level = 0.95,
                        data = NULL, values = NULL, values.audit = NULL, times = NULL,
                        x = NULL, n = NULL, N.units = NULL, N.items = NULL,
                        r.delta = 2.7, m.type = "accounts", cs.a = 1, cs.b = 3, cs.mu = 0.5,
                        prior = FALSE) {
+  method <- match.arg(method)
   alternative <- match.arg(alternative)
   bayesian <- (inherits(prior, "logical") && prior) || inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")
   # Import existing prior distribution with class 'jfaPrior' or 'jfaPosterior'.
@@ -167,46 +176,35 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = "poiss
     prior.n <- 1
     prior.x <- 0
   }
-  if (conf.level >= 1 || conf.level <= 0 || is.null(conf.level) || length(conf.level) != 1) {
-    stop("'conf.level' must be a single value between 0 and 1")
+  stopifnot(
+    "missing value for 'conf.level'" = !is.null(conf.level),
+    "'conf.level' must be a single value between 0 and 1" = is.numeric(conf.level) && length(conf.level) == 1 && conf.level > 0 && conf.level < 1,
+    "missing value for 'materiality' or `min.precision`" = !(is.null(materiality) && is.null(min.precision))
+  )
+  if (!is.null(materiality)) {
+    stopifnot("'materiality' must be a single value between 0 and 1" = is.numeric(materiality) && materiality > 0 && materiality < 1)
   }
-  if (is.null(materiality) && is.null(min.precision)) {
-    stop("missing value for 'materiality' or `min.precision`")
+  if (!is.null(min.precision)) {
+    stopifnot("'min.precision' must be a single value between 0 and 1" = is.numeric(min.precision) && min.precision > 0 && min.precision < 1)
   }
-  if (!is.null(materiality) && (materiality <= 0 || materiality > 1)) {
-    stop("'materiality' must be a single value between 0 and 1")
-  }
-  if (!is.null(min.precision) && (min.precision <= 0 || min.precision >= 1)) {
-    stop("'min.precision' must be a single value between 0 and 1")
-  }
-  if (!(method %in% c("poisson", "binomial", "hypergeometric", "stringer", "stringer.meikle", "stringer.lta", "stringer.pvz", "rohrbach", "moment", "coxsnell", "direct", "difference", "quotient", "regression", "mpu")) || length(method) != 1) {
-    stop("'method' should be one of 'poisson', 'binomial', 'hypergeometric', 'stringer', 'stringer.meikle', 'stringer.lta', 'stringer.pvz', 'rohrbach', 'moment', 'coxsnell', 'direct', 'difference', 'quotient', 'regression', 'mpu'")
-  }
-  if (bayesian && method %in% c("stringer", "stringer.meikle", "stringer.lta", "stringer.pvz", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu")) {
-    stop("'method' should be one of 'poisson', 'binomial', 'hypergeometric'")
+  if (bayesian) {
+    stopifnot("'method' should be one of 'poisson', 'binomial', 'hypergeometric'" = method %in% c("poisson", "binomial", "hypergeometric"))
   }
   if (alternative %in% c("two.sided", "greater") && method %in% c("stringer", "stringer.meikle", "stringer.lta", "stringer.pvz")) {
     stop(paste0("'method = ", method, "' does not accomodate 'alternative = ", alternative, "'"))
   }
+  stopifnot("missing value(s) for 'data' or a combination of 'x' and 'n'" = !is.null(x) || !is.null(n) || !is.null(data))
   if (!is.null(x) || !is.null(n)) { # Use summary statistics
     if (method %in% c("stringer", "stringer.meikle", "stringer.lta", "stringer.pvz", "coxsnell", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu")) {
       stop(paste0("missing value for 'data' with 'method = ", method, "'"))
     }
-    if (is.null(n)) {
-      stop("missing value for 'n'")
-    }
-    if (n <= 0 || n %% 1 != 0 || length(n) != 1) {
-      stop("'n' must be a single integer > 0")
-    }
-    if (is.null(x)) {
-      stop("missing value for 'x'")
-    }
-    if (x < 0 || length(x) != 1) {
-      stop("'x' must be a single value >= 0")
-    }
-    if (x > n) {
-      stop("'x' must be a positive value <= 'n'")
-    }
+    stopifnot(
+      "missing value for 'n'" = !is.null(n),
+      "'n' must be a single integer >= 0" = is.numeric(n) && n %% 1 == 0 && length(n) == 1 && n > 0,
+      "missing value for 'x'" = !is.null(x),
+      "'x' must be a single value >= 0" = is.numeric(x) && length(x) == 1 && x >= 0,
+      "'x' must be a positive value <= 'n'" = x <= n
+    )
     if (x %% 1 != 0 && method == "hypergeometric" && !bayesian) {
       x <- ceiling(x)
       warning(paste0("using 'x = ", x, "' since 'x' must be a single integer >= 0"))
@@ -219,21 +217,17 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = "poiss
     t.obs <- x
   } else if (!is.null(data)) { # Use data sample
     dname <- deparse(substitute(data))
-    if (is.null(values)) {
-      stop("missing value for 'values'")
-    }
-    if (length(values) != 1) {
-      stop("'values' must be a single character")
-    }
+    stopifnot(
+      "missing value for 'values'" = !is.null(values),
+      "'values' must be a single character" = is.character(values) && length(values) == 1
+    )
     if (!(values %in% colnames(data))) {
       stop(paste0("'", values, "' is not a column in 'data'"))
     }
-    if (is.null(values.audit)) {
-      stop("missing value for 'values.audit'")
-    }
-    if (length(values.audit) != 1) {
-      stop("'values.audit' must be a single character")
-    }
+    stopifnot(
+      "missing value for 'values.audit'" = !is.null(values.audit),
+      "'values.audit' must be a single character" = is.character(values.audit) && length(values.audit) == 1
+    )
     if (!(values.audit %in% colnames(data))) {
       stop(paste0("'", values.audit, "' is not a column in 'data'"))
     }
@@ -241,21 +235,17 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = "poiss
       warning("'data' is used while 'x' or 'n' is specified")
     }
     missing <- unique(c(which(is.na(data[, values])), which(is.na(data[, values.audit]))))
-    if (length(missing) == nrow(data)) {
-      stop("not enough rows in 'data'")
-    }
+    stopifnot("not enough rows in 'data'" = length(missing) < nrow(data))
     data <- stats::na.omit(data)
     if (!is.null(times)) {
       if (!(times %in% colnames(data))) {
         stop(paste0("'", times, "' is not a column in 'data'"))
       }
       times <- data[, times]
-      if (!is.null(times) && any(times < 1)) {
-        stop("column 'times' in 'data' must be a vector of integers >= 1")
-      }
-      if (!is.null(times) && any(times %% 1 != 0)) {
-        stop("column 'times' in 'data' must be a vector of nonnegative integers")
-      }
+      stopifnot(
+        "column 'times' in 'data' must be a vector of integers >= 1" = all(times >= 1),
+        "column 'times' in 'data' must be a vector of nonnegative integers" = all(times %% 1 == 0)
+      )
       n.obs <- sum(times)
     } else {
       n.obs <- nrow(data)
@@ -268,8 +258,6 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = "poiss
       t <- t * times
     }
     t.obs <- sum(t)
-  } else {
-    stop("missing value(s) for 'data' or a combination of 'x' and 'n'")
   }
   # Set the materiality and the minimium precision to 1 if they are NULL
   if (is.null(materiality)) {
@@ -353,12 +341,10 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = "poiss
       }
     }
   } else if (method == "hypergeometric") {
-    if (is.null(N.units)) {
-      stop("missing value for 'N.units'")
-    }
-    if (N.units <= 0 || length(N.units) != 1) {
-      stop("'N.units' must be a single integer > 0")
-    }
+    stopifnot(
+      "missing value for 'N.units'" = !is.null(N.units),
+      "'N.units' must be a single value > 0" = is.numeric(N.units) && length(N.units) == 1 && N.units > 0
+    )
     N.units <- ceiling(N.units)
     if (bayesian) {
       # Bayesian evaluation using the beta-binomial distribution

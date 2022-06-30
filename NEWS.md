@@ -4,6 +4,10 @@
 
 - Fixed a bug where the proportion of value in `summary(selection)` was displayed incorrectly.
 
+**Minor changes**
+
+- Improved the error handling and error messages.
+
 # jfa 0.6.4
 
 **Minor changes**

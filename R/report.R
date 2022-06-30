@@ -56,9 +56,7 @@
 #' @export
 
 report <- function(object, file = "report.html", format = c("html_document", "pdf_document")) {
-  if (!inherits(object, "jfaEvaluation")) {
-    stop("'object' must be of class 'jfaEvaluation'")
-  }
+  stopifnot("'object' must be of class 'jfaEvaluation'" = inherits(object, "jfaEvaluation"))
   if (!requireNamespace("rmarkdown", quietly = TRUE)) {
     stop('package \"rmarkdown\" needed for this function to work, please install it', call. = FALSE)
   }
