@@ -293,9 +293,9 @@
 <code class="sourceCode R"><span><span class="co"># Selection using random record (attributes) sampling</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'items'</span>, method <span class="op">=</span> <span class="st">'random'</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Selection using fixed interval monetary unit sampling (using column 'bookValues' in BuildIt)</span></span>
+<span><span class="co"># Selection using fixed interval monetary unit sampling (using column 'bookValue' in BuildIt)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'values'</span>, </span>
-<span>               method <span class="op">=</span> <span class="st">'interval'</span>, values <span class="op">=</span> <span class="st">'bookValues'</span><span class="op">)</span></span>
+<span>               method <span class="op">=</span> <span class="st">'interval'</span>, values <span class="op">=</span> <span class="st">'bookValue'</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the selection</span></span></code></pre></div>
 </div>
