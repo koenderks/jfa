@@ -68,7 +68,7 @@ test_that(desc = "(id: f6-v0.1.0-t6) Test for units = 'values' and method = 'int
 test_that(desc = "(id: f6-v0.1.0-t7) Test for units = 'values' and method = 'interval' using negative book values", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = c(-100, runif(n = 999, min = 100, max = 500)))
-  jfaRes <- expect_warning(selection(population, size = 100, units = "values", method = "interval", values = "bookValue", start = 3))
+  jfaRes <- expect_message(selection(population, size = 100, units = "values", method = "interval", values = "bookValue", start = 3))
   expect_equal(ncol(jfaRes[["sample"]]), 4)
   expect_equal(nrow(jfaRes[["sample"]]), 100)
 })

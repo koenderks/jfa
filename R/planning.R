@@ -97,13 +97,13 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
   # Import existing prior distribution with class 'jfaPrior' or 'jfaPosterior'
   if (inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")) {
     if (likelihood != prior[["likelihood"]]) {
-      warning(paste0("using 'likelihood = ", prior[["likelihood"]], "' from 'prior'"))
+      message(paste0("Using 'likelihood = ", prior[["likelihood"]], "' from 'prior'"))
     }
     prior.n <- prior[["description"]]$implicit.n
     prior.x <- prior[["description"]]$implicit.x
     likelihood <- prior[["likelihood"]]
     if (!is.null(prior[["N.units"]])) {
-      warning(paste0("using 'N.units = ", prior[["N.units"]], "' from 'prior'"))
+      message(paste0("Using 'N.units = ", prior[["N.units"]], "' from 'prior'"))
       N.units <- prior[["N.units"]]
     }
   } else if (prior) {
@@ -133,7 +133,7 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
     errorType <- "integer"
     if (expected %% 1 != 0 && likelihood %in% c("binomial", "hypergeometric") && !bayesian) {
       expected <- ceiling(expected)
-      warning(paste0("using 'expected = ", expected, "' since 'expected' must be a single integer >= 0"))
+      message(paste0("Using 'expected = ", expected, "' since 'expected' must be a single integer >= 0"))
     }
   }
   stopifnot("'expected' must be an integer < 'max'" = expected < max)
@@ -226,7 +226,7 @@ planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
   # No sample size could be calculated, throw an error
   stopifnot("the sample size is lower than 'max'" = !is.null(n))
   if (!is.null(N.units) && n > N.units) { # The sample size is too large
-    warning("the sample size is larger than 'N.units'")
+    message("The sample size is larger than 'N.units'")
   }
   # Create the main results object
   result <- list()

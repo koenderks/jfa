@@ -163,13 +163,13 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
   # Import existing prior distribution with class 'jfaPrior' or 'jfaPosterior'.
   if (inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")) {
     if (method != prior[["likelihood"]]) {
-      warning(paste0("using 'method = ", prior[["likelihood"]], "' from 'prior'"))
+      message(paste0("Using 'method = ", prior[["likelihood"]], "' from 'prior'"))
     }
     prior.x <- prior[["description"]]$implicit.x
     prior.n <- prior[["description"]]$implicit.n
     method <- prior[["likelihood"]]
     if (!is.null(prior[["N.units"]])) {
-      warning(paste0("using 'N.units = ", prior[["N.units"]], "' from 'prior'"))
+      message(paste0("Using 'N.units = ", prior[["N.units"]], "' from 'prior'"))
       N.units <- prior[["N.units"]]
     }
   } else {
@@ -207,10 +207,10 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
     )
     if (x %% 1 != 0 && method == "hypergeometric" && !bayesian) {
       x <- ceiling(x)
-      warning(paste0("using 'x = ", x, "' since 'x' must be a single integer >= 0"))
+      message(paste0("Using 'x = ", x, "' since 'x' must be a single integer >= 0"))
     }
     if (!is.null(data)) {
-      warning("'x' and 'n' are used while 'data' is specified")
+      message("'x' and 'n' are used while 'data' is specified")
     }
     n.obs <- n
     x.obs <- x
@@ -232,7 +232,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
       stop(paste0("'", values.audit, "' is not a column in 'data'"))
     }
     if (!is.null(x) || !is.null(n)) {
-      warning("'data' is used while 'x' or 'n' is specified")
+      message("'data' is used while 'x' or 'n' is specified")
     }
     missing <- unique(c(which(is.na(data[, values])), which(is.na(data[, values.audit]))))
     stopifnot("not enough rows in 'data'" = length(missing) < nrow(data))

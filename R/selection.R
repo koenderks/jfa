@@ -126,7 +126,7 @@ selection <- function(data, size, units = c("items", "values"),
     data <- data[order(data[, order], decreasing = decreasing), , drop = FALSE]
   } else if (randomize) { # Randomize the population
     if (!is.null(order)) {
-      warning("'order' overruled by 'randomize = TRUE'")
+      message("'order' overruled by 'randomize = TRUE'")
     }
     data <- data[sample(1:nrow(data)), , drop = FALSE]
   }
@@ -137,7 +137,7 @@ selection <- function(data, size, units = c("items", "values"),
     stopifnot("cannot take a sample larger than the population value" = size <= sum(bookvalues))
   }
   if (!is.null(bookvalues) && any(bookvalues < 0)) { # Remove the negative book values from the population
-    warning("'values' contains negative values which are removed before selection")
+    message("'values' contains negative values which are removed before selection")
     negvals <- which(bookvalues < 0)
     data <- data[-negvals, ]
     bookvalues <- data[, values]
