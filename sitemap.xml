@@ -1,84 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://koenderks.github.io/jfa/404.html</loc>
+    <loc>/404.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/CODE_OF_CONDUCT.html</loc>
+    <loc>/CODE_OF_CONDUCT.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/CONTRIBUTING.html</loc>
+    <loc>/CONTRIBUTING.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/LICENSE.html</loc>
+    <loc>/LICENSE.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/articles/index.html</loc>
+    <loc>/articles/index.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/articles/jfa.html</loc>
+    <loc>/articles/jfa.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/articles/v1_sampling_workflow.html</loc>
+    <loc>/articles/v1_sampling_workflow.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/articles/v2_bayesian_sampling_workflow.html</loc>
+    <loc>/articles/v2_bayesian_sampling_workflow.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/articles/v3_prior_distributions.html</loc>
+    <loc>/articles/v3_prior_distributions.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/articles/v4_selection_methodology.html</loc>
+    <loc>/articles/v4_selection_methodology.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/articles/v5_estimating_misstatement.html</loc>
+    <loc>/articles/v5_estimating_misstatement.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/articles/v6_testing_misstatement.html</loc>
+    <loc>/articles/v6_testing_misstatement.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/articles/v7_bayes_factors_summary_statistics.html</loc>
+    <loc>/articles/v7_bayes_factors_summary_statistics.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/authors.html</loc>
+    <loc>/authors.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/index.html</loc>
+    <loc>/index.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/news/index.html</loc>
+    <loc>/news/index.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/reference/BuildIt.html</loc>
+    <loc>/reference/BuildIt.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/reference/auditPrior.html</loc>
+    <loc>/reference/auditPrior.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/reference/carrier.html</loc>
+    <loc>/reference/carrier.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/reference/evaluation.html</loc>
+    <loc>/reference/evaluation.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/reference/figures/readme/report/report.html</loc>
+    <loc>/reference/figures/readme/report/report.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/reference/index.html</loc>
+    <loc>/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/reference/jfa-methods.html</loc>
+    <loc>/reference/jfa-methods.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/reference/jfa.html</loc>
+    <loc>/reference/jfa.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/reference/planning.html</loc>
+    <loc>/reference/planning.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/reference/report.html</loc>
+    <loc>/reference/report.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/reference/selection.html</loc>
+    <loc>/reference/selection.html</loc>
   </url>
 </urlset>
