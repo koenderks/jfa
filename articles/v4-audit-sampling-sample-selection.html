@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Selection: Sampling methodology • jfa</title>
+<title>Audit sampling: Sample selection • jfa</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Selection: Sampling methodology">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Audit sampling: Sample selection">
 <meta property="og:description" content="jfa">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -60,28 +60,22 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/v1_sampling_workflow.html">Workflow: Classical audit sampling</a>
+      <a href="../articles/v1-audit-sampling-workflow.html">Audit sampling: Classical sampling workflow</a>
     </li>
     <li>
-      <a href="../articles/v2_bayesian_sampling_workflow.html">Workflow: Bayesian audit sampling</a>
+      <a href="../articles/v2-audit-sampling-bayesian-workflow.html">Audit sampling: Bayesian sampling workflow</a>
     </li>
     <li>
-      <a href="../articles/v3_prior_distributions.html">Planning: Prior distributions</a>
+      <a href="../articles/v3-audit-sampling-prior-distributions.html">Audit sampling: Prior distributions</a>
     </li>
     <li>
-      <a href="../articles/v4_selection_methodology.html">Selection: Sampling methodology</a>
+      <a href="../articles/v4-audit-sampling-sample-selection.html">Audit sampling: Sample selection</a>
     </li>
     <li>
-      <a href="../articles/v5_estimating_misstatement.html">Evaluation: Estimating misstatement</a>
+      <a href="../articles/v5-audit-sampling-evaluation.html">Audit sampling: Sample evaluation</a>
     </li>
     <li>
-      <a href="../articles/v6_testing_misstatement.html">Evaluation: Testing misstatement</a>
-    </li>
-    <li>
-      <a href="../articles/v7_bayes_factors_summary_statistics.html">Evaluation: Bayes factors using summary statistics</a>
-    </li>
-    <li>
-      <a href="../articles/v8_digit_analysis.html">Auditing data: Get started</a>
+      <a href="../articles/v6-auditing-data-digit-analysis.html">Auditing data: Digit analysis</a>
     </li>
   </ul>
 </li>
@@ -109,21 +103,21 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Selection: Sampling methodology</h1>
+      <h1 data-toc-skip>Audit sampling: Sample selection</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
             <h4 data-toc-skip class="date">last modified:
-19-08-2021</h4>
+05-11-2022</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/v4_selection_methodology.Rmd" class="external-link"><code>vignettes/v4_selection_methodology.Rmd</code></a></small>
-      <div class="hidden name"><code>v4_selection_methodology.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/v4-audit-sampling-sample-selection.Rmd" class="external-link"><code>vignettes/v4-audit-sampling-sample-selection.Rmd</code></a></small>
+      <div class="hidden name"><code>v4-audit-sampling-sample-selection.Rmd</code></div>
 
     </div>
 
     
     
 <div class="section level2">
-<h2 id="sampling-methodology">Sampling methodology<a class="anchor" aria-label="anchor" href="#sampling-methodology"></a>
+<h2 id="audit-sampling-sample-selection">Audit sampling: Sample selection<a class="anchor" aria-label="anchor" href="#audit-sampling-sample-selection"></a>
 </h2>
 <p>Auditors are often required to assess balances or processes that
 involve a large number of items. Since they cannot inspect all of these
@@ -251,12 +245,8 @@ interval is selected. However, this can be changed by setting the
 argument <code>start = 1</code> to a different value.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Record sampling</span></span>
-<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">"items"</span>, method <span class="op">=</span> <span class="st">"interval"</span>, start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: 'selection' is deprecated.</span></span>
-<span><span class="co">## Use 'sample_selection' instead.</span></span>
-<span><span class="co">## See help("Deprecated") and help("jfa-deprecated").</span></span></code></pre>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">"items"</span>, method <span class="op">=</span> <span class="st">"interval"</span>, start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   row times    ID bookValue auditValue</span></span>
 <span><span class="co">## 1   1     1 82884    242.61     242.61</span></span>
 <span><span class="co">## 2  36     1 80125    118.58     118.58</span></span>
@@ -264,14 +254,10 @@ argument <code>start = 1</code> to a different value.</p>
 <span><span class="co">## 4 106     1 88261    266.66     266.66</span></span>
 <span><span class="co">## 5 141     1 58999    568.60     568.60</span></span>
 <span><span class="co">## 6 176     1 27801    314.65     314.65</span></span></code></pre>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Monetary unit sampling</span></span>
-<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">"values"</span>, method <span class="op">=</span> <span class="st">"interval"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: 'selection' is deprecated.</span></span>
-<span><span class="co">## Use 'sample_selection' instead.</span></span>
-<span><span class="co">## See help("Deprecated") and help("jfa-deprecated").</span></span></code></pre>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">"values"</span>, method <span class="op">=</span> <span class="st">"interval"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   row times    ID bookValue auditValue</span></span>
 <span><span class="co">## 1   1     1 82884    242.61     242.61</span></span>
 <span><span class="co">## 2  38     1 57172    329.30     329.30</span></span>
@@ -313,15 +299,11 @@ possibility that an items is included in the sample twice.</p>
 <p>As an example, the code below shows how to apply the cell sampling
 method in a record sampling and a monetary unit sampling setting. It is
 important to set a seed to make the results reproducible.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Record sampling</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">"items"</span>, method <span class="op">=</span> <span class="st">"cell"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: 'selection' is deprecated.</span></span>
-<span><span class="co">## Use 'sample_selection' instead.</span></span>
-<span><span class="co">## See help("Deprecated") and help("jfa-deprecated").</span></span></code></pre>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">"items"</span>, method <span class="op">=</span> <span class="st">"cell"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   row times    ID bookValue auditValue</span></span>
 <span><span class="co">## 1   9     1 14608    216.48     216.48</span></span>
 <span><span class="co">## 2  48     1 45437    347.94     139.18</span></span>
@@ -329,15 +311,11 @@ important to set a seed to make the results reproducible.</p>
 <span><span class="co">## 4 136     1 45746    440.72     440.72</span></span>
 <span><span class="co">## 5 147     1 72906    677.62     677.62</span></span>
 <span><span class="co">## 6 206     1 93529    528.79     528.79</span></span></code></pre>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Monetary unit sampling</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">"values"</span>, method <span class="op">=</span> <span class="st">"cell"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: 'selection' is deprecated.</span></span>
-<span><span class="co">## Use 'sample_selection' instead.</span></span>
-<span><span class="co">## See help("Deprecated") and help("jfa-deprecated").</span></span></code></pre>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">"values"</span>, method <span class="op">=</span> <span class="st">"cell"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   row times    ID bookValue auditValue</span></span>
 <span><span class="co">## 1   8     1 81460    295.20     295.20</span></span>
 <span><span class="co">## 2  53     1 80645    677.88     677.88</span></span>
@@ -378,15 +356,11 @@ sample.</p>
 (with our without replacement using <code>replace</code>) method in a
 record sampling and a monetary unit sampling setting. It is important to
 set a seed to make results reproducible.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Record sampling</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">"items"</span>, method <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: 'selection' is deprecated.</span></span>
-<span><span class="co">## Use 'sample_selection' instead.</span></span>
-<span><span class="co">## See help("Deprecated") and help("jfa-deprecated").</span></span></code></pre>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">"items"</span>, method <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    row times    ID bookValue auditValue</span></span>
 <span><span class="co">## 1 1017     1 50755    618.24     618.24</span></span>
 <span><span class="co">## 2  679     1 20237    669.75     669.75</span></span>
@@ -394,15 +368,11 @@ set a seed to make results reproducible.</p>
 <span><span class="co">## 4  930     1 85674    257.82     257.82</span></span>
 <span><span class="co">## 5 1533     1 31051    308.53     308.53</span></span>
 <span><span class="co">## 6  471     1 84375    824.66     824.66</span></span></code></pre>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Monetary unit sampling</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">"values"</span>, method <span class="op">=</span> <span class="st">"random"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: 'selection' is deprecated.</span></span>
-<span><span class="co">## Use 'sample_selection' instead.</span></span>
-<span><span class="co">## See help("Deprecated") and help("jfa-deprecated").</span></span></code></pre>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">"values"</span>, method <span class="op">=</span> <span class="st">"random"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    row times    ID bookValue auditValue</span></span>
 <span><span class="co">## 1 2174     1 90260    625.98     625.98</span></span>
 <span><span class="co">## 2 2928     1 68595    548.21     548.21</span></span>
@@ -430,15 +400,11 @@ precise control over sample sizes.</p>
 <p>As an example, the code below shows how to apply the modified sieve
 sampling method in a monetary unit sampling setting. It is important to
 set a seed to make results reproducible.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Monetary unit sampling</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">"values"</span>, method <span class="op">=</span> <span class="st">"sieve"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: 'selection' is deprecated.</span></span>
-<span><span class="co">## Use 'sample_selection' instead.</span></span>
-<span><span class="co">## See help("Deprecated") and help("jfa-deprecated").</span></span></code></pre>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">"values"</span>, method <span class="op">=</span> <span class="st">"sieve"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    row times    ID bookValue auditValue</span></span>
 <span><span class="co">## 1 2329     1 29919    681.10     681.10</span></span>
 <span><span class="co">## 2 2883     1 59402    279.29     279.29</span></span>
@@ -459,15 +425,11 @@ The <code>order</code> argument takes as input a column name in
 example, you can order the population from lowest book value to highest
 book value before engaging in selection. In this case, you should use
 the <code>decreasing = FALSE</code> argument.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Ordering population from lowest 'bookValue' to highest 'bookValue' before MUS</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">"values"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, order <span class="op">=</span> <span class="st">"bookValue"</span>, decreasing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: 'selection' is deprecated.</span></span>
-<span><span class="co">## Use 'sample_selection' instead.</span></span>
-<span><span class="co">## See help("Deprecated") and help("jfa-deprecated").</span></span></code></pre>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">"values"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, order <span class="op">=</span> <span class="st">"bookValue"</span>, decreasing <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    row times    ID bookValue auditValue</span></span>
 <span><span class="co">## 1 2662     1 30568     14.47      14.47</span></span>
 <span><span class="co">## 2 2923     1 63567    125.21     125.21</span></span>
@@ -477,15 +439,11 @@ the <code>decreasing = FALSE</code> argument.</p>
 <span><span class="co">## 6  302     1 94296    198.59     198.59</span></span></code></pre>
 <p>The <code>randomize</code> argument can be used to randomly shuffle
 the items in the population before selection.</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Randomly shuffle population items before MUS</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">"values"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, randomize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: 'selection' is deprecated.</span></span>
-<span><span class="co">## Use 'sample_selection' instead.</span></span>
-<span><span class="co">## See help("Deprecated") and help("jfa-deprecated").</span></span></code></pre>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">"values"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, randomize <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">$</span><span class="va">sample</span>, n <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    row times    ID bookValue auditValue</span></span>
 <span><span class="co">## 1 1017     1 50755    618.24     618.24</span></span>
 <span><span class="co">## 2 2159     1  3653    492.39     492.39</span></span>

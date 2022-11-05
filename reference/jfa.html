@@ -46,28 +46,22 @@ For documentation on jfa itself, including the manual and user guide
     <span class="caret"></span>
   </a>
   <ul class="dropdown-menu" role="menu"><li>
-      <a href="../articles/v1_sampling_workflow.html">Workflow: Classical audit sampling</a>
+      <a href="../articles/v1-audit-sampling-workflow.html">Audit sampling: Classical sampling workflow</a>
     </li>
     <li>
-      <a href="../articles/v2_bayesian_sampling_workflow.html">Workflow: Bayesian audit sampling</a>
+      <a href="../articles/v2-audit-sampling-bayesian-workflow.html">Audit sampling: Bayesian sampling workflow</a>
     </li>
     <li>
-      <a href="../articles/v3_prior_distributions.html">Planning: Prior distributions</a>
+      <a href="../articles/v3-audit-sampling-prior-distributions.html">Audit sampling: Prior distributions</a>
     </li>
     <li>
-      <a href="../articles/v4_selection_methodology.html">Selection: Sampling methodology</a>
+      <a href="../articles/v4-audit-sampling-sample-selection.html">Audit sampling: Sample selection</a>
     </li>
     <li>
-      <a href="../articles/v5_estimating_misstatement.html">Evaluation: Estimating misstatement</a>
+      <a href="../articles/v5-audit-sampling-evaluation.html">Audit sampling: Sample evaluation</a>
     </li>
     <li>
-      <a href="../articles/v6_testing_misstatement.html">Evaluation: Testing misstatement</a>
-    </li>
-    <li>
-      <a href="../articles/v7_bayes_factors_summary_statistics.html">Evaluation: Bayes factors using summary statistics</a>
-    </li>
-    <li>
-      <a href="../articles/v8_digit_analysis.html">Auditing data: Get started</a>
+      <a href="../articles/v6-auditing-data-digit-analysis.html">Auditing data: Digit analysis</a>
     </li>
   </ul></li>
 <li>
@@ -156,9 +150,6 @@ For documentation on jfa itself, including the manual and user guide
 <span class="r-in"><span><span class="co"># Stage 1: Planning</span></span></span>
 <span class="r-in"><span><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, expected <span class="op">=</span> <span class="fl">0.01</span>, </span></span>
 <span class="r-in"><span>                   likelihood <span class="op">=</span> <span class="st">'poisson'</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'planning' is deprecated.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Use 'sample_planning' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> See help("Deprecated") and help("jfa-deprecated").</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Classical Audit Sample Planning Summary</span>
@@ -182,9 +173,6 @@ For documentation on jfa itself, including the manual and user guide
 <span class="r-in"><span><span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="va">stage1</span>,</span></span>
 <span class="r-in"><span>                    units <span class="op">=</span> <span class="st">'values'</span>, values <span class="op">=</span> <span class="st">'bookValue'</span>,</span></span>
 <span class="r-in"><span>                    method <span class="op">=</span> <span class="st">'interval'</span>, start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'selection' is deprecated.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Use 'sample_selection' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> See help("Deprecated") and help("jfa-deprecated").</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Audit Sample Selection Summary</span>
@@ -213,9 +201,6 @@ For documentation on jfa itself, including the manual and user guide
 <span class="r-in"><span><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, method <span class="op">=</span> <span class="st">'stringer'</span>,</span></span>
 <span class="r-in"><span>                     conf.level <span class="op">=</span> <span class="fl">0.95</span>, data <span class="op">=</span> <span class="va">sample</span>,</span></span>
 <span class="r-in"><span>                     values <span class="op">=</span> <span class="st">'bookValue'</span>, values.audit <span class="op">=</span> <span class="st">'auditValue'</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'evaluation' is deprecated.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Use 'sample_evaluation' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> See help("Deprecated") and help("jfa-deprecated").</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Classical Audit Sample Evaluation Summary</span>
@@ -264,9 +249,6 @@ For documentation on jfa itself, including the manual and user guide
 <span class="r-in"><span><span class="co"># Stage 1: Planning</span></span></span>
 <span class="r-in"><span><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, expected <span class="op">=</span> <span class="fl">0.01</span>,</span></span>
 <span class="r-in"><span>                   likelihood <span class="op">=</span> <span class="st">'poisson'</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'planning' is deprecated.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Use 'sample_planning' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> See help("Deprecated") and help("jfa-deprecated").</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Bayesian Audit Sample Planning Summary</span>
@@ -292,9 +274,6 @@ For documentation on jfa itself, including the manual and user guide
 <span class="r-in"><span><span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="va">stage1</span>,</span></span>
 <span class="r-in"><span>                    units <span class="op">=</span> <span class="st">'values'</span>, values <span class="op">=</span> <span class="st">'bookValue'</span>,</span></span>
 <span class="r-in"><span>                    method <span class="op">=</span> <span class="st">'interval'</span>, start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'selection' is deprecated.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Use 'sample_selection' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> See help("Deprecated") and help("jfa-deprecated").</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Audit Sample Selection Summary</span>
@@ -323,9 +302,6 @@ For documentation on jfa itself, including the manual and user guide
 <span class="r-in"><span><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, data <span class="op">=</span> <span class="va">sample</span>,</span></span>
 <span class="r-in"><span>                     values <span class="op">=</span> <span class="st">'bookValue'</span>, values.audit <span class="op">=</span> <span class="st">'auditValue'</span>,</span></span>
 <span class="r-in"><span>                     prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'evaluation' is deprecated.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Use 'sample_evaluation' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> See help("Deprecated") and help("jfa-deprecated").</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Bayesian Audit Sample Evaluation Summary</span>
@@ -356,12 +332,6 @@ For documentation on jfa itself, including the manual and user guide
 <span class="r-in"><span><span class="co"># Create the prior distribution</span></span></span>
 <span class="r-in"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'arm'</span>, likelihood <span class="op">=</span> <span class="st">'poisson'</span>,</span></span>
 <span class="r-in"><span>                    expected <span class="op">=</span> <span class="fl">0.01</span>, materiality <span class="op">=</span> <span class="fl">0.03</span>, cr <span class="op">=</span> <span class="fl">0.6</span>, ir <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'planning' is deprecated.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Use 'sample_planning' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> See help("Deprecated") and help("jfa-deprecated").</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'planning' is deprecated.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Use 'sample_planning' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> See help("Deprecated") and help("jfa-deprecated").</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Prior Distribution Summary</span>
@@ -385,9 +355,6 @@ For documentation on jfa itself, including the manual and user guide
 <span class="r-in"><span><span class="co"># Stage 1: Planning</span></span></span>
 <span class="r-in"><span><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, expected <span class="op">=</span> <span class="fl">0.01</span>,</span></span>
 <span class="r-in"><span>                   likelihood <span class="op">=</span> <span class="st">'poisson'</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'planning' is deprecated.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Use 'sample_planning' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> See help("Deprecated") and help("jfa-deprecated").</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Bayesian Audit Sample Planning Summary</span>
@@ -413,9 +380,6 @@ For documentation on jfa itself, including the manual and user guide
 <span class="r-in"><span><span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="va">stage1</span>,</span></span>
 <span class="r-in"><span>                    units <span class="op">=</span> <span class="st">'values'</span>, values <span class="op">=</span> <span class="st">'bookValue'</span>,</span></span>
 <span class="r-in"><span>                    method <span class="op">=</span> <span class="st">'interval'</span>, start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'selection' is deprecated.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Use 'sample_selection' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> See help("Deprecated") and help("jfa-deprecated").</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Audit Sample Selection Summary</span>
@@ -444,9 +408,6 @@ For documentation on jfa itself, including the manual and user guide
 <span class="r-in"><span><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, data <span class="op">=</span> <span class="va">sample</span>,</span></span>
 <span class="r-in"><span>                     values <span class="op">=</span> <span class="st">'bookValue'</span>, values.audit <span class="op">=</span> <span class="st">'auditValue'</span>,</span></span>
 <span class="r-in"><span>                     prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>'evaluation' is deprecated.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> Use 'sample_evaluation' instead.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> See help("Deprecated") and help("jfa-deprecated").</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Bayesian Audit Sample Evaluation Summary</span>

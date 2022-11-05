@@ -3,13 +3,11 @@ pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   jfa: jfa.html
-  v1_sampling_workflow: v1_sampling_workflow.html
-  v2_bayesian_sampling_workflow: v2_bayesian_sampling_workflow.html
-  v3_prior_distributions: v3_prior_distributions.html
-  v4_selection_methodology: v4_selection_methodology.html
-  v5_estimating_misstatement: v5_estimating_misstatement.html
-  v6_testing_misstatement: v6_testing_misstatement.html
-  v7_bayes_factors_summary_statistics: v7_bayes_factors_summary_statistics.html
-  v8_digit_analysis: v8_digit_analysis.html
-last_built: 2022-11-05T10:39Z
+  v1-audit-sampling-workflow: v1-audit-sampling-workflow.html
+  v2-audit-sampling-bayesian-workflow: v2-audit-sampling-bayesian-workflow.html
+  v3-audit-sampling-prior-distributions: v3-audit-sampling-prior-distributions.html
+  v4-audit-sampling-sample-selection: v4-audit-sampling-sample-selection.html
+  v5-audit-sampling-evaluation: v5-audit-sampling-evaluation.html
+  v6-auditing-data-digit-analysis: v6-auditing-data-digit-analysis.html
+last_built: 2022-11-05T11:53Z
 

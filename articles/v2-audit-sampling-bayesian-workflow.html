@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Workflow: Bayesian audit sampling • jfa</title>
+<title>Audit sampling: Bayesian sampling workflow • jfa</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Workflow: Bayesian audit sampling">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Audit sampling: Bayesian sampling workflow">
 <meta property="og:description" content="jfa">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -60,28 +60,22 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/v1_sampling_workflow.html">Workflow: Classical audit sampling</a>
+      <a href="../articles/v1-audit-sampling-workflow.html">Audit sampling: Classical sampling workflow</a>
     </li>
     <li>
-      <a href="../articles/v2_bayesian_sampling_workflow.html">Workflow: Bayesian audit sampling</a>
+      <a href="../articles/v2-audit-sampling-bayesian-workflow.html">Audit sampling: Bayesian sampling workflow</a>
     </li>
     <li>
-      <a href="../articles/v3_prior_distributions.html">Planning: Prior distributions</a>
+      <a href="../articles/v3-audit-sampling-prior-distributions.html">Audit sampling: Prior distributions</a>
     </li>
     <li>
-      <a href="../articles/v4_selection_methodology.html">Selection: Sampling methodology</a>
+      <a href="../articles/v4-audit-sampling-sample-selection.html">Audit sampling: Sample selection</a>
     </li>
     <li>
-      <a href="../articles/v5_estimating_misstatement.html">Evaluation: Estimating misstatement</a>
+      <a href="../articles/v5-audit-sampling-evaluation.html">Audit sampling: Sample evaluation</a>
     </li>
     <li>
-      <a href="../articles/v6_testing_misstatement.html">Evaluation: Testing misstatement</a>
-    </li>
-    <li>
-      <a href="../articles/v7_bayes_factors_summary_statistics.html">Evaluation: Bayes factors using summary statistics</a>
-    </li>
-    <li>
-      <a href="../articles/v8_digit_analysis.html">Auditing data: Get started</a>
+      <a href="../articles/v6-auditing-data-digit-analysis.html">Auditing data: Digit analysis</a>
     </li>
   </ul>
 </li>
@@ -109,21 +103,21 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Workflow: Bayesian audit sampling</h1>
+      <h1 data-toc-skip>Audit sampling: Bayesian sampling workflow</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
             <h4 data-toc-skip class="date">last modified:
-27-10-2021</h4>
+05-11-2022</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/v2_bayesian_sampling_workflow.Rmd" class="external-link"><code>vignettes/v2_bayesian_sampling_workflow.Rmd</code></a></small>
-      <div class="hidden name"><code>v2_bayesian_sampling_workflow.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/v2-audit-sampling-bayesian-workflow.Rmd" class="external-link"><code>vignettes/v2-audit-sampling-bayesian-workflow.Rmd</code></a></small>
+      <div class="hidden name"><code>v2-audit-sampling-bayesian-workflow.Rmd</code></div>
 
     </div>
 
     
     
 <div class="section level2">
-<h2 id="scenario">Scenario<a class="anchor" aria-label="anchor" href="#scenario"></a>
+<h2 id="audit-sampling-bayesian-sampling-workflow">Audit sampling: Bayesian sampling workflow<a class="anchor" aria-label="anchor" href="#audit-sampling-bayesian-sampling-workflow"></a>
 </h2>
 <p>This vignette aims to show how the <code>jfa</code> package
 facilitates auditors in the standard audit sampling workflow (hereafter
@@ -242,16 +236,9 @@ is done, see Derks et al. (2019).</p>
 <span>  method <span class="op">=</span> <span class="st">"arm"</span>, likelihood <span class="op">=</span> <span class="st">"poisson"</span>, expected <span class="op">=</span> <span class="va">expected</span>,</span>
 <span>  materiality <span class="op">=</span> <span class="va">materiality</span>, ir <span class="op">=</span> <span class="va">ir</span>, cr <span class="op">=</span> <span class="va">cr</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: 'planning' is deprecated.</span></span>
-<span><span class="co">## Use 'sample_planning' instead.</span></span>
-<span><span class="co">## See help("Deprecated") and help("jfa-deprecated").</span></span>
-<span></span>
-<span><span class="co">## Warning: 'planning' is deprecated.</span></span>
-<span><span class="co">## Use 'sample_planning' instead.</span></span>
-<span><span class="co">## See help("Deprecated") and help("jfa-deprecated").</span></span></code></pre>
 <p>Laura can inspect the resulting prior distribution with the
 <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Prior Distribution Summary</span></span>
@@ -273,27 +260,24 @@ is done, see Derks et al. (2019).</p>
 <span><span class="co">##   Precision:                     0.074289</span></span></code></pre>
 <p>The prior distribution can be shown by using the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>
 function.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v2_bayesian_sampling_workflow_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="v2-audit-sampling-bayesian-workflow_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>Now that the prior distribution is specified, Laura can calculate the
 required sample size for her desired statement by using the
 <code><a href="../reference/planning.html">planning()</a></code> function. She uses the <code>prior</code> object
 as input for the <code><a href="../reference/planning.html">planning()</a></code> function to use her prior
 distribution.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Step 1: Calculate the required sample size.</span></span>
 <span><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: 'planning' is deprecated.</span></span>
-<span><span class="co">## Use 'sample_planning' instead.</span></span>
-<span><span class="co">## See help("Deprecated") and help("jfa-deprecated").</span></span></code></pre>
 <p>Laura can then inspect the result from her planning procedure by
 using the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function. Her result tells her that,
 given her prior distribution she needs to audit a sample of 178
 transactions so that, when at most 4.45 errors are found, she can
 conclude with 95% confidence that the maximum error in BuildIt’s
 financial statements is lower the materiality of 5%.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Planning Summary</span></span>
@@ -319,9 +303,9 @@ posterior distribution by using the <code><a href="https://rdrr.io/r/graphics/pl
 expected posterior distribution is the posterior distribution that would
 occur if Laura actually observed a sample of 178 transactions, from
 which 4.45 were in error.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v2_bayesian_sampling_workflow_files/figure-html/unnamed-chunk-10-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="v2-audit-sampling-bayesian-workflow_files/figure-html/unnamed-chunk-10-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="stage-2-selecting-a-sample">Stage 2: Selecting a sample<a class="anchor" aria-label="anchor" href="#stage-2-selecting-a-sample"></a>
@@ -344,15 +328,12 @@ include more high-valued transactions. The <code><a href="../reference/selection
 function allows her to sample from the financial statements. She uses
 the <code>stage1</code> object as an input for the
 <code><a href="../reference/selection.html">selection()</a></code> function.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Step 2: Draw a sample from the financial statements.</span></span>
 <span><span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="va">stage1</span>, units <span class="op">=</span> <span class="st">"values"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, method <span class="op">=</span> <span class="st">"interval"</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: 'selection' is deprecated.</span></span>
-<span><span class="co">## Use 'sample_selection' instead.</span></span>
-<span><span class="co">## See help("Deprecated") and help("jfa-deprecated").</span></span></code></pre>
 <p>Laura can inspect the outcomes of her sampling procedure by using the
 <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Audit Sample Selection Summary</span></span>
@@ -383,7 +364,7 @@ execute her audit by annotating the sample with their audit value (for
 exampling by writing the sample to a <em>.csv</em> file using
 <code><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv()</a></code>. She can then load her annotated sample back
 into R for further evaluation.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Step 3: Isolate the sample for execution of the audit.</span></span>
 <span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">stage2</span><span class="op">$</span><span class="va">sample</span></span>
 <span></span>
@@ -403,20 +384,17 @@ in the <code>auditValue</code> column of the data set .</p>
 <code>priorResult</code> object to the function, she automatically sets
 <code>method = "binomial"</code> to be consistent with her prior
 distribution.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Step 4: Evaluate the sample.</span></span>
 <span><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="va">materiality</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, data <span class="op">=</span> <span class="va">sample</span>,</span>
 <span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, prior <span class="op">=</span> <span class="va">prior</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: 'evaluation' is deprecated.</span></span>
-<span><span class="co">## Use 'sample_evaluation' instead.</span></span>
-<span><span class="co">## See help("Deprecated") and help("jfa-deprecated").</span></span></code></pre>
 <p>Laura can inspect the outcomes of her inference by using the
 <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function. Her resulting upper bound is 2.278%,
 which is lower than the materiality of 5%. The output tells Laura the
 correct conclusion immediately.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Evaluation Summary</span></span>
@@ -445,9 +423,9 @@ the posterior distribution that contains 95% of the probability, which
 ends at 2.278%. Therefore, Laura can state that there is a 95%
 probability that the misstatement in BuildIt’s population is lower than
 2.278%.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v2_bayesian_sampling_workflow_files/figure-html/unnamed-chunk-16-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="v2-audit-sampling-bayesian-workflow_files/figure-html/unnamed-chunk-16-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>

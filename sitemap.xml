@@ -19,28 +19,22 @@
     <loc>/articles/jfa.html</loc>
   </url>
   <url>
-    <loc>/articles/v1_sampling_workflow.html</loc>
+    <loc>/articles/v1-audit-sampling-workflow.html</loc>
   </url>
   <url>
-    <loc>/articles/v2_bayesian_sampling_workflow.html</loc>
+    <loc>/articles/v2-audit-sampling-bayesian-workflow.html</loc>
   </url>
   <url>
-    <loc>/articles/v3_prior_distributions.html</loc>
+    <loc>/articles/v3-audit-sampling-prior-distributions.html</loc>
   </url>
   <url>
-    <loc>/articles/v4_selection_methodology.html</loc>
+    <loc>/articles/v4-audit-sampling-sample-selection.html</loc>
   </url>
   <url>
-    <loc>/articles/v5_estimating_misstatement.html</loc>
+    <loc>/articles/v5-audit-sampling-evaluation.html</loc>
   </url>
   <url>
-    <loc>/articles/v6_testing_misstatement.html</loc>
-  </url>
-  <url>
-    <loc>/articles/v7_bayes_factors_summary_statistics.html</loc>
-  </url>
-  <url>
-    <loc>/articles/v8_digit_analysis.html</loc>
+    <loc>/articles/v6-auditing-data-digit-analysis.html</loc>
   </url>
   <url>
     <loc>/authors.html</loc>
@@ -61,10 +55,7 @@
     <loc>/reference/carrier.html</loc>
   </url>
   <url>
-    <loc>/reference/data_digit_distribution.html</loc>
-  </url>
-  <url>
-    <loc>/reference/data_repeated_values.html</loc>
+    <loc>/reference/digit_distribution.html</loc>
   </url>
   <url>
     <loc>/reference/evaluation.html</loc>
@@ -85,16 +76,10 @@
     <loc>/reference/planning.html</loc>
   </url>
   <url>
+    <loc>/reference/repeated_values.html</loc>
+  </url>
+  <url>
     <loc>/reference/report.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sample_evaluation.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sample_planning.html</loc>
-  </url>
-  <url>
-    <loc>/reference/sample_selection.html</loc>
   </url>
   <url>
     <loc>/reference/sanitizer.html</loc>

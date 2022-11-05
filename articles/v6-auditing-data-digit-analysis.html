@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auditing data: Get started • jfa</title>
+<title>Auditing data: Digit analysis • jfa</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Auditing data: Get started">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Auditing data: Digit analysis">
 <meta property="og:description" content="jfa">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -60,28 +60,22 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/v1_sampling_workflow.html">Workflow: Classical audit sampling</a>
+      <a href="../articles/v1-audit-sampling-workflow.html">Audit sampling: Classical sampling workflow</a>
     </li>
     <li>
-      <a href="../articles/v2_bayesian_sampling_workflow.html">Workflow: Bayesian audit sampling</a>
+      <a href="../articles/v2-audit-sampling-bayesian-workflow.html">Audit sampling: Bayesian sampling workflow</a>
     </li>
     <li>
-      <a href="../articles/v3_prior_distributions.html">Planning: Prior distributions</a>
+      <a href="../articles/v3-audit-sampling-prior-distributions.html">Audit sampling: Prior distributions</a>
     </li>
     <li>
-      <a href="../articles/v4_selection_methodology.html">Selection: Sampling methodology</a>
+      <a href="../articles/v4-audit-sampling-sample-selection.html">Audit sampling: Sample selection</a>
     </li>
     <li>
-      <a href="../articles/v5_estimating_misstatement.html">Evaluation: Estimating misstatement</a>
+      <a href="../articles/v5-audit-sampling-evaluation.html">Audit sampling: Sample evaluation</a>
     </li>
     <li>
-      <a href="../articles/v6_testing_misstatement.html">Evaluation: Testing misstatement</a>
-    </li>
-    <li>
-      <a href="../articles/v7_bayes_factors_summary_statistics.html">Evaluation: Bayes factors using summary statistics</a>
-    </li>
-    <li>
-      <a href="../articles/v8_digit_analysis.html">Auditing data: Get started</a>
+      <a href="../articles/v6-auditing-data-digit-analysis.html">Auditing data: Digit analysis</a>
     </li>
   </ul>
 </li>
@@ -109,29 +103,30 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Auditing data: Get started</h1>
+      <h1 data-toc-skip>Auditing data: Digit analysis</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
             <h4 data-toc-skip class="date">last modified:
 05-11-2022</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/v8_digit_analysis.Rmd" class="external-link"><code>vignettes/v8_digit_analysis.Rmd</code></a></small>
-      <div class="hidden name"><code>v8_digit_analysis.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/v6-auditing-data-digit-analysis.Rmd" class="external-link"><code>vignettes/v6-auditing-data-digit-analysis.Rmd</code></a></small>
+      <div class="hidden name"><code>v6-auditing-data-digit-analysis.Rmd</code></div>
 
     </div>
 
     
     
 <div class="section level2">
-<h2 id="auditing-data-get-started">Auditing data: Get started<a class="anchor" aria-label="anchor" href="#auditing-data-get-started"></a>
+<h2 id="auditing-data-digit-analysis">Auditing data: Digit analysis<a class="anchor" aria-label="anchor" href="#auditing-data-digit-analysis"></a>
 </h2>
-<p>Welcome to the ‘Auditing data’ vignette of the <code>jfa</code>
+<p>Welcome to the ‘Digit analysis’ vignette of the <code>jfa</code>
 package. In this vignette you are able to find detailed examples of how
-you can incorporate the functions provided by the package.</p>
+you can incorporate the <code><a href="../reference/digit_distribution.html">digit_distribution()</a></code> and
+<code><a href="../reference/repeated_values.html">repeated_values()</a></code> functions provided by the package.</p>
 <div class="section level3">
-<h3 id="function-data_digit_distribution">Function: <code>data_digit_distribution()</code><a class="anchor" aria-label="anchor" href="#function-data_digit_distribution"></a>
+<h3 id="function-digit_distribution">Function: <code>digit_distribution()</code><a class="anchor" aria-label="anchor" href="#function-digit_distribution"></a>
 </h3>
-<p>The function <code><a href="../reference/data_digit_distribution.html">data_digit_distribution()</a></code> takes a vector of
+<p>The function <code><a href="../reference/digit_distribution.html">digit_distribution()</a></code> takes a vector of
 numeric values, extract the requested digits, and compares the
 frequencies of these digits to a reference distribution. The function
 <code>distr.test()</code> performs a frequentist hypothesis test of the
@@ -147,14 +142,15 @@ Bayes factor (Kass &amp; Raftery, 1995).</p>
 <p>Benford’s law (Benford, 1938) is a principle that describes a pattern
 in many naturally-occurring numbers. According to Benford’s law, each
 possible leading digit <em>d</em> in a naturally occurring, or
-non-manipulated, set of numbers occurs with a probability p(d) = log10(1
-+ 1/d). The distribution of leading digits in a data set of financial
-transaction values (e.g., the <code>sinoForest</code> data) can be
-extracted and tested against the expected frequencies under Benford’s
-law using the code below.</p>
+non-manipulated, set of numbers occurs with a probability
+<code>p(d) = log10(1 + 1/d)</code>. The distribution of leading digits
+in a data set of financial transaction values (e.g., the
+<code>sinoForest</code> data) can be extracted and tested against the
+expected frequencies under Benford’s law using the code below.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Frequentist hypothesis test</span></span>
-<span><span class="fu"><a href="../reference/data_digit_distribution.html">data_digit_distribution</a></span><span class="op">(</span><span class="va">sinoForest</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"first"</span>, reference <span class="op">=</span> <span class="st">"benford"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/digit_distribution.html">digit_distribution</a></span><span class="op">(</span><span class="va">sinoForest</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"first"</span>, reference <span class="op">=</span> <span class="st">"benford"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Digit distribution test</span></span>
 <span><span class="co">## </span></span>
@@ -162,40 +158,50 @@ law using the code below.</p>
 <span><span class="co">## n = 772, X-squared = 7.6517, df = 8, p-value = 0.4682</span></span>
 <span><span class="co">## alternative hypothesis: leading digit(s) are not distributed according to the benford distribution.</span></span></code></pre>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Bayesian hypothesis test using default prior</span></span>
-<span><span class="fu"><a href="../reference/data_digit_distribution.html">data_digit_distribution</a></span><span class="op">(</span><span class="va">sinoForest</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"first"</span>, reference <span class="op">=</span> <span class="st">"benford"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Bayesian hypothesis test using default prior</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/digit_distribution.html">digit_distribution</a></span><span class="op">(</span><span class="va">sinoForest</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"first"</span>, reference <span class="op">=</span> <span class="st">"benford"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Digit distribution test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sinoForest$value</span></span>
 <span><span class="co">## n = 772, BF10 = 1.4493e-07</span></span>
 <span><span class="co">## alternative hypothesis: leading digit(s) are not distributed according to the benford distribution.</span></span></code></pre>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<p><img src="v6-auditing-data-digit-analysis_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 </div>
 <div class="section level3">
-<h3 id="function-data_repeated_values">Function: <code>data_repeated_values()</code><a class="anchor" aria-label="anchor" href="#function-data_repeated_values"></a>
+<h3 id="function-repeated_values">Function: <code>repeated_values()</code><a class="anchor" aria-label="anchor" href="#function-repeated_values"></a>
 </h3>
-<p>The function <code><a href="../reference/data_repeated_values.html">data_repeated_values()</a></code> analyzes the
-frequency with which values get repeated within a set of numbers. Unlike
-Benford’s law, and its generalizations, this approach examines the
-entire number at once, not only the first or last digit. For the
-technical details of this procedure, see Simohnsohn (2019).</p>
+<p>The function <code><a href="../reference/repeated_values.html">repeated_values()</a></code> analyzes the frequency
+with which values get repeated within a set of numbers. Unlike Benford’s
+law, and its generalizations, this approach examines the entire number
+at once, not only the first or last digit. For the technical details of
+this procedure, see Simohnsohn (2019).</p>
 <p><em>Example:</em></p>
 <p>In this example we analyze a data set from a (retracted) paper that
 describes three experiments run in Chinese factories, where workers were
 nudged to use more hand-sanitizer. These data were shown to exhibited
 two classic markers of data tampering: impossibly similar means and the
 uneven distribution of last digits (Yu, Nelson, &amp; Simohnson, 2018).
-We can use the <code><a href="../reference/data_repeated_values.html">data_repeated_values()</a></code> function to test if
-these data also contain a greater amount of repeated values than
-expected if the data were not tampered with.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/data_repeated_values.html">data_repeated_values</a></span><span class="op">(</span><span class="va">sanitizer</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"lasttwo"</span>, B <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span></code></pre></div>
+We can use the <code><a href="../reference/repeated_values.html">repeated_values()</a></code> function to test if these
+data also contain a greater amount of repeated values than expected if
+the data were not tampered with.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/repeated_values.html">repeated_values</a></span><span class="op">(</span><span class="va">sanitizer</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"lasttwo"</span>, B <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Repeated values test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sanitizer$value</span></span>
-<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.002</span></span>
+<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0015</span></span>
 <span><span class="co">## alternative hypothesis: average frequency in data is greater than for random data.</span></span></code></pre>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<p><img src="v6-auditing-data-digit-analysis_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 </div>
 </div>
   </div>
