@@ -4,7 +4,7 @@
 \alias{digit_distribution}
 \title{Auditing Data: Digit Distribution}
 \usage{
-digit_distribution(x, check = 'first',
+digit_distribution(x, check = c("first", "last", "firsttwo"),
                    reference = 'benford', prior = FALSE)
 }
 \arguments{

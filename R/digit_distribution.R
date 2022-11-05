@@ -17,7 +17,7 @@
 #'
 #' @description This function extracts and performs a test of the distribution of (leading) digits in a vector against a reference distribution. By default, the distribution of leading digits is checked against Benford's law.
 #'
-#' @usage digit_distribution(x, check = 'first',
+#' @usage digit_distribution(x, check = c("first", "last", "firsttwo"),
 #'                    reference = 'benford', prior = FALSE)
 #'
 #' @param x           a numeric vector.
