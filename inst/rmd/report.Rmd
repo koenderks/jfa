@@ -26,7 +26,7 @@ colorize <- function(x, color) {
 
 <img src="jfaLogo.png" width="133" height="154" alt="logo" align="right" margin-left="20" margin-right="20"/>
 
-This report was created by `r version$version.string` and its package `jfa` (version `r utils::packageVersion("jfa")`)^[`jfa`'s source code can be found on its [GitHub page](https://github.com/koenderks/jfa)]. `jfa` provides Bayesian and classical audit sampling analyses and is available on CRAN. 
+This report was created by `r version$version.string` and its package `jfa` (version `r utils::packageVersion("jfa")`)^[`jfa`'s source code can be found on its [GitHub page](https://github.com/koenderks/jfa)]. `jfa` provides Bayesian and classical methods for auditing and is available on CRAN. 
 
 `jfa` is free software and you can redistribute it and or modify it under the terms of the GNU GPL-3 as published by the Free Software Foundation. The package is distributed in the hope that it will be useful, but without any warranty; without even the implied warranty of merchantability of fitness for a particular purpose. 
 

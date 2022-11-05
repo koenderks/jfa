@@ -5,7 +5,7 @@
 [![Bugs](https://img.shields.io/github/issues/koenderks/jfa/bug?label=Bugs&logo=github&logoColor=%23FFF&color=brightgreen)](https://github.com/koenderks/jfa/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
 [![Total](https://cranlogs.r-pkg.org/badges/grand-total/jfa?color=blue)](https://cranlogs.r-pkg.org)
 
-# jfa: Bayesian and Classical Audit Sampling <img src='https://github.com/koenderks/jfa/raw/development/man/figures/logo.png' width='149' height='173' align='right'/>
+# jfa: Bayesian and Classical Methods for Auditing <img src='https://github.com/koenderks/jfa/raw/development/man/figures/logo.png' width='149' height='173' align='right'/>
 
 `jfa` is an R package for statistical auditing focusing on two areas: audit sampling and data auditing. First, the package provides functions for planning, performing, evaluating, and reporting an audit sample compliant with international standards on auditing. Specifically, these functions implement standard audit sampling techniques for calculating sample sizes, selecting items from a population, and evaluating misstatement from a data sample or from summary statistics. `jfa` enables the user to create a prior probability distribution to perform Bayesian audit sampling using these functions. Second, the package provides functions for auditing data, for example testing the first digits in a data set against Benford's law.
 
@@ -311,7 +311,7 @@ Below you can find several informative tables that contain statistical sample si
 
 - Bickel, P. J. (1992). Inference and auditing: The Stringer bound. *International Statistical Review*, 60(2), 197–209. - [View online](https://www.jstor.org/stable/1403650)
 - Cox, D. R., & Snell, E. J. (1979). On sampling and the estimation of rare errors. *Biometrika*, 66(1), 125-132. - [View online](https://doi.org/10.1093/biomet/66.1.125)
-- Derks, K. (2022). jfa: Bayesian and classical audit sampling. R package version 0.6.3. - [View online](https://cran.r-project.org/package=jfa)
+- Derks, K. (2022). jfa: Bayesian and classical methods for auditing. R package version 0.6.5. - [View online](https://cran.r-project.org/package=jfa)
 - Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., & Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. *International Journal of Auditing*, 25(3), 621-636. - [View online](https://doi.org/10.1111/ijau.12240)
 - Derks, K., de Swart, J., Wagenmakers, E.-J., & Wetzels, R. (2021). The Bayesian Approach to Audit Evidence: Quantifying Statistical Evidence using the Bayes Factor. *PsyArXiv* - [View online](https://doi.org/10.31234/osf.io/kzqp5)
 - Derks, K., de Swart. J., Wagenmakers, E.-J., Wille, J., & Wetzels, R. (2021). JASP for Audit: Bayesian Tools for the Auditing Practice. *Journal of Open Source Software*, 6(68), 2733. - [View online](https://doi.org/10.21105/joss.02733)

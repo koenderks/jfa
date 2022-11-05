@@ -1,9 +1,9 @@
 citHeader("To cite jfa in publications, please use:")
 
 bibentry(bibtype = "Manual",
-         title = "jfa: Bayesian and Classical Audit Sampling",
+         title = "jfa: Bayesian and Classical Methods for Auditing",
          author = person("Koen", "Derks"),
          year = "2022",
          note = "R package version 0.6.5",
          url = "https://CRAN.R-project.org/package=jfa",
-         textVersion = "Derks, K. (2022). jfa: Bayesian and Classical Audit Sampling. R package version 0.6.5.")
+         textVersion = "Derks, K. (2022). jfa: Bayesian and Classical Methods for Auditing. R package version 0.6.5.")
