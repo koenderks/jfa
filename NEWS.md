@@ -1,5 +1,9 @@
 # jfa 0.6.5
 
+**New features**
+
+- Integrated the auditing functionality of the `digitTests` package.
+
 **Bug fixes**
 
 - Fixed a bug where the proportion of value in `summary(selection)` was displayed incorrectly.

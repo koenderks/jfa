@@ -13,14 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Select a Statistical Audit Sample
+#' Audit Sampling: Selection
 #'
-#' @description \code{selection()} is used to perform statistical selection of audit samples. It offers flexible implementations of the most common audit sampling algorithms for attributes sampling and monetary unit sampling. \code{selection()} returns an object of class \code{jfaSelection} which can be used with associated \code{summary()} and a \code{plot()} methods.
+#' @description \code{sample_selection()} is used to perform statistical selection of audit samples. It offers flexible implementations of the most common audit sampling algorithms for attributes sampling and monetary unit sampling. The function returns an object of class \code{jfaSelection} which can be used with associated \code{summary()} and a \code{plot()} methods.
 #'
 #' For more details on how to use this function, see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
-#' @usage selection(data, size, units = c('items', 'values'),
+#' @usage sample_selection(data, size, units = c('items', 'values'),
 #'           method = c('interval', 'cell', 'random', 'sieve'), values = NULL,
 #'           order = NULL, decreasing = FALSE, randomize = FALSE,
 #'           replace = FALSE, start = 1)
@@ -82,20 +82,19 @@
 #' data("BuildIt")
 #'
 #' # Select 100 items using random sampling
-#' selection(data = BuildIt, size = 100, method = "random")
+#' sample_selection(data = BuildIt, size = 100, method = "random")
 #'
 #' # Select 150 monetary units using fixed interval sampling
-#' selection(
+#' sample_selection(
 #'   data = BuildIt, size = 150, units = "values",
 #'   method = "interval", values = "bookValue"
 #' )
 #' @export
 
-selection <- function(data, size, units = c("items", "values"),
-                      method = c("interval", "cell", "random", "sieve"), values = NULL,
-                      order = NULL, decreasing = FALSE, randomize = FALSE,
-                      replace = FALSE, start = 1) {
-  .Deprecated(new = "sample_selection", package = "jfa", old = "selection")
+sample_selection <- function(data, size, units = c("items", "values"),
+                             method = c("interval", "cell", "random", "sieve"), values = NULL,
+                             order = NULL, decreasing = FALSE, randomize = FALSE,
+                             replace = FALSE, start = 1) {
   units <- match.arg(units)
   method <- match.arg(method)
   if (inherits(size, "jfaPlanning")) { # If the input for 'sampleSize' is of class 'jfaPlanning', extract the planned sample size
@@ -138,7 +137,7 @@ selection <- function(data, size, units = c("items", "values"),
     stopifnot("cannot take a sample larger than the population value" = size <= sum(bookvalues))
   }
   if (!is.null(bookvalues) && any(bookvalues < 0)) { # Remove the negative book values from the population
-    message("'values' contains negative values which are removed before selection")
+    message("'values' contains negative values which are removed before sample selection")
     negvals <- which(bookvalues < 0)
     data <- data[-negvals, ]
     bookvalues <- data[, values]

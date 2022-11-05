@@ -35,9 +35,9 @@ Laura wants to make a statement that, with 95% confidence, the misstatement in t
 
 ```{r}
 # Specify the confidence, materiality, and expected errors.
-confidence  <- 0.95   # 95%
-materiality <- 0.05   # 5%
-expected    <- 0.025  # 2.5%
+confidence <- 0.95 # 95%
+materiality <- 0.05 # 5%
+expected <- 0.025 # 2.5%
 ```
 
 Many audits are performed according to the *audit risk model (ARM)*, which determines that the uncertainty about Laura's statement as a whole (1 - her confidence) is a factor of three terms: the inherent risk, the control risk, and the detection risk. Inherent risk is the risk posed by an error in BuildIt's financial statement that could be material, before consideration of any related control systems (e.g., computer systems). Control risk is the risk that a material misstatement is not prevented or detected by BuildIt's internal control systems. Detection risk is the risk that Laura will fail to find material misstatements that exist in an BuildIt's financial statements. The *ARM* is practically useful because for a given level of audit risk, the tolerable detection risk bears an inverse relation to the other two risks. The *ARM* is useful for Laura because it enables her to incorporate prior knowledge on BuildIt's organization to increase the required risk that she will fail to find material misstatements. According to the *ARM*, the audit risk will then be retained.
@@ -48,8 +48,8 @@ Usually the auditor judges inherent risk and control risk on a three-point scale
 
 ```{r}
 # Specify the inherent risk (ir) and control risk (cr).
-ir <- 1     # 100%
-cr <- 0.6   # 60%
+ir <- 1 # 100%
+cr <- 0.6 # 60%
 ```
 
 ## Stage 1: Planning an audit sample
@@ -77,7 +77,7 @@ Laura chooses to use *monetary unit sampling*, as she wants to include more high
 
 ```{r}
 # Step 2: Draw a sample from the financial statements.
-stage2 <- selection(data = BuildIt, size = stage1, units = "values", values = "bookValue", method = 'interval')
+stage2 <- selection(data = BuildIt, size = stage1, units = "values", values = "bookValue", method = "interval")
 ```
 
 Laura can inspect the outcomes of her sampling procedure by using the `summary()` function.
@@ -109,8 +109,10 @@ Using her annotated sample, Laura can perform her inference with the `evaluation
 
 ```{r}
 # Step 4: Evaluate the sample
-stage4 <- evaluation(materiality = materiality, conf.level = c.adj, data = sample, 
-                     values = 'bookValue', values.audit = 'auditValue')
+stage4 <- evaluation(
+  materiality = materiality, conf.level = c.adj, data = sample,
+  values = "bookValue", values.audit = "auditValue"
+)
 ```
 
 Laura can inspect the outcomes of her inference by using the `summary()` function. Her resulting 91.66% upper bound is 1.396%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.

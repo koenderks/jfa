@@ -1,0 +1,51 @@
+---
+title: "Get started"
+author: Koen Derks
+date: "last modified: 05-11-2022"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Get started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteDepends{jfa}
+  %\VignetteKeywords{digit, tests, Bayesian}
+  %\VignettePackage{jfa}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo = F}
+library(jfa)
+```
+
+# Auditing Data
+
+Welcome to the 'Auditing data' vignette of the `jfa` package. In this vignette you are able to find detailed examples of how you can incorporate the functions provided by the package.
+
+## Function: `data_digit_distribution()`
+
+The function `data_digit_distribution()` takes a vector of numeric values, extract the requested digits, and compares the frequencies of these digits to a reference distribution. The function `distr.test()` performs a frequentist hypothesis test of the null hypothesis that the digits are distributed according to the reference distribution and produces a *p* value. The function `distr.btest()` performs a Bayesian hypothesis test of the null hypothesis that the digits are distributed according to the reference distribution against the alternative hypothesis (using the prior parameters specified in `alpha`) that the digits are not distributed according to the reference distribution and produces a Bayes factor (Kass & Raftery, 1995).
+
+*Example:*
+
+Benford’s law (Benford, 1938) is a principle that describes a pattern in many naturally-occurring numbers. According to Benford's law, each possible leading digit *d* in a naturally occurring, or non-manipulated, set of numbers occurs with a probability p(d) = log10(1 + 1/d). The distribution of leading digits in a data set of financial transaction values (e.g., the `sinoForest` data) can be extracted and tested against the expected frequencies under Benford's law using the code below.
+
+```{r}
+# Frequentist hypothesis test
+data_digit_distribution(sinoForest$value, check = "first", reference = "benford")
+
+# Bayesian hypothesis test using default prior
+data_digit_distribution(sinoForest$value, check = "first", reference = "benford", prior = TRUE)
+```
+
+## Function: `data_repeated_values()`
+
+The function `data_repeated_values()` analyzes the frequency with which values get repeated within a set of numbers. Unlike Benford's law, and its generalizations, this approach examines the entire number at once, not only the first or last digit. For the technical details of this procedure, see Simohnsohn (2019).
+
+*Example:*
+
+In this example we analyze a data set from a (retracted) paper that describes three experiments run in Chinese factories, where workers were nudged to use more hand-sanitizer. These data were shown to exhibited two classic markers of data tampering: impossibly similar means and the uneven distribution of last digits (Yu, Nelson, & Simohnson, 2018). We can use the `data_repeated_values()` function to test if these data also contain a greater amount of repeated values than expected if the data were not tampered with.
+
+```{r}
+data_repeated_values(sanitizer$value, check = "lasttwo", B = 2000)
+```

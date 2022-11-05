@@ -17,7 +17,7 @@
 #'
 #' Methods defined for objects returned from the \code{\link{auditPrior}}, \code{\link{planning}}, \code{\link{selection}}, and \code{\link{evaluation}} functions.
 #'
-#' @param object,x    an object of class \code{jfaPrior}, \code{jfaPosterior}, \code{jfaPlanning}, \code{jfaSelection}, or \code{jfaEvaluation}.
+#' @param object,x    an object of class \code{jfaPrior}, \code{jfaPosterior}, \code{jfaPlanning}, \code{jfaSelection}, \code{jfaEvaluation}, \code{jfaDistr}, or \code{jfaRv}.
 #' @param digits      an integer specifying the number of digits to which output should be rounded. Used in \code{summary}.
 #' @param xlim        used in \code{plot}. Specifies the x limits (x1, x2) of the plot.
 #' @param n           used in \code{predict}. Specifies the sample size for which predictions should be made.
@@ -33,7 +33,7 @@
 #' @name jfa-methods
 NULL
 
-# Print methods
+# Methods for class: jfaPrior #####################################################
 
 #' @rdname jfa-methods
 #' @method print jfaPrior
@@ -43,75 +43,6 @@ print.jfaPrior <- function(x, ...) {
   cat(strwrap("Prior Distribution for Audit Sampling", prefix = "\t"), sep = "\n")
   cat("\n")
   cat("functional form:", x[["prior"]], "\nparameters obtained via method", paste0("'", x[["method"]], "'\n"))
-}
-
-#' @rdname jfa-methods
-#' @method print jfaPosterior
-#' @export
-print.jfaPosterior <- function(x, ...) {
-  cat("\n")
-  cat(strwrap("Posterior Distribution from Audit Sampling", prefix = "\t"), sep = "\n")
-  cat("\n")
-  cat("functional form:", x[["posterior"]], "\nparameters obtained via method 'sample'\n")
-}
-
-#' @rdname jfa-methods
-#' @method print jfaPlanning
-#' @export
-print.jfaPlanning <- function(x, ...) {
-  cat("\n")
-  if (is.null(x[["prior"]])) cat(strwrap("Classical Audit Sample Planning", prefix = "\t"), sep = "\n") else cat(strwrap("Bayesian Audit Sample Planning", prefix = "\t"), sep = "\n")
-  cat("\n")
-  cat("minimum sample size =", x[["n"]], "\nsample size obtained in", x[["iterations"]], "iteration(s) via method", if (is.null(x[["prior"]])) paste0("'", x[["likelihood"]], "'\n") else paste0("'", x[["likelihood"]], "' + 'prior'\n"))
-}
-
-#' @rdname jfa-methods
-#' @method print jfaSelection
-#' @export
-print.jfaSelection <- function(x, ...) {
-  cat("\n")
-  cat(strwrap("Audit Sample Selection", prefix = "\t"), sep = "\n")
-  cat("\n")
-  cat(paste("data: ", x[["data.name"]]), sep = "\n")
-  cat(paste0("number of sampling units = ", x[["n.units"]], ", number of items = ", x[["n.items"]], "\nsample selected via method ", paste0("'", x[["units"]], "' + '", x[["method"]], "'\n")))
-}
-
-#' @rdname jfa-methods
-#' @method print jfaEvaluation
-#' @export
-print.jfaEvaluation <- function(x, digits = getOption("digits"), ...) {
-  cat("\n")
-  if (is.null(x[["prior"]])) cat(strwrap(paste0("Classical Audit Sample Evaluation"), prefix = "\t"), sep = "\n") else cat(strwrap(paste0("Bayesian Audit Sample Evaluation"), prefix = "\t"), sep = "\n")
-  cat("\n")
-  lab <- if (!is.null(x[["data"]])) x[["data.name"]] else paste0(x[["x"]], " and ", x[["n"]])
-  cat(paste("data: ", lab), sep = "\n")
-  out <- character()
-  out <- c(out, paste("number of errors =", format(x[["x"]], digits = max(1L, digits - 2L))))
-  out <- c(out, paste("number of samples =", format(x[["n"]], digits = max(1L, digits - 2L))))
-  out <- c(out, paste("taint =", format(x[["t"]], digits = max(1L, digits - 2L))))
-  if (is.null(x[["prior"]]) && x[["materiality"]] < 1 && x[["method"]] %in% c("binomial", "poisson", "hypergeometric")) {
-    out <- c(out, paste("p-value =", format.pval(x[["p.value"]], digits = max(1L, digits - 2L))))
-  }
-  if (!is.null(x[["prior"]]) && x[["materiality"]] < 1) {
-    out <- c(out, paste("BF\u2081\u2080 =", format(x[["posterior"]][["hypotheses"]]$bf.h1, digits = max(1L, digits - 2L))))
-  }
-  cat(strwrap(paste(out, collapse = ", ")), sep = "\n")
-  if (!is.null(x[["p.value"]]) || !is.null(x[["posterior"]]$hypotheses)) {
-    if (x[["alternative"]] == "less") {
-      cat(paste0("alternative hypothesis: true misstatement rate is less than ", x[["materiality"]]), sep = "\n")
-    }
-    if (x[["alternative"]] == "two.sided") {
-      cat(paste0("alternative hypothesis: true misstatement rate is not equal to ", x[["materiality"]]), sep = "\n")
-    }
-    if (x[["alternative"]] == "greater") {
-      cat(paste0("alternative hypothesis: true misstatement rate is greater than ", x[["materiality"]]), sep = "\n")
-    }
-  }
-  if (!is.null(x[["ub"]])) {
-    cat(format(100 * x$conf.level), " percent ", if (is.null(x[["prior"]])) "confidence" else "credible", " interval:\n", " ", paste(format(c(x[["lb"]], x[["ub"]]), digits = digits), collapse = " "), "\n", sep = "")
-  }
-  cat(paste0("estimate:\n", " ", format(x[["mle"]], digits = digits)), "\n")
-  cat(paste0("estimates obtained via method ", if (is.null(x[["prior"]])) paste0("'", x[["method"]], "'\n") else paste0("'", x[["method"]], "' + 'prior'\n")))
 }
 
 #' @rdname jfa-methods
@@ -145,153 +76,6 @@ print.summary.jfaPrior <- function(x, digits = getOption("digits"), ...) {
   cat(paste(" ", format(x[["conf.level"]] * 100), "percent upper bound:       ", format(x[["ub"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Precision:                    ", format(x[["precision"]], digits = max(1L, digits - 2L))), "\n")
 }
-
-#' @rdname jfa-methods
-#' @method print summary.jfaPosterior
-#' @export
-print.summary.jfaPosterior <- function(x, digits = getOption("digits"), ...) {
-  cat("\n")
-  cat(strwrap("Posterior Distribution Summary", prefix = "\t"), sep = "\n")
-  cat("\nResults:\n")
-  cat(paste("  Functional form:              ", x[["posterior"]]), "\n")
-  cat(paste("  Mode:                         ", format(x[["mode"]], digits = max(1L, digits - 2L))), "\n")
-  cat(paste("  Mean:                         ", format(x[["mean"]], digits = max(1L, digits - 2L))), "\n")
-  cat(paste("  Median:                       ", format(x[["median"]], digits = max(1L, digits - 2L))), "\n")
-  cat(paste("  Variance:                     ", format(x[["var"]], digits = max(1L, digits - 2L))), "\n")
-  cat(paste("  Skewness:                     ", format(x[["skewness"]], digits = max(1L, digits - 2L))), "\n")
-  cat(paste("  Precision:                    ", format(x[["precision"]], digits = max(1L, digits - 2L))), "\n")
-}
-
-#' @rdname jfa-methods
-#' @method print summary.jfaPlanning
-#' @export
-print.summary.jfaPlanning <- function(x, digits = getOption("digits"), ...) {
-  cat("\n")
-  cat(strwrap(paste(x[["type"]], "Audit Sample Planning Summary"), prefix = "\t"), sep = "\n")
-  cat("\nOptions:\n")
-  cat(paste("  Confidence level:             ", format(x[["conf.level"]], digits = max(1L, digits - 2L))), "\n")
-  if (!is.null(x[["N.units"]])) {
-    cat(paste("  Population size:              ", format(x[["N.units"]], digits = max(1L, digits - 2L))), "\n")
-  }
-  if (x[["materiality"]] < 1) {
-    cat(paste("  Materiality:                  ", format(x[["materiality"]], digits = max(1L, digits - 2L))), "\n")
-    cat(paste("  Hypotheses:                   ", paste0("H\u2080: \u0398 ", if (x[["type"]] == "Bayesian") ">" else ">=", " ", format(x[["materiality"]], digits = max(1L, digits - 2L)), " vs. H\u2081: \u0398 < ", format(x[["materiality"]], digits = max(1L, digits - 2L)))), "\n")
-  }
-  if (x[["min.precision"]] < 1) {
-    cat(paste("  Min. precision:               ", format(x[["min.precision"]], digits = max(1L, digits - 2L))), "\n")
-  }
-  cat(paste("  Expected:                     ", format(x[["expected"]], digits = max(1L, digits - 2L))), "\n")
-  cat(paste("  Likelihood:                   ", x[["likelihood"]]), "\n")
-  if (x[["type"]] == "Bayesian") {
-    cat(paste("  Prior distribution:           ", x[["prior"]]), "\n")
-  }
-  cat("\nResults:\n")
-  cat(paste("  Minimum sample size:          ", x[["n"]]), "\n")
-  cat(paste("  Tolerable errors:             ", format(x[["x"]], digits = max(1L, digits - 2L))), "\n")
-  if (x[["type"]] == "Bayesian") {
-    cat(paste("  Posterior distribution:       ", x[["posterior"]]), "\n")
-  }
-  cat(paste("  Expected most likely error:   ", format(x[["mle"]], digits = max(1L, digits - 2L))), "\n")
-  cat(paste("  Expected upper bound:         ", format(x[["ub"]], digits = max(1L, digits - 2L))), "\n")
-  cat(paste("  Expected precision:           ", format(x[["precision"]], digits = max(1L, digits - 2L))), "\n")
-  if (x[["materiality"]] < 1 && x[["type"]] == "Bayesian") {
-    cat(paste("  Expected BF\u2081\u2080:\t                ", format(x[["bf.h1"]], digits = max(1L, digits - 2L))), "\n")
-  }
-  if (x[["materiality"]] < 1 && x[["type"]] == "Classical") {
-    cat(paste("  Expected p-value:             ", format.pval(x[["p.value"]], digits = max(1L, digits - 2L))), "\n")
-  }
-}
-
-#' @rdname jfa-methods
-#' @method print summary.jfaSelection
-#' @export
-print.summary.jfaSelection <- function(x, digits = getOption("digits"), ...) {
-  cat("\n")
-  cat(strwrap(paste(x[["type"]], "Audit Sample Selection Summary"), prefix = "\t"), sep = "\n")
-  cat("\nOptions:\n")
-  cat(paste("  Requested sample size:        ", x[["n.req"]]), "\n")
-  cat(paste("  Sampling units:               ", switch(x[["units"]],
-    "values" = "monetary units",
-    "items" = "items"
-  )), "\n")
-  cat(paste("  Method:                       ", switch(x[["method"]],
-    "random" = "random sampling",
-    "interval" = "fixed interval sampling",
-    "cell" = "cell sampling",
-    "sieve" = "modified sieve sampling"
-  )), "\n")
-  if (x[["method"]] == "interval") {
-    cat(paste("  Starting point:               ", x[["start"]]), "\n")
-  }
-  cat("\nData:\n")
-  cat(paste("  Population size:              ", x[["N.items"]]), "\n")
-  if (x[["units"]] == "values") {
-    cat(paste("  Population value:             ", format(x[["N.units"]], digits = max(1L, digits - 2L))), "\n")
-  }
-  if (x[["method"]] == "interval" || x[["method"]] == "cell") {
-    cat(paste("  Selection interval:           ", format(x[["interval"]], digits = max(1L, digits - 2L))), "\n")
-  }
-  cat("\nResults:\n")
-  cat(paste("  Selected sampling units:      ", x[["n.units"]]), "\n")
-  if (x[["units"]] == "values") {
-    cat(paste("  Proportion of value:          ", format(x[["prop.val"]], digits = max(1L, digits - 2L))), "\n")
-  }
-  cat(paste("  Selected items:               ", x[["n.items"]]), "\n")
-  cat(paste("  Proportion of size:           ", format(x[["prop.n"]], digits = max(1L, digits - 2L))), "\n")
-}
-
-#' @rdname jfa-methods
-#' @method print summary.jfaEvaluation
-#' @export
-print.summary.jfaEvaluation <- function(x, digits = getOption("digits"), ...) {
-  cat("\n")
-  cat(strwrap(paste(x[["type"]], "Audit Sample Evaluation Summary"), prefix = "\t"), sep = "\n")
-  cat("\nOptions:\n")
-  cat(paste("  Confidence level:              ", format(x[["conf.level"]], digits = max(1L, digits - 2L))), "\n")
-  if (!is.null(x[["N.units"]])) {
-    cat(paste("  Population size:               ", format(x[["N.units"]], digits = max(1L, digits - 2L))), "\n")
-  }
-  if (x[["materiality"]] < 1) {
-    cat(paste("  Materiality:                   ", format(x[["materiality"]], digits = max(1L, digits - 2L))), "\n")
-    if (x[["method"]] %in% c("poisson", "binomial", "hypergeometric")) {
-      cat(paste("  Hypotheses:                    ", switch(x[["alternative"]],
-        "two.sided" = paste0("H\u2080: \u0398 = ", format(x[["materiality"]], digits = max(1L, digits - 2L)), " vs. H\u2081: \u0398 \u2260 ", format(x[["materiality"]], digits = max(1L, digits - 2L))),
-        "less" = paste0("H\u2080: \u0398 ", if (x[["type"]] == "Bayesian") ">" else ">=", " ", format(x[["materiality"]], digits = max(1L, digits - 2L)), " vs. H\u2081: \u0398 < ", format(x[["materiality"]], digits = max(1L, digits - 2L))),
-        "greater" = paste0("H\u2080: \u0398 ", if (x[["type"]] == "Bayesian") "<" else "<=", " ", format(x[["materiality"]], digits = max(1L, digits - 2L)), " vs. H\u2081: \u0398 > ", format(x[["materiality"]], digits = max(1L, digits - 2L)))
-      )), "\n")
-    }
-  }
-  if (x[["min.precision"]] < 1) {
-    cat(paste("  Min. precision:                ", format(x[["min.precision"]], digits = max(1L, digits - 2L))), "\n")
-  }
-  cat(paste("  Method:                        ", x[["method"]]), "\n")
-  if (x[["type"]] == "Bayesian") {
-    cat(paste("  Prior distribution:            ", x[["prior"]]), "\n")
-  }
-  cat("\nData:\n")
-  cat(paste("  Sample size:                   ", x[["n"]]), "\n")
-  cat(paste("  Number of errors:              ", x[["x"]]), "\n")
-  cat(paste("  Sum of taints:                 ", x[["t"]]), "\n")
-  cat("\nResults:\n")
-  if (x[["type"]] == "Bayesian") {
-    cat(paste("  Posterior distribution:        ", x[["posterior"]]), "\n")
-  }
-  cat(paste("  Most likely error:             ", format(x[["mle"]], digits = max(1L, digits - 2L))), "\n")
-  if (x[["type"]] == "Bayesian") {
-    cat(paste(" ", paste0(format(x[["conf.level"]] * 100), " percent credible interval:   ", paste0("[", format(x[["lb"]], digits = max(1L, digits - 2L)), ", ", format(x[["ub"]], digits = max(1L, digits - 2L)), "]"))), "\n")
-  } else if (x[["type"]] == "Classical") {
-    cat(paste(" ", paste0(format(x[["conf.level"]] * 100), " percent confidence interval: ", paste0("[", format(x[["lb"]], digits = max(1L, digits - 2L)), ", ", format(x[["ub"]], digits = max(1L, digits - 2L)), "]"))), "\n")
-  }
-  cat(paste("  Precision:                     ", format(x[["precision"]], digits = max(1L, digits - 2L))), "\n")
-  if (x[["materiality"]] < 1 && x[["type"]] == "Bayesian") {
-    cat(paste("  BF\u2081\u2080:\t                         ", format(x[["bf.h1"]], digits = max(1L, digits - 2L))), "\n")
-  }
-  if (x[["materiality"]] < 1 && x[["type"]] == "Classical" && x[["method"]] %in% c("poisson", "binomial", "hypergeometric")) {
-    cat(paste("  p-value:                       ", format.pval(x[["p.value"]], digits = max(1L, digits - 2L))), "\n")
-  }
-}
-
-# Summary methods
 
 #' @rdname jfa-methods
 #' @method summary jfaPrior
@@ -342,137 +126,6 @@ summary.jfaPrior <- function(object, digits = getOption("digits"), ...) {
 }
 
 #' @rdname jfa-methods
-#' @method summary jfaPosterior
-#' @export
-summary.jfaPosterior <- function(object, digits = getOption("digits"), ...) {
-  out <- data.frame(
-    "posterior" = object[["posterior"]],
-    "ub" = round(object[["statistics"]]$ub, digits),
-    "precision" = round(object[["statistics"]]$precision, digits),
-    "mode" = round(object[["statistics"]]$mode, digits),
-    "mean" = round(object[["statistics"]]$mean, digits),
-    "median" = round(object[["statistics"]]$median, digits),
-    "var" = round(object[["statistics"]]$var, digits),
-    "skewness" = round(object[["statistics"]]$skewness, digits),
-    stringsAsFactors = FALSE
-  )
-  class(out) <- c("summary.jfaPosterior", "data.frame")
-  return(out)
-}
-
-#' @rdname jfa-methods
-#' @method summary jfaPlanning
-#' @export
-summary.jfaPlanning <- function(object, digits = getOption("digits"), ...) {
-  out <- data.frame(
-    "conf.level" = round(object[["conf.level"]], digits),
-    "expected" = round(object[["expected"]], digits),
-    "materiality" = round(object[["materiality"]], digits),
-    "min.precision" = round(object[["min.precision"]], digits),
-    "likelihood" = object[["likelihood"]],
-    "x" = round(object[["x"]], digits),
-    "n" = object[["n"]],
-    "ub" = round(object[["ub"]], digits),
-    "precision" = round(object[["precision"]], digits),
-    stringsAsFactors = FALSE
-  )
-  if (!is.null(object[["p.value"]])) {
-    out[["p.value"]] <- format.pval(object[["p.value"]], digits, eps = 0.01)
-  }
-  if (!is.null(object[["N.units"]])) {
-    out[["N.units"]] <- object[["N.units"]]
-  }
-  if (inherits(object[["prior"]], "jfaPrior")) {
-    out[["prior"]] <- object[["prior"]]$prior
-    out[["posterior"]] <- object[["posterior"]]$posterior
-    out[["mle"]] <- round(object[["posterior"]][["statistics"]]$mode, digits)
-    if (object[["materiality"]] != 1) {
-      out[["bf.h1"]] <- round(object[["posterior"]][["hypotheses"]]$bf.h1, digits)
-    }
-  } else {
-    out[["mle"]] <- round(object[["x"]] / object[["n"]], digits)
-  }
-  out[["type"]] <- if (inherits(object[["prior"]], "jfaPrior")) "Bayesian" else "Classical"
-  class(out) <- c("summary.jfaPlanning", "data.frame")
-  return(out)
-}
-
-#' @rdname jfa-methods
-#' @method summary jfaSelection
-#' @export
-summary.jfaSelection <- function(object, digits = getOption("digits"), ...) {
-  out <- data.frame(
-    "N.items" = object[["N.items"]],
-    "N.units" = round(object[["N.units"]], digits),
-    "n.req" = object[["n.req"]],
-    "units" = object[["units"]],
-    "method" = object[["method"]],
-    "n.units" = object[["n.units"]],
-    "n.items" = object[["n.items"]],
-    "prop.n" = round(object[["n.items"]] / object[["N.items"]], digits),
-    stringsAsFactors = FALSE
-  )
-  if (object[["method"]] == "interval" || object[["method"]] == "cell") {
-    out[["interval"]] <- round(object[["interval"]], digits)
-    if (object[["method"]] == "interval") {
-      out[["start"]] <- object[["start"]]
-    }
-  }
-  if (object[["units"]] == "values") {
-    out[["prop.val"]] <- round(sum(abs(object[["sample"]][, object[["values.name"]]])) / object[["N.units"]], digits)
-  }
-  class(out) <- c("summary.jfaSelection", "data.frame")
-  return(out)
-}
-
-#' @rdname jfa-methods
-#' @method summary jfaEvaluation
-#' @export
-summary.jfaEvaluation <- function(object, digits = getOption("digits"), ...) {
-  out <- data.frame(
-    "conf.level" = round(object[["conf.level"]], digits),
-    "materiality" = round(object[["materiality"]], digits),
-    "min.precision" = round(object[["min.precision"]], digits),
-    "x" = object[["x"]],
-    "n" = object[["n"]],
-    "method" = object[["method"]],
-    "mle" = round(object[["mle"]], digits),
-    "precision" = round(object[["precision"]], digits),
-    "alternative" = object[["alternative"]],
-    stringsAsFactors = FALSE
-  )
-  if (!is.null(object[["p.value"]])) {
-    out[["p.value"]] <- object[["p.value"]]
-  }
-  if (!is.null(object[["N.units"]])) {
-    out[["N.units"]] <- object[["N.units"]]
-  }
-  if (object[["method"]] %in% c("direct", "difference", "quotient", "regression")) {
-    out[["type"]] <- "Classical"
-    out[["lb"]] <- round(object[["lb"]], digits)
-    out[["ub"]] <- round(object[["ub"]], digits)
-  } else {
-    out[["t"]] <- round(object[["t"]], digits)
-    out[["ub"]] <- round(object[["ub"]], digits)
-    out[["lb"]] <- round(object[["lb"]], digits)
-    if (!is.null(object[["prior"]])) {
-      out[["type"]] <- "Bayesian"
-      out[["prior"]] <- object[["prior"]][["prior"]]
-      out[["posterior"]] <- object[["posterior"]][["posterior"]]
-      if (object[["materiality"]] != 1) {
-        out[["bf.h1"]] <- round(object[["posterior"]][["hypotheses"]]$bf.h1, digits)
-      }
-    } else {
-      out[["type"]] <- "Classical"
-    }
-  }
-  class(out) <- c("summary.jfaEvaluation", "data.frame")
-  return(out)
-}
-
-# Predict methods
-
-#' @rdname jfa-methods
 #' @method predict jfaPrior
 #' @export
 predict.jfaPrior <- function(object, n, lim = NULL, cumulative = FALSE, ...) {
@@ -516,15 +169,6 @@ predict.jfaPrior <- function(object, n, lim = NULL, cumulative = FALSE, ...) {
 }
 
 #' @rdname jfa-methods
-#' @method predict jfaPosterior
-#' @export
-predict.jfaPosterior <- function(object, n, lim = NULL, cumulative = FALSE, ...) {
-  predict.jfaPrior(object, n, lim, cumulative, ...)
-}
-
-# Plot methods
-
-#' @rdname jfa-methods
 #' @method plot jfaPrior
 #' @export
 plot.jfaPrior <- function(x, xlim = c(0, 1), ...) {
@@ -548,6 +192,60 @@ plot.jfaPrior <- function(x, xlim = c(0, 1), ...) {
     graphics::axis(1, at = pretty(xseq, min.n = 4) + 0.5, labels = pretty(xseq, min.n = 4))
     graphics::axis(2, at = c(0, yMax), labels = FALSE, las = 1, lwd.ticks = 0)
   }
+}
+
+# Methods for class: jfaPosterior #####################################################
+
+#' @rdname jfa-methods
+#' @method print jfaPosterior
+#' @export
+print.jfaPosterior <- function(x, ...) {
+  cat("\n")
+  cat(strwrap("Posterior Distribution from Audit Sampling", prefix = "\t"), sep = "\n")
+  cat("\n")
+  cat("functional form:", x[["posterior"]], "\nparameters obtained via method 'sample'\n")
+}
+
+#' @rdname jfa-methods
+#' @method print summary.jfaPosterior
+#' @export
+print.summary.jfaPosterior <- function(x, digits = getOption("digits"), ...) {
+  cat("\n")
+  cat(strwrap("Posterior Distribution Summary", prefix = "\t"), sep = "\n")
+  cat("\nResults:\n")
+  cat(paste("  Functional form:              ", x[["posterior"]]), "\n")
+  cat(paste("  Mode:                         ", format(x[["mode"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste("  Mean:                         ", format(x[["mean"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste("  Median:                       ", format(x[["median"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste("  Variance:                     ", format(x[["var"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste("  Skewness:                     ", format(x[["skewness"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste("  Precision:                    ", format(x[["precision"]], digits = max(1L, digits - 2L))), "\n")
+}
+
+#' @rdname jfa-methods
+#' @method summary jfaPosterior
+#' @export
+summary.jfaPosterior <- function(object, digits = getOption("digits"), ...) {
+  out <- data.frame(
+    "posterior" = object[["posterior"]],
+    "ub" = round(object[["statistics"]]$ub, digits),
+    "precision" = round(object[["statistics"]]$precision, digits),
+    "mode" = round(object[["statistics"]]$mode, digits),
+    "mean" = round(object[["statistics"]]$mean, digits),
+    "median" = round(object[["statistics"]]$median, digits),
+    "var" = round(object[["statistics"]]$var, digits),
+    "skewness" = round(object[["statistics"]]$skewness, digits),
+    stringsAsFactors = FALSE
+  )
+  class(out) <- c("summary.jfaPosterior", "data.frame")
+  return(out)
+}
+
+#' @rdname jfa-methods
+#' @method predict jfaPosterior
+#' @export
+predict.jfaPosterior <- function(object, n, lim = NULL, cumulative = FALSE, ...) {
+  predict.jfaPrior(object, n, lim, cumulative, ...)
 }
 
 #' @rdname jfa-methods
@@ -575,6 +273,95 @@ plot.jfaPosterior <- function(x, xlim = c(0, 1), ...) {
     graphics::axis(1, at = pretty(xseq, min.n = 4) + 0.5, labels = pretty(xseq, min.n = 4))
     graphics::axis(2, at = c(0, yMax), labels = FALSE, las = 1, lwd.ticks = 0)
   }
+}
+
+# Methods for class: jfaPlanning #####################################################
+
+#' @rdname jfa-methods
+#' @method print jfaPlanning
+#' @export
+print.jfaPlanning <- function(x, ...) {
+  cat("\n")
+  if (is.null(x[["prior"]])) cat(strwrap("Classical Audit Sample Planning", prefix = "\t"), sep = "\n") else cat(strwrap("Bayesian Audit Sample Planning", prefix = "\t"), sep = "\n")
+  cat("\n")
+  cat("minimum sample size =", x[["n"]], "\nsample size obtained in", x[["iterations"]], "iteration(s) via method", if (is.null(x[["prior"]])) paste0("'", x[["likelihood"]], "'\n") else paste0("'", x[["likelihood"]], "' + 'prior'\n"))
+}
+
+#' @rdname jfa-methods
+#' @method print summary.jfaPlanning
+#' @export
+print.summary.jfaPlanning <- function(x, digits = getOption("digits"), ...) {
+  cat("\n")
+  cat(strwrap(paste(x[["type"]], "Audit Sample Planning Summary"), prefix = "\t"), sep = "\n")
+  cat("\nOptions:\n")
+  cat(paste("  Confidence level:             ", format(x[["conf.level"]], digits = max(1L, digits - 2L))), "\n")
+  if (!is.null(x[["N.units"]])) {
+    cat(paste("  Population size:              ", format(x[["N.units"]], digits = max(1L, digits - 2L))), "\n")
+  }
+  if (x[["materiality"]] < 1) {
+    cat(paste("  Materiality:                  ", format(x[["materiality"]], digits = max(1L, digits - 2L))), "\n")
+    cat(paste("  Hypotheses:                   ", paste0("H\u2080: \u0398 ", if (x[["type"]] == "Bayesian") ">" else ">=", " ", format(x[["materiality"]], digits = max(1L, digits - 2L)), " vs. H\u2081: \u0398 < ", format(x[["materiality"]], digits = max(1L, digits - 2L)))), "\n")
+  }
+  if (x[["min.precision"]] < 1) {
+    cat(paste("  Min. precision:               ", format(x[["min.precision"]], digits = max(1L, digits - 2L))), "\n")
+  }
+  cat(paste("  Expected:                     ", format(x[["expected"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste("  Likelihood:                   ", x[["likelihood"]]), "\n")
+  if (x[["type"]] == "Bayesian") {
+    cat(paste("  Prior distribution:           ", x[["prior"]]), "\n")
+  }
+  cat("\nResults:\n")
+  cat(paste("  Minimum sample size:          ", x[["n"]]), "\n")
+  cat(paste("  Tolerable errors:             ", format(x[["x"]], digits = max(1L, digits - 2L))), "\n")
+  if (x[["type"]] == "Bayesian") {
+    cat(paste("  Posterior distribution:       ", x[["posterior"]]), "\n")
+  }
+  cat(paste("  Expected most likely error:   ", format(x[["mle"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste("  Expected upper bound:         ", format(x[["ub"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste("  Expected precision:           ", format(x[["precision"]], digits = max(1L, digits - 2L))), "\n")
+  if (x[["materiality"]] < 1 && x[["type"]] == "Bayesian") {
+    cat(paste("  Expected BF\u2081\u2080:\t                ", format(x[["bf.h1"]], digits = max(1L, digits - 2L))), "\n")
+  }
+  if (x[["materiality"]] < 1 && x[["type"]] == "Classical") {
+    cat(paste("  Expected p-value:             ", format.pval(x[["p.value"]], digits = max(1L, digits - 2L))), "\n")
+  }
+}
+
+#' @rdname jfa-methods
+#' @method summary jfaPlanning
+#' @export
+summary.jfaPlanning <- function(object, digits = getOption("digits"), ...) {
+  out <- data.frame(
+    "conf.level" = round(object[["conf.level"]], digits),
+    "expected" = round(object[["expected"]], digits),
+    "materiality" = round(object[["materiality"]], digits),
+    "min.precision" = round(object[["min.precision"]], digits),
+    "likelihood" = object[["likelihood"]],
+    "x" = round(object[["x"]], digits),
+    "n" = object[["n"]],
+    "ub" = round(object[["ub"]], digits),
+    "precision" = round(object[["precision"]], digits),
+    stringsAsFactors = FALSE
+  )
+  if (!is.null(object[["p.value"]])) {
+    out[["p.value"]] <- format.pval(object[["p.value"]], digits, eps = 0.01)
+  }
+  if (!is.null(object[["N.units"]])) {
+    out[["N.units"]] <- object[["N.units"]]
+  }
+  if (inherits(object[["prior"]], "jfaPrior")) {
+    out[["prior"]] <- object[["prior"]]$prior
+    out[["posterior"]] <- object[["posterior"]]$posterior
+    out[["mle"]] <- round(object[["posterior"]][["statistics"]]$mode, digits)
+    if (object[["materiality"]] != 1) {
+      out[["bf.h1"]] <- round(object[["posterior"]][["hypotheses"]]$bf.h1, digits)
+    }
+  } else {
+    out[["mle"]] <- round(object[["x"]] / object[["n"]], digits)
+  }
+  out[["type"]] <- if (inherits(object[["prior"]], "jfaPrior")) "Bayesian" else "Classical"
+  class(out) <- c("summary.jfaPlanning", "data.frame")
+  return(out)
 }
 
 #' @rdname jfa-methods
@@ -636,6 +423,85 @@ plot.jfaPlanning <- function(x, xlim = c(0, 1), ...) {
   }
 }
 
+# Methods for class: jfaSelection #####################################################
+
+#' @rdname jfa-methods
+#' @method print jfaSelection
+#' @export
+print.jfaSelection <- function(x, ...) {
+  cat("\n")
+  cat(strwrap("Audit Sample Selection", prefix = "\t"), sep = "\n")
+  cat("\n")
+  cat(paste("data: ", x[["data.name"]]), sep = "\n")
+  cat(paste0("number of sampling units = ", x[["n.units"]], ", number of items = ", x[["n.items"]], "\nsample selected via method ", paste0("'", x[["units"]], "' + '", x[["method"]], "'\n")))
+}
+
+#' @rdname jfa-methods
+#' @method print summary.jfaSelection
+#' @export
+print.summary.jfaSelection <- function(x, digits = getOption("digits"), ...) {
+  cat("\n")
+  cat(strwrap(paste(x[["type"]], "Audit Sample Selection Summary"), prefix = "\t"), sep = "\n")
+  cat("\nOptions:\n")
+  cat(paste("  Requested sample size:        ", x[["n.req"]]), "\n")
+  cat(paste("  Sampling units:               ", switch(x[["units"]],
+    "values" = "monetary units",
+    "items" = "items"
+  )), "\n")
+  cat(paste("  Method:                       ", switch(x[["method"]],
+    "random" = "random sampling",
+    "interval" = "fixed interval sampling",
+    "cell" = "cell sampling",
+    "sieve" = "modified sieve sampling"
+  )), "\n")
+  if (x[["method"]] == "interval") {
+    cat(paste("  Starting point:               ", x[["start"]]), "\n")
+  }
+  cat("\nData:\n")
+  cat(paste("  Population size:              ", x[["N.items"]]), "\n")
+  if (x[["units"]] == "values") {
+    cat(paste("  Population value:             ", format(x[["N.units"]], digits = max(1L, digits - 2L))), "\n")
+  }
+  if (x[["method"]] == "interval" || x[["method"]] == "cell") {
+    cat(paste("  Selection interval:           ", format(x[["interval"]], digits = max(1L, digits - 2L))), "\n")
+  }
+  cat("\nResults:\n")
+  cat(paste("  Selected sampling units:      ", x[["n.units"]]), "\n")
+  if (x[["units"]] == "values") {
+    cat(paste("  Proportion of value:          ", format(x[["prop.val"]], digits = max(1L, digits - 2L))), "\n")
+  }
+  cat(paste("  Selected items:               ", x[["n.items"]]), "\n")
+  cat(paste("  Proportion of size:           ", format(x[["prop.n"]], digits = max(1L, digits - 2L))), "\n")
+}
+
+#' @rdname jfa-methods
+#' @method summary jfaSelection
+#' @export
+summary.jfaSelection <- function(object, digits = getOption("digits"), ...) {
+  out <- data.frame(
+    "N.items" = object[["N.items"]],
+    "N.units" = round(object[["N.units"]], digits),
+    "n.req" = object[["n.req"]],
+    "units" = object[["units"]],
+    "method" = object[["method"]],
+    "n.units" = object[["n.units"]],
+    "n.items" = object[["n.items"]],
+    "prop.n" = round(object[["n.items"]] / object[["N.items"]], digits),
+    stringsAsFactors = FALSE
+  )
+  if (object[["method"]] == "interval" || object[["method"]] == "cell") {
+    out[["interval"]] <- round(object[["interval"]], digits)
+    if (object[["method"]] == "interval") {
+      out[["start"]] <- object[["start"]]
+    }
+  }
+  if (object[["units"]] == "values") {
+    out[["prop.val"]] <- round(sum(abs(object[["sample"]][, object[["values.name"]]])) / object[["N.units"]], digits)
+  }
+  class(out) <- c("summary.jfaSelection", "data.frame")
+  return(out)
+}
+
 #' @rdname jfa-methods
 #' @method plot jfaSelection
 #' @export
@@ -645,6 +511,142 @@ plot.jfaSelection <- function(x, ...) {
   graphics::hist(x[["data"]][[name]], breaks = 30, main = "Histogram of population and sample book values", xlab = "Book values", las = 1, col = "lightgray")
   graphics::hist(x[["sample"]][[name]], breaks = 30, main = "Sample", xlab = "Book values", las = 1, add = TRUE, col = "darkgray")
   graphics::legend("topright", legend = c("Population", "Sample"), bty = "n", fill = c("lightgray", "darkgray"))
+}
+
+# Methods for class: jfaEvaluation #####################################################
+
+#' @rdname jfa-methods
+#' @method print jfaEvaluation
+#' @export
+print.jfaEvaluation <- function(x, digits = getOption("digits"), ...) {
+  cat("\n")
+  if (is.null(x[["prior"]])) cat(strwrap(paste0("Classical Audit Sample Evaluation"), prefix = "\t"), sep = "\n") else cat(strwrap(paste0("Bayesian Audit Sample Evaluation"), prefix = "\t"), sep = "\n")
+  cat("\n")
+  lab <- if (!is.null(x[["data"]])) x[["data.name"]] else paste0(x[["x"]], " and ", x[["n"]])
+  cat(paste("data: ", lab), sep = "\n")
+  out <- character()
+  out <- c(out, paste("number of errors =", format(x[["x"]], digits = max(1L, digits - 2L))))
+  out <- c(out, paste("number of samples =", format(x[["n"]], digits = max(1L, digits - 2L))))
+  out <- c(out, paste("taint =", format(x[["t"]], digits = max(1L, digits - 2L))))
+  if (is.null(x[["prior"]]) && x[["materiality"]] < 1 && x[["method"]] %in% c("binomial", "poisson", "hypergeometric")) {
+    out <- c(out, paste("p-value =", format.pval(x[["p.value"]], digits = max(1L, digits - 2L))))
+  }
+  if (!is.null(x[["prior"]]) && x[["materiality"]] < 1) {
+    out <- c(out, paste("BF\u2081\u2080 =", format(x[["posterior"]][["hypotheses"]]$bf.h1, digits = max(1L, digits - 2L))))
+  }
+  cat(strwrap(paste(out, collapse = ", ")), sep = "\n")
+  if (!is.null(x[["p.value"]]) || !is.null(x[["posterior"]]$hypotheses)) {
+    if (x[["alternative"]] == "less") {
+      cat(paste0("alternative hypothesis: true misstatement rate is less than ", x[["materiality"]]), sep = "\n")
+    }
+    if (x[["alternative"]] == "two.sided") {
+      cat(paste0("alternative hypothesis: true misstatement rate is not equal to ", x[["materiality"]]), sep = "\n")
+    }
+    if (x[["alternative"]] == "greater") {
+      cat(paste0("alternative hypothesis: true misstatement rate is greater than ", x[["materiality"]]), sep = "\n")
+    }
+  }
+  if (!is.null(x[["ub"]])) {
+    cat(format(100 * x$conf.level), " percent ", if (is.null(x[["prior"]])) "confidence" else "credible", " interval:\n", " ", paste(format(c(x[["lb"]], x[["ub"]]), digits = digits), collapse = " "), "\n", sep = "")
+  }
+  cat(paste0("estimate:\n", " ", format(x[["mle"]], digits = digits)), "\n")
+  cat(paste0("estimates obtained via method ", if (is.null(x[["prior"]])) paste0("'", x[["method"]], "'\n") else paste0("'", x[["method"]], "' + 'prior'\n")))
+}
+
+#' @rdname jfa-methods
+#' @method print summary.jfaEvaluation
+#' @export
+print.summary.jfaEvaluation <- function(x, digits = getOption("digits"), ...) {
+  cat("\n")
+  cat(strwrap(paste(x[["type"]], "Audit Sample Evaluation Summary"), prefix = "\t"), sep = "\n")
+  cat("\nOptions:\n")
+  cat(paste("  Confidence level:              ", format(x[["conf.level"]], digits = max(1L, digits - 2L))), "\n")
+  if (!is.null(x[["N.units"]])) {
+    cat(paste("  Population size:               ", format(x[["N.units"]], digits = max(1L, digits - 2L))), "\n")
+  }
+  if (x[["materiality"]] < 1) {
+    cat(paste("  Materiality:                   ", format(x[["materiality"]], digits = max(1L, digits - 2L))), "\n")
+    if (x[["method"]] %in% c("poisson", "binomial", "hypergeometric")) {
+      cat(paste("  Hypotheses:                    ", switch(x[["alternative"]],
+        "two.sided" = paste0("H\u2080: \u0398 = ", format(x[["materiality"]], digits = max(1L, digits - 2L)), " vs. H\u2081: \u0398 \u2260 ", format(x[["materiality"]], digits = max(1L, digits - 2L))),
+        "less" = paste0("H\u2080: \u0398 ", if (x[["type"]] == "Bayesian") ">" else ">=", " ", format(x[["materiality"]], digits = max(1L, digits - 2L)), " vs. H\u2081: \u0398 < ", format(x[["materiality"]], digits = max(1L, digits - 2L))),
+        "greater" = paste0("H\u2080: \u0398 ", if (x[["type"]] == "Bayesian") "<" else "<=", " ", format(x[["materiality"]], digits = max(1L, digits - 2L)), " vs. H\u2081: \u0398 > ", format(x[["materiality"]], digits = max(1L, digits - 2L)))
+      )), "\n")
+    }
+  }
+  if (x[["min.precision"]] < 1) {
+    cat(paste("  Min. precision:                ", format(x[["min.precision"]], digits = max(1L, digits - 2L))), "\n")
+  }
+  cat(paste("  Method:                        ", x[["method"]]), "\n")
+  if (x[["type"]] == "Bayesian") {
+    cat(paste("  Prior distribution:            ", x[["prior"]]), "\n")
+  }
+  cat("\nData:\n")
+  cat(paste("  Sample size:                   ", x[["n"]]), "\n")
+  cat(paste("  Number of errors:              ", x[["x"]]), "\n")
+  cat(paste("  Sum of taints:                 ", x[["t"]]), "\n")
+  cat("\nResults:\n")
+  if (x[["type"]] == "Bayesian") {
+    cat(paste("  Posterior distribution:        ", x[["posterior"]]), "\n")
+  }
+  cat(paste("  Most likely error:             ", format(x[["mle"]], digits = max(1L, digits - 2L))), "\n")
+  if (x[["type"]] == "Bayesian") {
+    cat(paste(" ", paste0(format(x[["conf.level"]] * 100), " percent credible interval:   ", paste0("[", format(x[["lb"]], digits = max(1L, digits - 2L)), ", ", format(x[["ub"]], digits = max(1L, digits - 2L)), "]"))), "\n")
+  } else if (x[["type"]] == "Classical") {
+    cat(paste(" ", paste0(format(x[["conf.level"]] * 100), " percent confidence interval: ", paste0("[", format(x[["lb"]], digits = max(1L, digits - 2L)), ", ", format(x[["ub"]], digits = max(1L, digits - 2L)), "]"))), "\n")
+  }
+  cat(paste("  Precision:                     ", format(x[["precision"]], digits = max(1L, digits - 2L))), "\n")
+  if (x[["materiality"]] < 1 && x[["type"]] == "Bayesian") {
+    cat(paste("  BF\u2081\u2080:\t                         ", format(x[["bf.h1"]], digits = max(1L, digits - 2L))), "\n")
+  }
+  if (x[["materiality"]] < 1 && x[["type"]] == "Classical" && x[["method"]] %in% c("poisson", "binomial", "hypergeometric")) {
+    cat(paste("  p-value:                       ", format.pval(x[["p.value"]], digits = max(1L, digits - 2L))), "\n")
+  }
+}
+
+#' @rdname jfa-methods
+#' @method summary jfaEvaluation
+#' @export
+summary.jfaEvaluation <- function(object, digits = getOption("digits"), ...) {
+  out <- data.frame(
+    "conf.level" = round(object[["conf.level"]], digits),
+    "materiality" = round(object[["materiality"]], digits),
+    "min.precision" = round(object[["min.precision"]], digits),
+    "x" = object[["x"]],
+    "n" = object[["n"]],
+    "method" = object[["method"]],
+    "mle" = round(object[["mle"]], digits),
+    "precision" = round(object[["precision"]], digits),
+    "alternative" = object[["alternative"]],
+    stringsAsFactors = FALSE
+  )
+  if (!is.null(object[["p.value"]])) {
+    out[["p.value"]] <- object[["p.value"]]
+  }
+  if (!is.null(object[["N.units"]])) {
+    out[["N.units"]] <- object[["N.units"]]
+  }
+  if (object[["method"]] %in% c("direct", "difference", "quotient", "regression")) {
+    out[["type"]] <- "Classical"
+    out[["lb"]] <- round(object[["lb"]], digits)
+    out[["ub"]] <- round(object[["ub"]], digits)
+  } else {
+    out[["t"]] <- round(object[["t"]], digits)
+    out[["ub"]] <- round(object[["ub"]], digits)
+    out[["lb"]] <- round(object[["lb"]], digits)
+    if (!is.null(object[["prior"]])) {
+      out[["type"]] <- "Bayesian"
+      out[["prior"]] <- object[["prior"]][["prior"]]
+      out[["posterior"]] <- object[["posterior"]][["posterior"]]
+      if (object[["materiality"]] != 1) {
+        out[["bf.h1"]] <- round(object[["posterior"]][["hypotheses"]]$bf.h1, digits)
+      }
+    } else {
+      out[["type"]] <- "Classical"
+    }
+  }
+  class(out) <- c("summary.jfaEvaluation", "data.frame")
+  return(out)
 }
 
 #' @rdname jfa-methods
@@ -732,4 +734,105 @@ plot.jfaEvaluation <- function(x, xlim = c(0, 1), ...) {
       graphics::legend("topright", legend = c("Error free", "Errors"), fill = c("lightgray", "darkgray"), bty = "n", cex = 1.2)
     }
   }
+}
+
+# Methods for class: jfaDistr #####################################################
+
+#' @rdname jfa-methods
+#' @method print jfaDistr
+#' @export
+print.jfaDistr <- function(x, digits = getOption("digits"), ...) {
+  cat("\n")
+  cat(strwrap("Digit distribution test", prefix = "\t"), sep = "\n")
+  cat("\n")
+  cat("data:  ", x$data.name, "\n", sep = "")
+  out <- character()
+  if (!is.null(x$n)) {
+    out <- c(out, paste(names(x$n), "=", format(x$n, digits = max(1L, digits - 2L))))
+  }
+  if (!is.null(x$statistic)) {
+    out <- c(out, paste(names(x$statistic), "=", format(x$statistic, digits = max(1L, digits - 2L))))
+  }
+  if (!is.null(x$parameter)) {
+    out <- c(out, paste(names(x$parameter), "=", format(x$parameter, digits = max(1L, digits - 2L))))
+  }
+  if (!is.null(x$bf)) {
+    out <- c(out, paste("BF10", "=", format(x$bf, digits = max(1L, digits - 2L))))
+  }
+  if (!is.null(x$p.value)) {
+    fp <- format.pval(x$p.value, digits = max(1L, digits - 3L))
+    out <- c(out, paste("p-value", if (startsWith(fp, "<")) fp else paste("=", fp)))
+  }
+  cat(strwrap(paste(out, collapse = ", ")), sep = "\n")
+  digitLabel <- switch(x$check,
+    "first" = "leading",
+    "last" = "last",
+    "firsttwo" = "first two"
+  )
+  distLabel <- if (is.numeric(x$reference)) "reference" else x$reference
+  cat(paste0("alternative hypothesis: ", digitLabel, " digit(s) are not distributed according to the ", distLabel, " distribution."))
+  cat("\n")
+  invisible(x)
+}
+
+#' @rdname jfa-methods
+#' @method plot jfaDistr
+#' @export
+plot.jfaDistr <- function(x, ...) {
+  p_exp <- x$expected / x$n
+  p_obs <- x$observed / x$n
+  yTicks <- pretty(c(0, p_exp, p_obs), min.n = 4)
+  plot <- graphics::barplot(p_exp,
+    las = 1, main = "Observed vs. Expected Distribution", xlab = "Digit", ylab = "Relative frequency",
+    names.arg = x$digits, ylim = c(0, max(yTicks)), col = "gray", axes = FALSE
+  )
+  graphics::legend("topright", legend = c("Observed", "Expected"), fill = c("blue", "gray"), bty = "n")
+  xloc <- as.numeric(plot)
+  graphics::lines(x = xloc, y = p_obs, cex = 2, col = "blue")
+  graphics::points(x = xloc, y = p_obs, cex = if (x$check == "firsttwo") 1 else 1.5, col = "blue", pch = 19)
+  graphics::axis(side = 1, at = xloc, labels = rep("", length(x$digits)), pos = -0.01)
+  graphics::axis(side = 2, at = yTicks, las = 1)
+}
+
+# Methods for class: jfaRv #####################################################
+
+#' @rdname jfa-methods
+#' @method print jfaRv
+#' @export
+print.jfaRv <- function(x, digits = getOption("digits"), ...) {
+  cat("\n")
+  cat(strwrap("Repeated values test", prefix = "\t"), sep = "\n")
+  cat("\n")
+  cat("data:  ", x$data.name, "\n", sep = "")
+  out <- character()
+  if (!is.null(x$n)) {
+    out <- c(out, paste(names(x$n), "=", format(x$n, digits = max(1L, digits - 2L))))
+  }
+  if (!is.null(x$statistic)) {
+    out <- c(out, paste(names(x$statistic), "=", format(x$statistic, digits = max(1L, digits - 2L))))
+  }
+  if (!is.null(x$p.value)) {
+    fp <- format.pval(x$p.value, digits = max(1L, digits - 3L))
+    out <- c(out, paste("p-value", if (startsWith(fp, "<")) fp else paste("=", fp)))
+  }
+  cat(strwrap(paste(out, collapse = ", ")), sep = "\n")
+  cat(paste0("alternative hypothesis: ", switch(x$method,
+    "af" = "average frequency",
+    "entropy" = "entropy"
+  ), " in data is ", switch(x$method,
+    "af" = "greater",
+    "entropy" = "lower"
+  ), " than for random data."))
+  cat("\n")
+  invisible(x)
+}
+
+#' @rdname jfa-methods
+#' @method plot jfaRv
+#' @export
+plot.jfaRv <- function(x, ...) {
+  plot <- graphics::barplot(as.numeric(x$frequencies), las = 1, main = "Histogram with Individual Bins", ylab = "Frequency", xlab = "Value", names.arg = "")
+  xloc <- as.numeric(plot)
+  ticks <- pretty(xloc, min.n = 4)
+  graphics::axis(side = 1, at = ticks, labels = round(seq(min(x$x), max(x$x), length.out = length(ticks)), 2))
 }

@@ -15,7 +15,7 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, fig.height=4, fig.width=6)
+knitr::opts_chunk$set(echo = TRUE, fig.height = 4, fig.width = 6)
 library(jfa)
 ```
 
@@ -83,13 +83,13 @@ As an example, the code below shows how to apply the fixed interval sampling met
 
 ```{r}
 # Record sampling
-sample <- selection(data = BuildIt, size = 100, units = 'items', method = 'interval', start = 1)
+sample <- selection(data = BuildIt, size = 100, units = "items", method = "interval", start = 1)
 head(sample$sample, n = 6)
 ```
 
 ```{r}
 # Monetary unit sampling
-sample <- selection(data = BuildIt, size = 100, units = 'values', method = 'interval', values = 'bookValue', start = 1)
+sample <- selection(data = BuildIt, size = 100, units = "values", method = "interval", values = "bookValue", start = 1)
 head(sample$sample, n = 6)
 ```
 
@@ -118,14 +118,14 @@ As an example, the code below shows how to apply the cell sampling method in a r
 ```{r}
 # Record sampling
 set.seed(1)
-sample <- selection(data = BuildIt, size = 100, units = 'items', method = 'cell')
+sample <- selection(data = BuildIt, size = 100, units = "items", method = "cell")
 head(sample$sample, n = 6)
 ```
 
 ```{r}
 # Monetary unit sampling
 set.seed(1)
-sample <- selection(data = BuildIt, size = 100, units = 'values', method = 'cell', values = 'bookValue')
+sample <- selection(data = BuildIt, size = 100, units = "values", method = "cell", values = "bookValue")
 head(sample$sample, n = 6)
 ```
 
@@ -152,14 +152,14 @@ As an example, the code below shows how to apply the random sampling (with our w
 ```{r}
 # Record sampling
 set.seed(1)
-sample <- selection(data = BuildIt, size = 100, units = 'items', method = 'random')
+sample <- selection(data = BuildIt, size = 100, units = "items", method = "random")
 head(sample$sample, n = 6)
 ```
 
 ```{r}
 # Monetary unit sampling
 set.seed(1)
-sample <- selection(data = BuildIt, size = 100, units = 'values', method = 'random', values = 'bookValue')
+sample <- selection(data = BuildIt, size = 100, units = "values", method = "random", values = "bookValue")
 head(sample$sample, n = 6)
 ```
 
@@ -177,7 +177,7 @@ As an example, the code below shows how to apply the modified sieve sampling met
 ```{r}
 # Monetary unit sampling
 set.seed(1)
-sample <- selection(data = BuildIt, size = 100, units = 'values', method = 'sieve', values = 'bookValue')
+sample <- selection(data = BuildIt, size = 100, units = "values", method = "sieve", values = "bookValue")
 head(sample$sample, n = 6)
 ```
 
@@ -188,7 +188,7 @@ The `selection()` function has additional arguments (`order`, `decreasing`, and 
 ```{r}
 # Ordering population from lowest 'bookValue' to highest 'bookValue' before MUS
 set.seed(1)
-sample <- selection(data = BuildIt, size = 100, units = 'values', values = 'bookValue', order = 'bookValue', decreasing = FALSE)
+sample <- selection(data = BuildIt, size = 100, units = "values", values = "bookValue", order = "bookValue", decreasing = FALSE)
 head(sample$sample, n = 6)
 ```
 
@@ -197,7 +197,7 @@ The `randomize` argument can be used to randomly shuffle the items in the popula
 ```{r}
 # Randomly shuffle population items before MUS
 set.seed(1)
-sample <- selection(data = BuildIt, size = 100, units = 'values', values = 'bookValue', randomize = TRUE)
+sample <- selection(data = BuildIt, size = 100, units = "values", values = "bookValue", randomize = TRUE)
 head(sample$sample, n = 6)
 ```
 

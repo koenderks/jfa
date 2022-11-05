@@ -367,7 +367,6 @@ test_that(desc = "(id: f3-v0.6.0-t1) Test Bayes factors for beta prior", {
 })
 
 test_that(desc = "(id: f3-v0.6.0-t2) Test Bayes factors for gamma prior", {
-
   # Compute a Bayes factor from a noninformative gamma(1, 0) prior
   BF <- evaluation(materiality = 0.03, n = 160, x = 1, prior = auditPrior(method = "strict", likelihood = "poisson"))$posterior$hypotheses$odds.h1
   expect_equal(BF, 19.95007199)
@@ -382,7 +381,6 @@ test_that(desc = "(id: f3-v0.6.0-t2) Test Bayes factors for gamma prior", {
 })
 
 test_that(desc = "(id: f3-v0.6.0-t3) Test Bayes factors for beta-binomial prior", {
-
   # Compute a Bayes factor from a noninformative beta-binomial prior
   BF <- evaluation(materiality = 0.03, n = 160, x = 1, prior = auditPrior(method = "default", likelihood = "hypergeometric", N.units = 1000))$posterior$hypotheses$bf.h1
   expect_equal(BF, 1103.766987)

@@ -13,14 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Plan a Statistical Audit Sample
+#' Audit Sampling: Planning
 #'
-#' @description \code{planning()} is used to calculate a minimum sample size for audit samples. It allows specification of statistical requirements for the sample with respect to the performance materiality or the precision. \code{planning()} returns an object of class \code{jfaPlanning} which can be used with associated \code{summary()} and \code{plot()} methods.
+#' @description \code{sample_planning()} is used to calculate a minimum sample size for audit samples. It allows specification of statistical requirements for the sample with respect to the performance materiality or the precision. The function returns an object of class \code{jfaPlanning} which can be used with associated \code{summary()} and \code{plot()} methods.
 #'
 #' For more details on how to use this function, see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
-#' @usage planning(materiality = NULL, min.precision = NULL, expected = 0,
+#' @usage sample_planning(materiality = NULL, min.precision = NULL, expected = 0,
 #'          likelihood = c('poisson', 'binomial', 'hypergeometric'),
 #'          conf.level = 0.95, N.units = NULL, by = 1, max = 5000,
 #'          prior = FALSE)
@@ -73,26 +73,25 @@
 #'
 #' @examples
 #' # Classical planning using a Poisson likelihood
-#' planning(materiality = 0.03, expected = 0.01, likelihood = "poisson")
+#' sample_planning(materiality = 0.03, expected = 0.01, likelihood = "poisson")
 #'
 #' # Bayesian planning using a noninformative beta prior distribution
-#' planning(
+#' sample_planning(
 #'   materiality = 0.05, expected = 0.025, likelihood = "binomial",
 #'   prior = TRUE
 #' )
 #'
 #' # Bayesian planning using an impartial gamma prior distribution
-#' planning(
+#' sample_planning(
 #'   materiality = 0.05, expected = 0, likelihood = "poisson",
 #'   prior = auditPrior(method = "impartial", materiality = 0.05)
 #' )
 #' @export
 
-planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
-                     likelihood = c("poisson", "binomial", "hypergeometric"),
-                     conf.level = 0.95, N.units = NULL, by = 1, max = 5000,
-                     prior = FALSE) {
-  .Deprecated(new = "sample_planning", package = "jfa", old = "planning")
+sample_planning <- function(materiality = NULL, min.precision = NULL, expected = 0,
+                            likelihood = c("poisson", "binomial", "hypergeometric"),
+                            conf.level = 0.95, N.units = NULL, by = 1, max = 5000,
+                            prior = FALSE) {
   bayesian <- (inherits(prior, "logical") && prior) || inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")
   likelihood <- match.arg(likelihood)
   # Import existing prior distribution with class 'jfaPrior' or 'jfaPosterior'

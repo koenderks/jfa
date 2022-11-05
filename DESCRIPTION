@@ -1,21 +1,21 @@
 Package: jfa
-Title: Bayesian and Classical Audit Sampling
+Title: Bayesian and Classical Auditing Techniques
 Version: 0.6.5
-Date: 2022-06-17
+Date: 2022-11-05
 Authors@R:
     person(given = "Koen",
            family = "Derks",
            role = c("aut", "cre"),
            email = "k.derks@nyenrode.nl",
            comment = c(ORCID = '0000-0002-5533-9349'))
-Description: Provides statistical audit sampling methods as implemented in JASP for Audit (Derks et al., 2021 <doi:10.21105/joss.02733>). The package makes it easy for an auditor to plan a statistical sample, select the sample from the population, and evaluate the misstatement in the sample compliant with the International Standards on Auditing. Next to classical audit sampling methodology, the package implements Bayesian equivalents of these methods whose statistical underpinnings are described in Derks et al. (2021) <doi:10.1111/ijau.12240>, Derks et al. (2021) <doi:10.31234/osf.io/kzqp5>, and Derks et al. (2022) <doi:10.31234/osf.io/8nf3e>.
+Description: Provides statistical techniques for audit sampling and data auditing as implemented in JASP for Audit (Derks et al., 2021 <doi:10.21105/joss.02733>). First, the package makes it easy for an auditor to plan a statistical sample, select the sample from the population, and evaluate the misstatement in the sample compliant with the International Standards on Auditing. Next to classical audit sampling methodology, the package implements Bayesian equivalents of these methods whose statistical underpinnings are described in Derks et al. (2021) <doi:10.1111/ijau.12240>, Derks et al. (2021) <doi:10.31234/osf.io/kzqp5>, and Derks et al. (2022) <doi:10.31234/osf.io/8nf3e>. Second, the package provides statistical tests and support functions for detecting irregular digit patterns in numerical data, including (Bayesian) tests of digit distributions and tests for repeated values.
 BugReports: https://github.com/koenderks/jfa/issues
 URL: https://koenderks.github.io/jfa/, https://github.com/koenderks/jfa
 Imports: extraDistr, graphics, stats
-Suggests: kableExtra, knitr, MUS, rmarkdown, samplingbook, testthat
+Suggests: benford.analysis, BenfordTests, BeyondBenford, kableExtra, knitr, MUS, rmarkdown, samplingbook, testthat
 Language: en-US
 License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 VignetteBuilder: knitr

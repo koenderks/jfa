@@ -30,22 +30,23 @@ test_that(desc = "(id: f12-v0.5.4-t1) Test Sample sizes for hypergeometric distr
   for (i in 1:nrow(sampleSizeMatrix)) {
     sampleSizeMatrix[i, 4] <- planning(conf.level = sampleSizeMatrix[i, 3], expected = 0, likelihood = "hypergeometric", N.units = sampleSizeMatrix[i, 1], materiality = sampleSizeMatrix[i, 2])$n
   }
-  
+
   ezquantMatrix <- matrix(NA, nrow = length(populationSize), ncol = 4)
   ezquantMatrix[, 1] <- populationSize
   ezquantMatrix[, 2] <- tolerableErrorRate
   ezquantMatrix[, 3] <- confidenceLevel
-  
-  ezquantMatrix[, 4] <- c(27, 36, 54, 102,
-                          28, 37, 55, 108,
-                          28, 38, 57, 113,
-                          35, 47, 69, 129,
-                          36, 48, 71, 138,
-                          36, 49, 73, 147,
-                          53, 70, 101, 183,
-                          54, 72, 107, 204,
-                          55, 74, 112, 223)
-  
+
+  ezquantMatrix[, 4] <- c(
+    27, 36, 54, 102,
+    28, 37, 55, 108,
+    28, 38, 57, 113,
+    35, 47, 69, 129,
+    36, 48, 71, 138,
+    36, 49, 73, 147,
+    53, 70, 101, 183,
+    54, 72, 107, 204,
+    55, 74, 112, 223
+  )
+
   expect_equal(sampleSizeMatrix, ezquantMatrix)
 })
-

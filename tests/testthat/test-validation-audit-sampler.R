@@ -96,26 +96,27 @@ test_that(desc = "(id: f11-v0.4.0-t1) Test Sample sizes for Hypergeometric distr
   auditSamplerMatrix[, 3] <- tolerableErrorRate
   auditSamplerMatrix[, 4] <- confidenceLevel
 
-  auditSamplerMatrix[, 5:7] <- matrix(c(
-    46, 48, 2,
-    61, 64, 3,
-    90, 96, 6,
-    99, 132, 33,
-    55, 58, 3,
-    73, 78, 5,
-    140, 156, 16,
-    139, 181, 42,
-    158, 195, 37,
-    170, 221, 51,
-    178, 240, 62,
-    196, 266, 70,
-    58, 58, 0,
-    77, 78, 1,
-    154, 156, 2,
-    78, 78, 0,
-    156, 156, 0
-  ),
-  ncol = 3, nrow = 17, byrow = TRUE
+  auditSamplerMatrix[, 5:7] <- matrix(
+    c(
+      46, 48, 2,
+      61, 64, 3,
+      90, 96, 6,
+      99, 132, 33,
+      55, 58, 3,
+      73, 78, 5,
+      140, 156, 16,
+      139, 181, 42,
+      158, 195, 37,
+      170, 221, 51,
+      178, 240, 62,
+      196, 266, 70,
+      58, 58, 0,
+      77, 78, 1,
+      154, 156, 2,
+      78, 78, 0,
+      156, 156, 0
+    ),
+    ncol = 3, nrow = 17, byrow = TRUE
   )
 
   expect_equal(sampleSizeMatrix, auditSamplerMatrix)

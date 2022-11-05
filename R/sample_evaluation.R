@@ -13,14 +13,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Evaluate a Statistical Audit Sample
+#' Audit Sampling: Evaluation
 #'
-#' @description \code{evaluation()} is used to perform statistical inference about the misstatement in an audit population. It allows specification of statistical requirements for the sample with respect to the performance materiality or the precision. \code{evaluation()} returns an object of class \code{jfaEvaluation} which can be used with associated \code{summary()} and \code{plot()} methods.
+#' @description \code{sample_evaluation()} is used to perform statistical inference about the misstatement in an audit population. It allows specification of statistical requirements for the sample with respect to the performance materiality or the precision. The function returns an object of class \code{jfaEvaluation} which can be used with associated \code{summary()} and \code{plot()} methods.
 #'
 #' For more details on how to use this function, see the package vignette:
 #' \code{vignette('jfa', package = 'jfa')}
 #'
-#' @usage evaluation(materiality = NULL, min.precision = NULL, method = c(
+#' @usage sample_evaluation(materiality = NULL, min.precision = NULL, method = c(
 #'              "poisson", "binomial", "hypergeometric",
 #'              "stringer", "stringer.meikle", "stringer.lta", "stringer.pvz",
 #'              "rohrbach", "moment", "coxsnell",
@@ -115,13 +115,13 @@
 #'
 #' # Draw a sample of 100 monetary units from the population using
 #' # fixed interval monetary unit sampling
-#' sample <- selection(
+#' sample <- sample_selection(
 #'   data = BuildIt, size = 100, units = "values",
 #'   method = "interval", values = "bookValue"
 #' )$sample
 #'
 #' # Classical evaluation using the Stringer bound
-#' evaluation(
+#' sample_evaluation(
 #'   materiality = 0.05, method = "stringer", conf.level = 0.95,
 #'   data = sample, values = "bookValue", values.audit = "auditValue"
 #' )
@@ -133,31 +133,30 @@
 #' )
 #'
 #' # Bayesian evaluation using a noninformative gamma prior distribution
-#' evaluation(
+#' sample_evaluation(
 #'   materiality = 0.05, method = "poisson", conf.level = 0.95,
 #'   data = sample, values = "bookValue", values.audit = "auditValue",
 #'   prior = TRUE
 #' )
 #'
 #' # Bayesian evaluation using an informed prior distribution
-#' evaluation(
+#' sample_evaluation(
 #'   materiality = 0.05, method = "poisson", conf.level = 0.95,
 #'   data = sample, values = "bookValue", values.audit = "auditValue",
 #'   prior = auditPrior(method = "param", alpha = 1, beta = 10)
 #' )
 #' @export
 
-evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
-                         "poisson", "binomial", "hypergeometric",
-                         "stringer", "stringer.meikle", "stringer.lta", "stringer.pvz",
-                         "rohrbach", "moment", "coxsnell",
-                         "direct", "difference", "quotient", "regression", "mpu"
-                       ), alternative = c("less", "two.sided", "greater"), conf.level = 0.95,
-                       data = NULL, values = NULL, values.audit = NULL, times = NULL,
-                       x = NULL, n = NULL, N.units = NULL, N.items = NULL,
-                       r.delta = 2.7, m.type = "accounts", cs.a = 1, cs.b = 3, cs.mu = 0.5,
-                       prior = FALSE) {
-  .Deprecated(new = "sample_evaluation", package = "jfa", old = "evaluation")
+sample_evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
+                                "poisson", "binomial", "hypergeometric",
+                                "stringer", "stringer.meikle", "stringer.lta", "stringer.pvz",
+                                "rohrbach", "moment", "coxsnell",
+                                "direct", "difference", "quotient", "regression", "mpu"
+                              ), alternative = c("less", "two.sided", "greater"), conf.level = 0.95,
+                              data = NULL, values = NULL, values.audit = NULL, times = NULL,
+                              x = NULL, n = NULL, N.units = NULL, N.items = NULL,
+                              r.delta = 2.7, m.type = "accounts", cs.a = 1, cs.b = 3, cs.mu = 0.5,
+                              prior = FALSE) {
   method <- match.arg(method)
   alternative <- match.arg(alternative)
   bayesian <- (inherits(prior, "logical") && prior) || inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")
