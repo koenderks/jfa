@@ -1,5 +1,5 @@
 # -----------------------------------------------------------
-# CITATION file created with {cffr} R package, v0.2.2
+# CITATION file created with {cffr} R package, v0.3.0
 # See also: https://docs.ropensci.org/cffr/
 # -----------------------------------------------------------
  
@@ -7,16 +7,18 @@ cff-version: 1.2.0
 message: 'To cite package "jfa" in publications use:'
 type: software
 license: GPL-3.0-or-later
-title: 'jfa: Bayesian and Classical Audit Sampling'
+title: 'jfa: Bayesian and Classical Methods for Auditing'
 version: 0.6.5
-abstract: Provides statistical audit sampling methods as implemented in JASP for Audit
-  (Derks et al., 2021 <doi:10.21105/joss.02733>). The package makes it easy for an
-  auditor to plan a statistical sample, select the sample from the population, and
-  evaluate the misstatement in the sample compliant with the International Standards
-  on Auditing. Next to classical audit sampling methodology, the package implements
-  Bayesian equivalents of these methods whose statistical underpinnings are described
-  in Derks et al. (2021) <doi:10.1111/ijau.12240>, Derks et al. (2021) <doi:10.31234/osf.io/kzqp5>,
-  and Derks et al. (2022) <doi:10.31234/osf.io/8nf3e>.
+abstract: Provides statistical methods for audit sampling and data auditing as implemented
+  in JASP for Audit (Derks et al., 2021 <doi:10.21105/joss.02733>). First, the package
+  makes it easy for an auditor to plan a statistical sample, select the sample from
+  the population, and evaluate the misstatement in the sample compliant with international
+  standards on auditing. Next to classical audit sampling methodology, the package
+  implements Bayesian equivalents of these methods whose statistical underpinnings
+  are described in Derks et al. (2021) <doi:10.1111/ijau.12240>, Derks et al. (2021)
+  <doi:10.31234/osf.io/kzqp5>, and Derks et al. (2022) <doi:10.31234/osf.io/8nf3e>.
+  Second, the package provides statistical tools for auditing data, including (Bayesian)
+  tests of digit distributions and tests for repeated values.
 authors:
 - family-names: Derks
   given-names: Koen
@@ -36,7 +38,7 @@ preferred-citation:
 repository: https://CRAN.R-project.org/package=jfa
 repository-code: https://github.com/koenderks/jfa
 url: https://koenderks.github.io/jfa/
-date-released: '2022-06-17'
+date-released: '2022-11-05'
 contact:
 - family-names: Derks
   given-names: Koen
@@ -48,6 +50,7 @@ keywords:
 - bayesian
 - r
 - r-package
+- rstats
 - sampling
 - statistics
 references:
@@ -84,6 +87,36 @@ references:
   url: https://www.R-project.org/
   institution:
     name: R Foundation for Statistical Computing
+- type: software
+  title: benford.analysis
+  abstract: 'benford.analysis: Benford Analysis for Data Validation and Forensic Analytics'
+  notes: Suggests
+  authors:
+  - family-names: Cinelli
+    given-names: Carlos
+  year: '2022'
+  url: https://CRAN.R-project.org/package=benford.analysis
+- type: software
+  title: BenfordTests
+  abstract: 'BenfordTests: Statistical Tests for Evaluating Conformity to Benford''s
+    Law'
+  notes: Suggests
+  authors:
+  - family-names: Joenssen
+    given-names: Dieter William
+    email: Dieter.Joenssen@googlemail.com
+  year: '2022'
+  url: https://CRAN.R-project.org/package=BenfordTests
+- type: software
+  title: BeyondBenford
+  abstract: 'BeyondBenford: Compare the Goodness of Fit of Benford''s and Blondeau
+    Da Silva''s Digit Distributions to a Given Dataset'
+  notes: Suggests
+  authors:
+  - family-names: Stephane
+    given-names: Blondeau Da Silva
+  year: '2022'
+  url: https://CRAN.R-project.org/package=BeyondBenford
 - type: software
   title: kableExtra
   abstract: 'kableExtra: Construct Complex Table with ''kable'' and Pipe Syntax'
