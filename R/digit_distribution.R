@@ -74,7 +74,7 @@
 
 digit_distribution <- function(x, check = c("first", "last", "firsttwo"),
                                reference = "benford", prior = FALSE) {
-  bayesian <- inherits(prior, "jfaPrior") || prior
+  bayesian <- prior[1] != FALSE
   dname <- deparse(substitute(x))
   x <- x[!is.na(x)]
   x <- x[!is.infinite(x)]
@@ -113,8 +113,10 @@ digit_distribution <- function(x, check = c("first", "last", "firsttwo"),
   } else {
     if (is.logical(prior)) {
       alpha <- rep(1, length(dig))
-    } else if (length(alpha) != length(dig)) {
-      stop("The number of elements in alpha must be equal to the number of possible digits.")
+    } else if (length(prior) != length(dig)) {
+      stop("The number of elements in prior must be equal to the number of possible digits")
+    } else {
+      alpha <- prior
     }
     # compute Bayes factor
     lbeta.xa <- sum(lgamma(alpha + obs)) - lgamma(sum(alpha + obs)) # Prior with alpha[i] counts for each digit
@@ -136,7 +138,7 @@ digit_distribution <- function(x, check = c("first", "last", "firsttwo"),
   result[["observed"]] <- obs
   result[["expected"]] <- exp
   result[["n"]] <- n
-  if (!prior) {
+  if (!bayesian) {
     result[["statistic"]] <- statistic
     result[["parameter"]] <- parameter
     result[["p.value"]] <- pval
