@@ -84,12 +84,12 @@ test_that(desc = "Validate BeyondBenford package first digits", {
 test_that(desc = "Validate Derks et al. (2020)", {
   data("sinoForest")
   res <- digit_distribution(x = sinoForest$value, check = "first", reference = "benford")
-  expect_equal(as.numeric(res$bf), 1 / 6899678.1488)
+  expect_equal(1 / as.numeric(res$bf), 6899678.1488)
 })
 
 test_that(desc = "Validate uniform distribution", {
   res <- digit_distribution(x = 1:9, check = "first", reference = "uniform")
-  expect_equal(as.numeric(res$bf), 1 / 22.77012458)
+  expect_equal(1 / as.numeric(res$bf), 22.77012458)
 })
 
 test_that(desc = "Validate benford.analysis package", {
