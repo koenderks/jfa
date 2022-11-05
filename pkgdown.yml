@@ -1,4 +1,4 @@
-pandoc: 2.14.2
+pandoc: 2.19.2
 pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
@@ -10,5 +10,6 @@ articles:
   v5_estimating_misstatement: v5_estimating_misstatement.html
   v6_testing_misstatement: v6_testing_misstatement.html
   v7_bayes_factors_summary_statistics: v7_bayes_factors_summary_statistics.html
-last_built: 2022-10-25T07:19Z
+  v8_digit_analysis: v8_digit_analysis.html
+last_built: 2022-11-05T10:39Z
 

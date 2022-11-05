@@ -80,6 +80,9 @@
     <li>
       <a href="../articles/v7_bayes_factors_summary_statistics.html">Evaluation: Bayes factors using summary statistics</a>
     </li>
+    <li>
+      <a href="../articles/v8_digit_analysis.html">Auditing data: Get started</a>
+    </li>
   </ul>
 </li>
 <li>
@@ -109,7 +112,8 @@
       <h1 data-toc-skip>Evaluation: Testing misstatement</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">last modified: 19-08-2021</h4>
+            <h4 data-toc-skip class="date">last modified:
+19-08-2021</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/v6_testing_misstatement.Rmd" class="external-link"><code>vignettes/v6_testing_misstatement.Rmd</code></a></small>
       <div class="hidden name"><code>v6_testing_misstatement.Rmd</code></div>
@@ -121,17 +125,36 @@
 <div class="section level2">
 <h2 id="hypothesis-testing">Hypothesis testing<a class="anchor" aria-label="anchor" href="#hypothesis-testing"></a>
 </h2>
-<p>In an audit sampling test the auditor generally assigns performance materiality, <span class="math inline">\(\theta_{max}\)</span>, to the population which expresses the maximum tolerable misstatement (as a fraction or a monetary amount). The auditor then inspects a sample of the population to make a decision between the following two hypotheses:</p>
-<p><span class="math display">\[H_1:\theta&lt;\theta_{max}\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, H_0:\theta\geq\theta_{max}\]</span>.</p>
-<p>The <code><a href="../reference/evaluation.html">evaluation()</a></code> function allows you to make a statement about the credibility of these two hypotheses after inspecting a sample. Note that this requires that you specify the <code>materiality</code> argument in the function.</p>
+<p>In an audit sampling test the auditor generally assigns performance
+materiality, <span class="math inline">\(\theta_{max}\)</span>, to the
+population which expresses the maximum tolerable misstatement (as a
+fraction or a monetary amount). The auditor then inspects a sample of
+the population to make a decision between the following two
+hypotheses:</p>
+<p><span class="math display">\[H_1:\theta&lt;\theta_{max}\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,
+H_0:\theta\geq\theta_{max}\]</span>.</p>
+<p>The <code><a href="../reference/evaluation.html">evaluation()</a></code> function allows you to make a statement
+about the credibility of these two hypotheses after inspecting a sample.
+Note that this requires that you specify the <code>materiality</code>
+argument in the function.</p>
 </div>
 <div class="section level2">
 <h2 id="classical-hypothesis-testing-using-the-p-value">Classical hypothesis testing using the <em>p</em>-value<a class="anchor" aria-label="anchor" href="#classical-hypothesis-testing-using-the-p-value"></a>
 </h2>
-<p>Classical hypothesis testing uses the <em>p</em> value to make a decision about whether to reject the hypothesis <span class="math inline">\(H_0\)</span> or not. As an example, consider that an auditor wants to verify whether the population contains less than 5 percent misstatement, implying the hypotheses <span class="math inline">\(H_1:\theta&lt;0.05\)</span> and <span class="math inline">\(H_0:\theta\geq0.05\)</span>. They have taken a sample of 100 items, of which 1 contained an error. They set the significance level for the <em>p</em> value to 0.05, implying that a <em>p</em> value &lt; 0.05 will be enough to reject the hypothesis <span class="math inline">\(H_0\)</span>.</p>
+<p>Classical hypothesis testing uses the <em>p</em> value to make a
+decision about whether to reject the hypothesis <span class="math inline">\(H_0\)</span> or not. As an example, consider that
+an auditor wants to verify whether the population contains less than 5
+percent misstatement, implying the hypotheses <span class="math inline">\(H_1:\theta&lt;0.05\)</span> and <span class="math inline">\(H_0:\theta\geq0.05\)</span>. They have taken a
+sample of 100 items, of which 1 contained an error. They set the
+significance level for the <em>p</em> value to 0.05, implying that a
+<em>p</em> value &lt; 0.05 will be enough to reject the hypothesis <span class="math inline">\(H_0\)</span>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">result_classical</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_classical</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">result_classical</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: 'evaluation' is deprecated.</span></span>
+<span><span class="co">## Use 'sample_evaluation' instead.</span></span>
+<span><span class="co">## See help("Deprecated") and help("jfa-deprecated").</span></span></code></pre>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_classical</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Classical Audit Sample Evaluation Summary</span></span>
 <span><span class="co">## </span></span>
@@ -151,13 +174,24 @@
 <span><span class="co">##   95 percent confidence interval: [0, 0.047439] </span></span>
 <span><span class="co">##   Precision:                      0.037439 </span></span>
 <span><span class="co">##   p-value:                        0.040428</span></span></code></pre>
-<p>As we can see, the <em>p</em> value is lower than 0.05 implying that the hypothesis <span class="math inline">\(H_0\)</span> is rejected.</p>
+<p>As we can see, the <em>p</em> value is lower than 0.05 implying that
+the hypothesis <span class="math inline">\(H_0\)</span> is rejected.</p>
 </div>
 <div class="section level2">
 <h2 id="bayesian-hypothesis-testing-using-the-bayes-factor">Bayesian hypothesis testing using the Bayes factor<a class="anchor" aria-label="anchor" href="#bayesian-hypothesis-testing-using-the-bayes-factor"></a>
 </h2>
-<p>Bayesian hypothesis testing uses the Bayes factor, <span class="math inline">\(BF_{10}\)</span> or <span class="math inline">\(BF_{01}\)</span>, to make a statement about the evidence provided by the sample in support for one of the two hypotheses <span class="math inline">\(H_1\)</span> or <span class="math inline">\(H_0\)</span>. The subscript The Bayes factor denotes which hypothesis it favors. By default, the <code><a href="../reference/evaluation.html">evaluation()</a></code> function returns the value for <span class="math inline">\(BF_{10}\)</span>.</p>
-<p>As an example of how to interpret the Bayes factor, the value of <span class="math inline">\(BF_{10} = 10\)</span> (provided by the <code><a href="../reference/evaluation.html">evaluation()</a></code> function) can be interpreted as: <em>the data are 10 times more likely to have occurred under the hypothesis <span class="math inline">\(H_1:\theta&lt;\theta_{max}\)</span> than under the hypothesis <span class="math inline">\(H_0:\theta\geq\theta_{max}\)</span></em>. <span class="math inline">\(BF_{10} &gt; 1\)</span> indicates evidence for <span class="math inline">\(H_1\)</span>, while <span class="math inline">\(BF_{10} &lt; 1\)</span> indicates evidence for <span class="math inline">\(H_0\)</span>.</p>
+<p>Bayesian hypothesis testing uses the Bayes factor, <span class="math inline">\(BF_{10}\)</span> or <span class="math inline">\(BF_{01}\)</span>, to make a statement about the
+evidence provided by the sample in support for one of the two hypotheses
+<span class="math inline">\(H_1\)</span> or <span class="math inline">\(H_0\)</span>. The subscript The Bayes factor
+denotes which hypothesis it favors. By default, the
+<code><a href="../reference/evaluation.html">evaluation()</a></code> function returns the value for <span class="math inline">\(BF_{10}\)</span>.</p>
+<p>As an example of how to interpret the Bayes factor, the value of
+<span class="math inline">\(BF_{10} = 10\)</span> (provided by the
+<code><a href="../reference/evaluation.html">evaluation()</a></code> function) can be interpreted as: <em>the data
+are 10 times more likely to have occurred under the hypothesis <span class="math inline">\(H_1:\theta&lt;\theta_{max}\)</span> than under the
+hypothesis <span class="math inline">\(H_0:\theta\geq\theta_{max}\)</span></em>. <span class="math inline">\(BF_{10} &gt; 1\)</span> indicates evidence for
+<span class="math inline">\(H_1\)</span>, while <span class="math inline">\(BF_{10} &lt; 1\)</span> indicates evidence for
+<span class="math inline">\(H_0\)</span>.</p>
 <table class="table">
 <thead><tr class="header">
 <th><span class="math inline">\(BF_{10}\)</span></th>
@@ -224,13 +258,23 @@
 <div class="section level3">
 <h3 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h3>
-<p>Again, consider the same example of an auditor who wants to verify whether the population contains less than 5 percent misstatement, implying the hypotheses <span class="math inline">\(H_1:\theta&lt;0.05\)</span> and <span class="math inline">\(H_0:\theta\geq0.05\)</span>. They have taken a sample of 100 items, of which 1 contained an error. The prior distribution is assumed to be a default <em>beta(1,1)</em> prior.</p>
-<p>The output below shows that <span class="math inline">\(BF_{10}=515\)</span>, implying that there is extreme evidence for <span class="math inline">\(H_1\)</span>, the hypothesis that the population contains misstatements lower than 5 percent of the population.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<p>Again, consider the same example of an auditor who wants to verify
+whether the population contains less than 5 percent misstatement,
+implying the hypotheses <span class="math inline">\(H_1:\theta&lt;0.05\)</span> and <span class="math inline">\(H_0:\theta\geq0.05\)</span>. They have taken a
+sample of 100 items, of which 1 contained an error. The prior
+distribution is assumed to be a default <em>beta(1,1)</em> prior.</p>
+<p>The output below shows that <span class="math inline">\(BF_{10}=515\)</span>, implying that there is
+extreme evidence for <span class="math inline">\(H_1\)</span>, the
+hypothesis that the population contains misstatements lower than 5
+percent of the population.</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"default"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span>
 <span><span class="va">result_bayesian</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: 'evaluation' is deprecated.</span></span>
+<span><span class="co">## Use 'sample_evaluation' instead.</span></span>
+<span><span class="co">## See help("Deprecated") and help("jfa-deprecated").</span></span></code></pre>
 <pre><code><span><span class="co">## Using 'method = binomial' from 'prior'</span></span></code></pre>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_bayesian</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Evaluation Summary</span></span>
@@ -257,13 +301,28 @@
 <div class="section level3">
 <h3 id="sensitivity-to-the-prior-distribution">Sensitivity to the prior distribution<a class="anchor" aria-label="anchor" href="#sensitivity-to-the-prior-distribution"></a>
 </h3>
-<p>In audit sampling, the Bayes factor is dependent on the prior distribution for <span class="math inline">\(\theta\)</span>. As a rule of thumb, when the prior distribution is very uninformative (as with <code>method = 'default'</code>) with respect to <span class="math inline">\(\theta\)</span>, the Bayes factor tends to overquantify the evidence in favor of <span class="math inline">\(H_1\)</span>. You can mitigate this dependency using <code>method = "impartial"</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function, which constructs a prior distribution that is impartial with respect to the hypotheses <span class="math inline">\(H_1\)</span> and <span class="math inline">\(H_0\)</span>.</p>
-<p>The output below shows that <span class="math inline">\(BF_{10}=47\)</span>, implying that there is strong evidence for <span class="math inline">\(H_1\)</span>, the hypothesis that the population contains misstatements lower than 5 percent of the population. Since the two priors both resulted in convincing Bayes factors, the results are robust to the choice of prior distribution.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<p>In audit sampling, the Bayes factor is dependent on the prior
+distribution for <span class="math inline">\(\theta\)</span>. As a rule
+of thumb, when the prior distribution is very uninformative (as with
+<code>method = 'default'</code>) with respect to <span class="math inline">\(\theta\)</span>, the Bayes factor tends to
+overquantify the evidence in favor of <span class="math inline">\(H_1\)</span>. You can mitigate this dependency
+using <code>method = "impartial"</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code>
+function, which constructs a prior distribution that is impartial with
+respect to the hypotheses <span class="math inline">\(H_1\)</span> and
+<span class="math inline">\(H_0\)</span>.</p>
+<p>The output below shows that <span class="math inline">\(BF_{10}=47\)</span>, implying that there is strong
+evidence for <span class="math inline">\(H_1\)</span>, the hypothesis
+that the population contains misstatements lower than 5 percent of the
+population. Since the two priors both resulted in convincing Bayes
+factors, the results are robust to the choice of prior distribution.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"impartial"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span>
 <span><span class="va">result_bayesian</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning: 'evaluation' is deprecated.</span></span>
+<span><span class="co">## Use 'sample_evaluation' instead.</span></span>
+<span><span class="co">## See help("Deprecated") and help("jfa-deprecated").</span></span></code></pre>
 <pre><code><span><span class="co">## Using 'method = binomial' from 'prior'</span></span></code></pre>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_bayesian</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Evaluation Summary</span></span>
@@ -292,8 +351,14 @@
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <ul>
-<li><p>Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., and Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. <em>International Journal of Auditing</em>, 25(3), 621-636.</p></li>
-<li><p>Derks, K., de Swart, J., Wagenmakers, E.-J., &amp; Wetzels, R. (2021). The Bayesian Approach to Audit Evidence: Quantifying Statistical Evidence using the Bayes Factor. <em>PsyArXiv</em>.</p></li>
+<li><p>Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J.,
+and Wetzels, R. (2021). Priors in a Bayesian audit: How integration of
+existing information into the prior distribution can improve audit
+transparency and efficiency. <em>International Journal of Auditing</em>,
+25(3), 621-636.</p></li>
+<li><p>Derks, K., de Swart, J., Wagenmakers, E.-J., &amp; Wetzels, R.
+(2021). The Bayesian Approach to Audit Evidence: Quantifying Statistical
+Evidence using the Bayes Factor. <em>PsyArXiv</em>.</p></li>
 </ul>
 </div>
   </div>

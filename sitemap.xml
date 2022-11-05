@@ -40,6 +40,9 @@
     <loc>/articles/v7_bayes_factors_summary_statistics.html</loc>
   </url>
   <url>
+    <loc>/articles/v8_digit_analysis.html</loc>
+  </url>
+  <url>
     <loc>/authors.html</loc>
   </url>
   <url>
@@ -56,6 +59,12 @@
   </url>
   <url>
     <loc>/reference/carrier.html</loc>
+  </url>
+  <url>
+    <loc>/reference/data_digit_distribution.html</loc>
+  </url>
+  <url>
+    <loc>/reference/data_repeated_values.html</loc>
   </url>
   <url>
     <loc>/reference/evaluation.html</loc>
@@ -79,6 +88,21 @@
     <loc>/reference/report.html</loc>
   </url>
   <url>
+    <loc>/reference/sample_evaluation.html</loc>
+  </url>
+  <url>
+    <loc>/reference/sample_planning.html</loc>
+  </url>
+  <url>
+    <loc>/reference/sample_selection.html</loc>
+  </url>
+  <url>
+    <loc>/reference/sanitizer.html</loc>
+  </url>
+  <url>
     <loc>/reference/selection.html</loc>
+  </url>
+  <url>
+    <loc>/reference/sinoForest.html</loc>
   </url>
 </urlset>

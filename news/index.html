@@ -55,6 +55,9 @@
     <li>
       <a href="../articles/v7_bayes_factors_summary_statistics.html">Evaluation: Bayes factors using summary statistics</a>
     </li>
+    <li>
+      <a href="../articles/v8_digit_analysis.html">Auditing data: Get started</a>
+    </li>
   </ul></li>
 <li>
   <a href="../news/index.html">Changelog</a>
@@ -80,9 +83,13 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.6.5" id="jfa-065">jfa 0.6.5<a class="anchor" aria-label="anchor" href="#jfa-065"></a></h2>
-<p><strong>Bug fixes</strong></p>
-<ul><li>Fixed a bug where the proportion of value in <code>summary(selection)</code> was displayed incorrectly.</li></ul><p><strong>Minor changes</strong></p>
-<ul><li>Improved the error handling and error messages.</li></ul></div>
+<p><strong>New features</strong></p>
+<ul><li>Integrated the auditing functionality of the <code>digitTests</code> package.</li>
+</ul><p><strong>Bug fixes</strong></p>
+<ul><li>Fixed a bug where the proportion of value in <code>summary(selection)</code> was displayed incorrectly.</li>
+</ul><p><strong>Minor changes</strong></p>
+<ul><li>Improved the error handling and error messages.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.6.4" id="jfa-064">jfa 0.6.4<small>2022-06-16</small><a class="anchor" aria-label="anchor" href="#jfa-064"></a></h2>
 <p><strong>Minor changes</strong></p>
@@ -98,16 +105,20 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.6.2" id="jfa-062">jfa 0.6.2<small>2022-01-23</small><a class="anchor" aria-label="anchor" href="#jfa-062"></a></h2>
 <p><strong>Major changes</strong></p>
-<ul><li>Removed the output and functions related to the class <code>jfaPredictive</code>. The probabilities for the prior and posterior predictive distributions can be obtained by calling the <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> function.</li></ul><p><strong>Minor changes</strong></p>
+<ul><li>Removed the output and functions related to the class <code>jfaPredictive</code>. The probabilities for the prior and posterior predictive distributions can be obtained by calling the <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> function.</li>
+</ul><p><strong>Minor changes</strong></p>
 <ul><li>The value for <code>N.units</code> in <code><a href="../reference/auditPrior.html">auditPrior()</a></code>, <code><a href="../reference/planning.html">planning()</a></code>, and <code><a href="../reference/evaluation.html">evaluation()</a></code> is now automatically ceiled for <code>likelihood</code>/<code>method</code> = <code>'hypergeometric'</code>.</li>
 <li>Implemented a warning message when the <code>likelihood</code> in the <code>prior</code> does not match with the <code>likelihood</code>/<code>method</code> inputs for <code><a href="../reference/planning.html">planning()</a></code> and <code><a href="../reference/evaluation.html">evaluation()</a></code>. The likelihood from the prior is leading in these cases and will overrule the other options.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.6.1" id="jfa-061">jfa 0.6.1<small>2021-11-18</small><a class="anchor" aria-label="anchor" href="#jfa-061"></a></h2>
 <p><strong>New features</strong></p>
-<ul><li>Added argument <code>randomize</code> to the <code><a href="../reference/selection.html">selection()</a></code> function, which allows the user to randomly shuffle the items in the population before selection. Note that specifying <code>randomize = TRUE</code> overrules <code>order</code>.</li></ul><p><strong>Bug fixes</strong></p>
-<ul><li>Fixed a bug where the maximum sample size was not reached (i.e., <code>planning</code> stopped at <code>max</code> - 1).</li></ul><p><strong>Major changes</strong></p>
-<ul><li>The <code>order</code> argument in <code><a href="../reference/selection.html">selection()</a></code> no longer accepts a logical, but instead takes the column name of the ranking variable in the <code>data</code>.</li></ul><p><strong>Minor changes</strong></p>
+<ul><li>Added argument <code>randomize</code> to the <code><a href="../reference/selection.html">selection()</a></code> function, which allows the user to randomly shuffle the items in the population before selection. Note that specifying <code>randomize = TRUE</code> overrules <code>order</code>.</li>
+</ul><p><strong>Bug fixes</strong></p>
+<ul><li>Fixed a bug where the maximum sample size was not reached (i.e., <code>planning</code> stopped at <code>max</code> - 1).</li>
+</ul><p><strong>Major changes</strong></p>
+<ul><li>The <code>order</code> argument in <code><a href="../reference/selection.html">selection()</a></code> no longer accepts a logical, but instead takes the column name of the ranking variable in the <code>data</code>.</li>
+</ul><p><strong>Minor changes</strong></p>
 <ul><li>Adjusted an error in the text of the selection vignette.</li>
 <li>Rewritten most of the vignettes.</li>
 </ul></div>
@@ -122,7 +133,8 @@
 <li>Added a new vignette that describes the sampling methodology implemented in <code>jfa</code>.</li>
 <li>objects from <code><a href="../reference/auditPrior.html">auditPrior()</a></code>, <code><a href="../reference/planning.html">planning()</a></code>, and <code><a href="../reference/evaluation.html">evaluation()</a></code> now contain information about the posterior predictive distribution when <code>N.units</code> is specified.</li>
 </ul><p><strong>Major changes</strong></p>
-<ul><li>From <code>jfa</code> 0.5.7 to <code>jfa</code> 0.6.0 there has been a major overhaul in the names of function arguments. This is done so that the calls integrate better with general R syntax and the package gets more user-friendly. I apologize for any inconvenience this may cause. The following names have been changed:<ul><li>
+<ul><li>From <code>jfa</code> 0.5.7 to <code>jfa</code> 0.6.0 there has been a major overhaul in the names of function arguments. This is done so that the calls integrate better with general R syntax and the package gets more user-friendly. I apologize for any inconvenience this may cause. The following names have been changed:
+<ul><li>
 <code>median</code> -&gt; <code>impartial</code> (in <code><a href="../reference/auditPrior.html">auditPrior()</a></code>)</li>
 <li>
 <code>sampleK</code> -&gt; <code>x</code> (in <code><a href="../reference/auditPrior.html">auditPrior()</a></code>)</li>
@@ -208,7 +220,8 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.5.6" id="jfa-056">jfa 0.5.6<small>2021-07-06</small><a class="anchor" aria-label="anchor" href="#jfa-056"></a></h2>
 <p><strong>Bug fixes</strong></p>
-<ul><li>Fixed a bug in the <code><a href="../reference/jfa-methods.html">print.jfaEvaluation()</a></code> call if there was no performance materiality specified and <code>prior = TRUE</code>.</li></ul></div>
+<ul><li>Fixed a bug in the <code><a href="../reference/jfa-methods.html">print.jfaEvaluation()</a></code> call if there was no performance materiality specified and <code>prior = TRUE</code>.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.5.5" id="jfa-055">jfa 0.5.5<small>2021-07-01</small><a class="anchor" aria-label="anchor" href="#jfa-055"></a></h2>
 <p><strong>New features</strong></p>
@@ -219,13 +232,17 @@
 <ul><li>Fixed a bug in <code><a href="../reference/evaluation.html">evaluation()</a></code> in which the likelihood stored in the prior was not properly passed to the function.</li>
 <li>Fixed an error in the calculation of the posterior mode of the beta distribution.</li>
 </ul><p><strong>Minor changes</strong></p>
-<ul><li>Restored the default value (0.95) for the ‘confidence’ argument in all applicable functions.</li></ul></div>
+<ul><li>Restored the default value (0.95) for the ‘confidence’ argument in all applicable functions.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.5.4" id="jfa-054">jfa 0.5.4<small>2021-06-02</small><a class="anchor" aria-label="anchor" href="#jfa-054"></a></h2>
 <p><strong>New features</strong></p>
-<ul><li>Objects with class <code>jfaPosterior</code> as returned by <code>evaluation()$posterior</code> and <code>planning()$expectedPosterior</code> can now be used as input for the <code>prior</code> argument in the <code><a href="../reference/planning.html">planning()</a></code> and <code><a href="../reference/evaluation.html">evaluation()</a></code> functions.</li></ul><p><strong>Bug fixes</strong></p>
-<ul><li>Fixed a bug in <code>method = 'bram'</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function where the prior parameters would go off to infinity when <code>expectedError = 0</code>.</li></ul><p><strong>Major changes</strong></p>
-<ul><li>Now calculates the upper bound for the population errors according to the hypergeometric distribution via an inverted hypothesis test. As a result of this method, the <code><a href="../reference/planning.html">planning()</a></code> function does not require a value for the <code>materiality</code> anymore when planning with the <code>hypergeometric</code> likelihood.</li></ul><p><strong>Minor changes</strong></p>
+<ul><li>Objects with class <code>jfaPosterior</code> as returned by <code>evaluation()$posterior</code> and <code>planning()$expectedPosterior</code> can now be used as input for the <code>prior</code> argument in the <code><a href="../reference/planning.html">planning()</a></code> and <code><a href="../reference/evaluation.html">evaluation()</a></code> functions.</li>
+</ul><p><strong>Bug fixes</strong></p>
+<ul><li>Fixed a bug in <code>method = 'bram'</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function where the prior parameters would go off to infinity when <code>expectedError = 0</code>.</li>
+</ul><p><strong>Major changes</strong></p>
+<ul><li>Now calculates the upper bound for the population errors according to the hypergeometric distribution via an inverted hypothesis test. As a result of this method, the <code><a href="../reference/planning.html">planning()</a></code> function does not require a value for the <code>materiality</code> anymore when planning with the <code>hypergeometric</code> likelihood.</li>
+</ul><p><strong>Minor changes</strong></p>
 <ul><li>Added a benchmark for the <code>MUS</code> package to the unit tests.</li>
 <li>Improved plots with better titles and axes labels.</li>
 </ul></div>
@@ -243,12 +260,15 @@
 <li>Changed the default <code>likelihood = 'poisson'</code> in the <code><a href="../reference/planning.html">planning()</a></code> function to <code>likelihood = 'binomial'</code> to be consistent across all functions.</li>
 <li>Changed the order of most function arguments so that <code>materiality</code> and <code>minPrecision</code> are among the first ones to be shown.</li>
 </ul><p><strong>Minor changes</strong></p>
-<ul><li>Updated the documentation for all functions with more simple examples.</li></ul></div>
+<ul><li>Updated the documentation for all functions with more simple examples.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.5.2" id="jfa-052">jfa 0.5.2<small>2021-04-02</small><a class="anchor" aria-label="anchor" href="#jfa-052"></a></h2>
 <p><strong>New features</strong></p>
-<ul><li>Update the poisson evaluation calculation so that it allows for fractional errors.</li></ul><p><strong>Bug fixes</strong></p>
-<ul><li>Fixed an error in the hypergeometric upper bound calculation that was accidentally based on the <code><a href="https://rdrr.io/r/stats/Hypergeometric.html" class="external-link">phyper()</a></code> function instead of the <code><a href="https://rdrr.io/r/stats/Hypergeometric.html" class="external-link">qhyper()</a></code> function, which resulted in lower bounds than usual.</li></ul><p><strong>Minor changes</strong></p>
+<ul><li>Update the poisson evaluation calculation so that it allows for fractional errors.</li>
+</ul><p><strong>Bug fixes</strong></p>
+<ul><li>Fixed an error in the hypergeometric upper bound calculation that was accidentally based on the <code><a href="https://rdrr.io/r/stats/Hypergeometric.html" class="external-link">phyper()</a></code> function instead of the <code><a href="https://rdrr.io/r/stats/Hypergeometric.html" class="external-link">qhyper()</a></code> function, which resulted in lower bounds than usual.</li>
+</ul><p><strong>Minor changes</strong></p>
 <ul><li>Add statistical tables with output (sample sizes, upper limits, Bayes factors) to the GitHub repository in pdf format.</li>
 <li>Changed the computation method of the sample sizes for hypergeometric and beta-binomial distributions so that they are faster.</li>
 </ul></div>
@@ -261,7 +281,8 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.5.0" id="jfa-050">jfa 0.5.0<small>2021-01-04</small><a class="anchor" aria-label="anchor" href="#jfa-050"></a></h2>
 <p><strong>New features</strong></p>
-<ul><li>Add a function <code><a href="../reference/report.html">report()</a></code> that automatically generates an audit report.</li></ul><p><strong>Major changes</strong></p>
+<ul><li>Add a function <code><a href="../reference/report.html">report()</a></code> that automatically generates an audit report.</li>
+</ul><p><strong>Major changes</strong></p>
 <ul><li>Removed the <code>sampling()</code> function, which is now replaced entirely with the <code><a href="../reference/selection.html">selection()</a></code> function.</li>
 <li>Changed the output of the <code><a href="../reference/evaluation.html">evaluation()</a></code> function when an estimator is used.</li>
 </ul></div>
@@ -274,20 +295,25 @@
 <li>Added <code>expectedPosterior</code> of class <code>jfaPosterior</code> to the output of the <code><a href="../reference/planning.html">planning()</a></code> function, includes <code>description</code>, <code>statistics</code> and <code>hypotheses</code>.</li>
 <li>Added <code>posterior</code> of class <code>jfaPosterior</code> to the output of the <code><a href="../reference/evaluation.html">evaluation()</a></code> function, includes <code>description</code>, <code>statistics</code> and <code>hypotheses</code>.</li>
 </ul><p><strong>Bug fixes</strong></p>
-<ul><li>Implemented improved calculation of prior parameters in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function for <code>method = impartial</code> when <code>expectedErrors &gt; 0</code>.</li></ul><p><strong>Major changes</strong></p>
-<ul><li>Add a warning message to the <code>sampling()</code> function that it will be deprecated from 0.5.0 onward. You can use <code><a href="../reference/selection.html">selection()</a></code> instead, since <code>sampling()</code> causes namespace issues with other packages.</li></ul><p><strong>Minor changes</strong></p>
-<ul><li>Changed the class <code>jfaSampling</code> to <code>jfaSelection</code>. This should not have any consequences.</li></ul></div>
+<ul><li>Implemented improved calculation of prior parameters in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function for <code>method = impartial</code> when <code>expectedErrors &gt; 0</code>.</li>
+</ul><p><strong>Major changes</strong></p>
+<ul><li>Add a warning message to the <code>sampling()</code> function that it will be deprecated from 0.5.0 onward. You can use <code><a href="../reference/selection.html">selection()</a></code> instead, since <code>sampling()</code> causes namespace issues with other packages.</li>
+</ul><p><strong>Minor changes</strong></p>
+<ul><li>Changed the class <code>jfaSampling</code> to <code>jfaSelection</code>. This should not have any consequences.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.1" id="jfa-031">jfa 0.3.1<small>2020-10-12</small><a class="anchor" aria-label="anchor" href="#jfa-031"></a></h2>
 <p><strong>Bug fixes</strong></p>
 <ul><li>Fixed a bug in the <code><a href="../reference/planning.html">planning()</a></code> function that did not allow the user to plan for a monetary sample when their population size was too low.</li>
 <li>Fixed a bug in the <code><a href="../reference/planning.html">planning()</a></code> function that did not allow the user to select a non-integer number of expected errors when there was a prior involved.</li>
 </ul><p><strong>Minor changes</strong></p>
-<ul><li>Added unit tests that regularly verify results of the <code><a href="../reference/planning.html">planning()</a></code> and <code><a href="../reference/evaluation.html">evaluation()</a></code> functions against benchmarks.</li></ul></div>
+<ul><li>Added unit tests that regularly verify results of the <code><a href="../reference/planning.html">planning()</a></code> and <code><a href="../reference/evaluation.html">evaluation()</a></code> functions against benchmarks.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.3.0" id="jfa-030">jfa 0.3.0<small>2020-09-15</small><a class="anchor" aria-label="anchor" href="#jfa-030"></a></h2>
 <p><strong>New features</strong></p>
-<ul><li>Implemented the argument <code>counts</code> in the <code><a href="../reference/evaluation.html">evaluation()</a></code> function that quantifies how many times each observation should be evaluated due to being selected multiple times in the selection stage.</li></ul></div>
+<ul><li>Implemented the argument <code>counts</code> in the <code><a href="../reference/evaluation.html">evaluation()</a></code> function that quantifies how many times each observation should be evaluated due to being selected multiple times in the selection stage.</li>
+</ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.2.0" id="jfa-020">jfa 0.2.0<small>2020-08-05</small><a class="anchor" aria-label="anchor" href="#jfa-020"></a></h2>
 <p><strong>New features</strong></p>
@@ -302,7 +328,8 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.1.0" id="jfa-010">jfa 0.1.0<small>2020-01-08</small><a class="anchor" aria-label="anchor" href="#jfa-010"></a></h2>
 <p><strong>New features</strong></p>
-<ul><li>First version of the <code>jfa</code> package. The package provides four functions: <code><a href="../reference/auditPrior.html">auditPrior()</a></code>, <code><a href="../reference/planning.html">planning()</a></code>, <code>sampling()</code>, and <code><a href="../reference/evaluation.html">evaluation()</a></code>.</li></ul></div>
+<ul><li>First version of the <code>jfa</code> package. The package provides four functions: <code><a href="../reference/auditPrior.html">auditPrior()</a></code>, <code><a href="../reference/planning.html">planning()</a></code>, <code>sampling()</code>, and <code><a href="../reference/evaluation.html">evaluation()</a></code>.</li>
+</ul></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
