@@ -1,12 +1,12 @@
 ---
-title: "Get started"
+title: "Auditing data: Get started"
 author: Koen Derks
 date: "last modified: 05-11-2022"
 output: 
   rmarkdown::html_vignette:
     toc: true
 vignette: >
-  %\VignetteIndexEntry{Get started}
+  %\VignetteIndexEntry{Auditing data: Get started}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteDepends{jfa}
   %\VignetteKeywords{digit, tests, Bayesian}
@@ -18,7 +18,7 @@ vignette: >
 library(jfa)
 ```
 
-# Auditing Data
+# Auditing data: Get started
 
 Welcome to the 'Auditing data' vignette of the `jfa` package. In this vignette you are able to find detailed examples of how you can incorporate the functions provided by the package.
 
