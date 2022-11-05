@@ -20,11 +20,11 @@ library(jfa)
 
 # Auditing data: Digit analysis
 
-Welcome to the 'Digit analysis' vignette of the `jfa` package. In this vignette you are able to find detailed examples of how you can incorporate the `data_digit_distribution()` and `data_repeated_values()` functions provided by the package.
+Welcome to the 'Digit analysis' vignette of the `jfa` package. In this vignette you are able to find detailed examples of how you can incorporate the `digit_distribution()` and `repeated_values()` functions provided by the package.
 
-## Function: `data_digit_distribution()`
+## Function: `digit_distribution()`
 
-The function `data_digit_distribution()` takes a vector of numeric values, extract the requested digits, and compares the frequencies of these digits to a reference distribution. The function `distr.test()` performs a frequentist hypothesis test of the null hypothesis that the digits are distributed according to the reference distribution and produces a *p* value. The function `distr.btest()` performs a Bayesian hypothesis test of the null hypothesis that the digits are distributed according to the reference distribution against the alternative hypothesis (using the prior parameters specified in `alpha`) that the digits are not distributed according to the reference distribution and produces a Bayes factor (Kass & Raftery, 1995).
+The function `digit_distribution()` takes a vector of numeric values, extract the requested digits, and compares the frequencies of these digits to a reference distribution. The function `distr.test()` performs a frequentist hypothesis test of the null hypothesis that the digits are distributed according to the reference distribution and produces a *p* value. The function `distr.btest()` performs a Bayesian hypothesis test of the null hypothesis that the digits are distributed according to the reference distribution against the alternative hypothesis (using the prior parameters specified in `alpha`) that the digits are not distributed according to the reference distribution and produces a Bayes factor (Kass & Raftery, 1995).
 
 *Example:*
 
@@ -32,26 +32,26 @@ Benford’s law (Benford, 1938) is a principle that describes a pattern in many 
 
 ```{r}
 # Frequentist hypothesis test
-x <- data_digit_distribution(sinoForest$value, check = "first", reference = "benford")
+x <- digit_distribution(sinoForest$value, check = "first", reference = "benford")
 print(x)
 plot(x)
 
 # Bayesian hypothesis test using default prior
-x <- data_digit_distribution(sinoForest$value, check = "first", reference = "benford", prior = TRUE)
+x <- digit_distribution(sinoForest$value, check = "first", reference = "benford", prior = TRUE)
 print(x)
 plot(x)
 ```
 
-## Function: `data_repeated_values()`
+## Function: `repeated_values()`
 
-The function `data_repeated_values()` analyzes the frequency with which values get repeated within a set of numbers. Unlike Benford's law, and its generalizations, this approach examines the entire number at once, not only the first or last digit. For the technical details of this procedure, see Simohnsohn (2019).
+The function `repeated_values()` analyzes the frequency with which values get repeated within a set of numbers. Unlike Benford's law, and its generalizations, this approach examines the entire number at once, not only the first or last digit. For the technical details of this procedure, see Simohnsohn (2019).
 
 *Example:*
 
-In this example we analyze a data set from a (retracted) paper that describes three experiments run in Chinese factories, where workers were nudged to use more hand-sanitizer. These data were shown to exhibited two classic markers of data tampering: impossibly similar means and the uneven distribution of last digits (Yu, Nelson, & Simohnson, 2018). We can use the `data_repeated_values()` function to test if these data also contain a greater amount of repeated values than expected if the data were not tampered with.
+In this example we analyze a data set from a (retracted) paper that describes three experiments run in Chinese factories, where workers were nudged to use more hand-sanitizer. These data were shown to exhibited two classic markers of data tampering: impossibly similar means and the uneven distribution of last digits (Yu, Nelson, & Simohnson, 2018). We can use the `repeated_values()` function to test if these data also contain a greater amount of repeated values than expected if the data were not tampered with.
 
 ```{r}
-x <- data_repeated_values(sanitizer$value, check = "lasttwo", B = 2000)
+x <- repeated_values(sanitizer$value, check = "lasttwo", B = 2000)
 print(x)
 plot(x)
 ```

@@ -17,8 +17,8 @@
 #'
 #' @description This function analyzes the frequency with which values get repeated within a set of numbers. Unlike Benford's law, and its generalizations, this approach examines the entire number at once, not only the first or last digit.
 #'
-#' @usage data_repeated_values(x, check = c('last', "lasttwo", "all"),
-#'                      method = c("af", "entropy"), B = 2000)
+#' @usage repeated_values(x, check = c('last', "lasttwo", "all"),
+#'                 method = c("af", "entropy"), B = 2000)
 #'
 #' @param x             a numeric vector of values from which the digits should be analyzed.
 #' @param check         which digits to shuffle during the procedure. Can be \code{last} or \code{lasttwo}.
@@ -46,7 +46,7 @@
 #'
 #' @references Simohnsohn, U. (2019, May 25). Number-Bunching: A New Tool for Forensic Data Analysis. Retrieved from \url{https://datacolada.org/77}.
 #'
-#' @seealso \code{\link{data_digit_distribution}}
+#' @seealso \code{\link{digit_distribution}}
 #'
 #' @keywords repeated values
 #'
@@ -55,12 +55,12 @@
 #' x <- rnorm(50)
 #'
 #' # Repeated values analysis shuffling last digit
-#' data_repeated_values(x, check = "last", method = "af", B = 2000)
+#' repeated_values(x, check = "last", method = "af", B = 2000)
 #'
 #' @export
 
-data_repeated_values <- function(x, check = c("last", "lasttwo", "all"),
-                                 method = c("af", "entropy"), B = 2000) {
+repeated_values <- function(x, check = c("last", "lasttwo", "all"),
+                            method = c("af", "entropy"), B = 2000) {
   check <- match.arg(check)
   method <- match.arg(method)
   dname <- deparse(substitute(x))

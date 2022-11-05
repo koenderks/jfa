@@ -17,8 +17,8 @@
 #'
 #' @description This function extracts and performs a test of the distribution of (leading) digits in a vector against a reference distribution. By default, the distribution of leading digits is checked against Benford's law.
 #'
-#' @usage data_digit_distribution(x, check = 'first',
-#'                         reference = 'benford', prior = FALSE)
+#' @usage digit_distribution(x, check = 'first',
+#'                    reference = 'benford', prior = FALSE)
 #'
 #' @param x           a numeric vector.
 #' @param check       location of the digits to analyze. Can be \code{first}, \code{firsttwo}, or \code{last}.
@@ -44,7 +44,7 @@
 #'
 #' @references Benford, F. (1938). The law of anomalous numbers. \emph{In Proceedings of the American Philosophical Society}, 551-572.
 #'
-#' @seealso \code{\link{data_repeated_values}}
+#' @seealso \code{\link{repeated_values}}
 #'
 #' @keywords benford distribution Bayes factor
 #'
@@ -53,27 +53,27 @@
 #' x <- rnorm(100)
 #'
 #' # First digit analysis against Benford's law
-#' data_digit_distribution(x, check = "first", reference = "benford")
+#' digit_distribution(x, check = "first", reference = "benford")
 #'
 #' # Bayesian first digit analysis against Benford's law
-#' data_digit_distribution(x, check = "first", reference = "benford", prior = TRUE)
+#' digit_distribution(x, check = "first", reference = "benford", prior = TRUE)
 #'
 #' # Last digit analysis against the uniform distribution
-#' data_digit_distribution(x, check = "last", reference = "uniform")
+#' digit_distribution(x, check = "last", reference = "uniform")
 #'
 #' # Bayesian last digit analysis against the uniform distribution
-#' data_digit_distribution(x, check = "last", reference = "uniform", prior = TRUE)
+#' digit_distribution(x, check = "last", reference = "uniform", prior = TRUE)
 #'
 #' # First digit analysis against a custom distribution
-#' data_digit_distribution(x, check = "last", reference = 1:9)
+#' digit_distribution(x, check = "last", reference = 1:9)
 #'
 #' # Bayesian first digit analysis against a custom distribution
-#' data_digit_distribution(x, check = "last", reference = 1:9, prior = TRUE)
+#' digit_distribution(x, check = "last", reference = 1:9, prior = TRUE)
 #'
 #' @export
 
-data_digit_distribution <- function(x, check = c("first", "last", "firsttwo"),
-                                    reference = "benford", prior = FALSE) {
+digit_distribution <- function(x, check = c("first", "last", "firsttwo"),
+                               reference = "benford", prior = FALSE) {
   bayesian <- inherits(prior, "jfaPrior") || prior
   dname <- deparse(substitute(x))
   x <- x[!is.na(x)]
