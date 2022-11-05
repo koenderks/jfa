@@ -1,0 +1,193 @@
+---
+title: "Audit sampling: Sample evaluation"
+author: Koen Derks
+date: "last modified: 05-11-2022"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Audit sampling: Sample evaluation}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteDepends{jfa}
+  %\VignetteKeywords{audit, evaluation, jfa, planning, prior}
+  %\VignettePackage{jfa}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, fig.height = 4, fig.width = 6)
+library(jfa)
+```
+
+## Audit sampling: Sample evaluation
+
+### Hypothesis testing
+
+In an audit sampling test the auditor generally assigns performance materiality, $\theta_{max}$, to the population which expresses the maximum tolerable misstatement (as a fraction or a monetary amount). The auditor then inspects a sample of the population to make a decision between the following two hypotheses:
+
+$$H_1:\theta<\theta_{max}\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, H_0:\theta\geq\theta_{max}$$. 
+
+The `evaluation()` function allows you to make a statement about the credibility of these two hypotheses after inspecting a sample. Note that this requires that you specify the `materiality` argument in the function.
+
+#### Classical hypothesis testing using the *p*-value
+
+Classical hypothesis testing uses the *p* value to make a decision about whether to reject the hypothesis $H_0$ or not. As an example, consider that an auditor wants to verify whether the population contains less than 5 percent misstatement, implying the hypotheses $H_1:\theta<0.05$ and $H_0:\theta\geq0.05$. They have taken a sample of 100 items, of which 1 contained an error. They set the significance level for the *p* value to 0.05, implying that a *p* value < 0.05 will be enough to reject the hypothesis $H_0$.
+
+```{r}
+result_classical <- evaluation(materiality = 0.05, x = 1, n = 100)
+summary(result_classical)
+```
+
+As we can see, the *p* value is lower than 0.05 implying that the hypothesis $H_0$ is rejected.
+
+#### Bayesian hypothesis testing using the Bayes factor
+
+Bayesian hypothesis testing uses the Bayes factor, $BF_{10}$ or $BF_{01}$, to make a statement about the evidence provided by the sample in support for one of the two hypotheses $H_1$ or $H_0$. The subscript The Bayes factor denotes which hypothesis it favors. By default, the `evaluation()` function returns the value for $BF_{10}$.
+
+As an example of how to interpret the Bayes factor, the value of $BF_{10} = 10$ (provided by the `evaluation()` function) can be interpreted as: *the data are 10 times more likely to have occurred under the hypothesis $H_1:\theta<\theta_{max}$ than under the hypothesis $H_0:\theta\geq\theta_{max}$*. $BF_{10} > 1$ indicates evidence for $H_1$, while $BF_{10} < 1$ indicates evidence for $H_0$. 
+
+| $BF_{10}$ | Strength of evidence |
+|---------|-------|
+| $< 0.01$ | Extreme evidence for $H_0$ |
+| $0.01 - 0.033$ | Very strong evidence for $H_0$ |
+| $0.033 - 0.10$ | Strong evidence for $H_0$ |
+| $0.10 - 0.33$ | Moderate evidence for $H_0$ |
+| $0.33 - 1$ | Anecdotal evidence for $H_0$ |
+| $1$ | No evidence for $H_1$ or $H_0$ |
+| $1 - 3$ | Anecdotal evidence for $H_1$ |
+| $3 - 10$ | Moderate evidence for $H_1$ |
+| $10 - 30$ | Strong evidence for $H_1$ |
+| $30 - 100$ | Very strong evidence for $H_1$ |
+| $> 100$ | Extreme evidence for $H_1$ |
+
+##### Example 
+
+Again, consider the same example of an auditor who wants to verify whether the population contains less than 5 percent misstatement, implying the hypotheses $H_1:\theta<0.05$ and $H_0:\theta\geq0.05$. They have taken a sample of 100 items, of which 1 contained an error. The prior distribution is assumed to be a default *beta(1,1)* prior. 
+
+The output below shows that $BF_{10}=515$, implying that there is extreme evidence for $H_1$, the hypothesis that the population contains misstatements lower than 5 percent of the population. 
+
+```{r}
+prior <- auditPrior(materiality = 0.05, method = "default", likelihood = "binomial")
+result_bayesian <- evaluation(materiality = 0.05, x = 1, n = 100, prior = prior)
+summary(result_bayesian)
+```
+
+##### Sensitivity to the prior distribution
+
+In audit sampling, the Bayes factor is dependent on the prior distribution for $\theta$. As a rule of thumb, when the prior distribution is very uninformative (as with `method = 'default'`) with respect to $\theta$, the Bayes factor tends to overquantify the evidence in favor of $H_1$. You can mitigate this dependency using `method = "impartial"` in the `auditPrior()` function, which constructs a prior distribution that is impartial with respect to the hypotheses $H_1$ and $H_0$.
+
+The output below shows that $BF_{10}=47$, implying that there is strong evidence for $H_1$, the hypothesis that the population contains misstatements lower than 5 percent of the population. Since the two priors both resulted in convincing Bayes factors, the results are robust to the choice of prior distribution.
+
+```{r}
+prior <- auditPrior(materiality = 0.05, method = "impartial", likelihood = "binomial")
+result_bayesian <- evaluation(materiality = 0.05, x = 1, n = 100, prior = prior)
+summary(result_bayesian)
+```
+
+##### Application
+
+Two-stage sampling plans are required if an initial sample does not provide enough assurance to accept (or reject) a population definitively. In the field of quality control, ISO 28596 'Sampling procedures for inspection by attributes — Two-stage sampling plans for auditing and for inspection under prior information' provides two-stage sampling plans by attributes for inspection for a proportion of nonconforming items in a target population of discrete units. For example, this standard applies for inspections of a proportion of nonconforming items in a lot of product items, or inspections of the proportion of nonconforming test characteristics of a product subject to an acceptance test.
+
+The idea behind the standard two-stage sampling plan is simple. In the first stage, after drawing $n_1$ items and observing $k_1$ nonconforming items, a confidence interval for the proportion of nonconforming items is calculated. The decision in the first stage proceeds according to one of the three following scenarios:
+
+1. If the confidence interval completely lies below the tolerance value, the lot is accepted.
+2. If the confidence interval completely lies above the tolerance value, the lot is rejected.
+3. If the confidence interval contains the tolerance value, no decision can be made in the first stage. In this case, the auditor proceeds to the second stage. 
+
+In the second stage, a number $k_2$ of nonconforming items is observed in a sample of size $n_2$. A new confidence interval for the proportion of nonconforming items is calculated based on the total number $k_1 + k_2$ of nonconforming items. The decision in the second stage proceeds according to one of the two following scenarios:
+
+1. If the confidence interval completely lies above or below the tolerance value, the decision for approval and rejection is analogous to that in the first stage.
+2. If the interval contains the tolerance value, the decision is based on whether a bigger portion of the confidence interval lies below or above the tolerance value. If a larger portion of the interval lies above the tolerance value, the lot is rejected. If a larger portion of the interval lies below the tolerance value, the lot is accepted.
+
+The auditor is inspecting a lot of products and wants to make a statement with 90% confidence against a tolerance value of 5%. They formulate the hypothesis of intolerable deviations as $H_0:\theta \geq 0.05$ and the hypothesis of tolerable deviations as $H_1: \theta < 0.05$.
+
+```{r}
+confidence <- 0.90 # 90% confidence
+tolerance <- 0.05 # 5% tolerance
+```
+
+
+In the first stage, the auditor inspects $n_1 = 32$ items and observes $k_1 = 2$ nonconforming items. The shortest two-sided confidence interval (Göb & Lurz, 2012) for the proportion of nonconforming items is [0.0167; 0.1866]. This confidence interval contains the tolerance value and therefore no decision can be made in the first stage. The auditor therefore continues to the second stage.
+
+```{r, eval = F}
+ISO28596:::CI.binom.shortest(size = 32, x = 2, level = confidence)$bounds
+#      x estimate      lower     upper
+# [1,] 2   0.0625 0.01674365 0.1866428
+```
+
+In the second stage, the auditor inspects an additional $n_2 = 50$ items and observes $k_2 = 0$ nonconforming items. After observing these data, the shortest two-sided confidence interval for the proportion of nonconforming items (using $n = n_1 + n_2$ and $k = k_1 + k_2$) is [0.0065; 0.0734]. At this point, the confidence interval still contains the tolerance value but the auditor determines that the portion of the confidence interval that lies below the tolerance value is larger than the portion above the tolerance value. Therefore, they accept the lot.
+
+```{r, eval = F}
+ISO28596:::CI.binom.shortest(size = 32 + 50, x = 2 + 0, level = confidence)$bounds
+#      x   estimate       lower      upper
+# [1,] 2 0.02439024 0.006504196 0.07341118
+```
+
+The `jfa` package can be used to calculate Bayes factors for the hypothesis of tolerable deviations $H_1$ in the lot versus the hypothesis of intolerable deviations $H_0$ in the lot. The Bayes factor can provide insight into the weight of evidence in favor of acceptance of the lot versus the evidence in favor of rejection of the lot. Especially in the situation where the confidence interval contains the tolerance value the Bayes factor can provide an easy interpretation of the evidence in favor of acceptance versus rejection.
+
+$$BF_{10} = \underbrace{\frac{p(\text{data} | H_1)}{p(\text{data} | H_0)}}_{\text{Relative evidence}} $$
+
+To calculate the Bayes factor the auditor must first specify the prior distribution for the proportion of nonconforming items in the lot. An appropriate prior distribution can be one that assigns equal probability to the event of acceptance and the event of rejection (Derks et al., 2021), see also the vignette [Prior distributions](https://koenderks.github.io/jfa/articles/v3_prior_distributions.html). The code below creates this prior distribution.
+
+```{r}
+prior <- auditPrior(method = "impartial", likelihood = "binomial", materiality = 0.05)
+```
+
+Using the `evaluation()` function the auditor can create the prior distribution and calculate the Bayes factor in favor of acceptance of the lot versus rejection of the lot. In this case, the Bayes factor in favor of acceptance ($BF_{-+}$) is 0.66. This Bayes factor represents only anecdotal evidence in favor of rejection of the lot, since the data is 1 / 0.66 = 1.51 times more likely under the hypothesis $H_0$ than under the hypothesis $H_1$ (see the vignette [Testing misstatement](https://koenderks.github.io/jfa/articles/v6_testing_misstatement.html) for the interpretation of $BF_{-+}$).
+
+```{r}
+evaluation(materiality = tolerance, x = 2, n = 32, prior = prior)
+```
+
+The Bayes factor in favor of acceptance after the second sample of items is 6.24 which represents moderate evidence in favor of acceptance. Hence, we should continue selecting and inspecting items to gather sufficient evidence for one of the two hypotheses.
+
+```{r}
+evaluation(materiality = tolerance, x = 2 + 0, n = 32 + 50, prior = prior)
+```
+
+### Estimation
+
+When performing estimation the auditor tries to determine the unknown misstatement in the population on the basis of a sample. Generally, estimation implies that there is a minimal amount of assurance to be obtained about the precision / accuracy of your estimate (i.e., the most likely error - the upper bound). This inference about the population misstatement can be performed using the `evaluation()` function by specifying the `min.precision` argument and providing the sample data or summary statistics.
+
+#### Classical estimation
+
+Suppose your sampling objective is to estimate the misstatement with a precision of 2%. You have planned a sample of *n* = 188 items from which *x* = 1 turns out a contain an error. Standard classical evaluation using the Poisson distribution can be performed using the example code below.
+
+```{r}
+result_classical <- evaluation(min.precision = 0.02, method = "poisson", n = 188, x = 1)
+```
+
+Calling the `summary()` function on the result from the `evaluation()` function provides the estimates for the most likely error, the 95% upper bound, and the precision.
+
+```{r}
+summary(result_classical)
+```
+
+As we can see, the most likely error in the population is 1 / 188 = 0.53% and the 95% (one-sided) confidence interval ranges from 0% to 2.52%. Consequently, the precision of the estimate is 2.52% - 0.53% = 1.99%. This means that this sample provides sufficient information to estimate the misstatement in the population with a precision of 2%.
+
+#### Bayesian estimation
+
+In principle Bayesian estimation follows the same procedure as its classical counterpart, with the exception that a prior distribution must be provided to the `evaluation()` function. Therefore, the first step is to set up a prior distribution (see also the vignette [Prior distributions](https://koenderks.github.io/jfa/articles/v3_prior_distributions.html)). For illustration, we will assume a `default` *gamma(1, 1)* prior distribution.
+
+```{r}
+prior <- auditPrior(method = "default", likelihood = "poisson")
+```
+
+The sample outcomes together with the prior distribution can then be provided to the evaluation function. Once again, the `summary()` function provides the estimates for the most likely error, the 95% upper bound, and the precision. Note that, because the prior is already constructed for use with a `poisson` likelihood, the `method` argument does not need to be provided to the `evaluation()` function.
+
+```{r}
+result_bayesian <- evaluation(min.precision = 0.02, n = 188, x = 1, prior = prior)
+summary(result_bayesian)
+```
+
+As we can see, the posterior distribution is a *gamma(2, 189)* distribution. This distribution implies a most likely error in the population is 0.53% and a 95% (one-sided) confidence interval that ranges from 0% to 2.51%. Consequently, the precision of the estimate is 2.51% - 0.53% = 1.98%. Also in the Bayesian framework, this sample provides sufficient information to estimate the misstatement in the population with a precision of 2%.
+
+## References
+
+* Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., and Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. *International Journal of Auditing*, 25(3), 621-636.
+
+* Derks, K., de Swart, J., Wagenmakers, E.-J., & Wetzels, R. (2021). The Bayesian Approach to Audit Evidence: Quantifying Statistical Evidence using the Bayes Factor. *PsyArXiv*.
+
+* Stewart, T. R. (2012). *Technical Notes on the AICPA Audit Guide Audit Sampling*. American Institute of Certified Public Accountants, New York.
+
+* Stewart, T. R. (2013). *A Bayesian Audit Assurance Model with Application to the Component Materiality problem in Group Audits.* VU University, Amsterdam.

@@ -1,12 +1,12 @@
 ---
-title: 'Selection: Sampling methodology'
+title: 'Audit sampling: Sample selection'
 author: Koen Derks
-date: 'last modified: 19-08-2021'
+date: 'last modified: 05-11-2022'
 output: 
   rmarkdown::html_vignette:
     toc: true
 vignette: >
-  %\VignetteIndexEntry{Selection: Sampling methodology}
+  %\VignetteIndexEntry{Audit sampling: Sample selection}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteDepends{jfa}
   %\VignetteKeywords{algorithm, audit, method, sampling, selection}
@@ -19,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE, fig.height = 4, fig.width = 6)
 library(jfa)
 ```
 
-## Sampling methodology
+## Audit sampling: Sample selection
 
 Auditors are often required to assess balances or processes that involve a large number of items. Since they cannot inspect all of these items individually, they need to select a subset (i.e., a sample) from the total population to make a statement about a certain characteristic of the population. For this purpose, various selection methodologies are available that have become standard in an audit context. However, in practice it seems that the distinction between sampling methods ---and when to use them--- is not always easy to make. 
 

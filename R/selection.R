@@ -95,7 +95,6 @@ selection <- function(data, size, units = c("items", "values"),
                       method = c("interval", "cell", "random", "sieve"), values = NULL,
                       order = NULL, decreasing = FALSE, randomize = FALSE,
                       replace = FALSE, start = 1) {
-  .Deprecated(new = "sample_selection", package = "jfa", old = "selection")
   units <- match.arg(units)
   method <- match.arg(method)
   if (inherits(size, "jfaPlanning")) { # If the input for 'sampleSize' is of class 'jfaPlanning', extract the planned sample size

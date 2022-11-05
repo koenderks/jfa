@@ -7,9 +7,9 @@
 
 # jfa: Bayesian and Classical Audit Sampling <img src='https://github.com/koenderks/jfa/raw/development/man/figures/logo.png' width='149' height='173' align='right'/>
 
-`jfa` is an R package for statistical audit sampling. The package provides functions for planning, performing, evaluating, and reporting an audit sample compliant with the International Standards on Auditing. Specifically, these functions implement standard audit sampling techniques for calculating sample sizes, selecting items from a population, and evaluating misstatement from a data sample or from summary statistics. Additionally, the `jfa` package allows the user to create a prior probability distribution to perform Bayesian audit sampling using these functions.
+`jfa` is an R package for statistical auditing focusing on two areas: audit sampling and data auditing. First, the package provides functions for planning, performing, evaluating, and reporting an audit sample compliant with international standards on auditing. Specifically, these functions implement standard audit sampling techniques for calculating sample sizes, selecting items from a population, and evaluating misstatement from a data sample or from summary statistics. `jfa` enables the user to create a prior probability distribution to perform Bayesian audit sampling using these functions. Second, the package provides functions for auditing data, for example testing the first digits in a data set against Benford's law.
 
-The package and its intended workflow are also implemented with a graphical user interface in the [Audit](https://github.com/jasp-stats/jaspAudit) module of [JASP](https://jasp-stats.org), a free and open-source statistical software program.
+The functionality of the package and its intended workflow are also implemented with a graphical user interface in the [Audit](https://github.com/jasp-stats/jaspAudit) module of [JASP](https://jasp-stats.org), a free and open-source statistical software program.
 
 ## Overview
 
@@ -56,9 +56,9 @@ The cheat sheet below can help you get started with the `jfa` package and its in
 Below you can find an explanation of the available functions in `jfa` sorted by their occurrence in the standard audit sampling workflow. For detailed examples of how to use these functions, visit the [Get started](https://koenderks.github.io/jfa/articles/jfa.html) section on the package website.
 
 - [`auditPrior()`](#create-a-prior-distribution-with-auditprior)
-- [`planning()`](#plan-a-sample-with-planning)
-- [`selection()`](#select-sample-items-with-selection)
-- [`evaluation()`](#evaluate-a-sample-with-evaluation)
+- [`planning()`](#plan-a-sample-with-sampling-planning)
+- [`selection()`](#select-sample-items-with-sampling-selection)
+- [`evaluation()`](#evaluate-a-sample-with-sampling-evaluation)
 - [`report()`](#create-a-report-with-report)
 
 ### Create a prior distribution with `auditPrior()`
@@ -146,7 +146,7 @@ x <- planning(materiality = 0.03, likelihood = 'binomial', prior = TRUE)
 
 # Bayesian planning using a custom beta(1, 10) prior and binomial likelihood
 x <- planning(materiality = 0.03, 
-              prior = auditPrior(method = 'param', likelihood = 'binomial', alpha = 1, beta = 10))
+       prior = auditPrior(method = 'param', likelihood = 'binomial', alpha = 1, beta = 10))
 
 summary(x) # Prints information about the planning
 ```

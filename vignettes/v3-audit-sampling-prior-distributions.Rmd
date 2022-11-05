@@ -1,12 +1,12 @@
 ---
-title: 'Planning: Prior distributions'
+title: 'Audit sampling: Prior distributions'
 author: Koen Derks
-date: 'last modified: 19-08-2021'
+date: 'last modified: 05-11-2022'
 output: 
   rmarkdown::html_vignette:
     toc: true
 vignette: >
-  %\VignetteIndexEntry{Planning: Prior distributions}
+  %\VignetteIndexEntry{Audit sampling: Prior distributions}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteDepends{jfa}
   %\VignetteKeywords{audit, evaluation, planning, prior}
@@ -19,17 +19,9 @@ knitr::opts_chunk$set(echo = TRUE, fig.height = 4, fig.width = 6)
 library(jfa)
 ```
 
-## Bayesian inference
+## Audit sampling: Prior distributions
 
-Bayesian statistics allows you to incorporate existing information into the sampling procedure and to revise this information using the information from the sample. The use of the prior distribution can potentially decrease the amount of audit work required to achieve the desired assurance, thereby increasing your efficiency as an auditor. For example, when you have information from the auditee's internal controls that indicates a low-risk profile, you may build on this information to require less evidence from substantive testing. Be aware that all information that you incorporate into the statistical analysis should be justified.
-
-### Prior probability distributions
-
-Bayesian statistics incorporates existing information into the sampling procedure using a prior probability distribution. The prior distribution is a probability distribution that reflects your existing information about the misstatement in the population. Because the prior distribution is based on existing information, it is usually created before the auditor starts planning a sample. 
-
-## Constructing a prior distribution
-
-What information can be incorporated into the prior distribution depends on what type of information is available, the quality of that information, and the situation at hand. When the auditor has decided what kind of information they want to incorporate into a prior distribution, they can use the `auditPrior()` function to calculate the corresponding parameters of the prior distribution. Below we discuss the various types of audit information that `jfa` is able to incorporate into a prior distribution.
+Bayesian statistics allows you to incorporate existing information into the sampling procedure and to revise this information using the information from the sample. The use of the prior distribution can potentially decrease the amount of audit work required to achieve the desired assurance, thereby increasing your efficiency as an auditor. For example, when you have information from the auditee's internal controls that indicates a low-risk profile, you may build on this information to require less evidence from substantive testing. Be aware that all information that you incorporate into the statistical analysis should be justified. What information can be incorporated into the prior distribution depends on what type of information is available, the quality of that information, and the situation at hand. When the auditor has decided what kind of information they want to incorporate into a prior distribution, they can use the `auditPrior()` function to calculate the corresponding parameters of the prior distribution. Below we discuss the various types of audit information that `jfa` is able to incorporate into a prior distribution.
 
 First, we set some default options for the confidence, performance materiality, the likelihood, and the expected errors in the sample.
 
@@ -39,7 +31,6 @@ likelihood <- "binomial" # Binomial likelihood
 materiality <- 0.05 # Performance materiality of 5%
 expected <- 0.01 # 1% errors expected in sample
 ```
-
 
 ### Minimal information priors (`method = 'default'`)
 
@@ -207,7 +198,7 @@ Bayesian statistics allows the auditor to build on their existing information. T
 The prior distribution can be used the planning stage to calculate a minimum sample size by providing the objected returned by the `auditPrior()` function to the `planning()` function. For example, the code below calculates the minimum sample size to test the misstatement in the population against a performance materiality of 5%, while incorporating the information in `prior9`.
 
 ```{r}
-jfa::planning(materiality = materiality, expected = expected, conf.level = confidence, prior = prior9)
+planning(materiality = materiality, expected = expected, conf.level = confidence, prior = prior9)
 ```
 
 ### Combining `auditPrior()` with `evaluation()`
@@ -215,7 +206,7 @@ jfa::planning(materiality = materiality, expected = expected, conf.level = confi
 The prior distribution can be used the evaluation stage by providing the objected returned by the `auditPrior()` function to the `evaluation()` function. For example, the code below evaluates the misstatement in the population with respect to the performance materiality of 5% after seeing a sample of 60 items with 1 misstatement, while incorporating the information in `prior8`.
 
 ```{r}
-jfa::evaluation(materiality = materiality, conf.level = confidence, x = 1, n = 60, prior = prior9)
+evaluation(materiality = materiality, conf.level = confidence, x = 1, n = 60, prior = prior9)
 ```
 
 ## References

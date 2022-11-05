@@ -157,7 +157,6 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
                        x = NULL, n = NULL, N.units = NULL, N.items = NULL,
                        r.delta = 2.7, m.type = "accounts", cs.a = 1, cs.b = 3, cs.mu = 0.5,
                        prior = FALSE) {
-  .Deprecated(new = "sample_evaluation", package = "jfa", old = "evaluation")
   method <- match.arg(method)
   alternative <- match.arg(alternative)
   bayesian <- (inherits(prior, "logical") && prior) || inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")

@@ -1,20 +1,20 @@
 ---
-title: "Workflow: Bayesian audit sampling"
+title: "Audit sampling: Classical sampling workflow"
 author: Koen Derks
-date: "last modified: 27-10-2021"
+date: "last modified: 05-11-2022"
 output: 
   rmarkdown::html_vignette:
     toc: true
 vignette: >
-  %\VignetteIndexEntry{Workflow: Bayesian audit sampling}
+  %\VignetteIndexEntry{Audit sampling: Classical sampling workflow}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteDepends{jfa}
-  %\VignetteKeywords{audit, bayesian, sampling, workflow}
+  %\VignetteKeywords{audit, classical, sampling, workflow}
   %\VignettePackage{jfa}
   %\VignetteEncoding{UTF-8}
 ---
 
-## Scenario
+## Audit sampling: Classical sampling workflow
 
 This vignette aims to show how the `jfa` package facilitates auditors in the standard audit sampling workflow (hereafter "audit workflow"). In this example of the audit workflow, we will consider the case of BuildIt. BuildIt is a fictional construction company in the United States that is being audited by Laura, an external auditor for a fictional audit firm. At the end of the year, BuildIt has provided a summary of its financial situation in the financial statements. Laura's job as an auditor is to formulate an opinion about the fairness and correctness of BuildIt's financial statements. 
 
@@ -54,59 +54,26 @@ cr <- 0.6 # 60%
 
 ## Stage 1: Planning an audit sample
 
-Laura can choose to either perform a frequentist analysis, where she uses the increased detection risk as her level of uncertainty, or perform a Bayesian analysis, where she captures the information in the control risk in a prior distribution. For this example, we will show how Laura performs a Bayesian analysis. A frequentist analysis can easily be done through the following functions by setting `prior = FALSE`. In a frequentist audit, Laura immediately starts at step 1 and uses the value `adjustedConfidence` as her new value for `confidence`.
+Laura can choose to either perform a frequentist analysis, where she uses the increased detection risk as her level of uncertainty, or perform a Bayesian analysis, where she captures the information in the control risk in a prior distribution. For this example, we will show how Laura performs a frequentist analysis. In a frequentist audit, Laura immediately uses the adjusted confidence to calculate the sample size using the `planning()` function.
 
 ```{r}
 # Adjust the required confidence for a frequentist analysis.
 c.adj <- 1 - ((1 - confidence) / (ir * cr))
-```
-
-However, in a Bayesian audit, Laura starts at step 0 by defining the prior distribution that corresponds to her assessment of the control risk. She assumes the likelihood for a sample of $n$ observations, in which $k$ were in error, to be `poisson`. Using the `auditPrior()` function, she can create a prior distribution that incorporates the information in the risk assessments from the *ARM*. For more information on how this is done, see Derks et al. (2019).
-
-```{r}
-# Step 0: Create a prior distribution according to the audit risk model.
-prior <- auditPrior(
-  method = "arm", likelihood = "poisson", expected = expected,
-  materiality = materiality, ir = ir, cr = cr
-)
-```
-
-Laura can inspect the resulting prior distribution with the `summary()` function.
-
-```{r}
-summary(prior)
-```
-
-The prior distribution can be shown by using the `plot()` function.
-
-```{r fig.align="center", fig.height=4, fig.width=6}
-plot(prior)
-```
-
-Now that the prior distribution is specified, Laura can calculate the required sample size for her desired statement by using the `planning()` function. She uses the `prior` object as input for the `planning()` function to use her prior distribution.
-
-```{r}
 # Step 1: Calculate the required sample size.
-stage1 <- planning(materiality = materiality, expected = expected, conf.level = confidence, prior = prior)
+stage1 <- planning(materiality = materiality, expected = expected, conf.level = c.adj)
 ```
 
-Laura can then inspect the result from her planning procedure by using the `summary()` function. Her result tells her that, given her prior distribution she needs to audit a sample of 178 transactions so that, when at most 4.45 errors are found, she can conclude with 95% confidence that the maximum error in BuildIt's financial statements is lower the materiality of 5%. 
+Laura can then inspect the result from her planning procedure by using the `summary()` function. Her result tells her that, given her prior distribution she needs to audit a sample of 178 items so that, when at most 4.45 errors are found, she can conclude with 91.66% confidence that the maximum error in BuildIt's financial statements is lower the materiality of 5%. 
 
 ```{r}
 summary(stage1)
 ```
 
-Laura can inspect how the prior distribution compares to the expected posterior distribution by using the `plot()` function. The expected posterior distribution is the posterior distribution that would occur if Laura actually observed a sample of 178 transactions, from which 4.45 were in error.
-
-```{r fig.align="center", fig.height=4, fig.width=6}
-plot(stage1)
-```
-
 ## Stage 2: Selecting a sample
 
-Laura is now ready to select the required 178 transactions from the financial statements. She can choose to do this according to one of two statistical methods. In *record sampling* (`units = "items"`), inclusion probabilities are assigned on the transaction level, treating transactions with a high value and a low value the same, a transaction of $5,000 is equally likely to be selected as a transaction of $1,000. In *monetary unit sampling* (`units = "values"`), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the transaction that includes that dollar is selected. This favors higher transactions, as a transaction of \$5,000 is five times more likely to be selected than a transaction of \$1,000. 
+Laura is now ready to select the required 178 items from the financial statements. She can choose to do this according to one of two statistical methods. In *record sampling* (`units = "items"`), inclusion probabilities are assigned on the item level, treating items with a high value and a low value the same, an items of $5,000 is equally likely to be selected as a item of $1,000. In *monetary unit sampling* (`units = "values"`), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the item that includes that dollar is selected. This favors higher items, as an items of \$5,000 is five times more likely to be selected than a item of \$1,000. 
 
-Laura chooses to use *monetary unit sampling*, as she wants to include more high-valued transactions. The `selection()` function allows her to sample from the financial statements. She uses the `stage1` object as an input for the `selection()` function.
+Laura chooses to use *monetary unit sampling*, as she wants to include more high-valued items. The `selection()` function allows her to sample from the financial statements. She uses the `stage1` object as an input for the `selection()` function.
 
 ```{r}
 # Step 2: Draw a sample from the financial statements.
@@ -138,28 +105,22 @@ For this example, the audit values of the sample are already included in the `au
 
 ## Stage 4: Evaluating the sample
 
-Using her annotated sample, Laura can perform her inference with the `evaluation()` function. By passing the `priorResult` object to the function, she automatically sets `method = "binomial"` to be consistent with her prior distribution.
+Using her annotated sample, Laura can perform her inference with the `evaluation()` function.
 
 ```{r}
-# Step 4: Evaluate the sample.
+# Step 4: Evaluate the sample
 stage4 <- evaluation(
-  materiality = materiality, conf.level = confidence, data = sample,
-  values = "bookValue", values.audit = "auditValue", prior = prior
+  materiality = materiality, conf.level = c.adj, data = sample,
+  values = "bookValue", values.audit = "auditValue"
 )
 ```
 
-Laura can inspect the outcomes of her inference by using the `summary()` function. Her resulting upper bound is 2.278%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.
+Laura can inspect the outcomes of her inference by using the `summary()` function. Her resulting 91.66% upper bound is 1.396%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.
 
 ```{r}
 summary(stage4)
 ```
 
-She can inspect the prior and posterior distribution by using the `plot()` function. The shaded area quantifies the area under the posterior distribution that contains 95% of the probability, which ends at 2.278%. Therefore, Laura can state that there is a 95% probability that the misstatement in BuildIt's population is lower than 2.278%.
-
-```{r fig.align="center", fig.height=4, fig.width=6}
-plot(stage4)
-```
-
 ## Conclusion
 
-Since the 95% upper confidence bound on the misstatement in population is lower than the performance materiality Laura has obtained sufficient evidence to conclude that there is less than 5% risk that the population contains material misstatement.
+Since the 91.66% upper confidence bound on the misstatement in population is lower than the performance materiality Laura has obtained sufficient evidence to conclude that there is less than 5% risk that the population contains material misstatement.
