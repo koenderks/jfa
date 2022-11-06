@@ -73,7 +73,7 @@ auditPrior(method = c(
 
 *Example usage:*
 
-```r
+```{r}
 # Default beta(1, 1) prior distribution
 x <- auditPrior(method = 'default', likelihood = 'binomial')
 
@@ -110,7 +110,7 @@ planning(materiality = NULL, min.precision = NULL, expected = 0,
 
 *Example usage:*
 
-```r
+```{r}
 # Classical planning using the Poisson likelihood
 x <- planning(materiality = 0.03, likelihood = 'poisson')
 
@@ -153,7 +153,7 @@ selection(data, size, units = c('items', 'values'),
 
 *Example usage:*
 
-```r
+```{r}
 # Selection using random record (attributes) sampling
 x <- selection(data = BuildIt, size = 100, units = 'items', method = 'random')
 
@@ -205,7 +205,7 @@ evaluation(materiality = NULL, min.precision = NULL, method = c(
 
 *Example usage:*
 
-```r
+```{r}
 # Classical evaluation using the Poisson likelihood (and summary statistics)
 x <- evaluation(materiality = 0.03, x = 1, n = 100, method = 'poisson')
 
