@@ -120,6 +120,30 @@ references:
   year: '2022'
   url: https://CRAN.R-project.org/package=BeyondBenford
 - type: software
+  title: coda
+  abstract: 'coda: Output Analysis and Diagnostics for MCMC'
+  notes: Suggests
+  authors:
+  - family-names: Plummer
+    given-names: Martyn
+    email: martyn.plummer@gmail.com
+  - family-names: Best
+    given-names: Nicky
+  - family-names: Cowles
+    given-names: Kate
+  - family-names: Vines
+    given-names: Karen
+  - family-names: Sarkar
+    given-names: Deepayan
+  - family-names: Bates
+    given-names: Douglas
+  - family-names: Almond
+    given-names: Russell
+  - family-names: Magnusson
+    given-names: Arni
+  year: '2022'
+  url: https://CRAN.R-project.org/package=coda
+- type: software
   title: kableExtra
   abstract: 'kableExtra: Construct Complex Table with ''kable'' and Pipe Syntax'
   notes: Suggests
@@ -152,6 +176,16 @@ references:
     given-names: André
   year: '2022'
   url: https://CRAN.R-project.org/package=MUS
+- type: software
+  title: rjags
+  abstract: 'rjags: Bayesian Graphical Models using MCMC'
+  notes: Suggests
+  authors:
+  - family-names: Plummer
+    given-names: Martyn
+    email: martyn.plummer@gmail.com
+  year: '2022'
+  url: https://CRAN.R-project.org/package=rjags
 - type: software
   title: rmarkdown
   abstract: 'rmarkdown: Dynamic Documents for R'

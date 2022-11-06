@@ -69,7 +69,6 @@
 #'
 #' # Bayesian first digit analysis against a custom distribution
 #' digit.test(x, check = "last", reference = 1:9, prior = TRUE)
-#'
 #' @export
 
 digit.test <- function(x, check = c("first", "last", "firsttwo"),

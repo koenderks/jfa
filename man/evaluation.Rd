@@ -10,8 +10,8 @@ evaluation(materiality = NULL, min.precision = NULL, method = c(
              "rohrbach", "moment", "coxsnell",
              "direct", "difference", "quotient", "regression", "mpu"
            ), alternative = c('less', 'two.sided', 'greater'), conf.level = 0.95,
-           data = NULL, values = NULL, values.audit = NULL, times = NULL,
-           x = NULL, n = NULL, N.units = NULL, N.items = NULL,
+           data = NULL, values = NULL, values.audit = NULL, strata = NULL, times = NULL,
+           x = NULL, n = NULL, N.units = NULL, N.items = NULL, pool = FALSE,
            r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5,
            prior = FALSE)
 }
@@ -28,11 +28,13 @@ evaluation(materiality = NULL, min.precision = NULL, method = c(
 
 \item{data}{a data frame containing a data sample.}
 
-\item{values}{a character specifying name of a column in \code{data} containing the book values of the items.}
+\item{values}{a character specifying name of a numeric column in \code{data} containing the book values of the items.}
 
-\item{values.audit}{a character specifying name of a column in \code{data} containing the audit (true) values of the items.}
+\item{values.audit}{a character specifying name of a numeric column in \code{data} containing the audit (true) values of the items.}
 
-\item{times}{a character specifying name of a column in \code{data} containing the number of times each item in \code{data} should be counted (e.g., due to being selected multiple times for the sample).}
+\item{strata}{a character specifying name of a factor column in \code{data} indicating to which stratum each item belongs.}
+
+\item{times}{a character specifying name of a numeric column in \code{data} containing the number of times each item in \code{data} should be counted (e.g., due to being selected multiple times for the sample).}
 
 \item{x}{a numeric value larger than 0 specifying the sum of (proportional) misstatements in the sample. If specified, overrides the \code{data}, \code{values} and \code{values.audit} arguments and assumes that the data come from summary statistics specified by both \code{x} and \code{n}.}
 
@@ -41,6 +43,8 @@ evaluation(materiality = NULL, min.precision = NULL, method = c(
 \item{N.units}{an integer larger than 0 specifying the number of units in the population. Only used for methods \code{hypergeometric}, \code{direct}, \code{difference}, \code{quotient}, and \code{regression}.}
 
 \item{N.items}{an integer larger than 0 specifying the number of items in the population. Only used for methods \code{direct}, \code{difference}, \code{quotient}, and \code{regression}.}
+
+\item{pool}{logical. Whether to pool information during stratified evaluation. Only has an effect when there are strata in the data.}
 
 \item{r.delta}{a numeric value specifying \eqn{\Delta} in Rohrbach's augmented variance bound (Rohrbach, 1993). Only used for method \code{rohrbach}.}
 

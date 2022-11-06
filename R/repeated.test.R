@@ -56,7 +56,6 @@
 #'
 #' # Repeated values analysis shuffling last digit
 #' repeated.test(x, check = "last", method = "af", B = 2000)
-#'
 #' @export
 
 repeated.test <- function(x, check = c("last", "lasttwo", "all"),

@@ -12,7 +12,7 @@ Description: Provides statistical methods for audit sampling and data auditing a
 BugReports: https://github.com/koenderks/jfa/issues
 URL: https://koenderks.github.io/jfa/, https://github.com/koenderks/jfa
 Imports: extraDistr, graphics, stats
-Suggests: benford.analysis, BenfordTests, BeyondBenford, kableExtra, knitr, MUS, rmarkdown, samplingbook, testthat
+Suggests: benford.analysis, BenfordTests, BeyondBenford, coda, kableExtra, knitr, MUS, rjags, rmarkdown, samplingbook, testthat
 Language: en-US
 License: GPL (>= 3)
 Encoding: UTF-8

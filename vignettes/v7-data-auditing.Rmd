@@ -18,7 +18,7 @@ vignette: >
 library(jfa)
 ```
 
-Welcome to the 'Data auditing' page of the `jfa` package. Here you can find a simple explanation of the functions in the package that facilitate data auditing. For more detailed explanations of each function, read the other vignettes on the [package website](https://koenderks.github.io/jfa).
+Welcome to the 'Data auditing' vignette of the `jfa` package. Here you can find a simple explanation of the functions in the package that facilitate data auditing. For more detailed explanations of each function, read the other vignettes on the [package website](https://koenderks.github.io/jfa).
 
 ## 1. Functions and intended usage
 
@@ -31,7 +31,7 @@ Below you can find an explanation of the available data auditing functions in `j
 
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
-The functions `distr.test()` and `distr.btest()` take a vector of numeric values, extract the requested digits, and compares the frequencies of these digits to a reference distribution. The function `distr.test()` performs a frequentist hypothesis test of the null hypothesis that the digits are distributed according to the reference distribution and produces a *p* value. The function `distr.btest()` performs a Bayesian hypothesis test of the null hypothesis that the digits are distributed according to the reference distribution against the alternative hypothesis (using the prior parameters specified in `alpha`) that the digits are not distributed according to the reference distribution and produces a Bayes factor (Kass & Raftery, 1995). The possible options for the `check` argument are taken over from `extract_digits()`.
+The function `digit.test()` takes a vector of numeric values, extract the requested digits, and compares the frequencies of these digits to a reference distribution. By default, the function performs a frequentist hypothesis test of the null hypothesis that the digits are distributed according to the reference distribution and produces a *p* value. When a prior is specified, the function performs a Bayesian hypothesis test of the null hypothesis that the digits are distributed according to the reference distribution against the alternative hypothesis that the digits are not distributed according to the reference distribution and produces a Bayes factor (Kass & Raftery, 1995).
 
 *Full function with default arguments:*
 

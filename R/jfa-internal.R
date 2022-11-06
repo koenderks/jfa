@@ -142,3 +142,101 @@
   af <- sum(tx^2) / sum(tx)
   return(af)
 }
+
+.getmode <- function(x, round = 3) {
+  dens <- stats::density(x)
+  mode <- round(dens$x[which.max(dens$y)], round)
+  return(mode)
+}
+
+.poststratification <- function(theta, N) {
+  sum(theta * N / sum(N))
+}
+
+.fitjagsmodel <- function(method, prior.x, prior.n, n.obs, t.obs, t, nstrata, stratum, type) {
+  stopifnot("'method = hypergeometric' does not support pooling" = method != "hypergeometric")
+  iterations <- switch(type,
+    "taints" = 1e4,
+    "errors" = 1e5
+  )
+  model <- switch(type,
+    "errors" = switch(method,
+      "binomial" = paste0("
+    model {
+      theta ~ dbeta(", 1 + prior.x, ", ", 1 + prior.n - prior.x, ")
+      sigma ~ dnorm(0, 1)
+      for (i in 1:S) {
+        alpha_s[i] ~ dnorm(0, 1)
+      }
+      for (i in 1:S){
+        theta_s[i] <- ilogit(logit(theta) + sigma * alpha_s[i])
+        k[i] ~ dbinom(theta_s[i], n[i])
+      }
+    }"),
+      "poisson" = paste0("
+    model {
+      theta ~ dgamma(", 1 + prior.x, ", ", prior.n, ")
+      sigma ~ dnorm(0, 1)
+      for (i in 1:S) {
+        alpha_s[i] ~ dnorm(0, 1)
+      }
+      for (i in 1:S){
+      theta_s[i] <- ilogit(logit(theta) + sigma * alpha_s[i])
+      k[i] ~ dpois(theta_s[i] * n[i])
+      }
+    }")
+    ),
+    "taints" = switch(method,
+      "binomial" = paste0("
+    model {
+      theta ~ dbeta(", 1 + prior.x, ", ", 1 + prior.n - prior.x, ")
+      sigma ~ dnorm(0, 1)
+      nu ~ dnorm(0, 10)I(0, )
+      for (i in 1:S) {
+        alpha_s[i] ~ dnorm(0, 1)
+        theta_s[i] <- ilogit(logit(theta) + sigma * alpha_s[i])
+      }
+      for (i in 1:n){
+        t[i] ~ dbeta(nu * theta_s[s[i]], nu * (1 - theta_s[s[i]]))
+      }
+    }"),
+      "poisson" = paste0("
+    model {
+      theta ~ dgamma(", 1 + prior.x, ", ", prior.n, ")
+      sigma ~ dnorm(0, 1)
+      nu ~ dnorm(0, 100)I(0, )
+      for (i in 1:S) {
+        alpha_s[i] ~ dnorm(0, 1)
+        theta_s[i] <- ilogit(logit(theta) + sigma * alpha_s[i])
+      }
+      for (i in 1:n){
+        t[i] ~ dbeta(nu * theta_s[s[i]], nu * (1 - theta_s[s[i]]))
+      }
+    }")
+    )
+  )
+  dataList <- switch(type,
+    "errors" = list("n" = n.obs[-1], "k" = t.obs[-1], "S" = nstrata - 1),
+    "taints" = list("t" = (t[[1]] * (n.obs[1] - 1) + 0.5) / n.obs[1], "n" = n.obs[1], "S" = nstrata - 1, "s" = as.numeric(stratum))
+  )
+  p <- try({
+    utils::capture.output(
+      file = "NUL",
+      raw <- rjags::coda.samples(
+        model =
+          rjags::jags.model(
+            file = textConnection(model), data = dataList, n.chains = 4, inits = list(.RNG.name = "base::Wichmann-Hill", .RNG.seed = 120492)
+          ), variable.names = c("theta_s"), n.iter = iterations, burnin = iterations / 10
+      )
+    )
+  }, silent = TRUE)
+  if (inherits(p, "try-error")) {
+    if (grepl("Failed to locate any version of JAGS", p[[1]], fixed = TRUE)) {
+      stop("JAGS is required but missing, download it from http://www.sourceforge.net/projects/mcmc-jags/files")
+    } else {
+      stop(p[[1]])
+    }
+  }
+  samples <- coda::mcmc(do.call(rbind, raw))
+  return(samples)
+}

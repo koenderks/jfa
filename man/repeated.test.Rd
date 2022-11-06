@@ -44,7 +44,6 @@ x <- rnorm(50)
 
 # Repeated values analysis shuffling last digit
 repeated.test(x, check = "last", method = "af", B = 2000)
-
 }
 \references{
 Simohnsohn, U. (2019, May 25). Number-Bunching: A New Tool for Forensic Data Analysis. Retrieved from \url{https://datacolada.org/77}.

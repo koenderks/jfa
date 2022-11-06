@@ -51,6 +51,11 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
 
+      - name: Install JAGS
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y jags
+
       - name: Install system dependencies
         if: runner.os == 'Linux'
         run: |

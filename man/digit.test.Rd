@@ -57,7 +57,6 @@ digit.test(x, check = "last", reference = 1:9)
 
 # Bayesian first digit analysis against a custom distribution
 digit.test(x, check = "last", reference = 1:9, prior = TRUE)
-
 }
 \references{
 Benford, F. (1938). The law of anomalous numbers. \emph{In Proceedings of the American Philosophical Society}, 551-572.
