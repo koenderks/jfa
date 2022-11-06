@@ -29,6 +29,8 @@ Below you can find an explanation of the available data auditing functions in `j
 
 ### Test digit distributions with `digit.test()`
 
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+
 The functions `distr.test()` and `distr.btest()` take a vector of numeric values, extract the requested digits, and compares the frequencies of these digits to a reference distribution. The function `distr.test()` performs a frequentist hypothesis test of the null hypothesis that the digits are distributed according to the reference distribution and produces a *p* value. The function `distr.btest()` performs a Bayesian hypothesis test of the null hypothesis that the digits are distributed according to the reference distribution against the alternative hypothesis (using the prior parameters specified in `alpha`) that the digits are not distributed according to the reference distribution and produces a Bayes factor (Kass & Raftery, 1995). The possible options for the `check` argument are taken over from `extract_digits()`.
 
 *Full function with default arguments:*
@@ -70,6 +72,8 @@ digit.test(sinoForest$value, check = "first", reference = "benford", prior = TRU
 ```
 
 ### Test for repeated values with `repeated.test()`
+
+[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
 The function `repeated.test()` analyzes the frequency with which values get repeated within a set of numbers. Unlike Benford's law, and its generalizations, this approach examines the entire number at once, not only the first or last digit. For the technical details of this procedure, see Simohnsohn (2019).
 
