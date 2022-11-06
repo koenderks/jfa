@@ -89,7 +89,7 @@ The function `repeated_values()` analyzes the frequency with which values get re
 
 *Full function with default arguments:*
 
-```{r}
+```r
 repeated_values(x, check = 'last', method = 'af', B = 2000)
 ```
 
