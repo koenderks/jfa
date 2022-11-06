@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Audit sampling: Sample selection • jfa</title>
+<title>Audit sampling: Selecting a sample • jfa</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Audit sampling: Sample selection">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Audit sampling: Selecting a sample">
 <meta property="og:description" content="jfa">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -69,13 +69,13 @@
       <a href="../articles/v3-audit-sampling-bayesian-workflow.html">Audit sampling: Bayesian sampling workflow</a>
     </li>
     <li>
-      <a href="../articles/v4-audit-sampling-prior-distributions.html">Audit sampling: Prior distributions</a>
+      <a href="../articles/v4-audit-sampling-prior-distributions.html">Audit sampling: Creating a prior distribution</a>
     </li>
     <li>
-      <a href="../articles/v5-audit-sampling-sample-selection.html">Audit sampling: Sample selection</a>
+      <a href="../articles/v5-audit-sampling-sample-selection.html">Audit sampling: Selecting a sample</a>
     </li>
     <li>
-      <a href="../articles/v6-audit-sampling-evaluation.html">Audit sampling: Sample evaluation</a>
+      <a href="../articles/v6-audit-sampling-evaluation.html">Audit sampling: Evaluating a sample</a>
     </li>
     <li>
       <a href="../articles/v7-data-auditing.html">Data auditing: Get started</a>
@@ -109,7 +109,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Audit sampling: Sample selection</h1>
+      <h1 data-toc-skip>Audit sampling: Selecting a sample</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
             <h4 data-toc-skip class="date">last modified:
@@ -122,9 +122,6 @@
 
     
     
-<div class="section level2">
-<h2 id="audit-sampling-sample-selection">Audit sampling: Sample selection<a class="anchor" aria-label="anchor" href="#audit-sampling-sample-selection"></a>
-</h2>
 <p>Auditors are often required to assess balances or processes that
 involve a large number of items. Since they cannot inspect all of these
 items individually, they need to select a subset (i.e., a sample) from
@@ -457,7 +454,6 @@ the items in the population before selection.</p>
 <span><span class="co">## 4 2698     1   225    507.18     507.18</span></span>
 <span><span class="co">## 5  355     1 27934    749.38     749.38</span></span>
 <span><span class="co">## 6 1242     1 64071    759.34     759.34</span></span></code></pre>
-</div>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

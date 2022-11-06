@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Audit sampling: Prior distributions • jfa</title>
+<title>Audit sampling: Creating a prior distribution • jfa</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Audit sampling: Prior distributions">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Audit sampling: Creating a prior distribution">
 <meta property="og:description" content="jfa">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -69,13 +69,13 @@
       <a href="../articles/v3-audit-sampling-bayesian-workflow.html">Audit sampling: Bayesian sampling workflow</a>
     </li>
     <li>
-      <a href="../articles/v4-audit-sampling-prior-distributions.html">Audit sampling: Prior distributions</a>
+      <a href="../articles/v4-audit-sampling-prior-distributions.html">Audit sampling: Creating a prior distribution</a>
     </li>
     <li>
-      <a href="../articles/v5-audit-sampling-sample-selection.html">Audit sampling: Sample selection</a>
+      <a href="../articles/v5-audit-sampling-sample-selection.html">Audit sampling: Selecting a sample</a>
     </li>
     <li>
-      <a href="../articles/v6-audit-sampling-evaluation.html">Audit sampling: Sample evaluation</a>
+      <a href="../articles/v6-audit-sampling-evaluation.html">Audit sampling: Evaluating a sample</a>
     </li>
     <li>
       <a href="../articles/v7-data-auditing.html">Data auditing: Get started</a>
@@ -109,7 +109,8 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Audit sampling: Prior distributions</h1>
+      <h1 data-toc-skip>Audit sampling: Creating a prior
+distribution</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
             <h4 data-toc-skip class="date">last modified:
@@ -122,12 +123,10 @@
 
     
     
-<div class="section level2">
-<h2 id="audit-sampling-prior-distributions">Audit sampling: Prior distributions<a class="anchor" aria-label="anchor" href="#audit-sampling-prior-distributions"></a>
-</h2>
-<p>Bayesian statistics allows you to incorporate existing information
-into the sampling procedure and to revise this information using the
-information from the sample. The use of the prior distribution can
+<p>Bayesian statistics enables the incorporation of existing information
+into the sampling procedure via the prior distribution. The information
+in the prior is then revised using the information from a sample to come
+to an overall conclusion. The use of the prior distribution can
 potentially decrease the amount of audit work required to achieve the
 desired assurance, thereby increasing your efficiency as an auditor. For
 example, when you have information from the auditee’s internal controls
@@ -150,11 +149,17 @@ materiality, the likelihood, and the expected errors in the sample.</p>
 <span><span class="va">materiality</span> <span class="op">&lt;-</span> <span class="fl">0.05</span> <span class="co"># Performance materiality of 5%</span></span>
 <span><span class="va">expected</span> <span class="op">&lt;-</span> <span class="fl">0.01</span> <span class="co"># 1% errors expected in sample</span></span></code></pre></div>
 <div class="section level3">
-<h3 id="minimal-information-priors-method-default">Minimal information priors (<code>method = 'default'</code>)<a class="anchor" aria-label="anchor" href="#minimal-information-priors-method-default"></a>
+<h3 id="default-priors-method-default">Default priors (<code>method = 'default'</code>)<a class="anchor" aria-label="anchor" href="#default-priors-method-default"></a>
 </h3>
-<p>You can construct a prior distribution from minimal information using
-<code>method = 'default'</code>. As an example, the code below
-incorporates minimal information into a prior distribution.</p>
+<p>The default prior distributions are created using
+<code>method = 'default'</code>. <code>jfa</code>’s default priors
+satisfy two criteria: 1) they contain relatively little information
+about the misstatement parameter and 2) they are proper (i.e., they
+integrate to 1). These priors are the the gamma(1, 1) distribution as a
+conjugate prior for the Poisson likelihood, the beta(1, 1) distribution
+as a conjugate prior for the binomial likelihood, and the
+beta-binomial(N, 1, 1) distribution as a conjugate prior for the
+hypergeometric likelihood.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"default"</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior1</span><span class="op">)</span></span></code></pre></div>
@@ -186,11 +191,12 @@ incorporates minimal information into a prior distribution.</p>
 <h3 id="prior-distributions-with-classical-properties-method-strict">Prior distributions with classical properties
 (<code>method = 'strict'</code>)<a class="anchor" aria-label="anchor" href="#prior-distributions-with-classical-properties-method-strict"></a>
 </h3>
-<p>You can construct a prior distribution on the basis of no existing
-information using <code>method = 'strict'</code>. The prior distribution
-that is constructed is improper but yields exactly the same results as
-the classical methodology with respect to sample sizes, upper limits,
-and evidence.</p>
+<p>You can construct an improper prior distribution with classical
+properties using <code>method = 'strict'</code>. The posterior
+distribution of from this prior yields the same results as the classical
+methodology with respect to sample sizes and upper limits, but is only
+proper once a single non-misstated unit is present in the sample (Derks
+et al., 2022).</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"strict"</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior2</span><span class="op">)</span></span></code></pre></div>
@@ -257,7 +263,7 @@ code below creates a beta(2, 10) prior distribution.</p>
 (<code>method = 'impartial'</code>)<a class="anchor" aria-label="anchor" href="#prior-distributions-with-equal-prior-probabilities-method-impartial"></a>
 </h3>
 <p>You can incorporate the assumption that tolerable misstatement is
-equally likely as intolerable misstatement using
+equally likely as intolerable misstatement (Derks et al., 2022) using
 <code>method = 'impartial'</code>. As an example, the code below
 incorporates this assumption into a prior distribution.</p>
 <p><em>Note: This method requires that you specify a value for the
@@ -298,9 +304,9 @@ incorporates this assumption into a prior distribution.</p>
 </h3>
 <p>You can manually assign prior probabilities to the hypothesis of
 tolerable misstatement and the hypotheses of intolerable misstatement
-(using <code>p.hmin</code>) in combination with
-<code>method = 'hyp'</code>. As an example, the code below incorporates
-the information that the hypothesis of tolerable misstatement has a
+(Derks et al., 2021) with <code>method = 'hyp'</code> in combination
+with <code>p.hmin</code>. As an example, the code below incorporates the
+information that the hypothesis of tolerable misstatement has a
 probability of 60% into a prior distribution.</p>
 <p><em>Note: This method requires that you specify a value for the
 <code>materiality</code>.</em></p>
@@ -340,11 +346,11 @@ probability of 60% into a prior distribution.</p>
 </h3>
 <p>You can translate the risk assessments from the Audit Risk Model
 (inherent risk and internal control risk) into a prior distribution
-using <code>method = 'arm'</code> in combination with the
-<code>ir</code> and <code>cr</code> arguments. As an example, the code
-below incorporates the information that the inherent risk is equal to
-90% and that the internal control risk is equal to 60% into a prior
-distribution.</p>
+(Derks et al., 2021) using <code>method = 'arm'</code> in combination
+with the <code>ir</code> and <code>cr</code> arguments. As an example,
+the code below incorporates the information that the inherent risk is
+equal to 90% and that the internal control risk is equal to 60% into a
+prior distribution.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior6</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span></span>
 <span>  method <span class="op">=</span> <span class="st">"arm"</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>,</span>
@@ -420,10 +426,10 @@ upper bound is 60%.</p>
 (<code>method = 'sample'</code>)<a class="anchor" aria-label="anchor" href="#prior-distributions-from-an-earlier-sample-method-sample"></a>
 </h3>
 <p>You can incorporate information from an earlier sample into the prior
-distribution using <code>method = 'sample'</code> in combination with
-<code>x</code> and <code>n</code>. As an example, the code below
-incorporates the information from an earlier sample of 30 items in which
-0 misstatements were found into a prior distribution.</p>
+distribution (Derks et al., 2021) using <code>method = 'sample'</code>
+in combination with <code>x</code> and <code>n</code>. As an example,
+the code below incorporates the information from an earlier sample of 30
+items in which 0 misstatements were found into a prior distribution.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior8</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span></span>
 <span>  method <span class="op">=</span> <span class="st">"sample"</span>, likelihood <span class="op">=</span> <span class="va">likelihood</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>,</span>
@@ -459,7 +465,7 @@ incorporates the information from an earlier sample of 30 items in which
 (<code>method = 'factor'</code>)<a class="anchor" aria-label="anchor" href="#prior-distributions-from-a-weighted-earlier-sample-method-factor"></a>
 </h3>
 <p>You can incorporate information from last years results, weighted by
-a factor, into the prior distribution using
+a factor (Derks et al., 2021), into the prior distribution using
 <code>method = 'factor'</code> in combination with <code>x</code> and
 <code>n</code>. As an example, the code below incorporates the
 information from a last years results (a sample of 58 items in which 0
@@ -494,7 +500,6 @@ distribution.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior9</span><span class="op">)</span></span></code></pre></div>
 <p><img src="v4-audit-sampling-prior-distributions_files/figure-html/unnamed-chunk-19-1.png" width="576"></p>
-</div>
 </div>
 <div class="section level2">
 <h2 id="using-a-prior-distribution-in-other-functions">Using a prior distribution in other functions<a class="anchor" aria-label="anchor" href="#using-a-prior-distribution-in-other-functions"></a>
