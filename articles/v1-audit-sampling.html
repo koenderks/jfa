@@ -225,16 +225,41 @@ beta-binomial prior distribution (Dyer &amp; Pierce, 1991).</li>
 <p><em>Example usage:</em></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Default beta(1, 1) prior distribution</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'default'</span>, likelihood <span class="op">=</span> <span class="st">'binomial'</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"default"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Custom gamma(1, 10) prior distribution </span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'param'</span>, likelihood <span class="op">=</span> <span class="st">'poisson'</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="co"># Custom gamma(1, 10) prior distribution</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"param"</span>, likelihood <span class="op">=</span> <span class="st">"poisson"</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Beta prior distribution incorporating inherent risk (70%) and control risk (50%)</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'arm'</span>, likelihood <span class="op">=</span> <span class="st">'binomial'</span>, materiality <span class="op">=</span> <span class="fl">0.05</span>, ir <span class="op">=</span> <span class="fl">0.7</span>, cr <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"arm"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, materiality <span class="op">=</span> <span class="fl">0.05</span>, ir <span class="op">=</span> <span class="fl">0.7</span>, cr <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the prior distribution</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">x</span>, n <span class="op">=</span> <span class="fl">20</span>, cumulative <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Predictions for a sample of n = 20</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the prior distribution</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Prior Distribution Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Likelihood:                    binomial </span></span>
+<span><span class="co">##   Specifics:                     ir = 0.7; cr = 0.5; dr = 0.1428571 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Functional form:               beta(α = 1, β = 21) </span></span>
+<span><span class="co">##   Equivalent sample size:        21 </span></span>
+<span><span class="co">##   Equivalent errors:             0 </span></span>
+<span><span class="co">##   Mode:                          0 </span></span>
+<span><span class="co">##   Mean:                          0.045455 </span></span>
+<span><span class="co">##   Median:                        0.032468 </span></span>
+<span><span class="co">##   Variance:                      0.0018865 </span></span>
+<span><span class="co">##   Skewness:                      1.7442 </span></span>
+<span><span class="co">##   95 percent upper bound:        0.13295 </span></span>
+<span><span class="co">##   Precision:                     0.13295</span></span></code></pre>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">x</span>, n <span class="op">=</span> <span class="fl">20</span>, cumulative <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="co"># Predictions for a sample of n = 20</span></span></code></pre></div>
+<pre><code><span><span class="co">##      x&lt;=0      x&lt;=1      x&lt;=2      x&lt;=3      x&lt;=4      x&lt;=5      x&lt;=6      x&lt;=7 </span></span>
+<span><span class="co">## 0.5121951 0.7682927 0.8930582 0.9521576 0.9793114 0.9913797 0.9965519 0.9986816 </span></span>
+<span><span class="co">##      x&lt;=8      x&lt;=9     x&lt;=10     x&lt;=11     x&lt;=12     x&lt;=13     x&lt;=14     x&lt;=15 </span></span>
+<span><span class="co">## 0.9995206 0.9998352 0.9999468 0.9999841 0.9999956 0.9999989 0.9999998 1.0000000 </span></span>
+<span><span class="co">##     x&lt;=16     x&lt;=17     x&lt;=18     x&lt;=19     x&lt;=20 </span></span>
+<span><span class="co">## 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="plan-a-sample-with-planning">Plan a sample with <code>planning()</code><a class="anchor" aria-label="anchor" href="#plan-a-sample-with-planning"></a>
@@ -252,7 +277,7 @@ an object of class <code>jfaPrior</code> as returned by the
 <code>jfaPosterior</code> as returned by the <code><a href="../reference/evaluation.html">evaluation()</a></code>
 function.</p>
 <p><em>Full function with default arguments:</em></p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="cn">NULL</span>, min.precision <span class="op">=</span> <span class="cn">NULL</span>, expected <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>         likelihood <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'poisson'</span>, <span class="st">'binomial'</span>, <span class="st">'hypergeometric'</span><span class="op">)</span>, </span>
 <span>         conf.level <span class="op">=</span> <span class="fl">0.95</span>, N.units <span class="op">=</span> <span class="cn">NULL</span>, by <span class="op">=</span> <span class="fl">1</span>, max <span class="op">=</span> <span class="fl">5000</span>, </span>
@@ -269,18 +294,40 @@ argument:</em></p>
 2012).</li>
 </ul>
 <p><em>Example usage:</em></p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Classical planning using the Poisson likelihood</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, likelihood <span class="op">=</span> <span class="st">'poisson'</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, likelihood <span class="op">=</span> <span class="st">"poisson"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Bayesian planning using a default beta(1, 1) prior and binomial likelihood</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, likelihood <span class="op">=</span> <span class="st">'binomial'</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Bayesian planning using a custom beta(1, 10) prior and binomial likelihood</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, </span>
-<span>       prior <span class="op">=</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'param'</span>, likelihood <span class="op">=</span> <span class="st">'binomial'</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the planning</span></span></code></pre></div>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span></span>
+<span>  materiality <span class="op">=</span> <span class="fl">0.03</span>,</span>
+<span>  prior <span class="op">=</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"param"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Using 'likelihood = binomial' from 'prior'</span></span></code></pre>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the planning</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Bayesian Audit Sample Planning Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Confidence level:              0.95 </span></span>
+<span><span class="co">##   Materiality:                   0.03 </span></span>
+<span><span class="co">##   Hypotheses:                    H₀: Θ &gt; 0.03 vs. H₁: Θ &lt; 0.03 </span></span>
+<span><span class="co">##   Expected:                      0 </span></span>
+<span><span class="co">##   Likelihood:                    binomial </span></span>
+<span><span class="co">##   Prior distribution:            beta(α = 1, β = 10) </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Minimum sample size:           89 </span></span>
+<span><span class="co">##   Tolerable errors:              0 </span></span>
+<span><span class="co">##   Posterior distribution:        beta(α = 1, β = 99) </span></span>
+<span><span class="co">##   Expected most likely error:    0 </span></span>
+<span><span class="co">##   Expected upper bound:          0.029807 </span></span>
+<span><span class="co">##   Expected precision:            0.029807 </span></span>
+<span><span class="co">##   Expected BF₁₀:                  54.479</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="select-sample-items-with-selection">Select sample items with <code>selection()</code><a class="anchor" aria-label="anchor" href="#select-sample-items-with-selection"></a>
@@ -296,7 +343,7 @@ the <code>size</code> argument can be an object of class
 <code>jfaPlanning</code> as returned by the <code><a href="../reference/planning.html">planning()</a></code>
 function.</p>
 <p><em>Full function with default arguments:</em></p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">size</span>, units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'items'</span>, <span class="st">'values'</span><span class="op">)</span>,</span>
 <span>          method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'interval'</span>, <span class="st">'cell'</span>, <span class="st">'random'</span>, <span class="st">'sieve'</span><span class="op">)</span>, values <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>          order <span class="op">=</span> <span class="cn">NULL</span>, decreasing <span class="op">=</span> <span class="cn">FALSE</span>, randomize <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -323,15 +370,36 @@ Teitlebaum, &amp; Anderson, 1979).</li>
 (Hoogduin, Hall, &amp; Tsay, 2010).</li>
 </ul>
 <p><em>Example usage:</em></p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Selection using random record (attributes) sampling</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'items'</span>, method <span class="op">=</span> <span class="st">'random'</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">"items"</span>, method <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Selection using fixed interval monetary unit sampling (using column 'bookValue' in BuildIt)</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">'values'</span>, </span>
-<span>               method <span class="op">=</span> <span class="st">'interval'</span>, values <span class="op">=</span> <span class="st">'bookValue'</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">"values"</span>,</span>
+<span>  method <span class="op">=</span> <span class="st">"interval"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the selection</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Audit Sample Selection Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Requested sample size:         100 </span></span>
+<span><span class="co">##   Sampling units:                monetary units </span></span>
+<span><span class="co">##   Method:                        fixed interval sampling </span></span>
+<span><span class="co">##   Starting point:                1 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Data:</span></span>
+<span><span class="co">##   Population size:               3500 </span></span>
+<span><span class="co">##   Population value:              1403221 </span></span>
+<span><span class="co">##   Selection interval:            14032 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Selected sampling units:       100 </span></span>
+<span><span class="co">##   Proportion of value:           0.037014 </span></span>
+<span><span class="co">##   Selected items:                100 </span></span>
+<span><span class="co">##   Proportion of size:            0.028571</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="evaluate-a-sample-with-evaluation">Evaluate a sample with <code>evaluation()</code><a class="anchor" aria-label="anchor" href="#evaluate-a-sample-with-evaluation"></a>
@@ -348,7 +416,7 @@ be an object of class <code>jfaPrior</code> as returned by the
 <code>jfaPosterior</code> as returned by the <code><a href="../reference/evaluation.html">evaluation()</a></code>
 function.</p>
 <p><em>Full function with default arguments:</em></p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="cn">NULL</span>, min.precision <span class="op">=</span> <span class="cn">NULL</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>             <span class="st">"poisson"</span>, <span class="st">"binomial"</span>, <span class="st">"hypergeometric"</span>,</span>
 <span>             <span class="st">"stringer"</span>, <span class="st">"stringer.meikle"</span>, <span class="st">"stringer.lta"</span>, <span class="st">"stringer.pvz"</span>,</span>
@@ -405,18 +473,42 @@ Hoogduin, 2011).</li>
 2011).</li>
 </ul>
 <p><em>Example usage:</em></p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Classical evaluation using the Poisson likelihood (and summary statistics)</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, method <span class="op">=</span> <span class="st">'poisson'</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, method <span class="op">=</span> <span class="st">"poisson"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Bayesian evaluation using a default minimal information prior (and summary statistics)</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, method <span class="op">=</span> <span class="st">'poisson'</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, method <span class="op">=</span> <span class="st">"poisson"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Bayesian evaluation using a custom beta(1, 10) prior (and summary statistics)</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, </span>
-<span>                prior <span class="op">=</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">'param'</span>, likelihood <span class="op">=</span> <span class="st">'binomial'</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the evaluation</span></span></code></pre></div>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
+<span>  materiality <span class="op">=</span> <span class="fl">0.03</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>,</span>
+<span>  prior <span class="op">=</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"param"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Using 'method = binomial' from 'prior'</span></span></code></pre>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the evaluation</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Bayesian Audit Sample Evaluation Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Confidence level:               0.95 </span></span>
+<span><span class="co">##   Materiality:                    0.03 </span></span>
+<span><span class="co">##   Hypotheses:                     H₀: Θ &gt; 0.03 vs. H₁: Θ &lt; 0.03 </span></span>
+<span><span class="co">##   Method:                         binomial </span></span>
+<span><span class="co">##   Prior distribution:             beta(α = 1, β = 10) </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Data:</span></span>
+<span><span class="co">##   Sample size:                    100 </span></span>
+<span><span class="co">##   Number of errors:               1 </span></span>
+<span><span class="co">##   Sum of taints:                  1 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Posterior distribution:         beta(α = 2, β = 109) </span></span>
+<span><span class="co">##   Most likely error:              0.0091743 </span></span>
+<span><span class="co">##   95 percent credible interval:   [0, 0.042399] </span></span>
+<span><span class="co">##   Precision:                      0.033225 </span></span>
+<span><span class="co">##   BF₁₀:                            15.385</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="create-a-report-with-report">Create a report with <code>report()</code><a class="anchor" aria-label="anchor" href="#create-a-report-with-report"></a>
@@ -428,10 +520,10 @@ function and automatically creates a <code>html</code> or
 <code>pdf</code> report containing the analysis results and their
 interpretation.</p>
 <p><em>Full function with default arguments:</em></p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span><span class="va">object</span>, file <span class="op">=</span> <span class="st">'report.html'</span>, format <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'html_document'</span>, <span class="st">'pdf_document'</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><em>Example usage:</em></p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Generate an automatic report</span></span>
 <span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">x</span>, file <span class="op">=</span> <span class="st">'myReport.html'</span><span class="op">)</span></span></code></pre></div>
 <p>For an example report, see the following <a href="https://github.com/koenderks/jfa/raw/development/man/figures/readme/report/report.pdf" class="external-link">link</a>.</p>
