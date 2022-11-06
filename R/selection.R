@@ -13,12 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Select a Statistical Audit Sample
+#' Audit Sampling: Selection
 #'
-#' @description \code{selection()} is used to perform statistical selection of audit samples. It offers flexible implementations of the most common audit sampling algorithms for attributes sampling and monetary unit sampling. \code{selection()} returns an object of class \code{jfaSelection} which can be used with associated \code{summary()} and a \code{plot()} methods.
-#'
-#' For more details on how to use this function, see the package vignette:
-#' \code{vignette('jfa', package = 'jfa')}
+#' @description \code{selection()} is used to perform statistical selection of audit samples. It offers flexible implementations of the most common audit sampling algorithms for attributes sampling and monetary unit sampling. The function returns an object of class \code{jfaSelection} that can be used with associated \code{summary()} and a \code{plot()} methods.
 #'
 #' @usage selection(data, size, units = c('items', 'values'),
 #'           method = c('interval', 'cell', 'random', 'sieve'), values = NULL,

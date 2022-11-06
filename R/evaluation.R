@@ -13,12 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Evaluate a Statistical Audit Sample
+#' Audit Sampling: Evaluation
 #'
-#' @description \code{evaluation()} is used to perform statistical inference about the misstatement in an audit population. It allows specification of statistical requirements for the sample with respect to the performance materiality or the precision. \code{evaluation()} returns an object of class \code{jfaEvaluation} which can be used with associated \code{summary()} and \code{plot()} methods.
-#'
-#' For more details on how to use this function, see the package vignette:
-#' \code{vignette('jfa', package = 'jfa')}
+#' @description \code{evaluation()} is used to perform statistical inference about the misstatement in an audit population. It allows specification of statistical requirements for the sample with respect to the performance materiality or the precision. The function returns an object of class \code{jfaEvaluation} that can be used with associated \code{summary()} and \code{plot()} methods.
 #'
 #' @usage evaluation(materiality = NULL, min.precision = NULL, method = c(
 #'              "poisson", "binomial", "hypergeometric",

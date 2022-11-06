@@ -2,7 +2,7 @@
 % Please edit documentation in R/planning.R
 \name{planning}
 \alias{planning}
-\title{Plan a Statistical Audit Sample}
+\title{Audit Sampling: Planning}
 \usage{
 planning(materiality = NULL, min.precision = NULL, expected = 0,
          likelihood = c('poisson', 'binomial', 'hypergeometric'),
@@ -49,10 +49,7 @@ An object of class \code{jfaPlanning} containing:
 \item{posterior}{if a prior distribution is specified, an object of class \code{jfaPosterior} that contains information about the expected posterior distribution.}
 }
 \description{
-\code{planning()} is used to calculate a minimum sample size for audit samples. It allows specification of statistical requirements for the sample with respect to the performance materiality or the precision. \code{planning()} returns an object of class \code{jfaPlanning} which can be used with associated \code{summary()} and \code{plot()} methods.
-
-For more details on how to use this function, see the package vignette:
-\code{vignette('jfa', package = 'jfa')}
+\code{planning()} is used to calculate a minimum sample size for audit samples. It allows specification of statistical requirements for the sample with respect to the performance materiality or the precision. The function returns an object of class \code{jfaPlanning} that can be used with associated \code{summary()} and \code{plot()} methods.
 }
 \details{
 This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.

@@ -13,12 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Plan a Statistical Audit Sample
+#' Audit Sampling: Planning
 #'
-#' @description \code{planning()} is used to calculate a minimum sample size for audit samples. It allows specification of statistical requirements for the sample with respect to the performance materiality or the precision. \code{planning()} returns an object of class \code{jfaPlanning} which can be used with associated \code{summary()} and \code{plot()} methods.
-#'
-#' For more details on how to use this function, see the package vignette:
-#' \code{vignette('jfa', package = 'jfa')}
+#' @description \code{planning()} is used to calculate a minimum sample size for audit samples. It allows specification of statistical requirements for the sample with respect to the performance materiality or the precision. The function returns an object of class \code{jfaPlanning} that can be used with associated \code{summary()} and \code{plot()} methods.
 #'
 #' @usage planning(materiality = NULL, min.precision = NULL, expected = 0,
 #'          likelihood = c('poisson', 'binomial', 'hypergeometric'),

@@ -13,12 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Create an Audit Sampling Report
+#' Audit Sampling: Reporting
 #'
-#' @description \code{report()} takes an object of class \code{jfaEvaluation} as returned by the \code{evaluation()} function automatically generates a \code{html} or \code{pdf} report of the results.
-#'
-#' For more details on how to use this function, see the package vignette:
-#' \code{vignette('jfa', package = 'jfa')}
+#' @description \code{report()} takes an object of class \code{jfaEvaluation} as returned by the \code{evaluation()} function automatically generates a \code{html} or \code{pdf} report containing the most relevant statistical results and their interpretation.
 #'
 #' @usage report(object, file = 'report.html', format = c('html_document', 'pdf_document'))
 #'

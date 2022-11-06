@@ -2,7 +2,7 @@
 % Please edit documentation in R/report.R
 \name{report}
 \alias{report}
-\title{Create an Audit Sampling Report}
+\title{Audit Sampling: Reporting}
 \usage{
 report(object, file = 'report.html', format = c('html_document', 'pdf_document'))
 }
@@ -17,10 +17,7 @@ report(object, file = 'report.html', format = c('html_document', 'pdf_document')
 A \code{html} or \code{pdf} file containing a report of the evaluation.
 }
 \description{
-\code{report()} takes an object of class \code{jfaEvaluation} as returned by the \code{evaluation()} function automatically generates a \code{html} or \code{pdf} report of the results.
-
-For more details on how to use this function, see the package vignette:
-\code{vignette('jfa', package = 'jfa')}
+\code{report()} takes an object of class \code{jfaEvaluation} as returned by the \code{evaluation()} function automatically generates a \code{html} or \code{pdf} report containing the most relevant statistical results and their interpretation.
 }
 \examples{
 data("BuildIt")

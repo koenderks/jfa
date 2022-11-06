@@ -2,7 +2,7 @@
 % Please edit documentation in R/auditPrior.R
 \name{auditPrior}
 \alias{auditPrior}
-\title{Prior Distributions for Audit Sampling}
+\title{Audit Sampling: Prior Distributions}
 \usage{
 auditPrior(method = c(
              "default", "strict", "param", "impartial", "hyp",
@@ -60,10 +60,7 @@ An object of class \code{jfaPrior} containing:
 \item{N.units}{if \code{N.units} is specified, the number of units in the population.}
 }
 \description{
-\code{auditPrior()} is used to specify a prior distribution for Bayesian audit sampling. The interface allows a complete customization of the prior distribution as well as a formal translation of pre-existing audit information into a prior distribution. \code{auditPrior()} returns an object of class \code{jfaPrior} that can be subsequently used in the \code{planning()} and \code{evaluation()} functions via their \code{prior} argument. Objects with class \code{jfaPrior} can be used with associated \code{summary()} and \code{plot()} methods.
-
-For more details on how to use this function, see the package vignette:
-\code{vignette('jfa', package = 'jfa')}
+\code{auditPrior()} is used to create a prior distribution for Bayesian audit sampling. The interface allows a complete customization of the prior distribution as well as a formal translation of pre-existing audit information into a prior distribution. The function returns an object of class \code{jfaPrior} that can be used in the \code{planning()} and \code{evaluation()} functions via their \code{prior} argument. Objects with class \code{jfaPrior} can be further inspected via associated \code{summary()} and \code{plot()} methods.
 }
 \details{
 To perform Bayesian audit sampling you must assign a prior probability distribution to the parameter in the model, i.e., the population misstatement \eqn{\theta}.

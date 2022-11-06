@@ -2,7 +2,7 @@
 % Please edit documentation in R/repeated.test.R
 \name{repeated.test}
 \alias{repeated.test}
-\title{Auditing Data: Repeated Values}
+\title{Auditing Data: Repeated Values Test}
 \usage{
 repeated.test(x, check = c('last', "lasttwo", "all"),
               method = c("af", "entropy"), B = 2000)

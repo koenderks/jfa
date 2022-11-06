@@ -2,7 +2,7 @@
 % Please edit documentation in R/evaluation.R
 \name{evaluation}
 \alias{evaluation}
-\title{Evaluate a Statistical Audit Sample}
+\title{Audit Sampling: Evaluation}
 \usage{
 evaluation(materiality = NULL, min.precision = NULL, method = c(
              "poisson", "binomial", "hypergeometric",
@@ -79,10 +79,7 @@ An object of class \code{jfaEvaluation} containing:
 \item{data.name}{a character giving the name of the data.}
 }
 \description{
-\code{evaluation()} is used to perform statistical inference about the misstatement in an audit population. It allows specification of statistical requirements for the sample with respect to the performance materiality or the precision. \code{evaluation()} returns an object of class \code{jfaEvaluation} which can be used with associated \code{summary()} and \code{plot()} methods.
-
-For more details on how to use this function, see the package vignette:
-\code{vignette('jfa', package = 'jfa')}
+\code{evaluation()} is used to perform statistical inference about the misstatement in an audit population. It allows specification of statistical requirements for the sample with respect to the performance materiality or the precision. The function returns an object of class \code{jfaEvaluation} that can be used with associated \code{summary()} and \code{plot()} methods.
 }
 \details{
 This section lists the available options for the \code{methods} argument.

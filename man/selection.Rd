@@ -2,7 +2,7 @@
 % Please edit documentation in R/selection.R
 \name{selection}
 \alias{selection}
-\title{Select a Statistical Audit Sample}
+\title{Audit Sampling: Selection}
 \usage{
 selection(data, size, units = c('items', 'values'),
           method = c('interval', 'cell', 'random', 'sieve'), values = NULL,
@@ -48,10 +48,7 @@ An object of class \code{jfaSelection} containing:
 \item{data.name}{a character indicating the name of the population data.}
 }
 \description{
-\code{selection()} is used to perform statistical selection of audit samples. It offers flexible implementations of the most common audit sampling algorithms for attributes sampling and monetary unit sampling. \code{selection()} returns an object of class \code{jfaSelection} which can be used with associated \code{summary()} and a \code{plot()} methods.
-
-For more details on how to use this function, see the package vignette:
-\code{vignette('jfa', package = 'jfa')}
+\code{selection()} is used to perform statistical selection of audit samples. It offers flexible implementations of the most common audit sampling algorithms for attributes sampling and monetary unit sampling. The function returns an object of class \code{jfaSelection} that can be used with associated \code{summary()} and a \code{plot()} methods.
 }
 \details{
 This section elaborates on the possible options for the \code{units} argument:
