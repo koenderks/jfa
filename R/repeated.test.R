@@ -46,7 +46,7 @@
 #'
 #' @references Simohnsohn, U. (2019, May 25). Number-Bunching: A New Tool for Forensic Data Analysis. Retrieved from \url{https://datacolada.org/77}.
 #'
-#' @seealso \code{\link{digit.test}} \code{\link{missing.test}}
+#' @seealso \code{\link{digit.test}}
 #'
 #' @keywords audit repeated values
 #'

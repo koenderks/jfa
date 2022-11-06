@@ -50,7 +50,7 @@ repeated.test(x, check = "last", method = "af", B = 2000)
 Simohnsohn, U. (2019, May 25). Number-Bunching: A New Tool for Forensic Data Analysis. Retrieved from \url{https://datacolada.org/77}.
 }
 \seealso{
-\code{\link{digit.test}} \code{\link{missing.test}}
+\code{\link{digit.test}}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}

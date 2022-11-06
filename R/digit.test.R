@@ -44,7 +44,7 @@
 #'
 #' @references Benford, F. (1938). The law of anomalous numbers. \emph{In Proceedings of the American Philosophical Society}, 551-572.
 #'
-#' @seealso \code{\link{repeated.test}} \code{\link{missing.test}}
+#' @seealso \code{\link{repeated.test}}
 #'
 #' @keywords audit Bayesian Benford digits distribution
 #'

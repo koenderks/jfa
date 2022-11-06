@@ -63,7 +63,7 @@ digit.test(x, check = "last", reference = 1:9, prior = TRUE)
 Benford, F. (1938). The law of anomalous numbers. \emph{In Proceedings of the American Philosophical Society}, 551-572.
 }
 \seealso{
-\code{\link{repeated.test}} \code{\link{missing.test}}
+\code{\link{repeated.test}}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}
