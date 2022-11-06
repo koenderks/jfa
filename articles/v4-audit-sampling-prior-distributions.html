@@ -60,22 +60,28 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/v1-audit-sampling-workflow.html">Audit sampling: Classical sampling workflow</a>
+      <a href="../articles/v1-audit-sampling.html">Audit sampling: Get started</a>
     </li>
     <li>
-      <a href="../articles/v2-audit-sampling-bayesian-workflow.html">Audit sampling: Bayesian sampling workflow</a>
+      <a href="../articles/v2-audit-sampling-workflow.html">Audit sampling: Classical sampling workflow</a>
     </li>
     <li>
-      <a href="../articles/v3-audit-sampling-prior-distributions.html">Audit sampling: Prior distributions</a>
+      <a href="../articles/v3-audit-sampling-bayesian-workflow.html">Audit sampling: Bayesian sampling workflow</a>
     </li>
     <li>
-      <a href="../articles/v4-audit-sampling-sample-selection.html">Audit sampling: Sample selection</a>
+      <a href="../articles/v4-audit-sampling-prior-distributions.html">Audit sampling: Prior distributions</a>
     </li>
     <li>
-      <a href="../articles/v5-audit-sampling-evaluation.html">Audit sampling: Sample evaluation</a>
+      <a href="../articles/v5-audit-sampling-sample-selection.html">Audit sampling: Sample selection</a>
     </li>
     <li>
-      <a href="../articles/v6-auditing-data-digit-analysis.html">Auditing data: Digit analysis</a>
+      <a href="../articles/v6-audit-sampling-evaluation.html">Audit sampling: Sample evaluation</a>
+    </li>
+    <li>
+      <a href="../articles/v7-data-auditing.html">Data auditing: Get started</a>
+    </li>
+    <li>
+      <a href="../articles/v8-auditing-data-digit-analysis.html">Auditing data: Digit analysis</a>
     </li>
   </ul>
 </li>
@@ -109,8 +115,8 @@
             <h4 data-toc-skip class="date">last modified:
 05-11-2022</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/v3-audit-sampling-prior-distributions.Rmd" class="external-link"><code>vignettes/v3-audit-sampling-prior-distributions.Rmd</code></a></small>
-      <div class="hidden name"><code>v3-audit-sampling-prior-distributions.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/v4-audit-sampling-prior-distributions.Rmd" class="external-link"><code>vignettes/v4-audit-sampling-prior-distributions.Rmd</code></a></small>
+      <div class="hidden name"><code>v4-audit-sampling-prior-distributions.Rmd</code></div>
 
     </div>
 
@@ -174,7 +180,7 @@ incorporates minimal information into a prior distribution.</p>
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v3-audit-sampling-prior-distributions_files/figure-html/unnamed-chunk-3-1.png" width="576"></p>
+<p><img src="v4-audit-sampling-prior-distributions_files/figure-html/unnamed-chunk-3-1.png" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="prior-distributions-with-classical-properties-method-strict">Prior distributions with classical properties
@@ -210,7 +216,7 @@ and evidence.</p>
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v3-audit-sampling-prior-distributions_files/figure-html/unnamed-chunk-5-1.png" width="576"></p>
+<p><img src="v4-audit-sampling-prior-distributions_files/figure-html/unnamed-chunk-5-1.png" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="custom-prior-distributions-method-param">Custom prior distributions (<code>method = 'param'</code>)<a class="anchor" aria-label="anchor" href="#custom-prior-distributions-method-param"></a>
@@ -244,7 +250,7 @@ code below creates a beta(2, 10) prior distribution.</p>
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior3</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v3-audit-sampling-prior-distributions_files/figure-html/unnamed-chunk-7-1.png" width="576"></p>
+<p><img src="v4-audit-sampling-prior-distributions_files/figure-html/unnamed-chunk-7-1.png" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="prior-distributions-with-equal-prior-probabilities-method-impartial">Prior distributions with equal prior probabilities
@@ -284,7 +290,7 @@ incorporates this assumption into a prior distribution.</p>
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior4</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v3-audit-sampling-prior-distributions_files/figure-html/unnamed-chunk-9-1.png" width="576"></p>
+<p><img src="v4-audit-sampling-prior-distributions_files/figure-html/unnamed-chunk-9-1.png" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="prior-distributions-with-custom-prior-probabilities-method-hyp">Prior distributions with custom prior probabilities
@@ -326,7 +332,7 @@ probability of 60% into a prior distribution.</p>
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior5</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v3-audit-sampling-prior-distributions_files/figure-html/unnamed-chunk-11-1.png" width="576"></p>
+<p><img src="v4-audit-sampling-prior-distributions_files/figure-html/unnamed-chunk-11-1.png" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="prior-distributions-using-the-audit-risk-model-method-arm">Prior distributions using the Audit Risk Model
@@ -367,7 +373,7 @@ distribution.</p>
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior6</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v3-audit-sampling-prior-distributions_files/figure-html/unnamed-chunk-13-1.png" width="576"></p>
+<p><img src="v4-audit-sampling-prior-distributions_files/figure-html/unnamed-chunk-13-1.png" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="prior-distributions-using-the-bayesian-risk-assessment-model-method-bram">Prior distributions using the Bayesian Risk Assessment Model
@@ -407,7 +413,7 @@ upper bound is 60%.</p>
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior7</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v3-audit-sampling-prior-distributions_files/figure-html/unnamed-chunk-15-1.png" width="576"></p>
+<p><img src="v4-audit-sampling-prior-distributions_files/figure-html/unnamed-chunk-15-1.png" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="prior-distributions-from-an-earlier-sample-method-sample">Prior distributions from an earlier sample
@@ -446,7 +452,7 @@ incorporates the information from an earlier sample of 30 items in which
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior8</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v3-audit-sampling-prior-distributions_files/figure-html/unnamed-chunk-17-1.png" width="576"></p>
+<p><img src="v4-audit-sampling-prior-distributions_files/figure-html/unnamed-chunk-17-1.png" width="576"></p>
 </div>
 <div class="section level3">
 <h3 id="prior-distributions-from-a-weighted-earlier-sample-method-factor">Prior distributions from a weighted earlier sample
@@ -487,7 +493,7 @@ distribution.</p>
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior9</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v3-audit-sampling-prior-distributions_files/figure-html/unnamed-chunk-19-1.png" width="576"></p>
+<p><img src="v4-audit-sampling-prior-distributions_files/figure-html/unnamed-chunk-19-1.png" width="576"></p>
 </div>
 </div>
 <div class="section level2">

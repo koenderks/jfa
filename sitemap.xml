@@ -19,22 +19,28 @@
     <loc>/articles/jfa.html</loc>
   </url>
   <url>
-    <loc>/articles/v1-audit-sampling-workflow.html</loc>
+    <loc>/articles/v1-audit-sampling.html</loc>
   </url>
   <url>
-    <loc>/articles/v2-audit-sampling-bayesian-workflow.html</loc>
+    <loc>/articles/v2-audit-sampling-workflow.html</loc>
   </url>
   <url>
-    <loc>/articles/v3-audit-sampling-prior-distributions.html</loc>
+    <loc>/articles/v3-audit-sampling-bayesian-workflow.html</loc>
   </url>
   <url>
-    <loc>/articles/v4-audit-sampling-sample-selection.html</loc>
+    <loc>/articles/v4-audit-sampling-prior-distributions.html</loc>
   </url>
   <url>
-    <loc>/articles/v5-audit-sampling-evaluation.html</loc>
+    <loc>/articles/v5-audit-sampling-sample-selection.html</loc>
   </url>
   <url>
-    <loc>/articles/v6-auditing-data-digit-analysis.html</loc>
+    <loc>/articles/v6-audit-sampling-evaluation.html</loc>
+  </url>
+  <url>
+    <loc>/articles/v7-data-auditing.html</loc>
+  </url>
+  <url>
+    <loc>/articles/v8-auditing-data-digit-analysis.html</loc>
   </url>
   <url>
     <loc>/authors.html</loc>

@@ -60,22 +60,28 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/v1-audit-sampling-workflow.html">Audit sampling: Classical sampling workflow</a>
+      <a href="../articles/v1-audit-sampling.html">Audit sampling: Get started</a>
     </li>
     <li>
-      <a href="../articles/v2-audit-sampling-bayesian-workflow.html">Audit sampling: Bayesian sampling workflow</a>
+      <a href="../articles/v2-audit-sampling-workflow.html">Audit sampling: Classical sampling workflow</a>
     </li>
     <li>
-      <a href="../articles/v3-audit-sampling-prior-distributions.html">Audit sampling: Prior distributions</a>
+      <a href="../articles/v3-audit-sampling-bayesian-workflow.html">Audit sampling: Bayesian sampling workflow</a>
     </li>
     <li>
-      <a href="../articles/v4-audit-sampling-sample-selection.html">Audit sampling: Sample selection</a>
+      <a href="../articles/v4-audit-sampling-prior-distributions.html">Audit sampling: Prior distributions</a>
     </li>
     <li>
-      <a href="../articles/v5-audit-sampling-evaluation.html">Audit sampling: Sample evaluation</a>
+      <a href="../articles/v5-audit-sampling-sample-selection.html">Audit sampling: Sample selection</a>
     </li>
     <li>
-      <a href="../articles/v6-auditing-data-digit-analysis.html">Auditing data: Digit analysis</a>
+      <a href="../articles/v6-audit-sampling-evaluation.html">Audit sampling: Sample evaluation</a>
+    </li>
+    <li>
+      <a href="../articles/v7-data-auditing.html">Data auditing: Get started</a>
+    </li>
+    <li>
+      <a href="../articles/v8-auditing-data-digit-analysis.html">Auditing data: Digit analysis</a>
     </li>
   </ul>
 </li>
@@ -109,8 +115,8 @@
             <h4 data-toc-skip class="date">last modified:
 05-11-2022</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/v6-auditing-data-digit-analysis.Rmd" class="external-link"><code>vignettes/v6-auditing-data-digit-analysis.Rmd</code></a></small>
-      <div class="hidden name"><code>v6-auditing-data-digit-analysis.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/v8-auditing-data-digit-analysis.Rmd" class="external-link"><code>vignettes/v8-auditing-data-digit-analysis.Rmd</code></a></small>
+      <div class="hidden name"><code>v8-auditing-data-digit-analysis.Rmd</code></div>
 
     </div>
 
@@ -171,7 +177,7 @@ expected frequencies under Benford’s law using the code below.</p>
 <span><span class="co">## alternative hypothesis: leading digit(s) are not distributed according to the benford distribution.</span></span></code></pre>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v6-auditing-data-digit-analysis_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
+<p><img src="v8-auditing-data-digit-analysis_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="function-repeated_values">Function: <code>repeated_values()</code><a class="anchor" aria-label="anchor" href="#function-repeated_values"></a>
@@ -197,11 +203,11 @@ the data were not tampered with.</p>
 <span><span class="co">##  Repeated values test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sanitizer$value</span></span>
-<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0025</span></span>
+<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.002</span></span>
 <span><span class="co">## alternative hypothesis: average frequency in data is greater than for random data.</span></span></code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v6-auditing-data-digit-analysis_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
+<p><img src="v8-auditing-data-digit-analysis_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 </div>
 </div>
   </div>
