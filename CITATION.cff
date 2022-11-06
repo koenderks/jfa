@@ -26,7 +26,7 @@ authors:
   orcid: https://orcid.org/0000-0002-5533-9349
 preferred-citation:
   type: manual
-  title: 'jfa: Bayesian and Classical Audit Sampling'
+  title: 'jfa: Bayesian and Classical Methods for Auditing'
   authors:
   - family-names: Derks
     given-names: Koen
@@ -38,7 +38,7 @@ preferred-citation:
 repository: https://CRAN.R-project.org/package=jfa
 repository-code: https://github.com/koenderks/jfa
 url: https://koenderks.github.io/jfa/
-date-released: '2022-11-05'
+date-released: '2022-11-06'
 contact:
 - family-names: Derks
   given-names: Koen
@@ -48,6 +48,8 @@ keywords:
 - audit
 - audit-sampling
 - bayesian
+- data-audit
+- digit-analysis
 - r
 - r-package
 - rstats
