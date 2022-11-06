@@ -1,12 +1,12 @@
 ---
-title: "Audit sampling: Sample evaluation"
+title: "Audit sampling: Evaluating a sample"
 author: Koen Derks
 date: "last modified: 05-11-2022"
 output: 
   rmarkdown::html_vignette:
     toc: true
 vignette: >
-  %\VignetteIndexEntry{Audit sampling: Sample evaluation}
+  %\VignetteIndexEntry{Audit sampling: Evaluating a sample}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteDepends{jfa}
   %\VignetteKeywords{audit, evaluation, jfa, planning, prior}
@@ -19,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE, fig.height = 4, fig.width = 6)
 library(jfa)
 ```
 
-## Audit sampling: Sample evaluation
+This vignette outlines the most commonly used sample evaluation methodology for auditing and shows how to evaluate a sample using these methods with the `jfa` package.
 
 ### Hypothesis testing
 

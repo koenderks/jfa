@@ -1,12 +1,12 @@
 ---
-title: 'Audit sampling: Prior distributions'
+title: 'Audit sampling: Creating a prior distribution'
 author: Koen Derks
 date: 'last modified: 05-11-2022'
 output: 
   rmarkdown::html_vignette:
     toc: true
 vignette: >
-  %\VignetteIndexEntry{Audit sampling: Prior distributions}
+  %\VignetteIndexEntry{Audit sampling: Creating a prior distribution}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteDepends{jfa}
   %\VignetteKeywords{audit, evaluation, planning, prior}
@@ -19,9 +19,7 @@ knitr::opts_chunk$set(echo = TRUE, fig.height = 4, fig.width = 6)
 library(jfa)
 ```
 
-## Audit sampling: Prior distributions
-
-Bayesian statistics allows you to incorporate existing information into the sampling procedure and to revise this information using the information from the sample. The use of the prior distribution can potentially decrease the amount of audit work required to achieve the desired assurance, thereby increasing your efficiency as an auditor. For example, when you have information from the auditee's internal controls that indicates a low-risk profile, you may build on this information to require less evidence from substantive testing. Be aware that all information that you incorporate into the statistical analysis should be justified. What information can be incorporated into the prior distribution depends on what type of information is available, the quality of that information, and the situation at hand. When the auditor has decided what kind of information they want to incorporate into a prior distribution, they can use the `auditPrior()` function to calculate the corresponding parameters of the prior distribution. Below we discuss the various types of audit information that `jfa` is able to incorporate into a prior distribution.
+Bayesian statistics enables the incorporation of existing information into the sampling procedure via the prior distribution. The information in the prior is then revised using the information from a sample to come to an overall conclusion. The use of the prior distribution can potentially decrease the amount of audit work required to achieve the desired assurance, thereby increasing your efficiency as an auditor. For example, when you have information from the auditee's internal controls that indicates a low-risk profile, you may build on this information to require less evidence from substantive testing. Be aware that all information that you incorporate into the statistical analysis should be justified. What information can be incorporated into the prior distribution depends on what type of information is available, the quality of that information, and the situation at hand. When the auditor has decided what kind of information they want to incorporate into a prior distribution, they can use the `auditPrior()` function to calculate the corresponding parameters of the prior distribution. Below we discuss the various types of audit information that `jfa` is able to incorporate into a prior distribution.
 
 First, we set some default options for the confidence, performance materiality, the likelihood, and the expected errors in the sample.
 
@@ -32,9 +30,9 @@ materiality <- 0.05 # Performance materiality of 5%
 expected <- 0.01 # 1% errors expected in sample
 ```
 
-### Minimal information priors (`method = 'default'`)
+### Default priors (`method = 'default'`)
 
-You can construct a prior distribution from minimal information using `method = 'default'`. As an example, the code below incorporates minimal information into a prior distribution.
+The default prior distributions are created using `method = 'default'`. `jfa`'s default priors satisfy two criteria: 1) they contain relatively little information about the misstatement parameter and 2) they are proper (i.e., they integrate to 1). These priors are the the gamma(1, 1) distribution as a conjugate prior for the Poisson likelihood, the beta(1, 1) distribution as a conjugate prior for the binomial likelihood, and the beta-binomial(N, 1, 1) distribution as a conjugate prior for the hypergeometric likelihood.
 
 ```{r}
 prior1 <- auditPrior(method = "default", likelihood = likelihood, expected = expected, conf.level = confidence)
@@ -49,7 +47,7 @@ plot(prior1)
 
 ### Prior distributions with classical properties (`method = 'strict'`)
 
-You can construct a prior distribution on the basis of no existing information using `method = 'strict'`. The prior distribution that is constructed is improper but yields exactly the same results as the classical methodology with respect to sample sizes, upper limits, and evidence.
+You can construct an improper prior distribution with classical properties using `method = 'strict'`. The posterior distribution of from this prior yields the same results as the classical methodology with respect to sample sizes and upper limits, but is only proper once a single non-misstated unit is present in the sample (Derks et al., 2022).
 
 ```{r}
 prior2 <- auditPrior(method = "strict", likelihood = likelihood)
@@ -79,7 +77,7 @@ plot(prior3)
 
 ### Prior distributions with equal prior probabilities (`method = 'impartial'`)
 
-You can incorporate the assumption that tolerable misstatement is equally likely as intolerable misstatement using `method = 'impartial'`. As an example, the code below incorporates this assumption into a prior distribution.
+You can incorporate the assumption that tolerable misstatement is equally likely as intolerable misstatement (Derks et al., 2022) using `method = 'impartial'`. As an example, the code below incorporates this assumption into a prior distribution.
 
 *Note: This method requires that you specify a value for the `materiality`.*
 
@@ -99,7 +97,7 @@ plot(prior4)
 
 ### Prior distributions with custom prior probabilities (`method = 'hyp'`)
 
-You can manually assign prior probabilities to the hypothesis of tolerable misstatement and the hypotheses of intolerable misstatement (using `p.hmin`) in combination with `method = 'hyp'`. As an example, the code below incorporates the information that the hypothesis of tolerable misstatement has a probability of 60% into a prior distribution.
+You can manually assign prior probabilities to the hypothesis of tolerable misstatement and the hypotheses of intolerable misstatement (Derks et al., 2021) with `method = 'hyp'` in combination with `p.hmin`. As an example, the code below incorporates the information that the hypothesis of tolerable misstatement has a probability of 60% into a prior distribution.
 
 *Note: This method requires that you specify a value for the `materiality`.*
 
@@ -119,7 +117,7 @@ plot(prior5)
 
 ### Prior distributions using the Audit Risk Model (`method = 'arm'`)
 
-You can translate the risk assessments from the Audit Risk Model (inherent risk and internal control risk) into a prior distribution using `method = 'arm'` in combination with the `ir` and `cr` arguments. As an example, the code below incorporates the information that the inherent risk is equal to 90% and that the internal control risk is equal to 60% into a prior distribution. 
+You can translate the risk assessments from the Audit Risk Model (inherent risk and internal control risk) into a prior distribution (Derks et al., 2021) using `method = 'arm'` in combination with the `ir` and `cr` arguments. As an example, the code below incorporates the information that the inherent risk is equal to 90% and that the internal control risk is equal to 60% into a prior distribution. 
 
 ```{r}
 prior6 <- auditPrior(
@@ -155,7 +153,7 @@ plot(prior7)
 
 ### Prior distributions from an earlier sample (`method = 'sample'`)
 
-You can incorporate information from an earlier sample into the prior distribution using `method = 'sample'` in combination with `x` and `n`. As an example, the code below incorporates the information from an earlier sample of 30 items in which 0 misstatements were found into a prior distribution.
+You can incorporate information from an earlier sample into the prior distribution (Derks et al., 2021) using `method = 'sample'` in combination with `x` and `n`. As an example, the code below incorporates the information from an earlier sample of 30 items in which 0 misstatements were found into a prior distribution.
 
 ```{r}
 prior8 <- auditPrior(
@@ -173,7 +171,7 @@ plot(prior8)
 
 ### Prior distributions from a weighted earlier sample (`method = 'factor'`)
 
-You can incorporate information from last years results, weighted by a factor, into the prior distribution using `method = 'factor'` in combination with `x` and `n`. As an example, the code below incorporates the information from a last years results (a sample of 58 items in which 0 misstatements were found), weighted by a factor 0.7, into a prior distribution.
+You can incorporate information from last years results, weighted by a factor (Derks et al., 2021), into the prior distribution using `method = 'factor'` in combination with `x` and `n`. As an example, the code below incorporates the information from a last years results (a sample of 58 items in which 0 misstatements were found), weighted by a factor 0.7, into a prior distribution.
 
 ```{r}
 prior9 <- auditPrior(
