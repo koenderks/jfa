@@ -13,11 +13,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-context("Tests for function rv.test")
+context("Tests for function repeated.test()")
 
 test_that(desc = "Print and plot call", {
   data("sanitizer")
-  res <- repeated_values(x = sanitizer$value, check = "last", method = "af", B = 500)
+  res <- repeated.test(x = sanitizer$value, check = "last", method = "af", B = 500)
   invisible({
     capture.output({
       print(res)
@@ -33,8 +33,8 @@ test_that(desc = "Print and plot call", {
 
 test_that(desc = "Validate Datacolada[77]", {
   data("sanitizer")
-  res <- repeated_values(x = sanitizer$value, check = "last", method = "af", B = 500)
+  res <- repeated.test(x = sanitizer$value, check = "last", method = "af", B = 500)
   expect_equal(as.numeric(res$statistic), 1.5225)
-  res <- repeated_values(x = sanitizer$value, check = "last", method = "entropy", B = 500)
+  res <- repeated.test(x = sanitizer$value, check = "last", method = "entropy", B = 500)
   expect_equal(as.numeric(res$statistic), 7.065769174)
 })

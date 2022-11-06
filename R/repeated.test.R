@@ -17,8 +17,8 @@
 #'
 #' @description This function analyzes the frequency with which values get repeated within a set of numbers. Unlike Benford's law, and its generalizations, this approach examines the entire number at once, not only the first or last digit.
 #'
-#' @usage repeated_values(x, check = c('last', "lasttwo", "all"),
-#'                 method = c("af", "entropy"), B = 2000)
+#' @usage repeated.test(x, check = c('last', "lasttwo", "all"),
+#'               method = c("af", "entropy"), B = 2000)
 #'
 #' @param x             a numeric vector of values from which the digits should be analyzed.
 #' @param check         which digits to shuffle during the procedure. Can be \code{last} or \code{lasttwo}.
@@ -46,21 +46,21 @@
 #'
 #' @references Simohnsohn, U. (2019, May 25). Number-Bunching: A New Tool for Forensic Data Analysis. Retrieved from \url{https://datacolada.org/77}.
 #'
-#' @seealso \code{\link{digit_distribution}}
+#' @seealso \code{\link{digit.test}} \code{\link{missing.test}}
 #'
-#' @keywords repeated values
+#' @keywords audit repeated values
 #'
 #' @examples
 #' set.seed(1)
 #' x <- rnorm(50)
 #'
 #' # Repeated values analysis shuffling last digit
-#' repeated_values(x, check = "last", method = "af", B = 2000)
+#' repeated.test(x, check = "last", method = "af", B = 2000)
 #'
 #' @export
 
-repeated_values <- function(x, check = c("last", "lasttwo", "all"),
-                            method = c("af", "entropy"), B = 2000) {
+repeated.test <- function(x, check = c("last", "lasttwo", "all"),
+                          method = c("af", "entropy"), B = 2000) {
   check <- match.arg(check)
   method <- match.arg(method)
   dname <- deparse(substitute(x))
@@ -108,20 +108,19 @@ repeated_values <- function(x, check = c("last", "lasttwo", "all"),
   if (B < 500) {
     warning("the p-value may be unreliable. It is advised to increase the number of samples.")
   }
-  result <- list(
-    statistic = statistic,
-    p.value = pval,
-    x = x,
-    frequencies = frequencies,
-    samples = storage,
-    integers = table(integers),
-    decimals = table(decimals),
-    n = n,
-    cor.test = if (!inherits(cortest, "try-error")) cortest else NULL,
-    check = check,
-    method = method,
-    data.name = dname
-  )
+  result <- list()
+  result[["statistic"]] <- statistic
+  result[["p.value"]] <- pval
+  result[["x"]] <- x
+  result[["frequencies"]] <- frequencies
+  result[["samples"]] <- storage
+  result[["integers"]] <- table(integers)
+  result[["decimals"]] <- table(decimals)
+  result[["n"]] <- n
+  result[["cor.test"]] <- if (!inherits(cortest, "try-error")) cortest else NULL
+  result[["check"]] <- check
+  result[["method"]] <- method
+  result[["data.name"]] <- dname
   class(result) <- c(class(result), "jfaRv")
   return(result)
 }

@@ -2,7 +2,7 @@
 
 **New features**
 
-- Integrated the auditing functionality of the `digitTests` package via the `digit_distribution()` and `repeated_values()` functions.
+- Integrated the auditing functionality of the `digitTests` package via the `digit.test()` and `repeated.test()` functions.
 
 **Bug fixes**
 

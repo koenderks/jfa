@@ -24,17 +24,17 @@ Welcome to the 'Data auditing' page of the `jfa` package. Here you can find a si
 
 Below you can find an explanation of the available data auditing functions in `jfa`.
 
-- [`digit_distribution()`](#test-digit-distributions-with-digit-distribution)
-- [`repeated_values()`](#test-for-repeated-values-with-repeated-values)
+- [`digit.test()`](#test-digit-distributions-with-digit-test)
+- [`repeated.test()`](#test-for-repeated-values-with-repeated-test)
 
-### Test digit distributions with `digit_distribution()`
+### Test digit distributions with `digit.test()`
 
 The functions `distr.test()` and `distr.btest()` take a vector of numeric values, extract the requested digits, and compares the frequencies of these digits to a reference distribution. The function `distr.test()` performs a frequentist hypothesis test of the null hypothesis that the digits are distributed according to the reference distribution and produces a *p* value. The function `distr.btest()` performs a Bayesian hypothesis test of the null hypothesis that the digits are distributed according to the reference distribution against the alternative hypothesis (using the prior parameters specified in `alpha`) that the digits are not distributed according to the reference distribution and produces a Bayes factor (Kass & Raftery, 1995). The possible options for the `check` argument are taken over from `extract_digits()`.
 
 *Full function with default arguments:*
 
 ```r
-digit_distribution(x, check = c('first', "last", "firsttwo"), reference = 'benford', prior = FALSE)
+digit.test(x, check = c('first', "last", "firsttwo"), reference = 'benford', prior = FALSE)
 ```
 
 *Supported options for the `check` argument:*
@@ -63,34 +63,20 @@ The distribution of leading digits in a data set of financial transaction values
 
 ```{r}
 # Frequentist hypothesis test
-digit_distribution(sinoForest$value, check = 'first', reference = 'benford')
-
-#
-# 	Digit distribution test
-#
-# data:  sinoForest$value
-# n = 772, X-squared = 7.6517, df = 8, p-value = 0.4682
-# alternative hypothesis: leading digit(s) are not distributed according to the benford distribution.
+digit.test(sinoForest$value, check = "first", reference = "benford")
 
 # Bayesian hypothesis test using default prior
-digit_distribution(sinoForest$value, check = 'first', reference = 'benford', prior = TRUE)
-
-#
-# 	Digit distribution test
-#
-# data:  sinoForest$value
-# n = 772, BF10 = 1.4493e-07
-# alternative hypothesis: leading digit(s) are not distributed according to the benford distribution.
+digit.test(sinoForest$value, check = "first", reference = "benford", prior = TRUE)
 ```
 
-### Test for repeated values with `repeated_values()`
+### Test for repeated values with `repeated.test()`
 
-The function `repeated_values()` analyzes the frequency with which values get repeated within a set of numbers. Unlike Benford's law, and its generalizations, this approach examines the entire number at once, not only the first or last digit. For the technical details of this procedure, see Simohnsohn (2019).
+The function `repeated.test()` analyzes the frequency with which values get repeated within a set of numbers. Unlike Benford's law, and its generalizations, this approach examines the entire number at once, not only the first or last digit. For the technical details of this procedure, see Simohnsohn (2019).
 
 *Full function with default arguments:*
 
 ```r
-repeated_values(x, check = 'last', method = 'af', B = 2000)
+repeated.test(x, check = 'last', method = 'af', B = 2000)
 ```
 
 *Supported options for the `check` argument:*
@@ -113,14 +99,7 @@ repeated_values(x, check = 'last', method = 'af', B = 2000)
 In this example, we analyze a data set from a (retracted) paper that describes three experiments run in Chinese factories, where workers were nudged to use more hand-sanitizer. These data were shown to exhibited two classic markers of data tampering: impossibly similar means and the uneven distribution of last digits (Yu, Nelson, & Simohnson, 2018). We can use the `rv.test()` function to test if these data also contain a greater amount of repeated values than expected if the data were not tampered with.
 
 ```{r}
-repeated_values(sanitizer$value, check = 'lasttwo', B = 5000)
-
-#
-# 	Repeated values test
-#
-# data:  sanitizer$value
-# n = 1600, AF = 1.5225, p-value = 0.0024
-# alternative hypothesis: frequencies of repeated values are greater than for random data.
+repeated.test(sanitizer$value, check = "lasttwo", B = 5000)
 ```
 
 ## 2. Benchmarks
