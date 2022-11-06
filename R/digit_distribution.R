@@ -74,6 +74,7 @@
 
 digit_distribution <- function(x, check = c("first", "last", "firsttwo"),
                                reference = "benford", prior = FALSE) {
+  check <- match.arg(check)
   bayesian <- prior[1] != FALSE
   dname <- deparse(substitute(x))
   x <- x[!is.na(x)]

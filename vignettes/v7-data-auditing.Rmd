@@ -1,0 +1,139 @@
+---
+title: "Data auditing: Get started"
+author: Koen Derks
+date: "last modified: 05-11-2022"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Data auditing: Get started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteDepends{jfa}
+  %\VignetteKeywords{digit, tests, Bayesian}
+  %\VignettePackage{jfa}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, echo = FALSE}
+library(jfa)
+```
+
+Welcome to the 'Data auditing' page of the `jfa` package. Here you can find a simple explanation of the functions in the package that facilitate data auditing. For more detailed explanations of each function, read the other vignettes on the [package website](https://koenderks.github.io/jfa).
+
+## 1. Functions and intended usage
+
+Below you can find an explanation of the available data auditing functions in `jfa`.
+
+- [`digit_distribution()`](#test-digit-distributions-with-digit-distribution)
+- [`repeated_values()`](#test-for-repeated-values-with-repeated-values)
+
+### Test digit distributions with `digit_distribution()`
+
+The functions `distr.test()` and `distr.btest()` take a vector of numeric values, extract the requested digits, and compares the frequencies of these digits to a reference distribution. The function `distr.test()` performs a frequentist hypothesis test of the null hypothesis that the digits are distributed according to the reference distribution and produces a *p* value. The function `distr.btest()` performs a Bayesian hypothesis test of the null hypothesis that the digits are distributed according to the reference distribution against the alternative hypothesis (using the prior parameters specified in `alpha`) that the digits are not distributed according to the reference distribution and produces a Bayes factor (Kass & Raftery, 1995). The possible options for the `check` argument are taken over from `extract_digits()`.
+
+*Full function with default arguments:*
+
+```r
+digit_distribution(x, check = c('first', "last", "firsttwo"), reference = 'benford', prior = FALSE)
+```
+
+*Supported options for the `check` argument:*
+
+| `check` | Returns |
+| :----------- | :----------- |
+| `fist` | First digit |
+| `firsttwo` | First and second digit |
+| `last` | Last digit |
+
+*Supported options for the `reference` argument:*
+
+| `check` | Returns |
+| :----------- | :----------- |
+| `benford` | Benford's law |
+| `uniform` | Uniform distribution |
+| Vector of probabilities | Custom distribution |
+
+*Example usage:*
+
+Benford’s law (Benford, 1938) is a principle that describes a pattern in many naturally-occurring numbers. According to Benford's law, each possible leading digit *d* in a naturally occurring, or non-manipulated, set of numbers occurs with a probability:
+
+<img src="https://latex.codecogs.com/svg.image?p(d_i)&space;=&space;\text{log}_{10}(1&space;+&space;\frac{1}{d_i})" title="p(d_i) = \text{log}_{10}(\frac{1}{d_i})" />
+
+The distribution of leading digits in a data set of financial transaction values (e.g., the `sinoForest` data) can be extracted and tested against the expected frequencies under Benford's law using the code below.
+
+```{r}
+# Frequentist hypothesis test
+digit_distribution(sinoForest$value, check = 'first', reference = 'benford')
+
+#
+# 	Digit distribution test
+#
+# data:  sinoForest$value
+# n = 772, X-squared = 7.6517, df = 8, p-value = 0.4682
+# alternative hypothesis: leading digit(s) are not distributed according to the benford distribution.
+
+# Bayesian hypothesis test using default prior
+digit_distribution(sinoForest$value, check = 'first', reference = 'benford', prior = TRUE)
+
+#
+# 	Digit distribution test
+#
+# data:  sinoForest$value
+# n = 772, BF10 = 1.4493e-07
+# alternative hypothesis: leading digit(s) are not distributed according to the benford distribution.
+```
+
+### Test for repeated values with `repeated_values()`
+
+The function `repeated_values()` analyzes the frequency with which values get repeated within a set of numbers. Unlike Benford's law, and its generalizations, this approach examines the entire number at once, not only the first or last digit. For the technical details of this procedure, see Simohnsohn (2019).
+
+*Full function with default arguments:*
+
+```{r}
+repeated_values(x, check = 'last', method = 'af', B = 2000)
+```
+
+*Supported options for the `check` argument:*
+
+| `check` | Returns |
+| :----------- | :----------- |
+| `last` | Last decimal |
+| `lasttwo` | Last two decimals |
+| `all` | All decimals |
+
+*Supported options for the `method` argument:*
+
+| `check` | Returns |
+| :----------- | :----------- |
+| `af` | Average frequency |
+| `entropy` | Entropy |
+
+*Example usage:*
+
+In this example, we analyze a data set from a (retracted) paper that describes three experiments run in Chinese factories, where workers were nudged to use more hand-sanitizer. These data were shown to exhibited two classic markers of data tampering: impossibly similar means and the uneven distribution of last digits (Yu, Nelson, & Simohnson, 2018). We can use the `rv.test()` function to test if these data also contain a greater amount of repeated values than expected if the data were not tampered with.
+
+```{r}
+repeated_values(sanitizer$value, check = 'lasttwo', B = 5000)
+
+#
+# 	Repeated values test
+#
+# data:  sanitizer$value
+# n = 1600, AF = 1.5225, p-value = 0.0024
+# alternative hypothesis: frequencies of repeated values are greater than for random data.
+```
+
+## 2. Benchmarks
+
+To validate the statistical results, `jfa`'s automated [unit tests](https://github.com/koenderks/jfa/tree/development/tests/testthat) regularly verify the main output from the package against the following benchmarks:
+
+- [benford.analysis](https://cran.r-project.org/package=benford.analysis) (R package version 0.1.5)
+- [BenfordTests](https://cran.r-project.org/package=BenfordTests) (R package version 1.2.0)
+- [BeyondBenford](https://cran.r-project.org/package=BeyondBenford) (R package version 1.4)
+
+## 3. References
+
+- Benford, F. (1938). The law of anomalous numbers. In *Proceedings of the American Philosophical Society*, 551-572. - [View online](https://www.jstor.org/stable/984802)
+- Kass, R. E., & Raftery, A. E. (1995). Bayes factors. *Journal of the American Statistical Association*, *90*(430), 773-795. - [View online](https://www.tandfonline.com/doi/abs/10.1080/01621459.1995.10476572)
+- Simohnsohn, U. (2019, May 25). *Number-Bunching: A New Tool for Forensic Data Analysis*. - [View online](https://datacolada.org/77)
+- Yo, F., Nelson, L., & Simonsohn, U. (2018, December 5). *In Press at Psychological Science: A New 'Nudge' Supported by Implausible Data*. - [View online](https://datacolada.org/74)
