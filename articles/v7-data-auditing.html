@@ -122,10 +122,10 @@
 
     
     
-<p>Welcome to the ‘Data auditing’ page of the <code>jfa</code> package.
-Here you can find a simple explanation of the functions in the package
-that facilitate data auditing. For more detailed explanations of each
-function, read the other vignettes on the <a href="https://koenderks.github.io/jfa" class="external-link">package website</a>.</p>
+<p>Welcome to the ‘Data auditing’ vignette of the <code>jfa</code>
+package. Here you can find a simple explanation of the functions in the
+package that facilitate data auditing. For more detailed explanations of
+each function, read the other vignettes on the <a href="https://koenderks.github.io/jfa" class="external-link">package website</a>.</p>
 <div class="section level2">
 <h2 id="functions-and-intended-usage">1. Functions and intended usage<a class="anchor" aria-label="anchor" href="#functions-and-intended-usage"></a>
 </h2>
@@ -139,20 +139,17 @@ functions in <code>jfa</code>.</p>
 <h3 id="test-digit-distributions-with-digit-test">Test digit distributions with <code>digit.test()</code><a class="anchor" aria-label="anchor" href="#test-digit-distributions-with-digit-test"></a>
 </h3>
 <p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
-<p>The functions <code>distr.test()</code> and
-<code>distr.btest()</code> take a vector of numeric values, extract the
-requested digits, and compares the frequencies of these digits to a
-reference distribution. The function <code>distr.test()</code> performs
-a frequentist hypothesis test of the null hypothesis that the digits are
-distributed according to the reference distribution and produces a
-<em>p</em> value. The function <code>distr.btest()</code> performs a
-Bayesian hypothesis test of the null hypothesis that the digits are
-distributed according to the reference distribution against the
-alternative hypothesis (using the prior parameters specified in
-<code>alpha</code>) that the digits are not distributed according to the
-reference distribution and produces a Bayes factor (Kass &amp; Raftery,
-1995). The possible options for the <code>check</code> argument are
-taken over from <code>extract_digits()</code>.</p>
+<p>The function <code><a href="../reference/digit.test.html">digit.test()</a></code> takes a vector of numeric
+values, extract the requested digits, and compares the frequencies of
+these digits to a reference distribution. By default, the function
+performs a frequentist hypothesis test of the null hypothesis that the
+digits are distributed according to the reference distribution and
+produces a <em>p</em> value. When a prior is specified, the function
+performs a Bayesian hypothesis test of the null hypothesis that the
+digits are distributed according to the reference distribution against
+the alternative hypothesis that the digits are not distributed according
+to the reference distribution and produces a Bayes factor (Kass &amp;
+Raftery, 1995).</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/digit.test.html">digit.test</a></span><span class="op">(</span><span class="va">x</span>, check <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'first'</span>, <span class="st">"last"</span>, <span class="st">"firsttwo"</span><span class="op">)</span>, reference <span class="op">=</span> <span class="st">'benford'</span>, prior <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
@@ -293,7 +290,7 @@ data were not tampered with.</p>
 <span><span class="co">##  Repeated values test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sanitizer$value</span></span>
-<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.002</span></span>
+<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0022</span></span>
 <span><span class="co">## alternative hypothesis: average frequency in data is greater than for random data.</span></span></code></pre>
 </div>
 </div>
