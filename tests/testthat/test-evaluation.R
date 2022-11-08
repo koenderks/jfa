@@ -433,11 +433,18 @@ test_that(desc = "(id: f3-v0.6.5-t2) Test Bayesian poisson stratification with s
   expect_equal(res$strata$ub, stats::qgamma(0.95, 1 + k, n))
   # 3. Partial pooling
   set.seed(1) # Required because the population posterior is generated through sampling
-  res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "poisson", prior = TRUE, pool = TRUE)
-  expect_equal(res$mle, 0.132)
-  expect_equal(res$ub, 0.372574195)
-  expect_equal(res$strata$mle, c(0.153, 0.122, 0.069))
-  expect_equal(res$strata$ub, c(0.5627176177, 0.4276601688, 0.3591851483))
+  p <- try({
+    res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "poisson", prior = TRUE, pool = TRUE)
+  })
+  # For CRAN
+  if (inherits(p, "try-error")) {
+    expect_equal(p[[1]], "JAGS is missing but required, download it from http://www.sourceforge.net/projects/mcmc-jags/files")
+  } else {
+    expect_equal(res$mle, 0.132)
+    expect_equal(res$ub, 0.372574195)
+    expect_equal(res$strata$mle, c(0.153, 0.122, 0.069))
+    # We do not test for the upper bound because of the difference on OS's due to sampling
+  }
 })
 
 test_that(desc = "(id: f3-v0.6.5-t3) Test frequentist binomial stratification with summary statistics", {
@@ -473,12 +480,19 @@ test_that(desc = "(id: f3-v0.6.5-t4) Test Bayesian binomial stratification with 
   expect_equal(res$strata$mle, k / n)
   expect_equal(res$strata$ub, stats::qbeta(0.95, 1 + k, 1 + n - k))
   # 3. Partial pooling
+  p <- try({
   set.seed(1) # Required because the population posterior is generated through sampling
   res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "binomial", prior = TRUE, pool = TRUE)
-  expect_equal(res$mle, 0.148)
-  expect_equal(res$ub, 0.306713178)
-  expect_equal(res$strata$mle, c(0.161, 0.121, 0.091))
-  expect_equal(res$strata$ub, c(0.4758775838, 0.3914763812, 0.3527315985))
+  })
+  # For CRAN
+  if (inherits(p, "try-error")) {
+    expect_equal(p[[1]], "JAGS is missing but required, download it from http://www.sourceforge.net/projects/mcmc-jags/files")
+  } else {
+    expect_equal(res$mle, 0.148)
+    expect_equal(res$ub, 0.306713178)
+    expect_equal(res$strata$mle, c(0.161, 0.121, 0.091))
+    # We do not test for the upper bound because of the difference on OS's due to sampling
+  }
 })
 
 test_that(desc = "(id: f3-v0.6.5-t5) Test stratification with data", {
