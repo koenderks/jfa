@@ -53,14 +53,12 @@ jobs:
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
 
       - name: Install JAGS on macOS
-        run: |
-          if [ "${{ runner.os }}" = 'macOS' ]; then
-            brew install jags
+        if: runner.os == 'macOS'
+        run: brew install jags
 
       - name: Install JAGS on Linux
-        run: |
-          if [ "${{ runner.os }}" = 'Linux' ]; then
-            sudo apt install jags
+        if: runner.os == 'Linux'
+        run: sudo apt install jags
 
       - name: Install system dependencies
         if: runner.os == 'Linux'
