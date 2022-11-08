@@ -439,7 +439,7 @@ test_that(desc = "(id: f3-v0.6.5-t2) Test Bayesian poisson stratification with s
     })
     # For CRAN
     if (inherits(p, "try-error")) {
-      expect_equal(p[[1]], "JAGS is missing but required, download it from http://www.sourceforge.net/projects/mcmc-jags/files")
+      expect_equal(p[[1]], "\n  JAGS is missing but required, download it from http://www.sourceforge.net/projects/mcmc-jags/files\n")
     } else {
       expect_equal(res$mle, 0.132)
       expect_equal(res$ub, 0.372574195)
@@ -489,7 +489,7 @@ test_that(desc = "(id: f3-v0.6.5-t4) Test Bayesian binomial stratification with 
     })
     # For CRAN
     if (inherits(p, "try-error")) {
-      expect_equal(p[[1]], "JAGS is missing but required, download it from http://www.sourceforge.net/projects/mcmc-jags/files")
+      expect_equal(p[[1]], "\n  JAGS is missing but required, download it from http://www.sourceforge.net/projects/mcmc-jags/files\n")
     } else {
       expect_equal(res$mle, 0.148)
       expect_equal(res$ub, 0.306713178)
