@@ -456,15 +456,14 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
   } else {
     stopifnot("'pool = TRUE' only possible when 'prior != FALSE'" = bayesian)
     # Fit multilevel model, see jfa-internal.R
-    if (any(t.obs %% 1 != 0) && !is.null(data)) {
-      warning("taints are transformed by (t * (n - 1) + 0.5) / n")
-      samples <- .fitjagsmodel(method, prior.x, prior.n, n.obs, t.obs, t, nstrata, stratum, type = "taints")
+    if (any(t.obs %% 1 != 0) && !is.null(data)) { # If there are broken taints, use the beta likelihood
+      samples <- .fitjagsmodel(method, prior.x, prior.n, n.obs, t.obs, t, nstrata, stratum, likelihood = "beta")
     } else {
       if (any(t.obs %% 1 != 0)) {
         warning("sum of taints in each stratum is rounded upwards")
         t.obs <- ceiling(t.obs)
       }
-      samples <- .fitjagsmodel(method, prior.x, prior.n, n.obs, t.obs, t = NULL, nstrata, stratum, type = "errors")
+      samples <- .fitjagsmodel(method, prior.x, prior.n, n.obs, t.obs, t = NULL, nstrata, stratum, likelihood = "binomial")
     }
     for (i in 2:nstrata) {
       mle[i] <- .getmode(samples[, i - 1])
@@ -484,37 +483,16 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
   # Create the main results object
   result <- list()
   result[["conf.level"]] <- conf.level
-  if (nstrata == 1) {
+  if (nstrata == 1) { # Only results for population
     result[["mle"]] <- mle[1]
     result[["ub"]] <- ub[1]
     result[["lb"]] <- lb[1]
     result[["precision"]] <- precision[1]
-  } else { # Poststratification when N.units is specified
-    if (is.null(N.units)) { # Weights
-      weights <- rep(1, nstrata - 1) / (nstrata - 1)
-    } else {
-      weights <- N.units[-1] / N.units[1]
-    }
+  } else { # Poststratification to get to population results
     if (!pool) {
-      samples <- matrix(NA, ncol = nstrata - 1, nrow = 1e5)
-      set.seed(120495)
-      for (i in 2:nstrata) {
-        if (bayesian) {
-          samples[, i - 1] <- switch(method,
-            "poisson" = stats::rgamma(1e5, 1 + prior.x + t.obs[i], prior.n + n.obs[i]),
-            "binomial" = stats::rbeta(1e5, 1 + prior.x + t.obs[i], 1 + prior.n - prior.x + n.obs[i] - t.obs[i]),
-            "hypergeometric" = extraDistr::rbbinom(1e5, N.units[i] - n.obs[i], 1 + prior.x + t.obs[i], 1 + prior.n - prior.x + n.obs[i] - t.obs[i]) / N.units[i]
-          )
-        } else {
-          samples[, i - 1] <- switch(method,
-            "poisson" = stats::rgamma(1e5, 1 + t.obs[i], n.obs[i]),
-            "binomial" = stats::rbeta(1e5, 1 + t.obs[i], n.obs[i] - t.obs[i]),
-            "hypergeometric" = extraDistr::rbbinom(1e5, N.units[i] - n.obs[i], 1 + t.obs[i], n.obs[i] - t.obs[i]) / N.units[i]
-          )
-        }
-      }
+      samples <- .posterior_samples(method, nstrata, bayesian, prior.x, t.obs, prior.n, n.obs, N.units)
     }
-    psamples <- samples %*% weights
+    psamples <- .poststratify_samples(samples, N.units, nstrata)
     result[["mle"]] <- .getmode(psamples)
     result[["lb"]] <- switch(alternative,
       "two.sided" = as.numeric(stats::quantile(psamples, probs = (1 - conf.level) / 2)),
@@ -531,8 +509,8 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
   if (!bayesian && materiality < 1 && method %in% c("binomial", "poisson", "hypergeometric")) {
     result[["p.value"]] <- p.val[1]
   }
+  # Add the stratum results
   if (nstrata > 1) {
-    # Add the stratum results
     result[["strata"]] <- data.frame(n = n.obs[-1], x = t.obs[-1], mle = mle[-1], lb = lb[-1], ub = ub[-1], precision = precision[-1])
     if (!bayesian && materiality < 1 && method %in% c("binomial", "poisson", "hypergeometric")) {
       result[["strata"]][["p.value"]] <- p.val[-1]

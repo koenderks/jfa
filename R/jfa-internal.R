@@ -149,18 +149,14 @@
   return(mode)
 }
 
-.poststratification <- function(theta, N) {
-  sum(theta * N / sum(N))
-}
-
-.fitjagsmodel <- function(method, prior.x, prior.n, n.obs, t.obs, t, nstrata, stratum, type) {
+.fitjagsmodel <- function(method, prior.x, prior.n, n.obs, t.obs, t, nstrata, stratum, likelihood) {
   stopifnot("'method = hypergeometric' does not support pooling" = method != "hypergeometric")
-  iterations <- switch(type,
-    "taints" = 1e4,
-    "errors" = 1e5
+  iterations <- switch(likelihood,
+    "beta" = 1e4,
+    "binomial" = 1e5
   )
-  model <- switch(type,
-    "errors" = switch(method,
+  model <- switch(likelihood,
+    "binomial" = switch(method,
       "binomial" = paste0("
     model {
       theta ~ dbeta(", 1 + prior.x, ", ", 1 + prior.n - prior.x, ")
@@ -186,7 +182,7 @@
       }
     }")
     ),
-    "taints" = switch(method,
+    "beta" = switch(method,
       "binomial" = paste0("
     model {
       theta ~ dbeta(", 1 + prior.x, ", ", 1 + prior.n - prior.x, ")
@@ -215,28 +211,64 @@
     }")
     )
   )
-  dataList <- switch(type,
-    "errors" = list("n" = n.obs[-1], "k" = t.obs[-1], "S" = nstrata - 1),
-    "taints" = list("t" = (t[[1]] * (n.obs[1] - 1) + 0.5) / n.obs[1], "n" = n.obs[1], "S" = nstrata - 1, "s" = as.numeric(stratum))
+  dataList <- switch(likelihood,
+    "binomial" = list("n" = n.obs[-1], "k" = t.obs[-1], "S" = nstrata - 1),
+    "beta" = list("t" = (t[[1]] * (n.obs[1] - 1) + 0.5) / n.obs[1], "n" = n.obs[1], "S" = nstrata - 1, "s" = as.numeric(stratum))
   )
-  p <- try({
-    utils::capture.output(
-      file = "NUL",
-      raw <- rjags::coda.samples(
-        model =
-          rjags::jags.model(
-            file = textConnection(model), data = dataList, n.chains = 4, inits = list(.RNG.name = "base::Wichmann-Hill", .RNG.seed = 120492)
-          ), variable.names = c("theta_s"), n.iter = iterations, burnin = iterations / 10
+  if (likelihood == "beta") {
+    warning("taints are transformed by (t * (n - 1) + 0.5) / n")
+  }
+  p <- try(
+    {
+      utils::capture.output(
+        file = "NUL",
+        raw <- rjags::coda.samples(
+          model =
+            rjags::jags.model(
+              file = textConnection(model), data = dataList, n.chains = 4, inits = list(.RNG.name = "base::Wichmann-Hill", .RNG.seed = 120492)
+            ), variable.names = c("theta_s"), n.iter = iterations, burnin = iterations / 10
+        )
       )
-    )
-  }, silent = TRUE)
+    },
+    silent = TRUE
+  )
   if (inherits(p, "try-error")) {
     if (grepl("Failed to locate any version of JAGS", p[[1]], fixed = TRUE)) {
-      stop("JAGS is required but missing, download it from http://www.sourceforge.net/projects/mcmc-jags/files")
+      stop("JAGS is missing but required, download it from http://www.sourceforge.net/projects/mcmc-jags/files")
     } else {
       stop(p[[1]])
     }
   }
   samples <- coda::mcmc(do.call(rbind, raw))
   return(samples)
+}
+
+.posterior_samples <- function(method, nstrata, bayesian, prior.x, t.obs, prior.n, n.obs, N.units) {
+  samples <- matrix(NA, ncol = nstrata - 1, nrow = 1e5)
+  set.seed(120495)
+  for (i in 2:nstrata) {
+    if (bayesian) {
+      samples[, i - 1] <- switch(method,
+        "poisson" = stats::rgamma(1e5, 1 + prior.x + t.obs[i], prior.n + n.obs[i]),
+        "binomial" = stats::rbeta(1e5, 1 + prior.x + t.obs[i], 1 + prior.n - prior.x + n.obs[i] - t.obs[i]),
+        "hypergeometric" = extraDistr::rbbinom(1e5, N.units[i] - n.obs[i], 1 + prior.x + t.obs[i], 1 + prior.n - prior.x + n.obs[i] - t.obs[i]) / N.units[i]
+      )
+    } else {
+      samples[, i - 1] <- switch(method,
+        "poisson" = stats::rgamma(1e5, 1 + t.obs[i], n.obs[i]),
+        "binomial" = stats::rbeta(1e5, 1 + t.obs[i], n.obs[i] - t.obs[i]),
+        "hypergeometric" = extraDistr::rbbinom(1e5, N.units[i] - n.obs[i], 1 + t.obs[i], n.obs[i] - t.obs[i]) / N.units[i]
+      )
+    }
+  }
+  return(samples)
+}
+
+.poststratify_samples <- function(samples, N.units, nstrata) {
+  if (is.null(N.units)) { # Weights
+    weights <- rep(1, nstrata - 1) / (nstrata - 1)
+  } else {
+    weights <- N.units[-1] / N.units[1]
+  }
+  psamples <- samples %*% weights
 }
