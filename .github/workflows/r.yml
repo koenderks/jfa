@@ -52,6 +52,13 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
 
+      - name: Locate JAGS on Windows
+        if: runner.os == 'macOS'
+        run: |
+          path <- normalizePath(file.path("..", "pkgs", "64", "JAGS"), winslash = "/")
+          cat("\nSys.setenv(JAGS_HOME = '", path, "')\n", file = "~/.Rprofile", sep = "", append = TRUE)
+        shell: Rscript {0}
+
       - name: Install JAGS on macOS
         if: runner.os == 'macOS'
         run: brew install jags
