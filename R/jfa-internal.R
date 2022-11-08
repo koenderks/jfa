@@ -143,12 +143,14 @@
   return(af)
 }
 
+# This function takes a vector x and returns the mode (the most occurring value) via density estimation
 .getmode <- function(x, round = 3) {
   dens <- stats::density(x)
   mode <- round(dens$x[which.max(dens$y)], round)
   return(mode)
 }
 
+# This function fits a JAGS model using partial pooling and returns samples from the stratum posteriors
 .fitjagsmodel <- function(method, prior.x, prior.n, n.obs, t.obs, t, nstrata, stratum, likelihood) {
   stopifnot("'method = hypergeometric' does not support pooling" = method != "hypergeometric")
   iterations <- switch(likelihood,
@@ -243,6 +245,7 @@
   return(samples)
 }
 
+# This function samples from an analytical posterior distribution
 .posterior_samples <- function(method, nstrata, bayesian, prior.x, t.obs, prior.n, n.obs, N.units) {
   samples <- matrix(NA, ncol = nstrata - 1, nrow = 1e5)
   set.seed(120495)
@@ -264,11 +267,12 @@
   return(samples)
 }
 
+# This function implements poststratification
 .poststratify_samples <- function(samples, N.units, nstrata) {
-  if (is.null(N.units)) { # Weights
+  if (is.null(N.units)) { # Create equal poststratification weights (1 / nstrata) in absence of N.units
     weights <- rep(1, nstrata - 1) / (nstrata - 1)
   } else {
     weights <- N.units[-1] / N.units[1]
   }
-  psamples <- samples %*% weights
+  psamples <- samples %*% weights # Weigh each stratum using the poststratification weights
 }
