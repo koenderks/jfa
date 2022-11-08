@@ -478,7 +478,7 @@ test_that(desc = "(id: f3-v0.6.5-t4) Test Bayesian binomial stratification with 
   expect_equal(res$mle, 0.148)
   expect_equal(res$ub, 0.306713178)
   expect_equal(res$strata$mle, c(0.161, 0.121, 0.091))
-  expect_equal(res$strata$ub, c(0.4758775838, 0.3527315985, 0.3527315985))
+  expect_equal(res$strata$ub, c(0.4758775838, 0.3914763812, 0.3527315985))
 })
 
 test_that(desc = "(id: f3-v0.6.5-t5) Test stratification with data", {
