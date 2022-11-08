@@ -399,7 +399,7 @@ test_that(desc = "(id: f3-v0.6.0-t3) Test Bayes factors for beta-binomial prior"
 
 # jfa 0.6.5
 
-test_that(desc = "(id: f3-v0.6.5-t1) Test frequentist poisson stratification with summary statistics", {
+test_that(desc = "(id: f3-v0.6.5-t1) Test frequentist poisson stratification with summary statistics (Derks et al., 2022, Table 1)", {
   k <- c(2, 1, 0)
   n <- c(6, 7, 7)
   N <- c(8, 11, 11)
@@ -416,7 +416,7 @@ test_that(desc = "(id: f3-v0.6.5-t1) Test frequentist poisson stratification wit
   expect_equal(res$strata$ub, stats::qgamma(0.95, 1 + k, n))
 })
 
-test_that(desc = "(id: f3-v0.6.5-t2) Test Bayesian poisson stratification with summary statistics", {
+test_that(desc = "(id: f3-v0.6.5-t2) Test Bayesian poisson stratification with summary statistics (Derks et al., 2022, Table 1)", {
   k <- c(2, 1, 0)
   n <- c(6, 7, 7)
   N <- c(8, 11, 11)
@@ -432,22 +432,24 @@ test_that(desc = "(id: f3-v0.6.5-t2) Test Bayesian poisson stratification with s
   expect_equal(res$strata$mle, k / n)
   expect_equal(res$strata$ub, stats::qgamma(0.95, 1 + k, n))
   # 3. Partial pooling
-  set.seed(1) # Required because the population posterior is generated through sampling
-  p <- try({
-    res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "poisson", prior = TRUE, pool = TRUE)
-  })
-  # For CRAN
-  if (inherits(p, "try-error")) {
-    expect_equal(p[[1]], "JAGS is missing but required, download it from http://www.sourceforge.net/projects/mcmc-jags/files")
-  } else {
-    expect_equal(res$mle, 0.132)
-    expect_equal(res$ub, 0.372574195)
-    expect_equal(res$strata$mle, c(0.153, 0.122, 0.069))
-    # We do not test for the upper bound because of the difference on OS's due to sampling
+  if (Sys.info()["sysname"] != "Windows") { # Getting JAGS on a Windows runner is difficult
+    set.seed(1) # Required because the population posterior is generated through sampling
+    p <- try({
+      res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "poisson", prior = TRUE, pool = TRUE)
+    })
+    # For CRAN
+    if (inherits(p, "try-error")) {
+      expect_equal(p[[1]], "JAGS is missing but required, download it from http://www.sourceforge.net/projects/mcmc-jags/files")
+    } else {
+      expect_equal(res$mle, 0.132)
+      expect_equal(res$ub, 0.372574195)
+      expect_equal(res$strata$mle, c(0.153, 0.122, 0.069))
+      # We do not test for the upper bound because of the difference on OS's due to sampling
+    }
   }
 })
 
-test_that(desc = "(id: f3-v0.6.5-t3) Test frequentist binomial stratification with summary statistics", {
+test_that(desc = "(id: f3-v0.6.5-t3) Test frequentist binomial stratification with summary statistics (Derks et al., 2022, Table 1)", {
   k <- c(2, 1, 0)
   n <- c(6, 7, 7)
   N <- c(8, 11, 11)
@@ -464,7 +466,7 @@ test_that(desc = "(id: f3-v0.6.5-t3) Test frequentist binomial stratification wi
   expect_equal(res$strata$ub, stats::qbeta(0.95, 1 + k, n - k))
 })
 
-test_that(desc = "(id: f3-v0.6.5-t4) Test Bayesian binomial stratification with summary statistics", {
+test_that(desc = "(id: f3-v0.6.5-t4) Test Bayesian binomial stratification with summary statistics (Derks et al., 2022, Table 1)", {
   k <- c(2, 1, 0)
   n <- c(6, 7, 7)
   N <- c(8, 11, 11)
@@ -480,30 +482,33 @@ test_that(desc = "(id: f3-v0.6.5-t4) Test Bayesian binomial stratification with 
   expect_equal(res$strata$mle, k / n)
   expect_equal(res$strata$ub, stats::qbeta(0.95, 1 + k, 1 + n - k))
   # 3. Partial pooling
-  p <- try({
-  set.seed(1) # Required because the population posterior is generated through sampling
-  res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "binomial", prior = TRUE, pool = TRUE)
-  })
-  # For CRAN
-  if (inherits(p, "try-error")) {
-    expect_equal(p[[1]], "JAGS is missing but required, download it from http://www.sourceforge.net/projects/mcmc-jags/files")
-  } else {
-    expect_equal(res$mle, 0.148)
-    expect_equal(res$ub, 0.306713178)
-    expect_equal(res$strata$mle, c(0.161, 0.121, 0.091))
-    # We do not test for the upper bound because of the difference on OS's due to sampling
+  if (Sys.info()["sysname"] != "Windows") { # Getting JAGS on a Windows runner is difficult
+    set.seed(1) # Required because the population posterior is generated through sampling
+    p <- try({
+      res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "binomial", prior = TRUE, pool = TRUE)
+    })
+    # For CRAN
+    if (inherits(p, "try-error")) {
+      expect_equal(p[[1]], "JAGS is missing but required, download it from http://www.sourceforge.net/projects/mcmc-jags/files")
+    } else {
+      expect_equal(res$mle, 0.148)
+      expect_equal(res$ub, 0.306713178)
+      expect_equal(res$strata$mle, c(0.161, 0.121, 0.091))
+      # We do not test for the upper bound because of the difference on OS's due to sampling
+    }
   }
 })
 
-test_that(desc = "(id: f3-v0.6.5-t5) Test stratification with data", {
+test_that(desc = "(id: f3-v0.6.5-t5) Test stratification with data (Derks et al., 2022, Table 4)", {
   set.seed(1)
-  population <- read.csv("https://osf.io/vge5d/download")
-  sample <- population[population$insample == 1, ]
-  sample$stratum <- factor(sample(c("low", "medium", "high"), size = nrow(sample), replace = TRUE))
+  data("BuildIt")
+  BuildIt$inSample <- c(rep(1, 100), rep(0, 3400))
+  BuildIt_sample <- subset(BuildIt, BuildIt$inSample == 1)
+  BuildIt_sample$stratum <- factor(sample(c("low", "medium", "high"), size = nrow(BuildIt_sample), replace = TRUE))
   res <- evaluation(
-    materiality = 0.03, data = sample, prior = TRUE, method = "binomial",
+    materiality = 0.03, data = BuildIt_sample, prior = TRUE, method = "binomial",
     values = "bookValue", values.audit = "auditValue", strata = "stratum"
   )
-  expect_equal(res$strata$mle, c(0.10666814, 0.05454557, 0.02702684))
-  expect_equal(res$strata$ub, c(0.2396285217, 0.1657562137, 0.1188538497))
+  expect_equal(res$strata$mle, c(0.01999976449, 0.03636379347, 0.03243200798))
+  expect_equal(res$strata$ub, c(0.1244479234, 0.1407523854, 0.1266882179))
 })
