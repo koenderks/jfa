@@ -528,7 +528,7 @@ print.jfaEvaluation <- function(x, digits = getOption("digits"), ...) {
   out <- c(out, paste("number of errors =", format(x[["x"]], digits = max(1L, digits - 2L))))
   out <- c(out, paste("number of samples =", format(x[["n"]], digits = max(1L, digits - 2L))))
   out <- c(out, paste("taint =", format(x[["t"]], digits = max(1L, digits - 2L))))
-  if (is.null(x[["prior"]]) && x[["materiality"]] < 1 && x[["method"]] %in% c("binomial", "poisson", "hypergeometric")) {
+  if (is.null(x[["prior"]]) && x[["materiality"]] < 1 && is.null(x[["strata"]]) && x[["method"]] %in% c("binomial", "poisson", "hypergeometric")) {
     out <- c(out, paste("p-value =", format.pval(x[["p.value"]], digits = max(1L, digits - 2L))))
   }
   if (!is.null(x[["prior"]]) && x[["materiality"]] < 1 && is.null(x[["strata"]])) {
@@ -599,7 +599,7 @@ print.summary.jfaEvaluation <- function(x, digits = getOption("digits"), ...) {
   if (x[["materiality"]] < 1 && x[["type"]] == "Bayesian" && is.null(x[["strata"]])) {
     cat(paste("  BF\u2081\u2080:\t                         ", format(x[["bf.h1"]], digits = max(1L, digits - 2L))), "\n")
   }
-  if (x[["materiality"]] < 1 && x[["type"]] == "Classical" && x[["method"]] %in% c("poisson", "binomial", "hypergeometric")) {
+  if (x[["materiality"]] < 1 && x[["type"]] == "Classical"  && is.null(x[["strata"]]) && x[["method"]] %in% c("poisson", "binomial", "hypergeometric")) {
     cat(paste("  p-value:                       ", format.pval(x[["p.value"]], digits = max(1L, digits - 2L))), "\n")
   }
   if (!is.null(x[["strata"]])) {
