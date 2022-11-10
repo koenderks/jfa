@@ -173,7 +173,7 @@
     }"),
       "poisson" = paste0("
     model {
-      theta ~ dgamma(", 1 + prior.x, ", ", prior.n, ")
+      theta ~ dgamma(", 1 + prior.x, ", ", prior.n, ")I(0, 1)
       sigma ~ dnorm(0, 1)
       for (i in 1:S) {
         alpha_s[i] ~ dnorm(0, 1)
@@ -200,9 +200,9 @@
     }"),
       "poisson" = paste0("
     model {
-      theta ~ dgamma(", 1 + prior.x, ", ", prior.n, ")
+      theta ~ dgamma(", 1 + prior.x, ", ", prior.n, ")I(0, 1)
       sigma ~ dnorm(0, 1)
-      nu ~ dnorm(0, 100)I(0, )
+      nu ~ dnorm(0, 10)I(0, )
       for (i in 1:S) {
         alpha_s[i] ~ dnorm(0, 1)
         theta_s[i] <- ilogit(logit(theta) + sigma * alpha_s[i])

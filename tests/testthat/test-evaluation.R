@@ -496,15 +496,15 @@ test_that(desc = "(id: f3-v0.6.5-t4) Test Bayesian binomial stratification with 
 })
 
 test_that(desc = "(id: f3-v0.6.5-t5) Test stratification with data (Derks et al., 2022, Table 4)", {
-  set.seed(1)
   data("BuildIt")
+  BuildIt$stratum <- factor(c("high", "medium", rep(c("low", "medium", "high"), times = 1166)))
   BuildIt$inSample <- c(rep(1, 100), rep(0, 3400))
   BuildIt_sample <- subset(BuildIt, BuildIt$inSample == 1)
-  BuildIt_sample$stratum <- factor(sample(c("low", "medium", "high"), size = nrow(BuildIt_sample), replace = TRUE))
   res <- evaluation(
     materiality = 0.03, data = BuildIt_sample, prior = TRUE, method = "binomial",
-    values = "bookValue", values.audit = "auditValue", strata = "stratum"
+    values = "bookValue", values.audit = "auditValue", strata = "stratum", 
+    N.units = as.numeric(table(BuildIt_sample$stratum))
   )
-  expect_equal(res$strata$mle, c(0.01714337719, 0.02222174011, 0.04736782184))
-  expect_equal(res$strata$ub, c(0.1079945958, 0.1369647925, 0.1456541369))
+  expect_equal(res$strata$mle, c(0.01818169065, 0.03636289354, 0.03529444518))
+  expect_equal(res$strata$ub, c(0.1140247217, 0.1407511113, 0.1369524323))
 })
