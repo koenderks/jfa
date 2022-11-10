@@ -144,7 +144,7 @@
 }
 
 # This function takes a vector x and returns the mode (the most occurring value) via density estimation
-.getmode <- function(x, round = 3) {
+.getmode <- function(x, round = 7) {
   dens <- stats::density(x)
   mode <- round(dens$x[which.max(dens$y)], round)
   return(mode)

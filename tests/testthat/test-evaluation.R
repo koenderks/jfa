@@ -410,7 +410,7 @@ test_that(desc = "(id: f3-v0.6.5-t1) Test frequentist poisson stratification wit
   # 2. No pooling
   set.seed(1) # Required because the population posterior is generated through sampling
   res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "poisson")
-  expect_equal(res$mle, 0.247)
+  expect_equal(res$mle, 0.2467001)
   expect_equal(res$ub, 0.5103523829)
   expect_equal(res$strata$mle, k / n)
   expect_equal(res$strata$ub, stats::qgamma(0.95, 1 + k, n))
@@ -427,7 +427,7 @@ test_that(desc = "(id: f3-v0.6.5-t2) Test Bayesian poisson stratification with s
   # 2. No pooling
   set.seed(1) # Required because the population posterior is generated through sampling
   res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "poisson", prior = auditPrior(method = "strict"))
-  expect_equal(res$mle, 0.247)
+  expect_equal(res$mle, 0.2467001)
   expect_equal(res$ub, 0.5103523829)
   expect_equal(res$strata$mle, k / n)
   expect_equal(res$strata$ub, stats::qgamma(0.95, 1 + k, n))
@@ -440,9 +440,9 @@ test_that(desc = "(id: f3-v0.6.5-t2) Test Bayesian poisson stratification with s
   if (inherits(p, "try-error")) {
     expect_equal(p[[1]], "\n  JAGS is missing but required, download it from http://www.sourceforge.net/projects/mcmc-jags/files\n")
   } else {
-    expect_equal(res$mle, 0.132)
+    expect_equal(res$mle, 0.1320321)
     expect_equal(res$ub, 0.372574195)
-    expect_equal(res$strata$mle, c(0.153, 0.122, 0.069))
+    expect_equal(res$strata$mle, c(0.1527927, 0.1221420, 0.0692265))
     # We do not test for the upper bound because of the difference on OS's due to sampling
   }
 })
@@ -458,7 +458,7 @@ test_that(desc = "(id: f3-v0.6.5-t3) Test frequentist binomial stratification wi
   # 2. No pooling
   set.seed(1) # Required because the population posterior is generated through sampling
   res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "binomial")
-  expect_equal(res$mle, 0.245)
+  expect_equal(res$mle, 0.2447319)
   expect_equal(res$ub, 0.3956012)
   expect_equal(res$strata$mle, k / n)
   expect_equal(res$strata$ub, stats::qbeta(0.95, 1 + k, n - k))
@@ -475,7 +475,7 @@ test_that(desc = "(id: f3-v0.6.5-t4) Test Bayesian binomial stratification with 
   # 2. No pooling
   set.seed(1) # Required because the population posterior is generated through sampling
   res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "binomial", prior = TRUE)
-  expect_equal(res$mle, 0.177)
+  expect_equal(res$mle, 0.1773613)
   expect_equal(res$ub, 0.3208153168)
   expect_equal(res$strata$mle, k / n)
   expect_equal(res$strata$ub, stats::qbeta(0.95, 1 + k, 1 + n - k))
@@ -488,9 +488,9 @@ test_that(desc = "(id: f3-v0.6.5-t4) Test Bayesian binomial stratification with 
   if (inherits(p, "try-error")) {
     expect_equal(p[[1]], "\n  JAGS is missing but required, download it from http://www.sourceforge.net/projects/mcmc-jags/files\n")
   } else {
-    expect_equal(res$mle, 0.148)
+    expect_equal(res$mle, 0.1476978)
     expect_equal(res$ub, 0.306713178)
-    expect_equal(res$strata$mle, c(0.161, 0.121, 0.091))
+    expect_equal(res$strata$mle, c(0.1609902, 0.1207917, 0.0906320))
     # We do not test for the upper bound because of the difference on OS's due to sampling
   }
 })
@@ -505,6 +505,6 @@ test_that(desc = "(id: f3-v0.6.5-t5) Test stratification with data (Derks et al.
     materiality = 0.03, data = BuildIt_sample, prior = TRUE, method = "binomial",
     values = "bookValue", values.audit = "auditValue", strata = "stratum"
   )
-  expect_equal(res$strata$mle, c(0.01999976449, 0.03636379347, 0.03243200798))
-  expect_equal(res$strata$ub, c(0.1244479234, 0.1407523854, 0.1266882179))
+  expect_equal(res$strata$mle, c(0.01714338, 0.02222174, 0.04736782))
+  expect_equal(res$strata$ub, c(0.1079946, 0.1369648, 0.1456541369))
 })
