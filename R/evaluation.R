@@ -511,7 +511,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
   }
   # Add the stratum results
   if (nstrata > 1) {
-    result[["strata"]] <- data.frame(n = n.obs[-1], x = t.obs[-1], mle = mle[-1], lb = lb[-1], ub = ub[-1], precision = precision[-1])
+    result[["strata"]] <- data.frame(n = n.obs[-1], x = x.obs[-1], t = t.obs[-1], mle = mle[-1], lb = lb[-1], ub = ub[-1], precision = precision[-1])
     if (!bayesian && materiality < 1 && method %in% c("binomial", "poisson", "hypergeometric")) {
       result[["strata"]][["p.value"]] <- p.val[-1]
     }
