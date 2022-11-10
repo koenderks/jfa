@@ -34,6 +34,18 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
 
+      - name: Clone jasp-required-files on windows
+        if: runner.os == 'Windows'
+        run: |
+          branch='Windows'
+          echo "branch=$branch"
+          git clone --branch=$branch https://github.com/jasp-stats/jasp-required-files.git pkgs
+          # set JAGS_ROOT environment variable required for compiling JAGS_MODULES
+          jags_root=$(readlink -f pkgs/64/JAGS)
+          echo "jags_root = $jags_root"
+          echo "JAGS_ROOT=$jags_root" >> $GITHUB_ENV
+        working-directory: ..
+
       - name: Locate JAGS on Windows
         if: runner.os == 'Windows'
         run: |

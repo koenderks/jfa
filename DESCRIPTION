@@ -13,7 +13,6 @@ BugReports: https://github.com/koenderks/jfa/issues
 URL: https://koenderks.github.io/jfa/, https://github.com/koenderks/jfa
 Imports: extraDistr, graphics, stats
 Suggests: benford.analysis, BenfordTests, BeyondBenford, coda, kableExtra, knitr, MUS, rjags, rmarkdown, samplingbook, testthat
-SystemRequirements: JAGS 4.x.y
 Language: en-US
 License: GPL (>= 3)
 Encoding: UTF-8
