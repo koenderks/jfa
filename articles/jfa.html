@@ -116,7 +116,7 @@
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
             <h4 data-toc-skip class="date">last modified:
-27-10-2021</h4>
+10-11-2022</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/jfa.Rmd" class="external-link"><code>vignettes/jfa.Rmd</code></a></small>
       <div class="hidden name"><code>jfa.Rmd</code></div>
@@ -126,14 +126,150 @@
     
     
 <p>Welcome to the ‘Get started’ vignette of the <code>jfa</code>
-package. This vignette provides a simple explanation of the
-functionality in the package. For a more detailed explanation of the
-functions in the package, see the other vignettes at the <a href="https://koenderks.github.io/" class="external-link">package website</a>.</p>
+package. <code>jfa</code> is an R package that provides Bayesian and
+classical statistical methods for audit sampling and data auditing.
+First, the package provides functions for planning, performing,
+evaluating, and reporting an audit sample compliant with international
+standards on auditing. Second, the package includes functions for
+auditing data, such as testing the distribution of first digits of a
+data set against Benford’s law.</p>
+<p>This vignette provides a simple explanation of the functionality in
+the package. For a more detailed explanation of the functions in the
+package, see the other vignettes at the <a href="https://koenderks.github.io/" class="external-link">package website</a>.</p>
+<div class="section level2">
+<h2 id="audit-sampling">Audit sampling<a class="anchor" aria-label="anchor" href="#audit-sampling"></a>
+</h2>
+<center>
+<p><img src="img/workflow.png" alt="Figure 1: The audit sampling workflow"><br></p>
+</center>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Load the BuildIt population</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"BuildIt"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">BuildIt</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##      ID bookValue auditValue</span></span>
+<span><span class="co">## 1 82884    242.61     242.61</span></span>
+<span><span class="co">## 2 25064    642.99     642.99</span></span>
+<span><span class="co">## 3 81235    628.53     628.53</span></span>
+<span><span class="co">## 4 71769    431.87     431.87</span></span>
+<span><span class="co">## 5 55080    620.88     620.88</span></span>
+<span><span class="co">## 6 93224    501.76     501.76</span></span></code></pre>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Stage 1: Planning</span></span>
+<span><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span></span>
+<span>  materiality <span class="op">=</span> <span class="fl">0.03</span>, expected <span class="op">=</span> <span class="fl">0.01</span>,</span>
+<span>  likelihood <span class="op">=</span> <span class="st">"poisson"</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Classical Audit Sample Planning Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Confidence level:              0.95 </span></span>
+<span><span class="co">##   Materiality:                   0.03 </span></span>
+<span><span class="co">##   Hypotheses:                    H₀: Θ &gt;= 0.03 vs. H₁: Θ &lt; 0.03 </span></span>
+<span><span class="co">##   Expected:                      0.01 </span></span>
+<span><span class="co">##   Likelihood:                    poisson </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Minimum sample size:           220 </span></span>
+<span><span class="co">##   Tolerable errors:              2.2 </span></span>
+<span><span class="co">##   Expected most likely error:    0.01 </span></span>
+<span><span class="co">##   Expected upper bound:          0.02997 </span></span>
+<span><span class="co">##   Expected precision:            0.01997 </span></span>
+<span><span class="co">##   Expected p-value:              &lt; 2.22e-16</span></span></code></pre>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Stage 2: Selection</span></span>
+<span><span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="va">stage1</span>,</span>
+<span>  units <span class="op">=</span> <span class="st">"values"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>,</span>
+<span>  method <span class="op">=</span> <span class="st">"interval"</span>, start <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Audit Sample Selection Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Requested sample size:         220 </span></span>
+<span><span class="co">##   Sampling units:                monetary units </span></span>
+<span><span class="co">##   Method:                        fixed interval sampling </span></span>
+<span><span class="co">##   Starting point:                1 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Data:</span></span>
+<span><span class="co">##   Population size:               3500 </span></span>
+<span><span class="co">##   Population value:              1403221 </span></span>
+<span><span class="co">##   Selection interval:            6378.3 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Selected sampling units:       220 </span></span>
+<span><span class="co">##   Proportion of value:           0.080554 </span></span>
+<span><span class="co">##   Selected items:                220 </span></span>
+<span><span class="co">##   Proportion of size:            0.062857</span></span></code></pre>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Stage 3: Execution</span></span>
+<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">stage2</span><span class="op">[[</span><span class="st">"sample"</span><span class="op">]</span><span class="op">]</span></span>
+<span></span>
+<span><span class="co"># Stage 4: Evaluation</span></span>
+<span><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
+<span>  materiality <span class="op">=</span> <span class="fl">0.03</span>, method <span class="op">=</span> <span class="st">"stringer"</span>,</span>
+<span>  conf.level <span class="op">=</span> <span class="fl">0.95</span>, data <span class="op">=</span> <span class="va">sample</span>,</span>
+<span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Classical Audit Sample Evaluation Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Confidence level:               0.95 </span></span>
+<span><span class="co">##   Materiality:                    0.03 </span></span>
+<span><span class="co">##   Method:                         stringer </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Data:</span></span>
+<span><span class="co">##   Sample size:                    220 </span></span>
+<span><span class="co">##   Number of errors:               5 </span></span>
+<span><span class="co">##   Sum of taints:                  2.9999929 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Most likely error:              0.013636 </span></span>
+<span><span class="co">##   95 percent confidence interval: [0, 0.033724] </span></span>
+<span><span class="co">##   Precision:                      0.020087</span></span></code></pre>
+</div>
+<div class="section level2">
+<h2 id="data-auditing">Data auditing<a class="anchor" aria-label="anchor" href="#data-auditing"></a>
+</h2>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Digit distribution test</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/digit.test.html">digit.test</a></span><span class="op">(</span><span class="va">sinoForest</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"first"</span>, reference <span class="op">=</span> <span class="st">"benford"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Digit distribution test</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## data:  sinoForest$value</span></span>
+<span><span class="co">## n = 772, X-squared = 7.6517, df = 8, p-value = 0.4682</span></span>
+<span><span class="co">## alternative hypothesis: leading digit(s) are not distributed according to the benford distribution.</span></span></code></pre>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<p><img src="jfa_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Repeated values test</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/repeated.test.html">repeated.test</a></span><span class="op">(</span><span class="va">sanitizer</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"lasttwo"</span>, B <span class="op">=</span> <span class="fl">5000</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Repeated values test</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## data:  sanitizer$value</span></span>
+<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0032</span></span>
+<span><span class="co">## alternative hypothesis: average frequency in data is greater than for random data.</span></span></code></pre>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<p><img src="jfa_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+</div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-      </div>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
+</div>
 
 </div>
 
