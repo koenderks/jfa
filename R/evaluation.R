@@ -439,7 +439,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
           "stringer.pvz" = .stringer(t[[i]], conf.level, n.obs[i], correction = "pvz"), # Classical evaluation using the Stringer bound with PvZ adjustment
           "rohrbach" = .rohrbach(t[[i]], conf.level, n.obs[i], alternative, N.units[i], r.delta), # Classical evaluation using Rohrbachs augmented variance bound
           "moment" = .moment(t[[i]], conf.level, n.obs[i], alternative, m.type), # Classical evaluation using the Modified Moment bound
-          "coxsnell" = .coxsnell(t[[i]], conf.level, n.obs[i], alternative, cs.a, cs.b, cs.mu, 1 + prior.x, 1 + prior.n - prior.x), # Bayesian evaluation using the Cox and Snell bound
+          "coxsnell" = .coxsnell(t[[i]], conf.level, n.obs[i], alternative, cs.a, cs.b, cs.mu, 1 + prior.x, prior.n - prior.x), # Bayesian evaluation using the Cox and Snell bound
           "mpu" = .mpu(t[[i]], conf.level, alternative, n.obs[i]), # Classical evaluation using the Mean-per-unit estimator
           "direct" = .direct(bookvalues[[i]], auditvalues[[i]], conf.level, alternative, N.items[i], n.obs[i], N.units[i]), # Classical evaluation using the Direct estimator
           "difference" = .difference(bookvalues[[i]], auditvalues[[i]], conf.level, alternative, N.items[i], n.obs[i]), # Classical evaluation using the Difference estimator
@@ -519,17 +519,17 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
       if (alternative == "less") {
         result[["strata"]][["bf10"]] <- switch(method,
           "poisson" = (stats::pgamma(materiality, 1 + prior.x + t.obs[-1], prior.n + n.obs[-1]) / stats::pgamma(materiality, 1 + prior.x + t.obs[-1], prior.n + n.obs[-1], lower.tail = FALSE)) / (stats::pgamma(materiality, 1 + prior.x, prior.n) / stats::pgamma(materiality, 1 + prior.x, prior.n, lower.tail = FALSE)),
-          "binomial" = (stats::pbeta(materiality, 1 + prior.x + t.obs[-1], 1 + prior.n - prior.x + n.obs[-1] - t.obs[-1]) / stats::pbeta(materiality, 1 + prior.x + t.obs[-1], 1 + prior.n - prior.x + n.obs[-1] - t.obs[-1], lower.tail = FALSE)) / (stats::pbeta(materiality, 1 + prior.x, 1 + prior.n - prior.x) / stats::pbeta(materiality, 1 + prior.x, 1 + prior.n - prior.x, lower.tail = FALSE))
+          "binomial" = (stats::pbeta(materiality, 1 + prior.x + t.obs[-1], prior.n - prior.x + n.obs[-1] - t.obs[-1]) / stats::pbeta(materiality, 1 + prior.x + t.obs[-1], prior.n - prior.x + n.obs[-1] - t.obs[-1], lower.tail = FALSE)) / (stats::pbeta(materiality, 1 + prior.x, prior.n - prior.x) / stats::pbeta(materiality, 1 + prior.x, 1 + prior.n - prior.x, lower.tail = FALSE))
         )
       } else if (alternative == "greater") {
         result[["strata"]][["bf10"]] <- switch(method,
           "poisson" = (stats::pgamma(materiality, 1 + prior.x + t.obs[-1], prior.n + n.obs[-1], lower.tail = FALSE) / stats::pgamma(materiality, 1 + prior.x + t.obs[-1], prior.n + n.obs[-1])) / (stats::pgamma(materiality, 1 + prior.x, prior.n, lower.tail = FALSE) / stats::pgamma(materiality, 1 + prior.x, prior.n)),
-          "binomial" = (stats::pbeta(materiality, 1 + prior.x + t.obs[-1], 1 + prior.n - prior.x + n.obs[-1] - t.obs[-1], lower.tail = FALSE) / stats::pbeta(materiality, 1 + prior.x + t.obs[-1], 1 + prior.n - prior.x + n.obs[-1] - t.obs[-1])) / (stats::pbeta(materiality, 1 + prior.x, 1 + prior.n - prior.x, lower.tail = FALSE) / stats::pbeta(materiality, 1 + prior.x, 1 + prior.n - prior.x))
+          "binomial" = (stats::pbeta(materiality, 1 + prior.x + t.obs[-1], prior.n - prior.x + n.obs[-1] - t.obs[-1], lower.tail = FALSE) / stats::pbeta(materiality, 1 + prior.x + t.obs[-1], prior.n - prior.x + n.obs[-1] - t.obs[-1])) / (stats::pbeta(materiality, 1 + prior.x, prior.n - prior.x, lower.tail = FALSE) / stats::pbeta(materiality, 1 + prior.x, 1 + prior.n - prior.x))
         )
       } else if (alternative == "two.sided") {
         result[["strata"]][["bf10"]] <- switch(method,
           "poisson" = stats::dgamma(materiality, 1 + prior.x + t.obs[-1], prior.n + n.obs[-1]) / stats::dgamma(materiality, 1 + prior.x, prior.n),
-          "binomial" = stats::dbeta(materiality, 1 + prior.x + t.obs[-1], 1 + prior.n - prior.x + n.obs[-1] - t.obs[-1]) / stats::dbeta(materiality, 1 + prior.x, 1 + prior.n - prior.x)
+          "binomial" = stats::dbeta(materiality, 1 + prior.x + t.obs[-1], prior.n - prior.x + n.obs[-1] - t.obs[-1]) / stats::dbeta(materiality, 1 + prior.x, prior.n - prior.x)
         )
       }
     }

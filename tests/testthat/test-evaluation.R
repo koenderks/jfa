@@ -488,9 +488,9 @@ test_that(desc = "(id: f3-v0.6.5-t4) Test Bayesian binomial stratification with 
   if (inherits(p, "try-error")) {
     expect_equal(p[[1]], "\n  JAGS is missing but required, download it from http://www.sourceforge.net/projects/mcmc-jags/files\n")
   } else {
-    expect_equal(res$mle, 0.1476978)
-    expect_equal(res$ub, 0.306713178)
-    expect_equal(res$strata$mle, c(0.1609902, 0.1207917, 0.0906320))
+    expect_equal(res$mle, 0.1467903)
+    expect_equal(res$ub, 0.3187864799)
+    expect_equal(res$strata$mle, c(0.1624390, 0.1192878, 0.0714838))
     # We do not test for the upper bound because of the difference on OS's due to sampling
   }
 })
@@ -505,8 +505,6 @@ test_that(desc = "(id: f3-v0.6.5-t5) Test stratification with data (Derks et al.
     materiality = 0.03, data = BuildIt_sample, prior = TRUE, method = "binomial",
     values = "bookValue", values.audit = "auditValue", strata = "stratum"
   )
-  expect_equal(is.null(res$strata$mle), FALSE)
-  print(format(res$strata$mle, digits = 10))
-  expect_equal(is.null(res$strata$ub), FALSE)
-  print(format(res$strata$ub, digits = 10))
+  expect_equal(res$strata$mle, c(0.01714337719, 0.02222174011, 0.04736782184))
+  expect_equal(res$strata$ub, c(0.1079945958, 0.1369647925, 0.1456541369))
 })

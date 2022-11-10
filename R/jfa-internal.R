@@ -161,7 +161,7 @@
     "binomial" = switch(method,
       "binomial" = paste0("
     model {
-      theta ~ dbeta(", 1 + prior.x, ", ", 1 + prior.n - prior.x, ")
+      theta ~ dbeta(", 1 + prior.x, ", ", prior.n - prior.x, ")
       sigma ~ dnorm(0, 1)
       for (i in 1:S) {
         alpha_s[i] ~ dnorm(0, 1)
@@ -187,7 +187,7 @@
     "beta" = switch(method,
       "binomial" = paste0("
     model {
-      theta ~ dbeta(", 1 + prior.x, ", ", 1 + prior.n - prior.x, ")
+      theta ~ dbeta(", 1 + prior.x, ", ", prior.n - prior.x, ")
       sigma ~ dnorm(0, 1)
       nu ~ dnorm(0, 10)I(0, )
       for (i in 1:S) {
