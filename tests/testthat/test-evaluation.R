@@ -432,7 +432,6 @@ test_that(desc = "(id: f3-v0.6.5-t2) Test Bayesian poisson stratification with s
   expect_equal(res$strata$mle, k / n)
   expect_equal(res$strata$ub, stats::qgamma(0.95, 1 + k, n))
   # 3. Partial pooling
-  set.seed(1) # Required because the population posterior is generated through sampling
   p <- try({
     res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "poisson", prior = TRUE, pool = TRUE)
   })
@@ -440,10 +439,10 @@ test_that(desc = "(id: f3-v0.6.5-t2) Test Bayesian poisson stratification with s
   if (inherits(p, "try-error")) {
     expect_equal(p[[1]], "\n  JAGS is missing but required, download it from http://www.sourceforge.net/projects/mcmc-jags/files\n")
   } else {
-    expect_equal(res$mle, 0.1320321)
-    expect_equal(res$ub, 0.372574195)
-    expect_equal(res$strata$mle, c(0.1527927, 0.1221420, 0.0692265))
-    # We do not test for the upper bound because of the difference on OS's due to sampling
+    expect_equal(res$mle, 0.1516604)
+    expect_equal(res$ub, 0.3741805337)
+    expect_equal(res$strata$mle, c(0.1641429, 0.1112469, 0.0661130))
+    expect_equal(res$strata$ub, c(0.5627108892, 0.4301772617, 0.3604615052))
   }
 })
 
@@ -480,7 +479,6 @@ test_that(desc = "(id: f3-v0.6.5-t4) Test Bayesian binomial stratification with 
   expect_equal(res$strata$mle, k / n)
   expect_equal(res$strata$ub, stats::qbeta(0.95, 1 + k, 1 + n - k))
   # 3. Partial pooling
-  set.seed(1) # Required because the population posterior is generated through sampling
   p <- try({
     res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "binomial", prior = TRUE, pool = TRUE)
   })
@@ -491,7 +489,7 @@ test_that(desc = "(id: f3-v0.6.5-t4) Test Bayesian binomial stratification with 
     expect_equal(res$mle, 0.1467903)
     expect_equal(res$ub, 0.3187864799)
     expect_equal(res$strata$mle, c(0.1624390, 0.1192878, 0.0714838))
-    # We do not test for the upper bound because of the difference on OS's due to sampling
+    expect_equal(res$strata$ub, c(0.4891329046, 0.3664226016, 0.3076560340))
   }
 })
 
