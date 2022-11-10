@@ -224,13 +224,9 @@
     {
       utils::capture.output(
         file = "NUL",
-        raw <- rjags::coda.samples(
-          model =
-            rjags::jags.model(
-              file = textConnection(model), data = dataList, n.chains = 4, inits = list(.RNG.name = "base::Wichmann-Hill", .RNG.seed = 120492)
-            ), variable.names = c("theta_s"), n.iter = iterations, burnin = iterations / 10
-        )
+        jagsmodel <- rjags::jags.model(file = textConnection(model), data = dataList, n.chains = 4, inits = list(.RNG.name = "base::Wichmann-Hill", .RNG.seed = 120492), quiet = TRUE)
       )
+      raw <- rjags::coda.samples(model = jagsmodel, variable.names = c("theta_s"), n.iter = iterations, burnin = iterations / 10)
     },
     silent = TRUE
   )
