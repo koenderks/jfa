@@ -23,10 +23,10 @@
 #'
 #' @format A data frame with 20 rows and 5 variables.
 #' \describe{
-#'   \item{i}{branch number.}
-#'   \item{N}{total number of items in each branch.}
-#'   \item{n}{number of items in sample per branch.}
-#'   \item{x}{number of errors in sample per branch.}
+#'   \item{stratum}{branch/stratum number.}
+#'   \item{items}{total number of items in each branch.}
+#'   \item{samples}{number of items in sample per branch.}
+#'   \item{errors}{number of errors in sample per branch.}
 #' }
 #'
 #' @keywords datasets
