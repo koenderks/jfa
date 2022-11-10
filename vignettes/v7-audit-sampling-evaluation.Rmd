@@ -130,12 +130,21 @@ Complete pooling assumes no differences between strata. This has the advantages 
 ```{r}
 result_cp <- evaluation(
   materiality = 0.05, method = "binomial", prior = TRUE,
-  n = sum(retailer$samples), x = sum(retailer$errors), N.units = sum(retailer$items)
+  n = sum(retailer$samples), x = sum(retailer$errors), N.units = sum(retailer$items),
+  alternative = "two.sided"
 )
 summary(result_cp)
 ```
 
-For example, the output shows that the population level estimate is 4.4% with an 95% upper bound of 5.2%.
+For example, the output shows that the population level estimate is 4.4% with an 95% upper bound of 5.2%. The stratum estimates are all the same.
+
+```{r, echo = FALSE}
+plot(1:20, rep(result_cp$mle, 20), pch = 19, ylim = c(0, 0.5), las = 1, main = "Stratum estimates", ylab = "Misstatement", xlab = "Stratum", axes = FALSE)
+graphics::axis(side = 1, at = 1:20)
+graphics::axis(side = 2, at = seq(0, 0.50, length.out = 6), las = 1)
+graphics::arrows(x0 = 1:20, x1 = 1:20, y0 = rep(result_cp$lb, 20), y1 = rep(result_cp$ub, 20), angle = 90, length = 0.05)
+graphics::arrows(x0 = 1:20, x1 = 1:20, y1 = rep(result_cp$lb, 20), y0 = rep(result_cp$ub, 20), angle = 90, length = 0.05)
+```
 
 ### Approach 2: No pooling
 
@@ -144,12 +153,21 @@ No pooling assumes no similarities between strata. This allows the auditor to di
 ```{r}
 result_np <- evaluation(
   materiality = 0.05, method = "binomial", prior = TRUE,
-  n = retailer$samples, x = retailer$errors, N.units = retailer$items
+  n = retailer$samples, x = retailer$errors, N.units = retailer$items,
+  alternative = "two.sided"
 )
 summary(result_np)
 ```
 
-In this case, the output shows that the population level estimate is 5.6% with an 95% upper bound of 7.6%.
+In this case, the output shows that the population level estimate is 5.6% with an 95% upper bound of 7.6%. The stratum estimates differ from each other.
+
+```{r, echo = FALSE}
+plot(1:20, result_np$strata$mle, pch = 19, ylim = c(0, 0.5), las = 1, main = "Stratum estimates", ylab = "Misstatement", xlab = "Stratum", axes = FALSE)
+graphics::axis(side = 1, at = 1:20)
+graphics::axis(side = 2, at = seq(0, 0.50, length.out = 6), las = 1)
+graphics::arrows(x0 = 1:20, x1 = 1:20, y0 = result_np$strata$lb, y1 = result_np$strata$ub, angle = 90, length = 0.05)
+graphics::arrows(x0 = 1:20, x1 = 1:20, y1 = result_np$strat$lb, y0 = result_np$strata$ub, angle = 90, length = 0.05)
+```
 
 ### Approach 3: Partial pooling
 
@@ -158,12 +176,21 @@ Finally, partial pooling assumes differences and similarities between strata. Th
 ```{r}
 result_pp <- evaluation(
   materiality = 0.05, method = "binomial", prior = TRUE, pool = TRUE,
-  n = retailer$samples, x = retailer$errors, N.units = retailer$items
+  n = retailer$samples, x = retailer$errors, N.units = retailer$items,
+  alternative = "two.sided"
 )
 summary(result_pp)
 ```
 
-In this case, the output shows that the population level estimate is 4.3% with an 95% upper bound of 5.1%.
+In this case, the output shows that the population level estimate is 4.3% with an 95% upper bound of 5.1%. Like in the previous approach, the stratum estimates are different. However, partial pooling puts the stratum estimates closer together and makes them more accurate.
+
+```{r, echo = FALSE}
+plot(1:20, result_pp$strata$mle, pch = 19, ylim = c(0, 0.5), las = 1, main = "Stratum estimates", ylab = "Misstatement", xlab = "Stratum", axes = FALSE)
+graphics::axis(side = 1, at = 1:20)
+graphics::axis(side = 2, at = seq(0, 0.50, length.out = 6), las = 1)
+graphics::arrows(x0 = 1:20, x1 = 1:20, y0 = result_pp$strata$lb, y1 = result_pp$strata$ub, angle = 90, length = 0.05)
+graphics::arrows(x0 = 1:20, x1 = 1:20, y1 = result_pp$strat$lb, y0 = result_pp$strata$ub, angle = 90, length = 0.05)
+```
 
 ## References
 
