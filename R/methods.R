@@ -21,7 +21,7 @@
   bound <- 1 - (1 - conf.level)^(1 / n)
   if (length(t) > 0) {
     propSum <- 0
-    for (i in 1:length(t)) {
+    for (i in seq_along(t)) {
       propSum <- propSum + (stats::qbeta(p = conf.level, shape1 = i + 1, shape2 = n - i) - stats::qbeta(p = conf.level, shape1 = (i - 1) + 1, shape2 = n - (i - 1))) * t[i]
     }
     bound <- bound + propSum
@@ -50,7 +50,7 @@
     tmin <- sort(subset(taints, taints > 0))
     if (length(tmin) > 0) {
       constant <- 0
-      for (i in 1:length(tmin)) {
+      for (i in seq_along(tmin)) {
         constant <- constant + (((n - 2 * i + 1) / (2 * sqrt(i * (n - i + 1)))) * rev(tmin)[i])
       }
       constant <- (1 / n) * constant
