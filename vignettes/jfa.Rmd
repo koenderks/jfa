@@ -1,7 +1,7 @@
 ---
 title: "Get started"
 author: Koen Derks
-date: "last modified: 27-10-2021"
+date: "last modified: 10-11-2022"
 output: 
   rmarkdown::html_vignette:
     toc: true
@@ -14,5 +14,67 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-Welcome to the 'Get started' vignette of the `jfa` package. This vignette provides a simple explanation of the functionality in the package. For a more detailed explanation of the functions in the package, see the other vignettes at the [package website](https://koenderks.github.io/).
+```{r, echo = FALSE}
+library(jfa)
+```
 
+Welcome to the 'Get started' vignette of the `jfa` package. `jfa` is an R package that provides Bayesian and classical statistical methods for audit sampling and data auditing. First, the package provides functions for planning, performing, evaluating, and reporting an audit sample compliant with international standards on auditing. Second, the package includes functions for auditing data, such as testing the distribution of first digits of a data set against Benford's law.
+
+This vignette provides a simple explanation of the functionality in the package. For a more detailed explanation of the functions in the package, see the other vignettes at the [package website](https://koenderks.github.io/).
+
+## Audit sampling
+
+<center>
+
+![Figure 1: The audit sampling workflow](img/workflow.png)\
+
+</center>
+
+```{r}
+# Load the BuildIt population
+data("BuildIt")
+head(BuildIt)
+
+# Stage 1: Planning
+stage1 <- planning(
+  materiality = 0.03, expected = 0.01,
+  likelihood = "poisson", conf.level = 0.95
+)
+summary(stage1)
+
+# Stage 2: Selection
+stage2 <- selection(
+  data = BuildIt, size = stage1,
+  units = "values", values = "bookValue",
+  method = "interval", start = 1
+)
+summary(stage2)
+
+# Stage 3: Execution
+sample <- stage2[["sample"]]
+
+# Stage 4: Evaluation
+stage4 <- evaluation(
+  materiality = 0.03, method = "stringer",
+  conf.level = 0.95, data = sample,
+  values = "bookValue", values.audit = "auditValue"
+)
+summary(stage4)
+```
+
+## Data auditing
+
+```{r}
+# Digit distribution test
+x <- digit.test(sinoForest$value, check = "first", reference = "benford")
+print(x)
+plot(x)
+```
+
+
+```{r}
+# Repeated values test
+x <- repeated.test(sanitizer$value, check = "lasttwo", B = 5000)
+print(x)
+plot(x)
+```

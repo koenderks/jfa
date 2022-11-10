@@ -1,7 +1,7 @@
 ---
 title: "Audit sampling: Evaluating a sample"
 author: Koen Derks
-date: "last modified: 05-11-2022"
+date: "last modified: 10-11-2022"
 output: 
   rmarkdown::html_vignette:
     toc: true
@@ -19,6 +19,12 @@ knitr::opts_chunk$set(echo = TRUE, fig.height = 4, fig.width = 6)
 set.seed(1)
 library(jfa)
 ```
+
+<center>
+
+![Figure 1: The location of the evaluation stage in the audit sampling workflow](img/evaluation.png)\
+
+</center>
 
 This vignette outlines the most commonly used sample evaluation methodology for auditing and shows how to evaluate a sample using the `evaluation()` function in the `jfa` package.
 

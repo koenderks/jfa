@@ -1,7 +1,7 @@
 ---
 title: "Auditing data: Digit analysis"
 author: Koen Derks
-date: "last modified: 05-11-2022"
+date: "last modified: 10-11-2022"
 output: 
   rmarkdown::html_vignette:
     toc: true

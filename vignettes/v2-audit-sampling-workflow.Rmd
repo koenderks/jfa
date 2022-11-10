@@ -1,7 +1,7 @@
 ---
 title: "Audit sampling: Classical sampling workflow"
 author: Koen Derks
-date: "last modified: 05-11-2022"
+date: "last modified: 10-11-2022"
 output: 
   rmarkdown::html_vignette:
     toc: true
@@ -26,6 +26,12 @@ In order to formulate an opinion about the misstatement in the population, Laura
 library(jfa)
 data("BuildIt")
 ```
+
+<center>
+
+![Figure 1: Illustration of the audit sampling workflow](img/workflow.png)\
+
+</center>
 
 ## Setting up the audit
 
@@ -52,6 +58,12 @@ cr <- 0.6 # 60%
 
 ## Stage 1: Planning an audit sample
 
+<center>
+
+![Figure 2: The location of the planning stage in the audit sampling workflow](img/planning.png)\
+
+</center>
+
 Laura can choose to either perform a frequentist analysis, where she uses the increased detection risk as her level of uncertainty, or perform a Bayesian analysis, where she captures the information in the control risk in a prior distribution. For this example, we will show how Laura performs a frequentist analysis. In a frequentist audit, Laura immediately uses the adjusted confidence to calculate the sample size using the `planning()` function.
 
 ```{r}
@@ -68,6 +80,12 @@ summary(stage1)
 ```
 
 ## Stage 2: Selecting a sample
+
+<center>
+
+![Figure 3: The location of the selection stage in the audit sampling workflow](img/selection.png)\
+
+</center>
 
 Laura is now ready to select the required 178 items from the financial statements. She can choose to do this according to one of two statistical methods. In *record sampling* (`units = "items"`), inclusion probabilities are assigned on the item level, treating items with a high value and a low value the same, an items of $5,000 is equally likely to be selected as a item of $1,000. In *monetary unit sampling* (`units = "values"`), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the item that includes that dollar is selected. This favors higher items, as an items of \$5,000 is five times more likely to be selected than a item of \$1,000. 
 
@@ -102,6 +120,12 @@ sample <- stage2$sample
 For this example, the audit values of the sample are already included in the `auditValue` column of the data set .
 
 ## Stage 4: Evaluating the sample
+
+<center>
+
+![Figure 4: The location of the evaluation stage in the audit sampling workflow](img/evaluation.png)\
+
+</center>
 
 Using her annotated sample, Laura can perform her inference with the `evaluation()` function.
 

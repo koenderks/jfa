@@ -1,7 +1,7 @@
 ---
 title: 'Audit sampling: Planning a sample'
 author: Koen Derks
-date: 'last modified: 05-11-2022'
+date: "last modified: 10-11-2022"
 output: 
   rmarkdown::html_vignette:
     toc: true
@@ -18,6 +18,12 @@ vignette: >
 knitr::opts_chunk$set(echo = TRUE, fig.height = 4, fig.width = 6)
 library(jfa)
 ```
+
+<center>
+
+![Figure 1: The location of the planning stage in the audit sampling workflow](img/planning.png)\
+
+</center>
 
 The objective of the planning stage in an audit is to determine a minimum sample size. This vignette shows how to use the `planning()` function to achieve this.
 
