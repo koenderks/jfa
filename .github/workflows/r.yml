@@ -52,20 +52,16 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
 
-      - name: Clone jasp-required-files on windows
+      - name: Get JAGS on windows
         if: runner.os == 'Windows'
-        run: |
-          git clone --branch='Windows' https://github.com/jasp-stats/jasp-required-files.git pkgs
-          jags_root=$(readlink -f pkgs/64/JAGS)
-          echo "jags_root = $jags_root"
-          echo "JAGS_ROOT=$jags_root" >> $GITHUB_ENV
+        run: git clone https://github.com/koenderks/JAGS.git JAGS
         working-directory: ..
         shell: bash
 
       - name: Locate JAGS on Windows
         if: runner.os == 'Windows'
         run: |
-          path <- normalizePath(file.path("..", "pkgs", "64", "JAGS"), winslash = "/")
+          path <- normalizePath(file.path("..", "JAGS"), winslash = "/")
           cat("\nSys.setenv(JAGS_HOME = '", path, "')\n", file = "~/.Rprofile", sep = "", append = TRUE)
         shell: Rscript {0}
 
