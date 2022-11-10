@@ -31,16 +31,19 @@
     <loc>/articles/v4-audit-sampling-prior-distributions.html</loc>
   </url>
   <url>
-    <loc>/articles/v5-audit-sampling-sample-selection.html</loc>
+    <loc>/articles/v5-audit-sampling-planning.html</loc>
   </url>
   <url>
-    <loc>/articles/v6-audit-sampling-evaluation.html</loc>
+    <loc>/articles/v6-audit-sampling-sample-selection.html</loc>
   </url>
   <url>
-    <loc>/articles/v7-data-auditing.html</loc>
+    <loc>/articles/v7-audit-sampling-evaluation.html</loc>
   </url>
   <url>
-    <loc>/articles/v8-auditing-data-digit-analysis.html</loc>
+    <loc>/articles/v8-data-auditing.html</loc>
+  </url>
+  <url>
+    <loc>/articles/v9-auditing-data-digit-analysis.html</loc>
   </url>
   <url>
     <loc>/authors.html</loc>

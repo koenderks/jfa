@@ -72,16 +72,19 @@
       <a href="../articles/v4-audit-sampling-prior-distributions.html">Audit sampling: Creating a prior distribution</a>
     </li>
     <li>
-      <a href="../articles/v5-audit-sampling-sample-selection.html">Audit sampling: Selecting a sample</a>
+      <a href="../articles/v5-audit-sampling-planning.html">Audit sampling: Planning a sample</a>
     </li>
     <li>
-      <a href="../articles/v6-audit-sampling-evaluation.html">Audit sampling: Evaluating a sample</a>
+      <a href="../articles/v6-audit-sampling-sample-selection.html">Audit sampling: Selecting a sample</a>
     </li>
     <li>
-      <a href="../articles/v7-data-auditing.html">Data auditing: Get started</a>
+      <a href="../articles/v7-audit-sampling-evaluation.html">Audit sampling: Evaluating a sample</a>
     </li>
     <li>
-      <a href="../articles/v8-auditing-data-digit-analysis.html">Auditing data: Digit analysis</a>
+      <a href="../articles/v8-data-auditing.html">Data auditing: Get started</a>
+    </li>
+    <li>
+      <a href="../articles/v9-auditing-data-digit-analysis.html">Auditing data: Digit analysis</a>
     </li>
   </ul>
 </li>
@@ -115,8 +118,8 @@
             <h4 data-toc-skip class="date">last modified:
 05-11-2022</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/v8-auditing-data-digit-analysis.Rmd" class="external-link"><code>vignettes/v8-auditing-data-digit-analysis.Rmd</code></a></small>
-      <div class="hidden name"><code>v8-auditing-data-digit-analysis.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/v9-auditing-data-digit-analysis.Rmd" class="external-link"><code>vignettes/v9-auditing-data-digit-analysis.Rmd</code></a></small>
+      <div class="hidden name"><code>v9-auditing-data-digit-analysis.Rmd</code></div>
 
     </div>
 
@@ -177,7 +180,7 @@ expected frequencies under Benford’s law using the code below.</p>
 <span><span class="co">## alternative hypothesis: leading digit(s) are not distributed according to the benford distribution.</span></span></code></pre>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v8-auditing-data-digit-analysis_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
+<p><img src="v9-auditing-data-digit-analysis_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="function-repeated-test">Function: <code>repeated.test()</code><a class="anchor" aria-label="anchor" href="#function-repeated-test"></a>
@@ -203,11 +206,11 @@ the data were not tampered with.</p>
 <span><span class="co">##  Repeated values test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sanitizer$value</span></span>
-<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.001</span></span>
+<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.003</span></span>
 <span><span class="co">## alternative hypothesis: average frequency in data is greater than for random data.</span></span></code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v8-auditing-data-digit-analysis_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
+<p><img src="v9-auditing-data-digit-analysis_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 </div>
 </div>
   </div>
