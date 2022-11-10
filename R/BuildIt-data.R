@@ -30,7 +30,7 @@
 #'
 #' @keywords datasets
 #'
-#' @references Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., & Wetzels, R. (2019). JASP for audit: Bayesian tools for the auditing practice.
+#' @references Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., & Wetzels, R. (2021). JASP for audit: Bayesian tools for the auditing practice. \emph{Journal of Open Source Software}, \emph{6}(68), 2733.
 #'
 #' @examples
 #' data(BuildIt)

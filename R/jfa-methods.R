@@ -599,7 +599,7 @@ print.summary.jfaEvaluation <- function(x, digits = getOption("digits"), ...) {
   if (x[["materiality"]] < 1 && x[["type"]] == "Bayesian" && is.null(x[["strata"]])) {
     cat(paste("  BF\u2081\u2080:\t                         ", format(x[["bf.h1"]], digits = max(1L, digits - 2L))), "\n")
   }
-  if (x[["materiality"]] < 1 && x[["type"]] == "Classical"  && is.null(x[["strata"]]) && x[["method"]] %in% c("poisson", "binomial", "hypergeometric")) {
+  if (x[["materiality"]] < 1 && x[["type"]] == "Classical" && is.null(x[["strata"]]) && x[["method"]] %in% c("poisson", "binomial", "hypergeometric")) {
     cat(paste("  p-value:                       ", format.pval(x[["p.value"]], digits = max(1L, digits - 2L))), "\n")
   }
   if (!is.null(x[["strata"]])) {
