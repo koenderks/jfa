@@ -139,9 +139,25 @@ package, see the other vignettes at the <a href="https://koenderks.github.io/" c
 <div class="section level2">
 <h2 id="audit-sampling">Audit sampling<a class="anchor" aria-label="anchor" href="#audit-sampling"></a>
 </h2>
+<p><code>jfa</code> provides a user-friendly interface for statistical
+audit sampling. The standard audit sampling workflow is divided into
+four distinct parts: planning a sample, selecting the sample from the
+population, executing the audit and evaluating the misstatement by
+extrapolating the errors in the sample to the population.</p>
 <center>
 <p><img src="img/workflow.png" alt="Figure 1: The audit sampling workflow"><br></p>
 </center>
+<p>See the package vignette <a href="https://koenderks.github.io/jfa/articles/v1-audit-sampling.html" class="external-link">Audit
+sampling: Get started</a> for more details about <code>jfa</code>’s
+audit sampling functionality.</p>
+<div class="section level3">
+<h3 id="functions-and-intended-usage">Functions and intended usage<a class="anchor" aria-label="anchor" href="#functions-and-intended-usage"></a>
+</h3>
+<p>To illustrate <code>jfa</code> statistical audit sampling
+functionality, consider the <code>BuildIt</code> data set that comes
+with the package. This data consists of 3500 financial statement line
+items, each of which has a booked value and (for illustrative purposes)
+a true (audit) value.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Load the BuildIt population</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"BuildIt"</span><span class="op">)</span></span>
@@ -153,6 +169,13 @@ package, see the other vignettes at the <a href="https://koenderks.github.io/" c
 <span><span class="co">## 4 71769    431.87     431.87</span></span>
 <span><span class="co">## 5 55080    620.88     620.88</span></span>
 <span><span class="co">## 6 93224    501.76     501.76</span></span></code></pre>
+<p>The first step in the audit sampling workflow is to calculate a
+minimum required sample size given the purpose of the sample. You can
+use the sample to 1) obtain evidence for or against the hypothesis that
+the misstatement in the population is lower than the performance
+materiality and / or 2) estimate the misstatement in the population. The
+<code><a href="../reference/planning.html">planning()</a></code> function can be used to calculate this minimum
+required sample size.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Stage 1: Planning</span></span>
 <span><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span></span>
@@ -177,6 +200,8 @@ package, see the other vignettes at the <a href="https://koenderks.github.io/" c
 <span><span class="co">##   Expected upper bound:          0.02997 </span></span>
 <span><span class="co">##   Expected precision:            0.01997 </span></span>
 <span><span class="co">##   Expected p-value:              &lt; 2.22e-16</span></span></code></pre>
+<p>The <code><a href="../reference/selection.html">selection()</a></code> function can be used to select the
+required samples from the population.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Stage 2: Selection</span></span>
 <span><span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span></span>
@@ -206,9 +231,11 @@ package, see the other vignettes at the <a href="https://koenderks.github.io/" c
 <span><span class="co">##   Proportion of size:            0.062857</span></span></code></pre>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Stage 3: Execution</span></span>
-<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">stage2</span><span class="op">[[</span><span class="st">"sample"</span><span class="op">]</span><span class="op">]</span></span>
-<span></span>
-<span><span class="co"># Stage 4: Evaluation</span></span>
+<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">stage2</span><span class="op">[[</span><span class="st">"sample"</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
+<p>The <code><a href="../reference/evaluation.html">evaluation()</a></code> function can be used to evaluate the
+misstatement in the sample.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Stage 4: Evaluation</span></span>
 <span><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="fl">0.03</span>, method <span class="op">=</span> <span class="st">"stringer"</span>,</span>
 <span>  conf.level <span class="op">=</span> <span class="fl">0.95</span>, data <span class="op">=</span> <span class="va">sample</span>,</span>
@@ -233,10 +260,20 @@ package, see the other vignettes at the <a href="https://koenderks.github.io/" c
 <span><span class="co">##   95 percent confidence interval: [0, 0.033724] </span></span>
 <span><span class="co">##   Precision:                      0.020087</span></span></code></pre>
 </div>
+</div>
 <div class="section level2">
 <h2 id="data-auditing">Data auditing<a class="anchor" aria-label="anchor" href="#data-auditing"></a>
 </h2>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<p>The <code><a href="../reference/digit.test.html">digit.test()</a></code> function can be used to test the
+distribution of leading or last digits in a variable against a
+pre-specified distribution (e.g., Benford’s law).</p>
+<p>See the package vignette <a href="https://koenderks.github.io/jfa/articles/v8-data-auditing.html" class="external-link">Data
+auditing: Get started</a> for more details about <code>jfa</code>’s data
+auditing functionality.</p>
+<div class="section level3">
+<h3 id="functions-and-intended-usage-1">Functions and intended usage<a class="anchor" aria-label="anchor" href="#functions-and-intended-usage-1"></a>
+</h3>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Digit distribution test</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/digit.test.html">digit.test</a></span><span class="op">(</span><span class="va">sinoForest</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"first"</span>, reference <span class="op">=</span> <span class="st">"benford"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
@@ -246,10 +283,12 @@ package, see the other vignettes at the <a href="https://koenderks.github.io/" c
 <span><span class="co">## data:  sinoForest$value</span></span>
 <span><span class="co">## n = 772, X-squared = 7.6517, df = 8, p-value = 0.4682</span></span>
 <span><span class="co">## alternative hypothesis: leading digit(s) are not distributed according to the benford distribution.</span></span></code></pre>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
-<p><img src="jfa_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<p><img src="jfa_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+<p>The <code><a href="../reference/repeated.test.html">repeated.test()</a></code> function can be used to test the
+numbers in a variable for repeated values.</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Repeated values test</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/repeated.test.html">repeated.test</a></span><span class="op">(</span><span class="va">sanitizer</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"lasttwo"</span>, B <span class="op">=</span> <span class="fl">5000</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
@@ -257,11 +296,12 @@ package, see the other vignettes at the <a href="https://koenderks.github.io/" c
 <span><span class="co">##  Repeated values test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sanitizer$value</span></span>
-<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0032</span></span>
+<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0016</span></span>
 <span><span class="co">## alternative hypothesis: average frequency in data is greater than for random data.</span></span></code></pre>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
-<p><img src="jfa_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
+<p><img src="jfa_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
+</div>
 </div>
   </div>
 
