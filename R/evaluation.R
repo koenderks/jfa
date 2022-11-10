@@ -302,7 +302,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
   # When performing stratification, add the full population as a first stratum
   if (length(n.obs) > 1) {
     n.obs <- c(sum(n.obs), n.obs)
-    x.obs <- c(sum(ceiling(x.obs)), ceiling(x.obs))
+    x.obs <- c(sum(x.obs), x.obs)
     t.obs <- c(sum(t.obs), t.obs)
     if (!is.null(N.units)) {
       N.units <- c(sum(N.units), N.units)
