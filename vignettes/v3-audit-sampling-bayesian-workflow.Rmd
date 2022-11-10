@@ -14,8 +14,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-## Audit sampling: Bayesian sampling workflow
-
 This vignette aims to show how the `jfa` package facilitates auditors in the standard audit sampling workflow (hereafter "audit workflow"). In this example of the audit workflow, we will consider the case of BuildIt. BuildIt is a fictional construction company in the United States that is being audited by Laura, an external auditor for a fictional audit firm. At the end of the year, BuildIt has provided a summary of its financial situation in the financial statements. Laura's job as an auditor is to formulate an opinion about the fairness and correctness of BuildIt's financial statements. 
 
 Therefore, Laura needs to obtain sufficient and appropriate evidence for the claim that the misstatement in the financial statements is lower than a certain amount: the materiality. If the financial statements contain errors that are considered material, this means that the errors in the financial statements are large enough that they might influence the decision of someone relying on these financial statements. For Laura, the materiality is set at 5% of the total value of the financial statements.
