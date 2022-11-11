@@ -57,29 +57,17 @@ keywords:
 - statistics
 references:
 - type: software
-  title: coda
-  abstract: 'coda: Output Analysis and Diagnostics for MCMC'
-  notes: Imports
+  title: 'R: A Language and Environment for Statistical Computing'
+  notes: Depends
   authors:
-  - family-names: Plummer
-    given-names: Martyn
-    email: martyn.plummer@gmail.com
-  - family-names: Best
-    given-names: Nicky
-  - family-names: Cowles
-    given-names: Kate
-  - family-names: Vines
-    given-names: Karen
-  - family-names: Sarkar
-    given-names: Deepayan
-  - family-names: Bates
-    given-names: Douglas
-  - family-names: Almond
-    given-names: Russell
-  - family-names: Magnusson
-    given-names: Arni
+  - name: R Core Team
+  location:
+    name: Vienna, Austria
   year: '2022'
-  url: https://CRAN.R-project.org/package=coda
+  url: https://www.R-project.org/
+  institution:
+    name: R Foundation for Statistical Computing
+  version: '>= 3.4.0'
 - type: software
   title: extraDistr
   abstract: 'extraDistr: Additional Univariate and Multivariate Distributions'
@@ -102,15 +90,101 @@ references:
   institution:
     name: R Foundation for Statistical Computing
 - type: software
-  title: rjags
-  abstract: 'rjags: Bayesian Graphical Models using MCMC'
+  title: methods
+  abstract: 'R: A Language and Environment for Statistical Computing'
   notes: Imports
   authors:
-  - family-names: Plummer
-    given-names: Martyn
-    email: martyn.plummer@gmail.com
+  - name: R Core Team
+  location:
+    name: Vienna, Austria
   year: '2022'
-  url: https://CRAN.R-project.org/package=rjags
+  url: https://www.R-project.org/
+  institution:
+    name: R Foundation for Statistical Computing
+- type: software
+  title: Rcpp
+  abstract: 'Rcpp: Seamless R and C++ Integration'
+  notes: Imports
+  authors:
+  - family-names: Eddelbuettel
+    given-names: Dirk
+  - family-names: Francois
+    given-names: Romain
+  - family-names: Allaire
+    given-names: JJ
+  - family-names: Ushey
+    given-names: Kevin
+  - family-names: Kou
+    given-names: Qiang
+  - family-names: Russell
+    given-names: Nathan
+  - family-names: Ucar
+    given-names: Inaki
+  - family-names: Bates
+    given-names: Douglas
+  - family-names: Chambers
+    given-names: John
+  year: '2022'
+  url: https://CRAN.R-project.org/package=Rcpp
+  version: '>= 0.12.0'
+- type: software
+  title: RcppParallel
+  abstract: 'RcppParallel: Parallel Programming Tools for ''Rcpp'''
+  notes: Imports
+  authors:
+  - family-names: Allaire
+    given-names: JJ
+    email: jj@rstudio.com
+  - family-names: Francois
+    given-names: Romain
+  - family-names: Ushey
+    given-names: Kevin
+    email: kevin@rstudio.com
+  - family-names: Vandenbrouck
+    given-names: Gregory
+  - family-names: Geelnard
+    given-names: Marcus
+  - name: Intel
+  year: '2022'
+  url: https://CRAN.R-project.org/package=RcppParallel
+  version: '>= 5.0.1'
+- type: software
+  title: rstan
+  abstract: 'rstan: R Interface to Stan'
+  notes: Imports
+  authors:
+  - family-names: Guo
+    given-names: Jiqiang
+    email: guojq28@gmail.com
+  - family-names: Gabry
+    given-names: Jonah
+    email: jsg2201@columbia.edu
+  - family-names: Goodrich
+    given-names: Ben
+    email: benjamin.goodrich@columbia.edu
+  - family-names: Weber
+    given-names: Sebastian
+    email: sdw.post@waebers.de
+  year: '2022'
+  url: https://CRAN.R-project.org/package=rstan
+  version: '>= 2.18.1'
+- type: software
+  title: rstantools
+  abstract: 'rstantools: Tools for Developing R Packages Interfacing with ''Stan'''
+  notes: Imports
+  authors:
+  - family-names: Gabry
+    given-names: Jonah
+    email: jsg2201@columbia.edu
+  - family-names: Goodrich
+    given-names: Ben
+    email: benjamin.goodrich@columbia.edu
+  - family-names: Lysy
+    given-names: Martin
+    email: mlysy@uwaterloo.ca
+  year: '2022'
+  url: https://CRAN.R-project.org/package=rstantools
+  version: '>= 2.2.0'
 - type: software
   title: stats
   abstract: 'R: A Language and Environment for Statistical Computing'
@@ -258,3 +332,87 @@ references:
     email: hadley@rstudio.com
   year: '2022'
   url: https://CRAN.R-project.org/package=testthat
+- type: software
+  title: BH
+  abstract: 'BH: Boost C++ Header Files'
+  notes: LinkingTo
+  authors:
+  - family-names: Eddelbuettel
+    given-names: Dirk
+  - family-names: Emerson
+    given-names: John W.
+  - family-names: Kane
+    given-names: Michael J.
+  year: '2022'
+  url: https://CRAN.R-project.org/package=BH
+  version: '>= 1.66.0'
+- type: software
+  title: RcppEigen
+  abstract: 'RcppEigen: ''Rcpp'' Integration for the ''Eigen'' Templated Linear Algebra
+    Library'
+  notes: LinkingTo
+  authors:
+  - family-names: Bates
+    given-names: Douglas
+  - family-names: Eddelbuettel
+    given-names: Dirk
+  - family-names: Francois
+    given-names: Romain
+  - family-names: Eigen
+    given-names: Yixuan Qiu; the authors of Eigen for the included version of
+  year: '2022'
+  url: https://CRAN.R-project.org/package=RcppEigen
+  version: '>= 0.3.3.3.0'
+- type: software
+  title: StanHeaders
+  abstract: 'StanHeaders: C++ Header Files for Stan'
+  notes: LinkingTo
+  authors:
+  - family-names: Goodrich
+    given-names: Ben
+    email: benjamin.goodrich@columbia.edu
+  - family-names: Gelman
+    given-names: Andrew
+  - family-names: Carpenter
+    given-names: Bob
+  - family-names: Hoffman
+    given-names: Matt
+  - family-names: Lee
+    given-names: Daniel
+  - family-names: Betancourt
+    given-names: Michael
+  - family-names: Brubaker
+    given-names: Marcus
+  - family-names: Guo
+    given-names: Jiqiang
+  - family-names: Li
+    given-names: Peter
+  - family-names: Riddell
+    given-names: Allen
+  - family-names: Inacio
+    given-names: Marco
+  - family-names: Morris
+    given-names: Mitzi
+  - family-names: Arnold
+    given-names: Jeffrey
+  - family-names: Goedman
+    given-names: Rob
+  - family-names: Lau
+    given-names: Brian
+  - family-names: Trangucci
+    given-names: Rob
+  - family-names: Gabry
+    given-names: Jonah
+  - family-names: Kucukelbir
+    given-names: Alp
+  - family-names: Grant
+    given-names: Robert
+  - family-names: Tran
+    given-names: Dustin
+  - family-names: Malecki
+    given-names: Michael
+  - family-names: Gao
+    given-names: Yuanjun
+  year: '2022'
+  url: https://CRAN.R-project.org/package=StanHeaders
+  version: '>= 2.18.0'

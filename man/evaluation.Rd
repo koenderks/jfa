@@ -141,6 +141,7 @@ evaluation(
   data = sample, values = "bookValue", values.audit = "auditValue",
   prior = auditPrior(method = "param", alpha = 1, beta = 10)
 )
+
 }
 \references{
 Cox, D. and Snell, E. (1979). On sampling and the estimation of rare errors. \emph{Biometrika}, 66(1), 125-132.

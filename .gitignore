@@ -2,3 +2,6 @@ docs
 jfaRelease.R
 /doc/
 /Meta/
+*.o
+*.cc
+*.h
