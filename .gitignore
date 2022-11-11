@@ -2,3 +2,4 @@ docs
 jfaRelease.R
 /doc/
 /Meta/
+*.o
