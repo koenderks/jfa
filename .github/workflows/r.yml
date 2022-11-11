@@ -52,27 +52,6 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
 
-      - name: Get JAGS on windows
-        if: runner.os == 'Windows'
-        run: git clone https://github.com/koenderks/JAGS.git JAGS
-        working-directory: ..
-        shell: bash
-
-      - name: Locate JAGS on Windows
-        if: runner.os == 'Windows'
-        run: |
-          path <- normalizePath(file.path("..", "JAGS"), winslash = "/")
-          cat("\nSys.setenv(JAGS_HOME = '", path, "')\n", file = "~/.Rprofile", sep = "", append = TRUE)
-        shell: Rscript {0}
-
-      - name: Install JAGS on macOS
-        if: runner.os == 'macOS'
-        run: brew install jags
-
-      - name: Install JAGS on Linux
-        if: runner.os == 'Linux'
-        run: sudo apt install jags
-
       - name: Install system dependencies
         if: runner.os == 'Linux'
         run: |
@@ -85,6 +64,7 @@ jobs:
         run: |
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
+          install.packages("rstan", repos = c("https://mc-stan.org/r-packages/", getOption("repos")))
         shell: Rscript {0}
 
       - name: Check

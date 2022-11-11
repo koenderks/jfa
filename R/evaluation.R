@@ -144,6 +144,8 @@
 #'   data = sample, values = "bookValue", values.audit = "auditValue",
 #'   prior = auditPrior(method = "param", alpha = 1, beta = 10)
 #' )
+#' 
+#' @useDynLib jfa, .registration = TRUE
 #' @export
 
 evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
@@ -457,13 +459,13 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
     stopifnot("'pool = TRUE' only possible when 'prior != FALSE'" = bayesian)
     # Fit multilevel model, see jfa-internal.R
     if (any(t.obs %% 1 != 0) && !is.null(data)) { # If there are broken taints, use the beta likelihood
-      samples <- .fitjagsmodel(method, prior.x, prior.n, n.obs, t.obs, t, nstrata, stratum, likelihood = "beta")
+      samples <- .partial_pooling(method, prior.x, prior.n, n.obs, t.obs, t, nstrata, stratum, likelihood = "beta")
     } else {
       if (any(t.obs %% 1 != 0)) {
         warning("sum of taints in each stratum is rounded upwards")
         t.obs <- ceiling(t.obs)
       }
-      samples <- .fitjagsmodel(method, prior.x, prior.n, n.obs, t.obs, t = NULL, nstrata, stratum, likelihood = "binomial")
+      samples <- .partial_pooling(method, prior.x, prior.n, n.obs, t.obs, t = NULL, nstrata, stratum, likelihood = "binomial")
     }
     for (i in 2:nstrata) {
       mle[i] <- .getmode(samples[, i - 1])
