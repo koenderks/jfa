@@ -555,7 +555,8 @@ specific conclusion is possible. However, because all strata are assumed
 to be independent, this increases the uncertainty of the population
 estimate.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">result_np</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="co"># Important because the posterior distribution is determined via sampling</span></span>
+<span><span class="va">result_np</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"binomial"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  n <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">samples</span>, x <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">errors</span>, N.units <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">items</span>,</span>
 <span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span>, pooling <span class="op">=</span> <span class="st">"none"</span></span>
@@ -619,7 +620,8 @@ also retaining the decreased uncertainty obtained by aggregating
 information. Partial pooling is a powerful technique that can result in
 substantially more efficient estimates.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">result_pp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="co"># Important because the posterior distribution is determined via sampling</span></span>
+<span><span class="va">result_pp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"binomial"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  n <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">samples</span>, x <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">errors</span>, N.units <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">items</span>,</span>
 <span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span>, pooling <span class="op">=</span> <span class="st">"partial"</span></span>
