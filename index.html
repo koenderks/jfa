@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bayesian and Classical Methods for Auditing • jfa</title>
+<title>Bayesian and Classical Statistical Auditing • jfa</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
@@ -17,14 +17,14 @@
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
-<script src="pkgdown.js"></script><meta property="og:title" content="Bayesian and Classical Methods for Auditing">
-<meta property="og:description" content="Provides statistical methods for audit sampling and data auditing as implemented in 
+<script src="pkgdown.js"></script><meta property="og:title" content="Bayesian and Classical Statistical Auditing">
+<meta property="og:description" content="Provides Bayesian and classical methods for statistical auditing as implemented in 
     JASP for Audit (Derks et al., 2021 &lt;doi:10.21105/joss.02733&gt;). First, the package makes it easy 
     for an auditor to plan a statistical sample, select the sample from the population, and evaluate 
-    the misstatement in the sample compliant with international standards on auditing. Next to classical 
+    the misstatement in the sample compliant with international auditing standards. Next to classical 
     audit sampling methodology, the package implements Bayesian equivalents of these methods whose statistical 
     underpinnings are described in Derks et al. (2021) &lt;doi:10.1111/ijau.12240&gt;, Derks et al. (2021) &lt;doi:10.31234/osf.io/kzqp5&gt;, 
-    and Derks et al. (2022) &lt;doi:10.31234/osf.io/8nf3e&gt;. Second, the package provides statistical tools for 
+    and Derks et al. (2022) &lt;doi:10.31234/osf.io/8nf3e&gt;. Second, the package provides statistical methods for 
     auditing data, including (Bayesian) tests of digit distributions and tests for repeated values.">
 <meta property="og:image" content="/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -121,14 +121,14 @@
 
 
 <div class="section level1">
-<div class="page-header"><h1 id="jfa-bayesian-and-classical-methods-for-auditing-">jfa: Bayesian and Classical Methods for Auditing <img src="https://github.com/koenderks/jfa/raw/development/man/figures/logo.png" width="149" height="173" align="right"><a class="anchor" aria-label="anchor" href="#jfa-bayesian-and-classical-methods-for-auditing-"></a>
+<div class="page-header"><h1 id="jfa-bayesian-and-classical-statistical-auditing-">jfa: Bayesian and Classical Statistical Auditing <img src="https://github.com/koenderks/jfa/raw/development/man/figures/logo.png" width="149" height="173" align="right"><a class="anchor" aria-label="anchor" href="#jfa-bayesian-and-classical-statistical-auditing-"></a>
 </h1></div>
-<p><strong>jfa</strong> is an R package that provides Bayesian and classical statistical methods for auditing. The package provides an ensemble of functions for planning, performing, evaluating, and reporting an audit sample compliant with international standards on auditing and functions for auditing data, such as testing the distribution of first digits of a data set against Benford’s law. Next to standard frequentist methods, <strong>jfa</strong> makes it easy for auditors to apply state-of-the-art Bayesian inference in their audits.</p>
+<p><strong>jfa</strong> is an R package that provides Bayesian and classical methods for statistical auditing. The package includes functions for planning, performing, evaluating, and reporting audit samples compliant with international auditing standards, as well as functions for auditing data, such as testing the distribution of leading digits against Benford’s law. In addition to offering classical frequentist methods, <strong>jfa</strong> also provides a straightforward implementation of their Bayesian counterparts.</p>
 <ul>
 <li><a href="https://koenderks.github.io/jfa/articles/v1-audit-sampling.html" class="external-link">Audit sampling: Get started</a></li>
 <li><a href="https://koenderks.github.io/jfa/articles/v7-data-auditing.html" class="external-link">Data auditing: Get started</a></li>
 </ul>
-<p>The functionality of the <strong>jfa</strong> package and its intended workflow are also implemented with a graphical user interface in the <a href="https://github.com/jasp-stats/jaspAudit" class="external-link">Audit</a> module of <a href="https://jasp-stats.org" class="external-link">JASP</a>, a free and open-source statistical software program.</p>
+<p>The functionality of the <strong>jfa</strong> package and its intended workflow are also implemented with a graphical user interface in the <a href="https://github.com/jasp-stats/jaspAudit" class="external-link">Audit</a> module of <a href="https://jasp-stats.org" class="external-link">JASP</a>, a free and open-source software program for statistical analyses.</p>
 <hr>
 <div class="section level3">
 <h3 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a>
@@ -171,7 +171,7 @@
 <h3 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h3>
 <p>If you use <strong>jfa</strong>, please cite the software as follows:</p>
-<p>Derks, K. (2022). jfa: Bayesian and Classical Methods for Auditing. <a href="https://cran.r-project.org/package=jfa" class="external-link uri">https://cran.r-project.org/package=jfa</a></p>
+<p>Derks, K. (2022). jfa: Bayesian and Classical Statistical Auditing. <a href="https://cran.r-project.org/package=jfa" class="external-link uri">https://cran.r-project.org/package=jfa</a></p>
 </div>
 </div>
 
