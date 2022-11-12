@@ -20,7 +20,7 @@ library(jfa)
 
 Welcome to the 'Data auditing' vignette of the **jfa** package. Here you can find a simple explanation of the functions in the package that facilitate data auditing. For more detailed explanations of each function, read the other vignettes on the [package website](https://koenderks.github.io/jfa).
 
-## 1. Functions and intended usage
+## Functions and intended usage
 
 Below you can find an explanation of the available data auditing functions in **jfa**.
 
@@ -106,7 +106,7 @@ In this example, we analyze a data set from a (retracted) paper that describes t
 repeated.test(sanitizer$value, check = "lasttwo", B = 5000)
 ```
 
-## 2. Benchmarks
+## Benchmarks
 
 To validate the statistical results, **jfa**'s automated [unit tests](https://github.com/koenderks/jfa/tree/development/tests/testthat) regularly verify the main output from the package against the following benchmarks:
 
@@ -114,7 +114,7 @@ To validate the statistical results, **jfa**'s automated [unit tests](https://gi
 - [BenfordTests](https://cran.r-project.org/package=BenfordTests) (R package version 1.2.0)
 - [BeyondBenford](https://cran.r-project.org/package=BeyondBenford) (R package version 1.4)
 
-## 3. References
+## References
 
 - Benford, F. (1938). The law of anomalous numbers. In *Proceedings of the American Philosophical Society*, 551-572. - [View online](https://www.jstor.org/stable/984802)
 - Kass, R. E., & Raftery, A. E. (1995). Bayes factors. *Journal of the American Statistical Association*, *90*(430), 773-795. - [View online](https://www.tandfonline.com/doi/abs/10.1080/01621459.1995.10476572)

@@ -5,22 +5,22 @@
 [![Bugs](https://img.shields.io/github/issues/koenderks/jfa/bug?label=Bugs&logo=github&logoColor=%23FFF&color=brightgreen)](https://github.com/koenderks/jfa/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
 [![Total](https://cranlogs.r-pkg.org/badges/grand-total/jfa?color=blue)](https://cranlogs.r-pkg.org)
 
-# jfa: Bayesian and Classical Methods for Auditing <img src='https://github.com/koenderks/jfa/raw/development/man/figures/logo.png' width='149' height='173' align='right'/>
+# jfa: Bayesian and Classical Statistical Auditing <img src='https://github.com/koenderks/jfa/raw/development/man/figures/logo.png' width='149' height='173' align='right'/>
 
-**jfa** is an R package that provides Bayesian and classical statistical methods for auditing. The package provides an ensemble of functions for planning, performing, evaluating, and reporting an audit sample compliant with international standards on auditing and functions for auditing data, such as testing the distribution of first digits of a data set against Benford's law. Next to standard frequentist methods, **jfa** makes it easy for auditors to apply state-of-the-art Bayesian inference in their audits.
+**jfa** is an R package that provides Bayesian and classical methods for statistical auditing. The package includes functions for planning, performing, evaluating, and reporting audit samples compliant with international auditing standards, as well as functions for auditing data, such as testing the distribution of leading digits against Benford's law. In addition to offering classical frequentist methods, **jfa** also provides a straightforward implementation of their Bayesian counterparts.
 
 - [Audit sampling: Get started](https://koenderks.github.io/jfa/articles/v1-audit-sampling.html)
 - [Data auditing: Get started](https://koenderks.github.io/jfa/articles/v7-data-auditing.html)
 
-The functionality of the **jfa** package and its intended workflow are also implemented with a graphical user interface in the [Audit](https://github.com/jasp-stats/jaspAudit) module of [JASP](https://jasp-stats.org), a free and open-source statistical software program.
+The functionality of the **jfa** package and its intended workflow are also implemented with a graphical user interface in the [Audit](https://github.com/jasp-stats/jaspAudit) module of [JASP](https://jasp-stats.org), a free and open-source software program for statistical analyses.
 
 ---
 
 ### Resources
 
-* [Package website](https://koenderks.github.io/jfa/) (online documentation, vignettes)
-* [Ask a question](https://github.com/koenderks/jfa/discussions) (Discussion forum)
-* [Open an issue](https://github.com/koenderks/jfa/issues) (GitHub issues for bug reports, feature requests)
+- [Package website](https://koenderks.github.io/jfa/) (online documentation, vignettes)
+- [Ask a question](https://github.com/koenderks/jfa/discussions) (Discussion forum)
+- [Open an issue](https://github.com/koenderks/jfa/issues) (GitHub issues for bug reports, feature requests)
 
 ### Installation
 
@@ -51,4 +51,4 @@ If you are willing to contribute to the improvement of the package by adding a b
 
 If you use **jfa**, please cite the software as follows:
 
-Derks, K. (2022). jfa: Bayesian and Classical Methods for Auditing. https://cran.r-project.org/package=jfa
+Derks, K. (2022). jfa: Bayesian and Classical Statistical Auditing. https://cran.r-project.org/package=jfa

@@ -2,26 +2,24 @@
 \alias{jfa}
 \alias{jfa-package}
 \docType{package}
-\title{jfa --- Bayesian and Classical Methods for Auditing}
+\title{jfa --- Bayesian and Classical Statistical Auditing}
 \description{
   \if{html}{\figure{logo.png}{options: alt='logo' width='120' style='float: right' }}
 
-  \code{jfa} is an R package for statistical auditing focusing on two areas: 
-  audit sampling and data auditing. First, the package provides functions for planning, 
-  performing, evaluating, and reporting an audit sample compliant with international standards on auditing. 
-  Specifically, these functions implement standard audit sampling techniques for calculating sample sizes, 
-  selecting items from a population, and evaluating misstatement from a data sample or from summary statistics. 
-  \code{jfa} enables the user to create a prior probability distribution to perform Bayesian audit sampling using 
-  these functions. Second, the package provides functions for auditing data, for example testing the 
-  first digits in a data set against Benford's law.
+  \code{jfa} is an R package that provides Bayesian and classical methods for statistical auditing. 
+  The package includes functions for planning, performing, evaluating, and reporting an audit sample 
+  compliant with international auditing standards, as well as functions for auditing data, such as 
+  testing the distribution of leading digits in the data against Benford's law. In addition to offering 
+  classical frequentist methods, \code{jfa} also provides a straightforward implementation of their 
+  Bayesian counterparts.
   
   The functionality of the package and its intended workflow are also implemented with 
   a graphical user interface in the Audit module of  \href{https://jasp-stats.org}{JASP}, 
-  a free and open-source statistical software program.
+  a free and open-source software program for statistical analyses.
 
   For documentation on \code{jfa} itself, including the manual and user guide
-  for the package, worked examples, and other
-  tutorial information visit the \href{https://koenderks.github.io/jfa/}{package website}.
+  for the package, worked examples, and other tutorial information visit the 
+  \href{https://koenderks.github.io/jfa/}{package website}.
   
 }
 

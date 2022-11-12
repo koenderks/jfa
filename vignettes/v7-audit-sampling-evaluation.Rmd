@@ -127,32 +127,9 @@ data(retailer)
 print(retailer)
 ```
 
-Typically, there are 3 approaches to evaluating a stratified sample: complete pooling, no pooling, and partial pooling (Derks et al., 2022). Complete pooling assumes no difference between strata and all data is aggregated so that it can be analyzed as a whole. No pooling assumes no similarities between strata, which means that all data must be analyzed independently on the level of the strata. Partial pooling assumes differences and similarities between strata, which enables information to be shared between strata. 
+Typically, there are 3 approaches to evaluating a stratified sample: no pooling, complete pooling, and partial pooling (see Derks et al., 2022). No pooling assumes no similarities between strata, which means that all data must be analyzed independently on the level of the strata. Complete pooling assumes no difference between strata and all data is aggregated so that it can be analyzed as a whole. Partial pooling assumes differences and similarities between strata, which enables information to be shared between strata. 
 
-### Approach 1: Complete pooling
-
-Complete pooling assumes no differences between strata. This has the advantages that data can be aggregated, which decreases the uncertainty of the population estimate. However, the disadvantage of this approach is that it does not allow the auditor to differentiate between strata, as every stratum receives the same estimate (equal to the population estimate).
-
-```{r}
-result_cp <- evaluation(
-  materiality = 0.05, method = "binomial", prior = TRUE,
-  n = retailer$samples, x = retailer$errors, N.units = retailer$items,
-  alternative = "two.sided", pooling = "complete"
-)
-summary(result_cp)
-```
-
-For example, the output shows that the population level estimate is 4.4% with an 95% upper bound of 5.2%. The stratum estimates are all the same.
-
-```{r, echo = FALSE}
-plot(1:20, result_cp$strata$mle, pch = 19, ylim = c(0, 0.5), las = 1, main = "Stratum estimates", ylab = "Misstatement", xlab = "Stratum", axes = FALSE)
-graphics::axis(side = 1, at = 1:20)
-graphics::axis(side = 2, at = seq(0, 0.50, length.out = 6), las = 1)
-graphics::arrows(x0 = 1:20, x1 = 1:20, y0 = result_cp$strata$lb, y1 = result_cp$strata$ub, angle = 90, length = 0.05)
-graphics::arrows(x0 = 1:20, x1 = 1:20, y1 = result_cp$strata$lb, y0 = result_cp$strata$ub, angle = 90, length = 0.05)
-```
-
-### Approach 2: No pooling
+### Approach 1: No pooling
 
 No pooling assumes no similarities between strata. This allows the auditor to differentiate between strata, which means that a stratum specific conclusion is possible. However, because all strata are assumed to be independent, this increases the uncertainty of the population estimate.
 
@@ -166,7 +143,7 @@ result_np <- evaluation(
 summary(result_np)
 ```
 
-In this case, the output shows that the population level estimate is 5.6% with an 95% upper bound of 7.6%. The stratum estimates differ from each other.
+In this case, the output shows that the population level estimate is 5.85% with a 95% credible interval ranging from 4.28% to 8.22%. The stratum estimates differ from each other.
 
 ```{r, echo = FALSE}
 plot(1:20, result_np$strata$mle, pch = 19, ylim = c(0, 0.5), las = 1, main = "Stratum estimates", ylab = "Misstatement", xlab = "Stratum", axes = FALSE)
@@ -176,9 +153,32 @@ graphics::arrows(x0 = 1:20, x1 = 1:20, y0 = result_np$strata$lb, y1 = result_np$
 graphics::arrows(x0 = 1:20, x1 = 1:20, y1 = result_np$strat$lb, y0 = result_np$strata$ub, angle = 90, length = 0.05)
 ```
 
+### Approach 2: Complete pooling
+
+Complete pooling assumes no differences between strata. This has the advantages that data can be aggregated, which decreases the uncertainty of the population estimate. However, the disadvantage of this approach is that it does not allow the auditor to differentiate between strata, as every stratum receives the same estimate (equal to the population estimate).
+
+```{r}
+result_cp <- evaluation(
+  materiality = 0.05, method = "binomial", prior = TRUE,
+  n = retailer$samples, x = retailer$errors, N.units = retailer$items,
+  alternative = "two.sided", pooling = "complete"
+)
+summary(result_cp)
+```
+
+For example, the output shows that the population level estimate is 4.47% with a 95% credible interval ranging from 3.74% to 5.33%. However, the stratum estimates are all the same.
+
+```{r, echo = FALSE}
+plot(1:20, result_cp$strata$mle, pch = 19, ylim = c(0, 0.5), las = 1, main = "Stratum estimates", ylab = "Misstatement", xlab = "Stratum", axes = FALSE)
+graphics::axis(side = 1, at = 1:20)
+graphics::axis(side = 2, at = seq(0, 0.50, length.out = 6), las = 1)
+graphics::arrows(x0 = 1:20, x1 = 1:20, y0 = result_cp$strata$lb, y1 = result_cp$strata$ub, angle = 90, length = 0.05)
+graphics::arrows(x0 = 1:20, x1 = 1:20, y1 = result_cp$strata$lb, y0 = result_cp$strata$ub, angle = 90, length = 0.05)
+```
+
 ### Approach 3: Partial pooling
 
-Finally, partial pooling assumes differences and similarities between strata. This allows the auditor to differentiate between strata, while also retaining the decreased uncertainty obtained by aggregating information. Partial pooling is a powerful technique that can result in substantially more efficient estimates.
+Finally, partial pooling assumes differences and similarities between strata. This allows the auditor to differentiate between strata, while also retaining the decreased uncertainty obtained by aggregating information. Partial pooling is a powerful technique that can result in more efficient population and stratum estimates.
 
 ```{r}
 set.seed(1) # Important because the posterior distribution is determined via sampling
@@ -190,7 +190,7 @@ result_pp <- evaluation(
 summary(result_pp)
 ```
 
-In this case, the output shows that the population level estimate is 4.3% with an 95% upper bound of 5.1%. Like in the previous approach, the stratum estimates are different. However, partial pooling puts the stratum estimates closer together and makes them more accurate.
+In this case, the output shows that the population level estimate is 4.34% with a 95% credible interval ranging from 3.45% to 5.33%. Like in the previous approach, the stratum estimates are different. However, partial pooling puts the stratum estimates closer together and makes them more accurate.
 
 ```{r, echo = FALSE}
 plot(1:20, result_pp$strata$mle, pch = 19, ylim = c(0, 0.5), las = 1, main = "Stratum estimates", ylab = "Misstatement", xlab = "Stratum", axes = FALSE)
