@@ -154,9 +154,9 @@ to determine the statistical distribution linking the sample outcomes to
 the population misstatement (e.g., <code>poisson</code>,
 <code>binomial</code>, or <code>hypergeometric</code>). All three
 distributions are standard in an audit sampling context because they are
-(approximations) of the hypergeometric distribution, but
-<code>poisson</code> is the default in <code>jfa</code> because it is
-the most conservative.</p>
+(approximations) of the hypergeometric distribution, however,
+<code>poisson</code> is the default because it is the most conservative
+of all three distributions.</p>
 <p>Lastly, it is advised to obtain knowledge of the expected (or
 tolerable) errors in the sample. It is strongly recommended to set the
 value for the expected errors in the sample conservatively to minimize
@@ -254,7 +254,7 @@ units.</p>
 <p>Performing Bayesian planning requires an input for the
 <code>prior</code> argument in the <code><a href="../reference/planning.html">planning()</a></code> function.
 Simply setting <code>prior = TRUE</code> performs Bayesian planning
-using <code>jfa</code>’s <a href="https://koenderks.github.io/jfa/articles/v4-audit-sampling-prior-distributions.html#default-priors-method-default" class="external-link">default
+using <strong>jfa</strong>’s <a href="https://koenderks.github.io/jfa/articles/v4-audit-sampling-prior-distributions.html#default-priors-method-default" class="external-link">default
 priors</a>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Bayesian planning for a performance materiality of 0.05 using a default prior</span></span>
