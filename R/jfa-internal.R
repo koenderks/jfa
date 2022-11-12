@@ -150,7 +150,7 @@
   return(mode)
 }
 
-# This function fits a JAGS model using partial pooling and returns samples from the stratum posteriors
+# This function fits a stan model using partial pooling and returns samples from the stratum posteriors
 .partial_pooling <- function(method, prior.x, prior.n, n.obs, t.obs, t, nstrata, stratum, likelihood) {
   stopifnot("'method = hypergeometric' does not support pooling" = method != "hypergeometric")
   data <- switch(likelihood,

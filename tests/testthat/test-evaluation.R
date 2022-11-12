@@ -474,7 +474,7 @@ test_that(desc = "(id: f3-v0.6.5-t5) Test stratification with data (Derks et al.
   res <- evaluation(
     materiality = 0.03, data = BuildIt_sample, prior = TRUE, method = "binomial",
     values = "bookValue", values.audit = "auditValue", strata = "stratum",
-    N.units = as.numeric(table(BuildIt_sample$stratum), pooling = "none")
+    N.units = as.numeric(table(BuildIt_sample$stratum)), pooling = "none"
   )
   expect_equal(res$strata$mle, c(0.01818169065, 0.03636289354, 0.03529444518))
   expect_equal(res$strata$ub, c(0.1140247217, 0.1407511113, 0.1369524323))
