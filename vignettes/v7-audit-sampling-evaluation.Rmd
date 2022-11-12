@@ -145,11 +145,11 @@ summary(result_cp)
 For example, the output shows that the population level estimate is 4.4% with an 95% upper bound of 5.2%. The stratum estimates are all the same.
 
 ```{r, echo = FALSE}
-plot(1:20, rep(result_cp$mle, 20), pch = 19, ylim = c(0, 0.5), las = 1, main = "Stratum estimates", ylab = "Misstatement", xlab = "Stratum", axes = FALSE)
+plot(1:20, result_cp$strata$mle, pch = 19, ylim = c(0, 0.5), las = 1, main = "Stratum estimates", ylab = "Misstatement", xlab = "Stratum", axes = FALSE)
 graphics::axis(side = 1, at = 1:20)
 graphics::axis(side = 2, at = seq(0, 0.50, length.out = 6), las = 1)
-graphics::arrows(x0 = 1:20, x1 = 1:20, y0 = rep(result_cp$lb, 20), y1 = rep(result_cp$ub, 20), angle = 90, length = 0.05)
-graphics::arrows(x0 = 1:20, x1 = 1:20, y1 = rep(result_cp$lb, 20), y0 = rep(result_cp$ub, 20), angle = 90, length = 0.05)
+graphics::arrows(x0 = 1:20, x1 = 1:20, y0 = result_cp$strata$lb, y1 = result_cp$strata$ub, angle = 90, length = 0.05)
+graphics::arrows(x0 = 1:20, x1 = 1:20, y1 = result_cp$strata$lb, y0 = result_cp$strata$ub, angle = 90, length = 0.05)
 ```
 
 ### Approach 2: No pooling

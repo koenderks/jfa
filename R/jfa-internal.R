@@ -163,7 +163,7 @@
       raw <- rstan::sampling(
         object = stanmodels[[paste0("pp_", likelihood)]], data = data, pars = "theta_s", iter = getOption("jfa.staniterations", 2000),
         warmup = getOption("jfa.stanwarmup", 1000), chains = getOption("jfa.stanchains", 4), cores = getOption("mc.cores", 1),
-        seed = getOption("jfa.stanseed", 120495)
+        seed = getOption("jfa.stanseed", .Random.seed[1])
       )
     )
   })
@@ -173,22 +173,13 @@
 
 # This function samples from an analytical posterior distribution
 .posterior_samples <- function(method, nstrata, bayesian, prior.x, t.obs, prior.n, n.obs, N.units) {
-  samples <- matrix(NA, ncol = nstrata - 1, nrow = 1e5)
-  set.seed(120495)
+  samples <- matrix(NA, ncol = nstrata - 1, nrow = 100000)
   for (i in 2:nstrata) {
-    if (bayesian) {
-      samples[, i - 1] <- switch(method,
-        "poisson" = stats::rgamma(1e5, 1 + prior.x + t.obs[i], prior.n + n.obs[i]),
-        "binomial" = stats::rbeta(1e5, 1 + prior.x + t.obs[i], prior.n - prior.x + n.obs[i] - t.obs[i]),
-        "hypergeometric" = extraDistr::rbbinom(1e5, N.units[i] - n.obs[i], 1 + prior.x + t.obs[i], prior.n - prior.x + n.obs[i] - t.obs[i]) / N.units[i]
-      )
-    } else {
-      samples[, i - 1] <- switch(method,
-        "poisson" = stats::rgamma(1e5, 1 + t.obs[i], n.obs[i]),
-        "binomial" = stats::rbeta(1e5, 1 + t.obs[i], n.obs[i] - t.obs[i]),
-        "hypergeometric" = extraDistr::rbbinom(1e5, N.units[i] - n.obs[i], 1 + t.obs[i], n.obs[i] - t.obs[i]) / N.units[i]
-      )
-    }
+    samples[, i - 1] <- switch(method,
+      "poisson" = stats::rgamma(n = 100000, 1 + prior.x + t.obs[i], prior.n + n.obs[i]),
+      "binomial" = stats::rbeta(n = 100000, 1 + prior.x + t.obs[i], prior.n - prior.x + n.obs[i] - t.obs[i]),
+      "hypergeometric" = extraDistr::rbbinom(n = 100000, N.units[i] - n.obs[i], 1 + prior.x + t.obs[i], prior.n - prior.x + n.obs[i] - t.obs[i]) / N.units[i]
+    )
   }
   return(samples)
 }
