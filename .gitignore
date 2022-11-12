@@ -5,3 +5,4 @@ jfaRelease.R
 *.o
 *.cc
 *.h
+*.dll
