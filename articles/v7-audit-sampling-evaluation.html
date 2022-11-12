@@ -492,8 +492,8 @@ estimate).</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"binomial"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">retailer</span><span class="op">$</span><span class="va">samples</span><span class="op">)</span>, x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">retailer</span><span class="op">$</span><span class="va">errors</span><span class="op">)</span>, N.units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">retailer</span><span class="op">$</span><span class="va">items</span><span class="op">)</span>,</span>
-<span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span></span>
+<span>  n <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">samples</span>, x <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">errors</span>, N.units <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">items</span>,</span>
+<span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span>, pooling <span class="op">=</span> <span class="st">"complete"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_cp</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -513,11 +513,33 @@ estimate).</p>
 <span><span class="co">##   Sum of taints:                  115 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
-<span><span class="co">##   Posterior distribution:         beta(α = 116, β = 2461) </span></span>
+<span><span class="co">##   Posterior distribution:         Approximated via MCMC sampling </span></span>
 <span><span class="co">##   Most likely error:              0.04466 </span></span>
 <span><span class="co">##   95 percent credible interval:   [0.03735, 0.053345] </span></span>
 <span><span class="co">##   Precision:                      0.0086852 </span></span>
-<span><span class="co">##   BF₁₀:                            0.022725</span></span></code></pre>
+<span><span class="co">## </span></span>
+<span><span class="co">## Strata (20):</span></span>
+<span><span class="co">##      n  x  t     mle      lb       ub precision     bf10</span></span>
+<span><span class="co">## 1  300 21 21 0.04466 0.03735 0.053345 0.0086852  8.74677</span></span>
+<span><span class="co">## 2  300 16 16 0.04466 0.03735 0.053345 0.0086852 29.65662</span></span>
+<span><span class="co">## 3  300 15 15 0.04466 0.03735 0.053345 0.0086852 31.63373</span></span>
+<span><span class="co">## 4  300 14 14 0.04466 0.03735 0.053345 0.0086852 31.52312</span></span>
+<span><span class="co">## 5  300 16 16 0.04466 0.03735 0.053345 0.0086852 29.65662</span></span>
+<span><span class="co">## 6  150  5  5 0.04466 0.03735 0.053345 0.0086852 16.43531</span></span>
+<span><span class="co">## 7  150  4  4 0.04466 0.03735 0.053345 0.0086852 10.69421</span></span>
+<span><span class="co">## 8  150  3  3 0.04466 0.03735 0.053345 0.0086852  5.52898</span></span>
+<span><span class="co">## 9  150  4  4 0.04466 0.03735 0.053345 0.0086852 10.69421</span></span>
+<span><span class="co">## 10 150  5  5 0.04466 0.03735 0.053345 0.0086852 16.43531</span></span>
+<span><span class="co">## 11  50  2  2 0.04466 0.03735 0.053345 0.0086852 13.31617</span></span>
+<span><span class="co">## 12  50  3  3 0.04466 0.03735 0.053345 0.0086852 11.21362</span></span>
+<span><span class="co">## 13  50  2  2 0.04466 0.03735 0.053345 0.0086852 13.31617</span></span>
+<span><span class="co">## 14  50  1  1 0.04466 0.03735 0.053345 0.0086852 10.32683</span></span>
+<span><span class="co">## 15  50  0  0 0.04466 0.03735 0.053345 0.0086852  3.92419</span></span>
+<span><span class="co">## 16  15  0  0 0.04466 0.03735 0.053345 0.0086852  7.41266</span></span>
+<span><span class="co">## 17  15  0  0 0.04466 0.03735 0.053345 0.0086852  7.41266</span></span>
+<span><span class="co">## 18  15  0  0 0.04466 0.03735 0.053345 0.0086852  7.41266</span></span>
+<span><span class="co">## 19  15  1  1 0.04466 0.03735 0.053345 0.0086852  5.85210</span></span>
+<span><span class="co">## 20  15  3  3 0.04466 0.03735 0.053345 0.0086852  0.49173</span></span></code></pre>
 <p>For example, the output shows that the population level estimate is
 4.4% with an 95% upper bound of 5.2%. The stratum estimates are all the
 same.</p>
@@ -535,7 +557,7 @@ estimate.</p>
 <code class="sourceCode R"><span><span class="va">result_np</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"binomial"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  n <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">samples</span>, x <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">errors</span>, N.units <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">items</span>,</span>
-<span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span></span>
+<span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span>, pooling <span class="op">=</span> <span class="st">"none"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_np</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -597,9 +619,9 @@ information. Partial pooling is a powerful technique that can result in
 substantially more efficient estimates.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result_pp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
-<span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"binomial"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span>, pool <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"binomial"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  n <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">samples</span>, x <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">errors</span>, N.units <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">items</span>,</span>
-<span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span></span>
+<span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span>, pooling <span class="op">=</span> <span class="st">"partial"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_pp</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
