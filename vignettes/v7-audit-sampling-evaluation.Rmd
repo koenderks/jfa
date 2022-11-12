@@ -157,6 +157,7 @@ graphics::arrows(x0 = 1:20, x1 = 1:20, y1 = result_cp$strata$lb, y0 = result_cp$
 No pooling assumes no similarities between strata. This allows the auditor to differentiate between strata, which means that a stratum specific conclusion is possible. However, because all strata are assumed to be independent, this increases the uncertainty of the population estimate.
 
 ```{r}
+set.seed(1) # Important because the posterior distribution is determined via sampling
 result_np <- evaluation(
   materiality = 0.05, method = "binomial", prior = TRUE,
   n = retailer$samples, x = retailer$errors, N.units = retailer$items,
@@ -180,6 +181,7 @@ graphics::arrows(x0 = 1:20, x1 = 1:20, y1 = result_np$strat$lb, y0 = result_np$s
 Finally, partial pooling assumes differences and similarities between strata. This allows the auditor to differentiate between strata, while also retaining the decreased uncertainty obtained by aggregating information. Partial pooling is a powerful technique that can result in substantially more efficient estimates.
 
 ```{r}
+set.seed(1) # Important because the posterior distribution is determined via sampling
 result_pp <- evaluation(
   materiality = 0.05, method = "binomial", prior = TRUE,
   n = retailer$samples, x = retailer$errors, N.units = retailer$items,
