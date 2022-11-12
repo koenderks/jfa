@@ -13,8 +13,8 @@
   classical frequentist methods, \code{jfa} also provides a straightforward implementation of their 
   Bayesian counterparts.
   
-  The functionality of the package and its intended workflow are also implemented with 
-  a graphical user interface in the Audit module of  \href{https://jasp-stats.org}{JASP}, 
+  The functionality of the \code{jfa} package and its intended workflow are implemented with 
+  a graphical user interface in the Audit module of \href{https://jasp-stats.org}{JASP}, 
   a free and open-source software program for statistical analyses.
 
   For documentation on \code{jfa} itself, including the manual and user guide

@@ -12,7 +12,7 @@
 - [Audit sampling: Get started](https://koenderks.github.io/jfa/articles/v1-audit-sampling.html)
 - [Data auditing: Get started](https://koenderks.github.io/jfa/articles/v8-data-auditing.html)
 
-The functionality of the **jfa** package and its intended workflow are also implemented with a graphical user interface in the [Audit](https://github.com/jasp-stats/jaspAudit) module of [JASP](https://jasp-stats.org), a free and open-source software program for statistical analyses.
+The functionality of the **jfa** package and its intended workflow are implemented with a graphical user interface in the [Audit](https://github.com/jasp-stats/jaspAudit) module of [JASP](https://jasp-stats.org), a free and open-source software program for statistical analyses.
 
 ---
 
