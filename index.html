@@ -123,32 +123,55 @@
 <div class="section level1">
 <div class="page-header"><h1 id="jfa-bayesian-and-classical-methods-for-auditing-">jfa: Bayesian and Classical Methods for Auditing <img src="https://github.com/koenderks/jfa/raw/development/man/figures/logo.png" width="149" height="173" align="right"><a class="anchor" aria-label="anchor" href="#jfa-bayesian-and-classical-methods-for-auditing-"></a>
 </h1></div>
-<p><code>jfa</code> is an R package that provides Bayesian and classical statistical methods for audit sampling and data auditing. First, the package provides functions for planning, performing, evaluating, and reporting an audit sample compliant with international standards on auditing. Second, the package includes functions for auditing data, such as testing the distribution of first digits of a data set against Benford’s law. For complete documentation of <code>jfa</code>, visit the <a href="https://koenderks.github.io/jfa/" class="external-link">package website</a> or download the <a href="https://cran.r-project.org/package=jfa/jfa.pdf" class="external-link">package manual</a>.</p>
+<p><strong>jfa</strong> is an R package that provides Bayesian and classical statistical methods for audit sampling and data auditing. First, the package provides functions for planning, performing, evaluating, and reporting an audit sample compliant with international standards on auditing. Second, the package includes functions for auditing data, such as testing the distribution of first digits of a data set against Benford’s law. For complete documentation of <strong>jfa</strong>, visit the <a href="https://koenderks.github.io/jfa/" class="external-link">package website</a> or download the <a href="https://cran.r-project.org/package=jfa/jfa.pdf" class="external-link">package manual</a>.</p>
 <ul>
 <li><a href="https://koenderks.github.io/jfa/articles/v1-audit-sampling.html" class="external-link">Audit sampling: Get started</a></li>
 <li><a href="https://koenderks.github.io/jfa/articles/v7-data-auditing.html" class="external-link">Data auditing: Get started</a></li>
 </ul>
-<p>The functionality of the <code>jfa</code> package and its intended workflow are also implemented with a graphical user interface in the <a href="https://github.com/jasp-stats/jaspAudit" class="external-link">Audit</a> module of <a href="https://jasp-stats.org" class="external-link">JASP</a>, a free and open-source statistical software program.</p>
-<div class="section level2">
-<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h2>
-<p>The most recently released version of <code>jfa</code> can be downloaded from <a href="https://cran.r-project.org/package=jfa" class="external-link">CRAN</a> by running the following command in R:</p>
+<p>The functionality of the <strong>jfa</strong> package and its intended workflow are also implemented with a graphical user interface in the <a href="https://github.com/jasp-stats/jaspAudit" class="external-link">Audit</a> module of <a href="https://jasp-stats.org" class="external-link">JASP</a>, a free and open-source statistical software program.</p>
+<hr>
+<div class="section level3">
+<h3 id="resources">Resources<a class="anchor" aria-label="anchor" href="#resources"></a>
+</h3>
+<ul>
+<li>
+<a href="https://koenderks.github.io/jfa/" class="external-link">Package website</a> (online documentation, vignettes)</li>
+<li>
+<a href="https://github.com/koenderks/jfa/discussions" class="external-link">Ask a question</a> (Discussion forum)</li>
+<li>
+<a href="https://github.com/koenderks/jfa/issues" class="external-link">Open an issue</a> (GitHub issues for bug reports, feature requests)</li>
+</ul>
+</div>
+<div class="section level3">
+<h3 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h3>
+<div class="section level4">
+<h4 id="latest-release">Latest Release<a class="anchor" aria-label="anchor" href="#latest-release"></a>
+</h4>
+<p>The most recent <strong>jfa</strong> release can be installed from CRAN via:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'jfa'</span><span class="op">)</span></span></code></pre></div>
-<p>Alternatively, you can download the development version from GitHub using:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"jfa"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="development-version">Development Version<a class="anchor" aria-label="anchor" href="#development-version"></a>
+</h4>
+<p>To install the development version from GitHub, first make sure that you can install the <strong>rstan</strong> package and C++ toolchain by following these <a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started" class="external-link">instructions</a>. Once <strong>rstan</strong> is successfully installed, you can install <strong>jfa</strong> from GitHub using the <strong>remotes</strong> package by executing the following in R:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("remotes") # Uncomment if you do not have the 'remotes' package installed</span></span>
-<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">'koenderks/jfa'</span><span class="op">)</span></span></code></pre></div>
-<p>After installation, the <code>jfa</code> package can be loaded with:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://koenderks.github.io/jfa/" class="external-link">jfa</a></span><span class="op">)</span></span></code></pre></div>
-<p>Note that downloading the development version from GitHub requires the software Stan and a working C++ compilation toolchain. In case of issues with using Stan, information how to install the R package <code>rstan</code> is available here: <a href="https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started" class="external-link uri">https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started</a>. These requirements are not present when you install the compiled package from CRAN.</p>
+<span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"koenderks/jfa"</span>, INSTALL_opts <span class="op">=</span> <span class="st">"--no-multiarch"</span>, force <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
-</h2>
-<p><code>jfa</code> is an open-source project that aims to be useful for the audit community. Your help in benchmarking and extending <code>jfa</code> is therefore greatly appreciated. Contributing to <code>jfa</code> does not have to take much time or knowledge, and there is extensive information available about it on the <a href="https://github.com/koenderks/jfa/wiki" class="external-link">Wiki</a> of this repository.</p>
+</div>
+<div class="section level3">
+<h3 id="contributing">Contributing<a class="anchor" aria-label="anchor" href="#contributing"></a>
+</h3>
+<p><strong>jfa</strong> is an open-source project that aims to be useful for the audit community. Your help in benchmarking and extending the package is therefore greatly appreciated. Contributing does not have to take much time or knowledge, and there is extensive information available about it on the <a href="https://github.com/koenderks/jfa/wiki" class="external-link">Wiki</a> of this repository.</p>
 <p>If you are willing to contribute to the improvement of the package by adding a benchmark, please check out the Wiki page on <a href="https://github.com/koenderks/jfa/wiki/Benchmarks" class="external-link">how to contribute a benchmark to jfa</a>. If you are willing to contribute to the improvement of the package by adding a new statistical method, please check the Wiki page on <a href="https://github.com/koenderks/jfa/wiki/Methods" class="external-link">how to contribute a new method to jfa</a>.</p>
+</div>
+<div class="section level3">
+<h3 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h3>
+<p>If you use <strong>jfa</strong>, please cite the software as follows:</p>
+<p>Derks, K. (2022). jfa: Bayesian and Classical Methods for Auditing. <a href="https://cran.r-project.org/package=jfa" class="external-link uri">https://cran.r-project.org/package=jfa</a></p>
 </div>
 </div>
 
