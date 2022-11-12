@@ -1,5 +1,5 @@
 Package: jfa
-Title: Bayesian and Classical Statistical Auditing
+Title: Statistical Methods for Auditing
 Version: 0.6.5
 Date: 2022-11-10
 Authors@R:
@@ -8,7 +8,7 @@ Authors@R:
            role = c("aut", "cre"),
            email = "k.derks@nyenrode.nl",
            comment = c(ORCID = '0000-0002-5533-9349'))
-Description: Provides Bayesian and classical methods for statistical auditing as implemented in 
+Description: Provides statistical methods for auditing as implemented in 
     JASP for Audit (Derks et al., 2021 <doi:10.21105/joss.02733>). First, the package makes it easy 
     for an auditor to plan a statistical sample, select the sample from the population, and evaluate 
     the misstatement in the sample compliant with international auditing standards. Next to classical 
