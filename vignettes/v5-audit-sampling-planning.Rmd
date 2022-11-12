@@ -34,7 +34,7 @@ Planning a minimum sample size requires knowledge of the conditions that lead to
 - **Hypothesis testing**: The goal of the sample is to obtain evidence for or against the claim that the misstatement in the population is lower than a given value (i.e., the performance materiality).
 - **Estimation**: The goal of the sample is to obtain an accurate estimate of the misstatement in the population (with a minimum precision).
 
-Next to determining the sampling objective(s), it is also important to determine the statistical distribution linking the sample outcomes to the population misstatement (e.g., `poisson`, `binomial`, or `hypergeometric`). All three distributions are standard in an audit sampling context because they are (approximations) of the hypergeometric distribution, but `poisson` is the default in `jfa` because it is the most conservative.
+Next to determining the sampling objective(s), it is also important to determine the statistical distribution linking the sample outcomes to the population misstatement (e.g., `poisson`, `binomial`, or `hypergeometric`). All three distributions are standard in an audit sampling context because they are (approximations) of the hypergeometric distribution, however, `poisson` is the default because it is the most conservative of all three distributions.
 
 Lastly, it is advised to obtain knowledge of the expected (or tolerable) errors in the sample. It is strongly recommended to set the value for the expected errors in the sample conservatively to minimize the chance of the observed errors in the sample exceeding the expected errors, which would imply that insufficient work has been done in the end.
 
@@ -70,7 +70,7 @@ summary(stage1)
 
 ### Bayesian planning
 
-Performing Bayesian planning requires an input for the `prior` argument in the `planning()` function. Simply setting `prior = TRUE` performs Bayesian planning using `jfa`'s [default priors](https://koenderks.github.io/jfa/articles/v4-audit-sampling-prior-distributions.html#default-priors-method-default).
+Performing Bayesian planning requires an input for the `prior` argument in the `planning()` function. Simply setting `prior = TRUE` performs Bayesian planning using **jfa**'s [default priors](https://koenderks.github.io/jfa/articles/v4-audit-sampling-prior-distributions.html#default-priors-method-default).
 
 ```{r}
 # Bayesian planning for a performance materiality of 0.05 using a default prior

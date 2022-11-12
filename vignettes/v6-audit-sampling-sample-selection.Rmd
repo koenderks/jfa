@@ -27,7 +27,7 @@ library(jfa)
 
 Auditors are often required to assess balances or processes that involve a large number of items. Since they cannot inspect all of these items individually, they need to select a subset (i.e., a sample) from the total population to make a statement about a certain characteristic of the population. For this purpose, various selection methodologies are available that have become standard in an audit context. However, in practice it seems that the distinction between sampling methods ---and when to use them--- is not always easy to make. 
 
-This vignette outlines the most commonly used sampling methodology for auditing and shows how to select a sample using these methods with the `jfa` package.
+This vignette outlines the most commonly used sampling methodology for auditing and shows how to select a sample using these methods with the **jfa** package.
 
 ### Sampling units
 
@@ -43,13 +43,13 @@ A sampling unit for monetary unit sampling is different than a sampling unit for
 
 ### Sampling methods
 
-This section discusses the four sampling methods implemented in `jfa`. First, for notation, let the the population $N$ be defined as the total set of individual sampling units $x_i$.
+This section discusses the four sampling methods implemented in **jfa**. First, for notation, let the the population $N$ be defined as the total set of individual sampling units $x_i$.
 
 $$N = \{x_1, x_2, \dots, x_N\}.$$
 
 In statistical sampling, every sampling unit $x_i$ in the population must receive a selection probability $p(x_i)$. The purpose of the sampling method is to provide a framework to assign selection probabilities to each of the sampling units, and subsequently draw sampling units from the population until a set of size $n$ has been created.
 
-The next section discusses which sampling methods are available in `jfa`. To illustrate the outcomes for different sampling methods, we will use the `BuildIt` data set that can be loaded using the code below.
+The next section discusses which sampling methods are available in **jfa**. To illustrate the outcomes for different sampling methods, we will use the `BuildIt` data set that can be loaded using the code below.
 
 ```{r}
 data(BuildIt)

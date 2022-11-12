@@ -20,7 +20,7 @@ library(jfa)
 
 # Auditing data: Digit analysis
 
-Welcome to the 'Digit analysis' vignette of the `jfa` package. In this vignette you are able to find detailed examples of how you can incorporate the `digit.test()` and `repeated.test()` functions provided by the package.
+Welcome to the 'Digit analysis' vignette of the **jfa** package. In this vignette you are able to find detailed examples of how you can incorporate the `digit.test()` and `repeated.test()` functions provided by the package.
 
 ## Function: `digit.test()`
 

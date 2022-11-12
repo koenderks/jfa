@@ -18,11 +18,11 @@ vignette: >
 library(jfa)
 ```
 
-Welcome to the 'Data auditing' vignette of the `jfa` package. Here you can find a simple explanation of the functions in the package that facilitate data auditing. For more detailed explanations of each function, read the other vignettes on the [package website](https://koenderks.github.io/jfa).
+Welcome to the 'Data auditing' vignette of the **jfa** package. Here you can find a simple explanation of the functions in the package that facilitate data auditing. For more detailed explanations of each function, read the other vignettes on the [package website](https://koenderks.github.io/jfa).
 
 ## 1. Functions and intended usage
 
-Below you can find an explanation of the available data auditing functions in `jfa`.
+Below you can find an explanation of the available data auditing functions in **jfa**.
 
 - [`digit.test()`](#test-digit-distributions-with-digit-test)
 - [`repeated.test()`](#test-for-repeated-values-with-repeated-test)
@@ -108,7 +108,7 @@ repeated.test(sanitizer$value, check = "lasttwo", B = 5000)
 
 ## 2. Benchmarks
 
-To validate the statistical results, `jfa`'s automated [unit tests](https://github.com/koenderks/jfa/tree/development/tests/testthat) regularly verify the main output from the package against the following benchmarks:
+To validate the statistical results, **jfa**'s automated [unit tests](https://github.com/koenderks/jfa/tree/development/tests/testthat) regularly verify the main output from the package against the following benchmarks:
 
 - [benford.analysis](https://cran.r-project.org/package=benford.analysis) (R package version 0.1.5)
 - [BenfordTests](https://cran.r-project.org/package=BenfordTests) (R package version 1.2.0)

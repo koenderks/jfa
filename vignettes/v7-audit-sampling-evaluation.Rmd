@@ -26,7 +26,7 @@ library(jfa)
 
 </center>
 
-This vignette outlines the most commonly used sample evaluation methodology for auditing and shows how to evaluate a sample using the `evaluation()` function in the `jfa` package.
+This vignette outlines the most commonly used sample evaluation methodology for auditing and shows how to evaluate a sample using the `evaluation()` function in the **jfa** package.
 
 ## Evaluation of non-stratified samples
 
