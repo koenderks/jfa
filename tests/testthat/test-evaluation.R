@@ -152,18 +152,11 @@ test_that(desc = "(id: f3-v0.1.0-t12) Evaluation with moment method", {
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "poisson")
   samp <- selection(population, size = jfaRes, units = "items", method = "random")$sample
   samp$auditValue <- samp[["bookValue"]]
-  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "moment", N.units = 1000, m.type = "accounts")
+  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "moment", N.units = 1000)
   expect_equal(jfaEval[["ub"]], 0.04916021, tolerance = 0.001)
-
-  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "moment", N.units = 1000, m.type = "inventory")
-  expect_equal(jfaEval[["ub"]], 0.04916021, tolerance = 0.001)
-
   samp$auditValue[1] <- samp[["bookValue"]][1] - (0.5 * samp[["bookValue"]][1]) # Add an overstatement
-  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "moment", N.units = 1000, m.type = "accounts")
+  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "moment", N.units = 1000)
   expect_equal(jfaEval[["ub"]], 0.03730203, tolerance = 0.001)
-
-  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "moment", N.units = 1000, m.type = "inventory")
-  expect_equal(jfaEval[["ub"]], 0.03656485, tolerance = 0.001)
 })
 
 test_that(desc = "(id: f3-v0.1.0-t13) Evaluation with direct method", {

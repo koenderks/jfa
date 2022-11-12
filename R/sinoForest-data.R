@@ -26,7 +26,7 @@
 #' @keywords datasets
 #'
 #' @references Nigrini, M. J. (2012). Benford's Law: Application for Forensic Accounting, Auditing and Fraud Detection. Wiley and Sons: New Jersey.
-#' 
+#'
 #' @source \url{https://cran.r-project.org/package=benford.analysis}
 #'
 #' @examples

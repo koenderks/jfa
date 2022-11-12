@@ -26,8 +26,8 @@
 #' @keywords datasets
 #'
 #' @references [Retracted] Li, M., Sun, Y., & Chen, H. (2019). The decoy effect as a nudge: Boosting hand hygiene with a worse option. Psychological Science, 30, 139–149.
-#' 
-#' @source \url{http://datacolada.org/appendix/74/Study 2 - Decoy Effect.csv}
+#'
+#' @source \url{http://datacolada.org/appendix/74/}
 #'
 #' @examples
 #' data(sanitizer)

@@ -587,7 +587,7 @@ print.summary.jfaEvaluation <- function(x, digits = getOption("digits"), ...) {
   cat(paste("  Sum of taints:                 ", x[["t"]]), "\n")
   cat("\nResults:\n")
   if (x[["type"]] == "Bayesian") {
-    cat(paste("  Posterior distribution:        ", if (is.null(x[["strata"]])) x[["posterior"]] else "Approximated via MCMC sampling"), "\n")
+    cat(paste("  Posterior distribution:        ", if (is.null(x[["strata"]]) || x[["pooling"]] == "complete") x[["posterior"]] else "Approximated via MCMC sampling"), "\n")
   }
   cat(paste("  Most likely error:             ", format(x[["mle"]], digits = max(1L, digits - 2L))), "\n")
   if (x[["type"]] == "Bayesian") {
@@ -596,7 +596,7 @@ print.summary.jfaEvaluation <- function(x, digits = getOption("digits"), ...) {
     cat(paste(" ", paste0(format(x[["conf.level"]] * 100), " percent confidence interval: ", paste0("[", format(x[["lb"]], digits = max(1L, digits - 2L)), ", ", format(x[["ub"]], digits = max(1L, digits - 2L)), "]"))), "\n")
   }
   cat(paste("  Precision:                     ", format(x[["precision"]], digits = max(1L, digits - 2L))), "\n")
-  if (x[["materiality"]] < 1 && x[["type"]] == "Bayesian" && is.null(x[["strata"]])) {
+  if (x[["materiality"]] < 1 && x[["type"]] == "Bayesian" && (is.null(x[["strata"]]) || x[["pooling"]] == "complete")) {
     cat(paste("  BF\u2081\u2080:\t                         ", format(x[["bf.h1"]], digits = max(1L, digits - 2L))), "\n")
   }
   if (x[["materiality"]] < 1 && x[["type"]] == "Classical" && is.null(x[["strata"]]) && x[["method"]] %in% c("poisson", "binomial", "hypergeometric")) {
@@ -622,6 +622,7 @@ summary.jfaEvaluation <- function(object, digits = getOption("digits"), ...) {
     "mle" = round(object[["mle"]], digits),
     "precision" = round(object[["precision"]], digits),
     "alternative" = object[["alternative"]],
+    "pooling" = object[["pooling"]],
     stringsAsFactors = FALSE
   )
   if (!is.null(object[["p.value"]])) {

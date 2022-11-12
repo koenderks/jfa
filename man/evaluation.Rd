@@ -12,7 +12,7 @@ evaluation(materiality = NULL, min.precision = NULL, method = c(
            ), alternative = c('less', 'two.sided', 'greater'), conf.level = 0.95,
            data = NULL, values = NULL, values.audit = NULL, strata = NULL, times = NULL,
            x = NULL, n = NULL, N.units = NULL, N.items = NULL,
-           pooling = c("none", "complete", "partial"), 
+           pooling = c("none", "complete", "partial"),
            prior = FALSE)
 }
 \arguments{

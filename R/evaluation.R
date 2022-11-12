@@ -25,7 +25,7 @@
 #'            ), alternative = c('less', 'two.sided', 'greater'), conf.level = 0.95,
 #'            data = NULL, values = NULL, values.audit = NULL, strata = NULL, times = NULL,
 #'            x = NULL, n = NULL, N.units = NULL, N.items = NULL,
-#'            pooling = c("none", "complete", "partial"), 
+#'            pooling = c("none", "complete", "partial"),
 #'            prior = FALSE)
 #'
 #' @param materiality   a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum tolerable misstatement) as a fraction of the total number of units in the population. Can be \code{NULL}, but \code{min.precision} should be specified in that case. Not used for methods \code{direct}, \code{difference}, \code{quotient}, and \code{regression}.
@@ -149,7 +149,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
                          "direct", "difference", "quotient", "regression", "mpu"
                        ), alternative = c("less", "two.sided", "greater"), conf.level = 0.95,
                        data = NULL, values = NULL, values.audit = NULL, strata = NULL, times = NULL,
-                       x = NULL, n = NULL, N.units = NULL, N.items = NULL, 
+                       x = NULL, n = NULL, N.units = NULL, N.items = NULL,
                        pooling = c("none", "complete", "partial"),
                        prior = FALSE) {
   method <- match.arg(method)
@@ -505,37 +505,39 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
   }
   # Add the stratum results
   if (nstrata > 1) {
-	if (pooling == "complete") {
+    if (pooling == "complete") {
       mle <- rep(mle[1], nstrata - 1)
-	  lb <- rep(lb[1], nstrata - 1)
-	  ub <- rep(ub[1], nstrata - 1)
-	  precision <- rep(precision[1], nstrata - 1)
-	} else {
-		mle <- mle[-1]
-		lb <- lb[-1]
-		ub <- ub[-1]
-		precision <- precision[-1]
-	}
-    result[["strata"]] <- data.frame(n = n.obs[-1], x = x.obs[-1], t = t.obs[-1], mle = mle, lb = lb, ub = ub, precision = precision)
-    if (!bayesian && materiality < 1 && method %in% c("binomial", "poisson", "hypergeometric")) {
-      result[["strata"]][["p.value"]] <- p.val[-1] # TODO
+      lb <- rep(lb[1], nstrata - 1)
+      ub <- rep(ub[1], nstrata - 1)
+      precision <- rep(precision[1], nstrata - 1)
+    } else {
+      mle <- mle[-1]
+      lb <- lb[-1]
+      ub <- ub[-1]
+      precision <- precision[-1]
     }
-    if (bayesian && materiality != 1 && method %in% c("binomial", "poisson", "hypergeometric") && pooling != "partial") {
-      if (alternative == "less") {
-        result[["strata"]][["bf10"]] <- switch(method,
-          "poisson" = (stats::pgamma(materiality, 1 + prior.x + t.obs[-1], prior.n + n.obs[-1]) / stats::pgamma(materiality, 1 + prior.x + t.obs[-1], prior.n + n.obs[-1], lower.tail = FALSE)) / (stats::pgamma(materiality, 1 + prior.x, prior.n) / stats::pgamma(materiality, 1 + prior.x, prior.n, lower.tail = FALSE)),
-          "binomial" = (stats::pbeta(materiality, 1 + prior.x + t.obs[-1], prior.n - prior.x + n.obs[-1] - t.obs[-1]) / stats::pbeta(materiality, 1 + prior.x + t.obs[-1], prior.n - prior.x + n.obs[-1] - t.obs[-1], lower.tail = FALSE)) / (stats::pbeta(materiality, 1 + prior.x, prior.n - prior.x) / stats::pbeta(materiality, 1 + prior.x, 1 + prior.n - prior.x, lower.tail = FALSE))
-        )
-      } else if (alternative == "greater") {
-        result[["strata"]][["bf10"]] <- switch(method,
-          "poisson" = (stats::pgamma(materiality, 1 + prior.x + t.obs[-1], prior.n + n.obs[-1], lower.tail = FALSE) / stats::pgamma(materiality, 1 + prior.x + t.obs[-1], prior.n + n.obs[-1])) / (stats::pgamma(materiality, 1 + prior.x, prior.n, lower.tail = FALSE) / stats::pgamma(materiality, 1 + prior.x, prior.n)),
-          "binomial" = (stats::pbeta(materiality, 1 + prior.x + t.obs[-1], prior.n - prior.x + n.obs[-1] - t.obs[-1], lower.tail = FALSE) / stats::pbeta(materiality, 1 + prior.x + t.obs[-1], prior.n - prior.x + n.obs[-1] - t.obs[-1])) / (stats::pbeta(materiality, 1 + prior.x, prior.n - prior.x, lower.tail = FALSE) / stats::pbeta(materiality, 1 + prior.x, 1 + prior.n - prior.x))
-        )
-      } else if (alternative == "two.sided") {
-        result[["strata"]][["bf10"]] <- switch(method,
-          "poisson" = stats::dgamma(materiality, 1 + prior.x + t.obs[-1], prior.n + n.obs[-1]) / stats::dgamma(materiality, 1 + prior.x, prior.n),
-          "binomial" = stats::dbeta(materiality, 1 + prior.x + t.obs[-1], prior.n - prior.x + n.obs[-1] - t.obs[-1]) / stats::dbeta(materiality, 1 + prior.x, prior.n - prior.x)
-        )
+    result[["strata"]] <- data.frame(n = n.obs[-1], x = x.obs[-1], t = t.obs[-1], mle = mle, lb = lb, ub = ub, precision = precision)
+    if (pooling == "none") {
+      if (!bayesian && materiality < 1 && method %in% c("binomial", "poisson", "hypergeometric")) {
+        result[["strata"]][["p.value"]] <- p.val[-1] # TODO
+      }
+      if (bayesian && materiality != 1 && method %in% c("binomial", "poisson", "hypergeometric") && pooling != "partial") {
+        if (alternative == "less") {
+          result[["strata"]][["bf10"]] <- switch(method,
+            "poisson" = (stats::pgamma(materiality, 1 + prior.x + t.obs[-1], prior.n + n.obs[-1]) / stats::pgamma(materiality, 1 + prior.x + t.obs[-1], prior.n + n.obs[-1], lower.tail = FALSE)) / (stats::pgamma(materiality, 1 + prior.x, prior.n) / stats::pgamma(materiality, 1 + prior.x, prior.n, lower.tail = FALSE)),
+            "binomial" = (stats::pbeta(materiality, 1 + prior.x + t.obs[-1], prior.n - prior.x + n.obs[-1] - t.obs[-1]) / stats::pbeta(materiality, 1 + prior.x + t.obs[-1], prior.n - prior.x + n.obs[-1] - t.obs[-1], lower.tail = FALSE)) / (stats::pbeta(materiality, 1 + prior.x, prior.n - prior.x) / stats::pbeta(materiality, 1 + prior.x, 1 + prior.n - prior.x, lower.tail = FALSE))
+          )
+        } else if (alternative == "greater") {
+          result[["strata"]][["bf10"]] <- switch(method,
+            "poisson" = (stats::pgamma(materiality, 1 + prior.x + t.obs[-1], prior.n + n.obs[-1], lower.tail = FALSE) / stats::pgamma(materiality, 1 + prior.x + t.obs[-1], prior.n + n.obs[-1])) / (stats::pgamma(materiality, 1 + prior.x, prior.n, lower.tail = FALSE) / stats::pgamma(materiality, 1 + prior.x, prior.n)),
+            "binomial" = (stats::pbeta(materiality, 1 + prior.x + t.obs[-1], prior.n - prior.x + n.obs[-1] - t.obs[-1], lower.tail = FALSE) / stats::pbeta(materiality, 1 + prior.x + t.obs[-1], prior.n - prior.x + n.obs[-1] - t.obs[-1])) / (stats::pbeta(materiality, 1 + prior.x, prior.n - prior.x, lower.tail = FALSE) / stats::pbeta(materiality, 1 + prior.x, 1 + prior.n - prior.x))
+          )
+        } else if (alternative == "two.sided") {
+          result[["strata"]][["bf10"]] <- switch(method,
+            "poisson" = stats::dgamma(materiality, 1 + prior.x + t.obs[-1], prior.n + n.obs[-1]) / stats::dgamma(materiality, 1 + prior.x, prior.n),
+            "binomial" = stats::dbeta(materiality, 1 + prior.x + t.obs[-1], prior.n - prior.x + n.obs[-1] - t.obs[-1]) / stats::dbeta(materiality, 1 + prior.x, prior.n - prior.x)
+          )
+        }
       }
     }
     rownames(result[["strata"]]) <- if (is.null(strata)) 1:nrow(result[["strata"]]) else levels(stratum)
@@ -547,6 +549,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
   result[["min.precision"]] <- min.precision
   result[["alternative"]] <- alternative
   result[["method"]] <- method
+  result[["pooling"]] <- pooling
   if (!is.null(N.units)) {
     result[["N.units"]] <- N.units[1]
   }
