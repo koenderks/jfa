@@ -161,8 +161,9 @@
     utils::capture.output(
       file = "NUL",
       raw <- rstan::sampling(
-        object = stanmodels[[paste0("pp_", likelihood)]], data = data, chains = 4, cores = 1, verbose = FALSE, pars = "theta_s",
-        iter = 2e3, warmup = 1e3, seed = 120495, show_messages = FALSE
+        object = stanmodels[[paste0("pp_", likelihood)]], data = data, pars = "theta_s", iter = getOption("jfa.staniterations", 2000), 
+        warmup = getOption("jfa.stanwarmup", 1000), chains = getOption("jfa.stanchains", 4), cores = getOption("mc.cores", 1), 
+        seed = getOption("jfa.stanseed", 120495)
       )
     )
   })

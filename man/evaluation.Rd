@@ -11,8 +11,8 @@ evaluation(materiality = NULL, min.precision = NULL, method = c(
              "direct", "difference", "quotient", "regression", "mpu"
            ), alternative = c('less', 'two.sided', 'greater'), conf.level = 0.95,
            data = NULL, values = NULL, values.audit = NULL, strata = NULL, times = NULL,
-           x = NULL, n = NULL, N.units = NULL, N.items = NULL, pool = FALSE,
-           r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5,
+           x = NULL, n = NULL, N.units = NULL, N.items = NULL,
+           pooling = c("none", "complete", "partial"), 
            prior = FALSE)
 }
 \arguments{
@@ -44,17 +44,7 @@ evaluation(materiality = NULL, min.precision = NULL, method = c(
 
 \item{N.items}{an integer larger than 0 specifying the number of items in the population. Only used for methods \code{direct}, \code{difference}, \code{quotient}, and \code{regression}.}
 
-\item{pool}{logical. Whether to pool information during stratified evaluation. Only has an effect when there are strata in the data.}
-
-\item{r.delta}{a numeric value specifying \eqn{\Delta} in Rohrbach's augmented variance bound (Rohrbach, 1993). Only used for method \code{rohrbach}.}
-
-\item{m.type}{a character specifying the type of population (Dworin and Grimlund, 1984). Possible options are \code{accounts} and \code{inventory}. Only used for method \code{moment}.}
-
-\item{cs.a}{a numeric value specifying the \eqn{\alpha} parameter of the prior distribution on the mean taint. Only used for method \code{coxsnell}.}
-
-\item{cs.b}{a numeric value specifying the \eqn{\beta} parameter of the prior distribution on the mean taint. Only used for method \code{coxsnell}.}
-
-\item{cs.mu}{a numeric value between 0 and 1 specifying the mean of the prior distribution on the mean taint. Only used for method \code{coxsnell}.}
+\item{pooling}{a character specifying the type of model to use when analyzing stratified samples. Possible options are \code{none} (default) for no pooling (i.e., no information is shared between strata), \code{complete} for complete pooling (i.e., all information is shared between strata) or \code{partial} for partial pooling (i.e., information can be shared between strata). The latter option fits a pre-compiled stan model to the data. Relevant mcmc options for stan can be set using \code{options(jfa.stanseed)}, \code{options(jfa.stancores)}, \code{options(jfa.stanchains)}, \code{options(jfa.staniterations)} and \code{options(jfa.stanwarmup)}.}
 
 \item{prior}{a logical specifying whether to use a prior distribution, or an object of class \code{jfaPrior} or \code{jfaPosterior} containing the prior distribution. If \code{FALSE} (default), performs classical planning. If \code{TRUE}, performs Bayesian planning using a default conjugate prior.}
 }

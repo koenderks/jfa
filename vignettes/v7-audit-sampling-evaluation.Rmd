@@ -136,8 +136,8 @@ Complete pooling assumes no differences between strata. This has the advantages 
 ```{r}
 result_cp <- evaluation(
   materiality = 0.05, method = "binomial", prior = TRUE,
-  n = sum(retailer$samples), x = sum(retailer$errors), N.units = sum(retailer$items),
-  alternative = "two.sided"
+  n = retailer$samples, x = retailer$errors, N.units = retailer$items,
+  alternative = "two.sided", pooling = "complete"
 )
 summary(result_cp)
 ```
@@ -160,7 +160,7 @@ No pooling assumes no similarities between strata. This allows the auditor to di
 result_np <- evaluation(
   materiality = 0.05, method = "binomial", prior = TRUE,
   n = retailer$samples, x = retailer$errors, N.units = retailer$items,
-  alternative = "two.sided"
+  alternative = "two.sided", pooling = "none"
 )
 summary(result_np)
 ```
@@ -181,9 +181,9 @@ Finally, partial pooling assumes differences and similarities between strata. Th
 
 ```{r}
 result_pp <- evaluation(
-  materiality = 0.05, method = "binomial", prior = TRUE, pool = TRUE,
+  materiality = 0.05, method = "binomial", prior = TRUE,
   n = retailer$samples, x = retailer$errors, N.units = retailer$items,
-  alternative = "two.sided"
+  alternative = "two.sided", pooling = "partial"
 )
 summary(result_pp)
 ```

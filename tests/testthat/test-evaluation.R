@@ -404,12 +404,12 @@ test_that(desc = "(id: f3-v0.6.5-t1) Test frequentist poisson stratification wit
   n <- c(6, 7, 7)
   N <- c(8, 11, 11)
   # 1. Complete pooling
-  res <- evaluation(materiality = 0.03, x = sum(k), n = sum(n), N.units = sum(N), method = "poisson")
+  res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "poisson", pooling = "complete")
   expect_equal(res$mle, sum(k) / sum(n))
   expect_equal(res$ub, stats::qgamma(0.95, 1 + sum(k), sum(n)))
   # 2. No pooling
   set.seed(1) # Required because the population posterior is generated through sampling
-  res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "poisson")
+  res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "poisson", pooling = "none")
   expect_equal(res$mle, 0.2467001243)
   expect_equal(res$ub, 0.5103523829)
   expect_equal(res$strata$mle, k / n)
@@ -421,18 +421,18 @@ test_that(desc = "(id: f3-v0.6.5-t2) Test Bayesian poisson stratification with s
   n <- c(6, 7, 7)
   N <- c(8, 11, 11)
   # 1. Complete pooling
-  res <- evaluation(materiality = 0.03, x = sum(k), n = sum(n), N.units = sum(N), method = "poisson", prior = auditPrior(method = "strict"))
+  res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "poisson", prior = auditPrior(method = "strict"), pooling = "complete")
   expect_equal(res$mle, sum(k) / sum(n))
   expect_equal(res$ub, stats::qgamma(0.95, 1 + sum(k), sum(n)))
   # 2. No pooling
   set.seed(1) # Required because the population posterior is generated through sampling
-  res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "poisson", prior = auditPrior(method = "strict"))
+  res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "poisson", prior = auditPrior(method = "strict"), pooling = "none")
   expect_equal(res$mle, 0.2467001243)
   expect_equal(res$ub, 0.5103523829)
   expect_equal(res$strata$mle, k / n)
   expect_equal(res$strata$ub, stats::qgamma(0.95, 1 + k, n))
   # 3. Partial pooling
-  res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "poisson", prior = TRUE, pool = TRUE)
+  res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "poisson", prior = TRUE, pooling = "partial")
   #   expect_equal(res$mle, 0.1513380489)
   #   expect_equal(res$ub, 0.3122788071)
   #   expect_equal(res$strata$mle, c(0.15246418316, 0.10694468585, 0.08520606986))
@@ -444,12 +444,12 @@ test_that(desc = "(id: f3-v0.6.5-t3) Test frequentist binomial stratification wi
   n <- c(6, 7, 7)
   N <- c(8, 11, 11)
   # 1. Complete pooling
-  res <- evaluation(materiality = 0.03, x = sum(k), n = sum(n), N.units = sum(N), method = "binomial")
+  res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "binomial", pooling = "complete")
   expect_equal(res$mle, sum(k) / sum(n))
   expect_equal(res$ub, stats::qbeta(0.95, 1 + sum(k), sum(n) - sum(k)))
   # 2. No pooling
   set.seed(1) # Required because the population posterior is generated through sampling
-  res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "binomial")
+  res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "binomial", pooling = "none")
   expect_equal(res$mle, 0.2447318967)
   expect_equal(res$ub, 0.3956011947)
   expect_equal(res$strata$mle, k / n)
@@ -461,18 +461,18 @@ test_that(desc = "(id: f3-v0.6.5-t4) Test Bayesian binomial stratification with 
   n <- c(6, 7, 7)
   N <- c(8, 11, 11)
   # 1. Complete pooling
-  res <- evaluation(materiality = 0.03, x = sum(k), n = sum(n), N.units = sum(N), method = "binomial", prior = TRUE)
+  res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "binomial", prior = TRUE, pooling = "complete")
   expect_equal(res$mle, sum(k) / sum(n))
   expect_equal(res$ub, stats::qbeta(0.95, 1 + sum(k), 1 + sum(n) - sum(k)))
   # 2. No pooling
   set.seed(1) # Required because the population posterior is generated through sampling
-  res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "binomial", prior = TRUE)
+  res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "binomial", prior = TRUE, pooling = "none")
   expect_equal(res$mle, 0.1991355717)
   expect_equal(res$ub, 0.3538272974)
   expect_equal(res$strata$mle, k / n)
   expect_equal(res$strata$ub, stats::qbeta(0.95, 1 + k, 1 + n - k))
   # 3. Partial pooling
-  res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "binomial", prior = TRUE, pool = TRUE)
+  res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "binomial", prior = TRUE, pooling = "partial")
   #   expect_equal(res$mle, 0.1480663796)
   #   expect_equal(res$ub, 0.3174707817)
   #   expect_equal(res$strata$mle, c(0.15682003293, 0.10840350066, 0.09148279313))
@@ -487,7 +487,7 @@ test_that(desc = "(id: f3-v0.6.5-t5) Test stratification with data (Derks et al.
   res <- evaluation(
     materiality = 0.03, data = BuildIt_sample, prior = TRUE, method = "binomial",
     values = "bookValue", values.audit = "auditValue", strata = "stratum",
-    N.units = as.numeric(table(BuildIt_sample$stratum))
+    N.units = as.numeric(table(BuildIt_sample$stratum), pooling = "none")
   )
   expect_equal(res$strata$mle, c(0.01818169065, 0.03636289354, 0.03529444518))
   expect_equal(res$strata$ub, c(0.1140247217, 0.1407511113, 0.1369524323))

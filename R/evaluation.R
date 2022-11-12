@@ -24,8 +24,8 @@
 #'              "direct", "difference", "quotient", "regression", "mpu"
 #'            ), alternative = c('less', 'two.sided', 'greater'), conf.level = 0.95,
 #'            data = NULL, values = NULL, values.audit = NULL, strata = NULL, times = NULL,
-#'            x = NULL, n = NULL, N.units = NULL, N.items = NULL, pool = FALSE,
-#'            r.delta = 2.7, m.type = 'accounts', cs.a = 1, cs.b = 3, cs.mu = 0.5,
+#'            x = NULL, n = NULL, N.units = NULL, N.items = NULL,
+#'            pooling = c("none", "complete", "partial"), 
 #'            prior = FALSE)
 #'
 #' @param materiality   a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum tolerable misstatement) as a fraction of the total number of units in the population. Can be \code{NULL}, but \code{min.precision} should be specified in that case. Not used for methods \code{direct}, \code{difference}, \code{quotient}, and \code{regression}.
@@ -42,12 +42,7 @@
 #' @param n             an integer larger than 0 specifying the number of items in the sample. If specified, overrides the \code{data}, \code{values} and \code{values.audit} arguments and assumes that the data come from summary statistics specified by both \code{x} and \code{n}.
 #' @param N.units       an integer larger than 0 specifying the number of units in the population. Only used for methods \code{hypergeometric}, \code{direct}, \code{difference}, \code{quotient}, and \code{regression}.
 #' @param N.items       an integer larger than 0 specifying the number of items in the population. Only used for methods \code{direct}, \code{difference}, \code{quotient}, and \code{regression}.
-#' @param pool          logical. Whether to pool information during stratified evaluation. Only has an effect when there are strata in the data.
-#' @param r.delta       a numeric value specifying \eqn{\Delta} in Rohrbach's augmented variance bound (Rohrbach, 1993). Only used for method \code{rohrbach}.
-#' @param m.type        a character specifying the type of population (Dworin and Grimlund, 1984). Possible options are \code{accounts} and \code{inventory}. Only used for method \code{moment}.
-#' @param cs.a          a numeric value specifying the \eqn{\alpha} parameter of the prior distribution on the mean taint. Only used for method \code{coxsnell}.
-#' @param cs.b          a numeric value specifying the \eqn{\beta} parameter of the prior distribution on the mean taint. Only used for method \code{coxsnell}.
-#' @param cs.mu         a numeric value between 0 and 1 specifying the mean of the prior distribution on the mean taint. Only used for method \code{coxsnell}.
+#' @param pooling       a character specifying the type of model to use when analyzing stratified samples. Possible options are \code{none} (default) for no pooling (i.e., no information is shared between strata), \code{complete} for complete pooling (i.e., all information is shared between strata) or \code{partial} for partial pooling (i.e., information can be shared between strata). The latter option fits a pre-compiled stan model to the data. Relevant mcmc options for stan can be set using \code{options(jfa.stanseed)}, \code{options(jfa.stancores)}, \code{options(jfa.stanchains)}, \code{options(jfa.staniterations)} and \code{options(jfa.stanwarmup)}.
 #' @param prior         a logical specifying whether to use a prior distribution, or an object of class \code{jfaPrior} or \code{jfaPosterior} containing the prior distribution. If \code{FALSE} (default), performs classical planning. If \code{TRUE}, performs Bayesian planning using a default conjugate prior.
 #'
 #' @details This section lists the available options for the \code{methods} argument.
@@ -154,11 +149,12 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
                          "direct", "difference", "quotient", "regression", "mpu"
                        ), alternative = c("less", "two.sided", "greater"), conf.level = 0.95,
                        data = NULL, values = NULL, values.audit = NULL, strata = NULL, times = NULL,
-                       x = NULL, n = NULL, N.units = NULL, N.items = NULL, pool = FALSE,
-                       r.delta = 2.7, m.type = "accounts", cs.a = 1, cs.b = 3, cs.mu = 0.5,
+                       x = NULL, n = NULL, N.units = NULL, N.items = NULL, 
+                       pooling = c("none", "complete", "partial"),
                        prior = FALSE) {
   method <- match.arg(method)
   alternative <- match.arg(alternative)
+  pooling <- match.arg(pooling)
   bayesian <- (inherits(prior, "logical") && prior) || inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")
   # Import existing prior distribution with class 'jfaPrior' or 'jfaPosterior'.
   if (inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")) {
@@ -315,10 +311,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
   nstrata <- length(t.obs)
   # Define placeholders for the most likely error and the precision
   mle <- ub <- lb <- precision <- p.val <- K <- numeric(nstrata)
-  if (!pool || length(t.obs) == 1) {
-    if (pool) {
-      warning("'pool = TRUE' has no effect when there are no strata in the data")
-    }
+  if (pooling != "partial" || length(t.obs) == 1) {
     for (i in 1:nstrata) {
       # Calculate the results per stratum depending on the specified 'method'
       if (method == "poisson") {
@@ -438,9 +431,9 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
           "stringer.meikle" = .stringer(t[[i]], conf.level, n.obs[i], correction = "meikle"), # Classical evaluation using the Stringer bound with Meikle's adjustment
           "stringer.lta" = .stringer(t[[i]], conf.level, n.obs[i], correction = "lta"), # Classical evaluation using the Stringer bound with the LTA adjustment
           "stringer.pvz" = .stringer(t[[i]], conf.level, n.obs[i], correction = "pvz"), # Classical evaluation using the Stringer bound with PvZ adjustment
-          "rohrbach" = .rohrbach(t[[i]], conf.level, n.obs[i], alternative, N.units[i], r.delta), # Classical evaluation using Rohrbachs augmented variance bound
-          "moment" = .moment(t[[i]], conf.level, n.obs[i], alternative, m.type), # Classical evaluation using the Modified Moment bound
-          "coxsnell" = .coxsnell(t[[i]], conf.level, n.obs[i], alternative, cs.a, cs.b, cs.mu, 1 + prior.x, prior.n - prior.x), # Bayesian evaluation using the Cox and Snell bound
+          "rohrbach" = .rohrbach(t[[i]], conf.level, n.obs[i], alternative, N.units[i], r.delta = 2.7), # Classical evaluation using Rohrbachs augmented variance bound
+          "moment" = .moment(t[[i]], conf.level, n.obs[i], alternative, m.type = "accounts"), # Classical evaluation using the Modified Moment bound
+          "coxsnell" = .coxsnell(t[[i]], conf.level, n.obs[i], alternative, cs.a = 1, cs.b = 3, cs.mu = 0.5, 1 + prior.x, prior.n - prior.x), # Bayesian evaluation using the Cox and Snell bound
           "mpu" = .mpu(t[[i]], conf.level, alternative, n.obs[i]), # Classical evaluation using the Mean-per-unit estimator
           "direct" = .direct(bookvalues[[i]], auditvalues[[i]], conf.level, alternative, N.items[i], n.obs[i], N.units[i]), # Classical evaluation using the Direct estimator
           "difference" = .difference(bookvalues[[i]], auditvalues[[i]], conf.level, alternative, N.items[i], n.obs[i]), # Classical evaluation using the Difference estimator
@@ -455,7 +448,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
       precision[i] <- if (alternative == "greater") mle[i] - lb[i] else ub[i] - mle[i]
     }
   } else {
-    stopifnot("'pool = TRUE' only possible when 'prior != FALSE'" = bayesian)
+    stopifnot("pooling = 'partial' only possible when 'prior != FALSE'" = bayesian)
     # Fit multilevel model, see jfa-internal.R
     if (any(t.obs %% 1 != 0) && !is.null(data)) { # If there are broken taints, use the beta likelihood
       samples <- .partial_pooling(method, prior.x, prior.n, n.obs, t.obs, t, nstrata, stratum, likelihood = "beta")
@@ -484,13 +477,13 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
   # Create the main results object
   result <- list()
   result[["conf.level"]] <- conf.level
-  if (nstrata == 1) { # Only results for population
+  if (nstrata == 1 || pooling == "complete") { # Only results for population
     result[["mle"]] <- mle[1]
     result[["ub"]] <- ub[1]
     result[["lb"]] <- lb[1]
     result[["precision"]] <- precision[1]
   } else { # Poststratification to get to population results
-    if (!pool) {
+    if (pooling != "partial") {
       samples <- .posterior_samples(method, nstrata, bayesian, prior.x, t.obs, prior.n, n.obs, N.units)
     }
     psamples <- .poststratify_samples(samples, N.units, nstrata)
@@ -512,11 +505,22 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
   }
   # Add the stratum results
   if (nstrata > 1) {
-    result[["strata"]] <- data.frame(n = n.obs[-1], x = x.obs[-1], t = t.obs[-1], mle = mle[-1], lb = lb[-1], ub = ub[-1], precision = precision[-1])
+	if (pooling == "complete") {
+      mle <- rep(mle[1], nstrata - 1)
+	  lb <- rep(lb[1], nstrata - 1)
+	  ub <- rep(ub[1], nstrata - 1)
+	  precision <- rep(precision[1], nstrata - 1)
+	} else {
+		mle <- mle[-1]
+		lb <- lb[-1]
+		ub <- ub[-1]
+		precision <- precision[-1]
+	}
+    result[["strata"]] <- data.frame(n = n.obs[-1], x = x.obs[-1], t = t.obs[-1], mle = mle, lb = lb, ub = ub, precision = precision)
     if (!bayesian && materiality < 1 && method %in% c("binomial", "poisson", "hypergeometric")) {
-      result[["strata"]][["p.value"]] <- p.val[-1]
+      result[["strata"]][["p.value"]] <- p.val[-1] # TODO
     }
-    if (bayesian && materiality != 1 && method %in% c("binomial", "poisson", "hypergeometric") && !pool) {
+    if (bayesian && materiality != 1 && method %in% c("binomial", "poisson", "hypergeometric") && pooling != "partial") {
       if (alternative == "less") {
         result[["strata"]][["bf10"]] <- switch(method,
           "poisson" = (stats::pgamma(materiality, 1 + prior.x + t.obs[-1], prior.n + n.obs[-1]) / stats::pgamma(materiality, 1 + prior.x + t.obs[-1], prior.n + n.obs[-1], lower.tail = FALSE)) / (stats::pgamma(materiality, 1 + prior.x, prior.n) / stats::pgamma(materiality, 1 + prior.x, prior.n, lower.tail = FALSE)),

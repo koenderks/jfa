@@ -7,6 +7,9 @@
 \format{
 A data frame with 772 rows and 1 variable.
 }
+\source{
+\url{https://cran.r-project.org/package=benford.analysis}
+}
 \usage{
 data(sinoForest)
 }

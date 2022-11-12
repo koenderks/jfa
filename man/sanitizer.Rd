@@ -7,6 +7,9 @@
 \format{
 A data frame with 1600 rows and 1 variable.
 }
+\source{
+\url{http://datacolada.org/appendix/74/Study 2 - Decoy Effect.csv}
+}
 \usage{
 data(sanitizer)
 }

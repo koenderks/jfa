@@ -13,6 +13,9 @@ A data frame with 20 rows and 5 variables.
   \item{errors}{number of errors in sample per branch.}
 }
 }
+\source{
+Derks, K., de Swart, J., & Wetzels, R. (2022). Een Bayesiaanse blik op gestratificeerde steekproeven heeft voordelen voor de auditor. \emph{Maandblad voor Accountancy en Bedrijfseconomie}, 96(1/2), 37-46. https://doi.org/10.5117/mab.96.78836
+}
 \usage{
 data(retailer)
 }
@@ -21,8 +24,5 @@ Sample outcomes per stratum from a retail company consisting of 20 branches.
 }
 \examples{
 data(retailer)
-}
-\references{
-Derks, K., de Swart, J., & Wetzels, R. (2022). Een Bayesiaanse blik op gestratificeerde steekproeven heeft voordelen voor de auditor. \emph{Maandblad voor Accountancy en Bedrijfseconomie}, 96(1/2), 37-46. https://doi.org/10.5117/mab.96.78836
 }
 \keyword{datasets}
