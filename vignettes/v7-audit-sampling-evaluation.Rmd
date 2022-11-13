@@ -26,14 +26,16 @@ library(jfa)
 
 </center>
 
-This vignette outlines the most commonly used sample evaluation methodology for auditing and shows how to evaluate a sample using the `evaluation()` function in the **jfa** package. Evaluating an audit sample using `evaluation()` requires that the data from the sample is accessible in one of two forms:
+This vignette outlines the most commonly used sample evaluation methodology for auditing and shows how to evaluate a sample using the `evaluation()` function in the **jfa** package. Evaluating an audit sample using the `evaluation()` function requires that the data from the sample is available in one of two forms:
 
-- Summary statistics of the sample, including (a vector of) the number of items (`n`), (a vector of) the sum of errors / taints (`x`) and optionally (a vector of) the number of units in the population (`N.units`).
-- A `data.frame` containing a numeric column with book values, a numeric column with audit (true) values and optionally a factor column indicating stratum membership.
+- **Summary statistics:** This includes (a vector of) the number of items (`n`), (a vector of) the sum of errors / taints (`x`) and optionally (a vector of) the number of units in the population (`N.units`).
+- **Data:** A `data.frame` containing a numeric column with book values (`values`), a numeric column with audit (true) values (`values.audit`) and optionally a factor column indicating stratum membership (`strata`).
 
-Typically in audit sampling there is a maximum tolerable error that applies to the population, the performance $\theta_{max}$, which should be expressed as a fraction using the `materiality` argument. Next to estimation which is performed by default, specifying `materiality` enables the comparison of two competing hypotheses:
+By default, `evaluation()` performs estimation and provides a point estimate of the population misstatement and a (`conf.level` $\times$ 100)% confidence / credible interval around this estimate. However, in audit sampling there typically applies a maximum tolerable error to the population, the performance $\theta_{max}$. You can provide this critical value to the `evaluation()` function as a fraction using the `materiality` argument. Next to estimation which is performed by default, specifying `materiality` triggers the comparison of two competing hypotheses:
 
-$$H_1:\theta<\theta_{max}\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, H_0:\theta\geq\theta_{max}$$. 
+$$H_1:\theta<\theta_{max}\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, H_0:\theta\geq\theta_{max}$$.
+
+Evidence in favor or against the hypothesis of tolerable misstatement is then quantified using the *p*-value (classical) or the Bayes factor (Bayesian).
 
 ## Evaluation using summary statistics
 
@@ -43,7 +45,7 @@ A non-stratified sample evaluation should be used when the population is not div
 
 #### Classical evaluation using the *p*-value
 
-Classical hypothesis testing uses the *p*-value to make a decision about whether to reject the hypothesis $H_0$ or not. As an example, consider that an auditor wants to verify whether the population contains less than 5 percent misstatement, implying the hypotheses $H_1:\theta<0.05$ and $H_0:\theta\geq0.05$. They have taken a sample of 100 items, of which 1 contained an error. They set the significance level for the *p* value to 0.05, implying that a *p* value < 0.05 will be enough to reject the hypothesis $H_0$.
+Classical hypothesis testing uses the *p*-value to make a decision about whether to reject the hypothesis $H_0$ or not. As an example, consider that an auditor wants to verify whether the population contains less than 5 percent misstatement, implying the hypotheses $H_1:\theta<0.05$ and $H_0:\theta\geq0.05$. They have taken a sample of 100 items, of which 1 contained an error. They set the significance level for the *p*-value to 0.05, implying that $p < 0.05$ will be enough to reject the hypothesis $H_0$.
 
 ```{r}
 evaluation(materiality = 0.05, x = 1, n = 100)
@@ -173,7 +175,7 @@ graphics::arrows(x0 = 1:20, x1 = 1:20, y1 = result_pp$strat$lb, y0 = result_pp$s
 
 ## Evaluation using data
 
-For this example, we take the `BuildIt` that set that comes with the package. The performance materiality in this example is set to 5%.
+For this example, we take the `BuildIt` that set that comes with the package. This data set contains 3500 financial statement line items, each with a booked value `bookValue` and, for illustrative purposes, and audited (true) value `auditValue`. Since the focus of this vignette is the evaluation stage in the audit, the first 300 items are selected as an example. The performance materiality in this example is set to 5%.
 
 ```{r}
 data(BuildIt)
@@ -184,7 +186,11 @@ head(sample)
 
 ### Non-stratified samples
 
+Evaluating a non-stratified sample using data requires specification of the `data`, `values` and `values.audit` arguments. The input for these arguments is the name of the specific column in `data`.
+
 #### Classical evaluation
+
+The call below evaluates the `BuildIt` sample using a classical non-stratified evaluation procedure.
 
 ```{r}
 x <- evaluation(materiality = 0.05, data = sample, values = "bookValue", values.audit = "auditValue")
@@ -194,6 +200,8 @@ summary(x)
 In this case, the output shows that the population estimate is 1.8% with a 95% (one-sided) confidence interval ranging from 0% to 3.68%.
 
 #### Bayesian evaluation
+
+The call below evaluates the `BuildIt` sample using a Bayesian non-stratified evaluation procedure.
 
 ```{r}
 prior <- auditPrior(method = "default")
@@ -205,20 +213,26 @@ The output shows that the population estimate is 1.8% with a 95% (one-sided) cre
 
 ### Stratified samples
 
+As an example, we add a stratum indicator to the `BuildIt` data set to indicate stratum membership of the line items. Here, each line item comes from one of three branches of the auditee.
+
 ```{r}
 BuildIt$stratum <- factor(c("Branch 1", "Branch 2", rep(c("Branch 3", "Branch 1", "Branch 2"), times = 1166)))
 sample <- subset(BuildIt, BuildIt$inSample == 1)
 head(sample)
 ```
 
+Evaluating a stratified sample using data requires specification of the `data`, `values`, `values.audit` and `strata` arguments. The number of units per stratum in the population should be provided with `N.units` to weigh the stratum estimates and arrive at a representative population estimate.
+
 #### Classical evaluation
 
+The call below evaluates the `BuildIt` sample using a classical stratified evaluation procedure.
+
 ```{r}
-x <- evaluation(materiality = 0.05, data = sample, values = "bookValue", values.audit = "auditValue", strata = "stratum", alternative = "two.sided")
+x <- evaluation(materiality = 0.05, data = sample, values = "bookValue", values.audit = "auditValue", strata = "stratum", alternative = "two.sided", N.units = as.numeric(table(BuildIt$stratum)))
 summary(x)
 ```
 
-In this case, the output shows that the population estimate is 2.62% with a 95% confidence interval ranging from 1.23% to 4.93%. The stratum estimates can be seen in the output of the `summary()` function and are visualized below.
+In this case, the output shows that the population estimate is 2.50% with a 95% confidence interval ranging from 1.22% to 4.96%. The stratum estimates can be seen in the output of the `summary()` function and are visualized below.
 
 ```{r, echo = FALSE}
 plot(1:3, x$strata$mle, pch = 19, ylim = c(0, 0.1), las = 1, main = "Stratum estimates", ylab = "Misstatement", xlab = "Stratum", axes = FALSE)
@@ -230,15 +244,15 @@ graphics::arrows(x0 = 1:3, x1 = 1:3, y1 = x$strata$lb, y0 = x$strata$ub, angle =
 
 #### Bayesian evaluation
 
-Bayesian inference can improve the stratum estimates by setting a prior distribution that is applied to each stratum.
+Bayesian inference can improve the stratum estimates by specifying a prior distribution that is then applied to each stratum. The call below evaluates the `BuildIt` sample using a Bayesian stratified evaluation procedure.
 
 ```{r}
 prior <- auditPrior(method = "arm", materiality = 0.05, ir = 0.5, cr = 0.5)
-x <- evaluation(materiality = 0.05, data = sample, values = "bookValue", values.audit = "auditValue", strata = "stratum", alternative = "two.sided", prior = prior)
+x <- evaluation(materiality = 0.05, data = sample, values = "bookValue", values.audit = "auditValue", strata = "stratum", alternative = "two.sided", N.units = as.numeric(table(BuildIt$stratum)), prior = prior)
 summary(x)
 ```
 
-The output shows that the population estimate is 1.95% with a 95% credible interval ranging from 0.97% to 3.92%. The stratum estimates can be seen in the output of the `summary()` function and are visualized below.
+The output shows that the population estimate is 1.89% with a 95% credible interval ranging from 0.98% to 3.92%. The stratum estimates can be seen in the output of the `summary()` function and are visualized below.
 
 ```{r, echo = FALSE}
 plot(1:3, x$strata$mle, pch = 19, ylim = c(0, 0.1), las = 1, main = "Stratum estimates", ylab = "Misstatement", xlab = "Stratum", axes = FALSE)
@@ -250,12 +264,8 @@ graphics::arrows(x0 = 1:3, x1 = 1:3, y1 = x$strata$lb, y0 = x$strata$ub, angle =
 
 ## References
 
-* Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., and Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. *International Journal of Auditing*, 25(3), 621-636.
-
-* Derks, K., de Swart, J., Wagenmakers, E.-J., & Wetzels, R. (2021). The Bayesian Approach to Audit Evidence: Quantifying Statistical Evidence using the Bayes Factor. *PsyArXiv*.
-
-* Derks, K., de Swart, J., Wagenmakers, E.-J., & Wetzels, R. (2022). Bayesian Generalized Linear Modeling for Audit Sampling: How to Incorporate Audit Information into the Statistical Model. *PsyArXiv*.
-
-* Stewart, T. R. (2012). *Technical Notes on the AICPA Audit Guide Audit Sampling*. American Institute of Certified Public Accountants, New York.
-
-* Stewart, T. R. (2013). *A Bayesian Audit Assurance Model with Application to the Component Materiality problem in Group Audits.* VU University, Amsterdam.
+- Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., and Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. *International Journal of Auditing*, 25(3), 621-636. https://doi.org/10.1111/ijau.12240
+- Derks, K., de Swart, J., Wagenmakers, E.-J., & Wetzels, R. (2021). The Bayesian Approach to Audit Evidence: Quantifying Statistical Evidence using the Bayes Factor. *PsyArXiv*. https://doi.org/10.31234/osf.io/kzqp5
+- Derks, K., de Swart, J., Wagenmakers, E.-J., & Wetzels, R. (2022). Bayesian Generalized Linear Modeling for Audit Sampling: How to Incorporate Audit Information into the Statistical Model. *PsyArXiv*. https://doi.org/10.31234/osf.io/byj2a
+- Stewart, T. R. (2012). *Technical Notes on the AICPA Audit Guide Audit Sampling*. American Institute of Certified Public Accountants, New York.
+- Stewart, T. R. (2013). *A Bayesian Audit Assurance Model with Application to the Component Materiality problem in Group Audits*. VU University, Amsterdam.

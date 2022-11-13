@@ -209,6 +209,5 @@ evaluation(materiality = materiality, conf.level = confidence, x = 1, n = 60, pr
 
 ## References
 
-* Derks, K., de Swart, J., Wagenmakers, E.-J., and Wetzels, R. (2022). An impartial Bayesian hypothesis test for audit sampling. *PsyArXiv*.
-
-* Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., and Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. *International Journal of Auditing*, 25(3), 621-636.
+- Derks, K., de Swart, J., Wagenmakers, E.-J., and Wetzels, R. (2022). An impartial Bayesian hypothesis test for audit sampling. *PsyArXiv*. https://doi.org/10.31234/osf.io/8nf3e
+- Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., and Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. *International Journal of Auditing*, 25(3), 621-636. https://doi.org/10.1111/ijau.12240

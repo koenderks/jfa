@@ -55,3 +55,9 @@ x <- repeated.test(sanitizer$value, check = "lasttwo", B = 2000)
 print(x)
 plot(x)
 ```
+
+## References
+
+- Benford, F. (1938). The law of anomalous numbers. In *Proceedings of the American Philosophical Society*, 551-572. - [View online](https://www.jstor.org/stable/984802)
+- Simohnsohn, U. (2019, May 25). *Number-Bunching: A New Tool for Forensic Data Analysis*. - [View online](https://datacolada.org/77)
+- Yo, F., Nelson, L., & Simonsohn, U. (2018, December 5). *In Press at Psychological Science: A New 'Nudge' Supported by Implausible Data*. - [View online](https://datacolada.org/74)
