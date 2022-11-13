@@ -96,6 +96,7 @@
 #' \item{prior}{an object of class 'jfaPrior' that contains the prior distribution.}
 #' \item{posterior}{an object of class 'jfaPosterior' that contains the posterior distribution.}
 #' \item{data}{a data frame containing the relevant columns from the \code{data}.}
+#' \item{strata}{a data frame containing the relevant statistical results for the strata.}
 #' \item{data.name}{a character giving the name of the data.}
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
@@ -105,41 +106,25 @@
 #' @keywords audit evaluation prior
 #'
 #' @examples
+#' # Using summary statistics
+#' evaluation(materiality = 0.05, x = 0, n = 100)
+#' evaluation(materiality = 0.05, x = c(2, 1, 0), n = c(50, 70, 40))
+#'
+#' # Using data
 #' data("BuildIt")
+#' BuildIt$inSample <- c(rep(1, 100), rep(0, 3400))
+#' levs <- c("low", "medium", "high")
+#' BuildIt$stratum <- factor(c(levs[3], levs[2], rep(levs, times = 1166)))
+#' sample <- subset(BuildIt, BuildIt$inSample == 1)
 #'
-#' # Draw a sample of 100 monetary units from the population using
-#' # fixed interval monetary unit sampling
-#' sample <- selection(
-#'   data = BuildIt, size = 100, units = "values",
-#'   method = "interval", values = "bookValue"
-#' )$sample
-#'
-#' # Classical evaluation using the Stringer bound
 #' evaluation(
-#'   materiality = 0.05, method = "stringer", conf.level = 0.95,
-#'   data = sample, values = "bookValue", values.audit = "auditValue"
+#'   materiality = 0.05, data = sample,
+#'   values = "bookValue", values.audit = "auditValue"
 #' )
-#'
-#' # Classical evaluation using the Poisson likelihood
 #' evaluation(
-#'   materiality = 0.05, method = "poisson", conf.level = 0.95,
-#'   data = sample, values = "bookValue", values.audit = "auditValue"
+#'   materiality = 0.05, data = sample, values = "bookValue",
+#'   values.audit = "auditValue", strata = "stratum"
 #' )
-#'
-#' # Bayesian evaluation using a noninformative gamma prior distribution
-#' evaluation(
-#'   materiality = 0.05, method = "poisson", conf.level = 0.95,
-#'   data = sample, values = "bookValue", values.audit = "auditValue",
-#'   prior = TRUE
-#' )
-#'
-#' # Bayesian evaluation using an informed prior distribution
-#' evaluation(
-#'   materiality = 0.05, method = "poisson", conf.level = 0.95,
-#'   data = sample, values = "bookValue", values.audit = "auditValue",
-#'   prior = auditPrior(method = "param", alpha = 1, beta = 10)
-#' )
-#'
 #' @export
 
 evaluation <- function(materiality = NULL, min.precision = NULL, method = c(

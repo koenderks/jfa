@@ -69,20 +69,15 @@
 #' @keywords audit evaluation planning prior
 #'
 #' @examples
-#' # Classical planning using a Poisson likelihood
-#' planning(materiality = 0.03, expected = 0.01, likelihood = "poisson")
+#' # Classical planning
+#' planning(materiality = 0.03)
 #'
-#' # Bayesian planning using a noninformative beta prior distribution
-#' planning(
-#'   materiality = 0.05, expected = 0.025, likelihood = "binomial",
-#'   prior = TRUE
-#' )
+#' # Bayesian planning using a default prior
+#' planning(materiality = 0.03, prior = TRUE)
 #'
-#' # Bayesian planning using an impartial gamma prior distribution
-#' planning(
-#'   materiality = 0.05, expected = 0, likelihood = "poisson",
-#'   prior = auditPrior(method = "impartial", materiality = 0.05)
-#' )
+#' # Bayesian planning using an impartial prior
+#' prior <- auditPrior(method = "impartial", materiality = 0.05)
+#' planning(materiality = 0.05, prior = prior)
 #' @export
 
 planning <- function(materiality = NULL, min.precision = NULL, expected = 0,

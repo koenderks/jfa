@@ -92,14 +92,14 @@ This section elaborates on the available likelihoods and corresponding prior dis
 }
 }
 \examples{
-# Default uniform beta(1, 1) prior distribution
-auditPrior(method = "default", likelihood = "binomial")
+# Default beta prior
+auditPrior(likelihood = "binomial")
 
-# Translate inherent risk (ir) and control risk (cr) to a gamma prior distribution
+# Impartial prior
+auditPrior(method = "impartial", materiality = 0.05)
+
+# Translate inherent risk (ir) and control risk (cr) to a prior
 auditPrior(method = "arm", expected = 0.025, materiality = 0.05, ir = 1, cr = 0.6)
-
-# Impartial beta prior distribution (equal prior probabilities)
-auditPrior(method = "impartial", likelihood = "binomial", materiality = 0.05)
 }
 \references{
 Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., & Wetzels, R. (2021). JASP for audit: Bayesian tools for the auditing practice. \emph{Journal of Open Source Software}, \emph{6}(68), 2733.

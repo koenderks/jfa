@@ -61,20 +61,15 @@ This section elaborates on the available likelihoods and corresponding prior dis
 }
 }
 \examples{
-# Classical planning using a Poisson likelihood
-planning(materiality = 0.03, expected = 0.01, likelihood = "poisson")
+# Classical planning
+planning(materiality = 0.03)
 
-# Bayesian planning using a noninformative beta prior distribution
-planning(
-  materiality = 0.05, expected = 0.025, likelihood = "binomial",
-  prior = TRUE
-)
+# Bayesian planning using a default prior
+planning(materiality = 0.03, prior = TRUE)
 
-# Bayesian planning using an impartial gamma prior distribution
-planning(
-  materiality = 0.05, expected = 0, likelihood = "poisson",
-  prior = auditPrior(method = "impartial", materiality = 0.05)
-)
+# Bayesian planning using an impartial prior
+prior <- auditPrior(method = "impartial", materiality = 0.05)
+planning(materiality = 0.05, prior = prior)
 }
 \references{
 Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., & Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. \emph{International Journal of Auditing}, 25(3), 621-636.
