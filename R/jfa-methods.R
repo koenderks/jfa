@@ -844,30 +844,3 @@ plot.jfaRv <- function(x, ...) {
   ticks <- pretty(xloc, min.n = 4)
   graphics::axis(side = 1, at = ticks, labels = round(seq(min(x$x), max(x$x), length.out = length(ticks)), 2))
 }
-
-# Methods for class: jfaMis #####################################################
-
-#' @rdname jfa-methods
-#' @method print jfaMis
-#' @export
-print.jfaMis <- function(x, digits = getOption("digits"), ...) {
-  cat("\n")
-  cat(strwrap("Missing values test", prefix = "\t"), sep = "\n")
-  cat("\n")
-  cat("data:  ", x$data.name, "\n", sep = "")
-  out <- character()
-  if (!is.null(x$n)) {
-    out <- c(out, paste(names(x$n), "=", format(x$n, digits = max(1L, digits - 2L))))
-  }
-  if (!is.null(x$statistic)) {
-    out <- c(out, paste(names(x$statistic), "=", format(x$statistic, digits = max(1L, digits - 2L))))
-  }
-  if (!is.null(x$p.value)) {
-    fp <- format.pval(x$p.value, digits = max(1L, digits - 3L))
-    out <- c(out, paste("p-value", if (startsWith(fp, "<")) fp else paste("=", fp)))
-  }
-  cat(strwrap(paste(out, collapse = ", ")), sep = "\n")
-  cat("alternative hypothesis: data is not missing completely at random (MCAR).")
-  cat("\n")
-  invisible(x)
-}

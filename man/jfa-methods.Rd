@@ -28,7 +28,6 @@
 \alias{plot.jfaDistr}
 \alias{print.jfaRv}
 \alias{plot.jfaRv}
-\alias{print.jfaMis}
 \title{Methods for jfa objects}
 \usage{
 \method{print}{jfaPrior}(x, ...)
@@ -82,8 +81,6 @@
 \method{print}{jfaRv}(x, digits = getOption("digits"), ...)
 
 \method{plot}{jfaRv}(x, ...)
-
-\method{print}{jfaMis}(x, digits = getOption("digits"), ...)
 }
 \arguments{
 \item{...}{further arguments, currently ignored.}

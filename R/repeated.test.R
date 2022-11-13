@@ -77,7 +77,7 @@ repeated.test <- function(x, check = c("last", "lasttwo", "all"),
   } else if (method == "entropy") {
     statistic <- .entropy(x)
   } else {
-    stop("Specify a valid input for the method argument.")
+    stop("specify a valid input for the method argument")
   }
   fraction <- switch(check,
     "last" = 10,
@@ -105,7 +105,7 @@ repeated.test <- function(x, check = c("last", "lasttwo", "all"),
     "entropy" = "S"
   )
   if (B < 500) {
-    warning("the p-value may be unreliable. It is advised to increase the number of samples.")
+    warning("p-value may be unreliable when 'B' < 500")
   }
   result <- list()
   result[["statistic"]] <- statistic

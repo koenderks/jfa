@@ -73,6 +73,7 @@
 
 digit.test <- function(x, check = c("first", "last", "firsttwo"),
                        reference = "benford", prior = FALSE) {
+  stopifnot("'x' must be a vector" = (NCOL(x) == 1) && !is.data.frame(x))
   check <- match.arg(check)
   bayesian <- prior[1] != FALSE
   dname <- deparse(substitute(x))
@@ -89,19 +90,17 @@ digit.test <- function(x, check = c("first", "last", "firsttwo"),
   obs[index] <- as.numeric(d_tab)
   p_obs <- obs / n
   if (is.numeric(reference)) {
-    if (length(reference) != length(dig)) {
-      stop("The number of elements in reference must be equal to the number of possible digits")
-    }
-    if (any(reference < 0)) {
-      stop("All elements in reference must be positive")
-    }
+    stopifnot(
+      "number of elements in reference must be equal to the number of digits" = length(reference) == length(dig),
+      "all elements in 'reference' must be >= 0" = all(reference >= 0)
+    )
     p_exp <- reference / sum(reference)
   } else if (reference == "benford") {
     p_exp <- log10(1 + 1 / dig) # Benfords law: log_10(1 + 1 / d)
   } else if (reference == "uniform") {
     p_exp <- rep(1 / length(dig), length(dig))
   } else {
-    stop("Specify a valid input for the reference argument")
+    stop("specify a valid input for the 'reference' argument")
   }
   exp <- n * p_exp
   if (!bayesian) {
@@ -114,7 +113,7 @@ digit.test <- function(x, check = c("first", "last", "firsttwo"),
     if (is.logical(prior)) {
       alpha <- rep(1, length(dig))
     } else if (length(prior) != length(dig)) {
-      stop("The number of elements in prior must be equal to the number of possible digits")
+      stop("the number of elements in 'prior' must be equal to the number of digits")
     } else {
       alpha <- prior
     }
