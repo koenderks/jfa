@@ -60,6 +60,7 @@
 
 repeated.test <- function(x, check = c("last", "lasttwo", "all"),
                           method = c("af", "entropy"), B = 2000) {
+  stopifnot("'x' must be a vector" = (NCOL(x) == 1) && !is.data.frame(x))
   check <- match.arg(check)
   method <- match.arg(method)
   dname <- deparse(substitute(x))
