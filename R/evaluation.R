@@ -477,7 +477,10 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
   # Create the main results object
   result <- list()
   result[["conf.level"]] <- conf.level
-  if (nstrata == 1 || pooling == "complete") { # Only results for population
+  if (nstrata == 1 || pooling == "complete" || !(method %in% c("poisson", "binomial", "hypergeometric"))) { # Only results for population
+    if (!(method %in% c("poisson", "binomial", "hypergeometric"))) {
+      warning("population results are displayed for aggregated sample")
+    }
     result[["mle"]] <- mle[1]
     result[["ub"]] <- ub[1]
     result[["lb"]] <- lb[1]
