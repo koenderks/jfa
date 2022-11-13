@@ -239,29 +239,29 @@
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Default uniform beta(1, 1) prior distribution</span></span></span>
-<span class="r-in"><span><span class="fu">auditPrior</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"default"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Default beta prior</span></span></span>
+<span class="r-in"><span><span class="fu">auditPrior</span><span class="op">(</span>likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Prior Distribution for Audit Sampling</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> functional form: beta(α = 1, β = 1) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> parameters obtained via method 'default'</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Translate inherent risk (ir) and control risk (cr) to a gamma prior distribution</span></span></span>
+<span class="r-in"><span><span class="co"># Impartial prior</span></span></span>
+<span class="r-in"><span><span class="fu">auditPrior</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"impartial"</span>, materiality <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Prior Distribution for Audit Sampling</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> functional form: gamma(α = 1, β = 13.863) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> parameters obtained via method 'impartial'</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Translate inherent risk (ir) and control risk (cr) to a prior</span></span></span>
 <span class="r-in"><span><span class="fu">auditPrior</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"arm"</span>, expected <span class="op">=</span> <span class="fl">0.025</span>, materiality <span class="op">=</span> <span class="fl">0.05</span>, ir <span class="op">=</span> <span class="fl">1</span>, cr <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Prior Distribution for Audit Sampling</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> functional form: gamma(α = 2.325, β = 53) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> parameters obtained via method 'arm'</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Impartial beta prior distribution (equal prior probabilities)</span></span></span>
-<span class="r-in"><span><span class="fu">auditPrior</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"impartial"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, materiality <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 	Prior Distribution for Audit Sampling</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> functional form: beta(α = 1, β = 13.513) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> parameters obtained via method 'impartial'</span>
 </code></pre></div>
     </div>
   </div>
