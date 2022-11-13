@@ -161,8 +161,8 @@
     utils::capture.output(
       file = "NUL",
       raw <- rstan::sampling(
-        object = stanmodels[[paste0("pp_", likelihood)]], data = data, pars = "theta_s", iter = 2000,
-        warmup = 1000, chains = 4, cores = 1, seed = ceiling(stats::runif(1, -1000, 1000))
+        object = stanmodels[[paste0("pp_", likelihood)]], data = data, pars = "theta_s", iter = getOptions("mcmc.iterations", 2000),
+        warmup = getOptions("mcmc.warmup", 1000), chains = getOptions("mcmc.chains", 4), cores = getOptions("mcmc.cores", 1), seed = ceiling(stats::runif(1, -1000, 1000))
       )
     )
   })
