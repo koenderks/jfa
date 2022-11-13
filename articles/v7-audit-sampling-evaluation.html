@@ -131,25 +131,36 @@
 <p>This vignette outlines the most commonly used sample evaluation
 methodology for auditing and shows how to evaluate a sample using the
 <code><a href="../reference/evaluation.html">evaluation()</a></code> function in the <strong>jfa</strong> package.
-Evaluating an audit sample using <code><a href="../reference/evaluation.html">evaluation()</a></code> requires that
-the data from the sample is accessible in one of two forms:</p>
+Evaluating an audit sample using the <code><a href="../reference/evaluation.html">evaluation()</a></code> function
+requires that the data from the sample is available in one of two
+forms:</p>
 <ul>
-<li>Summary statistics of the sample, including (a vector of) the number
-of items (<code>n</code>), (a vector of) the sum of errors / taints
-(<code>x</code>) and optionally (a vector of) the number of units in the
-population (<code>N.units</code>).</li>
-<li>A <code>data.frame</code> containing a numeric column with book
-values, a numeric column with audit (true) values and optionally a
-factor column indicating stratum membership.</li>
+<li>
+<strong>Summary statistics:</strong> This includes (a vector of) the
+number of items (<code>n</code>), (a vector of) the sum of errors /
+taints (<code>x</code>) and optionally (a vector of) the number of units
+in the population (<code>N.units</code>).</li>
+<li>
+<strong>Data:</strong> A <code>data.frame</code> containing a
+numeric column with book values (<code>values</code>), a numeric column
+with audit (true) values (<code>values.audit</code>) and optionally a
+factor column indicating stratum membership (<code>strata</code>).</li>
 </ul>
-<p>Typically in audit sampling there is a maximum tolerable error that
-applies to the population, the performance <span class="math inline">\(\theta_{max}\)</span>, which should be expressed
-as a fraction using the <code>materiality</code> argument. Next to
-estimation which is performed by default, specifying
-<code>materiality</code> enables the comparison of two competing
-hypotheses:</p>
+<p>By default, <code><a href="../reference/evaluation.html">evaluation()</a></code> performs estimation and
+provides a point estimate of the population misstatement and a
+(<code>conf.level</code> <span class="math inline">\(\times\)</span>
+100)% confidence / credible interval around this estimate. However, in
+audit sampling there typically applies a maximum tolerable error to the
+population, the performance <span class="math inline">\(\theta_{max}\)</span>. You can provide this
+critical value to the <code><a href="../reference/evaluation.html">evaluation()</a></code> function as a fraction
+using the <code>materiality</code> argument. Next to estimation which is
+performed by default, specifying <code>materiality</code> triggers the
+comparison of two competing hypotheses:</p>
 <p><span class="math display">\[H_1:\theta&lt;\theta_{max}\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,
 H_0:\theta\geq\theta_{max}\]</span>.</p>
+<p>Evidence in favor or against the hypothesis of tolerable misstatement
+is then quantified using the <em>p</em>-value (classical) or the Bayes
+factor (Bayesian).</p>
 <div class="section level2">
 <h2 id="evaluation-using-summary-statistics">Evaluation using summary statistics<a class="anchor" aria-label="anchor" href="#evaluation-using-summary-statistics"></a>
 </h2>
@@ -166,8 +177,8 @@ decision about whether to reject the hypothesis <span class="math inline">\(H_0\
 an auditor wants to verify whether the population contains less than 5
 percent misstatement, implying the hypotheses <span class="math inline">\(H_1:\theta&lt;0.05\)</span> and <span class="math inline">\(H_0:\theta\geq0.05\)</span>. They have taken a
 sample of 100 items, of which 1 contained an error. They set the
-significance level for the <em>p</em> value to 0.05, implying that a
-<em>p</em> value &lt; 0.05 will be enough to reject the hypothesis <span class="math inline">\(H_0\)</span>.</p>
+significance level for the <em>p</em>-value to 0.05, implying that <span class="math inline">\(p &lt; 0.05\)</span> will be enough to reject the
+hypothesis <span class="math inline">\(H_0\)</span>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -581,8 +592,12 @@ estimates closer together and makes them more accurate.</p>
 <h2 id="evaluation-using-data">Evaluation using data<a class="anchor" aria-label="anchor" href="#evaluation-using-data"></a>
 </h2>
 <p>For this example, we take the <code>BuildIt</code> that set that
-comes with the package. The performance materiality in this example is
-set to 5%.</p>
+comes with the package. This data set contains 3500 financial statement
+line items, each with a booked value <code>bookValue</code> and, for
+illustrative purposes, and audited (true) value <code>auditValue</code>.
+Since the focus of this vignette is the evaluation stage in the audit,
+the first 300 items are selected as an example. The performance
+materiality in this example is set to 5%.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">BuildIt</span><span class="op">)</span></span>
 <span><span class="va">BuildIt</span><span class="op">$</span><span class="va">inSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">300</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3200</span><span class="op">)</span><span class="op">)</span> <span class="co"># For illustrative purposes</span></span>
@@ -598,9 +613,15 @@ set to 5%.</p>
 <div class="section level3">
 <h3 id="non-stratified-samples-1">Non-stratified samples<a class="anchor" aria-label="anchor" href="#non-stratified-samples-1"></a>
 </h3>
+<p>Evaluating a non-stratified sample using data requires specification
+of the <code>data</code>, <code>values</code> and
+<code>values.audit</code> arguments. The input for these arguments is
+the name of the specific column in <code>data</code>.</p>
 <div class="section level4">
 <h4 id="classical-evaluation">Classical evaluation<a class="anchor" aria-label="anchor" href="#classical-evaluation"></a>
 </h4>
+<p>The call below evaluates the <code>BuildIt</code> sample using a
+classical non-stratified evaluation procedure.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
@@ -629,6 +650,8 @@ with a 95% (one-sided) confidence interval ranging from 0% to 3.68%.</p>
 <div class="section level4">
 <h4 id="bayesian-evaluation">Bayesian evaluation<a class="anchor" aria-label="anchor" href="#bayesian-evaluation"></a>
 </h4>
+<p>The call below evaluates the <code>BuildIt</code> sample using a
+Bayesian non-stratified evaluation procedure.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"default"</span><span class="op">)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span>
@@ -661,6 +684,9 @@ with a 95% (one-sided) confidence interval ranging from 0% to 3.68%.</p>
 <div class="section level3">
 <h3 id="stratified-samples-1">Stratified samples<a class="anchor" aria-label="anchor" href="#stratified-samples-1"></a>
 </h3>
+<p>As an example, we add a stratum indicator to the <code>BuildIt</code>
+data set to indicate stratum membership of the line items. Here, each
+line item comes from one of three branches of the auditee.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">BuildIt</span><span class="op">$</span><span class="va">stratum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Branch 1"</span>, <span class="st">"Branch 2"</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Branch 3"</span>, <span class="st">"Branch 1"</span>, <span class="st">"Branch 2"</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">1166</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">BuildIt</span>, <span class="va">BuildIt</span><span class="op">$</span><span class="va">inSample</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
@@ -672,17 +698,26 @@ with a 95% (one-sided) confidence interval ranging from 0% to 3.68%.</p>
 <span><span class="co">## 4 71769    431.87     431.87        1 Branch 1</span></span>
 <span><span class="co">## 5 55080    620.88     620.88        1 Branch 2</span></span>
 <span><span class="co">## 6 93224    501.76     501.76        1 Branch 3</span></span></code></pre>
+<p>Evaluating a stratified sample using data requires specification of
+the <code>data</code>, <code>values</code>, <code>values.audit</code>
+and <code>strata</code> arguments. The number of units per stratum in
+the population should be provided with <code>N.units</code> to weigh the
+stratum estimates and arrive at a representative population
+estimate.</p>
 <div class="section level4">
 <h4 id="classical-evaluation-1">Classical evaluation<a class="anchor" aria-label="anchor" href="#classical-evaluation-1"></a>
 </h4>
+<p>The call below evaluates the <code>BuildIt</code> sample using a
+classical stratified evaluation procedure.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, strata <span class="op">=</span> <span class="st">"stratum"</span>, alternative <span class="op">=</span> <span class="st">"two.sided"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, strata <span class="op">=</span> <span class="st">"stratum"</span>, alternative <span class="op">=</span> <span class="st">"two.sided"</span>, N.units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">BuildIt</span><span class="op">$</span><span class="va">stratum</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Classical Audit Sample Evaluation Summary</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Options:</span></span>
 <span><span class="co">##   Confidence level:               0.95 </span></span>
+<span><span class="co">##   Population size:                3500 </span></span>
 <span><span class="co">##   Materiality:                    0.05 </span></span>
 <span><span class="co">##   Hypotheses:                     H₀: Θ = 0.05 vs. H₁: Θ ≠ 0.05 </span></span>
 <span><span class="co">##   Method:                         poisson </span></span>
@@ -693,17 +728,17 @@ with a 95% (one-sided) confidence interval ranging from 0% to 3.68%.</p>
 <span><span class="co">##   Sum of taints:                  5.4000026 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
-<span><span class="co">##   Most likely error:              0.024359 </span></span>
-<span><span class="co">##   95 percent confidence interval: [0.012236, 0.049284] </span></span>
-<span><span class="co">##   Precision:                      0.024925 </span></span>
+<span><span class="co">##   Most likely error:              0.024361 </span></span>
+<span><span class="co">##   95 percent confidence interval: [0.012237, 0.049281] </span></span>
+<span><span class="co">##   Precision:                      0.02492 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Strata (3):</span></span>
 <span><span class="co">##            n x   t   mle          lb       ub precision  p.value</span></span>
 <span><span class="co">## Branch 1 100 4 2.4 0.024 0.003783116 0.078519  0.054519 0.502842</span></span>
 <span><span class="co">## Branch 2 100 1 0.6 0.006 0.000017736 0.048592  0.042592 0.072256</span></span>
 <span><span class="co">## Branch 3 100 4 2.4 0.024 0.003782930 0.078518  0.054519 0.502842</span></span></code></pre>
-<p>In this case, the output shows that the population estimate is 2.62%
-with a 95% confidence interval ranging from 1.23% to 4.93%. The stratum
+<p>In this case, the output shows that the population estimate is 2.50%
+with a 95% confidence interval ranging from 1.22% to 4.96%. The stratum
 estimates can be seen in the output of the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>
 function and are visualized below.</p>
 <p><img src="v7-audit-sampling-evaluation_files/figure-html/unnamed-chunk-16-1.png" width="576"></p>
@@ -711,17 +746,20 @@ function and are visualized below.</p>
 <div class="section level4">
 <h4 id="bayesian-evaluation-1">Bayesian evaluation<a class="anchor" aria-label="anchor" href="#bayesian-evaluation-1"></a>
 </h4>
-<p>Bayesian inference can improve the stratum estimates by setting a
-prior distribution that is applied to each stratum.</p>
+<p>Bayesian inference can improve the stratum estimates by specifying a
+prior distribution that is then applied to each stratum. The call below
+evaluates the <code>BuildIt</code> sample using a Bayesian stratified
+evaluation procedure.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"arm"</span>, materiality <span class="op">=</span> <span class="fl">0.05</span>, ir <span class="op">=</span> <span class="fl">0.5</span>, cr <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, strata <span class="op">=</span> <span class="st">"stratum"</span>, alternative <span class="op">=</span> <span class="st">"two.sided"</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, strata <span class="op">=</span> <span class="st">"stratum"</span>, alternative <span class="op">=</span> <span class="st">"two.sided"</span>, N.units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">BuildIt</span><span class="op">$</span><span class="va">stratum</span><span class="op">)</span><span class="op">)</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Evaluation Summary</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Options:</span></span>
 <span><span class="co">##   Confidence level:               0.95 </span></span>
+<span><span class="co">##   Population size:                3500 </span></span>
 <span><span class="co">##   Materiality:                    0.05 </span></span>
 <span><span class="co">##   Hypotheses:                     H₀: Θ = 0.05 vs. H₁: Θ ≠ 0.05 </span></span>
 <span><span class="co">##   Method:                         poisson </span></span>
@@ -734,17 +772,17 @@ prior distribution that is applied to each stratum.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
 <span><span class="co">##   Posterior distribution:         Approximated via MCMC sampling </span></span>
-<span><span class="co">##   Most likely error:              0.019285 </span></span>
-<span><span class="co">##   95 percent credible interval:   [0.0097439, 0.039175] </span></span>
-<span><span class="co">##   Precision:                      0.019889 </span></span>
+<span><span class="co">##   Most likely error:              0.019284 </span></span>
+<span><span class="co">##   95 percent credible interval:   [0.0097438, 0.039169] </span></span>
+<span><span class="co">##   Precision:                      0.019885 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Strata (3):</span></span>
 <span><span class="co">##            n x   t       mle        lb       ub precision    bf10</span></span>
 <span><span class="co">## Branch 1 100 4 2.4 0.0188979 0.0062841 0.061826  0.042928 0.89793</span></span>
 <span><span class="co">## Branch 2 100 1 0.6 0.0047244 0.0010319 0.038261  0.033537 0.10753</span></span>
 <span><span class="co">## Branch 3 100 4 2.4 0.0188975 0.0062839 0.061825  0.042928 0.89789</span></span></code></pre>
-<p>The output shows that the population estimate is 1.95% with a 95%
-credible interval ranging from 0.97% to 3.92%. The stratum estimates can
+<p>The output shows that the population estimate is 1.89% with a 95%
+credible interval ranging from 0.98% to 3.92%. The stratum estimates can
 be seen in the output of the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function and are
 visualized below.</p>
 <p><img src="v7-audit-sampling-evaluation_files/figure-html/unnamed-chunk-18-1.png" width="576"></p>
@@ -755,24 +793,27 @@ visualized below.</p>
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <ul>
-<li><p>Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J.,
-and Wetzels, R. (2021). Priors in a Bayesian audit: How integration of
+<li>Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., and
+Wetzels, R. (2021). Priors in a Bayesian audit: How integration of
 existing information into the prior distribution can improve audit
 transparency and efficiency. <em>International Journal of Auditing</em>,
-25(3), 621-636.</p></li>
-<li><p>Derks, K., de Swart, J., Wagenmakers, E.-J., &amp; Wetzels, R.
+25(3), 621-636. <a href="https://doi.org/10.1111/ijau.12240" class="external-link uri">https://doi.org/10.1111/ijau.12240</a>
+</li>
+<li>Derks, K., de Swart, J., Wagenmakers, E.-J., &amp; Wetzels, R.
 (2021). The Bayesian Approach to Audit Evidence: Quantifying Statistical
-Evidence using the Bayes Factor. <em>PsyArXiv</em>.</p></li>
-<li><p>Derks, K., de Swart, J., Wagenmakers, E.-J., &amp; Wetzels, R.
+Evidence using the Bayes Factor. <em>PsyArXiv</em>. <a href="https://doi.org/10.31234/osf.io/kzqp5" class="external-link uri">https://doi.org/10.31234/osf.io/kzqp5</a>
+</li>
+<li>Derks, K., de Swart, J., Wagenmakers, E.-J., &amp; Wetzels, R.
 (2022). Bayesian Generalized Linear Modeling for Audit Sampling: How to
 Incorporate Audit Information into the Statistical Model.
-<em>PsyArXiv</em>.</p></li>
-<li><p>Stewart, T. R. (2012). <em>Technical Notes on the AICPA Audit
-Guide Audit Sampling</em>. American Institute of Certified Public
-Accountants, New York.</p></li>
-<li><p>Stewart, T. R. (2013). <em>A Bayesian Audit Assurance Model with
-Application to the Component Materiality problem in Group Audits.</em>
-VU University, Amsterdam.</p></li>
+<em>PsyArXiv</em>. <a href="https://doi.org/10.31234/osf.io/byj2a" class="external-link uri">https://doi.org/10.31234/osf.io/byj2a</a>
+</li>
+<li>Stewart, T. R. (2012). <em>Technical Notes on the AICPA Audit Guide
+Audit Sampling</em>. American Institute of Certified Public Accountants,
+New York.</li>
+<li>Stewart, T. R. (2013). <em>A Bayesian Audit Assurance Model with
+Application to the Component Materiality problem in Group Audits</em>.
+VU University, Amsterdam.</li>
 </ul>
 </div>
   </div>
