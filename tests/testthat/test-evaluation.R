@@ -425,8 +425,12 @@ test_that(desc = "(id: f3-v0.6.5-t2) Test Bayesian poisson stratification with s
   expect_equal(res$strata$mle, k / n)
   expect_equal(res$strata$ub, stats::qgamma(0.95, 1 + k, n))
   # 3. Partial pooling
+  set.seed(1)
   res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "poisson", prior = TRUE, pooling = "partial")
-  # We do not check these results because of differences in OS's
+  expect_equal(res$mle, 0.1450616389)
+  expect_equal(res$ub, 0.3114867304)
+  expect_equal(res$strata$mle, c(0.14954736685, 0.13064833867, 0.07182962096))
+  expect_equal(res$strata$ub, c(0.4847548628, 0.3575705300, 0.3020884650))
 })
 
 test_that(desc = "(id: f3-v0.6.5-t3) Test frequentist binomial stratification with summary statistics (Derks et al., 2022, Table 1)", {
@@ -462,11 +466,15 @@ test_that(desc = "(id: f3-v0.6.5-t4) Test Bayesian binomial stratification with 
   expect_equal(res$strata$mle, k / n)
   expect_equal(res$strata$ub, stats::qbeta(0.95, 1 + k, 1 + n - k))
   # 3. Partial pooling
+  set.seed(1)
   res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "binomial", prior = TRUE, pooling = "partial")
-  # We do not test these results because of differences in OS's
+  expect_equal(res$mle, 0.1561214164)
+  expect_equal(res$ub, 0.315930795)
+  expect_equal(res$strata$mle, c(0.16372650278, 0.13624375390, 0.07927504039))
+  expect_equal(res$strata$ub, c(0.4939133323, 0.3714885141, 0.3048099870))
 })
 
-test_that(desc = "(id: f3-v0.6.5-t5) Test stratification with BuildIt data", {
+test_that(desc = "(id: f3-v0.6.5-t5) Test stratification with data (Derks et al., 2022, Table 4)", {
   data("BuildIt")
   BuildIt$stratum <- factor(c("high", "medium", rep(c("low", "medium", "high"), times = 1166)))
   BuildIt$inSample <- c(rep(1, 100), rep(0, 3400))
@@ -491,10 +499,14 @@ test_that(desc = "(id: f3-v0.6.5-t5) Test stratification with BuildIt data", {
   expect_equal(res$strata$mle, c(0.01818169065, 0.03636289354, 0.03529444518))
   expect_equal(res$strata$ub, c(0.1140247217, 0.1407511113, 0.1369524323))
   # 3. Partial pooling
+  set.seed(1)
   res <- evaluation(
     materiality = 0.03, data = BuildIt_sample, prior = TRUE, method = "binomial",
     values = "bookValue", values.audit = "auditValue", strata = "stratum",
     N.units = as.numeric(table(BuildIt_sample$stratum)), pooling = "partial"
   )
-  # We do not test these results because of differences in OS's
+  expect_equal(res$mle, 0.04908250853)
+  expect_equal(res$ub, 0.06480999913)
+  expect_equal(res$strata$mle, c(0.04826792134, 0.04671585252, 0.04698414364))
+  expect_equal(res$strata$ub, c(0.06748697968, 0.06629369663, 0.06718377800))
 })

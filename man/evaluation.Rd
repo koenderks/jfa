@@ -44,7 +44,7 @@ evaluation(materiality = NULL, min.precision = NULL, method = c(
 
 \item{N.items}{an integer larger than 0 specifying the number of items in the population. Only used for methods \code{direct}, \code{difference}, \code{quotient}, and \code{regression}.}
 
-\item{pooling}{a character specifying the type of model to use when analyzing stratified samples. Possible options are \code{none} (default) for no pooling (i.e., no information is shared between strata), \code{complete} for complete pooling (i.e., all information is shared between strata) or \code{partial} for partial pooling (i.e., information can be shared between strata). The latter option fits a pre-compiled stan model to the data. Relevant mcmc options for stan can be set using \code{options(jfa.stanseed)}, \code{options(jfa.stancores)}, \code{options(jfa.stanchains)}, \code{options(jfa.staniterations)} and \code{options(jfa.stanwarmup)}.}
+\item{pooling}{a character specifying the type of model to use when analyzing stratified samples. Possible options are \code{none} (default) for no pooling (i.e., no information is shared between strata), \code{complete} for complete pooling (i.e., all information is shared between strata) or \code{partial} for partial pooling (i.e., information can be shared between strata). The latter option fits a pre-compiled stan model to the data.}
 
 \item{prior}{a logical specifying whether to use a prior distribution, or an object of class \code{jfaPrior} or \code{jfaPosterior} containing the prior distribution. If \code{FALSE} (default), performs classical planning. If \code{TRUE}, performs Bayesian planning using a default conjugate prior.}
 }
