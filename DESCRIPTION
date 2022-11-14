@@ -22,6 +22,7 @@ Imports:
     extraDistr,
     graphics,
     methods,
+    moments,
     Rcpp (>= 0.12.0),
     RcppParallel (>= 5.0.1),
     rstan (>= 2.18.1),

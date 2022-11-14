@@ -7,7 +7,8 @@ data {
   real<lower=0> t[n];
   real<lower=0> priorx;
   real<lower=0> priorn;
-  int betaprior;
+  int beta_prior;
+  int use_likelihood;
 }
 parameters {
   real<lower=0, upper=1> theta;
@@ -22,7 +23,7 @@ transformed parameters {
   phi = inv_logit(mu + sigma * alpha_s);
 }
 model {
-  if (betaprior) {
+  if (beta_prior) {
     theta ~ beta(1 + priorx, priorn - priorx);
   } else {
     theta ~ gamma(1 + priorx, priorn);
@@ -30,8 +31,10 @@ model {
   sigma ~ normal(0, 1);
   alpha_s ~ normal(0, 1);
   nu ~ pareto(1, 1.5);
-  for (i in 1:n) {
-    t[i] ~ beta(phi[s[i]] * nu, (1 - phi[s[i]]) * nu);
+  if (use_likelihood) {
+    for (i in 1:n) {
+      t[i] ~ beta(phi[s[i]] * nu, (1 - phi[s[i]]) * nu);
+    }
   }
 }
 generated quantities {

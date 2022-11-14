@@ -6,7 +6,8 @@ data {
   int<lower=0> k[S];
   real<lower=0> priorx;
   real<lower=0> priorn;
-  int betaprior;
+  int beta_prior;
+  int use_likelihood;
 }
 parameters {
   real<lower=0, upper=1> theta;
@@ -18,14 +19,16 @@ transformed parameters {
   mu = logit(theta);
 }
 model {
-  if (betaprior) {
+  if (beta_prior) {
     theta ~ beta(1 + priorx, priorn - priorx);
   } else {
     theta ~ gamma(1 + priorx, priorn);
   }
   sigma ~ normal(0, 1);
   alpha_s ~ normal(0, 1);
-  k ~ binomial_logit(n, mu + sigma * alpha_s);
+  if (use_likelihood) {
+    k ~ binomial_logit(n, mu + sigma * alpha_s);
+  }
 }
 generated quantities {
   vector<lower=0, upper=1>[S] theta_s;

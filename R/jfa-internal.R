@@ -154,30 +154,44 @@
 .partial_pooling <- function(method, prior.x, prior.n, n.obs, t.obs, t, nstrata, stratum, likelihood) {
   stopifnot("'method = hypergeometric' does not support pooling" = method != "hypergeometric")
   data <- switch(likelihood,
-    "binomial" = list(S = nstrata - 1, n = n.obs[-1], k = t.obs[-1], priorx = prior.x, priorn = prior.n, betaprior = as.numeric(method == "binomial")),
-    "beta" = list(S = nstrata - 1, "t" = (t[[1]] * (n.obs[1] - 1) + 0.5) / n.obs[1], "n" = n.obs[1], "s" = as.numeric(stratum), priorx = prior.x, priorn = prior.n, betaprior = as.numeric(method == "binomial"))
+    "binomial" = list(S = nstrata - 1, n = n.obs[-1], k = t.obs[-1], priorx = prior.x, priorn = prior.n, beta_prior = as.numeric(method == "binomial")),
+    "beta" = list(S = nstrata - 1, "t" = (t[[1]] * (n.obs[1] - 1) + 0.5) / n.obs[1], "n" = n.obs[1], "s" = as.numeric(stratum), priorx = prior.x, priorn = prior.n, beta_prior = as.numeric(method == "binomial"))
   )
+  # Prior samples
   suppressWarnings({
     utils::capture.output(
       file = "NUL",
-      raw <- rstan::sampling(
-        object = stanmodels[[paste0("pp_", likelihood)]], data = data, pars = "theta_s", iter = getOption("mcmc.iterations", 2000),
+      raw_prior <- rstan::sampling(
+        object = stanmodels[[paste0("pp_", likelihood)]], data = c(data, use_likelihood = 0), pars = "theta_s", iter = getOption("mcmc.iterations", 2000),
+        warmup = getOption("mcmc.warmup", 1000), chains = getOption("mcmc.chains", 4), cores = getOption("mcmc.cores", 1), seed = ceiling(stats::runif(1, -1000, 1000))
+      ),
+      raw_posterior <- rstan::sampling(
+        object = stanmodels[[paste0("pp_", likelihood)]], data = c(data, use_likelihood = 1), pars = "theta_s", iter = getOption("mcmc.iterations", 2000),
         warmup = getOption("mcmc.warmup", 1000), chains = getOption("mcmc.chains", 4), cores = getOption("mcmc.cores", 1), seed = ceiling(stats::runif(1, -1000, 1000))
       )
     )
   })
-  samples <- rstan::extract(raw)$theta_s
+  prior_samples <- rstan::extract(raw_prior)$theta_s
+  posterior_samples <- rstan::extract(raw_posterior)$theta_s
+  samples <- cbind(posterior_samples, prior_samples)
   return(samples)
 }
 
 # This function samples from an analytical posterior distribution
-.posterior_samples <- function(method, nstrata, bayesian, prior.x, t.obs, prior.n, n.obs, N.units) {
-  samples <- matrix(NA, ncol = nstrata - 1, nrow = 100000)
+.fake_mcmc <- function(method, nstrata, bayesian, prior.x, t.obs, prior.n, n.obs, N.units) {
+  samples <- matrix(NA, ncol = (nstrata - 1) * 2, nrow = 100000)
   for (i in 2:nstrata) {
     samples[, i - 1] <- switch(method,
       "poisson" = stats::rgamma(n = 100000, 1 + prior.x + t.obs[i], prior.n + n.obs[i]),
       "binomial" = stats::rbeta(n = 100000, 1 + prior.x + t.obs[i], prior.n - prior.x + n.obs[i] - t.obs[i]),
       "hypergeometric" = extraDistr::rbbinom(n = 100000, N.units[i] - n.obs[i], 1 + prior.x + t.obs[i], prior.n - prior.x + n.obs[i] - t.obs[i]) / N.units[i]
+    )
+  }
+  for (i in (nstrata + 1):((nstrata - 1) * 2 + 1)) {
+    samples[, i - 1] <- switch(method,
+      "poisson" = stats::rgamma(n = 100000, 1 + prior.x, prior.n),
+      "binomial" = stats::rbeta(n = 100000, 1 + prior.x, prior.n - prior.x),
+      "hypergeometric" = extraDistr::rbbinom(n = 100000, N.units[i - nstrata], 1 + prior.x, prior.n - prior.x) / N.units[i - nstrata]
     )
   }
   return(samples)
