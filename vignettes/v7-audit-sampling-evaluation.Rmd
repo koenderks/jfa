@@ -190,23 +190,28 @@ Evaluating a non-stratified sample using data requires specification of the `dat
 The call below evaluates the `allowances` sample using a classical non-stratified evaluation procedure.
 
 ```{r}
-x <- evaluation(materiality = 0.05, data = allowances, values = "bookValue", values.audit = "auditValue", times = "times")
+x <- evaluation(
+  materiality = 0.05, data = allowances,
+  values = "bookValue", values.audit = "auditValue", times = "times"
+)
 summary(x)
 ```
 
-In this case, the output shows that the population estimate is 1.8% with a 95% (one-sided) confidence interval ranging from 0% to 3.68%.
+In this case, the output shows that the population estimate is 15.77% with a 95% (one-sided) confidence interval ranging from 0% to 17.31%.
 
 #### Bayesian evaluation
 
 The call below evaluates the `allowances` sample using a Bayesian non-stratified evaluation procedure.
 
 ```{r}
-prior <- auditPrior(method = "default")
-x <- evaluation(materiality = 0.05, data = allowances, values = "bookValue", values.audit = "auditValue", times = "times", prior = prior)
+x <- evaluation(
+  materiality = 0.05, data = allowances, prior = TRUE,
+  values = "bookValue", values.audit = "auditValue", times = "times"
+)
 summary(x)
 ```
 
-The output shows that the population estimate is 1.8% with a 95% (one-sided) credible interval ranging from 0% to 3.67%.
+The output shows that the population estimate is 15.75% with a 95% (one-sided) credible interval ranging from 0% to 17.49%.
 
 ### Stratified samples
 
@@ -217,11 +222,15 @@ Evaluating a stratified sample using data requires specification of the `data`, 
 The call below evaluates the `allowances` sample using a classical stratified evaluation procedure.
 
 ```{r}
-x <- evaluation(materiality = 0.05, data = allowances, values = "bookValue", values.audit = "auditValue", strata = "branch", times = "times", alternative = "two.sided", N.units = as.numeric(table(allowances$branch)))
+x <- evaluation(
+  materiality = 0.05, data = allowances,
+  values = "bookValue", values.audit = "auditValue", strata = "branch", times = "times",
+  alternative = "two.sided", N.units = as.numeric(table(allowances$branch))
+)
 summary(x)
 ```
 
-In this case, the output shows that the population estimate is 2.50% with a 95% confidence interval ranging from 1.22% to 4.96%. The stratum estimates can be seen in the output of the `summary()` function and are visualized below.
+In this case, the output shows that the population estimate is 21.88% with a 95% confidence interval ranging from 19.27% to 24.70%. The stratum estimates can be seen in the output of the `summary()` function and are visualized below.
 
 ```{r, echo = FALSE}
 plot(1:16, x$strata$mle, pch = 19, ylim = c(0, 1), las = 1, main = "Stratum estimates", ylab = "Misstatement", xlab = "Stratum", axes = FALSE)
@@ -233,11 +242,14 @@ graphics::arrows(x0 = 1:16, x1 = 1:16, y1 = x$strata$lb, y0 = x$strata$ub, angle
 
 #### Bayesian evaluation
 
-Bayesian inference can improve the stratum estimates by specifying a prior distribution that is then applied to each stratum and pooling information. The call below evaluates the `allowances` sample using a Bayesian multilevel stratified evaluation procedure.
+Bayesian inference can improve the stratum estimates by specifying a prior distribution that is then applied to each stratum and pooling information between strata where possible. The call below evaluates the `allowances` sample using a Bayesian multilevel stratified evaluation procedure.
 
 ```{r}
-prior <- auditPrior(method = "arm", materiality = 0.05, ir = 0.5, cr = 0.5)
-x <- evaluation(materiality = 0.05, data = allowances, values = "bookValue", values.audit = "auditValue", strata = "branch", times = "times", alternative = "two.sided", N.units = as.numeric(table(allowances$branch)), pooling = "partial", prior = prior)
+x <- evaluation(
+  materiality = 0.05, data = allowances, prior = TRUE,
+  values = "bookValue", values.audit = "auditValue", strata = "branch", times = "times",
+  alternative = "two.sided", N.units = as.numeric(table(allowances$branch)), pooling = "partial"
+)
 summary(x)
 ```
 

@@ -221,8 +221,10 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
         stop(paste0("'", times, "' is not a column in 'data'"))
       }
       times <- data[, times]
-      stopifnot("'times' contains missing values" = sum(!is.na(times)) == nrow(data),
-                "column 'times' in 'data' must be a vector of integers" = all(times %% 1 == 0))
+      stopifnot(
+        "'times' contains missing values" = sum(!is.na(times)) == nrow(data),
+        "column 'times' in 'data' must be a vector of integers" = all(times %% 1 == 0)
+      )
       data <- data[times > 0, ]
       times <- times[times > 0]
       n.obs <- sum(times)
