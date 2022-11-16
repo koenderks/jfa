@@ -238,7 +238,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
       auditvalues[[1]] <- data[, values.audit]
       t[[1]] <- (bookvalues[[1]] - auditvalues[[1]]) / bookvalues[[1]]
       x.obs <- length(which(t[[1]] != 0))
-      if (!is.null(times)) { # Partial pooling uses item level taints
+      if (!is.null(times)) {
         t[[1]] <- t[[1]] * times
       }
       t.obs <- sum(t[[1]])
@@ -271,7 +271,11 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
       if (length(n.obs) > 1) {
         bookvalues <- c(data[, values], bookvalues)
         auditvalues <- c(data[, values.audit], bookvalues)
-        t <- c(list(unlist(t)), t)
+        allt <- list(rep(NA, length(stratum)))
+        for (j in 1:nlevels(stratum)) {
+          allt[[1]][which(stratum == levels(stratum)[j])] <- t[[j]]
+        }
+        t <- c(allt, t)
       }
     }
   }
