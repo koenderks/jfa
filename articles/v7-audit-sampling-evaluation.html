@@ -185,7 +185,8 @@ hypothesis <span class="math inline">\(H_0\)</span>.</p>
 <span><span class="co">##  Classical Audit Sample Evaluation</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  1 and 100</span></span>
-<span><span class="co">## number of errors = 1, number of samples = 100, taint = 1, p-value = NA</span></span>
+<span><span class="co">## number of errors = 1, number of samples = 100, taint = 1, p-value =</span></span>
+<span><span class="co">## 0.040428</span></span>
 <span><span class="co">## alternative hypothesis: true misstatement rate is less than 0.05</span></span>
 <span><span class="co">## 95 percent confidence interval:</span></span>
 <span><span class="co">##  0.00000000 0.04743865</span></span>
@@ -419,9 +420,9 @@ the population estimate.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
 <span><span class="co">##   Posterior distribution:         Approximated via MCMC sampling </span></span>
-<span><span class="co">##   Most likely error:              0.059091 </span></span>
-<span><span class="co">##   95 percent credible interval:   [0.042509, 0.081932] </span></span>
-<span><span class="co">##   Precision:                      0.02284 </span></span>
+<span><span class="co">##   Most likely error:              0.058487 </span></span>
+<span><span class="co">##   95 percent credible interval:   [0.042763, 0.082201] </span></span>
+<span><span class="co">##   Precision:                      0.023714 </span></span>
 <span><span class="co">##   BF₁₀:                            0 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Strata (20):</span></span>
@@ -532,8 +533,116 @@ population estimate.</p>
 <span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"binomial"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  n <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">samples</span>, x <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">errors</span>, N.units <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">items</span>,</span>
 <span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span>, pooling <span class="op">=</span> <span class="st">"partial"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_pp</span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">## SAMPLING FOR MODEL 'pp_binomial' NOW (CHAIN 1).</span></span>
+<span><span class="co">## Chain 1: </span></span>
+<span><span class="co">## Chain 1: Gradient evaluation took 2.4e-05 seconds</span></span>
+<span><span class="co">## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.24 seconds.</span></span>
+<span><span class="co">## Chain 1: Adjust your expectations accordingly!</span></span>
+<span><span class="co">## Chain 1: </span></span>
+<span><span class="co">## Chain 1: </span></span>
+<span><span class="co">## Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
+<span><span class="co">## Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
+<span><span class="co">## Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
+<span><span class="co">## Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
+<span><span class="co">## Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
+<span><span class="co">## Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
+<span><span class="co">## Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
+<span><span class="co">## Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
+<span><span class="co">## Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
+<span><span class="co">## Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
+<span><span class="co">## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
+<span><span class="co">## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
+<span><span class="co">## Chain 1: </span></span>
+<span><span class="co">## Chain 1:  Elapsed Time: 0.146031 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 1:                0.117311 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 1:                0.263342 seconds (Total)</span></span>
+<span><span class="co">## Chain 1: </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## SAMPLING FOR MODEL 'pp_binomial' NOW (CHAIN 2).</span></span>
+<span><span class="co">## Chain 2: </span></span>
+<span><span class="co">## Chain 2: Gradient evaluation took 1.4e-05 seconds</span></span>
+<span><span class="co">## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.14 seconds.</span></span>
+<span><span class="co">## Chain 2: Adjust your expectations accordingly!</span></span>
+<span><span class="co">## Chain 2: </span></span>
+<span><span class="co">## Chain 2: </span></span>
+<span><span class="co">## Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
+<span><span class="co">## Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
+<span><span class="co">## Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
+<span><span class="co">## Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
+<span><span class="co">## Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
+<span><span class="co">## Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
+<span><span class="co">## Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
+<span><span class="co">## Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
+<span><span class="co">## Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
+<span><span class="co">## Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
+<span><span class="co">## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
+<span><span class="co">## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
+<span><span class="co">## Chain 2: </span></span>
+<span><span class="co">## Chain 2:  Elapsed Time: 0.15198 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 2:                0.115966 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 2:                0.267946 seconds (Total)</span></span>
+<span><span class="co">## Chain 2: </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## SAMPLING FOR MODEL 'pp_binomial' NOW (CHAIN 3).</span></span>
+<span><span class="co">## Chain 3: </span></span>
+<span><span class="co">## Chain 3: Gradient evaluation took 1.2e-05 seconds</span></span>
+<span><span class="co">## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.12 seconds.</span></span>
+<span><span class="co">## Chain 3: Adjust your expectations accordingly!</span></span>
+<span><span class="co">## Chain 3: </span></span>
+<span><span class="co">## Chain 3: </span></span>
+<span><span class="co">## Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
+<span><span class="co">## Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
+<span><span class="co">## Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
+<span><span class="co">## Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
+<span><span class="co">## Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
+<span><span class="co">## Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
+<span><span class="co">## Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
+<span><span class="co">## Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
+<span><span class="co">## Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
+<span><span class="co">## Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
+<span><span class="co">## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
+<span><span class="co">## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
+<span><span class="co">## Chain 3: </span></span>
+<span><span class="co">## Chain 3:  Elapsed Time: 0.149869 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 3:                0.121224 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 3:                0.271093 seconds (Total)</span></span>
+<span><span class="co">## Chain 3: </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## SAMPLING FOR MODEL 'pp_binomial' NOW (CHAIN 4).</span></span>
+<span><span class="co">## Chain 4: </span></span>
+<span><span class="co">## Chain 4: Gradient evaluation took 1.3e-05 seconds</span></span>
+<span><span class="co">## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.13 seconds.</span></span>
+<span><span class="co">## Chain 4: Adjust your expectations accordingly!</span></span>
+<span><span class="co">## Chain 4: </span></span>
+<span><span class="co">## Chain 4: </span></span>
+<span><span class="co">## Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
+<span><span class="co">## Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
+<span><span class="co">## Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
+<span><span class="co">## Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
+<span><span class="co">## Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
+<span><span class="co">## Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
+<span><span class="co">## Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
+<span><span class="co">## Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
+<span><span class="co">## Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
+<span><span class="co">## Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
+<span><span class="co">## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
+<span><span class="co">## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
+<span><span class="co">## Chain 4: </span></span>
+<span><span class="co">## Chain 4:  Elapsed Time: 0.152776 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 4:                0.119812 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 4:                0.272588 seconds (Total)</span></span>
+<span><span class="co">## Chain 4:</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: There were 9 divergent transitions after warmup. See</span></span>
+<span><span class="co">## https://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup</span></span>
+<span><span class="co">## to find out why this is a problem and how to eliminate them.</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Examine the pairs() plot to diagnose sampling problems</span></span></code></pre>
+<pre><code><span><span class="co">## Warning: Tail Effective Samples Size (ESS) is too low, indicating posterior variances and tail quantiles may be unreliable.</span></span>
+<span><span class="co">## Running the chains for more iterations may help. See</span></span>
+<span><span class="co">## https://mc-stan.org/misc/warnings.html#tail-ess</span></span></code></pre>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_pp</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Evaluation Summary</span></span>
 <span><span class="co">## </span></span>
@@ -599,7 +708,7 @@ illustrative purposes, and audited (true) value <code>auditValue</code>.
 Since the focus of this vignette is the evaluation stage in the audit,
 the first 300 items are selected as an example. The performance
 materiality in this example is set to 5%.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">BuildIt</span><span class="op">)</span></span>
 <span><span class="va">BuildIt</span><span class="op">$</span><span class="va">inSample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">300</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">3200</span><span class="op">)</span><span class="op">)</span> <span class="co"># For illustrative purposes</span></span>
 <span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">BuildIt</span>, <span class="va">BuildIt</span><span class="op">$</span><span class="va">inSample</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
@@ -623,7 +732,7 @@ the name of the specific column in <code>data</code>.</p>
 </h4>
 <p>The call below evaluates the <code>BuildIt</code> sample using a
 classical non-stratified evaluation procedure.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -644,7 +753,7 @@ classical non-stratified evaluation procedure.</p>
 <span><span class="co">##   Most likely error:              0.018 </span></span>
 <span><span class="co">##   95 percent confidence interval: [0, 0.036827] </span></span>
 <span><span class="co">##   Precision:                      0.018827 </span></span>
-<span><span class="co">##   p-value:                        NA</span></span></code></pre>
+<span><span class="co">##   p-value:                        0.0042563</span></span></code></pre>
 <p>In this case, the output shows that the population estimate is 1.8%
 with a 95% (one-sided) confidence interval ranging from 0% to 3.68%.</p>
 </div>
@@ -653,7 +762,7 @@ with a 95% (one-sided) confidence interval ranging from 0% to 3.68%.</p>
 </h4>
 <p>The call below evaluates the <code>BuildIt</code> sample using a
 Bayesian non-stratified evaluation procedure.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"default"</span><span class="op">)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
@@ -688,7 +797,7 @@ Bayesian non-stratified evaluation procedure.</p>
 <p>As an example, we add a stratum indicator to the <code>BuildIt</code>
 data set to indicate stratum membership of the line items. Here, each
 line item comes from one of three branches of the auditee.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">BuildIt</span><span class="op">$</span><span class="va">stratum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Branch 1"</span>, <span class="st">"Branch 2"</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Branch 3"</span>, <span class="st">"Branch 1"</span>, <span class="st">"Branch 2"</span><span class="op">)</span>, times <span class="op">=</span> <span class="fl">1166</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">BuildIt</span>, <span class="va">BuildIt</span><span class="op">$</span><span class="va">inSample</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">)</span></span></code></pre></div>
@@ -710,7 +819,7 @@ estimate.</p>
 </h4>
 <p>The call below evaluates the <code>BuildIt</code> sample using a
 classical stratified evaluation procedure.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, strata <span class="op">=</span> <span class="st">"stratum"</span>, alternative <span class="op">=</span> <span class="st">"two.sided"</span>, N.units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">BuildIt</span><span class="op">$</span><span class="va">stratum</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -729,9 +838,9 @@ classical stratified evaluation procedure.</p>
 <span><span class="co">##   Sum of taints:                  5.4000026 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
-<span><span class="co">##   Most likely error:              0.026056 </span></span>
-<span><span class="co">##   95 percent confidence interval: [0.012185, 0.049403] </span></span>
-<span><span class="co">##   Precision:                      0.023347 </span></span>
+<span><span class="co">##   Most likely error:              0.024355 </span></span>
+<span><span class="co">##   95 percent confidence interval: [0.012174, 0.049122] </span></span>
+<span><span class="co">##   Precision:                      0.024767 </span></span>
 <span><span class="co">##   p-value:                        NA </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Strata (3):</span></span>
@@ -752,7 +861,7 @@ function and are visualized below.</p>
 prior distribution that is then applied to each stratum. The call below
 evaluates the <code>BuildIt</code> sample using a Bayesian stratified
 evaluation procedure.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"arm"</span>, materiality <span class="op">=</span> <span class="fl">0.05</span>, ir <span class="op">=</span> <span class="fl">0.5</span>, cr <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, strata <span class="op">=</span> <span class="st">"stratum"</span>, alternative <span class="op">=</span> <span class="st">"two.sided"</span>, N.units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">BuildIt</span><span class="op">$</span><span class="va">stratum</span><span class="op">)</span><span class="op">)</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
@@ -774,10 +883,10 @@ evaluation procedure.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
 <span><span class="co">##   Posterior distribution:         Approximated via MCMC sampling </span></span>
-<span><span class="co">##   Most likely error:              0.017996 </span></span>
-<span><span class="co">##   95 percent credible interval:   [0.0098463, 0.039262] </span></span>
-<span><span class="co">##   Precision:                      0.021266 </span></span>
-<span><span class="co">##   BF₁₀:                            19.924 </span></span>
+<span><span class="co">##   Most likely error:              0.01878 </span></span>
+<span><span class="co">##   95 percent credible interval:   [0.0097508, 0.039217] </span></span>
+<span><span class="co">##   Precision:                      0.020438 </span></span>
+<span><span class="co">##   BF₁₀:                            18.363 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Strata (3):</span></span>
 <span><span class="co">##            n x   t       mle        lb       ub precision   bf10</span></span>
