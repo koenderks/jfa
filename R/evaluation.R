@@ -473,7 +473,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
     result[["precision"]] <- precision[1]
   } else { # Poststratification to get to population results
     if (pooling != "partial") {
-      samples <- .fake_mcmc(method, nstrata, bayesian, prior.x, t.obs, prior.n, n.obs, N.units, iterations = 10000)
+      samples <- .fake_mcmc(method, nstrata, bayesian, prior.x, t.obs, prior.n, n.obs, N.units, iterations = 100000)
     }
     prior_samples <- .poststratify_samples(samples[, nstrata:ncol(samples)], N.units, nstrata)
     posterior_samples <- .poststratify_samples(samples[, 1:(nstrata - 1)], N.units, nstrata)
@@ -491,7 +491,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
   }
   result[["precision"]] <- if (alternative == "greater") result[["mle"]] - result[["lb"]] else result[["ub"]] - result[["mle"]]
   if (!bayesian && materiality < 1 && method %in% c("binomial", "poisson", "hypergeometric")) {
-    if (use_stratification && pooling == "complete") {
+    if (!use_stratification || pooling == "complete") {
       result[["p.value"]] <- p.val[1]
     } else {
       result[["p.value"]] <- NA
