@@ -233,11 +233,11 @@ graphics::arrows(x0 = 1:16, x1 = 1:16, y1 = x$strata$lb, y0 = x$strata$ub, angle
 
 #### Bayesian evaluation
 
-Bayesian inference can improve the stratum estimates by specifying a prior distribution that is then applied to each stratum. The call below evaluates the `BuildIt` sample using a Bayesian stratified evaluation procedure.
+Bayesian inference can improve the stratum estimates by specifying a prior distribution that is then applied to each stratum and pooling information. The call below evaluates the `allowances` sample using a Bayesian multilevel stratified evaluation procedure.
 
 ```{r}
 prior <- auditPrior(method = "arm", materiality = 0.05, ir = 0.5, cr = 0.5)
-x <- evaluation(materiality = 0.05, data = allowances, values = "bookValue", values.audit = "auditValue", strata = "branch", times = "times", alternative = "two.sided", N.units = as.numeric(table(allowances$branch)), prior = prior)
+x <- evaluation(materiality = 0.05, data = allowances, values = "bookValue", values.audit = "auditValue", strata = "branch", times = "times", alternative = "two.sided", N.units = as.numeric(table(allowances$branch)), pooling = "partial", prior = prior)
 summary(x)
 ```
 
