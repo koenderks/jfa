@@ -13,9 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#' Retailer data
+#' Retailer Group Audit
 #'
-#' Sample outcomes per stratum from a retail company consisting of 20 branches.
+#' Sample outcomes summarized per branch from an audit of a retail company consisting of 20 branches.
 #'
 #' @docType data
 #'

@@ -3,7 +3,7 @@
 \docType{data}
 \name{retailer}
 \alias{retailer}
-\title{Retailer data}
+\title{Retailer Group Audit}
 \format{
 A data frame with 20 rows and 5 variables.
 \describe{
@@ -20,7 +20,7 @@ Derks, K., de Swart, J., & Wetzels, R. (2022). Een Bayesiaanse blik op gestratif
 data(retailer)
 }
 \description{
-Sample outcomes per stratum from a retail company consisting of 20 branches.
+Sample outcomes summarized per branch from an audit of a retail company consisting of 20 branches.
 }
 \examples{
 data(retailer)
