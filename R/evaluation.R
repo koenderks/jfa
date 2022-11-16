@@ -67,7 +67,7 @@
 #'
 #' @references Cox, D. and Snell, E. (1979). On sampling and the estimation of rare errors. \emph{Biometrika}, 66(1), 125-132.
 #' @references Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., & Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. \emph{International Journal of Auditing}, 25(3), 621-636.
-#' @references Dworin, L. D. and Grimlund, R. A. (1984). Dollar-unit sampling for accounts receivable and inventory. \emph{The Accounting Review}, 59(2), 218–241
+#' @references Dworin, L. D. and Grimlund, R. A. (1984). Dollar-unit sampling for accounts receivable and inventory. \emph{The Accounting Review}, 59(2), 218-241
 #' @references Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). \emph{Dollar-unit Sampling: A Practical Guide for Auditors}. Copp Clark Pitman; Belmont, Calif.: distributed by Fearon-Pitman.
 #' @references Meikle, G. R. (1972). \emph{Statistical Sampling in an Audit Context: An Audit Technique}. Canadian Institute of Chartered Accountants.
 #' @references Pap, G., and van Zuijlen, M. C. (1996). On the asymptotic behavior of the Stringer bound. \emph{Statistica Neerlandica}, 50(3), 367-389.
@@ -216,29 +216,27 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
     if (!is.null(x) || !is.null(n)) {
       message("'data' is used while 'x' or 'n' is specified")
     }
-    missing <- unique(c(which(is.na(data[, values])), which(is.na(data[, values.audit]))))
-    stopifnot("not enough rows in 'data'" = length(missing) < nrow(data))
-    data <- stats::na.omit(data)
     if (!is.null(times)) {
       if (!(times %in% colnames(data))) {
         stop(paste0("'", times, "' is not a column in 'data'"))
       }
       times <- data[, times]
-      stopifnot(
-        "column 'times' in 'data' must be a vector of integers >= 1" = all(times >= 1),
-        "column 'times' in 'data' must be a vector of nonnegative integers" = all(times %% 1 == 0)
-      )
+      stopifnot("'times' contains missing values" = sum(!is.na(times)) == nrow(data),
+                "column 'times' in 'data' must be a vector of integers" = all(times %% 1 == 0))
+      data <- data[times > 0, ]
+      times <- times[times > 0]
       n.obs <- sum(times)
     } else {
       n.obs <- nrow(data)
     }
+    stopifnot("'data' contains missing values" = sum(stats::complete.cases(data)) == nrow(data))
     bookvalues <- auditvalues <- t <- list()
     if (is.null(strata)) {
       bookvalues[[1]] <- data[, values]
       auditvalues[[1]] <- data[, values.audit]
       t[[1]] <- (bookvalues[[1]] - auditvalues[[1]]) / bookvalues[[1]]
       x.obs <- length(which(t[[1]] != 0))
-      if (!is.null(times)) {
+      if (!is.null(times)) { # Partial pooling uses item level taints
         t[[1]] <- t[[1]] * times
       }
       t.obs <- sum(t[[1]])
@@ -262,8 +260,9 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
         auditvalues[[i]] <- subdata[, values.audit]
         t[[i]] <- (bookvalues[[i]] - auditvalues[[i]]) / bookvalues[[i]]
         x.obs[i] <- length(which(t[[i]] != 0))
-        if (!is.null(times)) {
+        if (!is.null(times) && pooling != "partial") {
           t[[i]] <- t[[i]] * times[index]
+          n.obs[i] <- sum(times[index])
         }
         t.obs[i] <- sum(t[[i]])
       }
