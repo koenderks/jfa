@@ -604,7 +604,7 @@ print.summary.jfaEvaluation <- function(x, digits = getOption("digits"), ...) {
   }
   if (!is.null(x[["strata"]])) {
     cat(paste0("\nStrata (", nrow(x[["strata"]]), "):\n"))
-    print(format(x[["strata"]], digits = max(1L, digits - 2L)), quote = FALSE)
+    print(round(x[["strata"]], digits = max(1L, digits - 2L)), quote = FALSE)
   }
 }
 
