@@ -287,9 +287,18 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
     t.obs <- c(sum(t.obs), t.obs)
     if (!is.null(N.units)) {
       N.units <- c(sum(N.units), N.units)
+      stopifnot("'N.units' must be equal to number of strata" = length(N.units) == length(t.obs))
     }
     if (!is.null(N.items)) {
       N.items <- c(sum(N.items), N.items)
+      stopifnot("'N.items' must be equal to number of strata" = length(N.items) == length(t.obs))
+    }
+  } else {
+    if (!is.null(N.units)) {
+      stopifnot("'N.units' must be a single integer" = length(N.units) == 1)
+    }
+    if (!is.null(N.items)) {
+      stopifnot("'N.items' must be a single integer" = length(N.items) == 1)
     }
   }
   nstrata <- length(t.obs)
