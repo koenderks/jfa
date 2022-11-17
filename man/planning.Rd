@@ -39,10 +39,10 @@ about the possible likelihoods.}
 confidence level (i.e., 1 - audit risk / detection risk).}
 
 \item{N.units}{a numeric value larger than 0 specifying the total
-number of units in the population. This argument is strictly only required
-for the \code{hypergeometric} likelihood, but is also used in
-stratification to weigh the estimates of each individual stratum to arrive
-at the population estimate. If \code{NULL}, each stratum is assumed to be
+number of units in the population. This argument is strictly required for
+the \code{hypergeometric} likelihood, but is also used in stratification
+to weigh the estimates of each individual stratum to arrive at the
+population estimate. If \code{NULL}, each stratum is assumed to be
 equally represented in the population.}
 
 \item{by}{an integer larger than 0 specifying the increment
@@ -63,22 +63,34 @@ using a prior that is conjugate to the specified \code{likelihood}.}
 \value{
 An object of class \code{jfaPlanning} containing:
 
-\item{conf.level}{a numeric value between 0 and 1 giving the confidence level.}
-\item{x}{a numeric value larger than, or equal to, 0 giving (the proportional sum of) the tolerable errors in the sample.}
+\item{conf.level}{a numeric value between 0 and 1 giving the confidence
+  level.}
+\item{x}{a numeric value larger than, or equal to, 0 giving (the proportional
+  sum of) the tolerable errors in the sample.}
 \item{n}{an integer larger than 0 giving the minimal sample size.}
 \item{ub}{a numeric value between 0 and 1 giving the expected upper bound.}
-\item{precision}{a numeric value between 0 and 1 giving the expected precision.}
+\item{precision}{a numeric value between 0 and 1 giving the expected
+  precision.}
 \item{p.value}{a numeric value giving the expected one-sided p-value.}
-\item{K}{if \code{likelihood = 'hypergeometric'}, an integer larger than 0 giving the assumed population errors.}
-\item{N.units}{an integer larger than 0 giving the number of units in the population (only returned if \code{N.units} is specified).}
-\item{materiality}{a numeric value between 0 and 1 giving the performance materiality if specified.}
-\item{min.precision}{a numeric value between 0 and 1 giving the minimum precision if specified.}
-\item{expected}{a numeric value larger than, or equal to, 0 giving the expected errors input.}
+\item{K}{if \code{likelihood = 'hypergeometric'}, an integer larger than 0
+  giving the assumed population errors.}
+\item{N.units}{an integer larger than 0 giving the number of units in the
+  population (only returned if \code{N.units} is specified).}
+\item{materiality}{a numeric value between 0 and 1 giving the performance
+  materiality if specified.}
+\item{min.precision}{a numeric value between 0 and 1 giving the minimum
+  precision if specified.}
+\item{expected}{a numeric value larger than, or equal to, 0 giving the
+  expected misstatement input.}
 \item{likelihood}{a character indicating the likelihood.}
-\item{errorType}{a character indicating whether the expected errors input type.}
-\item{iterations}{an integer giving the number of iterations of the algorithm.}
-\item{prior}{if a prior distribution is specified, an object of class \code{jfaPrior} that contains information about the prior distribution.}
-\item{posterior}{if a prior distribution is specified, an object of class \code{jfaPosterior} that contains information about the expected posterior distribution.}
+\item{errorType}{a character indicating the expected misstatements input.}
+\item{iterations}{an integer giving the number of iterations of the
+  algorithm.}
+\item{prior}{if a prior distribution is specified, an object of class
+  \code{jfaPrior} that contains information about the prior distribution.}
+\item{posterior}{if a prior distribution is specified, an object of class
+  \code{jfaPosterior} that contains information about the expected posterior
+  distribution.}
 }
 \description{
 \code{planning()} is used to calculate a minimum sample size for
@@ -121,17 +133,32 @@ planning(materiality = 0.03)
 # Bayesian planning using a default prior
 planning(materiality = 0.03, prior = TRUE)
 
-# Bayesian planning using an impartial prior
+# Bayesian planning using a custom prior
 prior <- auditPrior(method = "impartial", materiality = 0.05)
 planning(materiality = 0.05, prior = prior)
 }
 \references{
-Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., & Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. \emph{International Journal of Auditing}, 25(3), 621-636.
+Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J.,
+  & Wetzels, R. (2021). Priors in a Bayesian audit: How integration of
+  existing information into the prior distribution can improve audit
+  transparency and efficiency. \emph{International Journal of Auditing},
+  25(3), 621-636. \url{https://doi.org/10.1111/ijau.12240}
 
-Dyer, D. and Pierce, R.L. (1993). On the choice of the prior distribution in hypergeometric sampling. \emph{Communications in Statistics - Theory and Methods}, 22(8), 2125 - 2146.
+Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., &
+  Wetzels, R. (2021). JASP for audit: Bayesian tools for the auditing
+  practice. \emph{Journal of Open Source Software}, \emph{6}(68), 2733.
+  \url{https://doi.org/10.21105/joss.02733}
+
+Dyer, D. and Pierce, R.L. (1993). On the choice of the prior
+distribution in hypergeometric sampling. \emph{Communications in Statistics -
+Theory and Methods}, 22(8), 2125 - 2146.
+\url{https://doi.org/10.1080/03610929308831139}
 }
 \seealso{
-\code{\link{auditPrior}} \code{\link{selection}} \code{\link{evaluation}} \code{\link{report}}
+\code{\link{auditPrior}}
+         \code{\link{selection}}
+         \code{\link{evaluation}}
+         \code{\link{report}}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}

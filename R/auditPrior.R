@@ -15,7 +15,14 @@
 
 #' Audit Sampling: Prior Distributions
 #'
-#' @description \code{auditPrior()} is used to create a prior distribution for Bayesian audit sampling. The interface allows a complete customization of the prior distribution as well as a formal translation of pre-existing audit information into a prior distribution. The function returns an object of class \code{jfaPrior} that can be used in the \code{planning()} and \code{evaluation()} functions via their \code{prior} argument. Objects with class \code{jfaPrior} can be further inspected via associated \code{summary()} and \code{plot()} methods.
+#' @description \code{auditPrior()} is used to create a prior distribution for
+#' Bayesian audit sampling. The interface allows a complete customization of the
+#' prior distribution as well as a formal translation of pre-existing audit
+#' information into a prior distribution. The function returns an object of
+#' class \code{jfaPrior} that can be used in the \code{planning()} and
+#' \code{evaluation()} functions via their \code{prior} argument. Objects with
+#' class \code{jfaPrior} can be further inspected via associated
+#' \code{summary()} and \code{plot()} methods.
 #'
 #' @usage auditPrior(method = c(
 #'              "default", "strict", "param", "impartial", "hyp",
@@ -26,70 +33,177 @@
 #'            ub = NULL, p.hmin = NULL, x = NULL, n = NULL,
 #'            factor = NULL, conf.level = 0.95)
 #'
-#' @param method      a character specifying the method by which the prior distribution is constructed. Possible options are \code{default}, \code{strict}, \code{impartial}, \code{param}, \code{arm}, \code{bram}, \code{hyp}, \code{sample}, and \code{factor}. See the details section for more information.
-#' @param likelihood  a character specifying the likelihood for updating the prior distribution. Possible options are \code{poisson} (default) for a conjugate gamma prior distribution, \code{binomial} for a conjugate beta prior distribution, or \code{hypergeometric} for a conjugate beta-binomial prior distribution. See the details section for more information.
-#' @param N.units     a numeric value larger than 0 specifying the total number of units in the population. Only used for the \code{hypergeometric} likelihood.
-#' @param alpha       a numeric value specifying the \eqn{\alpha} parameter of the prior distribution. Only used for method \code{param}.
-#' @param beta        a numeric value specifying the \eqn{\beta} parameter of the prior distribution. Only used for method \code{param}.
-#' @param materiality a numeric value between 0 and 1 specifying the performance materiality (i.e., the maximum tolerable misstatement) as a fraction of the total number of units in the population. Only used for methods \code{impartial}, \code{arm}, and \code{hyp}.
-#' @param expected    a numeric value between 0 and 1 specifying the expected errors in the sample relative to the total sample size. Only used for methods \code{impartial}, \code{arm}, \code{bram}, and \code{hyp}.
-#' @param ir          a numeric value between 0 and 1 specifying the inherent risk in the audit risk model. Only used for method \code{arm}.
-#' @param cr          a numeric value between 0 and 1 specifying the internal control risk in the audit risk model. Only used for method \code{arm}.
-#' @param ub          a numeric value between 0 and 1 specifying the \code{conf.level}-\% upper bound for the prior distribution as a fraction of the total number of units in the population. Only used for method \code{bram}.
-#' @param p.hmin      a numeric value between 0 and 1 specifying the prior probability of the hypothesis of tolerable misstatement (H1: \eqn{\theta <} materiality). Only used for method \code{hyp}.
-#' @param x           a numeric value larger than, or equal to, 0 specifying the sum of proportional errors (taints) in a prior sample. Only used for methods \code{sample} and \code{factor}.
-#' @param n           a numeric value larger than 0 specifying the sample size of a prior sample. Only used for methods \code{sample} and \code{factor}.
-#' @param factor      a numeric value between 0 and 1 specifying the weight of the prior sample. Only used for method \code{factor}.
-#' @param conf.level  a numeric value between 0 and 1 specifying the confidence level.
+#' @param method      a character specifying the method by which the prior
+#'   distribution is constructed. Possible options are \code{default},
+#'   \code{strict}, \code{impartial}, \code{param}, \code{arm}, \code{bram},
+#'   \code{hyp}, \code{sample}, and \code{factor}. See the details section for
+#'   more information.
+#' @param likelihood  a character specifying the likelihood for updating the
+#'   prior distribution. Possible options are \code{poisson} (default) for a
+#'   conjugate gamma prior distribution, \code{binomial} for a conjugate beta
+#'   prior distribution, or \code{hypergeometric} for a conjugate beta-binomial
+#'   prior distribution. See the details section for more information.
+#' @param N.units     a numeric value larger than 0 specifying the total number
+#'   of units in the population. Required for the \code{hypergeometric}
+#'   likelihood.
+#' @param alpha       a numeric value specifying the \eqn{\alpha} parameter of
+#'   the prior distribution. Required for method \code{param}.
+#' @param beta        a numeric value specifying the \eqn{\beta} parameter of
+#'   the prior distribution. Required for method \code{param}.
+#' @param materiality   a numeric value between 0 and 1 specifying the
+#'   performance materiality (i.e., the maximum tolerable misstatement in the
+#'   population) as a fraction of the total number of units in the population.
+#'   Required for methods \code{impartial}, \code{arm}, and \code{hyp}.
+#' @param expected      a numeric value between 0 and 1 specifying the expected
+#'   (tolerable) misstatements in the sample relative to the total sample size.
+#'   Required for methods \code{impartial}, \code{arm}, \code{bram}, and
+#'   \code{hyp}.
+#' @param ir          a numeric value between 0 and 1 specifying the inherent
+#'   risk (i.e., the probability of material misstatement occurring due to
+#'   inherent factors) in the audit risk model. Required for method \code{arm}.
+#' @param cr          a numeric value between 0 and 1 specifying the internal
+#'   control risk (i.e., the probability of material misstatement occurring due
+#'   to internal control systems) in the audit risk model. Required for method
+#'   \code{arm}.
+#' @param ub          a numeric value between 0 and 1 specifying the
+#'   \code{conf.level}-\% upper bound for the prior distribution as a
+#'   fraction of the total number of units in the population. Required for
+#'   method \code{bram}.
+#' @param p.hmin      a numeric value between 0 and 1 specifying the prior
+#'   probability of the hypothesis of tolerable misstatement (H1: \eqn{\theta <}
+#'   materiality). Required for method \code{hyp}.
+#' @param x           a numeric value larger than, or equal to, 0 specifying the
+#'   sum of proportional misstatements (taints) in a prior sample. Required for
+#'   methods \code{sample} and \code{factor}.
+#' @param n           a numeric value larger than 0 specifying the number of
+#'   units in a prior sample. Required for methods \code{sample} and
+#'   \code{factor}.
+#' @param factor      a numeric value between 0 and 1 specifying the weight of
+#'   a prior sample specified via \code{x} and \code{n}. Required for method
+#'   \code{factor}.
+#' @param conf.level  a numeric value between 0 and 1 specifying the confidence
+#'   level (1 - audit risk).
 #'
-#' @details To perform Bayesian audit sampling you must assign a prior probability distribution to the parameter in the model, i.e., the population misstatement \eqn{\theta}.
-#'          The prior distribution can incorporate pre-existing audit information about \eqn{\theta} before seeing a sample, which consequently allows for a more efficient or more accurate estimate of \eqn{\theta}.
-#'          However, the default priors used in \code{jfa} are purposely indifferent towards the individual values of \eqn{\theta} in order to 'let the data speak for themselves'.
-#'          Note that these default priors are a conservative choice of prior since they assume all possible misstatement to be (roughly) equally likely before seeing a data sample.
-#'          It is therefore strongly recommended to construct an informed prior distribution based on pre-existing audit information if possible.
+#' @details To perform Bayesian audit sampling you must assign a prior
+#'   distribution to the parameter in the model, i.e., the population
+#'   misstatement \eqn{\theta}. The prior distribution can incorporate
+#'   pre-existing audit information about \eqn{\theta} into the analysis, which
+#'   consequently allows for a more efficient or more accurate estimates. The
+#'   default priors used by \code{jfa} are indifferent towards the possible
+#'   values of \eqn{\theta}, while still being proper. Note that the default
+#'   prior distributions are a conservative choice of prior since they, in most
+#'   cases, assume all possible misstatement to be equally likely before seeing
+#'   a data sample. It is recommended to construct an informed prior
+#'   distribution based on pre-existing audit information when possible.
 #'
-#' @details This section elaborates on the available options for the \code{method} argument.
+#' @details This section elaborates on the available input options for the
+#'   \code{method} argument.
 #'
 #' \itemize{
-#'  \item{\code{default}:   This method produces a \emph{gamma(1, 1)}, \emph{beta(1, 1)}, or \emph{beta-binomial(N, 1, 1)} prior distribution. These priors are indifferent towards the possible values of the misstatement.}
-#'  \item{\code{strict}:    This method produces an improper \emph{gamma(1, 0)}, \emph{beta(1, 0)}, or \emph{beta-binomial(N, 1, 0)} prior distribution. These prior distributions exactly match sample sizes and upper limits from classical methods.}
-#'  \item{\code{impartial}: This method produces an impartial prior distribution. These prior distributions assume that tolerable misstatement (\eqn{\theta <} materiality) and intolerable misstatement (\eqn{\theta >} materiality) are equally likely.}
-#'  \item{\code{param}:     This method produces a \code{gamma(alpha, beta)}, \code{beta(alpha, beta)}, or \code{beta-binomial(N, alpha, beta)} prior distribution.}
-#'  \item{\code{hyp}:       This method translates an assessment of the prior probability for tolerable misstatement (\eqn{\theta <} materiality) to a prior distribution.}
-#'  \item{\code{arm}:       This method translates an assessment of inherent risk and internal control risk (Audit Risk Model, Derks et al., 2021) to a prior distribution.}
-#'  \item{\code{bram}:      This method translates an assessment of the expected most likely error and x-\% upper bound to a prior distribution.}
-#'  \item{\code{sample}:    This method translates sampling results from an earlier sample to a prior distribution.}
-#'  \item{\code{factor}:    This method translates and weighs sampling results from an earlier sample to a prior distribution.}
+#'  \item{\code{default}:   This method produces a \emph{gamma(1, 1)},
+#'    \emph{beta(1, 1)}, or \emph{beta-binomial(N, 1, 1)} prior distribution.
+#'    These prior distributions are indifferent towards the possible values of
+#'    the misstatement.}
+#'  \item{\code{strict}:    This method produces an improper \emph{gamma(1, 0)},
+#'    \emph{beta(1, 0)}, or \emph{beta-binomial(N, 1, 0)} prior distribution.
+#'    These prior distributions match sample sizes and upper limits from
+#'    classical methods and can be used to emulate classical results.}
+#'  \item{\code{impartial}: This method produces an impartial prior
+#'    distribution. These prior distributions assume that tolerable misstatement
+#'    (\eqn{\theta <} materiality) and intolerable misstatement (\eqn{\theta >}
+#'    materiality) are equally likely.}
+#'  \item{\code{param}:     This method produces a custom
+#'    \code{gamma(alpha, beta)}, \code{beta(alpha, beta)}, or
+#'    \code{beta-binomial(N, alpha, beta)} prior distribution. The alpha and
+#'    beta parameters must be set using \code{alpha} and \code{beta}.}
+#'  \item{\code{hyp}:       This method translates an assessment of the prior
+#'    probability for tolerable misstatement (\eqn{\theta <} materiality) to a
+#'    prior distribution.}
+#'  \item{\code{arm}:       This method translates an assessment of inherent
+#'    risk and internal control risk to a prior distribution.}
+#'  \item{\code{bram}:      This method translates an assessment of the
+#'    expected most likely error and \empth{x}-\% upper bound to a prior
+#'    distribution.}
+#'  \item{\code{sample}:    This method translates the outcome of an earlier
+#'    sample to a prior distribution.}
+#'  \item{\code{factor}:    This method translates and weighs the outcome of an
+#'    earlier sample to a prior distribution.}
 #' }
 #'
-#' @details This section elaborates on the available likelihoods and corresponding prior distributions for the \code{likelihood} argument.
+#' @details This section elaborates on the available input options for the
+#' \code{likelihood} argument and the corresponding conjugate prior
+#' distributions used by \code{jfa}.
 #'
 #' \itemize{
-#'  \item{\code{poisson}:        The Poisson distribution is an approximation of the binomial distribution. The Poisson distribution is defined as: \deqn{f(\theta, n) = \frac{\lambda^\theta e^{-\lambda}}{\theta!}} The conjugate \emph{gamma(\eqn{\alpha, \beta})} prior has probability density function: \deqn{p(\theta; \alpha, \beta) = \frac{\beta^\alpha \theta^{\alpha - 1} e^{-\beta \theta}}{\Gamma(\alpha)}}}
-#'  \item{\code{binomial}:       The binomial distribution is an approximation of the hypergeometric distribution. The binomial distribution is defined as: \deqn{f(\theta, n, x) = {n \choose x} \theta^x (1 - \theta)^{n - x}} The conjugate \emph{beta(\eqn{\alpha, \beta})} prior has probability density function: \deqn{p(\theta; \alpha, \beta) = \frac{1}{B(\alpha, \beta)} \theta^{\alpha - 1} (1 - \theta)^{\beta - 1}}}
-#'  \item{\code{hypergeometric}: The hypergeometric distribution is defined as: \deqn{f(x, n, K, N) = \frac{{K \choose x} {N - K \choose n - x}}{{N \choose n}}} The conjugate \emph{beta-binomial(\eqn{\alpha, \beta})} prior (Dyer and Pierce, 1993) has probability mass function: \deqn{f(x, n, \alpha, \beta) = {n \choose x} \frac{B(x + \alpha, n - x + \beta)}{B(\alpha, \beta)}} }
+#'  \item{\code{poisson}:        The Poisson distribution is an approximation of
+#'    the binomial distribution. The Poisson distribution is defined as:
+#'    \deqn{f(\theta, n) = \frac{\lambda^\theta e^{-\lambda}}{\theta!}}. The
+#'    conjugate \emph{gamma(\eqn{\alpha, \beta})} prior has probability density
+#'    function:
+#'    \deqn{p(\theta; \alpha, \beta) = \frac{\beta^\alpha \theta^{\alpha - 1}
+#'    e^{-\beta \theta}}{\Gamma(\alpha)}}.}
+#'  \item{\code{binomial}:       The binomial distribution is an approximation
+#'  of the hypergeometric distribution. The binomial distribution is defined as:
+#'  \deqn{f(\theta, n, x) = {n \choose x} \theta^x (1 - \theta)^{n - x}}. The
+#'  conjugate \emph{beta(\eqn{\alpha, \beta})} prior has probability density
+#'  function: \deqn{p(\theta; \alpha, \beta) = \frac{1}{B(\alpha, \beta)}
+#'  \theta^{\alpha - 1} (1 - \theta)^{\beta - 1}}.}
+#'  \item{\code{hypergeometric}: The hypergeometric distribution is defined as:
+#'  \deqn{f(x, n, K, N) = \frac{{K \choose x} {N - K \choose n - x}}
+#'  {{N \choose n}}}. The conjugate \emph{beta-binomial(\eqn{\alpha, \beta})}
+#'  prior (Dyer and Pierce, 1993) has probability mass function:
+#'  \deqn{f(x, n, \alpha, \beta) = {n \choose x}
+#'  \frac{B(x + \alpha, n - x + \beta)}{B(\alpha, \beta)}}.}
 #' }
 #'
 #' @return An object of class \code{jfaPrior} containing:
 #'
-#' \item{prior}{a string describing the functional form of the prior distribution.}
-#' \item{description}{a list containing a description of the prior distribution, including the parameters of the prior distribution and the implicit sample on which the prior distribution is based.}
-#' \item{statistics}{a list containing statistics of the prior distribution, including the mean, mode, median, and upper bound of the prior distribution.}
-#' \item{specifics}{a list containing specifics of the prior distribution that vary depending on the \code{method}.}
-#' \item{hypotheses}{if \code{materiality} is specified, a list containing information about the hypotheses, including prior probabilities and odds for the hypothesis of tolerable misstatement (H1) and the hypothesis of intolerable misstatement (H0).}
-#' \item{method}{a character indicating the method by which the prior distribution is constructed.}
+#' \item{prior}{a string describing the functional form of the prior
+#'   distribution.}
+#' \item{description}{a list containing a description of the prior distribution,
+#'   including the parameters of the prior distribution and the implicit sample
+#'   on which the prior distribution is based.}
+#' \item{statistics}{a list containing statistics of the prior distribution,
+#'   including the mean, mode, median, and upper bound of the prior
+#'   distribution.}
+#' \item{specifics}{a list containing specifics of the prior distribution that
+#'   vary depending on the \code{method}.}
+#' \item{hypotheses}{if \code{materiality} is specified, a list containing
+#'   information about the hypotheses, including prior probabilities and odds
+#'   for the hypothesis of tolerable misstatement (H1) and the hypothesis of
+#'   intolerable misstatement (H0).}
+#' \item{method}{a character indicating the method by which the prior
+#'   distribution is constructed.}
 #' \item{likelihood}{a character indicating the likelihood of the data.}
-#' \item{materiality}{if \code{materiality} is specified, a numeric value between 0 and 1 giving the materiality used to construct the prior distribution.}
-#' \item{expected}{a numeric value larger than, or equal to, 0 giving the input for the number of expected errors.}
-#' \item{conf.level}{a numeric value between 0 and 1 giving the confidence level.}
-#' \item{N.units}{if \code{N.units} is specified, the number of units in the population.}
+#' \item{materiality}{if \code{materiality} is specified, a numeric value
+#'   between 0 and 1 giving the materiality used to construct the prior
+#'   distribution.}
+#' \item{expected}{a numeric value larger than, or equal to, 0 giving the input
+#'   for the number of expected misstatements.}
+#' \item{conf.level}{a numeric value between 0 and 1 giving the confidence
+#'   level.}
+#' \item{N.units}{if \code{N.units} is specified, the number of units in the
+#'   population.}
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
-#' @seealso \code{\link{planning}} \code{\link{selection}} \code{\link{evaluation}} \code{\link{report}}
+#' @seealso \code{\link{planning}}
+#'          \code{\link{selection}}
+#'          \code{\link{evaluation}}
+#'          \code{\link{report}}
 #'
-#' @references Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., & Wetzels, R. (2021). JASP for audit: Bayesian tools for the auditing practice. \emph{Journal of Open Source Software}, \emph{6}(68), 2733.
-#' @references Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., & Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. \emph{International Journal of Auditing}, \emph{25}(3), 621-636.
+#' @references Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J.,
+#'   & Wetzels, R. (2021). Priors in a Bayesian audit: How integration of
+#'   existing information into the prior distribution can improve audit
+#'   transparency and efficiency. \emph{International Journal of Auditing},
+#'   25(3), 621-636. \url{https://doi.org/10.1111/ijau.12240}
+#' @references Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., &
+#'   Wetzels, R. (2021). JASP for audit: Bayesian tools for the auditing
+#'   practice. \emph{Journal of Open Source Software}, \emph{6}(68), 2733.
+#'   \url{https://doi.org/10.21105/joss.02733}
+#' @references Derks, K., de Swart, J., Wagenmakers, E.-J., & Wetzels, R.
+#'   (2022). An impartial Bayesian hypothesis test for audit sampling.
+#'   \emph{PsyArXiv}. \url{https://doi.org/10.31234/osf.io/8nf3e}
 #'
 #' @keywords audit evaluation planning prior
 #'
@@ -107,11 +221,21 @@
 auditPrior <- function(method = c(
                          "default", "strict", "param", "impartial", "hyp",
                          "arm", "bram", "sample", "factor"
-                       ), likelihood = c("poisson", "binomial", "hypergeometric"),
-                       N.units = NULL, alpha = NULL, beta = NULL,
-                       materiality = NULL, expected = 0, ir = NULL, cr = NULL,
-                       ub = NULL, p.hmin = NULL, x = NULL, n = NULL,
-                       factor = NULL, conf.level = 0.95) {
+                       ),
+                       likelihood = c("poisson", "binomial", "hypergeometric"),
+                       N.units = NULL,
+                       alpha = NULL,
+                       beta = NULL,
+                       materiality = NULL,
+                       expected = 0,
+                       ir = NULL,
+                       cr = NULL,
+                       ub = NULL,
+                       p.hmin = NULL,
+                       x = NULL,
+                       n = NULL,
+                       factor = NULL,
+                       conf.level = 0.95) {
   method <- match.arg(method)
   likelihood <- match.arg(likelihood)
   stopifnot(
@@ -257,7 +381,7 @@ auditPrior <- function(method = c(
   description[["implicit.x"]] <- prior.x
   description[["implicit.n"]] <- prior.n
   # Create the prior string
-  prior.string <- switch(likelihood,
+  prior_string <- switch(likelihood,
     "poisson" = paste0("gamma(\u03B1 = ", round(description[["alpha"]], 3), ", \u03B2 = ", round(description[["beta"]], 3), ")"),
     "binomial" = paste0("beta(\u03B1 = ", round(description[["alpha"]], 3), ", \u03B2 = ", round(description[["beta"]], 3), ")"),
     "hypergeometric" = paste0("beta-binomial(N = ", N.units, ", \u03B1 = ", round(description[["alpha"]], 3), ", \u03B2 = ", round(description[["beta"]], 3), ")")
@@ -341,7 +465,7 @@ auditPrior <- function(method = c(
   # Create the main result object
   result <- list()
   # Functional form of the prior distribution
-  result[["prior"]] <- prior.string
+  result[["prior"]] <- prior_string
   result[["description"]] <- description
   result[["statistics"]] <- statistics
   if (method != "default" && method != "strict") {

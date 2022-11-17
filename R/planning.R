@@ -50,10 +50,10 @@
 #' @param conf.level    a numeric value between 0 and 1 specifying the
 #'   confidence level (i.e., 1 - audit risk / detection risk).
 #' @param N.units       a numeric value larger than 0 specifying the total
-#'   number of units in the population. This argument is strictly only required
-#'   for the \code{hypergeometric} likelihood, but is also used in
-#'   stratification to weigh the estimates of each individual stratum to arrive
-#'   at the population estimate. If \code{NULL}, each stratum is assumed to be
+#'   number of units in the population. This argument is strictly required for
+#'   the \code{hypergeometric} likelihood, but is also used in stratification
+#'   to weigh the estimates of each individual stratum to arrive at the
+#'   population estimate. If \code{NULL}, each stratum is assumed to be
 #'   equally represented in the population.
 #' @param by            an integer larger than 0 specifying the increment
 #'   between acceptable sample sizes (e.g., \code{increment = 5} considers only
@@ -137,6 +137,10 @@
 #'   existing information into the prior distribution can improve audit
 #'   transparency and efficiency. \emph{International Journal of Auditing},
 #'   25(3), 621-636. \url{https://doi.org/10.1111/ijau.12240}
+#' @references Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., &
+#'   Wetzels, R. (2021). JASP for audit: Bayesian tools for the auditing
+#'   practice. \emph{Journal of Open Source Software}, \emph{6}(68), 2733.
+#'   \url{https://doi.org/10.21105/joss.02733}
 #' @references Dyer, D. and Pierce, R.L. (1993). On the choice of the prior
 #' distribution in hypergeometric sampling. \emph{Communications in Statistics -
 #' Theory and Methods}, 22(8), 2125 - 2146.

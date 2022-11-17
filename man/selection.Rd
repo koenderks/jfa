@@ -116,6 +116,11 @@ selection(
 )
 }
 \references{
+Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., &
+  Wetzels, R. (2021). JASP for audit: Bayesian tools for the auditing
+  practice. \emph{Journal of Open Source Software}, \emph{6}(68), 2733.
+  \url{https://doi.org/10.21105/joss.02733}
+
 Hoogduin, L. A., Hall, T. W., & Tsay, J. J. (2010). Modified
   sieve sampling: A method for single-and multi-stage
   probability-proportional-to-size sampling. \emph{Auditing: A Journal of
