@@ -10,9 +10,13 @@ colorize <- function(x, color) {
   if (knitr::is_latex_output()) {
     sprintf("\\textcolor{%s}{%s}", color, x)
   } else if (knitr::is_html_output()) {
-    sprintf("<span style='color: %s;'>%s</span>", color, 
-      x)
-  } else x
+    sprintf(
+      "<span style='color: %s;'>%s</span>", color,
+      x
+    )
+  } else {
+    x
+  }
 }
 ```
 
@@ -42,50 +46,55 @@ Visit the [package website](https://koenderks.github.io/jfa) to learn more!
 ```{r echo=FALSE}
 df <- data.frame("n" = object[["n"]], "k" = object[["x"]], "t" = object[["t"]])
 colnames(df) <- c("Sample size", "Misstatements", "Total taint")
-tab <- knitr::kable(df, digits = 2, caption = "Table 1: Summary of the sampling results.", format = "html",
-                    row.names = FALSE, format.args = list(big.mark = ",", scientific = FALSE),
-                    table.attr = "style='width:40%;'", align = "c")
-if(is.nan(object[["t"]]))
-  tab <- kableExtra::footnote(tab, 
-                              alphabet = "The total taint could not be calculated because 
-                              some book values are zero.", fixed_small_size = TRUE)
-kableExtra::kable_classic(tab, position="float_left", html_font = "Cambria")
+tab <- knitr::kable(df,
+  digits = 2, caption = "Table 1: Summary of the sampling results.", format = "html",
+  row.names = FALSE, format.args = list(big.mark = ",", scientific = FALSE),
+  table.attr = "style='width:40%;'", align = "c"
+)
+if (is.nan(object[["t"]])) {
+  tab <- kableExtra::footnote(tab,
+    alphabet = "The total taint could not be calculated because
+                              some book values are zero.", fixed_small_size = TRUE
+  )
+}
+kableExtra::kable_classic(tab, position = "float_left", html_font = "Cambria")
 ```
 
 <div class = "row" align="center">
 <br>
 ```{r, echo = FALSE}
-if(object[["materiality"]] != 1){
-  if(object[["method"]] %in% c("direct", "difference", "quotient", "regression")){
-    if(object[["ub"]] < object[["materiality"]] * object[["N.units"]]){
-      knitr::include_graphics("./materiality_succeeded.png")  
+if (object[["materiality"]] != 1) {
+  if (object[["method"]] %in% c("direct", "difference", "quotient", "regression")) {
+    if (object[["ub"]] < object[["materiality"]] * object[["N.units"]]) {
+      knitr::include_graphics("./materiality_succeeded.png")
     } else {
-      knitr::include_graphics("./materiality_failed.png") 
-    }    
+      knitr::include_graphics("./materiality_failed.png")
+    }
   } else {
-    if(object[["ub"]] < object[["materiality"]]){
-      knitr::include_graphics("./materiality_succeeded.png")  
+    if (object[["ub"]] < object[["materiality"]]) {
+      knitr::include_graphics("./materiality_succeeded.png")
     } else {
-      knitr::include_graphics("./materiality_failed.png") 
+      knitr::include_graphics("./materiality_failed.png")
     }
   }
 }
 
-if(object[["materiality"]] != 1 & object[["min.precision"]] != 1)
+if (object[["materiality"]] != 1 && object[["min.precision"]] != 1) {
   knitr::include_graphics("./empty.png")
+}
 
-if(object[["min.precision"]] != 1){
-  if(object[["method"]] %in% c("direct", "difference", "quotient", "regression")){
-    if(object[["precision"]] < object[["min.precision"]] * object[["N.units"]]){
-      knitr::include_graphics("./precision_succeeded.png")  
+if (object[["min.precision"]] != 1) {
+  if (object[["method"]] %in% c("direct", "difference", "quotient", "regression")) {
+    if (object[["precision"]] < object[["min.precision"]] * object[["N.units"]]) {
+      knitr::include_graphics("./precision_succeeded.png")
     } else {
-      knitr::include_graphics("./precision_failed.png") 
-    }    
+      knitr::include_graphics("./precision_failed.png")
+    }
   } else {
-    if(object[["precision"]] < object[["min.precision"]]){
-      knitr::include_graphics("./precision_succeeded.png")  
+    if (object[["precision"]] < object[["min.precision"]]) {
+      knitr::include_graphics("./precision_succeeded.png")
     } else {
-      knitr::include_graphics("./precision_failed.png") 
+      knitr::include_graphics("./precision_failed.png")
     }
   }
 }
@@ -95,39 +104,50 @@ if(object[["min.precision"]] != 1){
 The table below summarizes the estimated misstatement in the population, including the most likely error, the `r round(object[["conf.level"]] * 100, 3)`% upper bound, and the obtained precision. As a justification of these results, appendix A contains the derivations upon which they are based. Appendix B lists the input data.
 
 ```{r, echo = FALSE}
-if(object[["method"]] %in% c("direct", "difference", "quotient", "regression")){
-   df <- data.frame("type" = c("x 100 = %", "$"),
-                    "mle" = c(object[["mle"]]/object[["N.units"]], object[["mle"]]),
-                    "lb" = c(object[["lb"]]/object[["N.units"]], object[["lb"]]),
-                    "ub" = c(object[["ub"]]/object[["N.units"]], object[["ub"]]),
-                    "precision" = c(object[["precision"]]/object[["N.units"]], object[["precision"]]))
- colnames(df) <- c("", "Most likely error", "Lower bound", "Upper bound", "Precision") 
+if (object[["method"]] %in% c("direct", "difference", "quotient", "regression")) {
+  df <- data.frame(
+    "type" = c("x 100 = %", "$"),
+    "mle" = c(object[["mle"]] / object[["N.units"]], object[["mle"]]),
+    "lb" = c(object[["lb"]] / object[["N.units"]], object[["lb"]]),
+    "ub" = c(object[["ub"]] / object[["N.units"]], object[["ub"]]),
+    "precision" = c(object[["precision"]] / object[["N.units"]], object[["precision"]])
+  )
+  colnames(df) <- c("", "Most likely error", "Lower bound", "Upper bound", "Precision")
 } else {
-  if(!is.null(object[["N.units"]])){
-      df <- data.frame("type" = c("% = x 100", "$"),
-                       "mle" = c(object[["mle"]], object[["mle"]] * object[["N.units"]]),
-                        "ub" = c(object[["ub"]], object[["ub"]] * object[["N.units"]]),
-                        "precision" = c(object[["precision"]], 
-                                        object[["precision"]] * object[["N.units"]])) 
+  if (!is.null(object[["N.units"]])) {
+    df <- data.frame(
+      "type" = c("% = x 100", "$"),
+      "mle" = c(object[["mle"]], object[["mle"]] * object[["N.units"]]),
+      "ub" = c(object[["ub"]], object[["ub"]] * object[["N.units"]]),
+      "precision" = c(
+        object[["precision"]],
+        object[["precision"]] * object[["N.units"]]
+      )
+    )
   } else {
-    df <- data.frame("type" = c("% = x 100"),
-                     "mle" = object[["mle"]],
-                     "ub" = object[["ub"]],
-                     "precision" = object[["precision"]]) 
+    df <- data.frame(
+      "type" = c("% = x 100"),
+      "mle" = object[["mle"]],
+      "ub" = object[["ub"]],
+      "precision" = object[["precision"]]
+    )
   }
- colnames(df) <- c("", "Most likely error", "Upper bound", "Precision") 
+  colnames(df) <- c("", "Most likely error", "Upper bound", "Precision")
 }
-tab <- knitr::kable(df, digits = 3, caption = "Table 2: Summary of the inferential results.", format = "html", 
-                    row.names = FALSE, format.args = list(big.mark = ",", scientific = FALSE),
-                    table.attr = "style='width:70%;'", align = "r")
-tab <- kableExtra::footnote(tab, 
-                            alphabet = "The top row shows the misstatement as a fraction of the total value.", fixed_small_size = TRUE)
-kableExtra::kable_classic(tab, position="left", html_font = "Cambria")
+tab <- knitr::kable(df,
+  digits = 3, caption = "Table 2: Summary of the inferential results.", format = "html",
+  row.names = FALSE, format.args = list(big.mark = ",", scientific = FALSE),
+  table.attr = "style='width:70%;'", align = "r"
+)
+tab <- kableExtra::footnote(tab,
+  alphabet = "The top row shows the misstatement as a fraction of the total value.", fixed_small_size = TRUE
+)
+kableExtra::kable_classic(tab, position = "left", html_font = "Cambria")
 ```
 
 ```{r echo=FALSE, fig.height=3.4, fig.align='center'}
-if(!(object[["method"]]%in%c("stringer"))){
-  plot(object) 
+if (!(object[["method"]] %in% c("stringer"))) {
+  plot(object)
 }
 ```
 
@@ -206,16 +226,17 @@ These results have been calculated using `r switch(object[["method"]], "poisson"
 `r if (!is.null(object[["data"]])){ "\n---" }`
 
 ```{r, echo = FALSE}
-if(!is.null(object[["data"]])){
-  tab <- knitr::kable(object[['data']], 
-                       digits = 3, 
-                       caption = "Table 3: Relevant data obtained from the input sample.", 
-                       align = "c", 
-                       format = "html", 
-                       row.names = FALSE, 
-                       format.args = list(big.mark = ",", scientific = FALSE),
-                       table.attr = "style='width:70%;'")
-  kableExtra::kable_classic(tab, position="center", html_font = "Cambria")
+if (!is.null(object[["data"]])) {
+  tab <- knitr::kable(object[["data"]],
+    digits = 3,
+    caption = "Table 3: Relevant data obtained from the input sample.",
+    align = "c",
+    format = "html",
+    row.names = FALSE,
+    format.args = list(big.mark = ",", scientific = FALSE),
+    table.attr = "style='width:70%;'"
+  )
+  kableExtra::kable_classic(tab, position = "center", html_font = "Cambria")
 }
 ```
 

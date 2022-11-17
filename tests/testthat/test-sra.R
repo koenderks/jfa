@@ -19,11 +19,11 @@ context("Benchmark against SRA")
 # Retrieved on 10-11-2022
 
 test_that(desc = "(id: f13-v0.6.5-t1) Test frequentist sample sizes", {
-  theta <- c(1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000) / 20000 # materiality / N
+  theta <- c(1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000) / 20000 # materiality divided by N
   confidence <- c(0.95, 0.96, 0.97, 0.975, 0.98, 0.99)
   sampleSizeMatrix <- matrix(NA, nrow = length(confidence), ncol = length(theta))
-  for (i in 1:nrow(sampleSizeMatrix)) {
-    for (j in 1:ncol(sampleSizeMatrix)) {
+  for (i in seq_len(nrow(sampleSizeMatrix))) {
+    for (j in seq_len(ncol(sampleSizeMatrix))) {
       plan <- planning(materiality = theta[j], conf.level = confidence[i], likelihood = "poisson")
       sampleSizeMatrix[i, j] <- plan[["n"]]
     }

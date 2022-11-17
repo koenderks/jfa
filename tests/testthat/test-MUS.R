@@ -16,7 +16,6 @@
 context("Benchmark against R package MUS")
 
 # MUS R package (version 0.1.6)
-# install.packages('MUS')
 
 test_that(desc = "(id: f12-v0.5.4-t1) Test Sample sizes for poisson distribution", {
   set.seed(1)
@@ -24,8 +23,8 @@ test_that(desc = "(id: f12-v0.5.4-t1) Test Sample sizes for poisson distribution
   m <- seq(10000, 20000, 1000)
   e <- seq(100, 900, 100)
   ss_MUS <- ss_jfa <- matrix(NA, nrow = length(e), ncol = length(m))
-  for (j in 1:length(m)) {
-    for (i in 1:length(e)) {
+  for (j in seq_along(m)) {
+    for (i in seq_along(e)) {
       ss_MUS[i, j] <- MUS::MUS.calc.n.conservative(confidence.level = 0.95, tolerable.error = m[j], expected.error = e[i], book.value = sum(data$book.value)) # MUS::calc.n.conservative is used in MUS::MUS.planning()
       ss_jfa[i, j] <- jfa::planning(conf.level = 0.95, materiality = m[j] / sum(data$book.value), expected = e[i] / sum(data$book.value), likelihood = "poisson")$n
     }
@@ -41,7 +40,6 @@ test_that(desc = "(id: f12-v0.5.4-t1) Test Sample sizes for poisson distribution
 })
 
 # MUS R package (version 0.1.6)
-# install.packages('MUS')
 
 test_that(desc = "(id: f12-v0.5.4-t2) Test most likely error and upper bound using stringer bound", {
   set.seed(1)
@@ -49,8 +47,8 @@ test_that(desc = "(id: f12-v0.5.4-t2) Test most likely error and upper bound usi
   m <- seq(10000, 20000, 500)
   e <- seq(500, 4500, 100)
   mle_MUS <- ub_MUS <- mle_jfa <- ub_jfa <- matrix(NA, nrow = length(e), ncol = length(m))
-  for (j in 1:length(m)) {
-    for (i in 1:length(e)) {
+  for (j in seq_along(m)) {
+    for (i in seq_along(e)) {
       plan <- MUS::MUS.planning(data = data, tolerable.error = m[j], expected.error = e[i])
       # Extract a sample and cache it (no high values exist in this example)
       extract <- MUS::MUS.extraction(plan)

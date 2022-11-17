@@ -24,8 +24,8 @@ test_that(desc = "(id: f11-v0.4.0-t1) Test Sample sizes for binomial distributio
   sampleSizeMatrix <- matrix(NA, nrow = length(expectedDeviationRate), ncol = length(tolerableDeivationRate))
   rownames(sampleSizeMatrix) <- expectedDeviationRate
   colnames(sampleSizeMatrix) <- tolerableDeivationRate
-  for (i in 1:length(tolerableDeivationRate)) {
-    for (j in 1:length(expectedDeviationRate)) {
+  for (i in seq_along(tolerableDeivationRate)) {
+    for (j in seq_along(expectedDeviationRate)) {
       if (i == 1 && j > 5) {
         next
       }
@@ -82,7 +82,7 @@ test_that(desc = "(id: f11-v0.4.0-t1) Test Sample sizes for Hypergeometric distr
   sampleSizeMatrix[, 2] <- expectedErrorRate
   sampleSizeMatrix[, 3] <- tolerableErrorRate
   sampleSizeMatrix[, 4] <- confidenceLevel
-  for (i in 1:nrow(sampleSizeMatrix)) {
+  for (i in seq_len(nrow(sampleSizeMatrix))) {
     jfaRes <- planning(conf.level = sampleSizeMatrix[i, 4], expected = sampleSizeMatrix[i, 2], likelihood = "hypergeometric", N.units = sampleSizeMatrix[i, 1], materiality = sampleSizeMatrix[i, 3])
     sampleSizeMatrix[i, 5] <- jfaRes[["n"]]
     jfaRes <- planning(conf.level = sampleSizeMatrix[i, 4], expected = sampleSizeMatrix[i, 2], likelihood = "binomial", N.units = sampleSizeMatrix[i, 1], materiality = sampleSizeMatrix[i, 3])

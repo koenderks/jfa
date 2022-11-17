@@ -268,7 +268,6 @@ plot.jfaPosterior <- function(x, xlim = c(0, 1), ...) {
     graphics::axis(1, at = pretty(xseq, min.n = 4), labels = round(pretty(xseq, min.n = 4), 2))
     graphics::axis(2, at = c(0, yMax), labels = FALSE, las = 1, lwd.ticks = 0)
   } else {
-    mainLab <- paste0("beta-binomial posterior distribution (N = ", x[["N.units"]] - x[["description"]]$n, ", alpha = ", round(x[["description"]]$alpha, 3), ", beta = ", round(x[["description"]]$beta, 3), ")")
     graphics::barplot(d, bty = "n", xlab = "K", ylab = "Probability", las = 1, ylim = c(0, yMax), width = 1, space = 0, main = x[["posterior"]], axes = FALSE, col = "darkgray")
     graphics::axis(1, at = pretty(xseq, min.n = 4) + 0.5, labels = pretty(xseq, min.n = 4))
     graphics::axis(2, at = c(0, yMax), labels = FALSE, las = 1, lwd.ticks = 0)
@@ -669,7 +668,7 @@ plot.jfaEvaluation <- function(x, xlim = c(0, 1), ...) {
     ymax <- x[["mle"]] + 2 * x[["precision"]]
     graphics::plot(0, type = "n", ylim = c(ymin, ymax), ylab = expression(E), xlim = c(0, 1), bty = "n", xaxt = "n", xlab = "", yaxt = "n", main = paste0(round(x[["conf.level"]] * 100, 2), "% Confidence interval"))
     yBreaks <- base::pretty(c(ymin, ymax), n = 6)
-    graphics::axis(side = 2, at = yBreaks, labels = base::format(round(yBreaks), scientific = F, big.mark = ","), las = 1)
+    graphics::axis(side = 2, at = yBreaks, labels = base::format(round(yBreaks), scientific = FALSE, big.mark = ","), las = 1)
     graphics::segments(x0 = 0, x1 = 1, y0 = 0, y1 = 0, lty = 2, col = "gray")
     if (x[["materiality"]] != 1) {
       graphics::segments(x0 = 0, x1 = 1, y0 = (x[["N.units"]] * x[["materiality"]]), y1 = (x[["N.units"]] * x[["materiality"]]), lty = 2, col = "red")

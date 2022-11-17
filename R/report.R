@@ -15,19 +15,31 @@
 
 #' Audit Sampling: Reporting
 #'
-#' @description \code{report()} takes an object of class \code{jfaEvaluation} as returned by the \code{evaluation()} function automatically generates a \code{html} or \code{pdf} report containing the most relevant statistical results and their interpretation.
+#' @description \code{report()} takes an object of class \code{jfaEvaluation} as
+#' returned by the \code{evaluation()} function automatically generates a
+#' \code{html} or \code{pdf} report containing the most relevant statistical
+#' results and their interpretation.
 #'
-#' @usage report(object, file = 'report.html', format = c('html_document', 'pdf_document'))
+#' @usage report(object, file = 'report.html',
+#'        format = c('html_document', 'pdf_document'))
 #'
-#' @param object an object of class \code{jfaEvaluation} as returned by the \code{evaluation()} function.
-#' @param file   a character specifying the name of the report (e.g. \code{report.html}).
-#' @param format a character specifying the output format of the report. Possible options are \code{html_document} (default) and \code{pdf_document}, but compiling to \code{pdf} format requires a local version of MikTex.
+#' @param object an object of class \code{jfaEvaluation} as returned by the
+#'   \code{evaluation()} function.
+#' @param file   a character specifying the name of the report (e.g.
+#'   \code{report.html}).
+#' @param format a character specifying the output format of the report.
+#'   Possible options are \code{html_document} (default) and
+#'   \code{pdf_document}, but compiling to \code{pdf} format requires a local
+#'   version of \code{MikTex}.
 #'
-#' @return A \code{html} or \code{pdf} file containing a report of the evaluation.
+#' @return A \code{html} or \code{pdf} file containing the report.
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
-#' @seealso \code{\link{auditPrior}} \code{\link{planning}} \code{\link{selection}} \code{\link{evaluation}}
+#' @seealso \code{\link{auditPrior}}
+#'          \code{\link{planning}}
+#'          \code{\link{selection}}
+#'          \code{\link{evaluation}}
 #'
 #' @keywords audit evaluation report
 #'
@@ -52,8 +64,12 @@
 #'
 #' @export
 
-report <- function(object, file = "report.html", format = c("html_document", "pdf_document")) {
-  stopifnot("'object' must be of class 'jfaEvaluation'" = inherits(object, "jfaEvaluation"))
+report <- function(object,
+                   file = "report.html",
+                   format = c("html_document", "pdf_document")) {
+  valid_object <- inherits(object, "jfaEvaluation")
+  stopifnot("'object' must be of class 'jfaEvaluation'" = valid_object)
+  format <- match.arg(format)
   if (!requireNamespace("rmarkdown", quietly = TRUE)) {
     stop('package \"rmarkdown\" needed for this function to work, please install it', call. = FALSE)
   }
@@ -63,16 +79,12 @@ report <- function(object, file = "report.html", format = c("html_document", "pd
   if (!requireNamespace("kableExtra", quietly = TRUE)) {
     stop('package \"kableExtra\" needed for this function to work, please install it', call. = FALSE)
   }
-  # Determine the template
-  file_location <- system.file("rmd/report.Rmd", package = "jfa")
-  # Process the function arguments
-  format <- match.arg(format)
+  template_location <- system.file("rmd/report.Rmd", package = "jfa")
   args <- list()
-  args$input <- file_location
+  args$input <- template_location
   args$output_dir <- getwd()
   args$output_format <- format
   args$output_file <- file
-  # Start the renderer via rmarkdown
   output_file <- do.call(.getfun("rmarkdown::render"), args = args)
   invisible(output_file)
 }

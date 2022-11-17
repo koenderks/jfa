@@ -23,7 +23,7 @@ test_that(desc = "(id: f14-v0.5.1-t1) Test Sample sizes on page 17", {
   SR <- c(0.05, 0.10, 0.25, 0.40, 0.50)
   materiality <- 0.01
   n <- numeric(length(SR))
-  for (i in 1:length(SR)) {
+  for (i in seq_along(SR)) {
     n[i] <- jfa::planning(conf.level = 1 - SR[i], materiality = materiality, likelihood = "poisson")$n
   }
   expect_equal(n, c(300, 230 + 1, 140 - 1, 90 + 2, 70))

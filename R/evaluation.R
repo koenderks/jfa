@@ -634,10 +634,10 @@ evaluation <- function(materiality = NULL,
     result[["precision"]] <- precision[1]
   } else { # Poststratification to get to population results
     if (pooling != "partial") {
-      samples <- .fake_mcmc(method, nstrata, bayesian, prior.x, t.obs, prior.n, n.obs, N.units, iterations = 100000)
+      samples <- .sample_analytical(method, nstrata, bayesian, prior.x, t.obs, prior.n, n.obs, N.units, iterations = 100000)
     }
-    prior_samples <- .poststratify_samples(samples[, nstrata:ncol(samples)], N.units, nstrata)
-    posterior_samples <- .poststratify_samples(samples[, 1:(nstrata - 1)], N.units, nstrata)
+    prior_samples <- .poststratify_samples(samples[, nstrata:ncol(samples)], N.units)
+    posterior_samples <- .poststratify_samples(samples[, 1:(nstrata - 1)], N.units)
     result[["mle"]] <- .getmode(posterior_samples)
     result[["lb"]] <- switch(alternative,
       "two.sided" = as.numeric(stats::quantile(posterior_samples, probs = (1 - conf.level) / 2)),

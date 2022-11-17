@@ -20,14 +20,14 @@ context("Benchmark against Appendix C (AICPA 2017)")
 
 test_that(desc = "(id f10-v0.4.0-t1) Test Monetary Unit Sample Sizes for 5 percent risk of overreliance (AICPA 2017 - Appendix C: Table C-1)", {
   riskOfIncorrectAcceptance <- c(rep(5, 6), rep(10, 5), rep(15, 5), rep(20, 5), rep(25, 5), rep(30, 4), rep(35, 4), rep(50, 4)) / 100
-  ratioOfExpectedToTolerableMisstatement <- c(seq(0, 0.5, 0.1), 0, seq(0.2, 0.5, 0.1), 0, seq(0.2, 0.5, 0.1), 0, seq(0.2, 0.5, 0.1), 0, seq(0.2, 0.5, 0.1), 0, seq(0.2, 0.6, 0.2), 0, seq(0.2, 0.6, 0.2), 0, seq(0.2, 0.6, 0.2))
+  ratioExpectedTolerable <- c(seq(0, 0.5, 0.1), 0, seq(0.2, 0.5, 0.1), 0, seq(0.2, 0.5, 0.1), 0, seq(0.2, 0.5, 0.1), 0, seq(0.2, 0.5, 0.1), 0, seq(0.2, 0.6, 0.2), 0, seq(0.2, 0.6, 0.2), 0, seq(0.2, 0.6, 0.2))
   tolerableMisstatement <- c(0.5, 0.3, 0.1, 0.08, 0.06, 0.05, 0.04, 0.03, 0.02, 0.01, 0.005)
   sampleSizeMatrix <- matrix(NA, nrow = length(riskOfIncorrectAcceptance), ncol = length(tolerableMisstatement) + 3)
   colnames(sampleSizeMatrix) <- c("Risk", "Expected", tolerableMisstatement, "Taints")
   sampleSizeMatrix[, 1] <- riskOfIncorrectAcceptance
-  sampleSizeMatrix[, 2] <- ratioOfExpectedToTolerableMisstatement
-  for (i in 1:nrow(sampleSizeMatrix)) {
-    for (j in 1:length(tolerableMisstatement)) {
+  sampleSizeMatrix[, 2] <- ratioExpectedTolerable
+  for (i in seq_len(nrow(sampleSizeMatrix))) {
+    for (j in seq_along(tolerableMisstatement)) {
       jfaRes <- planning(conf.level = (1 - sampleSizeMatrix[i, 1]), expected = tolerableMisstatement[j] * sampleSizeMatrix[i, 2], likelihood = "poisson", materiality = tolerableMisstatement[j])
       sampleSizeMatrix[i, j + 2] <- jfaRes[["n"]]
     }
@@ -37,7 +37,7 @@ test_that(desc = "(id f10-v0.4.0-t1) Test Monetary Unit Sample Sizes for 5 perce
   aicpaMatrix <- matrix(data = NA, nrow = length(riskOfIncorrectAcceptance), ncol = length(tolerableMisstatement) + 3, byrow = FALSE)
   colnames(aicpaMatrix) <- c("Risk", "Expected", tolerableMisstatement, "Taints")
   aicpaMatrix[, 1] <- riskOfIncorrectAcceptance
-  aicpaMatrix[, 2] <- ratioOfExpectedToTolerableMisstatement
+  aicpaMatrix[, 2] <- ratioExpectedTolerable
   aicpaMatrix[, 3:14] <- matrix(
     c(
       6, 10, 30, 38, 50, 60, 75, 100, 150, 300, 600, 0,

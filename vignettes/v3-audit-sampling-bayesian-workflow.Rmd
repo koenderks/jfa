@@ -137,20 +137,24 @@ summary(stage2)
 
 ## Stage 3: Executing the audit
 
-The selected sample can be isolated by indexing the `sample` object from the sampling result. Now Laura can execute her audit by annotating the sample with their audit value (for exampling by writing the sample to a *.csv* file using `write.csv()`. She can then load her annotated sample back into R for further evaluation.
+The selected sample can be isolated by indexing the `sample` object from the sampling result.
 
 ```{r}
 # Step 3: Isolate the sample for execution of the audit.
 sample <- stage2$sample
-
-# To write the sample to a .csv file:
-# write.csv(x = sample, file = "auditSample.csv", row.names = FALSE)
-
-# To load annotated sample back into R:
-# sample <- read.csv(file = "auditSample.csv")
 ```
 
-For this example, the audit values of the sample are already included in the `auditValue` column of the data set .
+Now Laura can execute her audit by annotating the sample with their audit value (for exampling by writing the sample to a *.csv* file using `write.csv()`. She can then load her annotated sample back into R for further evaluation.
+
+```{r, eval = FALSE}
+# To write the sample to a .csv file:
+write.csv(x = sample, file = "auditSample.csv", row.names = FALSE)
+
+# To load annotated sample back into R:
+sample <- read.csv(file = "auditSample.csv")
+```
+
+For this example, the audit values of the sample are already included in the `auditValue` column of the data set.
 
 ## Stage 4: Evaluating the sample
 

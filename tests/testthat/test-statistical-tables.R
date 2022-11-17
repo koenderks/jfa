@@ -44,8 +44,8 @@ test_that(desc = "(id: f7-v0.5.5-t1) Statistical Sample Sizes based on the Binom
   expected <- seq(0, 0.1, 0.0025)
 
   tab <- matrix(NA, nrow = length(expected), ncol = length(m))
-  for (rows in 1:length(expected)) {
-    for (columns in 1:length(m)) {
+  for (rows in seq_along(expected)) {
+    for (columns in seq_along(m)) {
       if (expected[rows] >= m[columns]) {
         next
       } else {
@@ -53,7 +53,7 @@ test_that(desc = "(id: f7-v0.5.5-t1) Statistical Sample Sizes based on the Binom
           {
             suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "binomial", materiality = m[columns]))
           },
-          silent = T
+          silent = TRUE
         )
         if (inherits(p, "try-error")) {
           next
@@ -63,7 +63,7 @@ test_that(desc = "(id: f7-v0.5.5-t1) Statistical Sample Sizes based on the Binom
     }
   }
 
-  table <- as.data.frame(tab, stringsAsFactors = F)
+  table <- as.data.frame(tab, stringsAsFactors = FALSE)
   table <- cbind(expected = round(expected, 4), table)
   table <- matrix(as.numeric(unlist(table)), ncol = 13)
 
@@ -93,8 +93,8 @@ test_that(desc = "(id: f7-v0.5.5-t2) Statistical Sample Sizes based on the Binom
   expected <- seq(0, 0.1, 0.0025)
 
   tab <- matrix(NA, nrow = length(expected), ncol = length(m))
-  for (rows in 1:length(expected)) {
-    for (columns in 1:length(m)) {
+  for (rows in seq_along(expected)) {
+    for (columns in seq_along(m)) {
       if (expected[rows] >= m[columns]) {
         next
       } else {
@@ -102,7 +102,7 @@ test_that(desc = "(id: f7-v0.5.5-t2) Statistical Sample Sizes based on the Binom
           {
             suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "binomial", materiality = m[columns]))
           },
-          silent = T
+          silent = TRUE
         )
         if (inherits(p, "try-error")) {
           next
@@ -112,7 +112,7 @@ test_that(desc = "(id: f7-v0.5.5-t2) Statistical Sample Sizes based on the Binom
     }
   }
 
-  table <- as.data.frame(tab, stringsAsFactors = F)
+  table <- as.data.frame(tab, stringsAsFactors = FALSE)
   table <- cbind(expected = round(expected, 4), table)
   table <- matrix(as.numeric(unlist(table)), ncol = 13)
 
@@ -142,8 +142,8 @@ test_that(desc = "(id: f7-v0.5.5-t3) Statistical Sample Sizes based on the Binom
   expected <- seq(0, 0.1, 0.0025)
 
   tab <- matrix(NA, nrow = length(expected), ncol = length(m))
-  for (rows in 1:length(expected)) {
-    for (columns in 1:length(m)) {
+  for (rows in seq_along(expected)) {
+    for (columns in seq_along(m)) {
       if (expected[rows] >= m[columns]) {
         next
       } else {
@@ -151,7 +151,7 @@ test_that(desc = "(id: f7-v0.5.5-t3) Statistical Sample Sizes based on the Binom
           {
             suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "binomial", materiality = m[columns]))
           },
-          silent = T
+          silent = TRUE
         )
         if (inherits(p, "try-error")) {
           next
@@ -161,7 +161,7 @@ test_that(desc = "(id: f7-v0.5.5-t3) Statistical Sample Sizes based on the Binom
     }
   }
 
-  table <- as.data.frame(tab, stringsAsFactors = F)
+  table <- as.data.frame(tab, stringsAsFactors = FALSE)
   table <- cbind(expected = round(expected, 4), table)
   table <- matrix(as.numeric(unlist(table)), ncol = 13)
 
@@ -191,8 +191,8 @@ test_that(desc = "(id: f7-v0.5.5-t4) Statistical Sample Sizes based on the Binom
   expected <- seq(0, 0.1, 0.0025)
 
   tab <- matrix(NA, nrow = length(expected), ncol = length(m))
-  for (rows in 1:length(expected)) {
-    for (columns in 1:length(m)) {
+  for (rows in seq_along(expected)) {
+    for (columns in seq_along(m)) {
       if (expected[rows] >= m[columns]) {
         next
       } else {
@@ -200,7 +200,7 @@ test_that(desc = "(id: f7-v0.5.5-t4) Statistical Sample Sizes based on the Binom
           {
             suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "binomial", materiality = m[columns]))
           },
-          silent = T
+          silent = TRUE
         )
         if (inherits(p, "try-error")) {
           next
@@ -210,7 +210,7 @@ test_that(desc = "(id: f7-v0.5.5-t4) Statistical Sample Sizes based on the Binom
     }
   }
 
-  table <- as.data.frame(tab, stringsAsFactors = F)
+  table <- as.data.frame(tab, stringsAsFactors = FALSE)
   table <- cbind(expected = round(expected, 4), table)
   table <- matrix(as.numeric(unlist(table)), ncol = 13)
 
@@ -242,8 +242,8 @@ test_that(desc = "(id: f7-v0.5.5-t5) Statistical Sample Sizes based on the Poiss
   expected <- seq(0, 0.1, 0.0025)
 
   tab <- matrix(NA, nrow = length(expected), ncol = length(m))
-  for (rows in 1:length(expected)) {
-    for (columns in 1:length(m)) {
+  for (rows in seq_along(expected)) {
+    for (columns in seq_along(m)) {
       if (expected[rows] >= m[columns]) {
         next
       } else {
@@ -251,7 +251,7 @@ test_that(desc = "(id: f7-v0.5.5-t5) Statistical Sample Sizes based on the Poiss
           {
             suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "poisson", materiality = m[columns]))
           },
-          silent = T
+          silent = TRUE
         )
         if (inherits(p, "try-error")) {
           next
@@ -261,7 +261,7 @@ test_that(desc = "(id: f7-v0.5.5-t5) Statistical Sample Sizes based on the Poiss
     }
   }
 
-  table <- as.data.frame(tab, stringsAsFactors = F)
+  table <- as.data.frame(tab, stringsAsFactors = FALSE)
   table <- cbind(expected = round(expected, 4), table)
   table <- matrix(as.numeric(unlist(table)), ncol = 13)
 
@@ -291,8 +291,8 @@ test_that(desc = "(id: f7-v0.5.5-t6) Statistical Sample Sizes based on the Poiss
   expected <- seq(0, 0.1, 0.0025)
 
   tab <- matrix(NA, nrow = length(expected), ncol = length(m))
-  for (rows in 1:length(expected)) {
-    for (columns in 1:length(m)) {
+  for (rows in seq_along(expected)) {
+    for (columns in seq_along(m)) {
       if (expected[rows] >= m[columns]) {
         next
       } else {
@@ -300,7 +300,7 @@ test_that(desc = "(id: f7-v0.5.5-t6) Statistical Sample Sizes based on the Poiss
           {
             suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "poisson", materiality = m[columns]))
           },
-          silent = T
+          silent = TRUE
         )
         if (inherits(p, "try-error")) {
           next
@@ -310,7 +310,7 @@ test_that(desc = "(id: f7-v0.5.5-t6) Statistical Sample Sizes based on the Poiss
     }
   }
 
-  table <- as.data.frame(tab, stringsAsFactors = F)
+  table <- as.data.frame(tab, stringsAsFactors = FALSE)
   table <- cbind(expected = round(expected, 4), table)
   table <- matrix(as.numeric(unlist(table)), ncol = 13)
 
@@ -340,8 +340,8 @@ test_that(desc = "(id: f7-v0.5.5-t7) Statistical Sample Sizes based on the Poiss
   expected <- seq(0, 0.1, 0.0025)
 
   tab <- matrix(NA, nrow = length(expected), ncol = length(m))
-  for (rows in 1:length(expected)) {
-    for (columns in 1:length(m)) {
+  for (rows in seq_along(expected)) {
+    for (columns in seq_along(m)) {
       if (expected[rows] >= m[columns]) {
         next
       } else {
@@ -349,7 +349,7 @@ test_that(desc = "(id: f7-v0.5.5-t7) Statistical Sample Sizes based on the Poiss
           {
             suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "poisson", materiality = m[columns]))
           },
-          silent = T
+          silent = TRUE
         )
         if (inherits(p, "try-error")) {
           next
@@ -359,7 +359,7 @@ test_that(desc = "(id: f7-v0.5.5-t7) Statistical Sample Sizes based on the Poiss
     }
   }
 
-  table <- as.data.frame(tab, stringsAsFactors = F)
+  table <- as.data.frame(tab, stringsAsFactors = FALSE)
   table <- cbind(expected = round(expected, 4), table)
   table <- matrix(as.numeric(unlist(table)), ncol = 13)
 
@@ -389,8 +389,8 @@ test_that(desc = "(id: f7-v0.5.5-t8) Statistical Sample Sizes based on the Poiss
   expected <- seq(0, 0.1, 0.0025)
 
   tab <- matrix(NA, nrow = length(expected), ncol = length(m))
-  for (rows in 1:length(expected)) {
-    for (columns in 1:length(m)) {
+  for (rows in seq_along(expected)) {
+    for (columns in seq_along(m)) {
       if (expected[rows] >= m[columns]) {
         next
       } else {
@@ -398,7 +398,7 @@ test_that(desc = "(id: f7-v0.5.5-t8) Statistical Sample Sizes based on the Poiss
           {
             suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "poisson", materiality = m[columns]))
           },
-          silent = T
+          silent = TRUE
         )
         if (inherits(p, "try-error")) {
           next
@@ -408,7 +408,7 @@ test_that(desc = "(id: f7-v0.5.5-t8) Statistical Sample Sizes based on the Poiss
     }
   }
 
-  table <- as.data.frame(tab, stringsAsFactors = F)
+  table <- as.data.frame(tab, stringsAsFactors = FALSE)
   table <- cbind(expected = round(expected, 4), table)
   table <- matrix(as.numeric(unlist(table)), ncol = 13)
 
@@ -447,8 +447,8 @@ test_that(desc = "(id: f7-v0.5.5-t9) Statistical Sample Sizes based on the Hyper
   N <- 100
 
   tab <- matrix(NA, nrow = length(expected), ncol = length(m))
-  for (rows in 1:length(expected)) {
-    for (columns in 1:length(m)) {
+  for (rows in seq_along(expected)) {
+    for (columns in seq_along(m)) {
       if (expected[rows] >= m[columns]) {
         next
       } else {
@@ -456,7 +456,7 @@ test_that(desc = "(id: f7-v0.5.5-t9) Statistical Sample Sizes based on the Hyper
           {
             suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
           },
-          silent = T
+          silent = TRUE
         )
         if (inherits(p, "try-error")) {
           next
@@ -466,7 +466,7 @@ test_that(desc = "(id: f7-v0.5.5-t9) Statistical Sample Sizes based on the Hyper
     }
   }
 
-  table <- as.data.frame(tab, stringsAsFactors = F)
+  table <- as.data.frame(tab, stringsAsFactors = FALSE)
   table <- cbind(expected = round(expected, 4), table)
   table <- matrix(as.numeric(unlist(table)), ncol = 13)
 
@@ -497,8 +497,8 @@ test_that(desc = "(id: f7-v0.5.5-t10) Statistical Sample Sizes based on the Hype
   N <- 500
 
   tab <- matrix(NA, nrow = length(expected), ncol = length(m))
-  for (rows in 1:length(expected)) {
-    for (columns in 1:length(m)) {
+  for (rows in seq_along(expected)) {
+    for (columns in seq_along(m)) {
       if (expected[rows] >= m[columns]) {
         next
       } else {
@@ -506,7 +506,7 @@ test_that(desc = "(id: f7-v0.5.5-t10) Statistical Sample Sizes based on the Hype
           {
             suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
           },
-          silent = T
+          silent = TRUE
         )
         if (inherits(p, "try-error")) {
           next
@@ -516,7 +516,7 @@ test_that(desc = "(id: f7-v0.5.5-t10) Statistical Sample Sizes based on the Hype
     }
   }
 
-  table <- as.data.frame(tab, stringsAsFactors = F)
+  table <- as.data.frame(tab, stringsAsFactors = FALSE)
   table <- cbind(expected = round(expected, 4), table)
   table <- matrix(as.numeric(unlist(table)), ncol = 13)
 
@@ -547,8 +547,8 @@ test_that(desc = "(id: f7-v0.5.5-t11) Statistical Sample Sizes based on the Hype
   N <- 1000
 
   tab <- matrix(NA, nrow = length(expected), ncol = length(m))
-  for (rows in 1:length(expected)) {
-    for (columns in 1:length(m)) {
+  for (rows in seq_along(expected)) {
+    for (columns in seq_along(m)) {
       if (expected[rows] >= m[columns]) {
         next
       } else {
@@ -556,7 +556,7 @@ test_that(desc = "(id: f7-v0.5.5-t11) Statistical Sample Sizes based on the Hype
           {
             suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
           },
-          silent = T
+          silent = TRUE
         )
         if (inherits(p, "try-error")) {
           next
@@ -566,7 +566,7 @@ test_that(desc = "(id: f7-v0.5.5-t11) Statistical Sample Sizes based on the Hype
     }
   }
 
-  table <- as.data.frame(tab, stringsAsFactors = F)
+  table <- as.data.frame(tab, stringsAsFactors = FALSE)
   table <- cbind(expected = round(expected, 4), table)
   table <- matrix(as.numeric(unlist(table)), ncol = 13)
 
@@ -597,8 +597,8 @@ test_that(desc = "(id: f7-v0.5.5-t12) Statistical Sample Sizes based on the Hype
   N <- 100
 
   tab <- matrix(NA, nrow = length(expected), ncol = length(m))
-  for (rows in 1:length(expected)) {
-    for (columns in 1:length(m)) {
+  for (rows in seq_along(expected)) {
+    for (columns in seq_along(m)) {
       if (expected[rows] >= m[columns]) {
         next
       } else {
@@ -606,7 +606,7 @@ test_that(desc = "(id: f7-v0.5.5-t12) Statistical Sample Sizes based on the Hype
           {
             suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
           },
-          silent = T
+          silent = TRUE
         )
         if (inherits(p, "try-error")) {
           next
@@ -616,7 +616,7 @@ test_that(desc = "(id: f7-v0.5.5-t12) Statistical Sample Sizes based on the Hype
     }
   }
 
-  table <- as.data.frame(tab, stringsAsFactors = F)
+  table <- as.data.frame(tab, stringsAsFactors = FALSE)
   table <- cbind(expected = round(expected, 4), table)
   table <- matrix(as.numeric(unlist(table)), ncol = 13)
 
@@ -647,8 +647,8 @@ test_that(desc = "(id: f7-v0.5.5-t13) Statistical Sample Sizes based on the Hype
   N <- 500
 
   tab <- matrix(NA, nrow = length(expected), ncol = length(m))
-  for (rows in 1:length(expected)) {
-    for (columns in 1:length(m)) {
+  for (rows in seq_along(expected)) {
+    for (columns in seq_along(m)) {
       if (expected[rows] >= m[columns]) {
         next
       } else {
@@ -656,7 +656,7 @@ test_that(desc = "(id: f7-v0.5.5-t13) Statistical Sample Sizes based on the Hype
           {
             suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
           },
-          silent = T
+          silent = TRUE
         )
         if (inherits(p, "try-error")) {
           next
@@ -666,7 +666,7 @@ test_that(desc = "(id: f7-v0.5.5-t13) Statistical Sample Sizes based on the Hype
     }
   }
 
-  table <- as.data.frame(tab, stringsAsFactors = F)
+  table <- as.data.frame(tab, stringsAsFactors = FALSE)
   table <- cbind(expected = round(expected, 4), table)
   table <- matrix(as.numeric(unlist(table)), ncol = 13)
 
@@ -697,8 +697,8 @@ test_that(desc = "(id: f7-v0.5.5-t14) Statistical Sample Sizes based on the Hype
   N <- 1000
 
   tab <- matrix(NA, nrow = length(expected), ncol = length(m))
-  for (rows in 1:length(expected)) {
-    for (columns in 1:length(m)) {
+  for (rows in seq_along(expected)) {
+    for (columns in seq_along(m)) {
       if (expected[rows] >= m[columns]) {
         next
       } else {
@@ -706,7 +706,7 @@ test_that(desc = "(id: f7-v0.5.5-t14) Statistical Sample Sizes based on the Hype
           {
             suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
           },
-          silent = T
+          silent = TRUE
         )
         if (inherits(p, "try-error")) {
           next
@@ -716,7 +716,7 @@ test_that(desc = "(id: f7-v0.5.5-t14) Statistical Sample Sizes based on the Hype
     }
   }
 
-  table <- as.data.frame(tab, stringsAsFactors = F)
+  table <- as.data.frame(tab, stringsAsFactors = FALSE)
   table <- cbind(expected = round(expected, 4), table)
   table <- matrix(as.numeric(unlist(table)), ncol = 13)
 
@@ -747,8 +747,8 @@ test_that(desc = "(id: f7-v0.5.5-t15) Statistical Sample Sizes based on the Hype
   N <- 100
 
   tab <- matrix(NA, nrow = length(expected), ncol = length(m))
-  for (rows in 1:length(expected)) {
-    for (columns in 1:length(m)) {
+  for (rows in seq_along(expected)) {
+    for (columns in seq_along(m)) {
       if (expected[rows] >= m[columns]) {
         next
       } else {
@@ -756,7 +756,7 @@ test_that(desc = "(id: f7-v0.5.5-t15) Statistical Sample Sizes based on the Hype
           {
             suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
           },
-          silent = T
+          silent = TRUE
         )
         if (inherits(p, "try-error")) {
           next
@@ -766,7 +766,7 @@ test_that(desc = "(id: f7-v0.5.5-t15) Statistical Sample Sizes based on the Hype
     }
   }
 
-  table <- as.data.frame(tab, stringsAsFactors = F)
+  table <- as.data.frame(tab, stringsAsFactors = FALSE)
   table <- cbind(expected = round(expected, 4), table)
   table <- matrix(as.numeric(unlist(table)), ncol = 13)
 
@@ -797,8 +797,8 @@ test_that(desc = "(id: f7-v0.5.5-t16) Statistical Sample Sizes based on the Hype
   N <- 500
 
   tab <- matrix(NA, nrow = length(expected), ncol = length(m))
-  for (rows in 1:length(expected)) {
-    for (columns in 1:length(m)) {
+  for (rows in seq_along(expected)) {
+    for (columns in seq_along(m)) {
       if (expected[rows] >= m[columns]) {
         next
       } else {
@@ -806,7 +806,7 @@ test_that(desc = "(id: f7-v0.5.5-t16) Statistical Sample Sizes based on the Hype
           {
             suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
           },
-          silent = T
+          silent = TRUE
         )
         if (inherits(p, "try-error")) {
           next
@@ -816,7 +816,7 @@ test_that(desc = "(id: f7-v0.5.5-t16) Statistical Sample Sizes based on the Hype
     }
   }
 
-  table <- as.data.frame(tab, stringsAsFactors = F)
+  table <- as.data.frame(tab, stringsAsFactors = FALSE)
   table <- cbind(expected = round(expected, 4), table)
   table <- matrix(as.numeric(unlist(table)), ncol = 13)
 
@@ -847,8 +847,8 @@ test_that(desc = "(id: f7-v0.5.5-t17) Statistical Sample Sizes based on the Hype
   N <- 1000
 
   tab <- matrix(NA, nrow = length(expected), ncol = length(m))
-  for (rows in 1:length(expected)) {
-    for (columns in 1:length(m)) {
+  for (rows in seq_along(expected)) {
+    for (columns in seq_along(m)) {
       if (expected[rows] >= m[columns]) {
         next
       } else {
@@ -856,7 +856,7 @@ test_that(desc = "(id: f7-v0.5.5-t17) Statistical Sample Sizes based on the Hype
           {
             suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
           },
-          silent = T
+          silent = TRUE
         )
         if (inherits(p, "try-error")) {
           next
@@ -866,7 +866,7 @@ test_that(desc = "(id: f7-v0.5.5-t17) Statistical Sample Sizes based on the Hype
     }
   }
 
-  table <- as.data.frame(tab, stringsAsFactors = F)
+  table <- as.data.frame(tab, stringsAsFactors = FALSE)
   table <- cbind(expected = round(expected, 4), table)
   table <- matrix(as.numeric(unlist(table)), ncol = 13)
 
@@ -897,8 +897,8 @@ test_that(desc = "(id: f7-v0.5.5-t18) Statistical Sample Sizes based on the Hype
   N <- 100
 
   tab <- matrix(NA, nrow = length(expected), ncol = length(m))
-  for (rows in 1:length(expected)) {
-    for (columns in 1:length(m)) {
+  for (rows in seq_along(expected)) {
+    for (columns in seq_along(m)) {
       if (expected[rows] >= m[columns]) {
         next
       } else {
@@ -906,7 +906,7 @@ test_that(desc = "(id: f7-v0.5.5-t18) Statistical Sample Sizes based on the Hype
           {
             suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
           },
-          silent = T
+          silent = TRUE
         )
         if (inherits(p, "try-error")) {
           next
@@ -916,7 +916,7 @@ test_that(desc = "(id: f7-v0.5.5-t18) Statistical Sample Sizes based on the Hype
     }
   }
 
-  table <- as.data.frame(tab, stringsAsFactors = F)
+  table <- as.data.frame(tab, stringsAsFactors = FALSE)
   table <- cbind(expected = round(expected, 4), table)
   table <- matrix(as.numeric(unlist(table)), ncol = 13)
 
@@ -947,8 +947,8 @@ test_that(desc = "(id: f7-v0.5.5-t19) Statistical Sample Sizes based on the Hype
   N <- 500
 
   tab <- matrix(NA, nrow = length(expected), ncol = length(m))
-  for (rows in 1:length(expected)) {
-    for (columns in 1:length(m)) {
+  for (rows in seq_along(expected)) {
+    for (columns in seq_along(m)) {
       if (expected[rows] >= m[columns]) {
         next
       } else {
@@ -956,7 +956,7 @@ test_that(desc = "(id: f7-v0.5.5-t19) Statistical Sample Sizes based on the Hype
           {
             suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
           },
-          silent = T
+          silent = TRUE
         )
         if (inherits(p, "try-error")) {
           next
@@ -966,7 +966,7 @@ test_that(desc = "(id: f7-v0.5.5-t19) Statistical Sample Sizes based on the Hype
     }
   }
 
-  table <- as.data.frame(tab, stringsAsFactors = F)
+  table <- as.data.frame(tab, stringsAsFactors = FALSE)
   table <- cbind(expected = round(expected, 4), table)
   table <- matrix(as.numeric(unlist(table)), ncol = 13)
 
@@ -997,8 +997,8 @@ test_that(desc = "(id: f7-v0.5.5-t20) Statistical Sample Sizes based on the Hype
   N <- 1000
 
   tab <- matrix(NA, nrow = length(expected), ncol = length(m))
-  for (rows in 1:length(expected)) {
-    for (columns in 1:length(m)) {
+  for (rows in seq_along(expected)) {
+    for (columns in seq_along(m)) {
       if (expected[rows] >= m[columns]) {
         next
       } else {
@@ -1006,7 +1006,7 @@ test_that(desc = "(id: f7-v0.5.5-t20) Statistical Sample Sizes based on the Hype
           {
             suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
           },
-          silent = T
+          silent = TRUE
         )
         if (inherits(p, "try-error")) {
           next
@@ -1016,7 +1016,7 @@ test_that(desc = "(id: f7-v0.5.5-t20) Statistical Sample Sizes based on the Hype
     }
   }
 
-  table <- as.data.frame(tab, stringsAsFactors = F)
+  table <- as.data.frame(tab, stringsAsFactors = FALSE)
   table <- cbind(expected = round(expected, 4), table)
   table <- matrix(as.numeric(unlist(table)), ncol = 13)
 
@@ -1051,8 +1051,8 @@ test_that(desc = "(id: f7-v0.5.5-21) Statistical Sampling Results based on the B
   k <- 0:10
 
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "binomial")
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
@@ -1087,8 +1087,8 @@ test_that(desc = "(id: f7-v0.5.5-22) Statistical Sampling Results based on the B
   k <- 0:10
 
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "binomial")
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
@@ -1123,8 +1123,8 @@ test_that(desc = "(id: f7-v0.5.5-23) Statistical Sampling Results based on the B
   k <- 0:10
 
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "binomial")
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
@@ -1159,8 +1159,8 @@ test_that(desc = "(id: f7-v0.5.5-24) Statistical Sampling Results based on the B
   k <- 0:10
 
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "binomial")
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
@@ -1197,8 +1197,8 @@ test_that(desc = "(id: f7-v0.5.5-25) Statistical Sampling Results based on the P
   k <- 0:10
 
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "poisson")
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
@@ -1233,8 +1233,8 @@ test_that(desc = "(id: f7-v0.5.5-26) Statistical Sampling Results based on the P
   k <- 0:10
 
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "poisson")
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
@@ -1269,8 +1269,8 @@ test_that(desc = "(id: f7-v0.5.5-27) Statistical Sampling Results based on the P
   k <- 0:10
 
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "poisson")
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
@@ -1305,8 +1305,8 @@ test_that(desc = "(id: f7-v0.5.5-28) Statistical Sampling Results based on the P
   k <- 0:10
 
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "poisson")
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
@@ -1344,8 +1344,8 @@ test_that(desc = "(id: f7-v0.5.5-29) Statistical Sampling Results based on the H
   N <- 100
 
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       if (n[rows] >= N) {
         next
       }
@@ -1384,8 +1384,8 @@ test_that(desc = "(id: f7-v0.5.5-30) Statistical Sampling Results based on the H
   N <- 500
 
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       if (n[rows] >= N) {
         next
       }
@@ -1424,8 +1424,8 @@ test_that(desc = "(id: f7-v0.5.5-31) Statistical Sampling Results based on the H
   N <- 1000
 
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       if (n[rows] >= N) {
         next
       }
@@ -1464,8 +1464,8 @@ test_that(desc = "(id: f7-v0.5.5-32) Statistical Sampling Results based on the H
   N <- 100
 
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       if (n[rows] >= N) {
         next
       }
@@ -1504,8 +1504,8 @@ test_that(desc = "(id: f7-v0.5.5-33) Statistical Sampling Results based on the H
   N <- 500
 
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       if (n[rows] >= N) {
         next
       }
@@ -1544,8 +1544,8 @@ test_that(desc = "(id: f7-v0.5.5-34) Statistical Sampling Results based on the H
   N <- 1000
 
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       if (n[rows] >= N) {
         next
       }
@@ -1584,8 +1584,8 @@ test_that(desc = "(id: f7-v0.5.5-35) Statistical Sampling Results based on the H
   N <- 100
 
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       if (n[rows] >= N) {
         next
       }
@@ -1624,8 +1624,8 @@ test_that(desc = "(id: f7-v0.5.5-36) Statistical Sampling Results based on the H
   N <- 500
 
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       if (n[rows] >= N) {
         next
       }
@@ -1664,8 +1664,8 @@ test_that(desc = "(id: f7-v0.5.5-37) Statistical Sampling Results based on the H
   N <- 1000
 
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       if (n[rows] >= N) {
         next
       }
@@ -1704,8 +1704,8 @@ test_that(desc = "(id: f7-v0.5.5-38) Statistical Sampling Results based on the H
   N <- 100
 
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       if (n[rows] >= N) {
         next
       }
@@ -1744,8 +1744,8 @@ test_that(desc = "(id: f7-v0.5.5-39) Statistical Sampling Results based on the H
   N <- 500
 
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       if (n[rows] >= N) {
         next
       }
@@ -1784,8 +1784,8 @@ test_that(desc = "(id: f7-v0.5.5-40) Statistical Sampling Results based on the H
   N <- 1000
 
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       if (n[rows] >= N) {
         next
       }
@@ -1827,8 +1827,8 @@ test_that(desc = "(id: f7-v0.5.5-t41) Statistical Sampling Results based on the 
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "impartial", likelihood = "binomial")
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
@@ -1839,7 +1839,7 @@ test_that(desc = "(id: f7-v0.5.5-t41) Statistical Sampling Results based on the 
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
   for (i in 2:12) {
-    tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
+    tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = TRUE), no = tableWorkflow[, i])
   }
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
   expect_equal(tableWorkflow, reference)
@@ -1865,8 +1865,8 @@ test_that(desc = "(id: f7-v0.5.5-t42) Statistical Sampling Results based on the 
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "impartial", likelihood = "binomial")
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
@@ -1877,7 +1877,7 @@ test_that(desc = "(id: f7-v0.5.5-t42) Statistical Sampling Results based on the 
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
   for (i in 2:12) {
-    tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
+    tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = TRUE), no = tableWorkflow[, i])
   }
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
   expect_equal(tableWorkflow, reference)
@@ -1903,8 +1903,8 @@ test_that(desc = "(id: f7-v0.5.5-t43) Statistical Sampling Results based on the 
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "impartial", likelihood = "binomial")
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
@@ -1915,7 +1915,7 @@ test_that(desc = "(id: f7-v0.5.5-t43) Statistical Sampling Results based on the 
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
   for (i in 2:12) {
-    tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
+    tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = TRUE), no = tableWorkflow[, i])
   }
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
   expect_equal(tableWorkflow, reference)
@@ -1941,8 +1941,8 @@ test_that(desc = "(id: f7-v0.5.5-t44) Statistical Sampling Results based on the 
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "impartial", likelihood = "binomial")
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
@@ -1953,7 +1953,7 @@ test_that(desc = "(id: f7-v0.5.5-t44) Statistical Sampling Results based on the 
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
   for (i in 2:12) {
-    tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
+    tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = TRUE), no = tableWorkflow[, i])
   }
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
   expect_equal(tableWorkflow, reference)
@@ -1981,8 +1981,8 @@ test_that(desc = "(id: f7-v0.5.5-t45) Statistical Sampling Results based on the 
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "impartial", likelihood = "poisson")
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
@@ -1993,7 +1993,7 @@ test_that(desc = "(id: f7-v0.5.5-t45) Statistical Sampling Results based on the 
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
   for (i in 2:12) {
-    tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
+    tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = TRUE), no = tableWorkflow[, i])
   }
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
   expect_equal(tableWorkflow, reference)
@@ -2020,8 +2020,8 @@ test_that(desc = "(id: f7-v0.5.5-t46) Statistical Sampling Results based on the 
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "impartial", likelihood = "poisson")
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
@@ -2032,7 +2032,7 @@ test_that(desc = "(id: f7-v0.5.5-t46) Statistical Sampling Results based on the 
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
   for (i in 2:12) {
-    tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
+    tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = TRUE), no = tableWorkflow[, i])
   }
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
   expect_equal(tableWorkflow, reference)
@@ -2058,8 +2058,8 @@ test_that(desc = "(id: f7-v0.5.5-t47) Statistical Sampling Results based on the 
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "impartial", likelihood = "poisson")
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
@@ -2070,7 +2070,7 @@ test_that(desc = "(id: f7-v0.5.5-t47) Statistical Sampling Results based on the 
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
   for (i in 2:12) {
-    tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
+    tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = TRUE), no = tableWorkflow[, i])
   }
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
   expect_equal(tableWorkflow, reference)
@@ -2096,8 +2096,8 @@ test_that(desc = "(id: f7-v0.5.5-t48) Statistical Sampling Results based on the 
   n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
   k <- 0:10
   tabWorkflow <- matrix(NA, nrow = length(n), ncol = length(k))
-  for (rows in 1:length(n)) {
-    for (columns in 1:length(k)) {
+  for (rows in seq_along(n)) {
+    for (columns in seq_along(k)) {
       # Via workflow
       prior <- auditPrior(conf.level = 0.9, materiality = materiality, method = "impartial", likelihood = "poisson")
       result <- evaluation(conf.level = 0.9, materiality = materiality, n = n[rows], x = k[columns], prior = prior)
@@ -2108,7 +2108,7 @@ test_that(desc = "(id: f7-v0.5.5-t48) Statistical Sampling Results based on the 
   tableWorkflow <- cbind(n = n, tableWorkflow)
   tableWorkflow <- round(tableWorkflow, 2)
   for (i in 2:12) {
-    tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = T), no = tableWorkflow[, i])
+    tableWorkflow[, i] <- ifelse(tableWorkflow[, i] > 10000000, yes = format(tableWorkflow[, i], scientific = TRUE), no = tableWorkflow[, i])
   }
   tableWorkflow <- matrix(as.numeric(unlist(tableWorkflow)), ncol = 12)
   expect_equal(tableWorkflow, reference)

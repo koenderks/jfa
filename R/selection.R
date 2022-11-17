@@ -154,10 +154,12 @@ selection <- function(data,
     size <- size[["n"]]
   }
   stopifnot("'size' must be a single integer > 0" = (size > 0) && (size %% 1 == 0))
-  switch(units,
-    "items" = stopifnot("cannot take a sample larger than the population when 'replace = FALSE'" = !(size > nrow(data) && !replace)),
-    "values" = stopifnot("missing value for 'values'" = !is.null(values))
-  )
+  if (units == "items") {
+    valid_replace <- !(size > nrow(data) && !replace)
+    stopifnot("cannot take a sample larger than the population when 'replace = FALSE'" = valid_replace)
+  } else {
+    stopifnot("missing value for 'values'" = !is.null(values))
+  }
   if (!is.null(values)) {
     valid_values <- is.character(values) && (length(values) == 1)
     stopifnot("'values' must be a single character" = valid_values)
@@ -189,7 +191,7 @@ selection <- function(data,
     book_values <- data[, values]
   }
   if (use_mus) {
-    valid_size <- size <= sum(book_values)
+    valid_size <- (size <= sum(book_values))
     stopifnot("cannot take a sample larger than the population value" = valid_size)
   }
   if (!is.null(book_values) && any(book_values < 0)) {
@@ -231,7 +233,7 @@ selection <- function(data,
     # Fixed interval record sampling
     interval <- nrow(data) / size
     if (start > interval) {
-      stop(paste0("'start' must be an integer <= the selection interval (", interval, ")"))
+      stop(paste0("'start' must be <= the selectioninterval (", interval, ")"))
     }
     selected_items <- start + 0:(size - 1) * interval
     sample_items <- row_numbers[selected_items]
@@ -239,7 +241,7 @@ selection <- function(data,
     # Fixed interval monetary unit sampling
     interval <- sum(book_values) / size
     if (start > interval) {
-      stop(paste0("'start' must be an integer <= the selection interval (", interval, ")"))
+      stop(paste0("'start' must be <= the selection interval (", interval, ")"))
     }
     selected_units <- start + 0:(size - 1) * interval
     sample_items <- NULL

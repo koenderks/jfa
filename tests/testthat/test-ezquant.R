@@ -27,7 +27,7 @@ test_that(desc = "(id: f12-v0.5.4-t1) Test Sample sizes for hypergeometric distr
   sampleSizeMatrix[, 1] <- populationSize
   sampleSizeMatrix[, 2] <- tolerableErrorRate
   sampleSizeMatrix[, 3] <- confidenceLevel
-  for (i in 1:nrow(sampleSizeMatrix)) {
+  for (i in seq_len(nrow(sampleSizeMatrix))) {
     sampleSizeMatrix[i, 4] <- planning(conf.level = sampleSizeMatrix[i, 3], expected = 0, likelihood = "hypergeometric", N.units = sampleSizeMatrix[i, 1], materiality = sampleSizeMatrix[i, 2])$n
   }
 

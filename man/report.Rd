@@ -4,20 +4,29 @@
 \alias{report}
 \title{Audit Sampling: Reporting}
 \usage{
-report(object, file = 'report.html', format = c('html_document', 'pdf_document'))
+report(object, file = 'report.html',
+       format = c('html_document', 'pdf_document'))
 }
 \arguments{
-\item{object}{an object of class \code{jfaEvaluation} as returned by the \code{evaluation()} function.}
+\item{object}{an object of class \code{jfaEvaluation} as returned by the
+\code{evaluation()} function.}
 
-\item{file}{a character specifying the name of the report (e.g. \code{report.html}).}
+\item{file}{a character specifying the name of the report (e.g.
+\code{report.html}).}
 
-\item{format}{a character specifying the output format of the report. Possible options are \code{html_document} (default) and \code{pdf_document}, but compiling to \code{pdf} format requires a local version of MikTex.}
+\item{format}{a character specifying the output format of the report.
+Possible options are \code{html_document} (default) and
+\code{pdf_document}, but compiling to \code{pdf} format requires a local
+version of \code{MikTex}.}
 }
 \value{
-A \code{html} or \code{pdf} file containing a report of the evaluation.
+A \code{html} or \code{pdf} file containing the report.
 }
 \description{
-\code{report()} takes an object of class \code{jfaEvaluation} as returned by the \code{evaluation()} function automatically generates a \code{html} or \code{pdf} report containing the most relevant statistical results and their interpretation.
+\code{report()} takes an object of class \code{jfaEvaluation} as
+returned by the \code{evaluation()} function automatically generates a
+\code{html} or \code{pdf} report containing the most relevant statistical
+results and their interpretation.
 }
 \examples{
 data("BuildIt")
@@ -40,7 +49,10 @@ report(result)
 
 }
 \seealso{
-\code{\link{auditPrior}} \code{\link{planning}} \code{\link{selection}} \code{\link{evaluation}}
+\code{\link{auditPrior}}
+         \code{\link{planning}}
+         \code{\link{selection}}
+         \code{\link{evaluation}}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}

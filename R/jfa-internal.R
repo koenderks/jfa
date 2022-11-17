@@ -27,7 +27,8 @@
 
 # This function finds the mode (= value with the highest probability) of the beta-binomial distribution
 .modebbinom <- function(N, shape1, shape2) {
-  if ((shape1 == 1 && shape2 == 1) || shape1 == 0 || shape2 == 0) {
+  no_mode <- (shape1 == 1 && shape2 == 1) || shape1 == 0 || shape2 == 0
+  if (no_mode) {
     return(NA)
   }
   if (shape1 == 1 && shape2 > 1) {
@@ -175,8 +176,7 @@
   return(samples)
 }
 
-# This function samples from an analytical posterior distribution
-.fake_mcmc <- function(method, nstrata, bayesian, prior.x, t.obs, prior.n, n.obs, N.units, iterations) {
+.sample_analytical <- function(method, nstrata, bayesian, prior.x, t.obs, prior.n, n.obs, N.units, iterations) {
   samples <- matrix(NA, ncol = (nstrata - 1) * 2, nrow = iterations)
   for (i in 2:nstrata) {
     samples[, i - 1] <- switch(method,
@@ -195,14 +195,13 @@
   return(samples)
 }
 
-# This function implements poststratification
-.poststratify_samples <- function(samples, N.units, nstrata) {
-  if (is.null(N.units)) { # Create equal poststratification weights (1 / nstrata) in absence of N.units
-    weights <- rep(1, nstrata - 1) / (nstrata - 1)
+.poststratify_samples <- function(samples, N.units) {
+  n_strata <- ncol(samples)
+  if (is.null(N.units)) {
+    weights <- rep(1, n_strata) / n_strata
   } else {
     weights <- N.units[-1] / N.units[1]
   }
-  # Weigh the samples of each stratum using the poststratification weights to arrive at the poststratified population posterior
   poststratified_samples <- samples %*% weights
   return(poststratified_samples)
 }

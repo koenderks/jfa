@@ -16,7 +16,6 @@
 context("Benchmark against R package samplingbook")
 
 # samplingbook R package (version 1.2.4)
-# install.packages('samplingbook')
 
 test_that(desc = "(id: f15-v0.6.3-t1) Validate hypergeometric 99% upper bounds", {
   ub_level <- 0.99

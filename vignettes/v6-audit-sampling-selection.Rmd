@@ -192,7 +192,11 @@ The `selection()` function has additional arguments (`order`, `decreasing`, and 
 ```{r}
 # Ordering population from lowest 'bookValue' to highest 'bookValue' before MUS
 set.seed(1)
-sample <- selection(data = BuildIt, size = 100, units = "values", values = "bookValue", order = "bookValue", decreasing = FALSE)
+sample <- selection(
+  data = BuildIt, size = 100,
+  units = "values", values = "bookValue",
+  order = "bookValue", decreasing = FALSE
+)
 head(sample$sample, n = 6)
 ```
 
@@ -201,7 +205,10 @@ The `randomize` argument can be used to randomly shuffle the items in the popula
 ```{r}
 # Randomly shuffle population items before MUS
 set.seed(1)
-sample <- selection(data = BuildIt, size = 100, units = "values", values = "bookValue", randomize = TRUE)
+sample <- selection(
+  data = BuildIt, size = 100,
+  units = "values", values = "bookValue", randomize = TRUE
+)
 head(sample$sample, n = 6)
 ```
 
