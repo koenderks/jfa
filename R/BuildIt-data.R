@@ -15,7 +15,10 @@
 
 #' BuildIt Construction Financial Statements
 #'
-#' Fictional data from a construction company in the United States, containing 3500 observations identification numbers, book values, and audit values. The audit values are added for illustrative purposes, as these would need to be assessed by the auditor in the execution stage of the audit.
+#' Fictional data from a construction company in the United States, containing
+#' 3500 observations identification numbers, book values, and audit values. The
+#' audit values are added for illustrative purposes, as these would need to be
+#' assessed by the auditor in the execution stage of the audit.
 #'
 #' @docType data
 #'
@@ -30,7 +33,9 @@
 #'
 #' @keywords datasets
 #'
-#' @references Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., & Wetzels, R. (2021). JASP for audit: Bayesian tools for the auditing practice. \emph{Journal of Open Source Software}, \emph{6}(68), 2733.
+#' @references Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., &
+#' Wetzels, R. (2021). JASP for audit: Bayesian tools for the auditing practice.
+#' \emph{Journal of Open Source Software}, \emph{6}(68), 2733.
 #'
 #' @examples
 #' data(BuildIt)

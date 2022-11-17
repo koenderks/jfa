@@ -88,7 +88,6 @@ digit.test <- function(x, check = c("first", "last", "firsttwo"),
   d_included <- as.numeric(names(d_tab))
   index <- if (check == "firsttwo") d_included - 9 else d_included
   obs[index] <- as.numeric(d_tab)
-  p_obs <- obs / n
   if (is.numeric(reference)) {
     stopifnot(
       "number of elements in reference must be equal to the number of digits" = length(reference) == length(dig),

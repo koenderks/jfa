@@ -22,13 +22,15 @@ A data frame with 202 rows and 12 variables.
 }
 }
 \source{
-\url{https://towardsdatascience.com/data-driven-audit-1-automated-sampling-using-python-52e83347add5}
+\url{https://towardsdatascience.com/data-driven-audit-1-automated-
+sampling-using-python-52e83347add5}
 }
 \usage{
 data(carrier)
 }
 \description{
-Fictional data from a carrier company in Europe, containing 202 ledger items across 10 company entities.
+Fictional data from a carrier company in Europe, containing 202 ledger items
+across 10 company entities.
 }
 \examples{
 data(carrier)

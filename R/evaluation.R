@@ -803,7 +803,7 @@ evaluation <- function(materiality = NULL, min.precision = NULL, method = c(
     class(result[["posterior"]]) <- "jfaPosterior"
   }
   # Add the data and taints to the output
-  if (!is.null(data) && !is.null(values) & !is.null(values.audit)) {
+  if (!is.null(data) && !is.null(values) && !is.null(values.audit)) {
     indexa <- which(colnames(data) == values.audit)
     indexb <- which(colnames(data) == values)
     frame <- as.data.frame(data[, c(indexb, indexa)])

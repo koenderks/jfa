@@ -165,17 +165,13 @@
       control = list(adapt_delta = 0.95)
     )
   )
-  tryCatch(
-    {
-      raw_posterior <- rstan::sampling(
-        object = stanmodels[[paste0("pp_", likelihood)]], data = c(data, use_likelihood = 1), pars = "theta_s", iter = getOption("mcmc.iterations", 2000),
-        warmup = getOption("mcmc.warmup", 1000), chains = getOption("mcmc.chains", 4), cores = getOption("mcmc.cores", 1), seed = ceiling(stats::runif(1, -1000, 1000)),
-        control = list(adapt_delta = 0.95)
-      )
-    },
-    error = function(e) stop(e)
+  raw_posterior <- rstan::sampling(
+    object = stanmodels[[paste0("pp_", likelihood)]], data = c(data, use_likelihood = 1), pars = "theta_s", iter = getOption("mcmc.iterations", 2000),
+    warmup = getOption("mcmc.warmup", 1000), chains = getOption("mcmc.chains", 4), cores = getOption("mcmc.cores", 1), seed = ceiling(stats::runif(1, -1000, 1000)),
+    control = list(adapt_delta = 0.95)
   )
   samples <- cbind(rstan::extract(raw_posterior)$theta_s, rstan::extract(raw_prior)$theta_s)
+  stopifnot("stan model could not be fitted..." = ncol(samples) == (nstrata - 1) * 2)
   return(samples)
 }
 

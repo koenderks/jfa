@@ -7,18 +7,21 @@
 \format{
 A data frame with 4189 rows and 5 variables.
 \describe{
-  \item{item}{unique record identification number.}
-  \item{branch}{branch number.}
-  \item{bookValue}{book value in US dollars.}
-  \item{auditValue}{true value in US dollars.}
-  \item{times}{sample indicator.}
+  \item{item}{a unique record identification number.}
+  \item{branch}{the stratum identifyer / branch number.}
+  \item{bookValue}{the item book value in US dollars.}
+  \item{auditValue}{the item audit (true) value in US dollars.}
+  \item{times}{a sample selection indicator (\code{0} = not in sample).}
 }
 }
 \usage{
 data(allowances)
 }
 \description{
-Fictional population from a legitimacy audit, containing 4189 observations identification numbers and stratum identifiers, book values, and audit values. The audit values are added for illustrative purposes, as these would need to be assessed by the auditor in the execution stage of the audit.
+Fictional population from a legitimacy audit, containing 4189 records with
+identification numbers, stratum identifiers, book values, and audit values.
+The audit values are added for illustrative purposes, as these would
+need to be assessed by the auditor in the execution stage of the audit.
 }
 \examples{
 data(allowances)

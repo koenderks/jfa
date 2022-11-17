@@ -91,14 +91,14 @@
 .moment <- function(taints, conf.level, n, alternative, m.type = c("inventory", "accounts")) {
   m.type <- match.arg(m.type)
   tall <- subset(taints, taints != 0)
-  if (m.type == "inventory" & length(tall) > 0) {
+  if (m.type == "inventory" && length(tall) > 0) {
     tstar <- 0.81 * (1 - 0.667 * tanh(10 * abs(mean(tall))))
-  } else if (m.type == "inventory" & length(tall) == 0) {
+  } else if (m.type == "inventory" && length(tall) == 0) {
     tstar <- 0.81 * (1 - 0.667 * tanh(10 * 0))
   }
-  if (m.type == "accounts" & length(tall) > 0) {
+  if (m.type == "accounts" && length(tall) > 0) {
     tstar <- 0.81 * (1 - 0.667 * tanh(10 * mean(tall))) * (1 + 0.667 * tanh(length(tall) / 10))
-  } else if (m.type == "accounts" & length(tall) == 0) {
+  } else if (m.type == "accounts" && length(tall) == 0) {
     tstar <- 0.81 * (1 - 0.667 * tanh(10 * 0)) * (1 + 0.667 * tanh(0 / 10))
   }
   ncm1_z <- (tstar^1 + sum(tall^1)) / (length(tall) + 1)

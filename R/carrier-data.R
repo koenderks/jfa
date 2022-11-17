@@ -15,7 +15,8 @@
 
 #' Carrier Company Financial Statements
 #'
-#' Fictional data from a carrier company in Europe, containing 202 ledger items across 10 company entities.
+#' Fictional data from a carrier company in Europe, containing 202 ledger items
+#' across 10 company entities.
 #'
 #' @docType data
 #'
@@ -39,7 +40,8 @@
 #'
 #' @keywords datasets
 #'
-#' @source \url{https://towardsdatascience.com/data-driven-audit-1-automated-sampling-using-python-52e83347add5}
+#' @source \url{https://towardsdatascience.com/data-driven-audit-1-automated-
+#' sampling-using-python-52e83347add5}
 #'
 #' @examples
 #' data(carrier)

@@ -118,14 +118,14 @@ selection <- function(data, size, units = c("items", "values"),
   interval <- NULL # Placeholder for interval
   bookvalues <- NULL # Placeholder for book values
   dname <- deparse(substitute(data))
-  data <- as.data.frame(data, row.names = 1:nrow(data)) # Convert the population to a data frame
+  data <- as.data.frame(data, row.names = seq_len(nrow(data))) # Convert the population to a data frame
   if (!randomize && !is.null(order)) { # Order the population
     data <- data[order(data[, order], decreasing = decreasing), , drop = FALSE]
   } else if (randomize) { # Randomize the population
     if (!is.null(order)) {
       message("'order' overruled by 'randomize = TRUE'")
     }
-    data <- data[sample(1:nrow(data)), , drop = FALSE]
+    data <- data[sample(seq_len(nrow(data))), , drop = FALSE]
   }
   if (!is.null(values)) { # Take the book values from the population
     bookvalues <- data[, values]
@@ -201,7 +201,7 @@ selection <- function(data, size, units = c("items", "values"),
   # Create the main results object
   result <- list()
   result[["data"]] <- as.data.frame(data)
-  result[["sample"]] <- as.data.frame(sample, row.names = 1:nrow(sample))
+  result[["sample"]] <- as.data.frame(sample, row.names = seq_len(nrow(sample)))
   result[["n.req"]] <- size
   result[["n.units"]] <- sum(count)
   result[["n.items"]] <- nrow(sample)

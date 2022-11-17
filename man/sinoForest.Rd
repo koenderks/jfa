@@ -20,6 +20,7 @@ Financial Statemens numbers of Sino Forest Corporation's 2010 Report.
 data(sinoForest)
 }
 \references{
-Nigrini, M. J. (2012). Benford's Law: Application for Forensic Accounting, Auditing and Fraud Detection. Wiley and Sons: New Jersey.
+Nigrini, M. J. (2012). Benford's Law: Application for Forensic
+Accounting, Auditing and Fraud Detection. Wiley and Sons: New Jersey.
 }
 \keyword{datasets}

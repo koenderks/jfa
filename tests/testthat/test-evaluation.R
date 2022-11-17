@@ -484,6 +484,7 @@ test_that(desc = "(id: f3-v0.6.5-t5) Test stratification with data (Derks et al.
   BuildIt$stratum <- factor(c("high", "medium", rep(c("low", "medium", "high"), times = 1166)))
   BuildIt$inSample <- c(rep(1, 100), rep(0, 3400))
   BuildIt_sample <- subset(BuildIt, BuildIt$inSample == 1)
+  BuildIt_sample$wholeError <- ifelse(BuildIt_sample$bookValue != BuildIt_sample$auditValue, yes = 0, no = BuildIt_sample$auditValue)
   # 1. Complete pooling
   res <- evaluation(
     materiality = 0.03, data = BuildIt_sample, prior = TRUE, method = "binomial",
@@ -503,10 +504,18 @@ test_that(desc = "(id: f3-v0.6.5-t5) Test stratification with data (Derks et al.
   expect_equal(res$ub, 0.09724879894)
   expect_equal(res$strata$mle, c(0.01818169065, 0.03636289354, 0.03529444518))
   expect_equal(res$strata$ub, c(0.1140247217, 0.1407511113, 0.1369524323))
-  # 3. Partial pooling
+  # 3. Partial pooling (partial errors)
   res <- evaluation(
     materiality = 0.03, data = BuildIt_sample, prior = TRUE, method = "binomial",
     values = "bookValue", values.audit = "auditValue", strata = "stratum",
+    N.units = as.numeric(table(BuildIt_sample$stratum)), pooling = "partial"
+  )
+  expect_equal(is.data.frame(res$strata), TRUE)
+  # We do not test these results because of differences in OS's due to sampling
+  # 4. Partial pooling (whole errors)
+  res <- evaluation(
+    materiality = 0.03, data = BuildIt_sample, prior = TRUE, method = "binomial",
+    values = "bookValue", values.audit = "wholeError", strata = "stratum",
     N.units = as.numeric(table(BuildIt_sample$stratum)), pooling = "partial"
   )
   expect_equal(is.data.frame(res$strata), TRUE)

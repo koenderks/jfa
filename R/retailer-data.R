@@ -15,7 +15,8 @@
 
 #' Retailer Group Audit
 #'
-#' Sample outcomes summarized per branch from an audit of a retail company consisting of 20 branches.
+#' Sample outcomes summarized per branch from an audit of a retail company
+#' consisting of 20 branches.
 #'
 #' @docType data
 #'
@@ -31,7 +32,10 @@
 #'
 #' @keywords datasets
 #'
-#' @source Derks, K., de Swart, J., & Wetzels, R. (2022). Een Bayesiaanse blik op gestratificeerde steekproeven heeft voordelen voor de auditor. \emph{Maandblad voor Accountancy en Bedrijfseconomie}, 96(1/2), 37-46. https://doi.org/10.5117/mab.96.78836
+#' @source Derks, K., de Swart, J., & Wetzels, R. (2022). Een Bayesiaanse blik
+#' op gestratificeerde steekproeven heeft voordelen voor de auditor.
+#' \emph{Maandblad voor Accountancy en Bedrijfseconomie}, 96(1/2), 37-46.
+#' https://doi.org/10.5117/mab.96.78836
 #'
 #' @examples
 #' data(retailer)
