@@ -314,22 +314,22 @@ function.</p>
 <h2 id="stage-3-executing-the-audit">Stage 3: Executing the audit<a class="anchor" aria-label="anchor" href="#stage-3-executing-the-audit"></a>
 </h2>
 <p>The selected sample can be isolated by indexing the
-<code>sample</code> object from the sampling result. Now Laura can
-execute her audit by annotating the sample with their audit value (for
-exampling by writing the sample to a <em>.csv</em> file using
-<code><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv()</a></code>. She can then load her annotated sample back
-into R for further evaluation.</p>
+<code>sample</code> object from the sampling result.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Step 3: Isolate the sample for execution of the audit.</span></span>
-<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">stage2</span><span class="op">$</span><span class="va">sample</span></span>
-<span></span>
-<span><span class="co"># To write the sample to a .csv file:</span></span>
-<span><span class="co"># write.csv(x = sample, file = "auditSample.csv", row.names = FALSE)</span></span>
+<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">stage2</span><span class="op">$</span><span class="va">sample</span></span></code></pre></div>
+<p>Now Laura can execute her audit by annotating the sample with their
+audit value (for exampling by writing the sample to a <em>.csv</em> file
+using <code><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv()</a></code>. She can then load her annotated sample
+back into R for further evaluation.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># To write the sample to a .csv file:</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">sample</span>, file <span class="op">=</span> <span class="st">"auditSample.csv"</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To load annotated sample back into R:</span></span>
-<span><span class="co"># sample &lt;- read.csv(file = "auditSample.csv")</span></span></code></pre></div>
+<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"auditSample.csv"</span><span class="op">)</span></span></code></pre></div>
 <p>For this example, the audit values of the sample are already included
-in the <code>auditValue</code> column of the data set .</p>
+in the <code>auditValue</code> column of the data set.</p>
 </div>
 <div class="section level2">
 <h2 id="stage-4-evaluating-the-sample">Stage 4: Evaluating the sample<a class="anchor" aria-label="anchor" href="#stage-4-evaluating-the-sample"></a>
@@ -339,7 +339,7 @@ in the <code>auditValue</code> column of the data set .</p>
 </center>
 <p>Using her annotated sample, Laura can perform her inference with the
 <code><a href="../reference/evaluation.html">evaluation()</a></code> function.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Step 4: Evaluate the sample</span></span>
 <span><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="va">materiality</span>, conf.level <span class="op">=</span> <span class="va">c.adj</span>, data <span class="op">=</span> <span class="va">sample</span>,</span>
@@ -349,7 +349,7 @@ in the <code>auditValue</code> column of the data set .</p>
 <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function. Her resulting 91.66% upper bound is
 1.396%, which is lower than the materiality of 5%. The output tells
 Laura the correct conclusion immediately.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Classical Audit Sample Evaluation Summary</span></span>

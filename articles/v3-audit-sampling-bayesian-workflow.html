@@ -373,22 +373,22 @@ the <code>stage1</code> object as an input for the
 <h2 id="stage-3-executing-the-audit">Stage 3: Executing the audit<a class="anchor" aria-label="anchor" href="#stage-3-executing-the-audit"></a>
 </h2>
 <p>The selected sample can be isolated by indexing the
-<code>sample</code> object from the sampling result. Now Laura can
-execute her audit by annotating the sample with their audit value (for
-exampling by writing the sample to a <em>.csv</em> file using
-<code><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv()</a></code>. She can then load her annotated sample back
-into R for further evaluation.</p>
+<code>sample</code> object from the sampling result.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Step 3: Isolate the sample for execution of the audit.</span></span>
-<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">stage2</span><span class="op">$</span><span class="va">sample</span></span>
-<span></span>
-<span><span class="co"># To write the sample to a .csv file:</span></span>
-<span><span class="co"># write.csv(x = sample, file = "auditSample.csv", row.names = FALSE)</span></span>
+<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">stage2</span><span class="op">$</span><span class="va">sample</span></span></code></pre></div>
+<p>Now Laura can execute her audit by annotating the sample with their
+audit value (for exampling by writing the sample to a <em>.csv</em> file
+using <code><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv()</a></code>. She can then load her annotated sample
+back into R for further evaluation.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># To write the sample to a .csv file:</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">sample</span>, file <span class="op">=</span> <span class="st">"auditSample.csv"</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># To load annotated sample back into R:</span></span>
-<span><span class="co"># sample &lt;- read.csv(file = "auditSample.csv")</span></span></code></pre></div>
+<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"auditSample.csv"</span><span class="op">)</span></span></code></pre></div>
 <p>For this example, the audit values of the sample are already included
-in the <code>auditValue</code> column of the data set .</p>
+in the <code>auditValue</code> column of the data set.</p>
 </div>
 <div class="section level2">
 <h2 id="stage-4-evaluating-the-sample">Stage 4: Evaluating the sample<a class="anchor" aria-label="anchor" href="#stage-4-evaluating-the-sample"></a>
@@ -401,7 +401,7 @@ in the <code>auditValue</code> column of the data set .</p>
 <code>priorResult</code> object to the function, she automatically sets
 <code>method = "binomial"</code> to be consistent with her prior
 distribution.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Step 4: Evaluate the sample.</span></span>
 <span><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="va">materiality</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, data <span class="op">=</span> <span class="va">sample</span>,</span>
@@ -411,7 +411,7 @@ distribution.</p>
 <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function. Her resulting upper bound is 2.278%,
 which is lower than the materiality of 5%. The output tells Laura the
 correct conclusion immediately.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Evaluation Summary</span></span>
@@ -440,9 +440,9 @@ the posterior distribution that contains 95% of the probability, which
 ends at 2.278%. Therefore, Laura can state that there is a 95%
 probability that the misstatement in BuildIt’s population is lower than
 2.278%.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v3-audit-sampling-bayesian-workflow_files/figure-html/unnamed-chunk-16-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="v3-audit-sampling-bayesian-workflow_files/figure-html/unnamed-chunk-17-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
