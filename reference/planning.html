@@ -146,10 +146,10 @@ confidence level (i.e., 1 - audit risk / detection risk).</p></dd>
 
 <dt>N.units</dt>
 <dd><p>a numeric value larger than 0 specifying the total
-number of units in the population. This argument is strictly only required
-for the <code>hypergeometric</code> likelihood, but is also used in
-stratification to weigh the estimates of each individual stratum to arrive
-at the population estimate. If <code>NULL</code>, each stratum is assumed to be
+number of units in the population. This argument is strictly required for
+the <code>hypergeometric</code> likelihood, but is also used in stratification
+to weigh the estimates of each individual stratum to arrive at the
+population estimate. If <code>NULL</code>, each stratum is assumed to be
 equally represented in the population.</p></dd>
 
 
@@ -180,10 +180,12 @@ using a prior that is conjugate to the specified <code>likelihood</code>.</p></d
 
 <p>An object of class <code>jfaPlanning</code> containing:</p>
 <dl><dt>conf.level</dt>
-<dd><p>a numeric value between 0 and 1 giving the confidence level.</p></dd>
+<dd><p>a numeric value between 0 and 1 giving the confidence
+  level.</p></dd>
 
 <dt>x</dt>
-<dd><p>a numeric value larger than, or equal to, 0 giving (the proportional sum of) the tolerable errors in the sample.</p></dd>
+<dd><p>a numeric value larger than, or equal to, 0 giving (the proportional
+  sum of) the tolerable errors in the sample.</p></dd>
 
 <dt>n</dt>
 <dd><p>an integer larger than 0 giving the minimal sample size.</p></dd>
@@ -192,40 +194,50 @@ using a prior that is conjugate to the specified <code>likelihood</code>.</p></d
 <dd><p>a numeric value between 0 and 1 giving the expected upper bound.</p></dd>
 
 <dt>precision</dt>
-<dd><p>a numeric value between 0 and 1 giving the expected precision.</p></dd>
+<dd><p>a numeric value between 0 and 1 giving the expected
+  precision.</p></dd>
 
 <dt>p.value</dt>
 <dd><p>a numeric value giving the expected one-sided p-value.</p></dd>
 
 <dt>K</dt>
-<dd><p>if <code>likelihood = 'hypergeometric'</code>, an integer larger than 0 giving the assumed population errors.</p></dd>
+<dd><p>if <code>likelihood = 'hypergeometric'</code>, an integer larger than 0
+  giving the assumed population errors.</p></dd>
 
 <dt>N.units</dt>
-<dd><p>an integer larger than 0 giving the number of units in the population (only returned if <code>N.units</code> is specified).</p></dd>
+<dd><p>an integer larger than 0 giving the number of units in the
+  population (only returned if <code>N.units</code> is specified).</p></dd>
 
 <dt>materiality</dt>
-<dd><p>a numeric value between 0 and 1 giving the performance materiality if specified.</p></dd>
+<dd><p>a numeric value between 0 and 1 giving the performance
+  materiality if specified.</p></dd>
 
 <dt>min.precision</dt>
-<dd><p>a numeric value between 0 and 1 giving the minimum precision if specified.</p></dd>
+<dd><p>a numeric value between 0 and 1 giving the minimum
+  precision if specified.</p></dd>
 
 <dt>expected</dt>
-<dd><p>a numeric value larger than, or equal to, 0 giving the expected errors input.</p></dd>
+<dd><p>a numeric value larger than, or equal to, 0 giving the
+  expected misstatement input.</p></dd>
 
 <dt>likelihood</dt>
 <dd><p>a character indicating the likelihood.</p></dd>
 
 <dt>errorType</dt>
-<dd><p>a character indicating whether the expected errors input type.</p></dd>
+<dd><p>a character indicating the expected misstatements input.</p></dd>
 
 <dt>iterations</dt>
-<dd><p>an integer giving the number of iterations of the algorithm.</p></dd>
+<dd><p>an integer giving the number of iterations of the
+  algorithm.</p></dd>
 
 <dt>prior</dt>
-<dd><p>if a prior distribution is specified, an object of class <code>jfaPrior</code> that contains information about the prior distribution.</p></dd>
+<dd><p>if a prior distribution is specified, an object of class
+  <code>jfaPrior</code> that contains information about the prior distribution.</p></dd>
 
 <dt>posterior</dt>
-<dd><p>if a prior distribution is specified, an object of class <code>jfaPosterior</code> that contains information about the expected posterior distribution.</p></dd>
+<dd><p>if a prior distribution is specified, an object of class
+  <code>jfaPosterior</code> that contains information about the expected posterior
+  distribution.</p></dd>
 
 </dl></div>
     <div id="details">
@@ -255,12 +267,26 @@ distributions used by <code>jfa</code>.</p>
 </ul></div>
     <div id="references">
     <h2>References</h2>
-    <p>Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., &amp; Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. <em>International Journal of Auditing</em>, 25(3), 621-636.</p>
-<p>Dyer, D. and Pierce, R.L. (1993). On the choice of the prior distribution in hypergeometric sampling. <em>Communications in Statistics - Theory and Methods</em>, 22(8), 2125 - 2146.</p>
+    <p>Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J.,
+  &amp; Wetzels, R. (2021). Priors in a Bayesian audit: How integration of
+  existing information into the prior distribution can improve audit
+  transparency and efficiency. <em>International Journal of Auditing</em>,
+  25(3), 621-636. <a href="https://doi.org/10.1111/ijau.12240" class="external-link">https://doi.org/10.1111/ijau.12240</a></p>
+<p>Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., &amp;
+  Wetzels, R. (2021). JASP for audit: Bayesian tools for the auditing
+  practice. <em>Journal of Open Source Software</em>, <em>6</em>(68), 2733.
+  <a href="https://doi.org/10.21105/joss.02733" class="external-link">https://doi.org/10.21105/joss.02733</a></p>
+<p>Dyer, D. and Pierce, R.L. (1993). On the choice of the prior
+distribution in hypergeometric sampling. <em>Communications in Statistics -
+Theory and Methods</em>, 22(8), 2125 - 2146.
+<a href="https://doi.org/10.1080/03610929308831139" class="external-link">https://doi.org/10.1080/03610929308831139</a></p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
-    <div class="dont-index"><p><code><a href="auditPrior.html">auditPrior</a></code> <code><a href="selection.html">selection</a></code> <code><a href="evaluation.html">evaluation</a></code> <code><a href="report.html">report</a></code></p></div>
+    <div class="dont-index"><p><code><a href="auditPrior.html">auditPrior</a></code>
+         <code><a href="selection.html">selection</a></code>
+         <code><a href="evaluation.html">evaluation</a></code>
+         <code><a href="report.html">report</a></code></p></div>
     </div>
     <div id="author">
     <h2>Author</h2>
@@ -285,7 +311,7 @@ distributions used by <code>jfa</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> minimum sample size = 99 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sample size obtained in 100 iteration(s) via method 'poisson' + 'prior'</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Bayesian planning using an impartial prior</span></span></span>
+<span class="r-in"><span><span class="co"># Bayesian planning using a custom prior</span></span></span>
 <span class="r-in"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"impartial"</span>, materiality <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">planning</span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
