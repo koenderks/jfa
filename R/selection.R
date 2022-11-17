@@ -44,7 +44,8 @@
 #' @param decreasing a logical specifying whether to order the items from
 #'   smallest to largest. Only used if \code{order} is specified.
 #' @param randomize  a logical specifying if items should be randomly shuffled
-#'   prior to selection. Note that \code{randomize = TRUE} overrules \code{order}.
+#'   prior to selection. Note that \code{randomize = TRUE} overrules
+#'   \code{order}.
 #' @param replace    a logical specifying if sampling units should be selected
 #'   with replacement. Only used for method \code{random}.
 #' @param start      an integer larger than 0 specifying index of the unit that
@@ -54,7 +55,7 @@
 #'   argument:
 #'
 #' \itemize{
-#'  \item{\code{items}:  In attributes sampling each item in the population is a
+#'  \item{\code{items}: In attributes sampling each item in the population is a
 #'    sampling unit. An item with a book value of $5000 is therefore equally
 #'    likely to be selected as an item with a book value of $500.}
 #'  \item{\code{values}: In monetary unit sampling each monetary unit in the
@@ -111,11 +112,10 @@
 #'   sieve sampling: A method for single-and multi-stage
 #'   probability-proportional-to-size sampling. \emph{Auditing: A Journal of
 #'   Practice & Theory}, 29(1), 125-148.
+#'   \url{https://doi.org/10.2308/aud.2010.29.1.125}
 #' @references Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979).
 #'   \emph{Dollar-unit Sampling: A Practical Guide for Auditors}. Copp Clark
-#'   Pitman; Belmont, Calif.: distributed by Fearon-Pitman.
-#' @references Wampler, B., & McEacharn, M. (2005). Monetary-unit sampling using
-#'   Microsoft Excel. \emph{The CPA journal}, 75(5), 36.
+#'   Pitman; Belmont, California. ISBN: 9780773042780.
 #'
 #' @keywords audit items mus selection
 #'
