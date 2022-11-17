@@ -95,7 +95,7 @@ repeated_test <- function(x,
   frequencies <- table(x)
   storage <- numeric(samples)
   if (method == "af") {
-    statistic <- .af(x)
+    statistic <- .average_frequency(x)
   } else if (method == "entropy") {
     statistic <- .entropy(x)
   } else {
@@ -113,7 +113,7 @@ repeated_test <- function(x,
       no = (x - (decimals / fraction)) + decim_samples
     )
     storage[i] <- switch(method,
-      "af" = .af(sim),
+      "af" = .average_frequency(sim),
       "entropy" = .entropy(sim)
     )
   }

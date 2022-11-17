@@ -85,6 +85,6 @@ report <- function(object,
   args$output_dir <- getwd()
   args$output_format <- format
   args$output_file <- file
-  output_file <- do.call(.getfun("rmarkdown::render"), args = args)
+  output_file <- do.call(.get_markdown_call("rmarkdown::render"), args = args)
   invisible(output_file)
 }

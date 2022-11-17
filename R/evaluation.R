@@ -607,7 +607,7 @@ evaluation <- function(materiality = NULL,
       samples <- .partial_pooling(method, prior.x, prior.n, n.obs, t.obs, t = NULL, nstrata, stratum, likelihood = "binomial")
     }
     for (i in 2:nstrata) {
-      mle[i] <- .getmode(samples[, i - 1])
+      mle[i] <- .compute_mode(samples[, i - 1])
       lb[i] <- switch(alternative,
         "two.sided" = stats::quantile(samples[, i - 1], probs = (1 - conf.level) / 2),
         "less" = 0,
@@ -638,7 +638,7 @@ evaluation <- function(materiality = NULL,
     }
     prior_samples <- .poststratify_samples(samples[, nstrata:ncol(samples)], N.units)
     posterior_samples <- .poststratify_samples(samples[, 1:(nstrata - 1)], N.units)
-    result[["mle"]] <- .getmode(posterior_samples)
+    result[["mle"]] <- .compute_mode(posterior_samples)
     result[["lb"]] <- switch(alternative,
       "two.sided" = as.numeric(stats::quantile(posterior_samples, probs = (1 - conf.level) / 2)),
       "less" = 0,
