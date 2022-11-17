@@ -24,19 +24,19 @@ Welcome to the 'Data auditing' vignette of the **jfa** package. Here you can fin
 
 Below you can find an explanation of the available data auditing functions in **jfa**.
 
-- [`digit.test()`](#test-digit-distributions-with-digit-test)
-- [`repeated.test()`](#test-for-repeated-values-with-repeated-test)
+- [`digit_test()`](#test-digit-distributions-with-digit-test)
+- [`repeated_test()`](#test-for-repeated-values-with-repeated-test)
 
-### Test digit distributions with `digit.test()`
+### Test digit distributions with `digit_test()`
 
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
-The function `digit.test()` takes a vector of numeric values, extract the requested digits, and compares the frequencies of these digits to a reference distribution. By default, the function performs a frequentist hypothesis test of the null hypothesis that the digits are distributed according to the reference distribution and produces a *p* value. When a prior is specified, the function performs a Bayesian hypothesis test of the null hypothesis that the digits are distributed according to the reference distribution against the alternative hypothesis that the digits are not distributed according to the reference distribution and produces a Bayes factor (Kass & Raftery, 1995).
+The function `digit_test()` takes a vector of numeric values, extract the requested digits, and compares the frequencies of these digits to a reference distribution. By default, the function performs a frequentist hypothesis test of the null hypothesis that the digits are distributed according to the reference distribution and produces a *p* value. When a prior is specified, the function performs a Bayesian hypothesis test of the null hypothesis that the digits are distributed according to the reference distribution against the alternative hypothesis that the digits are not distributed according to the reference distribution and produces a Bayes factor (Kass & Raftery, 1995).
 
 *Full function with default arguments:*
 
 ```r
-digit.test(x, check = c('first', "last", "firsttwo"), reference = 'benford', prior = FALSE)
+digit_test(x, check = c('first', "last", "firsttwo"), reference = 'benford', prior = FALSE)
 ```
 
 *Supported options for the `check` argument:*
@@ -65,22 +65,22 @@ The distribution of leading digits in a data set of financial transaction values
 
 ```{r}
 # Frequentist hypothesis test
-digit.test(sinoForest$value, check = "first", reference = "benford")
+digit_test(sinoForest$value, check = "first", reference = "benford")
 
 # Bayesian hypothesis test using default prior
-digit.test(sinoForest$value, check = "first", reference = "benford", prior = TRUE)
+digit_test(sinoForest$value, check = "first", reference = "benford", prior = TRUE)
 ```
 
-### Test for repeated values with `repeated.test()`
+### Test for repeated values with `repeated_test()`
 
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
-The function `repeated.test()` analyzes the frequency with which values get repeated within a set of numbers. Unlike Benford's law, and its generalizations, this approach examines the entire number at once, not only the first or last digit. For the technical details of this procedure, see Simohnsohn (2019).
+The function `repeated_test()` analyzes the frequency with which values get repeated within a set of numbers. Unlike Benford's law, and its generalizations, this approach examines the entire number at once, not only the first or last digit. For the technical details of this procedure, see Simohnsohn (2019).
 
 *Full function with default arguments:*
 
 ```r
-repeated.test(x, check = 'last', method = 'af', B = 2000)
+repeated_test(x, check = 'last', method = 'af', samples = 2000)
 ```
 
 *Supported options for the `check` argument:*
@@ -103,7 +103,7 @@ repeated.test(x, check = 'last', method = 'af', B = 2000)
 In this example, we analyze a data set from a (retracted) paper that describes three experiments run in Chinese factories, where workers were nudged to use more hand-sanitizer. These data were shown to exhibited two classic markers of data tampering: impossibly similar means and the uneven distribution of last digits (Yu, Nelson, & Simohnson, 2018). We can use the `rv.test()` function to test if these data also contain a greater amount of repeated values than expected if the data were not tampered with.
 
 ```{r}
-repeated.test(sanitizer$value, check = "lasttwo", B = 5000)
+repeated_test(sanitizer$value, check = "lasttwo", samples = 5000)
 ```
 
 ## Benchmarks

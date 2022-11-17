@@ -119,7 +119,7 @@ selection(
 Hoogduin, L. A., Hall, T. W., & Tsay, J. J. (2010). Modified
   sieve sampling: A method for single-and multi-stage
   probability-proportional-to-size sampling. \emph{Auditing: A Journal of
-  Practice & Theory}, 29(1), 125-148. 
+  Practice & Theory}, 29(1), 125-148.
   \url{https://doi.org/10.2308/aud.2010.29.1.125}
 
 Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979).

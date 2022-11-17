@@ -64,15 +64,15 @@ report <- function(object, file = "report.html", format = c("html_document", "pd
     stop('package \"kableExtra\" needed for this function to work, please install it', call. = FALSE)
   }
   # Determine the template
-  theFile <- system.file("rmd/report.Rmd", package = "jfa")
+  file_location <- system.file("rmd/report.Rmd", package = "jfa")
   # Process the function arguments
   format <- match.arg(format)
   args <- list()
-  args$input <- theFile
+  args$input <- file_location
   args$output_dir <- getwd()
   args$output_format <- format
   args$output_file <- file
   # Start the renderer via rmarkdown
-  outputFileName <- do.call(.getfun("rmarkdown::render"), args = args)
-  invisible(outputFileName)
+  output_file <- do.call(.getfun("rmarkdown::render"), args = args)
+  invisible(output_file)
 }

@@ -15,17 +15,27 @@
 
 #' Auditing Data: Digit Distribution Test
 #'
-#' @description This function extracts and performs a test of the distribution of (leading) digits in a vector against a reference distribution. By default, the distribution of leading digits is checked against Benford's law.
+#' @description This function extracts and performs a test of the distribution
+#' of (leading) digits in a vector against a reference distribution. By default,
+#' the distribution of leading digits is checked against Benford's law.
 #'
-#' @usage digit.test(x, check = c("first", "last", "firsttwo"),
+#' @usage digit_test(x, check = c("first", "last", "firsttwo"),
 #'            reference = 'benford', prior = FALSE)
 #'
-#' @param x           a numeric vector.
-#' @param check       location of the digits to analyze. Can be \code{first}, \code{firsttwo}, or \code{last}.
-#' @param reference   which character string given the reference distribution for the digits, or a vector of probabilities for each digit. Can be \code{benford} for Benford's law, \code{uniform} for the uniform distribution. An error is given if any entry of \code{reference} is negative. Probabilities that do not sum to one are normalized.
-#' @param prior       a logical specifying whether to use a prior distribution, or a numeric vector containing the prior parameters for the Dirichlet distribution on the digit categories.
+#' @param x         a numeric vector.
+#' @param check     location of the digits to analyze. Can be \code{first},
+#'   \code{firsttwo}, or \code{last}.
+#' @param reference which character string given the reference distribution for
+#'   the digits, or a vector of probabilities for each digit. Can be
+#'   \code{benford} for Benford's law, \code{uniform} for the uniform
+#'   distribution. An error is given if any entry of \code{reference} is
+#'   negative. Probabilities that do not sum to one are normalized.
+#' @param prior     a logical specifying whether to use a prior distribution,
+#'   or a numeric vector containing the prior parameters for the Dirichlet
+#'   distribution on the digit categories.
 #'
-#' @details Benford's law is defined as \eqn{p(d) = log10(1/d)}. The uniform distribution is defined as \eqn{p(d) = 1/d}.
+#' @details Benford's law is defined as \eqn{p(d) = log10(1/d)}. The uniform
+#'   distribution is defined as \eqn{p(d) = 1/d}.
 #'
 #' @return An object of class \code{jfaDistr} containing:
 #'
@@ -33,7 +43,8 @@
 #' \item{expected}{the expected counts under the null hypothesis.}
 #' \item{n}{the number of observations in \code{x}.}
 #' \item{statistic}{the value the chi-squared test statistic.}
-#' \item{parameter}{the degrees of freedom of the approximate chi-squared distribution of the test statistic.}
+#' \item{parameter}{the degrees of freedom of the approximate chi-squared
+#'   distribution of the test statistic.}
 #' \item{p.value}{the p-value for the test.}
 #' \item{check}{checked digits.}
 #' \item{digits}{vector of digits.}
@@ -42,9 +53,10 @@
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
-#' @references Benford, F. (1938). The law of anomalous numbers. \emph{In Proceedings of the American Philosophical Society}, 551-572.
+#' @references Benford, F. (1938). The law of anomalous numbers.
+#'   \emph{In Proceedings of the American Philosophical Society}, 551-572.
 #'
-#' @seealso \code{\link{repeated.test}}
+#' @seealso \code{\link{repeated_test}}
 #'
 #' @keywords audit Bayesian Benford digits distribution
 #'
@@ -53,26 +65,28 @@
 #' x <- rnorm(100)
 #'
 #' # First digit analysis against Benford's law
-#' digit.test(x, check = "first", reference = "benford")
+#' digit_test(x, check = "first", reference = "benford")
 #'
 #' # Bayesian first digit analysis against Benford's law
-#' digit.test(x, check = "first", reference = "benford", prior = TRUE)
+#' digit_test(x, check = "first", reference = "benford", prior = TRUE)
 #'
 #' # Last digit analysis against the uniform distribution
-#' digit.test(x, check = "last", reference = "uniform")
+#' digit_test(x, check = "last", reference = "uniform")
 #'
 #' # Bayesian last digit analysis against the uniform distribution
-#' digit.test(x, check = "last", reference = "uniform", prior = TRUE)
+#' digit_test(x, check = "last", reference = "uniform", prior = TRUE)
 #'
 #' # First digit analysis against a custom distribution
-#' digit.test(x, check = "last", reference = 1:9)
+#' digit_test(x, check = "last", reference = 1:9)
 #'
 #' # Bayesian first digit analysis against a custom distribution
-#' digit.test(x, check = "last", reference = 1:9, prior = TRUE)
+#' digit_test(x, check = "last", reference = 1:9, prior = TRUE)
 #' @export
 
-digit.test <- function(x, check = c("first", "last", "firsttwo"),
-                       reference = "benford", prior = FALSE) {
+digit_test <- function(x,
+                       check = c("first", "last", "firsttwo"),
+                       reference = "benford",
+                       prior = FALSE) {
   stopifnot("'x' must be a vector" = (NCOL(x) == 1) && !is.data.frame(x))
   check <- match.arg(check)
   bayesian <- prior[1] != FALSE
@@ -90,7 +104,7 @@ digit.test <- function(x, check = c("first", "last", "firsttwo"),
   obs[index] <- as.numeric(d_tab)
   if (is.numeric(reference)) {
     stopifnot(
-      "number of elements in reference must be equal to the number of digits" = length(reference) == length(dig),
+      "number of elements in 'reference' must be equal to the number of digits" = length(reference) == length(dig),
       "all elements in 'reference' must be >= 0" = all(reference >= 0)
     )
     p_exp <- reference / sum(reference)
@@ -112,18 +126,19 @@ digit.test <- function(x, check = c("first", "last", "firsttwo"),
     if (is.logical(prior)) {
       alpha <- rep(1, length(dig))
     } else if (length(prior) != length(dig)) {
-      stop("the number of elements in 'prior' must be equal to the number of digits")
+      stop("number of elements in 'prior' must be equal to number of digits")
     } else {
       alpha <- prior
     }
     # compute Bayes factor
-    lbeta.xa <- sum(lgamma(alpha + obs)) - lgamma(sum(alpha + obs)) # Prior with alpha[i] counts for each digit
-    lbeta.a <- sum(lgamma(alpha)) - lgamma(sum(alpha))
-    # in this case, counts*log(thetas) should be zero, omit to avoid numerical issue with log(0)
+    # Prior with alpha[i] counts for each digit
+    lbeta_xa <- sum(lgamma(alpha + obs)) - lgamma(sum(alpha + obs))
+    lbeta_a <- sum(lgamma(alpha)) - lgamma(sum(alpha))
+    # omit to avoid numerical issue with log(0)
     if (any(rowSums(cbind(p_exp, obs)) == 0)) {
-      log_bf10 <- (lbeta.xa - lbeta.a)
+      log_bf10 <- (lbeta_xa - lbeta_a)
     } else {
-      log_bf10 <- (lbeta.xa - lbeta.a) + (0 - sum(obs * log(p_exp)))
+      log_bf10 <- (lbeta_xa - lbeta_a) + (0 - sum(obs * log(p_exp)))
     }
     bf <- exp(log_bf10)
     names(bf) <- "BF10"
