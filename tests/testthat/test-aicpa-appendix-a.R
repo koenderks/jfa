@@ -24,8 +24,8 @@ test_that(desc = "(id: f9-v0.4.0-t1) Test sample sizes for 5 percent risk of ove
   sampleSizeMatrix <- matrix(NA, nrow = length(expectedDeviationRate), ncol = length(tolerableDeivationRate))
   rownames(sampleSizeMatrix) <- expectedDeviationRate
   colnames(sampleSizeMatrix) <- tolerableDeivationRate
-  for (i in seq_along(length(tolerableDeivationRate))) {
-    for (j in seq_along(length(expectedDeviationRate))) {
+  for (i in seq_along(tolerableDeivationRate)) {
+    for (j in seq_along(expectedDeviationRate)) {
       if (i == 1 && j > 6) {
         next
       }
@@ -92,8 +92,8 @@ test_that(desc = "(id: f9-v0.4.0-t2) Test sample sizes for 10 percent risk of ov
   sampleSizeMatrix <- matrix(NA, nrow = length(expectedDeviationRate), ncol = length(tolerableDeivationRate))
   rownames(sampleSizeMatrix) <- expectedDeviationRate
   colnames(sampleSizeMatrix) <- tolerableDeivationRate
-  for (i in seq_along(length(tolerableDeivationRate))) {
-    for (j in seq_along(length(expectedDeviationRate))) {
+  for (i in seq_along(tolerableDeivationRate)) {
+    for (j in seq_along(expectedDeviationRate)) {
       if (i == 1 && j > 7) {
         next
       }
@@ -163,8 +163,8 @@ test_that(desc = "(id: f9-v0.4.0-t3) Test upper bounds for 5 percent risk of ove
   evaluationMatrix <- matrix(NA, nrow = length(sampleSize), ncol = length(numberOfDeviations))
   rownames(evaluationMatrix) <- sampleSize
   colnames(evaluationMatrix) <- numberOfDeviations
-  for (i in seq_along(length(numberOfDeviations))_ {
-    for (j in seq_along(length(sampleSize))) {
+  for (i in seq_along(numberOfDeviations)) {
+    for (j in seq_along(sampleSize)) {
       jfaRes <- evaluation(conf.level = 0.95, method = "binomial", materiality = 0.05, n = sampleSize[j], x = numberOfDeviations[i])
       evaluationMatrix[j, i] <- ceiling(jfaRes[["ub"]] * 100 * 10) / 10
     }
@@ -209,8 +209,8 @@ test_that(desc = "(id: f9-v0.4.0-t4) Test upper bounds for 10 percent risk of ov
   evaluationMatrix <- matrix(NA, nrow = length(sampleSize), ncol = length(numberOfDeviations))
   rownames(evaluationMatrix) <- sampleSize
   colnames(evaluationMatrix) <- numberOfDeviations
-  for (i in seq_along(length(numberOfDeviations))) {
-    for (j in seq_along(length(sampleSize))) {
+  for (i in seq_along(numberOfDeviations)) {
+    for (j in seq_along(sampleSize)) {
       jfaRes <- evaluation(conf.level = 0.90, method = "binomial", materiality = 0.05, n = sampleSize[j], x = numberOfDeviations[i])
       evaluationMatrix[j, i] <- ceiling(jfaRes[["ub"]] * 100 * 10) / 10
     }
