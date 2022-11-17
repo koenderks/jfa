@@ -268,7 +268,7 @@ misstatement in the sample.</p>
 <div class="section level2">
 <h2 id="data-auditing">Data auditing<a class="anchor" aria-label="anchor" href="#data-auditing"></a>
 </h2>
-<p>The <code><a href="../reference/digit.test.html">digit.test()</a></code> function can be used to test the
+<p>The <code><a href="../reference/digit_test.html">digit_test()</a></code> function can be used to test the
 distribution of leading or last digits in a variable against a
 pre-specified distribution (e.g., Benford’s law).</p>
 <p>See the package vignette <a href="https://koenderks.github.io/jfa/articles/v8-data-auditing.html" class="external-link">Data
@@ -279,7 +279,7 @@ data auditing functionality.</p>
 </h3>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Digit distribution test</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/digit.test.html">digit.test</a></span><span class="op">(</span><span class="va">sinoForest</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"first"</span>, reference <span class="op">=</span> <span class="st">"benford"</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/digit_test.html">digit_test</a></span><span class="op">(</span><span class="va">sinoForest</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"first"</span>, reference <span class="op">=</span> <span class="st">"benford"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Digit distribution test</span></span>
@@ -290,17 +290,17 @@ data auditing functionality.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <p><img src="jfa_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
-<p>The <code><a href="../reference/repeated.test.html">repeated.test()</a></code> function can be used to test the
+<p>The <code><a href="../reference/repeated_test.html">repeated_test()</a></code> function can be used to test the
 numbers in a variable for repeated values.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Repeated values test</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/repeated.test.html">repeated.test</a></span><span class="op">(</span><span class="va">sanitizer</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"lasttwo"</span>, B <span class="op">=</span> <span class="fl">5000</span><span class="op">)</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/repeated_test.html">repeated_test</a></span><span class="op">(</span><span class="va">sanitizer</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"lasttwo"</span>, samples <span class="op">=</span> <span class="fl">5000</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Repeated values test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sanitizer$value</span></span>
-<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0014</span></span>
+<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0026</span></span>
 <span><span class="co">## alternative hypothesis: average frequency in data is greater than for random data.</span></span></code></pre>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
