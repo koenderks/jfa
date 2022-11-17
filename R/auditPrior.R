@@ -384,42 +384,13 @@ auditPrior <- function(method = c(
   )
   description[["implicit.x"]] <- prior.x
   description[["implicit.n"]] <- prior.n
-  prior_string <- switch(likelihood,
-    "poisson" = paste0("gamma(\u03B1 = ", round(description[["alpha"]], 3), ", \u03B2 = ", round(description[["beta"]], 3), ")"),
-    "binomial" = paste0("beta(\u03B1 = ", round(description[["alpha"]], 3), ", \u03B2 = ", round(description[["beta"]], 3), ")"),
-    "hypergeometric" = paste0("beta-binomial(N = ", N.units, ", \u03B1 = ", round(description[["alpha"]], 3), ", \u03B2 = ", round(description[["beta"]], 3), ")")
-  )
   statistics <- list()
-  statistics[["mode"]] <- switch(likelihood,
-    "poisson" = (description[["alpha"]] - 1) / description[["beta"]],
-    "binomial" = (description[["alpha"]] - 1) / (description[["alpha"]] + description[["beta"]] - 2),
-    "hypergeometric" = .modebbinom(N.units, description[["alpha"]], description[["beta"]])
-  )
-  statistics[["mean"]] <- switch(likelihood,
-    "poisson" = description[["alpha"]] / description[["beta"]],
-    "binomial" = description[["alpha"]] / (description[["alpha"]] + description[["beta"]]),
-    "hypergeometric" = description[["alpha"]] / (description[["alpha"]] + description[["beta"]]) * N.units
-  )
-  statistics[["median"]] <- switch(likelihood,
-    "poisson" = stats::qgamma(0.5, description[["alpha"]], description[["beta"]]),
-    "binomial" = stats::qbeta(0.5, description[["alpha"]], description[["beta"]]),
-    "hypergeometric" = .qbbinom(0.5, N.units, description[["alpha"]], description[["beta"]])
-  )
-  statistics[["var"]] <- switch(likelihood,
-    "poisson" = description[["alpha"]] / description[["beta"]]^2,
-    "binomial" = (description[["alpha"]] * description[["beta"]]) / ((description[["alpha"]] + description[["beta"]])^2 * (description[["alpha"]] + description[["beta"]] + 1)),
-    "hypergeometric" = ((N.units * description[["alpha"]] * description[["beta"]]) * (description[["alpha"]] + description[["beta"]] + N.units)) / ((description[["alpha"]] + description[["beta"]])^2 * (description[["alpha"]] + description[["beta"]] + 1))
-  )
-  statistics[["skewness"]] <- switch(likelihood,
-    "poisson" = 2 / sqrt(description[["alpha"]]),
-    "binomial" = ((2 * (description[["beta"]] - description[["alpha"]])) * sqrt(description[["alpha"]] + description[["beta"]] + 1)) / ((description[["alpha"]] + description[["beta"]] + 2) * sqrt(description[["alpha"]] * description[["beta"]])),
-    "hypergeometric" = (((description[["alpha"]] + description[["beta"]] + 2 * N.units) * (description[["beta"]] - description[["alpha"]])) / (description[["alpha"]] + description[["beta"]] + 2)) * sqrt((1 + description[["alpha"]] + description[["beta"]]) / (N.units * description[["alpha"]] * description[["beta"]] * (N.units + description[["alpha"]] + description[["beta"]])))
-  )
-  statistics[["ub"]] <- switch(likelihood,
-    "poisson" = stats::qgamma(conf.level, description[["alpha"]], description[["beta"]]),
-    "binomial" = stats::qbeta(conf.level, description[["alpha"]], description[["beta"]]),
-    "hypergeometric" = .qbbinom(conf.level, N.units, description[["alpha"]], description[["beta"]])
-  )
+  statistics[["mode"]] <- .distribution_mode(likelihood, description[["alpha"]], description[["beta"]], N.units)
+  statistics[["mean"]] <- .distribution_mean(likelihood, description[["alpha"]], description[["beta"]], N.units)
+  statistics[["median"]] <- .distribution_median(likelihood, description[["alpha"]], description[["beta"]], N.units)
+  statistics[["var"]] <- .distribution_variance(likelihood, description[["alpha"]], description[["beta"]], N.units)
+  statistics[["skewness"]] <- .distribution_skewness(likelihood, description[["alpha"]], description[["beta"]], N.units)
+  statistics[["ub"]] <- .distribution_ub(likelihood, conf.level, description[["alpha"]], description[["beta"]], N.units)
   statistics[["precision"]] <- statistics[["ub"]] - statistics[["mode"]]
   requires_specifics <- method != "default" && method != "strict"
   if (requires_specifics) {
@@ -444,29 +415,15 @@ auditPrior <- function(method = c(
   }
   if (requires_hypotheses) {
     hypotheses <- list()
-    h1_string <- paste0("H\u2081: \u0398 < ", materiality)
-    h0_string <- paste0("H\u2080: \u0398 > ", materiality)
-    hypotheses[["hypotheses"]] <- c(h1_string, h0_string)
-    hypotheses[["p.h1"]] <- switch(likelihood,
-      "poisson" = stats::pgamma(materiality, description[["alpha"]], description[["beta"]]),
-      "binomial" = stats::pbeta(materiality, description[["alpha"]], description[["beta"]]),
-      "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * N.units) - 1, N.units, description[["alpha"]], description[["beta"]])
-    )
-    hypotheses[["p.h0"]] <- switch(likelihood,
-      "poisson" = stats::pgamma(materiality, description[["alpha"]], description[["beta"]], lower.tail = FALSE),
-      "binomial" = stats::pbeta(materiality, description[["alpha"]], description[["beta"]], lower.tail = FALSE),
-      "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * N.units) - 1, N.units, description[["alpha"]], description[["beta"]], lower.tail = FALSE)
-    )
+    hypotheses[["hypotheses"]] <- .hypothesis_string(materiality)
+    hypotheses[["p.h1"]] <- .hypothesis_probability("tolerable", materiality, likelihood, description[["alpha"]], description[["beta"]], N.units)
+    hypotheses[["p.h0"]] <- .hypothesis_probability("intolerable", materiality, likelihood, description[["alpha"]], description[["beta"]], N.units)
     hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
     hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
-    hypotheses[["density"]] <- switch(likelihood,
-      "poisson" = stats::dgamma(materiality, description[["alpha"]], description[["beta"]]),
-      "binomial" = stats::dbeta(materiality, description[["alpha"]], description[["beta"]]),
-      "hypergeometric" = extraDistr::dbbinom(ceiling(materiality * N.units), N.units, description[["alpha"]], description[["beta"]])
-    )
+    hypotheses[["density"]] <- .hypothesis_density(materiality, likelihood, description[["alpha"]], description[["beta"]], N.units)
   }
   result <- list()
-  result[["prior"]] <- prior_string
+  result[["prior"]] <- .distribution_string(likelihood, description[["alpha"]], description[["beta"]], N.units)
   result[["description"]] <- description
   result[["statistics"]] <- statistics
   if (requires_specifics) {

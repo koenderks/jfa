@@ -66,6 +66,106 @@
   }
 }
 
+.distribution_string <- function(likelihood, alpha, beta, N.units = NULL) {
+  string <- switch(likelihood,
+    "poisson" = paste0("gamma(\u03B1 = ", round(alpha, 3), ", \u03B2 = ", round(beta, 3), ")"),
+    "binomial" = paste0("beta(\u03B1 = ", round(alpha, 3), ", \u03B2 = ", round(beta, 3), ")"),
+    "hypergeometric" = paste0("beta-binomial(N = ", N.units, ", \u03B1 = ", round(alpha, 3), ", \u03B2 = ", round(beta, 3), ")")
+  )
+  return(string)
+}
+
+.hypothesis_string <- function(materiality) {
+  h1_string <- paste0("H\u2081: \u0398 < ", materiality)
+  h0_string <- paste0("H\u2080: \u0398 > ", materiality)
+  strings <- c(h1_string, h0_string)
+  return(strings)
+}
+
+.distribution_mode <- function(likelihood = NULL, alpha = NULL, beta = NULL, N.units = NULL, samples = NULL) {
+  if (!is.null(samples)) {
+    dens <- stats::density(samples)
+    mode <- dens$x[which.max(dens$y)]
+  } else {
+    mode <- switch(likelihood,
+      "poisson" = (alpha - 1) / beta,
+      "binomial" = (alpha - 1) / (alpha + beta - 2),
+      "hypergeometric" = .modebbinom(N.units, alpha, beta)
+    )
+  }
+  return(mode)
+}
+
+.distribution_mean <- function(likelihood, alpha, beta, N.units = NULL) {
+  mean <- switch(likelihood,
+    "poisson" = alpha / beta,
+    "binomial" = alpha / (alpha + beta),
+    "hypergeometric" = alpha / (alpha + beta) * N.units
+  )
+  return(mean)
+}
+
+.distribution_median <- function(likelihood, alpha, beta, N.units = NULL) {
+  median <- switch(likelihood,
+    "poisson" = stats::qgamma(0.5, alpha, beta),
+    "binomial" = stats::qbeta(0.5, alpha, beta),
+    "hypergeometric" = .qbbinom(0.5, N.units, alpha, beta)
+  )
+  return(median)
+}
+
+.distribution_variance <- function(likelihood, alpha, beta, N.units = NULL) {
+  variance <- switch(likelihood,
+    "poisson" = alpha / beta^2,
+    "binomial" = (alpha * beta) / ((alpha + beta)^2 * (alpha + beta + 1)),
+    "hypergeometric" = ((N.units * alpha * beta) * (alpha + beta + N.units)) / ((alpha + beta)^2 * (alpha + beta + 1))
+  )
+  return(variance)
+}
+
+.distribution_skewness <- function(likelihood, alpha, beta, N.units = NULL) {
+  skewness <- switch(likelihood,
+    "poisson" = 2 / sqrt(alpha),
+    "binomial" = ((2 * (beta - alpha)) * sqrt(alpha + beta + 1)) / ((alpha + beta + 2) * sqrt(alpha * beta)),
+    "hypergeometric" = (((alpha + beta + 2 * N.units) * (beta - alpha)) / (alpha + beta + 2)) * sqrt((1 + alpha + beta) / (N.units * alpha * beta * (N.units + alpha + beta)))
+  )
+  return(skewness)
+}
+
+.distribution_ub <- function(likelihood, conf.level, alpha, beta, N.units = NULL) {
+  ub <- switch(likelihood,
+    "poisson" = stats::qgamma(conf.level, alpha, beta),
+    "binomial" = stats::qbeta(conf.level, alpha, beta),
+    "hypergeometric" = .qbbinom(conf.level, N.units, alpha, beta)
+  )
+  return(ub)
+}
+
+.hypothesis_density <- function(materiality, likelihood, alpha, beta, N.units = NULL) {
+  density <- switch(likelihood,
+    "poisson" = stats::dgamma(materiality, alpha, beta),
+    "binomial" = stats::dbeta(materiality, alpha, beta),
+    "hypergeometric" = extraDistr::dbbinom(ceiling(materiality * N.units), N.units, alpha, beta)
+  )
+  return(density)
+}
+
+.hypothesis_probability <- function(hyp, materiality, likelihood, alpha, beta, N.units = NULL) {
+  if (hyp == "tolerable") {
+    prob <- switch(likelihood,
+      "poisson" = stats::pgamma(materiality, alpha, beta),
+      "binomial" = stats::pbeta(materiality, alpha, beta),
+      "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * N.units) - 1, N.units, alpha, beta)
+    )
+  } else {
+    prob <- switch(likelihood,
+      "poisson" = stats::pgamma(materiality, alpha, beta, lower.tail = FALSE),
+      "binomial" = stats::pbeta(materiality, alpha, beta, lower.tail = FALSE),
+      "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * N.units) - 1, N.units, alpha, beta, lower.tail = FALSE)
+    )
+  }
+}
+
 .poststratify_samples <- function(samples, N.units) {
   n_strata <- ncol(samples)
   if (is.null(N.units)) {
