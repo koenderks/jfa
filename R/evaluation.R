@@ -601,7 +601,7 @@ evaluation <- function(materiality = NULL,
       samples <- .partial_pooling(method, prior.x, prior.n, n.obs, t.obs, t, nstrata, stratum, likelihood = "beta")
     } else {
       if (any(t.obs %% 1 != 0)) {
-        warning("sum of taints in each stratum is rounded upwards")
+        message("sum of taints in each stratum is rounded upwards")
         t.obs <- ceiling(t.obs)
       }
       samples <- .partial_pooling(method, prior.x, prior.n, n.obs, t.obs, t = NULL, nstrata, stratum, likelihood = "binomial")
@@ -625,8 +625,8 @@ evaluation <- function(materiality = NULL,
   result <- list()
   result[["conf.level"]] <- conf.level
   if (!use_stratification || pooling == "complete" || !(method %in% c("poisson", "binomial", "hypergeometric"))) { # Only results for population
-    if (!(method %in% c("poisson", "binomial", "hypergeometric"))) {
-      warning("population results are displayed for aggregated sample")
+    if (use_stratification && !(method %in% c("poisson", "binomial", "hypergeometric"))) {
+      message("population results are displayed for aggregated sample")
     }
     result[["mle"]] <- mle[1]
     result[["ub"]] <- ub[1]

@@ -42,7 +42,7 @@ for(rows in 1:length(expected)){
       next
     } else {
       p <- try({ suppressMessages(ss <- jfa::planning(conf.level = 0.90, expected = expected[rows], likelihood = "poisson", materiality = m[columns])) }, silent = T)
-      if(class(p) == "try-error"){
+      if(inherits(p, "try-error")){
         next 
       }
       tab[rows, columns] <- paste0(ss$n, " (", round(ss$x, 2), ")")
@@ -92,7 +92,7 @@ for(rows in 1:length(expected)){
       next
     } else {
       p <- try({ suppressMessages(ss <- jfa::planning(conf.level = 0.95, expected = expected[rows], likelihood = "poisson", materiality = m[columns])) }, silent = T)
-      if(class(p) == "try-error"){
+      if(inherits(p, "try-error")){
         next 
       }
       tab[rows, columns] <- paste0(ss$n, " (", round(ss$x, 2), ")")
@@ -142,7 +142,7 @@ for(rows in 1:length(expected)){
       next
     } else {
       p <- try({ suppressMessages(ss <- jfa::planning(conf.level = 0.975, expected = expected[rows], likelihood = "poisson", materiality = m[columns])) }, silent = T)
-      if(class(p) == "try-error"){
+      if(inherits(p, "try-error")){
         next 
       }
       tab[rows, columns] <- paste0(ss$n, " (", round(ss$x, 2), ")")
@@ -192,7 +192,7 @@ for(rows in 1:length(expected)){
       next
     } else {
       p <- try({ suppressMessages(ss <- jfa::planning(conf.level = 0.99, expected = expected[rows], likelihood = "poisson", materiality = m[columns])) }, silent = T)
-      if(class(p) == "try-error"){
+      if(inherits(p, "try-error")){
         next 
       }
       tab[rows, columns] <- paste0(ss$n, " (", round(ss$x, 2), ")")

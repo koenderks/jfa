@@ -107,6 +107,7 @@ This section elaborates on the possible options for the
 data("BuildIt")
 
 # Select 100 items using random sampling
+set.seed(1)
 selection(data = BuildIt, size = 100, method = "random")
 
 # Select 150 monetary units using fixed interval sampling

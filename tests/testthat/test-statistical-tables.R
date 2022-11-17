@@ -55,7 +55,7 @@ test_that(desc = "(id: f7-v0.5.5-t1) Statistical Sample Sizes based on the Binom
           },
           silent = T
         )
-        if (class(p) == "try-error") {
+        if (inherits(p, "try-error")) {
           next
         }
         tab[rows, columns] <- ss$n
@@ -104,7 +104,7 @@ test_that(desc = "(id: f7-v0.5.5-t2) Statistical Sample Sizes based on the Binom
           },
           silent = T
         )
-        if (class(p) == "try-error") {
+        if (inherits(p, "try-error")) {
           next
         }
         tab[rows, columns] <- ss$n
@@ -153,7 +153,7 @@ test_that(desc = "(id: f7-v0.5.5-t3) Statistical Sample Sizes based on the Binom
           },
           silent = T
         )
-        if (class(p) == "try-error") {
+        if (inherits(p, "try-error")) {
           next
         }
         tab[rows, columns] <- ss$n
@@ -202,7 +202,7 @@ test_that(desc = "(id: f7-v0.5.5-t4) Statistical Sample Sizes based on the Binom
           },
           silent = T
         )
-        if (class(p) == "try-error") {
+        if (inherits(p, "try-error")) {
           next
         }
         tab[rows, columns] <- ss$n
@@ -253,7 +253,7 @@ test_that(desc = "(id: f7-v0.5.5-t5) Statistical Sample Sizes based on the Poiss
           },
           silent = T
         )
-        if (class(p) == "try-error") {
+        if (inherits(p, "try-error")) {
           next
         }
         tab[rows, columns] <- ss$n
@@ -302,7 +302,7 @@ test_that(desc = "(id: f7-v0.5.5-t6) Statistical Sample Sizes based on the Poiss
           },
           silent = T
         )
-        if (class(p) == "try-error") {
+        if (inherits(p, "try-error")) {
           next
         }
         tab[rows, columns] <- ss$n
@@ -351,7 +351,7 @@ test_that(desc = "(id: f7-v0.5.5-t7) Statistical Sample Sizes based on the Poiss
           },
           silent = T
         )
-        if (class(p) == "try-error") {
+        if (inherits(p, "try-error")) {
           next
         }
         tab[rows, columns] <- ss$n
@@ -400,7 +400,7 @@ test_that(desc = "(id: f7-v0.5.5-t8) Statistical Sample Sizes based on the Poiss
           },
           silent = T
         )
-        if (class(p) == "try-error") {
+        if (inherits(p, "try-error")) {
           next
         }
         tab[rows, columns] <- ss$n
@@ -458,7 +458,7 @@ test_that(desc = "(id: f7-v0.5.5-t9) Statistical Sample Sizes based on the Hyper
           },
           silent = T
         )
-        if (class(p) == "try-error") {
+        if (inherits(p, "try-error")) {
           next
         }
         tab[rows, columns] <- ss$n
@@ -508,7 +508,7 @@ test_that(desc = "(id: f7-v0.5.5-t10) Statistical Sample Sizes based on the Hype
           },
           silent = T
         )
-        if (class(p) == "try-error") {
+        if (inherits(p, "try-error")) {
           next
         }
         tab[rows, columns] <- ss$n
@@ -558,7 +558,7 @@ test_that(desc = "(id: f7-v0.5.5-t11) Statistical Sample Sizes based on the Hype
           },
           silent = T
         )
-        if (class(p) == "try-error") {
+        if (inherits(p, "try-error")) {
           next
         }
         tab[rows, columns] <- ss$n
@@ -608,7 +608,7 @@ test_that(desc = "(id: f7-v0.5.5-t12) Statistical Sample Sizes based on the Hype
           },
           silent = T
         )
-        if (class(p) == "try-error") {
+        if (inherits(p, "try-error")) {
           next
         }
         tab[rows, columns] <- ss$n
@@ -658,7 +658,7 @@ test_that(desc = "(id: f7-v0.5.5-t13) Statistical Sample Sizes based on the Hype
           },
           silent = T
         )
-        if (class(p) == "try-error") {
+        if (inherits(p, "try-error")) {
           next
         }
         tab[rows, columns] <- ss$n
@@ -708,7 +708,7 @@ test_that(desc = "(id: f7-v0.5.5-t14) Statistical Sample Sizes based on the Hype
           },
           silent = T
         )
-        if (class(p) == "try-error") {
+        if (inherits(p, "try-error")) {
           next
         }
         tab[rows, columns] <- ss$n
@@ -758,7 +758,7 @@ test_that(desc = "(id: f7-v0.5.5-t15) Statistical Sample Sizes based on the Hype
           },
           silent = T
         )
-        if (class(p) == "try-error") {
+        if (inherits(p, "try-error")) {
           next
         }
         tab[rows, columns] <- ss$n
@@ -808,7 +808,7 @@ test_that(desc = "(id: f7-v0.5.5-t16) Statistical Sample Sizes based on the Hype
           },
           silent = T
         )
-        if (class(p) == "try-error") {
+        if (inherits(p, "try-error")) {
           next
         }
         tab[rows, columns] <- ss$n
@@ -858,7 +858,7 @@ test_that(desc = "(id: f7-v0.5.5-t17) Statistical Sample Sizes based on the Hype
           },
           silent = T
         )
-        if (class(p) == "try-error") {
+        if (inherits(p, "try-error")) {
           next
         }
         tab[rows, columns] <- ss$n
@@ -908,7 +908,7 @@ test_that(desc = "(id: f7-v0.5.5-t18) Statistical Sample Sizes based on the Hype
           },
           silent = T
         )
-        if (class(p) == "try-error") {
+        if (inherits(p, "try-error")) {
           next
         }
         tab[rows, columns] <- ss$n
@@ -958,7 +958,7 @@ test_that(desc = "(id: f7-v0.5.5-t19) Statistical Sample Sizes based on the Hype
           },
           silent = T
         )
-        if (class(p) == "try-error") {
+        if (inherits(p, "try-error")) {
           next
         }
         tab[rows, columns] <- ss$n
@@ -1008,7 +1008,7 @@ test_that(desc = "(id: f7-v0.5.5-t20) Statistical Sample Sizes based on the Hype
           },
           silent = T
         )
-        if (class(p) == "try-error") {
+        if (inherits(p, "try-error")) {
           next
         }
         tab[rows, columns] <- ss$n

@@ -130,7 +130,7 @@ repeated_test <- function(x,
     "entropy" = "S"
   )
   if (samples < 500) {
-    warning("p-value may be unreliable when 'samples' < 500")
+    message("p-value may be unreliable when 'samples' < 500")
   }
   result <- list()
   result[["statistic"]] <- statistic
