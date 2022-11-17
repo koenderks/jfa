@@ -52,8 +52,8 @@
 #'   the prior distribution. Required for method \code{param}.
 #' @param materiality   a numeric value between 0 and 1 specifying the
 #'   performance materiality (i.e., the maximum tolerable misstatement in the
-#'   population) as a fraction of the total number of units in the population.
-#'   Required for methods \code{impartial}, \code{arm}, and \code{hyp}.
+#'   population) as a fraction. Required for methods \code{impartial},
+#'   \code{arm}, and \code{hyp}.
 #' @param expected      a numeric value between 0 and 1 specifying the expected
 #'   (tolerable) misstatements in the sample relative to the total sample size.
 #'   Required for methods \code{impartial}, \code{arm}, \code{bram}, and
@@ -67,8 +67,7 @@
 #'   \code{arm}.
 #' @param ub          a numeric value between 0 and 1 specifying the
 #'   \code{conf.level}-\% upper bound for the prior distribution as a
-#'   fraction of the total number of units in the population. Required for
-#'   method \code{bram}.
+#'   fraction. Required for method \code{bram}.
 #' @param p.hmin      a numeric value between 0 and 1 specifying the prior
 #'   probability of the hypothesis of tolerable misstatement (H1: \eqn{\theta <}
 #'   materiality). Required for method \code{hyp}.

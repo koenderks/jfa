@@ -28,13 +28,12 @@
 #'
 #' @param materiality   a numeric value between 0 and 1 specifying the
 #'   performance materiality (i.e., the maximum tolerable misstatement in the
-#'   population) as a fraction of the total number of units in the population.
-#'   Can be \code{NULL}, but \code{min.precision} should be specified in that
-#'   case.
+#'   population) as a fraction. Can be \code{NULL}, but \code{min.precision}
+#'   should be specified in that case.
 #' @param min.precision a numeric value between 0 and 1 specifying the minimum
 #'   precision (i.e., the estimated upper bound minus the estimated most likely
-#'   error) as a fraction of the total population size. Can be \code{NULL}, but
-#'   \code{materiality} should be specified in that case.
+#'   error) as a fraction. Can be \code{NULL}, but \code{materiality} should be
+#'   specified in that case.
 #' @param expected      a numeric value between 0 and 1 specifying the expected
 #'   (tolerable) misstatements in the sample relative to the total sample size,
 #'   or a number (>= 1) specifying the expected (tolerable) number of
@@ -50,11 +49,8 @@
 #' @param conf.level    a numeric value between 0 and 1 specifying the
 #'   confidence level (i.e., 1 - audit risk / detection risk).
 #' @param N.units       a numeric value larger than 0 specifying the total
-#'   number of units in the population. This argument is strictly required for
-#'   the \code{hypergeometric} likelihood, but is also used in stratification
-#'   to weigh the estimates of each individual stratum to arrive at the
-#'   population estimate. If \code{NULL}, each stratum is assumed to be
-#'   equally represented in the population.
+#'   number of units in the population. Required for the \code{hypergeometric}
+#'   likelihood.
 #' @param by            an integer larger than 0 specifying the increment
 #'   between acceptable sample sizes (e.g., \code{increment = 5} considers only
 #'   sample sizes of 5, 10, 15, ...).
