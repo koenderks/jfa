@@ -119,17 +119,17 @@ selection(
 Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., &
   Wetzels, R. (2021). JASP for audit: Bayesian tools for the auditing
   practice. \emph{Journal of Open Source Software}, \emph{6}(68), 2733.
-  \url{https://doi.org/10.21105/joss.02733}
+  \doi{10.21105/joss.02733}
 
 Hoogduin, L. A., Hall, T. W., & Tsay, J. J. (2010). Modified
   sieve sampling: A method for single-and multi-stage
   probability-proportional-to-size sampling. \emph{Auditing: A Journal of
   Practice & Theory}, 29(1), 125-148.
-  \url{https://doi.org/10.2308/aud.2010.29.1.125}
+  \doi{10.2308/aud.2010.29.1.125}
 
 Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979).
   \emph{Dollar-unit Sampling: A Practical Guide for Auditors}. Copp Clark
-  Pitman; Belmont, California. ISBN: 9780773042780.
+  Pitman; Belmont, CA. ISBN: 9780773042780.
 }
 \seealso{
 \code{\link{auditPrior}}

@@ -109,7 +109,7 @@ digit_test <- function(x,
     )
     p_exp <- reference / sum(reference)
   } else if (reference == "benford") {
-    p_exp <- log10(1 + 1 / dig) # Benfords law: log_10(1 + 1 / d)
+    p_exp <- log10(1 + 1 / dig)
   } else if (reference == "uniform") {
     p_exp <- rep(1 / length(dig), length(dig))
   } else {
@@ -130,11 +130,8 @@ digit_test <- function(x,
     } else {
       alpha <- prior
     }
-    # compute Bayes factor
-    # Prior with alpha[i] counts for each digit
     lbeta_xa <- sum(lgamma(alpha + obs)) - lgamma(sum(alpha + obs))
     lbeta_a <- sum(lgamma(alpha)) - lgamma(sum(alpha))
-    # omit to avoid numerical issue with log(0)
     if (any(rowSums(cbind(p_exp, obs)) == 0)) {
       log_bf10 <- (lbeta_xa - lbeta_a)
     } else {
@@ -146,7 +143,6 @@ digit_test <- function(x,
   names(n) <- "n"
   names(obs) <- dig
   names(exp) <- dig
-  # Create results object
   result <- list()
   result[["observed"]] <- obs
   result[["expected"]] <- exp

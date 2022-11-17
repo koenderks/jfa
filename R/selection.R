@@ -111,15 +111,15 @@
 #' @references Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., &
 #'   Wetzels, R. (2021). JASP for audit: Bayesian tools for the auditing
 #'   practice. \emph{Journal of Open Source Software}, \emph{6}(68), 2733.
-#'   \url{https://doi.org/10.21105/joss.02733}
+#'   \doi{10.21105/joss.02733}
 #' @references Hoogduin, L. A., Hall, T. W., & Tsay, J. J. (2010). Modified
 #'   sieve sampling: A method for single-and multi-stage
 #'   probability-proportional-to-size sampling. \emph{Auditing: A Journal of
 #'   Practice & Theory}, 29(1), 125-148.
-#'   \url{https://doi.org/10.2308/aud.2010.29.1.125}
+#'   \doi{10.2308/aud.2010.29.1.125}
 #' @references Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979).
 #'   \emph{Dollar-unit Sampling: A Practical Guide for Auditors}. Copp Clark
-#'   Pitman; Belmont, California. ISBN: 9780773042780.
+#'   Pitman; Belmont, CA. ISBN: 9780773042780.
 #'
 #' @keywords audit items mus selection
 #'
@@ -148,112 +148,116 @@ selection <- function(data,
                       start = 1) {
   units <- match.arg(units)
   method <- match.arg(method)
+  use_mus <- units == "values"
   if (inherits(size, "jfaPlanning")) {
-    # Extract the planned sample size
     size <- size[["n"]]
-  } else {
-    stopifnot("'size' must be a single integer > 0" = size > 0)
   }
+  stopifnot("'size' must be a single integer > 0" = (size > 0) && (size %% 1 == 0))
   switch(units,
     "items" = stopifnot("cannot take a sample larger than the population when 'replace = FALSE'" = !(size > nrow(data) && !replace)),
     "values" = stopifnot("missing value for 'values'" = !is.null(values))
   )
   if (!is.null(values)) {
-    stopifnot("'values' must be a single character" = is.character(values) && length(values) == 1)
-    if (!(values %in% colnames(data))) { # Check if the book values column can be found in the data
+    valid_values <- is.character(values) && (length(values) == 1)
+    stopifnot("'values' must be a single character" = valid_values)
+    if (!(values %in% colnames(data))) {
       stop(paste0("'", values, "' is not a column in 'data'"))
     }
   }
-  if (!is.null(order) && !(order %in% colnames(data))) { # Check if the order column can be found in the data
+  if (!is.null(order) && !(order %in% colnames(data))) {
     stop(paste0("'", order, "' is not a column in 'data'"))
   }
   if (method == "interval") {
-    stopifnot("'start' must be an integer >= 1" = start >= 1)
+    valid_start <- (start >= 1) && (start %% 1 == 0)
+    stopifnot("'start' must be an integer >= 1" = valid_start)
   }
-  interval <- NULL # Placeholder for interval
-  bookvalues <- NULL # Placeholder for book values
+  interval <- NULL
+  book_values <- NULL
   dname <- deparse(substitute(data))
-  data <- as.data.frame(data, row.names = seq_len(nrow(data))) # Convert the population to a data frame
-  if (!randomize && !is.null(order)) { # Order the population
+  data <- as.data.frame(data, row.names = seq_len(nrow(data)))
+  if (!randomize && !is.null(order)) {
     data <- data[order(data[, order], decreasing = decreasing), , drop = FALSE]
-  } else if (randomize) { # Randomize the population
+  } else if (randomize) {
     if (!is.null(order)) {
       message("'order' overruled by 'randomize = TRUE'")
     }
-    data <- data[sample(seq_len(nrow(data))), , drop = FALSE]
+    new_order <- sample.int(nrow(data))
+    data <- data[new_order, , drop = FALSE]
   }
-  if (!is.null(values)) { # Take the book values from the population
-    bookvalues <- data[, values]
+  if (!is.null(values)) {
+    book_values <- data[, values]
   }
-  if (units == "values") { # Check if the sample size is valid
-    stopifnot("cannot take a sample larger than the population value" = size <= sum(bookvalues))
+  if (use_mus) {
+    valid_size <- size <= sum(book_values)
+    stopifnot("cannot take a sample larger than the population value" = valid_size)
   }
-  if (!is.null(bookvalues) && any(bookvalues < 0)) { # Remove the negative book values from the population
-    message("'values' contains negative values which are removed before selection")
-    negvals <- which(bookvalues < 0)
-    data <- data[-negvals, ]
-    bookvalues <- data[, values]
+  if (!is.null(book_values) && any(book_values < 0)) {
+    message("negative values in 'values' are removed before selection")
+    negative_values <- which(book_values < 0)
+    data <- data[-negative_values, ]
+    book_values <- data[, values]
   }
   row_numbers <- as.numeric(rownames(data))
-  # Sampling algorithms:
-  if (method == "random" && units == "items") {
-    # 1. Random record sampling
-    index <- sample(row_numbers, size = size, replace = replace)
-  } else if (method == "random" && units == "values") {
-    # 2. Random monetary unit sampling
+  if (method == "random" && !use_mus) {
+    # Random record sampling
+    sample_items <- sample(row_numbers, size, replace)
+  } else if (method == "random" && use_mus) {
+    # Random monetary unit sampling
     if (size > nrow(data)) {
       replace <- TRUE
     }
-    index <- sample(row_numbers, size = size, replace = replace, prob = bookvalues)
-  } else if (method == "cell" && units == "items") {
-    # 3. Cell record sampling
+    sample_items <- sample(row_numbers, size, replace, book_values)
+  } else if (method == "cell" && !use_mus) {
+    # Cell record sampling
     interval <- nrow(data) / size
     intervals <- 0:size * interval
-    index <- NULL
+    sample_items <- NULL
     for (i in seq_len(size)) {
-      interval_selection <- stats::runif(min = intervals[i], max = intervals[i + 1], n = 1)
-      index <- c(index, row_numbers[interval_selection])
+      selected_item <- stats::runif(1, intervals[i], intervals[i + 1])
+      sample_items <- c(sample_items, row_numbers[selected_item])
     }
-  } else if (method == "cell" && units == "values") {
-    # 4. Cell monetary unit sampling
-    interval <- sum(bookvalues) / size
+  } else if (method == "cell" && use_mus) {
+    # Cell monetary unit sampling
+    interval <- sum(book_values) / size
     intervals <- 0:size * interval
-    index <- NULL
+    sample_items <- NULL
     for (i in 1:size) {
-      interval_selection <- stats::runif(min = intervals[i], max = intervals[i + 1], n = 1)
-      index <- c(index, row_numbers[which(interval_selection <= cumsum(bookvalues))[1]])
+      selected_unit <- stats::runif(1, intervals[i], intervals[i + 1])
+      selected_item <- which(selected_unit <= cumsum(book_values))[1]
+      sample_items <- c(sample_items, row_numbers[selected_item])
     }
-  } else if (method == "interval" && units == "items") {
-    # 5. Fixed interval record sampling
+  } else if (method == "interval" && !use_mus) {
+    # Fixed interval record sampling
     interval <- nrow(data) / size
     if (start > interval) {
       stop(paste0("'start' must be an integer <= the selection interval (", interval, ")"))
     }
-    interval_selection <- start + 0:(size - 1) * interval
-    index <- row_numbers[interval_selection]
-  } else if (method == "interval" && units == "values") {
-    # 6. Fixed interval monetary unit sampling
-    interval <- sum(bookvalues) / size
+    selected_items <- start + 0:(size - 1) * interval
+    sample_items <- row_numbers[selected_items]
+  } else if (method == "interval" && use_mus) {
+    # Fixed interval monetary unit sampling
+    interval <- sum(book_values) / size
     if (start > interval) {
       stop(paste0("'start' must be an integer <= the selection interval (", interval, ")"))
     }
-    interval_selection <- start + 0:(size - 1) * interval
-    index <- NULL
+    selected_units <- start + 0:(size - 1) * interval
+    sample_items <- NULL
     for (i in 1:size) {
-      index <- c(index, row_numbers[which(interval_selection[i] <= cumsum(bookvalues))[1]])
+      selected_item <- which(selected_units[i] <= cumsum(book_values))[1]
+      sample_items <- c(sample_items, row_numbers[selected_item])
     }
   } else if (method == "sieve") {
-    stopifnot("'method = sieve' does not accomodate 'units = items'" = units == "values")
-    # 7. Modified sieve sampling (Hoogduin, Hall, & Tsay, 2010)
-    ri <- bookvalues / stats::runif(length(bookvalues), min = 0, max = 1)
-    index <- row_numbers[order(-ri)]
-    index <- index[1:size]
+    # Modified sieve sampling
+    stopifnot("'method = sieve' does not accomodate 'units = items'" = use_mus)
+    ri <- book_values / stats::runif(length(book_values), 0, 1)
+    sample_items <- row_numbers[order(-ri)]
+    sample_items <- sample_items[1:size]
   }
-  # Gather output
-  count <- as.numeric(table(index)[match(unique(index), names(table(index)))])
-  sample <- cbind(unique(index), count, data[match(unique(index), row_numbers), ])
+  names_match <- match(unique(sample_items), names(table(sample_items)))
+  row_match <- match(unique(sample_items), row_numbers)
+  count <- as.numeric(table(sample_items)[names_match])
+  sample <- cbind(unique(sample_items), count, data[row_match, ])
   colnames(sample) <- c("row", "times", colnames(data))
-  # Create the main results object
   result <- list()
   result[["data"]] <- as.data.frame(data)
   result[["sample"]] <- as.data.frame(sample, row.names = seq_len(nrow(sample)))
@@ -262,7 +266,7 @@ selection <- function(data,
   result[["n.items"]] <- nrow(sample)
   result[["N.units"]] <- switch(units,
     "items" = nrow(data),
-    "values" = sum(bookvalues)
+    "values" = sum(book_values)
   )
   result[["N.items"]] <- nrow(data)
   if (!is.null(interval)) {
@@ -276,7 +280,6 @@ selection <- function(data,
   }
   result[["data.name"]] <- dname
   result[["values.name"]] <- values
-  # Add class 'jfaSelection' to the result
-  class(result) <- "jfaSelection"
+  class(result) <- c(class(result), "jfaSelection")
   return(result)
 }

@@ -138,17 +138,16 @@ Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J.,
   & Wetzels, R. (2021). Priors in a Bayesian audit: How integration of
   existing information into the prior distribution can improve audit
   transparency and efficiency. \emph{International Journal of Auditing},
-  25(3), 621-636. \url{https://doi.org/10.1111/ijau.12240}
+  25(3), 621-636. \doi{10.1111/ijau.12240}
 
 Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., &
   Wetzels, R. (2021). JASP for audit: Bayesian tools for the auditing
   practice. \emph{Journal of Open Source Software}, \emph{6}(68), 2733.
-  \url{https://doi.org/10.21105/joss.02733}
+  \doi{10.21105/joss.02733}
 
 Dyer, D. and Pierce, R.L. (1993). On the choice of the prior
 distribution in hypergeometric sampling. \emph{Communications in Statistics -
-Theory and Methods}, 22(8), 2125 - 2146.
-\url{https://doi.org/10.1080/03610929308831139}
+Theory and Methods}, 22(8), 2125 - 2146. \doi{10.1080/03610929308831139}
 }
 \seealso{
 \code{\link{auditPrior}}

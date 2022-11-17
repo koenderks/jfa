@@ -150,38 +150,38 @@
 #'
 #' @references Cox, D. and Snell, E. (1979). On sampling and the estimation of
 #'   rare errors. \emph{Biometrika}, 66(1), 125-132.
-#'   \url{https://doi.org/10.1093/biomet/66.1.125}.
+#'   \doi{10.1093/biomet/66.1.125}.
 #' @references Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J.,
 #'   & Wetzels, R. (2021). Priors in a Bayesian audit: How integration of
 #'   existing information into the prior distribution can improve audit
 #'   transparency and efficiency. \emph{International Journal of Auditing},
-#'   25(3), 621-636. \url{https://doi.org/10.1111/ijau.12240}
+#'   25(3), 621-636. \doi{10.1111/ijau.12240}
 #' @references Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., &
 #'   Wetzels, R. (2021). JASP for audit: Bayesian tools for the auditing
 #'   practice. \emph{Journal of Open Source Software}, \emph{6}(68), 2733.
-#'   \url{https://doi.org/10.21105/joss.02733}
+#'   \doi{10.21105/joss.02733}
 #' @references Derks, K., de Swart, J., Wagenmakers, E.-J., & Wetzels, R.
 #'   (2021). The Bayesian approach to audit evidence: Quantifying statistical
 #'   evidence using the Bayes factor. \emph{PsyArXiv}.
-#'   \url{https://doi.org/10.31234/osf.io/kzqp5}
+#'   \doi{10.31234/osf.io/kzqp5}
 #' @references Derks, K., de Swart, J., Wagenmakers, E.-J., & Wetzels, R.
 #'   (2022). An impartial Bayesian hypothesis test for audit sampling.
-#'   \emph{PsyArXiv}. \url{https://doi.org/10.31234/osf.io/8nf3e}
+#'   \emph{PsyArXiv}. \doi{10.31234/osf.io/8nf3e}
 #' @references Derks, K., de Swart, J., Wagenmakers, E.-J., & Wetzels, R.
 #'   (2022). Bayesian generalized linear modeling for audit sampling: How to
 #'   incorporate audit information into the statistical model. \emph{PsyArXiv}.
-#'   \url{https://doi.org/10.31234/osf.io/byj2a}
+#'   \doi{10.31234/osf.io/byj2a}
 #' @references Dworin, L. D. and Grimlund, R. A. (1984). Dollar-unit sampling
 #'   for accounts receivable and inventory. \emph{The Accounting Review}, 59(2),
 #'   218-241. \url{https://www.jstor.org/stable/247296}
 #' @references Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979).
 #'   \emph{Dollar-unit Sampling: A Practical Guide for Auditors}. Copp Clark
-#'   Pitman; Belmont, California. ISBN: 9780773042780.
+#'   Pitman; Belmont, CA. ISBN: 9780773042780.
 #' @references Meikle, G. R. (1972). \emph{Statistical Sampling in an Audit
 #'   Context}. Canadian Institute of Chartered Accountants.
 #' @references Pap, G., and van Zuijlen, M. C. (1996). On the asymptotic
 #'   behavior of the Stringer bound. \emph{Statistica Neerlandica}, 50(3),
-#'   367-389. \url{https://doi.org/10.1111/j.1467-9574.1996.tb01503.x}.
+#'   367-389. \doi{10.1111/j.1467-9574.1996.tb01503.x}.
 #' @references Rohrbach, K. J. (1993). Variance augmentation to achieve nominal
 #'   coverage probability in sampling from audit populations. \emph{Auditing},
 #'   12(2), 79.
@@ -970,6 +970,6 @@ evaluation <- function(materiality = NULL,
     result[["data.name"]] <- dname
   }
   # Add class 'jfaEvaluation' to the result.
-  class(result) <- "jfaEvaluation"
+  class(result) <- c(class(result), "jfaEvaluation")
   return(result)
 }

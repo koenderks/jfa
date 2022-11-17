@@ -157,7 +157,7 @@ This section elaborates on the available input options for the
  \item{\code{arm}:       This method translates an assessment of inherent
    risk and internal control risk to a prior distribution.}
  \item{\code{bram}:      This method translates an assessment of the
-   expected most likely error and \empth{x}-\% upper bound to a prior
+   expected most likely error and \emph{x}-\% upper bound to a prior
    distribution.}
  \item{\code{sample}:    This method translates the outcome of an earlier
    sample to a prior distribution.}
@@ -206,16 +206,16 @@ Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J.,
   & Wetzels, R. (2021). Priors in a Bayesian audit: How integration of
   existing information into the prior distribution can improve audit
   transparency and efficiency. \emph{International Journal of Auditing},
-  25(3), 621-636. \url{https://doi.org/10.1111/ijau.12240}
+  25(3), 621-636. \doi{10.1111/ijau.12240}
 
 Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., &
   Wetzels, R. (2021). JASP for audit: Bayesian tools for the auditing
   practice. \emph{Journal of Open Source Software}, \emph{6}(68), 2733.
-  \url{https://doi.org/10.21105/joss.02733}
+  \doi{10.21105/joss.02733}
 
 Derks, K., de Swart, J., Wagenmakers, E.-J., & Wetzels, R.
   (2022). An impartial Bayesian hypothesis test for audit sampling.
-  \emph{PsyArXiv}. \url{https://doi.org/10.31234/osf.io/8nf3e}
+  \emph{PsyArXiv}. \doi{10.31234/osf.io/8nf3e}
 }
 \seealso{
 \code{\link{planning}}
