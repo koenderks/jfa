@@ -28,21 +28,43 @@
   }
 }
 
-.dist_string <- function(likelihood, alpha, beta, N.units = NULL) {
-  string <- switch(likelihood,
-    "poisson" = paste0("gamma(\u03B1 = ", round(alpha, 3), ", \u03B2 = ", round(beta, 3), ")"),
-    "binomial" = paste0("beta(\u03B1 = ", round(alpha, 3), ", \u03B2 = ", round(beta, 3), ")"),
-    "hypergeometric" = paste0("beta-binomial(N = ", N.units, ", \u03B1 = ", round(alpha, 3), ", \u03B2 = ", round(beta, 3), ")")
-  )
+.dist_form <- function(likelihood, analytical = TRUE) {
+  if (analytical) {
+    form <- switch(likelihood,
+      "poisson" = "gamma",
+      "binomial" = "beta",
+      "hypergeometric" = "beta-binomial"
+    )
+  } else {
+    form <- "MCMC"
+  }
+  return(form)
+}
+
+.dist_string <- function(likelihood, alpha, beta, N.units, analytical = TRUE) {
+  if (analytical) {
+    string <- switch(likelihood,
+      "poisson" = paste0("gamma(\u03B1 = ", round(alpha, 3), ", \u03B2 = ", round(beta, 3), ")"),
+      "binomial" = paste0("beta(\u03B1 = ", round(alpha, 3), ", \u03B2 = ", round(beta, 3), ")"),
+      "hypergeometric" = paste0("beta-binomial(N = ", N.units, ", \u03B1 = ", round(alpha, 3), ", \u03B2 = ", round(beta, 3), ")")
+    )
+  } else {
+    string <- "Approximated via MCMC sampling"
+  }
   return(string)
 }
 
-.dist_mode <- function(likelihood, alpha, beta, N.units) {
-  mode <- switch(likelihood,
-    "poisson" = (alpha - 1) / beta,
-    "binomial" = (alpha - 1) / (alpha + beta - 2),
-    "hypergeometric" = .modebbinom(N.units, alpha, beta)
-  )
+.dist_mode <- function(likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+  if (analytical) {
+    mode <- switch(likelihood,
+      "poisson" = (alpha - 1) / beta,
+      "binomial" = (alpha - 1) / (alpha + beta - 2),
+      "hypergeometric" = .modebbinom(N.units, alpha, beta)
+    )
+  } else {
+    dens <- stats::density(samples)
+    mode <- dens[["x"]][which.max(dens[["y"]])]
+  }
   return(mode)
 }
 
@@ -58,49 +80,113 @@
   return(mode)
 }
 
-.dist_mean <- function(likelihood, alpha, beta, N.units = NULL) {
-  mean <- switch(likelihood,
-    "poisson" = alpha / beta,
-    "binomial" = alpha / (alpha + beta),
-    "hypergeometric" = alpha / (alpha + beta) * N.units
-  )
+.dist_mean <- function(likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+  if (analytical) {
+    mean <- switch(likelihood,
+      "poisson" = alpha / beta,
+      "binomial" = alpha / (alpha + beta),
+      "hypergeometric" = alpha / (alpha + beta) * N.units
+    )
+  } else {
+    mean <- mean(samples)
+  }
   return(mean)
 }
 
-.dist_quartile <- function(prob, likelihood, alpha, beta, N.units = NULL) {
-  quartile <- switch(likelihood,
-    "poisson" = stats::qgamma(prob, alpha, beta),
-    "binomial" = stats::qbeta(prob, alpha, beta),
-    "hypergeometric" = .qbbinom(prob, N.units, alpha, beta)
-  )
-  return(quartile)
+.dist_median <- function(likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+  if (analytical) {
+    median <- switch(likelihood,
+      "poisson" = stats::qgamma(0.5, alpha, beta),
+      "binomial" = stats::qbeta(0.5, alpha, beta),
+      "hypergeometric" = .qbbinom(0.5, N.units, alpha, beta)
+    )
+  } else {
+    median <- stats::median(samples)
+  }
+  return(median)
 }
 
-.dist_var <- function(likelihood, alpha, beta, N.units = NULL) {
-  variance <- switch(likelihood,
-    "poisson" = alpha / beta^2,
-    "binomial" = (alpha * beta) / ((alpha + beta)^2 * (alpha + beta + 1)),
-    "hypergeometric" = ((N.units * alpha * beta) * (alpha + beta + N.units)) / ((alpha + beta)^2 * (alpha + beta + 1))
-  )
+.dist_var <- function(likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+  if (analytical) {
+    variance <- switch(likelihood,
+      "poisson" = alpha / beta^2,
+      "binomial" = (alpha * beta) / ((alpha + beta)^2 * (alpha + beta + 1)),
+      "hypergeometric" = ((N.units * alpha * beta) * (alpha + beta + N.units)) / ((alpha + beta)^2 * (alpha + beta + 1))
+    )
+  } else {
+    variance <- stats::var(samples)
+  }
   return(variance)
 }
 
-.dist_skew <- function(likelihood, alpha, beta, N.units = NULL) {
-  skewness <- switch(likelihood,
-    "poisson" = 2 / sqrt(alpha),
-    "binomial" = ((2 * (beta - alpha)) * sqrt(alpha + beta + 1)) / ((alpha + beta + 2) * sqrt(alpha * beta)),
-    "hypergeometric" = (((alpha + beta + 2 * N.units) * (beta - alpha)) / (alpha + beta + 2)) * sqrt((1 + alpha + beta) / (N.units * alpha * beta * (N.units + alpha + beta)))
-  )
+.dist_skew <- function(likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+  if (analytical) {
+    skewness <- switch(likelihood,
+      "poisson" = 2 / sqrt(alpha),
+      "binomial" = ((2 * (beta - alpha)) * sqrt(alpha + beta + 1)) / ((alpha + beta + 2) * sqrt(alpha * beta)),
+      "hypergeometric" = (((alpha + beta + 2 * N.units) * (beta - alpha)) / (alpha + beta + 2)) * sqrt((1 + alpha + beta) / (N.units * alpha * beta * (N.units + alpha + beta)))
+    )
+  } else {
+    skewness <- moments::skewness(samples)
+  }
   return(skewness)
 }
 
-.dist_ub <- function(conf.level, likelihood, alpha, beta, N.units = NULL) {
-  ub <- switch(likelihood,
-    "poisson" = stats::qgamma(conf.level, alpha, beta),
-    "binomial" = stats::qbeta(conf.level, alpha, beta),
-    "hypergeometric" = .qbbinom(conf.level, N.units, alpha, beta)
-  )
+.dist_precision <- function(alternative, mode, lb, ub) {
+  if (alternative == "greater") {
+    precision <- mode - lb
+  } else {
+    precision <- ub - mode
+  }
+  return(precision)
+}
+
+.dist_ub <- function(alternative, conf.level, likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+  if (alternative == "greater") {
+    if (likelihood == "poisson") {
+      ub <- Inf
+    } else {
+      ub <- 1
+    }
+  } else {
+    if (alternative == "less") {
+      prob <- conf.level
+    } else {
+      prob <- conf.level + (1 - conf.level) / 2
+    }
+    if (analytical) {
+      ub <- switch(likelihood,
+        "poisson" = stats::qgamma(prob, alpha, beta),
+        "binomial" = stats::qbeta(prob, alpha, beta),
+        "hypergeometric" = .qbbinom(prob, N.units, alpha, beta)
+      )
+    } else {
+      ub <- stats::quantile(samples, prob)
+    }
+  }
   return(ub)
+}
+
+.dist_lb <- function(alternative, conf.level, likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+  if (alternative == "less") {
+    lb <- 0
+  } else {
+    if (alternative == "greater") {
+      prob <- 1 - conf.level
+    } else {
+      prob <- (1 - conf.level) / 2
+    }
+    if (analytical) {
+      lb <- switch(likelihood,
+        "poisson" = stats::qgamma(prob, alpha, beta),
+        "binomial" = stats::qbeta(prob, alpha, beta),
+        "hypergeometric" = .qbbinom(prob, N.units, alpha, beta)
+      )
+    } else {
+      lb <- stats::quantile(samples, prob)
+    }
+  }
+  return(lb)
 }
 
 .qbbinom <- function(p, N, shape1, shape2, lower.tail = TRUE, log.p = FALSE) {
@@ -115,7 +201,7 @@
   return(q)
 }
 
-# Talens, E. (2005). Statistical Auditing and the AOQL-method 
+# Talens, E. (2005). Statistical Auditing and the AOQL-method
 # https://core.ac.uk/download/pdf/232379784.pdf
 .qhyper <- function(p, N, n, k) {
   K <- k:N
@@ -123,32 +209,77 @@
   return(max(K[cdf > (1 - p)]))
 }
 
-.hyp_string <- function(materiality) {
-  h1_string <- paste0("H\u2081: \u0398 < ", materiality)
-  h0_string <- paste0("H\u2080: \u0398 > ", materiality)
+.hyp_string <- function(materiality, alternative) {
+  if (alternative == "less") {
+    h1_string <- paste0("H\u2081: \u0398 < ", materiality)
+    h0_string <- paste0("H\u2080: \u0398 > ", materiality)
+  } else if (alternative == "greater") {
+    h1_string <- paste0("H\u2081: \u0398 > ", materiality)
+    h0_string <- paste0("H\u2080: \u0398 < ", materiality)
+  } else if (alternative == "two.sided") {
+    h1_string <- paste0("H\u2081: \u0398 \u2260 ", materiality)
+    h0_string <- paste0("H\u2080: \u0398 = ", materiality)
+  }
   strings <- c(h1_string, h0_string)
   return(strings)
 }
 
-.hyp_dens <- function(materiality, likelihood, alpha, beta, N.units = NULL) {
-  dens <- switch(likelihood,
-    "poisson" = stats::dgamma(materiality, alpha, beta),
-    "binomial" = stats::dbeta(materiality, alpha, beta),
-    "hypergeometric" = extraDistr::dbbinom(ceiling(materiality * N.units), N.units, alpha, beta)
-  )
+.hyp_dens <- function(materiality, likelihood, alpha, beta, N.units, post_N, analytical = TRUE, samples = NULL) {
+  if (analytical) {
+    dens <- switch(likelihood,
+      "poisson" = stats::dgamma(materiality, alpha, beta),
+      "binomial" = stats::dbeta(materiality, alpha, beta),
+      "hypergeometric" = extraDistr::dbbinom(ceiling(materiality * N.units), post_N, alpha, beta)
+    )
+  } else {
+    densfit <- stats::density(samples, from = 0, to = 1)
+    dens <- stats::approx(densfit[["x"]], densfit[["y"]], materiality)$y
+  }
   return(dens)
 }
 
-.hyp_prob <- function(lower_tail, materiality, likelihood, alpha, beta, N.units = NULL, post_N = NULL) {
-  if (is.null(post_N)) {
-    post_N <- N.units
+.hyp_prob <- function(lower_tail, materiality, likelihood, alpha, beta, N.units, post_N, analytical = TRUE, samples = NULL) {
+  if (analytical) {
+    prob <- switch(likelihood,
+      "poisson" = stats::pgamma(materiality, alpha, beta, lower.tail = lower_tail),
+      "binomial" = stats::pbeta(materiality, alpha, beta, lower.tail = lower_tail),
+      "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * N.units) - 1, post_N, alpha, beta, lower.tail = lower_tail)
+    )
+  } else {
+    if (lower_tail) {
+      prob <- length(which(samples < materiality)) / length(samples)
+    } else {
+      prob <- length(which(samples > materiality)) / length(samples)
+    }
   }
-  prob <- switch(likelihood,
-    "poisson" = stats::pgamma(materiality, alpha, beta, lower.tail = lower_tail),
-    "binomial" = stats::pbeta(materiality, alpha, beta, lower.tail = lower_tail),
-    "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * N.units) - 1, post_N, alpha, beta, lower.tail = lower_tail)
-  )
   return(prob)
+}
+
+.bf01_twosided <- function(materiality, density, prior, analytical = TRUE, prior_samples = NULL) {
+  if (analytical) {
+    bf01 <- density / prior[["hypotheses"]]$density
+  } else {
+    densfit <- stats::density(prior_samples, from = 0, to = 1)
+    bf01 <- density / stats::approx(densfit[["x"]], densfit[["y"]], materiality)$y
+  }
+  return(bf01)
+}
+
+.bf10_onesided <- function(materiality, alternative, posterior_odds, prior, analytical = TRUE, prior_samples = NULL) {
+  if (analytical) {
+    prior_odds <- prior[["hypotheses"]]$odds.h1
+  } else {
+    if (alternative == "less") {
+      prior_prob_h1 <- length(which(prior_samples < materiality)) / length(prior_samples)
+      prior_prob_h0 <- length(which(prior_samples > materiality)) / length(prior_samples)
+    } else {
+      prior_prob_h1 <- length(which(prior_samples > materiality)) / length(prior_samples)
+      prior_prob_h0 <- length(which(prior_samples < materiality)) / length(prior_samples)
+    }
+    prior_odds <- prior_prob_h1 / prior_prob_h0
+  }
+  bf10 <- posterior_odds / prior_odds
+  return(bf10)
 }
 
 .poststratify_samples <- function(samples, N.units) {

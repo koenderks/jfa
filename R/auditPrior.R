@@ -305,7 +305,7 @@ auditPrior <- function(method = c(
             b <- prior.n - prior.x
           }
         }
-        bound <- .dist_ub(conf.level, likelihood, a, b, N.units)
+        bound <- .dist_ub("less", conf.level, likelihood, a, b, N.units)
       }
     }
   } else if (method == "impartial" || method == "hyp") {
@@ -339,7 +339,7 @@ auditPrior <- function(method = c(
         } else {
           b <- prior.n - prior.x
         }
-        median <- .dist_quartile(p.h1, likelihood, a, b, N.units)
+        median <- .dist_ub("less", p.h1, likelihood, a, b, N.units)
       }
     }
   } else if (method == "sample" || method == "factor") {
@@ -382,11 +382,7 @@ auditPrior <- function(method = c(
   result[["prior"]] <- .dist_string(likelihood, prior_alpha, prior_beta, N.units)
   # Description section
   description <- list()
-  description[["density"]] <- switch(likelihood,
-    "poisson" = "gamma",
-    "binomial" = "beta",
-    "hypergeometric" = "beta-binomial"
-  )
+  description[["density"]] <- .dist_form(likelihood)
   description[["alpha"]] <- prior_alpha
   description[["beta"]] <- prior_beta
   description[["implicit.x"]] <- prior.x
@@ -396,10 +392,10 @@ auditPrior <- function(method = c(
   statistics <- list()
   statistics[["mode"]] <- .dist_mode(likelihood, prior_alpha, prior_beta, N.units)
   statistics[["mean"]] <- .dist_mean(likelihood, prior_alpha, prior_beta, N.units)
-  statistics[["median"]] <- .dist_quartile(0.5, likelihood, prior_alpha, prior_beta, N.units)
+  statistics[["median"]] <- .dist_median(likelihood, prior_alpha, prior_beta, N.units)
   statistics[["var"]] <- .dist_var(likelihood, prior_alpha, prior_beta, N.units)
   statistics[["skewness"]] <- .dist_skew(likelihood, prior_alpha, prior_beta, N.units)
-  statistics[["ub"]] <- .dist_ub(conf.level, likelihood, prior_alpha, prior_beta, N.units)
+  statistics[["ub"]] <- .dist_ub("less", conf.level, likelihood, prior_alpha, prior_beta, N.units)
   statistics[["precision"]] <- statistics[["ub"]] - statistics[["mode"]]
   result[["statistics"]] <- statistics
   # Specifics section
@@ -427,12 +423,12 @@ auditPrior <- function(method = c(
   # Hypotheses section
   if (!is.null(materiality)) {
     hypotheses <- list()
-    hypotheses[["hypotheses"]] <- .hyp_string(materiality)
-    hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, likelihood, prior_alpha, prior_beta, N.units)
-    hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, likelihood, prior_alpha, prior_beta, N.units)
+    hypotheses[["hypotheses"]] <- .hyp_string(materiality, "less")
+    hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, likelihood, prior_alpha, prior_beta, N.units, N.units)
+    hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, likelihood, prior_alpha, prior_beta, N.units, N.units)
     hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
     hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
-    hypotheses[["density"]] <- .hyp_dens(materiality, likelihood, prior_alpha, prior_beta, N.units)
+    hypotheses[["density"]] <- .hyp_dens(materiality, likelihood, prior_alpha, prior_beta, N.units, N.units)
     result[["hypotheses"]] <- hypotheses
   }
   # Additional info

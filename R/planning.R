@@ -255,7 +255,7 @@ planning <- function(materiality = NULL,
       } else {
         beta <- prior.n - prior.x + i - x
       }
-      bound <- .dist_ub(conf.level, likelihood, alpha, beta, N.units - i)
+      bound <- .dist_ub("less", conf.level, likelihood, alpha, beta, N.units - i)
       mle <- .dist_mode(likelihood, alpha, beta, N.units - i)
       if (likelihood == "hypergeometric") {
         bound <- bound / N.units
@@ -338,11 +338,7 @@ planning <- function(materiality = NULL,
     result[["posterior"]] <- posterior
     # Description section
     description <- list()
-    description[["density"]] <- switch(likelihood,
-      "poisson" = "gamma",
-      "binomial" = "beta",
-      "hypergeometric" = "beta-binomial"
-    )
+    description[["density"]] <- .dist_form(likelihood)
     description[["n"]] <- result[["n"]]
     description[["x"]] <- result[["x"]]
     description[["alpha"]] <- post_alpha
@@ -358,16 +354,16 @@ planning <- function(materiality = NULL,
     statistics <- list()
     statistics[["mode"]] <- .dist_mode(likelihood, post_alpha, post_beta, post_N)
     statistics[["mean"]] <- .dist_mean(likelihood, post_alpha, post_beta, post_N)
-    statistics[["median"]] <- .dist_quartile(0.5, likelihood, post_alpha, post_beta, post_N)
+    statistics[["median"]] <- .dist_median(likelihood, post_alpha, post_beta, post_N)
     statistics[["var"]] <- .dist_var(likelihood, post_alpha, post_beta, post_N)
     statistics[["skewness"]] <- .dist_skew(likelihood, post_alpha, post_beta, post_N)
-    statistics[["ub"]] <- .dist_ub(conf.level, likelihood, post_alpha, post_beta, post_N)
+    statistics[["ub"]] <- .dist_ub("less", conf.level, likelihood, post_alpha, post_beta, post_N)
     statistics[["precision"]] <- statistics[["ub"]] - statistics[["mode"]]
     result[["posterior"]][["statistics"]] <- statistics
     # Hypotheses section
     if (result[["materiality"]] != 1) {
       hypotheses <- list()
-      hypotheses[["hypotheses"]] <- .hyp_string(materiality)
+      hypotheses[["hypotheses"]] <- .hyp_string(materiality, "less")
       hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, likelihood, post_alpha, post_beta, N.units, post_N)
       hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, likelihood, post_alpha, post_beta, N.units, post_N)
       hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
