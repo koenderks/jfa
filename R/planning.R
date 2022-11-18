@@ -164,10 +164,10 @@ planning <- function(materiality = NULL,
                      by = 1,
                      max = 5000,
                      prior = FALSE) {
-  bayesian <- (inherits(prior, "logical") && prior) || inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")
   likelihood <- match.arg(likelihood)
-  # Import existing prior distribution with class 'jfaPrior' or 'jfaPosterior'
-  if (inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")) {
+  is_jfa_prior <- inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")
+  is_bayesian <- (inherits(prior, "logical") && prior) || is_jfa_prior
+  if (is_jfa_prior) {
     if (likelihood != prior[["likelihood"]]) {
       message(paste0("Using 'likelihood = ", prior[["likelihood"]], "' from 'prior'"))
     }
@@ -182,98 +182,89 @@ planning <- function(materiality = NULL,
     prior.n <- 1
     prior.x <- 0
   }
-  stopifnot(
-    "missing value for 'conf.level'" = !is.null(conf.level),
-    "'conf.level' must be a single value between 0 and 1" = is.numeric(conf.level) && length(conf.level) == 1 && conf.level > 0 && conf.level < 1,
-    "missing value for 'materiality' or `min.precision`" = !(is.null(materiality) && is.null(min.precision))
-  )
+  stopifnot("missing value for 'conf.level'" = !is.null(conf.level))
+  valid_confidence <- is.numeric(conf.level) && length(conf.level) == 1 && conf.level > 0 && conf.level < 1
+  stopifnot("'conf.level' must be a single value between 0 and 1" = valid_confidence)
+  stopifnot("missing value for 'materiality' or `min.precision`" = !(is.null(materiality) && is.null(min.precision)))
   if (!is.null(materiality)) {
-    stopifnot("'materiality' must be a single value between 0 and 1" = is.numeric(materiality) && materiality > 0 && materiality < 1)
+    valid_materiality <- is.numeric(materiality) && materiality > 0 && materiality < 1
+    stopifnot("'materiality' must be a single value between 0 and 1" = valid_materiality)
   }
   if (!is.null(min.precision)) {
-    stopifnot("'min.precision' must be a single value between 0 and 1" = is.numeric(min.precision) && min.precision > 0 && min.precision < 1)
+    valid_precision <- is.numeric(min.precision) && min.precision > 0 && min.precision < 1
+    stopifnot("'min.precision' must be a single value between 0 and 1" = valid_precision)
   }
-  # Define a placeholder for the sample size
   n <- NULL
-  # Find out the type of expected errors (percentage vs. number)
   if (expected >= 0 && expected < 1) {
     error_type <- "percentage"
     if (!is.null(materiality)) {
-      stopifnot("'expected' must be a single value < 'materiality'" = is.numeric(expected) && expected < materiality)
+      valid_expected <- is.numeric(expected) && expected < materiality
+      stopifnot("'expected' must be a single value < 'materiality'" = valid_expected)
     }
   } else if (expected >= 1) {
     error_type <- "integer"
-    if (expected %% 1 != 0 && likelihood %in% c("binomial", "hypergeometric") && !bayesian) {
+    if (expected %% 1 != 0 && likelihood %in% c("binomial", "hypergeometric") && !is_bayesian) {
       expected <- ceiling(expected)
       message(paste0("Using 'expected = ", expected, "' since 'expected' must be a single integer >= 0"))
     }
   }
   stopifnot("'expected' must be an integer < 'max'" = expected < max)
-  # Set the materiality and the minimium precision to 1 if they are not specified
   if (is.null(materiality)) {
     materiality <- 1
   }
   if (is.null(min.precision)) {
     min.precision <- 1
   }
-  # Requirements for the hypergeometric distribution
   if (likelihood == "hypergeometric") {
-    stopifnot(
-      "missing value for 'N.units'" = !is.null(N.units),
-      "'N.units' must be a single value > 0" = is.numeric(N.units) && length(N.units) == 1 && N.units > 0
-    )
+    stopifnot("missing value for 'N.units'" = !is.null(N.units))
+    valid_units <- is.numeric(N.units) && length(N.units) == 1 && N.units > 0
+    stopifnot("'N.units' must be a single value > 0" = valid_units)
     N.units <- ceiling(N.units)
     if (!is.null(materiality)) {
       if (expected >= 1) {
-        stopifnot("'expected' / 'N.units' must be < 'materiality'" = expected < ceiling(materiality * N.units))
+        valid_expected <- (expected < ceiling(materiality * N.units))
+        stopifnot("'expected' / 'N.units' must be < 'materiality'" = valid_expected)
       } else {
-        stopifnot("'expected' * 'N.units' must be < 'materiality' * 'N.units'" = ceiling(expected * N.units) < ceiling(materiality * N.units))
+        valid_expected <- (ceiling(expected * N.units) < ceiling(materiality * N.units))
+        stopifnot("'expected' * 'N.units' must be < 'materiality' * 'N.units'" = valid_expected)
       }
     }
   }
-  # Define the sampling frame (the possible sample sizes)
   sframe <- seq(from = 0, to = max, by = by)
   sframe[1] <- 1
-  # Set up counters
   iter <- 1
   sufficient <- FALSE
-  # Start iterating over the sampling frame
   while (!sufficient && iter <= length(sframe)) {
     i <- sframe[iter]
-    # Find the expected errors in the sample
     x <- switch(error_type,
       "percentage" = expected * i,
       "integer" = expected
     )
     if (likelihood == "hypergeometric") {
-      x <- ceiling(x) # Convert to an integer in the case of a hypergeometric likelihood
+      x <- ceiling(x)
       population.x <- ceiling(materiality * N.units)
     }
-    while (i <= x) { # Remove redundant numbers from the sampling frame for more efficient sampling
+    while (i <= x) {
       sframe <- sframe[-iter]
       i <- sframe[iter]
     }
-    if (bayesian) { # Bayesian planning
+    if (is_bayesian) {
       alpha <- 1 + prior.x + x
-      beta <- switch(likelihood,
-        "poisson" = prior.n + i,
-        "binomial" = prior.n - prior.x + i - x,
-        "hypergeometric" = prior.n - prior.x + i - x
-      )
-      bound <- switch(likelihood,
-        "poisson" = stats::qgamma(conf.level, shape = alpha, rate = beta),
-        "binomial" = stats::qbeta(conf.level, shape1 = alpha, shape2 = beta),
-        "hypergeometric" = .qbbinom(p = conf.level, N = N.units - i, shape1 = alpha, shape2 = beta) / N.units
-      )
-      mle <- switch(likelihood,
-        "poisson" = (alpha - 1) / beta,
-        "binomial" = (alpha - 1) / (alpha + beta - 2),
-        "hypergeometric" = .modebbinom(N = N.units - i, shape1 = alpha, shape2 = beta) / N.units
-      )
-    } else { # Classical planning
+      if (likelihood == "poisson") {
+        beta <- prior.n + i
+      } else {
+        beta <- prior.n - prior.x + i - x
+      }
+      bound <- .dist_ub(conf.level, likelihood, alpha, beta, N.units - i)
+      mle <- .dist_mode(likelihood, alpha, beta, N.units - i)
+      if (likelihood == "hypergeometric") {
+        bound <- bound / N.units
+        mle <- mle / N.units
+      }
+    } else {
       if (likelihood == "binomial") {
         x <- ceiling(x)
-      } # Convert to an integer in the case of a binomial likelihood
+      }
       bound <- switch(likelihood,
         "poisson" = stats::qgamma(p = conf.level, shape = 1 + x, rate = i),
         "binomial" = stats::qbeta(p = conf.level, shape1 = 1 + x, shape2 = i - x),
@@ -288,26 +279,25 @@ planning <- function(materiality = NULL,
         )
       }
     }
-    sufficient <- bound < materiality && (bound - mle) < min.precision # Sufficient work done?
+    sufficient <- bound < materiality && (bound - mle) < min.precision
     if (sufficient) {
       n <- i
     } else {
       iter <- iter + 1
     }
   }
-  # No sample size could be calculated, throw an error
-  stopifnot("the sample size is lower than 'max'" = !is.null(n))
-  if (!is.null(N.units) && n > N.units) { # The sample size is too large
+  stopifnot("the sample size is larger than 'max'" = !is.null(n))
+  if (!is.null(N.units) && n > N.units) {
     message("The sample size is larger than 'N.units'")
   }
-  # Create the main results object
+  # Main results object
   result <- list()
   result[["conf.level"]] <- conf.level
   result[["x"]] <- x
   result[["n"]] <- n
   result[["ub"]] <- bound
   result[["precision"]] <- bound - mle
-  if (!bayesian && materiality < 1) {
+  if (!is_bayesian && materiality < 1) {
     result[["p.value"]] <- p.val
   }
   result[["N.units"]] <- N.units
@@ -320,105 +310,76 @@ planning <- function(materiality = NULL,
   result[["likelihood"]] <- likelihood
   result[["errorType"]] <- error_type
   result[["iterations"]] <- iter
-  # Create the prior distribution object
-  if (bayesian) {
-    if (inherits(prior, "jfaPrior") && !is.null(prior[["hypotheses"]])) {
+  # Prior distribution object
+  if (is_bayesian) {
+    if (is_jfa_prior && !is.null(prior[["hypotheses"]])) {
       result[["prior"]] <- prior
     } else {
-      result[["prior"]] <- auditPrior(
-        conf.level = conf.level, materiality = result[["materiality"]], method = "sample",
-        likelihood = likelihood, N.units = result[["N.units"]], n = prior.n, x = prior.x
+      result[["prior"]] <- auditPrior("sample", likelihood, result[["N.units"]],
+        n = prior.n, x = prior.x, conf.level = conf.level,
+        materiality = result[["materiality"]]
       )
     }
   }
+  # Posterior distribution object
   if (!is.null(result[["prior"]])) {
-    # Create the expected posterior distribution object
-    result[["posterior"]] <- list()
-    # Functional form of the expected posterior
-    result[["posterior"]]$posterior <- switch(likelihood,
-      "poisson" = paste0("gamma(\u03B1 = ", round(result[["prior"]]$description$alpha + result[["x"]], 3), ", \u03B2 = ", round(result[["prior"]]$description$beta + result[["n"]], 3), ")"),
-      "binomial" = paste0("beta(\u03B1 = ", round(result[["prior"]]$description$alpha + result[["x"]], 3), ", \u03B2 = ", round(result[["prior"]]$description$beta + result[["n"]] - result[["x"]], 3), ")"),
-      "hypergeometric" = paste0("beta-binomial(N = ", result[["N.units"]] - result[["n"]], ", \u03B1 = ", round(result[["prior"]]$description$alpha + result[["x"]], 3), ", \u03B2 = ", round(result[["prior"]]$description$beta + result[["n"]] - result[["x"]], 3), ")")
-    )
-    result[["posterior"]]$likelihood <- likelihood
-    # Create the description section
-    result[["posterior"]][["description"]] <- list()
-    result[["posterior"]][["description"]]$density <- switch(likelihood,
+    # Posterior parameters
+    post_alpha <- result[["prior"]]$description$alpha + result[["x"]]
+    if (likelihood == "poisson") {
+      post_beta <- result[["prior"]]$description$beta + result[["n"]]
+    } else {
+      post_beta <- result[["prior"]]$description$beta + result[["n"]] - result[["x"]]
+    }
+    post_N <- result[["N.units"]] - result[["n"]]
+    # Main object
+    posterior <- list()
+    posterior[["posterior"]] <- .dist_string(likelihood, post_alpha, post_beta, post_N)
+    posterior[["likelihood"]] <- likelihood
+    result[["posterior"]] <- posterior
+    # Description section
+    description <- list()
+    description[["density"]] <- switch(likelihood,
       "poisson" = "gamma",
       "binomial" = "beta",
       "hypergeometric" = "beta-binomial"
     )
-    result[["posterior"]][["description"]]$n <- result[["n"]]
-    result[["posterior"]][["description"]]$x <- result[["x"]]
-    result[["posterior"]][["description"]]$alpha <- result[["prior"]]$description$alpha + result[["x"]]
-    result[["posterior"]][["description"]]$beta <- switch(likelihood,
-      "poisson" = result[["prior"]]$description$beta + result[["n"]],
-      "binomial" = result[["prior"]]$description$beta + result[["n"]] - result[["x"]],
-      "hypergeometric" = result[["prior"]]$description$beta + result[["n"]] - result[["x"]]
-    )
-    result[["posterior"]][["description"]]$implicit.x <- result[["expectedPosterior"]][["description"]]$alpha - 1
-    result[["posterior"]][["description"]]$implicit.n <- switch(likelihood,
-      "poisson" = result[["posterior"]][["description"]]$beta,
-      "binomial" = result[["posterior"]][["description"]]$beta - result[["posterior"]][["description"]]$implicit.x,
-      "hypergeometric" = result[["posterior"]][["description"]]$beta - result[["posterior"]][["description"]]$implicit.x
-    )
-    # Create the statistics section
-    result[["posterior"]][["statistics"]] <- list()
-    result[["posterior"]][["statistics"]]$mode <- switch(likelihood,
-      "poisson" = (result[["posterior"]][["description"]]$alpha - 1) / result[["posterior"]][["description"]]$beta,
-      "binomial" = (result[["posterior"]][["description"]]$alpha - 1) / (result[["posterior"]][["description"]]$alpha + result[["posterior"]][["description"]]$beta - 2),
-      "hypergeometric" = .modebbinom(N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta)
-    )
-    result[["posterior"]][["statistics"]]$mean <- switch(likelihood,
-      "poisson" = result[["posterior"]][["description"]]$alpha / result[["posterior"]][["description"]]$beta,
-      "binomial" = result[["posterior"]][["description"]]$alpha / (result[["posterior"]][["description"]]$alpha + result[["posterior"]][["description"]]$beta),
-      "hypergeometric" = result[["posterior"]][["description"]]$alpha / (result[["posterior"]][["description"]]$alpha + result[["posterior"]][["description"]]$beta) * (result[["N.units"]] - result[["n"]])
-    )
-    result[["posterior"]][["statistics"]]$median <- switch(likelihood,
-      "poisson" = stats::qgamma(0.5, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
-      "binomial" = stats::qbeta(0.5, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
-      "hypergeometric" = .qbbinom(0.5, N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta)
-    )
-    result[["posterior"]][["statistics"]]$var <- switch(likelihood,
-      "poisson" = result[["posterior"]][["description"]]$alpha / result[["posterior"]][["description"]]$beta^2,
-      "binomial" = (result[["posterior"]][["description"]]$alpha * result[["posterior"]][["description"]]$beta) / ((result[["posterior"]][["description"]]$alpha + result[["posterior"]][["description"]]$beta)^2 * (result[["posterior"]][["description"]]$alpha + result[["posterior"]][["description"]]$beta + 1)),
-      "hypergeometric" = (((result[["N.units"]] - result[["n"]]) * result[["posterior"]][["description"]]$alpha * result[["posterior"]][["description"]]$beta) * (result[["posterior"]][["description"]]$alpha + result[["posterior"]][["description"]]$beta + (result[["N.units"]] - result[["n"]]))) / ((result[["posterior"]][["description"]]$alpha + result[["posterior"]][["description"]]$beta)^2 * (result[["posterior"]][["description"]]$alpha + result[["posterior"]][["description"]]$beta + 1))
-    )
-    result[["posterior"]][["statistics"]]$skewness <- switch(likelihood,
-      "poisson" = 2 / sqrt(result[["posterior"]][["description"]]$alpha),
-      "binomial" = ((2 * (result[["posterior"]][["description"]]$beta - result[["posterior"]][["description"]]$alpha)) * sqrt(result[["posterior"]][["description"]]$alpha + result[["posterior"]][["description"]]$beta + 1)) / ((result[["posterior"]][["description"]]$alpha + result[["posterior"]][["description"]]$beta + 2) * sqrt(result[["posterior"]][["description"]]$alpha * result[["posterior"]][["description"]]$beta)),
-      "hypergeometric" = (((result[["posterior"]][["description"]]$alpha + result[["posterior"]][["description"]]$beta + 2 * (result[["N.units"]] - result[["n"]])) * (result[["posterior"]][["description"]]$beta - result[["posterior"]][["description"]]$alpha)) / (result[["posterior"]][["description"]]$alpha + result[["posterior"]][["description"]]$beta + 2)) * sqrt((1 + result[["posterior"]][["description"]]$alpha + result[["posterior"]][["description"]]$beta) / ((result[["N.units"]] - result[["n"]]) * result[["posterior"]][["description"]]$alpha * result[["posterior"]][["description"]]$beta * ((result[["N.units"]] - result[["n"]]) + result[["posterior"]][["description"]]$alpha + result[["posterior"]][["description"]]$beta)))
-    )
-    result[["posterior"]][["statistics"]]$ub <- switch(likelihood,
-      "poisson" = stats::qgamma(conf.level, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
-      "binomial" = stats::qbeta(conf.level, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
-      "hypergeometric" = .qbbinom(conf.level, N = result[["N.units"]] - result[["n"]], shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta)
-    )
-    result[["posterior"]][["statistics"]]$precision <- result[["posterior"]][["statistics"]]$ub - result[["posterior"]][["statistics"]]$mode
-    # Create the hypotheses section
-    if (result[["materiality"]] != 1) {
-      result[["posterior"]][["hypotheses"]] <- list()
-      result[["posterior"]][["hypotheses"]]$hypotheses <- c(paste0("H\u2081: \u0398 < ", materiality), paste0("H\u2080: \u0398 > ", materiality))
-      result[["posterior"]][["hypotheses"]]$p.h1 <- switch(likelihood,
-        "poisson" = stats::pgamma(materiality, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta),
-        "binomial" = stats::pbeta(materiality, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta),
-        "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * result[["N.units"]]) - 1, size = result[["N.units"]] - result[["n"]], alpha = result[["posterior"]][["description"]]$alpha, beta = result[["posterior"]][["description"]]$beta)
-      )
-      result[["posterior"]][["hypotheses"]]$p.h0 <- switch(likelihood,
-        "poisson" = stats::pgamma(materiality, shape = result[["posterior"]][["description"]]$alpha, rate = result[["posterior"]][["description"]]$beta, lower.tail = FALSE),
-        "binomial" = stats::pbeta(materiality, shape1 = result[["posterior"]][["description"]]$alpha, shape2 = result[["posterior"]][["description"]]$beta, lower.tail = FALSE),
-        "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * result[["N.units"]]) - 1, size = result[["N.units"]] - result[["n"]], alpha = result[["posterior"]][["description"]]$alpha, beta = result[["posterior"]][["description"]]$beta, lower.tail = FALSE)
-      )
-      result[["posterior"]][["hypotheses"]]$odds.h1 <- result[["posterior"]][["hypotheses"]]$p.h1 / result[["posterior"]][["hypotheses"]]$p.h0
-      result[["posterior"]][["hypotheses"]]$odds.h0 <- 1 / result[["posterior"]][["hypotheses"]]$odds.h1
-      result[["posterior"]][["hypotheses"]]$bf.h1 <- result[["posterior"]][["hypotheses"]]$odds.h1 / result[["prior"]][["hypotheses"]]$odds.h1
-      result[["posterior"]][["hypotheses"]]$bf.h0 <- 1 / result[["posterior"]][["hypotheses"]]$bf.h1
+    description[["n"]] <- result[["n"]]
+    description[["x"]] <- result[["x"]]
+    description[["alpha"]] <- post_alpha
+    description[["beta"]] <- post_beta
+    description[["implicit.x"]] <- post_alpha - 1
+    if (likelihood == "poisson") {
+      description[["implicit.n"]] <- post_beta
+    } else {
+      description[["implicit.n"]] <- post_beta - description[["implicit.x"]]
     }
+    result[["posterior"]][["description"]] <- description
+    # Statistics section
+    statistics <- list()
+    statistics[["mode"]] <- .dist_mode(likelihood, post_alpha, post_beta, post_N)
+    statistics[["mean"]] <- .dist_mean(likelihood, post_alpha, post_beta, post_N)
+    statistics[["median"]] <- .dist_quartile(0.5, likelihood, post_alpha, post_beta, post_N)
+    statistics[["var"]] <- .dist_var(likelihood, post_alpha, post_beta, post_N)
+    statistics[["skewness"]] <- .dist_skew(likelihood, post_alpha, post_beta, post_N)
+    statistics[["ub"]] <- .dist_ub(conf.level, likelihood, post_alpha, post_beta, post_N)
+    statistics[["precision"]] <- statistics[["ub"]] - statistics[["mode"]]
+    result[["posterior"]][["statistics"]] <- statistics
+    # Hypotheses section
+    if (result[["materiality"]] != 1) {
+      hypotheses <- list()
+      hypotheses[["hypotheses"]] <- .hyp_string(materiality)
+      hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, likelihood, post_alpha, post_beta, N.units, post_N)
+      hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, likelihood, post_alpha, post_beta, N.units, post_N)
+      hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
+      hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
+      hypotheses[["bf.h1"]] <- hypotheses[["odds.h1"]] / result[["prior"]][["hypotheses"]]$odds.h1
+      hypotheses[["bf.h0"]] <- 1 / hypotheses[["bf.h1"]]
+      result[["posterior"]][["hypotheses"]] <- hypotheses
+    }
+    # Additional info
     result[["posterior"]]$N.units <- result[["N.units"]]
-    # Add class 'jfaPosterior' to the posterior distribution object
     class(result[["posterior"]]) <- "jfaPosterior"
   }
-  # Add class 'jfaPlanning' to the result
   class(result) <- c(class(result), "jfaPlanning")
   return(result)
 }
