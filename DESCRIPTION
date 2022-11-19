@@ -20,7 +20,7 @@ Description: Provides statistical methods for auditing as implemented in JASP
     provides statistical methods for auditing data, including (Bayesian) tests
     of digit distributions and tests for repeated values.
 Depends:
-    R (>= 3.4.0)
+    R (>= 3.5.0)
 Imports:
     extraDistr,
     graphics,
