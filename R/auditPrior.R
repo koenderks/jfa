@@ -305,7 +305,7 @@ auditPrior <- function(method = c(
             b <- prior.n - prior.x
           }
         }
-        bound <- .dist_ub("less", conf.level, likelihood, a, b, N.units)
+        bound <- .comp_ub_bayes("less", conf.level, likelihood, a, b, N.units)
       }
     }
   } else if (method == "impartial" || method == "hyp") {
@@ -339,7 +339,7 @@ auditPrior <- function(method = c(
         } else {
           b <- prior.n - prior.x
         }
-        median <- .dist_ub("less", p.h1, likelihood, a, b, N.units)
+        median <- .comp_ub_bayes("less", p.h1, likelihood, a, b, N.units)
       }
     }
   } else if (method == "sample" || method == "factor") {
@@ -379,10 +379,10 @@ auditPrior <- function(method = c(
   }
   # Prior distribution object
   result <- list()
-  result[["prior"]] <- .dist_string(likelihood, prior_alpha, prior_beta, N.units)
+  result[["prior"]] <- .functional_form(likelihood, prior_alpha, prior_beta, N.units)
   # Description section
   description <- list()
-  description[["density"]] <- .dist_form(likelihood)
+  description[["density"]] <- .functional_density(likelihood)
   description[["alpha"]] <- prior_alpha
   description[["beta"]] <- prior_beta
   description[["implicit.x"]] <- prior.x
@@ -390,13 +390,13 @@ auditPrior <- function(method = c(
   result[["description"]] <- description
   # Statistics section
   statistics <- list()
-  statistics[["mode"]] <- .dist_mode(likelihood, prior_alpha, prior_beta, N.units)
-  statistics[["mean"]] <- .dist_mean(likelihood, prior_alpha, prior_beta, N.units)
-  statistics[["median"]] <- .dist_median(likelihood, prior_alpha, prior_beta, N.units)
-  statistics[["var"]] <- .dist_var(likelihood, prior_alpha, prior_beta, N.units)
-  statistics[["skewness"]] <- .dist_skew(likelihood, prior_alpha, prior_beta, N.units)
-  statistics[["ub"]] <- .dist_ub("less", conf.level, likelihood, prior_alpha, prior_beta, N.units)
-  statistics[["precision"]] <- statistics[["ub"]] - statistics[["mode"]]
+  statistics[["mode"]] <- .comp_mode_bayes(likelihood, prior_alpha, prior_beta, N.units)
+  statistics[["mean"]] <- .comp_mean_bayes(likelihood, prior_alpha, prior_beta, N.units)
+  statistics[["median"]] <- .comp_median_bayes(likelihood, prior_alpha, prior_beta, N.units)
+  statistics[["var"]] <- .comp_var_bayes(likelihood, prior_alpha, prior_beta, N.units)
+  statistics[["skewness"]] <- .comp_skew_bayes(likelihood, prior_alpha, prior_beta, N.units)
+  statistics[["ub"]] <- .comp_ub_bayes("less", conf.level, likelihood, prior_alpha, prior_beta, N.units)
+  statistics[["precision"]] <- .comp_precision("less", statistics[["mode"]], NULL, statistics[["ub"]])
   result[["statistics"]] <- statistics
   # Specifics section
   if (method != "default" && method != "strict") {

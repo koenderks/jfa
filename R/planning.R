@@ -255,8 +255,8 @@ planning <- function(materiality = NULL,
       } else {
         beta <- prior.n - prior.x + i - x
       }
-      bound <- .dist_ub("less", conf.level, likelihood, alpha, beta, N.units - i)
-      mle <- .dist_mode(likelihood, alpha, beta, N.units - i)
+      bound <- .comp_ub_bayes("less", conf.level, likelihood, alpha, beta, N.units - i)
+      mle <- .comp_mode_bayes(likelihood, alpha, beta, N.units - i)
       if (likelihood == "hypergeometric") {
         bound <- bound / N.units
         mle <- mle / N.units
@@ -265,13 +265,13 @@ planning <- function(materiality = NULL,
       if (likelihood == "binomial") {
         x <- ceiling(x)
       }
-      bound <- .est_ub("less", conf.level, likelihood, i, x, x, N.units)
+      bound <- .comp_ub_freq("less", conf.level, likelihood, i, x, x, N.units)
       if (likelihood == "hypergeometric") {
         bound <- bound / N.units
       }
       mle <- x / i
       if (materiality < 1) {
-        p.val <- .est_pval("less", materiality, likelihood, i, x, x, N.units, population.x)
+        p.val <- .comp_pval("less", materiality, likelihood, i, x, x, N.units, population.x)
       }
     }
     sufficient <- bound < materiality && (bound - mle) < min.precision
@@ -328,12 +328,12 @@ planning <- function(materiality = NULL,
     post_N <- result[["N.units"]] - result[["n"]]
     # Main object
     posterior <- list()
-    posterior[["posterior"]] <- .dist_string(likelihood, post_alpha, post_beta, post_N)
+    posterior[["posterior"]] <- .functional_form(likelihood, post_alpha, post_beta, post_N)
     posterior[["likelihood"]] <- likelihood
     result[["posterior"]] <- posterior
     # Description section
     description <- list()
-    description[["density"]] <- .dist_form(likelihood)
+    description[["density"]] <- .functional_density(likelihood)
     description[["n"]] <- result[["n"]]
     description[["x"]] <- result[["x"]]
     description[["alpha"]] <- post_alpha
@@ -347,12 +347,12 @@ planning <- function(materiality = NULL,
     result[["posterior"]][["description"]] <- description
     # Statistics section
     statistics <- list()
-    statistics[["mode"]] <- .dist_mode(likelihood, post_alpha, post_beta, post_N)
-    statistics[["mean"]] <- .dist_mean(likelihood, post_alpha, post_beta, post_N)
-    statistics[["median"]] <- .dist_median(likelihood, post_alpha, post_beta, post_N)
-    statistics[["var"]] <- .dist_var(likelihood, post_alpha, post_beta, post_N)
-    statistics[["skewness"]] <- .dist_skew(likelihood, post_alpha, post_beta, post_N)
-    statistics[["ub"]] <- .dist_ub("less", conf.level, likelihood, post_alpha, post_beta, post_N)
+    statistics[["mode"]] <- .comp_mode_bayes(likelihood, post_alpha, post_beta, post_N)
+    statistics[["mean"]] <- .comp_mean_bayes(likelihood, post_alpha, post_beta, post_N)
+    statistics[["median"]] <- .comp_median_bayes(likelihood, post_alpha, post_beta, post_N)
+    statistics[["var"]] <- .comp_var_bayes(likelihood, post_alpha, post_beta, post_N)
+    statistics[["skewness"]] <- .comp_skew_bayes(likelihood, post_alpha, post_beta, post_N)
+    statistics[["ub"]] <- .comp_ub_bayes("less", conf.level, likelihood, post_alpha, post_beta, post_N)
     statistics[["precision"]] <- statistics[["ub"]] - statistics[["mode"]]
     result[["posterior"]][["statistics"]] <- statistics
     # Hypotheses section

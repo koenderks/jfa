@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-.get_markdown_call <- function(x) {
+.markdown_call <- function(x) {
   if (length(grep("::", x)) > 0) {
     parts <- strsplit(x, "::")[[1]]
     return(getExportedValue(parts[1], parts[2]))
@@ -22,7 +22,7 @@
   }
 }
 
-.dist_form <- function(likelihood, analytical = TRUE) {
+.functional_density <- function(likelihood, analytical = TRUE) {
   if (analytical) {
     form <- switch(likelihood,
       "poisson" = "gamma",
@@ -35,7 +35,7 @@
   return(form)
 }
 
-.dist_string <- function(likelihood, alpha, beta, N.units, analytical = TRUE) {
+.functional_form <- function(likelihood, alpha, beta, N.units, analytical = TRUE) {
   if (analytical) {
     string <- switch(likelihood,
       "poisson" = paste0("gamma(\u03B1 = ", round(alpha, 3), ", \u03B2 = ", round(beta, 3), ")"),
@@ -48,7 +48,25 @@
   return(string)
 }
 
-.dist_mode <- function(likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+.comp_precision <- function(alternative, mle, lb, ub) {
+  if (alternative == "greater") {
+    precision <- mle - lb
+  } else {
+    precision <- ub - mle
+  }
+  return(precision)
+}
+
+.comp_mle_freq <- function(likelihood, n.obs, x.obs, t.obs) {
+  if (likelihood == "hypergeometric") {
+    mle <- x.obs / n.obs
+  } else {
+    mle <- t.obs / n.obs
+  }
+  return(mle)
+}
+
+.comp_mode_bayes <- function(likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
   if (analytical) {
     mode <- switch(likelihood,
       "poisson" = (alpha - 1) / beta,
@@ -74,7 +92,7 @@
   return(mode)
 }
 
-.dist_mean <- function(likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+.comp_mean_bayes <- function(likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
   if (analytical) {
     mean <- switch(likelihood,
       "poisson" = alpha / beta,
@@ -87,7 +105,7 @@
   return(mean)
 }
 
-.dist_median <- function(likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+.comp_median_bayes <- function(likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
   if (analytical) {
     median <- switch(likelihood,
       "poisson" = stats::qgamma(0.5, alpha, beta),
@@ -100,7 +118,7 @@
   return(median)
 }
 
-.dist_var <- function(likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+.comp_var_bayes <- function(likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
   if (analytical) {
     variance <- switch(likelihood,
       "poisson" = alpha / beta^2,
@@ -113,7 +131,7 @@
   return(variance)
 }
 
-.dist_skew <- function(likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+.comp_skew_bayes <- function(likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
   if (analytical) {
     skewness <- switch(likelihood,
       "poisson" = 2 / sqrt(alpha),
@@ -126,16 +144,51 @@
   return(skewness)
 }
 
-.dist_precision <- function(alternative, mode, lb, ub) {
+.comp_ub_freq <- function(alternative, conf.level, likelihood, n.obs, x.obs, t.obs, N.units) {
   if (alternative == "greater") {
-    precision <- mode - lb
+    ub <- 1
   } else {
-    precision <- ub - mode
+    if (alternative == "less") {
+      prob <- conf.level
+    } else {
+      prob <- conf.level + (1 - conf.level) / 2
+    }
+    ub <- switch(likelihood,
+      "poisson" = stats::qgamma(prob, 1 + t.obs, n.obs),
+      "binomial" = stats::qbeta(prob, 1 + t.obs, n.obs - t.obs),
+      "hypergeometric" = .qhyper(prob, N.units, n.obs, x.obs)
+    )
   }
-  return(precision)
+  return(ub)
 }
 
-.dist_ub <- function(alternative, conf.level, likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+.comp_lb_freq <- function(alternative, conf.level, likelihood, n.obs, x.obs, t.obs, N.units) {
+  if (alternative == "less") {
+    lb <- 0
+  } else {
+    if (alternative == "greater") {
+      prob <- 1 - conf.level
+    } else {
+      prob <- (1 - conf.level) / 2
+    }
+    lb <- switch(likelihood,
+      "poisson" = stats::qgamma(prob, 1 + t.obs, n.obs),
+      "binomial" = stats::qbeta(prob, 1 + t.obs, n.obs - t.obs),
+      "hypergeometric" = .qhyper(prob, N.units, n.obs, x.obs)
+    )
+  }
+  return(lb)
+}
+
+# Talens, E. (2005). Statistical Auditing and the AOQL-method
+# https://core.ac.uk/download/pdf/232379784.pdf
+.qhyper <- function(p, N, n, k) {
+  K <- k:N
+  cdf <- stats::phyper(q = k, m = K, n = N - K, k = n)
+  return(max(K[cdf > (1 - p)]))
+}
+
+.comp_ub_bayes <- function(alternative, conf.level, likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
   if (alternative == "greater") {
     ub <- 1
   } else {
@@ -157,7 +210,7 @@
   return(ub)
 }
 
-.dist_lb <- function(alternative, conf.level, likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+.comp_lb_bayes <- function(alternative, conf.level, likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
   if (alternative == "less") {
     lb <- 0
   } else {
@@ -191,14 +244,6 @@
   return(q)
 }
 
-# Talens, E. (2005). Statistical Auditing and the AOQL-method
-# https://core.ac.uk/download/pdf/232379784.pdf
-.qhyper <- function(p, N, n, k) {
-  K <- k:N
-  cdf <- stats::phyper(q = k, m = K, n = N - K, k = n)
-  return(max(K[cdf > (1 - p)]))
-}
-
 .hyp_string <- function(materiality, alternative) {
   if (alternative == "less") {
     h1_string <- paste0("H\u2081: \u0398 < ", materiality)
@@ -212,6 +257,29 @@
   }
   strings <- c(h1_string, h0_string)
   return(strings)
+}
+
+.comp_pval <- function(alternative, materiality, likelihood, n.obs, x.obs, t.obs, N.units, K) {
+  if (alternative == "two.sided") {
+    pval <- switch(likelihood,
+      "poisson" = stats::poisson.test(ceiling(t.obs), n.obs, materiality, "two.sided")$p.value,
+      "binomial" = stats::binom.test(ceiling(t.obs), n.obs, materiality, "two.sided")$p.value,
+      "hypergeometric" = stats::fisher.test(matrix(c(x.obs, n.obs - x.obs, K - x.obs, N.units - n.obs - K + x.obs), nrow = 2), alternative = "two.sided")$p.value
+    )
+  } else if (alternative == "less") {
+    pval <- switch(likelihood,
+      "poisson" = stats::pgamma(materiality, 1 + t.obs, n.obs, lower.tail = FALSE),
+      "binomial" = stats::pbeta(materiality, 1 + t.obs, n.obs - t.obs, lower.tail = FALSE),
+      "hypergeometric" = stats::phyper(x.obs, K, N.units - K, n.obs)
+    )
+  } else {
+    pval <- switch(likelihood,
+      "poisson" = stats::pgamma(materiality, 1 + t.obs, n.obs),
+      "binomial" = stats::pbeta(materiality, 1 + t.obs, n.obs - t.obs),
+      "hypergeometric" = stats::phyper(x.obs - 1, K, N.units - K, n.obs, lower.tail = FALSE)
+    )
+  }
+  return(pval)
 }
 
 .hyp_dens <- function(materiality, likelihood, alpha, beta, N.units, post_N, analytical = TRUE, samples = NULL) {
@@ -270,74 +338,6 @@
   }
   bf10 <- posterior_odds / prior_odds
   return(bf10)
-}
-
-.est_mle <- function(likelihood, n.obs, x.obs, t.obs) {
-  if (likelihood == "hypergeometric") {
-    mle <- x.obs / n.obs
-  } else {
-    mle <- t.obs / n.obs
-  }
-  return(mle)
-}
-
-.est_pval <- function(alternative, materiality, likelihood, n.obs, x.obs, t.obs, N.units, K) {
-  if (alternative == "two.sided") {
-    pval <- switch(likelihood,
-      "poisson" = stats::poisson.test(ceiling(t.obs), n.obs, materiality, "two.sided")$p.value,
-      "binomial" = stats::binom.test(ceiling(t.obs), n.obs, materiality, "two.sided")$p.value,
-      "hypergeometric" = stats::fisher.test(matrix(c(x.obs, n.obs - x.obs, K - x.obs, N.units - n.obs - K + x.obs), nrow = 2), alternative = "two.sided")$p.value
-    )
-  } else if (alternative == "less") {
-    pval <- switch(likelihood,
-      "poisson" = stats::pgamma(materiality, 1 + t.obs, n.obs, lower.tail = FALSE),
-      "binomial" = stats::pbeta(materiality, 1 + t.obs, n.obs - t.obs, lower.tail = FALSE),
-      "hypergeometric" = stats::phyper(x.obs, K, N.units - K, n.obs)
-    )
-  } else {
-    pval <- switch(likelihood,
-      "poisson" = stats::pgamma(materiality, 1 + t.obs, n.obs),
-      "binomial" = stats::pbeta(materiality, 1 + t.obs, n.obs - t.obs),
-      "hypergeometric" = stats::phyper(x.obs - 1, K, N.units - K, n.obs, lower.tail = FALSE)
-    )
-  }
-  return(pval)
-}
-
-.est_ub <- function(alternative, conf.level, likelihood, n.obs, x.obs, t.obs, N.units) {
-  if (alternative == "greater") {
-    ub <- 1
-  } else {
-    if (alternative == "less") {
-      prob <- conf.level
-    } else {
-      prob <- conf.level + (1 - conf.level) / 2
-    }
-    ub <- switch(likelihood,
-      "poisson" = stats::qgamma(conf.level, 1 + t.obs, n.obs),
-      "binomial" = stats::qbeta(conf.level, 1 + t.obs, n.obs - t.obs),
-      "hypergeometric" = .qhyper(conf.level, N.units, n.obs, x.obs)
-    )
-  }
-  return(ub)
-}
-
-.est_lb <- function(alternative, conf.level, likelihood, n.obs, x.obs, t.obs, N.units) {
-  if (alternative == "less") {
-    lb <- 0
-  } else {
-    if (alternative == "greater") {
-      prob <- 1 - conf.level
-    } else {
-      prob <- (1 - conf.level) / 2
-    }
-    lb <- switch(likelihood,
-      "poisson" = stats::qgamma(conf.level, 1 + t.obs, n.obs),
-      "binomial" = stats::qbeta(conf.level, 1 + t.obs, n.obs - t.obs),
-      "hypergeometric" = .qhyper(conf.level, N.units, n.obs, x.obs)
-    )
-  }
-  return(lb)
 }
 
 .poststratification <- function(samples, N.units) {
