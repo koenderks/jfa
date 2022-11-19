@@ -38,7 +38,7 @@ preferred-citation:
 repository: https://CRAN.R-project.org/package=jfa
 repository-code: https://github.com/koenderks/jfa
 url: https://koenderks.github.io/jfa/
-date-released: '2022-11-10'
+date-released: '2022-11-19'
 contact:
 - family-names: Derks
   given-names: Koen
@@ -219,6 +219,7 @@ references:
     given-names: Carlos
   year: '2022'
   url: https://CRAN.R-project.org/package=benford.analysis
+  version: '>= 0.1.5'
 - type: software
   title: BenfordTests
   abstract: 'BenfordTests: Statistical Tests for Evaluating Conformity to Benford''s
@@ -230,6 +231,7 @@ references:
     email: Dieter.Joenssen@googlemail.com
   year: '2022'
   url: https://CRAN.R-project.org/package=BenfordTests
+  version: '>= 1.2.0'
 - type: software
   title: BeyondBenford
   abstract: 'BeyondBenford: Compare the Goodness of Fit of Benford''s and Blondeau
@@ -240,6 +242,7 @@ references:
     given-names: Blondeau Da Silva
   year: '2022'
   url: https://CRAN.R-project.org/package=BeyondBenford
+  version: '>= 1.4'
 - type: software
   title: kableExtra
   abstract: 'kableExtra: Construct Complex Table with ''kable'' and Pipe Syntax'
@@ -273,6 +276,7 @@ references:
     given-names: André
   year: '2022'
   url: https://CRAN.R-project.org/package=MUS
+  version: '>= 0.1.6'
 - type: software
   title: rmarkdown
   abstract: 'rmarkdown: Dynamic Documents for R'
@@ -335,6 +339,7 @@ references:
     given-names: Manuel
   year: '2022'
   url: https://CRAN.R-project.org/package=samplingbook
+  version: '>= 1.2.4'
 - type: software
   title: testthat
   abstract: 'testthat: Unit Testing for R'
