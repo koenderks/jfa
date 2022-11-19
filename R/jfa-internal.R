@@ -383,7 +383,13 @@
 }
 
 .bf10_onesided_samples <- function(materiality, alternative, nstrata, stratum_samples) {
-  bf10 <- (apply(stratum_samples[, 1:(nstrata - 1)], 2, function(x) length(which(x < materiality)) / length(x)) / apply(stratum_samples[, 1:(nstrata - 1)], 2, function(x) length(which(x > materiality)) / length(x))) / (apply(stratum_samples[, nstrata:ncol(stratum_samples)], 2, function(x) length(which(x < materiality)) / length(x)) / apply(stratum_samples[, nstrata:ncol(stratum_samples)], 2, function(x) length(which(x > materiality)) / length(x)))
+  less <- function(x) length(which(x < materiality)) / length(x)
+  greater <- function(x) length(which(x > materiality)) / length(x)
+  prior_samples <- stratum_samples[, nstrata:ncol(stratum_samples)]
+  post_samples <- stratum_samples[, 1:(nstrata - 1)]
+  prior_odds_less <- apply(prior_samples, 2, less) / apply(prior_samples, 2, greater)
+  post_odds_less <- apply(post_samples, 2, less) / apply(post_samples, 2, greater)
+  bf10 <- post_odds_less / prior_odds_less
   if (alternative == "greater") {
     bf10 <- 1 / bf10
   }
@@ -421,21 +427,23 @@
     control = list(adapt_delta = 0.95)
   )
   samples <- cbind(rstan::extract(raw_posterior)$theta_s, rstan::extract(raw_prior)$theta_s)
-  stopifnot("stan model could not be fitted..." = ncol(samples) == (nstrata - 1) * 2)
+  stopifnot("Stan model could not be fitted" = ncol(samples) == (nstrata - 1) * 2)
   return(samples)
 }
 
-.mcmc_analytical <- function(method, nstrata, bayesian, prior.x, t.obs, prior.n, n.obs, N.units, iterations) {
+.mcmc_analytical <- function(likelihood, nstrata, prior.x, t.obs, prior.n, n.obs, N.units, iterations) {
   samples <- matrix(NA, ncol = (nstrata - 1) * 2, nrow = iterations)
-  for (i in 2:nstrata) {
-    samples[, i - 1] <- switch(method,
+  stratum_indices_prior <- (nstrata + 1):((nstrata - 1) * 2 + 1)
+  stratum_indices_post <- 2:nstrata
+  for (i in stratum_indices_post) { # Sample from stratum posterior distributions
+    samples[, i - 1] <- switch(likelihood,
       "poisson" = stats::rgamma(n = iterations, 1 + prior.x + t.obs[i], prior.n + n.obs[i]),
       "binomial" = stats::rbeta(n = iterations, 1 + prior.x + t.obs[i], prior.n - prior.x + n.obs[i] - t.obs[i]),
       "hypergeometric" = extraDistr::rbbinom(n = iterations, N.units[i] - n.obs[i], 1 + prior.x + t.obs[i], prior.n - prior.x + n.obs[i] - t.obs[i]) / N.units[i]
     )
   }
-  for (i in (nstrata + 1):((nstrata - 1) * 2 + 1)) {
-    samples[, i - 1] <- switch(method,
+  for (i in stratum_indices_prior) { # Sample from stratum prior distributions
+    samples[, i - 1] <- switch(likelihood,
       "poisson" = stats::rgamma(n = iterations, 1 + prior.x, prior.n),
       "binomial" = stats::rbeta(n = iterations, 1 + prior.x, prior.n - prior.x),
       "hypergeometric" = extraDistr::rbbinom(n = iterations, N.units[i - nstrata], 1 + prior.x, prior.n - prior.x) / N.units[i - nstrata]

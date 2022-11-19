@@ -404,8 +404,8 @@ test_that(desc = "(id: f3-v0.6.5-t1) Test frequentist poisson stratification wit
   # 2. No pooling
   set.seed(1) # Required because the population posterior is generated through sampling
   res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "poisson", pooling = "none")
-  expect_equal(res$mle, 0.2024018998)
-  expect_equal(res$ub, 0.4425428299)
+  expect_equal(res$mle, 0.2347666001)
+  expect_equal(res$ub, 0.5101278778)
   expect_equal(res$p.value, NA)
   expect_equal(res$strata$mle, k / n)
   expect_equal(res$strata$ub, stats::qgamma(0.95, 1 + k, n))
@@ -448,8 +448,8 @@ test_that(desc = "(id: f3-v0.6.5-t3) Test frequentist binomial stratification wi
   # 2. No pooling
   set.seed(1) # Required because the population posterior is generated through sampling
   res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "binomial", pooling = "none")
-  expect_equal(res$mle, 0.2052522799)
-  expect_equal(res$ub, 0.3536624007)
+  expect_equal(res$mle, 0.2224631925)
+  expect_equal(res$ub, 0.3947343991)
   expect_equal(res$p.value, NA)
   expect_equal(res$strata$mle, k / n)
   expect_equal(res$strata$ub, stats::qbeta(0.95, 1 + k, n - k))

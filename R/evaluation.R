@@ -290,20 +290,25 @@ evaluation <- function(materiality = NULL,
   pooling <- match.arg(pooling)
   is_jfa_prior <- inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")
   is_bayesian <- (inherits(prior, "logical") && prior) || is_jfa_prior
-  if (is_jfa_prior) {
-    if (method != prior[["likelihood"]]) {
-      message(paste0("Using 'method = ", prior[["likelihood"]], "' from 'prior'"))
-    }
-    prior.x <- prior[["description"]]$implicit.x
-    prior.n <- prior[["description"]]$implicit.n
-    method <- prior[["likelihood"]]
-    if (!is.null(prior[["N.units"]])) {
-      message(paste0("Using 'N.units = ", prior[["N.units"]], "' from 'prior'"))
-      N.units <- prior[["N.units"]]
+  if (is_bayesian) {
+    if (is_jfa_prior) {
+      if (method != prior[["likelihood"]]) {
+        message(paste0("Using 'method = ", prior[["likelihood"]], "' from 'prior'"))
+      }
+      prior.x <- prior[["description"]]$implicit.x
+      prior.n <- prior[["description"]]$implicit.n
+      method <- prior[["likelihood"]]
+      if (!is.null(prior[["N.units"]])) {
+        message(paste0("Using 'N.units = ", prior[["N.units"]], "' from 'prior'"))
+        N.units <- prior[["N.units"]]
+      }
+    } else {
+      prior.x <- 0
+      prior.n <- 1
     }
   } else {
-    prior.n <- 1
     prior.x <- 0
+    prior.n <- 0
   }
   stopifnot("missing value for 'conf.level'" = !is.null(conf.level))
   valid_confidence <- is.numeric(conf.level) && length(conf.level) == 1 && conf.level > 0 && conf.level < 1
@@ -515,7 +520,7 @@ evaluation <- function(materiality = NULL,
       precision[i] <- .comp_precision(alternative, mle[i], lb[i], ub[i])
     }
     if (use_stratification && pooling == "none") {
-      stratum_samples <- .mcmc_analytical(method, nstrata, is_bayesian, prior.x, t.obs, prior.n, n.obs, N.units, iterations = 100000)
+      stratum_samples <- .mcmc_analytical(method, nstrata, prior.x, t.obs, prior.n, n.obs, N.units, iterations = 100000)
     }
   } else {
     stopifnot("pooling = 'partial' only possible when 'prior != FALSE'" = is_bayesian)
