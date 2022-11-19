@@ -2,6 +2,7 @@
 
 **New features**
 
+- Added functionality for stratified evaluation in the `evaluation()` function.
 - Integrated the auditing functionality of the `digitTests` package via the `digit_test()` and `repeated_test()` functions.
 
 **Bug fixes**

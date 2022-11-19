@@ -2,12 +2,12 @@
 \alias{jfa}
 \alias{jfa-package}
 \docType{package}
-\title{jfa --- Bayesian and Classical Statistical Auditing}
+\title{jfa --- Statistical Methods for Auditing}
 \description{
   \if{html}{\figure{logo.png}{options: alt='logo' width='120' style='float: right' }}
 
-  \code{jfa} is an R package that provides Bayesian and classical methods for statistical auditing. 
-  The package includes functions for planning, performing, evaluating, and reporting an audit sample 
+  \code{jfa} is an R package that provides statistical methods for auditing. The package 
+  includes functions for planning, performing, evaluating, and reporting an audit sample 
   compliant with international auditing standards, as well as functions for auditing data, such as 
   testing the distribution of leading digits in the data against Benford's law. In addition to offering 
   classical frequentist methods, \code{jfa} also provides a straightforward implementation of their 
@@ -69,9 +69,9 @@
 \seealso{
 Useful links:
 \itemize{
-  \item The \href{https://raw.githubusercontent.com/koenderks/jfa/development/man/figures/cheatsheet/cheatsheet.png}{cheat sheet} for a quick overview of the intended workflow.
   \item The \href{https://koenderks.github.io/jfa/articles/}{vignettes} for worked examples.
   \item The \href{https://github.com/koenderks/jfa/issues}{issue page} to submit a bug report or feature request.
+  \item The \href{https://raw.githubusercontent.com/koenderks/jfa/development/man/figures/cheatsheet/cheatsheet.png}{cheat sheet} for an overview of the intended audit sampling workflow.
 }
 }
 
