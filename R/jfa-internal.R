@@ -313,7 +313,7 @@
   return(prob)
 }
 
-.bf01_twosided <- function(materiality, density, prior, analytical = TRUE, prior_samples = NULL) {
+.bf01_twosided_prior <- function(materiality, density, prior, analytical = TRUE, prior_samples = NULL) {
   if (analytical) {
     bf01 <- density / prior[["hypotheses"]]$density
   } else {
@@ -323,7 +323,28 @@
   return(bf01)
 }
 
-.bf10_onesided <- function(materiality, alternative, posterior_odds, prior, analytical = TRUE, prior_samples = NULL) {
+.bf01_twosided_sumstats <- function(materiality, likelihood, prior.n, prior.x, n.obs, t.obs, N.units) {
+  bf01 <- switch(likelihood,
+    "poisson" = stats::dgamma(materiality, 1 + prior.x + t.obs, prior.n + n.obs) / stats::dgamma(materiality, 1 + prior.x, prior.n),
+    "binomial" = stats::dbeta(materiality, 1 + prior.x + t.obs, prior.n - prior.x + n.obs - t.obs) / stats::dbeta(materiality, 1 + prior.x, prior.n - prior.x),
+    "hypergeometric" = extraDistr::dbbinom(ceiling(materiality * N.units), N.units - n.obs, 1 + prior.x + t.obs, prior.n - prior.x + n.obs - t.obs) / extraDistr::dbbinom(ceiling(materiality * N.units), N.units, 1 + prior.x, prior.n - prior.x)
+  )
+  return(bf01)
+}
+
+.bf01_twosided_samples <- function(materiality, nstrata, stratum_samples) {
+  bf01 <- numeric(nstrata - 1)
+  for (i in 1:(nstrata - 1)) {
+    prior_samples <- stratum_samples[, (nstrata - 1) + i]
+    posterior_samples <- stratum_samples[, i]
+    prior_densfit <- stats::density(prior_samples, from = 0, to = 1)
+    post_densfit <- stats::density(posterior_samples, from = 0, to = 1)
+    bf01[i] <- stats::approx(post_densfit[["x"]], post_densfit[["y"]], materiality)$y / stats::approx(prior_densfit[["x"]], prior_densfit[["y"]], materiality)$y
+  }
+  return(bf01)
+}
+
+.bf10_onesided_prior <- function(materiality, alternative, posterior_odds, prior, analytical = TRUE, prior_samples = NULL) {
   if (analytical) {
     prior_odds <- prior[["hypotheses"]]$odds.h1
   } else {
@@ -337,6 +358,35 @@
     prior_odds <- prior_prob_h1 / prior_prob_h0
   }
   bf10 <- posterior_odds / prior_odds
+  return(bf10)
+}
+
+.bf10_onesided_sumstats <- function(materiality, alternative, likelihood, prior.n, prior.x, n.obs, t.obs, N.units) {
+  prior_alpha <- 1 + prior.x
+  post_alpha <- prior_alpha + t.obs
+  if (likelihood == "poisson") {
+    prior_beta <- prior.n
+    post_beta <- prior.n + n.obs
+  } else {
+    prior_beta <- prior.n - prior.x
+    post_beta <- prior_beta + n.obs - t.obs
+  }
+  bf10 <- switch(likelihood,
+    "poisson" = (stats::pgamma(materiality, post_alpha, post_beta) / stats::pgamma(materiality, post_alpha, post_beta, lower.tail = FALSE)) / (stats::pgamma(materiality, prior_alpha, prior_beta) / stats::pgamma(materiality, prior_alpha, prior_beta, lower.tail = FALSE)),
+    "binomial" = (stats::pbeta(materiality, post_alpha, post_beta) / stats::pbeta(materiality, post_alpha, post_beta, lower.tail = FALSE)) / (stats::pbeta(materiality, prior_alpha, prior_beta) / stats::pbeta(materiality, prior_alpha, prior_beta, lower.tail = FALSE)),
+    "hypergeometric" = (extraDistr::pbbinom(ceiling(materiality * N.units) - 1, N.units - n.obs, post_alpha, post_beta) / extraDistr::pbbinom(ceiling(materiality * N.units) - 1, N.units - n.obs, post_alpha, post_beta, lower.tail = FALSE)) / (extraDistr::pbbinom(ceiling(materiality * N.units) - 1, N.units, prior_alpha, prior_beta) / extraDistr::pbbinom(ceiling(materiality * N.units) - 1, N.units, prior_alpha, prior_alpha, lower.tail = FALSE))
+  )
+  if (alternative == "greater") {
+    bf10 <- 1 / bf10
+  }
+  return(bf10)
+}
+
+.bf10_onesided_samples <- function(materiality, alternative, nstrata, stratum_samples) {
+  bf10 <- (apply(stratum_samples[, 1:(nstrata - 1)], 2, function(x) length(which(x < materiality)) / length(x)) / apply(stratum_samples[, 1:(nstrata - 1)], 2, function(x) length(which(x > materiality)) / length(x))) / (apply(stratum_samples[, nstrata:ncol(stratum_samples)], 2, function(x) length(which(x < materiality)) / length(x)) / apply(stratum_samples[, nstrata:ncol(stratum_samples)], 2, function(x) length(which(x > materiality)) / length(x)))
+  if (alternative == "greater") {
+    bf10 <- 1 / bf10
+  }
   return(bf10)
 }
 

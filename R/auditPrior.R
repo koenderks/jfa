@@ -235,6 +235,7 @@ auditPrior <- function(method = c(
                        n = NULL,
                        factor = NULL,
                        conf.level = 0.95) {
+  # Input checking
   method <- match.arg(method)
   likelihood <- match.arg(likelihood)
   stopifnot("missing value for 'conf.level'" = !is.null(conf.level))
@@ -259,6 +260,7 @@ auditPrior <- function(method = c(
     stopifnot("'N.units' must be a single value > 0" = valid_units)
     N.units <- ceiling(N.units)
   }
+  # Compute results
   if (method == "default") {
     prior.n <- 1
     prior.x <- 0
@@ -282,10 +284,10 @@ auditPrior <- function(method = c(
     stopifnot("missing value for 'ub'" = !is.null(ub))
     valid_ub <- length(ub) == 1 && is.numeric(ub) && ub > 0 && ub < 1 && ub > expected
     stopifnot("'ub' must be a single value between 0 and 1 and > 'expected'" = valid_ub)
-    if (likelihood == "poisson" && expected > 0) {
+    if (likelihood == "poisson" && expected > 0) { # Stewart (2013, p. 45)
       r <- expected / ub
       q <- stats::qnorm(conf.level)
-      prior.x <- ((((q * r) + sqrt(3 + ((r / 3) * (4 * q^2 - 10)) - ((r^2 / 3) * (q^2 - 1)))) / (2 * (1 - r)))^2 + (1 / 4)) - 1 # Stewart (2013, p. 45)
+      prior.x <- ((((q * r) + sqrt(3 + ((r / 3) * (4 * q^2 - 10)) - ((r^2 / 3) * (q^2 - 1)))) / (2 * (1 - r)))^2 + (1 / 4)) - 1
       prior.n <- prior.x / expected
     } else {
       bound <- Inf
@@ -370,17 +372,17 @@ auditPrior <- function(method = c(
       prior.n <- beta + prior.x
     }
   }
-  # Prior parameters
+  # Parameters
   prior_alpha <- 1 + prior.x
   if (likelihood == "poisson") {
     prior_beta <- prior.n
   } else {
     prior_beta <- prior.n - prior.x
   }
-  # Prior distribution object
+  # Initialize main results
   result <- list()
   result[["prior"]] <- .functional_form(likelihood, prior_alpha, prior_beta, N.units)
-  # Description section
+  # Description
   description <- list()
   description[["density"]] <- .functional_density(likelihood)
   description[["alpha"]] <- prior_alpha
@@ -388,7 +390,7 @@ auditPrior <- function(method = c(
   description[["implicit.x"]] <- prior.x
   description[["implicit.n"]] <- prior.n
   result[["description"]] <- description
-  # Statistics section
+  # Statistics
   statistics <- list()
   statistics[["mode"]] <- .comp_mode_bayes(likelihood, prior_alpha, prior_beta, N.units)
   statistics[["mean"]] <- .comp_mean_bayes(likelihood, prior_alpha, prior_beta, N.units)
@@ -398,7 +400,7 @@ auditPrior <- function(method = c(
   statistics[["ub"]] <- .comp_ub_bayes("less", conf.level, likelihood, prior_alpha, prior_beta, N.units)
   statistics[["precision"]] <- .comp_precision("less", statistics[["mode"]], NULL, statistics[["ub"]])
   result[["statistics"]] <- statistics
-  # Specifics section
+  # Specifics
   if (method != "default" && method != "strict") {
     specifics <- list()
     if (method == "impartial" || method == "hyp") {
@@ -420,7 +422,7 @@ auditPrior <- function(method = c(
     }
     result[["specifics"]] <- specifics
   }
-  # Hypotheses section
+  # Hypotheses
   if (!is.null(materiality)) {
     hypotheses <- list()
     hypotheses[["hypotheses"]] <- .hyp_string(materiality, "less")

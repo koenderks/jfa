@@ -164,6 +164,7 @@ planning <- function(materiality = NULL,
                      by = 1,
                      max = 5000,
                      prior = FALSE) {
+  # Input checking
   likelihood <- match.arg(likelihood)
   is_jfa_prior <- inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")
   is_bayesian <- (inherits(prior, "logical") && prior) || is_jfa_prior
@@ -234,6 +235,7 @@ planning <- function(materiality = NULL,
   sframe[1] <- 1
   iter <- 1
   sufficient <- FALSE
+  # Compute results
   while (!sufficient && iter <= length(sframe)) {
     i <- sframe[iter]
     x <- switch(error_type,
@@ -285,7 +287,7 @@ planning <- function(materiality = NULL,
   if (!is.null(N.units) && n > N.units) {
     message("The sample size is larger than 'N.units'")
   }
-  # Main results object
+  # Initialize main results
   result <- list()
   result[["conf.level"]] <- conf.level
   result[["x"]] <- x
@@ -305,7 +307,7 @@ planning <- function(materiality = NULL,
   result[["likelihood"]] <- likelihood
   result[["errorType"]] <- error_type
   result[["iterations"]] <- iter
-  # Prior distribution object
+  # Prior distribution
   if (is_bayesian) {
     if (is_jfa_prior && !is.null(prior[["hypotheses"]])) {
       result[["prior"]] <- prior
@@ -316,9 +318,9 @@ planning <- function(materiality = NULL,
       )
     }
   }
-  # Posterior distribution object
+  # Posterior distribution
   if (!is.null(result[["prior"]])) {
-    # Posterior parameters
+    # Parameters
     post_alpha <- result[["prior"]]$description$alpha + result[["x"]]
     if (likelihood == "poisson") {
       post_beta <- result[["prior"]]$description$beta + result[["n"]]
@@ -326,12 +328,12 @@ planning <- function(materiality = NULL,
       post_beta <- result[["prior"]]$description$beta + result[["n"]] - result[["x"]]
     }
     post_N <- result[["N.units"]] - result[["n"]]
-    # Main object
+    # Initialize posterior distribution
     posterior <- list()
     posterior[["posterior"]] <- .functional_form(likelihood, post_alpha, post_beta, post_N)
     posterior[["likelihood"]] <- likelihood
     result[["posterior"]] <- posterior
-    # Description section
+    # Description
     description <- list()
     description[["density"]] <- .functional_density(likelihood)
     description[["n"]] <- result[["n"]]
@@ -345,7 +347,7 @@ planning <- function(materiality = NULL,
       description[["implicit.n"]] <- post_beta - description[["implicit.x"]]
     }
     result[["posterior"]][["description"]] <- description
-    # Statistics section
+    # Statistics
     statistics <- list()
     statistics[["mode"]] <- .comp_mode_bayes(likelihood, post_alpha, post_beta, post_N)
     statistics[["mean"]] <- .comp_mean_bayes(likelihood, post_alpha, post_beta, post_N)
@@ -355,7 +357,7 @@ planning <- function(materiality = NULL,
     statistics[["ub"]] <- .comp_ub_bayes("less", conf.level, likelihood, post_alpha, post_beta, post_N)
     statistics[["precision"]] <- statistics[["ub"]] - statistics[["mode"]]
     result[["posterior"]][["statistics"]] <- statistics
-    # Hypotheses section
+    # Hypotheses
     if (result[["materiality"]] != 1) {
       hypotheses <- list()
       hypotheses[["hypotheses"]] <- .hyp_string(materiality, "less")

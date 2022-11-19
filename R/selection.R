@@ -147,6 +147,7 @@ selection <- function(data,
                       randomize = FALSE,
                       replace = FALSE,
                       start = 1) {
+  # Input checking
   units <- match.arg(units)
   method <- match.arg(method)
   use_mus <- units == "values"
@@ -201,6 +202,7 @@ selection <- function(data,
     book_values <- data[, values]
   }
   row_numbers <- as.numeric(rownames(data))
+  # Compute results
   if (method == "random" && !use_mus) {
     # Random record sampling
     sample_items <- sample(row_numbers, size, replace)
@@ -256,11 +258,13 @@ selection <- function(data,
     sample_items <- row_numbers[order(-ri)]
     sample_items <- sample_items[1:size]
   }
+  # Data
   names_match <- match(unique(sample_items), names(table(sample_items)))
   row_match <- match(unique(sample_items), row_numbers)
   count <- as.numeric(table(sample_items)[names_match])
   sample <- cbind(unique(sample_items), count, data[row_match, ])
   colnames(sample) <- c("row", "times", colnames(data))
+  # Initialize results
   result <- list()
   result[["data"]] <- as.data.frame(data)
   result[["sample"]] <- as.data.frame(sample, row.names = seq_len(nrow(sample)))

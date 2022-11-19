@@ -284,6 +284,7 @@ evaluation <- function(materiality = NULL,
                        N.items = NULL,
                        pooling = c("none", "complete", "partial"),
                        prior = FALSE) {
+  # Input checking
   method <- match.arg(method)
   alternative <- match.arg(alternative)
   pooling <- match.arg(pooling)
@@ -324,11 +325,15 @@ evaluation <- function(materiality = NULL,
   if (alternative %in% c("two.sided", "greater") && is_stringer_method) {
     stop(paste0("'method = ", method, "' does not accomodate 'alternative = ", alternative, "'"))
   }
-  stopifnot("missing value(s) for 'data' or a combination of 'x' and 'n'" = !is.null(x) || !is.null(n) || !is.null(data))
+  stopifnot("missing value(s) for 'data' or 'x' and 'n'" = !is.null(x) || !is.null(n) || !is.null(data))
   has_summary_statistics <- !is.null(x) || !is.null(n)
   has_data <- !is.null(data)
   if (has_summary_statistics) {
-    valid_method <- !(method %in% c("stringer", "stringer.meikle", "stringer.lta", "stringer.pvz", "coxsnell", "rohrbach", "moment", "direct", "difference", "quotient", "regression", "mpu"))
+    valid_method <- !(method %in% c(
+      "stringer", "stringer.meikle", "stringer.lta", "stringer.pvz",
+      "coxsnell", "rohrbach", "moment", "mpu",
+      "direct", "difference", "quotient", "regression"
+    ))
     stopifnot("missing value for 'data'" = valid_method)
     stopifnot("missing value for 'n'" = !is.null(n))
     valid_n <- is.numeric(n) && all(n %% 1 == 0) && length(n) > 0 && all(n > 0)
@@ -457,6 +462,7 @@ evaluation <- function(materiality = NULL,
   nstrata <- length(t.obs) # Population is first 'stratum'
   use_stratification <- nstrata > 1
   mle <- lb <- ub <- precision <- p.val <- K <- numeric(nstrata)
+  # Compute results
   if (!use_stratification || pooling != "partial") {
     for (i in 1:nstrata) {
       if (valid_test_method) {
@@ -489,12 +495,12 @@ evaluation <- function(materiality = NULL,
       } else {
         out <- switch(method,
           "stringer" = .stringer(taints[[i]], conf.level, n.obs[i]),
-          "stringer.meikle" = .stringer(taints[[i]], conf.level, n.obs[i], correction = "meikle"),
-          "stringer.lta" = .stringer(taints[[i]], conf.level, n.obs[i], correction = "lta"),
-          "stringer.pvz" = .stringer(taints[[i]], conf.level, n.obs[i], correction = "pvz"),
-          "rohrbach" = .rohrbach(taints[[i]], conf.level, n.obs[i], alternative, N.units[i], r.delta = 2.7),
-          "moment" = .moment(taints[[i]], conf.level, n.obs[i], alternative, m.type = "accounts"),
-          "coxsnell" = .coxsnell(taints[[i]], conf.level, n.obs[i], alternative, cs.a = 1, cs.b = 3, cs.mu = 0.5, 1 + prior.x, prior.n - prior.x),
+          "stringer.meikle" = .stringer(taints[[i]], conf.level, n.obs[i], "meikle"),
+          "stringer.lta" = .stringer(taints[[i]], conf.level, n.obs[i], "lta"),
+          "stringer.pvz" = .stringer(taints[[i]], conf.level, n.obs[i], "pvz"),
+          "rohrbach" = .rohrbach(taints[[i]], conf.level, n.obs[i], alternative, N.units[i], 2.7),
+          "moment" = .moment(taints[[i]], conf.level, n.obs[i], alternative, "accounts"),
+          "coxsnell" = .coxsnell(taints[[i]], conf.level, n.obs[i], alternative, 1, 3, 0.5, 1 + prior.x, prior.n - prior.x),
           "mpu" = .mpu(taints[[i]], conf.level, alternative, n.obs[i]),
           "direct" = .direct(book_values[[i]], audit_values[[i]], conf.level, alternative, N.items[i], n.obs[i], N.units[i]),
           "difference" = .difference(book_values[[i]], audit_values[[i]], conf.level, alternative, N.items[i], n.obs[i]),
@@ -539,7 +545,7 @@ evaluation <- function(materiality = NULL,
   } else if (use_stratification && !valid_test_method) {
     message("population results are displayed for aggregated sample")
   }
-  # Main results object
+  # Initialize main results
   result <- list()
   result[["conf.level"]] <- conf.level
   result[["mle"]] <- mle[1]
@@ -552,88 +558,6 @@ evaluation <- function(materiality = NULL,
     } else {
       result[["p.value"]] <- NA
     }
-  }
-  if (use_stratification) {
-    if (pooling == "complete") {
-      mle <- rep(mle[1], nstrata - 1)
-      lb <- rep(lb[1], nstrata - 1)
-      ub <- rep(ub[1], nstrata - 1)
-      precision <- rep(precision[1], nstrata - 1)
-    } else {
-      mle <- mle[-1]
-      lb <- lb[-1]
-      ub <- ub[-1]
-      precision <- precision[-1]
-    }
-    stratum_table <- data.frame(
-      n = n.obs[-1], x = x.obs[-1], t = t.obs[-1],
-      mle = mle, lb = lb, ub = ub, precision = precision
-    )
-    if (pooling == "complete") {
-      if (!is_bayesian && materiality < 1 && valid_test_method) {
-        stratum_table[["p.value"]] <- p.val[1]
-      }
-      if (is_bayesian && materiality != 1 && valid_test_method) {
-        if (alternative == "less") {
-          stratum_table[["bf10"]] <- switch(method,
-            "poisson" = (stats::pgamma(materiality, 1 + prior.x + t.obs[1], prior.n + n.obs[1]) / stats::pgamma(materiality, 1 + prior.x + t.obs[1], prior.n + n.obs[1], lower.tail = FALSE)) / (stats::pgamma(materiality, 1 + prior.x, prior.n) / stats::pgamma(materiality, 1 + prior.x, prior.n, lower.tail = FALSE)),
-            "binomial" = (stats::pbeta(materiality, 1 + prior.x + t.obs[1], prior.n - prior.x + n.obs[1] - t.obs[1]) / stats::pbeta(materiality, 1 + prior.x + t.obs[1], prior.n - prior.x + n.obs[1] - t.obs[1], lower.tail = FALSE)) / (stats::pbeta(materiality, 1 + prior.x, prior.n - prior.x) / stats::pbeta(materiality, 1 + prior.x, prior.n - prior.x, lower.tail = FALSE)),
-            "hypergeometric" = (extraDistr::pbbinom(ceiling(materiality * N.units[1]) - 1, size = N.units[1] - n.obs[1], alpha = 1 + prior.x + t.obs[1], beta = prior.n - prior.x + n.obs[1] - t.obs[1]) / extraDistr::pbbinom(ceiling(materiality * N.units[1]) - 1, size = N.units[1] - n.obs[1], alpha = 1 + prior.x + t.obs[1], beta = prior.n - prior.x + n.obs[1] - t.obs[1], lower.tail = FALSE)) / (extraDistr::pbbinom(ceiling(materiality * N.units[1]) - 1, size = N.units[1], alpha = 1 + prior.x, beta = prior.n - prior.x) / extraDistr::pbbinom(ceiling(materiality * N.units[1]) - 1, size = N.units[1], alpha = 1 + prior.x, beta = prior.n - prior.x, lower.tail = FALSE))
-          )
-        } else if (alternative == "greater") {
-          stratum_table[["bf10"]] <- switch(method,
-            "poisson" = (stats::pgamma(materiality, 1 + prior.x + t.obs[1], prior.n + n.obs[1], lower.tail = FALSE) / stats::pgamma(materiality, 1 + prior.x + t.obs[1], prior.n + n.obs[1])) / (stats::pgamma(materiality, 1 + prior.x, prior.n, lower.tail = FALSE) / stats::pgamma(materiality, 1 + prior.x, prior.n)),
-            "binomial" = (stats::pbeta(materiality, 1 + prior.x + t.obs[1], prior.n - prior.x + n.obs[1] - t.obs[-1], lower.tail = FALSE) / stats::pbeta(materiality, 1 + prior.x + t.obs[1], prior.n - prior.x + n.obs[1] - t.obs[1])) / (stats::pbeta(materiality, 1 + prior.x, prior.n - prior.x, lower.tail = FALSE) / stats::pbeta(materiality, 1 + prior.x, prior.n - prior.x)),
-            "hypergeometric" = (extraDistr::pbbinom(ceiling(materiality * N.units[1]) - 1, size = N.units[1] - n.obs[1], alpha = 1 + prior.x + t.obs[1], beta = prior.n - prior.x + n.obs[1] - t.obs[1], lower.tail = FALSE) / extraDistr::pbbinom(ceiling(materiality * N.units[1]) - 1, size = N.units[1] - n.obs[1], alpha = 1 + prior.x + t.obs[1], beta = prior.n - prior.x + n.obs[1] - t.obs[1])) / (extraDistr::pbbinom(ceiling(materiality * N.units[1]) - 1, size = N.units[1], alpha = 1 + prior.x, beta = prior.n - prior.x, lower.tail = FALSE) / extraDistr::pbbinom(ceiling(materiality * N.units[1]) - 1, size = N.units[1], alpha = 1 + prior.x, beta = prior.n - prior.x))
-          )
-        } else if (alternative == "two.sided") {
-          stratum_table[["bf10"]] <- switch(method,
-            "poisson" = 1 / (stats::dgamma(materiality, 1 + prior.x + t.obs[1], prior.n + n.obs[1]) / stats::dgamma(materiality, 1 + prior.x, prior.n)),
-            "binomial" = 1 / (stats::dbeta(materiality, 1 + prior.x + t.obs[1], prior.n - prior.x + n.obs[1] - t.obs[1]) / stats::dbeta(materiality, 1 + prior.x, prior.n - prior.x)),
-            "hypergeometric" = 1 / (extraDistr::dbbinom(ceiling(materiality * N.units[1]), size = N.units[1] - n.obs[1], alpha = 1 + prior.x + t.obs[1], beta = prior.n - prior.x + n.obs[1] - t.obs[1]) / extraDistr::dbbinom(ceiling(materiality * N.units[1]), size = N.units[1], alpha = 1 + prior.x, beta = prior.n - prior.x))
-          )
-        }
-      }
-    } else if (pooling == "none") {
-      if (!is_bayesian && materiality < 1 && valid_test_method) {
-        stratum_table[["p.value"]] <- p.val[-1]
-      }
-      if (is_bayesian && materiality != 1 && valid_test_method) {
-        if (alternative == "less") {
-          stratum_table[["bf10"]] <- switch(method,
-            "poisson" = (stats::pgamma(materiality, 1 + prior.x + t.obs[-1], prior.n + n.obs[-1]) / stats::pgamma(materiality, 1 + prior.x + t.obs[-1], prior.n + n.obs[-1], lower.tail = FALSE)) / (stats::pgamma(materiality, 1 + prior.x, prior.n) / stats::pgamma(materiality, 1 + prior.x, prior.n, lower.tail = FALSE)),
-            "binomial" = (stats::pbeta(materiality, 1 + prior.x + t.obs[-1], prior.n - prior.x + n.obs[-1] - t.obs[-1]) / stats::pbeta(materiality, 1 + prior.x + t.obs[-1], prior.n - prior.x + n.obs[-1] - t.obs[-1], lower.tail = FALSE)) / (stats::pbeta(materiality, 1 + prior.x, prior.n - prior.x) / stats::pbeta(materiality, 1 + prior.x, prior.n - prior.x, lower.tail = FALSE)),
-            "hypergeometric" = (extraDistr::pbbinom(ceiling(materiality * N.units[-1]) - 1, size = N.units[-1] - n.obs[-1], alpha = 1 + prior.x + t.obs[-1], beta = prior.n - prior.x + n.obs[-1] - t.obs[-1]) / extraDistr::pbbinom(ceiling(materiality * N.units[-1]) - 1, size = N.units[-1] - n.obs[-1], alpha = 1 + prior.x + t.obs[-1], beta = prior.n - prior.x + n.obs[-1] - t.obs[-1], lower.tail = FALSE)) / (extraDistr::pbbinom(ceiling(materiality * N.units[-1]) - 1, size = N.units[-1], alpha = 1 + prior.x, beta = prior.n - prior.x) / extraDistr::pbbinom(ceiling(materiality * N.units[-1]) - 1, size = N.units[-1], alpha = 1 + prior.x, beta = prior.n - prior.x, lower.tail = FALSE))
-          )
-        } else if (alternative == "greater") {
-          stratum_table[["bf10"]] <- switch(method,
-            "poisson" = (stats::pgamma(materiality, 1 + prior.x + t.obs[-1], prior.n + n.obs[-1], lower.tail = FALSE) / stats::pgamma(materiality, 1 + prior.x + t.obs[-1], prior.n + n.obs[-1])) / (stats::pgamma(materiality, 1 + prior.x, prior.n, lower.tail = FALSE) / stats::pgamma(materiality, 1 + prior.x, prior.n)),
-            "binomial" = (stats::pbeta(materiality, 1 + prior.x + t.obs[-1], prior.n - prior.x + n.obs[-1] - t.obs[-1], lower.tail = FALSE) / stats::pbeta(materiality, 1 + prior.x + t.obs[-1], prior.n - prior.x + n.obs[-1] - t.obs[-1])) / (stats::pbeta(materiality, 1 + prior.x, prior.n - prior.x, lower.tail = FALSE) / stats::pbeta(materiality, 1 + prior.x, prior.n - prior.x)),
-            "hypergeometric" = (extraDistr::pbbinom(ceiling(materiality * N.units[-1]) - 1, size = N.units[-1] - n.obs[-1], alpha = 1 + prior.x + t.obs[-1], beta = prior.n - prior.x + n.obs[-1] - t.obs[-1], lower.tail = FALSE) / extraDistr::pbbinom(ceiling(materiality * N.units[-1]) - 1, size = N.units[-1] - n.obs[-1], alpha = 1 + prior.x + t.obs[-1], beta = prior.n - prior.x + n.obs[-1] - t.obs[-1])) / (extraDistr::pbbinom(ceiling(materiality * N.units[-1]) - 1, size = N.units[-1], alpha = 1 + prior.x, beta = prior.n - prior.x, lower.tail = FALSE) / extraDistr::pbbinom(ceiling(materiality * N.units[-1]) - 1, size = N.units[-1], alpha = 1 + prior.x, beta = prior.n - prior.x))
-          )
-        } else if (alternative == "two.sided") {
-          stratum_table[["bf10"]] <- switch(method,
-            "poisson" = 1 / (stats::dgamma(materiality, 1 + prior.x + t.obs[-1], prior.n + n.obs[-1]) / stats::dgamma(materiality, 1 + prior.x, prior.n)),
-            "binomial" = 1 / (stats::dbeta(materiality, 1 + prior.x + t.obs[-1], prior.n - prior.x + n.obs[-1] - t.obs[-1]) / stats::dbeta(materiality, 1 + prior.x, prior.n - prior.x)),
-            "hypergeometric" = 1 / (extraDistr::dbbinom(ceiling(materiality * N.units[-1]), size = N.units[-1] - n.obs[-1], alpha = 1 + prior.x + t.obs[-1], beta = prior.n - prior.x + n.obs[-1] - t.obs[-1]) / extraDistr::dbbinom(ceiling(materiality * N.units[-1]), size = N.units[-1], alpha = 1 + prior.x, beta = prior.n - prior.x))
-          )
-        }
-      }
-    } else if (pooling == "partial") {
-      if (materiality != 1) {
-        if (alternative == "less") {
-          stratum_table[["bf10"]] <- (apply(stratum_samples[, 1:(nstrata - 1)], 2, function(x) length(which(x < materiality)) / length(x)) / apply(stratum_samples[, 1:(nstrata - 1)], 2, function(x) length(which(x > materiality)) / length(x))) / (apply(stratum_samples[, nstrata:ncol(stratum_samples)], 2, function(x) length(which(x < materiality)) / length(x)) / apply(stratum_samples[, nstrata:ncol(stratum_samples)], 2, function(x) length(which(x > materiality)) / length(x)))
-        } else if (alternative == "greater") {
-          stratum_table[["bf10"]] <- (apply(stratum_samples[, 1:(nstrata - 1)], 2, function(x) length(which(x > materiality)) / length(x)) / apply(stratum_samples[, 1:(nstrata - 1)], 2, function(x) length(which(x < materiality)) / length(x))) / (apply(stratum_samples[, nstrata:ncol(stratum_samples)], 2, function(x) length(which(x > materiality)) / length(x)) / apply(stratum_samples[, nstrata:ncol(stratum_samples)], 2, function(x) length(which(x < materiality)) / length(x)))
-        } else if (alternative == "two.sided") {
-          for (i in 1:(nstrata - 1)) {
-            stratum_table[["bf10"]][i] <- 1 / (stats::approx(stats::density(stratum_samples[, i], from = 0, to = 1)$x, stats::density(stratum_samples[, i], from = 0, to = 1)$y, materiality)$y / stats::approx(stats::density(stratum_samples[, (nstrata - 1) + i], from = 0, to = 1)$x, stats::density(stratum_samples[, (nstrata - 1) + i], from = 0, to = 1)$y, materiality)$y)
-          }
-        }
-      }
-    }
-    rownames(stratum_table) <- if (is.null(strata)) seq_len(nrow(stratum_table)) else levels(stratum)
-    result[["strata"]] <- stratum_table
   }
   result[["x"]] <- x.obs[1]
   result[["t"]] <- t.obs[1]
@@ -652,7 +576,49 @@ evaluation <- function(materiality = NULL,
   if (method == "hypergeometric" && !is_bayesian) {
     result[["K"]] <- K[1]
   }
-  # Prior distribution object
+  # Stratum results
+  if (use_stratification) {
+    if (pooling == "complete") {
+      mle <- rep(mle[1], nstrata - 1)
+      lb <- rep(lb[1], nstrata - 1)
+      ub <- rep(ub[1], nstrata - 1)
+      precision <- rep(precision[1], nstrata - 1)
+    } else {
+      mle <- mle[-1]
+      lb <- lb[-1]
+      ub <- ub[-1]
+      precision <- precision[-1]
+    }
+    stratum_table <- data.frame(
+      n = n.obs[-1], x = x.obs[-1], t = t.obs[-1],
+      mle = mle, lb = lb, ub = ub, precision = precision
+    )
+    if (materiality < 1 && valid_test_method) {
+      if (!is_bayesian) {
+        stratum_table[["p.value"]] <- switch(pooling,
+          "complete" = p.val[1],
+          "none" = p.val[-1]
+        )
+      } else {
+        if (alternative == "two.sided") {
+          stratum_table[["bf10"]] <- switch(pooling,
+            "complete" = 1 / .bf01_twosided_sumstats(materiality, method, prior.n, prior.x, n.obs[1], t.obs[1], N.units[1]),
+            "none" = 1 / .bf01_twosided_sumstats(materiality, method, prior.n, prior.x, n.obs[-1], t.obs[-1], N.units[-1]),
+            "partial" = 1 / .bf01_twosided_samples(materiality, nstrata, stratum_samples)
+          )
+        } else {
+          stratum_table[["bf10"]] <- switch(pooling,
+            "complete" = .bf10_onesided_sumstats(materiality, alternative, method, prior.n, prior.x, n.obs[1], t.obs[1], N.units[1]),
+            "none" = .bf10_onesided_sumstats(materiality, alternative, method, prior.n, prior.x, n.obs[-1], t.obs[-1], N.units[-1]),
+            "partial" = .bf10_onesided_samples(materiality, alternative, nstrata, stratum_samples)
+          )
+        }
+      }
+    }
+    rownames(stratum_table) <- if (is.null(strata)) seq_len(nrow(stratum_table)) else levels(stratum)
+    result[["strata"]] <- stratum_table
+  }
+  # Prior distribution
   if (is_bayesian) {
     if (is_jfa_prior && !is.null(prior[["hypotheses"]])) {
       if (alternative == "greater") {
@@ -665,10 +631,10 @@ evaluation <- function(materiality = NULL,
     }
     result[["prior"]] <- prior
   }
-  # Posterior distribution object
+  # Posterior distribution
   if (!is.null(result[["prior"]])) {
     analytical <- !use_stratification || pooling == "complete"
-    # Posterior parameters
+    # Parameters
     post_alpha <- result[["prior"]][["description"]]$alpha + result[["t"]]
     if (method == "poisson") {
       post_beta <- result[["prior"]][["description"]]$beta + result[["n"]]
@@ -676,11 +642,11 @@ evaluation <- function(materiality = NULL,
       post_beta <- result[["prior"]][["description"]]$beta + result[["n"]] - result[["t"]]
     }
     post_N <- result[["N.units"]] - result[["n"]]
-    # Main object
+    # Initialize posterior distribution
     result[["posterior"]] <- list()
     result[["posterior"]]$posterior <- .functional_form(method, post_alpha, post_beta, post_N, analytical)
     result[["posterior"]]$likelihood <- method
-    # Description section
+    # Description
     description <- list()
     description[["density"]] <- .functional_density(method, analytical)
     description[["n"]] <- result[["n"]]
@@ -698,7 +664,7 @@ evaluation <- function(materiality = NULL,
       post_samples <- NULL
     }
     result[["posterior"]][["description"]] <- description
-    # Statistics section
+    # Statistics
     statistics <- list()
     statistics[["mode"]] <- .comp_mode_bayes(method, post_alpha, post_beta, post_N, analytical, post_samples)
     statistics[["mean"]] <- .comp_mean_bayes(method, post_alpha, post_beta, post_N, analytical, post_samples)
@@ -709,13 +675,13 @@ evaluation <- function(materiality = NULL,
     statistics[["lb"]] <- .comp_lb_bayes(alternative, conf.level, method, post_alpha, post_beta, post_N, analytical, post_samples)
     statistics[["precision"]] <- .comp_precision(alternative, statistics[["mode"]], statistics[["lb"]], statistics[["ub"]])
     result[["posterior"]][["statistics"]] <- statistics
-    # Hypotheses section
+    # Hypotheses
     if (result[["materiality"]] != 1) {
       hypotheses <- list()
       hypotheses[["hypotheses"]] <- .hyp_string(materiality, alternative)
       if (alternative == "two.sided") {
         hypotheses[["density"]] <- .hyp_dens(materiality, method, post_alpha, post_beta, N.units, post_N, analytical, post_samples)
-        hypotheses[["bf.h0"]] <- .bf01_twosided(materiality, hypotheses[["density"]], result[["prior"]], analytical, prior_samples)
+        hypotheses[["bf.h0"]] <- .bf01_twosided_prior(materiality, hypotheses[["density"]], result[["prior"]], analytical, prior_samples)
         hypotheses[["bf.h1"]] <- 1 / hypotheses[["bf.h0"]]
       } else {
         lower_tail <- alternative == "less"
@@ -723,7 +689,7 @@ evaluation <- function(materiality = NULL,
         hypotheses[["p.h0"]] <- .hyp_prob(!lower_tail, materiality, method, post_alpha, post_beta, result[["N.units"]], post_N, analytical, post_samples)
         hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
         hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
-        hypotheses[["bf.h1"]] <- .bf10_onesided(materiality, alternative, hypotheses[["odds.h1"]], result[["prior"]], analytical, prior_samples)
+        hypotheses[["bf.h1"]] <- .bf10_onesided_prior(materiality, alternative, hypotheses[["odds.h1"]], result[["prior"]], analytical, prior_samples)
         hypotheses[["bf.h0"]] <- 1 / hypotheses[["bf.h1"]]
       }
       result[["posterior"]][["hypotheses"]] <- hypotheses
@@ -731,6 +697,7 @@ evaluation <- function(materiality = NULL,
     result[["posterior"]]$N.units <- result[["N.units"]]
     class(result[["posterior"]]) <- c(class(result[["posterior"]]), "jfaPosterior")
   }
+  # Data
   if (has_data && !is.null(values) && !is.null(values.audit)) {
     values_column <- which(colnames(data) == values)
     values_audit_column <- which(colnames(data) == values.audit)
