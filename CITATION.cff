@@ -67,7 +67,7 @@ references:
   url: https://www.R-project.org/
   institution:
     name: R Foundation for Statistical Computing
-  version: '>= 3.4.0'
+  version: '>= 3.5.0'
 - type: software
   title: extraDistr
   abstract: 'extraDistr: Additional Univariate and Multivariate Distributions'
