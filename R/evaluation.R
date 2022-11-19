@@ -694,7 +694,7 @@ evaluation <- function(materiality = NULL,
       hypotheses <- list()
       hypotheses[["hypotheses"]] <- .hyp_string(materiality, alternative)
       if (alternative == "two.sided") {
-        hypotheses[["density"]] <- .hyp_dens(materiality, method, post_alpha, post_beta, N.units, post_N, analytical, post_samples)
+        hypotheses[["density"]] <- .hyp_dens(materiality, method, post_alpha, post_beta, result[["N.units"]], post_N, analytical, post_samples)
         hypotheses[["bf.h0"]] <- .bf01_twosided_prior(materiality, hypotheses[["density"]], result[["prior"]], analytical, prior_samples)
         hypotheses[["bf.h1"]] <- 1 / hypotheses[["bf.h0"]]
       } else {
