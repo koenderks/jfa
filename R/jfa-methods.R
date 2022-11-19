@@ -322,7 +322,7 @@ print.summary.jfaPlanning <- function(x, digits = getOption("digits"), ...) {
     cat(paste("  Expected BF\u2081\u2080:\t                ", format(x[["bf.h1"]], digits = max(1L, digits - 2L))), "\n")
   }
   if (x[["materiality"]] < 1 && x[["type"]] == "Classical") {
-    cat(paste("  Expected p-value:             ", format.pval(x[["p.value"]], digits = max(1L, digits - 2L))), "\n")
+    cat(paste("  Expected p-value:             ", format.pval(x[["p.value"]], digits = max(1L, digits - 2L), eps = 0.001)), "\n")
   }
 }
 
@@ -343,7 +343,7 @@ summary.jfaPlanning <- function(object, digits = getOption("digits"), ...) {
     stringsAsFactors = FALSE
   )
   if (!is.null(object[["p.value"]])) {
-    out[["p.value"]] <- format.pval(object[["p.value"]], digits, eps = 0.01)
+    out[["p.value"]] <- object[["p.value"]]
   }
   if (!is.null(object[["N.units"]])) {
     out[["N.units"]] <- object[["N.units"]]
