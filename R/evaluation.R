@@ -494,6 +494,9 @@ evaluation <- function(materiality = NULL,
           }
         }
         if (method == "hypergeometric") {
+          if (is_bayesian) {
+            mle[i] <- mle[i] / N.units[i]
+          }
           lb[i] <- lb[i] / N.units[i]
           ub[i] <- ub[i] / N.units[i]
         }
@@ -535,6 +538,9 @@ evaluation <- function(materiality = NULL,
     }
     for (i in 2:nstrata) {
       mle[i] <- .comp_mode_bayes(analytical = FALSE, samples = stratum_samples[, i - 1])
+      if (method == "hypergeometric") {
+        mle[i] <- mle[i] / N.units[i]
+      }
       lb[i] <- .comp_lb_bayes(alternative, conf.level, analytical = FALSE, samples = stratum_samples[, i - 1])
       ub[i] <- .comp_ub_bayes(alternative, conf.level, analytical = FALSE, samples = stratum_samples[, i - 1])
       precision[i] <- .comp_precision(alternative, mle[i], lb[i], ub[i])
@@ -544,6 +550,9 @@ evaluation <- function(materiality = NULL,
     prior_samples <- .poststratification(stratum_samples[, nstrata:ncol(stratum_samples)], N.units)
     post_samples <- .poststratification(stratum_samples[, 1:(nstrata - 1)], N.units)
     mle[1] <- .comp_mode_bayes(analytical = FALSE, samples = post_samples)
+    if (method == "hypergeometric") {
+      mle[1] <- mle[1] / N.units[1]
+    }
     lb[1] <- .comp_lb_bayes(alternative, conf.level, analytical = FALSE, samples = post_samples)
     ub[1] <- .comp_ub_bayes(alternative, conf.level, analytical = FALSE, samples = post_samples)
     precision[1] <- .comp_precision(alternative, mle[1], lb[1], ub[1])
