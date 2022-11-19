@@ -316,9 +316,9 @@ evaluation <- function(materiality = NULL,
     valid_precision <- is.numeric(min.precision) && min.precision > 0 && min.precision < 1
     stopifnot("'min.precision' must be a single value between 0 and 1" = valid_precision)
   }
-  valid_bayesian_method <- method %in% c("poisson", "binomial", "hypergeometric")
+  valid_test_method <- method %in% c("poisson", "binomial", "hypergeometric")
   if (is_bayesian) {
-    stopifnot("'method' should be one of 'poisson', 'binomial', or 'hypergeometric'" = valid_bayesian_method)
+    stopifnot("'method' should be one of 'poisson', 'binomial', or 'hypergeometric'" = valid_test_method)
   }
   is_stringer_method <- method %in% c("stringer", "stringer.meikle", "stringer.lta", "stringer.pvz")
   if (alternative %in% c("two.sided", "greater") && is_stringer_method) {
@@ -387,8 +387,7 @@ evaluation <- function(materiality = NULL,
     } else {
       valid_strata <- is.character(strata) && length(strata) == 1
       stopifnot("'strata' must be a single character" = valid_strata)
-      strata_message <- paste0("'", strata, "' is not a column in 'data'")
-      stopifnot(strata_message = strata %in% colnames(data))
+      stopifnot("column 'strata' not found in 'data'" = strata %in% colnames(data))
       stratum <- data[, strata]
       stopifnot("column 'strata' in 'data' must be a factor variable" = is.factor(stratum))
       x.obs <- t.obs <- n.obs <- numeric(nlevels(stratum))
@@ -449,120 +448,43 @@ evaluation <- function(materiality = NULL,
       stopifnot("'N.items' must be a single integer" = valid_items)
     }
   }
+  if (method == "hypergeometric") {
+    stopifnot("missing value for 'N.units'" = !is.null(N.units))
+    valid_units <- is.numeric(N.units) && length(N.units) > 0 && all(N.units > 0)
+    stopifnot("all values in 'N.units' must be > 0" = valid_units)
+    N.units <- ceiling(N.units)
+  }
   nstrata <- length(t.obs) # Population is first 'stratum'
   use_stratification <- nstrata > 1
-  mle <- ub <- lb <- precision <- p.val <- K <- numeric(nstrata)
-  if (pooling != "partial" || !use_stratification) {
+  mle <- lb <- ub <- precision <- p.val <- K <- numeric(nstrata)
+  if (!use_stratification || pooling != "partial") {
     for (i in 1:nstrata) {
-      if (method == "poisson") {
+      if (valid_test_method) {
         if (is_bayesian) {
-          mle[i] <- ((1 + prior.x + t.obs[i]) - 1) / (prior.n + n.obs[i])
-          ub[i] <- switch(alternative,
-            "two.sided" = stats::qgamma(p = conf.level + (1 - conf.level) / 2, shape = 1 + prior.x + t.obs[i], rate = prior.n + n.obs[i]),
-            "less" = stats::qgamma(p = conf.level, shape = 1 + prior.x + t.obs[i], rate = prior.n + n.obs[i]),
-            "greater" = 1
-          )
-          lb[i] <- switch(alternative,
-            "two.sided" = stats::qgamma(p = (1 - conf.level) / 2, shape = 1 + prior.x + t.obs[i], rate = prior.n + n.obs[i]),
-            "less" = 0,
-            "greater" = stats::qgamma(p = 1 - conf.level, shape = 1 + prior.x + t.obs[i], rate = prior.n + n.obs[i])
-          )
+          stratum_alpha <- 1 + prior.x + t.obs[i]
+          if (method == "poisson") {
+            stratum_beta <- prior.n + n.obs[i]
+          } else {
+            stratum_beta <- prior.n + n.obs[i] - t.obs[i]
+          }
+          stratum_N <- N.units[i] - n.obs[i]
+          mle[i] <- .dist_mode(method, stratum_alpha, stratum_beta, stratum_N)
+          lb[i] <- .dist_lb(alternative, conf.level, method, stratum_alpha, stratum_beta, stratum_N)
+          ub[i] <- .dist_ub(alternative, conf.level, method, stratum_alpha, stratum_beta, stratum_N)
         } else {
-          # Classical evaluation using the Poisson distribution
-          mle[i] <- t.obs[i] / n.obs[i]
-          ub[i] <- switch(alternative,
-            "two.sided" = stats::qgamma(p = conf.level + (1 - conf.level) / 2, shape = 1 + t.obs[i], rate = n.obs[i]),
-            "less" = stats::qgamma(p = conf.level, shape = 1 + t.obs[i], rate = n.obs[i]),
-            "greater" = Inf
-          )
-          lb[i] <- switch(alternative,
-            "two.sided" = stats::qgamma(p = (1 - conf.level) / 2, shape = t.obs[i], rate = n.obs[i]),
-            "less" = 0,
-            "greater" = stats::qgamma(p = 1 - conf.level, shape = t.obs[i], rate = n.obs[i])
-          )
+          if (method == "hypergeometric") {
+            K[i] <- ceiling(materiality * N.units[i])
+          }
+          mle[i] <- .est_mle(method, n.obs[i], x.obs[i], t.obs[i])
+          lb[i] <- .est_lb(alternative, conf.level, method, n.obs[i], x.obs[i], t.obs[i], N.units[i])
+          ub[i] <- .est_ub(alternative, conf.level, method, n.obs[i], x.obs[i], t.obs[i], N.units[i])
           if (materiality < 1) {
-            p.val[i] <- switch(alternative,
-              "two.sided" = stats::poisson.test(x = ceiling(t.obs[i]), T = n.obs[i], r = materiality, alternative = "two.sided")$p.value,
-              "less" = stats::pgamma(q = materiality, shape = 1 + t.obs[i], rate = n.obs[i], lower.tail = FALSE),
-              "greater" = stats::pgamma(q = materiality, shape = t.obs[i], rate = n.obs[i])
-            )
+            p.val[i] <- .est_pval(alternative, materiality, method, n.obs[i], x.obs[i], t.obs[i], N.units[i], K[i])
           }
         }
-      } else if (method == "binomial") {
-        if (is_bayesian) {
-          # Bayesian evaluation using the beta distribution
-          mle[i] <- (1 + prior.x + t.obs[i] - 1) / ((1 + prior.x + t.obs[i]) + (prior.n - prior.x + n.obs[i] - t.obs[i]) - 2)
-          ub[i] <- switch(alternative,
-            "two.sided" = stats::qbeta(p = conf.level + (1 - conf.level) / 2, shape1 = 1 + prior.x + t.obs[i], shape2 = prior.n - prior.x + n.obs[i] - t.obs[i]),
-            "less" = stats::qbeta(p = conf.level, shape1 = 1 + prior.x + t.obs[i], shape2 = prior.n - prior.x + n.obs[i] - t.obs[i]),
-            "greater" = 1
-          )
-          lb[i] <- switch(alternative,
-            "two.sided" = stats::qbeta(p = (1 - conf.level) / 2, shape1 = 1 + prior.x + t.obs[i], shape2 = prior.n - prior.x + n.obs[i] - t.obs[i]),
-            "less" = 0,
-            "greater" = stats::qbeta(p = 1 - conf.level, shape1 = 1 + prior.x + t.obs[i], shape2 = prior.n - prior.x + n.obs[i] - t.obs[i])
-          )
-        } else {
-          # Classical evaluation using the binomial distribution
-          mle[i] <- t.obs[i] / n.obs[i]
-          ub[i] <- switch(alternative,
-            "two.sided" = stats::qbeta(p = conf.level + (1 - conf.level) / 2, shape1 = 1 + t.obs[i], shape2 = n.obs[i] - t.obs[i]),
-            "less" = stats::qbeta(p = conf.level, shape1 = 1 + t.obs[i], shape2 = n.obs[i] - t.obs[i]),
-            "greater" = 1
-          )
-          lb[i] <- switch(alternative,
-            "two.sided" = stats::qbeta(p = (1 - conf.level) / 2, shape1 = t.obs[i], shape2 = 1 + n.obs[i] - t.obs[i]),
-            "less" = 0,
-            "greater" = stats::qbeta(p = 1 - conf.level, shape1 = t.obs[i], shape2 = 1 + n.obs[i] - t.obs[i])
-          )
-          if (materiality < 1) {
-            p.val[i] <- switch(alternative,
-              "two.sided" = stats::binom.test(x = ceiling(t.obs[i]), n = n.obs[i], p = materiality, alternative = "two.sided")$p.value,
-              "less" = stats::pbeta(q = materiality, shape1 = 1 + t.obs[i], shape2 = n.obs[i] - t.obs[i], lower.tail = FALSE),
-              "greater" = stats::pbeta(q = materiality, shape1 = t.obs[i], shape2 = 1 + n.obs[i] - t.obs[i])
-            )
-          }
-        }
-      } else if (method == "hypergeometric") {
-        stopifnot(
-          "missing value for 'N.units'" = !is.null(N.units),
-          "all values in 'N.units' must be > 0" = is.numeric(N.units) && length(N.units) > 0 && all(N.units > 0)
-        )
-        N.units <- ceiling(N.units)
-        if (is_bayesian) {
-          # Bayesian evaluation using the beta-binomial distribution
-          mle[i] <- .modebbinom(N = N.units[i] - n.obs[i], shape1 = 1 + prior.x + t.obs[i], shape2 = prior.n - prior.x + n.obs[i] - t.obs[i]) / N.units[i]
-          ub[i] <- switch(alternative,
-            "two.sided" = .qbbinom(p = conf.level + (1 - conf.level) / 2, N = N.units[i] - n.obs[i], shape1 = 1 + prior.x + t.obs[i], shape2 = prior.n - prior.x + n.obs[i] - t.obs[i]) / N.units[i],
-            "less" = .qbbinom(p = conf.level, N = N.units[i] - n.obs[i], shape1 = 1 + prior.x + t.obs[i], shape2 = prior.n - prior.x + n.obs[i] - t.obs[i]) / N.units[i],
-            "greater" = 1
-          )
-          lb[i] <- switch(alternative,
-            "two.sided" = .qbbinom(p = (1 - conf.level) / 2, N = N.units[i] - n.obs[i], shape1 = 1 + prior.x + t.obs[i], shape2 = prior.n - prior.x + n.obs[i] - t.obs[i]) / N.units[i],
-            "less" = 0,
-            "greater" = .qbbinom(p = 1 - conf.level, N = N.units[i] - n.obs[i], shape1 = 1 + prior.x + t.obs[i], shape2 = prior.n - prior.x + n.obs[i] - t.obs[i]) / N.units[i]
-          )
-        } else {
-          # Classical evaluation using the hypergeometric distribution
-          K[i] <- ceiling(materiality * N.units[i])
-          mle[i] <- x.obs[i] / n.obs[i]
-          ub[i] <- switch(alternative,
-            "two.sided" = .qhyper(p = conf.level + (1 - conf.level) / 2, N = N.units[i], n = n.obs[i], k = x.obs[i]) / N.units[i],
-            "less" = .qhyper(p = conf.level, N = N.units[i], n = n.obs[i], k = x.obs[i]) / N.units[i],
-            "greater" = 1
-          )
-          lb[i] <- switch(alternative,
-            "two.sided" = .qhyper(p = (1 - conf.level) / 2, N = N.units[i], n = n.obs[i], k = x.obs[i]) / N.units[i],
-            "less" = 0,
-            "greater" = .qhyper(p = 1 - conf.level, N = N.units[i], n = n.obs[i], k = x.obs[i]) / N.units[i]
-          )
-          if (materiality < 1) {
-            p.val[i] <- switch(alternative,
-              "two.sided" = stats::fisher.test(matrix(c(x.obs[i], n.obs[i] - x.obs[i], K[i] - x.obs[i], N.units[i] - n.obs[i] - K[i] + x.obs[i]), nrow = 2), alternative = "two.sided")$p.value,
-              "less" = stats::phyper(q = x.obs[i], m = K[i], n = N.units[i] - K[i], k = n.obs[i]),
-              "greater" = stats::phyper(q = x.obs[i] - 1, m = K[i], n = N.units[i] - K[i], k = n.obs[i], lower.tail = FALSE)
-            )
-          }
+        if (method == "hypergeometric") {
+          lb[i] <- lb[i] / N.units[i]
+          ub[i] <- ub[i] / N.units[i]
         }
       } else {
         out <- switch(method,
@@ -584,39 +506,31 @@ evaluation <- function(materiality = NULL,
         ub[i] <- out[["ub"]]
         lb[i] <- out[["lb"]]
       }
-      precision[i] <- if (alternative == "greater") mle[i] - lb[i] else ub[i] - mle[i]
+      precision[i] <- .dist_precision(alternative, mle[i], lb[i], ub[i])
     }
   } else {
     stopifnot("pooling = 'partial' only possible when 'prior != FALSE'" = is_bayesian)
     if (broken_taints && has_data) {
-      stratum_samples <- .partial_pooling(method, prior.x, prior.n, n.obs, t.obs, taints, nstrata, stratum, likelihood = "beta")
+      stratum_samples <- .mcmc_stan(method, prior.x, prior.n, n.obs, t.obs, taints, nstrata, stratum, likelihood = "beta")
     } else {
       if (broken_taints) {
         message("sum of taints in each stratum is rounded upwards")
         t.obs <- ceiling(t.obs)
       }
-      stratum_samples <- .partial_pooling(method, prior.x, prior.n, n.obs, t.obs, t = NULL, nstrata, stratum, likelihood = "binomial")
+      stratum_samples <- .mcmc_stan(method, prior.x, prior.n, n.obs, t.obs, t = NULL, nstrata, stratum, likelihood = "binomial")
     }
     for (i in 2:nstrata) {
       mle[i] <- .dist_mode(analytical = FALSE, samples = stratum_samples[, i - 1])
-      lb[i] <- switch(alternative,
-        "two.sided" = stats::quantile(stratum_samples[, i - 1], probs = (1 - conf.level) / 2),
-        "less" = 0,
-        "greater" = stats::quantile(stratum_samples[, i - 1], probs = 1 - conf.level)
-      )
-      ub[i] <- switch(alternative,
-        "two.sided" = stats::quantile(stratum_samples[, i - 1], probs = conf.level + (1 - conf.level) / 2),
-        "less" = stats::quantile(stratum_samples[, i - 1], probs = conf.level),
-        "greater" = 1
-      )
-      precision[i] <- if (alternative == "greater") mle[i] - lb[i] else ub[i] - mle[i]
+      lb[i] <- .dist_lb(alternative, conf.level, analytical = FALSE, samples = stratum_samples[, i - 1])
+      ub[i] <- .dist_ub(alternative, conf.level, analytical = FALSE, samples = stratum_samples[, i - 1])
+      precision[i] <- .dist_precision(alternative, mle[i], lb[i], ub[i])
     }
   }
   # Main results object
   result <- list()
   result[["conf.level"]] <- conf.level
-  if (!use_stratification || pooling == "complete" || !valid_bayesian_method) {
-    if (use_stratification && !valid_bayesian_method) {
+  if (!use_stratification || pooling == "complete" || !valid_test_method) {
+    if (use_stratification && !valid_test_method) {
       message("population results are displayed for aggregated sample")
     }
     result[["mle"]] <- mle[1]
@@ -625,31 +539,22 @@ evaluation <- function(materiality = NULL,
     result[["precision"]] <- precision[1]
   } else {
     if (pooling != "partial") {
-      stratum_samples <- .sample_analytical(method, nstrata, is_bayesian, prior.x, t.obs, prior.n, n.obs, N.units, iterations = 100000)
+      stratum_samples <- .mcmc_analytical(method, nstrata, is_bayesian, prior.x, t.obs, prior.n, n.obs, N.units, iterations = 100000)
     }
-    prior_samples <- .poststratify_samples(stratum_samples[, nstrata:ncol(stratum_samples)], N.units)
-    post_samples <- .poststratify_samples(stratum_samples[, 1:(nstrata - 1)], N.units)
-    result[["mle"]] <- .compute_mode(post_samples)
-    result[["lb"]] <- switch(alternative,
-      "two.sided" = as.numeric(stats::quantile(post_samples, probs = (1 - conf.level) / 2)),
-      "less" = 0,
-      "greater" = as.numeric(stats::quantile(post_samples, probs = 1 - conf.level))
-    )
-    result[["ub"]] <- switch(alternative,
-      "two.sided" = as.numeric(stats::quantile(post_samples, probs = conf.level + (1 - conf.level) / 2)),
-      "less" = as.numeric(stats::quantile(post_samples, probs = conf.level)),
-      "greater" = 1
-    )
+    prior_samples <- .poststratification(stratum_samples[, nstrata:ncol(stratum_samples)], N.units)
+    post_samples <- .poststratification(stratum_samples[, 1:(nstrata - 1)], N.units)
+    result[["mle"]] <- .dist_mode(analytical = FALSE, samples = post_samples)
+    result[["lb"]] <- .dist_lb(alternative, conf.level, analytical = FALSE, samples = post_samples)
+    result[["ub"]] <- .dist_ub(alternative, conf.level, analytical = FALSE, samples = post_samples)
   }
-  result[["precision"]] <- if (alternative == "greater") result[["mle"]] - result[["lb"]] else result[["ub"]] - result[["mle"]]
-  if (!is_bayesian && materiality < 1 && method %in% c("binomial", "poisson", "hypergeometric")) {
+  result[["precision"]] <- .dist_precision(alternative, result[["mle"]], result[["lb"]], result[["ub"]])
+  if (!is_bayesian && materiality < 1 && valid_test_method) {
     if (!use_stratification || pooling == "complete") {
       result[["p.value"]] <- p.val[1]
     } else {
       result[["p.value"]] <- NA
     }
   }
-  # Add the stratum results
   if (use_stratification) {
     if (pooling == "complete") {
       mle <- rep(mle[1], nstrata - 1)
@@ -664,10 +569,10 @@ evaluation <- function(materiality = NULL,
     }
     result[["strata"]] <- data.frame(n = n.obs[-1], x = x.obs[-1], t = t.obs[-1], mle = mle, lb = lb, ub = ub, precision = precision)
     if (pooling == "complete") {
-      if (!is_bayesian && materiality < 1 && method %in% c("binomial", "poisson", "hypergeometric")) {
+      if (!is_bayesian && materiality < 1 && valid_test_method) {
         result[["strata"]][["p.value"]] <- p.val[1]
       }
-      if (is_bayesian && materiality != 1 && method %in% c("binomial", "poisson", "hypergeometric")) {
+      if (is_bayesian && materiality != 1 && valid_test_method) {
         if (alternative == "less") {
           result[["strata"]][["bf10"]] <- switch(method,
             "poisson" = (stats::pgamma(materiality, 1 + prior.x + t.obs[1], prior.n + n.obs[1]) / stats::pgamma(materiality, 1 + prior.x + t.obs[1], prior.n + n.obs[1], lower.tail = FALSE)) / (stats::pgamma(materiality, 1 + prior.x, prior.n) / stats::pgamma(materiality, 1 + prior.x, prior.n, lower.tail = FALSE)),
@@ -689,10 +594,10 @@ evaluation <- function(materiality = NULL,
         }
       }
     } else if (pooling == "none") {
-      if (!is_bayesian && materiality < 1 && method %in% c("binomial", "poisson", "hypergeometric")) {
+      if (!is_bayesian && materiality < 1 && valid_test_method) {
         result[["strata"]][["p.value"]] <- p.val[-1]
       }
-      if (is_bayesian && materiality != 1 && method %in% c("binomial", "poisson", "hypergeometric")) {
+      if (is_bayesian && materiality != 1 && valid_test_method) {
         if (alternative == "less") {
           result[["strata"]][["bf10"]] <- switch(method,
             "poisson" = (stats::pgamma(materiality, 1 + prior.x + t.obs[-1], prior.n + n.obs[-1]) / stats::pgamma(materiality, 1 + prior.x + t.obs[-1], prior.n + n.obs[-1], lower.tail = FALSE)) / (stats::pgamma(materiality, 1 + prior.x, prior.n) / stats::pgamma(materiality, 1 + prior.x, prior.n, lower.tail = FALSE)),

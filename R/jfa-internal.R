@@ -13,12 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-.compute_mode <- function(x) {
-  dens <- stats::density(x)
-  mode <- dens$x[which.max(dens$y)]
-  return(mode)
-}
-
 .get_markdown_call <- function(x) {
   if (length(grep("::", x)) > 0) {
     parts <- strsplit(x, "::")[[1]]
@@ -143,11 +137,7 @@
 
 .dist_ub <- function(alternative, conf.level, likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
   if (alternative == "greater") {
-    if (likelihood == "poisson") {
-      ub <- Inf
-    } else {
-      ub <- 1
-    }
+    ub <- 1
   } else {
     if (alternative == "less") {
       prob <- conf.level
@@ -161,7 +151,7 @@
         "hypergeometric" = .qbbinom(prob, N.units, alpha, beta)
       )
     } else {
-      ub <- stats::quantile(samples, prob)
+      ub <- as.numeric(stats::quantile(samples, prob))
     }
   }
   return(ub)
@@ -183,7 +173,7 @@
         "hypergeometric" = .qbbinom(prob, N.units, alpha, beta)
       )
     } else {
-      lb <- stats::quantile(samples, prob)
+      lb <- as.numeric(stats::quantile(samples, prob))
     }
   }
   return(lb)
@@ -282,7 +272,75 @@
   return(bf10)
 }
 
-.poststratify_samples <- function(samples, N.units) {
+.est_mle <- function(likelihood, n.obs, x.obs, t.obs) {
+  if (likelihood == "hypergeometric") {
+    mle <- x.obs / n.obs
+  } else {
+    mle <- t.obs / n.obs
+  }
+  return(mle)
+}
+
+.est_pval <- function(alternative, materiality, likelihood, n.obs, x.obs, t.obs, N.units, K) {
+  if (alternative == "two.sided") {
+    pval <- switch(likelihood,
+      "poisson" = stats::poisson.test(ceiling(t.obs), n.obs, materiality, "two.sided")$p.value,
+      "binomial" = stats::binom.test(ceiling(t.obs), n.obs, materiality, "two.sided")$p.value,
+      "hypergeometric" = stats::fisher.test(matrix(c(x.obs, n.obs - x.obs, K - x.obs, N.units - n.obs - K + x.obs), nrow = 2), alternative = "two.sided")$p.value
+    )
+  } else if (alternative == "less") {
+    pval <- switch(likelihood,
+      "poisson" = stats::pgamma(materiality, 1 + t.obs, n.obs, lower.tail = FALSE),
+      "binomial" = stats::pbeta(materiality, 1 + t.obs, n.obs - t.obs, lower.tail = FALSE),
+      "hypergeometric" = stats::phyper(x.obs, K, N.units - K, n.obs)
+    )
+  } else {
+    pval <- switch(likelihood,
+      "poisson" = stats::pgamma(materiality, 1 + t.obs, n.obs),
+      "binomial" = stats::pbeta(materiality, 1 + t.obs, n.obs - t.obs),
+      "hypergeometric" = stats::phyper(x.obs - 1, K, N.units - K, n.obs, lower.tail = FALSE)
+    )
+  }
+  return(pval)
+}
+
+.est_ub <- function(alternative, conf.level, likelihood, n.obs, x.obs, t.obs, N.units) {
+  if (alternative == "greater") {
+    ub <- 1
+  } else {
+    if (alternative == "less") {
+      prob <- conf.level
+    } else {
+      prob <- conf.level + (1 - conf.level) / 2
+    }
+    ub <- switch(likelihood,
+      "poisson" = stats::qgamma(conf.level, 1 + t.obs, n.obs),
+      "binomial" = stats::qbeta(conf.level, 1 + t.obs, n.obs - t.obs),
+      "hypergeometric" = .qhyper(conf.level, N.units, n.obs, x.obs)
+    )
+  }
+  return(ub)
+}
+
+.est_lb <- function(alternative, conf.level, likelihood, n.obs, x.obs, t.obs, N.units) {
+  if (alternative == "less") {
+    lb <- 0
+  } else {
+    if (alternative == "greater") {
+      prob <- 1 - conf.level
+    } else {
+      prob <- (1 - conf.level) / 2
+    }
+    lb <- switch(likelihood,
+      "poisson" = stats::qgamma(conf.level, 1 + t.obs, n.obs),
+      "binomial" = stats::qbeta(conf.level, 1 + t.obs, n.obs - t.obs),
+      "hypergeometric" = .qhyper(conf.level, N.units, n.obs, x.obs)
+    )
+  }
+  return(lb)
+}
+
+.poststratification <- function(samples, N.units) {
   n_strata <- ncol(samples)
   if (is.null(N.units)) {
     weights <- rep(1, n_strata) / n_strata
@@ -293,8 +351,7 @@
   return(poststratified_samples)
 }
 
-# This function fits a stan model using partial pooling and returns samples from the stratum posteriors
-.partial_pooling <- function(method, prior.x, prior.n, n.obs, t.obs, t, nstrata, stratum, likelihood) {
+.mcmc_stan <- function(method, prior.x, prior.n, n.obs, t.obs, t, nstrata, stratum, likelihood) {
   stopifnot("'method = hypergeometric' does not support pooling" = method != "hypergeometric")
   data <- switch(likelihood,
     "binomial" = list(S = nstrata - 1, n = n.obs[-1], k = t.obs[-1], priorx = prior.x, priorn = prior.n, beta_prior = as.numeric(method == "binomial")),
@@ -318,7 +375,7 @@
   return(samples)
 }
 
-.sample_analytical <- function(method, nstrata, bayesian, prior.x, t.obs, prior.n, n.obs, N.units, iterations) {
+.mcmc_analytical <- function(method, nstrata, bayesian, prior.x, t.obs, prior.n, n.obs, N.units, iterations) {
   samples <- matrix(NA, ncol = (nstrata - 1) * 2, nrow = iterations)
   for (i in 2:nstrata) {
     samples[, i - 1] <- switch(method,

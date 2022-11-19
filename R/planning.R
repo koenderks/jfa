@@ -265,18 +265,13 @@ planning <- function(materiality = NULL,
       if (likelihood == "binomial") {
         x <- ceiling(x)
       }
-      bound <- switch(likelihood,
-        "poisson" = stats::qgamma(p = conf.level, shape = 1 + x, rate = i),
-        "binomial" = stats::qbeta(p = conf.level, shape1 = 1 + x, shape2 = i - x),
-        "hypergeometric" = .qhyper(p = conf.level, N = N.units, n = i, k = x) / N.units
-      )
+      bound <- .est_ub("less", conf.level, likelihood, i, x, x, N.units)
+      if (likelihood == "hypergeometric") {
+        bound <- bound / N.units
+      }
       mle <- x / i
       if (materiality < 1) {
-        p.val <- switch(likelihood,
-          "poisson" = stats::pgamma(q = materiality, shape = 1 + x, rate = i, lower.tail = FALSE),
-          "binomial" = stats::pbeta(q = materiality, shape1 = 1 + x, shape2 = i - x, lower.tail = FALSE),
-          "hypergeometric" = stats::phyper(q = x, m = population.x, n = N.units - population.x, k = i)
-        )
+        p.val <- .est_pval("less", materiality, likelihood, i, x, x, N.units, population.x)
       }
     }
     sufficient <- bound < materiality && (bound - mle) < min.precision
