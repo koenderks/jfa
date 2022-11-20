@@ -5,3 +5,8 @@ destination: "."
 template:
   params:
     bootswatch: cosmo
+
+navbar:
+  structure:
+    left:  [intro, articles, reference, news]
+    right: [search, github]
