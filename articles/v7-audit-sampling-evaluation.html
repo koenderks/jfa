@@ -116,7 +116,7 @@
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
             <h4 data-toc-skip class="date">last modified:
-10-11-2022</h4>
+20-11-2022</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/v7-audit-sampling-evaluation.Rmd" class="external-link"><code>vignettes/v7-audit-sampling-evaluation.Rmd</code></a></small>
       <div class="hidden name"><code>v7-audit-sampling-evaluation.Rmd</code></div>
@@ -128,12 +128,14 @@
 <center>
 <p><img src="img/evaluation.png" alt="Figure 1: The location of the evaluation stage in the audit sampling workflow"><br></p>
 </center>
-<p>This vignette outlines the most commonly used sample evaluation
-methodology for auditing and shows how to evaluate a sample using the
-<code><a href="../reference/evaluation.html">evaluation()</a></code> function in the <strong>jfa</strong> package.
-Evaluating an audit sample using the <code><a href="../reference/evaluation.html">evaluation()</a></code> function
-requires that the data from the sample is available in one of two
-forms:</p>
+<p>This vignette demonstrates how to evaluate a sample with the
+<code><a href="../reference/evaluation.html">evaluation()</a></code> function from the <strong>jfa</strong>
+package. In auditing, the goal of the evaluation is typically to
+estimate the misstatement in the population based on a sample, or to
+test the misstatement in the population against a critical upper limit,
+referred to as the performance materiality. Evaluating an audit sample
+using the <code><a href="../reference/evaluation.html">evaluation()</a></code> function requires that the sample
+data is available in one of two forms:</p>
 <ul>
 <li>
 <strong>Summary statistics:</strong> This includes (a vector of) the
@@ -146,31 +148,41 @@ numeric column with book values (<code>values</code>), a numeric column
 with audit (true) values (<code>values.audit</code>) and optionally a
 factor column indicating stratum membership (<code>strata</code>).</li>
 </ul>
-<p>By default, <code><a href="../reference/evaluation.html">evaluation()</a></code> performs estimation and
-provides a point estimate of the population misstatement and a
-(<code>conf.level</code> <span class="math inline">\(\times\)</span>
+<p>By default, <code><a href="../reference/evaluation.html">evaluation()</a></code> estimates the population
+misstatement and returns a point estimate as well as a
+(<code>conf.level</code> <span class="math inline">\(times\)</span>
 100)% confidence / credible interval around this estimate. However, in
-audit sampling there typically applies a maximum tolerable error to the
-population, the performance <span class="math inline">\(\theta_{max}\)</span>. You can provide this
-critical value to the <code><a href="../reference/evaluation.html">evaluation()</a></code> function as a fraction
-using the <code>materiality</code> argument. Next to estimation which is
-performed by default, specifying <code>materiality</code> triggers the
-comparison of two competing hypotheses:</p>
-<p><span class="math display">\[H_1:\theta&lt;\theta_{max}\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,
-H_0:\theta\geq\theta_{max}\]</span>.</p>
-<p>Evidence in favor or against the hypothesis of tolerable misstatement
-is then quantified using the <em>p</em>-value (classical) or the Bayes
-factor (Bayesian).</p>
+audit sampling, the population is typically subject to a certain maximum
+tolerable misstatement defined by the performance materiality <span class="math inline">\(theta_max\)</span>. Using the
+<code>materiality</code> argument, you can provide this critical value
+to the <code><a href="../reference/evaluation.html">evaluation()</a></code> function as a fraction. In addition to
+the estimation that is performed by default, specifying
+<code>materiality</code> triggers the comparison of two competing
+hypotheses. Which hypotheses are being compared depends on the input for
+the <code>alternative</code> argument:</p>
+<ul>
+<li>
+<code>alternative = "less"</code> (default): <span class="math inline">\(H_1:\theta&lt;\theta_{max}\)</span> versus <span class="math inline">\(H_0:\theta\geq\theta_{max}\)</span>
+</li>
+<li>
+<code>alternative = "greater"</code>: <span class="math inline">\(H_1:\theta&gt;\theta_{max}\)</span> versus <span class="math inline">\(H_0:\theta\leq\theta_{max}\)</span>
+</li>
+<li>
+<code>alternative = "two.sided"</code>: <span class="math inline">\(H_1:\theta \neq\theta_{max}\)</span> versus <span class="math inline">\(H_0:\theta=\theta_{max}\)</span>
+</li>
+</ul>
 <div class="section level2">
 <h2 id="evaluation-using-summary-statistics">Evaluation using summary statistics<a class="anchor" aria-label="anchor" href="#evaluation-using-summary-statistics"></a>
 </h2>
 <div class="section level3">
 <h3 id="non-stratified-samples">Non-stratified samples<a class="anchor" aria-label="anchor" href="#non-stratified-samples"></a>
 </h3>
-<p>A non-stratified sample evaluation should be used when the population
-is not divided into distinct groups of items (i.e, strata).</p>
+<p>In a non-stratified sampling procedure, the auditor does not take
+samples from different strata or subgroups in a population. An example
+of such a situation would be where the auditor is auditing the general
+ledger of a small business.</p>
 <div class="section level4">
-<h4 id="classical-evaluation-using-the-p-value">Classical evaluation using the <em>p</em>-value<a class="anchor" aria-label="anchor" href="#classical-evaluation-using-the-p-value"></a>
+<h4 id="classical-evaluation">Classical evaluation<a class="anchor" aria-label="anchor" href="#classical-evaluation"></a>
 </h4>
 <p>Classical hypothesis testing uses the <em>p</em>-value to make a
 decision about whether to reject the hypothesis <span class="math inline">\(H_0\)</span> or not. As an example, consider that
@@ -196,94 +208,31 @@ hypothesis <span class="math inline">\(H_0\)</span>.</p>
 <p>The output shows that the most likely error in the population is
 estimated to be 1 / 100 = 1% and that the 95% (one-sided) confidence
 interval ranges from 0% to 4.74%. The output also shows that the
-<em>p</em>-value is lower than 0.05 implying that the hypothesis <span class="math inline">\(H_0\)</span> can be rejected and that the sample
-provides sufficient evidence to conclude that the population does not
-contain material misstatement.</p>
+<em>p</em>-value is lower than 0.05 implying that the hypothesis <span class="math inline">\(H_0\)</span> can be rejected. Hence, the auditor
+is able to conclude that the sample provides sufficient evidence to
+state with reasonable assurance that the population does not contain
+material misstatement.</p>
 </div>
 <div class="section level4">
-<h4 id="bayesian-evaluation-using-the-bayes-factor">Bayesian evaluation using the Bayes factor<a class="anchor" aria-label="anchor" href="#bayesian-evaluation-using-the-bayes-factor"></a>
+<h4 id="bayesian-evaluation">Bayesian evaluation<a class="anchor" aria-label="anchor" href="#bayesian-evaluation"></a>
 </h4>
 <p>Bayesian hypothesis testing uses the Bayes factor, <span class="math inline">\(BF_{10}\)</span> or <span class="math inline">\(BF_{01}\)</span>, to make a statement about the
 evidence provided by the sample in support for one of the two hypotheses
-<span class="math inline">\(H_1\)</span> or <span class="math inline">\(H_0\)</span>. The subscript The Bayes factor
-denotes which hypothesis it favors. By default, the
+<span class="math inline">\(H_1\)</span> or <span class="math inline">\(H_0\)</span>. As an example of how to interpret
+the Bayes factor, the value of <span class="math inline">\(BF_{10} =
+10\)</span> (provided by the <code><a href="../reference/evaluation.html">evaluation()</a></code> function) can be
+interpreted as: <em>the data are 10 times more likely to have occurred
+under the hypothesis <span class="math inline">\(H_1\)</span> than under
+the hypothesis <span class="math inline">\(H_0\)</span></em>. <span class="math inline">\(BF_{10} &gt; 1\)</span> indicates evidence in
+favor of <span class="math inline">\(H_1\)</span> and against <span class="math inline">\(H_0\)</span>, while <span class="math inline">\(BF_{10} &lt; 1\)</span> indicates evidence in
+favor of <span class="math inline">\(H_0\)</span> and against <span class="math inline">\(H_1\)</span>. By default, the
 <code><a href="../reference/evaluation.html">evaluation()</a></code> function returns the value for <span class="math inline">\(BF_{10}\)</span>.</p>
-<p>As an example of how to interpret the Bayes factor, the value of
-<span class="math inline">\(BF_{10} = 10\)</span> (provided by the
-<code><a href="../reference/evaluation.html">evaluation()</a></code> function) can be interpreted as: <em>the data
-are 10 times more likely to have occurred under the hypothesis <span class="math inline">\(H_1:\theta&lt;\theta_{max}\)</span> than under the
-hypothesis <span class="math inline">\(H_0:\theta\geq\theta_{max}\)</span></em>. <span class="math inline">\(BF_{10} &gt; 1\)</span> indicates evidence for
-<span class="math inline">\(H_1\)</span>, while <span class="math inline">\(BF_{10} &lt; 1\)</span> indicates evidence for
-<span class="math inline">\(H_0\)</span>.</p>
-<table class="table">
-<thead><tr class="header">
-<th><span class="math inline">\(BF_{10}\)</span></th>
-<th>Strength of evidence</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">\(&lt; 0.01\)</span></td>
-<td>Extreme evidence for <span class="math inline">\(H_0\)</span>
-</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(0.01 - 0.033\)</span></td>
-<td>Very strong evidence for <span class="math inline">\(H_0\)</span>
-</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(0.033 - 0.10\)</span></td>
-<td>Strong evidence for <span class="math inline">\(H_0\)</span>
-</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(0.10 - 0.33\)</span></td>
-<td>Moderate evidence for <span class="math inline">\(H_0\)</span>
-</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(0.33 - 1\)</span></td>
-<td>Anecdotal evidence for <span class="math inline">\(H_0\)</span>
-</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(1\)</span></td>
-<td>No evidence for <span class="math inline">\(H_1\)</span> or <span class="math inline">\(H_0\)</span>
-</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(1 - 3\)</span></td>
-<td>Anecdotal evidence for <span class="math inline">\(H_1\)</span>
-</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(3 - 10\)</span></td>
-<td>Moderate evidence for <span class="math inline">\(H_1\)</span>
-</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(10 - 30\)</span></td>
-<td>Strong evidence for <span class="math inline">\(H_1\)</span>
-</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\(30 - 100\)</span></td>
-<td>Very strong evidence for <span class="math inline">\(H_1\)</span>
-</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\(&gt; 100\)</span></td>
-<td>Extreme evidence for <span class="math inline">\(H_1\)</span>
-</td>
-</tr>
-</tbody>
-</table>
 <p>Consider the previous example of an auditor who wants to verify
 whether the population contains less than 5 percent misstatement,
 implying the hypotheses <span class="math inline">\(H_1:\theta&lt;0.05\)</span> and <span class="math inline">\(H_0:\theta\geq0.05\)</span>. They have taken a
 sample of 100 items, of which 1 was found to contain a misstatement. The
-prior distribution is assumed to be <strong>jfa</strong>’s default
-<em>beta(1,1)</em> prior.</p>
+prior distribution is assumed to be a default <em>beta(1,1)</em>
+prior.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"default"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></code></pre></div>
@@ -310,10 +259,10 @@ function). The Bayes factor in this case is shown to be <span class="math inline
 the sample are about 515 times more likely to occur under the hypothesis
 of tolerable misstatement than under the hypothesis of material
 misstatement.</p>
-<p>Note that this is a very high Bayes factor for a little amount of
-data. That is because the Bayes factor is dependent on the prior
+<p>Note that this is a very high Bayes factor for the little data that
+is observed. That is because the Bayes factor is dependent on the prior
 distribution for <span class="math inline">\(\theta\)</span>. As a rule
-of thumb, when the prior distribution is very conservative (as with
+of thumb, when the prior distribution is highly conservative (as with
 <code>method = 'default'</code>) with respect to the hypothesis of
 tolerable misstatement, the Bayes factor tends to over quantify the
 evidence in favor of this hypothesis. You can mitigate this dependency
@@ -340,17 +289,24 @@ assumption of impartiality there is strong evidence for <span class="math inline
 contains misstatements lower than 5 percent of the population (tolerable
 misstatement). Since the two prior distributions both resulted in
 convincing Bayes factors, the results can be considered robust to the
-choice of prior distribution.</p>
+choice of prior distribution. Hence, the auditor is able to conclude
+that the sample provides convincing evidence to state that the
+population does not contain material misstatement.</p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="stratified-samples">Stratified samples<a class="anchor" aria-label="anchor" href="#stratified-samples"></a>
 </h3>
-<p>A stratified sample evaluation should be used when the population is
-divided into distinct groups of items (i.e, strata). For illustrative
-purposes, this vignette only describes the Bayesian approach to
-stratification but going from this to a classical approach only requires
-setting <code>prior = FALSE</code>.</p>
+<p>In a stratified sampling procedure, the auditor takes samples from
+different strata or subgroups in a population. An example of such a
+situation would be a group audit where the auditee consists of different
+branches across the country. In this case, the component auditors can
+take a sample from each branch but the group auditor must form an
+opinion on the group as a whole. For illustrative purposes, this
+vignette only describes the Bayesian approach to stratified evaluation
+but going from this approach to a classical approach only requires
+setting <code>prior = FALSE</code>. As a data example, consider the
+<code>retailer</code> data set that comes with the package.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">retailer</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">retailer</span><span class="op">)</span></span></code></pre></div>
@@ -378,13 +334,13 @@ setting <code>prior = FALSE</code>.</p>
 <p>Typically, there are three approaches to evaluating a stratified
 sample: no pooling, complete pooling, and partial pooling (see Derks et
 al., 2022). No pooling assumes no similarities between strata, which
-means that all data must be analyzed independently on the level of the
-strata. Complete pooling assumes no difference between strata and all
-data is aggregated so that it can be analyzed as a whole. Partial
-pooling assumes differences and similarities between strata, which
-enables information to be shared between strata. This is a powerful
-technique that can result in more efficient population and stratum
-estimates, but is currently only feasible in the Bayesian framework.</p>
+means that all strata must be analyzed independently. Complete pooling
+assumes no difference between strata, which means that all data is
+aggregated and analyzed as a whole. Finally, partial pooling assumes
+differences and similarities between strata, which enables information
+to be shared between strata. Partial pooling is a powerful technique
+that can result in more efficient population and stratum estimates but
+is currently only feasible when performing a Bayesian analysis.</p>
 <div class="section level4">
 <h4 id="approach-1-no-pooling">Approach 1: No pooling<a class="anchor" aria-label="anchor" href="#approach-1-no-pooling"></a>
 </h4>
@@ -537,8 +493,8 @@ population estimate.</p>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'pp_binomial' NOW (CHAIN 1).</span></span>
 <span><span class="co">## Chain 1: </span></span>
-<span><span class="co">## Chain 1: Gradient evaluation took 2.6e-05 seconds</span></span>
-<span><span class="co">## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.26 seconds.</span></span>
+<span><span class="co">## Chain 1: Gradient evaluation took 4.6e-05 seconds</span></span>
+<span><span class="co">## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.46 seconds.</span></span>
 <span><span class="co">## Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 1: </span></span>
 <span><span class="co">## Chain 1: </span></span>
@@ -555,15 +511,15 @@ population estimate.</p>
 <span><span class="co">## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 1: </span></span>
-<span><span class="co">## Chain 1:  Elapsed Time: 0.208435 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 1:                0.18229 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 1:                0.390725 seconds (Total)</span></span>
+<span><span class="co">## Chain 1:  Elapsed Time: 0.223809 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 1:                0.19605 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 1:                0.419859 seconds (Total)</span></span>
 <span><span class="co">## Chain 1: </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'pp_binomial' NOW (CHAIN 2).</span></span>
 <span><span class="co">## Chain 2: </span></span>
-<span><span class="co">## Chain 2: Gradient evaluation took 1.3e-05 seconds</span></span>
-<span><span class="co">## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.13 seconds.</span></span>
+<span><span class="co">## Chain 2: Gradient evaluation took 1.5e-05 seconds</span></span>
+<span><span class="co">## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.15 seconds.</span></span>
 <span><span class="co">## Chain 2: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 2: </span></span>
 <span><span class="co">## Chain 2: </span></span>
@@ -580,15 +536,15 @@ population estimate.</p>
 <span><span class="co">## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 2: </span></span>
-<span><span class="co">## Chain 2:  Elapsed Time: 0.199458 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 2:                0.303599 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 2:                0.503057 seconds (Total)</span></span>
+<span><span class="co">## Chain 2:  Elapsed Time: 0.200933 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 2:                0.320038 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 2:                0.520971 seconds (Total)</span></span>
 <span><span class="co">## Chain 2: </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'pp_binomial' NOW (CHAIN 3).</span></span>
 <span><span class="co">## Chain 3: </span></span>
-<span><span class="co">## Chain 3: Gradient evaluation took 2e-05 seconds</span></span>
-<span><span class="co">## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.2 seconds.</span></span>
+<span><span class="co">## Chain 3: Gradient evaluation took 1.5e-05 seconds</span></span>
+<span><span class="co">## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.15 seconds.</span></span>
 <span><span class="co">## Chain 3: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 3: </span></span>
 <span><span class="co">## Chain 3: </span></span>
@@ -605,15 +561,15 @@ population estimate.</p>
 <span><span class="co">## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 3: </span></span>
-<span><span class="co">## Chain 3:  Elapsed Time: 0.220503 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 3:                0.220856 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 3:                0.441359 seconds (Total)</span></span>
+<span><span class="co">## Chain 3:  Elapsed Time: 0.226647 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 3:                0.233929 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 3:                0.460576 seconds (Total)</span></span>
 <span><span class="co">## Chain 3: </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'pp_binomial' NOW (CHAIN 4).</span></span>
 <span><span class="co">## Chain 4: </span></span>
-<span><span class="co">## Chain 4: Gradient evaluation took 1.4e-05 seconds</span></span>
-<span><span class="co">## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.14 seconds.</span></span>
+<span><span class="co">## Chain 4: Gradient evaluation took 1.3e-05 seconds</span></span>
+<span><span class="co">## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.13 seconds.</span></span>
 <span><span class="co">## Chain 4: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 4: </span></span>
 <span><span class="co">## Chain 4: </span></span>
@@ -630,9 +586,9 @@ population estimate.</p>
 <span><span class="co">## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 4: </span></span>
-<span><span class="co">## Chain 4:  Elapsed Time: 0.182668 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 4:                0.205514 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 4:                0.388182 seconds (Total)</span></span>
+<span><span class="co">## Chain 4:  Elapsed Time: 0.188694 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 4:                0.217303 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 4:                0.405997 seconds (Total)</span></span>
 <span><span class="co">## Chain 4:</span></span></code></pre>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_pp</span><span class="op">)</span></span></code></pre></div>
@@ -719,7 +675,7 @@ of the <code>data</code>, <code>values</code> and
 <code>values.audit</code> arguments. The input for these arguments is
 the name of the specific column in <code>data</code>.</p>
 <div class="section level4">
-<h4 id="classical-evaluation">Classical evaluation<a class="anchor" aria-label="anchor" href="#classical-evaluation"></a>
+<h4 id="classical-evaluation-1">Classical evaluation<a class="anchor" aria-label="anchor" href="#classical-evaluation-1"></a>
 </h4>
 <p>The call below evaluates the <code>allowances</code> sample using a
 classical non-stratified evaluation procedure.</p>
@@ -753,7 +709,7 @@ with a 95% (one-sided) confidence interval ranging from 0% to
 17.31%.</p>
 </div>
 <div class="section level4">
-<h4 id="bayesian-evaluation">Bayesian evaluation<a class="anchor" aria-label="anchor" href="#bayesian-evaluation"></a>
+<h4 id="bayesian-evaluation-1">Bayesian evaluation<a class="anchor" aria-label="anchor" href="#bayesian-evaluation-1"></a>
 </h4>
 <p>The call below evaluates the <code>allowances</code> sample using a
 Bayesian non-stratified evaluation procedure.</p>
@@ -798,7 +754,7 @@ the population should be provided with <code>N.units</code> to weigh the
 stratum estimates and arrive at a representative population
 estimate.</p>
 <div class="section level4">
-<h4 id="classical-evaluation-1">Classical evaluation<a class="anchor" aria-label="anchor" href="#classical-evaluation-1"></a>
+<h4 id="classical-evaluation-2">Classical evaluation<a class="anchor" aria-label="anchor" href="#classical-evaluation-2"></a>
 </h4>
 <p>The call below evaluates the <code>allowances</code> sample using a
 classical stratified evaluation procedure.</p>
@@ -855,7 +811,7 @@ stratum estimates can be seen in the output of the
 <p><img src="v7-audit-sampling-evaluation_files/figure-html/unnamed-chunk-15-1.png" width="576"></p>
 </div>
 <div class="section level4">
-<h4 id="bayesian-evaluation-1">Bayesian evaluation<a class="anchor" aria-label="anchor" href="#bayesian-evaluation-1"></a>
+<h4 id="bayesian-evaluation-2">Bayesian evaluation<a class="anchor" aria-label="anchor" href="#bayesian-evaluation-2"></a>
 </h4>
 <p>Bayesian inference can improve the stratum estimates by specifying a
 prior distribution that is then applied to each stratum and pooling
@@ -871,8 +827,8 @@ evaluation procedure.</p>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'pp_beta' NOW (CHAIN 1).</span></span>
 <span><span class="co">## Chain 1: </span></span>
-<span><span class="co">## Chain 1: Gradient evaluation took 0.000336 seconds</span></span>
-<span><span class="co">## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.36 seconds.</span></span>
+<span><span class="co">## Chain 1: Gradient evaluation took 0.000386 seconds</span></span>
+<span><span class="co">## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.86 seconds.</span></span>
 <span><span class="co">## Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 1: </span></span>
 <span><span class="co">## Chain 1: </span></span>
@@ -889,15 +845,15 @@ evaluation procedure.</p>
 <span><span class="co">## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 1: </span></span>
-<span><span class="co">## Chain 1:  Elapsed Time: 59.6708 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 1:                52.785 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 1:                112.456 seconds (Total)</span></span>
+<span><span class="co">## Chain 1:  Elapsed Time: 61.4802 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 1:                55.889 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 1:                117.369 seconds (Total)</span></span>
 <span><span class="co">## Chain 1: </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'pp_beta' NOW (CHAIN 2).</span></span>
 <span><span class="co">## Chain 2: </span></span>
-<span><span class="co">## Chain 2: Gradient evaluation took 0.000325 seconds</span></span>
-<span><span class="co">## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 3.25 seconds.</span></span>
+<span><span class="co">## Chain 2: Gradient evaluation took 0.00027 seconds</span></span>
+<span><span class="co">## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 2.7 seconds.</span></span>
 <span><span class="co">## Chain 2: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 2: </span></span>
 <span><span class="co">## Chain 2: </span></span>
@@ -914,15 +870,15 @@ evaluation procedure.</p>
 <span><span class="co">## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 2: </span></span>
-<span><span class="co">## Chain 2:  Elapsed Time: 55.1184 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 2:                49.599 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 2:                104.717 seconds (Total)</span></span>
+<span><span class="co">## Chain 2:  Elapsed Time: 56.8703 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 2:                51.8911 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 2:                108.761 seconds (Total)</span></span>
 <span><span class="co">## Chain 2: </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'pp_beta' NOW (CHAIN 3).</span></span>
 <span><span class="co">## Chain 3: </span></span>
-<span><span class="co">## Chain 3: Gradient evaluation took 0.000292 seconds</span></span>
-<span><span class="co">## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 2.92 seconds.</span></span>
+<span><span class="co">## Chain 3: Gradient evaluation took 0.000269 seconds</span></span>
+<span><span class="co">## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 2.69 seconds.</span></span>
 <span><span class="co">## Chain 3: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 3: </span></span>
 <span><span class="co">## Chain 3: </span></span>
@@ -939,15 +895,15 @@ evaluation procedure.</p>
 <span><span class="co">## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 3: </span></span>
-<span><span class="co">## Chain 3:  Elapsed Time: 59.0195 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 3:                49.4272 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 3:                108.447 seconds (Total)</span></span>
+<span><span class="co">## Chain 3:  Elapsed Time: 59.1091 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 3:                52.3772 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 3:                111.486 seconds (Total)</span></span>
 <span><span class="co">## Chain 3: </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'pp_beta' NOW (CHAIN 4).</span></span>
 <span><span class="co">## Chain 4: </span></span>
-<span><span class="co">## Chain 4: Gradient evaluation took 0.000352 seconds</span></span>
-<span><span class="co">## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 3.52 seconds.</span></span>
+<span><span class="co">## Chain 4: Gradient evaluation took 0.000345 seconds</span></span>
+<span><span class="co">## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 3.45 seconds.</span></span>
 <span><span class="co">## Chain 4: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 4: </span></span>
 <span><span class="co">## Chain 4: </span></span>
@@ -964,9 +920,9 @@ evaluation procedure.</p>
 <span><span class="co">## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 4: </span></span>
-<span><span class="co">## Chain 4:  Elapsed Time: 51.8507 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 4:                50.2639 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 4:                102.115 seconds (Total)</span></span>
+<span><span class="co">## Chain 4:  Elapsed Time: 54.7344 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 4:                52.7347 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 4:                107.469 seconds (Total)</span></span>
 <span><span class="co">## Chain 4:</span></span></code></pre>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
