@@ -1,7 +1,7 @@
 ---
 title: "Audit sampling: Evaluating a sample"
 author: Koen Derks
-date: "last modified: 10-11-2022"
+date: "last modified: 20-11-2022"
 output: 
   rmarkdown::html_vignette:
     toc: true
@@ -25,24 +25,24 @@ library(jfa)
 
 </center>
 
-This vignette outlines the most commonly used sample evaluation methodology for auditing and shows how to evaluate a sample using the `evaluation()` function in the **jfa** package. Evaluating an audit sample using the `evaluation()` function requires that the data from the sample is available in one of two forms:
+This vignette demonstrates how to evaluate a sample with the `evaluation()` function from the **jfa** package. In auditing, the goal of the evaluation is typically to estimate the misstatement in the population based on a sample, or to test the misstatement in the population against a critical upper limit, referred to as the performance materiality. Evaluating an audit sample using the `evaluation()` function requires that the sample data is available in one of two forms:
 
 - **Summary statistics:** This includes (a vector of) the number of items (`n`), (a vector of) the sum of errors / taints (`x`) and optionally (a vector of) the number of units in the population (`N.units`).
 - **Data:** A `data.frame` containing a numeric column with book values (`values`), a numeric column with audit (true) values (`values.audit`) and optionally a factor column indicating stratum membership (`strata`).
 
-By default, `evaluation()` performs estimation and provides a point estimate of the population misstatement and a (`conf.level` $\times$ 100)% confidence / credible interval around this estimate. However, in audit sampling there typically applies a maximum tolerable error to the population, the performance $\theta_{max}$. You can provide this critical value to the `evaluation()` function as a fraction using the `materiality` argument. Next to estimation which is performed by default, specifying `materiality` triggers the comparison of two competing hypotheses:
+By default, `evaluation()` estimates the population misstatement and returns a point estimate as well as a (`conf.level` $times$ 100)% confidence / credible interval around this estimate. However, in audit sampling, the population is typically subject to a certain maximum tolerable misstatement defined by the performance materiality $theta_max$. Using the `materiality` argument, you can provide this critical value to the `evaluation()` function as a fraction. In addition to the estimation that is performed by default, specifying `materiality` triggers the comparison of two competing hypotheses. Which hypotheses are being compared depends on the input for the `alternative` argument: 
 
-$$H_1:\theta<\theta_{max}\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\,\, H_0:\theta\geq\theta_{max}$$.
-
-Evidence in favor or against the hypothesis of tolerable misstatement is then quantified using the *p*-value (classical) or the Bayes factor (Bayesian).
+- `alternative = "less"` (default): $H_1:\theta<\theta_{max}$ versus $H_0:\theta\geq\theta_{max}$
+- `alternative = "greater"`: $H_1:\theta>\theta_{max}$ versus $H_0:\theta\leq\theta_{max}$
+- `alternative = "two.sided"`: $H_1:\theta \neq\theta_{max}$ versus $H_0:\theta=\theta_{max}$
 
 ## Evaluation using summary statistics
 
 ### Non-stratified samples
 
-A non-stratified sample evaluation should be used when the population is not divided into distinct groups of items (i.e, strata).
+In a non-stratified sampling procedure, the auditor does not take samples from different strata or subgroups in a population. An example of such a situation would be where the auditor is auditing the general ledger of a small business.
 
-#### Classical evaluation using the *p*-value
+#### Classical evaluation
 
 Classical hypothesis testing uses the *p*-value to make a decision about whether to reject the hypothesis $H_0$ or not. As an example, consider that an auditor wants to verify whether the population contains less than 5 percent misstatement, implying the hypotheses $H_1:\theta<0.05$ and $H_0:\theta\geq0.05$. They have taken a sample of 100 items, of which 1 contained an error. They set the significance level for the *p*-value to 0.05, implying that $p < 0.05$ will be enough to reject the hypothesis $H_0$.
 
@@ -50,29 +50,13 @@ Classical hypothesis testing uses the *p*-value to make a decision about whether
 evaluation(materiality = 0.05, x = 1, n = 100)
 ```
 
-The output shows that the most likely error in the population is estimated to be 1 / 100 = 1% and that the 95% (one-sided) confidence interval ranges from 0% to 4.74%. The output also shows that the *p*-value is lower than 0.05 implying that the hypothesis $H_0$ can be rejected and that the sample provides sufficient evidence to conclude that the population does not contain material misstatement.
+The output shows that the most likely error in the population is estimated to be 1 / 100 = 1% and that the 95% (one-sided) confidence interval ranges from 0% to 4.74%. The output also shows that the *p*-value is lower than 0.05 implying that the hypothesis $H_0$ can be rejected. Hence, the auditor is able to conclude that the sample provides sufficient evidence to state with reasonable assurance that the population does not contain material misstatement.
 
-#### Bayesian evaluation using the Bayes factor
+#### Bayesian evaluation
 
-Bayesian hypothesis testing uses the Bayes factor, $BF_{10}$ or $BF_{01}$, to make a statement about the evidence provided by the sample in support for one of the two hypotheses $H_1$ or $H_0$. The subscript The Bayes factor denotes which hypothesis it favors. By default, the `evaluation()` function returns the value for $BF_{10}$.
+Bayesian hypothesis testing uses the Bayes factor, $BF_{10}$ or $BF_{01}$, to make a statement about the evidence provided by the sample in support for one of the two hypotheses $H_1$ or $H_0$. As an example of how to interpret the Bayes factor, the value of $BF_{10} = 10$ (provided by the `evaluation()` function) can be interpreted as: *the data are 10 times more likely to have occurred under the hypothesis $H_1$ than under the hypothesis $H_0$*. $BF_{10} > 1$ indicates evidence in favor of $H_1$ and against $H_0$, while $BF_{10} < 1$ indicates evidence in favor of $H_0$ and against $H_1$. By default, the `evaluation()` function returns the value for $BF_{10}$.
 
-As an example of how to interpret the Bayes factor, the value of $BF_{10} = 10$ (provided by the `evaluation()` function) can be interpreted as: *the data are 10 times more likely to have occurred under the hypothesis $H_1:\theta<\theta_{max}$ than under the hypothesis $H_0:\theta\geq\theta_{max}$*. $BF_{10} > 1$ indicates evidence for $H_1$, while $BF_{10} < 1$ indicates evidence for $H_0$. 
-
-| $BF_{10}$ | Strength of evidence |
-|---------|-------|
-| $< 0.01$ | Extreme evidence for $H_0$ |
-| $0.01 - 0.033$ | Very strong evidence for $H_0$ |
-| $0.033 - 0.10$ | Strong evidence for $H_0$ |
-| $0.10 - 0.33$ | Moderate evidence for $H_0$ |
-| $0.33 - 1$ | Anecdotal evidence for $H_0$ |
-| $1$ | No evidence for $H_1$ or $H_0$ |
-| $1 - 3$ | Anecdotal evidence for $H_1$ |
-| $3 - 10$ | Moderate evidence for $H_1$ |
-| $10 - 30$ | Strong evidence for $H_1$ |
-| $30 - 100$ | Very strong evidence for $H_1$ |
-| $> 100$ | Extreme evidence for $H_1$ |
-
-Consider the previous example of an auditor who wants to verify whether the population contains less than 5 percent misstatement, implying the hypotheses $H_1:\theta<0.05$ and $H_0:\theta\geq0.05$. They have taken a sample of 100 items, of which 1 was found to contain a misstatement. The prior distribution is assumed to be **jfa**'s default *beta(1,1)* prior.
+Consider the previous example of an auditor who wants to verify whether the population contains less than 5 percent misstatement, implying the hypotheses $H_1:\theta<0.05$ and $H_0:\theta\geq0.05$. They have taken a sample of 100 items, of which 1 was found to contain a misstatement. The prior distribution is assumed to be a default *beta(1,1)* prior.
 
 ```{r}
 prior <- auditPrior(materiality = 0.05, method = "default", likelihood = "binomial")
@@ -81,25 +65,25 @@ evaluation(materiality = 0.05, x = 1, n = 100, prior = prior)
 
 The output shows that the most likely error in the population is estimated to be 1 / 100 = 1% and that the 95% (one-sided) credible interval ranges from 0% to 4.61%. The small difference between the classical and default Bayesian results is due to the prior distribution, which must be proper in order to calculate a Bayes factor (classical results can be emulated by constructing a prior with `method = "strict"` in the `auditPrior()` function). The Bayes factor in this case is shown to be $BF_{10}=515$, meaning that the data from the sample are about 515 times more likely to occur under the hypothesis of tolerable misstatement than under the hypothesis of material misstatement.
 
-Note that this is a very high Bayes factor for a little amount of data. That is because the Bayes factor is dependent on the prior distribution for $\theta$. As a rule of thumb, when the prior distribution is very conservative (as with `method = 'default'`) with respect to the hypothesis of tolerable misstatement, the Bayes factor tends to over quantify the evidence in favor of this hypothesis. You can mitigate this dependency by using a prior distribution that is impartial with respect to the hypotheses via `method = "impartial"` in the `auditPrior()` function (Derks et al., 2022).
+Note that this is a very high Bayes factor for the little data that is observed. That is because the Bayes factor is dependent on the prior distribution for $\theta$. As a rule of thumb, when the prior distribution is highly conservative (as with `method = 'default'`) with respect to the hypothesis of tolerable misstatement, the Bayes factor tends to over quantify the evidence in favor of this hypothesis. You can mitigate this dependency by using a prior distribution that is impartial with respect to the hypotheses via `method = "impartial"` in the `auditPrior()` function (Derks et al., 2022).
 
 ```{r}
 prior <- auditPrior(materiality = 0.05, method = "impartial", likelihood = "binomial")
 evaluation(materiality = 0.05, x = 1, n = 100, prior = prior)
 ```
 
-The output shows that $BF_{10}=47$, implying that under the assumption of impartiality there is strong evidence for $H_1$, the hypothesis that the population contains misstatements lower than 5 percent of the population (tolerable misstatement). Since the two prior distributions both resulted in convincing Bayes factors, the results can be considered robust to the choice of prior distribution.
+The output shows that $BF_{10}=47$, implying that under the assumption of impartiality there is strong evidence for $H_1$, the hypothesis that the population contains misstatements lower than 5 percent of the population (tolerable misstatement). Since the two prior distributions both resulted in convincing Bayes factors, the results can be considered robust to the choice of prior distribution. Hence, the auditor is able to conclude that the sample provides convincing evidence to state that the population does not contain material misstatement.
 
 ### Stratified samples
 
-A stratified sample evaluation should be used when the population is divided into distinct groups of items (i.e, strata). For illustrative purposes, this vignette only describes the Bayesian approach to stratification but going from this to a classical approach only requires setting `prior = FALSE`.
+In a stratified sampling procedure, the auditor takes samples from different strata or subgroups in a population. An example of such a situation would be a group audit where the auditee consists of different branches across the country. In this case, the component auditors can take a sample from each branch but the group auditor must form an opinion on the group as a whole. For illustrative purposes, this vignette only describes the Bayesian approach to stratified evaluation but going from this approach to a classical approach only requires setting `prior = FALSE`. As a data example, consider the `retailer` data set that comes with the package.
 
 ```{r}
 data(retailer)
 print(retailer)
 ```
 
-Typically, there are three approaches to evaluating a stratified sample: no pooling, complete pooling, and partial pooling (see Derks et al., 2022). No pooling assumes no similarities between strata, which means that all data must be analyzed independently on the level of the strata. Complete pooling assumes no difference between strata and all data is aggregated so that it can be analyzed as a whole. Partial pooling assumes differences and similarities between strata, which enables information to be shared between strata. This is a powerful technique that can result in more efficient population and stratum estimates, but is currently only feasible in the Bayesian framework. 
+Typically, there are three approaches to evaluating a stratified sample: no pooling, complete pooling, and partial pooling (see Derks et al., 2022). No pooling assumes no similarities between strata, which means that all strata must be analyzed independently. Complete pooling assumes no difference between strata, which means that all data is aggregated and analyzed as a whole. Finally, partial pooling assumes differences and similarities between strata, which enables information to be shared between strata. Partial pooling is a powerful technique that can result in more efficient population and stratum estimates but is currently only feasible when performing a Bayesian analysis. 
 
 #### Approach 1: No pooling
 

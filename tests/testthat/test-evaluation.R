@@ -521,3 +521,15 @@ test_that(desc = "(id: f3-v0.6.5-t5) Test stratification with data (Derks et al.
   expect_equal(is.data.frame(res$strata), TRUE)
   # We do not test these results because of differences in OS's due to sampling
 })
+
+test_that(desc = "(id: f3-v0.6.5-t6) Validate poststratification with stan examples", {
+  # https://mc-stan.org/docs/2_23/stan-users-guide/some-examples.html
+  # 28.1.2 Polling
+  set.seed(1)
+  n <- c(490, 112, 47)
+  x <- c(0.25 * n[1], 0.4 * n[2], 0.8 * n[3])
+  N <- c(20000, 5000, 2000)
+  prior <- auditPrior(method = "strict", likelihood = "binomial")
+  res <- evaluation(materiality = 0.03, n = n, x = x, N.units = N, prior = prior)
+  expect_equal(res$mle, 0.32, tolerance = 0.0001)
+})
