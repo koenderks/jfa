@@ -1,2 +1,7 @@
+url: https://koenderks.github.io/jfa/
+
+destination: "."
+
 template:
-  bootstrap: 5
+  params:
+    bootswatch: cosmo
