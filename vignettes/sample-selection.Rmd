@@ -1,5 +1,5 @@
 ---
-title: 'Selecting statistical audit samples using the jfa package'
+title: 'Selecting statistical audit samples'
 author: Koen Derks
 date: "`r Sys.Date()`"
 output: 
@@ -15,18 +15,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-## Introduction
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, fig.height = 4, fig.width = 6)
+```{r, include = FALSE}
 library(jfa)
 ```
 
-<center>
+## Introduction
 
-![Figure 1: The location of the selection stage in the audit sampling workflow](img/selection.png)\
-
-</center>
+<p align='center'><img src='https://github.com/koenderks/jfa/raw/development/vignettes/img/selection.png' alt='selection' width='100%'></p>
 
 Auditors are often required to assess balances or processes that involve a large number of items. Since they cannot inspect all of these items individually, they need to select a subset (i.e., a sample) from the total population to make a statement about a certain characteristic of the population. For this purpose, various selection methodologies are available that have become standard in an audit context. However, in practice it seems that the distinction between sampling methods ---and when to use them--- is not always easy to make. 
 

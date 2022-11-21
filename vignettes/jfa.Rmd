@@ -1,5 +1,5 @@
 ---
-title: "Get started"
+title: "Get started with the jfa package"
 author: Koen Derks
 date: "`r Sys.Date()`"
 output: 
@@ -15,11 +15,11 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-## Introduction
-
-```{r, echo = FALSE}
+```{r, include = FALSE}
 library(jfa)
 ```
+
+## Introduction
 
 Welcome to the 'Get started' vignette of the **jfa** package. **jfa** is an R package that provides Bayesian and classical statistical methods for audit sampling and data auditing. First, the package provides functions for planning, performing, evaluating, and reporting an audit sample compliant with international standards on auditing. Second, the package includes functions for auditing data, such as testing the distribution of first digits of a data set against Benford's law.
 
@@ -88,7 +88,7 @@ summary(stage4)
 
 The `digit_test()` function can be used to test the distribution of leading or last digits in a variable against a pre-specified distribution (e.g., Benford's law).
 
-See the package vignette [Data auditing: Get started](https://koenderks.github.io/jfa/articles/v8-data-auditing.html) for more details about **jfa**'s data auditing functionality.
+See the package vignette [Data auditing: Get started](https://koenderks.github.io/jfa/articles/data-auditing.html) for more details about **jfa**'s data auditing functionality.
 
 ### Functions and intended usage
 

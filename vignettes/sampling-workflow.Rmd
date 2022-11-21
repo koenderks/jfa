@@ -1,5 +1,5 @@
 ---
-title: "The classical audit sampling workflow in the jfa package"
+title: "Walkthrough of the classical audit sampling workflow"
 author: Koen Derks
 date: "`r Sys.Date()`"
 output: 
@@ -15,6 +15,10 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+```{r, include = FALSE}
+library(jfa)
+```
+
 ## Introduction
 
 This vignette aims to show how the **jfa** package facilitates auditors in the standard audit sampling workflow (hereafter "audit workflow"). In this example of the audit workflow, we will consider the case of BuildIt. BuildIt is a fictional construction company in the United States that is being audited by Laura, an external auditor for a fictional audit firm. At the end of the year, BuildIt has provided a summary of its financial situation in the financial statements. Laura's job as an auditor is to formulate an opinion about the fairness and correctness of BuildIt's financial statements. 
@@ -26,15 +30,10 @@ Since BuildIt is a small company, there is only a single population upon which t
 In order to formulate an opinion about the misstatement in the population, Laura separates her audit workflow into four stages. First, she will plan the size of the subset she needs to inspect from the financial statements to make a well-substantiated inference about them as a whole. Second, she will select the required subset from the financial statements. Third, she will inspect the selected subset and determines the audit (true) value of the items. Fourth, she will use the information from her inspected subset to make an inference about the misstatement in the population (e.g., in this case also the financial statements as a whole). To start her workflow, Laura first loads BuildIt's financial statements in R.
 
 ```{r}
-library(jfa)
 data("BuildIt")
 ```
 
-<center>
-
-![Figure 1: Illustration of the audit sampling workflow](img/workflow.png)\
-
-</center>
+<p align='center'><img src='https://github.com/koenderks/jfa/raw/development/vignettes/img/workflow.png' alt='workflow' width='100%'></p>
 
 ## Setting up the audit
 
@@ -61,11 +60,7 @@ cr <- 0.6 # 60%
 
 ## Stage 1: Planning an audit sample
 
-<center>
-
-![Figure 2: The location of the planning stage in the audit sampling workflow](img/planning.png)\
-
-</center>
+<p align='center'><img src='https://github.com/koenderks/jfa/raw/development/vignettes/img/planning.png' alt='planning' width='100%'></p>
 
 Laura can choose to either perform a frequentist analysis, where she uses the increased detection risk as her level of uncertainty, or perform a Bayesian analysis, where she captures the information in the control risk in a prior distribution. For this example, we will show how Laura performs a frequentist analysis. In a frequentist audit, Laura immediately uses the adjusted confidence to calculate the sample size using the `planning()` function.
 
@@ -84,11 +79,7 @@ summary(stage1)
 
 ## Stage 2: Selecting a sample
 
-<center>
-
-![Figure 3: The location of the selection stage in the audit sampling workflow](img/selection.png)\
-
-</center>
+<p align='center'><img src='https://github.com/koenderks/jfa/raw/development/vignettes/img/selection.png' alt='selection' width='100%'></p>
 
 Laura is now ready to select the required 178 items from the financial statements. She can choose to do this according to one of two statistical methods. In *record sampling* (`units = "items"`), inclusion probabilities are assigned on the item level, treating items with a high value and a low value the same, an items of $5,000 is equally likely to be selected as a item of $1,000. In *monetary unit sampling* (`units = "values"`), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the item that includes that dollar is selected. This favors higher items, as an items of \$5,000 is five times more likely to be selected than a item of \$1,000. 
 
@@ -128,11 +119,7 @@ For this example, the audit values of the sample are already included in the `au
 
 ## Stage 4: Evaluating the sample
 
-<center>
-
-![Figure 4: The location of the evaluation stage in the audit sampling workflow](img/evaluation.png)\
-
-</center>
+<p align='center'><img src='https://github.com/koenderks/jfa/raw/development/vignettes/img/evaluation.png' alt='evaluation' width='100%'></p>
 
 Using her annotated sample, Laura can perform her inference with the `evaluation()` function.
 

@@ -15,11 +15,11 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-## Introduction
-
-```{r, echo = FALSE}
+```{r, include = FALSE}
 library(jfa)
 ```
+
+## Introduction
 
 Welcome to the 'Audit sampling' vignette of the **jfa** package. Here you can find a detailed explanation of the functions in the package that facilitate the statistical audit sampling workflow. Specifically, these functions implement standard audit sampling techniques to calculate sample sizes, select items from a population, and evaluate misstatement in a data sample. The **jfa** package enables users to create a prior probability distribution to perform Bayesian audit sampling using these functions. For more detailed explanations of each function, read the other vignettes on the [package website](https://koenderks.github.io/jfa).
 

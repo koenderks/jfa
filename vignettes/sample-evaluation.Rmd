@@ -1,5 +1,5 @@
 ---
-title: "Evaluating statistical audit samples using the jfa package"
+title: "Evaluating misstatement in statistical audit samples"
 author: Koen Derks
 date: "`r Sys.Date()`"
 output: 
@@ -15,18 +15,13 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-## Introduction
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, fig.height = 4, fig.width = 6)
+```{r, include = FALSE}
 library(jfa)
 ```
 
-<center>
+## Introduction
 
-![Figure 1: The location of the evaluation stage in the audit sampling workflow](img/evaluation.png)\
-
-</center>
+<p align='center'><img src='https://github.com/koenderks/jfa/raw/development/vignettes/img/evaluation.png' alt='evaluation' width='100%'></p>
 
 This vignette demonstrates how to evaluate a sample with the `evaluation()` function from the **jfa** package. In auditing, the goal of the evaluation is typically to estimate the misstatement in the population based on a sample, or to test the misstatement in the population against a critical upper limit, referred to as the performance materiality. Evaluating an audit sample using the `evaluation()` function requires that the sample data is available in one of two forms:
 
