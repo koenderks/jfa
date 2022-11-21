@@ -21,9 +21,14 @@
 #' function returns an object of class \code{jfaPlanning} that can be used with
 #' associated \code{summary()} and \code{plot()} methods.
 #'
-#' @usage planning(materiality = NULL, min.precision = NULL, expected = 0,
-#'          likelihood = c('poisson', 'binomial', 'hypergeometric'),
-#'          conf.level = 0.95, N.units = NULL, by = 1, max = 5000,
+#' @usage planning(materiality = NULL,
+#'          min.precision = NULL,
+#'          expected = 0,
+#'          likelihood = c("poisson", "binomial", "hypergeometric"),
+#'          conf.level = 0.95,
+#'          N.units = NULL,
+#'          by = 1,
+#'          max = 5000,
 #'          prior = FALSE)
 #'
 #' @param materiality   a numeric value between 0 and 1 specifying the

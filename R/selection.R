@@ -21,10 +21,14 @@
 #' function returns an object of class \code{jfaSelection} that can be used with
 #' associated \code{summary()} and a \code{plot()} methods.
 #'
-#' @usage selection(data, size, units = c('items', 'values'),
-#'           method = c('interval', 'cell', 'random', 'sieve'), values = NULL,
-#'           order = NULL, decreasing = FALSE, randomize = FALSE,
-#'           replace = FALSE, start = 1)
+#' @usage selection(data, size, units = c("items", "values"),
+#'           method = c("interval", "cell", "random", "sieve"),
+#'           values = NULL,
+#'           order = NULL,
+#'           decreasing = FALSE,
+#'           randomize = FALSE,
+#'           replace = FALSE,
+#'           start = 1)
 #'
 #' @param data       a data frame containing the population data.
 #' @param size       an integer larger than 0 specifying the number of units to
@@ -91,13 +95,13 @@
 #' \item{N.units}{an integer giving the number of sampling units in the
 #'   population data.}
 #' \item{N.items}{an integer giving the number of items in the population data.}
-#' \item{interval}{if \code{method = 'interval'}, a numeric value giving the
+#' \item{interval}{if \code{method = "interval"}, a numeric value giving the
 #'   size of the selection interval.}
 #' \item{units}{a character indicating the type of sampling units.}
 #' \item{method}{a character indicating the sampling algorithm.}
 #' \item{values}{if \code{values} is specified, a character indicating the book
 #'   value column.}
-#' \item{start}{if \code{method = 'interval'}, an integer giving the index of
+#' \item{start}{if \code{method = "interval"}, an integer giving the index of
 #'   the selected unit in each interval.}
 #' \item{data.name}{a character indicating the name of the population data.}
 #'

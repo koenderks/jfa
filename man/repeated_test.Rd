@@ -4,8 +4,10 @@
 \alias{repeated_test}
 \title{Data Auditing: Repeated Values Test}
 \usage{
-repeated_test(x, check = c('last', "lasttwo", "all"),
-              method = c("af", "entropy"), samples = 2000)
+repeated_test(x,
+              check = c("last", "lasttwo", "all"),
+              method = c("af", "entropy"),
+              samples = 2000)
 }
 \arguments{
 \item{x}{a numeric vector of values from which the digits should be

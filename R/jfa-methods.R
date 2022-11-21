@@ -583,9 +583,6 @@ print.summary.jfaEvaluation <- function(x, digits = getOption("digits"), ...) {
       )), "\n")
     }
   }
-  if (x[["min.precision"]] < 1) {
-    cat(paste("  Min. precision:                ", format(x[["min.precision"]], digits = max(1L, digits - 2L))), "\n")
-  }
   cat(paste("  Method:                        ", x[["method"]]), "\n")
   if (x[["type"]] == "Bayesian") {
     cat(paste("  Prior distribution:            ", x[["prior"]]), "\n")
@@ -624,7 +621,6 @@ summary.jfaEvaluation <- function(object, digits = getOption("digits"), ...) {
   out <- list(
     "conf.level" = round(object[["conf.level"]], digits),
     "materiality" = round(object[["materiality"]], digits),
-    "min.precision" = round(object[["min.precision"]], digits),
     "x" = object[["x"]],
     "n" = object[["n"]],
     "method" = object[["method"]],

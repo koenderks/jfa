@@ -19,8 +19,10 @@
 #' of (leading) digits in a vector against a reference distribution. By default,
 #' the distribution of leading digits is checked against Benford's law.
 #'
-#' @usage digit_test(x, check = c("first", "last", "firsttwo"),
-#'            reference = 'benford', prior = FALSE)
+#' @usage digit_test(x,
+#'            check = c("first", "last", "firsttwo"),
+#'            reference = "benford",
+#'            prior = FALSE)
 #'
 #' @param x         a numeric vector.
 #' @param check     location of the digits to analyze. Can be \code{first},

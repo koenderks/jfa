@@ -39,7 +39,10 @@ The function `digit_test()` takes a vector of numeric values, extract the reques
 *Full function with default arguments:*
 
 ```r
-digit_test(x, check = c('first', "last", "firsttwo"), reference = 'benford', prior = FALSE)
+digit_test(x,
+           check = c("first", "last", "firsttwo"),
+           reference = "benford",
+           prior = FALSE)
 ```
 
 *Supported options for the `check` argument:*
@@ -83,7 +86,10 @@ The function `repeated_test()` analyzes the frequency with which values get repe
 *Full function with default arguments:*
 
 ```r
-repeated_test(x, check = 'last', method = 'af', samples = 2000)
+repeated_test(x,
+              check = "last",
+              method = "af",
+              samples = 2000)
 ```
 
 *Supported options for the `check` argument:*

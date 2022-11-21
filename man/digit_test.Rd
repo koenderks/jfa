@@ -4,8 +4,10 @@
 \alias{digit_test}
 \title{Data Auditing: Digit Distribution Test}
 \usage{
-digit_test(x, check = c("first", "last", "firsttwo"),
-           reference = 'benford', prior = FALSE)
+digit_test(x,
+           check = c("first", "last", "firsttwo"),
+           reference = "benford",
+           prior = FALSE)
 }
 \arguments{
 \item{x}{a numeric vector.}

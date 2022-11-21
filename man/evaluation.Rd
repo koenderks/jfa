@@ -4,31 +4,35 @@
 \alias{evaluation}
 \title{Audit Sampling: Evaluation}
 \usage{
-evaluation(materiality = NULL, min.precision = NULL, method = c(
-             "poisson", "binomial", "hypergeometric",
-             "stringer", "stringer.meikle", "stringer.lta", "stringer.pvz",
-             "rohrbach", "moment", "coxsnell",
-             "direct", "difference", "quotient", "regression", "mpu"
-           ), alternative = c('less', 'two.sided', 'greater'), conf.level = 0.95,
-           data = NULL, values = NULL, values.audit = NULL, strata = NULL, times = NULL,
-           x = NULL, n = NULL, N.units = NULL, N.items = NULL,
+evaluation(materiality = NULL,
+           method = c(
+             "poisson", "binomial", "hypergeometric", "stringer",
+             "stringer.meikle", "stringer.lta", "stringer.pvz", "rohrbach",
+             "rohrbach", "moment", "coxsnell", "direct", "difference",
+             "quotient", "regression", "mpu"
+           ),
+           alternative = c("less", "two.sided", "greater"),
+           conf.level = 0.95,
+           data = NULL,
+           values = NULL,
+           values.audit = NULL,
+           strata = NULL,
+           times = NULL,
+           x = NULL,
+           n = NULL,
+           N.units = NULL,
+           N.items = NULL,
            pooling = c("none", "complete", "partial"),
-           prior = FALSE)
+           prior = FALSE, ...)
 }
 \arguments{
 \item{materiality}{a numeric value between 0 and 1 specifying the
 performance materiality (i.e., the maximum tolerable misstatement in the
 population) as a fraction of the total number of units in the population.
-Can be \code{NULL}, but \code{min.precision} should be specified in that
-case. Not used for methods \code{direct}, \code{difference},
+Can be \code{NULL}. Not used for methods \code{direct}, \code{difference},
 \code{quotient}, and \code{regression}.}
 
-\item{min.precision}{a numeric value between 0 and 1 specifying the minimum
-precision (i.e., the estimated upper bound minus the estimated most likely
-error) as a fraction of the total population size. Can be \code{NULL}, but
-\code{materiality} should be specified in that case.}
-
-\item{method}{a character specifying the inference method. Possible
+\item{method}{a character specifying the statistical method. Possible
 options are \code{poisson} (default), \code{binomial},
 \code{hypergeometric}, \code{mpu}, \code{stringer}, \code{stringer.meikle},
 \code{stringer.lta}, \code{stringer.pvz}, \code{rohrbach}, \code{moment},
@@ -127,8 +131,6 @@ An object of class \code{jfaEvaluation} containing:
 \item{n}{an integer larger than 0 giving the sample size.}
 \item{materiality}{if \code{materiality} is specified, a numeric value
   between 0 and 1 giving the performance materiality as a fraction.}
-\item{min.precision}{if \code{min.precision} is specified, a numeric value
-  between 0 and 1 giving the minimum precision as a fraction.}
 \item{alternative}{a character indicating the alternative hypothesis.}
 \item{method}{a character the method used.}
 \item{N.units}{if \code{N.units} is specified, in integer larger than 0

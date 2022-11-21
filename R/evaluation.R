@@ -22,28 +22,33 @@
 #' an object of class \code{jfaEvaluation} that can be used with associated
 #' \code{summary()} and \code{plot()} methods.
 #'
-#' @usage evaluation(materiality = NULL, min.precision = NULL, method = c(
-#'              "poisson", "binomial", "hypergeometric",
-#'              "stringer", "stringer.meikle", "stringer.lta", "stringer.pvz",
-#'              "rohrbach", "moment", "coxsnell",
-#'              "direct", "difference", "quotient", "regression", "mpu"
-#'            ), alternative = c('less', 'two.sided', 'greater'), conf.level = 0.95,
-#'            data = NULL, values = NULL, values.audit = NULL, strata = NULL, times = NULL,
-#'            x = NULL, n = NULL, N.units = NULL, N.items = NULL,
+#' @usage evaluation(materiality = NULL,
+#'            method = c(
+#'              "poisson", "binomial", "hypergeometric", "stringer",
+#'              "stringer.meikle", "stringer.lta", "stringer.pvz", "rohrbach",
+#'              "rohrbach", "moment", "coxsnell", "direct", "difference",
+#'              "quotient", "regression", "mpu"
+#'            ),
+#'            alternative = c("less", "two.sided", "greater"),
+#'            conf.level = 0.95,
+#'            data = NULL,
+#'            values = NULL,
+#'            values.audit = NULL,
+#'            strata = NULL,
+#'            times = NULL,
+#'            x = NULL,
+#'            n = NULL,
+#'            N.units = NULL,
+#'            N.items = NULL,
 #'            pooling = c("none", "complete", "partial"),
-#'            prior = FALSE)
+#'            prior = FALSE, ...)
 #'
 #' @param materiality   a numeric value between 0 and 1 specifying the
 #'   performance materiality (i.e., the maximum tolerable misstatement in the
 #'   population) as a fraction of the total number of units in the population.
-#'   Can be \code{NULL}, but \code{min.precision} should be specified in that
-#'   case. Not used for methods \code{direct}, \code{difference},
+#'   Can be \code{NULL}. Not used for methods \code{direct}, \code{difference},
 #'   \code{quotient}, and \code{regression}.
-#' @param min.precision a numeric value between 0 and 1 specifying the minimum
-#'   precision (i.e., the estimated upper bound minus the estimated most likely
-#'   error) as a fraction of the total population size. Can be \code{NULL}, but
-#'   \code{materiality} should be specified in that case.
-#' @param method        a character specifying the inference method. Possible
+#' @param method        a character specifying the statistical method. Possible
 #'   options are \code{poisson} (default), \code{binomial},
 #'   \code{hypergeometric}, \code{mpu}, \code{stringer}, \code{stringer.meikle},
 #'   \code{stringer.lta}, \code{stringer.pvz}, \code{rohrbach}, \code{moment},
@@ -212,8 +217,6 @@
 #' \item{n}{an integer larger than 0 giving the sample size.}
 #' \item{materiality}{if \code{materiality} is specified, a numeric value
 #'   between 0 and 1 giving the performance materiality as a fraction.}
-#' \item{min.precision}{if \code{min.precision} is specified, a numeric value
-#'   between 0 and 1 giving the minimum precision as a fraction.}
 #' \item{alternative}{a character indicating the alternative hypothesis.}
 #' \item{method}{a character the method used.}
 #' \item{N.units}{if \code{N.units} is specified, in integer larger than 0
@@ -264,7 +267,6 @@
 #' @export
 
 evaluation <- function(materiality = NULL,
-                       min.precision = NULL,
                        method = c(
                          "poisson", "binomial", "hypergeometric",
                          "stringer", "stringer.meikle", "stringer.lta", "stringer.pvz",
@@ -283,7 +285,7 @@ evaluation <- function(materiality = NULL,
                        N.units = NULL,
                        N.items = NULL,
                        pooling = c("none", "complete", "partial"),
-                       prior = FALSE) {
+                       prior = FALSE, ...) {
   # Input checking
   method <- match.arg(method)
   alternative <- match.arg(alternative)
@@ -313,14 +315,9 @@ evaluation <- function(materiality = NULL,
   stopifnot("missing value for 'conf.level'" = !is.null(conf.level))
   valid_confidence <- is.numeric(conf.level) && length(conf.level) == 1 && conf.level > 0 && conf.level < 1
   stopifnot("'conf.level' must be a single value between 0 and 1" = valid_confidence)
-  stopifnot("missing value for 'materiality' or `min.precision`" = !(is.null(materiality) && is.null(min.precision)))
   if (!is.null(materiality)) {
     valid_materiality <- is.numeric(materiality) && materiality > 0 && materiality < 1
     stopifnot("'materiality' must be a single value between 0 and 1" = valid_materiality)
-  }
-  if (!is.null(min.precision)) {
-    valid_precision <- is.numeric(min.precision) && min.precision > 0 && min.precision < 1
-    stopifnot("'min.precision' must be a single value between 0 and 1" = valid_precision)
   }
   valid_test_method <- method %in% c("poisson", "binomial", "hypergeometric")
   if (is_bayesian) {
@@ -430,9 +427,6 @@ evaluation <- function(materiality = NULL,
   }
   if (is.null(materiality)) {
     materiality <- 1
-  }
-  if (is.null(min.precision)) {
-    min.precision <- 1
   }
   if (length(n.obs) > 1) {
     n.obs <- c(sum(n.obs), n.obs)
@@ -579,7 +573,6 @@ evaluation <- function(materiality = NULL,
   result[["t"]] <- t.obs[1]
   result[["n"]] <- n.obs[1]
   result[["materiality"]] <- materiality
-  result[["min.precision"]] <- min.precision
   result[["alternative"]] <- alternative
   result[["method"]] <- method
   result[["pooling"]] <- pooling
