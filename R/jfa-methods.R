@@ -548,8 +548,18 @@ print.jfaEvaluation <- function(x, digits = getOption("digits"), ...) {
   if (!is.null(x[["ub"]])) {
     cat(format(100 * x$conf.level), " percent ", if (is.null(x[["prior"]])) "confidence" else "credible", " interval:\n", " ", paste(format(c(x[["lb"]], x[["ub"]]), digits = digits), collapse = " "), "\n", sep = "")
   }
-  cat(paste0("estimate:\n", " ", format(x[["mle"]], digits = digits)), "\n")
-  cat(paste0("estimates obtained via method ", if (is.null(x[["prior"]])) paste0("'", x[["method"]], "'\n") else paste0("'", x[["method"]], "' + 'prior'\n")))
+  method_string <- paste0("'", x[["method"]], "'")
+  if (!is.null(x[["strata"]]) && x[["pooling"]] == "complete") {
+    method_string <- paste0(method_string, " + 'complete-pooling'")
+  } else if (!is.null(x[["strata"]]) && x[["pooling"]] == "none") {
+    method_string <- paste0(method_string, " + 'no-pooling'")
+  } else if (!is.null(x[["strata"]]) && x[["pooling"]] == "partial") {
+    method_string <- paste0(method_string, " + 'partial-pooling'")
+  }
+  if (!is.null(x[["prior"]])) {
+    method_string <- paste0(method_string, " + 'prior'")
+  }
+  cat("estimates obtained via method", method_string, "\n")
 }
 
 #' @rdname jfa-methods

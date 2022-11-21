@@ -220,6 +220,8 @@ planning <- function(materiality = NULL,
     stopifnot("missing value for 'N.units'" = !is.null(N.units))
     valid_units <- is.numeric(N.units) && length(N.units) == 1 && N.units > 0
     stopifnot("'N.units' must be a single value > 0" = valid_units)
+    valid_units_expected <- N.units > expected
+    stopifnot("'N.units' must be > expected" = valid_units_expected)
     N.units <- ceiling(N.units)
     if (!is.null(materiality)) {
       if (expected >= 1) {

@@ -1,5 +1,5 @@
 ---
-title: "Digit analysis using the jfa package"
+title: "Digit analysis"
 author: Koen Derks
 date: "`r Sys.Date()`"
 output: 

@@ -441,12 +441,12 @@ evaluation <- function(materiality = NULL,
     if (!is.null(N.units)) {
       N.units <- c(sum(N.units), N.units)
       valid_units <- length(N.units) == length(t.obs)
-      stopifnot("'N.units' must be equal to number of strata" = valid_units)
+      stopifnot("length of 'N.units' must be equal to number of strata" = valid_units)
     }
     if (!is.null(N.items)) {
       N.items <- c(sum(N.items), N.items)
       valid_items <- length(N.items) == length(t.obs)
-      stopifnot("'N.items' must be equal to number of strata" = valid_items)
+      stopifnot("length of 'N.items' must be equal to number of strata" = valid_items)
     }
   } else {
     if (!is.null(N.units)) {
@@ -458,6 +458,8 @@ evaluation <- function(materiality = NULL,
       stopifnot("'N.items' must be a single integer" = valid_items)
     }
   }
+  valid_units_n <- all(N.units >= n.obs)
+  stopifnot("all 'N.units' must be > the number of samples" = valid_units_n)
   if (method == "hypergeometric") {
     stopifnot("missing value for 'N.units'" = !is.null(N.units))
     valid_units <- is.numeric(N.units) && length(N.units) > 0 && all(N.units > 0)

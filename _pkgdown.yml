@@ -41,12 +41,12 @@ articles:
       auditing using the **jfa** package.
     contents:
       - audit-sampling
-      - sampling-workflow
-      - bayesian-sampling-workflow
       - creating-prior
       - sample-planning
       - sample-selection
       - sample-evaluation
+      - sampling-workflow
+      - bayesian-sampling-workflow
   - title: "Data Auditing"
     desc: >
       These vignettes provide an introduction to data auditing using the **jfa**
@@ -63,7 +63,8 @@ reference:
       - jfa-package
   - title: "Audit sampling"
     desc: >
-      Functions for audit sampling.
+      Functions for planning, selecting, evaluating and reporting audit samples
+      compliant with international standards on auditing.
     contents:
       - auditPrior
       - planning
@@ -72,13 +73,14 @@ reference:
       - report
   - title: "Data auditing"
     desc: >
-      Functions for data auditing.
+      Functions for data auditing, such as testing the distribution of leading
+      digits in a data set against Benford's law.
     contents:
       - digit_test
       - repeated_test
-  - title: "Example data"
+  - title: "Data sets"
     desc: >
-      Included data sets.
+      Example data sets included in the **jfa** package.
     contents:
       - allowances
       - BuildIt
@@ -88,6 +90,6 @@ reference:
       - sinoForest
   - title: "Miscellaneous"
     desc: >
-      Functions printing and plotting results.
+      Functions printing and plotting output from the **jfa** package.
     contents:
       - jfa-methods
