@@ -1,18 +1,21 @@
 ---
-title: "Audit sampling: Evaluating a sample"
+title: "Evaluating statistical audit samples using the jfa package"
 author: Koen Derks
-date: "last modified: 20-11-2022"
+date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: true
+    toc_depth: 3
 vignette: >
-  %\VignetteIndexEntry{Audit sampling: Evaluating a sample}
+  %\VignetteIndexEntry{Evaluating statistical audit samples}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteDepends{jfa}
   %\VignetteKeywords{audit, evaluation, jfa, planning, prior}
   %\VignettePackage{jfa}
   %\VignetteEncoding{UTF-8}
 ---
+
+## Introduction
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.height = 4, fig.width = 6)

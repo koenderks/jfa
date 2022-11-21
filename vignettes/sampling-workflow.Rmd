@@ -1,18 +1,21 @@
 ---
-title: "Audit sampling: Classical sampling workflow"
+title: "The classical audit sampling workflow in the jfa package"
 author: Koen Derks
-date: "last modified: 10-11-2022"
+date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: true
+    toc_depth: 3
 vignette: >
-  %\VignetteIndexEntry{Audit sampling: Classical sampling workflow}
+  %\VignetteIndexEntry{Classical sampling workflow}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteDepends{jfa}
   %\VignetteKeywords{audit, classical, sampling, workflow}
   %\VignettePackage{jfa}
   %\VignetteEncoding{UTF-8}
 ---
+
+## Introduction
 
 This vignette aims to show how the **jfa** package facilitates auditors in the standard audit sampling workflow (hereafter "audit workflow"). In this example of the audit workflow, we will consider the case of BuildIt. BuildIt is a fictional construction company in the United States that is being audited by Laura, an external auditor for a fictional audit firm. At the end of the year, BuildIt has provided a summary of its financial situation in the financial statements. Laura's job as an auditor is to formulate an opinion about the fairness and correctness of BuildIt's financial statements. 
 

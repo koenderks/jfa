@@ -1,12 +1,13 @@
 ---
-title: "Auditing data: Digit analysis"
+title: "Digit analysis using the jfa package"
 author: Koen Derks
-date: "last modified: 10-11-2022"
+date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: true
+    toc_depth: 3
 vignette: >
-  %\VignetteIndexEntry{Auditing data: Digit analysis}
+  %\VignetteIndexEntry{Digit analysis}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteDepends{jfa}
   %\VignetteKeywords{digit, tests, Bayesian}
@@ -14,11 +15,11 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+## Introduction
+
 ```{r, echo = F}
 library(jfa)
 ```
-
-# Auditing data: Digit analysis
 
 Welcome to the 'Digit analysis' vignette of the **jfa** package. In this vignette you are able to find detailed examples of how you can incorporate the `digit_test()` and `repeated_test()` functions provided by the package.
 

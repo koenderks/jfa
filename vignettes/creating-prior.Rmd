@@ -1,18 +1,21 @@
 ---
-title: 'Audit sampling: Creating a prior distribution'
+title: 'Creating prior distributions for audit sampling with the jfa package'
 author: Koen Derks
-date: "last modified: 10-11-2022"
+date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: true
+    toc_depth: 3
 vignette: >
-  %\VignetteIndexEntry{Audit sampling: Creating a prior distribution}
+  %\VignetteIndexEntry{Creating prior distributions}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteDepends{jfa}
   %\VignetteKeywords{audit, evaluation, planning, prior}
   %\VignettePackage{jfa}
   %\VignetteEncoding{UTF-8}
 ---
+
+## Introduction
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, fig.height = 4, fig.width = 6)
