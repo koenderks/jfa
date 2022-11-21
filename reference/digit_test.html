@@ -75,8 +75,10 @@ the distribution of leading digits is checked against Benford's law.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">digit_test</span><span class="op">(</span><span class="va">x</span>, check <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"first"</span>, <span class="st">"last"</span>, <span class="st">"firsttwo"</span><span class="op">)</span>,</span>
-<span>           reference <span class="op">=</span> <span class="st">'benford'</span>, prior <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">digit_test</span><span class="op">(</span><span class="va">x</span>,</span>
+<span>           check <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"first"</span>, <span class="st">"last"</span>, <span class="st">"firsttwo"</span><span class="op">)</span>,</span>
+<span>           reference <span class="op">=</span> <span class="st">"benford"</span>,</span>
+<span>           prior <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">

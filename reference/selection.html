@@ -79,10 +79,14 @@ associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-l
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">selection</span><span class="op">(</span><span class="va">data</span>, <span class="va">size</span>, units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'items'</span>, <span class="st">'values'</span><span class="op">)</span>,</span>
-<span>          method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'interval'</span>, <span class="st">'cell'</span>, <span class="st">'random'</span>, <span class="st">'sieve'</span><span class="op">)</span>, values <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>          order <span class="op">=</span> <span class="cn">NULL</span>, decreasing <span class="op">=</span> <span class="cn">FALSE</span>, randomize <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>          replace <span class="op">=</span> <span class="cn">FALSE</span>, start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">selection</span><span class="op">(</span><span class="va">data</span>, <span class="va">size</span>, units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"items"</span>, <span class="st">"values"</span><span class="op">)</span>,</span>
+<span>          method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"interval"</span>, <span class="st">"cell"</span>, <span class="st">"random"</span>, <span class="st">"sieve"</span><span class="op">)</span>,</span>
+<span>          values <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>          order <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>          decreasing <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>          randomize <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>          replace <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>          start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -169,7 +173,7 @@ should be selected. Only used for method <code>interval</code>.</p></dd>
 <dd><p>an integer giving the number of items in the population data.</p></dd>
 
 <dt>interval</dt>
-<dd><p>if <code>method = 'interval'</code>, a numeric value giving the
+<dd><p>if <code>method = "interval"</code>, a numeric value giving the
   size of the selection interval.</p></dd>
 
 <dt>units</dt>
@@ -183,7 +187,7 @@ should be selected. Only used for method <code>interval</code>.</p></dd>
   value column.</p></dd>
 
 <dt>start</dt>
-<dd><p>if <code>method = 'interval'</code>, an integer giving the index of
+<dd><p>if <code>method = "interval"</code>, an integer giving the index of
   the selected unit in each interval.</p></dd>
 
 <dt>data.name</dt>
