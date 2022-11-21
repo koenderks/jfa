@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Evaluating misstatement in statistical audit samples • jfa</title>
+<title>Evaluating statistical audit samples • jfa</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Evaluating misstatement in statistical audit samples">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Evaluating statistical audit samples">
 <meta property="og:description" content="jfa">
 <meta property="og:image" content="https://koenderks.github.io/jfa/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -91,8 +91,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Evaluating misstatement in statistical audit
-samples</h1>
+      <h1 data-toc-skip>Evaluating statistical audit samples</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
             <h4 data-toc-skip class="date">2022-11-21</h4>
@@ -184,8 +183,6 @@ hypothesis <span class="math inline">\(H_0\)</span>.</p>
 <span><span class="co">## alternative hypothesis: true misstatement rate is less than 0.05</span></span>
 <span><span class="co">## 95 percent confidence interval:</span></span>
 <span><span class="co">##  0.00000000 0.04743865</span></span>
-<span><span class="co">## estimate:</span></span>
-<span><span class="co">##  0.01 </span></span>
 <span><span class="co">## estimates obtained via method 'poisson'</span></span></code></pre>
 <p>The output shows that the most likely error in the population is
 estimated to be 1 / 100 = 1% and that the 95% (one-sided) confidence
@@ -227,8 +224,6 @@ prior.</p>
 <span><span class="co">## alternative hypothesis: true misstatement rate is less than 0.05</span></span>
 <span><span class="co">## 95 percent credible interval:</span></span>
 <span><span class="co">##  0.00000000 0.04610735</span></span>
-<span><span class="co">## estimate:</span></span>
-<span><span class="co">##  0.01 </span></span>
 <span><span class="co">## estimates obtained via method 'binomial' + 'prior'</span></span></code></pre>
 <p>The output shows that the most likely error in the population is
 estimated to be 1 / 100 = 1% and that the 95% (one-sided) credible
@@ -263,8 +258,6 @@ hypotheses via <code>method = "impartial"</code> in the
 <span><span class="co">## alternative hypothesis: true misstatement rate is less than 0.05</span></span>
 <span><span class="co">## 95 percent credible interval:</span></span>
 <span><span class="co">##  0.00000000 0.04110834</span></span>
-<span><span class="co">## estimate:</span></span>
-<span><span class="co">##  0.00888783 </span></span>
 <span><span class="co">## estimates obtained via method 'binomial' + 'prior'</span></span></code></pre>
 <p>The output shows that <span class="math inline">\(BF_{10}=47\)</span>, implying that under the
 assumption of impartiality there is strong evidence for <span class="math inline">\(H_1\)</span>, the hypothesis that the population
@@ -281,14 +274,16 @@ population does not contain material misstatement.</p>
 </h3>
 <p>In a stratified sampling procedure, the auditor takes samples from
 different strata or subgroups in a population. An example of such a
-situation would be a group audit where the auditee consists of different
-branches across the country. In this case, the component auditors can
-take a sample from each branch but the group auditor must form an
-opinion on the group as a whole. For illustrative purposes, this
-vignette only describes the Bayesian approach to stratified evaluation
-but going from this approach to a classical approach only requires
-setting <code>prior = FALSE</code>. As a data example, consider the
-<code>retailer</code> data set that comes with the package.</p>
+situation would be a group audit where the audited organization consists
+of different components or branches. Stratification is relevant to the
+group auditor if they must form an opinion on the group as a whole
+because they must aggregate the samples taken by the component
+auditors.</p>
+<p>As a data example, consider the <code>retailer</code> data set that
+comes with the package. The organization in question consists of 20
+branches across the country. In each of the 20 strata, a component
+auditor has taken a statistical sample and reported the outcomes to the
+group auditor.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">retailer</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">retailer</span><span class="op">)</span></span></code></pre></div>
@@ -313,25 +308,31 @@ setting <code>prior = FALSE</code>. As a data example, consider the
 <span><span class="co">## 18      18 10000      15      0</span></span>
 <span><span class="co">## 19      19 10000      15      1</span></span>
 <span><span class="co">## 20      20  4000      15      3</span></span></code></pre>
-<p>Typically, there are three approaches to evaluating a stratified
+<p>In general, there are three approaches to evaluating a stratified
 sample: no pooling, complete pooling, and partial pooling (see Derks et
-al., 2022). No pooling assumes no similarities between strata, which
-means that all strata must be analyzed independently. Complete pooling
-assumes no difference between strata, which means that all data is
-aggregated and analyzed as a whole. Finally, partial pooling assumes
-differences and similarities between strata, which enables information
-to be shared between strata. Partial pooling is a powerful technique
-that can result in more efficient population and stratum estimates but
-is currently only feasible when performing a Bayesian analysis.</p>
+al., 2022). When using <code><a href="../reference/evaluation.html">evaluation()</a></code>, you must to indicate
+which type of pooling to use via the <code>pooling</code> argument. No
+pooling assumes no similarities between strata, which means that all
+strata are analyzed independently. Complete pooling assumes no
+difference between strata, which means that all data is aggregated and
+analyzed as a whole. Finally, partial pooling assumes differences and
+similarities between strata, which means that information can be shared
+between strata. Partial pooling (a.k.a. multilevel/hierarchical
+modeling) is a powerful technique that can result in more efficient
+population and stratum estimates but is currently only feasible when
+performing a Bayesian analysis. For this reason, this vignette only
+describes the Bayesian approach to stratified evaluation but going from
+this approach to a classical approach only requires setting
+<code>prior = FALSE</code>.</p>
 <div class="section level4">
 <h4 id="approach-1-no-pooling">Approach 1: No pooling<a class="anchor" aria-label="anchor" href="#approach-1-no-pooling"></a>
 </h4>
-<p>No pooling assumes no similarities between strata. This means that
-the prior distribution specified through <code>prior</code> is applied
-independently for each stratum. Because all strata are assumed to be
-independent this allows for independent estimates for the misstatement
-in each stratum, but also results in a relatively high uncertainty in
-the population estimate.</p>
+<p>No pooling (<code>pooling = "none"</code>, default) assumes no
+similarities between strata. This means that the prior distribution
+specified through <code>prior</code> is applied independently for each
+stratum. This allows for independent estimates for the misstatement in
+each stratum but also results in a relatively high uncertainty in the
+population estimate.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="co"># Important because the posterior distribution is determined via sampling</span></span>
 <span><span class="va">result_np</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
@@ -386,20 +387,22 @@ the population estimate.</p>
 <span><span class="co">## 19  15  1  1 0.06667 0.01551 0.30232   0.23565 0.17088</span></span>
 <span><span class="co">## 20  15  3  3 0.20000 0.07266 0.45646   0.25646 2.03365</span></span></code></pre>
 <p>In this case, the output of the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function shows
-that the population estimate is 5.85% with a 95% credible interval
-ranging from 4.28% to 8.22%. The stratum estimates differ substantially
-from each other but are relatively uncertain.</p>
+that the estimate of the misstatement in the population is 5.85%, with
+the 95% credible interval ranging from 4.28% to 8.22%. The stratum
+estimates differ substantially from each other but are relatively
+uncertain.</p>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="approach-2-complete-pooling">Approach 2: Complete pooling<a class="anchor" aria-label="anchor" href="#approach-2-complete-pooling"></a>
 </h4>
-<p>Complete pooling assumes no differences between strata. This has the
-advantages that data from all strata can be aggregated, which decreases
-the uncertainty of the population estimate. However, the disadvantage of
-this approach is that it does not allow one to differentiate between
-strata, as every stratum receives the same estimate (equal to the
-population estimate).</p>
+<p>Complete pooling (<code>pooling = "complete"</code>) assumes no
+differences between strata. This has the advantages that data from all
+strata can be aggregated, which decreases the uncertainty in the
+population estimate compared to the no pooling approach. However, the
+disadvantage of this approach is that it does not facilitate the
+distinction between between strata, as every stratum receives the same
+estimate equal to that of the population.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"binomial"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -452,19 +455,22 @@ population estimate).</p>
 <span><span class="co">## 18  15  0  0 0.04466 0.03735 0.05335   0.00869 0.02273</span></span>
 <span><span class="co">## 19  15  1  1 0.04466 0.03735 0.05335   0.00869 0.02273</span></span>
 <span><span class="co">## 20  15  3  3 0.04466 0.03735 0.05335   0.00869 0.02273</span></span></code></pre>
-<p>For example, the output shows that the population estimate is 4.47%
-with a 95% credible interval ranging from 3.74% to 5.33%. However, the
-stratum estimates are all the same, but since the data is aggregated
-they are contain relatively little uncertainty.</p>
+<p>For example, the output of the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function shows
+that the estimate of the misstatement in the population is 4.47%, with
+the 95% credible interval ranging from 3.74% to 5.33%. Since the data is
+aggregated, the stratum estimates contain relatively little uncertainty.
+However, the probability of misstatement in stratum 20 (many
+misstatements) under this assumption is the same as that of stratum 15
+(few misstatements).</p>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="approach-3-partial-pooling">Approach 3: Partial pooling<a class="anchor" aria-label="anchor" href="#approach-3-partial-pooling"></a>
 </h4>
-<p>Finally, partial pooling assumes differences and similarities between
-strata. This allows the auditor to differentiate between strata, while
-also sharing information between the strata to reduce uncertainty in the
-population estimate.</p>
+<p>Finally, partial pooling (<code>pooling = "partial"</code>) assumes
+differences and similarities between strata. This allows the auditor to
+differentiate between strata, while also sharing information between the
+strata to reduce uncertainty in the population estimate.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="co"># Important because the posterior distribution is determined via sampling</span></span>
 <span><span class="va">result_pp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
@@ -493,15 +499,15 @@ population estimate.</p>
 <span><span class="co">## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 1: </span></span>
-<span><span class="co">## Chain 1:  Elapsed Time: 0.293767 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 1:                0.275947 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 1:                0.569714 seconds (Total)</span></span>
+<span><span class="co">## Chain 1:  Elapsed Time: 0.21684 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 1:                0.189888 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 1:                0.406728 seconds (Total)</span></span>
 <span><span class="co">## Chain 1: </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'pp_binomial' NOW (CHAIN 2).</span></span>
 <span><span class="co">## Chain 2: </span></span>
-<span><span class="co">## Chain 2: Gradient evaluation took 1.6e-05 seconds</span></span>
-<span><span class="co">## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.16 seconds.</span></span>
+<span><span class="co">## Chain 2: Gradient evaluation took 1.8e-05 seconds</span></span>
+<span><span class="co">## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.18 seconds.</span></span>
 <span><span class="co">## Chain 2: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 2: </span></span>
 <span><span class="co">## Chain 2: </span></span>
@@ -518,15 +524,15 @@ population estimate.</p>
 <span><span class="co">## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 2: </span></span>
-<span><span class="co">## Chain 2:  Elapsed Time: 0.229025 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 2:                0.353289 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 2:                0.582314 seconds (Total)</span></span>
+<span><span class="co">## Chain 2:  Elapsed Time: 0.202355 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 2:                0.310578 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 2:                0.512933 seconds (Total)</span></span>
 <span><span class="co">## Chain 2: </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'pp_binomial' NOW (CHAIN 3).</span></span>
 <span><span class="co">## Chain 3: </span></span>
-<span><span class="co">## Chain 3: Gradient evaluation took 1.6e-05 seconds</span></span>
-<span><span class="co">## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.16 seconds.</span></span>
+<span><span class="co">## Chain 3: Gradient evaluation took 2e-05 seconds</span></span>
+<span><span class="co">## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.2 seconds.</span></span>
 <span><span class="co">## Chain 3: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 3: </span></span>
 <span><span class="co">## Chain 3: </span></span>
@@ -543,9 +549,9 @@ population estimate.</p>
 <span><span class="co">## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 3: </span></span>
-<span><span class="co">## Chain 3:  Elapsed Time: 0.27566 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 3:                0.288113 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 3:                0.563773 seconds (Total)</span></span>
+<span><span class="co">## Chain 3:  Elapsed Time: 0.227458 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 3:                0.227748 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 3:                0.455206 seconds (Total)</span></span>
 <span><span class="co">## Chain 3: </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'pp_binomial' NOW (CHAIN 4).</span></span>
@@ -568,9 +574,9 @@ population estimate.</p>
 <span><span class="co">## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 4: </span></span>
-<span><span class="co">## Chain 4:  Elapsed Time: 0.228894 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 4:                0.249358 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 4:                0.478252 seconds (Total)</span></span>
+<span><span class="co">## Chain 4:  Elapsed Time: 0.188124 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 4:                0.2159 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 4:                0.404024 seconds (Total)</span></span>
 <span><span class="co">## Chain 4:</span></span></code></pre>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_pp</span><span class="op">)</span></span></code></pre></div>
@@ -619,12 +625,12 @@ population estimate.</p>
 <span><span class="co">## 18  15  0  0 0.04330 0.01984 0.06587   0.02257 0.03440</span></span>
 <span><span class="co">## 19  15  1  1 0.04293 0.02313 0.07342   0.03049 0.03109</span></span>
 <span><span class="co">## 20  15  3  3 0.04527 0.03047 0.10417   0.05889 0.02880</span></span></code></pre>
-<p>In this case, the output shows that the population estimate is 4.34%
-with a 95% credible interval ranging from 3.45% to 5.33%. Note that this
-estimate is substantially less uncertain than that of the no pooling
-approach. Like in the no pooling approach, the stratum estimates are
-different from each other. However, partial pooling puts the stratum
-estimates closer together and makes them more accurate.</p>
+<p>In this case, the output shows that the estimate of the misstatement
+in the population is 4.34%, with the 95% credible interval ranging from
+3.45% to 5.33%. Note that this population estimate is substantially less
+uncertain than that of the no pooling approach. Note that, like in the
+no pooling approach, the stratum estimates are different from each other
+but lie closer together and are less uncertain.</p>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
 </div>
 </div>
@@ -735,16 +741,18 @@ and <code>strata</code> arguments. The number of units per stratum in
 the population should be provided with <code>N.units</code> to weigh the
 stratum estimates and arrive at a representative population
 estimate.</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">N.units</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">allowances</span><span class="op">$</span><span class="va">bookValue</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">allowances</span><span class="op">$</span><span class="va">branch</span><span class="op">)</span>, <span class="va">sum</span><span class="op">)</span><span class="op">$</span><span class="va">x</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="classical-evaluation-2">Classical evaluation<a class="anchor" aria-label="anchor" href="#classical-evaluation-2"></a>
 </h4>
 <p>The call below evaluates the <code>allowances</code> sample using a
 classical stratified evaluation procedure.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, data <span class="op">=</span> <span class="va">allowances</span>,</span>
 <span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, strata <span class="op">=</span> <span class="st">"branch"</span>, times <span class="op">=</span> <span class="st">"times"</span>,</span>
-<span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span>, N.units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">allowances</span><span class="op">$</span><span class="va">branch</span><span class="op">)</span><span class="op">)</span></span>
+<span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span>, N.units <span class="op">=</span> <span class="va">N.units</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -752,7 +760,7 @@ classical stratified evaluation procedure.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Options:</span></span>
 <span><span class="co">##   Confidence level:               0.95 </span></span>
-<span><span class="co">##   Population size:                4076 </span></span>
+<span><span class="co">##   Population size:                16772249 </span></span>
 <span><span class="co">##   Materiality:                    0.05 </span></span>
 <span><span class="co">##   Hypotheses:                     H₀: Θ = 0.05 vs. H₁: Θ ≠ 0.05 </span></span>
 <span><span class="co">##   Method:                         poisson </span></span>
@@ -763,9 +771,9 @@ classical stratified evaluation procedure.</p>
 <span><span class="co">##   Sum of taints:                  252.9281046 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
-<span><span class="co">##   Most likely error:              0.21961 </span></span>
-<span><span class="co">##   95 percent confidence interval: [0.19359, 0.24815] </span></span>
-<span><span class="co">##   Precision:                      0.028543 </span></span>
+<span><span class="co">##   Most likely error:              0.15659 </span></span>
+<span><span class="co">##   95 percent confidence interval: [0.13572, 0.18276] </span></span>
+<span><span class="co">##   Precision:                      0.026168 </span></span>
 <span><span class="co">##   p-value:                        NA </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Strata (16):</span></span>
@@ -790,7 +798,7 @@ classical stratified evaluation procedure.</p>
 with a 95% confidence interval ranging from 19.27% to 24.70%. The
 stratum estimates can be seen in the output of the
 <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function and are visualized below.</p>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-16-1.png" width="700"></p>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-17-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="bayesian-evaluation-2">Bayesian evaluation<a class="anchor" aria-label="anchor" href="#bayesian-evaluation-2"></a>
@@ -800,17 +808,17 @@ prior distribution that is then applied to each stratum and pooling
 information between strata where possible. The call below evaluates the
 <code>allowances</code> sample using a Bayesian multilevel stratified
 evaluation procedure.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, data <span class="op">=</span> <span class="va">allowances</span>, prior <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, strata <span class="op">=</span> <span class="st">"branch"</span>, times <span class="op">=</span> <span class="st">"times"</span>,</span>
-<span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span>, N.units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">allowances</span><span class="op">$</span><span class="va">branch</span><span class="op">)</span><span class="op">)</span>, pooling <span class="op">=</span> <span class="st">"partial"</span></span>
+<span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span>, N.units <span class="op">=</span> <span class="va">N.units</span>, pooling <span class="op">=</span> <span class="st">"partial"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'pp_beta' NOW (CHAIN 1).</span></span>
 <span><span class="co">## Chain 1: </span></span>
-<span><span class="co">## Chain 1: Gradient evaluation took 0.000629 seconds</span></span>
-<span><span class="co">## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 6.29 seconds.</span></span>
+<span><span class="co">## Chain 1: Gradient evaluation took 0.000352 seconds</span></span>
+<span><span class="co">## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.52 seconds.</span></span>
 <span><span class="co">## Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 1: </span></span>
 <span><span class="co">## Chain 1: </span></span>
@@ -827,15 +835,15 @@ evaluation procedure.</p>
 <span><span class="co">## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 1: </span></span>
-<span><span class="co">## Chain 1:  Elapsed Time: 81.5907 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 1:                68.7649 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 1:                150.356 seconds (Total)</span></span>
+<span><span class="co">## Chain 1:  Elapsed Time: 60.9044 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 1:                54.6506 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 1:                115.555 seconds (Total)</span></span>
 <span><span class="co">## Chain 1: </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'pp_beta' NOW (CHAIN 2).</span></span>
 <span><span class="co">## Chain 2: </span></span>
-<span><span class="co">## Chain 2: Gradient evaluation took 0.000599 seconds</span></span>
-<span><span class="co">## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 5.99 seconds.</span></span>
+<span><span class="co">## Chain 2: Gradient evaluation took 0.000279 seconds</span></span>
+<span><span class="co">## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 2.79 seconds.</span></span>
 <span><span class="co">## Chain 2: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 2: </span></span>
 <span><span class="co">## Chain 2: </span></span>
@@ -852,15 +860,15 @@ evaluation procedure.</p>
 <span><span class="co">## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 2: </span></span>
-<span><span class="co">## Chain 2:  Elapsed Time: 69.462 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 2:                66.2395 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 2:                135.701 seconds (Total)</span></span>
+<span><span class="co">## Chain 2:  Elapsed Time: 55.0653 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 2:                50.7752 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 2:                105.841 seconds (Total)</span></span>
 <span><span class="co">## Chain 2: </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'pp_beta' NOW (CHAIN 3).</span></span>
 <span><span class="co">## Chain 3: </span></span>
-<span><span class="co">## Chain 3: Gradient evaluation took 0.000273 seconds</span></span>
-<span><span class="co">## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 2.73 seconds.</span></span>
+<span><span class="co">## Chain 3: Gradient evaluation took 0.000317 seconds</span></span>
+<span><span class="co">## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 3.17 seconds.</span></span>
 <span><span class="co">## Chain 3: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 3: </span></span>
 <span><span class="co">## Chain 3: </span></span>
@@ -877,15 +885,15 @@ evaluation procedure.</p>
 <span><span class="co">## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 3: </span></span>
-<span><span class="co">## Chain 3:  Elapsed Time: 73.1892 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 3:                63.8076 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 3:                136.997 seconds (Total)</span></span>
+<span><span class="co">## Chain 3:  Elapsed Time: 56.1417 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 3:                49.1258 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 3:                105.267 seconds (Total)</span></span>
 <span><span class="co">## Chain 3: </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'pp_beta' NOW (CHAIN 4).</span></span>
 <span><span class="co">## Chain 4: </span></span>
-<span><span class="co">## Chain 4: Gradient evaluation took 0.000392 seconds</span></span>
-<span><span class="co">## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 3.92 seconds.</span></span>
+<span><span class="co">## Chain 4: Gradient evaluation took 0.000354 seconds</span></span>
+<span><span class="co">## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 3.54 seconds.</span></span>
 <span><span class="co">## Chain 4: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 4: </span></span>
 <span><span class="co">## Chain 4: </span></span>
@@ -902,18 +910,18 @@ evaluation procedure.</p>
 <span><span class="co">## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 4: </span></span>
-<span><span class="co">## Chain 4:  Elapsed Time: 68.9377 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 4:                66.603 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 4:                135.541 seconds (Total)</span></span>
+<span><span class="co">## Chain 4:  Elapsed Time: 52.0696 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 4:                49.9144 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 4:                101.984 seconds (Total)</span></span>
 <span><span class="co">## Chain 4:</span></span></code></pre>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Evaluation Summary</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Options:</span></span>
 <span><span class="co">##   Confidence level:               0.95 </span></span>
-<span><span class="co">##   Population size:                4076 </span></span>
+<span><span class="co">##   Population size:                16772249 </span></span>
 <span><span class="co">##   Materiality:                    0.05 </span></span>
 <span><span class="co">##   Hypotheses:                     H₀: Θ = 0.05 vs. H₁: Θ ≠ 0.05 </span></span>
 <span><span class="co">##   Method:                         poisson </span></span>
@@ -926,10 +934,10 @@ evaluation procedure.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
 <span><span class="co">##   Posterior distribution:         Approximated via MCMC sampling </span></span>
-<span><span class="co">##   Most likely error:              0.23434 </span></span>
-<span><span class="co">##   95 percent credible interval:   [0.22062, 0.24812] </span></span>
-<span><span class="co">##   Precision:                      0.013779 </span></span>
-<span><span class="co">##   BF₁₀:                            1.6715e+15 </span></span>
+<span><span class="co">##   Most likely error:              0.15634 </span></span>
+<span><span class="co">##   95 percent credible interval:   [0.14539, 0.17002] </span></span>
+<span><span class="co">##   Precision:                      0.01368 </span></span>
+<span><span class="co">##   BF₁₀:                            1.3218e+16 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Strata (16):</span></span>
 <span><span class="co">##      n   x         t     mle      lb      ub precision         bf10</span></span>
@@ -953,7 +961,7 @@ evaluation procedure.</p>
 credible interval ranging from 0.98% to 3.92%. The stratum estimates can
 be seen in the output of the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function and are
 visualized below.</p>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-19-1.png" width="700"></p>
 </div>
 </div>
 </div>
