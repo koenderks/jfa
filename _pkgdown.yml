@@ -2,11 +2,80 @@ url: https://koenderks.github.io/jfa/
 
 destination: "."
 
+authors:
+  Koen Derks:
+    href: https://koenderks.com
+
 template:
   params:
     bootswatch: cosmo
 
 navbar:
-  structure:
-    left:  [intro, articles, reference, news]
-    right: [search, github]
+  left:
+    - icon: fa-home fa-lg
+      href: index.html
+    - text: "Get started"
+      href: jfa.html
+    - text: "Vignettes"
+      href: articles/index.html
+    - text: "Functions"
+      href: reference/index.html
+    - text: "News"
+      href: news/index.html
+  right:
+   - icon: fa-github
+     href: https://github.com/koenderks/jfa
+   - icon: fa-users
+     href: https://github.com/koenderks/jfa/discussions
+
+home:
+  links:
+  - text: Ask a question
+    href: https://github.com/koenderks/jfa/discussions
+
+articles:
+  - title: "Audit sampling"
+    desc: >
+      These vignettes provide an introduction to planning, selecting and
+      evaluating audit samples using the **jfa** package.
+    contents:
+      - v1-audit-sampling
+      - v2-audit-sampling-workflow
+      - v3-audit-sampling-bayesian-workflow
+      - v4-audit-sampling-prior-distributions
+      - v5-audit-sampling-planning
+      - v6-audit-sampling-selection
+      - v7-audit-sampling-evaluation
+  - title: "Data auditing"
+    desc: >
+      These vignettes provide an introduction to data auditing using the 
+      **jfa** package.
+    contents:
+      - v1-audit-sampling
+      - v2-audit-sampling-workflow
+      - v3-audit-sampling-bayesian-workflow
+      - v4-audit-sampling-prior-distributions
+      - v5-audit-sampling-planning
+      - v6-audit-sampling-selection
+      - v7-audit-sampling-evaluation
+
+reference:
+  - title: "Overview"
+    desc: >
+      Package overview
+    contents:
+      - jfa-package
+  - title: "Audit sampling"
+    desc: >
+      Functions for audit sampling
+    contents:
+      - auditPrior
+      - planning
+      - selection
+      - evaluation
+  - title: "Data auditing"
+    desc: >
+      Functions for data auditing
+    contents:
+      - digit_test
+      - repeated_test
