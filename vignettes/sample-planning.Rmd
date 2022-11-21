@@ -68,7 +68,7 @@ summary(stage1)
 
 ### Bayesian planning
 
-Performing Bayesian planning requires an input for the `prior` argument in the `planning()` function. Simply setting `prior = TRUE` performs Bayesian planning using **jfa**'s [default priors](https://koenderks.github.io/jfa/articles/v4-audit-sampling-prior-distributions.html#default-priors-method-default).
+Performing Bayesian planning requires an input for the `prior` argument in the `planning()` function. Simply setting `prior = TRUE` performs Bayesian planning using **jfa**'s [default priors](https://koenderks.github.io/jfa/articles/creating-prior.html#default-priors-method-default).
 
 ```{r}
 # Bayesian planning for a performance materiality of 0.05 using a default prior

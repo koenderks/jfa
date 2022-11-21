@@ -42,7 +42,7 @@ In a non-stratified sampling procedure, the auditor does not take samples from d
 
 #### Classical evaluation
 
-Classical hypothesis testing uses the *p*-value to make a decision about whether to reject the hypothesis $H_0$ or not. As an example, consider that an auditor wants to verify whether the population contains less than 5 percent misstatement, implying the hypotheses $H_1:\theta<0.05$ and $H_0:\theta\geq0.05$. They have taken a sample of 100 items, of which 1 contained an error. They set the significance level for the *p*-value to 0.05, implying that $p < 0.05$ will be enough to reject the hypothesis $H_0$.
+Classical hypothesis testing uses the *p*-value to make a decision about whether to reject the hypothesis $H_0$ or not. As an example, consider that an auditor wants to verify whether the population contains less than 5 percent misstatement, implying the hypotheses $H_1:\theta<0.05$ and $H_0:\theta\geq0.05$. They have taken a sample of 100 items, of which 1 contained an error. They set the significance level for the *p*-value to 0.05, implying that $p < 0.05$ will be enough to reject the hypothesis $H_0$. The call below evaluates the sample using a classical non-stratified evaluation procedure.
 
 ```{r}
 evaluation(materiality = 0.05, x = 1, n = 100)
@@ -54,7 +54,7 @@ The output shows that the most likely error in the population is estimated to be
 
 Bayesian hypothesis testing uses the Bayes factor, $BF_{10}$ or $BF_{01}$, to make a statement about the evidence provided by the sample in support for one of the two hypotheses $H_1$ or $H_0$. As an example of how to interpret the Bayes factor, the value of $BF_{10} = 10$ (provided by the `evaluation()` function) can be interpreted as: *the data are 10 times more likely to have occurred under the hypothesis $H_1$ than under the hypothesis $H_0$*. $BF_{10} > 1$ indicates evidence in favor of $H_1$ and against $H_0$, while $BF_{10} < 1$ indicates evidence in favor of $H_0$ and against $H_1$. By default, the `evaluation()` function returns the value for $BF_{10}$.
 
-Consider the previous example of an auditor who wants to verify whether the population contains less than 5 percent misstatement, implying the hypotheses $H_1:\theta<0.05$ and $H_0:\theta\geq0.05$. They have taken a sample of 100 items, of which 1 was found to contain a misstatement. The prior distribution is assumed to be a default *beta(1,1)* prior.
+Consider the previous example of an auditor who wants to verify whether the population contains less than 5 percent misstatement, implying the hypotheses $H_1:\theta<0.05$ and $H_0:\theta\geq0.05$. They have taken a sample of 100 items, of which 1 was found to contain a misstatement. The prior distribution is assumed to be a default *beta(1,1)* prior. The call below evaluates the sample using a Bayesian non-stratified evaluation procedure.
 
 ```{r}
 prior <- auditPrior(materiality = 0.05, method = "default", likelihood = "binomial")
@@ -83,11 +83,13 @@ data(retailer)
 print(retailer)
 ```
 
-In general, there are three approaches to evaluating a stratified sample: no pooling, complete pooling, and partial pooling (see Derks et al., 2022). When using `evaluation()`, you must to indicate which type of pooling to use via the `pooling` argument. No pooling assumes no similarities between strata, which means that all strata are analyzed independently. Complete pooling assumes no difference between strata, which means that all data is aggregated and analyzed as a whole. Finally, partial pooling assumes differences and similarities between strata, which means that information can be shared between strata. Partial pooling (a.k.a. multilevel/hierarchical modeling) is a powerful technique that can result in more efficient population and stratum estimates but is currently only feasible when performing a Bayesian analysis. For this reason, this vignette only describes the Bayesian approach to stratified evaluation but going from this approach to a classical approach only requires setting `prior = FALSE`. 
+In general, there are three approaches to evaluating a stratified sample: no pooling, complete pooling, and partial pooling (see Derks et al., 2022). When using `evaluation()`, you must to indicate which type of pooling to use via the `pooling` argument. No pooling assumes no similarities between strata, which means that all strata are analyzed independently. Complete pooling assumes no difference between strata, which means that all data is aggregated and analyzed as a whole. Finally, partial pooling assumes differences and similarities between strata, which means that information can be shared between strata. Partial pooling (i.e., multilevel/hierarchical modeling) is a powerful technique that can result in more efficient population and stratum estimates but is currently only feasible when performing a Bayesian analysis. For this reason, this vignette only describes the Bayesian approach to stratified evaluation but going from this approach to a classical approach only requires setting `prior = FALSE`.
+
+The number of units per stratum in the population can be provided with `N.units` to weigh the stratum estimates to determine population estimate (i.e., poststratification).
 
 #### Approach 1: No pooling
 
-No pooling (`pooling = "none"`, default) assumes no similarities between strata. This means that the prior distribution specified through `prior` is applied independently for each stratum. This allows for independent estimates for the misstatement in each stratum but also results in a relatively high uncertainty in the population estimate.
+No pooling (`pooling = "none"`, default) assumes no similarities between strata. This means that the prior distribution specified through `prior` is applied independently for each stratum. This allows for independent estimates for the misstatement in each stratum but also results in a relatively high uncertainty in the population estimate. The call below evaluates the sample using a Bayesian stratified evaluation procedure, in which the stratum estimates are poststratified to arrive at the population estimate.
 
 ```{r}
 set.seed(1) # Important because the posterior distribution is determined via sampling
@@ -111,7 +113,7 @@ graphics::arrows(x0 = 1:20, x1 = 1:20, y1 = result_np$strat$lb, y0 = result_np$s
 
 #### Approach 2: Complete pooling
 
-Complete pooling (`pooling = "complete"`) assumes no differences between strata. This has the advantages that data from all strata can be aggregated, which decreases the uncertainty in the population estimate compared to the no pooling approach. However, the disadvantage of this approach is that it does not facilitate the distinction between between strata, as every stratum receives the same estimate equal to that of the population.
+Complete pooling (`pooling = "complete"`) assumes no differences between strata. This has the advantages that data from all strata can be aggregated, which decreases the uncertainty in the population estimate compared to the no pooling approach. However, the disadvantage of this approach is that it does not facilitate the distinction between between strata, as every stratum receives the same estimate equal to that of the population. The call below evaluates the sample using a Bayesian stratified evaluation procedure, in which the strata are assumed to be the same.
 
 ```{r}
 result_cp <- evaluation(
@@ -134,7 +136,7 @@ graphics::arrows(x0 = 1:20, x1 = 1:20, y1 = result_cp$strata$lb, y0 = result_cp$
 
 #### Approach 3: Partial pooling
 
-Finally, partial pooling (`pooling = "partial"`) assumes differences and similarities between strata. This allows the auditor to differentiate between strata, while also sharing information between the strata to reduce uncertainty in the population estimate.
+Finally, partial pooling (`pooling = "partial"`) assumes differences and similarities between strata. This allows the auditor to differentiate between strata, while also sharing information between the strata to reduce uncertainty in the population estimate. The call below evaluates the sample using a Bayesian stratified evaluation procedure, in which the stratum estimates are poststratified to arrive at the population estimate.
 
 ```{r}
 set.seed(1) # Important because the posterior distribution is determined via sampling
@@ -181,7 +183,7 @@ x <- evaluation(
 summary(x)
 ```
 
-In this case, the output shows that the population estimate is 15.77% with a 95% (one-sided) confidence interval ranging from 0% to 17.31%.
+In this case, the output shows that the estimate of the misstatement in the population is 15.77%, with the 95% (one-sided) confidence interval ranging from 0% to 17.31%.
 
 #### Bayesian evaluation
 
@@ -195,11 +197,11 @@ x <- evaluation(
 summary(x)
 ```
 
-The output shows that the population estimate is 15.75% with a 95% (one-sided) credible interval ranging from 0% to 17.49%.
+The output shows that the estimate of the misstatement in the population is 15.75%, with the 95% (one-sided) credible interval ranging from 0% to 17.49%.
 
 ### Stratified samples
 
-Evaluating a stratified sample using data requires specification of the `data`, `values`, `values.audit` and `strata` arguments. The number of units per stratum in the population should be provided with `N.units` to weigh the stratum estimates and arrive at a representative population estimate.
+Evaluating a stratified sample using data requires specification of the `data`, `values`, `values.audit` and `strata` arguments in the `evaluation()` function. In this case, the units are monetary and calculated by aggregating the book values of the items in each stratum.
 
 ```{r}
 N.units <- aggregate(allowances$bookValue, list(allowances$branch), sum)$x
@@ -207,7 +209,7 @@ N.units <- aggregate(allowances$bookValue, list(allowances$branch), sum)$x
 
 #### Classical evaluation
 
-The call below evaluates the `allowances` sample using a classical stratified evaluation procedure.
+The call below evaluates the `allowances` sample using a classical stratified evaluation procedure, in which the stratum estimates are poststratified to arrive at the population estimate.
 
 ```{r}
 x <- evaluation(
@@ -218,7 +220,7 @@ x <- evaluation(
 summary(x)
 ```
 
-In this case, the output shows that the population estimate is 21.88% with a 95% confidence interval ranging from 19.27% to 24.70%. The stratum estimates can be seen in the output of the `summary()` function and are visualized below.
+In this case, the output shows that the estimate of the misstatement in the population is 21.88%, with the 95% confidence interval ranging from 19.27% to 24.70%. The stratum estimates can be seen in the output of the `summary()` function and are visualized below.
 
 ```{r, echo = FALSE}
 plot(1:16, x$strata$mle, pch = 19, ylim = c(0, 1), las = 1, main = "Stratum estimates", ylab = "Misstatement", xlab = "Stratum", axes = FALSE)
@@ -230,7 +232,7 @@ graphics::arrows(x0 = 1:16, x1 = 1:16, y1 = x$strata$lb, y0 = x$strata$ub, angle
 
 #### Bayesian evaluation
 
-Bayesian inference can improve the stratum estimates by specifying a prior distribution that is then applied to each stratum and pooling information between strata where possible. The call below evaluates the `allowances` sample using a Bayesian multilevel stratified evaluation procedure.
+Bayesian inference can improve upon the estimates of the classical approach by pooling information between strata where possible. The call below evaluates the `allowances` sample using a Bayesian multilevel stratified evaluation procedure, in which the stratum estimates are poststratified to arrive at the population estimate.
 
 ```{r}
 x <- evaluation(
@@ -241,7 +243,7 @@ x <- evaluation(
 summary(x)
 ```
 
-The output shows that the population estimate is 1.89% with a 95% credible interval ranging from 0.98% to 3.92%. The stratum estimates can be seen in the output of the `summary()` function and are visualized below.
+The output shows that the estimate of the misstatement in the population is 1.89%, with the 95% credible interval ranging from 0.98% to 3.92%. The stratum estimates can be seen in the output of the `summary()` function and are visualized below.
 
 ```{r, echo = FALSE}
 plot(1:16, x$strata$mle, pch = 19, ylim = c(0, 1), las = 1, main = "Stratum estimates", ylab = "Misstatement", xlab = "Stratum", axes = FALSE)
