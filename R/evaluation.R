@@ -26,8 +26,8 @@
 #'            method = c(
 #'              "poisson", "binomial", "hypergeometric", "stringer",
 #'              "stringer.meikle", "stringer.lta", "stringer.pvz", "rohrbach",
-#'              "rohrbach", "moment", "coxsnell", "direct", "difference",
-#'              "quotient", "regression", "mpu"
+#'              "moment", "coxsnell", "direct", "difference", "quotient",
+#'              "regression", "mpu"
 #'            ),
 #'            alternative = c("less", "two.sided", "greater"),
 #'            conf.level = 0.95,
@@ -270,10 +270,10 @@
 
 evaluation <- function(materiality = NULL,
                        method = c(
-                         "poisson", "binomial", "hypergeometric",
-                         "stringer", "stringer.meikle", "stringer.lta", "stringer.pvz",
-                         "rohrbach", "moment", "coxsnell",
-                         "direct", "difference", "quotient", "regression", "mpu"
+                         "poisson", "binomial", "hypergeometric", "stringer",
+                         "stringer.meikle", "stringer.lta", "stringer.pvz",
+                         "rohrbach", "moment", "coxsnell", "direct", "difference",
+                         "quotient", "regression", "mpu"
                        ),
                        alternative = c("less", "two.sided", "greater"),
                        conf.level = 0.95,
