@@ -2,17 +2,17 @@ pandoc: 2.19.2
 pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
+  audit-sampling: audit-sampling.html
+  bayesian-sampling-workflow: bayesian-sampling-workflow.html
+  creating-prior: creating-prior.html
+  data-auditing: data-auditing.html
+  digit-analysis: digit-analysis.html
   jfa: jfa.html
-  v1-audit-sampling: v1-audit-sampling.html
-  v2-audit-sampling-workflow: v2-audit-sampling-workflow.html
-  v3-audit-sampling-bayesian-workflow: v3-audit-sampling-bayesian-workflow.html
-  v4-audit-sampling-prior-distributions: v4-audit-sampling-prior-distributions.html
-  v5-audit-sampling-planning: v5-audit-sampling-planning.html
-  v6-audit-sampling-selection: v6-audit-sampling-selection.html
-  v7-audit-sampling-evaluation: v7-audit-sampling-evaluation.html
-  v8-data-auditing: v8-data-auditing.html
-  v9-auditing-data-digit-analysis: v9-auditing-data-digit-analysis.html
-last_built: 2022-11-20T11:11Z
+  sample-evaluation: sample-evaluation.html
+  sample-planning: sample-planning.html
+  sample-selection: sample-selection.html
+  sampling-workflow: sampling-workflow.html
+last_built: 2022-11-21T07:59Z
 urls:
   reference: https://koenderks.github.io/jfa/reference
   article: https://koenderks.github.io/jfa/articles

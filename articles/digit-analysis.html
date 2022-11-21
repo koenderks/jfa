@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auditing data: Digit analysis • jfa</title>
+<title>Digit analysis using the jfa package • jfa</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Auditing data: Digit analysis">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Digit analysis using the jfa package">
 <meta property="og:description" content="jfa">
 <meta property="og:image" content="https://koenderks.github.io/jfa/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -47,55 +47,34 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../articles/jfa.html">Get started</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/v1-audit-sampling.html">Audit sampling: Get started</a>
-    </li>
-    <li>
-      <a href="../articles/v2-audit-sampling-workflow.html">Audit sampling: Classical sampling workflow</a>
-    </li>
-    <li>
-      <a href="../articles/v3-audit-sampling-bayesian-workflow.html">Audit sampling: Bayesian sampling workflow</a>
-    </li>
-    <li>
-      <a href="../articles/v4-audit-sampling-prior-distributions.html">Audit sampling: Creating a prior distribution</a>
-    </li>
-    <li>
-      <a href="../articles/v5-audit-sampling-planning.html">Audit sampling: Planning a sample</a>
-    </li>
-    <li>
-      <a href="../articles/v6-audit-sampling-selection.html">Audit sampling: Selecting a sample</a>
-    </li>
-    <li>
-      <a href="../articles/v7-audit-sampling-evaluation.html">Audit sampling: Evaluating a sample</a>
-    </li>
-    <li>
-      <a href="../articles/v8-data-auditing.html">Data auditing: Get started</a>
-    </li>
-    <li>
-      <a href="../articles/v9-auditing-data-digit-analysis.html">Auditing data: Digit analysis</a>
-    </li>
-  </ul>
+  <a href="../articles/index.html">Vignettes</a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../reference/index.html">Functions</a>
 </li>
 <li>
-  <a href="../news/index.html">Changelog</a>
+  <a href="../news/index.html">News</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/koenderks/jfa/" class="external-link">
-    <span class="fab fa-github fa-lg"></span>
+  <a href="https://github.com/koenderks/jfa" class="external-link">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/koenderks/jfa/discussions" class="external-link">
+    <span class="fa fa-users"></span>
      
   </a>
 </li>
@@ -112,29 +91,29 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Auditing data: Digit analysis</h1>
+      <h1 data-toc-skip>Digit analysis using the jfa package</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">last modified:
-10-11-2022</h4>
+            <h4 data-toc-skip class="date">2022-11-21</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/v9-auditing-data-digit-analysis.Rmd" class="external-link"><code>vignettes/v9-auditing-data-digit-analysis.Rmd</code></a></small>
-      <div class="hidden name"><code>v9-auditing-data-digit-analysis.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/digit-analysis.Rmd" class="external-link"><code>vignettes/digit-analysis.Rmd</code></a></small>
+      <div class="hidden name"><code>digit-analysis.Rmd</code></div>
 
     </div>
 
     
     
 <div class="section level2">
-<h2 id="auditing-data-digit-analysis">Auditing data: Digit analysis<a class="anchor" aria-label="anchor" href="#auditing-data-digit-analysis"></a>
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>Welcome to the ‘Digit analysis’ vignette of the <strong>jfa</strong>
 package. In this vignette you are able to find detailed examples of how
 you can incorporate the <code><a href="../reference/digit_test.html">digit_test()</a></code> and
 <code><a href="../reference/repeated_test.html">repeated_test()</a></code> functions provided by the package.</p>
-<div class="section level3">
-<h3 id="function-digit_test">Function: <code>digit_test()</code><a class="anchor" aria-label="anchor" href="#function-digit_test"></a>
-</h3>
+</div>
+<div class="section level2">
+<h2 id="function-digit_test">Function: <code>digit_test()</code><a class="anchor" aria-label="anchor" href="#function-digit_test"></a>
+</h2>
 <p>The function <code><a href="../reference/digit_test.html">digit_test()</a></code> takes a vector of numeric
 values, extract the requested digits, and compares the frequencies of
 these digits to a reference distribution. The function either performs a
@@ -179,11 +158,11 @@ expected frequencies under Benford’s law using the code below.</p>
 <span><span class="co">## alternative hypothesis: leading digit(s) are not distributed according to the benford distribution.</span></span></code></pre>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v9-auditing-data-digit-analysis_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
+<p><img src="digit-analysis_files/figure-html/unnamed-chunk-2-1.png" width="700"></p>
 </div>
-<div class="section level3">
-<h3 id="function-repeated_test">Function: <code>repeated_test()</code><a class="anchor" aria-label="anchor" href="#function-repeated_test"></a>
-</h3>
+<div class="section level2">
+<h2 id="function-repeated_test">Function: <code>repeated_test()</code><a class="anchor" aria-label="anchor" href="#function-repeated_test"></a>
+</h2>
 <p>The function <code><a href="../reference/repeated_test.html">repeated_test()</a></code> analyzes the frequency with
 which values get repeated within a set of numbers. Unlike Benford’s law,
 and its generalizations, this approach examines the entire number at
@@ -205,15 +184,15 @@ the data were not tampered with.</p>
 <span><span class="co">##  Repeated values test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sanitizer$value</span></span>
-<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.005</span></span>
+<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.001</span></span>
 <span><span class="co">## alternative hypothesis: average frequency in data is greater than for random data.</span></span></code></pre>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
-<p><img src="v9-auditing-data-digit-analysis_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
+<p><img src="digit-analysis_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 </div>
-<div class="section level3">
-<h3 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
-</h3>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
 <ul>
 <li>Benford, F. (1938). The law of anomalous numbers. In <em>Proceedings
 of the American Philosophical Society</em>, 551-572. - <a href="https://www.jstor.org/stable/984802" class="external-link">View online</a>
@@ -227,7 +206,6 @@ Press at Psychological Science: A New ‘Nudge’ Supported by Implausible
 Data</em>. - <a href="https://datacolada.org/74" class="external-link">View online</a>
 </li>
 </ul>
-</div>
 </div>
   </div>
 
@@ -243,7 +221,7 @@ Data</em>. - <a href="https://datacolada.org/74" class="external-link">View onli
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Koen Derks.</p>
+<p>Developed by <a href="https://koenderks.com" class="external-link">Koen Derks</a>.</p>
 </div>
 
 <div class="pkgdown">

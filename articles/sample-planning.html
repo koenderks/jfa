@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Audit sampling: Planning a sample • jfa</title>
+<title>Planning statistical audit samples using the jfa package • jfa</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Audit sampling: Planning a sample">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Planning statistical audit samples using the jfa package">
 <meta property="og:description" content="jfa">
 <meta property="og:image" content="https://koenderks.github.io/jfa/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -47,55 +47,34 @@
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
 <li>
+  <a href="../index.html">
+    <span class="fa fa-home fa-lg"></span>
+     
+  </a>
+</li>
+<li>
   <a href="../articles/jfa.html">Get started</a>
 </li>
-<li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-    Articles
-     
-    <span class="caret"></span>
-  </a>
-  <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="../articles/v1-audit-sampling.html">Audit sampling: Get started</a>
-    </li>
-    <li>
-      <a href="../articles/v2-audit-sampling-workflow.html">Audit sampling: Classical sampling workflow</a>
-    </li>
-    <li>
-      <a href="../articles/v3-audit-sampling-bayesian-workflow.html">Audit sampling: Bayesian sampling workflow</a>
-    </li>
-    <li>
-      <a href="../articles/v4-audit-sampling-prior-distributions.html">Audit sampling: Creating a prior distribution</a>
-    </li>
-    <li>
-      <a href="../articles/v5-audit-sampling-planning.html">Audit sampling: Planning a sample</a>
-    </li>
-    <li>
-      <a href="../articles/v6-audit-sampling-selection.html">Audit sampling: Selecting a sample</a>
-    </li>
-    <li>
-      <a href="../articles/v7-audit-sampling-evaluation.html">Audit sampling: Evaluating a sample</a>
-    </li>
-    <li>
-      <a href="../articles/v8-data-auditing.html">Data auditing: Get started</a>
-    </li>
-    <li>
-      <a href="../articles/v9-auditing-data-digit-analysis.html">Auditing data: Digit analysis</a>
-    </li>
-  </ul>
+  <a href="../articles/index.html">Vignettes</a>
 </li>
 <li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../reference/index.html">Functions</a>
 </li>
 <li>
-  <a href="../news/index.html">Changelog</a>
+  <a href="../news/index.html">News</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/koenderks/jfa/" class="external-link">
-    <span class="fab fa-github fa-lg"></span>
+  <a href="https://github.com/koenderks/jfa" class="external-link">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+<li>
+  <a href="https://github.com/koenderks/jfa/discussions" class="external-link">
+    <span class="fa fa-users"></span>
      
   </a>
 </li>
@@ -112,25 +91,29 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Audit sampling: Planning a sample</h1>
+      <h1 data-toc-skip>Planning statistical audit samples using the jfa
+package</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">last modified:
-10-11-2022</h4>
+            <h4 data-toc-skip class="date">2022-11-21</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/v5-audit-sampling-planning.Rmd" class="external-link"><code>vignettes/v5-audit-sampling-planning.Rmd</code></a></small>
-      <div class="hidden name"><code>v5-audit-sampling-planning.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/sample-planning.Rmd" class="external-link"><code>vignettes/sample-planning.Rmd</code></a></small>
+      <div class="hidden name"><code>sample-planning.Rmd</code></div>
 
     </div>
 
     
     
+<div class="section level2">
+<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h2>
 <center>
 <p><img src="img/planning.png" alt="Figure 1: The location of the planning stage in the audit sampling workflow"><br></p>
 </center>
 <p>The objective of the planning stage in an audit is to determine a
 minimum sample size. This vignette shows how to use the
 <code><a href="../reference/planning.html">planning()</a></code> function to achieve this.</p>
+</div>
 <div class="section level2">
 <h2 id="setting-up-the-planning">Setting up the planning<a class="anchor" aria-label="anchor" href="#setting-up-the-planning"></a>
 </h2>
@@ -321,7 +304,7 @@ an object created by the <code>auditPrior</code> function:</p>
 
       <footer><div class="copyright">
   <p></p>
-<p>Developed by Koen Derks.</p>
+<p>Developed by <a href="https://koenderks.com" class="external-link">Koen Derks</a>.</p>
 </div>
 
 <div class="pkgdown">
