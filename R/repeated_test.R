@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-#' Auditing Data: Repeated Values Test
+#' Data Auditing: Repeated Values Test
 #'
 #' @description This function analyzes the frequency with which values get
 #' repeated within a set of numbers. Unlike Benford's law, and its

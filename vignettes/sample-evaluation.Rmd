@@ -1,5 +1,5 @@
 ---
-title: "Evaluating misstatement in statistical audit samples"
+title: "Evaluating statistical audit samples"
 author: Koen Derks
 date: "`r Sys.Date()`"
 output: 
@@ -74,18 +74,20 @@ The output shows that $BF_{10}=47$, implying that under the assumption of impart
 
 ### Stratified samples
 
-In a stratified sampling procedure, the auditor takes samples from different strata or subgroups in a population. An example of such a situation would be a group audit where the auditee consists of different branches across the country. In this case, the component auditors can take a sample from each branch but the group auditor must form an opinion on the group as a whole. For illustrative purposes, this vignette only describes the Bayesian approach to stratified evaluation but going from this approach to a classical approach only requires setting `prior = FALSE`. As a data example, consider the `retailer` data set that comes with the package.
+In a stratified sampling procedure, the auditor takes samples from different strata or subgroups in a population. An example of such a situation would be a group audit where the audited organization consists of different components or branches. Stratification is relevant to the group auditor if they must form an opinion on the group as a whole because they must aggregate the samples taken by the component auditors. 
+
+As a data example, consider the `retailer` data set that comes with the package. The organization in question consists of 20 branches across the country. In each of the 20 strata, a component auditor has taken a statistical sample and reported the outcomes to the group auditor. 
 
 ```{r}
 data(retailer)
 print(retailer)
 ```
 
-Typically, there are three approaches to evaluating a stratified sample: no pooling, complete pooling, and partial pooling (see Derks et al., 2022). No pooling assumes no similarities between strata, which means that all strata must be analyzed independently. Complete pooling assumes no difference between strata, which means that all data is aggregated and analyzed as a whole. Finally, partial pooling assumes differences and similarities between strata, which enables information to be shared between strata. Partial pooling is a powerful technique that can result in more efficient population and stratum estimates but is currently only feasible when performing a Bayesian analysis. 
+In general, there are three approaches to evaluating a stratified sample: no pooling, complete pooling, and partial pooling (see Derks et al., 2022). When using `evaluation()`, you must to indicate which type of pooling to use via the `pooling` argument. No pooling assumes no similarities between strata, which means that all strata are analyzed independently. Complete pooling assumes no difference between strata, which means that all data is aggregated and analyzed as a whole. Finally, partial pooling assumes differences and similarities between strata, which means that information can be shared between strata. Partial pooling (a.k.a. multilevel/hierarchical modeling) is a powerful technique that can result in more efficient population and stratum estimates but is currently only feasible when performing a Bayesian analysis. For this reason, this vignette only describes the Bayesian approach to stratified evaluation but going from this approach to a classical approach only requires setting `prior = FALSE`. 
 
 #### Approach 1: No pooling
 
-No pooling assumes no similarities between strata. This means that the prior distribution specified through `prior` is applied independently for each stratum. Because all strata are assumed to be independent this allows for independent estimates for the misstatement in each stratum, but also results in a relatively high uncertainty in the population estimate.
+No pooling (`pooling = "none"`, default) assumes no similarities between strata. This means that the prior distribution specified through `prior` is applied independently for each stratum. This allows for independent estimates for the misstatement in each stratum but also results in a relatively high uncertainty in the population estimate.
 
 ```{r}
 set.seed(1) # Important because the posterior distribution is determined via sampling
@@ -97,7 +99,7 @@ result_np <- evaluation(
 summary(result_np)
 ```
 
-In this case, the output of the `summary()` function shows that the population estimate is 5.85% with a 95% credible interval ranging from 4.28% to 8.22%. The stratum estimates differ substantially from each other but are relatively uncertain.
+In this case, the output of the `summary()` function shows that the estimate of the misstatement in the population is 5.85%, with the 95% credible interval ranging from 4.28% to 8.22%. The stratum estimates differ substantially from each other but are relatively uncertain.
 
 ```{r, echo = FALSE}
 plot(1:20, result_np$strata$mle, pch = 19, ylim = c(0, 0.5), las = 1, main = "Stratum estimates", ylab = "Misstatement", xlab = "Stratum", axes = FALSE)
@@ -109,7 +111,7 @@ graphics::arrows(x0 = 1:20, x1 = 1:20, y1 = result_np$strat$lb, y0 = result_np$s
 
 #### Approach 2: Complete pooling
 
-Complete pooling assumes no differences between strata. This has the advantages that data from all strata can be aggregated, which decreases the uncertainty of the population estimate. However, the disadvantage of this approach is that it does not allow one to differentiate between strata, as every stratum receives the same estimate (equal to the population estimate).
+Complete pooling (`pooling = "complete"`) assumes no differences between strata. This has the advantages that data from all strata can be aggregated, which decreases the uncertainty in the population estimate compared to the no pooling approach. However, the disadvantage of this approach is that it does not facilitate the distinction between between strata, as every stratum receives the same estimate equal to that of the population.
 
 ```{r}
 result_cp <- evaluation(
@@ -120,7 +122,7 @@ result_cp <- evaluation(
 summary(result_cp)
 ```
 
-For example, the output shows that the population estimate is 4.47% with a 95% credible interval ranging from 3.74% to 5.33%. However, the stratum estimates are all the same, but since the data is aggregated they are contain relatively little uncertainty.
+For example, the output of the `summary()` function shows that the estimate of the misstatement in the population is 4.47%, with the 95% credible interval ranging from 3.74% to 5.33%. Since the data is aggregated, the stratum estimates contain relatively little uncertainty. However, the probability of misstatement in stratum 20 (many misstatements) under this assumption is the same as that of stratum 15 (few misstatements).
 
 ```{r, echo = FALSE}
 plot(1:20, result_cp$strata$mle, pch = 19, ylim = c(0, 0.5), las = 1, main = "Stratum estimates", ylab = "Misstatement", xlab = "Stratum", axes = FALSE)
@@ -132,7 +134,7 @@ graphics::arrows(x0 = 1:20, x1 = 1:20, y1 = result_cp$strata$lb, y0 = result_cp$
 
 #### Approach 3: Partial pooling
 
-Finally, partial pooling assumes differences and similarities between strata. This allows the auditor to differentiate between strata, while also sharing information between the strata to reduce uncertainty in the population estimate.
+Finally, partial pooling (`pooling = "partial"`) assumes differences and similarities between strata. This allows the auditor to differentiate between strata, while also sharing information between the strata to reduce uncertainty in the population estimate.
 
 ```{r}
 set.seed(1) # Important because the posterior distribution is determined via sampling
@@ -144,7 +146,7 @@ result_pp <- evaluation(
 summary(result_pp)
 ```
 
-In this case, the output shows that the population estimate is 4.34% with a 95% credible interval ranging from 3.45% to 5.33%. Note that this estimate is substantially less uncertain than that of the no pooling approach. Like in the no pooling approach, the stratum estimates are different from each other. However, partial pooling puts the stratum estimates closer together and makes them more accurate.
+In this case, the output shows that the estimate of the misstatement in the population is 4.34%, with the 95% credible interval ranging from 3.45% to 5.33%. Note that this population estimate is substantially less uncertain than that of the no pooling approach. Note that, like in the no pooling approach, the stratum estimates are different from each other but lie closer together and are less uncertain.
 
 ```{r, echo = FALSE}
 plot(1:20, result_pp$strata$mle, pch = 19, ylim = c(0, 0.5), las = 1, main = "Stratum estimates", ylab = "Misstatement", xlab = "Stratum", axes = FALSE)
@@ -199,6 +201,10 @@ The output shows that the population estimate is 15.75% with a 95% (one-sided) c
 
 Evaluating a stratified sample using data requires specification of the `data`, `values`, `values.audit` and `strata` arguments. The number of units per stratum in the population should be provided with `N.units` to weigh the stratum estimates and arrive at a representative population estimate.
 
+```{r}
+N.units <- aggregate(allowances$bookValue, list(allowances$branch), sum)$x
+```
+
 #### Classical evaluation
 
 The call below evaluates the `allowances` sample using a classical stratified evaluation procedure.
@@ -207,7 +213,7 @@ The call below evaluates the `allowances` sample using a classical stratified ev
 x <- evaluation(
   materiality = 0.05, data = allowances,
   values = "bookValue", values.audit = "auditValue", strata = "branch", times = "times",
-  alternative = "two.sided", N.units = as.numeric(table(allowances$branch))
+  alternative = "two.sided", N.units = N.units
 )
 summary(x)
 ```
@@ -230,7 +236,7 @@ Bayesian inference can improve the stratum estimates by specifying a prior distr
 x <- evaluation(
   materiality = 0.05, data = allowances, prior = TRUE,
   values = "bookValue", values.audit = "auditValue", strata = "branch", times = "times",
-  alternative = "two.sided", N.units = as.numeric(table(allowances$branch)), pooling = "partial"
+  alternative = "two.sided", N.units = N.units, pooling = "partial"
 )
 summary(x)
 ```

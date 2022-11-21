@@ -2,7 +2,7 @@
 % Please edit documentation in R/digit_test.R
 \name{digit_test}
 \alias{digit_test}
-\title{Auditing Data: Digit Distribution Test}
+\title{Data Auditing: Digit Distribution Test}
 \usage{
 digit_test(x, check = c("first", "last", "firsttwo"),
            reference = 'benford', prior = FALSE)
