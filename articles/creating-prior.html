@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Creating prior distributions for audit sampling with the jfa package • jfa</title>
+<title>Creating a prior distribution for audit sampling • jfa</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Creating prior distributions for audit sampling with the jfa package">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Creating a prior distribution for audit sampling">
 <meta property="og:description" content="jfa">
 <meta property="og:image" content="https://koenderks.github.io/jfa/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -91,8 +91,8 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Creating prior distributions for audit sampling
-with the jfa package</h1>
+      <h1 data-toc-skip>Creating a prior distribution for audit
+sampling</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
             <h4 data-toc-skip class="date">2022-11-21</h4>
@@ -170,7 +170,7 @@ hypergeometric likelihood.</p>
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="creating-prior_files/figure-html/unnamed-chunk-3-1.png" width="576"></p>
+<p><img src="creating-prior_files/figure-html/unnamed-chunk-3-1.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="prior-distributions-with-classical-properties-method-strict">Prior distributions with classical properties
@@ -207,7 +207,7 @@ et al., 2022).</p>
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="creating-prior_files/figure-html/unnamed-chunk-5-1.png" width="576"></p>
+<p><img src="creating-prior_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="custom-prior-distributions-method-param">Custom prior distributions (<code>method = 'param'</code>)<a class="anchor" aria-label="anchor" href="#custom-prior-distributions-method-param"></a>
@@ -241,7 +241,7 @@ code below creates a beta(2, 10) prior distribution.</p>
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior3</span><span class="op">)</span></span></code></pre></div>
-<p><img src="creating-prior_files/figure-html/unnamed-chunk-7-1.png" width="576"></p>
+<p><img src="creating-prior_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="prior-distributions-with-equal-prior-probabilities-method-impartial">Prior distributions with equal prior probabilities
@@ -281,7 +281,7 @@ incorporates this assumption into a prior distribution.</p>
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior4</span><span class="op">)</span></span></code></pre></div>
-<p><img src="creating-prior_files/figure-html/unnamed-chunk-9-1.png" width="576"></p>
+<p><img src="creating-prior_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="prior-distributions-with-custom-prior-probabilities-method-hyp">Prior distributions with custom prior probabilities
@@ -323,7 +323,7 @@ probability of 60% into a prior distribution.</p>
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior5</span><span class="op">)</span></span></code></pre></div>
-<p><img src="creating-prior_files/figure-html/unnamed-chunk-11-1.png" width="576"></p>
+<p><img src="creating-prior_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="prior-distributions-using-the-audit-risk-model-method-arm">Prior distributions using the Audit Risk Model
@@ -364,7 +364,7 @@ prior distribution.</p>
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior6</span><span class="op">)</span></span></code></pre></div>
-<p><img src="creating-prior_files/figure-html/unnamed-chunk-13-1.png" width="576"></p>
+<p><img src="creating-prior_files/figure-html/unnamed-chunk-13-1.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="prior-distributions-using-the-bayesian-risk-assessment-model-method-bram">Prior distributions using the Bayesian Risk Assessment Model
@@ -404,7 +404,7 @@ upper bound is 60%.</p>
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior7</span><span class="op">)</span></span></code></pre></div>
-<p><img src="creating-prior_files/figure-html/unnamed-chunk-15-1.png" width="576"></p>
+<p><img src="creating-prior_files/figure-html/unnamed-chunk-15-1.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="prior-distributions-from-an-earlier-sample-method-sample">Prior distributions from an earlier sample
@@ -443,7 +443,7 @@ items in which 0 misstatements were found into a prior distribution.</p>
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior8</span><span class="op">)</span></span></code></pre></div>
-<p><img src="creating-prior_files/figure-html/unnamed-chunk-17-1.png" width="576"></p>
+<p><img src="creating-prior_files/figure-html/unnamed-chunk-17-1.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="prior-distributions-from-a-weighted-earlier-sample-method-factor">Prior distributions from a weighted earlier sample
@@ -484,7 +484,7 @@ distribution.</p>
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior9</span><span class="op">)</span></span></code></pre></div>
-<p><img src="creating-prior_files/figure-html/unnamed-chunk-19-1.png" width="576"></p>
+<p><img src="creating-prior_files/figure-html/unnamed-chunk-19-1.png" width="700"></p>
 </div>
 </div>
 <div class="section level2">

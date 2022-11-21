@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Evaluating statistical audit samples using the jfa package • jfa</title>
+<title>Evaluating misstatement in statistical audit samples • jfa</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Evaluating statistical audit samples using the jfa package">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Evaluating misstatement in statistical audit samples">
 <meta property="og:description" content="jfa">
 <meta property="og:image" content="https://koenderks.github.io/jfa/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -91,8 +91,8 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Evaluating statistical audit samples using the
-jfa package</h1>
+      <h1 data-toc-skip>Evaluating misstatement in statistical audit
+samples</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
             <h4 data-toc-skip class="date">2022-11-21</h4>
@@ -107,9 +107,8 @@ jfa package</h1>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<center>
-<p><img src="img/evaluation.png" alt="Figure 1: The location of the evaluation stage in the audit sampling workflow"><br></p>
-</center>
+<p align="center">
+<img src="https://github.com/koenderks/jfa/raw/development/vignettes/img/evaluation.png" alt="evaluation" width="100%"></p>
 <p>This vignette demonstrates how to evaluate a sample with the
 <code><a href="../reference/evaluation.html">evaluation()</a></code> function from the <strong>jfa</strong>
 package. In auditing, the goal of the evaluation is typically to
@@ -390,7 +389,7 @@ the population estimate.</p>
 that the population estimate is 5.85% with a 95% credible interval
 ranging from 4.28% to 8.22%. The stratum estimates differ substantially
 from each other but are relatively uncertain.</p>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-6-1.png" width="576"></p>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-7-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="approach-2-complete-pooling">Approach 2: Complete pooling<a class="anchor" aria-label="anchor" href="#approach-2-complete-pooling"></a>
@@ -457,7 +456,7 @@ population estimate).</p>
 with a 95% credible interval ranging from 3.74% to 5.33%. However, the
 stratum estimates are all the same, but since the data is aggregated
 they are contain relatively little uncertainty.</p>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-8-1.png" width="576"></p>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-9-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="approach-3-partial-pooling">Approach 3: Partial pooling<a class="anchor" aria-label="anchor" href="#approach-3-partial-pooling"></a>
@@ -476,8 +475,8 @@ population estimate.</p>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'pp_binomial' NOW (CHAIN 1).</span></span>
 <span><span class="co">## Chain 1: </span></span>
-<span><span class="co">## Chain 1: Gradient evaluation took 2.6e-05 seconds</span></span>
-<span><span class="co">## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.26 seconds.</span></span>
+<span><span class="co">## Chain 1: Gradient evaluation took 2.7e-05 seconds</span></span>
+<span><span class="co">## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.27 seconds.</span></span>
 <span><span class="co">## Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 1: </span></span>
 <span><span class="co">## Chain 1: </span></span>
@@ -494,15 +493,15 @@ population estimate.</p>
 <span><span class="co">## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 1: </span></span>
-<span><span class="co">## Chain 1:  Elapsed Time: 0.237537 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 1:                0.198358 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 1:                0.435895 seconds (Total)</span></span>
+<span><span class="co">## Chain 1:  Elapsed Time: 0.293767 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 1:                0.275947 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 1:                0.569714 seconds (Total)</span></span>
 <span><span class="co">## Chain 1: </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'pp_binomial' NOW (CHAIN 2).</span></span>
 <span><span class="co">## Chain 2: </span></span>
-<span><span class="co">## Chain 2: Gradient evaluation took 1.2e-05 seconds</span></span>
-<span><span class="co">## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.12 seconds.</span></span>
+<span><span class="co">## Chain 2: Gradient evaluation took 1.6e-05 seconds</span></span>
+<span><span class="co">## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.16 seconds.</span></span>
 <span><span class="co">## Chain 2: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 2: </span></span>
 <span><span class="co">## Chain 2: </span></span>
@@ -519,15 +518,15 @@ population estimate.</p>
 <span><span class="co">## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 2: </span></span>
-<span><span class="co">## Chain 2:  Elapsed Time: 0.210652 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 2:                0.314473 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 2:                0.525125 seconds (Total)</span></span>
+<span><span class="co">## Chain 2:  Elapsed Time: 0.229025 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 2:                0.353289 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 2:                0.582314 seconds (Total)</span></span>
 <span><span class="co">## Chain 2: </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'pp_binomial' NOW (CHAIN 3).</span></span>
 <span><span class="co">## Chain 3: </span></span>
-<span><span class="co">## Chain 3: Gradient evaluation took 3.1e-05 seconds</span></span>
-<span><span class="co">## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.31 seconds.</span></span>
+<span><span class="co">## Chain 3: Gradient evaluation took 1.6e-05 seconds</span></span>
+<span><span class="co">## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.16 seconds.</span></span>
 <span><span class="co">## Chain 3: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 3: </span></span>
 <span><span class="co">## Chain 3: </span></span>
@@ -544,15 +543,15 @@ population estimate.</p>
 <span><span class="co">## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 3: </span></span>
-<span><span class="co">## Chain 3:  Elapsed Time: 0.250695 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 3:                0.258452 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 3:                0.509147 seconds (Total)</span></span>
+<span><span class="co">## Chain 3:  Elapsed Time: 0.27566 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 3:                0.288113 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 3:                0.563773 seconds (Total)</span></span>
 <span><span class="co">## Chain 3: </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'pp_binomial' NOW (CHAIN 4).</span></span>
 <span><span class="co">## Chain 4: </span></span>
-<span><span class="co">## Chain 4: Gradient evaluation took 1.2e-05 seconds</span></span>
-<span><span class="co">## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.12 seconds.</span></span>
+<span><span class="co">## Chain 4: Gradient evaluation took 1.9e-05 seconds</span></span>
+<span><span class="co">## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.19 seconds.</span></span>
 <span><span class="co">## Chain 4: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 4: </span></span>
 <span><span class="co">## Chain 4: </span></span>
@@ -569,9 +568,9 @@ population estimate.</p>
 <span><span class="co">## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 4: </span></span>
-<span><span class="co">## Chain 4:  Elapsed Time: 0.211115 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 4:                0.215709 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 4:                0.426824 seconds (Total)</span></span>
+<span><span class="co">## Chain 4:  Elapsed Time: 0.228894 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 4:                0.249358 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 4:                0.478252 seconds (Total)</span></span>
 <span><span class="co">## Chain 4:</span></span></code></pre>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_pp</span><span class="op">)</span></span></code></pre></div>
@@ -626,7 +625,7 @@ estimate is substantially less uncertain than that of the no pooling
 approach. Like in the no pooling approach, the stratum estimates are
 different from each other. However, partial pooling puts the stratum
 estimates closer together and makes them more accurate.</p>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-10-1.png" width="576"></p>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
 </div>
 </div>
 </div>
@@ -791,7 +790,7 @@ classical stratified evaluation procedure.</p>
 with a 95% confidence interval ranging from 19.27% to 24.70%. The
 stratum estimates can be seen in the output of the
 <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function and are visualized below.</p>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-15-1.png" width="576"></p>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-16-1.png" width="700"></p>
 </div>
 <div class="section level4">
 <h4 id="bayesian-evaluation-2">Bayesian evaluation<a class="anchor" aria-label="anchor" href="#bayesian-evaluation-2"></a>
@@ -810,8 +809,8 @@ evaluation procedure.</p>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'pp_beta' NOW (CHAIN 1).</span></span>
 <span><span class="co">## Chain 1: </span></span>
-<span><span class="co">## Chain 1: Gradient evaluation took 0.000358 seconds</span></span>
-<span><span class="co">## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 3.58 seconds.</span></span>
+<span><span class="co">## Chain 1: Gradient evaluation took 0.000629 seconds</span></span>
+<span><span class="co">## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 6.29 seconds.</span></span>
 <span><span class="co">## Chain 1: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 1: </span></span>
 <span><span class="co">## Chain 1: </span></span>
@@ -828,15 +827,15 @@ evaluation procedure.</p>
 <span><span class="co">## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 1: </span></span>
-<span><span class="co">## Chain 1:  Elapsed Time: 68.2768 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 1:                62.2981 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 1:                130.575 seconds (Total)</span></span>
+<span><span class="co">## Chain 1:  Elapsed Time: 81.5907 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 1:                68.7649 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 1:                150.356 seconds (Total)</span></span>
 <span><span class="co">## Chain 1: </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'pp_beta' NOW (CHAIN 2).</span></span>
 <span><span class="co">## Chain 2: </span></span>
-<span><span class="co">## Chain 2: Gradient evaluation took 0.000273 seconds</span></span>
-<span><span class="co">## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 2.73 seconds.</span></span>
+<span><span class="co">## Chain 2: Gradient evaluation took 0.000599 seconds</span></span>
+<span><span class="co">## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 5.99 seconds.</span></span>
 <span><span class="co">## Chain 2: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 2: </span></span>
 <span><span class="co">## Chain 2: </span></span>
@@ -853,15 +852,15 @@ evaluation procedure.</p>
 <span><span class="co">## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 2: </span></span>
-<span><span class="co">## Chain 2:  Elapsed Time: 64.9783 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 2:                58.3036 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 2:                123.282 seconds (Total)</span></span>
+<span><span class="co">## Chain 2:  Elapsed Time: 69.462 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 2:                66.2395 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 2:                135.701 seconds (Total)</span></span>
 <span><span class="co">## Chain 2: </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'pp_beta' NOW (CHAIN 3).</span></span>
 <span><span class="co">## Chain 3: </span></span>
-<span><span class="co">## Chain 3: Gradient evaluation took 0.000267 seconds</span></span>
-<span><span class="co">## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 2.67 seconds.</span></span>
+<span><span class="co">## Chain 3: Gradient evaluation took 0.000273 seconds</span></span>
+<span><span class="co">## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 2.73 seconds.</span></span>
 <span><span class="co">## Chain 3: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 3: </span></span>
 <span><span class="co">## Chain 3: </span></span>
@@ -878,15 +877,15 @@ evaluation procedure.</p>
 <span><span class="co">## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 3: </span></span>
-<span><span class="co">## Chain 3:  Elapsed Time: 66.6475 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 3:                61.5918 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 3:                128.239 seconds (Total)</span></span>
+<span><span class="co">## Chain 3:  Elapsed Time: 73.1892 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 3:                63.8076 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 3:                136.997 seconds (Total)</span></span>
 <span><span class="co">## Chain 3: </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## SAMPLING FOR MODEL 'pp_beta' NOW (CHAIN 4).</span></span>
 <span><span class="co">## Chain 4: </span></span>
-<span><span class="co">## Chain 4: Gradient evaluation took 0.000424 seconds</span></span>
-<span><span class="co">## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 4.24 seconds.</span></span>
+<span><span class="co">## Chain 4: Gradient evaluation took 0.000392 seconds</span></span>
+<span><span class="co">## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 3.92 seconds.</span></span>
 <span><span class="co">## Chain 4: Adjust your expectations accordingly!</span></span>
 <span><span class="co">## Chain 4: </span></span>
 <span><span class="co">## Chain 4: </span></span>
@@ -903,9 +902,9 @@ evaluation procedure.</p>
 <span><span class="co">## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
 <span><span class="co">## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
 <span><span class="co">## Chain 4: </span></span>
-<span><span class="co">## Chain 4:  Elapsed Time: 65.8182 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 4:                66.5591 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 4:                132.377 seconds (Total)</span></span>
+<span><span class="co">## Chain 4:  Elapsed Time: 68.9377 seconds (Warm-up)</span></span>
+<span><span class="co">## Chain 4:                66.603 seconds (Sampling)</span></span>
+<span><span class="co">## Chain 4:                135.541 seconds (Total)</span></span>
 <span><span class="co">## Chain 4:</span></span></code></pre>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
@@ -954,7 +953,7 @@ evaluation procedure.</p>
 credible interval ranging from 0.98% to 3.92%. The stratum estimates can
 be seen in the output of the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function and are
 visualized below.</p>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-17-1.png" width="576"></p>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-18-1.png" width="700"></p>
 </div>
 </div>
 </div>

@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The classical audit sampling workflow in the jfa package • jfa</title>
+<title>Walkthrough of the classical audit sampling workflow • jfa</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="The classical audit sampling workflow in the jfa package">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Walkthrough of the classical audit sampling workflow">
 <meta property="og:description" content="jfa">
 <meta property="og:image" content="https://koenderks.github.io/jfa/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -91,8 +91,8 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>The classical audit sampling workflow in the jfa
-package</h1>
+      <h1 data-toc-skip>Walkthrough of the classical audit sampling
+workflow</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
             <h4 data-toc-skip class="date">2022-11-21</h4>
@@ -143,11 +143,9 @@ misstatement in the population (e.g., in this case also the financial
 statements as a whole). To start her workflow, Laura first loads
 BuildIt’s financial statements in R.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://koenderks.github.io/jfa/">jfa</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"BuildIt"</span><span class="op">)</span></span></code></pre></div>
-<center>
-<p><img src="img/workflow.png" alt="Figure 1: Illustration of the audit sampling workflow"><br></p>
-</center>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"BuildIt"</span><span class="op">)</span></span></code></pre></div>
+<p align="center">
+<img src="https://github.com/koenderks/jfa/raw/development/vignettes/img/workflow.png" alt="workflow" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="setting-up-the-audit">Setting up the audit<a class="anchor" aria-label="anchor" href="#setting-up-the-audit"></a>
@@ -202,9 +200,8 @@ BuildIt’s computer systems, she assesses the control risk as medium
 <div class="section level2">
 <h2 id="stage-1-planning-an-audit-sample">Stage 1: Planning an audit sample<a class="anchor" aria-label="anchor" href="#stage-1-planning-an-audit-sample"></a>
 </h2>
-<center>
-<p><img src="img/planning.png" alt="Figure 2: The location of the planning stage in the audit sampling workflow"><br></p>
-</center>
+<p align="center">
+<img src="https://github.com/koenderks/jfa/raw/development/vignettes/img/planning.png" alt="planning" width="100%"></p>
 <p>Laura can choose to either perform a frequentist analysis, where she
 uses the increased detection risk as her level of uncertainty, or
 perform a Bayesian analysis, where she captures the information in the
@@ -246,9 +243,8 @@ lower the materiality of 5%.</p>
 <div class="section level2">
 <h2 id="stage-2-selecting-a-sample">Stage 2: Selecting a sample<a class="anchor" aria-label="anchor" href="#stage-2-selecting-a-sample"></a>
 </h2>
-<center>
-<p><img src="img/selection.png" alt="Figure 3: The location of the selection stage in the audit sampling workflow"><br></p>
-</center>
+<p align="center">
+<img src="https://github.com/koenderks/jfa/raw/development/vignettes/img/selection.png" alt="selection" width="100%"></p>
 <p>Laura is now ready to select the required 178 items from the
 financial statements. She can choose to do this according to one of two
 statistical methods. In <em>record sampling</em>
@@ -317,9 +313,8 @@ in the <code>auditValue</code> column of the data set.</p>
 <div class="section level2">
 <h2 id="stage-4-evaluating-the-sample">Stage 4: Evaluating the sample<a class="anchor" aria-label="anchor" href="#stage-4-evaluating-the-sample"></a>
 </h2>
-<center>
-<p><img src="img/evaluation.png" alt="Figure 4: The location of the evaluation stage in the audit sampling workflow"><br></p>
-</center>
+<p align="center">
+<img src="https://github.com/koenderks/jfa/raw/development/vignettes/img/evaluation.png" alt="evaluation" width="100%"></p>
 <p>Using her annotated sample, Laura can perform her inference with the
 <code><a href="../reference/evaluation.html">evaluation()</a></code> function.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
