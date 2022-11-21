@@ -172,8 +172,8 @@
       prob <- (1 - conf.level) / 2
     }
     lb <- switch(likelihood,
-      "poisson" = stats::qgamma(prob, 1 + t.obs, n.obs),
-      "binomial" = stats::qbeta(prob, 1 + t.obs, n.obs - t.obs),
+      "poisson" = stats::qgamma(prob, t.obs, 1 + n.obs),
+      "binomial" = stats::qbeta(prob, t.obs, 1 + n.obs - t.obs),
       "hypergeometric" = .qhyper(prob, N.units, n.obs, x.obs)
     )
   }
