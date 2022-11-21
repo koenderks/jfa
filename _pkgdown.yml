@@ -15,7 +15,7 @@ navbar:
     - icon: fa-home fa-lg
       href: index.html
     - text: "Get started"
-      href: jfa.html
+      href: articles/jfa.html
     - text: "Vignettes"
       href: articles/index.html
     - text: "Functions"
