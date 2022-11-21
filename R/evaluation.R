@@ -111,6 +111,8 @@
 #'   performs classical evaluation If this argument is specified as \code{TRUE}
 #'   or as a prior from \code{auditPrior}, this function performs Bayesian
 #'   evaluation using a prior that is conjugate to the specified \code{method}.
+#' @param ...           further arguments to be passed to evaluation. Currently
+#'   for compatibility with JASP for audit but is to be deprecated later.
 #'
 #' @details This section lists the available options for the \code{method}
 #'   argument.
@@ -292,25 +294,20 @@ evaluation <- function(materiality = NULL,
   pooling <- match.arg(pooling)
   is_jfa_prior <- inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")
   is_bayesian <- (inherits(prior, "logical") && prior) || is_jfa_prior
-  if (is_bayesian) {
-    if (is_jfa_prior) {
-      if (method != prior[["likelihood"]]) {
-        message(paste0("Using 'method = ", prior[["likelihood"]], "' from 'prior'"))
-      }
-      prior.x <- prior[["description"]]$implicit.x
-      prior.n <- prior[["description"]]$implicit.n
-      method <- prior[["likelihood"]]
-      if (!is.null(prior[["N.units"]])) {
-        message(paste0("Using 'N.units = ", prior[["N.units"]], "' from 'prior'"))
-        N.units <- prior[["N.units"]]
-      }
-    } else {
-      prior.x <- 0
-      prior.n <- 1
+  if (is_jfa_prior) {
+    if (method != prior[["likelihood"]]) {
+      message(paste0("Using 'method = ", prior[["likelihood"]], "' from 'prior'"))
+    }
+    prior.x <- prior[["description"]]$implicit.x
+    prior.n <- prior[["description"]]$implicit.n
+    method <- prior[["likelihood"]]
+    if (!is.null(prior[["N.units"]])) {
+      message(paste0("Using 'N.units = ", prior[["N.units"]], "' from 'prior'"))
+      N.units <- prior[["N.units"]]
     }
   } else {
     prior.x <- 0
-    prior.n <- 0
+    prior.n <- 1
   }
   stopifnot("missing value for 'conf.level'" = !is.null(conf.level))
   valid_confidence <- is.numeric(conf.level) && length(conf.level) == 1 && conf.level > 0 && conf.level < 1
@@ -519,7 +516,11 @@ evaluation <- function(materiality = NULL,
       precision[i] <- .comp_precision(alternative, mle[i], lb[i], ub[i])
     }
     if (use_stratification && pooling == "none") {
-      stratum_samples <- .mcmc_analytical(method, nstrata, prior.x, t.obs, prior.n, n.obs, N.units, iterations = 100000)
+      if (is_bayesian) {
+        stratum_samples <- .mcmc_analytical(method, nstrata, prior.x, t.obs, prior.n, n.obs, N.units, iterations = 1e5)
+      } else {
+        stratum_samples <- .mcmc_emulate(method, alternative, nstrata, t.obs, n.obs, N.units, iterations = 1e5)
+      }
     }
   } else {
     stopifnot("pooling = 'partial' only possible when 'prior != FALSE'" = is_bayesian)

@@ -108,6 +108,9 @@ If this argument is specified as \code{FALSE} (default), the function
 performs classical evaluation If this argument is specified as \code{TRUE}
 or as a prior from \code{auditPrior}, this function performs Bayesian
 evaluation using a prior that is conjugate to the specified \code{method}.}
+
+\item{...}{further arguments to be passed to evaluation. Currently
+for compatibility with JASP for audit but is to be deprecated later.}
 }
 \value{
 An object of class \code{jfaEvaluation} containing:

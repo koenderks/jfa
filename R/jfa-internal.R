@@ -274,8 +274,8 @@
     )
   } else {
     pval <- switch(likelihood,
-      "poisson" = stats::pgamma(materiality, 1 + t.obs, n.obs),
-      "binomial" = stats::pbeta(materiality, 1 + t.obs, n.obs - t.obs),
+      "poisson" = stats::pgamma(materiality, t.obs, 1 + n.obs),
+      "binomial" = stats::pbeta(materiality, t.obs, 1 + n.obs - t.obs),
       "hypergeometric" = stats::phyper(x.obs - 1, K, N.units - K, n.obs, lower.tail = FALSE)
     )
   }
@@ -447,6 +447,37 @@
       "poisson" = stats::rgamma(n = iterations, 1 + prior.x, prior.n),
       "binomial" = stats::rbeta(n = iterations, 1 + prior.x, prior.n - prior.x),
       "hypergeometric" = extraDistr::rbbinom(n = iterations, N.units[i - nstrata], 1 + prior.x, prior.n - prior.x) / N.units[i - nstrata]
+    )
+  }
+  return(samples)
+}
+
+.mcmc_emulate <- function(likelihood, alternative, nstrata, t.obs, n.obs, N.units, iterations) {
+  samples <- matrix(NA, ncol = (nstrata - 1) * 2, nrow = iterations)
+  stratum_indices_prior <- (nstrata + 1):((nstrata - 1) * 2 + 1)
+  stratum_indices_post <- 2:nstrata
+  if (alternative == "two.sided") {
+    alpha <- c(rep(0, iterations / 2), rep(1, iterations / 2))
+    beta <- 1 - alpha
+  } else if (alternative == "less") {
+    alpha <- 1
+    beta <- 0
+  } else {
+    alpha <- 0
+    beta <- 1
+  }
+  for (i in stratum_indices_post) { # Sample from stratum posterior distributions
+    samples[, i - 1] <- switch(likelihood,
+      "poisson" = stats::rgamma(n = iterations, alpha + t.obs[i], beta + n.obs[i]),
+      "binomial" = stats::rbeta(n = iterations, alpha + t.obs[i], beta + n.obs[i] - t.obs[i]),
+      "hypergeometric" = extraDistr::rbbinom(n = iterations, N.units[i] - n.obs[i], alpha + t.obs[i], beta + n.obs[i] - t.obs[i]) / N.units[i]
+    )
+  }
+  for (i in stratum_indices_prior) { # Sample from stratum prior distributions
+    samples[, i - 1] <- switch(likelihood,
+      "poisson" = stats::rgamma(n = iterations, alpha, beta),
+      "binomial" = stats::rbeta(n = iterations, alpha, beta),
+      "hypergeometric" = extraDistr::rbbinom(n = iterations, N.units[i - nstrata], alpha, beta) / N.units[i - nstrata]
     )
   }
   return(samples)
