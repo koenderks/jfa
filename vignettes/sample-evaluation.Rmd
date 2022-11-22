@@ -183,7 +183,7 @@ x <- evaluation(
 summary(x)
 ```
 
-In this case, the output shows that the estimate of the misstatement in the population is 15.77%, with the 95% (one-sided) confidence interval ranging from 0% to 17.31%.
+In this case, the output shows that the estimate of the misstatement in the population is 15.77%, with the 95% (one-sided) confidence interval ranging from 0% to 17.5%.
 
 #### Bayesian evaluation
 
@@ -197,7 +197,7 @@ x <- evaluation(
 summary(x)
 ```
 
-The output shows that the estimate of the misstatement in the population is 15.75%, with the 95% (one-sided) credible interval ranging from 0% to 17.49%.
+The output shows that the estimate of the misstatement in the population is 15.76%, with the 95% (one-sided) credible interval ranging from 0% to 17.49%.
 
 ### Stratified samples
 
@@ -220,7 +220,7 @@ x <- evaluation(
 summary(x)
 ```
 
-In this case, the output shows that the estimate of the misstatement in the population is 21.88%, with the 95% confidence interval ranging from 19.27% to 24.70%. The stratum estimates can be seen in the output of the `summary()` function and are visualized below.
+In this case, the output shows that the estimate of the misstatement in the population is 14.72%, with the 95% confidence interval ranging from 12.55% to 18.26%. The precision of the population estimate is 3.54%. The stratum estimates can be seen in the output of the `summary()` function and are visualized below.
 
 ```{r, echo = FALSE}
 plot(1:16, x$strata$mle, pch = 19, ylim = c(0, 1), las = 1, main = "Stratum estimates", ylab = "Misstatement", xlab = "Stratum", axes = FALSE)
@@ -243,7 +243,7 @@ x <- evaluation(
 summary(x)
 ```
 
-The output shows that the estimate of the misstatement in the population is 1.89%, with the 95% credible interval ranging from 0.98% to 3.92%. The stratum estimates can be seen in the output of the `summary()` function and are visualized below.
+The output shows that the estimate of the misstatement in the population is 15.66%, with the 95% credible interval ranging from 14.59% to 17%. The precision of the population estimate is 1.34%, which is substantially lower than that of the classical approach. The stratum estimates can be seen in the output of the `summary()` function and are visualized below.
 
 ```{r, echo = FALSE}
 plot(1:16, x$strata$mle, pch = 19, ylim = c(0, 1), las = 1, main = "Stratum estimates", ylab = "Misstatement", xlab = "Stratum", axes = FALSE)
