@@ -57,11 +57,14 @@
   return(precision)
 }
 
-.comp_mle_freq <- function(likelihood, n.obs, x.obs, t.obs) {
+.comp_mle_freq <- function(likelihood, n.obs, x.obs, t.obs, N.units) {
+  if (is.null(N.units)) {
+    N.units <- rep(1, length(n.obs))
+  }
   if (likelihood == "hypergeometric") {
-    mle <- x.obs / n.obs
+    mle <- (x.obs / n.obs) %*% N.units / sum(N.units)
   } else {
-    mle <- t.obs / n.obs
+    mle <- (t.obs / n.obs) %*% N.units / sum(N.units)
   }
   return(mle)
 }
@@ -435,14 +438,14 @@
   samples <- matrix(NA, ncol = (nstrata - 1) * 2, nrow = iterations)
   stratum_indices_prior <- (nstrata + 1):((nstrata - 1) * 2 + 1)
   stratum_indices_post <- 2:nstrata
-  for (i in stratum_indices_post) { # Sample from stratum posterior distributions
+  for (i in stratum_indices_post) {
     samples[, i - 1] <- switch(likelihood,
       "poisson" = stats::rgamma(n = iterations, 1 + prior.x + t.obs[i], prior.n + n.obs[i]),
       "binomial" = stats::rbeta(n = iterations, 1 + prior.x + t.obs[i], prior.n - prior.x + n.obs[i] - t.obs[i]),
       "hypergeometric" = extraDistr::rbbinom(n = iterations, N.units[i] - n.obs[i], 1 + prior.x + t.obs[i], prior.n - prior.x + n.obs[i] - t.obs[i]) / N.units[i]
     )
   }
-  for (i in stratum_indices_prior) { # Sample from stratum prior distributions
+  for (i in stratum_indices_prior) {
     samples[, i - 1] <- switch(likelihood,
       "poisson" = stats::rgamma(n = iterations, 1 + prior.x, prior.n),
       "binomial" = stats::rbeta(n = iterations, 1 + prior.x, prior.n - prior.x),
@@ -466,14 +469,14 @@
     alpha <- 0
     beta <- 1
   }
-  for (i in stratum_indices_post) { # Sample from stratum posterior distributions
+  for (i in stratum_indices_post) {
     samples[, i - 1] <- switch(likelihood,
       "poisson" = stats::rgamma(n = iterations, alpha + t.obs[i], beta + n.obs[i]),
       "binomial" = stats::rbeta(n = iterations, alpha + t.obs[i], beta + n.obs[i] - t.obs[i]),
       "hypergeometric" = extraDistr::rbbinom(n = iterations, N.units[i] - n.obs[i], alpha + t.obs[i], beta + n.obs[i] - t.obs[i]) / N.units[i]
     )
   }
-  for (i in stratum_indices_prior) { # Sample from stratum prior distributions
+  for (i in stratum_indices_prior) {
     samples[, i - 1] <- switch(likelihood,
       "poisson" = stats::rgamma(n = iterations, alpha, beta),
       "binomial" = stats::rbeta(n = iterations, alpha, beta),

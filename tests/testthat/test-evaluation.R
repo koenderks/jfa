@@ -404,12 +404,12 @@ test_that(desc = "(id: f3-v0.6.5-t1) Test frequentist poisson stratification wit
   # 2. No pooling
   set.seed(1) # Required because the population posterior is generated through sampling
   res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "poisson", pooling = "none")
-  expect_equal(res$mle, 0.2347666001)
+  expect_equal(res$mle, as.numeric((k / n) %*% N / sum(N)))
   expect_equal(res$ub, 0.5101278778)
   expect_equal(res$p.value, NA)
   expect_equal(res$strata$mle, k / n)
   expect_equal(res$strata$ub, stats::qgamma(0.95, 1 + k, n))
-  expect_equal(res$strata$p.value, c(0.9991502269, 0.9808069376, 0.8105842460))
+  expect_equal(res$strata$p.value, stats::pgamma(0.03, 1 + k, n, lower.tail = FALSE))
 })
 
 test_that(desc = "(id: f3-v0.6.5-t2) Test Bayesian poisson stratification with summary statistics (Derks et al., 2022, Table 1)", {
@@ -448,12 +448,12 @@ test_that(desc = "(id: f3-v0.6.5-t3) Test frequentist binomial stratification wi
   # 2. No pooling
   set.seed(1) # Required because the population posterior is generated through sampling
   res <- evaluation(materiality = 0.03, x = k, n = n, N.units = N, method = "binomial", pooling = "none")
-  expect_equal(res$mle, 0.2224631925)
+  expect_equal(res$mle, as.numeric((k / n) %*% N / sum(N)))
   expect_equal(res$ub, 0.3947343991)
   expect_equal(res$p.value, NA)
   expect_equal(res$strata$mle, k / n)
   expect_equal(res$strata$ub, stats::qbeta(0.95, 1 + k, n - k))
-  expect_equal(res$strata$p.value, c(0.9994955825, 0.9829069658, 0.8079828448))
+  expect_equal(res$strata$p.value, stats::pbeta(0.03, 1 + k, n - k, lower.tail = FALSE))
 })
 
 test_that(desc = "(id: f3-v0.6.5-t4) Test Bayesian binomial stratification with summary statistics (Derks et al., 2022, Table 1)", {

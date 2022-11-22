@@ -479,7 +479,7 @@ evaluation <- function(materiality = NULL,
           if (method == "hypergeometric") {
             K[i] <- ceiling(materiality * N.units[i])
           }
-          mle[i] <- .comp_mle_freq(method, n.obs[i], x.obs[i], t.obs[i])
+          mle[i] <- .comp_mle_freq(method, n.obs[i], x.obs[i], t.obs[i], N.units[i])
           lb[i] <- .comp_lb_freq(alternative, conf.level, method, n.obs[i], x.obs[i], t.obs[i], N.units[i])
           ub[i] <- .comp_ub_freq(alternative, conf.level, method, n.obs[i], x.obs[i], t.obs[i], N.units[i])
           if (materiality < 1) {
@@ -534,7 +534,11 @@ evaluation <- function(materiality = NULL,
       stratum_samples <- .mcmc_stan(method, prior.x, prior.n, n.obs, t.obs, t = NULL, nstrata, stratum, likelihood = "binomial")
     }
     for (i in 2:nstrata) {
-      mle[i] <- .comp_mode_bayes(analytical = FALSE, samples = stratum_samples[, i - 1])
+      if (is_bayesian) {
+        mle[i] <- .comp_mode_bayes(analytical = FALSE, samples = stratum_samples[, i - 1])
+      } else {
+        mle[i] <- .comp_mle_freq(method, n.obs[i], x.obs[i], t.obs[i], N.units[i])
+      }
       if (method == "hypergeometric") {
         mle[i] <- mle[i] / N.units[i]
       }
@@ -546,9 +550,13 @@ evaluation <- function(materiality = NULL,
   if (use_stratification && pooling != "complete" && valid_test_method) {
     prior_samples <- .poststratification(stratum_samples[, nstrata:ncol(stratum_samples)], N.units)
     post_samples <- .poststratification(stratum_samples[, 1:(nstrata - 1)], N.units)
-    mle[1] <- .comp_mode_bayes(analytical = FALSE, samples = post_samples)
-    if (method == "hypergeometric") {
-      mle[1] <- mle[1] / N.units[1]
+    if (is_bayesian) {
+      mle[1] <- .comp_mode_bayes(analytical = FALSE, samples = post_samples)
+      if (method == "hypergeometric") {
+        mle[1] <- mle[1] / N.units[1]
+      }
+    } else {
+      mle[1] <- .comp_mle_freq(method, n.obs[-1], x.obs[-1], t.obs[-1], N.units[-1])
     }
     lb[1] <- .comp_lb_bayes(alternative, conf.level, analytical = FALSE, samples = post_samples)
     ub[1] <- .comp_ub_bayes(alternative, conf.level, analytical = FALSE, samples = post_samples)

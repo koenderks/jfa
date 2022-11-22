@@ -548,6 +548,9 @@ print.jfaEvaluation <- function(x, digits = getOption("digits"), ...) {
   if (!is.null(x[["ub"]])) {
     cat(format(100 * x$conf.level), " percent ", if (is.null(x[["prior"]])) "confidence" else "credible", " interval:\n", " ", paste(format(c(x[["lb"]], x[["ub"]]), digits = digits), collapse = " "), "\n", sep = "")
   }
+  if (!is.null(x[["mle"]])) {
+    cat("most likely estimate:\n", x[["mle"]], "\n")
+  }
   method_string <- paste0("'", x[["method"]], "'")
   if (!is.null(x[["strata"]]) && x[["pooling"]] == "complete") {
     method_string <- paste0(method_string, " + 'complete-pooling'")
@@ -559,7 +562,7 @@ print.jfaEvaluation <- function(x, digits = getOption("digits"), ...) {
   if (!is.null(x[["prior"]])) {
     method_string <- paste0(method_string, " + 'prior'")
   }
-  cat("estimates obtained via method", method_string, "\n")
+  cat("results obtained via method", method_string, "\n")
 }
 
 #' @rdname jfa-methods
