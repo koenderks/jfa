@@ -517,21 +517,21 @@ evaluation <- function(materiality = NULL,
     }
     if (use_stratification && pooling == "none") {
       if (is_bayesian) {
-        stratum_samples <- .mcmc_analytical(method, nstrata, prior.x, t.obs, prior.n, n.obs, N.units, iterations = 1e5)
+        stratum_samples <- .mcmc_analytical(method, nstrata, prior.x, t.obs, prior.n, n.obs, N.units, 1e5)
       } else {
-        stratum_samples <- .mcmc_emulate(method, alternative, nstrata, t.obs, n.obs, N.units, iterations = 1e5)
+        stratum_samples <- .mcmc_emulate(method, alternative, nstrata, t.obs, n.obs, N.units, 1e5)
       }
     }
   } else {
     stopifnot("pooling = 'partial' only possible when 'prior != FALSE'" = is_bayesian)
     if (broken_taints && has_data) {
-      stratum_samples <- .mcmc_stan(method, prior.x, prior.n, n.obs, t.obs, taints, nstrata, stratum, likelihood = "beta")
+      stratum_samples <- .mcmc_stan(method, prior.x, prior.n, n.obs, t.obs, taints, nstrata, stratum, "beta")
     } else {
       if (broken_taints) {
         message("sum of taints in each stratum is rounded upwards")
         t.obs <- ceiling(t.obs)
       }
-      stratum_samples <- .mcmc_stan(method, prior.x, prior.n, n.obs, t.obs, t = NULL, nstrata, stratum, likelihood = "binomial")
+      stratum_samples <- .mcmc_stan(method, prior.x, prior.n, n.obs, t.obs, t = NULL, nstrata, stratum, "binomial")
     }
     for (i in 2:nstrata) {
       if (is_bayesian) {
@@ -555,11 +555,13 @@ evaluation <- function(materiality = NULL,
       if (method == "hypergeometric") {
         mle[1] <- mle[1] / N.units[1]
       }
+      lb[1] <- .comp_lb_bayes(alternative, conf.level, analytical = FALSE, samples = post_samples)
+      ub[1] <- .comp_ub_bayes(alternative, conf.level, analytical = FALSE, samples = post_samples)
     } else {
       mle[1] <- .comp_mle_freq(method, n.obs[-1], x.obs[-1], t.obs[-1], N.units[-1])
+      lb[1] <- .comp_lb_freq(alternative, conf.level, analytical = FALSE, samples = post_samples)
+      ub[1] <- .comp_ub_freq(alternative, conf.level, analytical = FALSE, samples = post_samples)
     }
-    lb[1] <- .comp_lb_bayes(alternative, conf.level, analytical = FALSE, samples = post_samples)
-    ub[1] <- .comp_ub_bayes(alternative, conf.level, analytical = FALSE, samples = post_samples)
     precision[1] <- .comp_precision(alternative, mle[1], lb[1], ub[1])
   } else if (use_stratification && !valid_test_method) {
     message("population results are displayed for aggregated sample")

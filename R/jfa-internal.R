@@ -147,7 +147,7 @@
   return(skewness)
 }
 
-.comp_ub_freq <- function(alternative, conf.level, likelihood, n.obs, x.obs, t.obs, N.units) {
+.comp_ub_freq <- function(alternative, conf.level, likelihood, n.obs, x.obs, t.obs, N.units, analytical = TRUE, samples = NULL) {
   if (alternative == "greater") {
     ub <- 1
   } else {
@@ -156,16 +156,20 @@
     } else {
       prob <- conf.level + (1 - conf.level) / 2
     }
-    ub <- switch(likelihood,
-      "poisson" = stats::qgamma(prob, 1 + t.obs, n.obs),
-      "binomial" = stats::qbeta(prob, 1 + t.obs, n.obs - t.obs),
-      "hypergeometric" = .qhyper(prob, N.units, n.obs, x.obs)
-    )
+    if (analytical) {
+      ub <- switch(likelihood,
+        "poisson" = stats::qgamma(prob, 1 + t.obs, n.obs),
+        "binomial" = stats::qbeta(prob, 1 + t.obs, n.obs - t.obs),
+        "hypergeometric" = .qhyper(prob, N.units, n.obs, x.obs)
+      )
+    } else {
+      ub <- as.numeric(stats::quantile(samples[1:(length(samples) / 2)], prob))
+    }
   }
   return(ub)
 }
 
-.comp_lb_freq <- function(alternative, conf.level, likelihood, n.obs, x.obs, t.obs, N.units) {
+.comp_lb_freq <- function(alternative, conf.level, likelihood, n.obs, x.obs, t.obs, N.units, analytical = TRUE, samples = NULL) {
   if (alternative == "less") {
     lb <- 0
   } else {
@@ -174,11 +178,15 @@
     } else {
       prob <- (1 - conf.level) / 2
     }
-    lb <- switch(likelihood,
-      "poisson" = stats::qgamma(prob, t.obs, 1 + n.obs),
-      "binomial" = stats::qbeta(prob, t.obs, 1 + n.obs - t.obs),
-      "hypergeometric" = .qhyper(prob, N.units, n.obs, x.obs)
-    )
+    if (analytical) {
+      lb <- switch(likelihood,
+        "poisson" = stats::qgamma(prob, t.obs, 1 + n.obs),
+        "binomial" = stats::qbeta(prob, t.obs, 1 + n.obs - t.obs),
+        "hypergeometric" = .qhyper(prob, N.units, n.obs, x.obs)
+      )
+    } else {
+      lb <- as.numeric(stats::quantile(samples[(length(samples) / 2 + 1):length(samples)], prob))
+    }
   }
   return(lb)
 }
@@ -456,12 +464,10 @@
 }
 
 .mcmc_emulate <- function(likelihood, alternative, nstrata, t.obs, n.obs, N.units, iterations) {
-  samples <- matrix(NA, ncol = (nstrata - 1) * 2, nrow = iterations)
-  stratum_indices_prior <- (nstrata + 1):((nstrata - 1) * 2 + 1)
-  stratum_indices_post <- 2:nstrata
   if (alternative == "two.sided") {
-    alpha <- c(rep(0, iterations / 2), rep(1, iterations / 2))
+    alpha <- rep(1:0, each = iterations)
     beta <- 1 - alpha
+    iterations <- iterations * 2
   } else if (alternative == "less") {
     alpha <- 1
     beta <- 0
@@ -469,6 +475,9 @@
     alpha <- 0
     beta <- 1
   }
+  samples <- matrix(NA, ncol = (nstrata - 1) * 2, nrow = iterations)
+  stratum_indices_prior <- (nstrata + 1):((nstrata - 1) * 2 + 1)
+  stratum_indices_post <- 2:nstrata
   for (i in stratum_indices_post) {
     samples[, i - 1] <- switch(likelihood,
       "poisson" = stats::rgamma(n = iterations, alpha + t.obs[i], beta + n.obs[i]),
