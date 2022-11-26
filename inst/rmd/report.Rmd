@@ -1,8 +1,8 @@
 ---
-title: "Audit sampling report"
+title: "Report: Audit sample evaluation"
 output: 
   html_document:
-    theme: journal
+    theme: readable
 ---
 
 ```{r, include = FALSE}
@@ -22,214 +22,152 @@ colorize <- function(x, color) {
 
 ```{css, echo=FALSE}
 .math {
-  font-size: small;
+font-size: small;
+}
+#header {
+background: rgb(34, 63, 135);
+padding: 1em;
+color: rgb(255, 255, 255);
 }
 ```
 
 ---
 
-<img src="jfaLogo.png" width="133" height="154" alt="logo" align="right" margin-left="20" margin-right="20"/>
+<img src="jfaLogo.png" width="99.75" height="115.5" alt="logo" align="right" margin-left="20" margin-right="20"/>
 
-This report was created by `r version$version.string` and its package `jfa` (version `r utils::packageVersion("jfa")`)^[`jfa`'s source code can be found on its [GitHub page](https://github.com/koenderks/jfa)]. `jfa` provides Bayesian and classical methods for statistical auditing and is available on CRAN. 
-
-`jfa` is free software and you can redistribute it and or modify it under the terms of the GNU GPL-3 as published by the Free Software Foundation. The package is distributed in the hope that it will be useful, but without any warranty; without even the implied warranty of merchantability of fitness for a particular purpose. 
-
-Visit the [package website](https://koenderks.github.io/jfa) to learn more!
-
-### Summary
+This report was created by `r version$version.string` and its package **jfa** (version `r utils::packageVersion("jfa")`). **jfa** is free software and you can redistribute it and or modify it under the terms of the GNU GPL-3 as published by the Free Software Foundation. The package is distributed in the hope that it will be useful, but without any warranty; without even the implied warranty of merchantability of fitness for a particular purpose.
 
 ---
 
-<!-- State goal of analysis -->
-`r if(object[["materiality"]] != 1 & object[["min.precision"]] != 1){ paste0("The objective of this sampling procedure is to determine with a confidence of ", round(object[["conf.level"]] * 100, 3), "% whether the percentage of misstatement in the population is lower than the performance materiality of ", round(object[["materiality"]] * 100, 3), "% ",if(!is.null(object[["N.units"]])){paste0("( = $", format(round(object[["N.units"]] * object[["materiality"]], 3), scientific = FALSE, big.mark = ","),")")} else {}," with a required minimum precision of ", round(object[["min.precision"]] * 100, 3), "% ",if(!is.null(object[["N.units"]])){paste0("( = $", format(round(object[["N.units"]] * object[["min.precision"]], 3), scientific = FALSE, big.mark = ","),")")} else {},".") } else if(object[["materiality"]] != 1 && object[["min.precision"]] == 1){ paste0("The objective of this sampling procedure is to determine with a confidence of ", round(object[["conf.level"]] * 100, 3), "% whether the percentage of misstatement in the population is lower than the performance materiality of ", round(object[["materiality"]] * 100, 3), "% ",if(!is.null(object[["N.units"]])){paste0("( = $", format(round(object[["N.units"]] * object[["materiality"]], 3), scientific = FALSE, big.mark = ","),")")} else {}) } else if(object[["materiality"]] == 1 && object[["min.precision"]] != 1){ paste0("The objective of this sampling procedure is to determine the misstatement in the population with a confidence of ", round(object[["conf.level"]] * 100, 3), "% and a minimum required precision of ", round(object[["min.precision"]] * 100, 3), "% ",if(!is.null(object[["N.units"]])){paste0("( = $", format(round(object[["N.units"]] * object[["min.precision"]], 3), scientific = FALSE, big.mark = ","),")")} else {},".") }`
+### Results
 
 ```{r echo=FALSE}
-df <- data.frame("n" = object[["n"]], "k" = object[["x"]], "t" = object[["t"]])
-colnames(df) <- c("Sample size", "Misstatements", "Total taint")
-tab <- knitr::kable(df,
-  digits = 2, caption = "Table 1: Summary of the sampling results.", format = "html",
-  row.names = FALSE, format.args = list(big.mark = ",", scientific = FALSE),
-  table.attr = "style='width:40%;'", align = "c"
-)
-if (is.nan(object[["t"]])) {
-  tab <- kableExtra::footnote(tab,
-    alphabet = "The total taint could not be calculated because
-                              some book values are zero.", fixed_small_size = TRUE
-  )
-}
-kableExtra::kable_classic(tab, position = "float_left", html_font = "Cambria")
-```
-
-<div class = "row" align="center">
-<br>
-```{r, echo = FALSE}
-if (object[["materiality"]] != 1) {
-  if (object[["method"]] %in% c("direct", "difference", "quotient", "regression")) {
-    if (object[["ub"]] < object[["materiality"]] * object[["N.units"]]) {
-      knitr::include_graphics("./materiality_succeeded.png")
-    } else {
-      knitr::include_graphics("./materiality_failed.png")
-    }
-  } else {
-    if (object[["ub"]] < object[["materiality"]]) {
-      knitr::include_graphics("./materiality_succeeded.png")
-    } else {
-      knitr::include_graphics("./materiality_failed.png")
-    }
-  }
-}
-
-if (object[["materiality"]] != 1 && object[["min.precision"]] != 1) {
-  knitr::include_graphics("./empty.png")
-}
-
-if (object[["min.precision"]] != 1) {
-  if (object[["method"]] %in% c("direct", "difference", "quotient", "regression")) {
-    if (object[["precision"]] < object[["min.precision"]] * object[["N.units"]]) {
-      knitr::include_graphics("./precision_succeeded.png")
-    } else {
-      knitr::include_graphics("./precision_failed.png")
-    }
-  } else {
-    if (object[["precision"]] < object[["min.precision"]]) {
-      knitr::include_graphics("./precision_succeeded.png")
-    } else {
-      knitr::include_graphics("./precision_failed.png")
-    }
-  }
-}
-```
-</div>
-
-The table below summarizes the estimated misstatement in the population, including the most likely error, the `r round(object[["conf.level"]] * 100, 3)`% upper bound, and the obtained precision. As a justification of these results, appendix A contains the derivations upon which they are based. Appendix B lists the input data.
-
-```{r, echo = FALSE}
-if (object[["method"]] %in% c("direct", "difference", "quotient", "regression")) {
-  df <- data.frame(
-    "type" = c("x 100 = %", "$"),
-    "mle" = c(object[["mle"]] / object[["N.units"]], object[["mle"]]),
-    "lb" = c(object[["lb"]] / object[["N.units"]], object[["lb"]]),
-    "ub" = c(object[["ub"]] / object[["N.units"]], object[["ub"]]),
-    "precision" = c(object[["precision"]] / object[["N.units"]], object[["precision"]])
-  )
-  colnames(df) <- c("", "Most likely error", "Lower bound", "Upper bound", "Precision")
+if (!is.null(object[["prior"]])) {
+  inttype <- "Credible"
 } else {
+  inttype <- "Confidence"
+}
+df <- data.frame(n = object[["n"]])
+if (!is.null(object[["N.units"]])) {
+  df <- cbind(N = object[["N.units"]], df)
+}
+df$x <- object[["x"]]
+df$t <- object[["t"]]
+df$mle <- object[["mle"]]
+df$int <- paste0("[", round(object[["lb"]], 3), "; ", round(object[["ub"]], 3), "]")
+df$precision <- object[["precision"]]
+if (object[["materiality"]] < 1) {
+  if (!is.null(object[["prior"]])) {
+    df$stat <- object[["posterior"]][["hypotheses"]]$bf.h1
+  } else {
+    df$stat <- object[["p.value"]]
+  }
+}
+if (!is.null(object[["strata"]])) {
+  rows <- data.frame(n = object[["strata"]][, "n"])
   if (!is.null(object[["N.units"]])) {
-    df <- data.frame(
-      "type" = c("% = x 100", "$"),
-      "mle" = c(object[["mle"]], object[["mle"]] * object[["N.units"]]),
-      "ub" = c(object[["ub"]], object[["ub"]] * object[["N.units"]]),
-      "precision" = c(
-        object[["precision"]],
-        object[["precision"]] * object[["N.units"]]
-      )
+    rows <- cbind(rows, N = object[["strata"]][, "N"])
+  }
+  rows <- cbind(rows, object[["strata"]][, c("x", "t", "mle")])
+  rows$int <- paste0("[", round(object[["strata"]]$lb, 3), "; ", round(object[["strata"]]$ub, 3), "]")
+  rows$precision <- object[["strata"]][, "precision"]
+  if (object[["materiality"]] < 1) {
+    if (!is.null(object[["prior"]])) {
+      rows$stat <- object[["strata"]][, "bf10"]
+    } else {
+      rows$stat <- object[["strata"]][["p.value"]]
+    }
+  }
+  df <- rbind(df, rows)
+  rownames(df) <- c("Population", rownames(object[["strata"]]))
+} else {
+  rownames(df) <- "Population"
+}
+if (object[["materiality"]] < 1) {
+  if (!is.null(object[["prior"]])) {
+    col_names <- c(
+      "Sample size", "Misstatements", "Taint", "Most likely error",
+      paste0(round(object[["conf.level"]] * 100, 2), "% ", inttype, " interval"), "Precision", "BF10"
     )
   } else {
-    df <- data.frame(
-      "type" = c("% = x 100"),
-      "mle" = object[["mle"]],
-      "ub" = object[["ub"]],
-      "precision" = object[["precision"]]
+    col_names <- c(
+      "Sample size", "Misstatements", "Taint", "Most likely error",
+      paste0(round(object[["conf.level"]] * 100, 2), "% ", inttype, " interval"), "Precision", "p-value"
     )
   }
-  colnames(df) <- c("", "Most likely error", "Upper bound", "Precision")
+} else {
+  col_names <- c(
+    "Sample size", "Misstatements", "Taint", "Most likely error",
+    paste0(round(object[["conf.level"]] * 100, 2), "% ", inttype, " interval"), "Precision"
+  )
 }
+if (!is.null(object[["N.units"]])) {
+  col_names <- c("Total size", col_names)
+}
+colnames(df) <- col_names
 tab <- knitr::kable(df,
-  digits = 3, caption = "Table 2: Summary of the inferential results.", format = "html",
-  row.names = FALSE, format.args = list(big.mark = ",", scientific = FALSE),
-  table.attr = "style='width:70%;'", align = "r"
+  digits = 3, caption = "Table 1: Evaluation summary", format = "html",
+  format.args = list(big.mark = ",", scientific = FALSE),
+  table.attr = "style=''", align = "c"
 )
+if (object[["alternative"]] == "two.sided") {
+  alternative_string <- paste0("The displayed ", tolower(inttype), " interval is two-sided.")
+} else {
+  alternative_string <- paste0("The displayed ", tolower(inttype), " interval is one-sided.")
+}
+if (object[["materiality"]] < 1) {
+  test_string <- switch(object[["alternative"]],
+    "two.sided" = paste0("For all tests, the alternative hypothesis specifies that misstatement \u2260 ", round(object[["materiality"]], 3), "."),
+    "less" = paste0("For all tests, the alternative hypothesis specifies that misstatement < ", round(object[["materiality"]], 3), "."),
+    "greater" = paste0("For all tests, the alternative hypothesis specifies that misstatement > ", round(object[["materiality"]], 3), ".")
+  )
+} else {
+  test_string <- NULL
+}
+if (is.nan(object[["t"]])) {
+  taint_string <- "The total taint could not be calculated because some book values are zero."
+} else {
+  taint_string <- NULL
+}
 tab <- kableExtra::footnote(tab,
-  alphabet = "The top row shows the misstatement as a fraction of the total value.", fixed_small_size = TRUE
+  alphabet = c(alternative_string, test_string, taint_string),
+  fixed_small_size = TRUE
 )
-kableExtra::kable_classic(tab, position = "left", html_font = "Cambria")
+kableExtra::kable_classic(tab, position = "center", html_font = "Cambria")
 ```
 
-```{r echo=FALSE, fig.height=3.4, fig.align='center'}
-if (!(object[["method"]] %in% c("stringer"))) {
-  plot(object)
+```{r echo=FALSE, fig.align='center'}
+if (is.null(object[["strata"]])) {
+  plot(0, object[["mle"]],
+    pch = 19, ylim = c(0, 1), las = 1,
+    ylab = "Misstatement", xlab = "", axes = FALSE
+  )
+  graphics::axis(side = 1, at = 0, labels = "Population")
+  graphics::axis(side = 2, at = seq(0, 1, length.out = 5), las = 1)
+  graphics::arrows(x0 = 0, x1 = 0, y0 = object[["lb"]], y1 = object[["ub"]], angle = 90, length = 0.05)
+  graphics::arrows(x0 = 0, x1 = 0, y1 = object[["lb"]], y0 = object[["ub"]], angle = 90, length = 0.05)
+} else {
+  plot(0:nrow(object[["strata"]]), c(object[["mle"]], object[["strata"]]$mle),
+    pch = 19, ylim = c(0, 1), las = 1,
+    ylab = "Misstatement", xlab = "", axes = FALSE
+  )
+  graphics::axis(side = 1, at = 0:nrow(object[["strata"]]), labels = c("Population", rownames(object[["strata"]])), )
+  graphics::axis(side = 2, at = seq(0, 1, length.out = 5), las = 1)
+  graphics::arrows(x0 = 0:nrow(object[["strata"]]), x1 = 0:nrow(object[["strata"]]), y0 = c(object[["lb"]], object[["strata"]]$lb), y1 = c(object[["ub"]], object[["strata"]]$ub), angle = 90, length = 0.05)
+  graphics::arrows(x0 = 0:nrow(object[["strata"]]), x1 = 0:nrow(object[["strata"]]), y1 = c(object[["lb"]], object[["strata"]]$lb), y0 = c(object[["ub"]], object[["strata"]]$ub), angle = 90, length = 0.05)
+}
+if (object[["materiality"]] < 1) {
+  abline(h = object[["materiality"]], col = "darkred", lty = 2)
 }
 ```
 
-\newpage
-
-### Appendix A: Derivations
-
----
-
-These results have been calculated using `r switch(object[["method"]], "poisson" = "the Poisson distribution", "binomial" = "the binomial distribution", "the hypergeometric" = "hypergeometric distribution", "stringer" = "the Stringer bound (Bickel, 1992)", "stringer.meikle" = "the Stringer bound with Meikle's correction", "stringer.lta" = "the Stringer bound with LTA correction", "stringer.pvz" = "the modified Stringer bound", "rohrbach" = "Rohrbach's augmented variance bound", "moment" = "the modified moment bound", "coxsnell" = "the Cox and Snell bound", "direct" = "the direct estimator (Touw & Hoogduin, 2011)", "difference" = "the difference estimator (Touw & Hoogduin, 2011)", "quotient" = "the quotient estimator (Touw & Hoogduin, 2011)", "regression" = "the regression estimator (Touw & Hoogduin, 2011)")`. `r if(object[["method"]] %in% c("difference", "quotient", "direct", "regression")){"The units of inference are individual items"} else {"The units of inference are individual monetary units"}`.
-
-*Notation:*
-
-<!-- Notation for direct and regression estimators -->
-`r if (object[["method"]] %in% c("direct", "regression")){ paste0("\\begin{equation}\\begin{split}\\text{Ist position:    }& ist = \\text{", colnames(object[["data"]])[2], "} \\\\ \\text{Soll position:    }& soll = \\text{", colnames(object[["data"]])[3], "} \\\\ \\text{Sample size:    }& n = ", object[["n"]], " \\\\ \\text{Population size:    }& N = ", format(object[["N.items"]], big.mark=","), "\\\\ \\text{Population value:    }& B = ", format(object[["N.units"]], digits = 3, scientific = FALSE, big.mark = ","), " \\\\ \\text{Sampling risk:    }& \\alpha = ", round(1 - object[["conf.level"]], 3), "\\end{split} \\hspace{4cm} \\begin{split} \\text{Estimated population misstatement:     }& \\hat{E} \\\\ \\text{Lower bound population misstatement:     }& E_{",round(1 - (object[["conf.level"]] + ((1 - object[["conf.level"]])/2)), 3),"} \\\\ \\text{Upper bound population misstatement:     }& E_{",round(object[["conf.level"]] + ((1 - object[["conf.level"]])/2), 3),"} \\\\ \\text{Estimated unit true value:     }& \\hat{\\theta} \\end{split}\\end{equation}") }`
-
-<!-- Notation for difference and quotient estimators -->
-`r if (object[["method"]] %in% c("difference", "quotient")){ paste0("\\begin{equation}\\begin{split}\\text{Ist position:    }& ist = \\text{", colnames(object[["data"]])[2], "} \\\\ \\text{Soll position:    }& soll = \\text{", colnames(object[["data"]])[3], "} \\\\ \\text{Sample size:    }& n = ", object[["n"]], " \\\\ \\text{Population size:    }& N = ", format(object[["N.items"]], big.mark=","), "\\\\ \\text{Population value:    }& B = ", format(object[["N.units"]], digits = 3, scientific = FALSE, big.mark = ","), " \\\\ \\text{Sampling risk:    }& \\alpha = ", round(1 - object[["conf.level"]], 3), "\\end{split} \\hspace{4cm} \\begin{split} \\text{Estimated population misstatement:     }& \\hat{E} \\\\ \\text{Lower bound population misstatement:     }& E_{",round(1 - (object[["conf.level"]] + ((1 - object[["conf.level"]])/2)), 3),"} \\\\ \\text{Upper bound population misstatement:     }& E_{",round(object[["conf.level"]] + ((1 - object[["conf.level"]])/2), 3),"} \\\\ \\text{Estimated unit misstatement:     }& \\hat{\\theta} \\end{split}\\end{equation}") }`
-
-<!-- Notation for methods that return unit estimates -->
-`r if (object[["method"]] %in% c("binomial", "stringer")){ paste0("\\begin{equation}\\begin{split}\\text{Ist position:    }& ist = \\text{", colnames(object[["data"]])[2], "} \\\\ \\text{Soll position:    }& soll = \\text{", colnames(object[["data"]])[3], "} \\\\ \\text{Sample size:    }& n = ", object[["n"]], " \\\\ \\text{Misstatements:    }& k = ", object[["x"]], "\\\\ \\text{Population value:    }& B = ", format(object[["N.units"]], digits = 3, scientific = FALSE, big.mark = ","), " \\\\ \\text{Sampling risk:    }& \\alpha = ", round(1 - object[["conf.level"]], 3), "\\end{split} \\hspace{4cm} \\begin{split} \\text{Estimated population misstatement:     }& \\hat{E} \\\\ \\text{Upper bound population misstatement:     }& E_{",round(object[["conf.level"]], 3),"} \\\\ \\text{Estimated unit misstatement:     }& \\hat{\\theta} \\\\ \\text{Upper bound unit misstatement:     }& \\theta_{", round(object[["conf.level"]], 3),"} \\end{split}\\end{equation}") }`
-
-*Calculation:*
-
-`r if (!(object[["method"]] %in% c("difference", "direct", "quotient", "regression", "binomial", "stringer"))){ "**No calculations are available for this method yet. Check back soon!**" }`
-
-<!-- Calculations direct estimator -->
-`r if (object[["method"]] == "direct"){ paste0("$\\begin{aligned} \\text{The estimated population misstatemen}&\\text{t } \\hat{E}\\text{ is a generalization of the estimated unit true value }\\hat{\\theta}\\text{:} \\\\ \\\\ \\hat{E} &= B - N \\times \\hat{\\theta} \\\\ &= ", format(object[["N.units"]], digits = 3, scientific = F, big.mark=","), " - ", format(object[["N.items"]], scientific = F, big.mark=",")," \\times ", format(mean(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=",")," = ", format(object[["mle"]], nsmall = 2, scientific = F, big.mark=",")," \\\\ \\\\ \\text{The confidence interval for the populat}&\\text{ion misstatement } [E_{",round(1 - (object[["conf.level"]] + ((1 - object[["conf.level"]])/2)), 3),"}; E_{",round(object[["conf.level"]] + ((1 - object[["conf.level"]])/2), 3),"}] \\text{ is a generalization of the unit upper and lower bounds:} \\\\ \\\\ [E_{",round(1 - (object[["conf.level"]] + ((1 - object[["conf.level"]])/2)), 3),"}; E_{",round(object[["conf.level"]] + ((1 - object[["conf.level"]])/2), 3),"}] &= B - N \\times \\left( \\hat{\\theta} \\pm t_{1 - \\frac{\\alpha}{2}} \\times \\frac{s_{soll}}{\\sqrt{n}}\\right) \\\\ &= ", format(object[["N.units"]], digits = 3, scientific = F, big.mark=","), " - ", format(object[["N.items"]], scientific = F, big.mark=","), "\\times \\left(", format(mean(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=",") ," \\pm ", format(stats::qt(p = object[["conf.level"]] + ((1 - object[["conf.level"]]) / 2), df = object[["n"]] - 1) * (stats::sd(object[["data"]][, 3])/sqrt(object[["n"]])), nsmall = 2, scientific = F, big.mark=","),"\\right) = [", format(object[["lb"]], nsmall = 2, scientific = F, big.mark=","),";",format(object[["ub"]], nsmall = 2, scientific = F, big.mark=",")," ] \\\\ \\\\ \\text{The other relevant quantities can be de}&\\text{rived using the following formulas:} \\\\ \\\\ \\hat{\\theta} &= \\bar{soll} = \\frac{\\sum_{i=1}^n soll_i}{n} = \\frac{", format(sum(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=","),"}{", object[["n"]] ,"} = ", format(mean(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=","), "\\\\ t_{1 - \\frac{\\alpha}{2}} &= t_{", round(object[["conf.level"]] + ((1 - object[["conf.level"]]) / 2), 3) ,"} = ", round(stats::qt(p = object[["conf.level"]] + ((1 - object[["conf.level"]]) / 2), df = object[["n"]] - 1), 3) ,"\\\\ s_{soll} &= \\sqrt{\\frac{\\sum_{i=1}^n (soll_i - \\bar{soll})^2}{n - 1}} = \\sqrt{\\frac{", format(sum((object[["data"]][, 3] - mean(object[["data"]][, 3]))^2), nsmall = 2, scientific = F, big.mark=","),"}{", object[["n"]] - 1,"}} =", format(stats::sd(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=",") ,"\\\\ t_{", round(object[["conf.level"]] + ((1 - object[["conf.level"]]) / 2), 3) ,"} \\times \\frac{s_{soll}}{\\sqrt{n}} &= ", round(stats::qt(p = object[["conf.level"]] + ((1 - object[["conf.level"]]) / 2), df = object[["n"]] - 1), 3)," \\times \\frac{", format(stats::sd(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=",") ,"}{\\sqrt{", object[["n"]],"}} = ",format(stats::qt(p = object[["conf.level"]] + ((1 - object[["conf.level"]]) / 2), df = object[["n"]] - 1) * (stats::sd(object[["data"]][, 3])/sqrt(object[["n"]])), nsmall = 2, scientific = F, big.mark=",") ,"\\end{aligned}$") }`
-
-<!-- Calculations difference estimator -->
-`r if (object[["method"]] == "difference"){ paste0("$\\begin{aligned} \\text{The estimated population misstatemen}&\\text{t } \\hat{E}\\text{ is a generalization of the estimated unit misstatement }\\hat{\\theta}\\text{:} \\\\ \\\\ \\hat{E} &= N \\times \\hat{\\theta} \\\\ &= ", format(object[["N.items"]], scientific = F, big.mark=",")," \\times ", format(mean(object[["data"]][, 4]), nsmall = 2, scientific = F, big.mark=",")," = ", format(object[["N.items"]] * mean(object[["data"]][, 4]), nsmall = 2, scientific = F, big.mark=",") ," \\\\ \\\\ \\text{The confidence interval for the populat}&\\text{ion misstatement } [E_{",round(1 - (object[["conf.level"]] + ((1 - object[["conf.level"]])/2)), 3),"}; E_{",round(object[["conf.level"]] + ((1 - object[["conf.level"]])/2), 3),"}] \\text{ is a generalization of the unit upper and lower bounds:} \\\\ \\\\ [E_{",round(1 - (object[["conf.level"]] + ((1 - object[["conf.level"]])/2)), 3),"}; E_{",round(object[["conf.level"]] + ((1 - object[["conf.level"]])/2), 3),"}] &= N \\times \\left( \\hat{\\theta} \\pm  t_{1 - \\frac{\\alpha}{2}} \\times \\frac{s_e}{\\sqrt{n}} \\right) \\\\ &= ", format(object[["N.items"]], scientific = F, big.mark=","), " \\times \\left(", format(mean(object[["data"]][, 4]), nsmall = 2, scientific = F, big.mark=",") ," \\pm ", format(stats::qt(p = object[["conf.level"]] + ((1 - object[["conf.level"]]) / 2), df = object[["n"]] - 1) * (stats::sd(object[["data"]][, 4])/sqrt(object[["n"]])), nsmall = 2, scientific = F, big.mark=","),"\\right) = [", format(object[["lb"]], nsmall = 2, scientific = F, big.mark=","),";",format(object[["ub"]], nsmall = 2, scientific = F, big.mark=",")," ] \\\\ \\\\ \\text{The other relevant quantities can be de}&\\text{rived using the following formulas:} \\\\ \\\\ \\hat{\\theta} &= \\frac{\\sum_{i=1}^n ist_i - soll_i}{n} = \\frac{", format(sum(object[["data"]][, 4]), nsmall = 2, scientific = F, big.mark=","),"}{", object[["n"]] ,"} = ", format(mean(object[["data"]][, 4]), nsmall = 2, scientific = F, big.mark=","), "\\\\ t_{1 - \\frac{\\alpha}{2}} &= t_{", round(object[["conf.level"]] + ((1 - object[["conf.level"]]) / 2), 3) ,"} = ", round(stats::qt(p = object[["conf.level"]] + ((1 - object[["conf.level"]]) / 2), df = object[["n"]] - 1), 3) ,"\\\\ s_e &= \\sqrt{\\frac{\\sum_{i=1}^n ([ist_i - soll_i] - \\hat{\\theta})^2}{n - 1}} = \\sqrt{\\frac{", format(sum((object[["data"]][, 4] - mean(object[["data"]][, 4]))^2), nsmall = 2, scientific = F, big.mark=","),"}{", object[["n"]] - 1,"}} =", format(stats::sd(object[["data"]][, 4]), nsmall = 2, scientific = F, big.mark=","),"\\\\ t_{", round(object[["conf.level"]] + ((1 - object[["conf.level"]]) / 2), 3) ,"} \\times \\frac{s_e}{\\sqrt{n}} &= ", round(stats::qt(p = object[["conf.level"]] + ((1 - object[["conf.level"]]) / 2), df = object[["n"]] - 1), 3)," \\times \\frac{", format(stats::sd(object[["data"]][, 4]), nsmall = 2, scientific = F, big.mark=","),"}{\\sqrt{", object[["n"]],"}} = ",format(stats::qt(p = object[["conf.level"]] + ((1 - object[["conf.level"]]) / 2), df = object[["n"]] - 1) * (stats::sd(object[["data"]][, 4])/sqrt(object[["n"]])), nsmall = 2, scientific = F, big.mark=",") ,"\\end{aligned}$") }`
-
-<!-- Calculations quotient estimator -->
-`r if (object[["method"]] == "quotient"){ paste0("$\\begin{aligned} \\text{The estimated population misstatemen}&\\text{t } \\hat{E}\\text{ is a generalization of the estimated unit misstatement }\\hat{\\theta}\\text{:} \\\\ \\\\ \\hat{E} &= N \\times \\hat{\\theta} \\\\ &= ", format(object[["N.items"]], scientific = F, big.mark=",")," \\times ", format(((1 - (mean(object[["data"]][, 3]) / mean(object[["data"]][, 2]))) * mean(object[["data"]][, 2])), nsmall = 2, scientific = F, big.mark=",") ," = ", format(object[["N.items"]] * ((1 - (mean(object[["data"]][, 3]) / mean(object[["data"]][, 2]))) * mean(object[["data"]][, 2])), nsmall = 2, scientific = F, big.mark=",")," \\\\ \\\\ \\text{The confidence interval for the populat}&\\text{ion misstatement } [E_{",round(1 - (object[["conf.level"]] + ((1 - object[["conf.level"]])/2)), 3),"}; E_{",round(object[["conf.level"]] + ((1 - object[["conf.level"]])/2), 3),"}] \\text{ is a generalization of the unit upper and lower bounds:} \\\\ \\\\ [E_{",round(1 - (object[["conf.level"]] + ((1 - object[["conf.level"]])/2)), 3),"}; E_{",round(object[["conf.level"]] + ((1 - object[["conf.level"]])/2), 3),"}] &= N \\times \\left( \\hat{\\theta} \\pm  t_{1 - \\frac{\\alpha}{2}} \\times \\frac{s_q}{\\sqrt{n}} \\right) \\\\ &= ", format(object[["N.items"]], scientific = F, big.mark=","), "\\times \\left(", format(((1 - (mean(object[["data"]][, 3]) / mean(object[["data"]][, 2]))) * mean(object[["data"]][, 2])), nsmall = 2, scientific = F, big.mark=",")," \\pm ", format(object[["precision"]]/object[["N.items"]], nsmall = 2, scientific = F, big.mark=","),"\\right) = [", format(object[["lb"]], nsmall = 2, scientific = F, big.mark=","),";",format(object[["ub"]], nsmall = 2, scientific = F, big.mark=",")," ]\\\\ \\\\ \\text{The other relevant quantities can be de}&\\text{rived using the following formulas:} \\\\ \\\\ \\hat{\\theta} &= (1 - q) \\times \\bar{ist} = (1 - ", format(mean(object[["data"]][, 3]) / mean(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=",") ,") \\times ",format(mean(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=",")," = ",format(((1 - (mean(object[["data"]][, 3]) / mean(object[["data"]][, 2]))) * mean(object[["data"]][, 2])), nsmall = 2, scientific = F, big.mark=","),"\\\\ q &= \\frac{\\bar{soll}}{\\bar{ist}} = \\frac{", format(mean(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=",") ,"}{", format(mean(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=",") ,"} = ", format(mean(object[["data"]][, 3]) / mean(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=",")," \\\\ \\bar{ist} &= \\frac{\\sum_{i=1}^n ist_i}{n} = \\frac{", format(sum(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=","),"}{", object[["n"]] ,"} = ", format(mean(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=","), "\\\\ \\bar{soll} &= \\frac{\\sum_{i=1}^n soll_i}{n} = \\frac{", format(sum(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=","),"}{", object[["n"]] ,"} = ", format(mean(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=","), "\\\\ t_{1 - \\frac{\\alpha}{2}} &= t_{", round(object[["conf.level"]] + ((1 - object[["conf.level"]]) / 2), 3) ,"} = ", round(stats::qt(p = object[["conf.level"]] + ((1 - object[["conf.level"]]) / 2), df = object[["n"]] - 1), 3),"\\\\ r_{soll \\sim ist} &= Cor(ist, soll) = ", format(stats::cor(object[["data"]][, 2], object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=",")," \\\\ s_q &= \\sqrt{s_{soll}^2 - 2 \\times q \\times r_{soll \\sim ist} \\times s_{ist} \\times s_{soll} + q^2 \\times s_{ist}^2} \\\\ &= \\sqrt{", format(stats::var(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=",")," - 2 \\times ", format(mean(object[["data"]][, 3]) / mean(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=","), "\\times ", format(stats::cor(object[["data"]][, 2], object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=",")," \\times ", format(stats::sd(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=",")," \\times ", format(stats::sd(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=",")," + ", format(mean(object[["data"]][, 3]) / mean(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=","),"^2 \\times ",format(stats::sd(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=",")," } = ", format(sqrt(stats::var(object[["data"]][, 3]) - 2 * (mean(object[["data"]][, 3]) / mean(object[["data"]][, 2])) * stats::cor(object[["data"]][, 2], object[["data"]][, 3]) * stats::sd(object[["data"]][, 2]) * stats::sd(object[["data"]][, 3]) + (mean(object[["data"]][, 3]) / mean(object[["data"]][, 2]))^2 * stats::var(object[["data"]][, 2])), nsmall = 2, scientific = F, big.mark=","), " \\\\ s^2_{ist} &= \\frac{\\sum_{i=1}^n (ist_i - \\bar{ist})^2}{n - 1} = \\frac{", format(sum((object[["data"]][, 2] - mean(object[["data"]][, 2]))^2), nsmall = 2, scientific = F, big.mark=",") ,"}{", object[["n"]] - 1,"} =", format(stats::var(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=","),"\\\\ s_{ist} &= \\sqrt{s^2_{ist}} = ", format(stats::sd(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=",")," \\\\ s^2_{soll} &= \\frac{\\sum_{i=1}^n (soll_i - \\bar{soll})^2}{n - 1} = \\frac{", format(sum((object[["data"]][, 3] - mean(object[["data"]][, 3]))^2), nsmall = 2, scientific = F, big.mark=","),"}{", object[["n"]] - 1,"} =", format(stats::var(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=","),"\\\\ s_{soll} &= \\sqrt{s^2_{soll}} = ", format(stats::sd(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=",")," \\\\ t_{", round(object[["conf.level"]] + ((1 - object[["conf.level"]]) / 2), 3) ,"} \\times \\frac{s_q}{\\sqrt{n}} &= ", round(stats::qt(p = object[["conf.level"]] + ((1 - object[["conf.level"]]) / 2), df = object[["n"]] - 1), 3)," \\times \\frac{", format(sqrt(stats::var(object[["data"]][, 3]) - 2 * (mean(object[["data"]][, 3]) / mean(object[["data"]][, 2])) * stats::cor(object[["data"]][, 2], object[["data"]][, 3]) * stats::sd(object[["data"]][, 2]) * stats::sd(object[["data"]][, 3]) + (mean(object[["data"]][, 3]) / mean(object[["data"]][, 2]))^2 * stats::var(object[["data"]][, 2])), nsmall = 2, scientific = F, big.mark=","),"}{\\sqrt{", object[["n"]],"}} = ", format(object[["precision"]]/object[["N.items"]], nsmall = 2, scientific = F, big.mark=",")," \\end{aligned}$") }`
-
-<!-- Calculations regression estimator -->
-`r if (object[["method"]] == "regression"){ paste0("$\\begin{aligned} \\text{The estimated population misstatemen}&\\text{t } \\hat{E}\\text{ is a generalization of the estimated unit true value }\\hat{\\theta}\\text{:} \\\\ \\\\ \\hat{E} &= B - N \\times \\hat{\\theta} \\\\ &= ", format(object[["N.units"]], scientific = F, big.mark=",")," - ", format(object[["N.items"]], scientific = F, big.mark=",")," \\times ", format((object[["N.items"]] * mean(object[["data"]][, 3]) + as.numeric(stats::coef(stats::lm(object[["data"]][, 3] ~ object[["data"]][, 2]))[2]) * (object[["N.units"]] - object[["N.items"]] * mean(object[["data"]][, 2]))) / object[["N.items"]], nsmall = 2, scientific = F, big.mark=","),"= ", format(object[["mle"]], nsmall = 2, scientific = F, big.mark=",")," \\\\ \\\\ \\text{The confidence interval for the populat}&\\text{ion misstatement } [E_{",round(1 - (object[["conf.level"]] + ((1 - object[["conf.level"]])/2)), 3),"}; E_{",round(object[["conf.level"]] + ((1 - object[["conf.level"]])/2), 3),"}] \\text{ is a generalization of the unit upper and lower bounds:} \\\\ \\\\ [E_{",round(1 - (object[["conf.level"]] + ((1 - object[["conf.level"]])/2)), 3),"}; E_{",round(object[["conf.level"]] + ((1 - object[["conf.level"]])/2), 3),"}] &= B - N \\times \\left( \\hat{\\theta} \\pm t_{1 - \\frac{\\alpha}{2}} \\times \\frac{s_r}{\\sqrt{n}} \\right) \\\\ &= ", format(object[["N.units"]], scientific = F, big.mark=",")," - ", format(object[["N.items"]], scientific = F, big.mark=",")," \\times \\left(",format((object[["N.items"]] * mean(object[["data"]][, 3]) + as.numeric(stats::coef(stats::lm(object[["data"]][, 3] ~ object[["data"]][, 2]))[2]) * (object[["N.units"]] - object[["N.items"]] * mean(object[["data"]][, 2]))) / object[["N.items"]], nsmall = 2, scientific = F, big.mark=",")," \\pm ", format(stats::qt(p = object[["conf.level"]] + ((1 - object[["conf.level"]]) / 2), df = object[["n"]] - 1) * ((stats::sd(object[["data"]][, 3]) * sqrt(1 - stats::cor(object[["data"]][, 2], object[["data"]][, 3])^2))/sqrt(object[["n"]])), nsmall = 2, scientific = F, big.mark=",")," \\right) = [", format(object[["lb"]], nsmall = 2, scientific = F, big.mark=","),";", format(object[["ub"]], nsmall = 2, scientific = F, big.mark=","),"] \\\\ \\\\ \\text{The other relevant quantities can be de}&\\text{rived using the following formulas:} \\\\ \\\\ \\hat{\\theta} &= \\frac{N \\times \\bar{soll} + \\beta_{1_{soll \\sim ist}} \\times (B - N \\times \\bar{ist})}{N} \\\\ &= \\frac{", format(object[["N.items"]], scientific = F, big.mark=","), " \\times ", format(mean(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=",")," + ", format(as.numeric(stats::coef(stats::lm(object[["data"]][, 3] ~ object[["data"]][, 2]))[2]), nsmall = 2, scientific = F, big.mark=",")," \\times (", format(object[["N.units"]], scientific = F, big.mark=","), " - ", format(object[["N.items"]], scientific = F, big.mark=",")," \\times ", format(mean(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=","),")}{", format(object[["N.items"]], scientific = F, big.mark=","),"} = ",format((object[["N.items"]] * mean(object[["data"]][, 3]) + as.numeric(stats::coef(stats::lm(object[["data"]][, 3] ~ object[["data"]][, 2]))[2]) * (object[["N.units"]] - object[["N.items"]] * mean(object[["data"]][, 2]))) / object[["N.items"]], nsmall = 2, scientific = F, big.mark=",")," \\\\ \\beta_{1_{soll \\sim ist}} &= ", format(as.numeric(stats::coef(stats::lm(object[["data"]][, 3] ~ object[["data"]][, 2]))[2]), nsmall = 2, scientific = F, big.mark=",")," \\\\ \\bar{ist} &= \\frac{\\sum_{i=1}^n ist_i}{n} = \\frac{", format(sum(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=","),"}{", object[["n"]] ,"} = ", format(mean(object[["data"]][, 2]), nsmall = 2, scientific = F, big.mark=","), "\\\\ \\bar{soll} &= \\frac{\\sum_{i=1}^n soll_i}{n} = \\frac{", format(sum(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=","),"}{", object[["n"]] ,"} = ", format(mean(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=","), "\\\\ t_{1 - \\frac{\\alpha}{2}} &= t_{", round(object[["conf.level"]] + ((1 - object[["conf.level"]]) / 2), 3) ,"} = ", round(stats::qt(p = object[["conf.level"]] + ((1 - object[["conf.level"]]) / 2), df = object[["n"]] - 1), 3),"\\\\ s_r &= s_{soll} \\times \\sqrt{1 - r^2_{soll \\sim ist}} = ", format(stats::sd(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=",")," \\times \\sqrt{1 - ", format(stats::cor(object[["data"]][, 2], object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=","),"^2} = ", format(stats::sd(object[["data"]][, 3]) * sqrt(1 - stats::cor(object[["data"]][, 2], object[["data"]][, 3])^2), nsmall = 2, scientific = F, big.mark=","),"\\\\ s_{soll} &= \\sqrt{\\frac{\\sum_{i=1}^n (soll_i - \\bar{soll})^2}{n - 1}} = \\sqrt{\\frac{", format(sum((object[["data"]][, 3] - mean(object[["data"]][, 3]))^2), nsmall = 2, scientific = F, big.mark=",") ,"}{", object[["n"]] - 1,"}} =", format(stats::sd(object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=","),"\\\\ r_{soll \\sim ist} &= Cor(ist, soll) = ", format(stats::cor(object[["data"]][, 2], object[["data"]][, 3]), nsmall = 2, scientific = F, big.mark=",")," \\\\ t_{", round(object[["conf.level"]] + ((1 - object[["conf.level"]]) / 2), 3) ,"} \\times \\frac{s_r}{\\sqrt{n}} &= ", round(stats::qt(p = object[["conf.level"]] + ((1 - object[["conf.level"]]) / 2), df = object[["n"]] - 1), 3)," \\times \\frac{", format(stats::sd(object[["data"]][, 3]) * sqrt(1 - stats::cor(object[["data"]][, 2], object[["data"]][, 3])^2), nsmall = 2, scientific = F, big.mark=","),"}{\\sqrt{", object[["n"]],"}} = ", format(stats::qt(p = object[["conf.level"]] + ((1 - object[["conf.level"]]) / 2), df = object[["n"]] - 1) * ((stats::sd(object[["data"]][, 3]) * sqrt(1 - stats::cor(object[["data"]][, 2], object[["data"]][, 3])^2))/sqrt(object[["n"]])), nsmall = 2, scientific = F, big.mark=",")," \\end{aligned}$") }`
-
-<!-- Calculations classical binomial method -->
-`r if (object[["method"]] == "binomial" & is.null(object[["prior"]])){ paste0("$\\begin{aligned} \\text{The estimated population misstatemen}&\\text{t } \\hat{E}\\text{ is a generalization of the estimated unit misstatement }\\hat{\\theta}\\text{:} \\\\ \\\\ \\hat{E} &= B \\times \\hat{\\theta} ",if(!is.null(object[["N.units"]])){ paste0("\\\\ &= ", format(object[["N.units"]], scientific = F, big.mark=",")," \\times ", format(object[["mle"]], nsmall = 2, scientific = F, big.mark = ",")," = ",format(object[["N.units"]] * object[["mle"]], nsmall = 2, scientific = F, big.mark=","))} else { }," \\\\ \\\\ \\text{The upper bound for the population mi}&\\text{sstatement } E_{",round(object[["conf.level"]], 3),"} \\text{ is a generalization of the unit upper bound } \\theta_{",round(object[["conf.level"]], 3),"} \\text{:} \\\\ \\\\ E_{", round(object[["conf.level"]], 3),"} &= B \\times \\theta_{", round(object[["conf.level"]], 3),"} ",if(!is.null(object[["N.units"]])){ paste0("\\\\ &= ", format(object[["N.units"]], scientific = F, big.mark=",")," \\times ", format(object[["ub"]], nsmall = 2, scientific = F, big.mark = ",")," = ",format(object[["N.units"]] * object[["ub"]], nsmall = 2, scientific = F, big.mark=","))} else { }," \\\\ \\\\ \\text{The other relevant quantities can be de}&\\text{rived using the following formulas:} \\\\ \\\\ \\hat{\\theta} &= \\frac{k}{n} = \\frac{", object[["x"]],"}{", object[["n"]],"} = ",format(object[["x"]]/object[["n"]], nsmall = 2, scientific = F, big.mark=",")," \\\\ \\theta_{", round(object[["conf.level"]], 3),"} &= \\text{Beta}(1 - \\alpha; 1 + k, n - k) = \\text{Beta}(",round(object[["conf.level"]], 3),"; ", object[["x"]] + 1,", ", object[["n"]] - object[["x"]],") = ",format(object[["ub"]], nsmall = 2, scientific = F, big.mark=",")," \\end{aligned}$") }`
-
-<!-- Calculations Bayesian binomial method -->
-`r if (object[["method"]] == "binomial" & !is.null(object[["prior"]])){ paste0("$\\begin{aligned} \\text{The estimated population misstatemen}&\\text{t } \\hat{E}\\text{ is a generalization of the estimated unit misstatement }\\hat{\\theta}\\text{:} \\\\ \\\\ \\hat{E} &= B \\times \\hat{\\theta} ",if(!is.null(object[["N.units"]])){ paste0("\\\\ &= ", format(object[["N.units"]], scientific = F, big.mark=",")," \\times ", format(object[["mle"]], nsmall = 2, scientific = F, big.mark = ",")," = ",format(object[["N.units"]] * object[["mle"]], nsmall = 2, scientific = F, big.mark=","))} else { }," \\\\ \\\\ \\text{The upper bound for the population mi}&\\text{sstatement } E_{",round(object[["conf.level"]], 3),"} \\text{ is a generalization of the unit upper bound } \\theta_{",round(object[["conf.level"]], 3),"} \\text{:} \\\\ \\\\ E_{", round(object[["conf.level"]], 3),"} &= B \\times \\theta_{", round(object[["conf.level"]], 3),"} ",if(!is.null(object[["N.units"]])){ paste0("\\\\ &= ", format(object[["N.units"]], scientific = F, big.mark=",")," \\times ", format(object[["ub"]], nsmall = 2, scientific = F, big.mark = ",")," = ",format(object[["N.units"]] * object[["ub"]], nsmall = 2, scientific = F, big.mark=","))} else { }," \\\\ \\\\ \\text{The other relevant quantities can be de}&\\text{rived using the following formulas:} \\\\ \\\\ \\alpha_0 &= ", format(object[["prior"]][["description"]]$alpha, nsmall = 2, scientific = F, big.mark = ","),"\\\\ \\beta_0 &= ", format(object[["prior"]][["description"]]$beta, nsmall = 2, scientific = F, big.mark = ",")," \\\\ \\alpha_1 &= \\alpha_0 + t =", format(object[["posterior"]][["description"]]$alpha, nsmall = 2, scientific = F, big.mark = ","),"\\\\ \\beta_1 &= \\beta_0 + n - t =", format(object[["posterior"]][["description"]]$beta, nsmall = 2, scientific = F, big.mark = ",")," \\\\ \\hat{\\theta} &= \\frac{\\alpha_1 - 1}{\\alpha_1 + \\beta_1 - 2} = \\frac{", format(object[["posterior"]][["description"]]$alpha, nsmall = 2, scientific = F, big.mark = ",")," - 1}{", format(object[["posterior"]][["description"]]$alpha, nsmall = 2, scientific = F, big.mark = ","), "+ ", format(object[["posterior"]][["description"]]$beta, nsmall = 2, scientific = F, big.mark = ",")," - 2} = ",format(object[["mle"]], nsmall = 2, scientific = F, big.mark = ",")," \\\\ \\theta_{", round(object[["conf.level"]], 3),"} &= \\text{Beta}(1 - \\alpha; \\alpha_0 + t, \\beta_0 + n - t) = \\text{Beta}(",round(object[["conf.level"]], 3),"; ", format(object[["posterior"]][["description"]]$alpha, nsmall = 2, scientific = F, big.mark = ","),", ", format(object[["posterior"]][["description"]]$beta, nsmall = 2, scientific = F, big.mark = ","),") = ", format(object[["ub"]], nsmall = 2, scientific = F, big.mark = ",")," \\\\ t &= \\sum_{i=1}^n \\frac{ist_i - soll_i}{ist_i} = ", format(object[["t"]], nsmall = 2, scientific = F, big.mark = ",")," \\end{aligned}$") }`
-
-<!-- Calculations stringer method -->
-`r if (object[["method"]] == "stringer"){ paste0("$\\begin{aligned} \\text{The estimated population misstatemen}&\\text{t } \\hat{E}\\text{ is a generalization of the estimated unit misstatement }\\hat{\\theta}\\text{:} \\\\ \\\\ \\hat{E} &= B \\times \\hat{\\theta} ",if(!is.null(object[["N.units"]])){ paste0("\\\\ &= ", format(object[["N.units"]], scientific = F, big.mark=",")," \\times ", format(object[["mle"]], nsmall = 2, scientific = F, big.mark = ",")," = ",format(object[["N.units"]] * object[["mle"]], nsmall = 2, scientific = F, big.mark=","))} else { }," \\\\ \\\\ \\text{The upper bound for the population mi}&\\text{sstatement } E_{",round(object[["conf.level"]], 3),"} \\text{ is a generalization of the unit upper bound } \\theta_{",round(object[["conf.level"]], 3),"} \\text{:} \\\\ \\\\ E_{", round(object[["conf.level"]], 3),"} &= B \\times \\theta_{", round(object[["conf.level"]], 3),"} ",if(!is.null(object[["N.units"]])){ paste0("\\\\ &= ", format(object[["N.units"]], scientific = F, big.mark=",")," \\times ", format(object[["ub"]], nsmall = 2, scientific = F, big.mark = ",")," = ",format(object[["N.units"]] * object[["ub"]], nsmall = 2, scientific = F, big.mark=","))} else { }," \\end{aligned}$") }`
-
-*Evaluation:*
-
-<!-- Sampling objective materiality for methods that return monetary estimates -->
-`r if(object[["method"]] %in% c("difference", "direct", "quotient", "regression") & object[["materiality"]] != 1){ paste0(ifelse(object[["ub"]] < (object[["materiality"]] * object[["N.units"]]), yes = "&#10004;&#65039;", no = "&#10060;"), "$\\hspace{0.5cm} \\text{Upper bound lower than performance materiality} \\rightarrow E_{",round(object[["conf.level"]] + ((1 - object[["conf.level"]])/2), 3),"} < E_{max} \\rightarrow ", format(object[["ub"]], nsmall = 2, scientific = F, big.mark=","),"<", format(object[["materiality"]] * object[["N.units"]], digits = 3, scientific = F, big.mark = ","), "$") }`
-
-<!-- Sampling objective materiality for methods that return percentual estimates -->
-`r if(!(object[["method"]] %in% c("difference", "direct", "quotient", "regression")) & object[["materiality"]] != 1){ paste0(ifelse(object[["ub"]] < object[["materiality"]], yes = "&#10004;&#65039;", no = "&#10060;"), "$\\hspace{0.5cm} \\text{Upper bound lower than performance materiality} \\rightarrow  \\theta_{", round(object[["conf.level"]], 3),"} < \\theta_{max} \\rightarrow ", format(object[["ub"]], nsmall = 2, scientific = F, big.mark = ","),"<", format(object[["materiality"]], nsmall = 2, scientific = F, big.mark = ","), "$") }`
-
-<!-- Sampling objective minimum precision for methods that return monetary estimates -->
-`r if(object[["method"]] %in% c("difference", "direct", "quotient", "regression") & object[["min.precision"]] != 1){ paste0(ifelse(object[["precision"]] < (object[["min.precision"]] * object[["N.units"]]), yes = "&#10004;&#65039;", no = "&#10060;"), "$\\hspace{0.5cm} \\text{Precision is at least the minimum required precision} \\rightarrow E_{",round(object[["conf.level"]] + ((1 - object[["conf.level"]])/2), 3),"} - \\hat{E} < \\theta_{",round(object[["conf.level"]] + ((1 - object[["conf.level"]])/2), 3),"} - \\hat{\\theta} \\rightarrow ", format(object[["precision"]], nsmall = 2, scientific = F, big.mark=","),"<", format(object[["min.precision"]] * object[["N.units"]], digits = 3, scientific = F, big.mark=","), "$") }`
-
-<!-- Sampling objective minimum precision for methods that return percentual estimates -->
-`r if(!(object[["method"]] %in% c("difference", "direct", "quotient", "regression")) & object[["min.precision"]] != 1){ paste0(ifelse(object[["precision"]] < object[["min.precision"]], yes = "&#10004;&#65039;", no = "&#10060;"), "$\\hspace{0.5cm} \\text{Precision is at least the minimum required precision} \\rightarrow \\theta_{", round(object[["conf.level"]], 3),"} - \\hat{\\theta} < \\theta_{", round(object[["conf.level"]], 3),"} - \\hat{\\theta} \\rightarrow ", format(object[["precision"]], nsmall = 2, scientific = F, big.mark = ","),"<", format(object[["min.precision"]], nsmall = 2, scientific = F, big.mark = ","), "$") }`
-
-*References:*
-
-<!-- References for methods that return monetary estimates -->
-`r if (object[["method"]] %in% c("direct", "difference", "quotient", "regression")){ "* Touw, P. & Hoogduin, L. (2011). *Statistiek voor audit en controlling*. Boom uitgevers, Amsterdam." }`
-
-`r if (object[["method"]] %in% c("stringer")){ "* Bickel, P. J. (1992). Inference and auditing: The Stringer bound. *International Statistical Review*, 60(2), 197–209." }`
-
-`r if (object[["method"]] %in% c("binomial") & is.null(object[["prior"]])){ "* Stewart, T. R. (2012). *Technical Notes on the AICPA Audit Guide Audit Sampling*. American Institute of Certified Public Accountants, New York." }`
-
-`r if (object[["method"]] %in% c("binomial") & !is.null(object[["prior"]])){ "* Steele, A. (1992). *Audit Risk and Audit Evidence: The Bayesian Approach to Statistical Auditing*. San Diego: Academic Press.\n* Stewart, T. R. (2013). *A Bayesian Audit Assurance Model with Application to the Component Materiality Problem in Group Audits*. VU University, Amsterdam." }`
-
-<!-- Appendix B -->
-`r if (!is.null(object[["data"]])){ "\\newpage" }`
-`r if (!is.null(object[["data"]])){ "### Appendix B: Data" }`
-`r if (!is.null(object[["data"]])){ "\n---" }`
+`r if (!is.null(object[["data"]])){ "### Data" }`
 
 ```{r, echo = FALSE}
 if (!is.null(object[["data"]])) {
   tab <- knitr::kable(object[["data"]],
     digits = 3,
-    caption = "Table 3: Relevant data obtained from the input sample.",
+    caption = "Table 2: Sample data",
     align = "c",
     format = "html",
     row.names = FALSE,
@@ -240,3 +178,8 @@ if (!is.null(object[["data"]])) {
 }
 ```
 
+### Citation
+
+```{r echo = FALSE}
+citation("jfa")
+```

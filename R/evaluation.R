@@ -613,6 +613,9 @@ evaluation <- function(materiality = NULL,
       n = n.obs[-1], x = x.obs[-1], t = t.obs[-1],
       mle = mle, lb = lb, ub = ub, precision = precision
     )
+    if (!is.null(N.units)) {
+      stratum_table <- cbind(N = N.units[-1], stratum_table)
+    }
     if (materiality < 1 && valid_test_method) {
       if (!is_bayesian) {
         stratum_table[["p.value"]] <- switch(pooling,

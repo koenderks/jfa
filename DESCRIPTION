@@ -57,5 +57,5 @@ LazyData: true
 NeedsCompilation: yes
 SystemRequirements: GNU make
 Language: en-US
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.2
 Biarch: true
