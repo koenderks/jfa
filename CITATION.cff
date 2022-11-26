@@ -1,5 +1,5 @@
 # -----------------------------------------------------------
-# CITATION file created with {cffr} R package, v0.3.0
+# CITATION file created with {cffr} R package, v0.4.0
 # See also: https://docs.ropensci.org/cffr/
 # -----------------------------------------------------------
  
@@ -59,12 +59,12 @@ references:
 - type: software
   title: 'R: A Language and Environment for Statistical Computing'
   notes: Depends
+  url: https://www.R-project.org/
   authors:
   - name: R Core Team
   location:
     name: Vienna, Austria
   year: '2022'
-  url: https://www.R-project.org/
   institution:
     name: R Foundation for Statistical Computing
   version: '>= 3.5.0'
@@ -72,11 +72,12 @@ references:
   title: extraDistr
   abstract: 'extraDistr: Additional Univariate and Multivariate Distributions'
   notes: Imports
+  url: https://github.com/twolodzko/extraDistr
+  repository: https://CRAN.R-project.org/package=extraDistr
   authors:
   - family-names: Wolodzko
     given-names: Tymoteusz
   year: '2022'
-  url: https://CRAN.R-project.org/package=extraDistr
 - type: software
   title: graphics
   abstract: 'R: A Language and Environment for Statistical Computing'
@@ -86,7 +87,6 @@ references:
   location:
     name: Vienna, Austria
   year: '2022'
-  url: https://www.R-project.org/
   institution:
     name: R Foundation for Statistical Computing
 - type: software
@@ -98,13 +98,14 @@ references:
   location:
     name: Vienna, Austria
   year: '2022'
-  url: https://www.R-project.org/
   institution:
     name: R Foundation for Statistical Computing
 - type: software
   title: moments
   abstract: 'moments: Moments, Cumulants, Skewness, Kurtosis and Related Tests'
   notes: Imports
+  url: https://www.r-project.org
+  repository: https://CRAN.R-project.org/package=moments
   authors:
   - family-names: Komsta
     given-names: Lukasz
@@ -113,11 +114,12 @@ references:
     given-names: Frederick
     email: fnovomes@poly.edu
   year: '2022'
-  url: https://CRAN.R-project.org/package=moments
 - type: software
   title: Rcpp
   abstract: 'Rcpp: Seamless R and C++ Integration'
   notes: Imports
+  url: https://www.rcpp.org
+  repository: https://CRAN.R-project.org/package=Rcpp
   authors:
   - family-names: Eddelbuettel
     given-names: Dirk
@@ -138,12 +140,13 @@ references:
   - family-names: Chambers
     given-names: John
   year: '2022'
-  url: https://CRAN.R-project.org/package=Rcpp
   version: '>= 0.12.0'
 - type: software
   title: RcppParallel
   abstract: 'RcppParallel: Parallel Programming Tools for ''Rcpp'''
   notes: Imports
+  url: https://rcppcore.github.io/RcppParallel/
+  repository: https://CRAN.R-project.org/package=RcppParallel
   authors:
   - family-names: Allaire
     given-names: JJ
@@ -159,12 +162,13 @@ references:
     given-names: Marcus
   - name: Intel
   year: '2022'
-  url: https://CRAN.R-project.org/package=RcppParallel
   version: '>= 5.0.1'
 - type: software
   title: rstan
   abstract: 'rstan: R Interface to Stan'
   notes: Imports
+  url: https://mc-stan.org/rstan/
+  repository: https://CRAN.R-project.org/package=rstan
   authors:
   - family-names: Guo
     given-names: Jiqiang
@@ -179,12 +183,13 @@ references:
     given-names: Sebastian
     email: sdw.post@waebers.de
   year: '2022'
-  url: https://CRAN.R-project.org/package=rstan
   version: '>= 2.18.1'
 - type: software
   title: rstantools
   abstract: 'rstantools: Tools for Developing R Packages Interfacing with ''Stan'''
   notes: Imports
+  url: https://mc-stan.org/rstantools/
+  repository: https://CRAN.R-project.org/package=rstantools
   authors:
   - family-names: Gabry
     given-names: Jonah
@@ -196,7 +201,6 @@ references:
     given-names: Martin
     email: mlysy@uwaterloo.ca
   year: '2022'
-  url: https://CRAN.R-project.org/package=rstantools
   version: '>= 2.2.0'
 - type: software
   title: stats
@@ -207,80 +211,86 @@ references:
   location:
     name: Vienna, Austria
   year: '2022'
-  url: https://www.R-project.org/
   institution:
     name: R Foundation for Statistical Computing
 - type: software
   title: benford.analysis
   abstract: 'benford.analysis: Benford Analysis for Data Validation and Forensic Analytics'
   notes: Suggests
+  url: http://github.com/carloscinelli/benford.analysis
+  repository: https://CRAN.R-project.org/package=benford.analysis
   authors:
   - family-names: Cinelli
     given-names: Carlos
   year: '2022'
-  url: https://CRAN.R-project.org/package=benford.analysis
   version: '>= 0.1.5'
 - type: software
   title: BenfordTests
   abstract: 'BenfordTests: Statistical Tests for Evaluating Conformity to Benford''s
     Law'
   notes: Suggests
+  url: https://cran.r-project.org/package=BenfordTests
+  repository: https://CRAN.R-project.org/package=BenfordTests
   authors:
   - family-names: Joenssen
     given-names: Dieter William
     email: Dieter.Joenssen@googlemail.com
   year: '2022'
-  url: https://CRAN.R-project.org/package=BenfordTests
   version: '>= 1.2.0'
 - type: software
   title: BeyondBenford
   abstract: 'BeyondBenford: Compare the Goodness of Fit of Benford''s and Blondeau
     Da Silva''s Digit Distributions to a Given Dataset'
   notes: Suggests
+  repository: https://CRAN.R-project.org/package=BeyondBenford
   authors:
   - family-names: Stephane
     given-names: Blondeau Da Silva
   year: '2022'
-  url: https://CRAN.R-project.org/package=BeyondBenford
   version: '>= 1.4'
 - type: software
   title: kableExtra
   abstract: 'kableExtra: Construct Complex Table with ''kable'' and Pipe Syntax'
   notes: Suggests
+  url: http://haozhu233.github.io/kableExtra/
+  repository: https://CRAN.R-project.org/package=kableExtra
   authors:
   - family-names: Zhu
     given-names: Hao
     email: haozhu233@gmail.com
     orcid: https://orcid.org/0000-0002-3386-6076
   year: '2022'
-  url: https://CRAN.R-project.org/package=kableExtra
 - type: software
   title: knitr
   abstract: 'knitr: A General-Purpose Package for Dynamic Report Generation in R'
   notes: Suggests
+  url: https://yihui.org/knitr/
+  repository: https://CRAN.R-project.org/package=knitr
   authors:
   - family-names: Xie
     given-names: Yihui
     email: xie@yihui.name
     orcid: https://orcid.org/0000-0003-0645-5666
   year: '2022'
-  url: https://CRAN.R-project.org/package=knitr
 - type: software
   title: MUS
   abstract: 'MUS: Monetary Unit Sampling and Estimation Methods, Widely Used in Auditing'
   notes: Suggests
+  url: https://github.com/alsguimaraes/MUS
+  repository: https://CRAN.R-project.org/package=MUS
   authors:
   - family-names: Prömpers
     given-names: Henning
   - family-names: Guimarães
     given-names: André
   year: '2022'
-  url: https://CRAN.R-project.org/package=MUS
   version: '>= 0.1.6'
 - type: software
   title: rmarkdown
   abstract: 'rmarkdown: Dynamic Documents for R'
   notes: Suggests
+  url: https://pkgs.rstudio.com/rmarkdown/
+  repository: https://CRAN.R-project.org/package=rmarkdown
   authors:
   - family-names: Allaire
     given-names: JJ
@@ -315,11 +325,12 @@ references:
     email: rich@rstudio.com
     orcid: https://orcid.org/0000-0003-3925-190X
   year: '2022'
-  url: https://CRAN.R-project.org/package=rmarkdown
 - type: software
   title: samplingbook
   abstract: 'samplingbook: Survey Sampling Procedures'
   notes: Suggests
+  url: https://www.samplingbook.manitz.org
+  repository: https://CRAN.R-project.org/package=samplingbook
   authors:
   - family-names: Manitz
     given-names: Juliane
@@ -338,22 +349,24 @@ references:
   - family-names: Wiesenfarth
     given-names: Manuel
   year: '2022'
-  url: https://CRAN.R-project.org/package=samplingbook
   version: '>= 1.2.4'
 - type: software
   title: testthat
   abstract: 'testthat: Unit Testing for R'
   notes: Suggests
+  url: https://testthat.r-lib.org
+  repository: https://CRAN.R-project.org/package=testthat
   authors:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@rstudio.com
   year: '2022'
-  url: https://CRAN.R-project.org/package=testthat
 - type: software
   title: BH
   abstract: 'BH: Boost C++ Header Files'
   notes: LinkingTo
+  url: https://dirk.eddelbuettel.com/code/bh.html
+  repository: https://CRAN.R-project.org/package=BH
   authors:
   - family-names: Eddelbuettel
     given-names: Dirk
@@ -362,13 +375,14 @@ references:
   - family-names: Kane
     given-names: Michael J.
   year: '2022'
-  url: https://CRAN.R-project.org/package=BH
   version: '>= 1.66.0'
 - type: software
   title: RcppEigen
   abstract: 'RcppEigen: ''Rcpp'' Integration for the ''Eigen'' Templated Linear Algebra
     Library'
   notes: LinkingTo
+  url: https://dirk.eddelbuettel.com/code/rcpp.eigen.html
+  repository: https://CRAN.R-project.org/package=RcppEigen
   authors:
   - family-names: Bates
     given-names: Douglas
@@ -379,12 +393,13 @@ references:
   - family-names: Eigen
     given-names: Yixuan Qiu; the authors of Eigen for the included version of
   year: '2022'
-  url: https://CRAN.R-project.org/package=RcppEigen
   version: '>= 0.3.3.3.0'
 - type: software
   title: StanHeaders
   abstract: 'StanHeaders: C++ Header Files for Stan'
   notes: LinkingTo
+  url: https://mc-stan.org/
+  repository: https://CRAN.R-project.org/package=StanHeaders
   authors:
   - family-names: Goodrich
     given-names: Ben
@@ -432,5 +447,4 @@ references:
   - family-names: Gao
     given-names: Yuanjun
   year: '2022'
-  url: https://CRAN.R-project.org/package=StanHeaders
   version: '>= 2.18.0'
