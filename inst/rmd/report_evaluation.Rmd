@@ -1,5 +1,5 @@
 ---
-title: "Report: Audit sample evaluation"
+title: "Audit sample evaluation"
 output: 
   html_document:
     theme: readable
@@ -33,15 +33,18 @@ color: rgb(255, 255, 255);
 
 ---
 
-<img src="jfaLogo.png" width="99.75" height="115.5" alt="logo" align="right" margin-left="20" margin-right="20"/>
+<img src="jfaLogo.png" width="133" height="154" alt="logo" align="right" margin-left="20" margin-right="20"/>
 
-This report was created by `r version$version.string` and its package **jfa** (version `r utils::packageVersion("jfa")`). **jfa** is free software and you can redistribute it and or modify it under the terms of the GNU GPL-3 as published by the Free Software Foundation. The package is distributed in the hope that it will be useful, but without any warranty; without even the implied warranty of merchantability of fitness for a particular purpose.
+This report was created by `r version$version.string` and its package **jfa** (version `r utils::packageVersion("jfa")`). 
+**jfa** is free software and you can redistribute it and or modify it under the terms of the GNU GPL-3 as published by the 
+Free Software Foundation. The package is distributed in the hope that it will be useful, but without any warranty; without 
+even the implied warranty of merchantability of fitness for a particular purpose.
 
 ---
 
 ### Results
 
-```{r echo=FALSE}
+```{r echo = FALSE}
 if (!is.null(object[["prior"]])) {
   inttype <- "Credible"
 } else {
@@ -86,23 +89,23 @@ if (!is.null(object[["strata"]])) {
 if (object[["materiality"]] < 1) {
   if (!is.null(object[["prior"]])) {
     col_names <- c(
-      "Sample size", "Misstatements", "Taint", "Most likely error",
-      paste0(round(object[["conf.level"]] * 100, 2), "% ", inttype, " interval"), "Precision", "BF10"
+      "Samples", "Misstatements", "Taint", "Estimate",
+      paste0(round(object[["conf.level"]] * 100, 2), "% ", inttype, " interval\u00b9"), "Precision", "BF\u2081\u2080\u00b2"
     )
   } else {
     col_names <- c(
-      "Sample size", "Misstatements", "Taint", "Most likely error",
-      paste0(round(object[["conf.level"]] * 100, 2), "% ", inttype, " interval"), "Precision", "p-value"
+      "Samples", "Misstatements", "Taint", "Estimate",
+      paste0(round(object[["conf.level"]] * 100, 2), "% ", inttype, " interval\u00b9"), "Precision", "p-value\u00b2"
     )
   }
 } else {
   col_names <- c(
-    "Sample size", "Misstatements", "Taint", "Most likely error",
-    paste0(round(object[["conf.level"]] * 100, 2), "% ", inttype, " interval"), "Precision"
+    "Samples", "Misstatements", "Taint", "Estimate",
+    paste0(round(object[["conf.level"]] * 100, 2), "% ", inttype, " interval\u00b9"), "Precision"
   )
 }
 if (!is.null(object[["N.units"]])) {
-  col_names <- c("Total size", col_names)
+  col_names <- c("Units", col_names)
 }
 colnames(df) <- col_names
 tab <- knitr::kable(df,
@@ -117,47 +120,45 @@ if (object[["alternative"]] == "two.sided") {
 }
 if (object[["materiality"]] < 1) {
   test_string <- switch(object[["alternative"]],
-    "two.sided" = paste0("For all tests, the alternative hypothesis specifies that misstatement \u2260 ", round(object[["materiality"]], 3), "."),
-    "less" = paste0("For all tests, the alternative hypothesis specifies that misstatement < ", round(object[["materiality"]], 3), "."),
-    "greater" = paste0("For all tests, the alternative hypothesis specifies that misstatement > ", round(object[["materiality"]], 3), ".")
+    "two.sided" = paste0("For all tests, the alternative hypothesis H\u2081 specifies that misstatement \u2260 ", round(object[["materiality"]], 3), "."),
+    "less" = paste0("For all tests, the alternative hypothesis H\u2081 specifies that misstatement < ", round(object[["materiality"]], 3), "."),
+    "greater" = paste0("For all tests, the alternative hypothesis H\u2081 specifies that misstatement > ", round(object[["materiality"]], 3), ".")
   )
 } else {
   test_string <- NULL
 }
 if (is.nan(object[["t"]])) {
-  taint_string <- "The total taint could not be calculated because some book values are zero."
+  taint_string <- "The taint could not be calculated because some book values are zero."
 } else {
   taint_string <- NULL
 }
 tab <- kableExtra::footnote(tab,
-  alphabet = c(alternative_string, test_string, taint_string),
+  number = c(alternative_string, test_string, taint_string),
   fixed_small_size = TRUE
 )
 kableExtra::kable_classic(tab, position = "center", html_font = "Cambria")
 ```
 
-```{r echo=FALSE, fig.align='center'}
-if (is.null(object[["strata"]])) {
-  plot(0, object[["mle"]],
-    pch = 19, ylim = c(0, 1), las = 1,
-    ylab = "Misstatement", xlab = "", axes = FALSE
-  )
-  graphics::axis(side = 1, at = 0, labels = "Population")
-  graphics::axis(side = 2, at = seq(0, 1, length.out = 5), las = 1)
-  graphics::arrows(x0 = 0, x1 = 0, y0 = object[["lb"]], y1 = object[["ub"]], angle = 90, length = 0.05)
-  graphics::arrows(x0 = 0, x1 = 0, y1 = object[["lb"]], y0 = object[["ub"]], angle = 90, length = 0.05)
-} else {
-  plot(0:nrow(object[["strata"]]), c(object[["mle"]], object[["strata"]]$mle),
-    pch = 19, ylim = c(0, 1), las = 1,
-    ylab = "Misstatement", xlab = "", axes = FALSE
-  )
-  graphics::axis(side = 1, at = 0:nrow(object[["strata"]]), labels = c("Population", rownames(object[["strata"]])), )
-  graphics::axis(side = 2, at = seq(0, 1, length.out = 5), las = 1)
-  graphics::arrows(x0 = 0:nrow(object[["strata"]]), x1 = 0:nrow(object[["strata"]]), y0 = c(object[["lb"]], object[["strata"]]$lb), y1 = c(object[["ub"]], object[["strata"]]$ub), angle = 90, length = 0.05)
-  graphics::arrows(x0 = 0:nrow(object[["strata"]]), x1 = 0:nrow(object[["strata"]]), y1 = c(object[["lb"]], object[["strata"]]$lb), y0 = c(object[["ub"]], object[["strata"]]$ub), angle = 90, length = 0.05)
+```{r echo=FALSE, fig.align='center', fig.height=4.5, fig.width=7}
+xs <- 0
+labels <- "Population"
+mles <- object[["mle"]]
+lbs <- object[["lb"]]
+ubs <- object[["ub"]]
+if (!is.null(object[["strata"]])) {
+  xs <- c(xs, seq_len(nrow(object[["strata"]])))
+  labels <- c(labels, rownames(object[["strata"]]))
+  mles <- c(mles, object[["strata"]]$mle)
+  lbs <- c(lbs, object[["strata"]]$lb)
+  ubs <- c(ubs, object[["strata"]]$ub)
 }
+plot(xs, mles, pch = 19, ylim = c(0, 1), las = 1, ylab = "Misstatement", xlab = "", axes = FALSE)
+graphics::axis(side = 1, at = xs, labels = labels)
+graphics::axis(side = 2, at = seq(0, 1, length.out = 5), las = 1)
+graphics::arrows(x0 = xs, x1 = xs, y0 = lbs, y1 = ubs, angle = 90, length = 0.05)
+graphics::arrows(x0 = xs, x1 = xs, y1 = lbs, y0 = ubs, angle = 90, length = 0.05)
 if (object[["materiality"]] < 1) {
-  abline(h = object[["materiality"]], col = "darkred", lty = 2)
+  graphics::abline(h = object[["materiality"]], col = "darkred", lty = 2)
 }
 ```
 

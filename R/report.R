@@ -45,32 +45,14 @@
 #' @keywords audit evaluation report
 #'
 #' @examples
-#' data("BuildIt")
-#'
-#' # Draw a sample of 100 monetary units from the population using
-#' # fixed interval monetary unit sampling
-#' sample <- selection(
-#'   data = BuildIt, size = 100, method = "interval",
-#'   units = "values", values = "bookValue"
-#' )$sample
-#'
-#' # Evaluate using the Stringer bound
-#' result <- evaluation(
-#'   conf.level = 0.95, materiality = 0.05, method = "stringer",
-#'   data = sample, values = "bookValue", values.audit = "auditValue"
-#' )
+#' result <- evaluation(x = 0, n = 100)
 #' \dontrun{
 #' report(result)
 #' }
-#'
 #' @export
 
 report <- function(object,
-                   file = "report.html",
-                   format = c("html_document", "pdf_document")) {
-  valid_object <- inherits(object, "jfaEvaluation")
-  stopifnot("'object' must be of class 'jfaEvaluation'" = valid_object)
-  format <- match.arg(format)
+                   file = "report.html") {
   if (!requireNamespace("rmarkdown", quietly = TRUE)) {
     stop('package \"rmarkdown\" needed for this function to work, please install it', call. = FALSE)
   }
@@ -80,11 +62,23 @@ report <- function(object,
   if (!requireNamespace("kableExtra", quietly = TRUE)) {
     stop('package \"kableExtra\" needed for this function to work, please install it', call. = FALSE)
   }
-  template_location <- system.file("rmd/report.Rmd", package = "jfa")
+  if (inherits(object, "jfaEvaluation")) {
+    name <- "report_evaluation"
+  } else {
+    stop("'object' must be of class 'jfaEvaluation'")
+  }
   args <- list()
-  args$input <- template_location
+  args$input <- system.file(paste0("rmd/", name, ".Rmd"), package = "jfa")
   args$output_dir <- getwd()
-  args$output_format <- format
+  if (is.null(file)) {
+    stop("'file' should have a .html or .pdf extention")
+  } else if (grepl(pattern = ".html", x = file, fixed = TRUE)) {
+    args$output_format <- "html_document"
+  } else if (grepl(pattern = ".pdf", x = file, fixed = TRUE)) {
+    args$output_format <- "pdf_document"
+  } else {
+    stop("'file' should have a .html or .pdf extention")
+  }
   args$output_file <- file
   output_file <- do.call(.markdown_call("rmarkdown::render"), args = args)
   invisible(output_file)

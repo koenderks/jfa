@@ -139,4 +139,8 @@ summary(stage4)
 
 ## Conclusion
 
-Since the 91.66% upper confidence bound on the misstatement in population is lower than the performance materiality Laura has obtained sufficient evidence to conclude that there is less than 5% risk that the population contains material misstatement.
+Since the 91.66% upper confidence bound on the misstatement in population is lower than the performance materiality Laura has obtained sufficient evidence to conclude that there is less than 5% risk that the population contains material misstatement. Laura can report her outcomes using the `report()` function.
+
+```{r, eval = FALSE}
+report(stage4, file = "report.html")
+```

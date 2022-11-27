@@ -60,3 +60,8 @@ test_that(desc = "(id: f8-v0.1.0-t1) Test for use of jfaPrior and jfaPosterior",
   result2 <- evaluation(conf.level = conf.level, materiality = tolerance, n = plan2$n, x = plan2$x, prior = result$posterior)
   expect_equal(result2[["ub"]], 0.04829835) # Upper bound of 4.8%
 })
+
+test_that(desc = "(id: f8-v0.6.5-t1) Test for use of pipe in planning-selection", {
+  res <- planning(materiality = 0.03) |> selection(data = BuildIt)
+  expect_equal(nrow(res[["sample"]]), 100)
+})
