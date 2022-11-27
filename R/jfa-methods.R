@@ -672,8 +672,54 @@ summary.jfaEvaluation <- function(object, digits = getOption("digits"), ...) {
 #' @rdname jfa-methods
 #' @method plot jfaEvaluation
 #' @export
-plot.jfaEvaluation <- function(x, ...) {
-  plot.jfaPlanning(x, ...)
+plot.jfaEvaluation <- function(x, type = c("posterior", "estimates"), ...) {
+  type <- match.arg(type)
+  if (type == "posterior") {
+    p <- plot.jfaPlanning(x, ...)
+  } else {
+    xs <- 0
+    labels <- "Population"
+    mles <- x[["mle"]]
+    lbs <- x[["lb"]]
+    ubs <- x[["ub"]]
+    if (!is.null(x[["strata"]])) {
+      xs <- c(xs, seq_len(nrow(x[["strata"]])))
+      labels <- c(labels, rownames(x[["strata"]]))
+      mles <- c(mles, x[["strata"]]$mle)
+      lbs <- c(lbs, x[["strata"]]$lb)
+      ubs <- c(ubs, x[["strata"]]$ub)
+    }
+    df <- data.frame(x = xs, y = mles, lb = lbs, ub = ubs, lab = labels)
+    xBreaks <- df$x
+    xLimits <- c(min(df$x) - 0.25, max(df$x) + 0.25)
+    p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = x, y = y, ymin = lb, ymax = ub))
+    if (x[["materiality"]] < 1) {
+      p <- p + ggplot2::geom_segment(
+        x = -Inf,
+        xend = Inf,
+        y = x[["materiality"]],
+        yend = x[["materiality"]],
+        colour = "darkred",
+        linetype = "dashed"
+      )
+    }
+    p <- p + ggplot2::geom_errorbar(size = 0.5, width = 0.25) +
+      ggplot2::geom_point(size = 2.5, fill = "darkgray", colour = "black", shape = 21) +
+      scale_x_continuous(name = NULL, breaks = xBreaks, limits = xLimits, labels = df$lab) +
+      scale_y_continuous(name = "Misstatement", limits = c(0, 1), breaks = seq(0, 1, 0.2)) +
+      ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = 1) +
+      ggplot2::geom_segment(x = 0, xend = max(xBreaks), y = -Inf, yend = -Inf) +
+      ggplot2::theme(
+        legend.background = ggplot2::element_blank(),
+        legend.key = ggplot2::element_blank(),
+        panel.background = ggplot2::element_blank(),
+        panel.grid.major = ggplot2::element_blank(),
+        panel.grid.minor = ggplot2::element_blank(),
+        plot.background = ggplot2::element_blank(),
+        plot.title = ggplot2::element_text(hjust = 0.5)
+      )
+  }
+  return(p)
 }
 
 # Methods for class: jfaDistr #####################################################

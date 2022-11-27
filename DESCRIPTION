@@ -23,7 +23,6 @@ Depends:
     R (>= 3.5.0)
 Imports:
     extraDistr,
-    graphics,
     ggplot2,
     methods,
     moments,

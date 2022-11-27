@@ -140,26 +140,7 @@ kableExtra::kable_classic(tab, position = "center", html_font = "Cambria")
 ```
 
 ```{r echo=FALSE, fig.align='center', fig.height=4.5, fig.width=7}
-xs <- 0
-labels <- "Population"
-mles <- object[["mle"]]
-lbs <- object[["lb"]]
-ubs <- object[["ub"]]
-if (!is.null(object[["strata"]])) {
-  xs <- c(xs, seq_len(nrow(object[["strata"]])))
-  labels <- c(labels, rownames(object[["strata"]]))
-  mles <- c(mles, object[["strata"]]$mle)
-  lbs <- c(lbs, object[["strata"]]$lb)
-  ubs <- c(ubs, object[["strata"]]$ub)
-}
-plot(xs, mles, pch = 19, ylim = c(0, 1), las = 1, ylab = "Misstatement", xlab = "", axes = FALSE)
-graphics::axis(side = 1, at = xs, labels = labels)
-graphics::axis(side = 2, at = seq(0, 1, length.out = 5), las = 1)
-graphics::arrows(x0 = xs, x1 = xs, y0 = lbs, y1 = ubs, angle = 90, length = 0.05)
-graphics::arrows(x0 = xs, x1 = xs, y1 = lbs, y0 = ubs, angle = 90, length = 0.05)
-if (object[["materiality"]] < 1) {
-  graphics::abline(h = object[["materiality"]], col = "darkred", lty = 2)
-}
+plot(object, type = "estimates")
 ```
 
 `r if (!is.null(object[["data"]])){ "### Data" }`

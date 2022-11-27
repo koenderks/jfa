@@ -103,12 +103,8 @@ summary(result_np)
 
 In this case, the output of the `summary()` function shows that the estimate of the misstatement in the population is 5.85%, with the 95% credible interval ranging from 4.28% to 8.22%. The stratum estimates differ substantially from each other but are relatively uncertain.
 
-```{r, echo = FALSE}
-plot(1:20, result_np$strata$mle, pch = 19, ylim = c(0, 0.5), las = 1, main = "Stratum estimates", ylab = "Misstatement", xlab = "Stratum", axes = FALSE)
-graphics::axis(side = 1, at = 1:20)
-graphics::axis(side = 2, at = seq(0, 0.50, length.out = 6), las = 1)
-graphics::arrows(x0 = 1:20, x1 = 1:20, y0 = result_np$strata$lb, y1 = result_np$strata$ub, angle = 90, length = 0.05)
-graphics::arrows(x0 = 1:20, x1 = 1:20, y1 = result_np$strat$lb, y0 = result_np$strata$ub, angle = 90, length = 0.05)
+```{r}
+plot(result_np, type = "estimates")
 ```
 
 #### Approach 2: Complete pooling
@@ -126,12 +122,8 @@ summary(result_cp)
 
 For example, the output of the `summary()` function shows that the estimate of the misstatement in the population is 4.47%, with the 95% credible interval ranging from 3.74% to 5.33%. Since the data is aggregated, the stratum estimates contain relatively little uncertainty. However, the probability of misstatement in stratum 20 (many misstatements) under this assumption is the same as that of stratum 15 (few misstatements).
 
-```{r, echo = FALSE}
-plot(1:20, result_cp$strata$mle, pch = 19, ylim = c(0, 0.5), las = 1, main = "Stratum estimates", ylab = "Misstatement", xlab = "Stratum", axes = FALSE)
-graphics::axis(side = 1, at = 1:20)
-graphics::axis(side = 2, at = seq(0, 0.50, length.out = 6), las = 1)
-graphics::arrows(x0 = 1:20, x1 = 1:20, y0 = result_cp$strata$lb, y1 = result_cp$strata$ub, angle = 90, length = 0.05)
-graphics::arrows(x0 = 1:20, x1 = 1:20, y1 = result_cp$strata$lb, y0 = result_cp$strata$ub, angle = 90, length = 0.05)
+```{r}
+plot(result_cp, type = "estimates")
 ```
 
 #### Approach 3: Partial pooling
@@ -150,12 +142,8 @@ summary(result_pp)
 
 In this case, the output shows that the estimate of the misstatement in the population is 4.34%, with the 95% credible interval ranging from 3.45% to 5.33%. Note that this population estimate is substantially less uncertain than that of the no pooling approach. Note that, like in the no pooling approach, the stratum estimates are different from each other but lie closer together and are less uncertain.
 
-```{r, echo = FALSE}
-plot(1:20, result_pp$strata$mle, pch = 19, ylim = c(0, 0.5), las = 1, main = "Stratum estimates", ylab = "Misstatement", xlab = "Stratum", axes = FALSE)
-graphics::axis(side = 1, at = 1:20)
-graphics::axis(side = 2, at = seq(0, 0.50, length.out = 6), las = 1)
-graphics::arrows(x0 = 1:20, x1 = 1:20, y0 = result_pp$strata$lb, y1 = result_pp$strata$ub, angle = 90, length = 0.05)
-graphics::arrows(x0 = 1:20, x1 = 1:20, y1 = result_pp$strat$lb, y0 = result_pp$strata$ub, angle = 90, length = 0.05)
+```{r}
+plot(result_pp, type = "estimates")
 ```
 
 ## Evaluation using data
@@ -222,12 +210,8 @@ summary(x)
 
 In this case, the output shows that the estimate of the misstatement in the population is 14.72%, with the 95% confidence interval ranging from 12.55% to 18.26%. The precision of the population estimate is 3.54%. The stratum estimates can be seen in the output of the `summary()` function and are visualized below.
 
-```{r, echo = FALSE}
-plot(1:16, x$strata$mle, pch = 19, ylim = c(0, 1), las = 1, main = "Stratum estimates", ylab = "Misstatement", xlab = "Stratum", axes = FALSE)
-graphics::axis(side = 1, at = 1:16)
-graphics::axis(side = 2, at = seq(0, 1, length.out = 6), las = 1)
-graphics::arrows(x0 = 1:16, x1 = 1:16, y0 = x$strata$lb, y1 = x$strata$ub, angle = 90, length = 0.05)
-graphics::arrows(x0 = 1:16, x1 = 1:16, y1 = x$strata$lb, y0 = x$strata$ub, angle = 90, length = 0.05)
+```{r}
+plot(x, type = "estimates")
 ```
 
 #### Bayesian evaluation
@@ -245,12 +229,8 @@ summary(x)
 
 The output shows that the estimate of the misstatement in the population is 15.66%, with the 95% credible interval ranging from 14.59% to 17%. The precision of the population estimate is 1.34%, which is substantially lower than that of the classical approach. The stratum estimates can be seen in the output of the `summary()` function and are visualized below.
 
-```{r, echo = FALSE}
-plot(1:16, x$strata$mle, pch = 19, ylim = c(0, 1), las = 1, main = "Stratum estimates", ylab = "Misstatement", xlab = "Stratum", axes = FALSE)
-graphics::axis(side = 1, at = 1:16)
-graphics::axis(side = 2, at = seq(0, 1, length.out = 6), las = 1)
-graphics::arrows(x0 = 1:16, x1 = 1:16, y0 = x$strata$lb, y1 = x$strata$ub, angle = 90, length = 0.05)
-graphics::arrows(x0 = 1:16, x1 = 1:16, y1 = x$strata$lb, y0 = x$strata$ub, angle = 90, length = 0.05)
+```{r}
+plot(x, type = "estimates")
 ```
 
 ## References

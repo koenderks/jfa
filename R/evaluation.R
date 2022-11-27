@@ -704,6 +704,9 @@ evaluation <- function(materiality = NULL,
     result[["posterior"]]$likelihood <- method
     if (!analytical) {
       result[["posterior"]]$samples <- post_samples
+      result[["posterior"]]$method <- "mcmc"
+    } else {
+      result[["posterior"]]$method <- "sample"
     }
     # Description
     description <- list()
