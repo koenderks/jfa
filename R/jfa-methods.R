@@ -699,16 +699,8 @@ plot.jfaEvaluation <- function(x, type = c("posterior", "estimates"), ...) {
       ggplot2::scale_x_continuous(name = NULL, breaks = xBreaks, limits = xLimits, labels = df$lab) +
       ggplot2::scale_y_continuous(name = "Misstatement", limits = c(0, 1), breaks = seq(0, 1, 0.2)) +
       ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = 1) +
-      ggplot2::geom_segment(x = 0, xend = max(xBreaks), y = -Inf, yend = -Inf) +
-      ggplot2::theme(
-        legend.background = ggplot2::element_blank(),
-        legend.key = ggplot2::element_blank(),
-        panel.background = ggplot2::element_blank(),
-        panel.grid.major = ggplot2::element_blank(),
-        panel.grid.minor = ggplot2::element_blank(),
-        plot.background = ggplot2::element_blank(),
-        plot.title = ggplot2::element_text(hjust = 0.5)
-      )
+      ggplot2::geom_segment(x = 0, xend = max(xBreaks), y = -Inf, yend = -Inf)
+    p <- .theme_jfa(p)
   }
   return(p)
 }
