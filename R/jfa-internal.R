@@ -20,7 +20,7 @@
     axis.title = ggplot2::element_text(size = 15),
     legend.background = ggplot2::element_blank(),
     legend.key = ggplot2::element_blank(),
-    legend.text = ggplot2::element_text(size = 10),
+    legend.text = ggplot2::element_text(size = 12),
     panel.background = ggplot2::element_blank(),
     panel.grid.major = ggplot2::element_blank(),
     panel.grid.minor = ggplot2::element_blank(),

@@ -205,12 +205,20 @@ plot.jfaPrior <- function(x, ...) {
   df <- data.frame(x = xs, y = y)
   p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = x, y = y))
   if (x[["description"]]$density != "beta-binomial") {
-    p <- p + ggplot2::geom_line(linetype = "dashed") +
-      ggplot2::scale_x_continuous(name = "Population misstatement", breaks = xBreaks, limits = range(xBreaks)) +
+    if (inherits(x, "jfaPrior")) {
+      p <- p + ggplot2::geom_line(linetype = "dashed")
+    } else if (inherits(x, "jfaPosterior")) {
+      p <- p + ggplot2::geom_line(linetype = "solid")
+    }
+    p <- p + ggplot2::scale_x_continuous(name = "Population misstatement", breaks = xBreaks, limits = range(xBreaks)) +
       ggplot2::scale_y_continuous(name = "Density", breaks = yBreaks, limits = range(yBreaks))
   } else {
-    p <- p + ggplot2::geom_col(colour = "black", fill = "lightgray") +
-      ggplot2::scale_x_continuous(name = "Population misstatements", breaks = xBreaks, limits = c(xBreaks[1] - 1, max(xBreaks) + 1)) +
+    if (inherits(x, "jfaPrior")) {
+      p <- p + ggplot2::geom_col(colour = "black", fill = "lightgray")
+    } else if (inherits(x, "jfaPosterior")) {
+      p <- p + ggplot2::geom_col(colour = "black", fill = "darkgray")
+    }
+    p <- p + ggplot2::scale_x_continuous(name = "Population misstatements", breaks = xBreaks, limits = c(xBreaks[1] - 1, max(xBreaks) + 1)) +
       ggplot2::scale_y_continuous(name = "Probability", breaks = yBreaks, limits = range(yBreaks))
   }
   p <- p + ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yBreaks)) +
