@@ -795,19 +795,57 @@ print.jfaDistr <- function(x, digits = getOption("digits"), ...) {
 #' @method plot jfaDistr
 #' @export
 plot.jfaDistr <- function(x, ...) {
-  p_exp <- x$expected / x$n
-  p_obs <- x$observed / x$n
-  yTicks <- pretty(c(0, p_exp, p_obs), min.n = 4)
-  plot <- graphics::barplot(p_exp,
-    las = 1, main = "Observed vs. Expected Distribution", xlab = "Digit", ylab = "Relative frequency",
-    names.arg = x$digits, ylim = c(0, max(yTicks)), col = "gray", axes = FALSE
+  y <- type <- NULL
+  df <- data.frame(
+    x = c(x[["digits"]], x[["digits"]]),
+    y = c(x$observed / x$n, x$expected / x$n),
+    type = c(rep("Observed", length(x[["digits"]])), rep("Expected", length(x[["digits"]])))
   )
-  graphics::legend("topright", legend = c("Observed", "Expected"), fill = c("blue", "gray"), bty = "n")
-  xloc <- as.numeric(plot)
-  graphics::lines(x = xloc, y = p_obs, cex = 2, col = "blue")
-  graphics::points(x = xloc, y = p_obs, cex = if (x$check == "firsttwo") 1 else 1.5, col = "blue", pch = 19)
-  graphics::axis(side = 1, at = xloc, labels = rep("", length(x$digits)), pos = -0.01)
-  graphics::axis(side = 2, at = yTicks, las = 1)
+  yBreaks <- pretty(c(0, df$y), min.n = 4)
+  if (x[["check"]] == "first" || x[["check"]] == "last") {
+    xBreaks <- x[["digits"]]
+    xLabels <- x[["digits"]]
+    pointSize <- 5
+    lineSize <- 1.5
+  } else {
+    xBreaks <- x[["digits"]]
+    xLabels <- c(
+      10, rep("", 9),
+      20, rep("", 9),
+      30, rep("", 9),
+      40, rep("", 9),
+      50, rep("", 9),
+      60, rep("", 9),
+      70, rep("", 9),
+      80, rep("", 9),
+      90, rep("", 8),
+      99
+    )
+    pointSize <- 2
+    lineSize <- 1.2
+  }
+  axisName <- switch(x[["check"]],
+    "first" = "Leading digit",
+    "firsttwo" = "Leading digits",
+    "last" = "Last digit"
+  )
+  p <- ggplot2::ggplot(data = data.frame(x = c(xBreaks[1], xBreaks[1]), y = c(yBreaks[1], yBreaks[1]), type = c("Observed", "Expected")), mapping = ggplot2::aes(x = x, y = y, fill = type)) +
+    ggplot2::geom_point(alpha = 0) +
+    ggplot2::geom_bar(data = subset(df, type == "Expected"), mapping = ggplot2::aes(x = x, y = y), fill = "darkgray", stat = "identity", color = "black") +
+    ggplot2::geom_line(data = subset(df, type == "Observed"), mapping = ggplot2::aes(x = x, y = y), color = "dodgerblue", size = lineSize) +
+    ggplot2::geom_point(data = subset(df, type == "Observed"), mapping = ggplot2::aes(x = x, y = y), fill = "dodgerblue", size = pointSize, shape = 21) +
+    ggplot2::scale_x_continuous(name = axisName, breaks = xBreaks, labels = xLabels, limits = c(min(x[["digits"]]) - 0.5, max(x[["digits"]]) + 0.5), ) +
+    ggplot2::scale_y_continuous(name = "Relative frequency", breaks = yBreaks, limits = c(0, max(yBreaks))) +
+    ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yBreaks)) +
+    ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf) +
+    ggplot2::labs(fill = "") +
+    ggplot2::theme(legend.text = ggplot2::element_text(margin = ggplot2::margin(l = -5, r = 50))) +
+    ggplot2::guides(fill = ggplot2::guide_legend(reverse = TRUE, override.aes = list(
+      size = c(7, 10), shape = c(21, 22),
+      fill = c("dodgerblue", "darkgray"), color = "black", alpha = 1
+    )))
+  p <- .theme_jfa(p, legend.position = "top")
+  return(p)
 }
 
 # Methods for class: jfaRv #####################################################
@@ -847,15 +885,16 @@ print.jfaRv <- function(x, digits = getOption("digits"), ...) {
 #' @method plot jfaRv
 #' @export
 plot.jfaRv <- function(x, ...) {
-  df <- data.frame(y = as.numeric(x$frequencies), x = as.numeric(names(x$frequencies)))
-  xTicks <- pretty(c(min(x$x), max(x$x)), min.n = 5)
-  yTicks <- pretty(c(0, max(x$frequencies)), min.n = 5)
+  y <- NULL
+  df <- data.frame(x = x$x, y = as.numeric(x$frequencies))
+  xBreaks <- pretty(df$x, min.n = 5)
+  yBreaks <- pretty(df$y, min.n = 5)
   p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = x, y = y)) +
-    ggplot2::geom_bar(fill = "black", color = "black", size = 0.2, stat = "identity") +
-    ggplot2::scale_x_continuous(name = "Value", limits = range(xTicks), breaks = xTicks) +
-    ggplot2::scale_y_continuous(name = "Frequency", limits = range(yTicks), breaks = yTicks) +
-    ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yTicks)) +
-    ggplot2::geom_segment(x = min(xTicks), xend = max(xTicks), y = -Inf, yend = -Inf)
+    ggplot2::geom_bar(fill = "darkgray", color = "black", size = 0.2, stat = "identity") +
+    ggplot2::scale_x_continuous(name = "Value", limits = range(xBreaks), breaks = xBreaks) +
+    ggplot2::scale_y_continuous(name = "Frequency", limits = range(yBreaks), breaks = yBreaks) +
+    ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yBreaks)) +
+    ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf)
   p <- .theme_jfa(p)
   return(p)
 }

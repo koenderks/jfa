@@ -13,14 +13,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-.theme_jfa <- function(x) {
-  x <- x + ggplot2::theme(
-    plot.title = ggplot2::element_text(hjust = 0.5),
+.theme_jfa <- function(p, ...) {
+  p <- p + ggplot2::theme(
+    legend.background = ggplot2::element_blank(),
+    legend.key = ggplot2::element_blank(),
+    panel.background = ggplot2::element_blank(),
     panel.grid.major = ggplot2::element_blank(),
     panel.grid.minor = ggplot2::element_blank(),
-    panel.background = ggplot2::element_blank()
+    plot.background = ggplot2::element_blank(),
+    plot.title = ggplot2::element_text(hjust = 0.5), ...
   )
-  return(x)
+  return(p)
 }
 
 .markdown_call <- function(x) {

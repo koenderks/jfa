@@ -31,7 +31,7 @@ The function `digit_test()` takes a vector of numeric values, extract the reques
 
 Benford’s law (Benford, 1938) is a principle that describes a pattern in many naturally-occurring numbers. According to Benford's law, each possible leading digit *d* in a naturally occurring, or non-manipulated, set of numbers occurs with a probability `p(d) = log10(1 + 1/d)`. The distribution of leading digits in a data set of financial transaction values (e.g., the `sinoForest` data) can be extracted and tested against the expected frequencies under Benford's law using the code below.
 
-```{r}
+```{r fig.align="center", fig.height=4, fig.width=6}
 # Frequentist hypothesis test
 x <- digit_test(sinoForest$value, check = "first", reference = "benford")
 print(x)
@@ -51,7 +51,7 @@ The function `repeated_test()` analyzes the frequency with which values get repe
 
 In this example we analyze a data set from a (retracted) paper that describes three experiments run in Chinese factories, where workers were nudged to use more hand-sanitizer. These data were shown to exhibited two classic markers of data tampering: impossibly similar means and the uneven distribution of last digits (Yu, Nelson, & Simohnson, 2018). We can use the `repeated_test()` function to test if these data also contain a greater amount of repeated values than expected if the data were not tampered with.
 
-```{r}
+```{r fig.align="center", fig.height=4, fig.width=6}
 x <- repeated_test(sanitizer$value, check = "lasttwo", samples = 2000)
 print(x)
 plot(x)
