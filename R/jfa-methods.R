@@ -138,38 +138,41 @@ summary.jfaPrior <- function(object, digits = getOption("digits"), ...) {
 #' @method predict jfaPrior
 #' @export
 predict.jfaPrior <- function(object, n, lim = NULL, cumulative = FALSE, ...) {
+  if (object[["method"]] == "mcmc") {
+    stop("method = 'mcmc' is not supported")
+  }
   if (!is.null(lim)) {
     if (cumulative) {
       stopifnot("'lim' must be a single value >= 0" = length(lim) == 1 && lim > 0)
       if (object[["description"]]$density == "gamma") {
-        p <- stats::dnbinom(0:lim, size = object[["description"]]$alpha, prob = 1 / (1 + object[["description"]]$beta))
+        p <- stats::dnbinom(0:lim, object[["description"]]$alpha, 1 / (1 + object[["description"]]$beta))
       } else {
-        p <- extraDistr::dbbinom(0:lim, size = n, alpha = object[["description"]]$alpha, beta = object[["description"]]$beta)
+        p <- extraDistr::dbbinom(0:lim, n, object[["description"]]$alpha, object[["description"]]$beta)
       }
       p <- cumsum(p)
       names(p) <- if (object[["description"]]$density == "gamma") paste0("n<=", 0:lim) else paste0("x<=", 0:lim)
     } else {
       if (object[["description"]]$density == "gamma") {
-        p <- stats::dnbinom(lim, size = object[["description"]]$alpha, prob = 1 / (1 + object[["description"]]$beta))
+        p <- stats::dnbinom(lim, object[["description"]]$alpha, 1 / (1 + object[["description"]]$beta))
       } else {
-        p <- extraDistr::dbbinom(lim, size = n, alpha = object[["description"]]$alpha, beta = object[["description"]]$beta)
+        p <- extraDistr::dbbinom(lim, n, object[["description"]]$alpha, object[["description"]]$beta)
       }
       names(p) <- if (object[["description"]]$density == "gamma") paste0("n=", lim) else paste0("x=", lim)
     }
   } else {
     if (cumulative) {
       if (object[["description"]]$density == "gamma") {
-        p <- stats::dnbinom(0:n, size = object[["description"]]$alpha, prob = 1 / (1 + object[["description"]]$beta))
+        p <- stats::dnbinom(0:n, object[["description"]]$alpha, 1 / (1 + object[["description"]]$beta))
       } else {
-        p <- extraDistr::dbbinom(0:n, size = n, alpha = object[["description"]]$alpha, beta = object[["description"]]$beta)
+        p <- extraDistr::dbbinom(0:n, n, object[["description"]]$alpha, object[["description"]]$beta)
       }
       p <- cumsum(p)
       names(p) <- if (object[["description"]]$density == "gamma") paste0("n<=", 0:n) else paste0("x<=", 0:n)
     } else {
       if (object[["description"]]$density == "gamma") {
-        p <- stats::dnbinom(0:n, size = object[["description"]]$alpha, prob = 1 / (1 + object[["description"]]$beta))
+        p <- stats::dnbinom(0:n, object[["description"]]$alpha, 1 / (1 + object[["description"]]$beta))
       } else {
-        p <- extraDistr::dbbinom(0:n, size = n, alpha = object[["description"]]$alpha, beta = object[["description"]]$beta)
+        p <- extraDistr::dbbinom(0:n, n, object[["description"]]$alpha, object[["description"]]$beta)
       }
       names(p) <- if (object[["description"]]$density == "gamma") paste0("n=", 0:n) else paste0("x=", 0:n)
     }
@@ -200,19 +203,23 @@ plot.jfaPrior <- function(x, ...) {
   yBreaks <- pretty(c(0, yMax), min.n = 5)
   xBreaks <- pretty(xs, min.n = 5)
   df <- data.frame(x = xs, y = y)
-  p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = x, y = y)) +
-    ggplot2::ggtitle(x[["prior"]])
+  p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = x, y = y))
   if (x[["description"]]$density != "beta-binomial") {
     p <- p + ggplot2::geom_line(linetype = "dashed") +
       ggplot2::scale_x_continuous(name = "Population misstatement", breaks = xBreaks, limits = range(xBreaks)) +
-      ggplot2::scale_y_continuous(name = "Density", breaks = yBreaks, limits = range(yBreaks), expand = c(0, 0))
+      ggplot2::scale_y_continuous(name = "Density", breaks = yBreaks, limits = range(yBreaks))
   } else {
-    p <- p + ggplot2::geom_col(colour = "black", fill = "darkgray") +
+    p <- p + ggplot2::geom_col(colour = "black", fill = "lightgray") +
       ggplot2::scale_x_continuous(name = "Population misstatements", breaks = xBreaks, limits = c(xBreaks[1] - 1, max(xBreaks) + 1)) +
       ggplot2::scale_y_continuous(name = "Probability", breaks = yBreaks, limits = range(yBreaks))
   }
   p <- p + ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yBreaks)) +
     ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf)
+  if (inherits(x, "jfaPrior")) {
+    p <- p + ggplot2::ggtitle(x[["prior"]])
+  } else {
+    p <- p + ggplot2::ggtitle(x[["posterior"]])
+  }
   p <- .theme_jfa(p)
   return(p)
 }
@@ -226,7 +233,7 @@ print.jfaPosterior <- function(x, ...) {
   cat("\n")
   cat(strwrap("Posterior Distribution from Audit Sampling", prefix = "\t"), sep = "\n")
   cat("\n")
-  cat("functional form:", x[["posterior"]], "\nparameters obtained via method 'sample'\n")
+  cat("functional form:", x[["posterior"]], "\nparameters obtained via method", paste0("'", x[["method"]], "'\n"))
 }
 
 #' @rdname jfa-methods
@@ -274,27 +281,8 @@ predict.jfaPosterior <- function(object, n, lim = NULL, cumulative = FALSE, ...)
 #' @rdname jfa-methods
 #' @method plot jfaPosterior
 #' @export
-plot.jfaPosterior <- function(x, xlim = c(0, 1), ...) {
-  if (x[["description"]]$density == "gamma") {
-    xseq <- seq(xlim[1], xlim[2], length.out = 1000)
-    d <- stats::dgamma(xseq, shape = x[["description"]]$alpha, rate = x[["description"]]$beta)
-  } else if (x[["description"]]$density == "beta") {
-    xseq <- seq(xlim[1], xlim[2], length.out = 1000)
-    d <- stats::dbeta(xseq, shape1 = x[["description"]]$alpha, shape2 = x[["description"]]$beta)
-  } else if (x[["description"]]$density == "beta-binomial") {
-    xseq <- seq(xlim[1], xlim[2], by = 1)
-    d <- c(rep(0, x[["description"]]$x), extraDistr::dbbinom(x = xseq, size = x[["N.units"]] - x[["description"]]$n, alpha = x[["description"]]$alpha, beta = x[["description"]]$beta))
-  }
-  yMax <- if (is.infinite(max(d))) 10 else max(d)
-  if (x[["description"]]$density == "gamma" || x[["description"]]$density == "beta") {
-    graphics::plot(x = xseq, y = d, type = "l", bty = "n", xlab = expression(theta), ylab = "Density", las = 1, ylim = c(0, yMax), main = x[["posterior"]], axes = FALSE, lty = 1)
-    graphics::axis(1, at = pretty(xseq, min.n = 4), labels = round(pretty(xseq, min.n = 4), 2))
-    graphics::axis(2, at = c(0, yMax), labels = FALSE, las = 1, lwd.ticks = 0)
-  } else {
-    graphics::barplot(d, bty = "n", xlab = "K", ylab = "Probability", las = 1, ylim = c(0, yMax), width = 1, space = 0, main = x[["posterior"]], axes = FALSE, col = "darkgray")
-    graphics::axis(1, at = pretty(xseq, min.n = 4) + 0.5, labels = pretty(xseq, min.n = 4))
-    graphics::axis(2, at = c(0, yMax), labels = FALSE, las = 1, lwd.ticks = 0)
-  }
+plot.jfaPosterior <- function(x, ...) {
+  plot.jfaPrior(x, ...)
 }
 
 # Methods for class: jfaPlanning #####################################################
@@ -389,60 +377,64 @@ summary.jfaPlanning <- function(object, digits = getOption("digits"), ...) {
 #' @rdname jfa-methods
 #' @method plot jfaPlanning
 #' @export
-plot.jfaPlanning <- function(x, xlim = c(0, 1), ...) {
-  if (!is.null(x[["prior"]])) {
-    if (x[["likelihood"]] == "poisson") {
-      xseq <- seq(xlim[1], xlim[2], length.out = 1000)
-      d <- stats::dgamma(xseq, shape = x[["prior"]][["description"]]$alpha, rate = x[["prior"]][["description"]]$beta)
-      d1 <- stats::dgamma(xseq, shape = x[["posterior"]][["description"]]$alpha, rate = x[["posterior"]][["description"]]$beta)
-    } else if (x[["likelihood"]] == "binomial") {
-      xseq <- seq(xlim[1], xlim[2], length.out = 1000)
-      d <- stats::dbeta(xseq, shape1 = x[["prior"]][["description"]]$alpha, shape2 = x[["prior"]][["description"]]$beta)
-      d1 <- stats::dbeta(xseq, shape1 = x[["posterior"]][["description"]]$alpha, shape2 = x[["posterior"]][["description"]]$beta)
-    } else if (x[["likelihood"]] == "hypergeometric") {
-      xseq <- seq(xlim[1], xlim[2], by = 1)
-      d <- extraDistr::dbbinom(x = xseq, size = x[["N.units"]], alpha = x[["prior"]][["description"]]$alpha, beta = x[["prior"]][["description"]]$beta)
-      d1 <- extraDistr::dbbinom(x = xseq, size = x[["N.units"]] - x[["n"]], alpha = x[["posterior"]][["description"]]$alpha, beta = x[["posterior"]][["description"]]$beta)
-    }
-    if (x$likelihood == "poisson" || x$likelihood == "binomial") {
-      graphics::plot(
-        x = xseq, y = d1, type = "l", bty = "n", xlab = expression(theta), ylab = "Density", las = 1, ylim = c(0, max(d1)),
-        main = paste0(x[["prior"]]$prior, "  \u2192  ", x[["posterior"]]$posterior), axes = FALSE
-      )
-      graphics::lines(x = xseq, y = d, lty = 2)
-      graphics::axis(1, at = pretty(xseq, min.n = 4), labels = round(pretty(xseq, min.n = 4), 2))
-      graphics::axis(2, at = c(0, max(d1)), labels = FALSE, las = 1, lwd.ticks = 0)
-      graphics::legend("topright", legend = c("Prior", "Posterior"), lty = c(2, 1), bty = "n", cex = 1.2, lwd = 2)
-    } else {
-      graphics::barplot(d1,
-        bty = "n", xlab = "K", ylab = "Probability", las = 1, ylim = c(0, max(d1)), width = 1, space = 0,
-        main = paste0(x[["prior"]]$prior, "  \u2192  ", x[["posterior"]]$posterior), axes = FALSE, col = "darkgray"
-      )
-      graphics::barplot(d, col = "lightgray", add = TRUE, las = 1, axes = FALSE, width = 1, space = 0)
-      graphics::axis(1, at = pretty(xseq, min.n = 4) + 0.5, labels = pretty(xseq, min.n = 4))
-      graphics::axis(2, at = c(0, max(d1)), labels = FALSE, las = 1, lwd.ticks = 0)
-      graphics::legend("topright", legend = c("Prior", "Posterior"), fill = c("lightgray", "darkgray"), bty = "n", cex = 1.2)
-    }
-  } else {
-    xseq <- seq(xlim[1], xlim[2], by = 1)
-    if (x[["likelihood"]] == "poisson") {
-      mainLab <- paste0("Poisson distribution (lambda = ", round(x[["materiality"]] * x[["n"]], 2), ")")
-      d <- stats::dpois(x = xseq, lambda = x[["materiality"]] * x[["n"]])
-      d1 <- stats::dpois(x = 0:x[["x"]], lambda = x[["materiality"]] * x[["n"]])
-    } else if (x[["likelihood"]] == "binomial") {
-      mainLab <- paste0("Binomial distribution (n = ", x[["n"]], ", p = ", x[["materiality"]], ")")
-      d <- stats::dbinom(x = xseq, size = x[["n"]], prob = x[["materiality"]])
-      d1 <- stats::dbinom(x = 0:x[["x"]], size = x[["n"]], prob = x[["materiality"]])
-    } else if (x$likelihood == "hypergeometric") {
-      mainLab <- paste0("Hypergeometric distribution (N = ", x[["N.units"]], ", n = ", x[["n"]], ", K = ", x[["K"]], ")")
-      d <- stats::dhyper(x = xseq, m = x[["K"]], n = x[["N.units"]] - x[["K"]], k = x[["n"]])
-      d1 <- stats::dhyper(x = 0:x[["x"]], m = x[["K"]], n = x[["N.units"]] - x[["K"]], k = x[["n"]])
-    }
-    graphics::barplot(d, xlab = "x", col = "lightgray", ylab = "Probability", las = 1, main = mainLab, width = 1, space = 0)
-    graphics::axis(1, at = pretty(xseq, min.n = 4) + 0.5, labels = pretty(xseq, min.n = 4))
-    graphics::barplot(d1, col = "darkgray", add = TRUE, las = 1, axes = FALSE, width = 1, space = 0)
-    graphics::legend("topright", legend = c("Expected error free", "Expected errors"), fill = c("lightgray", "darkgray"), bty = "n", cex = 1.2)
+plot.jfaPlanning <- function(x, ...) {
+  if (is.null(x[["prior"]])) {
+    stop("no available plot for classical methods")
   }
+  y <- NULL
+  if (x[["prior"]][["description"]]$density == "gamma") {
+    xs <- seq(0, 1, length.out = 1000)
+    y <- stats::dgamma(xs, x[["prior"]][["description"]]$alpha, x[["prior"]][["description"]]$beta)
+  } else if (x[["prior"]][["description"]]$density == "beta") {
+    xs <- seq(0, 1, length.out = 1000)
+    y <- stats::dbeta(xs, x[["prior"]][["description"]]$alpha, x[["prior"]][["description"]]$beta)
+  } else if (x[["prior"]][["description"]]$density == "beta-binomial") {
+    xs <- seq(0, x[["N.units"]], by = 1)
+    y <- extraDistr::dbbinom(xs, x[["prior"]][["N.units"]], x[["prior"]][["description"]]$alpha, x[["prior"]][["description"]]$beta)
+  } else if (x[["prior"]][["description"]]$density == "MCMC") {
+    dens <- stats::density(x[["prior"]][["samples"]], from = 0, to = 1, n = 1000)
+    xs <- dens$x
+    y <- dens$y
+  }
+  df <- data.frame(x = xs, y = y)
+  p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = x, y = y))
+  if (x[["prior"]][["description"]]$density != "beta-binomial") {
+    p <- p + ggplot2::geom_line(linetype = "dashed")
+  } else {
+    p <- p + ggplot2::geom_col(colour = "black", fill = "lightgray")
+  }
+  if (x[["posterior"]][["description"]]$density == "gamma") {
+    xs <- seq(0, 1, length.out = 1000)
+    y <- stats::dgamma(xs, x[["posterior"]][["description"]]$alpha, x[["posterior"]][["description"]]$beta)
+  } else if (x[["posterior"]][["description"]]$density == "beta") {
+    xs <- seq(0, 1, length.out = 1000)
+    y <- stats::dbeta(xs, x[["posterior"]][["description"]]$alpha, x[["posterior"]][["description"]]$beta)
+  } else if (x[["posterior"]][["description"]]$density == "beta-binomial") {
+    xs <- seq(0, x[["posterior"]][["N.units"]], by = 1)
+    y <- extraDistr::dbbinom(xs, x[["posterior"]][["N.units"]], x[["posterior"]][["description"]]$alpha, x[["posterior"]][["description"]]$beta)
+  } else if (x[["posterior"]][["description"]]$density == "MCMC") {
+    dens <- stats::density(x[["posterior"]][["samples"]], from = 0, to = 1, n = 1000)
+    xs <- dens$x
+    y <- dens$y
+  }
+  yMax <- if (is.infinite(max(y))) 10 else max(y)
+  yBreaks <- pretty(c(0, yMax), min.n = 5)
+  xBreaks <- pretty(xs, min.n = 5)
+  df <- data.frame(x = xs, y = y)
+  if (x[["posterior"]][["description"]]$density != "beta-binomial") {
+    p <- p + ggplot2::geom_line(data = df, mapping = ggplot2::aes(x = x, y = y), linetype = "solid") +
+      ggplot2::scale_x_continuous(name = "Population misstatement", breaks = xBreaks, limits = range(xBreaks)) +
+      ggplot2::scale_y_continuous(name = "Density", breaks = yBreaks, limits = range(yBreaks))
+  } else {
+    p <- p + ggplot2::geom_col(data = df, mapping = ggplot2::aes(x = x, y = y), colour = "black", fill = "darkgray") +
+      ggplot2::scale_x_continuous(name = "Population misstatements", breaks = xBreaks, limits = c(xBreaks[1] - 1, max(xBreaks) + 1)) +
+      ggplot2::scale_y_continuous(name = "Probability", breaks = yBreaks, limits = range(yBreaks))
+  }
+  p <- p + ggplot2::ggtitle(paste0(x[["prior"]]$prior, "  \u2192  ", x[["posterior"]]$posterior)) +
+    ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yBreaks)) +
+    ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf)
+  p <- .theme_jfa(p)
+  return(p)
 }
 
 # Methods for class: jfaSelection #####################################################
@@ -522,17 +514,6 @@ summary.jfaSelection <- function(object, digits = getOption("digits"), ...) {
   }
   class(out) <- c("summary.jfaSelection", "data.frame")
   return(out)
-}
-
-#' @rdname jfa-methods
-#' @method plot jfaSelection
-#' @export
-plot.jfaSelection <- function(x, ...) {
-  stopifnot("No plotting method available for selection with units = 'items'" = x[["units"]] == "values")
-  name <- x[["values"]]
-  graphics::hist(x[["data"]][[name]], breaks = 30, main = "Histogram of population and sample book values", xlab = "Book values", las = 1, col = "lightgray")
-  graphics::hist(x[["sample"]][[name]], breaks = 30, main = "Sample", xlab = "Book values", las = 1, add = TRUE, col = "darkgray")
-  graphics::legend("topright", legend = c("Population", "Sample"), bty = "n", fill = c("lightgray", "darkgray"))
 }
 
 # Methods for class: jfaEvaluation #####################################################
@@ -691,88 +672,8 @@ summary.jfaEvaluation <- function(object, digits = getOption("digits"), ...) {
 #' @rdname jfa-methods
 #' @method plot jfaEvaluation
 #' @export
-plot.jfaEvaluation <- function(x, xlim = c(0, 1), ...) {
-  if (x[["method"]] %in% c("stringer", "stringer-meikle", "stringer-lta", "stringer-pvz", "rohrbach", "moment", "coxsnell")) {
-    stop(paste0("No plotting method available for sample evaluation using 'method = ", x[["method"]], "'"))
-  }
-  if (x[["method"]] %in% c("direct", "difference", "quotient", "regression")) {
-    ymin <- x[["mle"]] - 2 * x[["precision"]]
-    ymax <- x[["mle"]] + 2 * x[["precision"]]
-    graphics::plot(0, type = "n", ylim = c(ymin, ymax), ylab = expression(E), xlim = c(0, 1), bty = "n", xaxt = "n", xlab = "", yaxt = "n", main = paste0(round(x[["conf.level"]] * 100, 2), "% Confidence interval"))
-    yBreaks <- base::pretty(c(ymin, ymax), n = 6)
-    graphics::axis(side = 2, at = yBreaks, labels = base::format(round(yBreaks), scientific = FALSE, big.mark = ","), las = 1)
-    graphics::segments(x0 = 0, x1 = 1, y0 = 0, y1 = 0, lty = 2, col = "gray")
-    if (x[["materiality"]] != 1) {
-      graphics::segments(x0 = 0, x1 = 1, y0 = (x[["N.units"]] * x[["materiality"]]), y1 = (x[["N.units"]] * x[["materiality"]]), lty = 2, col = "red")
-    }
-    graphics::points(x = 0.5, y = x[["mle"]], pch = 19)
-    graphics::arrows(x0 = 0.5, x1 = 0.5, y0 = x[["lb"]], y1 = x[["ub"]], code = 3, lwd = 2, col = "black", angle = 90)
-    graphics::text(x = 0.86, y = x[["mle"]], labels = paste0("Most likely error = ", format(round(x[["mle"]], 2), scientific = FALSE, big.mark = ",")), cex = 0.75, adj = c(1, 0.5))
-    graphics::text(x = 0.87, y = x[["lb"]], labels = paste0("Lower bound = ", format(round(x[["lb"]], 2), scientific = FALSE, big.mark = ",")), cex = 0.75, adj = c(1, 0.5))
-    graphics::text(x = 0.87, y = x[["ub"]], labels = paste0("Upper bound = ", format(round(x[["ub"]], 2), scientific = FALSE, big.mark = ",")), cex = 0.75, adj = c(1, 0.5))
-    graphics::segments(x0 = 0.40, x1 = 0.40, y0 = x[["mle"]], y1 = x[["ub"]], col = "black")
-    graphics::segments(x0 = 0.40, x1 = 0.42, y0 = x[["mle"]], y1 = x[["mle"]], col = "black")
-    graphics::segments(x0 = 0.40, x1 = 0.42, y0 = x[["ub"]], y1 = x[["ub"]], col = "black")
-    graphics::text(x = 0.15, y = (x[["ub"]] - x[["precision"]] / 2), labels = paste0("Precision = ", format(round(x[["precision"]], 2), scientific = FALSE, big.mark = ",")), cex = 0.75, adj = c(0, 0.5))
-  } else {
-    if (!is.null(x[["prior"]])) {
-      if (x[["method"]] == "poisson") {
-        xseq <- seq(xlim[1], xlim[2], length.out = 1000)
-        d <- stats::dgamma(xseq, shape = x[["prior"]][["description"]]$alpha, rate = x[["prior"]][["description"]]$beta)
-        d1 <- stats::dgamma(xseq, shape = x[["posterior"]][["description"]]$alpha, rate = x[["posterior"]][["description"]]$beta)
-      } else if (x[["method"]] == "binomial") {
-        xseq <- seq(xlim[1], xlim[2], length.out = 1000)
-        d <- stats::dbeta(xseq, shape1 = x[["prior"]][["description"]]$alpha, shape2 = x[["prior"]][["description"]]$beta)
-        d1 <- stats::dbeta(xseq, shape1 = x[["posterior"]][["description"]]$alpha, shape2 = x[["posterior"]][["description"]]$beta)
-      } else if (x[["method"]] == "hypergeometric") {
-        xseq <- seq(xlim[1], xlim[2], by = 1)
-        d <- extraDistr::dbbinom(x = xseq, size = x[["N.units"]], alpha = x[["prior"]][["description"]]$alpha, beta = x[["prior"]][["description"]]$beta)
-        d1 <- extraDistr::dbbinom(x = xseq, size = x[["N.units"]] - x[["n"]], alpha = x[["posterior"]][["description"]]$alpha, beta = x[["posterior"]][["description"]]$beta)
-      }
-      if (x[["method"]] == "poisson" || x[["method"]] == "binomial") {
-        graphics::plot(
-          x = xseq, y = d1, type = "l", bty = "n", xlab = expression(theta), ylab = "Density", las = 1, ylim = c(0, max(d1)),
-          main = paste0(x[["prior"]]$prior, "  \u2192  ", x[["posterior"]]$posterior), axes = FALSE
-        )
-        graphics::lines(x = xseq, y = d, lty = 2)
-        graphics::axis(1, at = pretty(xseq, min.n = 4), labels = round(pretty(xseq, min.n = 4), 2))
-        graphics::axis(2, at = c(0, max(d1)), labels = FALSE, las = 1, lwd.ticks = 0)
-        graphics::legend("topright", legend = c("Prior", "Posterior"), lty = c(2, 1), bty = "n", cex = 1.2, lwd = 2)
-      } else {
-        graphics::barplot(d1,
-          bty = "n", xlab = "K", ylab = "Probability", las = 1, ylim = c(0, max(d1)), width = 1, space = 0,
-          main = paste0(x[["prior"]]$prior, "  \u2192  ", x[["posterior"]]$posterior), axes = FALSE, col = "darkgray"
-        )
-        graphics::barplot(d, col = "lightgray", add = TRUE, las = 1, axes = FALSE, width = 1, space = 0)
-        graphics::axis(1, at = pretty(xseq, min.n = 4) + 0.5, labels = pretty(xseq, min.n = 4))
-        graphics::axis(2, at = c(0, max(d1)), labels = FALSE, las = 1, lwd.ticks = 0)
-        graphics::legend("topright", legend = c("Prior", "Posterior"), fill = c("lightgray", "darkgray"), bty = "n", cex = 1.2)
-      }
-    } else {
-      stopifnot(
-        "missing value for 'materiality'" = x[["materiality"]] != 1,
-        "'likelihood' should be one of 'poisson', 'binomial', 'hypergeometric'" = x[["method"]] %in% c("poisson", "binomial", "hypergeometric")
-      )
-      xseq <- seq(xlim[1], xlim[2], by = 1)
-      if (x[["method"]] == "poisson") {
-        mainLab <- paste0("Poisson distribution (lambda = ", round(x[["materiality"]] * x[["n"]], 2), ")")
-        d <- stats::dpois(x = xseq, lambda = x[["materiality"]] * x[["n"]])
-        d1 <- stats::dpois(x = 0:x[["x"]], lambda = x[["materiality"]] * x[["n"]])
-      } else if (x[["method"]] == "binomial") {
-        mainLab <- paste0("Binomial distribution (n = ", x[["n"]], ", p = ", round(x[["materiality"]], 2), ")")
-        d <- stats::dbinom(x = xseq, size = x[["n"]], prob = x[["materiality"]])
-        d1 <- stats::dbinom(x = 0:x[["x"]], size = x[["n"]], prob = x[["materiality"]])
-      } else if (x[["method"]] == "hypergeometric") {
-        mainLab <- paste0("Hypergeometric distribution (N = ", x[["N.units"]], ", n = ", x[["n"]], ", K = ", x[["K"]], ")")
-        d <- stats::dhyper(x = xseq, m = x[["K"]], n = x[["N.units"]] - x[["K"]], k = x[["n"]])
-        d1 <- stats::dhyper(x = 0:x[["n"]], m = x[["K"]], n = x[["N.units"]] - x[["K"]], k = x[["n"]])
-      }
-      graphics::barplot(d, xlab = "x", col = "lightgray", ylab = "Probability", las = 1, main = mainLab, width = 1, space = 0)
-      graphics::axis(1, at = pretty(xseq, min.n = 4) + 0.5, labels = pretty(xseq, min.n = 4))
-      graphics::barplot(d1, col = "darkgray", add = TRUE, las = 1, axes = FALSE, width = 1, space = 0)
-      graphics::legend("topright", legend = c("Error free", "Errors"), fill = c("lightgray", "darkgray"), bty = "n", cex = 1.2)
-    }
-  }
+plot.jfaEvaluation <- function(x, ...) {
+  plot.jfaPlanning(x, ...)
 }
 
 # Methods for class: jfaDistr #####################################################

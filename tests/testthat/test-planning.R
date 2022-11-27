@@ -227,35 +227,30 @@ test_that(desc = "(id: f5-v0.5.0-t2) Test for Bayesian summary and print functio
   expect_equal(jfaRes[["x"]], 0)
 })
 
-test_that(desc = "(id: f5-v0.5.0-t3) Test for frequentist plot function", {
-  jfaRes <- planning(materiality = 0.01, conf.level = 0.95, expected = 0, likelihood = "poisson")
-  invisible(capture.output(plot(jfaRes)))
-  expect_equal(jfaRes[["x"]], 0)
-
-  jfaRes <- planning(materiality = 0.01, conf.level = 0.95, expected = 0, likelihood = "binomial")
-  invisible(capture.output(plot(jfaRes)))
-  expect_equal(jfaRes[["x"]], 0)
-
-  jfaRes <- planning(materiality = 0.01, conf.level = 0.95, expected = 0, likelihood = "hypergeometric", N.units = 1000)
-  invisible(capture.output(plot(jfaRes)))
-  expect_equal(jfaRes[["x"]], 0)
-})
-
 test_that(desc = "(id: f5-v0.5.0-t4) Test for Bayesian plot function", {
   jfaRes <- planning(min.precision = 0.02, conf.level = 0.95, expected = 0, likelihood = "poisson", prior = TRUE)
-  invisible(capture.output(plot(jfaRes)))
-  invisible(capture.output(plot(jfaRes[["posterior"]])))
-  expect_equal(jfaRes[["x"]], 0)
+  p <- plot(jfaRes)
+  expect_equal(is.null(p), FALSE)
+  p <- plot(jfaRes[["prior"]])
+  expect_equal(is.null(p), FALSE)
+  p <- plot(jfaRes[["posterior"]])
+  expect_equal(is.null(p), FALSE)
 
   jfaRes <- planning(materiality = 0.01, conf.level = 0.95, expected = 0, likelihood = "binomial", prior = TRUE)
-  invisible(capture.output(plot(jfaRes)))
-  invisible(capture.output(plot(jfaRes[["posterior"]])))
-  expect_equal(jfaRes[["x"]], 0)
+  p <- plot(jfaRes)
+  expect_equal(is.null(p), FALSE)
+  p <- plot(jfaRes[["prior"]])
+  expect_equal(is.null(p), FALSE)
+  p <- plot(jfaRes[["posterior"]])
+  expect_equal(is.null(p), FALSE)
 
   jfaRes <- planning(materiality = 0.01, conf.level = 0.95, expected = 0, likelihood = "hypergeometric", prior = TRUE, N.units = 1000)
-  invisible(capture.output(plot(jfaRes)))
-  invisible(capture.output(plot(jfaRes[["posterior"]])))
-  expect_equal(jfaRes[["x"]], 0)
+  p <- plot(jfaRes)
+  expect_equal(is.null(p), FALSE)
+  p <- plot(jfaRes[["prior"]])
+  expect_equal(is.null(p), FALSE)
+  p <- plot(jfaRes[["posterior"]])
+  expect_equal(is.null(p), FALSE)
 })
 
 # jfa version 0.5.1

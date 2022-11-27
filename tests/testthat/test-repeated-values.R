@@ -23,12 +23,8 @@ test_that(desc = "Print and plot call", {
       print(res)
     })
   })
-  invisible({
-    capture.output({
-      plot(res)
-    })
-  })
-  expect_equal(length(res$statistic), 1)
+  p <- plot(res)
+  expect_equal(is.null(p), FALSE)
 })
 
 test_that(desc = "Validate Datacolada[77]", {

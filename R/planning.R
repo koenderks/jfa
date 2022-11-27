@@ -342,6 +342,7 @@ planning <- function(materiality = NULL,
     posterior <- list()
     posterior[["posterior"]] <- .functional_form(likelihood, post_alpha, post_beta, post_N)
     posterior[["likelihood"]] <- likelihood
+    posterior[["method"]] <- "sample"
     result[["posterior"]] <- posterior
     # Description
     description <- list()

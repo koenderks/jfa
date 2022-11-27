@@ -94,15 +94,6 @@ test_that(desc = "(id: f6-v0.5.0-t1) Test for summary and print function", {
   expect_equal(nrow(jfaRes[["sample"]]), 100)
 })
 
-test_that(desc = "(id: f6-v0.5.0-t2) Test for plot function", {
-  set.seed(1)
-  population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
-  jfaRes <- selection(population, size = 100, units = "values", method = "random", order = "bookValue", values = "bookValue")
-  invisible(capture.output(plot(jfaRes)))
-  expect_equal(ncol(jfaRes[["sample"]]), 4)
-  expect_equal(nrow(jfaRes[["sample"]]), 100)
-})
-
 # jfa version 0.5.1 - 0.5.7
 # No changes to be benchmarked
 

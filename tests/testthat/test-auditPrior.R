@@ -136,16 +136,16 @@ test_that(desc = "(id: f2-v0.5.0-t1) Test for summary and print function", {
 
 test_that(desc = "(id: f2-v0.5.0-t2) Test for plot function", {
   prior <- auditPrior(conf.level = 0.95, likelihood = "binomial", method = "default", materiality = 0.05)
-  invisible(capture.output(plot(prior)))
-  expect_equal(prior[["description"]]$alpha, 1)
+  p <- plot(prior)
+  expect_equal(is.null(prior), FALSE)
 
   prior <- auditPrior(conf.level = 0.95, likelihood = "hypergeometric", method = "default", N.units = 1000)
-  invisible(capture.output(plot(prior)))
-  expect_equal(prior[["description"]]$alpha, 1)
+  p <- plot(prior)
+  expect_equal(is.null(prior), FALSE)
 
   prior <- auditPrior(conf.level = 0.95, likelihood = "poisson", method = "default", materiality = 0.05)
-  invisible(capture.output(plot(prior)))
-  expect_equal(prior[["description"]]$alpha, 1)
+  p <- plot(prior)
+  expect_equal(is.null(prior), FALSE)
 })
 
 # jfa version 0.5.1 - 0.5.2

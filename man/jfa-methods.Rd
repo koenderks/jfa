@@ -19,7 +19,6 @@
 \alias{print.jfaSelection}
 \alias{print.summary.jfaSelection}
 \alias{summary.jfaSelection}
-\alias{plot.jfaSelection}
 \alias{print.jfaEvaluation}
 \alias{print.summary.jfaEvaluation}
 \alias{summary.jfaEvaluation}
@@ -48,7 +47,7 @@
 
 \method{predict}{jfaPosterior}(object, n, lim = NULL, cumulative = FALSE, ...)
 
-\method{plot}{jfaPosterior}(x, xlim = c(0, 1), ...)
+\method{plot}{jfaPosterior}(x, ...)
 
 \method{print}{jfaPlanning}(x, ...)
 
@@ -56,7 +55,7 @@
 
 \method{summary}{jfaPlanning}(object, digits = getOption("digits"), ...)
 
-\method{plot}{jfaPlanning}(x, xlim = c(0, 1), ...)
+\method{plot}{jfaPlanning}(x, ...)
 
 \method{print}{jfaSelection}(x, ...)
 
@@ -64,15 +63,13 @@
 
 \method{summary}{jfaSelection}(object, digits = getOption("digits"), ...)
 
-\method{plot}{jfaSelection}(x, ...)
-
 \method{print}{jfaEvaluation}(x, digits = getOption("digits"), ...)
 
 \method{print}{summary.jfaEvaluation}(x, digits = getOption("digits"), ...)
 
 \method{summary}{jfaEvaluation}(object, digits = getOption("digits"), ...)
 
-\method{plot}{jfaEvaluation}(x, xlim = c(0, 1), ...)
+\method{plot}{jfaEvaluation}(x, ...)
 
 \method{print}{jfaDistr}(x, digits = getOption("digits"), ...)
 

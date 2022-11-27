@@ -74,7 +74,7 @@ An object of class \code{jfaSelection} containing:
 audit samples. It offers flexible implementations of the most common audit
 sampling algorithms for attributes sampling and monetary unit sampling. The
 function returns an object of class \code{jfaSelection} that can be used with
-associated \code{summary()} and a \code{plot()} methods.
+the associated \code{summary()} method.
 }
 \details{
 This section elaborates on the possible options for the \code{units}

@@ -19,7 +19,7 @@
 #' audit samples. It offers flexible implementations of the most common audit
 #' sampling algorithms for attributes sampling and monetary unit sampling. The
 #' function returns an object of class \code{jfaSelection} that can be used with
-#' associated \code{summary()} and a \code{plot()} methods.
+#' the associated \code{summary()} method.
 #'
 #' @usage selection(data, size, units = c("items", "values"),
 #'           method = c("interval", "cell", "random", "sieve"),

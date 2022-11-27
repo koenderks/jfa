@@ -23,12 +23,8 @@ test_that(desc = "Print and plot call", {
       print(res)
     })
   })
-  invisible({
-    capture.output({
-      plot(res)
-    })
-  })
-  expect_equal(length(res$digits), 9)
+  p <- plot(res)
+  expect_equal(is.null(p), FALSE)
 })
 
 test_that(desc = "Validate Derks et al. (2020)", {

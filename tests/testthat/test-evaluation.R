@@ -293,40 +293,33 @@ test_that(desc = "(id: f3-v0.2.0-t2) Test for Bayesian summary function", {
   expect_equal(jfaEval[["ub"]], 0.04792395, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f3-v0.2.0-t3) Test for frequentist plot function", {
-  set.seed(1)
-  population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
-  jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "poisson")
-  samp <- selection(population, size = jfaRes, units = "items", method = "random")$sample
-  samp$auditValue <- samp[["bookValue"]]
-  jfaEval <- evaluation(conf.level = 0.95, data = samp, values = "bookValue", values.audit = "auditValue", method = "poisson", materiality = 0.05)
-  invisible(capture.output(plot(jfaEval)))
-  expect_equal(jfaEval[["ub"]], 0.04992887, tolerance = 0.001)
-  jfaEval <- evaluation(conf.level = 0.95, data = samp, values = "bookValue", values.audit = "auditValue", method = "binomial", materiality = 0.05)
-  invisible(capture.output(plot(jfaEval)))
-  jfaEval <- evaluation(conf.level = 0.95, data = samp, values = "bookValue", values.audit = "auditValue", method = "hypergeometric", materiality = 0.05, N.units = nrow(population))
-  invisible(capture.output(plot(jfaEval)))
-  data("BuildIt")
-  BuildIt$inSample <- c(rep(1, 100), rep(0, 3400))
-  BuildIt_sample <- subset(BuildIt, BuildIt$inSample == 1)
-  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = BuildIt_sample, values = "bookValue", values.audit = "auditValue", method = "regression", N.items = 3500, N.units = sum(BuildIt$bookValue))
-  invisible(capture.output(plot(jfaEval)))
-})
-
 test_that(desc = "(id: f3-v0.2.0-t4) Test for Bayesian plot function", {
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   samp <- selection(population, size = 100, units = "items", method = "random")$sample
   samp$auditValue <- samp[["bookValue"]]
   jfaEval <- evaluation(conf.level = 0.95, data = samp, values = "bookValue", values.audit = "auditValue", method = "binomial", prior = TRUE, materiality = 0.05)
-  invisible(capture.output(plot(jfaEval)))
-  invisible(capture.output(plot(jfaEval[["posterior"]])))
+  p <- plot(jfaEval)
+  expect_equal(is.null(p), FALSE)
+  p <- plot(jfaEval[["prior"]])
+  expect_equal(is.null(p), FALSE)
+  p <- plot(jfaEval[["posterior"]])
+  expect_equal(is.null(p), FALSE)
   jfaEval <- evaluation(conf.level = 0.95, data = samp, values = "bookValue", values.audit = "auditValue", method = "poisson", prior = TRUE, materiality = 0.05)
-  invisible(capture.output(plot(jfaEval)))
+  p <- plot(jfaEval)
+  expect_equal(is.null(p), FALSE)
+  p <- plot(jfaEval[["prior"]])
+  expect_equal(is.null(p), FALSE)
+  p <- plot(jfaEval[["posterior"]])
+  expect_equal(is.null(p), FALSE)
   prior <- auditPrior(method = "default", likelihood = "hypergeometric", N.units = nrow(population))
   jfaEval <- evaluation(conf.level = 0.95, data = samp, values = "bookValue", values.audit = "auditValue", method = "hypergeometric", prior = prior, materiality = 0.05, N.units = nrow(population))
-  invisible(capture.output(plot(jfaEval)))
-  expect_equal(jfaEval[["ub"]], 0.027, tolerance = 0.001)
+  p <- plot(jfaEval)
+  expect_equal(is.null(p), FALSE)
+  p <- plot(jfaEval[["prior"]])
+  expect_equal(is.null(p), FALSE)
+  p <- plot(jfaEval[["posterior"]])
+  expect_equal(is.null(p), FALSE)
 })
 
 # jfa version 0.5.1 - 0.5.7
