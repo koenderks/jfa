@@ -215,11 +215,6 @@ plot.jfaPrior <- function(x, ...) {
   }
   p <- p + ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yBreaks)) +
     ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf)
-  if (inherits(x, "jfaPrior")) {
-    p <- p + ggplot2::ggtitle(x[["prior"]])
-  } else {
-    p <- p + ggplot2::ggtitle(x[["posterior"]])
-  }
   p <- .theme_jfa(p)
   return(p)
 }
@@ -381,59 +376,54 @@ plot.jfaPlanning <- function(x, ...) {
   if (is.null(x[["prior"]])) {
     stop("no available plot for classical methods")
   }
-  y <- NULL
+  y <- type <- NULL
   if (x[["prior"]][["description"]]$density == "gamma") {
-    xs <- seq(0, 1, length.out = 1000)
-    y <- stats::dgamma(xs, x[["prior"]][["description"]]$alpha, x[["prior"]][["description"]]$beta)
+    x1 <- seq(0, 1, length.out = 1000)
+    y1 <- stats::dgamma(x1, x[["prior"]][["description"]]$alpha, x[["prior"]][["description"]]$beta)
   } else if (x[["prior"]][["description"]]$density == "beta") {
-    xs <- seq(0, 1, length.out = 1000)
-    y <- stats::dbeta(xs, x[["prior"]][["description"]]$alpha, x[["prior"]][["description"]]$beta)
+    x1 <- seq(0, 1, length.out = 1000)
+    y1 <- stats::dbeta(x1, x[["prior"]][["description"]]$alpha, x[["prior"]][["description"]]$beta)
   } else if (x[["prior"]][["description"]]$density == "beta-binomial") {
-    xs <- seq(0, x[["N.units"]], by = 1)
-    y <- extraDistr::dbbinom(xs, x[["prior"]][["N.units"]], x[["prior"]][["description"]]$alpha, x[["prior"]][["description"]]$beta)
+    x1 <- seq(0, x[["N.units"]], by = 1)
+    y1 <- extraDistr::dbbinom(x1, x[["prior"]][["N.units"]], x[["prior"]][["description"]]$alpha, x[["prior"]][["description"]]$beta)
   } else if (x[["prior"]][["description"]]$density == "MCMC") {
     dens <- stats::density(x[["prior"]][["samples"]], from = 0, to = 1, n = 1000)
-    xs <- dens$x
-    y <- dens$y
-  }
-  df <- data.frame(x = xs, y = y)
-  p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = x, y = y))
-  if (x[["prior"]][["description"]]$density != "beta-binomial") {
-    p <- p + ggplot2::geom_line(linetype = "dashed")
-  } else {
-    p <- p + ggplot2::geom_col(colour = "black", fill = "lightgray")
+    x1 <- dens$x
+    y1 <- dens$y
   }
   if (x[["posterior"]][["description"]]$density == "gamma") {
-    xs <- seq(0, 1, length.out = 1000)
-    y <- stats::dgamma(xs, x[["posterior"]][["description"]]$alpha, x[["posterior"]][["description"]]$beta)
+    x2 <- seq(0, 1, length.out = 1000)
+    y2 <- stats::dgamma(x2, x[["posterior"]][["description"]]$alpha, x[["posterior"]][["description"]]$beta)
   } else if (x[["posterior"]][["description"]]$density == "beta") {
-    xs <- seq(0, 1, length.out = 1000)
-    y <- stats::dbeta(xs, x[["posterior"]][["description"]]$alpha, x[["posterior"]][["description"]]$beta)
+    x2 <- seq(0, 1, length.out = 1000)
+    y2 <- stats::dbeta(x2, x[["posterior"]][["description"]]$alpha, x[["posterior"]][["description"]]$beta)
   } else if (x[["posterior"]][["description"]]$density == "beta-binomial") {
-    xs <- seq(0, x[["posterior"]][["N.units"]], by = 1)
-    y <- extraDistr::dbbinom(xs, x[["posterior"]][["N.units"]], x[["posterior"]][["description"]]$alpha, x[["posterior"]][["description"]]$beta)
+    x2 <- seq(0, x[["posterior"]][["N.units"]] - x[["n"]], by = 1)
+    y2 <- extraDistr::dbbinom(x2, x[["posterior"]][["N.units"]] - x[["n"]], x[["posterior"]][["description"]]$alpha, x[["posterior"]][["description"]]$beta)
   } else if (x[["posterior"]][["description"]]$density == "MCMC") {
     dens <- stats::density(x[["posterior"]][["samples"]], from = 0, to = 1, n = 1000)
-    xs <- dens$x
-    y <- dens$y
+    x2 <- dens$x
+    y2 <- dens$y
   }
-  yMax <- if (is.infinite(max(y))) 10 else max(y)
+  df <- data.frame(x = c(x1, x2), y = c(y1, y2), type = c(rep("Prior", length(y1)), rep("Posterior", length(y2))))
+  yMax <- if (is.infinite(max(df$y))) max(y2) else max(df$y)
   yBreaks <- pretty(c(0, yMax), min.n = 5)
-  xBreaks <- pretty(xs, min.n = 5)
-  df <- data.frame(x = xs, y = y)
-  if (x[["posterior"]][["description"]]$density != "beta-binomial") {
-    p <- p + ggplot2::geom_line(data = df, mapping = ggplot2::aes(x = x, y = y), linetype = "solid") +
+  xBreaks <- pretty(df$x, min.n = 5)
+  p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = x, y = y))
+  if (x[["prior"]][["description"]]$density != "beta-binomial") {
+    p <- p + ggplot2::geom_line(mapping = ggplot2::aes(linetype = type)) +
+      ggplot2::scale_linetype_manual(name = NULL, values = c("solid", "dashed")) +
       ggplot2::scale_x_continuous(name = "Population misstatement", breaks = xBreaks, limits = range(xBreaks)) +
       ggplot2::scale_y_continuous(name = "Density", breaks = yBreaks, limits = range(yBreaks))
   } else {
-    p <- p + ggplot2::geom_col(data = df, mapping = ggplot2::aes(x = x, y = y), colour = "black", fill = "darkgray") +
+    p <- p + ggplot2::geom_col(mapping = ggplot2::aes(fill = type), alpha = 0.75, colour = "black", position = "identity") +
+      ggplot2::scale_fill_manual(name = NULL, values = c("darkgray", "lightgray")) +
       ggplot2::scale_x_continuous(name = "Population misstatements", breaks = xBreaks, limits = c(xBreaks[1] - 1, max(xBreaks) + 1)) +
       ggplot2::scale_y_continuous(name = "Probability", breaks = yBreaks, limits = range(yBreaks))
   }
-  p <- p + ggplot2::ggtitle(paste0(x[["prior"]]$prior, "  \u2192  ", x[["posterior"]]$posterior)) +
-    ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yBreaks)) +
+  p <- p + ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yBreaks)) +
     ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf)
-  p <- .theme_jfa(p)
+  p <- .theme_jfa(p, legend.position = c(0.8, 0.8))
   return(p)
 }
 

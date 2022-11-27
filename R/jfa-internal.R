@@ -15,13 +15,16 @@
 
 .theme_jfa <- function(p, ...) {
   p <- p + ggplot2::theme(
+    axis.text = ggplot2::element_text(size = 12),
+    axis.ticks.length = ggplot2::unit(2, "mm"),
+    axis.title = ggplot2::element_text(size = 15),
     legend.background = ggplot2::element_blank(),
     legend.key = ggplot2::element_blank(),
+    legend.text = ggplot2::element_text(size = 10),
     panel.background = ggplot2::element_blank(),
     panel.grid.major = ggplot2::element_blank(),
     panel.grid.minor = ggplot2::element_blank(),
-    plot.background = ggplot2::element_blank(),
-    plot.title = ggplot2::element_text(hjust = 0.5), ...
+    plot.background = ggplot2::element_blank(), ...
   )
   return(p)
 }
