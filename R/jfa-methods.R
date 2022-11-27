@@ -673,6 +673,7 @@ summary.jfaEvaluation <- function(object, digits = getOption("digits"), ...) {
 #' @method plot jfaEvaluation
 #' @export
 plot.jfaEvaluation <- function(x, type = c("posterior", "estimates"), ...) {
+  y <- lb <- ub <- NULL
   type <- match.arg(type)
   if (type == "posterior") {
     p <- plot.jfaPlanning(x, ...)
@@ -705,8 +706,8 @@ plot.jfaEvaluation <- function(x, type = c("posterior", "estimates"), ...) {
     }
     p <- p + ggplot2::geom_errorbar(size = 0.5, width = 0.25) +
       ggplot2::geom_point(size = 2.5, fill = "darkgray", colour = "black", shape = 21) +
-      scale_x_continuous(name = NULL, breaks = xBreaks, limits = xLimits, labels = df$lab) +
-      scale_y_continuous(name = "Misstatement", limits = c(0, 1), breaks = seq(0, 1, 0.2)) +
+      ggplot2::scale_x_continuous(name = NULL, breaks = xBreaks, limits = xLimits, labels = df$lab) +
+      ggplot2::scale_y_continuous(name = "Misstatement", limits = c(0, 1), breaks = seq(0, 1, 0.2)) +
       ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = 1) +
       ggplot2::geom_segment(x = 0, xend = max(xBreaks), y = -Inf, yend = -Inf) +
       ggplot2::theme(
