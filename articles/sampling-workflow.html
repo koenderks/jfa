@@ -95,7 +95,7 @@
 workflow</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2022-11-26</h4>
+            <h4 data-toc-skip class="date">2022-11-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/sampling-workflow.Rmd" class="external-link"><code>vignettes/sampling-workflow.Rmd</code></a></small>
       <div class="hidden name"><code>sampling-workflow.Rmd</code></div>
@@ -355,7 +355,10 @@ Laura the correct conclusion immediately.</p>
 <p>Since the 91.66% upper confidence bound on the misstatement in
 population is lower than the performance materiality Laura has obtained
 sufficient evidence to conclude that there is less than 5% risk that the
-population contains material misstatement.</p>
+population contains material misstatement. Laura can report her outcomes
+using the <code><a href="../reference/report.html">report()</a></code> function.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span><span class="va">stage4</span>, file <span class="op">=</span> <span class="st">"report.html"</span><span class="op">)</span></span></code></pre></div>
 </div>
   </div>
 
