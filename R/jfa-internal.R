@@ -13,6 +13,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+.theme_jfa <- function(x) {
+  x <- x + ggplot2::theme(
+    plot.title = ggplot2::element_text(hjust = 0.5),
+    panel.grid.major = ggplot2::element_blank(),
+    panel.grid.minor = ggplot2::element_blank(),
+    panel.background = ggplot2::element_blank()
+  )
+  return(x)
+}
+
 .markdown_call <- function(x) {
   if (length(grep("::", x)) > 0) {
     parts <- strsplit(x, "::")[[1]]

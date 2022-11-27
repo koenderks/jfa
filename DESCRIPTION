@@ -24,6 +24,7 @@ Depends:
 Imports:
     extraDistr,
     graphics,
+    ggplot2,
     methods,
     moments,
     Rcpp (>= 0.12.0),

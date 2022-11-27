@@ -847,8 +847,15 @@ print.jfaRv <- function(x, digits = getOption("digits"), ...) {
 #' @method plot jfaRv
 #' @export
 plot.jfaRv <- function(x, ...) {
-  plot <- graphics::barplot(as.numeric(x$frequencies), las = 1, main = "Histogram with Individual Bins", ylab = "Frequency", xlab = "Value", names.arg = "")
-  xloc <- as.numeric(plot)
-  ticks <- pretty(xloc, min.n = 4)
-  graphics::axis(side = 1, at = ticks, labels = round(seq(min(x$x), max(x$x), length.out = length(ticks)), 2))
+  df <- data.frame(y = as.numeric(x$frequencies), x = as.numeric(names(x$frequencies)))
+  xTicks <- pretty(c(min(x$x), max(x$x)), min.n = 5)
+  yTicks <- pretty(c(0, max(x$frequencies)), min.n = 5)
+  p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = x, y = y)) +
+    ggplot2::geom_bar(fill = "black", color = "black", size = 0.2, stat = "identity") +
+    ggplot2::scale_x_continuous(name = "Value", limits = range(xTicks), breaks = xTicks) +
+    ggplot2::scale_y_continuous(name = "Frequency", limits = range(yTicks), breaks = yTicks) +
+    ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yTicks)) +
+    ggplot2::geom_segment(x = min(xTicks), xend = max(xTicks), y = -Inf, yend = -Inf)
+  p <- .theme_jfa(p)
+  return(p)
 }
