@@ -38,7 +38,7 @@
 
 \method{predict}{jfaPrior}(object, n, lim = NULL, cumulative = FALSE, ...)
 
-\method{plot}{jfaPrior}(x, xlim = c(0, 1), ...)
+\method{plot}{jfaPrior}(x, ...)
 
 \method{print}{jfaPosterior}(x, ...)
 

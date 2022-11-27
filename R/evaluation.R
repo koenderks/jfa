@@ -295,6 +295,9 @@ evaluation <- function(materiality = NULL,
   is_jfa_prior <- inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")
   is_bayesian <- (inherits(prior, "logical") && prior) || is_jfa_prior
   if (is_jfa_prior) {
+    if (prior[["method"]] == "mcmc") {
+      stop("method = 'mcmc' not supported yet")
+    }
     if (method != prior[["likelihood"]]) {
       message(paste0("Using 'method = ", prior[["likelihood"]], "' from 'prior'"))
     }
@@ -643,6 +646,7 @@ evaluation <- function(materiality = NULL,
   }
   # Prior distribution
   if (is_bayesian) {
+    analytical <- !use_stratification || pooling == "complete"
     if (is_jfa_prior && !is.null(prior[["hypotheses"]])) {
       if (alternative == "greater") {
         prior[["hypotheses"]]$odds.h1 <- 1 / prior[["hypotheses"]]$odds.h1
@@ -653,10 +657,39 @@ evaluation <- function(materiality = NULL,
       )
     }
     result[["prior"]] <- prior
+    if (!analytical) {
+      result[["prior"]]$prior <- "Approximated via MCMC sampling"
+      result[["prior"]]$samples <- prior_samples
+      result[["prior"]]$method <- "mcmc"
+      # Description
+      description <- list()
+      description[["density"]] <- "MCMC"
+      result[["prior"]][["description"]] <- description
+      # Statistics
+      statistics <- list()
+      statistics[["mode"]] <- .comp_mode_bayes(analytical = FALSE, samples = prior_samples)
+      statistics[["mean"]] <- .comp_mean_bayes(analytical = FALSE, samples = prior_samples)
+      statistics[["median"]] <- .comp_median_bayes(analytical = FALSE, samples = prior_samples)
+      statistics[["var"]] <- .comp_var_bayes(analytical = FALSE, samples = prior_samples)
+      statistics[["skewness"]] <- .comp_skew_bayes(analytical = FALSE, samples = prior_samples)
+      statistics[["ub"]] <- .comp_ub_bayes("less", conf.level, analytical = FALSE, samples = prior_samples)
+      statistics[["precision"]] <- .comp_precision("less", statistics[["mode"]], NULL, statistics[["ub"]])
+      result[["prior"]][["statistics"]] <- statistics
+      if (materiality < 1) {
+        result[["prior"]][["materiality"]] <- materiality
+        hypotheses <- list()
+        hypotheses[["hypotheses"]] <- .hyp_string(materiality, "less")
+        hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, analytical = FALSE, samples = prior_samples)
+        hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, analytical = FALSE, samples = prior_samples)
+        hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
+        hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
+        hypotheses[["density"]] <- .hyp_dens(materiality, analytical = FALSE, samples = prior_samples)
+        result[["prior"]][["hypotheses"]] <- hypotheses
+      }
+    }
   }
   # Posterior distribution
   if (!is.null(result[["prior"]])) {
-    analytical <- !use_stratification || pooling == "complete"
     # Parameters
     post_alpha <- result[["prior"]][["description"]]$alpha + result[["t"]]
     if (method == "poisson") {
@@ -670,7 +703,6 @@ evaluation <- function(materiality = NULL,
     result[["posterior"]]$posterior <- .functional_form(method, post_alpha, post_beta, post_N, analytical)
     result[["posterior"]]$likelihood <- method
     if (!analytical) {
-      result[["prior"]]$samples <- prior_samples
       result[["posterior"]]$samples <- post_samples
     }
     # Description
@@ -708,7 +740,7 @@ evaluation <- function(materiality = NULL,
       hypotheses[["hypotheses"]] <- .hyp_string(materiality, alternative)
       if (alternative == "two.sided") {
         hypotheses[["density"]] <- .hyp_dens(materiality, method, post_alpha, post_beta, result[["N.units"]], post_N, analytical, post_samples)
-        hypotheses[["bf.h0"]] <- .bf01_twosided_prior(materiality, hypotheses[["density"]], result[["prior"]], analytical, prior_samples)
+        hypotheses[["bf.h0"]] <- hypotheses[["density"]] / result[["prior"]][["hypotheses"]]$density
         hypotheses[["bf.h1"]] <- 1 / hypotheses[["bf.h0"]]
       } else {
         lower_tail <- alternative == "less"
@@ -716,7 +748,7 @@ evaluation <- function(materiality = NULL,
         hypotheses[["p.h0"]] <- .hyp_prob(!lower_tail, materiality, method, post_alpha, post_beta, result[["N.units"]], post_N, analytical, post_samples)
         hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
         hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
-        hypotheses[["bf.h1"]] <- .bf10_onesided_prior(materiality, alternative, hypotheses[["odds.h1"]], result[["prior"]], analytical, prior_samples)
+        hypotheses[["bf.h1"]] <- hypotheses[["odds.h1"]] / result[["prior"]][["hypotheses"]]$odds.h1
         hypotheses[["bf.h0"]] <- 1 / hypotheses[["bf.h1"]]
       }
       result[["posterior"]][["hypotheses"]] <- hypotheses

@@ -90,8 +90,12 @@
       "hypergeometric" = .modebbinom(N.units, alpha, beta)
     )
   } else {
-    dens <- stats::density(samples)
-    mode <- dens[["x"]][which.max(dens[["y"]])]
+    if (all(is.infinite(samples))) {
+      mode <- Inf
+    } else {
+      dens <- stats::density(samples)
+      mode <- dens[["x"]][which.max(dens[["y"]])]
+    }
   }
   return(mode)
 }
@@ -314,8 +318,12 @@
       "hypergeometric" = extraDistr::dbbinom(ceiling(materiality * N.units), post_N, alpha, beta)
     )
   } else {
-    densfit <- stats::density(samples, from = 0, to = 1)
-    dens <- stats::approx(densfit[["x"]], densfit[["y"]], materiality)$y
+    if (all(is.infinite(samples))) {
+      dens <- 0
+    } else {
+      densfit <- stats::density(samples, from = 0, to = 1)
+      dens <- stats::approx(densfit[["x"]], densfit[["y"]], materiality)$y
+    }
   }
   return(dens)
 }
@@ -337,16 +345,6 @@
   return(prob)
 }
 
-.bf01_twosided_prior <- function(materiality, density, prior, analytical = TRUE, prior_samples = NULL) {
-  if (analytical) {
-    bf01 <- density / prior[["hypotheses"]]$density
-  } else {
-    densfit <- stats::density(prior_samples, from = 0, to = 1)
-    bf01 <- density / stats::approx(densfit[["x"]], densfit[["y"]], materiality)$y
-  }
-  return(bf01)
-}
-
 .bf01_twosided_sumstats <- function(materiality, likelihood, prior.n, prior.x, n.obs, t.obs, N.units) {
   bf01 <- switch(likelihood,
     "poisson" = stats::dgamma(materiality, 1 + prior.x + t.obs, prior.n + n.obs) / stats::dgamma(materiality, 1 + prior.x, prior.n),
@@ -366,23 +364,6 @@
     bf01[i] <- stats::approx(post_densfit[["x"]], post_densfit[["y"]], materiality)$y / stats::approx(prior_densfit[["x"]], prior_densfit[["y"]], materiality)$y
   }
   return(bf01)
-}
-
-.bf10_onesided_prior <- function(materiality, alternative, posterior_odds, prior, analytical = TRUE, prior_samples = NULL) {
-  if (analytical) {
-    prior_odds <- prior[["hypotheses"]]$odds.h1
-  } else {
-    if (alternative == "less") {
-      prior_prob_h1 <- length(which(prior_samples < materiality)) / length(prior_samples)
-      prior_prob_h0 <- length(which(prior_samples > materiality)) / length(prior_samples)
-    } else {
-      prior_prob_h1 <- length(which(prior_samples > materiality)) / length(prior_samples)
-      prior_prob_h0 <- length(which(prior_samples < materiality)) / length(prior_samples)
-    }
-    prior_odds <- prior_prob_h1 / prior_prob_h0
-  }
-  bf10 <- posterior_odds / prior_odds
-  return(bf10)
 }
 
 .bf10_onesided_sumstats <- function(materiality, alternative, likelihood, prior.n, prior.x, n.obs, t.obs, N.units) {

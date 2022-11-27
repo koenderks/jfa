@@ -62,12 +62,17 @@ print.summary.jfaPrior <- function(x, digits = getOption("digits"), ...) {
     "bram" = paste0("mode = ", x[["mode.prior"]], "; upper bound = ", x[["ub.prior"]]),
     "sample" = paste0("earlier sample of ", x[["n.prior"]], " items with ", x[["x.prior"]], " errors"),
     "factor" = paste0("earlier sample of ", x[["n.prior"]], " items with ", x[["x.prior"]], " errors weighted by ", x[["factor"]]),
-    "param" = paste0("\u03B1 = ", x[["alpha"]], "; \u03B2 = ", x[["beta"]])
+    "param" = paste0("\u03B1 = ", x[["alpha"]], "; \u03B2 = ", x[["beta"]]),
+    "mcmc" = "Consolidated prior distribution"
   )), "\n")
   cat("\nResults:\n")
   cat(paste("  Functional form:              ", x[["prior"]]), "\n")
-  cat(paste("  Equivalent sample size:       ", format(x[["implicit.n"]], digits = max(1L, digits - 2L))), "\n")
-  cat(paste("  Equivalent errors:            ", format(x[["implicit.x"]], digits = max(1L, digits - 2L))), "\n")
+  if (!is.null(x[["implicit.n"]])) {
+    cat(paste("  Equivalent sample size:       ", format(x[["implicit.n"]], digits = max(1L, digits - 2L))), "\n")
+  }
+  if (!is.null(x[["implicit.x"]])) {
+    cat(paste("  Equivalent errors:            ", format(x[["implicit.x"]], digits = max(1L, digits - 2L))), "\n")
+  }
   cat(paste("  Mode:                         ", format(x[["mode"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Mean:                         ", format(x[["mean"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Median:                       ", format(x[["median"]], digits = max(1L, digits - 2L))), "\n")
@@ -87,8 +92,6 @@ summary.jfaPrior <- function(object, digits = getOption("digits"), ...) {
     "likelihood" = object[["likelihood"]],
     "method" = object[["method"]],
     "prior" = object[["prior"]],
-    "implicit.n" = round(object[["description"]]$implicit.n, digits),
-    "implicit.x" = round(object[["description"]]$implicit.x, digits),
     "ub" = round(object[["statistics"]]$ub, digits),
     "precision" = round(object[["statistics"]]$precision, digits),
     "mode" = round(object[["statistics"]]$mode, digits),
@@ -98,6 +101,12 @@ summary.jfaPrior <- function(object, digits = getOption("digits"), ...) {
     "skewness" = round(object[["statistics"]]$skewness, digits),
     stringsAsFactors = FALSE
   )
+  if (!is.null(object[["description"]]$implicit.n)) {
+    out[["implicit.n"]] <- round(object[["description"]]$implicit.n, digits)
+  }
+  if (!is.null(object[["description"]]$implicit.x)) {
+    out[["implicit.n"]] <- round(object[["description"]]$implicit.x, digits)
+  }
   if (object[["method"]] == "impartial") {
     out[["materiality"]] <- round(object[["materiality"]], digits)
   } else if (object[["method"]] == "arm") {
@@ -171,27 +180,41 @@ predict.jfaPrior <- function(object, n, lim = NULL, cumulative = FALSE, ...) {
 #' @rdname jfa-methods
 #' @method plot jfaPrior
 #' @export
-plot.jfaPrior <- function(x, xlim = c(0, 1), ...) {
+plot.jfaPrior <- function(x, ...) {
+  y <- NULL
   if (x[["description"]]$density == "gamma") {
-    xseq <- seq(xlim[1], xlim[2], length.out = 1000)
-    d <- stats::dgamma(xseq, shape = x[["description"]]$alpha, rate = x[["description"]]$beta)
+    xs <- seq(0, 1, length.out = 1000)
+    y <- stats::dgamma(xs, x[["description"]]$alpha, x[["description"]]$beta)
   } else if (x[["description"]]$density == "beta") {
-    xseq <- seq(xlim[1], xlim[2], length.out = 1000)
-    d <- stats::dbeta(xseq, shape1 = x[["description"]]$alpha, shape2 = x[["description"]]$beta)
+    xs <- seq(0, 1, length.out = 1000)
+    y <- stats::dbeta(xs, x[["description"]]$alpha, x[["description"]]$beta)
   } else if (x[["description"]]$density == "beta-binomial") {
-    xseq <- seq(xlim[1], xlim[2], by = 1)
-    d <- extraDistr::dbbinom(x = xseq, size = x[["N.units"]], alpha = x[["description"]]$alpha, beta = x[["description"]]$beta)
+    xs <- seq(0, x[["N.units"]], by = 1)
+    y <- extraDistr::dbbinom(xs, x[["N.units"]], x[["description"]]$alpha, x[["description"]]$beta)
+  } else if (x[["description"]]$density == "MCMC") {
+    dens <- stats::density(x[["samples"]], from = 0, to = 1, n = 1000)
+    xs <- dens$x
+    y <- dens$y
   }
-  yMax <- if (is.infinite(max(d))) 10 else max(d)
-  if (x[["description"]]$density == "gamma" || x[["description"]]$density == "beta") {
-    graphics::plot(x = xseq, y = d, type = "l", bty = "n", xlab = expression(theta), ylab = "Density", las = 1, ylim = c(0, yMax), main = x[["prior"]], axes = FALSE, lty = 2)
-    graphics::axis(1, at = pretty(xseq, min.n = 4), labels = round(pretty(xseq, min.n = 4), 2))
-    graphics::axis(2, at = c(0, yMax), labels = FALSE, las = 1, lwd.ticks = 0)
+  yMax <- if (is.infinite(max(y))) 10 else max(y)
+  yBreaks <- pretty(c(0, yMax), min.n = 5)
+  xBreaks <- pretty(xs, min.n = 5)
+  df <- data.frame(x = xs, y = y)
+  p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = x, y = y)) +
+    ggplot2::ggtitle(x[["prior"]])
+  if (x[["description"]]$density != "beta-binomial") {
+    p <- p + ggplot2::geom_line(linetype = "dashed") +
+      ggplot2::scale_x_continuous(name = "Population misstatement", breaks = xBreaks, limits = range(xBreaks)) +
+      ggplot2::scale_y_continuous(name = "Density", breaks = yBreaks, limits = range(yBreaks), expand = c(0, 0))
   } else {
-    graphics::barplot(d, bty = "n", xlab = "K", ylab = "Probability", las = 1, ylim = c(0, yMax), width = 1, space = 0, main = x[["prior"]], axes = FALSE, col = "darkgray")
-    graphics::axis(1, at = pretty(xseq, min.n = 4) + 0.5, labels = pretty(xseq, min.n = 4))
-    graphics::axis(2, at = c(0, yMax), labels = FALSE, las = 1, lwd.ticks = 0)
+    p <- p + ggplot2::geom_col(colour = "black", fill = "darkgray") +
+      ggplot2::scale_x_continuous(name = "Population misstatements", breaks = xBreaks, limits = c(xBreaks[1] - 1, max(xBreaks) + 1)) +
+      ggplot2::scale_y_continuous(name = "Probability", breaks = yBreaks, limits = range(yBreaks))
   }
+  p <- p + ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yBreaks)) +
+    ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf)
+  p <- .theme_jfa(p)
+  return(p)
 }
 
 # Methods for class: jfaPosterior #####################################################
@@ -832,7 +855,7 @@ plot.jfaDistr <- function(x, ...) {
   p <- ggplot2::ggplot(data = data.frame(x = c(xBreaks[1], xBreaks[1]), y = c(yBreaks[1], yBreaks[1]), type = c("Observed", "Expected")), mapping = ggplot2::aes(x = x, y = y, fill = type)) +
     ggplot2::geom_point(alpha = 0) +
     ggplot2::geom_bar(data = subset(df, type == "Expected"), mapping = ggplot2::aes(x = x, y = y), fill = "darkgray", stat = "identity", color = "black") +
-    ggplot2::geom_line(data = subset(df, type == "Observed"), mapping = ggplot2::aes(x = x, y = y), color = "dodgerblue", size = lineSize) +
+    ggplot2::geom_line(data = subset(df, type == "Observed"), mapping = ggplot2::aes(x = x, y = y), color = "dodgerblue", linewidth = lineSize) +
     ggplot2::geom_point(data = subset(df, type == "Observed"), mapping = ggplot2::aes(x = x, y = y), fill = "dodgerblue", size = pointSize, shape = 21) +
     ggplot2::scale_x_continuous(name = axisName, breaks = xBreaks, labels = xLabels, limits = c(min(x[["digits"]]) - 0.5, max(x[["digits"]]) + 0.5), ) +
     ggplot2::scale_y_continuous(name = "Relative frequency", breaks = yBreaks, limits = c(0, max(yBreaks))) +
@@ -886,13 +909,13 @@ print.jfaRv <- function(x, digits = getOption("digits"), ...) {
 #' @export
 plot.jfaRv <- function(x, ...) {
   y <- NULL
-  df <- data.frame(x = x$x, y = as.numeric(x$frequencies))
+  df <- data.frame(x = as.numeric(names(x$frequencies)), y = as.numeric(x$frequencies))
   xBreaks <- pretty(df$x, min.n = 5)
   yBreaks <- pretty(df$y, min.n = 5)
   p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = x, y = y)) +
     ggplot2::geom_bar(fill = "darkgray", color = "black", size = 0.2, stat = "identity") +
-    ggplot2::scale_x_continuous(name = "Value", limits = range(xBreaks), breaks = xBreaks) +
-    ggplot2::scale_y_continuous(name = "Frequency", limits = range(yBreaks), breaks = yBreaks) +
+    ggplot2::scale_x_continuous(name = "Value", breaks = xBreaks, limits = range(xBreaks)) +
+    ggplot2::scale_y_continuous(name = "Frequency", breaks = yBreaks, limits = range(yBreaks)) +
     ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yBreaks)) +
     ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf)
   p <- .theme_jfa(p)
