@@ -107,6 +107,12 @@ In this case, the output of the `summary()` function shows that the estimate of 
 plot(result_np, type = "estimates")
 ```
 
+The prior and posterior distribution for the population misstatement can be requested via the `plot()` function.
+
+```{r}
+plot(result_np, type = "posterior")
+```
+
 #### Approach 2: Complete pooling
 
 Complete pooling (`pooling = "complete"`) assumes no differences between strata. This has the advantages that data from all strata can be aggregated, which decreases the uncertainty in the population estimate compared to the no pooling approach. However, the disadvantage of this approach is that it does not facilitate the distinction between between strata, as every stratum receives the same estimate equal to that of the population. The call below evaluates the sample using a Bayesian stratified evaluation procedure, in which the strata are assumed to be the same.
@@ -124,6 +130,12 @@ For example, the output of the `summary()` function shows that the estimate of t
 
 ```{r}
 plot(result_cp, type = "estimates")
+```
+
+The prior and posterior distribution for the population misstatement can be requested via the `plot()` function.
+
+```{r}
+plot(result_cp, type = "posterior")
 ```
 
 #### Approach 3: Partial pooling
@@ -144,6 +156,12 @@ In this case, the output shows that the estimate of the misstatement in the popu
 
 ```{r}
 plot(result_pp, type = "estimates")
+```
+
+The prior and posterior distribution for the population misstatement can be requested via the `plot()` function.
+
+```{r}
+plot(result_pp, type = "posterior")
 ```
 
 ## Evaluation using data
@@ -231,6 +249,12 @@ The output shows that the estimate of the misstatement in the population is 15.6
 
 ```{r}
 plot(x, type = "estimates")
+```
+
+The prior and posterior distribution for the population misstatement can be requested via the `plot()` function.
+
+```{r}
+plot(x, type = "posterior")
 ```
 
 ## References
