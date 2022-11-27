@@ -669,6 +669,10 @@ evaluation <- function(materiality = NULL,
     result[["posterior"]] <- list()
     result[["posterior"]]$posterior <- .functional_form(method, post_alpha, post_beta, post_N, analytical)
     result[["posterior"]]$likelihood <- method
+    if (!analytical) {
+      result[["prior"]]$samples <- prior_samples
+      result[["posterior"]]$samples <- post_samples
+    }
     # Description
     description <- list()
     description[["density"]] <- .functional_density(method, analytical)
