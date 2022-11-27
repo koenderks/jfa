@@ -103,13 +103,13 @@ summary(result_np)
 
 In this case, the output of the `summary()` function shows that the estimate of the misstatement in the population is 5.85%, with the 95% credible interval ranging from 4.28% to 8.22%. The stratum estimates differ substantially from each other but are relatively uncertain.
 
-```{r}
+```{r fig.align="center", fig.height=4, fig.width=6}
 plot(result_np, type = "estimates")
 ```
 
 The prior and posterior distribution for the population misstatement can be requested via the `plot()` function.
 
-```{r}
+```{r fig.align="center", fig.height=4, fig.width=6}
 plot(result_np, type = "posterior")
 ```
 
@@ -128,13 +128,13 @@ summary(result_cp)
 
 For example, the output of the `summary()` function shows that the estimate of the misstatement in the population is 4.47%, with the 95% credible interval ranging from 3.74% to 5.33%. Since the data is aggregated, the stratum estimates contain relatively little uncertainty. However, the probability of misstatement in stratum 20 (many misstatements) under this assumption is the same as that of stratum 15 (few misstatements).
 
-```{r}
+```{r fig.align="center", fig.height=4, fig.width=6}
 plot(result_cp, type = "estimates")
 ```
 
 The prior and posterior distribution for the population misstatement can be requested via the `plot()` function.
 
-```{r}
+```{r fig.align="center", fig.height=4, fig.width=6}
 plot(result_cp, type = "posterior")
 ```
 
@@ -154,13 +154,13 @@ summary(result_pp)
 
 In this case, the output shows that the estimate of the misstatement in the population is 4.34%, with the 95% credible interval ranging from 3.45% to 5.33%. Note that this population estimate is substantially less uncertain than that of the no pooling approach. Note that, like in the no pooling approach, the stratum estimates are different from each other but lie closer together and are less uncertain.
 
-```{r}
+```{r fig.align="center", fig.height=4, fig.width=6}
 plot(result_pp, type = "estimates")
 ```
 
 The prior and posterior distribution for the population misstatement can be requested via the `plot()` function.
 
-```{r}
+```{r fig.align="center", fig.height=4, fig.width=6}
 plot(result_pp, type = "posterior")
 ```
 
@@ -228,7 +228,7 @@ summary(x)
 
 In this case, the output shows that the estimate of the misstatement in the population is 14.72%, with the 95% confidence interval ranging from 12.55% to 18.26%. The precision of the population estimate is 3.54%. The stratum estimates can be seen in the output of the `summary()` function and are visualized below.
 
-```{r}
+```{r fig.align="center", fig.height=4, fig.width=6}
 plot(x, type = "estimates")
 ```
 
@@ -247,13 +247,13 @@ summary(x)
 
 The output shows that the estimate of the misstatement in the population is 15.66%, with the 95% credible interval ranging from 14.59% to 17%. The precision of the population estimate is 1.34%, which is substantially lower than that of the classical approach. The stratum estimates can be seen in the output of the `summary()` function and are visualized below.
 
-```{r}
+```{r fig.align="center", fig.height=4, fig.width=6}
 plot(x, type = "estimates")
 ```
 
 The prior and posterior distribution for the population misstatement can be requested via the `plot()` function.
 
-```{r}
+```{r fig.align="center", fig.height=4, fig.width=6}
 plot(x, type = "posterior")
 ```
 

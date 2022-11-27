@@ -92,7 +92,7 @@ See the package vignette [Data auditing: Get started](https://koenderks.github.i
 
 ### Functions and intended usage
 
-```{r}
+```{r fig.align="center", fig.height=4, fig.width=6}
 # Digit distribution test
 x <- digit_test(sinoForest$value, check = "first", reference = "benford")
 print(x)
@@ -101,7 +101,7 @@ plot(x)
 
 The `repeated_test()` function can be used to test the numbers in a variable for repeated values.
 
-```{r}
+```{r fig.align="center", fig.height=4, fig.width=6}
 # Repeated values test
 x <- repeated_test(sanitizer$value, check = "lasttwo", samples = 5000)
 print(x)

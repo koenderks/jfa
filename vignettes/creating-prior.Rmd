@@ -43,7 +43,7 @@ summary(prior1)
 
 You can visually inspect the prior distribution using the `plot()` function.
 
-```{r}
+```{r fig.align="center", fig.height=4, fig.width=6}
 plot(prior1)
 ```
 
@@ -58,7 +58,7 @@ summary(prior2)
 
 You can visually inspect the prior distribution using the `plot()` function.
 
-```{r}
+```{r fig.align="center", fig.height=4, fig.width=6}
 plot(prior2)
 ```
 
@@ -73,7 +73,7 @@ summary(prior3)
 
 You can visually inspect the prior distribution using the `plot()` function.
 
-```{r}
+```{r fig.align="center", fig.height=4, fig.width=6}
 plot(prior3)
 ```
 
@@ -93,7 +93,7 @@ summary(prior4)
 
 You can visually inspect the prior distribution using the `plot()` function.
 
-```{r}
+```{r fig.align="center", fig.height=4, fig.width=6}
 plot(prior4)
 ```
 
@@ -113,7 +113,7 @@ summary(prior5)
 
 You can visually inspect the prior distribution using the `plot()` function.
 
-```{r}
+```{r fig.align="center", fig.height=4, fig.width=6}
 plot(prior5)
 ```
 
@@ -131,7 +131,7 @@ summary(prior6)
 
 You can visually inspect the prior distribution using the `plot()` function.
 
-```{r}
+```{r fig.align="center", fig.height=4, fig.width=6}
 plot(prior6)
 ```
 
@@ -149,7 +149,7 @@ summary(prior7)
 
 You can visually inspect the prior distribution using the `plot()` function.
 
-```{r}
+```{r fig.align="center", fig.height=4, fig.width=6}
 plot(prior7)
 ```
 
@@ -167,7 +167,7 @@ summary(prior8)
 
 You can visually inspect the prior distribution using the `plot()` function.
 
-```{r}
+```{r fig.align="center", fig.height=4, fig.width=6}
 plot(prior8)
 ```
 
@@ -185,7 +185,7 @@ summary(prior9)
 
 You can visually inspect the prior distribution using the `plot()` function.
 
-```{r}
+```{r fig.align="center", fig.height=4, fig.width=6}
 plot(prior9)
 ```
 
