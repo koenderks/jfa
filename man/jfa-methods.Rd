@@ -91,8 +91,6 @@
 \item{lim}{used in \code{predict}. Limits the number of errors for which predictions should be made.}
 
 \item{cumulative}{used in \code{predict}. Specifies whether cumulative probabilities should be shown.}
-
-\item{xlim}{used in \code{plot}. Specifies the x limits (x1, x2) of the plot.}
 }
 \value{
 The \code{summary} methods return a \code{data.frame} which contains the input and output.

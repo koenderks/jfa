@@ -26,12 +26,8 @@
 #'
 #' @param object an object of class \code{jfaEvaluation} as returned by the
 #'   \code{evaluation()} function.
-#' @param file   a character specifying the name of the report (e.g.
+#' @param file   a character specifying the name and format of the report (e.g.
 #'   \code{report.html}).
-#' @param format a character specifying the output format of the report.
-#'   Possible options are \code{html_document} (default) and
-#'   \code{pdf_document}, but compiling to \code{pdf} format requires a local
-#'   version of \code{MikTex}.
 #'
 #' @return A \code{html} or \code{pdf} file containing the report.
 #'

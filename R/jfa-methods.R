@@ -19,7 +19,6 @@
 #'
 #' @param object,x    an object of class \code{jfaPrior}, \code{jfaPosterior}, \code{jfaPlanning}, \code{jfaSelection}, \code{jfaEvaluation}, \code{jfaDistr}, or \code{jfaRv}.
 #' @param digits      an integer specifying the number of digits to which output should be rounded. Used in \code{summary}.
-#' @param xlim        used in \code{plot}. Specifies the x limits (x1, x2) of the plot.
 #' @param n           used in \code{predict}. Specifies the sample size for which predictions should be made.
 #' @param lim         used in \code{predict}. Limits the number of errors for which predictions should be made.
 #' @param cumulative  used in \code{predict}. Specifies whether cumulative probabilities should be shown.
