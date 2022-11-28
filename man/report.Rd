@@ -5,8 +5,7 @@
 \title{Audit Sampling: Reporting}
 \usage{
 report(object,
-       file = "report.html",
-       format = c("html_document", "pdf_document"))
+       file = "report.html")
 }
 \arguments{
 \item{object}{an object of class \code{jfaEvaluation} as returned by the

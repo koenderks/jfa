@@ -21,8 +21,7 @@
 #' results and their interpretation.
 #'
 #' @usage report(object,
-#'        file = "report.html",
-#'        format = c("html_document", "pdf_document"))
+#'        file = "report.html")
 #'
 #' @param object an object of class \code{jfaEvaluation} as returned by the
 #'   \code{evaluation()} function.
