@@ -90,6 +90,7 @@ reference:
       - sinoForest
   - title: "Miscellaneous"
     desc: >
-      Functions printing and plotting output from the **jfa** package.
+      Functions for working with output from the **jfa** package.
     contents:
       - jfa-methods
+      - jfa-convolution
