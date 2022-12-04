@@ -39,7 +39,7 @@ NULL
 #' @method + jfaPrior
 #' @export
 "+.jfaPrior" <- function(p1, p2) {
-  valid_method <- p1[["method"]] == "mcmc" || p2[["method"]] == "mcmc"
+  valid_method <- p1[["method"]] != "mcmc" && p2[["method"]] != "mcmc"
   stopifnot("method = 'mcmc' not supported" = valid_method)
   valid_likelihood <- p1[["likelihood"]] != p2[["likelihood"]]
   stopifnot("convolution not supported for different 'likelihood's" = valid_likelihood)
