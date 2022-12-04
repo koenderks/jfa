@@ -42,7 +42,7 @@ print.jfaPrior <- function(x, ...) {
   cat("\n")
   cat(strwrap("Prior Distribution for Audit Sampling", prefix = "\t"), sep = "\n")
   cat("\n")
-  cat("functional form:", x[["prior"]], "\nparameters obtained via method", paste0("'", x[["method"]], "'\n"))
+  cat("functional form:", x[["prior"]], "\nparameters obtained via method", paste0("'", paste0(x[["method"]], collapse = " + "), "'\n"))
 }
 
 #' @rdname jfa-methods
@@ -53,18 +53,22 @@ print.summary.jfaPrior <- function(x, digits = getOption("digits"), ...) {
   cat(strwrap("Prior Distribution Summary", prefix = "\t"), sep = "\n")
   cat("\nOptions:\n")
   cat(paste("  Likelihood:                   ", x[["likelihood"]]), "\n")
-  cat(paste("  Specifics:                    ", switch(x[["method"]],
-    "default" = "noninformative",
-    "strict" = "classical properties",
-    "impartial" = paste0("p(\u0398 < ", x[["materiality"]], ") = p(\u0398 > ", x[["materiality"]], ") = 0.5"),
-    "hyp" = paste0("p(\u0398 < ", x[["materiality"]], ") = ", x[["p.h1"]], "; p(\u0398 > ", x[["materiality"]], ") = ", x[["p.h0"]]),
-    "arm" = paste0("ir = ", x[["ir"]], "; cr = ", x[["icr"]], "; dr = ", x[["dr"]]),
-    "bram" = paste0("mode = ", x[["mode.prior"]], "; upper bound = ", x[["ub.prior"]]),
-    "sample" = paste0("earlier sample of ", x[["n.prior"]], " items with ", x[["x.prior"]], " errors"),
-    "factor" = paste0("earlier sample of ", x[["n.prior"]], " items with ", x[["x.prior"]], " errors weighted by ", x[["factor"]]),
-    "param" = paste0("\u03B1 = ", x[["alpha"]], "; \u03B2 = ", x[["beta"]]),
-    "mcmc" = "Consolidated prior distribution"
-  )), "\n")
+  if (length(x[["method"]]) > 1) {
+    cat("  Specifics:                    Consolidated prior distribution\n")
+  } else {
+    cat(paste("  Specifics:                    ", switch(x[["method"]],
+      "default" = "noninformative",
+      "strict" = "classical properties",
+      "impartial" = paste0("p(\u0398 < ", x[["materiality"]], ") = p(\u0398 > ", x[["materiality"]], ") = 0.5"),
+      "hyp" = paste0("p(\u0398 < ", x[["materiality"]], ") = ", x[["p.h1"]], "; p(\u0398 > ", x[["materiality"]], ") = ", x[["p.h0"]]),
+      "arm" = paste0("ir = ", x[["ir"]], "; cr = ", x[["icr"]], "; dr = ", x[["dr"]]),
+      "bram" = paste0("mode = ", x[["mode.prior"]], "; upper bound = ", x[["ub.prior"]]),
+      "sample" = paste0("earlier sample of ", x[["n.prior"]], " items with ", x[["x.prior"]], " errors"),
+      "factor" = paste0("earlier sample of ", x[["n.prior"]], " items with ", x[["x.prior"]], " errors weighted by ", x[["factor"]]),
+      "param" = paste0("\u03B1 = ", x[["alpha"]], "; \u03B2 = ", x[["beta"]]),
+      "mcmc" = "Consolidated prior distribution"
+    )), "\n")
+  }
   cat("\nResults:\n")
   cat(paste("  Functional form:              ", x[["prior"]]), "\n")
   if (!is.null(x[["implicit.n"]])) {
