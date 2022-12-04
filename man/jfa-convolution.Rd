@@ -3,12 +3,18 @@
 \name{jfa-convolution}
 \alias{jfa-convolution}
 \alias{+.jfaPrior}
+\alias{+.jfaPosterior}
 \alias{*.jfaPrior}
+\alias{*.jfaPosterior}
 \title{Prior convolution utility functions}
 \usage{
 \method{+}{jfaPrior}(p1, p2)
 
+\method{+}{jfaPosterior}(p1, p2)
+
 \method{*}{jfaPrior}(c, p1)
+
+\method{*}{jfaPosterior}(c, p1)
 }
 \arguments{
 \item{p1}{an object of class \code{jfaPrior}.}

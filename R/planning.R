@@ -382,6 +382,7 @@ planning <- function(materiality = NULL,
     }
     # Additional info
     result[["posterior"]]$N.units <- result[["N.units"]]
+    result[["posterior"]]$conf.level <- conf.level
     class(result[["posterior"]]) <- "jfaPosterior"
   }
   class(result) <- c(class(result), "jfaPlanning")

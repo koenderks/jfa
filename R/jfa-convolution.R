@@ -35,11 +35,7 @@ NULL
   valid_likelihood <- p1[["likelihood"]] == p2[["likelihood"]]
   stopifnot("convolution not supported for different 'likelihood's" = valid_likelihood)
   likelihood <- p1[["likelihood"]]
-  if (!is.null(p1[["N.units"]])) {
-    N.units <- p1[["N.units"]]
-  } else {
-    N.units <- NULL
-  }
+  N.units <- p1[["N.units"]]
   if (is.null(p1[["description"]]$w)) {
     p1[["description"]]$w <- 1
   }
@@ -47,64 +43,68 @@ NULL
     p2[["description"]]$w <- 1
   }
   if (is.null(p1[["description"]]$alpha_i)) {
-    prior_alpha_i <- c(p1[["description"]]$alpha, p2[["description"]]$alpha)
-    prior_beta_i <- c(p1[["description"]]$beta, p2[["description"]]$beta)
+    alpha_i <- c(p1[["description"]]$alpha, p2[["description"]]$alpha)
+    beta_i <- c(p1[["description"]]$beta, p2[["description"]]$beta)
     w <- c(p1[["description"]]$w, p2[["description"]]$w)
   } else {
-    prior_alpha_i <- c(p1[["description"]]$alpha_i, p2[["description"]]$alpha)
-    prior_beta_i <- c(p1[["description"]]$beta_is, p2[["description"]]$beta)
+    alpha_i <- c(p1[["description"]]$alpha_i, p2[["description"]]$alpha)
+    beta_i <- c(p1[["description"]]$beta_is, p2[["description"]]$beta)
     w <- c(p1[["description"]]$w_i, p2[["description"]]$w)
   }
   if (likelihood == "poisson") {
-    e_x <- sum(w * (prior_alpha_i * prior_beta_i))
-    var_x <- sum(w * (prior_alpha_i * prior_beta_i^2))
-    prior_alpha <- e_x^2 / var_x
-    prior_beta <- var_x / e_x
+    e_x <- sum(w * (alpha_i * beta_i))
+    var_x <- sum(w * (alpha_i * beta_i^2))
+    alpha <- e_x^2 / var_x
+    beta <- var_x / e_x
   } else {
-    e_x <- sum(w * (prior_alpha_i / (prior_alpha_i + prior_beta_i)))
-    var_x <- sum(w^2 * ((prior_alpha_i * prior_beta_i) / ((prior_alpha_i + prior_beta_i)^2 * (prior_alpha_i + prior_beta_i + 1))))
-    prior_alpha <- ((e_x / sum(w))^2 * (1 - (e_x / sum(w))) / (var_x / sum(w)^2)) - (e_x / sum(w))
-    prior_beta <- ((((e_x / sum(w)) * (1 - (e_x / sum(w)))) / (var_x / sum(w)^2)) - 1) - prior_alpha
+    e_x <- sum(w * (alpha_i / (alpha_i + beta_i)))
+    var_x <- sum(w^2 * ((alpha_i * beta_i) / ((alpha_i + beta_i)^2 * (alpha_i + beta_i + 1))))
+    alpha <- ((e_x / sum(w))^2 * (1 - (e_x / sum(w))) / (var_x / sum(w)^2)) - (e_x / sum(w))
+    beta <- ((((e_x / sum(w)) * (1 - (e_x / sum(w)))) / (var_x / sum(w)^2)) - 1) - alpha
   }
-  prior.x <- prior_alpha - 1
+  x <- alpha - 1
   if (likelihood == "poisson") {
-    prior.n <- prior_beta
+    n <- beta
   } else {
-    prior.n <- prior_beta + prior.x
+    n <- beta + x
   }
   # Initialize main results
   result <- list()
-  result[["prior"]] <- .functional_form(likelihood, prior_alpha, prior_beta, N.units)
+  if (inherits(p1, "jfaPrior")) {
+    result[["prior"]] <- .functional_form(likelihood, alpha, beta, N.units)
+  } else {
+    result[["posterior"]] <- .functional_form(likelihood, alpha, beta, N.units)
+  }
   # Description
   description <- list()
   description[["density"]] <- .functional_density(likelihood)
-  description[["alpha"]] <- prior_alpha
-  description[["beta"]] <- prior_beta
-  description[["alpha_i"]] <- prior_alpha_i
-  description[["beta_i"]] <- prior_beta_i
+  description[["alpha"]] <- alpha
+  description[["beta"]] <- beta
+  description[["alpha_i"]] <- alpha_i
+  description[["beta_i"]] <- beta_i
   description[["w_i"]] <- w
-  description[["implicit.x"]] <- prior.x
-  description[["implicit.n"]] <- prior.n
+  description[["implicit.x"]] <- x
+  description[["implicit.n"]] <- n
   result[["description"]] <- description
   # Statistics
   statistics <- list()
-  statistics[["mode"]] <- .comp_mode_bayes(likelihood, prior_alpha, prior_beta, N.units)
-  statistics[["mean"]] <- .comp_mean_bayes(likelihood, prior_alpha, prior_beta, N.units)
-  statistics[["median"]] <- .comp_median_bayes(likelihood, prior_alpha, prior_beta, N.units)
-  statistics[["var"]] <- .comp_var_bayes(likelihood, prior_alpha, prior_beta, N.units)
-  statistics[["skewness"]] <- .comp_skew_bayes(likelihood, prior_alpha, prior_beta, N.units)
-  statistics[["ub"]] <- .comp_ub_bayes("less", p1[["conf.level"]], likelihood, prior_alpha, prior_beta, N.units)
+  statistics[["mode"]] <- .comp_mode_bayes(likelihood, alpha, beta, N.units)
+  statistics[["mean"]] <- .comp_mean_bayes(likelihood, alpha, beta, N.units)
+  statistics[["median"]] <- .comp_median_bayes(likelihood, alpha, beta, N.units)
+  statistics[["var"]] <- .comp_var_bayes(likelihood, alpha, beta, N.units)
+  statistics[["skewness"]] <- .comp_skew_bayes(likelihood, alpha, beta, N.units)
+  statistics[["ub"]] <- .comp_ub_bayes("less", p1[["conf.level"]], likelihood, alpha, beta, N.units)
   statistics[["precision"]] <- .comp_precision("less", statistics[["mode"]], NULL, statistics[["ub"]])
   result[["statistics"]] <- statistics
   # Hypotheses
   if (!is.null(p1[["materiality"]])) {
     hypotheses <- list()
     hypotheses[["hypotheses"]] <- .hyp_string(p1[["materiality"]], "less")
-    hypotheses[["p.h1"]] <- .hyp_prob(TRUE, p1[["materiality"]], likelihood, prior_alpha, prior_beta, N.units, N.units)
-    hypotheses[["p.h0"]] <- .hyp_prob(FALSE, p1[["materiality"]], likelihood, prior_alpha, prior_beta, N.units, N.units)
+    hypotheses[["p.h1"]] <- .hyp_prob(TRUE, p1[["materiality"]], likelihood, alpha, beta, N.units, N.units)
+    hypotheses[["p.h0"]] <- .hyp_prob(FALSE, p1[["materiality"]], likelihood, alpha, beta, N.units, N.units)
     hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
     hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
-    hypotheses[["density"]] <- .hyp_dens(p1[["materiality"]], likelihood, prior_alpha, prior_beta, N.units, N.units)
+    hypotheses[["density"]] <- .hyp_dens(p1[["materiality"]], likelihood, alpha, beta, N.units, N.units)
     result[["hypotheses"]] <- hypotheses
   }
   # Additional info
@@ -116,15 +116,32 @@ NULL
   result[["expected"]] <- p1[["expected"]]
   result[["conf.level"]] <- p1[["conf.level"]]
   result[["N.units"]] <- N.units
-  class(result) <- c(class(result), "jfaPrior")
+  class(result) <- class(p1)
   return(result)
+}
+
+#' @rdname jfa-convolution
+#' @method + jfaPosterior
+#' @export
+"+.jfaPosterior" <- function(p1, p2) {
+  do.call(what = "+.jfaPrior", args = list(p1, p2))
 }
 
 #' @rdname jfa-convolution
 #' @method * jfaPrior
 #' @export
 "*.jfaPrior" <- function(c, p1) {
-  stopifnot("multiplication of priors not supported" = !inherits(c, "jfaPrior"))
+  const_not_prior <- !inherits(c, "jfaPrior") && !inherits(c, "jfaPosterior")
+  stopifnot("multiplication of distributions not supported" = const_not_prior)
+  valid_const <- is.numeric(c) && length(c) == 1
+  stopifnot("'c' must be a single numeric value" = valid_const)
   p1[["description"]]$w <- c
   return(p1)
+}
+
+#' @rdname jfa-convolution
+#' @method * jfaPosterior
+#' @export
+"*.jfaPosterior" <- function(c, p1) {
+  do.call(what = "*.jfaPrior", args = list(c, p1))
 }

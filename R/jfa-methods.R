@@ -252,6 +252,7 @@ print.summary.jfaPosterior <- function(x, digits = getOption("digits"), ...) {
   cat(paste("  Median:                       ", format(x[["median"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Variance:                     ", format(x[["var"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Skewness:                     ", format(x[["skewness"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste(" ", format(x[["conf.level"]] * 100), "percent upper bound:       ", format(x[["ub"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Precision:                    ", format(x[["precision"]], digits = max(1L, digits - 2L))), "\n")
 }
 
@@ -268,6 +269,7 @@ summary.jfaPosterior <- function(object, digits = getOption("digits"), ...) {
     "median" = round(object[["statistics"]]$median, digits),
     "var" = round(object[["statistics"]]$var, digits),
     "skewness" = round(object[["statistics"]]$skewness, digits),
+    "conf.level" = object[["conf.level"]],
     stringsAsFactors = FALSE
   )
   class(out) <- c("summary.jfaPosterior", "data.frame")

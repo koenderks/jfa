@@ -189,6 +189,21 @@ You can visually inspect the prior distribution using the `plot()` function.
 plot(prior9)
 ```
 
+### Convoluted prior distributions
+
+You can combine and weigh multiple prior distributions into a single prior using the `+` and `*` operators. For example, suppose you created two priors `prior1` and `prior9` and want to compute the weighted average (i.e., convolution) of the two distributions.
+
+```{r}
+prior10 <- 0.6 * prior1 + 0.4 * prior9
+summary(prior10)
+```
+
+You can visually inspect the prior distribution using the `plot()` function.
+
+```{r fig.align="center", fig.height=4, fig.width=6}
+plot(prior10)
+```
+
 ## Using a prior distribution in other functions
 
 Bayesian statistics allows the auditor to build on their existing information. Therefore, the objects returned by the `auditPrior()` function can be used as input for the `prior` argument in the `planning()` and `evaluation()` functions.

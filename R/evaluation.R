@@ -686,6 +686,7 @@ evaluation <- function(materiality = NULL,
         hypotheses[["density"]] <- .hyp_dens(materiality, analytical = FALSE, samples = prior_samples)
         result[["prior"]][["hypotheses"]] <- hypotheses
       }
+      result[["prior"]]$conf.level <- conf.level
     }
   }
   # Posterior distribution
@@ -757,6 +758,7 @@ evaluation <- function(materiality = NULL,
       result[["posterior"]][["hypotheses"]] <- hypotheses
     }
     result[["posterior"]]$N.units <- result[["N.units"]]
+    result[["posterior"]]$conf.level <- result[["conf.level"]]
     class(result[["posterior"]]) <- c(class(result[["posterior"]]), "jfaPosterior")
   }
   # Data
