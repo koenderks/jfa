@@ -54,8 +54,8 @@ print.summary.jfaPrior <- function(x, digits = getOption("digits"), ...) {
   cat("\nOptions:\n")
   cat(paste("  Likelihood:                   ", x[["likelihood"]]), "\n")
   cat(paste("  Specifics:                    ", switch(x[["method"]],
-    "default" = "noninformative",
-    "strict" = "classical properties",
+    "default" = "least noninformative prior",
+    "strict" = "improper prior",
     "impartial" = paste0("p(\u0398 < ", x[["materiality"]], ") = p(\u0398 > ", x[["materiality"]], ") = 0.5"),
     "hyp" = paste0("p(\u0398 < ", x[["materiality"]], ") = ", x[["p.h1"]], "; p(\u0398 > ", x[["materiality"]], ") = ", x[["p.h0"]]),
     "arm" = paste0("ir = ", x[["ir"]], "; cr = ", x[["icr"]], "; dr = ", x[["dr"]]),
@@ -63,7 +63,8 @@ print.summary.jfaPrior <- function(x, digits = getOption("digits"), ...) {
     "sample" = paste0("earlier sample of ", x[["n.prior"]], " items with ", x[["x.prior"]], " errors"),
     "factor" = paste0("earlier sample of ", x[["n.prior"]], " items with ", x[["x.prior"]], " errors weighted by ", x[["factor"]]),
     "param" = paste0("\u03B1 = ", x[["alpha"]], "; \u03B2 = ", x[["beta"]]),
-    "mcmc" = "Consolidated prior distribution"
+    "mcmc" = "consolidated prior",
+    "convolution" = "convoluted prior"
   )), "\n")
   cat("\nResults:\n")
   cat(paste("  Functional form:              ", x[["prior"]]), "\n")
