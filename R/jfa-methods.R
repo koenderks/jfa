@@ -89,7 +89,6 @@ print.summary.jfaPrior <- function(x, digits = getOption("digits"), ...) {
 summary.jfaPrior <- function(object, digits = getOption("digits"), ...) {
   out <- data.frame(
     "conf.level" = round(object[["conf.level"]], digits),
-    "x" = round(object[["expected"]], digits),
     "likelihood" = object[["likelihood"]],
     "method" = object[["method"]],
     "prior" = object[["prior"]],
@@ -102,11 +101,14 @@ summary.jfaPrior <- function(object, digits = getOption("digits"), ...) {
     "skewness" = round(object[["statistics"]]$skewness, digits),
     stringsAsFactors = FALSE
   )
+  if (!is.null(object[["expected"]])) {
+    out[["x"]] <- round(object[["expected"]], digits)
+  }
   if (!is.null(object[["description"]]$implicit.n)) {
     out[["implicit.n"]] <- round(object[["description"]]$implicit.n, digits)
   }
   if (!is.null(object[["description"]]$implicit.x)) {
-    out[["implicit.n"]] <- round(object[["description"]]$implicit.x, digits)
+    out[["implicit.x"]] <- round(object[["description"]]$implicit.x, digits)
   }
   if (object[["method"]] == "impartial") {
     out[["materiality"]] <- round(object[["materiality"]], digits)

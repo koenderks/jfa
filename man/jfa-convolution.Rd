@@ -12,7 +12,7 @@
 
 \method{+}{jfaPosterior}(p1, p2)
 
-\method{*}{jfaPrior}(c, p1)
+\method{*}{jfaPrior}(p1, p2)
 
 \method{*}{jfaPosterior}(c, p1)
 }

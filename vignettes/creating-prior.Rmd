@@ -189,12 +189,12 @@ You can visually inspect the prior distribution using the `plot()` function.
 plot(prior9)
 ```
 
-### Convoluted prior distributions
+### Combining prior distributions
 
-You can combine multiple prior distributions into a single prior using the `+` operator. Combining priors is done by computing the convolution (i.e., a weighted average under the assumption of independence) of the prior distributions. For example, the convolution of `prior1` and `prior9` can be computed via `prior1 + prior9`. Additionally, the `*` operator can be used to control the contribution of each prior. For example, the weighted convolution of `prior1` and `prior9` can be computed with `a * prior1 + b * prior9`, where `a` and `b` are absolute weights.
+Adding multiple prior distributions is done via the `+` operator, which computes a prior distribution containing the combined information from the prior distributions. For example, the information in `prior6` and `prior9` can be combined (added) via `prior6 + prior9`.
 
 ```{r}
-prior10 <- 0.5 * prior1 + 0.5 * prior9 # same as prior1 + prior9
+prior10 <- prior6 + prior9
 summary(prior10)
 ```
 
@@ -202,6 +202,19 @@ You can visually inspect the prior distribution using the `plot()` function.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(prior10)
+```
+
+Weighing multiple prior distributions is done via the `*` operator, which computes the convolution (i.e., a weighted average under the assumption of independence) of the prior distributions. For example, the weighted average of `prior1` and `prior9` can be computed with `(a * prior1) + (b * prior9)`, where `a` and `b` are absolute weights.
+
+```{r}
+prior11 <- (0.5 * prior6) * (0.5 * prior9) # same as prior6 * prior9
+summary(prior11)
+```
+
+You can visually inspect the prior distribution using the `plot()` function.
+
+```{r fig.align="center", fig.height=4, fig.width=6}
+plot(prior11)
 ```
 
 ## Using a prior distribution in other functions
@@ -213,7 +226,7 @@ Bayesian statistics allows the auditor to build on their existing information. T
 The prior distribution can be used the planning stage to calculate a minimum sample size by providing the objected returned by the `auditPrior()` function to the `planning()` function. For example, the code below calculates the minimum sample size to test the misstatement in the population against a performance materiality of 5%, while incorporating the information in `prior9`.
 
 ```{r}
-planning(materiality = materiality, expected = expected, conf.level = confidence, prior = prior9)
+planning(materiality = materiality, expected = expected, conf.level = confidence, prior = prior10)
 ```
 
 ### Combining `auditPrior()` with `evaluation()`
@@ -221,7 +234,7 @@ planning(materiality = materiality, expected = expected, conf.level = confidence
 The prior distribution can be used the evaluation stage by providing the objected returned by the `auditPrior()` function to the `evaluation()` function. For example, the code below evaluates the misstatement in the population with respect to the performance materiality of 5% after seeing a sample of 60 items with 1 misstatement, while incorporating the information in `prior8`.
 
 ```{r}
-evaluation(materiality = materiality, conf.level = confidence, x = 1, n = 60, prior = prior9)
+evaluation(materiality = materiality, conf.level = confidence, x = 1, n = 60, prior = prior10)
 ```
 
 ## References

@@ -207,32 +207,47 @@ test_that(desc = "(id: f2-v0.6.0-t1) Test for param method hypergeometric", {
 
 # jfa 0.6.5
 
-test_that(desc = "(id: f2-v0.6.5-t1) Test for prior convolution", {
+test_that(desc = "(id: f2-v0.6.5-t1) Test for prior convolution using +", {
   prior <- auditPrior(materiality = 0.05, likelihood = "poisson", method = "default", N = 100)
   p <- prior + prior
+  expect_equal(p[["description"]]$alpha, 1)
+  expect_equal(p[["description"]]$beta, 2)
+  prior <- auditPrior(materiality = 0.05, likelihood = "binomial", method = "default", N = 100)
+  p <- prior + prior
+  expect_equal(p[["description"]]$alpha, 1)
+  expect_equal(p[["description"]]$beta, 2)
+  prior <- auditPrior(materiality = 0.05, likelihood = "hypergeometric", method = "default", N = 100)
+  p <- prior + prior
+  expect_equal(p[["description"]]$alpha, 1)
+  expect_equal(p[["description"]]$beta, 2)
+})
+
+test_that(desc = "(id: f2-v0.6.5-t2) Test for prior convolution using *", {
+  prior <- auditPrior(materiality = 0.05, likelihood = "poisson", method = "default", N = 100)
+  p <- prior * prior
   expect_equal(p[["description"]]$alpha, 2)
   expect_equal(p[["description"]]$beta, 1)
   prior <- auditPrior(materiality = 0.05, likelihood = "binomial", method = "default", N = 100)
-  p <- prior + prior
+  p <- prior * prior
   expect_equal(p[["description"]]$alpha, 2.5)
   expect_equal(p[["description"]]$beta, 2.5)
   prior <- auditPrior(materiality = 0.05, likelihood = "hypergeometric", method = "default", N = 100)
-  p <- prior + prior
+  p <- prior * prior
   expect_equal(p[["description"]]$alpha, 2.5)
   expect_equal(p[["description"]]$beta, 2.5)
 })
 
-test_that(desc = "(id: f2-v0.6.5-t1) Test for weighted prior convolution", {
+test_that(desc = "(id: f2-v0.6.5-t3) Test for weighted prior convolution using *", {
   prior <- auditPrior(materiality = 0.05, likelihood = "poisson", method = "default", N = 100)
-  p <- 0.2 * prior + 0.8 * prior
+  p <- (0.2 * prior) * (0.8 * prior)
   expect_equal(p[["description"]]$alpha, 1)
   expect_equal(p[["description"]]$beta, 1)
   prior <- auditPrior(materiality = 0.05, likelihood = "binomial", method = "default", N = 100)
-  p <- 0.2 * prior + 0.8 * prior
+  p <- (0.2 * prior) * (0.8 * prior)
   expect_equal(p[["description"]]$alpha, 1.705882353)
   expect_equal(p[["description"]]$beta, 1.705882353)
   prior <- auditPrior(materiality = 0.05, likelihood = "hypergeometric", method = "default", N = 100)
-  p <- 0.2 * prior + 0.8 * prior
+  p <- (0.2 * prior) * (0.8 * prior)
   expect_equal(p[["description"]]$alpha, 1.705882353)
   expect_equal(p[["description"]]$beta, 1.705882353)
 })
