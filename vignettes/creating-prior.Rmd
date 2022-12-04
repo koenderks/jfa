@@ -191,10 +191,10 @@ plot(prior9)
 
 ### Convoluted prior distributions
 
-You can combine and weigh multiple prior distributions into a single prior using the `+` and `*` operators. For example, suppose you created two priors `prior1` and `prior9` and want to compute the weighted average (i.e., convolution) of the two distributions.
+You can combine multiple prior distributions into a single prior using the `+` operator. Combining priors is done by computing the convolution (i.e., a weighted average under the assumption of independence) of the prior distributions. For example, the convolution of `prior1` and `prior9` can be computed via `prior1 + prior9`. Additionally, the `*` operator can be used to control the contribution of each prior. For example, the weighted convolution of `prior1` and `prior9` can be computed with `a * prior1 + b * prior9`, where `a` and `b` are absolute weights.
 
 ```{r}
-prior10 <- 0.6 * prior1 + 0.4 * prior9
+prior10 <- 0.5 * prior1 + 0.5 * prior9 # same as prior1 + prior9
 summary(prior10)
 ```
 

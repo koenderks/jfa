@@ -126,8 +126,8 @@ class \code{jfaPrior} that can be used in the \code{planning()} and
 \code{evaluation()} functions via their \code{prior} argument. Objects with
 class \code{jfaPrior} can be further inspected via associated
 \code{summary()} and \code{plot()} methods. They can also be used to compute
-a convoluted (i.e., a weighted average) prior using the \code{+} and \code{*}
-operators.
+a convoluted (i.e., a weighted average under the assumption of independence)
+prior using the \code{+} and \code{*} operators.
 }
 \details{
 To perform Bayesian audit sampling you must assign a prior
@@ -209,8 +209,10 @@ auditPrior(likelihood = "binomial")
 # Impartial prior
 auditPrior(method = "impartial", materiality = 0.05)
 
-# Translate inherent risk (ir) and control risk (cr) to a prior
-auditPrior(method = "arm", expected = 0.025, materiality = 0.05, ir = 1, cr = 0.6)
+# Combine priors
+prior1 <- auditPrior(method = "param", alpha = 1, beta = 10)
+prior2 <- auditPrior(method = "param", alpha = 2, beta = 20)
+0.5 * prior1 + 0.5 * prior2 # same as prior1 + prior2
 }
 \references{
 Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J.,

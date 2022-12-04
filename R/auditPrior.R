@@ -23,8 +23,8 @@
 #' \code{evaluation()} functions via their \code{prior} argument. Objects with
 #' class \code{jfaPrior} can be further inspected via associated
 #' \code{summary()} and \code{plot()} methods. They can also be used to compute
-#' a convoluted (i.e., a weighted average) prior using the \code{+} and \code{*}
-#' operators.
+#' a convoluted (i.e., a weighted average under the assumption of independence)
+#' prior using the \code{+} and \code{*} operators.
 #'
 #' @usage auditPrior(method = c(
 #'              "default", "strict", "param", "impartial", "hyp",
@@ -224,8 +224,10 @@
 #' # Impartial prior
 #' auditPrior(method = "impartial", materiality = 0.05)
 #'
-#' # Translate inherent risk (ir) and control risk (cr) to a prior
-#' auditPrior(method = "arm", expected = 0.025, materiality = 0.05, ir = 1, cr = 0.6)
+#' # Combine priors
+#' prior1 <- auditPrior(method = "param", alpha = 1, beta = 10)
+#' prior2 <- auditPrior(method = "param", alpha = 2, beta = 20)
+#' 0.5 * prior1 + 0.5 * prior2 # same as prior1 + prior2
 #' @export
 
 auditPrior <- function(method = c(
