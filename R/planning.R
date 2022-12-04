@@ -369,9 +369,11 @@ planning <- function(materiality = NULL,
     statistics[["precision"]] <- statistics[["ub"]] - statistics[["mode"]]
     result[["posterior"]][["statistics"]] <- statistics
     # Hypotheses
-    if (result[["materiality"]] != 1) {
+    if (materiality < 1) {
       hypotheses <- list()
       hypotheses[["hypotheses"]] <- .hyp_string(materiality, "less")
+      hypotheses[["materiality"]] <- materiality
+      hypotheses[["alternative"]] <- "less"
       hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, likelihood, post_alpha, post_beta, N.units, post_N)
       hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, likelihood, post_alpha, post_beta, N.units, post_N)
       hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
@@ -381,7 +383,7 @@ planning <- function(materiality = NULL,
       result[["posterior"]][["hypotheses"]] <- hypotheses
     }
     # Additional info
-    result[["posterior"]]$N.units <- result[["N.units"]]
+    result[["posterior"]]$N.units <- N.units
     result[["posterior"]]$conf.level <- conf.level
     class(result[["posterior"]]) <- "jfaPosterior"
   }

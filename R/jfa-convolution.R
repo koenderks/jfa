@@ -36,6 +36,7 @@ NULL
   stopifnot("convolution not supported for different 'likelihood's" = valid_likelihood)
   likelihood <- p1[["likelihood"]]
   N.units <- p1[["N.units"]]
+  materiality <- p1[["hypotheses"]]$materiality
   if (is.null(p1[["description"]]$w)) {
     p1[["description"]]$w <- 1
   }
@@ -97,23 +98,30 @@ NULL
   statistics[["precision"]] <- .comp_precision("less", statistics[["mode"]], NULL, statistics[["ub"]])
   result[["statistics"]] <- statistics
   # Hypotheses
-  if (!is.null(p1[["materiality"]])) {
+  if (!is.null(materiality)) {
+    if (inherits(p1, "jfaPosterior")) {
+      alternative <- p1[["hypotheses"]]$alternative
+    } else {
+      alternative <- "less"
+    }
     hypotheses <- list()
-    hypotheses[["hypotheses"]] <- .hyp_string(p1[["materiality"]], "less")
-    hypotheses[["p.h1"]] <- .hyp_prob(TRUE, p1[["materiality"]], likelihood, alpha, beta, N.units, N.units)
-    hypotheses[["p.h0"]] <- .hyp_prob(FALSE, p1[["materiality"]], likelihood, alpha, beta, N.units, N.units)
-    hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
-    hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
-    hypotheses[["density"]] <- .hyp_dens(p1[["materiality"]], likelihood, alpha, beta, N.units, N.units)
+    hypotheses[["materiality"]] <- materiality
+    hypotheses[["alternative"]] <- p1[["hypotheses"]]$alternative
+    hypotheses[["hypotheses"]] <- .hyp_string(materiality, alternative)
+    if (alternative == "two.sided") {
+      hypotheses[["density"]] <- .hyp_dens(materiality, likelihood, alpha, beta, N.units, N.units)
+    } else {
+      lower_tail <- alternative == "less"
+      hypotheses[["p.h1"]] <- .hyp_prob(lower_tail, materiality, likelihood, alpha, beta, N.units, N.units)
+      hypotheses[["p.h0"]] <- .hyp_prob(!lower_tail, materiality, likelihood, alpha, beta, N.units, N.units)
+      hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
+      hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
+    }
     result[["hypotheses"]] <- hypotheses
   }
   # Additional info
   result[["method"]] <- "convolution"
   result[["likelihood"]] <- likelihood
-  if (!is.null(p1[["materiality"]])) {
-    result[["materiality"]] <- p1[["materiality"]]
-  }
-  result[["expected"]] <- p1[["expected"]]
   result[["conf.level"]] <- p1[["conf.level"]]
   result[["N.units"]] <- N.units
   class(result) <- class(p1)

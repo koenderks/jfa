@@ -676,14 +676,18 @@ evaluation <- function(materiality = NULL,
       statistics[["precision"]] <- .comp_precision("less", statistics[["mode"]], NULL, statistics[["ub"]])
       result[["prior"]][["statistics"]] <- statistics
       if (materiality < 1) {
-        result[["prior"]][["materiality"]] <- materiality
         hypotheses <- list()
         hypotheses[["hypotheses"]] <- .hyp_string(materiality, "less")
-        hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, analytical = FALSE, samples = prior_samples)
-        hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, analytical = FALSE, samples = prior_samples)
-        hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
-        hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
-        hypotheses[["density"]] <- .hyp_dens(materiality, analytical = FALSE, samples = prior_samples)
+        hypotheses[["alternative"]] <- alternative
+        if (alternative == "two.sided") {
+          hypotheses[["density"]] <- .hyp_dens(materiality, analytical = FALSE, samples = prior_samples)
+        } else {
+          lower_tail <- alternative == "less"
+          hypotheses[["p.h1"]] <- .hyp_prob(lower_tail, materiality, analytical = FALSE, samples = prior_samples)
+          hypotheses[["p.h0"]] <- .hyp_prob(!lower_tail, materiality, analytical = FALSE, samples = prior_samples)
+          hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
+          hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
+        }
         result[["prior"]][["hypotheses"]] <- hypotheses
       }
       result[["prior"]]$conf.level <- conf.level
@@ -739,9 +743,11 @@ evaluation <- function(materiality = NULL,
     statistics[["precision"]] <- .comp_precision(alternative, statistics[["mode"]], statistics[["lb"]], statistics[["ub"]])
     result[["posterior"]][["statistics"]] <- statistics
     # Hypotheses
-    if (result[["materiality"]] != 1) {
+    if (materiality < 1) {
       hypotheses <- list()
       hypotheses[["hypotheses"]] <- .hyp_string(materiality, alternative)
+      hypotheses[["materiality"]] <- materiality
+      hypotheses[["alternative"]] <- alternative
       if (alternative == "two.sided") {
         hypotheses[["density"]] <- .hyp_dens(materiality, method, post_alpha, post_beta, result[["N.units"]], post_N, analytical, post_samples)
         hypotheses[["bf.h0"]] <- hypotheses[["density"]] / result[["prior"]][["hypotheses"]]$density
@@ -758,7 +764,7 @@ evaluation <- function(materiality = NULL,
       result[["posterior"]][["hypotheses"]] <- hypotheses
     }
     result[["posterior"]]$N.units <- result[["N.units"]]
-    result[["posterior"]]$conf.level <- result[["conf.level"]]
+    result[["posterior"]]$conf.level <- conf.level
     class(result[["posterior"]]) <- c(class(result[["posterior"]]), "jfaPosterior")
   }
   # Data

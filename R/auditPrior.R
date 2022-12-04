@@ -437,6 +437,8 @@ auditPrior <- function(method = c(
   if (!is.null(materiality)) {
     hypotheses <- list()
     hypotheses[["hypotheses"]] <- .hyp_string(materiality, "less")
+    hypotheses[["materiality"]] <- materiality
+    hypotheses[["alternative"]] <- "less"
     hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, likelihood, prior_alpha, prior_beta, N.units, N.units)
     hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, likelihood, prior_alpha, prior_beta, N.units, N.units)
     hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
