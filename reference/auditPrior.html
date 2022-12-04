@@ -7,8 +7,8 @@ class jfaPrior that can be used in the planning() and
 evaluation() functions via their prior argument. Objects with
 class jfaPrior can be further inspected via associated
 summary() and plot() methods. They can also be used to compute
-a convoluted (i.e., a weighted average) prior using the + and *
-operators."><meta property="og:image" content="https://koenderks.github.io/jfa/logo.png"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
+a convoluted prior using the + (for addition) and * (for
+weighing) operators."><meta property="og:image" content="https://koenderks.github.io/jfa/logo.png"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]--></head><body data-spy="scroll" data-target="#toc">
@@ -84,8 +84,8 @@ class <code>jfaPrior</code> that can be used in the <code><a href="planning.html
 <code><a href="evaluation.html">evaluation()</a></code> functions via their <code>prior</code> argument. Objects with
 class <code>jfaPrior</code> can be further inspected via associated
 <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods. They can also be used to compute
-a convoluted (i.e., a weighted average) prior using the <code>+</code> and <code>*</code>
-operators.</p>
+a convoluted prior using the <code>+</code> (for addition) and <code>*</code> (for
+weighing) operators.</p>
     </div>
 
     <div id="ref-usage">
@@ -354,28 +354,16 @@ distributions used by <code>jfa</code>.</p>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Default beta prior</span></span></span>
-<span class="r-in"><span><span class="fu">auditPrior</span><span class="op">(</span>likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 	Prior Distribution for Audit Sampling</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> functional form: beta(α = 1, β = 1) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> parameters obtained via method 'default'</span>
+<span class="r-in"><span><span class="va">prior1</span> <span class="op">&lt;-</span> <span class="fu">auditPrior</span><span class="op">(</span>likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Impartial prior</span></span></span>
-<span class="r-in"><span><span class="fu">auditPrior</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"impartial"</span>, materiality <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 	Prior Distribution for Audit Sampling</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> functional form: gamma(α = 1, β = 13.863) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> parameters obtained via method 'impartial'</span>
+<span class="r-in"><span><span class="va">prior2</span> <span class="op">&lt;-</span> <span class="fu">auditPrior</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"impartial"</span>, materiality <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Translate inherent risk (ir) and control risk (cr) to a prior</span></span></span>
-<span class="r-in"><span><span class="fu">auditPrior</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"arm"</span>, expected <span class="op">=</span> <span class="fl">0.025</span>, materiality <span class="op">=</span> <span class="fl">0.05</span>, ir <span class="op">=</span> <span class="fl">1</span>, cr <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 	Prior Distribution for Audit Sampling</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> functional form: gamma(α = 2.325, β = 53) </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> parameters obtained via method 'arm'</span>
+<span class="r-in"><span><span class="co"># Combine prior distributions</span></span></span>
+<span class="r-in"><span><span class="va">prior3</span> <span class="op">&lt;-</span> <span class="va">prior1</span> <span class="op">+</span> <span class="va">prior2</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in `+.jfaPrior`(prior1, prior2):</span> convolution not supported for different 'likelihood's</span>
+<span class="r-in"><span><span class="va">prior4</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">0.5</span> <span class="op">*</span> <span class="va">prior1</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="fl">0.5</span> <span class="op">*</span> <span class="va">prior2</span><span class="op">)</span> <span class="co"># same as prior1 * prior2</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in `+.jfaPrior`((0.5 * prior1), (0.5 * prior2)):</span> convolution not supported for different 'likelihood's</span>
 </code></pre></div>
     </div>
   </div>
