@@ -354,16 +354,27 @@ distributions used by <code>jfa</code>.</p>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Default beta prior</span></span></span>
-<span class="r-in"><span><span class="va">prior1</span> <span class="op">&lt;-</span> <span class="fu">auditPrior</span><span class="op">(</span>likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">auditPrior</span><span class="op">(</span>likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Prior Distribution for Audit Sampling</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> functional form: beta(α = 1, β = 1) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> parameters obtained via method 'default'</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Impartial prior</span></span></span>
-<span class="r-in"><span><span class="va">prior2</span> <span class="op">&lt;-</span> <span class="fu">auditPrior</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"impartial"</span>, materiality <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">auditPrior</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"impartial"</span>, materiality <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Prior Distribution for Audit Sampling</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> functional form: gamma(α = 1, β = 13.863) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> parameters obtained via method 'impartial'</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Combine prior distributions</span></span></span>
+<span class="r-in"><span><span class="va">prior1</span> <span class="op">&lt;-</span> <span class="fu">auditPrior</span><span class="op">(</span><span class="st">"param"</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">prior2</span> <span class="op">&lt;-</span> <span class="fu">auditPrior</span><span class="op">(</span><span class="st">"param"</span>, alpha <span class="op">=</span> <span class="fl">2</span>, beta <span class="op">=</span> <span class="fl">40</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">prior3</span> <span class="op">&lt;-</span> <span class="va">prior1</span> <span class="op">+</span> <span class="va">prior2</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in `+.jfaPrior`(prior1, prior2):</span> convolution not supported for different 'likelihood's</span>
-<span class="r-in"><span><span class="va">prior4</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">0.5</span> <span class="op">*</span> <span class="va">prior1</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="fl">0.5</span> <span class="op">*</span> <span class="va">prior2</span><span class="op">)</span> <span class="co"># same as prior1 * prior2</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in `+.jfaPrior`((0.5 * prior1), (0.5 * prior2)):</span> convolution not supported for different 'likelihood's</span>
+<span class="r-in"><span><span class="va">prior4</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">0.5</span> <span class="op">*</span> <span class="va">prior1</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="fl">0.5</span> <span class="op">*</span> <span class="va">prior2</span><span class="op">)</span> <span class="co"># same as prior1 * prior2</span></span></span>
+<span class="r-in"><span><span class="va">prior5</span> <span class="op">&lt;-</span> <span class="va">prior1</span> <span class="op">+</span> <span class="va">prior2</span> <span class="op">+</span> <span class="va">prior1</span> <span class="op">*</span> <span class="va">prior2</span></span></span>
 </code></pre></div>
     </div>
   </div>
