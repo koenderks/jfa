@@ -245,15 +245,13 @@ auditPrior <- function(method = c(
                        factor = NULL,
                        conf.level = 0.95) {
   # Input checking
-  method <- match.arg(method, several.ok = TRUE)
-  valid_method <- length(unique(method)) == length(method)
-  stopifnot("'method' must contain unique strings" = valid_method)
+  method <- match.arg(method)
   likelihood <- match.arg(likelihood)
   stopifnot("missing value for 'conf.level'" = !is.null(conf.level))
   valid_confidence <- is.numeric(conf.level) && length(conf.level) == 1 && conf.level > 0 && conf.level < 1
   stopifnot("'conf.level' must be a single value between 0 and 1" = valid_confidence)
   stopifnot("'expected' must be a single value >= 0" = expected >= 0)
-  if (any(method %in% c("impartial", "hyp", "arm"))) {
+  if (method %in% c("impartial", "hyp", "arm")) {
     stopifnot("missing value for 'materiality'" = !is.null(materiality))
     valid_materiality <- is.numeric(materiality) && materiality > 0 && materiality < 1
     stopifnot("'materiality' must be a single value between 0 and 1" = valid_materiality)
@@ -261,7 +259,7 @@ auditPrior <- function(method = c(
   if (!is.null(materiality) && expected < 1) {
     stopifnot("'expected' must be a single value < 'materiality'" = expected < materiality)
   }
-  requires_expected_percentage <- any(method %in% c("default", "sample", "factor", "param", "strict"))
+  requires_expected_percentage <- method %in% c("default", "sample", "factor", "param", "strict")
   if (expected >= 1 && !requires_expected_percentage) {
     stop(paste0("'expected' must be a single value between 0 and 1 for 'method = ", method, "'"))
   }
@@ -272,151 +270,123 @@ auditPrior <- function(method = c(
     N.units <- ceiling(N.units)
   }
   # Compute prior per method
-  prior_alpha_i <- numeric(length(method))
-  prior_beta_i <- numeric(length(method))
-  for (i in seq_along(method)) {
-    if (method[i] == "default") {
+  if (method == "default") {
+    prior.n <- 1
+    prior.x <- 0
+  } else if (method == "strict") {
+    prior.n <- 0
+    prior.x <- 0
+  } else if (method == "arm") {
+    stopifnot("missing value for 'ir' (inherent risk)" = !is.null(ir))
+    valid_ir <- ir > 0 && ir <= 1
+    stopifnot("'ir' (inherent risk) must be a single value between 0 and 1" = valid_ir)
+    stopifnot("missing value for 'cr' (control risk)" = !is.null(cr))
+    valid_cr <- cr > 0 && cr <= 1
+    stopifnot("'cr' (control risk) must be a single value between 0 and 1" = valid_cr)
+    stopifnot("ir * cr must be > 1 - conf.level" = ir * cr > 1 - conf.level)
+    detection_risk <- (1 - conf.level) / (ir * cr)
+    n.plus <- planning(materiality, min.precision = NULL, expected, likelihood, conf.level, N.units, prior = TRUE)$n
+    n.min <- planning(materiality, min.precision = NULL, expected, likelihood, 1 - detection_risk, N.units, prior = TRUE)$n
+    prior.n <- n.plus - n.min
+    prior.x <- (n.plus * expected) - (n.min * expected)
+  } else if (method == "bram") {
+    stopifnot("missing value for 'ub'" = !is.null(ub))
+    valid_ub <- length(ub) == 1 && is.numeric(ub) && ub > 0 && ub < 1 && ub > expected
+    stopifnot("'ub' must be a single value between 0 and 1 and > 'expected'" = valid_ub)
+    if (likelihood == "poisson" && expected > 0) { # Stewart (2013, p. 45)
+      r <- expected / ub
+      q <- stats::qnorm(conf.level)
+      prior.x <- ((((q * r) + sqrt(3 + ((r / 3) * (4 * q^2 - 10)) - ((r^2 / 3) * (q^2 - 1)))) / (2 * (1 - r)))^2 + (1 / 4)) - 1
+      prior.n <- prior.x / expected
+    } else {
+      bound <- Inf
+      prior.x <- 0
       prior.n <- 1
-      prior.x <- 0
-    } else if (method[i] == "strict") {
-      prior.n <- 0
-      prior.x <- 0
-    } else if (method[i] == "arm") {
-      stopifnot("missing value for 'ir' (inherent risk)" = !is.null(ir))
-      valid_ir <- ir > 0 && ir <= 1
-      stopifnot("'ir' (inherent risk) must be a single value between 0 and 1" = valid_ir)
-      stopifnot("missing value for 'cr' (control risk)" = !is.null(cr))
-      valid_cr <- cr > 0 && cr <= 1
-      stopifnot("'cr' (control risk) must be a single value between 0 and 1" = valid_cr)
-      stopifnot("ir * cr must be > 1 - conf.level" = ir * cr > 1 - conf.level)
-      detection_risk <- (1 - conf.level) / (ir * cr)
-      n.plus <- planning(materiality, min.precision = NULL, expected, likelihood, conf.level, N.units, prior = TRUE)$n
-      n.min <- planning(materiality, min.precision = NULL, expected, likelihood, 1 - detection_risk, N.units, prior = TRUE)$n
-      prior.n <- n.plus - n.min
-      prior.x <- (n.plus * expected) - (n.min * expected)
-    } else if (method[i] == "bram") {
-      stopifnot("missing value for 'ub'" = !is.null(ub))
-      valid_ub <- length(ub) == 1 && is.numeric(ub) && ub > 0 && ub < 1 && ub > expected
-      stopifnot("'ub' must be a single value between 0 and 1 and > 'expected'" = valid_ub)
-      if (likelihood == "poisson" && expected > 0) { # Stewart (2013, p. 45)
-        r <- expected / ub
-        q <- stats::qnorm(conf.level)
-        prior.x <- ((((q * r) + sqrt(3 + ((r / 3) * (4 * q^2 - 10)) - ((r^2 / 3) * (q^2 - 1)))) / (2 * (1 - r)))^2 + (1 / 4)) - 1
-        prior.n <- prior.x / expected
-      } else {
-        bound <- Inf
-        prior.x <- 0
-        prior.n <- 1
-        while (bound > ub) {
-          if (expected == 0) {
-            prior.n <- prior.n + 0.001
-          } else {
-            prior.x <- prior.x + 0.0001
-            a <- 1 + prior.x
-            if (likelihood == "poisson") {
-              prior.n <- prior.x / expected
-              b <- prior.n
-            } else {
-              prior.n <- 1 + prior.x / expected
-              b <- prior.n - prior.x
-            }
-          }
-          bound <- .comp_ub_bayes("less", conf.level, likelihood, a, b, N.units)
-        }
-      }
-    } else if (method[i] == "impartial" || method[i] == "hyp") {
-      if (method[i] == "impartial") {
-        p.h0 <- p.h1 <- 0.5
-      } else if (method[i] == "hyp") {
-        stopifnot("missing value for 'p.hmin'" = !is.null(p.hmin))
-        p.h1 <- p.hmin
-        p.h0 <- 1 - p.h1
-      }
-      if (expected == 0) {
-        prior.n <- switch(likelihood,
-          "poisson" = -(log(p.h0) / materiality),
-          "binomial" = log(p.h0) / log(1 - materiality),
-          "hypergeometric" = log(2) / (log(N.units / (N.units - ceiling(materiality * N.units))))
-        )
-        prior.x <- 0
-      } else {
-        median <- Inf
-        prior.x <- 0
-        while (median > materiality) {
+      while (bound > ub) {
+        if (expected == 0) {
+          prior.n <- prior.n + 0.001
+        } else {
           prior.x <- prior.x + 0.0001
-          if (likelihood == "poisson") {
-            prior.n <- prior.x / expected
-          } else {
-            prior.n <- 1 + prior.x / expected
-          }
           a <- 1 + prior.x
           if (likelihood == "poisson") {
+            prior.n <- prior.x / expected
             b <- prior.n
           } else {
+            prior.n <- 1 + prior.x / expected
             b <- prior.n - prior.x
           }
-          median <- .comp_ub_bayes("less", p.h1, likelihood, a, b, N.units)
         }
-      }
-    } else if (method[i] == "sample" || method[i] == "factor") {
-      stopifnot("missing value for 'n'" = !is.null(n))
-      valid_n <- is.numeric(n) && length(n) == 1 && n >= 0
-      stopifnot("'n' must be a single value >= 0" = valid_n)
-      stopifnot("missing value for 'x'" = !is.null(x))
-      valid_x <- is.numeric(x) && length(x) == 1 && x >= 0
-      stopifnot("'x' must be a single value >= 0" = valid_x)
-      if (method[i] == "factor") {
-        stopifnot("missing value for 'factor'" = !is.null(factor))
-      } else {
-        factor <- 1
-      }
-      prior.n <- n * factor
-      prior.x <- x * factor
-    } else if (method[i] == "param") {
-      stopifnot("missing value for 'alpha'" = !is.null(alpha))
-      valid_alpha <- is.numeric(alpha) && length(alpha) == 1 && alpha > 0
-      stopifnot("'alpha' must be a single value > 0" = valid_alpha)
-      stopifnot("missing value for 'beta'" = !is.null(beta))
-      valid_beta <- is.numeric(beta) && length(beta) == 1 && beta >= 0
-      stopifnot("'beta' must be a single value >= 0" = valid_beta)
-      prior.x <- alpha - 1
-      if (likelihood == "poisson") {
-        prior.n <- beta
-      } else {
-        prior.n <- beta + prior.x
+        bound <- .comp_ub_bayes("less", conf.level, likelihood, a, b, N.units)
       }
     }
-    # Parameters
-    prior_alpha_i[i] <- 1 + prior.x
-    if (likelihood == "poisson") {
-      prior_beta_i[i] <- prior.n
+  } else if (method == "impartial" || method == "hyp") {
+    if (method == "impartial") {
+      p.h0 <- p.h1 <- 0.5
+    } else if (method == "hyp") {
+      stopifnot("missing value for 'p.hmin'" = !is.null(p.hmin))
+      p.h1 <- p.hmin
+      p.h0 <- 1 - p.h1
+    }
+    if (expected == 0) {
+      prior.n <- switch(likelihood,
+        "poisson" = -(log(p.h0) / materiality),
+        "binomial" = log(p.h0) / log(1 - materiality),
+        "hypergeometric" = log(2) / (log(N.units / (N.units - ceiling(materiality * N.units))))
+      )
+      prior.x <- 0
     } else {
-      prior_beta_i[i] <- prior.n - prior.x
+      median <- Inf
+      prior.x <- 0
+      while (median > materiality) {
+        prior.x <- prior.x + 0.0001
+        if (likelihood == "poisson") {
+          prior.n <- prior.x / expected
+        } else {
+          prior.n <- 1 + prior.x / expected
+        }
+        a <- 1 + prior.x
+        if (likelihood == "poisson") {
+          b <- prior.n
+        } else {
+          b <- prior.n - prior.x
+        }
+        median <- .comp_ub_bayes("less", p.h1, likelihood, a, b, N.units)
+      }
+    }
+  } else if (method == "sample" || method == "factor") {
+    stopifnot("missing value for 'n'" = !is.null(n))
+    valid_n <- is.numeric(n) && length(n) == 1 && n >= 0
+    stopifnot("'n' must be a single value >= 0" = valid_n)
+    stopifnot("missing value for 'x'" = !is.null(x))
+    valid_x <- is.numeric(x) && length(x) == 1 && x >= 0
+    stopifnot("'x' must be a single value >= 0" = valid_x)
+    if (method == "factor") {
+      stopifnot("missing value for 'factor'" = !is.null(factor))
+    } else {
+      factor <- 1
+    }
+    prior.n <- n * factor
+    prior.x <- x * factor
+  } else if (method == "param") {
+    stopifnot("missing value for 'alpha'" = !is.null(alpha))
+    valid_alpha <- is.numeric(alpha) && length(alpha) == 1 && alpha > 0
+    stopifnot("'alpha' must be a single value > 0" = valid_alpha)
+    stopifnot("missing value for 'beta'" = !is.null(beta))
+    valid_beta <- is.numeric(beta) && length(beta) == 1 && beta >= 0
+    stopifnot("'beta' must be a single value >= 0" = valid_beta)
+    prior.x <- alpha - 1
+    if (likelihood == "poisson") {
+      prior.n <- beta
+    } else {
+      prior.n <- beta + prior.x
     }
   }
-  # Compute convolution of the priors
-  if (length(method) == 1) {
-    prior_alpha <- prior_alpha_i
-    prior_beta <- prior_beta_i
-  } else {
-    w <- rep(1, length(prior_alpha_i))
-    if (likelihood == "poisson") {
-      e_x <- sum(w * (prior_alpha_i * prior_beta_i))
-      var_x <- sum(w * (prior_alpha_i * prior_beta_i^2))
-      prior_alpha <- e_x^2 / var_x
-      prior_beta <- var_x / e_x
-    } else {
-      e_x <- sum(w * (prior_alpha_i / (prior_alpha_i + prior_beta_i)))
-      var_x <- sum(w^2 * ((prior_alpha_i * prior_beta_i) / ((prior_alpha_i + prior_beta_i)^2 * (prior_alpha_i + prior_beta_i + 1))))
-      prior_alpha <- ((e_x / sum(w))^2 * (1 - (e_x / sum(w))) / (var_x / sum(w)^2)) - (e_x / sum(w))
-      prior_beta <- ((((e_x / sum(w)) * (1 - (e_x / sum(w)))) / (var_x / sum(w)^2)) - 1) - prior_alpha
-    }
-  }
-  prior.x <- prior_alpha - 1
+  # Parameters
+  prior_alpha <- 1 + prior.x
   if (likelihood == "poisson") {
-    prior.n <- prior_beta
+    prior_beta <- prior.n
   } else {
-    prior.n <- prior_beta + prior.x
+    prior_beta <- prior.n - prior.x
   }
   # Initialize main results
   result <- list()
@@ -440,22 +410,22 @@ auditPrior <- function(method = c(
   statistics[["precision"]] <- .comp_precision("less", statistics[["mode"]], NULL, statistics[["ub"]])
   result[["statistics"]] <- statistics
   # Specifics
-  if (any(method != "default" & method != "strict")) {
+  if (method != "default" && method != "strict") {
     specifics <- list()
-    if (any(method == "impartial" | method == "hyp")) {
+    if (method == "impartial" || method == "hyp") {
       specifics[["p.h1"]] <- p.h1
       specifics[["p.h0"]] <- p.h0
-    } else if (any(method == "sample" | method == "factor")) {
+    } else if (method == "sample" || method == "factor") {
       specifics[["x"]] <- x
       specifics[["n"]] <- n
       specifics[["factor"]] <- factor
-    } else if (any(method == "arm")) {
+    } else if (method == "arm") {
       specifics[["ir"]] <- ir
       specifics[["cr"]] <- cr
-    } else if (any(method == "bram")) {
+    } else if (method == "bram") {
       specifics[["mode"]] <- expected
       specifics[["ub"]] <- ub
-    } else if (any(method == "param")) {
+    } else if (method == "param") {
       specifics[["alpha"]] <- alpha
       specifics[["beta"]] <- beta
     }

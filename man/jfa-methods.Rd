@@ -2,6 +2,7 @@
 % Please edit documentation in R/jfa-methods.R
 \name{jfa-methods}
 \alias{jfa-methods}
+\alias{+.jfaPrior}
 \alias{print.jfaPrior}
 \alias{print.summary.jfaPrior}
 \alias{summary.jfaPrior}
@@ -29,6 +30,8 @@
 \alias{plot.jfaRv}
 \title{Methods for jfa objects}
 \usage{
+\method{+}{jfaPrior}(p1, p2)
+
 \method{print}{jfaPrior}(x, ...)
 
 \method{print}{summary.jfaPrior}(x, digits = getOption("digits"), ...)

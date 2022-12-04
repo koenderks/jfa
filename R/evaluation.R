@@ -295,8 +295,8 @@ evaluation <- function(materiality = NULL,
   is_jfa_prior <- inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")
   is_bayesian <- (inherits(prior, "logical") && prior) || is_jfa_prior
   if (is_jfa_prior) {
-    if (any(prior[["method"]] == "mcmc")) {
-      stop("method = 'mcmc' not supported yet")
+    if (prior[["method"]] == "mcmc") {
+      stop("method = 'mcmc' not supported")
     }
     if (method != prior[["likelihood"]]) {
       message(paste0("Using 'method = ", prior[["likelihood"]], "' from 'prior'"))
