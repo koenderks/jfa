@@ -477,6 +477,40 @@ distribution.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior9</span><span class="op">)</span></span></code></pre></div>
 <p><img src="creating-prior_files/figure-html/unnamed-chunk-19-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
+<div class="section level3">
+<h3 id="convoluted-prior-distributions">Convoluted prior distributions<a class="anchor" aria-label="anchor" href="#convoluted-prior-distributions"></a>
+</h3>
+<p>You can combine and weigh multiple prior distributions into a single
+prior using the <code>+</code> and <code>*</code> operators. For
+example, suppose you created two priors <code>prior1</code> and
+<code>prior9</code> and want to compute the weighted average (i.e.,
+convolution) of the two distributions.</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">prior10</span> <span class="op">&lt;-</span> <span class="fl">0.6</span> <span class="op">*</span> <span class="va">prior1</span> <span class="op">+</span> <span class="fl">0.4</span> <span class="op">*</span> <span class="va">prior9</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior10</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Prior Distribution Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Likelihood:                    binomial </span></span>
+<span><span class="co">##   Specifics:                      </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Functional form:               beta(α = 1.89, β = 4.214) </span></span>
+<span><span class="co">##   Equivalent sample size:        0.88997 </span></span>
+<span><span class="co">##   Mode:                          0.21684 </span></span>
+<span><span class="co">##   Mean:                          0.30962 </span></span>
+<span><span class="co">##   Median:                        0.28777 </span></span>
+<span><span class="co">##   Variance:                      0.030088 </span></span>
+<span><span class="co">##   Skewness:                      0.54173 </span></span>
+<span><span class="co">##   95 percent upper bound:        0.62925 </span></span>
+<span><span class="co">##   Precision:                     0.41241</span></span></code></pre>
+<p>You can visually inspect the prior distribution using the
+<code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior10</span><span class="op">)</span></span></code></pre></div>
+<p><img src="creating-prior_files/figure-html/unnamed-chunk-21-1.png" width="576" style="display: block; margin: auto;"></p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="using-a-prior-distribution-in-other-functions">Using a prior distribution in other functions<a class="anchor" aria-label="anchor" href="#using-a-prior-distribution-in-other-functions"></a>
@@ -497,7 +531,7 @@ function. For example, the code below calculates the minimum sample size
 to test the misstatement in the population against a performance
 materiality of 5%, while incorporating the information in
 <code>prior9</code>.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, prior <span class="op">=</span> <span class="va">prior9</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Using 'likelihood = binomial' from 'prior'</span></span></code></pre>
 <pre><code><span><span class="co">## </span></span>
@@ -517,7 +551,7 @@ evaluates the misstatement in the population with respect to the
 performance materiality of 5% after seeing a sample of 60 items with 1
 misstatement, while incorporating the information in
 <code>prior8</code>.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">60</span>, prior <span class="op">=</span> <span class="va">prior9</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Using 'method = binomial' from 'prior'</span></span></code></pre>
 <pre><code><span><span class="co">## </span></span>
