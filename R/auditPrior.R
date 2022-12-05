@@ -412,6 +412,7 @@ auditPrior <- function(method = c(
   statistics[["median"]] <- .comp_median_bayes(likelihood, prior_alpha, prior_beta, N.units)
   statistics[["var"]] <- .comp_var_bayes(likelihood, prior_alpha, prior_beta, N.units)
   statistics[["skewness"]] <- .comp_skew_bayes(likelihood, prior_alpha, prior_beta, N.units)
+  statistics[["entropy"]] <- .comp_entropy_bayes(likelihood, prior_alpha, prior_beta, N.units)
   statistics[["ub"]] <- .comp_ub_bayes("less", conf.level, likelihood, prior_alpha, prior_beta, N.units)
   statistics[["precision"]] <- .comp_precision("less", statistics[["mode"]], NULL, statistics[["ub"]])
   result[["statistics"]] <- statistics

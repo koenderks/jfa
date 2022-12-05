@@ -672,6 +672,7 @@ evaluation <- function(materiality = NULL,
       statistics[["median"]] <- .comp_median_bayes(analytical = FALSE, samples = prior_samples)
       statistics[["var"]] <- .comp_var_bayes(analytical = FALSE, samples = prior_samples)
       statistics[["skewness"]] <- .comp_skew_bayes(analytical = FALSE, samples = prior_samples)
+      statistics[["entropy"]] <- .comp_entropy_bayes(analytical = FALSE, samples = prior_samples)
       statistics[["ub"]] <- .comp_ub_bayes("less", conf.level, analytical = FALSE, samples = prior_samples)
       statistics[["precision"]] <- .comp_precision("less", statistics[["mode"]], NULL, statistics[["ub"]])
       result[["prior"]][["statistics"]] <- statistics
@@ -738,6 +739,7 @@ evaluation <- function(materiality = NULL,
     statistics[["median"]] <- .comp_median_bayes(method, post_alpha, post_beta, post_N, analytical, post_samples)
     statistics[["var"]] <- .comp_var_bayes(method, post_alpha, post_beta, post_N, analytical, post_samples)
     statistics[["skewness"]] <- .comp_skew_bayes(method, post_alpha, post_beta, post_N, analytical, post_samples)
+    statistics[["entropy"]] <- .comp_entropy_bayes(method, post_alpha, post_beta, N.units, analytical, post_samples)
     statistics[["ub"]] <- .comp_ub_bayes(alternative, conf.level, method, post_alpha, post_beta, post_N, analytical, post_samples)
     statistics[["lb"]] <- .comp_lb_bayes(alternative, conf.level, method, post_alpha, post_beta, post_N, analytical, post_samples)
     statistics[["precision"]] <- .comp_precision(alternative, statistics[["mode"]], statistics[["lb"]], statistics[["ub"]])

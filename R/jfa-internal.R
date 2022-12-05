@@ -167,6 +167,23 @@
   return(skewness)
 }
 
+.comp_entropy_bayes <- function(likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+  if (analytical) {
+    if (alpha == 0 || beta == 0) {
+      entropy <- Inf
+    } else {
+      entropy <- switch(likelihood,
+        "poisson" = alpha - log(beta) + log(gamma(alpha)) + (1 - alpha) * digamma(alpha),
+        "binomial" = log(beta(alpha, beta)) - (alpha - 1) * digamma(alpha) - (beta - 1) * digamma(beta) + (alpha + beta - 2) * digamma(alpha + beta),
+        "hypergeometric" = log(beta(alpha, beta)) - (alpha - 1) * digamma(alpha) - (beta - 1) * digamma(beta) + (alpha + beta - 2) * digamma(alpha + beta)
+      )
+    }
+  } else {
+    entropy <- entropy::entropy.empirical(samples, unit = "log")
+  }
+  return(entropy)
+}
+
 .comp_ub_freq <- function(alternative, conf.level, likelihood, n.obs, x.obs, t.obs, N.units, analytical = TRUE, samples = NULL) {
   if (alternative == "greater") {
     ub <- 1

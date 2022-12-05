@@ -365,6 +365,7 @@ planning <- function(materiality = NULL,
     statistics[["median"]] <- .comp_median_bayes(likelihood, post_alpha, post_beta, post_N)
     statistics[["var"]] <- .comp_var_bayes(likelihood, post_alpha, post_beta, post_N)
     statistics[["skewness"]] <- .comp_skew_bayes(likelihood, post_alpha, post_beta, post_N)
+    statistics[["entropy"]] <- .comp_entropy_bayes(likelihood, post_alpha, post_beta, post_N)
     statistics[["ub"]] <- .comp_ub_bayes("less", conf.level, likelihood, post_alpha, post_beta, post_N)
     statistics[["precision"]] <- statistics[["ub"]] - statistics[["mode"]]
     result[["posterior"]][["statistics"]] <- statistics
