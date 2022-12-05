@@ -149,7 +149,7 @@
       "hypergeometric" = ((N.units * alpha * beta) * (alpha + beta + N.units)) / ((alpha + beta)^2 * (alpha + beta + 1))
     )
   } else {
-    variance <- stats::var(samples)
+    variance <- as.numeric(stats::var(samples))
   }
   return(variance)
 }
@@ -167,7 +167,7 @@
   return(skewness)
 }
 
-.comp_entropy_bayes <- function(likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+.comp_entropy_bayes <- function(likelihood, alpha, beta, analytical = TRUE, samples = NULL) {
   if (analytical) {
     if (alpha == 0 || beta == 0) {
       entropy <- Inf
@@ -179,9 +179,37 @@
       )
     }
   } else {
-    entropy <- entropy::entropy.empirical(samples, unit = "log")
+    entropy <- .entropy(round(samples, 3))
   }
   return(entropy)
+}
+
+.comp_kl_bayes <- function(likelihood, prior_alpha, prior_beta, post_alpha, post_beta, analytical = TRUE, samples_prior = NULL, samples_post = NULL) {
+  if (analytical) {
+    if (prior_alpha == 0 || prior_beta == 0) {
+      kl <- Inf
+    } else {
+      kl <- switch(likelihood,
+        "poisson" = (post_alpha - prior_alpha) * digamma(post_alpha) - log(gamma(post_alpha)) + log(gamma(prior_alpha)) + prior_alpha * (log(post_beta) - log(prior_beta)) + post_alpha * ((prior_beta - post_beta) / post_beta),
+        "binomial" = log(beta(prior_alpha, prior_beta) / beta(post_alpha, post_beta)) + (post_alpha - prior_alpha) * digamma(post_alpha) + (post_beta - prior_beta) * digamma(post_beta) + (prior_alpha - post_alpha + prior_beta - post_beta) * digamma(post_alpha + post_beta),
+        "hypergeometric" = log(beta(prior_alpha, prior_beta) / beta(post_alpha, post_beta)) + (post_alpha - prior_alpha) * digamma(post_alpha) + (post_beta - prior_beta) * digamma(post_beta) + (prior_alpha - post_alpha + prior_beta - post_beta) * digamma(post_alpha + post_beta)
+      )
+    }
+  } else {
+    if (any(is.infinite(samples_prior))) {
+      kl <- Inf
+    } else {
+      dens_prior <- stats::density(samples_prior)$y
+      prob_prior <- dens_prior / sum(dens_prior)
+      dens_post <- stats::density(samples_post)$y
+      prob_post <- dens_post / sum(dens_post)
+      rows <- rbind(prob_post, prob_prior)
+      kl <- suppressMessages({
+        as.numeric(philentropy::KL(rows, unit = "log"))
+      })
+    }
+  }
+  return(kl)
 }
 
 .comp_ub_freq <- function(alternative, conf.level, likelihood, n.obs, x.obs, t.obs, N.units, analytical = TRUE, samples = NULL) {

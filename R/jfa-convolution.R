@@ -67,7 +67,7 @@ NULL
   statistics[["median"]] <- .comp_median_bayes(likelihood, alpha, beta, N.units)
   statistics[["var"]] <- .comp_var_bayes(likelihood, alpha, beta, N.units)
   statistics[["skewness"]] <- .comp_skew_bayes(likelihood, alpha, beta, N.units)
-  statistics[["entropy"]] <- .comp_entropy_bayes(likelihood, alpha, beta, N.units)
+  statistics[["entropy"]] <- .comp_entropy_bayes(likelihood, alpha, beta)
   statistics[["ub"]] <- .comp_ub_bayes("less", p1[["conf.level"]], likelihood, alpha, beta, N.units)
   statistics[["precision"]] <- .comp_precision("less", statistics[["mode"]], NULL, statistics[["ub"]])
   result[["statistics"]] <- statistics
@@ -200,7 +200,7 @@ NULL
     statistics[["median"]] <- .comp_median_bayes(likelihood, alpha, beta, N.units)
     statistics[["var"]] <- .comp_var_bayes(likelihood, alpha, beta, N.units)
     statistics[["skewness"]] <- .comp_skew_bayes(likelihood, alpha, beta, N.units)
-    statistics[["entropy"]] <- .comp_entropy_bayes(likelihood, alpha, beta, N.units)
+    statistics[["entropy"]] <- .comp_entropy_bayes(likelihood, alpha, beta)
     statistics[["ub"]] <- .comp_ub_bayes("less", p1[["conf.level"]], likelihood, alpha, beta, N.units)
     statistics[["precision"]] <- .comp_precision("less", statistics[["mode"]], NULL, statistics[["ub"]])
     result[["statistics"]] <- statistics
