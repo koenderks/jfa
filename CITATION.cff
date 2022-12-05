@@ -69,6 +69,18 @@ references:
     name: R Foundation for Statistical Computing
   version: '>= 3.5.0'
 - type: software
+  title: entropy
+  abstract: 'entropy: Estimation of Entropy, Mutual Information and Related Quantities'
+  notes: Imports
+  url: https://strimmerlab.github.io/software/entropy/
+  repository: https://CRAN.R-project.org/package=entropy
+  authors:
+  - family-names: Hausser
+    given-names: Jean
+  - family-names: Strimmer
+    given-names: Korbinian
+  year: '2022'
+- type: software
   title: extraDistr
   abstract: 'extraDistr: Additional Univariate and Multivariate Distributions'
   notes: Imports
