@@ -17,12 +17,13 @@
 \method{*}{jfaPosterior}(p1, p2)
 }
 \arguments{
-\item{p1}{an object of class \code{jfaPrior}.}
+\item{p1}{an object of class \code{jfaPrior} or class \code{jfaPosterior}.}
 
-\item{p2}{an object of class \code{jfaPrior}.}
+\item{p2}{an object of class \code{jfaPrior} or class \code{jfaPosterior}.}
 }
 \value{
-An object of class \code{jfaPrior} with method \code{convolution}.
+An object of class \code{jfaPrior} or class \code{jfaPosterior}
+constructed with method \code{convolution}.
 }
 \description{
 Methods defined for convolutions of \code{jfaPrior} objects.

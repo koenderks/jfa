@@ -17,10 +17,11 @@
 #'
 #' Methods defined for convolutions of \code{jfaPrior} objects.
 #'
-#' @param p1  an object of class \code{jfaPrior}.
-#' @param p2  an object of class \code{jfaPrior}.
+#' @param p1  an object of class \code{jfaPrior} or class \code{jfaPosterior}.
+#' @param p2  an object of class \code{jfaPrior} or class \code{jfaPosterior}.
 #'
-#' @return    An object of class \code{jfaPrior} with method \code{convolution}.
+#' @return    An object of class \code{jfaPrior} or class \code{jfaPosterior}
+#' constructed with method \code{convolution}.
 #'
 #' @name jfa-convolution
 NULL
