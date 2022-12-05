@@ -170,7 +170,7 @@
 .comp_entropy_bayes <- function(likelihood, alpha, beta, analytical = TRUE, samples = NULL) {
   if (analytical) {
     if (alpha == 0 || beta == 0) {
-      entropy <- Inf
+      entropy <- -Inf
     } else {
       entropy <- switch(likelihood,
         "poisson" = alpha - log(beta) + log(gamma(alpha)) + (1 - alpha) * digamma(alpha),
