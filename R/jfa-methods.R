@@ -854,9 +854,9 @@ plot.jfaRv <- function(x, ...) {
   y <- NULL
   df <- data.frame(x = as.numeric(names(x$frequencies)), y = as.numeric(x$frequencies))
   xBreaks <- pretty(df$x, min.n = 5)
-  yBreaks <- pretty(df$y, min.n = 5)
+  yBreaks <- pretty(c(0, df$y), min.n = 5)
   p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = x, y = y)) +
-    ggplot2::geom_bar(fill = "darkgray", color = "black", size = 0.2, stat = "identity") +
+    ggplot2::geom_bar(fill = "darkgray", color = "black", linewidth = 0.2, stat = "identity") +
     ggplot2::scale_x_continuous(name = "Value", breaks = xBreaks, limits = range(xBreaks)) +
     ggplot2::scale_y_continuous(name = "Frequency", breaks = yBreaks, limits = range(yBreaks)) +
     ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yBreaks)) +

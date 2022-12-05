@@ -19,7 +19,6 @@
 #'
 #' @param p1  an object of class \code{jfaPrior}.
 #' @param p2  an object of class \code{jfaPrior}.
-#' @param c   a numeric value, used for multiplication.
 #'
 #' @return    An object of class \code{jfaPrior} with method \code{convolution}.
 #'
@@ -115,7 +114,7 @@ NULL
   p1_is_prior <- inherits(p1, "jfaPrior") || inherits(p1, "jfaPosterior")
   if (!p1_is_prior) {
     valid_const <- is.numeric(p1) && length(p1) == 1
-    stopifnot("'c' must be a single numeric value" = valid_const)
+    stopifnot("weighing requires a constant as the first argument" = valid_const)
     p2[["description"]]$w <- p1
     return(p2)
   } else {
@@ -126,20 +125,36 @@ NULL
     likelihood <- p1[["likelihood"]]
     N.units <- p1[["N.units"]]
     materiality <- p1[["hypotheses"]]$materiality
+    w <- alpha_i <- beta_i <- numeric()
     if (is.null(p1[["description"]]$w)) {
-      p1[["description"]]$w <- 1
+      w <- c(w, 1)
+      alpha_i <- c(alpha_i, p1[["description"]]$alpha)
+      beta_i <- c(beta_i, p1[["description"]]$beta)
+    } else {
+      if (is.null(p1[["description"]]$w_i)) {
+        w <- c(w, p1[["description"]]$w)
+        alpha_i <- c(alpha_i, p1[["description"]]$alpha)
+        beta_i <- c(beta_i, p1[["description"]]$beta)
+      } else {
+        w <- c(w, p1[["description"]]$w_i)
+        alpha_i <- c(alpha_i, p1[["description"]]$alpha_i)
+        beta_i <- c(beta_i, p1[["description"]]$beta_i)
+      }
     }
     if (is.null(p2[["description"]]$w)) {
-      p2[["description"]]$w <- 1
-    }
-    if (is.null(p1[["description"]]$alpha_i)) {
-      alpha_i <- c(p1[["description"]]$alpha, p2[["description"]]$alpha)
-      beta_i <- c(p1[["description"]]$beta, p2[["description"]]$beta)
-      w <- c(p1[["description"]]$w, p2[["description"]]$w)
+      w <- c(w, 1)
+      alpha_i <- c(alpha_i, p2[["description"]]$alpha)
+      beta_i <- c(beta_i, p2[["description"]]$beta)
     } else {
-      alpha_i <- c(p1[["description"]]$alpha_i, p2[["description"]]$alpha)
-      beta_i <- c(p1[["description"]]$beta_is, p2[["description"]]$beta)
-      w <- c(p1[["description"]]$w_i, p2[["description"]]$w)
+      if (is.null(p2[["description"]]$w_i)) {
+        w <- c(w, p2[["description"]]$w)
+        alpha_i <- c(alpha_i, p2[["description"]]$alpha)
+        beta_i <- c(beta_i, p2[["description"]]$beta)
+      } else {
+        w <- c(w, p2[["description"]]$w_i)
+        alpha_i <- c(alpha_i, p2[["description"]]$alpha_i)
+        beta_i <- c(beta_i, p2[["description"]]$beta_i)
+      }
     }
     if (likelihood == "poisson") {
       e_x <- sum(w * (alpha_i * beta_i))
@@ -221,6 +236,6 @@ NULL
 #' @rdname jfa-convolution
 #' @method * jfaPosterior
 #' @export
-"*.jfaPosterior" <- function(c, p1) {
-  do.call(what = "*.jfaPrior", args = list(c, p1))
+"*.jfaPosterior" <- function(p1, p2) {
+  do.call(what = "*.jfaPrior", args = list(p1, p2))
 }

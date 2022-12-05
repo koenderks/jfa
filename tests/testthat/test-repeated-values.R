@@ -18,11 +18,6 @@ context("Tests for function repeated_test()")
 test_that(desc = "Print and plot call", {
   data("sanitizer")
   res <- repeated_test(x = sanitizer$value, check = "last", method = "af", samples = 500)
-  invisible({
-    capture.output({
-      print(res)
-    })
-  })
   p <- plot(res)
   expect_equal(is.null(p), FALSE)
 })

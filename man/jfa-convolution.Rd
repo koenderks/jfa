@@ -14,14 +14,12 @@
 
 \method{*}{jfaPrior}(p1, p2)
 
-\method{*}{jfaPosterior}(c, p1)
+\method{*}{jfaPosterior}(p1, p2)
 }
 \arguments{
 \item{p1}{an object of class \code{jfaPrior}.}
 
 \item{p2}{an object of class \code{jfaPrior}.}
-
-\item{c}{a numeric value, used for multiplication.}
 }
 \value{
 An object of class \code{jfaPrior} with method \code{convolution}.

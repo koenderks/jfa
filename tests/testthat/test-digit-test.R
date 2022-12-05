@@ -18,11 +18,6 @@ context("Validation of function digit_test()")
 test_that(desc = "Print and plot call", {
   data("sinoForest")
   res <- digit_test(x = sinoForest$value, check = "first", reference = "benford")
-  invisible({
-    capture.output({
-      print(res)
-    })
-  })
   p <- plot(res)
   expect_equal(is.null(p), FALSE)
 })
