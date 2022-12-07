@@ -204,7 +204,7 @@ You can visually inspect the prior distribution using the `plot()` function.
 plot(prior10)
 ```
 
-Weighing multiple prior distributions is done via the `*` operator, which computes the convolution (i.e., a weighted average under the assumption of independence) of the prior distributions. For example, the weighted average of `prior1` and `prior9` can be computed with `(a * prior1) + (b * prior9)`, where `a` and `b` are absolute weights.
+Weighing multiple prior distributions is done via the `*` operator, which computes the convolution (i.e., a weighted average under the assumption of independence) of the prior distributions. For example, the weighted average of `prior1` and `prior9` can be computed with `(a * prior1) * (b * prior9)`, where `a` and `b` are absolute weights. Note that the convolution assumes that the sum of two distributions of the same type (e.g., beta) is a new distribution of that type (e.g., beta), which is per definition an approximation of the true distribution.
 
 ```{r}
 prior11 <- (0.5 * prior6) * (0.5 * prior9) # same as prior6 * prior9
