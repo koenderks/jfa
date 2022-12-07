@@ -659,7 +659,7 @@ evaluation <- function(materiality = NULL,
     result[["prior"]] <- prior
     if (!analytical) {
       result[["prior"]]$prior <- "Approximated via MCMC sampling"
-      result[["prior"]]$samples <- prior_samples
+      result[["prior"]]$plotsamples <- stats::density(ifelse(is.infinite(prior_samples), 1, prior_samples), from = 0, to = 1, n = 1000)
       result[["prior"]]$method <- "mcmc"
       # Description
       description <- list()
@@ -709,7 +709,7 @@ evaluation <- function(materiality = NULL,
     result[["posterior"]]$posterior <- .functional_form(method, post_alpha, post_beta, post_N, analytical)
     result[["posterior"]]$likelihood <- method
     if (!analytical) {
-      result[["posterior"]]$samples <- post_samples
+      result[["posterior"]]$plotsamples <- stats::density(ifelse(is.infinite(post_samples), 1, post_samples), from = 0, to = 1, n = 1000)
       result[["posterior"]]$method <- "mcmc"
     } else {
       result[["posterior"]]$method <- "sample"

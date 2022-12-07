@@ -200,9 +200,8 @@ plot.jfaPrior <- function(x, ...) {
     xs <- seq(0, x[["N.units"]], by = 1)
     y <- extraDistr::dbbinom(xs, x[["N.units"]], x[["description"]]$alpha, x[["description"]]$beta)
   } else if (x[["description"]]$density == "MCMC") {
-    dens <- stats::density(x[["samples"]], from = 0, to = 1, n = 1000)
-    xs <- dens$x
-    y <- dens$y
+    xs <- x[["plotsamples"]]$x
+    y <- x[["plotsamples"]]$y
   }
   yMax <- if (is.infinite(max(y))) 10 else max(y)
   yBreaks <- pretty(c(0, yMax), min.n = 5)
@@ -410,9 +409,8 @@ plot.jfaPlanning <- function(x, ...) {
     x1 <- seq(0, x[["N.units"]], by = 1)
     y1 <- extraDistr::dbbinom(x1, x[["prior"]][["N.units"]], x[["prior"]][["description"]]$alpha, x[["prior"]][["description"]]$beta)
   } else if (x[["prior"]][["description"]]$density == "MCMC") {
-    dens <- stats::density(x[["prior"]][["samples"]], from = 0, to = 1, n = 1000)
-    x1 <- dens$x
-    y1 <- dens$y
+    x1 <- x[["prior"]][["plotsamples"]]$x
+    y1 <- x[["prior"]][["plotsamples"]]$y
   }
   if (x[["posterior"]][["description"]]$density == "gamma") {
     x2 <- seq(0, 1, length.out = 1000)
@@ -424,9 +422,8 @@ plot.jfaPlanning <- function(x, ...) {
     x2 <- seq(0, x[["posterior"]][["N.units"]] - x[["n"]], by = 1)
     y2 <- extraDistr::dbbinom(x2, x[["posterior"]][["N.units"]] - x[["n"]], x[["posterior"]][["description"]]$alpha, x[["posterior"]][["description"]]$beta)
   } else if (x[["posterior"]][["description"]]$density == "MCMC") {
-    dens <- stats::density(x[["posterior"]][["samples"]], from = 0, to = 1, n = 1000)
-    x2 <- dens$x
-    y2 <- dens$y
+    x2 <- x[["posterior"]][["plotsamples"]]$x
+    y2 <- x[["posterior"]][["plotsamples"]]$y
   }
   df <- data.frame(x = c(x1, x2), y = c(y1, y2), type = c(rep("Prior", length(y1)), rep("Posterior", length(y2))))
   yMax <- if (is.infinite(max(df$y))) max(y2) else max(df$y)
