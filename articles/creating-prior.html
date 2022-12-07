@@ -95,7 +95,7 @@
 sampling</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2022-12-05</h4>
+            <h4 data-toc-skip class="date">2022-12-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/creating-prior.Rmd" class="external-link"><code>vignettes/creating-prior.Rmd</code></a></small>
       <div class="hidden name"><code>creating-prior.Rmd</code></div>
@@ -534,8 +534,11 @@ via <code>prior6 + prior9</code>.</p>
 operator, which computes the convolution (i.e., a weighted average under
 the assumption of independence) of the prior distributions. For example,
 the weighted average of <code>prior1</code> and <code>prior9</code> can
-be computed with <code>(a * prior1) + (b * prior9)</code>, where
-<code>a</code> and <code>b</code> are absolute weights.</p>
+be computed with <code>(a * prior1) * (b * prior9)</code>, where
+<code>a</code> and <code>b</code> are absolute weights. Note that the
+convolution assumes that the sum of two distributions of the same type
+(e.g., beta) is a new distribution of that type (e.g., beta), which is
+per definition an approximation of the true distribution.</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior11</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">0.5</span> <span class="op">*</span> <span class="va">prior6</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="fl">0.5</span> <span class="op">*</span> <span class="va">prior9</span><span class="op">)</span> <span class="co"># same as prior6 * prior9</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior11</span><span class="op">)</span></span></code></pre></div>
