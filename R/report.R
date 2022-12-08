@@ -59,6 +59,8 @@ report <- function(object,
   }
   if (inherits(object, "jfaEvaluation")) {
     name <- "report_evaluation"
+  } else if (inherits(object, "jfaPlanning")) {
+    name <- "report_planning"
   } else {
     stop("'object' must be of class 'jfaEvaluation'")
   }

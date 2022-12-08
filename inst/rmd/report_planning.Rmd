@@ -1,0 +1,88 @@
+---
+title: "Audit sample planning"
+output: 
+  html_document:
+    theme: readable
+---
+
+```{r, include = FALSE}
+colorize <- function(x, color) {
+  if (knitr::is_latex_output()) {
+    sprintf("\\textcolor{%s}{%s}", color, x)
+  } else if (knitr::is_html_output()) {
+    sprintf(
+      "<span style='color: %s;'>%s</span>", color,
+      x
+    )
+  } else {
+    x
+  }
+}
+```
+
+```{css, echo=FALSE}
+.math {
+font-size: small;
+}
+#header {
+background: rgb(34, 63, 135);
+padding: 1em;
+color: rgb(255, 255, 255);
+}
+```
+
+---
+
+<img src="jfaLogo.png" width="133" height="154" alt="logo" align="right" margin-left="20" margin-right="20"/>
+
+This report was created by `r version$version.string` and its package **jfa** (version `r utils::packageVersion("jfa")`). 
+**jfa** is free software and you can redistribute it and or modify it under the terms of the GNU GPL-3 as published by the 
+Free Software Foundation. The package is distributed in the hope that it will be useful, but without any warranty; without 
+even the implied warranty of merchantability of fitness for a particular purpose.
+
+---
+
+### Results
+
+```{r echo = FALSE}
+df <- data.frame(x = object[["x"]], n = object[["n"]])
+names <- c("Expected misstatements", "Sample size")
+if (!is.null(object[["prior"]])) {
+  names[2] <- paste0(names[2], "\u00b9")
+}
+if (object[["materiality"]] < 1) {
+  df <- cbind(m = object[["materiality"]], df)
+  names <- c("Performance materiality", names)
+}
+if (object[["min.precision"]] < 1) {
+  df <- cbind(m = object[["min.precision"]], df)
+  names <- c("Minimum precision", names)
+}
+colnames(df) <- names
+prior_string <- NULL
+if (!is.null(object[["prior"]])) {
+  prior_string <- paste0("The prior distribution for the population misstatement is ", tolower(object[["prior"]]$prior), ".")
+}
+tab <- knitr::kable(df,
+  digits = 3, caption = "Table 1: Planning summary", format = "html",
+  format.args = list(big.mark = ",", scientific = FALSE),
+  table.attr = "style='width:75%;'", align = "c"
+)
+tab <- kableExtra::footnote(tab,
+  number = c(prior_string),
+  fixed_small_size = TRUE
+)
+kableExtra::kable_classic(tab, position = "center", html_font = "Cambria")
+```
+
+```{r echo=FALSE, fig.align='center', fig.height=4.5, fig.width=7}
+if (!is.null(object[["prior"]])) {
+  plot(object)
+}
+```
+
+### Citation
+
+```{r echo = FALSE}
+citation("jfa")
+```

@@ -132,8 +132,12 @@ if (is.nan(object[["t"]])) {
 } else {
   taint_string <- NULL
 }
+prior_string <- NULL
+if (!is.null(object[["prior"]])) {
+  prior_string <- paste0("The prior distribution for the population misstatement is ", tolower(object[["prior"]]$prior), ".")
+}
 tab <- kableExtra::footnote(tab,
-  number = c(alternative_string, test_string, taint_string),
+  number = c(alternative_string, test_string, taint_string, prior_string),
   fixed_small_size = TRUE
 )
 kableExtra::kable_classic(tab, position = "center", html_font = "Cambria")
