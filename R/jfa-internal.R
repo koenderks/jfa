@@ -59,7 +59,7 @@
       "hypergeometric" = paste0("beta-binomial(N = ", N.units, ", \u03B1 = ", round(alpha, 3), ", \u03B2 = ", round(beta, 3), ")")
     )
   } else {
-    string <- "Approximated via MCMC sampling"
+    string <- "Determined via MCMC sampling"
   }
   return(string)
 }
@@ -481,7 +481,8 @@
   return(samples)
 }
 
-.mcmc_analytical <- function(likelihood, nstrata, prior.x, t.obs, prior.n, n.obs, N.units, iterations) {
+.mcmc_analytical <- function(likelihood, nstrata, prior.x, t.obs, prior.n, n.obs, N.units) {
+  iterations <- getOption("mcmc.iterations", 1e5)
   samples <- matrix(NA, ncol = (nstrata - 1) * 2, nrow = iterations)
   stratum_indices_prior <- (nstrata + 1):((nstrata - 1) * 2 + 1)
   stratum_indices_post <- 2:nstrata
@@ -502,7 +503,8 @@
   return(samples)
 }
 
-.mcmc_emulate <- function(likelihood, alternative, nstrata, t.obs, n.obs, N.units, iterations) {
+.mcmc_emulate <- function(likelihood, alternative, nstrata, t.obs, n.obs, N.units) {
+  iterations <- getOption("mcmc.iterations", 1e5)
   if (alternative == "two.sided") {
     alpha <- rep(1:0, each = iterations)
     beta <- 1 - alpha

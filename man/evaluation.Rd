@@ -95,10 +95,11 @@ analyzing stratified samples. Possible options are \code{none} (default)
 for no pooling (i.e., no information is shared between strata),
 \code{complete} for complete pooling (i.e., all information is shared
 between strata) or \code{partial} for partial pooling (i.e., some
-information is shared between strata). The latter option fits a
-pre-compiled Stan model to the data using a MCMC sampling procedure whose
+information is shared between strata). The latter two options fit a
+Bayesian model to the data using a MCMC sampling procedure whose
 options can be set globally using \code{options("mcmc.iterations")}
-(otherwise: 2000), \code{options("mcmc.warmup")} (otherwise: 1000),
+(otherwise: 2000 for partial pooling and 100000 for no pooling),
+\code{options("mcmc.warmup")} (otherwise: 1000),
 \code{options("mcmc.chains")} (otherwise: 4) and
 \code{options("mcmc.cores")} (otherwise: 1).}
 

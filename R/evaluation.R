@@ -99,10 +99,11 @@
 #'   for no pooling (i.e., no information is shared between strata),
 #'   \code{complete} for complete pooling (i.e., all information is shared
 #'   between strata) or \code{partial} for partial pooling (i.e., some
-#'   information is shared between strata). The latter option fits a
-#'   pre-compiled Stan model to the data using a MCMC sampling procedure whose
+#'   information is shared between strata). The latter two options fit a
+#'   Bayesian model to the data using a MCMC sampling procedure whose
 #'   options can be set globally using \code{options("mcmc.iterations")}
-#'   (otherwise: 2000), \code{options("mcmc.warmup")} (otherwise: 1000),
+#'   (otherwise: 2000 for partial pooling and 100000 for no pooling),
+#'   \code{options("mcmc.warmup")} (otherwise: 1000),
 #'   \code{options("mcmc.chains")} (otherwise: 4) and
 #'   \code{options("mcmc.cores")} (otherwise: 1).
 #' @param prior         a logical specifying whether to use a prior
@@ -520,9 +521,9 @@ evaluation <- function(materiality = NULL,
     }
     if (use_stratification && pooling == "none") {
       if (is_bayesian) {
-        stratum_samples <- .mcmc_analytical(method, nstrata, prior.x, t.obs, prior.n, n.obs, N.units, 1e5)
+        stratum_samples <- .mcmc_analytical(method, nstrata, prior.x, t.obs, prior.n, n.obs, N.units)
       } else {
-        stratum_samples <- .mcmc_emulate(method, alternative, nstrata, t.obs, n.obs, N.units, 1e5)
+        stratum_samples <- .mcmc_emulate(method, alternative, nstrata, t.obs, n.obs, N.units)
       }
     }
   } else {
@@ -658,7 +659,7 @@ evaluation <- function(materiality = NULL,
     }
     result[["prior"]] <- prior
     if (!analytical) {
-      result[["prior"]]$prior <- "Approximated via MCMC sampling"
+      result[["prior"]]$prior <- "Determined via MCMC sampling"
       result[["prior"]]$plotsamples <- stats::density(ifelse(is.infinite(prior_samples), 1, prior_samples), from = 0, to = 1, n = 1000)
       result[["prior"]]$method <- "mcmc"
       # Description

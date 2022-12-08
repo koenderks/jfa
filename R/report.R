@@ -62,7 +62,7 @@ report <- function(object,
   } else if (inherits(object, "jfaPlanning")) {
     name <- "report_planning"
   } else {
-    stop("'object' must be of class 'jfaEvaluation'")
+    stop("'object' must be of class 'jfaEvaluation' or 'jfaPlanning'")
   }
   args <- list()
   args$input <- system.file(paste0("rmd/", name, ".Rmd"), package = "jfa")
