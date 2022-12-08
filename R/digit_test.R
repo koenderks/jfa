@@ -51,6 +51,8 @@
 #' \item{check}{checked digits.}
 #' \item{digits}{vector of digits.}
 #' \item{reference}{reference distribution}
+#' \item{match}{a list containing the row numbers corresponding to the
+#'   observations matching each digit.}
 #' \item{data.name}{a character string giving the name(s) of the data.}
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
@@ -159,6 +161,7 @@ digit_test <- function(x,
   result[["check"]] <- check
   result[["digits"]] <- dig
   result[["reference"]] <- reference
+  result[["match"]] <- split(x = seq_along(d), f = d)
   result[["data.name"]] <- dname
   class(result) <- c(class(result), "jfaDistr")
   return(result)

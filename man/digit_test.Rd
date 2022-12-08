@@ -38,6 +38,8 @@ An object of class \code{jfaDistr} containing:
 \item{check}{checked digits.}
 \item{digits}{vector of digits.}
 \item{reference}{reference distribution}
+\item{match}{a list containing the row numbers corresponding to the
+  observations matching each digit.}
 \item{data.name}{a character string giving the name(s) of the data.}
 }
 \description{
