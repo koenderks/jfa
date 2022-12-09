@@ -143,8 +143,8 @@ summary.jfaPrior <- function(object, digits = getOption("digits"), ...) {
 #' @method predict jfaPrior
 #' @export
 predict.jfaPrior <- function(object, n, lim = NULL, cumulative = FALSE, ...) {
-  valid_method <- object[["method"]] %in% c("poisson", "binomial", "hypergeometric")
-  stopifnot("method is not supported" = valid_method)
+  valid_method <- object[["likelihood"]] %in% c("poisson", "binomial", "hypergeometric")
+  stopifnot("likelihood is not supported" = valid_method)
   if (!is.null(lim)) {
     if (cumulative) {
       stopifnot("'lim' must be a single value >= 0" = length(lim) == 1 && lim > 0)
