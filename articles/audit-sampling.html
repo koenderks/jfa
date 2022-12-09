@@ -304,10 +304,9 @@ argument:</em></p>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="fl">0.03</span>,</span>
 <span>  prior <span class="op">=</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"param"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## using binomial likelihood with beta prior</span></span></code></pre>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the planning</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the planning</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Planning Summary</span></span>
 <span><span class="co">## </span></span>
@@ -342,7 +341,7 @@ the <code>size</code> argument can be an object of class
 <code>jfaPlanning</code> as returned by the <code><a href="../reference/planning.html">planning()</a></code>
 function.</p>
 <p><em>Full function with default arguments:</em></p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span><span class="va">data</span>,</span>
 <span>          <span class="va">size</span>,</span>
 <span>          units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"items"</span>, <span class="st">"values"</span><span class="op">)</span>,</span>
@@ -375,7 +374,7 @@ Teitlebaum, &amp; Anderson, 1979).</li>
 (Hoogduin, Hall, &amp; Tsay, 2010).</li>
 </ul>
 <p><em>Example usage:</em></p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Selection using random record (attributes) sampling</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="fl">100</span>, units <span class="op">=</span> <span class="st">"items"</span>, method <span class="op">=</span> <span class="st">"random"</span><span class="op">)</span></span>
 <span></span>
@@ -421,7 +420,7 @@ be an object of class <code>jfaPrior</code> as returned by the
 <code>jfaPosterior</code> as returned by the <code><a href="../reference/evaluation.html">evaluation()</a></code>
 function.</p>
 <p><em>Full function with default arguments:</em></p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="cn">NULL</span>, </span>
 <span>           method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>             <span class="st">"poisson"</span>, <span class="st">"binomial"</span>, <span class="st">"hypergeometric"</span>,</span>
@@ -488,7 +487,7 @@ Hoogduin, 2011).</li>
 2011).</li>
 </ul>
 <p><em>Example usage:</em></p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Classical evaluation using the Poisson likelihood (and summary statistics)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, method <span class="op">=</span> <span class="st">"poisson"</span><span class="op">)</span></span>
 <span></span>
@@ -501,7 +500,7 @@ Hoogduin, 2011).</li>
 <span>  prior <span class="op">=</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"param"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Using 'method = binomial' from 'prior'</span></span></code></pre>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the evaluation</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Evaluation Summary</span></span>
@@ -535,12 +534,12 @@ function and automatically creates a <code>html</code> or
 <code>pdf</code> report containing the analysis results and their
 interpretation.</p>
 <p><em>Full function with default arguments:</em></p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span><span class="va">object</span>,</span>
 <span>       file <span class="op">=</span> <span class="st">"report.html"</span>,</span>
 <span>       format <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"html_document"</span>, <span class="st">"pdf_document"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><em>Example usage:</em></p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Generate an automatic report</span></span>
 <span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">x</span>, file <span class="op">=</span> <span class="st">'myReport.html'</span><span class="op">)</span></span></code></pre></div>
 <p>For an example report, see the following <a href="https://github.com/koenderks/jfa/raw/development/man/figures/readme/report/report.pdf" class="external-link">link</a>.</p>

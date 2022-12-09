@@ -499,12 +499,11 @@ materiality of 5%, while incorporating the information in
 <code>prior9</code>.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, prior <span class="op">=</span> <span class="va">prior9</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## using binomial likelihood with beta prior</span></span></code></pre>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Planning</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## minimum sample size = 29 </span></span>
-<span><span class="co">## sample size obtained in 30 iteration(s) via method 'binomial' + 'prior'</span></span></code></pre>
+<span><span class="co">## sample size obtained in 30 iterations via method 'binomial' + 'prior'</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="combining-auditprior-with-evaluation">Combining <code>auditPrior()</code> with
@@ -517,7 +516,7 @@ evaluates the misstatement in the population with respect to the
 performance materiality of 5% after seeing a sample of 60 items with 1
 misstatement, while incorporating the information in
 <code>prior8</code>.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">60</span>, prior <span class="op">=</span> <span class="va">prior9</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Using 'method = binomial' from 'prior'</span></span></code></pre>
 <pre><code><span><span class="co">## </span></span>

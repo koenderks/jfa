@@ -265,10 +265,8 @@ an object created by the <code>auditPrior</code> function:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Bayesian planning for a performance materiality of 0.05 using a custom prior</span></span>
 <span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>likelihood <span class="op">=</span> <span class="st">"poisson"</span>, method <span class="op">=</span> <span class="st">"param"</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, expected <span class="op">=</span> <span class="fl">0</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## using poisson likelihood with gamma prior</span></span></code></pre>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, expected <span class="op">=</span> <span class="fl">0</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Planning Summary</span></span>
 <span><span class="co">## </span></span>

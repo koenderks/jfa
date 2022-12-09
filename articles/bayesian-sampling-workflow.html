@@ -261,14 +261,13 @@ distribution.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Step 1: Calculate the required sample size.</span></span>
 <span><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## using poisson likelihood with gamma prior</span></span></code></pre>
 <p>Laura can then inspect the result from her planning procedure by
 using the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function. Her result tells her that,
 given her prior distribution she needs to audit a sample of 178
 transactions so that, when at most 4.45 errors are found, she can
 conclude with 95% confidence that the maximum error in BuildIt’s
 financial statements is lower the materiality of 5%.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Planning Summary</span></span>
@@ -294,7 +293,7 @@ posterior distribution by using the <code><a href="https://rdrr.io/r/graphics/pl
 expected posterior distribution is the posterior distribution that would
 occur if Laura actually observed a sample of 178 transactions, from
 which 4.45 were in error.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span></code></pre></div>
 <p><img src="bayesian-sampling-workflow_files/figure-html/unnamed-chunk-11-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
@@ -321,12 +320,12 @@ include more high-valued transactions. The <code><a href="../reference/selection
 function allows her to sample from the financial statements. She uses
 the <code>stage1</code> object as an input for the
 <code><a href="../reference/selection.html">selection()</a></code> function.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Step 2: Draw a sample from the financial statements.</span></span>
 <span><span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="va">stage1</span>, units <span class="op">=</span> <span class="st">"values"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, method <span class="op">=</span> <span class="st">"interval"</span><span class="op">)</span></span></code></pre></div>
 <p>Laura can inspect the outcomes of her sampling procedure by using the
 <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Audit Sample Selection Summary</span></span>
@@ -353,14 +352,14 @@ the <code>stage1</code> object as an input for the
 </h2>
 <p>The selected sample can be isolated by indexing the
 <code>sample</code> object from the sampling result.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Step 3: Isolate the sample for execution of the audit.</span></span>
 <span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">stage2</span><span class="op">$</span><span class="va">sample</span></span></code></pre></div>
 <p>Now Laura can execute her audit by annotating the sample with their
 audit value (for exampling by writing the sample to a <em>.csv</em> file
 using <code><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv()</a></code>. She can then load her annotated sample
 back into R for further evaluation.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># To write the sample to a .csv file:</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">sample</span>, file <span class="op">=</span> <span class="st">"auditSample.csv"</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
@@ -379,7 +378,7 @@ in the <code>auditValue</code> column of the data set.</p>
 <code>priorResult</code> object to the function, she automatically sets
 <code>method = "binomial"</code> to be consistent with her prior
 distribution.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Step 4: Evaluate the sample.</span></span>
 <span><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="va">materiality</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, data <span class="op">=</span> <span class="va">sample</span>,</span>
@@ -389,7 +388,7 @@ distribution.</p>
 <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function. Her resulting upper bound is 2.278%,
 which is lower than the materiality of 5%. The output tells Laura the
 correct conclusion immediately.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Evaluation Summary</span></span>
@@ -418,7 +417,7 @@ the posterior distribution that contains 95% of the probability, which
 ends at 2.278%. Therefore, Laura can state that there is a 95%
 probability that the misstatement in BuildIt’s population is lower than
 2.278%.</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></span></code></pre></div>
 <p><img src="bayesian-sampling-workflow_files/figure-html/unnamed-chunk-18-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
@@ -430,7 +429,7 @@ population is lower than the performance materiality Laura has obtained
 sufficient evidence to conclude that there is less than 5% risk that the
 population contains material misstatement. Laura can report her outcomes
 using the <code><a href="../reference/report.html">report()</a></code> function.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span><span class="va">stage4</span>, file <span class="op">=</span> <span class="st">"report.html"</span><span class="op">)</span></span></code></pre></div>
 </div>
   </div>
