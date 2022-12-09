@@ -204,13 +204,13 @@ plot.jfaPrior <- function(x, ...) {
   } else if (x[["description"]]$density == "uniform") {
     xs <- seq(0, 1, length.out = 1000)
     y <- truncdist::dtrunc(xs, spec = "unif", a = 0, b = 1, min = x[["description"]]$alpha, max = x[["description"]]$beta)
-  } else if (x[["description"]]$density == "cauchy") {
+  } else if (x[["description"]]$density == "Cauchy") {
     xs <- seq(0, 1, length.out = 1000)
     y <- truncdist::dtrunc(xs, spec = "cauchy", a = 0, b = 1, location = x[["description"]]$alpha, scale = x[["description"]]$beta)
-  } else if (x[["description"]]$density == "t") {
+  } else if (x[["description"]]$density == "Student-t") {
     xs <- seq(0, 1, length.out = 1000)
     y <- truncdist::dtrunc(xs, spec = "t", a = 0, b = 1, df = x[["description"]]$alpha)
-  } else if (x[["description"]]$density == "chisq") {
+  } else if (x[["description"]]$density == "chi-squared") {
     xs <- seq(0, 1, length.out = 1000)
     y <- truncdist::dtrunc(xs, spec = "chisq", a = 0, b = 1, df = x[["description"]]$alpha)
   } else if (x[["description"]]$density == "MCMC") {
@@ -325,7 +325,7 @@ print.jfaPlanning <- function(x, ...) {
   cat("\n")
   if (is.null(x[["prior"]])) cat(strwrap("Classical Audit Sample Planning", prefix = "\t"), sep = "\n") else cat(strwrap("Bayesian Audit Sample Planning", prefix = "\t"), sep = "\n")
   cat("\n")
-  cat("minimum sample size =", x[["n"]], "\nsample size obtained in", x[["iterations"]], "iteration(s) via method", if (is.null(x[["prior"]])) paste0("'", x[["likelihood"]], "'\n") else paste0("'", x[["likelihood"]], "' + 'prior'\n"))
+  cat("minimum sample size =", x[["n"]], "\nsample size obtained in", x[["iterations"]], "iterations via method", if (is.null(x[["prior"]])) paste0("'", x[["likelihood"]], "'\n") else paste0("'", x[["likelihood"]], "' + 'prior'\n"))
 }
 
 #' @rdname jfa-methods
@@ -428,13 +428,13 @@ plot.jfaPlanning <- function(x, ...) {
   } else if (x[["prior"]][["description"]]$density == "uniform") {
     x1 <- seq(0, 1, length.out = 1000)
     y1 <- truncdist::dtrunc(x1, spec = "unif", a = 0, b = 1, min = x[["prior"]][["description"]]$alpha, max = x[["prior"]][["description"]]$beta)
-  } else if (x[["prior"]][["description"]]$density == "cauchy") {
+  } else if (x[["prior"]][["description"]]$density == "Cauchy") {
     x1 <- seq(0, 1, length.out = 1000)
     y1 <- truncdist::dtrunc(x1, spec = "cauchy", a = 0, b = 1, location = x[["prior"]][["description"]]$alpha, scale = x[["prior"]][["description"]]$beta)
-  } else if (x[["prior"]][["description"]]$density == "t") {
+  } else if (x[["prior"]][["description"]]$density == "Student-t") {
     x1 <- seq(0, 1, length.out = 1000)
     y1 <- truncdist::dtrunc(x1, spec = "t", a = 0, b = 1, df = x[["prior"]][["description"]]$alpha)
-  } else if (x[["prior"]][["description"]]$density == "chisq") {
+  } else if (x[["prior"]][["description"]]$density == "chi-squared") {
     x1 <- seq(0, 1, length.out = 1000)
     y1 <- truncdist::dtrunc(x1, spec = "chisq", a = 0, b = 1, df = x[["prior"]][["description"]]$alpha)
   } else if (x[["prior"]][["description"]]$density == "MCMC") {

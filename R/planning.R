@@ -174,13 +174,13 @@ planning <- function(materiality = NULL,
   is_jfa_prior <- inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")
   is_bayesian <- (inherits(prior, "logical") && prior) || is_jfa_prior
   if (is_jfa_prior) {
+    stopifnot("method = 'mcmc' not supported" = prior[["likelihood"]] != "mcmc")
     conjugate_prior <- likelihood == prior[["likelihood"]]
     possible_match <- likelihood %in% c("poisson", "binomial", "hypergeometric") && prior[["likelihood"]] %in% c("poisson", "binomial", "hypergeometric")
     if (!conjugate_prior && possible_match) {
       likelihood <- prior[["likelihood"]]
       conjugate_prior <- TRUE
     }
-    message(paste0("using ", likelihood, " likelihood with ", prior[["description"]]$density, " prior"))
     if (!is.null(prior[["N.units"]])) {
       message(paste0("Using 'N.units = ", prior[["N.units"]], "' from 'prior'"))
       N.units <- prior[["N.units"]]

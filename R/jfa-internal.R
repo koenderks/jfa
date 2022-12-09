@@ -46,9 +46,9 @@
       "hypergeometric" = "beta-binomial",
       "normal" = "normal",
       "uniform" = "uniform",
-      "cauchy" = "cauchy",
-      "t" = "t",
-      "chisq" = "chisq"
+      "cauchy" = "Cauchy",
+      "t" = "Student-t",
+      "chisq" = "chi-squared"
     )
   } else {
     form <- "MCMC"
@@ -64,8 +64,8 @@
       "hypergeometric" = paste0("beta-binomial(N = ", N.units, ", \u03B1 = ", round(alpha, 3), ", \u03B2 = ", round(beta, 3), ")"),
       "normal" = paste0("normal(\u03BC = ", round(alpha, 3), ", \u03C3 = ", round(beta, 3), ")T[0,1]"),
       "uniform" = paste0("uniform(min = ", round(alpha, 3), ", max = ", round(beta, 3), ")"),
-      "cauchy" = paste0("cauchy(x\u2080 = ", round(alpha, 3), ", \u03B3 = ", round(beta, 3), ")T[0,1]"),
-      "t" = paste0("student-t(df = ", round(alpha, 3), ")T[0,1]"),
+      "cauchy" = paste0("Cauchy(x\u2080 = ", round(alpha, 3), ", \u03B3 = ", round(beta, 3), ")T[0,1]"),
+      "t" = paste0("Student-t(df = ", round(alpha, 3), ")T[0,1]"),
       "chisq" = paste0("chi-squared(df = ", round(alpha, 3), ")T[0,1]")
     )
   } else {
