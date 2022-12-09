@@ -613,12 +613,12 @@
   suppressWarnings({
     raw_prior <- rstan::sampling(
       object = stanmodels[[paste0("cp_", likelihood)]], data = c(data, use_likelihood = 0), pars = "theta", iter = getOption("mcmc.iterations", 2000),
-      warmup = getOption("mcmc.warmup", 1000), chains = 1, cores = getOption("mcmc.cores", 1), seed = ceiling(stats::runif(1, -1000, 1000)),
+      warmup = getOption("mcmc.warmup", 1000), chains = getOption("mcmc.chains", 4), cores = getOption("mcmc.cores", 1), seed = ceiling(stats::runif(1, -1000, 1000)),
       control = list(adapt_delta = 0.95), refresh = 0
     )
     raw_posterior <- rstan::sampling(
       object = stanmodels[[paste0("cp_", likelihood)]], data = c(data, use_likelihood = 1), pars = "theta", iter = getOption("mcmc.iterations", 2000),
-      warmup = getOption("mcmc.warmup", 1000), chains = 1, cores = getOption("mcmc.cores", 1), seed = ceiling(stats::runif(1, -1000, 1000)),
+      warmup = getOption("mcmc.warmup", 1000), chains = getOption("mcmc.chains", 4), cores = getOption("mcmc.cores", 1), seed = ceiling(stats::runif(1, -1000, 1000)),
       control = list(adapt_delta = 0.95), refresh = 0
     )
   })
