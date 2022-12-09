@@ -212,6 +212,9 @@ auditPrior(likelihood = "binomial")
 
 # Impartial prior
 auditPrior(method = "impartial", materiality = 0.05)
+
+# Non-conjugate prior
+auditPrior(method = "param", likelihood = "normal", alpha = 0, beta = 0.1)
 }
 \references{
 Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J.,

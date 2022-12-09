@@ -190,11 +190,11 @@ planning <- function(materiality = NULL,
       hypotheses[["hypotheses"]] <- .hyp_string(materiality, "less")
       hypotheses[["materiality"]] <- materiality
       hypotheses[["alternative"]] <- "less"
-      hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, likelihood, prior[["description"]]$alpha, prior[["description"]]$beta, N.units, N.units)
-      hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, likelihood, prior[["description"]]$alpha, prior[["description"]]$beta, N.units, N.units)
+      hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, N.units, N.units)
+      hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, N.units, N.units)
       hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
       hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
-      hypotheses[["density"]] <- .hyp_dens(materiality, likelihood, prior[["description"]]$alpha, prior[["description"]]$beta, N.units, N.units)
+      hypotheses[["density"]] <- .hyp_dens(materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, N.units, N.units)
       prior[["hypotheses"]] <- hypotheses
     }
   } else if (prior) {
