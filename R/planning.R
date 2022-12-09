@@ -175,7 +175,8 @@ planning <- function(materiality = NULL,
   is_bayesian <- (inherits(prior, "logical") && prior) || is_jfa_prior
   if (is_jfa_prior) {
     conjugate_prior <- likelihood == prior[["likelihood"]]
-    if (!conjugate_prior && likelihood %in% c("poisson", "binomial", "hypergeometric") && prior[["likelihood"]] %in% c("poisson", "binomial", "hypergeometric")) {
+    possible_match <- likelihood %in% c("poisson", "binomial", "hypergeometric") && prior[["likelihood"]] %in% c("poisson", "binomial", "hypergeometric")
+    if (!conjugate_prior && possible_match) {
       likelihood <- prior[["likelihood"]]
       conjugate_prior <- TRUE
     }

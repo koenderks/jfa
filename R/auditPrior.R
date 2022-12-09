@@ -111,9 +111,17 @@
 #'
 #' \itemize{
 #'  \item{\code{default}:   This method produces a \emph{gamma(1, 1)},
-#'    \emph{beta(1, 1)}, or \emph{beta-binomial(N, 1, 1)} prior distribution.
+#'    \emph{beta(1, 1)}, \emph{beta-binomial(N, 1, 1)}, \emph{normal(0.5, 1000)}
+#'    , \emph{cauchy(0, 1)}, \emph{student-t(1)}, or \emph{chi-squared(1)} prior
+#'    distribution.
 #'    These prior distributions are indifferent towards the possible values of
 #'    the misstatement.}
+#'  \item{\code{param}:     This method produces a custom
+#'    \code{gamma(alpha, beta)}, \code{beta(alpha, beta)},
+#'    \code{beta-binomial(N, alpha, beta)} prior distribution,
+#'    \emph{normal(alpha, beta)}, \emph{cauchy(alpha, beta)},
+#'    \emph{student-t(alpha)}, or \emph{chi-squared(alpha)}. The alpha and
+#'    beta parameters must be set using \code{alpha} and \code{beta}.}
 #'  \item{\code{strict}:    This method produces an improper \emph{gamma(1, 0)},
 #'    \emph{beta(1, 0)}, or \emph{beta-binomial(N, 1, 0)} prior distribution.
 #'    These prior distributions match sample sizes and upper limits from
@@ -122,10 +130,6 @@
 #'    distribution. These prior distributions assume that tolerable misstatement
 #'    (\eqn{\theta <} materiality) and intolerable misstatement (\eqn{\theta >}
 #'    materiality) are equally likely.}
-#'  \item{\code{param}:     This method produces a custom
-#'    \code{gamma(alpha, beta)}, \code{beta(alpha, beta)}, or
-#'    \code{beta-binomial(N, alpha, beta)} prior distribution. The alpha and
-#'    beta parameters must be set using \code{alpha} and \code{beta}.}
 #'  \item{\code{hyp}:       This method translates an assessment of the prior
 #'    probability for tolerable misstatement (\eqn{\theta <} materiality) to a
 #'    prior distribution.}
@@ -226,7 +230,7 @@
 #' @export
 
 auditPrior <- function(method = c(
-                         "default", "strict", "param", "impartial", "hyp",
+                         "default", "param", "strict", "impartial", "hyp",
                          "arm", "bram", "sample", "factor"
                        ),
                        likelihood = c(
