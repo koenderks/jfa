@@ -46,7 +46,9 @@
       "hypergeometric" = "beta-binomial",
       "normal" = "normal",
       "uniform" = "uniform",
-      "cauchy" = "cauchy"
+      "cauchy" = "cauchy",
+      "t" = "t",
+      "chisq" = "chisq"
     )
   } else {
     form <- "MCMC"
@@ -62,7 +64,9 @@
       "hypergeometric" = paste0("beta-binomial(N = ", N.units, ", \u03B1 = ", round(alpha, 3), ", \u03B2 = ", round(beta, 3), ")"),
       "normal" = paste0("normal(\u03BC = ", round(alpha, 3), ", \u03C3 = ", round(beta, 3), ")T[0,1]"),
       "uniform" = paste0("uniform(min = ", round(alpha, 3), ", max = ", round(beta, 3), ")"),
-      "cauchy" = paste0("cauchy(x\u2080 = ", round(alpha, 3), ", \u03B3 = ", round(beta, 3), ")T[0,1]")
+      "cauchy" = paste0("cauchy(x\u2080 = ", round(alpha, 3), ", \u03B3 = ", round(beta, 3), ")T[0,1]"),
+      "t" = paste0("student-t(df = ", round(alpha, 3), ")T[0,1]"),
+      "chisq" = paste0("chi-squared(df = ", round(alpha, 3), ")T[0,1]")
     )
   } else {
     string <- "Determined via MCMC sampling"
@@ -99,7 +103,9 @@
       "hypergeometric" = .modebbinom(N.units, alpha, beta),
       "normal" = alpha,
       "uniform" = NA,
-      "cauchy" = alpha
+      "cauchy" = alpha,
+      "t" = alpha,
+      "chisq" = alpha
     )
   } else {
     if (all(is.infinite(samples))) {
@@ -132,7 +138,9 @@
       "hypergeometric" = alpha / (alpha + beta) * N.units,
       "normal" = alpha + (dnorm((0 - alpha) / beta) - (dnorm(1 - alpha) / beta)) / (pnorm((0 - alpha) / beta) - (pnorm(1 - alpha) / beta)) * beta,
       "uniform" = (alpha + beta) / 2,
-      "cauchy" = NA
+      "cauchy" = NA,
+      "t" = NA,
+      "chisq" = NA
     )
   } else {
     mean <- mean(samples)
@@ -147,8 +155,10 @@
       "binomial" = stats::qbeta(0.5, alpha, beta),
       "hypergeometric" = .qbbinom(0.5, N.units, alpha, beta),
       "normal" = truncdist::qtrunc(0.5, spec = "norm", a = 0, b = 1, mean = alpha, sd = beta),
-      "uniform" = stats::qunif(0.5, alpha, beta),
-      "cauchy" = stats::qcauchy(0.5, alpha, beta)
+      "uniform" = truncdist::qtrunc(0.5, spec = "unif", a = 0, b = 1, min = alpha, max = beta),
+      "cauchy" = truncdist::qtrunc(0.5, spec = "cauchy", a = 0, b = 1, location = alpha, scale = beta),
+      "t" = truncdist::qtrunc(0.5, spec = "t", a = 0, b = 1, df = alpha),
+      "chisq" = truncdist::qtrunc(0.5, spec = "chisq", a = 0, b = 1, df = alpha)
     )
   } else {
     median <- stats::median(samples)
@@ -164,7 +174,9 @@
       "hypergeometric" = ((N.units * alpha * beta) * (alpha + beta + N.units)) / ((alpha + beta)^2 * (alpha + beta + 1)),
       "normal" = NA,
       "uniform" = (1 / 12) * (beta - alpha)^2,
-      "cauchy" = NA
+      "cauchy" = NA,
+      "t" = NA,
+      "chisq" = NA
     )
   } else {
     variance <- as.numeric(stats::var(samples))
@@ -180,7 +192,9 @@
       "hypergeometric" = (((alpha + beta + 2 * N.units) * (beta - alpha)) / (alpha + beta + 2)) * sqrt((1 + alpha + beta) / (N.units * alpha * beta * (N.units + alpha + beta))),
       "normal" = NA,
       "uniform" = 0,
-      "cauchy" = NA
+      "cauchy" = NA,
+      "t" = NA,
+      "chisq" = NA
     )
   } else {
     skewness <- moments::skewness(samples)
@@ -199,7 +213,9 @@
         "hypergeometric" = log(beta(alpha, beta)) - (alpha - 1) * digamma(alpha) - (beta - 1) * digamma(beta) + (alpha + beta - 2) * digamma(alpha + beta),
         "normal" = NA,
         "uniform" = log(beta - alpha),
-        "cauchy" = NA
+        "cauchy" = NA,
+        "t" = NA,
+        "chisq" = NA
       )
     }
   } else {
@@ -304,7 +320,9 @@
         "hypergeometric" = .qbbinom(prob, N.units, alpha, beta),
         "normal" = truncdist::qtrunc(prob, spec = "norm", a = 0, b = 1, mean = alpha, sd = beta),
         "uniform" = truncdist::qtrunc(prob, spec = "unif", a = 0, b = 1, min = alpha, max = beta),
-        "cauchy" = truncdist::qtrunc(prob, spec = "cauchy", a = 0, b = 1, location = alpha, scale = beta)
+        "cauchy" = truncdist::qtrunc(prob, spec = "cauchy", a = 0, b = 1, location = alpha, scale = beta),
+        "t" = truncdist::qtrunc(prob, spec = "t", a = 0, b = 1, df = alpha),
+        "chisq" = truncdist::qtrunc(prob, spec = "chisq", a = 0, b = 1, df = alpha)
       )
     } else {
       ub <- as.numeric(stats::quantile(samples, prob))
@@ -329,7 +347,9 @@
         "hypergeometric" = .qbbinom(prob, N.units, alpha, beta),
         "normal" = truncdist::qtrunc(prob, spec = "norm", a = 0, b = 1, mean = alpha, sd = beta),
         "uniform" = truncdist::qtrunc(prob, spec = "unif", a = 0, b = 1, min = alpha, max = beta),
-        "cauchy" = truncdist::qtrunc(prob, spec = "cauchy", a = 0, b = 1, location = alpha, scale = beta)
+        "cauchy" = truncdist::qtrunc(prob, spec = "cauchy", a = 0, b = 1, location = alpha, scale = beta),
+        "t" = truncdist::qtrunc(prob, spec = "t", a = 0, b = 1, df = alpha),
+        "chisq" = truncdist::qtrunc(prob, spec = "chisq", a = 0, b = 1, df = alpha)
       )
     } else {
       lb <- as.numeric(stats::quantile(samples, prob))
@@ -396,7 +416,9 @@
       "hypergeometric" = extraDistr::dbbinom(ceiling(materiality * N.units), post_N, alpha, beta),
       "normal" = truncdist::dtrunc(materiality, spec = "norm", a = 0, b = 1, mean = alpha, sd = beta),
       "uniform" = truncdist::dtrunc(materiality, spec = "unif", a = 0, b = 1, min = alpha, max = beta),
-      "cauchy" = truncdist::dtrunc(materiality, spec = "cauchy", a = 0, b = 1, location = alpha, scale = beta)
+      "cauchy" = truncdist::dtrunc(materiality, spec = "cauchy", a = 0, b = 1, location = alpha, scale = beta),
+      "t" = truncdist::dtrunc(materiality, spec = "t", a = 0, b = 1, df = alpha),
+      "chisq" = truncdist::dtrunc(materiality, spec = "chisq", a = 0, b = 1, df = alpha)
     )
   } else {
     if (all(is.infinite(samples))) {
@@ -417,7 +439,9 @@
       "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * N.units) - 1, post_N, alpha, beta, lower.tail = lower_tail),
       "normal" = truncdist::ptrunc(materiality, spec = "norm", a = 0, b = 1, mean = alpha, sd = beta, lower.tail = lower_tail),
       "uniform" = truncdist::ptrunc(materiality, spec = "unif", a = 0, b = 1, min = alpha, max = beta, lower.tail = lower_tail),
-      "cauchy" = truncdist::ptrunc(materiality, spec = "cauchy", a = 0, b = 1, location = alpha, scale = beta, lower.tail = lower_tail)
+      "cauchy" = truncdist::ptrunc(materiality, spec = "cauchy", a = 0, b = 1, location = alpha, scale = beta, lower.tail = lower_tail),
+      "t" = truncdist::ptrunc(materiality, spec = "t", a = 0, b = 1, df = alpha, lower.tail = lower_tail),
+      "chisq" = truncdist::ptrunc(materiality, spec = "chisq", a = 0, b = 1, df = alpha, lower.tail = lower_tail)
     )
   } else {
     if (lower_tail) {
@@ -582,7 +606,9 @@
     gamma_prior = as.numeric(prior[["likelihood"]] == "poisson"),
     normal_prior = as.numeric(prior[["likelihood"]] == "normal"),
     uniform_prior = as.numeric(prior[["likelihood"]] == "uniform"),
-    cauchy_prior = as.numeric(prior[["likelihood"]] == "cauchy")
+    cauchy_prior = as.numeric(prior[["likelihood"]] == "cauchy"),
+    t_prior = as.numeric(prior[["likelihood"]] == "t"),
+    chisq_prior = as.numeric(prior[["likelihood"]] == "chisq")
   )
   suppressWarnings({
     raw_prior <- rstan::sampling(

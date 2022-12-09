@@ -207,6 +207,12 @@ plot.jfaPrior <- function(x, ...) {
   } else if (x[["description"]]$density == "cauchy") {
     xs <- seq(0, 1, length.out = 1000)
     y <- truncdist::dtrunc(xs, spec = "cauchy", a = 0, b = 1, location = x[["description"]]$alpha, scale = x[["description"]]$beta)
+  } else if (x[["description"]]$density == "t") {
+    xs <- seq(0, 1, length.out = 1000)
+    y <- truncdist::dtrunc(xs, spec = "t", a = 0, b = 1, df = x[["description"]]$alpha)
+  } else if (x[["description"]]$density == "chisq") {
+    xs <- seq(0, 1, length.out = 1000)
+    y <- truncdist::dtrunc(xs, spec = "chisq", a = 0, b = 1, df = x[["description"]]$alpha)
   } else if (x[["description"]]$density == "MCMC") {
     xs <- x[["plotsamples"]]$x
     y <- x[["plotsamples"]]$y
@@ -418,13 +424,19 @@ plot.jfaPlanning <- function(x, ...) {
     y1 <- extraDistr::dbbinom(x1, x[["prior"]][["N.units"]], x[["prior"]][["description"]]$alpha, x[["prior"]][["description"]]$beta)
   } else if (x[["prior"]][["description"]]$density == "normal") {
     x1 <- seq(0, 1, length.out = 1000)
-    y1 <- stats::dnorm(x1, x[["prior"]][["description"]]$alpha, x[["prior"]][["description"]]$beta)
+    y1 <- truncdist::dtrunc(x1, spec = "norm", a = 0, b = 1, mean = x[["prior"]][["description"]]$alpha, sd = x[["prior"]][["description"]]$beta)
   } else if (x[["prior"]][["description"]]$density == "uniform") {
     x1 <- seq(0, 1, length.out = 1000)
-    y1 <- stats::dunif(x1, x[["prior"]][["description"]]$alpha, x[["prior"]][["description"]]$beta)
+    y1 <- truncdist::dtrunc(x1, spec = "unif", a = 0, b = 1, min = x[["prior"]][["description"]]$alpha, max = x[["prior"]][["description"]]$beta)
   } else if (x[["prior"]][["description"]]$density == "cauchy") {
     x1 <- seq(0, 1, length.out = 1000)
-    y1 <- stats::dcauchy(x1, x[["prior"]][["description"]]$alpha, x[["prior"]][["description"]]$beta)
+    y1 <- truncdist::dtrunc(x1, spec = "cauchy", a = 0, b = 1, location = x[["prior"]][["description"]]$alpha, scale = x[["prior"]][["description"]]$beta)
+  } else if (x[["prior"]][["description"]]$density == "t") {
+    x1 <- seq(0, 1, length.out = 1000)
+    y1 <- truncdist::dtrunc(x1, spec = "t", a = 0, b = 1, df = x[["prior"]][["description"]]$alpha)
+  } else if (x[["prior"]][["description"]]$density == "chisq") {
+    x1 <- seq(0, 1, length.out = 1000)
+    y1 <- truncdist::dtrunc(x1, spec = "chisq", a = 0, b = 1, df = x[["prior"]][["description"]]$alpha)
   } else if (x[["prior"]][["description"]]$density == "MCMC") {
     x1 <- x[["prior"]][["plotsamples"]]$x
     y1 <- x[["prior"]][["plotsamples"]]$y

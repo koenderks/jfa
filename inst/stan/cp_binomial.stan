@@ -10,6 +10,8 @@ data {
   int normal_prior;
   int uniform_prior;
   int cauchy_prior;
+  int t_prior;
+  int chisq_prior;
   int use_likelihood;
 }
 parameters {
@@ -26,6 +28,10 @@ model {
     theta ~ uniform(priorx, priorn);
   } else if (cauchy_prior) {
     theta ~ cauchy(priorx, priorn);
+  } else if (t_prior) {
+    theta ~ student_t(priorx, 0, 1);
+  } else if (chisq_prior) {
+    theta ~ chi_square(priorx);
   }
   if (use_likelihood) {
     k ~ binomial(n, theta);

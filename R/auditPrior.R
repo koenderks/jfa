@@ -231,7 +231,7 @@ auditPrior <- function(method = c(
                        ),
                        likelihood = c(
                          "poisson", "binomial", "hypergeometric",
-                         "normal", "uniform", "cauchy"
+                         "normal", "uniform", "cauchy", "t", "chisq"
                        ),
                        N.units = NULL,
                        alpha = NULL,
@@ -281,7 +281,9 @@ auditPrior <- function(method = c(
       "hypergeometric" = 1,
       "normal" = 0,
       "uniform" = 0,
-      "cauchy" = 0
+      "cauchy" = 0,
+      "t" = 1,
+      "chisq" = 1
     )
     prior_beta <- switch(likelihood,
       "poisson" = 1,
@@ -289,7 +291,9 @@ auditPrior <- function(method = c(
       "hypergeometric" = 1,
       "normal" = 1000,
       "uniform" = 1,
-      "cauchy" = 2
+      "cauchy" = 2,
+      "t" = NA,
+      "chisq" = NA
     )
     prior.x <- 0
     prior.n <- 1
@@ -420,16 +424,20 @@ auditPrior <- function(method = c(
   } else if (method == "param") {
     stopifnot("missing value for 'alpha'" = !is.null(alpha))
     valid_alpha <- is.numeric(alpha) && length(alpha) == 1
-    if (accomodates_elicitation) {
+    if (accomodates_elicitation || likelihood %in% c("t", "chisq")) {
       valid_alpha <- valid_alpha && alpha > 0
       stopifnot("'alpha' must be a single value > 0" = valid_alpha)
     } else {
       valid_alpha <- valid_alpha && alpha >= 0 && alpha <= 1
       stopifnot("'alpha' must be a single value between 0 and 1" = valid_alpha)
     }
-    stopifnot("missing value for 'beta'" = !is.null(beta))
-    valid_beta <- is.numeric(beta) && length(beta) == 1 && beta >= 0
-    stopifnot("'beta' must be a single value >= 0" = valid_beta)
+    stopifnot("missing value for 'beta'" = !is.null(beta) || likelihood %in% c("t", "chisq"))
+    if (accomodates_elicitation || !(likelihood %in% c("t", "chisq"))) {
+      valid_beta <- is.numeric(beta) && length(beta) == 1 && beta >= 0
+      stopifnot("'beta' must be a single value >= 0" = valid_beta)
+    } else {
+      beta <- 0
+    }
     prior_alpha <- alpha
     prior_beta <- beta
     if (accomodates_elicitation) {
