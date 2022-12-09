@@ -136,7 +136,7 @@
       "poisson" = alpha / beta,
       "binomial" = alpha / (alpha + beta),
       "hypergeometric" = alpha / (alpha + beta) * N.units,
-      "normal" = alpha + (dnorm((0 - alpha) / beta) - (dnorm(1 - alpha) / beta)) / (pnorm((0 - alpha) / beta) - (pnorm(1 - alpha) / beta)) * beta,
+      "normal" = alpha + (stats::dnorm((0 - alpha) / beta) - (stats::dnorm(1 - alpha) / beta)) / (stats::pnorm((0 - alpha) / beta) - (stats::pnorm(1 - alpha) / beta)) * beta,
       "uniform" = (alpha + beta) / 2,
       "cauchy" = NA,
       "t" = NA,

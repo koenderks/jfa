@@ -27,10 +27,13 @@
 #' weighing) operators.
 #'
 #' @usage auditPrior(method = c(
-#'              "default", "strict", "param", "impartial", "hyp",
+#'              "default", "param", "strict", "impartial", "hyp",
 #'              "arm", "bram", "sample", "factor"
 #'            ),
-#'            likelihood = c("poisson", "binomial", "hypergeometric"),
+#'            likelihood = c(
+#'              "poisson", "binomial", "hypergeometric",
+#'              "normal", "uniform", "cauchy", "t", "chisq"
+#'            ),
 #'            N.units = NULL,
 #'            alpha = NULL,
 #'            beta = NULL,
