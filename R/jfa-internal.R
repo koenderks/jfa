@@ -43,7 +43,10 @@
     form <- switch(likelihood,
       "poisson" = "gamma",
       "binomial" = "beta",
-      "hypergeometric" = "beta-binomial"
+      "hypergeometric" = "beta-binomial",
+      "normal" = "normal",
+      "uniform" = "uniform",
+      "cauchy" = "cauchy"
     )
   } else {
     form <- "MCMC"
@@ -51,12 +54,15 @@
   return(form)
 }
 
-.functional_form <- function(likelihood, alpha, beta, N.units, analytical = TRUE) {
+.functional_form <- function(family, alpha, beta, N.units, analytical = TRUE) {
   if (analytical) {
-    string <- switch(likelihood,
+    string <- switch(family,
       "poisson" = paste0("gamma(\u03B1 = ", round(alpha, 3), ", \u03B2 = ", round(beta, 3), ")"),
       "binomial" = paste0("beta(\u03B1 = ", round(alpha, 3), ", \u03B2 = ", round(beta, 3), ")"),
-      "hypergeometric" = paste0("beta-binomial(N = ", N.units, ", \u03B1 = ", round(alpha, 3), ", \u03B2 = ", round(beta, 3), ")")
+      "hypergeometric" = paste0("beta-binomial(N = ", N.units, ", \u03B1 = ", round(alpha, 3), ", \u03B2 = ", round(beta, 3), ")"),
+      "normal" = paste0("normal(\u03BC = ", round(alpha, 3), ", \u03C3 = ", round(beta, 3), ")T[0,1]"),
+      "uniform" = paste0("uniform(min = ", round(alpha, 3), ", max = ", round(beta, 3), ")"),
+      "cauchy" = paste0("cauchy(x\u2080 = ", round(alpha, 3), ", \u03B3 = ", round(beta, 3), ")T[0,1]")
     )
   } else {
     string <- "Determined via MCMC sampling"
@@ -85,12 +91,15 @@
   return(mle)
 }
 
-.comp_mode_bayes <- function(likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+.comp_mode_bayes <- function(family, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
   if (analytical) {
-    mode <- switch(likelihood,
+    mode <- switch(family,
       "poisson" = (alpha - 1) / beta,
       "binomial" = (alpha - 1) / (alpha + beta - 2),
-      "hypergeometric" = .modebbinom(N.units, alpha, beta)
+      "hypergeometric" = .modebbinom(N.units, alpha, beta),
+      "normal" = alpha,
+      "uniform" = NA,
+      "cauchy" = alpha
     )
   } else {
     if (all(is.infinite(samples))) {
@@ -115,12 +124,15 @@
   return(mode)
 }
 
-.comp_mean_bayes <- function(likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+.comp_mean_bayes <- function(family, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
   if (analytical) {
-    mean <- switch(likelihood,
+    mean <- switch(family,
       "poisson" = alpha / beta,
       "binomial" = alpha / (alpha + beta),
-      "hypergeometric" = alpha / (alpha + beta) * N.units
+      "hypergeometric" = alpha / (alpha + beta) * N.units,
+      "normal" = alpha + (dnorm((0 - alpha) / beta) - (dnorm(1 - alpha) / beta)) / (pnorm((0 - alpha) / beta) - (pnorm(1 - alpha) / beta)) * beta,
+      "uniform" = (alpha + beta) / 2,
+      "cauchy" = NA
     )
   } else {
     mean <- mean(samples)
@@ -128,12 +140,15 @@
   return(mean)
 }
 
-.comp_median_bayes <- function(likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+.comp_median_bayes <- function(family, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
   if (analytical) {
-    median <- switch(likelihood,
+    median <- switch(family,
       "poisson" = stats::qgamma(0.5, alpha, beta),
       "binomial" = stats::qbeta(0.5, alpha, beta),
-      "hypergeometric" = .qbbinom(0.5, N.units, alpha, beta)
+      "hypergeometric" = .qbbinom(0.5, N.units, alpha, beta),
+      "normal" = truncdist::qtrunc(0.5, spec = "norm", a = 0, b = 1, mean = alpha, sd = beta),
+      "uniform" = stats::qunif(0.5, alpha, beta),
+      "cauchy" = stats::qcauchy(0.5, alpha, beta)
     )
   } else {
     median <- stats::median(samples)
@@ -141,12 +156,15 @@
   return(median)
 }
 
-.comp_var_bayes <- function(likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+.comp_var_bayes <- function(family, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
   if (analytical) {
-    variance <- switch(likelihood,
+    variance <- switch(family,
       "poisson" = alpha / beta^2,
       "binomial" = (alpha * beta) / ((alpha + beta)^2 * (alpha + beta + 1)),
-      "hypergeometric" = ((N.units * alpha * beta) * (alpha + beta + N.units)) / ((alpha + beta)^2 * (alpha + beta + 1))
+      "hypergeometric" = ((N.units * alpha * beta) * (alpha + beta + N.units)) / ((alpha + beta)^2 * (alpha + beta + 1)),
+      "normal" = NA,
+      "uniform" = (1 / 12) * (beta - alpha)^2,
+      "cauchy" = NA
     )
   } else {
     variance <- as.numeric(stats::var(samples))
@@ -154,12 +172,15 @@
   return(variance)
 }
 
-.comp_skew_bayes <- function(likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+.comp_skew_bayes <- function(family, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
   if (analytical) {
-    skewness <- switch(likelihood,
+    skewness <- switch(family,
       "poisson" = 2 / sqrt(alpha),
       "binomial" = ((2 * (beta - alpha)) * sqrt(alpha + beta + 1)) / ((alpha + beta + 2) * sqrt(alpha * beta)),
-      "hypergeometric" = (((alpha + beta + 2 * N.units) * (beta - alpha)) / (alpha + beta + 2)) * sqrt((1 + alpha + beta) / (N.units * alpha * beta * (N.units + alpha + beta)))
+      "hypergeometric" = (((alpha + beta + 2 * N.units) * (beta - alpha)) / (alpha + beta + 2)) * sqrt((1 + alpha + beta) / (N.units * alpha * beta * (N.units + alpha + beta))),
+      "normal" = NA,
+      "uniform" = 0,
+      "cauchy" = NA
     )
   } else {
     skewness <- moments::skewness(samples)
@@ -167,15 +188,18 @@
   return(skewness)
 }
 
-.comp_entropy_bayes <- function(likelihood, alpha, beta, analytical = TRUE, samples = NULL) {
+.comp_entropy_bayes <- function(family, alpha, beta, analytical = TRUE, samples = NULL) {
   if (analytical) {
-    if (alpha == 0 || beta == 0) {
+    if (family %in% c("poisson", "binomial", "hypergeometric") && (alpha == 0 || beta == 0)) {
       entropy <- -Inf
     } else {
-      entropy <- switch(likelihood,
+      entropy <- switch(family,
         "poisson" = alpha - log(beta) + log(gamma(alpha)) + (1 - alpha) * digamma(alpha),
         "binomial" = log(beta(alpha, beta)) - (alpha - 1) * digamma(alpha) - (beta - 1) * digamma(beta) + (alpha + beta - 2) * digamma(alpha + beta),
-        "hypergeometric" = log(beta(alpha, beta)) - (alpha - 1) * digamma(alpha) - (beta - 1) * digamma(beta) + (alpha + beta - 2) * digamma(alpha + beta)
+        "hypergeometric" = log(beta(alpha, beta)) - (alpha - 1) * digamma(alpha) - (beta - 1) * digamma(beta) + (alpha + beta - 2) * digamma(alpha + beta),
+        "normal" = NA,
+        "uniform" = log(beta - alpha),
+        "cauchy" = NA
       )
     }
   } else {
@@ -184,12 +208,12 @@
   return(entropy)
 }
 
-.comp_kl_bayes <- function(likelihood, prior_alpha, prior_beta, post_alpha, post_beta, analytical = TRUE, samples_prior = NULL, samples_post = NULL) {
+.comp_kl_bayes <- function(family, prior_alpha, prior_beta, post_alpha, post_beta, analytical = TRUE, samples_prior = NULL, samples_post = NULL) {
   if (analytical) {
     if (prior_alpha == 0 || prior_beta == 0) {
       kl <- Inf
     } else {
-      kl <- switch(likelihood,
+      kl <- switch(family,
         "poisson" = (post_alpha - prior_alpha) * digamma(post_alpha) - log(gamma(post_alpha)) + log(gamma(prior_alpha)) + prior_alpha * (log(post_beta) - log(prior_beta)) + post_alpha * ((prior_beta - post_beta) / post_beta),
         "binomial" = log(beta(prior_alpha, prior_beta) / beta(post_alpha, post_beta)) + (post_alpha - prior_alpha) * digamma(post_alpha) + (post_beta - prior_beta) * digamma(post_beta) + (prior_alpha - post_alpha + prior_beta - post_beta) * digamma(post_alpha + post_beta),
         "hypergeometric" = log(beta(prior_alpha, prior_beta) / beta(post_alpha, post_beta)) + (post_alpha - prior_alpha) * digamma(post_alpha) + (post_beta - prior_beta) * digamma(post_beta) + (prior_alpha - post_alpha + prior_beta - post_beta) * digamma(post_alpha + post_beta)
@@ -212,7 +236,7 @@
   return(kl)
 }
 
-.comp_ub_freq <- function(alternative, conf.level, likelihood, n.obs, x.obs, t.obs, N.units, analytical = TRUE, samples = NULL) {
+.comp_ub_freq <- function(alternative, conf.level, family, n.obs, x.obs, t.obs, N.units, analytical = TRUE, samples = NULL) {
   if (alternative == "greater") {
     ub <- 1
   } else {
@@ -222,7 +246,7 @@
       prob <- conf.level + (1 - conf.level) / 2
     }
     if (analytical) {
-      ub <- switch(likelihood,
+      ub <- switch(family,
         "poisson" = stats::qgamma(prob, 1 + t.obs, n.obs),
         "binomial" = stats::qbeta(prob, 1 + t.obs, n.obs - t.obs),
         "hypergeometric" = .qhyper(prob, N.units, n.obs, x.obs)
@@ -234,7 +258,7 @@
   return(ub)
 }
 
-.comp_lb_freq <- function(alternative, conf.level, likelihood, n.obs, x.obs, t.obs, N.units, analytical = TRUE, samples = NULL) {
+.comp_lb_freq <- function(alternative, conf.level, family, n.obs, x.obs, t.obs, N.units, analytical = TRUE, samples = NULL) {
   if (alternative == "less") {
     lb <- 0
   } else {
@@ -244,7 +268,7 @@
       prob <- (1 - conf.level) / 2
     }
     if (analytical) {
-      lb <- switch(likelihood,
+      lb <- switch(family,
         "poisson" = stats::qgamma(prob, t.obs, 1 + n.obs),
         "binomial" = stats::qbeta(prob, t.obs, 1 + n.obs - t.obs),
         "hypergeometric" = .qhyper(prob, N.units, n.obs, x.obs)
@@ -264,7 +288,7 @@
   return(max(K[cdf > (1 - p)]))
 }
 
-.comp_ub_bayes <- function(alternative, conf.level, likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+.comp_ub_bayes <- function(alternative, conf.level, family, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
   if (alternative == "greater") {
     ub <- 1
   } else {
@@ -274,10 +298,13 @@
       prob <- conf.level + (1 - conf.level) / 2
     }
     if (analytical) {
-      ub <- switch(likelihood,
+      ub <- switch(family,
         "poisson" = stats::qgamma(prob, alpha, beta),
         "binomial" = stats::qbeta(prob, alpha, beta),
-        "hypergeometric" = .qbbinom(prob, N.units, alpha, beta)
+        "hypergeometric" = .qbbinom(prob, N.units, alpha, beta),
+        "normal" = truncdist::qtrunc(prob, spec = "norm", a = 0, b = 1, mean = alpha, sd = beta),
+        "uniform" = truncdist::qtrunc(prob, spec = "unif", a = 0, b = 1, min = alpha, max = beta),
+        "cauchy" = truncdist::qtrunc(prob, spec = "cauchy", a = 0, b = 1, location = alpha, scale = beta)
       )
     } else {
       ub <- as.numeric(stats::quantile(samples, prob))
@@ -286,7 +313,7 @@
   return(ub)
 }
 
-.comp_lb_bayes <- function(alternative, conf.level, likelihood, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+.comp_lb_bayes <- function(alternative, conf.level, family, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
   if (alternative == "less") {
     lb <- 0
   } else {
@@ -296,10 +323,13 @@
       prob <- (1 - conf.level) / 2
     }
     if (analytical) {
-      lb <- switch(likelihood,
+      lb <- switch(family,
         "poisson" = stats::qgamma(prob, alpha, beta),
         "binomial" = stats::qbeta(prob, alpha, beta),
-        "hypergeometric" = .qbbinom(prob, N.units, alpha, beta)
+        "hypergeometric" = .qbbinom(prob, N.units, alpha, beta),
+        "normal" = truncdist::qtrunc(prob, spec = "norm", a = 0, b = 1, mean = alpha, sd = beta),
+        "uniform" = truncdist::qtrunc(prob, spec = "unif", a = 0, b = 1, min = alpha, max = beta),
+        "cauchy" = truncdist::qtrunc(prob, spec = "cauchy", a = 0, b = 1, location = alpha, scale = beta)
       )
     } else {
       lb <- as.numeric(stats::quantile(samples, prob))
@@ -358,12 +388,15 @@
   return(pval)
 }
 
-.hyp_dens <- function(materiality, likelihood, alpha, beta, N.units, post_N, analytical = TRUE, samples = NULL) {
+.hyp_dens <- function(materiality, family, alpha, beta, N.units, post_N, analytical = TRUE, samples = NULL) {
   if (analytical) {
-    dens <- switch(likelihood,
+    dens <- switch(family,
       "poisson" = stats::dgamma(materiality, alpha, beta),
       "binomial" = stats::dbeta(materiality, alpha, beta),
-      "hypergeometric" = extraDistr::dbbinom(ceiling(materiality * N.units), post_N, alpha, beta)
+      "hypergeometric" = extraDistr::dbbinom(ceiling(materiality * N.units), post_N, alpha, beta),
+      "normal" = truncdist::dtrunc(materiality, spec = "norm", a = 0, b = 1, mean = alpha, sd = beta),
+      "uniform" = truncdist::dtrunc(materiality, spec = "unif", a = 0, b = 1, min = alpha, max = beta),
+      "cauchy" = truncdist::dtrunc(materiality, spec = "cauchy", a = 0, b = 1, location = alpha, scale = beta)
     )
   } else {
     if (all(is.infinite(samples))) {
@@ -376,12 +409,15 @@
   return(dens)
 }
 
-.hyp_prob <- function(lower_tail, materiality, likelihood, alpha, beta, N.units, post_N, analytical = TRUE, samples = NULL) {
+.hyp_prob <- function(lower_tail, materiality, family, alpha, beta, N.units, post_N, analytical = TRUE, samples = NULL) {
   if (analytical) {
-    prob <- switch(likelihood,
+    prob <- switch(family,
       "poisson" = stats::pgamma(materiality, alpha, beta, lower.tail = lower_tail),
       "binomial" = stats::pbeta(materiality, alpha, beta, lower.tail = lower_tail),
-      "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * N.units) - 1, post_N, alpha, beta, lower.tail = lower_tail)
+      "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * N.units) - 1, post_N, alpha, beta, lower.tail = lower_tail),
+      "normal" = truncdist::ptrunc(materiality, spec = "norm", a = 0, b = 1, mean = alpha, sd = beta, lower.tail = lower_tail),
+      "uniform" = truncdist::ptrunc(materiality, spec = "unif", a = 0, b = 1, min = alpha, max = beta, lower.tail = lower_tail),
+      "cauchy" = truncdist::ptrunc(materiality, spec = "cauchy", a = 0, b = 1, location = alpha, scale = beta, lower.tail = lower_tail)
     )
   } else {
     if (lower_tail) {
@@ -393,8 +429,8 @@
   return(prob)
 }
 
-.bf01_twosided_sumstats <- function(materiality, likelihood, prior.n, prior.x, n.obs, t.obs, N.units) {
-  bf01 <- switch(likelihood,
+.bf01_twosided_sumstats <- function(materiality, family, prior.n, prior.x, n.obs, t.obs, N.units) {
+  bf01 <- switch(family,
     "poisson" = stats::dgamma(materiality, 1 + prior.x + t.obs, prior.n + n.obs) / stats::dgamma(materiality, 1 + prior.x, prior.n),
     "binomial" = stats::dbeta(materiality, 1 + prior.x + t.obs, prior.n - prior.x + n.obs - t.obs) / stats::dbeta(materiality, 1 + prior.x, prior.n - prior.x),
     "hypergeometric" = extraDistr::dbbinom(ceiling(materiality * N.units), N.units - n.obs, 1 + prior.x + t.obs, prior.n - prior.x + n.obs - t.obs) / extraDistr::dbbinom(ceiling(materiality * N.units), N.units, 1 + prior.x, prior.n - prior.x)
@@ -414,17 +450,17 @@
   return(bf01)
 }
 
-.bf10_onesided_sumstats <- function(materiality, alternative, likelihood, prior.n, prior.x, n.obs, t.obs, N.units) {
+.bf10_onesided_sumstats <- function(materiality, alternative, family, prior.n, prior.x, n.obs, t.obs, N.units) {
   prior_alpha <- 1 + prior.x
   post_alpha <- prior_alpha + t.obs
-  if (likelihood == "poisson") {
+  if (family == "poisson") {
     prior_beta <- prior.n
     post_beta <- prior.n + n.obs
   } else {
     prior_beta <- prior.n - prior.x
     post_beta <- prior_beta + n.obs - t.obs
   }
-  bf10 <- switch(likelihood,
+  bf10 <- switch(family,
     "poisson" = (stats::pgamma(materiality, post_alpha, post_beta) / stats::pgamma(materiality, post_alpha, post_beta, lower.tail = FALSE)) / (stats::pgamma(materiality, prior_alpha, prior_beta) / stats::pgamma(materiality, prior_alpha, prior_beta, lower.tail = FALSE)),
     "binomial" = (stats::pbeta(materiality, post_alpha, post_beta) / stats::pbeta(materiality, post_alpha, post_beta, lower.tail = FALSE)) / (stats::pbeta(materiality, prior_alpha, prior_beta) / stats::pbeta(materiality, prior_alpha, prior_beta, lower.tail = FALSE)),
     "hypergeometric" = (extraDistr::pbbinom(ceiling(materiality * N.units) - 1, N.units - n.obs, post_alpha, post_beta) / extraDistr::pbbinom(ceiling(materiality * N.units) - 1, N.units - n.obs, post_alpha, post_beta, lower.tail = FALSE)) / (extraDistr::pbbinom(ceiling(materiality * N.units) - 1, N.units, prior_alpha, prior_beta) / extraDistr::pbbinom(ceiling(materiality * N.units) - 1, N.units, prior_alpha, prior_alpha, lower.tail = FALSE))
@@ -469,7 +505,7 @@
   raw_prior <- rstan::sampling(
     object = stanmodels[[paste0("pp_", likelihood)]], data = c(data, use_likelihood = 0), pars = "theta_s", iter = getOption("mcmc.iterations", 2000),
     warmup = getOption("mcmc.warmup", 1000), chains = getOption("mcmc.chains", 4), cores = getOption("mcmc.cores", 1), seed = ceiling(stats::runif(1, -1000, 1000)),
-    control = list(adapt_delta = 0.95)
+    control = list(adapt_delta = 0.95), refresh = 0
   )
   raw_posterior <- rstan::sampling(
     object = stanmodels[[paste0("pp_", likelihood)]], data = c(data, use_likelihood = 1), pars = "theta_s", iter = getOption("mcmc.iterations", 2000),
@@ -481,20 +517,20 @@
   return(samples)
 }
 
-.mcmc_analytical <- function(likelihood, nstrata, prior.x, t.obs, prior.n, n.obs, N.units) {
+.mcmc_analytical <- function(family, nstrata, prior.x, t.obs, prior.n, n.obs, N.units) {
   iterations <- getOption("mcmc.iterations", 1e5)
   samples <- matrix(NA, ncol = (nstrata - 1) * 2, nrow = iterations)
   stratum_indices_prior <- (nstrata + 1):((nstrata - 1) * 2 + 1)
   stratum_indices_post <- 2:nstrata
   for (i in stratum_indices_post) {
-    samples[, i - 1] <- switch(likelihood,
+    samples[, i - 1] <- switch(family,
       "poisson" = stats::rgamma(n = iterations, 1 + prior.x + t.obs[i], prior.n + n.obs[i]),
       "binomial" = stats::rbeta(n = iterations, 1 + prior.x + t.obs[i], prior.n - prior.x + n.obs[i] - t.obs[i]),
       "hypergeometric" = extraDistr::rbbinom(n = iterations, N.units[i] - n.obs[i], 1 + prior.x + t.obs[i], prior.n - prior.x + n.obs[i] - t.obs[i]) / N.units[i]
     )
   }
   for (i in stratum_indices_prior) {
-    samples[, i - 1] <- switch(likelihood,
+    samples[, i - 1] <- switch(family,
       "poisson" = stats::rgamma(n = iterations, 1 + prior.x, prior.n),
       "binomial" = stats::rbeta(n = iterations, 1 + prior.x, prior.n - prior.x),
       "hypergeometric" = extraDistr::rbbinom(n = iterations, N.units[i - nstrata], 1 + prior.x, prior.n - prior.x) / N.units[i - nstrata]
@@ -533,6 +569,35 @@
       "hypergeometric" = extraDistr::rbbinom(n = iterations, N.units[i - nstrata], alpha, beta) / N.units[i - nstrata]
     )
   }
+  return(samples)
+}
+
+.mcmc_planning <- function(likelihood, x, n, prior) {
+  data <- list(
+    n = n,
+    k = ceiling(x),
+    priorx = prior[["description"]]$alpha,
+    priorn = prior[["description"]]$beta,
+    beta_prior = as.numeric(prior[["likelihood"]] == "binomial"),
+    gamma_prior = as.numeric(prior[["likelihood"]] == "poisson"),
+    normal_prior = as.numeric(prior[["likelihood"]] == "normal"),
+    uniform_prior = as.numeric(prior[["likelihood"]] == "uniform"),
+    cauchy_prior = as.numeric(prior[["likelihood"]] == "cauchy")
+  )
+  suppressWarnings({
+    raw_prior <- rstan::sampling(
+      object = stanmodels[[paste0("cp_", likelihood)]], data = c(data, use_likelihood = 0), pars = "theta", iter = getOption("mcmc.iterations", 2000),
+      warmup = getOption("mcmc.warmup", 1000), chains = 1, cores = getOption("mcmc.cores", 1), seed = ceiling(stats::runif(1, -1000, 1000)),
+      control = list(adapt_delta = 0.95), refresh = 0
+    )
+    raw_posterior <- rstan::sampling(
+      object = stanmodels[[paste0("cp_", likelihood)]], data = c(data, use_likelihood = 1), pars = "theta", iter = getOption("mcmc.iterations", 2000),
+      warmup = getOption("mcmc.warmup", 1000), chains = 1, cores = getOption("mcmc.cores", 1), seed = ceiling(stats::runif(1, -1000, 1000)),
+      control = list(adapt_delta = 0.95), refresh = 0
+    )
+  })
+  samples <- cbind(rstan::extract(raw_posterior)$theta, rstan::extract(raw_prior)$theta)
+  stopifnot("Stan model could not be fitted" = ncol(samples) == 2)
   return(samples)
 }
 

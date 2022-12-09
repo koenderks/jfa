@@ -174,22 +174,31 @@ planning <- function(materiality = NULL,
   is_jfa_prior <- inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")
   is_bayesian <- (inherits(prior, "logical") && prior) || is_jfa_prior
   if (is_jfa_prior) {
-    if (prior[["method"]] == "mcmc") {
-      stop("method = 'mcmc' not supported")
+    conjugate_prior <- likelihood == prior[["likelihood"]]
+    if (!conjugate_prior && likelihood %in% c("poisson", "binomial", "hypergeometric") && prior[["likelihood"]] %in% c("poisson", "binomial", "hypergeometric")) {
+      likelihood <- prior[["likelihood"]]
+      conjugate_prior <- TRUE
     }
-    if (likelihood != prior[["likelihood"]]) {
-      message(paste0("Using 'likelihood = ", prior[["likelihood"]], "' from 'prior'"))
-    }
-    prior.n <- prior[["description"]]$implicit.n
-    prior.x <- prior[["description"]]$implicit.x
-    likelihood <- prior[["likelihood"]]
+    message(paste0("using ", likelihood, " likelihood with ", prior[["description"]]$density, " prior"))
     if (!is.null(prior[["N.units"]])) {
       message(paste0("Using 'N.units = ", prior[["N.units"]], "' from 'prior'"))
       N.units <- prior[["N.units"]]
     }
+    if (!is.null(materiality) && is.null(prior[["hypotheses"]])) {
+      hypotheses <- list()
+      hypotheses[["hypotheses"]] <- .hyp_string(materiality, "less")
+      hypotheses[["materiality"]] <- materiality
+      hypotheses[["alternative"]] <- "less"
+      hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, likelihood, prior[["description"]]$alpha, prior[["description"]]$beta, N.units, N.units)
+      hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, likelihood, prior[["description"]]$alpha, prior[["description"]]$beta, N.units, N.units)
+      hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
+      hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
+      hypotheses[["density"]] <- .hyp_dens(materiality, likelihood, prior[["description"]]$alpha, prior[["description"]]$beta, N.units, N.units)
+      prior[["hypotheses"]] <- hypotheses
+    }
   } else if (prior) {
-    prior.n <- 1
-    prior.x <- 0
+    prior <- auditPrior("default", likelihood, N.units, materiality = materiality, conf.level = conf.level, )
+    conjugate_prior <- TRUE
   }
   stopifnot("missing value for 'conf.level'" = !is.null(conf.level))
   valid_confidence <- is.numeric(conf.level) && length(conf.level) == 1 && conf.level > 0 && conf.level < 1
@@ -261,17 +270,24 @@ planning <- function(materiality = NULL,
       i <- sframe[iter]
     }
     if (is_bayesian) {
-      alpha <- 1 + prior.x + x
-      if (likelihood == "poisson") {
-        beta <- prior.n + i
+      if (conjugate_prior) {
+        alpha <- prior[["description"]]$alpha + x
+        if (likelihood == "poisson") {
+          beta <- prior[["description"]]$beta + i
+        } else {
+          beta <- prior[["description"]]$beta + i - x
+        }
+        bound <- .comp_ub_bayes("less", conf.level, likelihood, alpha, beta, N.units - i)
+        mle <- .comp_mode_bayes(likelihood, alpha, beta, N.units - i)
+        if (likelihood == "hypergeometric") {
+          bound <- bound / N.units
+          mle <- mle / N.units
+        }
       } else {
-        beta <- prior.n - prior.x + i - x
-      }
-      bound <- .comp_ub_bayes("less", conf.level, likelihood, alpha, beta, N.units - i)
-      mle <- .comp_mode_bayes(likelihood, alpha, beta, N.units - i)
-      if (likelihood == "hypergeometric") {
-        bound <- bound / N.units
-        mle <- mle / N.units
+        stopifnot("likelihood = 'hypergeometric' does not support non-conjugate priors" = likelihood != "hypergeometric")
+        samples <- .mcmc_planning(likelihood, x, i, prior)
+        mle <- .comp_mode_bayes(analytical = FALSE, samples = samples[, 1])
+        bound <- .comp_ub_bayes("less", conf.level, analytical = FALSE, samples = samples[, 1])
       }
     } else {
       if (likelihood == "binomial") {
@@ -317,57 +333,58 @@ planning <- function(materiality = NULL,
   result[["likelihood"]] <- likelihood
   result[["errorType"]] <- error_type
   result[["iterations"]] <- iter
-  # Prior distribution
+  # Prior and posterior distribution
   if (is_bayesian) {
-    if (is_jfa_prior && !is.null(prior[["hypotheses"]])) {
-      result[["prior"]] <- prior
+    result[["prior"]] <- prior
+    if (conjugate_prior) {
+      # Parameters
+      post_alpha <- result[["prior"]]$description$alpha + result[["x"]]
+      if (likelihood == "poisson") {
+        post_beta <- result[["prior"]]$description$beta + result[["n"]]
+      } else {
+        post_beta <- result[["prior"]]$description$beta + result[["n"]] - result[["x"]]
+      }
+      prior_samples <- NULL
+      post_samples <- NULL
     } else {
-      result[["prior"]] <- auditPrior("sample", likelihood, result[["N.units"]],
-        n = prior.n, x = prior.x, conf.level = conf.level,
-        materiality = result[["materiality"]]
-      )
-    }
-  }
-  # Posterior distribution
-  if (!is.null(result[["prior"]])) {
-    # Parameters
-    post_alpha <- result[["prior"]]$description$alpha + result[["x"]]
-    if (likelihood == "poisson") {
-      post_beta <- result[["prior"]]$description$beta + result[["n"]]
-    } else {
-      post_beta <- result[["prior"]]$description$beta + result[["n"]] - result[["x"]]
+      prior_samples <- samples[, 2]
+      post_samples <- samples[, 1]
     }
     post_N <- result[["N.units"]] - result[["n"]]
     # Initialize posterior distribution
     posterior <- list()
-    posterior[["posterior"]] <- .functional_form(likelihood, post_alpha, post_beta, post_N)
+    posterior[["posterior"]] <- .functional_form(likelihood, post_alpha, post_beta, post_N, conjugate_prior)
     posterior[["likelihood"]] <- likelihood
-    posterior[["method"]] <- "sample"
+    posterior[["method"]] <- if (conjugate_prior) "sample" else "mcmc"
     result[["posterior"]] <- posterior
     # Description
     description <- list()
-    description[["density"]] <- .functional_density(likelihood)
+    description[["density"]] <- .functional_density(likelihood, conjugate_prior)
     description[["n"]] <- result[["n"]]
     description[["x"]] <- result[["x"]]
-    description[["alpha"]] <- post_alpha
-    description[["beta"]] <- post_beta
-    description[["implicit.x"]] <- post_alpha - 1
-    if (likelihood == "poisson") {
-      description[["implicit.n"]] <- post_beta
+    if (conjugate_prior) {
+      description[["alpha"]] <- post_alpha
+      description[["beta"]] <- post_beta
+      description[["implicit.x"]] <- post_alpha - 1
+      if (likelihood == "poisson") {
+        description[["implicit.n"]] <- post_beta
+      } else {
+        description[["implicit.n"]] <- post_beta - description[["implicit.x"]]
+      }
     } else {
-      description[["implicit.n"]] <- post_beta - description[["implicit.x"]]
+      result[["posterior"]][["plotsamples"]] <- stats::density(ifelse(is.infinite(post_samples), 1, post_samples), from = 0, to = 1, n = 1000)
     }
     result[["posterior"]][["description"]] <- description
     # Statistics
     statistics <- list()
-    statistics[["mode"]] <- .comp_mode_bayes(likelihood, post_alpha, post_beta, post_N)
-    statistics[["mean"]] <- .comp_mean_bayes(likelihood, post_alpha, post_beta, post_N)
-    statistics[["median"]] <- .comp_median_bayes(likelihood, post_alpha, post_beta, post_N)
-    statistics[["var"]] <- .comp_var_bayes(likelihood, post_alpha, post_beta, post_N)
-    statistics[["skewness"]] <- .comp_skew_bayes(likelihood, post_alpha, post_beta, post_N)
-    statistics[["entropy"]] <- .comp_entropy_bayes(likelihood, post_alpha, post_beta)
-    statistics[["kl"]] <- .comp_kl_bayes(likelihood, result[["prior"]][["description"]]$alpha, result[["prior"]][["description"]]$beta, post_alpha, post_beta)
-    statistics[["ub"]] <- .comp_ub_bayes("less", conf.level, likelihood, post_alpha, post_beta, post_N)
+    statistics[["mode"]] <- .comp_mode_bayes(likelihood, post_alpha, post_beta, post_N, conjugate_prior, post_samples)
+    statistics[["mean"]] <- .comp_mean_bayes(likelihood, post_alpha, post_beta, post_N, conjugate_prior, post_samples)
+    statistics[["median"]] <- .comp_median_bayes(likelihood, post_alpha, post_beta, post_N, conjugate_prior, post_samples)
+    statistics[["var"]] <- .comp_var_bayes(likelihood, post_alpha, post_beta, post_N, conjugate_prior, post_samples)
+    statistics[["skewness"]] <- .comp_skew_bayes(likelihood, post_alpha, post_beta, post_N, conjugate_prior, post_samples)
+    statistics[["entropy"]] <- .comp_entropy_bayes(likelihood, post_alpha, post_beta, conjugate_prior, post_samples)
+    statistics[["kl"]] <- .comp_kl_bayes(likelihood, result[["prior"]][["description"]]$alpha, result[["prior"]][["description"]]$beta, post_alpha, post_beta, conjugate_prior, prior_samples, post_samples)
+    statistics[["ub"]] <- .comp_ub_bayes("less", conf.level, likelihood, post_alpha, post_beta, post_N, conjugate_prior, post_samples)
     statistics[["precision"]] <- statistics[["ub"]] - statistics[["mode"]]
     result[["posterior"]][["statistics"]] <- statistics
     # Hypotheses
@@ -376,8 +393,8 @@ planning <- function(materiality = NULL,
       hypotheses[["hypotheses"]] <- .hyp_string(materiality, "less")
       hypotheses[["materiality"]] <- materiality
       hypotheses[["alternative"]] <- "less"
-      hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, likelihood, post_alpha, post_beta, N.units, post_N)
-      hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, likelihood, post_alpha, post_beta, N.units, post_N)
+      hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, likelihood, post_alpha, post_beta, N.units, post_N, conjugate_prior, post_samples)
+      hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, likelihood, post_alpha, post_beta, N.units, post_N, conjugate_prior, post_samples)
       hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
       hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
       hypotheses[["bf.h1"]] <- hypotheses[["odds.h1"]] / result[["prior"]][["hypotheses"]]$odds.h1

@@ -208,13 +208,6 @@ auditPrior(likelihood = "binomial")
 
 # Impartial prior
 auditPrior(method = "impartial", materiality = 0.05)
-
-# Combine prior distributions
-prior1 <- auditPrior("param", alpha = 1, beta = 10)
-prior2 <- auditPrior("param", alpha = 2, beta = 40)
-prior3 <- prior1 + prior2
-prior4 <- (0.5 * prior1) * (0.5 * prior2) # same as prior1 * prior2
-prior5 <- prior1 + prior2 + prior1 * prior2
 }
 \references{
 Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J.,

@@ -31,7 +31,8 @@ Imports:
     RcppParallel (>= 5.0.1),
     rstan (>= 2.18.1),
     rstantools (>= 2.2.0),
-    stats
+    stats,
+    truncdist
 Suggests:
     benford.analysis (>= 0.1.5),
     BenfordTests (>= 1.2.0),

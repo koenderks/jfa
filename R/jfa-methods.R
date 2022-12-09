@@ -68,10 +68,10 @@ print.summary.jfaPrior <- function(x, digits = getOption("digits"), ...) {
   )), "\n")
   cat("\nResults:\n")
   cat(paste("  Functional form:              ", x[["prior"]]), "\n")
-  if (!is.null(x[["implicit.n"]])) {
+  if (!is.null(x[["implicit.n"]]) && x[["method"]] %in% c("poisson", "binomial", "hypergeometric")) {
     cat(paste("  Equivalent sample size:       ", format(x[["implicit.n"]], digits = max(1L, digits - 2L))), "\n")
   }
-  if (!is.null(x[["implicit.x"]])) {
+  if (!is.null(x[["implicit.x"]]) && x[["method"]] %in% c("poisson", "binomial", "hypergeometric")) {
     cat(paste("  Equivalent errors:            ", format(x[["implicit.x"]], digits = max(1L, digits - 2L))), "\n")
   }
   cat(paste("  Mode:                         ", format(x[["mode"]], digits = max(1L, digits - 2L))), "\n")
@@ -143,9 +143,8 @@ summary.jfaPrior <- function(object, digits = getOption("digits"), ...) {
 #' @method predict jfaPrior
 #' @export
 predict.jfaPrior <- function(object, n, lim = NULL, cumulative = FALSE, ...) {
-  if (object[["method"]] == "mcmc") {
-    stop("method = 'mcmc' is not supported")
-  }
+  valid_method <- object[["method"]] %in% c("poisson", "binomial", "hypergeometric")
+  stopifnot("method is not supported" = valid_method)
   if (!is.null(lim)) {
     if (cumulative) {
       stopifnot("'lim' must be a single value >= 0" = length(lim) == 1 && lim > 0)
@@ -199,6 +198,15 @@ plot.jfaPrior <- function(x, ...) {
   } else if (x[["description"]]$density == "beta-binomial") {
     xs <- seq(0, x[["N.units"]], by = 1)
     y <- extraDistr::dbbinom(xs, x[["N.units"]], x[["description"]]$alpha, x[["description"]]$beta)
+  } else if (x[["description"]]$density == "normal") {
+    xs <- seq(0, 1, length.out = 1000)
+    y <- truncdist::dtrunc(xs, spec = "norm", a = 0, b = 1, mean = x[["description"]]$alpha, sd = x[["description"]]$beta)
+  } else if (x[["description"]]$density == "uniform") {
+    xs <- seq(0, 1, length.out = 1000)
+    y <- truncdist::dtrunc(xs, spec = "unif", a = 0, b = 1, min = x[["description"]]$alpha, max = x[["description"]]$beta)
+  } else if (x[["description"]]$density == "cauchy") {
+    xs <- seq(0, 1, length.out = 1000)
+    y <- truncdist::dtrunc(xs, spec = "cauchy", a = 0, b = 1, location = x[["description"]]$alpha, scale = x[["description"]]$beta)
   } else if (x[["description"]]$density == "MCMC") {
     xs <- x[["plotsamples"]]$x
     y <- x[["plotsamples"]]$y
@@ -347,7 +355,7 @@ print.summary.jfaPlanning <- function(x, digits = getOption("digits"), ...) {
   cat(paste("  Expected upper bound:         ", format(x[["ub"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Expected precision:           ", format(x[["precision"]], digits = max(1L, digits - 2L))), "\n")
   if (x[["materiality"]] < 1 && x[["type"]] == "Bayesian") {
-    cat(paste("  Expected BF\u2081\u2080:\t                ", format(x[["bf.h1"]], digits = max(1L, digits - 2L))), "\n")
+    cat(paste("  Expected BF\u2081\u2080:                ", format(x[["bf.h1"]], digits = max(1L, digits - 2L))), "\n")
   }
   if (x[["materiality"]] < 1 && x[["type"]] == "Classical") {
     cat(paste("  Expected p-value:             ", format.pval(x[["p.value"]], digits = max(1L, digits - 2L), eps = 0.001)), "\n")
@@ -408,6 +416,15 @@ plot.jfaPlanning <- function(x, ...) {
   } else if (x[["prior"]][["description"]]$density == "beta-binomial") {
     x1 <- seq(0, x[["N.units"]], by = 1)
     y1 <- extraDistr::dbbinom(x1, x[["prior"]][["N.units"]], x[["prior"]][["description"]]$alpha, x[["prior"]][["description"]]$beta)
+  } else if (x[["prior"]][["description"]]$density == "normal") {
+    x1 <- seq(0, 1, length.out = 1000)
+    y1 <- stats::dnorm(x1, x[["prior"]][["description"]]$alpha, x[["prior"]][["description"]]$beta)
+  } else if (x[["prior"]][["description"]]$density == "uniform") {
+    x1 <- seq(0, 1, length.out = 1000)
+    y1 <- stats::dunif(x1, x[["prior"]][["description"]]$alpha, x[["prior"]][["description"]]$beta)
+  } else if (x[["prior"]][["description"]]$density == "cauchy") {
+    x1 <- seq(0, 1, length.out = 1000)
+    y1 <- stats::dcauchy(x1, x[["prior"]][["description"]]$alpha, x[["prior"]][["description"]]$beta)
   } else if (x[["prior"]][["description"]]$density == "MCMC") {
     x1 <- x[["prior"]][["plotsamples"]]$x
     y1 <- x[["prior"]][["plotsamples"]]$y

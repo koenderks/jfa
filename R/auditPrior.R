@@ -223,20 +223,16 @@
 #'
 #' # Impartial prior
 #' auditPrior(method = "impartial", materiality = 0.05)
-#'
-#' # Combine prior distributions
-#' prior1 <- auditPrior("param", alpha = 1, beta = 10)
-#' prior2 <- auditPrior("param", alpha = 2, beta = 40)
-#' prior3 <- prior1 + prior2
-#' prior4 <- (0.5 * prior1) * (0.5 * prior2) # same as prior1 * prior2
-#' prior5 <- prior1 + prior2 + prior1 * prior2
 #' @export
 
 auditPrior <- function(method = c(
                          "default", "strict", "param", "impartial", "hyp",
                          "arm", "bram", "sample", "factor"
                        ),
-                       likelihood = c("poisson", "binomial", "hypergeometric"),
+                       likelihood = c(
+                         "poisson", "binomial", "hypergeometric",
+                         "normal", "uniform", "cauchy"
+                       ),
                        N.units = NULL,
                        alpha = NULL,
                        beta = NULL,
@@ -275,13 +271,37 @@ auditPrior <- function(method = c(
     stopifnot("'N.units' must be a single value > 0" = valid_units)
     N.units <- ceiling(N.units)
   }
+  accomodates_elicitation <- likelihood %in% c("poisson", "binomial", "hypergeometric")
+  stopifnot("likelihood requires method = 'param' or 'default'" = accomodates_elicitation || method == "param" || method == "default")
   # Compute prior per method
   if (method == "default") {
+    prior_alpha <- switch(likelihood,
+      "poisson" = 1,
+      "binomial" = 1,
+      "hypergeometric" = 1,
+      "normal" = 0,
+      "uniform" = 0,
+      "cauchy" = 0
+    )
+    prior_beta <- switch(likelihood,
+      "poisson" = 1,
+      "binomial" = 1,
+      "hypergeometric" = 1,
+      "normal" = 1000,
+      "uniform" = 1,
+      "cauchy" = 2
+    )
+    prior.x <- 0
     prior.n <- 1
-    prior.x <- 0
   } else if (method == "strict") {
-    prior.n <- 0
+    prior_alpha <- 1
+    prior_beta <- switch(likelihood,
+      "poisson" = 0,
+      "binomial" = 0,
+      "hypergeometric" = 0
+    )
     prior.x <- 0
+    prior.n <- 0
   } else if (method == "arm") {
     stopifnot("missing value for 'ir' (inherent risk)" = !is.null(ir))
     valid_ir <- ir > 0 && ir <= 1
@@ -295,6 +315,12 @@ auditPrior <- function(method = c(
     n.min <- planning(materiality, min.precision = NULL, expected, likelihood, 1 - detection_risk, N.units, prior = TRUE)$n
     prior.n <- n.plus - n.min
     prior.x <- (n.plus * expected) - (n.min * expected)
+    prior_alpha <- 1 + prior.x
+    if (likelihood == "poisson") {
+      prior_beta <- prior.n
+    } else {
+      prior_beta <- prior.n - prior.x
+    }
   } else if (method == "bram") {
     stopifnot("missing value for 'ub'" = !is.null(ub))
     valid_ub <- length(ub) == 1 && is.numeric(ub) && ub > 0 && ub < 1 && ub > expected
@@ -324,6 +350,12 @@ auditPrior <- function(method = c(
         }
         bound <- .comp_ub_bayes("less", conf.level, likelihood, a, b, N.units)
       }
+    }
+    prior_alpha <- 1 + prior.x
+    if (likelihood == "poisson") {
+      prior_beta <- prior.n
+    } else {
+      prior_beta <- prior.n - prior.x
     }
   } else if (method == "impartial" || method == "hyp") {
     if (method == "impartial") {
@@ -359,6 +391,12 @@ auditPrior <- function(method = c(
         median <- .comp_ub_bayes("less", p.h1, likelihood, a, b, N.units)
       }
     }
+    prior_alpha <- 1 + prior.x
+    if (likelihood == "poisson") {
+      prior_beta <- prior.n
+    } else {
+      prior_beta <- prior.n - prior.x
+    }
   } else if (method == "sample" || method == "factor") {
     stopifnot("missing value for 'n'" = !is.null(n))
     valid_n <- is.numeric(n) && length(n) == 1 && n >= 0
@@ -373,26 +411,35 @@ auditPrior <- function(method = c(
     }
     prior.n <- n * factor
     prior.x <- x * factor
+    prior_alpha <- 1 + prior.x
+    if (likelihood == "poisson") {
+      prior_beta <- prior.n
+    } else {
+      prior_beta <- prior.n - prior.x
+    }
   } else if (method == "param") {
     stopifnot("missing value for 'alpha'" = !is.null(alpha))
-    valid_alpha <- is.numeric(alpha) && length(alpha) == 1 && alpha > 0
-    stopifnot("'alpha' must be a single value > 0" = valid_alpha)
+    valid_alpha <- is.numeric(alpha) && length(alpha) == 1
+    if (accomodates_elicitation) {
+      valid_alpha <- valid_alpha && alpha > 0
+      stopifnot("'alpha' must be a single value > 0" = valid_alpha)
+    } else {
+      valid_alpha <- valid_alpha && alpha >= 0 && alpha <= 1
+      stopifnot("'alpha' must be a single value between 0 and 1" = valid_alpha)
+    }
     stopifnot("missing value for 'beta'" = !is.null(beta))
     valid_beta <- is.numeric(beta) && length(beta) == 1 && beta >= 0
     stopifnot("'beta' must be a single value >= 0" = valid_beta)
-    prior.x <- alpha - 1
-    if (likelihood == "poisson") {
-      prior.n <- beta
-    } else {
-      prior.n <- beta + prior.x
+    prior_alpha <- alpha
+    prior_beta <- beta
+    if (accomodates_elicitation) {
+      prior.x <- prior_alpha - 1
+      if (likelihood == "poisson") {
+        prior.n <- prior_beta - prior.x
+      } else {
+        prior.n <- prior_beta - prior_alpha + 1
+      }
     }
-  }
-  # Parameters
-  prior_alpha <- 1 + prior.x
-  if (likelihood == "poisson") {
-    prior_beta <- prior.n
-  } else {
-    prior_beta <- prior.n - prior.x
   }
   # Initialize main results
   result <- list()
@@ -402,8 +449,10 @@ auditPrior <- function(method = c(
   description[["density"]] <- .functional_density(likelihood)
   description[["alpha"]] <- prior_alpha
   description[["beta"]] <- prior_beta
-  description[["implicit.x"]] <- prior.x
-  description[["implicit.n"]] <- prior.n
+  if (accomodates_elicitation) {
+    description[["implicit.x"]] <- prior.x
+    description[["implicit.n"]] <- prior.n
+  }
   result[["description"]] <- description
   # Statistics
   statistics <- list()
