@@ -94,7 +94,7 @@
       <h1 data-toc-skip>Planning statistical audit samples</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2022-12-08</h4>
+            <h4 data-toc-skip class="date">2022-12-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/sample-planning.Rmd" class="external-link"><code>vignettes/sample-planning.Rmd</code></a></small>
       <div class="hidden name"><code>sample-planning.Rmd</code></div>
@@ -259,14 +259,16 @@ priors</a>.</p>
 <span><span class="co">##   Expected most likely error:    0 </span></span>
 <span><span class="co">##   Expected upper bound:          0.049929 </span></span>
 <span><span class="co">##   Expected precision:            0.049929 </span></span>
-<span><span class="co">##   Expected BF₁₀:                  372.25</span></span></code></pre>
+<span><span class="co">##   Expected BF₁₀:                 372.25</span></span></code></pre>
 <p>Naturally, the input for the <code>prior</code> argument can also be
 an object created by the <code>auditPrior</code> function:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Bayesian planning for a performance materiality of 0.05 using a custom prior</span></span>
 <span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>likelihood <span class="op">=</span> <span class="st">"poisson"</span>, method <span class="op">=</span> <span class="st">"param"</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, expected <span class="op">=</span> <span class="fl">0</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, expected <span class="op">=</span> <span class="fl">0</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## using poisson likelihood with gamma prior</span></span></code></pre>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Planning Summary</span></span>
 <span><span class="co">## </span></span>
@@ -285,7 +287,7 @@ an object created by the <code>auditPrior</code> function:</p>
 <span><span class="co">##   Expected most likely error:    0 </span></span>
 <span><span class="co">##   Expected upper bound:          0.049929 </span></span>
 <span><span class="co">##   Expected precision:            0.049929 </span></span>
-<span><span class="co">##   Expected BF₁₀:                  29.42</span></span></code></pre>
+<span><span class="co">##   Expected BF₁₀:                 29.42</span></span></code></pre>
 </div>
 </div>
   </div>

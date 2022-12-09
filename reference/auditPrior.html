@@ -274,9 +274,17 @@ level (1 - audit risk).</p></dd>
 <p>This section elaborates on the available input options for the
   <code>method</code> argument.</p>
 <ul><li><p><code>default</code>:   This method produces a <em>gamma(1, 1)</em>,
-   <em>beta(1, 1)</em>, or <em>beta-binomial(N, 1, 1)</em> prior distribution.
+   <em>beta(1, 1)</em>, <em>beta-binomial(N, 1, 1)</em>, <em>normal(0.5, 1000)</em>
+   , <em>cauchy(0, 1)</em>, <em>student-t(1)</em>, or <em>chi-squared(1)</em> prior
+   distribution.
    These prior distributions are indifferent towards the possible values of
    the misstatement.</p></li>
+<li><p><code>param</code>:     This method produces a custom
+   <code>gamma(alpha, beta)</code>, <code>beta(alpha, beta)</code>,
+   <code>beta-binomial(N, alpha, beta)</code> prior distribution,
+   <em>normal(alpha, beta)</em>, <em>cauchy(alpha, beta)</em>,
+   <em>student-t(alpha)</em>, or <em>chi-squared(alpha)</em>. The alpha and
+   beta parameters must be set using <code>alpha</code> and <code>beta</code>.</p></li>
 <li><p><code>strict</code>:    This method produces an improper <em>gamma(1, 0)</em>,
    <em>beta(1, 0)</em>, or <em>beta-binomial(N, 1, 0)</em> prior distribution.
    These prior distributions match sample sizes and upper limits from
@@ -285,10 +293,6 @@ level (1 - audit risk).</p></dd>
    distribution. These prior distributions assume that tolerable misstatement
    (\(\theta &lt;\) materiality) and intolerable misstatement (\(\theta &gt;\)
    materiality) are equally likely.</p></li>
-<li><p><code>param</code>:     This method produces a custom
-   <code>gamma(alpha, beta)</code>, <code>beta(alpha, beta)</code>, or
-   <code>beta-binomial(N, alpha, beta)</code> prior distribution. The alpha and
-   beta parameters must be set using <code>alpha</code> and <code>beta</code>.</p></li>
 <li><p><code>hyp</code>:       This method translates an assessment of the prior
    probability for tolerable misstatement (\(\theta &lt;\) materiality) to a
    prior distribution.</p></li>
@@ -369,12 +373,13 @@ distributions used by <code>jfa</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> functional form: gamma(α = 1, β = 13.863) </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> parameters obtained via method 'impartial'</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Combine prior distributions</span></span></span>
-<span class="r-in"><span><span class="va">prior1</span> <span class="op">&lt;-</span> <span class="fu">auditPrior</span><span class="op">(</span><span class="st">"param"</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">prior2</span> <span class="op">&lt;-</span> <span class="fu">auditPrior</span><span class="op">(</span><span class="st">"param"</span>, alpha <span class="op">=</span> <span class="fl">2</span>, beta <span class="op">=</span> <span class="fl">40</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">prior3</span> <span class="op">&lt;-</span> <span class="va">prior1</span> <span class="op">+</span> <span class="va">prior2</span></span></span>
-<span class="r-in"><span><span class="va">prior4</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">0.5</span> <span class="op">*</span> <span class="va">prior1</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="fl">0.5</span> <span class="op">*</span> <span class="va">prior2</span><span class="op">)</span> <span class="co"># same as prior1 * prior2</span></span></span>
-<span class="r-in"><span><span class="va">prior5</span> <span class="op">&lt;-</span> <span class="va">prior1</span> <span class="op">+</span> <span class="va">prior2</span> <span class="op">+</span> <span class="va">prior1</span> <span class="op">*</span> <span class="va">prior2</span></span></span>
+<span class="r-in"><span><span class="co"># Non-conjugate prior</span></span></span>
+<span class="r-in"><span><span class="fu">auditPrior</span><span class="op">(</span>method <span class="op">=</span> <span class="st">"param"</span>, likelihood <span class="op">=</span> <span class="st">"normal"</span>, alpha <span class="op">=</span> <span class="fl">0</span>, beta <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Prior Distribution for Audit Sampling</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> functional form: normal(μ = 0, σ = 0.1)T[0,1] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> parameters obtained via method 'param'</span>
 </code></pre></div>
     </div>
   </div>

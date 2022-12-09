@@ -95,7 +95,7 @@
 sampling</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2022-12-08</h4>
+            <h4 data-toc-skip class="date">2022-12-09</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/creating-prior.Rmd" class="external-link"><code>vignettes/creating-prior.Rmd</code></a></small>
       <div class="hidden name"><code>creating-prior.Rmd</code></div>
@@ -157,8 +157,6 @@ hypergeometric likelihood.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
 <span><span class="co">##   Functional form:               beta(α = 1, β = 1) </span></span>
-<span><span class="co">##   Equivalent sample size:        1 </span></span>
-<span><span class="co">##   Equivalent errors:             0 </span></span>
 <span><span class="co">##   Mode:                          NaN </span></span>
 <span><span class="co">##   Mean:                          0.5 </span></span>
 <span><span class="co">##   Median:                        0.5 </span></span>
@@ -195,8 +193,6 @@ et al., 2022).</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
 <span><span class="co">##   Functional form:               beta(α = 1, β = 0) </span></span>
-<span><span class="co">##   Equivalent sample size:        0 </span></span>
-<span><span class="co">##   Equivalent errors:             0 </span></span>
 <span><span class="co">##   Mode:                          0 </span></span>
 <span><span class="co">##   Mean:                          1 </span></span>
 <span><span class="co">##   Median:                        1 </span></span>
@@ -230,8 +226,6 @@ code below creates a beta(2, 10) prior distribution.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
 <span><span class="co">##   Functional form:               beta(α = 2, β = 10) </span></span>
-<span><span class="co">##   Equivalent sample size:        11 </span></span>
-<span><span class="co">##   Equivalent errors:             1 </span></span>
 <span><span class="co">##   Mode:                          0.1 </span></span>
 <span><span class="co">##   Mean:                          0.16667 </span></span>
 <span><span class="co">##   Median:                        0.14796 </span></span>
@@ -271,8 +265,6 @@ incorporates this assumption into a prior distribution.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
 <span><span class="co">##   Functional form:               beta(α = 1.155, β = 16.385) </span></span>
-<span><span class="co">##   Equivalent sample size:        16.54 </span></span>
-<span><span class="co">##   Equivalent errors:             0.1554 </span></span>
 <span><span class="co">##   Mode:                          0.01 </span></span>
 <span><span class="co">##   Mean:                          0.065872 </span></span>
 <span><span class="co">##   Median:                        0.049999 </span></span>
@@ -314,8 +306,6 @@ probability of 60% into a prior distribution.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
 <span><span class="co">##   Functional form:               beta(α = 1.217, β = 22.493) </span></span>
-<span><span class="co">##   Equivalent sample size:        22.71 </span></span>
-<span><span class="co">##   Equivalent errors:             0.2171 </span></span>
 <span><span class="co">##   Mode:                          0.01 </span></span>
 <span><span class="co">##   Mean:                          0.051333 </span></span>
 <span><span class="co">##   Median:                        0.039239 </span></span>
@@ -356,8 +346,6 @@ prior distribution.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
 <span><span class="co">##   Functional form:               beta(α = 1.21, β = 20.79) </span></span>
-<span><span class="co">##   Equivalent sample size:        21 </span></span>
-<span><span class="co">##   Equivalent errors:             0.21 </span></span>
 <span><span class="co">##   Mode:                          0.0105 </span></span>
 <span><span class="co">##   Mean:                          0.055 </span></span>
 <span><span class="co">##   Median:                        0.042056 </span></span>
@@ -397,8 +385,6 @@ upper bound is 60%.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
 <span><span class="co">##   Functional form:               beta(α = 1.023, β = 3.317) </span></span>
-<span><span class="co">##   Equivalent sample size:        3.34 </span></span>
-<span><span class="co">##   Equivalent errors:             0.0234 </span></span>
 <span><span class="co">##   Mode:                          0.01 </span></span>
 <span><span class="co">##   Mean:                          0.23581 </span></span>
 <span><span class="co">##   Median:                        0.19356 </span></span>
@@ -437,8 +423,6 @@ items in which 0 misstatements were found into a prior distribution.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
 <span><span class="co">##   Functional form:               beta(α = 1, β = 30) </span></span>
-<span><span class="co">##   Equivalent sample size:        30 </span></span>
-<span><span class="co">##   Equivalent errors:             0 </span></span>
 <span><span class="co">##   Mode:                          0 </span></span>
 <span><span class="co">##   Mean:                          0.032258 </span></span>
 <span><span class="co">##   Median:                        0.02284 </span></span>
@@ -479,8 +463,6 @@ distribution.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
 <span><span class="co">##   Functional form:               beta(α = 1, β = 40.6) </span></span>
-<span><span class="co">##   Equivalent sample size:        40.6 </span></span>
-<span><span class="co">##   Equivalent errors:             0 </span></span>
 <span><span class="co">##   Mode:                          0 </span></span>
 <span><span class="co">##   Mean:                          0.024039 </span></span>
 <span><span class="co">##   Median:                        0.016928 </span></span>
@@ -494,78 +476,6 @@ distribution.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior9</span><span class="op">)</span></span></code></pre></div>
 <p><img src="creating-prior_files/figure-html/unnamed-chunk-19-1.png" width="576" style="display: block; margin: auto;"></p>
-</div>
-<div class="section level3">
-<h3 id="combining-prior-distributions">Combining prior distributions<a class="anchor" aria-label="anchor" href="#combining-prior-distributions"></a>
-</h3>
-<p>Adding multiple prior distributions is done via the <code>+</code>
-operator, which computes a prior distribution containing the combined
-information from the prior distributions. For example, the information
-in <code>prior6</code> and <code>prior9</code> can be combined (added)
-via <code>prior6 + prior9</code>.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">prior10</span> <span class="op">&lt;-</span> <span class="va">prior6</span> <span class="op">+</span> <span class="va">prior9</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior10</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Prior Distribution Summary</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Options:</span></span>
-<span><span class="co">##   Likelihood:                    binomial </span></span>
-<span><span class="co">##   Specifics:                     convoluted prior </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Results:</span></span>
-<span><span class="co">##   Functional form:               beta(α = 1.21, β = 61.39) </span></span>
-<span><span class="co">##   Equivalent sample size:        61.6 </span></span>
-<span><span class="co">##   Equivalent errors:             0.21 </span></span>
-<span><span class="co">##   Mode:                          0.0034653 </span></span>
-<span><span class="co">##   Mean:                          0.019329 </span></span>
-<span><span class="co">##   Median:                        0.014492 </span></span>
-<span><span class="co">##   Variance:                      0.000298 </span></span>
-<span><span class="co">##   Skewness:                      1.724 </span></span>
-<span><span class="co">##   Information entropy (nat):     -2.9588 </span></span>
-<span><span class="co">##   95 percent upper bound:        0.053651 </span></span>
-<span><span class="co">##   Precision:                     0.050186</span></span></code></pre>
-<p>You can visually inspect the prior distribution using the
-<code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior10</span><span class="op">)</span></span></code></pre></div>
-<p><img src="creating-prior_files/figure-html/unnamed-chunk-21-1.png" width="576" style="display: block; margin: auto;"></p>
-<p>Weighing multiple prior distributions is done via the <code>*</code>
-operator, which computes the convolution (i.e., a weighted average under
-the assumption of independence) of the prior distributions. For example,
-the weighted average of <code>prior1</code> and <code>prior9</code> can
-be computed with <code>(a * prior1) * (b * prior9)</code>, where
-<code>a</code> and <code>b</code> are absolute weights. Note that the
-convolution assumes that the sum of two distributions of the same type
-(e.g., beta) is a new distribution of that type (e.g., beta), which is
-per definition an approximation of the true distribution.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">prior11</span> <span class="op">&lt;-</span> <span class="op">(</span><span class="fl">0.5</span> <span class="op">*</span> <span class="va">prior6</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="fl">0.5</span> <span class="op">*</span> <span class="va">prior9</span><span class="op">)</span> <span class="co"># same as prior6 * prior9</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior11</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Prior Distribution Summary</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Options:</span></span>
-<span><span class="co">##   Likelihood:                    binomial </span></span>
-<span><span class="co">##   Specifics:                     convoluted prior </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Results:</span></span>
-<span><span class="co">##   Functional form:               beta(α = 2.095, β = 50.927) </span></span>
-<span><span class="co">##   Equivalent sample size:        52.022 </span></span>
-<span><span class="co">##   Equivalent errors:             1.0954 </span></span>
-<span><span class="co">##   Mode:                          0.021469 </span></span>
-<span><span class="co">##   Mean:                          0.039519 </span></span>
-<span><span class="co">##   Median:                        0.033863 </span></span>
-<span><span class="co">##   Variance:                      0.0007026 </span></span>
-<span><span class="co">##   Skewness:                      1.2629 </span></span>
-<span><span class="co">##   Information entropy (nat):     -2.3716 </span></span>
-<span><span class="co">##   95 percent upper bound:        0.090775 </span></span>
-<span><span class="co">##   Precision:                     0.069306</span></span></code></pre>
-<p>You can visually inspect the prior distribution using the
-<code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior11</span><span class="op">)</span></span></code></pre></div>
-<p><img src="creating-prior_files/figure-html/unnamed-chunk-23-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level2">
@@ -587,14 +497,14 @@ function. For example, the code below calculates the minimum sample size
 to test the misstatement in the population against a performance
 materiality of 5%, while incorporating the information in
 <code>prior9</code>.</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, prior <span class="op">=</span> <span class="va">prior10</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Using 'likelihood = binomial' from 'prior'</span></span></code></pre>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, prior <span class="op">=</span> <span class="va">prior9</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## using binomial likelihood with beta prior</span></span></code></pre>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Planning</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## minimum sample size = 8 </span></span>
-<span><span class="co">## sample size obtained in 9 iteration(s) via method 'binomial' + 'prior'</span></span></code></pre>
+<span><span class="co">## minimum sample size = 29 </span></span>
+<span><span class="co">## sample size obtained in 30 iteration(s) via method 'binomial' + 'prior'</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="combining-auditprior-with-evaluation">Combining <code>auditPrior()</code> with
@@ -607,19 +517,19 @@ evaluates the misstatement in the population with respect to the
 performance materiality of 5% after seeing a sample of 60 items with 1
 misstatement, while incorporating the information in
 <code>prior8</code>.</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">60</span>, prior <span class="op">=</span> <span class="va">prior10</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">60</span>, prior <span class="op">=</span> <span class="va">prior9</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Using 'method = binomial' from 'prior'</span></span></code></pre>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Evaluation</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  1 and 60</span></span>
-<span><span class="co">## number of errors = 1, number of samples = 60, taint = 1, BF₁₀ = 3.2872</span></span>
+<span><span class="co">## number of errors = 1, number of samples = 60, taint = 1, BF₁₀ = 3.7968</span></span>
 <span><span class="co">## alternative hypothesis: true misstatement rate is less than 0.05</span></span>
 <span><span class="co">## 95 percent credible interval:</span></span>
-<span><span class="co">##  0.00000000 0.04105308</span></span>
+<span><span class="co">##  0.00000000 0.04628728</span></span>
 <span><span class="co">## most likely estimate:</span></span>
-<span><span class="co">##  0.010016 </span></span>
+<span><span class="co">##  0.01004 </span></span>
 <span><span class="co">## results obtained via method 'binomial' + 'prior'</span></span></code></pre>
 </div>
 </div>
