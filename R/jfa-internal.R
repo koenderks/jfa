@@ -600,8 +600,8 @@
   data <- list(
     n = n,
     k = ceiling(x),
-    priorx = prior[["description"]]$alpha,
-    priorn = prior[["description"]]$beta,
+    alpha = prior[["description"]]$alpha,
+    beta = prior[["description"]]$beta,
     beta_prior = as.numeric(prior[["likelihood"]] == "binomial"),
     gamma_prior = as.numeric(prior[["likelihood"]] == "poisson"),
     normal_prior = as.numeric(prior[["likelihood"]] == "normal"),
