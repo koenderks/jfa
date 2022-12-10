@@ -106,16 +106,16 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
+<p>This vignette illustrates how to use the <code><a href="../reference/planning.html">planning()</a></code>
+function from the <strong>jfa</strong> package to calculate a minimum
+sample size for audit sampling.</p>
 <p align="center">
 <img src="https://github.com/koenderks/jfa/raw/development/vignettes/img/planning.png" alt="planning" width="100%"></p>
-<p>The objective of the planning stage in an audit is to determine a
-minimum sample size. This vignette shows how to use the
-<code><a href="../reference/planning.html">planning()</a></code> function to achieve this.</p>
 </div>
 <div class="section level2">
-<h2 id="setting-up-the-planning">Setting up the planning<a class="anchor" aria-label="anchor" href="#setting-up-the-planning"></a>
+<h2 id="required-information">Required information<a class="anchor" aria-label="anchor" href="#required-information"></a>
 </h2>
-<p>Planning a minimum sample size requires knowledge of the conditions
+<p>First, planning a minimum sample requires knowledge of the conditions
 that lead to acceptance or rejection of the population (i.e., the
 sampling objectives). Typically, sampling objectives can be classified
 into one or both of the following:</p>
@@ -130,25 +130,33 @@ materiality).</li>
 accurate estimate of the misstatement in the population (with a minimum
 precision).</li>
 </ul>
-<p>Next to determining the sampling objective(s), it is also important
-to determine the statistical distribution linking the sample outcomes to
-the population misstatement (e.g., <code>poisson</code>,
-<code>binomial</code>, or <code>hypergeometric</code>). All three
-distributions are standard in an audit sampling context because they are
-(approximations) of the hypergeometric distribution, however,
-<code>poisson</code> is the default because it is the most conservative
-of all three distributions.</p>
-<p>Lastly, it is advised to obtain knowledge of the expected (or
-tolerable) errors in the sample. It is strongly recommended to set the
-value for the expected errors in the sample conservatively to minimize
-the chance of the observed errors in the sample exceeding the expected
-errors, which would imply that insufficient work has been done in the
-end.</p>
-<p>With the <code>BuildIt</code> data set, because the booked amounts
-(monetary values) of each invoice in the population are given, an
-auditor may want to make a statement about the amount of misstatement in
-the population. For illustrative purposes we will tolerate zero
-misstatements in the sample.</p>
+<p>Second, it is advised to specify the expected (or tolerable)
+misstatements in the sample. The expected misstatements are the
+misstatements that you allow in the sample, while still retaining the
+desired amount of assurance about the population. It is strongly
+recommended to set the value for the expected misstatements in the
+sample conservatively to minimize the chance of the observed
+misstatements in the sample exceeding the expected misstatements, which
+would imply that insufficient work has been done in the end.</p>
+<p>Next to determining the sampling objective(s) and the expected
+misstatements, it is also important to determine the statistical
+distribution linking the sample outcomes to the population misstatement.
+This distribution is called the likelihood (i.e., <code>poisson</code>,
+<code>binomial</code>, or<code>hypergeometric</code>). All three
+aforementioned likelihoods are commonly used in an audit sampling
+context, however, <code>poisson</code> is the default likelihood in
+<strong>jfa</strong> because it is the most conservative of the
+three.</p>
+</div>
+<div class="section level2">
+<h2 id="planning-a-sample">Planning a sample<a class="anchor" aria-label="anchor" href="#planning-a-sample"></a>
+</h2>
+<p>To illustrate how the <code><a href="../reference/planning.html">planning()</a></code> function can be used to
+calculate a minimum sample size for audit sampling, we will first
+demonstrate how to set up a sample with the purpose of hypothesis
+testing and subsequently show how to plan a sample with the purpose of
+estimation. In both cases, we will tolerate zero misstatements in the
+sample.</p>
 <div class="section level3">
 <h3 id="hypothesis-testing">Hypothesis testing<a class="anchor" aria-label="anchor" href="#hypothesis-testing"></a>
 </h3>
@@ -157,21 +165,20 @@ misstatements in the sample.</p>
 for testing the hypothesis that the misstatement in the population is
 lower than the performance materiality. In this example the performance
 materiality is set to 5% of the total population value, meaning that the
-population may not contain more than 5% misstatement.</p>
+population cannot contain more than 5% misstatement.</p>
 <p><strong>Sampling objective</strong>: Calculate a minimum sample size
 such that, when no misstatements are found in the sample, there is a 95%
 chance that the misstatement in the population is lower than 5% of the
 population value.</p>
 <p>A minimum sample size for this sampling objective can be calculated
 by specifying the <code>materiality</code> parameter in the
-<code><a href="../reference/planning.html">planning()</a></code> function, see the code below. Next, a summary of
-the statistical results can be obtained using the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>
-function. The results show that, given zero tolerable errors, the
-minimum sample size is 60 units.</p>
+<code><a href="../reference/planning.html">planning()</a></code> function, see the command below. Next, a summary
+of the statistical results can be obtained using the
+<code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function. The result shows that, given zero
+tolerable errors, the minimum sample size is 60 units.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Classical planning for a performance materiality of 0.05</span></span>
-<span><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, expected <span class="op">=</span> <span class="fl">0</span>, likelihood <span class="op">=</span> <span class="st">"poisson"</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">plan</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, expected <span class="op">=</span> <span class="fl">0</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">plan</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Classical Audit Sample Planning Summary</span></span>
 <span><span class="co">## </span></span>
@@ -206,41 +213,29 @@ such that, when zero misstatements are found in the sample, there is a
 the most likely misstatement.</p>
 <p>A minimum sample size for this sampling objective can be calculated
 by specifying the <code>min.precision</code> parameter in the
-<code><a href="../reference/planning.html">planning()</a></code> function, see the code below. The results show
-that, given zero tolerable errors, the minimum sample size is 150
+<code><a href="../reference/planning.html">planning()</a></code> function, see the command below. The result
+shows that, given zero tolerable errors, the minimum sample size is 150
 units.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Classical planning for a minimum precision of 0.02</span></span>
-<span><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>min.precision <span class="op">=</span> <span class="fl">0.02</span>, expected <span class="op">=</span> <span class="fl">0</span>, likelihood <span class="op">=</span> <span class="st">"poisson"</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>min.precision <span class="op">=</span> <span class="fl">0.02</span>, expected <span class="op">=</span> <span class="fl">0</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Classical Audit Sample Planning Summary</span></span>
+<span><span class="co">##  Classical Audit Sample Planning</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Options:</span></span>
-<span><span class="co">##   Confidence level:              0.95 </span></span>
-<span><span class="co">##   Min. precision:                0.02 </span></span>
-<span><span class="co">##   Expected:                      0 </span></span>
-<span><span class="co">##   Likelihood:                    poisson </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Results:</span></span>
-<span><span class="co">##   Minimum sample size:           150 </span></span>
-<span><span class="co">##   Tolerable errors:              0 </span></span>
-<span><span class="co">##   Expected most likely error:    0 </span></span>
-<span><span class="co">##   Expected upper bound:          0.019971 </span></span>
-<span><span class="co">##   Expected precision:            0.019971</span></span></code></pre>
+<span><span class="co">## minimum sample size = 150 </span></span>
+<span><span class="co">## sample size obtained in 151 iterations via method 'poisson'</span></span></code></pre>
 </div>
 <div class="section level3">
 <h3 id="bayesian-planning">Bayesian planning<a class="anchor" aria-label="anchor" href="#bayesian-planning"></a>
 </h3>
 <p>Performing Bayesian planning requires an input for the
 <code>prior</code> argument in the <code><a href="../reference/planning.html">planning()</a></code> function.
-Simply setting <code>prior = TRUE</code> performs Bayesian planning
-using <strong>jfa</strong>’s <a href="https://koenderks.github.io/jfa/articles/creating-prior.html#default-priors-method-default">default
-priors</a>.</p>
+Setting <code>prior = TRUE</code> performs Bayesian planning using a <a href="https://koenderks.github.io/jfa/articles/creating-prior.html#default-priors-method-default">default
+prior</a> conjugate to the specified <code>likelihood</code>. For
+example, the command below uses a default gamma(1, 1) prior distribution
+to plan the sample.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Bayesian planning for a performance materiality of 0.05 using a default prior</span></span>
-<span><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, expected <span class="op">=</span> <span class="fl">0</span>, likelihood <span class="op">=</span> <span class="st">"poisson"</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">plan</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, expected <span class="op">=</span> <span class="fl">0</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">plan</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Planning Summary</span></span>
 <span><span class="co">## </span></span>
@@ -260,32 +255,28 @@ priors</a>.</p>
 <span><span class="co">##   Expected upper bound:          0.049929 </span></span>
 <span><span class="co">##   Expected precision:            0.049929 </span></span>
 <span><span class="co">##   Expected BF₁₀:                 372.25</span></span></code></pre>
-<p>Naturally, the input for the <code>prior</code> argument can also be
-an object created by the <code>auditPrior</code> function:</p>
+<p>You can inspect how the prior distribution compares to the expected
+posterior distribution by using the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function. The
+expected posterior distribution is the posterior distribution that would
+occur if you actually observed the planned sample containing the
+expected misstatements.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Bayesian planning for a performance materiality of 0.05 using a custom prior</span></span>
-<span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>likelihood <span class="op">=</span> <span class="st">"poisson"</span>, method <span class="op">=</span> <span class="st">"param"</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, expected <span class="op">=</span> <span class="fl">0</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">plan</span><span class="op">)</span></span></code></pre></div>
+<p><img src="sample-planning_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
+<p>The input for the <code>prior</code> argument can also be an object
+created by the <code>auditPrior</code> function. If
+<code><a href="../reference/planning.html">planning()</a></code> receives a prior for which there is a conjugate
+likelihood available, it will inherit the likelihood from the prior. For
+example, the command below uses a custom beta(1, 10) prior distribution
+to plan the sample using the binomial likelihood.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"param"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, expected <span class="op">=</span> <span class="fl">0</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Bayesian Audit Sample Planning Summary</span></span>
+<span><span class="co">##  Bayesian Audit Sample Planning</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Options:</span></span>
-<span><span class="co">##   Confidence level:              0.95 </span></span>
-<span><span class="co">##   Materiality:                   0.05 </span></span>
-<span><span class="co">##   Hypotheses:                    H₀: Θ &gt; 0.05 vs. H₁: Θ &lt; 0.05 </span></span>
-<span><span class="co">##   Expected:                      0 </span></span>
-<span><span class="co">##   Likelihood:                    poisson </span></span>
-<span><span class="co">##   Prior distribution:            gamma(α = 1, β = 10) </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Results:</span></span>
-<span><span class="co">##   Minimum sample size:           50 </span></span>
-<span><span class="co">##   Tolerable errors:              0 </span></span>
-<span><span class="co">##   Posterior distribution:        gamma(α = 1, β = 60) </span></span>
-<span><span class="co">##   Expected most likely error:    0 </span></span>
-<span><span class="co">##   Expected upper bound:          0.049929 </span></span>
-<span><span class="co">##   Expected precision:            0.049929 </span></span>
-<span><span class="co">##   Expected BF₁₀:                 29.42</span></span></code></pre>
+<span><span class="co">## minimum sample size = 49 </span></span>
+<span><span class="co">## sample size obtained in 50 iterations via method 'binomial' + 'prior'</span></span></code></pre>
 </div>
 </div>
   </div>

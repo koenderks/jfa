@@ -247,9 +247,10 @@ equally likely as intolerable misstatement (Derks et al., 2022) using
 creates an impartial beta prior distribution for a performance
 materiality of 5 percent.</p>
 <p><em>This method requires that you specify a value for the
-<code>materiality</code>.</em> <em>This method requires the
-<code>poisson</code>, <code>binomial</code>, or
-<code>hypergeometric</code> likelihood</em></p>
+<code>materiality</code>.</em></p>
+<p><em>This method requires the <code>poisson</code>,
+<code>binomial</code>, or <code>hypergeometric</code>
+likelihood</em></p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"impartial"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, materiality <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -268,10 +269,11 @@ tolerable misstatement and the hypotheses of intolerable misstatement
 with <code>p.hmin</code>. For example, the command below incorporates
 the information that the hypothesis of tolerable misstatement has a
 probability of 60% into a beta prior distribution.</p>
-<p><em>Note: This method requires that you specify a value for the
-<code>materiality</code>.</em> <em>This method requires the
-<code>poisson</code>, <code>binomial</code>, or
-<code>hypergeometric</code> likelihood</em></p>
+<p><em>This method requires that you specify a value for the
+<code>materiality</code>.</em></p>
+<p><em>This method requires the <code>poisson</code>,
+<code>binomial</code>, or <code>hypergeometric</code>
+likelihood</em></p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"hyp"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, materiality <span class="op">=</span> <span class="fl">0.05</span>, p.hmin <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -408,12 +410,12 @@ misstatement, while using a normal(0.025, 0.05) prior distribution.</p>
 <span><span class="co">##  Bayesian Audit Sample Evaluation</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  1 and 60</span></span>
-<span><span class="co">## number of errors = 1, number of samples = 60, taint = 1, BF₁₀ = 5.7227</span></span>
+<span><span class="co">## number of errors = 1, number of samples = 60, taint = 1, BF₁₀ = 6.3801</span></span>
 <span><span class="co">## alternative hypothesis: true misstatement rate is less than 0.05</span></span>
 <span><span class="co">## 95 percent credible interval:</span></span>
-<span><span class="co">##  0.00000000 0.06560672</span></span>
+<span><span class="co">##  0.00000000 0.06416159</span></span>
 <span><span class="co">## most likely estimate:</span></span>
-<span><span class="co">##  0.017081 </span></span>
+<span><span class="co">##  0.013026 </span></span>
 <span><span class="co">## results obtained via method 'poisson' + 'prior'</span></span></code></pre>
 </div>
 </div>
