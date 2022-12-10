@@ -453,11 +453,11 @@
   return(prob)
 }
 
-.bf01_twosided_sumstats <- function(materiality, family, prior.n, prior.x, n.obs, t.obs, N.units) {
+.bf01_twosided_sumstats <- function(materiality, family, alpha, beta, n.obs, t.obs, N.units) {
   bf01 <- switch(family,
-    "poisson" = stats::dgamma(materiality, 1 + prior.x + t.obs, prior.n + n.obs) / stats::dgamma(materiality, 1 + prior.x, prior.n),
-    "binomial" = stats::dbeta(materiality, 1 + prior.x + t.obs, prior.n - prior.x + n.obs - t.obs) / stats::dbeta(materiality, 1 + prior.x, prior.n - prior.x),
-    "hypergeometric" = extraDistr::dbbinom(ceiling(materiality * N.units), N.units - n.obs, 1 + prior.x + t.obs, prior.n - prior.x + n.obs - t.obs) / extraDistr::dbbinom(ceiling(materiality * N.units), N.units, 1 + prior.x, prior.n - prior.x)
+    "poisson" = stats::dgamma(materiality, alpha + t.obs, beta + n.obs) / stats::dgamma(materiality, alpha, beta),
+    "binomial" = stats::dbeta(materiality, alpha + t.obs, beta + n.obs - t.obs) / stats::dbeta(materiality, alpha, beta),
+    "hypergeometric" = extraDistr::dbbinom(ceiling(materiality * N.units), N.units - n.obs, alpha + t.obs, beta + n.obs - t.obs) / extraDistr::dbbinom(ceiling(materiality * N.units), N.units, alpha, beta)
   )
   return(bf01)
 }
@@ -474,20 +474,11 @@
   return(bf01)
 }
 
-.bf10_onesided_sumstats <- function(materiality, alternative, family, prior.n, prior.x, n.obs, t.obs, N.units) {
-  prior_alpha <- 1 + prior.x
-  post_alpha <- prior_alpha + t.obs
-  if (family == "poisson") {
-    prior_beta <- prior.n
-    post_beta <- prior.n + n.obs
-  } else {
-    prior_beta <- prior.n - prior.x
-    post_beta <- prior_beta + n.obs - t.obs
-  }
+.bf10_onesided_sumstats <- function(materiality, alternative, family, alpha, beta, n.obs, t.obs, N.units) {
   bf10 <- switch(family,
-    "poisson" = (stats::pgamma(materiality, post_alpha, post_beta) / stats::pgamma(materiality, post_alpha, post_beta, lower.tail = FALSE)) / (stats::pgamma(materiality, prior_alpha, prior_beta) / stats::pgamma(materiality, prior_alpha, prior_beta, lower.tail = FALSE)),
-    "binomial" = (stats::pbeta(materiality, post_alpha, post_beta) / stats::pbeta(materiality, post_alpha, post_beta, lower.tail = FALSE)) / (stats::pbeta(materiality, prior_alpha, prior_beta) / stats::pbeta(materiality, prior_alpha, prior_beta, lower.tail = FALSE)),
-    "hypergeometric" = (extraDistr::pbbinom(ceiling(materiality * N.units) - 1, N.units - n.obs, post_alpha, post_beta) / extraDistr::pbbinom(ceiling(materiality * N.units) - 1, N.units - n.obs, post_alpha, post_beta, lower.tail = FALSE)) / (extraDistr::pbbinom(ceiling(materiality * N.units) - 1, N.units, prior_alpha, prior_beta) / extraDistr::pbbinom(ceiling(materiality * N.units) - 1, N.units, prior_alpha, prior_alpha, lower.tail = FALSE))
+    "poisson" = (stats::pgamma(materiality, alpha + t.obs, beta + n.obs) / stats::pgamma(materiality, alpha + t.obs, beta + n.obs, lower.tail = FALSE)) / (stats::pgamma(materiality, alpha, beta) / stats::pgamma(materiality, alpha, beta, lower.tail = FALSE)),
+    "binomial" = (stats::pbeta(materiality, alpha + t.obs, beta + n.obs - t.obs) / stats::pbeta(materiality, alpha + t.obs, beta + n.obs - t.obs, lower.tail = FALSE)) / (stats::pbeta(materiality, alpha, beta) / stats::pbeta(materiality, alpha, beta, lower.tail = FALSE)),
+    "hypergeometric" = (extraDistr::pbbinom(ceiling(materiality * N.units) - 1, N.units - n.obs, alpha + t.obs, beta + n.obs - t.obs) / extraDistr::pbbinom(ceiling(materiality * N.units) - 1, N.units - n.obs, alpha + t.obs, beta + n.obs - t.obs, lower.tail = FALSE)) / (extraDistr::pbbinom(ceiling(materiality * N.units) - 1, N.units, alpha, beta) / extraDistr::pbbinom(ceiling(materiality * N.units) - 1, N.units, alpha, beta, lower.tail = FALSE))
   )
   if (alternative == "greater") {
     bf10 <- 1 / bf10
@@ -514,89 +505,13 @@
   if (is.null(N.units)) {
     weights <- rep(1, n_strata) / n_strata
   } else {
-    weights <- N.units[-1] / N.units[1]
+    weights <- N.units / sum(N.units)
   }
   poststratified_samples <- samples %*% weights
   return(poststratified_samples)
 }
 
-.mcmc_stan <- function(method, prior.x, prior.n, n.obs, t.obs, t, nstrata, stratum, likelihood) {
-  stopifnot("'method = hypergeometric' does not support pooling" = method != "hypergeometric")
-  data <- switch(likelihood,
-    "binomial" = list(S = nstrata - 1, n = n.obs[-1], k = t.obs[-1], priorx = prior.x, priorn = prior.n, beta_prior = as.numeric(method == "binomial")),
-    "beta" = list(S = nstrata - 1, t = (t[[1]] * (n.obs[1] - 1) + 0.5) / n.obs[1], n = n.obs[1], s = as.numeric(stratum), priorx = prior.x, priorn = prior.n, beta_prior = as.numeric(method == "binomial"))
-  )
-  raw_prior <- rstan::sampling(
-    object = stanmodels[[paste0("pp_", likelihood)]], data = c(data, use_likelihood = 0), pars = "theta_s", iter = getOption("mcmc.iterations", 2000),
-    warmup = getOption("mcmc.warmup", 1000), chains = getOption("mcmc.chains", 4), cores = getOption("mcmc.cores", 1), seed = ceiling(stats::runif(1, -1000, 1000)),
-    control = list(adapt_delta = 0.95), refresh = 0
-  )
-  raw_posterior <- rstan::sampling(
-    object = stanmodels[[paste0("pp_", likelihood)]], data = c(data, use_likelihood = 1), pars = "theta_s", iter = getOption("mcmc.iterations", 2000),
-    warmup = getOption("mcmc.warmup", 1000), chains = getOption("mcmc.chains", 4), cores = getOption("mcmc.cores", 1), seed = ceiling(stats::runif(1, -1000, 1000)),
-    control = list(adapt_delta = 0.95)
-  )
-  samples <- cbind(rstan::extract(raw_posterior)$theta_s, rstan::extract(raw_prior)$theta_s)
-  stopifnot("Stan model could not be fitted" = ncol(samples) == (nstrata - 1) * 2)
-  return(samples)
-}
-
-.mcmc_analytical <- function(family, nstrata, prior.x, t.obs, prior.n, n.obs, N.units) {
-  iterations <- getOption("mcmc.iterations", 1e5)
-  samples <- matrix(NA, ncol = (nstrata - 1) * 2, nrow = iterations)
-  stratum_indices_prior <- (nstrata + 1):((nstrata - 1) * 2 + 1)
-  stratum_indices_post <- 2:nstrata
-  for (i in stratum_indices_post) {
-    samples[, i - 1] <- switch(family,
-      "poisson" = stats::rgamma(n = iterations, 1 + prior.x + t.obs[i], prior.n + n.obs[i]),
-      "binomial" = stats::rbeta(n = iterations, 1 + prior.x + t.obs[i], prior.n - prior.x + n.obs[i] - t.obs[i]),
-      "hypergeometric" = extraDistr::rbbinom(n = iterations, N.units[i] - n.obs[i], 1 + prior.x + t.obs[i], prior.n - prior.x + n.obs[i] - t.obs[i]) / N.units[i]
-    )
-  }
-  for (i in stratum_indices_prior) {
-    samples[, i - 1] <- switch(family,
-      "poisson" = stats::rgamma(n = iterations, 1 + prior.x, prior.n),
-      "binomial" = stats::rbeta(n = iterations, 1 + prior.x, prior.n - prior.x),
-      "hypergeometric" = extraDistr::rbbinom(n = iterations, N.units[i - nstrata], 1 + prior.x, prior.n - prior.x) / N.units[i - nstrata]
-    )
-  }
-  return(samples)
-}
-
-.mcmc_emulate <- function(likelihood, alternative, nstrata, t.obs, n.obs, N.units) {
-  iterations <- getOption("mcmc.iterations", 1e5)
-  if (alternative == "two.sided") {
-    alpha <- rep(1:0, each = iterations)
-    beta <- 1 - alpha
-    iterations <- iterations * 2
-  } else if (alternative == "less") {
-    alpha <- 1
-    beta <- 0
-  } else {
-    alpha <- 0
-    beta <- 1
-  }
-  samples <- matrix(NA, ncol = (nstrata - 1) * 2, nrow = iterations)
-  stratum_indices_prior <- (nstrata + 1):((nstrata - 1) * 2 + 1)
-  stratum_indices_post <- 2:nstrata
-  for (i in stratum_indices_post) {
-    samples[, i - 1] <- switch(likelihood,
-      "poisson" = stats::rgamma(n = iterations, alpha + t.obs[i], beta + n.obs[i]),
-      "binomial" = stats::rbeta(n = iterations, alpha + t.obs[i], beta + n.obs[i] - t.obs[i]),
-      "hypergeometric" = extraDistr::rbbinom(n = iterations, N.units[i] - n.obs[i], alpha + t.obs[i], beta + n.obs[i] - t.obs[i]) / N.units[i]
-    )
-  }
-  for (i in stratum_indices_prior) {
-    samples[, i - 1] <- switch(likelihood,
-      "poisson" = stats::rgamma(n = iterations, alpha, beta),
-      "binomial" = stats::rbeta(n = iterations, alpha, beta),
-      "hypergeometric" = extraDistr::rbbinom(n = iterations, N.units[i - nstrata], alpha, beta) / N.units[i - nstrata]
-    )
-  }
-  return(samples)
-}
-
-.mcmc_planning <- function(likelihood, x, n, prior) {
+.mcmc_cp <- function(likelihood, x, n, prior, type) {
   data <- list(
     n = n,
     k = ceiling(x),
@@ -624,6 +539,105 @@
   })
   samples <- cbind(rstan::extract(raw_posterior)$theta, rstan::extract(raw_prior)$theta)
   stopifnot("Stan model could not be fitted" = ncol(samples) == 2)
+  return(samples)
+}
+
+.mcmc_pp <- function(likelihood, n.obs, t.obs, t, nstrata, stratum, prior) {
+  stopifnot("'method = hypergeometric' does not support pooling" = prior[["likelihood"]] != "hypergeometric")
+  if (likelihood == "binomial") {
+    data <- list(
+      S = nstrata - 1,
+      n = n.obs[-1],
+      k = t.obs[-1],
+      alpha = prior[["description"]]$alpha,
+      beta = prior[["description"]]$beta,
+      beta_prior = as.numeric(prior[["likelihood"]] == "binomial"),
+      gamma_prior = as.numeric(prior[["likelihood"]] == "poisson"),
+      normal_prior = as.numeric(prior[["likelihood"]] == "normal"),
+      uniform_prior = as.numeric(prior[["likelihood"]] == "uniform"),
+      cauchy_prior = as.numeric(prior[["likelihood"]] == "cauchy"),
+      t_prior = as.numeric(prior[["likelihood"]] == "t"),
+      chisq_prior = as.numeric(prior[["likelihood"]] == "chisq")
+    )
+  } else if (likelihood == "beta") {
+    data <- list(
+      S = nstrata - 1,
+      t = (t[[1]] * (n.obs[1] - 1) + 0.5) / n.obs[1],
+      n = n.obs[1], s = as.numeric(stratum),
+      alpha = prior[["description"]]$alpha,
+      beta = prior[["description"]]$beta,
+      beta_prior = as.numeric(prior[["likelihood"]] == "binomial"),
+      gamma_prior = as.numeric(prior[["likelihood"]] == "poisson"),
+      normal_prior = as.numeric(prior[["likelihood"]] == "normal"),
+      uniform_prior = as.numeric(prior[["likelihood"]] == "uniform"),
+      cauchy_prior = as.numeric(prior[["likelihood"]] == "cauchy"),
+      t_prior = as.numeric(prior[["likelihood"]] == "t"),
+      chisq_prior = as.numeric(prior[["likelihood"]] == "chisq")
+    )
+  }
+  raw_prior <- rstan::sampling(
+    object = stanmodels[[paste0("pp_", likelihood)]], data = c(data, use_likelihood = 0), pars = "theta_s", iter = getOption("mcmc.iterations", 2000),
+    warmup = getOption("mcmc.warmup", 1000), chains = getOption("mcmc.chains", 4), cores = getOption("mcmc.cores", 1), seed = ceiling(stats::runif(1, -1000, 1000)),
+    control = list(adapt_delta = 0.95), refresh = 0
+  )
+  raw_posterior <- rstan::sampling(
+    object = stanmodels[[paste0("pp_", likelihood)]], data = c(data, use_likelihood = 1), pars = "theta_s", iter = getOption("mcmc.iterations", 2000),
+    warmup = getOption("mcmc.warmup", 1000), chains = getOption("mcmc.chains", 4), cores = getOption("mcmc.cores", 1), seed = ceiling(stats::runif(1, -1000, 1000)),
+    control = list(adapt_delta = 0.95), refresh = 0
+  )
+  samples <- cbind(rstan::extract(raw_posterior)$theta_s, rstan::extract(raw_prior)$theta_s)
+  stopifnot("Stan model could not be fitted" = ncol(samples) == (nstrata - 1) * 2)
+  return(samples)
+}
+
+.mcmc_analytical <- function(nstrata, t.obs, n.obs, N.units, prior) {
+  iterations <- getOption("mcmc.iterations", 1e5)
+  samples <- matrix(NA, ncol = nstrata * 2, nrow = iterations)
+  for (i in 1:nstrata) {
+    samples[, i] <- switch(prior[["likelihood"]],
+      "poisson" = stats::rgamma(n = iterations, prior[["description"]]$alpha + t.obs[i], prior[["description"]]$beta + n.obs[i]),
+      "binomial" = stats::rbeta(n = iterations, prior[["description"]]$alpha + t.obs[i], prior[["description"]]$beta + n.obs[i] - t.obs[i]),
+      "hypergeometric" = extraDistr::rbbinom(n = iterations, N.units[i] - n.obs[i], prior[["description"]]$alpha + t.obs[i], prior[["description"]]$beta + n.obs[i] - t.obs[i]) / N.units[i]
+    )
+  }
+  for (i in (nstrata + 1):(nstrata * 2)) {
+    samples[, i] <- switch(prior[["likelihood"]],
+      "poisson" = stats::rgamma(n = iterations, prior[["description"]]$alpha, prior[["description"]]$beta),
+      "binomial" = stats::rbeta(n = iterations, prior[["description"]]$alpha, prior[["description"]]$beta),
+      "hypergeometric" = extraDistr::rbbinom(n = iterations, N.units[i - nstrata], prior[["description"]]$alpha, prior[["description"]]$beta) / N.units[i - nstrata]
+    )
+  }
+  return(samples)
+}
+
+.mcmc_emulate <- function(likelihood, alternative, nstrata, t.obs, n.obs, N.units) {
+  iterations <- getOption("mcmc.iterations", 1e5)
+  if (alternative == "two.sided") {
+    alpha <- rep(1:0, each = iterations)
+    beta <- 1 - alpha
+    iterations <- iterations * 2
+  } else if (alternative == "less") {
+    alpha <- 1
+    beta <- 0
+  } else {
+    alpha <- 0
+    beta <- 1
+  }
+  samples <- matrix(NA, ncol = nstrata * 2, nrow = iterations)
+  for (i in 1:nstrata) {
+    samples[, i] <- switch(likelihood,
+      "poisson" = stats::rgamma(n = iterations, alpha + t.obs[i], beta + n.obs[i]),
+      "binomial" = stats::rbeta(n = iterations, alpha + t.obs[i], beta + n.obs[i] - t.obs[i]),
+      "hypergeometric" = extraDistr::rbbinom(n = iterations, N.units[i] - n.obs[i], alpha + t.obs[i], beta + n.obs[i] - t.obs[i]) / N.units[i]
+    )
+  }
+  for (i in (nstrata + 1):(nstrata * 2)) {
+    samples[, i] <- switch(likelihood,
+      "poisson" = stats::rgamma(n = iterations, alpha, beta),
+      "binomial" = stats::rbeta(n = iterations, alpha, beta),
+      "hypergeometric" = extraDistr::rbbinom(n = iterations, N.units[i - nstrata], alpha, beta) / N.units[i - nstrata]
+    )
+  }
   return(samples)
 }
 

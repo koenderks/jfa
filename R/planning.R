@@ -198,7 +198,7 @@ planning <- function(materiality = NULL,
       prior[["hypotheses"]] <- hypotheses
     }
   } else if (prior) {
-    prior <- auditPrior("default", likelihood, N.units, materiality = materiality, conf.level = conf.level, )
+    prior <- auditPrior("default", likelihood, N.units, materiality = materiality, conf.level = conf.level)
     conjugate_prior <- TRUE
   }
   stopifnot("missing value for 'conf.level'" = !is.null(conf.level))
@@ -286,7 +286,7 @@ planning <- function(materiality = NULL,
         }
       } else {
         stopifnot("likelihood = 'hypergeometric' does not support non-conjugate priors" = likelihood != "hypergeometric")
-        samples <- .mcmc_planning(likelihood, x, i, prior)
+        samples <- .mcmc_cp(likelihood, x, i, prior, type = "planning")
         mle <- .comp_mode_bayes(analytical = FALSE, samples = samples[, 1])
         bound <- .comp_ub_bayes("less", conf.level, analytical = FALSE, samples = samples[, 1])
       }

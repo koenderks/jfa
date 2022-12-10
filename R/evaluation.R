@@ -296,22 +296,32 @@ evaluation <- function(materiality = NULL,
   is_jfa_prior <- inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")
   is_bayesian <- (inherits(prior, "logical") && prior) || is_jfa_prior
   if (is_jfa_prior) {
-    if (prior[["method"]] == "mcmc") {
-      stop("method = 'mcmc' not supported")
+    stopifnot("method = 'mcmc' not supported" = prior[["likelihood"]] != "mcmc")
+    conjugate_prior <- method == prior[["likelihood"]]
+    possible_match <- method %in% c("poisson", "binomial", "hypergeometric") && prior[["likelihood"]] %in% c("poisson", "binomial", "hypergeometric")
+    if (!conjugate_prior && possible_match) {
+      method <- prior[["likelihood"]]
+      conjugate_prior <- TRUE
     }
-    if (method != prior[["likelihood"]]) {
-      message(paste0("Using 'method = ", prior[["likelihood"]], "' from 'prior'"))
-    }
-    prior.x <- prior[["description"]]$implicit.x
-    prior.n <- prior[["description"]]$implicit.n
-    method <- prior[["likelihood"]]
     if (!is.null(prior[["N.units"]])) {
       message(paste0("Using 'N.units = ", prior[["N.units"]], "' from 'prior'"))
       N.units <- prior[["N.units"]]
     }
-  } else {
-    prior.x <- 0
-    prior.n <- 1
+    if (!is.null(materiality) && is.null(prior[["hypotheses"]])) {
+      hypotheses <- list()
+      hypotheses[["hypotheses"]] <- .hyp_string(materiality, "less")
+      hypotheses[["materiality"]] <- materiality
+      hypotheses[["alternative"]] <- "less"
+      hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, N.units, N.units)
+      hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, N.units, N.units)
+      hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
+      hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
+      hypotheses[["density"]] <- .hyp_dens(materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, N.units, N.units)
+      prior[["hypotheses"]] <- hypotheses
+    }
+  } else if (prior) {
+    prior <- auditPrior("default", method, N.units, materiality = materiality, conf.level = conf.level)
+    conjugate_prior <- TRUE
   }
   stopifnot("missing value for 'conf.level'" = !is.null(conf.level))
   valid_confidence <- is.numeric(conf.level) && length(conf.level) == 1 && conf.level > 0 && conf.level < 1
@@ -320,7 +330,7 @@ evaluation <- function(materiality = NULL,
     valid_materiality <- is.numeric(materiality) && materiality > 0 && materiality < 1
     stopifnot("'materiality' must be a single value between 0 and 1" = valid_materiality)
   }
-  valid_test_method <- method %in% c("poisson", "binomial", "hypergeometric")
+  valid_test_method <- method %in% c("poisson", "binomial", "hypergeometric", "normal", "uniform", "cauchy", "t", "chisq")
   if (is_bayesian) {
     stopifnot("'method' should be one of 'poisson', 'binomial', or 'hypergeometric'" = valid_test_method)
   }
@@ -454,31 +464,59 @@ evaluation <- function(materiality = NULL,
     }
   }
   valid_units_n <- all(N.units >= n.obs)
-  stopifnot("all 'N.units' must be > the number of samples" = valid_units_n)
+  stopifnot("all 'N.units' must be >= the number of samples" = valid_units_n)
   if (method == "hypergeometric") {
     stopifnot("missing value for 'N.units'" = !is.null(N.units))
     valid_units <- is.numeric(N.units) && length(N.units) > 0 && all(N.units > 0)
     stopifnot("all values in 'N.units' must be > 0" = valid_units)
     N.units <- ceiling(N.units)
   }
-  nstrata <- length(t.obs) # Population is first 'stratum'
-  use_stratification <- nstrata > 1
+  use_stratification <- length(t.obs) > 1
+  if (pooling == "complete") {
+    nstrata <- 1
+  } else {
+    nstrata <- length(t.obs) # Population is first 'stratum'
+  }
+  no_rows <- length(t.obs) - 1
+  if (is_bayesian) {
+    mcmc_prior <- nstrata > 1
+    mcmc_posterior <- nstrata > 1 || !conjugate_prior
+    if (conjugate_prior) {
+      stratum_samples <- NULL
+    } else {
+      stratum_samples <- matrix(NA, nrow = (getOption("mcmc.iterations", 2000) - getOption("mcmc.warmup", 1000)) * getOption("mcmc.chains", 4), ncol = no_rows * 2)
+    }
+  }
   mle <- lb <- ub <- precision <- p.val <- K <- numeric(nstrata)
   # Compute results
   if (!use_stratification || pooling != "partial") {
     for (i in 1:nstrata) {
       if (valid_test_method) {
         if (is_bayesian) {
-          stratum_alpha <- 1 + prior.x + t.obs[i]
-          if (method == "poisson") {
-            stratum_beta <- prior.n + n.obs[i]
+          if (conjugate_prior) {
+            stratum_alpha <- prior[["description"]]$alpha + t.obs[i]
+            if (method == "poisson") {
+              stratum_beta <- prior[["description"]]$beta + n.obs[i]
+            } else {
+              stratum_beta <- prior[["description"]]$beta + n.obs[i] - t.obs[i]
+            }
+            stratum_N <- N.units[i] - n.obs[i]
+            mle[i] <- .comp_mode_bayes(method, stratum_alpha, stratum_beta, stratum_N)
+            lb[i] <- .comp_lb_bayes(alternative, conf.level, method, stratum_alpha, stratum_beta, stratum_N)
+            ub[i] <- .comp_ub_bayes(alternative, conf.level, method, stratum_alpha, stratum_beta, stratum_N)
           } else {
-            stratum_beta <- prior.n + n.obs[i] - t.obs[i]
+            stopifnot("likelihood = 'hypergeometric' does not support non-conjugate priors" = method != "hypergeometric")
+            samples <- .mcmc_cp(method, t.obs[i], n.obs[i], prior, type = "evaluation")
+            prior_samples <- samples[, 2]
+            post_samples <- samples[, 1]
+            mle[i] <- .comp_mode_bayes(analytical = FALSE, samples = post_samples)
+            lb[i] <- .comp_lb_bayes(alternative, conf.level, analytical = FALSE, samples = post_samples)
+            ub[i] <- .comp_ub_bayes(alternative, conf.level, analytical = FALSE, samples = post_samples)
+            if (i != 1) {
+              stratum_samples[, i - 1] <- post_samples
+              stratum_samples[, no_rows + i - 1] <- prior_samples
+            }
           }
-          stratum_N <- N.units[i] - n.obs[i]
-          mle[i] <- .comp_mode_bayes(method, stratum_alpha, stratum_beta, stratum_N)
-          lb[i] <- .comp_lb_bayes(alternative, conf.level, method, stratum_alpha, stratum_beta, stratum_N)
-          ub[i] <- .comp_ub_bayes(alternative, conf.level, method, stratum_alpha, stratum_beta, stratum_N)
         } else {
           if (method == "hypergeometric") {
             K[i] <- ceiling(materiality * N.units[i])
@@ -505,7 +543,7 @@ evaluation <- function(materiality = NULL,
           "stringer.pvz" = .stringer(taints[[i]], conf.level, n.obs[i], "pvz"),
           "rohrbach" = .rohrbach(taints[[i]], conf.level, n.obs[i], alternative, N.units[i], 2.7),
           "moment" = .moment(taints[[i]], conf.level, n.obs[i], alternative, "accounts"),
-          "coxsnell" = .coxsnell(taints[[i]], conf.level, n.obs[i], alternative, 1, 3, 0.5, 1 + prior.x, prior.n - prior.x),
+          "coxsnell" = .coxsnell(taints[[i]], conf.level, n.obs[i], alternative, 1, 3, 0.5, 1, 1),
           "mpu" = .mpu(taints[[i]], conf.level, alternative, n.obs[i]),
           "direct" = .direct(book_values[[i]], audit_values[[i]], conf.level, alternative, N.items[i], n.obs[i], N.units[i]),
           "difference" = .difference(book_values[[i]], audit_values[[i]], conf.level, alternative, N.items[i], n.obs[i]),
@@ -520,22 +558,22 @@ evaluation <- function(materiality = NULL,
       precision[i] <- .comp_precision(alternative, mle[i], lb[i], ub[i])
     }
     if (use_stratification && pooling == "none") {
-      if (is_bayesian) {
-        stratum_samples <- .mcmc_analytical(method, nstrata, prior.x, t.obs, prior.n, n.obs, N.units)
-      } else {
-        stratum_samples <- .mcmc_emulate(method, alternative, nstrata, t.obs, n.obs, N.units)
+      if (is_bayesian && conjugate_prior) {
+        stratum_samples <- .mcmc_analytical(no_rows, t.obs[-1], n.obs[-1], N.units[-1], prior)
+      } else if (!is_bayesian) {
+        stratum_samples <- .mcmc_emulate(method, alternative, no_rows, t.obs[-1], n.obs[-1], N.units[-1])
       }
     }
   } else {
     stopifnot("pooling = 'partial' only possible when 'prior != FALSE'" = is_bayesian)
     if (broken_taints && has_data) {
-      stratum_samples <- .mcmc_stan(method, prior.x, prior.n, n.obs, t.obs, taints, nstrata, stratum, "beta")
+      stratum_samples <- .mcmc_pp("beta", n.obs, t.obs, taints, nstrata, stratum, prior)
     } else {
       if (broken_taints) {
         message("sum of taints in each stratum is rounded upwards")
         t.obs <- ceiling(t.obs)
       }
-      stratum_samples <- .mcmc_stan(method, prior.x, prior.n, n.obs, t.obs, t = NULL, nstrata, stratum, "binomial")
+      stratum_samples <- .mcmc_pp("binomial", n.obs, t.obs, t = NULL, nstrata, stratum, prior)
     }
     for (i in 2:nstrata) {
       if (is_bayesian) {
@@ -551,9 +589,10 @@ evaluation <- function(materiality = NULL,
       precision[i] <- .comp_precision(alternative, mle[i], lb[i], ub[i])
     }
   }
-  if (use_stratification && pooling != "complete" && valid_test_method) {
-    prior_samples <- .poststratification(stratum_samples[, nstrata:ncol(stratum_samples)], N.units)
-    post_samples <- .poststratification(stratum_samples[, 1:(nstrata - 1)], N.units)
+  use_poststratification <- use_stratification && pooling != "complete" && valid_test_method
+  if (use_poststratification) {
+    prior_samples <- .poststratification(stratum_samples[, (no_rows + 1):ncol(stratum_samples)], N.units[-1])
+    post_samples <- .poststratification(stratum_samples[, 1:no_rows], N.units[-1])
     if (is_bayesian) {
       mle[1] <- .comp_mode_bayes(analytical = FALSE, samples = post_samples)
       if (method == "hypergeometric") {
@@ -603,10 +642,10 @@ evaluation <- function(materiality = NULL,
   # Stratum results
   if (use_stratification) {
     if (pooling == "complete") {
-      mle <- rep(mle[1], nstrata - 1)
-      lb <- rep(lb[1], nstrata - 1)
-      ub <- rep(ub[1], nstrata - 1)
-      precision <- rep(precision[1], nstrata - 1)
+      mle <- rep(mle[1], no_rows)
+      lb <- rep(lb[1], no_rows)
+      ub <- rep(ub[1], no_rows)
+      precision <- rep(precision[1], no_rows)
     } else {
       mle <- mle[-1]
       lb <- lb[-1]
@@ -629,14 +668,14 @@ evaluation <- function(materiality = NULL,
       } else {
         if (alternative == "two.sided") {
           stratum_table[["bf10"]] <- switch(pooling,
-            "complete" = 1 / .bf01_twosided_sumstats(materiality, method, prior.n, prior.x, n.obs[1], t.obs[1], N.units[1]),
-            "none" = 1 / .bf01_twosided_sumstats(materiality, method, prior.n, prior.x, n.obs[-1], t.obs[-1], N.units[-1]),
+            "complete" = 1 / .bf01_twosided_sumstats(materiality, method, prior[["description"]]$alpha, prior[["description"]]$beta, n.obs[1], t.obs[1], N.units[1]),
+            "none" = 1 / .bf01_twosided_sumstats(materiality, method, prior[["description"]]$alpha, prior[["description"]]$beta, n.obs[-1], t.obs[-1], N.units[-1]),
             "partial" = 1 / .bf01_twosided_samples(materiality, nstrata, stratum_samples)
           )
         } else {
           stratum_table[["bf10"]] <- switch(pooling,
-            "complete" = .bf10_onesided_sumstats(materiality, alternative, method, prior.n, prior.x, n.obs[1], t.obs[1], N.units[1]),
-            "none" = .bf10_onesided_sumstats(materiality, alternative, method, prior.n, prior.x, n.obs[-1], t.obs[-1], N.units[-1]),
+            "complete" = .bf10_onesided_sumstats(materiality, alternative, method, prior[["description"]]$alpha, prior[["description"]]$beta, n.obs[1], t.obs[1], N.units[1]),
+            "none" = .bf10_onesided_sumstats(materiality, alternative, method, prior[["description"]]$alpha, prior[["description"]]$beta, n.obs[-1], t.obs[-1], N.units[-1]),
             "partial" = .bf10_onesided_samples(materiality, alternative, nstrata, stratum_samples)
           )
         }
@@ -647,18 +686,9 @@ evaluation <- function(materiality = NULL,
   }
   # Prior distribution
   if (is_bayesian) {
-    analytical <- !use_stratification || pooling == "complete"
-    if (is_jfa_prior && !is.null(prior[["hypotheses"]])) {
-      if (alternative == "greater") {
-        prior[["hypotheses"]]$odds.h1 <- 1 / prior[["hypotheses"]]$odds.h1
-      }
-    } else {
-      prior <- auditPrior("sample", method, result[["N.units"]],
-        materiality = result[["materiality"]], x = prior.x, n = prior.n
-      )
-    }
+    analytical <- !mcmc_prior && !mcmc_posterior
     result[["prior"]] <- prior
-    if (!analytical) {
+    if (mcmc_prior) {
       result[["prior"]]$prior <- "Determined via MCMC sampling"
       result[["prior"]]$plotsamples <- stats::density(ifelse(is.infinite(prior_samples), 1, prior_samples), from = 0, to = 1, n = 1000)
       result[["prior"]]$method <- "mcmc"
@@ -709,7 +739,7 @@ evaluation <- function(materiality = NULL,
     result[["posterior"]] <- list()
     result[["posterior"]]$posterior <- .functional_form(method, post_alpha, post_beta, post_N, analytical)
     result[["posterior"]]$likelihood <- method
-    if (!analytical) {
+    if (mcmc_posterior) {
       result[["posterior"]]$plotsamples <- stats::density(ifelse(is.infinite(post_samples), 1, post_samples), from = 0, to = 1, n = 1000)
       result[["posterior"]]$method <- "mcmc"
     } else {
@@ -729,8 +759,6 @@ evaluation <- function(materiality = NULL,
       } else {
         description[["implicit.n"]] <- description[["beta"]] - result[["t"]]
       }
-      prior_samples <- NULL
-      post_samples <- NULL
     }
     result[["posterior"]][["description"]] <- description
     # Statistics

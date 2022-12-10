@@ -5,9 +5,15 @@ data {
   int<lower=0> n;
   int<lower=1> s[n];
   real<lower=0, upper=1> t[n];
-  real<lower=0> priorx;
-  real<lower=0> priorn;
+  real<lower=0> alpha;
+  real<lower=0> beta;
   int beta_prior;
+  int gamma_prior;
+  int normal_prior;
+  int uniform_prior;
+  int cauchy_prior;
+  int t_prior;
+  int chisq_prior;
   int use_likelihood;
 }
 parameters {
@@ -26,9 +32,19 @@ transformed parameters {
 }
 model {
   if (beta_prior) {
-    theta ~ beta(1 + priorx, priorn - priorx);
-  } else {
-    theta ~ gamma(1 + priorx, priorn);
+    theta ~ beta(alpha, beta);
+  } else if (gamma_prior) {
+    theta ~ gamma(alpha, beta);
+  } else if (normal_prior) {
+    theta ~ normal(alpha, beta);
+  } else if (uniform_prior) {
+    theta ~ uniform(alpha, beta);
+  } else if (cauchy_prior) {
+    theta ~ cauchy(alpha, beta);
+  } else if (t_prior) {
+    theta ~ student_t(alpha, 0, 1);
+  } else if (chisq_prior) {
+    theta ~ chi_square(alpha);
   }
   sigma ~ normal(0, 1);
   alpha_s ~ normal(0, 1);
