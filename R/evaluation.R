@@ -506,7 +506,7 @@ evaluation <- function(materiality = NULL,
             ub[i] <- .comp_ub_bayes(alternative, conf.level, method, stratum_alpha, stratum_beta, stratum_N)
           } else {
             stopifnot("likelihood = 'hypergeometric' does not support non-conjugate priors" = method != "hypergeometric")
-            samples <- .mcmc_cp(method, t.obs[i], n.obs[i], prior, type = "evaluation")
+            samples <- .mcmc_cp(method, t.obs[i], n.obs[i], prior)
             prior_samples <- samples[, 2]
             post_samples <- samples[, 1]
             mle[i] <- .comp_mode_bayes(analytical = FALSE, samples = post_samples)

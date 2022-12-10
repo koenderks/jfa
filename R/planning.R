@@ -286,7 +286,7 @@ planning <- function(materiality = NULL,
         }
       } else {
         stopifnot("likelihood = 'hypergeometric' does not support non-conjugate priors" = likelihood != "hypergeometric")
-        samples <- .mcmc_cp(likelihood, x, i, prior, type = "planning")
+        samples <- .mcmc_cp(likelihood, x, i, prior)
         mle <- .comp_mode_bayes(analytical = FALSE, samples = samples[, 1])
         bound <- .comp_ub_bayes("less", conf.level, analytical = FALSE, samples = samples[, 1])
       }

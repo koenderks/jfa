@@ -511,7 +511,7 @@
   return(poststratified_samples)
 }
 
-.mcmc_cp <- function(likelihood, x, n, prior, type) {
+.mcmc_cp <- function(likelihood, x, n, prior) {
   data <- list(
     n = n,
     k = ceiling(x),
@@ -527,14 +527,28 @@
   )
   suppressWarnings({
     raw_prior <- rstan::sampling(
-      object = stanmodels[[paste0("cp_", likelihood)]], data = c(data, use_likelihood = 0), pars = "theta", iter = getOption("mcmc.iterations", 2000),
-      warmup = getOption("mcmc.warmup", 1000), chains = getOption("mcmc.chains", 4), cores = getOption("mcmc.cores", 1), seed = ceiling(stats::runif(1, -1000, 1000)),
-      control = list(adapt_delta = 0.95), refresh = 0
+      object = stanmodels[[paste0("cp_", likelihood)]],
+      data = c(data, use_likelihood = 0),
+      pars = "theta",
+      iter = getOption("mcmc.iterations", 2000),
+      warmup = getOption("mcmc.warmup", 1000),
+      chains = getOption("mcmc.chains", 4),
+      cores = getOption("mcmc.cores", 1),
+      seed = ceiling(stats::runif(1, -1000, 1000)),
+      control = list(adapt_delta = 0.95),
+      refresh = 0
     )
     raw_posterior <- rstan::sampling(
-      object = stanmodels[[paste0("cp_", likelihood)]], data = c(data, use_likelihood = 1), pars = "theta", iter = getOption("mcmc.iterations", 2000),
-      warmup = getOption("mcmc.warmup", 1000), chains = getOption("mcmc.chains", 4), cores = getOption("mcmc.cores", 1), seed = ceiling(stats::runif(1, -1000, 1000)),
-      control = list(adapt_delta = 0.95), refresh = 0
+      object = stanmodels[[paste0("cp_", likelihood)]],
+      data = c(data, use_likelihood = 1),
+      pars = "theta",
+      iter = getOption("mcmc.iterations", 2000),
+      warmup = getOption("mcmc.warmup", 1000),
+      chains = getOption("mcmc.chains", 4),
+      cores = getOption("mcmc.cores", 1),
+      seed = ceiling(stats::runif(1, -1000, 1000)),
+      control = list(adapt_delta = 0.95),
+      refresh = 0
     )
   })
   samples <- cbind(rstan::extract(raw_posterior)$theta, rstan::extract(raw_prior)$theta)
@@ -576,14 +590,28 @@
     )
   }
   raw_prior <- rstan::sampling(
-    object = stanmodels[[paste0("pp_", likelihood)]], data = c(data, use_likelihood = 0), pars = "theta_s", iter = getOption("mcmc.iterations", 2000),
-    warmup = getOption("mcmc.warmup", 1000), chains = getOption("mcmc.chains", 4), cores = getOption("mcmc.cores", 1), seed = ceiling(stats::runif(1, -1000, 1000)),
-    control = list(adapt_delta = 0.95), refresh = 0
+    object = stanmodels[[paste0("pp_", likelihood)]],
+    data = c(data, use_likelihood = 0),
+    pars = "theta_s",
+    iter = getOption("mcmc.iterations", 2000),
+    warmup = getOption("mcmc.warmup", 1000),
+    chains = getOption("mcmc.chains", 4),
+    cores = getOption("mcmc.cores", 1),
+    seed = ceiling(stats::runif(1, -1000, 1000)),
+    control = list(adapt_delta = 0.95),
+    refresh = 0
   )
   raw_posterior <- rstan::sampling(
-    object = stanmodels[[paste0("pp_", likelihood)]], data = c(data, use_likelihood = 1), pars = "theta_s", iter = getOption("mcmc.iterations", 2000),
-    warmup = getOption("mcmc.warmup", 1000), chains = getOption("mcmc.chains", 4), cores = getOption("mcmc.cores", 1), seed = ceiling(stats::runif(1, -1000, 1000)),
-    control = list(adapt_delta = 0.95), refresh = 0
+    object = stanmodels[[paste0("pp_", likelihood)]],
+    data = c(data, use_likelihood = 1),
+    pars = "theta_s",
+    iter = getOption("mcmc.iterations", 2000),
+    warmup = getOption("mcmc.warmup", 1000),
+    chains = getOption("mcmc.chains", 4),
+    cores = getOption("mcmc.cores", 1),
+    seed = ceiling(stats::runif(1, -1000, 1000)),
+    control = list(adapt_delta = 0.95),
+    refresh = 0
   )
   samples <- cbind(rstan::extract(raw_posterior)$theta_s, rstan::extract(raw_prior)$theta_s)
   stopifnot("Stan model could not be fitted" = ncol(samples) == (nstrata - 1) * 2)
