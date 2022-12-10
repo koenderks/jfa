@@ -21,66 +21,122 @@ library(jfa)
 
 ## Introduction
 
+This vignette illustrates how to use the `planning()` function from the **jfa**
+package to calculate a minimum sample size for audit sampling.
+
 <p align='center'><img src='https://github.com/koenderks/jfa/raw/development/vignettes/img/planning.png' alt='planning' width='100%'></p>
 
-The objective of the planning stage in an audit is to determine a minimum sample size. This vignette shows how to use the `planning()` function to achieve this.
+## Required information
 
-## Setting up the planning
+First, planning a minimum sample requires knowledge of the conditions that lead 
+to acceptance or rejection of the population (i.e., the sampling objectives).
+Typically, sampling objectives can be classified into one or both of the
+following:
 
-Planning a minimum sample size requires knowledge of the conditions that lead to acceptance or rejection of the population (i.e., the sampling objectives). Typically, sampling objectives can be classified into one or both of the following:
+- **Hypothesis testing**: The goal of the sample is to obtain evidence for or
+  against the claim that the misstatement in the population is lower than a
+  given value (i.e., the performance materiality).
+- **Estimation**: The goal of the sample is to obtain an accurate estimate of
+  the misstatement in the population (with a minimum precision).
 
-- **Hypothesis testing**: The goal of the sample is to obtain evidence for or against the claim that the misstatement in the population is lower than a given value (i.e., the performance materiality).
-- **Estimation**: The goal of the sample is to obtain an accurate estimate of the misstatement in the population (with a minimum precision).
+Second, it is advised to specify the expected (or tolerable) misstatements in
+the sample. The expected misstatements are the misstatements that you allow in
+the sample, while still retaining the desired amount of assurance about the 
+population. It is strongly recommended to set the value for the expected
+misstatements in the sample conservatively to minimize the chance of the
+observed misstatements in the sample exceeding the expected misstatements, which
+would imply that insufficient work has been done in the end.
 
-Next to determining the sampling objective(s), it is also important to determine the statistical distribution linking the sample outcomes to the population misstatement (e.g., `poisson`, `binomial`, or `hypergeometric`). All three distributions are standard in an audit sampling context because they are (approximations) of the hypergeometric distribution, however, `poisson` is the default because it is the most conservative of all three distributions.
+Next to determining the sampling objective(s) and the expected misstatements, it
+is also important to determine the statistical distribution linking the sample
+outcomes to the population misstatement. This distribution is called the
+likelihood (i.e., `poisson`, `binomial`, or`hypergeometric`). All three
+aforementioned likelihoods are commonly used in an audit sampling context,
+however, `poisson` is the default likelihood in **jfa** because it is the most
+conservative of the three.
 
-Lastly, it is advised to obtain knowledge of the expected (or tolerable) errors in the sample. It is strongly recommended to set the value for the expected errors in the sample conservatively to minimize the chance of the observed errors in the sample exceeding the expected errors, which would imply that insufficient work has been done in the end.
+## Planning a sample
 
-With the `BuildIt` data set, because the booked amounts (monetary values) of each invoice in the population are given, an auditor may want to make a statement about the amount of misstatement in the population. For illustrative purposes we will tolerate zero misstatements in the sample.
+To illustrate how the `planning()` function can be used to calculate a
+minimum sample size for audit sampling, we will first demonstrate how to set up
+a sample with the purpose of hypothesis testing and subsequently show how to
+plan a sample with the purpose of estimation. In both cases, we will tolerate
+zero misstatements in the sample.
 
 ### Hypothesis testing
 
-First, let's take a look at how you can use the `planning()` function to calculate the minimum sample size for testing the hypothesis that the misstatement in the population is lower than the performance materiality. In this example the performance materiality is set to 5% of the total population value, meaning that the population may not contain more than 5% misstatement.
+First, let's take a look at how you can use the `planning()` function to
+calculate the minimum sample size for testing the hypothesis that the
+misstatement in the population is lower than the performance materiality. In
+this example the performance materiality is set to 5% of the total population
+value, meaning that the population cannot contain more than 5% misstatement.
 
-**Sampling objective**: Calculate a minimum sample size such that, when no misstatements are found in the sample, there is a 95% chance that the misstatement in the population is lower than 5% of the population value.
+**Sampling objective**: Calculate a minimum sample size such that, when no
+misstatements are found in the sample, there is a 95% chance that the
+misstatement in the population is lower than 5% of the population value.
 
-A minimum sample size for this sampling objective can be calculated by specifying the `materiality` parameter in the `planning()` function, see the code below. Next, a summary of the statistical results can be obtained using the `summary()` function. The results show that, given zero tolerable errors, the minimum sample size is 60 units.
+A minimum sample size for this sampling objective can be calculated by
+specifying the `materiality` parameter in the `planning()` function, see the
+command below. Next, a summary of the statistical results can be obtained using
+the `summary()` function. The result shows that, given zero tolerable errors,
+the minimum sample size is 60 units.
 
 ```{r}
-# Classical planning for a performance materiality of 0.05
-stage1 <- planning(materiality = 0.05, expected = 0, likelihood = "poisson", conf.level = 0.95)
-summary(stage1)
+plan <- planning(materiality = 0.05, expected = 0, conf.level = 0.95)
+summary(plan)
 ```
 
 ### Estimation
 
-Next, let's take a look at how you can use the `planning()` function to calculate the minimum sample size for estimating the misstatement in the population with a minimum precision. The precision is defined as the difference between the most likely misstatement and the upper confidence bound on the misstatement. For this example, the minimum precision is set to 2% of the population value.
+Next, let's take a look at how you can use the `planning()` function to
+calculate the minimum sample size for estimating the misstatement in the
+population with a minimum precision. The precision is defined as the difference
+between the most likely misstatement and the upper confidence bound on the
+misstatement. For this example, the minimum precision is set to 2% of the
+population value.
 
-**Sampling objective**: Calculate a minimum sample size such that, when zero misstatements are found in the sample, there is a 95% chance that the misstatement in the population is at most 2% above the most likely misstatement.
+**Sampling objective**: Calculate a minimum sample size such that, when zero
+misstatements are found in the sample, there is a 95% chance that the
+misstatement in the population is at most 2% above the most likely misstatement.
 
-A minimum sample size for this sampling objective can be calculated by specifying the `min.precision` parameter in the `planning()` function, see the code below. The results show that, given zero tolerable errors, the minimum sample size is 150 units.
+A minimum sample size for this sampling objective can be calculated by
+specifying the `min.precision` parameter in the `planning()` function, see the
+command below. The result shows that, given zero tolerable errors, the minimum
+sample size is 150 units.
 
 ```{r}
-# Classical planning for a minimum precision of 0.02
-stage1 <- planning(min.precision = 0.02, expected = 0, likelihood = "poisson", conf.level = 0.95)
-summary(stage1)
+planning(min.precision = 0.02, expected = 0, conf.level = 0.95)
 ```
 
 ### Bayesian planning
 
-Performing Bayesian planning requires an input for the `prior` argument in the `planning()` function. Simply setting `prior = TRUE` performs Bayesian planning using **jfa**'s [default priors](https://koenderks.github.io/jfa/articles/creating-prior.html#default-priors-method-default).
+Performing Bayesian planning requires an input for the `prior` argument in the
+`planning()` function. Setting `prior = TRUE` performs Bayesian planning using a
+[default prior](https://koenderks.github.io/jfa/articles/creating-prior.html#default-priors-method-default)
+conjugate to the specified `likelihood`. For example, the command below uses a
+default gamma(1, 1) prior distribution to plan the sample.
 
 ```{r}
-# Bayesian planning for a performance materiality of 0.05 using a default prior
-stage1 <- planning(materiality = 0.05, expected = 0, likelihood = "poisson", conf.level = 0.95, prior = TRUE)
-summary(stage1)
+plan <- planning(materiality = 0.05, expected = 0, conf.level = 0.95, prior = TRUE)
+summary(plan)
 ```
 
-Naturally, the input for the `prior` argument can also be an object created by the `auditPrior` function:
+You can inspect how the prior distribution compares to the expected
+posterior distribution by using the `plot()` function. The expected posterior
+distribution is the posterior distribution that would occur if you actually
+observed the planned sample containing the expected misstatements.
 
 ```{r}
-# Bayesian planning for a performance materiality of 0.05 using a custom prior
-prior <- auditPrior(likelihood = "poisson", method = "param", alpha = 1, beta = 10)
-stage1 <- planning(materiality = 0.05, expected = 0, conf.level = 0.95, prior = prior)
-summary(stage1)
+plot(plan)
+```
+
+The input for the `prior` argument can also be an object created by the
+`auditPrior` function. If `planning()` receives a prior for which there is a
+conjugate likelihood available, it will inherit the likelihood from the prior.
+For example, the command below uses a custom beta(1, 10) prior distribution to
+plan the sample using the binomial likelihood.
+
+```{r}
+prior <- auditPrior(method = "param", likelihood = "binomial", alpha = 1, beta = 10)
+planning(materiality = 0.05, expected = 0, conf.level = 0.95, prior = prior)
 ```

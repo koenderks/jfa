@@ -109,6 +109,7 @@ For example, the command below creates an impartial beta prior distribution for
 a performance materiality of 5 percent.
 
 *This method requires that you specify a value for the `materiality`.*
+
 *This method requires the `poisson`, `binomial`, or `hypergeometric` likelihood*
 
 ```{r}
@@ -123,7 +124,8 @@ with `method = 'hyp'` in combination with `p.hmin`. For example, the command
 below incorporates the information that the hypothesis of tolerable misstatement 
 has a probability of 60% into a beta prior distribution.
 
-*Note: This method requires that you specify a value for the `materiality`.*
+*This method requires that you specify a value for the `materiality`.*
+
 *This method requires the `poisson`, `binomial`, or `hypergeometric` likelihood*
 
 ```{r}
@@ -221,11 +223,5 @@ evaluation(materiality = 0.05, x = 1, n = 60, prior = prior)
 
 ## References
 
-- Derks, K., de Swart, J., Wagenmakers, E.-J., and Wetzels, R. (2022).
-  An impartial Bayesian hypothesis test for audit sampling. *PsyArXiv*.
-  https://doi.org/10.31234/osf.io/8nf3e
-- Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., and Wetzels,
-  R. (2021). Priors in a Bayesian audit: How integration of existing information 
-  into the prior distribution can improve audit transparency and efficiency.
-  *International Journal of Auditing*, 25(3), 621-636.
-  https://doi.org/10.1111/ijau.12240
+- Derks, K., de Swart, J., Wagenmakers, E.-J., and Wetzels, R. (2022). An impartial Bayesian hypothesis test for audit sampling. *PsyArXiv*. https://doi.org/10.31234/osf.io/8nf3e
+- Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., and Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information  into the prior distribution can improve audit transparency and efficiency. *International Journal of Auditing*, 25(3), 621-636. https://doi.org/10.1111/ijau.12240

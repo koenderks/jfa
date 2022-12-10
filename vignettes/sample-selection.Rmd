@@ -21,33 +21,64 @@ library(jfa)
 
 ## Introduction
 
+This vignette outlines the most commonly used sampling methodology for auditing
+and shows how to select a sample using these methods with the **jfa** package.
+
 <p align='center'><img src='https://github.com/koenderks/jfa/raw/development/vignettes/img/selection.png' alt='selection' width='100%'></p>
 
-Auditors are often required to assess balances or processes that involve a large number of items. Since they cannot inspect all of these items individually, they need to select a subset (i.e., a sample) from the total population to make a statement about a certain characteristic of the population. For this purpose, various selection methodologies are available that have become standard in an audit context. However, in practice it seems that the distinction between sampling methods ---and when to use them--- is not always easy to make. 
-
-This vignette outlines the most commonly used sampling methodology for auditing and shows how to select a sample using these methods with the **jfa** package.
+Auditors are often required to assess balances or processes that involve a large
+number of items. Since they cannot inspect all of these items individually, they
+need to select a subset (i.e., a sample) from the total population to make a
+statement about a certain characteristic of the population. For this purpose,
+various selection methodologies are available that have become standard in an
+audit context.
 
 ### Sampling units
 
-Selecting a subset from the population requires knowledge of the sampling units; physical representations of the population that needs to be audited. Generally, the auditor has to choose between two types of sampling units: individual items in the population or individual monetary units in the population. In order to perform statistical selection, the population must be divided into individual sampling units that can be assigned a probability to be included in the sample. The total collection of all sampling units which have been assigned a selection probability is called the sampling frame.
+Selecting a subset from the population requires knowledge of the sampling units;
+physical representations of the population that needs to be audited. Generally,
+the auditor has to choose between two types of sampling units: individual items
+in the population or individual monetary units in the population. In order to
+perform statistical selection, the population must be divided into individual
+sampling units that can be assigned a probability to be included in the sample.
+The total collection of all sampling units which have been assigned a selection
+probability is called the sampling frame.
 
 #### Items
 
-A sampling unit for record (i.e., attributes) sampling is generally a characteristic of an item in the population. For example, suppose that you inspect a population of receipts. A possible sampling unit for record sampling can be the date of payment of the receipt. When a sampling unit (e.g., date of payment) is selected by the sampling method, the population item that corresponds to the sampled unit is included in the sample.
+A sampling unit for record (i.e., attributes) sampling is generally a
+characteristic of an item in the population. For example, suppose that you
+inspect a population of receipts. A possible sampling unit for record sampling
+can be the date of payment of the receipt. When a sampling unit (e.g., date of
+payment) is selected by the sampling method, the population item that
+corresponds to the sampled unit is included in the sample.
 
 #### Monetary units
 
-A sampling unit for monetary unit sampling is different than a sampling unit for record sampling in that it is an individual monetary unit within an item or transaction, like an individual dollar. For example, a single sampling unit can be the 10$^{th}$ dollar from a specific receipt in the population. When a sampling unit (e.g., individual dollar) is selected by the sampling method, the population item that includes the sampling unit is included in the sample.
+A sampling unit for monetary unit sampling is different than a sampling unit for
+record sampling in that it is an individual monetary unit within an item or
+transaction, like an individual dollar. For example, a single sampling unit can
+be the 10$^{th}$ dollar from a specific receipt in the population. When a
+sampling unit (e.g., individual dollar) is selected by the sampling method, the
+population item that includes the sampling unit is included in the sample.
 
 ### Sampling methods
 
-This section discusses the four sampling methods implemented in **jfa**. First, for notation, let the the population $N$ be defined as the total set of individual sampling units $x_i$.
+This section discusses the four sampling methods implemented in **jfa**. First,
+for notation, let the the population $N$ be defined as the total set of
+individual sampling units $x_i$.
 
 $$N = \{x_1, x_2, \dots, x_N\}.$$
 
-In statistical sampling, every sampling unit $x_i$ in the population must receive a selection probability $p(x_i)$. The purpose of the sampling method is to provide a framework to assign selection probabilities to each of the sampling units, and subsequently draw sampling units from the population until a set of size $n$ has been created.
+In statistical sampling, every sampling unit $x_i$ in the population must
+receive a selection probability $p(x_i)$. The purpose of the sampling method is
+to provide a framework to assign selection probabilities to each of the sampling
+units, and subsequently draw sampling units from the population until a set of
+size $n$ has been created.
 
-The next section discusses which sampling methods are available in **jfa**. To illustrate the outcomes for different sampling methods, we will use the `BuildIt` data set that can be loaded using the code below.
+The next section discusses which sampling methods are available in **jfa**. To
+illustrate the outcomes for different sampling methods, we will use the
+`BuildIt` data set that can be loaded using the code below.
 
 ```{r}
 data(BuildIt)
@@ -55,19 +86,31 @@ data(BuildIt)
 
 #### Fixed interval sampling (Systematic sampling)
 
-Fixed interval sampling is a method designed for yielding representative samples from monetary populations. The algorithm determines a uniform interval on the (optionally ranked) sampling units. Next, a starting point is handpicked or randomly selected in the first interval and a sampling unit is selected throughout the population at each of the uniform intervals from the starting point. For example, if the interval has a width of 10 sampling units and sampling unit number 5 is chosen as the starting point, the sampling units 5, 15, 25, etc. are selected to be included in the sample.
+Fixed interval sampling is a method designed for yielding representative samples
+from monetary populations. The algorithm determines a uniform interval on the
+(optionally ranked) sampling units. Next, a starting point is handpicked or
+randomly selected in the first interval and a sampling unit is selected
+throughout the population at each of the uniform intervals from the starting
+point. For example, if the interval has a width of 10 sampling units and
+sampling unit number 5 is chosen as the starting point, the sampling units 5,
+15, 25, etc. are selected to be included in the sample.
 
-The number of required intervals $I$ can be determined by dividing the number of sampling units in the population by the required sample size:
+The number of required intervals $I$ can be determined by dividing the number of
+sampling units in the population by the required sample size:
 
 $$I = \frac{N}{n},$$
 
-in which $n$ is the required sample size and $N$ is the total number of sampling units in the population.
+in which $n$ is the required sample size and $N$ is the total number of sampling
+units in the population.
 
-If the space between the selected sampling units is equal, the selection probability for each sampling unit is theoretically defined as:
+If the space between the selected sampling units is equal, the selection
+probability for each sampling unit is theoretically defined as:
 
 $$p(x) = \frac{1}{I},$$
 
-with the property that the space between selected units $i$ is the same as the interval $I$, see Figure 1. However, in practice the selection is deterministic and completely depends on the chosen starting points (using `start`).
+with the property that the space between selected units $i$ is the same as the
+interval $I$, see Figure 1. However, in practice the selection is deterministic
+and completely depends on the chosen starting points (using `start`).
 
 <center>
 
@@ -75,13 +118,32 @@ with the property that the space between selected units $i$ is the same as the i
 
 </center>
 
-The fixed interval method yields a sample that allows every sampling unit in the population an equal chance of being selected. However, the fixed interval method has the property that all items in the population with a monetary value larger than the interval $I$ have an selection probability of one because one of these items' sampling units are always selected from the interval. Note that, if the population is arranged randomly with respect to its deviation pattern, fixed interval sampling is equivalent to random selection.
+The fixed interval method yields a sample that allows every sampling unit in the
+population an equal chance of being selected. However, the fixed interval method
+has the property that all items in the population with a monetary value larger
+than the interval $I$ have an selection probability of one because one of these
+items' sampling units are always selected from the interval. Note that, if the
+population is arranged randomly with respect to its deviation pattern, fixed
+interval sampling is equivalent to random selection.
 
-**Advantage(s):** The advantage of the fixed interval sampling method is that it is often simple to understand and fast to perform. Another advantage is that, in monetary unit sampling, all items that are greater than the calculated interval will be included in the sample. In record sampling, since units can be ranked on the basis of value, there is also a guarantee that some large items will be in the sample.
+**Advantage(s):** The advantage of the fixed interval sampling method is that it
+is often simple to understand and fast to perform. Another advantage is that, in
+monetary unit sampling, all items that are greater than the calculated interval
+will be included in the sample. In record sampling, since units can be ranked on
+the basis of value, there is also a guarantee that some large items will be in
+the sample.
 
-**Disadvantage(s):** A pattern in the population can coincide with the selected interval, rendering the sample less representative. What is sometimes seen as an added complication for this method is that the sample is hard to extend after drawing the initial sample. This is due to the chance of selecting the same sampling unit. However, by removing the already selected sampling units from the population and redrawing the intervals this problem can be efficiently solved.
+**Disadvantage(s):** A pattern in the population can coincide with the selected
+interval, rendering the sample less representative. What is sometimes seen as an
+added complication for this method is that the sample is hard to extend after
+drawing the initial sample. This is due to the chance of selecting the same
+sampling unit. However, by removing the already selected sampling units from the
+population and redrawing the intervals this problem can be efficiently solved.
 
-As an example, the code below shows how to apply the fixed interval sampling method in a record sampling and a monetary unit sampling setting. Note that, by default, the first sampling unit from each interval is selected. However, this can be changed by setting the argument `start = 1` to a different value.
+As an example, the code below shows how to apply the fixed interval sampling
+method in a record sampling and a monetary unit sampling setting. Note that, by
+default, the first sampling unit from each interval is selected. However, this
+can be changed by setting the argument `start = 1` to a different value.
 
 ```{r}
 # Record sampling
@@ -97,9 +159,14 @@ head(sample$sample, n = 6)
 
 #### Cell sampling
 
-The cell sampling method divides the (optionally ranked) population into a set of intervals $I$ that are computed through the previously given equations. Within each interval, a sampling unit is selected by randomly drawing a number between 1 and the interval range $I$. This causes the space $i$ between the sampling units to vary.
+The cell sampling method divides the (optionally ranked) population into a set
+of intervals $I$ that are computed through the previously given equations.
+Within each interval, a sampling unit is selected by randomly drawing a number
+between 1 and the interval range $I$. This causes the space $i$ between the
+sampling units to vary.
 
-Like in the fixed interval sampling method, the selection probability for each sampling unit is defined as:
+Like in the fixed interval sampling method, the selection probability for each
+sampling unit is defined as:
 
 $$p(x) = \frac{1}{I}.$$
 
@@ -109,13 +176,24 @@ $$p(x) = \frac{1}{I}.$$
 
 </center>
 
-The cell sampling method has the property that all items in the population with a monetary value larger than twice the interval $I$ have a selection probability of one.
+The cell sampling method has the property that all items in the population with
+a monetary value larger than twice the interval $I$ have a selection probability
+of one.
 
-**Advantage(s):** More sets of samples are possible than in fixed interval sampling, as there is no systematic interval $i$ to determine the selections. It is argued that the cell sampling algorithm offers a solution to the pattern problem in fixed interval sampling.
+**Advantage(s):** More sets of samples are possible than in fixed interval
+sampling, as there is no systematic interval $i$ to determine the selections. It
+is argued that the cell sampling algorithm offers a solution to the pattern
+problem in fixed interval sampling.
 
-**Disadvantage(s):** A disadvantage of this sampling method is that not all items in the population with a monetary value larger than the interval have a selection probability of one. Besides, population items can be in two adjacent cells, thereby creating the possibility that an items is included in the sample twice.
+**Disadvantage(s):** A disadvantage of this sampling method is that not all
+items in the population with a monetary value larger than the interval have a
+selection probability of one. Besides, population items can be in two adjacent
+cells, thereby creating the possibility that an items is included in the sample
+twice.
 
-As an example, the code below shows how to apply the cell sampling method in a record sampling and a monetary unit sampling setting. It is important to set a seed to make the results reproducible.
+As an example, the code below shows how to apply the cell sampling method in a
+record sampling and a monetary unit sampling setting. It is important to set a
+seed to make the results reproducible.
 
 ```{r}
 # Record sampling
@@ -133,11 +211,18 @@ head(sample$sample, n = 6)
 
 #### Random sampling
 
-Random sampling is the most simple and straight-forward selection method The random sampling method provides a method that allows every sampling unit in the population an equal chance of being selected, meaning that every combination of sampling units has the same probability of being selected as every other combination of the same number of sampling units. Simply put, the algorithm draws a random selection of size $n$ of the sampling units. Therefore, the selection probability for each sampling unit is defined as:
+Random sampling is the most simple and straight-forward selection method The
+random sampling method provides a method that allows every sampling unit in the
+population an equal chance of being selected, meaning that every combination of
+sampling units has the same probability of being selected as every other
+combination of the same number of sampling units. Simply put, the algorithm
+draws a random selection of size $n$ of the sampling units. Therefore, the
+selection probability for each sampling unit is defined as:
 
 $$p(x) = \frac{1}{N},$$
 
-where $N$ is the number of units in the population. To clarify this procedure, Figure 3 provides an illustration of the random sampling method.
+where $N$ is the number of units in the population. To clarify this procedure,
+Figure 3 provides an illustration of the random sampling method.
 
 <center>
 
@@ -145,11 +230,18 @@ where $N$ is the number of units in the population. To clarify this procedure, F
 
 </center>
 
-**Advantage(s):** The random sampling method yields an optimal random selection, with the additional advantage that the sample can be easily extended by applying the same method again.
+**Advantage(s):** The random sampling method yields an optimal random selection,
+with the additional advantage that the sample can be easily extended by applying
+the same method again.
 
-**Disadvantages:** Because the selection probabilities are equal for all sampling units there is no guarantee that items with a large monetary value in the population will be included in the sample.
+**Disadvantages:** Because the selection probabilities are equal for all
+sampling units there is no guarantee that items with a large monetary value in
+the population will be included in the sample.
 
-As an example, the code below shows how to apply the random sampling (with our without replacement using `replace`) method in a record sampling and a monetary unit sampling setting. It is important to set a seed to make results reproducible.
+As an example, the code below shows how to apply the random sampling (with our
+without replacement using `replace`) method in a record sampling and a monetary
+unit sampling setting. It is important to set a seed to make results
+reproducible.
 
 ```{r}
 # Record sampling
@@ -167,14 +259,22 @@ head(sample$sample, n = 6)
 
 #### Modified Sieve Sampling
 
-The fourth option for the sampling method is modified sieve sampling (Hoogduin, Hall, & Tsay, 2010). The algorithm starts by selecting a standard uniform random number $R_i$ between 0 and 1 for each item in the population. Next, the sieve ratio:
+The fourth option for the sampling method is modified sieve sampling (Hoogduin,
+Hall, & Tsay, 2010). The algorithm starts by selecting a standard uniform random
+number $R_i$ between 0 and 1 for each item in the population. Next, the sieve
+ratio:
 
 $$S_i = \frac{Y_i}{R_i}$$
 
-is computed for each item by dividing the book value of that item by the random number. Lastly, the items in the population are sorted by their sieve ratio $S$ (in decreasing order) and the top $n$ items are selected for inspection. In contrast to the classical sieve sampling method (Rietveld, 1978), the modified sieve sampling method provides
-precise control over sample sizes. 
+is computed for each item by dividing the book value of that item by the random
+number. Lastly, the items in the population are sorted by their sieve ratio $S$
+(in decreasing order) and the top $n$ items are selected for inspection. In
+contrast to the classical sieve sampling method (Rietveld, 1978), the modified
+sieve sampling method provides precise control over sample sizes.
 
-As an example, the code below shows how to apply the modified sieve sampling method in a monetary unit sampling setting. It is important to set a seed to make results reproducible.
+As an example, the code below shows how to apply the modified sieve sampling
+method in a monetary unit sampling setting. It is important to set a seed to
+make results reproducible.
 
 ```{r}
 # Monetary unit sampling
@@ -185,7 +285,12 @@ head(sample$sample, n = 6)
 
 ### Ordering or randomizing the population
 
-The `selection()` function has additional arguments (`order`, `decreasing`, and `randomize`) to preprocess your population before selection. The `order` argument takes as input a column name in `data` which determines the order of the population. For example, you can order the population from lowest book value to highest book value before engaging in selection. In this case, you should use the `decreasing = FALSE` argument.
+The `selection()` function has additional arguments (`order`, `decreasing`,
+and `randomize`) to preprocess your population before selection. The `order`
+argument takes as input a column name in `data` which determines the order of
+the population. For example, you can order the population from lowest book value
+to highest book value before engaging in selection. In this case, you should use
+the `decreasing = FALSE` argument.
 
 ```{r}
 # Ordering population from lowest 'bookValue' to highest 'bookValue' before MUS
@@ -198,7 +303,8 @@ sample <- selection(
 head(sample$sample, n = 6)
 ```
 
-The `randomize` argument can be used to randomly shuffle the items in the population before selection.
+The `randomize` argument can be used to randomly shuffle the items in the
+population before selection.
 
 ```{r}
 # Randomly shuffle population items before MUS

@@ -21,13 +21,25 @@ library(jfa)
 
 ## Introduction
 
-Welcome to the 'Get started' vignette of the **jfa** package. **jfa** is an R package that provides Bayesian and classical statistical methods for audit sampling and data auditing. First, the package provides functions for planning, performing, evaluating, and reporting an audit sample compliant with international standards on auditing. Second, the package includes functions for auditing data, such as testing the distribution of first digits of a data set against Benford's law.
+Welcome to the 'Get started' vignette of the **jfa** package. **jfa** is an R
+package that provides Bayesian and classical statistical methods for audit
+sampling and data auditing. First, the package provides functions for planning,
+performing, evaluating, and reporting an audit sample compliant with
+international standards on auditing. Second, the package includes functions for
+auditing data, such as testing the distribution of first digits of a data set
+against Benford's law.
 
-This vignette provides a simple explanation of the functionality in the package. For a more detailed explanation of the functions in the package, see the other vignettes at the [package website](https://koenderks.github.io/).
+This vignette provides a simple explanation of the functionality in the package.
+For a more detailed explanation of the functions in the package, see the other
+vignettes at the [package website](https://koenderks.github.io/).
 
 ## Audit sampling
 
-**jfa** provides a user-friendly interface for statistical audit sampling. The standard audit sampling workflow is divided into four distinct parts: planning a sample, selecting the sample from the population, executing the audit and evaluating the misstatement by extrapolating the errors in the sample to the population.
+**jfa** provides a user-friendly interface for statistical audit sampling. The
+standard audit sampling workflow is divided into four distinct parts: planning a
+sample, selecting the sample from the population, executing the audit and
+evaluating the misstatement by extrapolating the errors in the sample to the
+population.
 
 <center>
 
@@ -35,11 +47,15 @@ This vignette provides a simple explanation of the functionality in the package.
 
 </center>
 
-See the package vignette [Audit sampling: Get started](https://koenderks.github.io/jfa/articles/audit-sampling.html) for more details about **jfa**'s audit sampling functionality.
+See the package vignette[Audit sampling: Get started](https://koenderks.github.io/jfa/articles/audit-sampling.html)
+for more details about **jfa**'s audit sampling functionality.
 
 ### Functions and intended usage
 
-To illustrate **jfa**'s' statistical audit sampling functionality, consider the `BuildIt` data set that comes with the package. This data consists of 3500 financial statement line items, each of which has a booked value and (for illustrative purposes) a true (audit) value.
+To illustrate **jfa**'s' statistical audit sampling functionality, consider the
+`BuildIt` data set that comes with the package. This data consists of 3500 items
+from a financial statement line item, each of which has a booked value and
+(for illustrative purposes) a true (audit) value.
 
 ```{r}
 # Load the BuildIt population
@@ -47,7 +63,12 @@ data("BuildIt")
 head(BuildIt)
 ```
 
-The first step in the audit sampling workflow is to calculate a minimum required sample size given the purpose of the sample. You can use the sample to 1) obtain evidence for or against the hypothesis that the misstatement in the population is lower than the performance materiality and / or 2) estimate the misstatement in the population. The `planning()` function can be used to calculate this minimum required sample size.
+The first step in the audit sampling workflow is to calculate a minimum required
+sample size given the purpose of the sample. You can use the sample to 1) obtain
+evidence for or against the hypothesis that the misstatement in the population is
+lower than the performance materiality and / or 2) estimate the misstatement in
+the population. The `planning()` function can be used to calculate this minimum
+required sample size.
 
 ```{r}
 # Stage 1: Planning
@@ -58,7 +79,8 @@ stage1 <- planning(
 summary(stage1)
 ```
 
-The `selection()` function can be used to select the required samples from the population.
+The `selection()` function can be used to select the required samples from the
+population.
 
 ```{r}
 # Stage 2: Selection
@@ -72,7 +94,8 @@ summary(stage2)
 sample <- stage2[["sample"]]
 ```
 
-The `evaluation()` function can be used to evaluate the misstatement in the sample.
+The `evaluation()` function can be used to evaluate the misstatement in the
+sample.
 
 ```{r}
 # Stage 4: Evaluation
@@ -86,9 +109,12 @@ summary(stage4)
 
 ## Data auditing
 
-The `digit_test()` function can be used to test the distribution of leading or last digits in a variable against a pre-specified distribution (e.g., Benford's law).
+The `digit_test()` function can be used to test the distribution of leading or
+last digits in a variable against a pre-specified distribution (e.g., Benford's
+law).
 
-See the package vignette [Data auditing: Get started](https://koenderks.github.io/jfa/articles/data-auditing.html) for more details about **jfa**'s data auditing functionality.
+See the package vignette [Data auditing: Get started](https://koenderks.github.io/jfa/articles/data-auditing.html)
+for more details about **jfa**'s data auditing functionality.
 
 ### Functions and intended usage
 
@@ -99,7 +125,8 @@ print(x)
 plot(x)
 ```
 
-The `repeated_test()` function can be used to test the numbers in a variable for repeated values.
+The `repeated_test()` function can be used to test the numbers in a variable for
+repeated values.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 # Repeated values test
