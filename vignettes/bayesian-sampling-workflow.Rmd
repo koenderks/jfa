@@ -21,36 +21,93 @@ library(jfa)
 
 ## Introduction
 
-This vignette aims to show how the **jfa** package facilitates auditors in the standard audit sampling workflow (hereafter "audit workflow"). In this example of the audit workflow, we will consider the case of BuildIt. BuildIt is a fictional construction company in the United States that is being audited by Laura, an external auditor for a fictional audit firm. At the end of the year, BuildIt has provided a summary of its financial situation in the financial statements. Laura's job as an auditor is to formulate an opinion about the fairness and correctness of BuildIt's financial statements. 
+This vignette aims to show how the **jfa** package facilitates auditors in the
+standard audit sampling workflow (hereafter "audit workflow"). In this example
+of the audit workflow, we will consider the case of BuildIt. BuildIt is a
+fictional construction company in the United States that is being audited by
+an external auditor for a fictional audit firm. At the end of the year, BuildIt
+has provided a summary of its financial situation in the financial
+statements. The objective of the auditor is to formulate an opinion about the
+fairness BuildIt's financial statements.
 
-Therefore, Laura needs to obtain sufficient and appropriate evidence for the claim that the misstatement in the financial statements is lower than a certain amount: the materiality. If the financial statements contain errors that are considered material, this means that the errors in the financial statements are large enough that they might influence the decision of someone relying on these financial statements. For Laura, the materiality is set at 5% of the total value of the financial statements.
+The auditor needs to obtain sufficient and appropriate evidence for the
+hypothesis that the misstatement in the financial statements is lower than a
+certain amount: the materiality. If the financial statements contain
+misstatements that are considered material, this means that the errors in the
+financial statements are large enough that they might influence the decision of
+stakeholders relying on these financial statements. The performance materiality
+is the materiality that applies to each of the populations on which the
+financial statements are based. For this example, the performance materiality is
+set at 5% of the total value of the population.
 
-Since BuildIt is a small company, there is only a single population upon which the financial statements are based. Therefore, laura can use the materiality for the overall financial statements as the performance materiality for the single population. Specifically, BuildIt's population consists of 3500 items. However, before assessing the details in the population, Laura has performed a test of BuildIt internal control systems and found that they were quite reliable.
-
-In order to formulate an opinion about the misstatement in the population, Laura separates her audit workflow into four stages. First, she will plan the size of the subset she needs to inspect from the financial statements to make a well-substantiated inference about them as a whole. Second, she will select the required subset from the financial statements. Third, she will inspect the selected subset and determines the audit (true) value of the items. Fourth, she will use the information from her inspected subset to make an inference about the misstatement in the population (e.g., in this case also the financial statements as a whole). To start her workflow, Laura first loads BuildIt's financial statements in R.
+In this example, we focus on the `BuildIt` data set that comes with the **jfa**
+package.
 
 ```{r}
 data("BuildIt")
+head(BuildIt)
 ```
+
+The population of interest consists of 3500 items, each with a booked value.
+Let's assume that, before performing audit sampling, the auditor has assessed
+the quality of BuildIt's internal control systems and found that they were
+working properly.
+
+In order to formulate an opinion about the misstatement in the population, the
+auditor separates their audit workflow into four stages. First, they will need
+to plan the minimum size of a sample they need to inspect to perform inference
+about the population. Second, they will need to select the required sample from
+the population. Third, they will need to inspect the selected sample and
+determine the audit (true) value of the items it contains. Fourth, they will
+need to use the information from the inspected sample to perform inference about
+the misstatement in the population.
 
 <p align='center'><img src='https://github.com/koenderks/jfa/raw/development/vignettes/img/workflow.png' alt='workflow' width='100%'></p>
 
 ## Setting up the audit
 
-Laura wants to make a statement that, with 95% confidence, the misstatement in the financial statements is lower than the performance materiality of 5%. Based on last year's audit at BuildIt, where the upper bound of the misstatement turned out to be 2.5%, she wants to tolerate at most 2.5% errors in the intended sample. Laura can therefore re-formulate her statistical statement as that she wants to conclude that, when 2.5% errors are found in her sample, she can conclude with 95% confidence, that the misstatement in the population is lower than the materiality of 5%. Below, Laura defines the materiality, confidence level, and expected errors.
+The auditor wants to make a statement that, with 95% confidence, the misstatement
+in the population is lower than the performance materiality of 5%. Based on last
+year's audit at BuildIt, where the upper bound of the misstatement turned out to
+be 2.5%, she wants to tolerate at most 2.5% errors in the intended sample. The
+auditor can therefore re-formulate their statistical statement as that they want
+to conclude that, when 2.5% errors are found in the sample, they can conclude
+with 95% confidence that the misstatement in the population is lower than the
+performance materiality of 5%.
+
+Below, the auditor defines the performance materiality, confidence level, and
+expected misstatements in the sample.
 
 ```{r}
-# Specify the confidence, materiality, and expected errors.
+# Specify the confidence, materiality, and expected misstatements.
 confidence <- 0.95 # 95%
 materiality <- 0.05 # 5%
 expected <- 0.025 # 2.5%
 ```
 
-Many audits are performed according to the *audit risk model (ARM)*, which determines that the uncertainty about Laura's statement as a whole (1 - her confidence) is a factor of three terms: the inherent risk, the control risk, and the detection risk. Inherent risk is the risk posed by an error in BuildIt's financial statement that could be material, before consideration of any related control systems (e.g., computer systems). Control risk is the risk that a material misstatement is not prevented or detected by BuildIt's internal control systems. Detection risk is the risk that Laura will fail to find material misstatements that exist in an BuildIt's financial statements. The *ARM* is practically useful because for a given level of audit risk, the tolerable detection risk bears an inverse relation to the other two risks. The *ARM* is useful for Laura because it enables her to incorporate prior knowledge on BuildIt's organization to increase the required risk that she will fail to find material misstatements. According to the *ARM*, the audit risk will then be retained.
+Many audits are performed according to the *audit risk model (ARM)*, which
+determines that the uncertainty about the auditor's statement as a whole
+(1 - the confidence) is a factor of three terms: the inherent risk, the control
+risk, and the detection risk. Inherent risk is the risk posed by an error in
+BuildIt's financial statement that could be material, before consideration of
+any related control systems (e.g., computer systems). Control risk is the risk
+that a material misstatement is not prevented or detected by BuildIt's internal
+control systems. Detection risk is the risk that Laura will fail to find
+material misstatements that exist in an BuildIt's financial statements. The
+*ARM* is practically useful because for a given level of audit risk, the
+tolerable detection risk bears an inverse relation to the other two risks. The
+*ARM* is useful for the auditor because it enables them to incorporate existing
+information on BuildIt's organization to increase the required risk that they
+will fail to find a material misstatement.
 
 $$ \text{Audit risk} = \text{Inherent risk} \,\times\, \text{Control risk} \,\times\, \text{Detection risk}$$
 
-Usually the auditor judges inherent risk and control risk on a three-point scale consisting of low, medium, and high. Different audit firms handle different standard percentages for these categories. Laura's firm defines the probabilities of low, medium, and high respectively as 50%, 60%, and 100%. Because Laura performed testing of BuildIt's computer systems, she assesses the control risk as medium (60%).
+Usually the auditor judges inherent risk and control risk on a three-point scale
+consisting of low, medium, and high. Different audit firms handle different
+standard percentages for these categories. The auditor's firm defines the
+probabilities of low, medium, and high respectively as 50%, 60%, and 100%.
+Because the auditor assessed BuildIt's internal control systems, they assess the
+control risk as medium (60%).
 
 ```{r}
 # Specify the inherent risk (ir) and control risk (cr).
@@ -62,14 +119,24 @@ cr <- 0.6 # 60%
 
 <p align='center'><img src='https://github.com/koenderks/jfa/raw/development/vignettes/img/planning.png' alt='planning' width='100%'></p>
 
-Laura can choose to either perform a frequentist analysis, where she uses the increased detection risk as her level of uncertainty, or perform a Bayesian analysis, where she captures the information in the control risk in a prior distribution. For this example, we will show how Laura performs a Bayesian analysis. A frequentist analysis can easily be done through the following functions by setting `prior = FALSE`. In a frequentist audit, Laura immediately starts at step 1 and uses the value `adjustedConfidence` as her new value for `confidence`.
+The auditor can choose to either perform a frequentist analysis, where they use
+the increased detection risk as their level of uncertainty, or perform a
+Bayesian analysis, where they incorporate the information about the control risk
+into a prior distribution. For this example, we will show how to perform a
+Bayesian analysis. A frequentist analysis can easily be done through the
+following functions by setting `prior = FALSE`. In a frequentist analysis, the
+auditor uses the value `c.adj` as their new value for `confidence`.
 
 ```{r}
 # Adjust the required confidence for a frequentist analysis.
 c.adj <- 1 - ((1 - confidence) / (ir * cr))
 ```
 
-However, in a Bayesian audit, Laura starts at step 0 by defining the prior distribution that corresponds to her assessment of the control risk. She assumes the likelihood for a sample of $n$ observations, in which $k$ were in error, to be `poisson`. Using the `auditPrior()` function, she can create a prior distribution that incorporates the information in the risk assessments from the *ARM*. For more information on how this is done, see Derks et al. (2019).
+However, in a Bayesian audit, the auditor starts at step 0 by defining the prior
+distribution that corresponds to their assessment of the control risk. Using the
+`auditPrior()` function, she can create a prior distribution that incorporates
+the information in the risk assessments from the *ARM*. For more information on
+how this is done, see Derks et al. (2019).
 
 ```{r}
 # Step 0: Create a prior distribution according to the audit risk model.
@@ -79,32 +146,36 @@ prior <- auditPrior(
 )
 ```
 
-Laura can inspect the resulting prior distribution with the `summary()` function.
-
-```{r}
-summary(prior)
-```
-
 The prior distribution can be shown by using the `plot()` function.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(prior)
 ```
 
-Now that the prior distribution is specified, Laura can calculate the required sample size for her desired statement by using the `planning()` function. She uses the `prior` object as input for the `planning()` function to use her prior distribution.
+Now that the prior distribution is specified, Laura can calculate the required
+sample size for her desired inference by using the `planning()` function. She
+uses the `prior` object as input for the `planning()` function.
 
 ```{r}
 # Step 1: Calculate the required sample size.
 stage1 <- planning(materiality = materiality, expected = expected, conf.level = confidence, prior = prior)
 ```
 
-Laura can then inspect the result from her planning procedure by using the `summary()` function. Her result tells her that, given her prior distribution she needs to audit a sample of 178 transactions so that, when at most 4.45 errors are found, she can conclude with 95% confidence that the maximum error in BuildIt's financial statements is lower the materiality of 5%. 
+The auditor can then inspect the result from her planning procedure by using the 
+`summary()` function. The result show that, given the prior distribution, the
+auditor needs to select a sample of 178 items so that, when at most 4.45
+misstatements are found, they can conclude with 95% confidence that the
+misstatement in BuildIt's financial statements is lower the performance
+materiality of 5%.
 
 ```{r}
 summary(stage1)
 ```
 
-Laura can inspect how the prior distribution compares to the expected posterior distribution by using the `plot()` function. The expected posterior distribution is the posterior distribution that would occur if Laura actually observed a sample of 178 transactions, from which 4.45 were in error.
+The auditor can inspect how the prior distribution compares to the expected
+posterior distribution by using the `plot()` function. The expected posterior
+distribution is the posterior distribution that would occur if the auditor
+actually observed a sample of 178 items, from which 4.45 were misstated.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(stage1)
@@ -114,16 +185,31 @@ plot(stage1)
 
 <p align='center'><img src='https://github.com/koenderks/jfa/raw/development/vignettes/img/selection.png' alt='selection' width='100%'></p>
 
-Laura is now ready to select the required 178 transactions from the financial statements. She can choose to do this according to one of two statistical methods. In *record sampling* (`units = "items"`), inclusion probabilities are assigned on the transaction level, treating transactions with a high value and a low value the same, a transaction of $5,000 is equally likely to be selected as a transaction of $1,000. In *monetary unit sampling* (`units = "values"`), inclusion probabilities are assigned on the level of individual monetary units (e.g., a dollar). When a dollar is selected to be in the sample, the transaction that includes that dollar is selected. This favors higher transactions, as a transaction of \$5,000 is five times more likely to be selected than a transaction of \$1,000. 
+The auditor is now ready to select the required 178 items from the population.
+They can choose to do this according to one of two statistical methods. In
+*record sampling* (`units = "items"`), inclusion probabilities are assigned on
+the item level, treating item with a high value and a low value the same, an 
+item of $5,000 is equally likely to be selected as an item of $1,000. In 
+*monetary unit sampling* (`units = "values"`), inclusion probabilities are
+assigned on the level of individual monetary units (e.g., a dollar). When a
+dollar is selected to be in the sample, the item that includes that dollar is
+selected. This favors items with a higher value, as an item with a value of 
+\$5,000 is now five times more likely to be selected than an item with a value
+of \$1,000.
 
-Laura chooses to use *monetary unit sampling*, as she wants to include more high-valued transactions. The `selection()` function allows her to sample from the financial statements. She uses the `stage1` object as an input for the `selection()` function.
+The auditor chooses to use *monetary unit sampling*, as they wants to include
+more high-valued items. The `selection()` function enables them to select the
+sample from the population. She uses the `stage1` object as an input for the
+`selection()` function, since this passes the calculated sample size to the
+function.
 
 ```{r}
 # Step 2: Draw a sample from the financial statements.
 stage2 <- selection(data = BuildIt, size = stage1, units = "values", values = "bookValue", method = "interval")
 ```
 
-Laura can inspect the outcomes of her sampling procedure by using the `summary()` function.
+Like before, the auditor can inspect the outcomes of their sampling procedure\
+by using the `summary()` function.
 
 ```{r}
 summary(stage2)
@@ -131,14 +217,19 @@ summary(stage2)
 
 ## Stage 3: Executing the audit
 
-The selected sample can be isolated by indexing the `sample` object from the sampling result.
+The selected sample can be isolated by indexing the `sample` object from the
+sampling result.
 
 ```{r}
 # Step 3: Isolate the sample for execution of the audit.
 sample <- stage2$sample
 ```
 
-Now Laura can execute her audit by annotating the sample with their audit value (for exampling by writing the sample to a *.csv* file using `write.csv()`. She can then load her annotated sample back into R for further evaluation.
+Next, the auditor can execute the audit by annotating the items in the sample
+with their audit values (for exampling by writing the sample to a *.csv* file
+using `write.csv()`. They can then load the annotated sample back into the R
+session for further evaluation. For this example, the audit values of the sample
+items are already included in the `auditValue` column of the data set.
 
 ```{r, eval = FALSE}
 # To write the sample to a .csv file:
@@ -148,13 +239,14 @@ write.csv(x = sample, file = "auditSample.csv", row.names = FALSE)
 sample <- read.csv(file = "auditSample.csv")
 ```
 
-For this example, the audit values of the sample are already included in the `auditValue` column of the data set.
-
 ## Stage 4: Evaluating the sample
 
 <p align='center'><img src='https://github.com/koenderks/jfa/raw/development/vignettes/img/evaluation.png' alt='evaluation' width='100%'></p>
 
-Using her annotated sample, Laura can perform her inference with the `evaluation()` function. By passing the `priorResult` object to the function, she automatically sets `method = "binomial"` to be consistent with her prior distribution.
+Using the annotated sample, the auditor can perform inference about the
+misstatement in the population via the `evaluation()` function. By passing the
+`prior` object to the function, it automatically sets `method = "binomial"` to
+be consistent with the prior distribution.
 
 ```{r}
 # Step 4: Evaluate the sample.
@@ -164,13 +256,18 @@ stage4 <- evaluation(
 )
 ```
 
-Laura can inspect the outcomes of her inference by using the `summary()` function. Her resulting upper bound is 2.278%, which is lower than the materiality of 5%. The output tells Laura the correct conclusion immediately.
+The auditor can inspect the outcomes of their inference by using the `summary()`
+function. The resulting upper bound is 2.278%, which is lower than the
+performance materiality of 5%. Therefore, the auditor can concluse that there is
+a 95% probability that the misstatement in BuildIt's population is lower than
+2.278%.
 
 ```{r}
 summary(stage4)
 ```
 
-She can inspect the prior and posterior distribution by using the `plot()` function. The shaded area quantifies the area under the posterior distribution that contains 95% of the probability, which ends at 2.278%. Therefore, Laura can state that there is a 95% probability that the misstatement in BuildIt's population is lower than 2.278%.
+They can inspect the prior and posterior distribution by using the `plot()`
+function.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(stage4)
@@ -178,7 +275,11 @@ plot(stage4)
 
 ## Conclusion
 
-Since the 95% upper confidence bound on the misstatement in population is lower than the performance materiality Laura has obtained sufficient evidence to conclude that there is less than 5% risk that the population contains material misstatement. Laura can report her outcomes using the `report()` function.
+Since the 95% upper credible bound on the misstatement in population is lower
+than the performance materiality, the auditor has obtained sufficient evidence
+to conclude that the population does not contain material misstatements. The
+auditor can create a `html` or `pdf` report of the statistical results using
+the `report()` function, as shown below.
 
 ```{r, eval = FALSE}
 report(stage4, file = "report.html")
