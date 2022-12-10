@@ -552,7 +552,7 @@
     )
   })
   samples <- cbind(rstan::extract(raw_posterior)$theta, rstan::extract(raw_prior)$theta)
-  stopifnot("Stan model could not be fitted" = ncol(samples) == 2)
+  stopifnot("Stan model could not be fitted..check your priors" = !is.null(samples) && ncol(samples) == 2)
   return(samples)
 }
 
@@ -614,7 +614,7 @@
     refresh = 0
   )
   samples <- cbind(rstan::extract(raw_posterior)$theta_s, rstan::extract(raw_prior)$theta_s)
-  stopifnot("Stan model could not be fitted" = ncol(samples) == (nstrata - 1) * 2)
+  stopifnot("Stan model could not be fitted...check your priors" = !is.null(samples) && ncol(samples) == (nstrata - 1) * 2)
   return(samples)
 }
 
