@@ -115,7 +115,7 @@
 #' \itemize{
 #'  \item{\code{default}:   This method produces a \emph{gamma(1, 1)},
 #'    \emph{beta(1, 1)}, \emph{beta-binomial(N, 1, 1)}, \emph{normal(0.5, 1000)}
-#'    , \emph{cauchy(0, 1)}, \emph{student-t(1)}, or \emph{chi-squared(1)} prior
+#'    , \emph{cauchy(0, 1000)}, \emph{student-t(1)}, or \emph{chi-squared(1)} prior
 #'    distribution.
 #'    These prior distributions are indifferent towards the possible values of
 #'    the misstatement.}
@@ -301,7 +301,7 @@ auditPrior <- function(method = c(
       "hypergeometric" = 1,
       "normal" = 1000,
       "uniform" = 1,
-      "cauchy" = 2,
+      "cauchy" = 1000,
       "t" = NA,
       "chisq" = NA
     )

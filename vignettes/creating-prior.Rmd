@@ -21,195 +21,211 @@ library(jfa)
 
 ## Introduction
 
-Bayesian statistics enables the incorporation of existing information into the sampling procedure via the prior distribution. The information in the prior is then revised using the information from a sample to come to an overall conclusion. The use of the prior distribution can potentially decrease the amount of audit work required to achieve the desired assurance, thereby increasing your efficiency as an auditor. For example, when you have information from the auditee's internal controls that indicates a low-risk profile, you may build on this information to require less evidence from substantive testing. Be aware that all information that you incorporate into the statistical analysis should be justified. What information can be incorporated into the prior distribution depends on what type of information is available, the quality of that information, and the situation at hand. When the auditor has decided what kind of information they want to incorporate into a prior distribution, they can use the `auditPrior()` function to calculate the corresponding parameters of the prior distribution. Below we discuss the various types of audit information that **jfa** is able to incorporate into a prior distribution.
+This vignette discusses how to set up a prior distribution for audit sampling
+using the `auditPrior()` function in the **jfa** package.
 
-First, we set some default options for the confidence, performance materiality, the likelihood, and the expected errors in the sample.
+Bayesian statistics enables auditors to incorporate existing information about
+the misstatement into the sampling procedure via the prior distribution. After
+observing data, the information in the prior is updated to come to an overall
+conclusion about the misstatement in the population. The advantage of using a
+prior distribution is that it makes the underlying assumptions explicit and can
+therefore decrease the amount of audit work required to achieve the desired
+assurance. For example, when you have information from the auditee's internal
+controls that indicates a low-risk profile, this information can be incorporated
+into the prior distribution in order to require less evidence from tests of
+details. Note that all incorporated prior information should be justified with
+appropriate audit evidence. What information can be incorporated into the prior
+distribution depends on what type of information is available, the quality of
+that information, and the situation at hand.
 
-```{r}
-confidence <- 0.95 # 95% confidence
-likelihood <- "binomial" # Binomial likelihood
-materiality <- 0.05 # Performance materiality of 5%
-expected <- 0.01 # 1% errors expected in sample
-```
+## Creating a prior distribution
+
+The `auditPrior()` function is used to specify a prior distribution for audit
+sampling. Below is an enumeration of the several ways that a prior distribution
+can be constructed using this function.
 
 ### Default priors (`method = 'default'`)
 
-The default prior distributions are created using `method = 'default'`. **jfa**'s default priors satisfy two criteria: 1) they contain relatively little information about the misstatement parameter and 2) they are proper (i.e., they integrate to 1). These priors are the the gamma(1, 1) distribution as a conjugate prior for the Poisson likelihood, the beta(1, 1) distribution as a conjugate prior for the binomial likelihood, and the beta-binomial(N, 1, 1) distribution as a conjugate prior for the hypergeometric likelihood.
+The default prior distributions are created using `method = 'default'`.
+**jfa**'s default priors satisfy two criteria: 1) they contain relatively little
+information about the population misstatement and 2) they are proper (i.e., they
+integrate to 1). The default priors in **jfa** are:
+
+* `likelihood = 'poisson'`: gamma($\alpha$ = 1, $\beta$ = 1)
+* `likelihood = 'binomial'`: beta($\alpha$ = 1, $\beta$ = 1)
+* `likelihood = 'hypergeometric'`: beta-binomial(N, $\alpha$ = 1, $\beta$ = 1)
+* `likelihood = 'normal'`: normal($\mu$ = 0, $\sigma$ = 1000)
+* `likelihood = 'uniform'`: uniform(min = 0, max = 1) 
+* `likelihood = 'cauchy'`: Cauchy($x_0$ = 0, $\gamma$ = 1000)
+* `likelihood = 't'`: Student-t(df = 1)
+* `likelihood = 'chisq'`: chi-squared(df = 1)
 
 ```{r}
-prior1 <- auditPrior(method = "default", likelihood = likelihood, expected = expected, conf.level = confidence)
-summary(prior1)
+prior <- auditPrior(method = "default", likelihood = "binomial")
+summary(prior)
 ```
 
-You can visually inspect the prior distribution using the `plot()` function.
+All prior distributions can be visually inspected via the `plot()` function.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
-plot(prior1)
+plot(prior)
 ```
 
-### Prior distributions with classical properties (`method = 'strict'`)
+### Priors with custom parameters (`method = 'param'`)
 
-You can construct an improper prior distribution with classical properties using `method = 'strict'`. The posterior distribution of from this prior yields the same results as the classical methodology with respect to sample sizes and upper limits, but is only proper once a single non-misstated unit is present in the sample (Derks et al., 2022).
+You can manually specify the parameters of the prior distribution with
+`method = 'param'` and the `alpha` and `beta` arguments, which correspond to the
+first and (optionally) second parameter of the prior as described above. For
+example, the commands below create a beta(2, 10) prior distribution, a
+normal(0.025, 0.05) prior distribution, and a Student-t(0.01) prior
+distribution.
 
 ```{r}
-prior2 <- auditPrior(method = "strict", likelihood = likelihood)
-summary(prior2)
+auditPrior(method = "param", likelihood = "binomial", alpha = 2, beta = 10)
+auditPrior(method = "param", likelihood = "normal", alpha = 0.025, beta = 0.05)
+auditPrior(method = "param", likelihood = "t", alpha = 0.01)
 ```
 
-You can visually inspect the prior distribution using the `plot()` function.
+### Improper priors (`method = 'strict'`)
 
-```{r fig.align="center", fig.height=4, fig.width=6}
-plot(prior2)
-```
+You can construct an improper prior distribution with classical properties using
+`method = 'strict'`. The posterior distribution of from this prior yields the
+same results as the classical methodology with respect to sample sizes and upper
+limits, but is only proper once a single non-misstated unit is present in the 
+sample (Derks et al., 2022). For example, the command below creates an improper
+beta(1, 0) prior distribution.
 
-### Custom prior distributions (`method = 'param'`)
-
-You can manually specify the $\alpha$ and $\beta$ parameters of the prior distribution using `method = 'param'` in combination with the `alpha` and `beta` arguments. As an example, the code below creates a beta(2, 10) prior distribution.
+*This method requires the `poisson`, `binomial`, or `hypergeometric` likelihood*
 
 ```{r}
-prior3 <- auditPrior(method = "param", likelihood = likelihood, alpha = 2, beta = 10)
-summary(prior3)
+auditPrior(method = "strict", likelihood = "binomial")
 ```
 
-You can visually inspect the prior distribution using the `plot()` function.
+### Impartial priors (`method = 'impartial'`)
 
-```{r fig.align="center", fig.height=4, fig.width=6}
-plot(prior3)
+You can incorporate the assumption that tolerable misstatement is equally likely
+as intolerable misstatement (Derks et al., 2022) using `method = 'impartial'`.
+For example, the command below creates an impartial beta prior distribution for
+a performance materiality of 5 percent.
+
+*This method requires that you specify a value for the `materiality`.*
+*This method requires the `poisson`, `binomial`, or `hypergeometric` likelihood*
+
+```{r}
+auditPrior(method = "impartial", likelihood = "binomial", materiality = 0.05)
 ```
 
-### Prior distributions with equal prior probabilities (`method = 'impartial'`)
+### Priors with custom prior probabilities (`method = 'hyp'`)
 
-You can incorporate the assumption that tolerable misstatement is equally likely as intolerable misstatement (Derks et al., 2022) using `method = 'impartial'`. As an example, the code below incorporates this assumption into a prior distribution.
+You can manually assign prior probabilities to the hypothesis of tolerable 
+misstatement and the hypotheses of intolerable misstatement (Derks et al., 2021)
+with `method = 'hyp'` in combination with `p.hmin`. For example, the command
+below incorporates the information that the hypothesis of tolerable misstatement 
+has a probability of 60% into a beta prior distribution.
 
 *Note: This method requires that you specify a value for the `materiality`.*
+*This method requires the `poisson`, `binomial`, or `hypergeometric` likelihood*
 
 ```{r}
-prior4 <- auditPrior(
-  method = "impartial", likelihood = likelihood, expected = expected, conf.level = confidence,
-  materiality = materiality
-)
-summary(prior4)
+auditPrior(method = "hyp", likelihood = "binomial", materiality = 0.05, p.hmin = 0.6)
 ```
 
-You can visually inspect the prior distribution using the `plot()` function.
+### Priors based on the Audit Risk Model (`method = 'arm'`)
 
-```{r fig.align="center", fig.height=4, fig.width=6}
-plot(prior4)
-```
+You can translate risk assessments from the Audit Risk Model (inherent risk and
+internal control risk) into a prior distribution (Derks et al., 2021) using
+`method = 'arm'` in combination with the `ir` and `cr` arguments. For example,
+the command below incorporates the information that the inherent risk is equal
+to 90% and internal control risk is equal to 60% into a beta prior distribution.
 
-### Prior distributions with custom prior probabilities (`method = 'hyp'`)
-
-You can manually assign prior probabilities to the hypothesis of tolerable misstatement and the hypotheses of intolerable misstatement (Derks et al., 2021) with `method = 'hyp'` in combination with `p.hmin`. As an example, the code below incorporates the information that the hypothesis of tolerable misstatement has a probability of 60% into a prior distribution.
-
-*Note: This method requires that you specify a value for the `materiality`.*
+*This method requires the `poisson`, `binomial`, or `hypergeometric` likelihood*
 
 ```{r}
-prior5 <- auditPrior(
-  method = "hyp", likelihood = likelihood, expected = expected, conf.level = confidence,
-  materiality = materiality, p.hmin = 0.6
-)
-summary(prior5)
+auditPrior(method = "arm", likelihood = "binomial", materiality = 0.05, ir = 0.9, cr = 0.6)
 ```
 
-You can visually inspect the prior distribution using the `plot()` function.
+### Priors based on the Bayesian Risk Assessment Model (`method = 'bram'`)
 
-```{r fig.align="center", fig.height=4, fig.width=6}
-plot(prior5)
-```
+You can incorporate information about the mode and the upper bound of the prior
+distribution using `method = 'bram'`. For example, the code below incorporates
+the information that the mode of the prior distribution is 1% and the upper
+bound is 60% into a beta prior distribution.
 
-### Prior distributions using the Audit Risk Model (`method = 'arm'`)
-
-You can translate the risk assessments from the Audit Risk Model (inherent risk and internal control risk) into a prior distribution (Derks et al., 2021) using `method = 'arm'` in combination with the `ir` and `cr` arguments. As an example, the code below incorporates the information that the inherent risk is equal to 90% and that the internal control risk is equal to 60% into a prior distribution. 
+*This method requires the `poisson`, `binomial`, or `hypergeometric` likelihood*
 
 ```{r}
-prior6 <- auditPrior(
-  method = "arm", likelihood = likelihood, expected = expected, conf.level = confidence,
-  materiality = materiality, ir = 0.9, cr = 0.6
-)
-summary(prior6)
+auditPrior(method = "bram", likelihood = "binomial", expected = 0.01, materiality = 0.05, ub = 0.6)
 ```
 
-You can visually inspect the prior distribution using the `plot()` function.
+### Priors based on an earlier sample (`method = 'sample'`)
 
-```{r fig.align="center", fig.height=4, fig.width=6}
-plot(prior6)
-```
+You can incorporate information from an earlier sample into the prior
+distribution (Derks et al., 2021) using `method = 'sample'` in combination with
+`x` and `n`. For example, the command below incorporates the information from
+an earlier sample of 30 items in which 0 misstatements were found into a beta
+prior distribution.
 
-### Prior distributions using the Bayesian Risk Assessment Model (`method = 'bram'`)
-
-You can incorporate information about the expected errors (mode) and the upper confidence bound of the prior distribution according to the Bayesian Risk Assessment Model (BRAM) using `method = 'bram'`. As an example, the code below incorporates the information that the mode of the prior distribution is 1% and the upper bound is 60%.
+*This method requires the `poisson`, `binomial`, or `hypergeometric` likelihood*
 
 ```{r}
-prior7 <- auditPrior(
-  method = "bram", likelihood = likelihood, expected = expected, conf.level = confidence,
-  materiality = materiality, ub = 0.6
-)
-summary(prior7)
+auditPrior(method = "sample", likelihood = "binomial", x = 0, n = 30)
 ```
 
-You can visually inspect the prior distribution using the `plot()` function.
+### Priors based on a weighted earlier sample (`method = 'factor'`)
 
-```{r fig.align="center", fig.height=4, fig.width=6}
-plot(prior7)
-```
+You can incorporate information from last years results, weighted by a factor
+(Derks et al., 2021), into the prior distribution using `method = 'factor'` in
+combination with `x` and `n`. For example, the command below incorporates the
+information from a last years results (a sample of 58 items in which 0
+misstatements were found), weighted by a factor 0.7, into a beta prior
+distribution.
 
-### Prior distributions from an earlier sample (`method = 'sample'`)
-
-You can incorporate information from an earlier sample into the prior distribution (Derks et al., 2021) using `method = 'sample'` in combination with `x` and `n`. As an example, the code below incorporates the information from an earlier sample of 30 items in which 0 misstatements were found into a prior distribution.
+*This method requires the `poisson`, `binomial`, or `hypergeometric` likelihood*
 
 ```{r}
-prior8 <- auditPrior(
-  method = "sample", likelihood = likelihood, expected = expected, conf.level = confidence,
-  materiality = materiality, x = 0, n = 30
-)
-summary(prior8)
+auditPrior(method = "factor", likelihood = "binomial", x = 0, n = 58, factor = 0.7)
 ```
 
-You can visually inspect the prior distribution using the `plot()` function.
+## Using a prior distribution
 
-```{r fig.align="center", fig.height=4, fig.width=6}
-plot(prior8)
-```
+The objects returned by the `auditPrior()` function can be used as input for the
+`prior` argument in the `planning()` and `evaluation()` functions. Below is
+small demonstration of how the prior distribution can be constructed using these
+functions.
 
-### Prior distributions from a weighted earlier sample (`method = 'factor'`)
+### Planning a sample
 
-You can incorporate information from last years results, weighted by a factor (Derks et al., 2021), into the prior distribution using `method = 'factor'` in combination with `x` and `n`. As an example, the code below incorporates the information from a last years results (a sample of 58 items in which 0 misstatements were found), weighted by a factor 0.7, into a prior distribution.
+The prior distribution can be used the planning stage to calculate a minimum
+sample size by providing the objected returned by the `auditPrior()` function to
+the `planning()` function. For example, the command below calculates the minimum
+sample size to test the misstatement in the population against a performance
+materiality of 5%, while using a beta(1, 10) prior distribution.
 
 ```{r}
-prior9 <- auditPrior(
-  method = "factor", likelihood = likelihood, expected = expected, conf.level = confidence,
-  materiality = materiality, x = 0, n = 58, factor = 0.7
-)
-summary(prior9)
+prior <- auditPrior(method = "param", likelihood = "binomial", alpha = 1, beta = 10)
+planning(materiality = 0.05, likelihood = "binomial", prior = prior)
 ```
 
-You can visually inspect the prior distribution using the `plot()` function.
+### Evaluating a sample
 
-```{r fig.align="center", fig.height=4, fig.width=6}
-plot(prior9)
-```
-
-## Using a prior distribution in other functions
-
-Bayesian statistics allows the auditor to build on their existing information. Therefore, the objects returned by the `auditPrior()` function can be used as input for the `prior` argument in the `planning()` and `evaluation()` functions.
-
-### Combining `auditPrior()` with `planning()`
-
-The prior distribution can be used the planning stage to calculate a minimum sample size by providing the objected returned by the `auditPrior()` function to the `planning()` function. For example, the code below calculates the minimum sample size to test the misstatement in the population against a performance materiality of 5%, while incorporating the information in `prior9`.
+The prior distribution can be used the evaluation stage by providing the
+objected returned by the `auditPrior()` function to the `evaluation()` function.
+For example, the command below evaluates the misstatement in the population with
+respect to a performance materiality of 5% after seeing a sample of 60 items
+with 1 misstatement, while using a normal(0.025, 0.05) prior distribution.
 
 ```{r}
-planning(materiality = materiality, expected = expected, conf.level = confidence, prior = prior9)
-```
-
-### Combining `auditPrior()` with `evaluation()`
-
-The prior distribution can be used the evaluation stage by providing the objected returned by the `auditPrior()` function to the `evaluation()` function. For example, the code below evaluates the misstatement in the population with respect to the performance materiality of 5% after seeing a sample of 60 items with 1 misstatement, while incorporating the information in `prior8`.
-
-```{r}
-evaluation(materiality = materiality, conf.level = confidence, x = 1, n = 60, prior = prior9)
+prior <- auditPrior(method = "param", likelihood = "normal", alpha = 0.025, beta = 0.05)
+evaluation(materiality = 0.05, x = 1, n = 60, prior = prior)
 ```
 
 ## References
 
-- Derks, K., de Swart, J., Wagenmakers, E.-J., and Wetzels, R. (2022). An impartial Bayesian hypothesis test for audit sampling. *PsyArXiv*. https://doi.org/10.31234/osf.io/8nf3e
-- Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., and Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. *International Journal of Auditing*, 25(3), 621-636. https://doi.org/10.1111/ijau.12240
+- Derks, K., de Swart, J., Wagenmakers, E.-J., and Wetzels, R. (2022).
+  An impartial Bayesian hypothesis test for audit sampling. *PsyArXiv*.
+  https://doi.org/10.31234/osf.io/8nf3e
+- Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., and Wetzels,
+  R. (2021). Priors in a Bayesian audit: How integration of existing information 
+  into the prior distribution can improve audit transparency and efficiency.
+  *International Journal of Auditing*, 25(3), 621-636.
+  https://doi.org/10.1111/ijau.12240
