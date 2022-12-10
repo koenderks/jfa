@@ -21,75 +21,178 @@ library(jfa)
 
 ## Introduction
 
+This vignette demonstrates how to evaluate a sample with the `evaluation()`
+function from the **jfa** package.
+
 <p align='center'><img src='https://github.com/koenderks/jfa/raw/development/vignettes/img/evaluation.png' alt='evaluation' width='100%'></p>
 
-This vignette demonstrates how to evaluate a sample with the `evaluation()` function from the **jfa** package. In auditing, the goal of the evaluation is typically to estimate the misstatement in the population based on a sample, or to test the misstatement in the population against a critical upper limit, referred to as the performance materiality. Evaluating an audit sample using the `evaluation()` function requires that the sample data is available in one of two forms:
+In auditing, the goal of the evaluation is typically to estimate the
+misstatement in the population based on a sample, or to test the misstatement in
+the population against a critical upper limit, referred to as the performance
+materiality.
 
-- **Summary statistics:** This includes (a vector of) the number of items (`n`), (a vector of) the sum of errors / taints (`x`) and optionally (a vector of) the number of units in the population (`N.units`).
-- **Data:** A `data.frame` containing a numeric column with book values (`values`), a numeric column with audit (true) values (`values.audit`) and optionally a factor column indicating stratum membership (`strata`).
+## Required information
 
-By default, `evaluation()` estimates the population misstatement and returns a point estimate as well as a (`conf.level` $times$ 100)% confidence / credible interval around this estimate. However, in audit sampling, the population is typically subject to a certain maximum tolerable misstatement defined by the performance materiality $theta_max$. Using the `materiality` argument, you can provide this critical value to the `evaluation()` function as a fraction. In addition to the estimation that is performed by default, specifying `materiality` triggers the comparison of two competing hypotheses. Which hypotheses are being compared depends on the input for the `alternative` argument: 
+Evaluating an audit sample using the `evaluation()` function requires that the
+sample data is available in one of two forms:
 
-- `alternative = "less"` (default): $H_1:\theta<\theta_{max}$ versus $H_0:\theta\geq\theta_{max}$
-- `alternative = "greater"`: $H_1:\theta>\theta_{max}$ versus $H_0:\theta\leq\theta_{max}$
-- `alternative = "two.sided"`: $H_1:\theta \neq\theta_{max}$ versus $H_0:\theta=\theta_{max}$
+- **Summary statistics:** This includes (a vector of) the number of items (`n`),
+  (a vector of) the sum of errors / taints (`x`) and optionally (a vector of)
+  the number of units in the population (`N.units`).
+- **Data:** A `data.frame` containing a numeric column with book values
+  (`values`), a numeric column with audit (true) values (`values.audit`) and
+  optionally a factor column indicating stratum membership (`strata`).
+
+By default, `evaluation()` estimates the population misstatement and returns a
+point estimate as well as a (`conf.level` $\times$ 100)% confidence / credible
+interval around this estimate. However, in audit sampling, the population is
+typically subject to a certain maximum tolerable misstatement defined by the
+performance materiality $\theta_{max}$. Using the `materiality` argument, you
+can provide this critical value to the `evaluation()` function as a fraction. In
+addition to the estimation that is performed by default, specifying
+`materiality` triggers the comparison of two competing hypotheses. Which
+hypotheses are being compared depends on the input for the `alternative`
+argument: 
+
+* `alternative = "less"` (default): $H_1:\theta<\theta_{max}$ versus $H_0:\theta\geq\theta_{max}$
+* `alternative = "greater"`: $H_1:\theta>\theta_{max}$ versus $H_0:\theta\leq\theta_{max}$
+* `alternative = "two.sided"`: $H_1:\theta \neq\theta_{max}$ versus $H_0:\theta=\theta_{max}$
 
 ## Evaluation using summary statistics
 
 ### Non-stratified samples
 
-In a non-stratified sampling procedure, the auditor does not take samples from different strata or subgroups in a population. An example of such a situation would be where the auditor is auditing the general ledger of a small business.
+In a non-stratified sampling procedure, the auditor does not take samples from
+different strata or subgroups in a population. An example of such a situation
+would be where the auditor is auditing the general ledger of a small business.
 
 #### Classical evaluation
 
-Classical hypothesis testing uses the *p*-value to make a decision about whether to reject the hypothesis $H_0$ or not. As an example, consider that an auditor wants to verify whether the population contains less than 5 percent misstatement, implying the hypotheses $H_1:\theta<0.05$ and $H_0:\theta\geq0.05$. They have taken a sample of 100 items, of which 1 contained an error. They set the significance level for the *p*-value to 0.05, implying that $p < 0.05$ will be enough to reject the hypothesis $H_0$. The call below evaluates the sample using a classical non-stratified evaluation procedure.
+Classical hypothesis testing uses the *p*-value to make a decision about whether
+to reject the hypothesis $H_0$ or not. As an example, consider that an auditor
+wants to verify whether the population contains less than 5 percent misstatement,
+implying the hypotheses $H_1:\theta<0.05$ and $H_0:\theta\geq0.05$. They have
+taken a sample of 100 items, of which 1 contained an error. They set the
+significance level for the *p*-value to 0.05, implying that $p < 0.05$ will be
+enough to reject the hypothesis $H_0$. The call below evaluates the sample using
+a classical non-stratified evaluation procedure.
 
 ```{r}
 evaluation(materiality = 0.05, x = 1, n = 100)
 ```
 
-The output shows that the most likely error in the population is estimated to be 1 / 100 = 1% and that the 95% (one-sided) confidence interval ranges from 0% to 4.74%. The output also shows that the *p*-value is lower than 0.05 implying that the hypothesis $H_0$ can be rejected. Hence, the auditor is able to conclude that the sample provides sufficient evidence to state with reasonable assurance that the population does not contain material misstatement.
+The output shows that the most likely error in the population is estimated to be
+1 / 100 = 1% and that the 95% (one-sided) confidence interval ranges from 0% to
+4.74%. The output also shows that the *p*-value is lower than 0.05 implying that
+the hypothesis $H_0$ can be rejected. Hence, the auditor is able to conclude
+that the sample provides sufficient evidence to state with reasonable assurance
+that the population does not contain material misstatement.
 
 #### Bayesian evaluation
 
-Bayesian hypothesis testing uses the Bayes factor, $BF_{10}$ or $BF_{01}$, to make a statement about the evidence provided by the sample in support for one of the two hypotheses $H_1$ or $H_0$. As an example of how to interpret the Bayes factor, the value of $BF_{10} = 10$ (provided by the `evaluation()` function) can be interpreted as: *the data are 10 times more likely to have occurred under the hypothesis $H_1$ than under the hypothesis $H_0$*. $BF_{10} > 1$ indicates evidence in favor of $H_1$ and against $H_0$, while $BF_{10} < 1$ indicates evidence in favor of $H_0$ and against $H_1$. By default, the `evaluation()` function returns the value for $BF_{10}$.
+Bayesian hypothesis testing uses the Bayes factor, $BF_{10}$ or $BF_{01}$, to
+make a statement about the evidence provided by the sample in support for one of
+the two hypotheses $H_1$ or $H_0$. As an example of how to interpret the Bayes
+factor, the value of $BF_{10} = 10$ (provided by the `evaluation()` function)
+can be interpreted as: *the data are 10 times more likely to have occurred underthe hypothesis $H_1$ than under the hypothesis $H_0$*.
+$BF_{10} > 1$ indicates evidence in favor of $H_1$ and against $H_0$, while
+$BF_{10} < 1$ indicates evidence in favor of $H_0$ and against $H_1$. The
+`evaluation()` function returns the value for $BF_{10}$, but $BF_{01}$ can be
+computed as $\frac{1}{BF_{10}}$.
 
-Consider the previous example of an auditor who wants to verify whether the population contains less than 5 percent misstatement, implying the hypotheses $H_1:\theta<0.05$ and $H_0:\theta\geq0.05$. They have taken a sample of 100 items, of which 1 was found to contain a misstatement. The prior distribution is assumed to be a default *beta(1,1)* prior. The call below evaluates the sample using a Bayesian non-stratified evaluation procedure.
+Consider the previous example of an auditor who wants to verify whether the
+population contains less than 5 percent misstatement, implying the hypotheses
+$H_1:\theta<0.05$ and $H_0:\theta\geq0.05$. They have taken a sample of 100
+items, of which 1 was found to contain a misstatement. The prior distribution is
+assumed to be a default *beta(1,1)* prior. The call below evaluates the sample
+using a Bayesian non-stratified evaluation procedure.
 
 ```{r}
 prior <- auditPrior(materiality = 0.05, method = "default", likelihood = "binomial")
 evaluation(materiality = 0.05, x = 1, n = 100, prior = prior)
 ```
 
-The output shows that the most likely error in the population is estimated to be 1 / 100 = 1% and that the 95% (one-sided) credible interval ranges from 0% to 4.61%. The small difference between the classical and default Bayesian results is due to the prior distribution, which must be proper in order to calculate a Bayes factor (classical results can be emulated by constructing a prior with `method = "strict"` in the `auditPrior()` function). The Bayes factor in this case is shown to be $BF_{10}=515$, meaning that the data from the sample are about 515 times more likely to occur under the hypothesis of tolerable misstatement than under the hypothesis of material misstatement.
+The output shows that the most likely error in the population is estimated to be
+1 / 100 = 1% and that the 95% (one-sided) credible interval ranges from 0% to
+4.61%. The small difference between the classical and default Bayesian results
+is due to the prior distribution, which must be proper in order to calculate a
+Bayes factor (classical results can be emulated by constructing a prior with
+`method = "strict"` in the `auditPrior()` function). The Bayes factor in this
+case is shown to be $BF_{10}=515$, meaning that the data from the sample are
+about 515 times more likely to occur under the hypothesis of tolerable
+misstatement than under the hypothesis of material misstatement.
 
-Note that this is a very high Bayes factor for the little data that is observed. That is because the Bayes factor is dependent on the prior distribution for $\theta$. As a rule of thumb, when the prior distribution is highly conservative (as with `method = 'default'`) with respect to the hypothesis of tolerable misstatement, the Bayes factor tends to over quantify the evidence in favor of this hypothesis. You can mitigate this dependency by using a prior distribution that is impartial with respect to the hypotheses via `method = "impartial"` in the `auditPrior()` function (Derks et al., 2022).
+Note that this is a very high Bayes factor for the little data that is observed.
+That is because the Bayes factor is dependent on the prior distribution for
+$\theta$. As a rule of thumb, when the prior distribution is highly conservative
+(as with `method = 'default'`) with respect to the hypothesis of tolerable
+misstatement, the Bayes factor tends to over quantify the evidence in favor of
+this hypothesis. You can mitigate this dependency by using a prior distribution
+that is impartial with respect to the hypotheses via `method = "impartial"` in
+the `auditPrior()` function (Derks et al., 2022).
 
 ```{r}
 prior <- auditPrior(materiality = 0.05, method = "impartial", likelihood = "binomial")
 evaluation(materiality = 0.05, x = 1, n = 100, prior = prior)
 ```
 
-The output shows that $BF_{10}=47$, implying that under the assumption of impartiality there is strong evidence for $H_1$, the hypothesis that the population contains misstatements lower than 5 percent of the population (tolerable misstatement). Since the two prior distributions both resulted in convincing Bayes factors, the results can be considered robust to the choice of prior distribution. Hence, the auditor is able to conclude that the sample provides convincing evidence to state that the population does not contain material misstatement.
+The output shows that $BF_{10}=47$, implying that under the assumption of
+impartiality there is strong evidence for $H_1$, the hypothesis that the
+population contains misstatements lower than 5 percent of the population
+(tolerable misstatement). Since the two prior distributions both resulted in
+convincing Bayes factors, the results can be considered robust to the choice of
+prior distribution. Hence, the auditor is able to conclude that the sample
+provides convincing evidence to state that the population does not contain
+material misstatement.
 
 ### Stratified samples
 
-In a stratified sampling procedure, the auditor takes samples from different strata or subgroups in a population. An example of such a situation would be a group audit where the audited organization consists of different components or branches. Stratification is relevant to the group auditor if they must form an opinion on the group as a whole because they must aggregate the samples taken by the component auditors. 
+In a stratified sampling procedure, the auditor takes samples from different
+strata (or subgroups) in a population. An example of such a situation would be
+a group audit where the audited organization consists of different components or
+branches. Stratification is relevant for the group auditor if they must form an
+opinion on the group as a whole because they must aggregate the samples taken by
+the component auditors. 
 
-As a data example, consider the `retailer` data set that comes with the package. The organization in question consists of 20 branches across the country. In each of the 20 strata, a component auditor has taken a statistical sample and reported the outcomes to the group auditor. 
+As a data example, consider the `retailer` data set that comes with the package.
+The organization in question consists of 20 branches across the country. In each
+of the 20 strata, a component auditor has taken a statistical sample and
+reported the outcomes to the group auditor. 
 
 ```{r}
 data(retailer)
 print(retailer)
 ```
 
-In general, there are three approaches to evaluating a stratified sample: no pooling, complete pooling, and partial pooling (see Derks et al., 2022). When using `evaluation()`, you must to indicate which type of pooling to use via the `pooling` argument. No pooling assumes no similarities between strata, which means that all strata are analyzed independently. Complete pooling assumes no difference between strata, which means that all data is aggregated and analyzed as a whole. Finally, partial pooling assumes differences and similarities between strata, which means that information can be shared between strata. Partial pooling (i.e., multilevel/hierarchical modeling) is a powerful technique that can result in more efficient population and stratum estimates but is currently only feasible when performing a Bayesian analysis. For this reason, this vignette only describes the Bayesian approach to stratified evaluation but going from this approach to a classical approach only requires setting `prior = FALSE`.
+In general, there are three approaches to evaluating a stratified sample: no
+pooling, complete pooling, and partial pooling (see Derks et al., 2022). When
+using `evaluation()`, you must to indicate which type of pooling to use via the
+`pooling` argument. No pooling assumes no similarities between strata, which
+means that all strata are analyzed independently. Complete pooling assumes no
+difference between strata, which means that all data is aggregated and analyzed
+as a whole. Finally, partial pooling assumes differences and similarities
+between strata, which means that information can be shared between strata.
+Partial pooling (i.e., multilevel/hierarchical modeling) is a powerful
+technique that can result in more efficient population and stratum estimates but
+is currently only feasible when performing a Bayesian analysis. For this reason,
+this vignette only describes the Bayesian approach to stratified evaluation but
+going from this approach to a classical approach only requires setting
+`prior = FALSE`.
 
-The number of units per stratum in the population can be provided with `N.units` to weigh the stratum estimates to determine population estimate (i.e., poststratification).
+The number of units per stratum in the population can be provided with `N.units`
+to weigh the stratum estimates to determine population estimate. This is called
+poststratification. If `N.units` is not specified, each stratum is assumed to be
+equally represented in the population.
 
 #### Approach 1: No pooling
 
-No pooling (`pooling = "none"`, default) assumes no similarities between strata. This means that the prior distribution specified through `prior` is applied independently for each stratum. This allows for independent estimates for the misstatement in each stratum but also results in a relatively high uncertainty in the population estimate. The call below evaluates the sample using a Bayesian stratified evaluation procedure, in which the stratum estimates are poststratified to arrive at the population estimate.
+No pooling (`pooling = "none"`, default) assumes no similarities between strata.
+This means that the prior distribution specified through `prior` is applied
+independently for each stratum. This allows for independent estimates for the
+misstatement in each stratum but also results in a relatively high uncertainty
+in the population estimate. The call below evaluates the sample using a Bayesian
+stratified evaluation procedure, in which the stratum estimates are
+poststratified to arrive at the population estimate.
 
 ```{r}
 set.seed(1) # Important because the posterior distribution is determined via sampling
@@ -101,13 +204,17 @@ result_np <- evaluation(
 summary(result_np)
 ```
 
-In this case, the output of the `summary()` function shows that the estimate of the misstatement in the population is 5.85%, with the 95% credible interval ranging from 4.28% to 8.22%. The stratum estimates differ substantially from each other but are relatively uncertain.
+In this case, the output of the `summary()` function shows that the estimate of
+the misstatement in the population is 5.85%, with the 95% credible interval
+ranging from 4.28% to 8.22%. The stratum estimates differ substantially from
+each other but are relatively uncertain.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(result_np, type = "estimates")
 ```
 
-The prior and posterior distribution for the population misstatement can be requested via the `plot()` function.
+The prior and posterior distribution for the population misstatement can be
+requested via the `plot()` function.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(result_np, type = "posterior")
@@ -115,7 +222,14 @@ plot(result_np, type = "posterior")
 
 #### Approach 2: Complete pooling
 
-Complete pooling (`pooling = "complete"`) assumes no differences between strata. This has the advantages that data from all strata can be aggregated, which decreases the uncertainty in the population estimate compared to the no pooling approach. However, the disadvantage of this approach is that it does not facilitate the distinction between between strata, as every stratum receives the same estimate equal to that of the population. The call below evaluates the sample using a Bayesian stratified evaluation procedure, in which the strata are assumed to be the same.
+Complete pooling (`pooling = "complete"`) assumes no differences between strata.
+This has the advantages that data from all strata can be aggregated, which
+decreases the uncertainty in the population estimate compared to the no
+pooling approach. However, the disadvantage of this approach is that it does
+not facilitate the distinction between between strata, as every stratum
+receives the same estimate equal to that of the population. The call below
+evaluates the sample using a Bayesian stratified evaluation procedure, in
+which the strata are assumed to be the same.
 
 ```{r}
 result_cp <- evaluation(
@@ -126,13 +240,19 @@ result_cp <- evaluation(
 summary(result_cp)
 ```
 
-For example, the output of the `summary()` function shows that the estimate of the misstatement in the population is 4.47%, with the 95% credible interval ranging from 3.74% to 5.33%. Since the data is aggregated, the stratum estimates contain relatively little uncertainty. However, the probability of misstatement in stratum 20 (many misstatements) under this assumption is the same as that of stratum 15 (few misstatements).
+For example, the output of the `summary()` function shows that the estimate of
+the misstatement in the population is 4.47%, with the 95% credible interval
+ranging from 3.74% to 5.33%. Since the data is aggregated, the stratum estimates
+contain relatively little uncertainty. However, the probability of misstatement
+in stratum 20 (many misstatements) under this assumption is the same as that of
+stratum 15 (few misstatements).
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(result_cp, type = "estimates")
 ```
 
-The prior and posterior distribution for the population misstatement can be requested via the `plot()` function.
+The prior and posterior distribution for the population misstatement can be
+requested via the `plot()` function.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(result_cp, type = "posterior")
@@ -140,7 +260,12 @@ plot(result_cp, type = "posterior")
 
 #### Approach 3: Partial pooling
 
-Finally, partial pooling (`pooling = "partial"`) assumes differences and similarities between strata. This allows the auditor to differentiate between strata, while also sharing information between the strata to reduce uncertainty in the population estimate. The call below evaluates the sample using a Bayesian stratified evaluation procedure, in which the stratum estimates are poststratified to arrive at the population estimate.
+Finally, partial pooling (`pooling = "partial"`) assumes differences and
+similarities between strata. This allows the auditor to differentiate between
+strata, while also sharing information between the strata to reduce uncertainty
+in the population estimate. The call below evaluates the sample using a Bayesian
+stratified evaluation procedure, in which the stratum estimates are
+poststratified to arrive at the population estimate.
 
 ```{r}
 set.seed(1) # Important because the posterior distribution is determined via sampling
@@ -152,13 +277,19 @@ result_pp <- evaluation(
 summary(result_pp)
 ```
 
-In this case, the output shows that the estimate of the misstatement in the population is 4.34%, with the 95% credible interval ranging from 3.45% to 5.33%. Note that this population estimate is substantially less uncertain than that of the no pooling approach. Note that, like in the no pooling approach, the stratum estimates are different from each other but lie closer together and are less uncertain.
+In this case, the output shows that the estimate of the misstatement in the
+population is 4.34%, with the 95% credible interval ranging from 3.45% to 5.33%.
+Note that this population estimate is substantially less uncertain than that of
+the no pooling approach. Note that, like in the no pooling approach, the stratum
+estimates are different from each other but lie closer together and are less
+uncertain.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(result_pp, type = "estimates")
 ```
 
-The prior and posterior distribution for the population misstatement can be requested via the `plot()` function.
+The prior and posterior distribution for the population misstatement can be
+requested via the `plot()` function.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(result_pp, type = "posterior")
@@ -166,7 +297,12 @@ plot(result_pp, type = "posterior")
 
 ## Evaluation using data
 
-For this example, we take the `allowances` that set that comes with the package. This data set contains 3500 financial statement line items, each with a booked value `bookValue` and, for illustrative purposes, and audited (true) value `auditValue`. Since the focus of this vignette is the evaluation stage in the audit, the sample is already indicated in the data set. The performance materiality in this example is set to 5%.
+For this example, we take the `allowances` that set that comes with the package.
+This data set contains 3500 financial statement line items, each with a booked
+value `bookValue` and, for illustrative purposes, and audited (true) value
+`auditValue`. Since the focus of this vignette is the evaluation stage in the
+audit, the sample is already indicated in the data set. The performance
+materiality in this example is set to 5%.
 
 ```{r}
 data(allowances)
@@ -175,11 +311,14 @@ head(allowances)
 
 ### Non-stratified samples
 
-Evaluating a non-stratified sample using data requires specification of the `data`, `values` and `values.audit` arguments. The input for these arguments is the name of the specific column in `data`.
+Evaluating a non-stratified sample using data requires specification of the
+`data`, `values` and `values.audit` arguments. The input for these arguments is
+the name of the specific column in `data`.
 
 #### Classical evaluation
 
-The call below evaluates the `allowances` sample using a classical non-stratified evaluation procedure.
+The call below evaluates the `allowances` sample using a classical
+non-stratified evaluation procedure.
 
 ```{r}
 x <- evaluation(
@@ -189,11 +328,14 @@ x <- evaluation(
 summary(x)
 ```
 
-In this case, the output shows that the estimate of the misstatement in the population is 15.77%, with the 95% (one-sided) confidence interval ranging from 0% to 17.5%.
+In this case, the output shows that the estimate of the misstatement in the
+population is 15.77%, with the 95% (one-sided) confidence interval ranging from
+0% to 17.5%.
 
 #### Bayesian evaluation
 
-The call below evaluates the `allowances` sample using a Bayesian non-stratified evaluation procedure.
+The call below evaluates the `allowances` sample using a Bayesian non-stratified
+evaluation procedure.
 
 ```{r}
 x <- evaluation(
@@ -203,11 +345,15 @@ x <- evaluation(
 summary(x)
 ```
 
-The output shows that the estimate of the misstatement in the population is 15.76%, with the 95% (one-sided) credible interval ranging from 0% to 17.49%.
+The output shows that the estimate of the misstatement in the population is
+15.76%, with the 95% (one-sided) credible interval ranging from 0% to 17.49%.
 
 ### Stratified samples
 
-Evaluating a stratified sample using data requires specification of the `data`, `values`, `values.audit` and `strata` arguments in the `evaluation()` function. In this case, the units are monetary and calculated by aggregating the book values of the items in each stratum.
+Evaluating a stratified sample using data requires specification of the `data`,
+`values`, `values.audit` and `strata` arguments in the `evaluation()` function.
+In this case, the units are monetary and calculated by aggregating the book
+values of the items in each stratum.
 
 ```{r}
 N.units <- aggregate(allowances$bookValue, list(allowances$branch), sum)$x
@@ -215,7 +361,9 @@ N.units <- aggregate(allowances$bookValue, list(allowances$branch), sum)$x
 
 #### Classical evaluation
 
-The call below evaluates the `allowances` sample using a classical stratified evaluation procedure, in which the stratum estimates are poststratified to arrive at the population estimate.
+The call below evaluates the `allowances` sample using a classical stratified
+evaluation procedure, in which the stratum estimates are poststratified to
+arrive at the population estimate.
 
 ```{r}
 x <- evaluation(
@@ -226,7 +374,10 @@ x <- evaluation(
 summary(x)
 ```
 
-In this case, the output shows that the estimate of the misstatement in the population is 14.72%, with the 95% confidence interval ranging from 12.55% to 18.26%. The precision of the population estimate is 3.54%. The stratum estimates can be seen in the output of the `summary()` function and are visualized below.
+In this case, the output shows that the estimate of the misstatement in the
+population is 14.72%, with the 95% confidence interval ranging from 12.55% to
+18.26%. The precision of the population estimate is 3.54%. The stratum estimates
+can be seen in the output of the `summary()` function and are visualized below.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(x, type = "estimates")
@@ -234,7 +385,11 @@ plot(x, type = "estimates")
 
 #### Bayesian evaluation
 
-Bayesian inference can improve upon the estimates of the classical approach by pooling information between strata where possible. The call below evaluates the `allowances` sample using a Bayesian multilevel stratified evaluation procedure, in which the stratum estimates are poststratified to arrive at the population estimate.
+Bayesian inference can improve upon the estimates of the classical approach by
+pooling information between strata where possible. The call below evaluates the
+`allowances` sample using a Bayesian multilevel stratified evaluation procedure,
+in which the stratum estimates are poststratified to arrive at the population
+estimate.
 
 ```{r}
 x <- evaluation(
@@ -245,13 +400,18 @@ x <- evaluation(
 summary(x)
 ```
 
-The output shows that the estimate of the misstatement in the population is 15.66%, with the 95% credible interval ranging from 14.59% to 17%. The precision of the population estimate is 1.34%, which is substantially lower than that of the classical approach. The stratum estimates can be seen in the output of the `summary()` function and are visualized below.
+The output shows that the estimate of the misstatement in the population is
+15.66%, with the 95% credible interval ranging from 14.59% to 17%. The precision
+of the population estimate is 1.34%, which is substantially lower than that of
+the classical approach. The stratum estimates can be seen in the output of the
+`summary()` function and are visualized below.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(x, type = "estimates")
 ```
 
-The prior and posterior distribution for the population misstatement can be requested via the `plot()` function.
+The prior and posterior distribution for the population misstatement can be
+requested via the `plot()` function.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(x, type = "posterior")

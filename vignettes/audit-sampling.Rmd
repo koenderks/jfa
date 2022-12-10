@@ -21,11 +21,21 @@ library(jfa)
 
 ## Introduction
 
-Welcome to the 'Audit sampling' vignette of the **jfa** package. Here you can find a detailed explanation of the functions in the package that facilitate the statistical audit sampling workflow. Specifically, these functions implement standard audit sampling techniques to calculate sample sizes, select items from a population, and evaluate misstatement in a data sample. The **jfa** package enables users to create a prior probability distribution to perform Bayesian audit sampling using these functions. For more detailed explanations of each function, read the other vignettes on the [package website](https://koenderks.github.io/jfa).
+Welcome to the 'Audit sampling' vignette of the **jfa** package. Here you can
+find a detailed explanation of the functions in the package that facilitate the
+statistical audit sampling workflow. Specifically, these functions implement
+standard audit sampling techniques to calculate sample sizes, select items from
+a population, and evaluate misstatement in a data sample. The **jfa** package
+enables users to create a prior probability distribution to perform Bayesian
+audit sampling using these functions. For more detailed explanations of each
+function, read the other vignettes on the
+[package website](https://koenderks.github.io/jfa).
 
 ## Cheat sheet
 
-The cheat sheet below will help you get started with **jfa**'s' intended audit sampling workflow. You can download a `pdf` version of the cheat sheet [here](https://github.com/koenderks/jfa/raw/development/man/figures/cheatsheet/cheatsheet.pdf).
+The cheat sheet below will help you get started with **jfa**'s' intended audit
+sampling workflow. You can download a `pdf` version of the cheat sheet
+[here](https://github.com/koenderks/jfa/raw/development/man/figures/cheatsheet/cheatsheet.pdf).
 
 <p align='center'><img src='https://github.com/koenderks/jfa/raw/development/man/figures/cheatsheet/cheatsheet.png' alt='cheatsheet' width='1000'></p>
 
@@ -33,7 +43,8 @@ The cheat sheet below will help you get started with **jfa**'s' intended audit s
 
 <p align='center'><img src='https://github.com/koenderks/jfa/raw/development/man/figures/readme/banner/jfaBanner.png' alt='banner'/></p>
 
-Below you can find an explanation of the available functions in **jfa** sorted by their occurrence in the standard audit sampling workflow.
+Below you can find an explanation of the available functions in **jfa** sorted
+by their occurrence in the standard audit sampling workflow.
 
 - [`auditPrior()`](#create-a-prior-distribution-with-auditprior)
 - [`planning()`](#plan-a-sample-with-planning)
@@ -45,7 +56,14 @@ Below you can find an explanation of the available functions in **jfa** sorted b
 
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
-The `auditPrior()` function is used to specify a prior distribution for Bayesian audit sampling. The interface allows a complete customization of the prior distribution as well as a formal translation of pre-existing audit information into a prior distribution. The function returns an object of class `jfaPrior` which can be used with associated `summary()` and `plot()` methods. Objects with class `jfaPrior` can also be used as input for the `prior` argument in other functions. Moreover, `jfaPrior` objects have a corresponding `predict()` function to produce the predictions of the prior distribution on the data level.
+The `auditPrior()` function is used to specify a prior distribution for Bayesian
+audit sampling. The interface allows a complete customization of the prior
+distribution as well as a formal translation of pre-existing audit information
+into a prior distribution. The function returns an object of class `jfaPrior`
+which can be used with associated `summary()` and `plot()` methods. Objects with
+class `jfaPrior` can also be used as input for the `prior` argument in other
+functions. Moreover, `jfaPrior` objects have a corresponding `predict()`
+function to produce the predictions of the prior distribution on the data level.
 
 *Full function with default arguments:*
 
@@ -54,7 +72,10 @@ auditPrior(method = c(
              "default", "strict", "param", "impartial", "hyp",
              "arm", "bram", "sample", "factor"
            ),
-           likelihood = c("poisson", "binomial", "hypergeometric"),
+           likelihood = c(
+             "poisson", "binomial", "hypergeometric",
+             "normal", "uniform", "cauchy", "t", "chisq"
+           ),
            N.units = NULL,
            alpha = NULL,
            beta = NULL,
@@ -73,9 +94,9 @@ auditPrior(method = c(
 *Supported options for the `method` argument:*
 
 - `default`: Indifferent / noninformative prior distribution.
+- `param`: Manually set the prior parameters.
 - `strict`: Improper prior distribution (matches classical results).
 - `impartial`: Impartial prior distribution (Derks et al., 2022).
-- `param`: Manually set the prior parameters.
 - `hyp`: Manually provide the prior probability for tolerable misstatement (Derks et al., 2021).
 - `arm`: Manually provide the inherent risk and internal control risk (Derks et al., 2021).
 - `bram`: Manually provide the upper bound of the prior distribution (Touw & Hoogduin, 2011).
@@ -87,6 +108,11 @@ auditPrior(method = c(
 - `poisson`: Poisson likelihood and conjugate gamma prior distribution (Stewart, 2013).
 - `binomial`: Binomial likelihood and conjugate beta prior distribution (Steele, 1992).
 - `hypergeometric`: Hypergeometric likelihood and conjugate beta-binomial prior distribution (Dyer & Pierce, 1991).
+- `normal`: Normal prior distribution.
+- `uniform`: Uniform prior distribution.
+- `cauchy`: Cauchy prior distribution.
+- `t`: Student-t prior distribution.
+- `chisq`: Chi-squared prior distribution.
 
 *Example usage:*
 
@@ -108,7 +134,14 @@ predict(x, n = 20, cumulative = TRUE) # Predictions for a sample of n = 20
 
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
-The `planning()` function is used to calculate a minimum sample size for audit samples. It allows specification of statistical requirements for the sample with respect to the performance materiality or the precision. The function returns an object of class `jfaPlanning` which can be used with associated `summary()` and `plot()` methods. To perform Bayesian planning, the input for the `prior` argument can be an object of class `jfaPrior` as returned by the `auditPrior()` function, or an object of class `jfaPosterior` as returned by the `evaluation()` function.
+The `planning()` function is used to calculate a minimum sample size for audit
+samples. It allows specification of statistical requirements for the sample with
+respect to the performance materiality or the precision. The function returns an
+object of class `jfaPlanning` which can be used with associated `summary()` and
+`plot()` methods. To perform Bayesian planning, the input for the `prior`
+argument can be an object of class `jfaPrior` as returned by the `auditPrior()`
+function, or an object of class `jfaPosterior` as returned by the `evaluation()`
+function.
 
 *Full function with default arguments:*
 
@@ -152,7 +185,12 @@ summary(x) # Prints information about the planning
 
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
-The `selection()` function is used to perform statistical selection of audit samples. It offers flexible implementations of the most common audit sampling algorithms for attributes sampling and monetary unit sampling. The function returns an object of class `jfaSelection` which can be used with associated `summary()` and `plot()` methods. The input for the `size` argument can be an object of class `jfaPlanning` as returned by the `planning()` function.
+The `selection()` function is used to perform statistical selection of audit
+samples. It offers flexible implementations of the most common audit sampling
+algorithms for attributes sampling and monetary unit sampling. The function
+returns an object of class `jfaSelection` which can be used with associated
+`summary()` and `plot()` methods. The input for the `size` argument can be an
+object of class `jfaPlanning` as returned by the `planning()` function.
 
 *Full function with default arguments:*
 
@@ -200,7 +238,13 @@ summary(x) # Prints information about the selection
 
 [![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
-The `evaluation()` function takes a sample or summary statistics of the sample and performs evaluation according to the specified method and sampling objectives. The function returns an object of class `jfaEvalution` which can be used with associated `summary()` and `plot()` methods. To perform Bayesian evaluation, the input for the `prior` argument can be an object of class `jfaPrior` as returned by the `auditPrior()` function, or an object of class `jfaPosterior` as returned by the `evaluation()` function.
+The `evaluation()` function takes a sample or summary statistics of the sample
+and performs evaluation according to the specified method and sampling
+objectives. The function returns an object of class `jfaEvalution` which can
+be used with associated `summary()` and `plot()` methods. To perform Bayesian
+evaluation, the input for the `prior` argument can be an object of class
+`jfaPrior` as returned by the `auditPrior()` function, or an object of class
+`jfaPosterior` as returned by the `evaluation()` function.
 
 *Full function with default arguments:*
 
@@ -267,7 +311,9 @@ summary(x) # Prints information about the evaluation
 
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
-The `report()` function takes an object of class `jfaEvaluation` as returned by the `evaluation()` function and automatically creates a `html` or `pdf` report containing the analysis results and their interpretation.
+The `report()` function takes an object of class `jfaEvaluation` as returned by
+the `evaluation()` function and automatically creates a `html` or `pdf` report
+containing the analysis results and their interpretation.
 
 *Full function with default arguments:*
 
@@ -288,7 +334,10 @@ For an example report, see the following [link](https://github.com/koenderks/jfa
 
 ## Benchmarks
 
-To validate the statistical results, **jfa**'s automated [unit tests](https://github.com/koenderks/jfa/tree/development/tests/testthat) regularly verify the main output from the package against the following benchmarks:
+To validate the statistical results, **jfa**'s automated
+[unit tests](https://github.com/koenderks/jfa/tree/development/tests/testthat)
+regularly verify the main output from the package against the following
+benchmarks:
 
 - [Audit Sampling: Audit Guide](https://www.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL) (Appendix A and Appendix C)
 - [AuditSampler](https://cplusglobal.wordpress.com/solutions/auditsampler-statistical-sampling-software/)
@@ -301,7 +350,10 @@ To validate the statistical results, **jfa**'s automated [unit tests](https://gi
 
 ## Statistical tables
 
-Below you can find several informative tables that contain statistical sample sizes, upper limits, one-sided *p* values, and Bayes factors. These tables are created using the `planning()` and `evaluation()` functions provided in the package.
+Below you can find several informative tables that contain statistical sample
+sizes, upper limits, one-sided *p* values, and Bayes factors. These tables are
+created using the `planning()` and `evaluation()` functions provided in the
+package.
 
 *Sample sizes*
 
