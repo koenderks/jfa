@@ -126,7 +126,7 @@ posterior distribution by using the `plot()` function. The expected posterior
 distribution is the posterior distribution that would occur if you actually
 observed the planned sample containing the expected misstatements.
 
-```{r}
+```{r fig.align="center", fig.height=4, fig.width=6}
 plot(plan)
 ```
 

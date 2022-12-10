@@ -639,54 +639,10 @@ evaluation <- function(materiality = NULL,
   if (method == "hypergeometric" && !is_bayesian) {
     result[["K"]] <- K[1]
   }
-  # Stratum results
-  if (use_stratification) {
-    if (pooling == "complete") {
-      mle <- rep(mle[1], no_rows)
-      lb <- rep(lb[1], no_rows)
-      ub <- rep(ub[1], no_rows)
-      precision <- rep(precision[1], no_rows)
-    } else {
-      mle <- mle[-1]
-      lb <- lb[-1]
-      ub <- ub[-1]
-      precision <- precision[-1]
-    }
-    stratum_table <- data.frame(
-      n = n.obs[-1], x = x.obs[-1], t = t.obs[-1],
-      mle = mle, lb = lb, ub = ub, precision = precision
-    )
-    if (!is.null(N.units)) {
-      stratum_table <- cbind(N = N.units[-1], stratum_table)
-    }
-    if (materiality < 1 && valid_test_method) {
-      if (!is_bayesian) {
-        stratum_table[["p.value"]] <- switch(pooling,
-          "complete" = p.val[1],
-          "none" = p.val[-1]
-        )
-      } else {
-        if (alternative == "two.sided") {
-          stratum_table[["bf10"]] <- switch(pooling,
-            "complete" = 1 / .bf01_twosided_sumstats(materiality, method, prior[["description"]]$alpha, prior[["description"]]$beta, n.obs[1], t.obs[1], N.units[1]),
-            "none" = 1 / .bf01_twosided_sumstats(materiality, method, prior[["description"]]$alpha, prior[["description"]]$beta, n.obs[-1], t.obs[-1], N.units[-1]),
-            "partial" = 1 / .bf01_twosided_samples(materiality, nstrata, stratum_samples)
-          )
-        } else {
-          stratum_table[["bf10"]] <- switch(pooling,
-            "complete" = .bf10_onesided_sumstats(materiality, alternative, method, prior[["description"]]$alpha, prior[["description"]]$beta, n.obs[1], t.obs[1], N.units[1]),
-            "none" = .bf10_onesided_sumstats(materiality, alternative, method, prior[["description"]]$alpha, prior[["description"]]$beta, n.obs[-1], t.obs[-1], N.units[-1]),
-            "partial" = .bf10_onesided_samples(materiality, alternative, nstrata, stratum_samples)
-          )
-        }
-      }
-    }
-    rownames(stratum_table) <- if (is.null(strata)) seq_len(nrow(stratum_table)) else levels(stratum)
-    result[["strata"]] <- stratum_table
-  }
-  # Prior distribution
+  # Prior and posterior distribution
   if (is_bayesian) {
     analytical <- !mcmc_prior && !mcmc_posterior
+    # Prior distribution
     result[["prior"]] <- prior
     if (mcmc_prior) {
       result[["prior"]]$prior <- "Determined via MCMC sampling"
@@ -724,10 +680,7 @@ evaluation <- function(materiality = NULL,
       }
       result[["prior"]]$conf.level <- conf.level
     }
-  }
-  # Posterior distribution
-  if (!is.null(result[["prior"]])) {
-    # Parameters
+    # Posterior distribution{
     post_alpha <- result[["prior"]][["description"]]$alpha + result[["t"]]
     if (method == "poisson") {
       post_beta <- result[["prior"]][["description"]]$beta + result[["n"]]
@@ -798,6 +751,55 @@ evaluation <- function(materiality = NULL,
     result[["posterior"]]$N.units <- result[["N.units"]]
     result[["posterior"]]$conf.level <- conf.level
     class(result[["posterior"]]) <- c(class(result[["posterior"]]), "jfaPosterior")
+  }
+  # Stratum results
+  if (use_stratification) {
+    if (pooling == "complete") {
+      mle <- rep(result[["mle"]], no_rows)
+      lb <- rep(result[["lb"]], no_rows)
+      ub <- rep(result[["ub"]], no_rows)
+      precision <- rep(result[["precision"]], no_rows)
+    } else {
+      mle <- mle[-1]
+      lb <- lb[-1]
+      ub <- ub[-1]
+      precision <- precision[-1]
+    }
+    stratum_table <- data.frame(
+      n = n.obs[-1], x = x.obs[-1], t = t.obs[-1],
+      mle = mle, lb = lb, ub = ub, precision = precision
+    )
+    if (!is.null(N.units)) {
+      stratum_table <- cbind(N = N.units[-1], stratum_table)
+    }
+    if (materiality < 1 && valid_test_method) {
+      if (!is_bayesian) {
+        stratum_table[["p.value"]] <- switch(pooling,
+          "complete" = result[["p.value"]],
+          "none" = p.val[-1]
+        )
+      } else {
+        if (pooling == "complete") {
+          stratum_table[["bf10"]] <- result[["posterior"]][["hypotheses"]]$bf.h1
+        } else {
+          if (alternative == "two.sided") {
+            if (conjugate_prior) {
+              stratum_table[["bf10"]] - 1 / .bf01_twosided_sumstats(materiality, method, prior[["description"]]$alpha, prior[["description"]]$beta, n.obs[-1], t.obs[-1], N.units[-1])
+            } else {
+              stratum_table[["bf10"]] <- 1 / .bf01_twosided_samples(materiality, nstrata, stratum_samples)
+            }
+          } else {
+            if (conjugate_prior) {
+              stratum_table[["bf10"]] <- .bf10_onesided_sumstats(materiality, alternative, method, prior[["description"]]$alpha, prior[["description"]]$beta, n.obs[-1], t.obs[-1], N.units[-1])
+            } else {
+              stratum_table[["bf10"]] <- .bf10_onesided_samples(materiality, alternative, nstrata, stratum_samples)
+            }
+          }
+        }
+      }
+    }
+    rownames(stratum_table) <- if (is.null(strata)) seq_len(nrow(stratum_table)) else levels(stratum)
+    result[["strata"]] <- stratum_table
   }
   # Data
   if (has_data && !is.null(values) && !is.null(values.audit)) {
