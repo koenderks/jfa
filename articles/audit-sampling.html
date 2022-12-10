@@ -94,7 +94,7 @@
       <h1 data-toc-skip>Audit sampling: Get started</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2022-12-09</h4>
+            <h4 data-toc-skip class="date">2022-12-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/audit-sampling.Rmd" class="external-link"><code>vignettes/audit-sampling.Rmd</code></a></small>
       <div class="hidden name"><code>audit-sampling.Rmd</code></div>
@@ -498,10 +498,9 @@ Hoogduin, 2011).</li>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="fl">0.03</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  prior <span class="op">=</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"param"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Using 'method = binomial' from 'prior'</span></span></code></pre>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the evaluation</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># Prints information about the evaluation</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Evaluation Summary</span></span>
 <span><span class="co">## </span></span>
@@ -534,12 +533,12 @@ function and automatically creates a <code>html</code> or
 <code>pdf</code> report containing the analysis results and their
 interpretation.</p>
 <p><em>Full function with default arguments:</em></p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span><span class="va">object</span>,</span>
 <span>       file <span class="op">=</span> <span class="st">"report.html"</span>,</span>
 <span>       format <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"html_document"</span>, <span class="st">"pdf_document"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><em>Example usage:</em></p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Generate an automatic report</span></span>
 <span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span>object <span class="op">=</span> <span class="va">x</span>, file <span class="op">=</span> <span class="st">'myReport.html'</span><span class="op">)</span></span></code></pre></div>
 <p>For an example report, see the following <a href="https://github.com/koenderks/jfa/raw/development/man/figures/readme/report/report.pdf" class="external-link">link</a>.</p>

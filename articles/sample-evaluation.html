@@ -94,7 +94,7 @@
       <h1 data-toc-skip>Evaluating statistical audit samples</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2022-12-09</h4>
+            <h4 data-toc-skip class="date">2022-12-10</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/sample-evaluation.Rmd" class="external-link"><code>vignettes/sample-evaluation.Rmd</code></a></small>
       <div class="hidden name"><code>sample-evaluation.Rmd</code></div>
@@ -220,7 +220,6 @@ evaluation procedure.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"default"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Using 'method = binomial' from 'prior'</span></span></code></pre>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Evaluation</span></span>
 <span><span class="co">## </span></span>
@@ -253,10 +252,9 @@ evidence in favor of this hypothesis. You can mitigate this dependency
 by using a prior distribution that is impartial with respect to the
 hypotheses via <code>method = "impartial"</code> in the
 <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function (Derks et al., 2022).</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"impartial"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Using 'method = binomial' from 'prior'</span></span></code></pre>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Evaluation</span></span>
 <span><span class="co">## </span></span>
@@ -293,7 +291,7 @@ comes with the package. The organization in question consists of 20
 branches across the country. In each of the 20 strata, a component
 auditor has taken a statistical sample and reported the outcomes to the
 group auditor.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">retailer</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">retailer</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    stratum items samples errors</span></span>
@@ -347,7 +345,7 @@ each stratum but also results in a relatively high uncertainty in the
 population estimate. The call below evaluates the sample using a
 Bayesian stratified evaluation procedure, in which the stratum estimates
 are poststratified to arrive at the population estimate.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="co"># Important because the posterior distribution is determined via sampling</span></span>
 <span><span class="va">result_np</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"binomial"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -405,12 +403,12 @@ that the estimate of the misstatement in the population is 5.85%, with
 the 95% credible interval ranging from 4.28% to 8.22%. The stratum
 estimates differ substantially from each other but are relatively
 uncertain.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result_np</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>The prior and posterior distribution for the population misstatement
 can be requested via the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result_np</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-8-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
@@ -426,7 +424,7 @@ distinction between between strata, as every stratum receives the same
 estimate equal to that of the population. The call below evaluates the
 sample using a Bayesian stratified evaluation procedure, in which the
 strata are assumed to be the same.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"binomial"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  n <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">samples</span>, x <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">errors</span>, N.units <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">items</span>,</span>
@@ -485,12 +483,12 @@ aggregated, the stratum estimates contain relatively little uncertainty.
 However, the probability of misstatement in stratum 20 (many
 misstatements) under this assumption is the same as that of stratum 15
 (few misstatements).</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result_cp</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-10-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>The prior and posterior distribution for the population misstatement
 can be requested via the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result_cp</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-11-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
@@ -504,115 +502,14 @@ strata to reduce uncertainty in the population estimate. The call below
 evaluates the sample using a Bayesian stratified evaluation procedure,
 in which the stratum estimates are poststratified to arrive at the
 population estimate.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="co"># Important because the posterior distribution is determined via sampling</span></span>
 <span><span class="va">result_pp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"binomial"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  n <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">samples</span>, x <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">errors</span>, N.units <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">items</span>,</span>
 <span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span>, pooling <span class="op">=</span> <span class="st">"partial"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## SAMPLING FOR MODEL 'pp_binomial' NOW (CHAIN 1).</span></span>
-<span><span class="co">## Chain 1: </span></span>
-<span><span class="co">## Chain 1: Gradient evaluation took 2.9e-05 seconds</span></span>
-<span><span class="co">## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0.29 seconds.</span></span>
-<span><span class="co">## Chain 1: Adjust your expectations accordingly!</span></span>
-<span><span class="co">## Chain 1: </span></span>
-<span><span class="co">## Chain 1: </span></span>
-<span><span class="co">## Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
-<span><span class="co">## Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
-<span><span class="co">## Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
-<span><span class="co">## Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
-<span><span class="co">## Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
-<span><span class="co">## Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
-<span><span class="co">## Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
-<span><span class="co">## Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
-<span><span class="co">## Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
-<span><span class="co">## Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
-<span><span class="co">## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
-<span><span class="co">## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
-<span><span class="co">## Chain 1: </span></span>
-<span><span class="co">## Chain 1:  Elapsed Time: 0.223824 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 1:                0.194688 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 1:                0.418512 seconds (Total)</span></span>
-<span><span class="co">## Chain 1: </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## SAMPLING FOR MODEL 'pp_binomial' NOW (CHAIN 2).</span></span>
-<span><span class="co">## Chain 2: </span></span>
-<span><span class="co">## Chain 2: Gradient evaluation took 1.3e-05 seconds</span></span>
-<span><span class="co">## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0.13 seconds.</span></span>
-<span><span class="co">## Chain 2: Adjust your expectations accordingly!</span></span>
-<span><span class="co">## Chain 2: </span></span>
-<span><span class="co">## Chain 2: </span></span>
-<span><span class="co">## Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
-<span><span class="co">## Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
-<span><span class="co">## Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
-<span><span class="co">## Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
-<span><span class="co">## Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
-<span><span class="co">## Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
-<span><span class="co">## Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
-<span><span class="co">## Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
-<span><span class="co">## Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
-<span><span class="co">## Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
-<span><span class="co">## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
-<span><span class="co">## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
-<span><span class="co">## Chain 2: </span></span>
-<span><span class="co">## Chain 2:  Elapsed Time: 0.203946 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 2:                0.308259 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 2:                0.512205 seconds (Total)</span></span>
-<span><span class="co">## Chain 2: </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## SAMPLING FOR MODEL 'pp_binomial' NOW (CHAIN 3).</span></span>
-<span><span class="co">## Chain 3: </span></span>
-<span><span class="co">## Chain 3: Gradient evaluation took 1.8e-05 seconds</span></span>
-<span><span class="co">## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0.18 seconds.</span></span>
-<span><span class="co">## Chain 3: Adjust your expectations accordingly!</span></span>
-<span><span class="co">## Chain 3: </span></span>
-<span><span class="co">## Chain 3: </span></span>
-<span><span class="co">## Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
-<span><span class="co">## Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
-<span><span class="co">## Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
-<span><span class="co">## Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
-<span><span class="co">## Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
-<span><span class="co">## Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
-<span><span class="co">## Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
-<span><span class="co">## Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
-<span><span class="co">## Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
-<span><span class="co">## Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
-<span><span class="co">## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
-<span><span class="co">## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
-<span><span class="co">## Chain 3: </span></span>
-<span><span class="co">## Chain 3:  Elapsed Time: 0.228764 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 3:                0.239587 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 3:                0.468351 seconds (Total)</span></span>
-<span><span class="co">## Chain 3: </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## SAMPLING FOR MODEL 'pp_binomial' NOW (CHAIN 4).</span></span>
-<span><span class="co">## Chain 4: </span></span>
-<span><span class="co">## Chain 4: Gradient evaluation took 1.5e-05 seconds</span></span>
-<span><span class="co">## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0.15 seconds.</span></span>
-<span><span class="co">## Chain 4: Adjust your expectations accordingly!</span></span>
-<span><span class="co">## Chain 4: </span></span>
-<span><span class="co">## Chain 4: </span></span>
-<span><span class="co">## Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
-<span><span class="co">## Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
-<span><span class="co">## Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
-<span><span class="co">## Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
-<span><span class="co">## Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
-<span><span class="co">## Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
-<span><span class="co">## Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
-<span><span class="co">## Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
-<span><span class="co">## Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
-<span><span class="co">## Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
-<span><span class="co">## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
-<span><span class="co">## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
-<span><span class="co">## Chain 4: </span></span>
-<span><span class="co">## Chain 4:  Elapsed Time: 0.191007 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 4:                0.223414 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 4:                0.414421 seconds (Total)</span></span>
-<span><span class="co">## Chain 4:</span></span></code></pre>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_pp</span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_pp</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Evaluation Summary</span></span>
 <span><span class="co">## </span></span>
@@ -664,12 +561,12 @@ in the population is 4.34%, with the 95% credible interval ranging from
 uncertain than that of the no pooling approach. Note that, like in the
 no pooling approach, the stratum estimates are different from each other
 but lie closer together and are less uncertain.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result_pp</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-13-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>The prior and posterior distribution for the population misstatement
 can be requested via the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result_pp</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-14-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
@@ -685,7 +582,7 @@ illustrative purposes, and audited (true) value <code>auditValue</code>.
 Since the focus of this vignette is the evaluation stage in the audit,
 the sample is already indicated in the data set. The performance
 materiality in this example is set to 5%.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">allowances</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">allowances</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   item branch bookValue auditValue times</span></span>
@@ -707,7 +604,7 @@ the name of the specific column in <code>data</code>.</p>
 </h4>
 <p>The call below evaluates the <code>allowances</code> sample using a
 classical non-stratified evaluation procedure.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, data <span class="op">=</span> <span class="va">allowances</span>,</span>
 <span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, times <span class="op">=</span> <span class="st">"times"</span></span>
@@ -741,7 +638,7 @@ interval ranging from 0% to 17.5%.</p>
 </h4>
 <p>The call below evaluates the <code>allowances</code> sample using a
 Bayesian non-stratified evaluation procedure.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, data <span class="op">=</span> <span class="va">allowances</span>, prior <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, times <span class="op">=</span> <span class="st">"times"</span></span>
@@ -781,7 +678,7 @@ the <code>data</code>, <code>values</code>, <code>values.audit</code>
 and <code>strata</code> arguments in the <code><a href="../reference/evaluation.html">evaluation()</a></code>
 function. In this case, the units are monetary and calculated by
 aggregating the book values of the items in each stratum.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">N.units</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">allowances</span><span class="op">$</span><span class="va">bookValue</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">allowances</span><span class="op">$</span><span class="va">branch</span><span class="op">)</span>, <span class="va">sum</span><span class="op">)</span><span class="op">$</span><span class="va">x</span></span></code></pre></div>
 <div class="section level4">
 <h4 id="classical-evaluation-2">Classical evaluation<a class="anchor" aria-label="anchor" href="#classical-evaluation-2"></a>
@@ -789,7 +686,7 @@ aggregating the book values of the items in each stratum.</p>
 <p>The call below evaluates the <code>allowances</code> sample using a
 classical stratified evaluation procedure, in which the stratum
 estimates are poststratified to arrive at the population estimate.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, data <span class="op">=</span> <span class="va">allowances</span>,</span>
 <span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, strata <span class="op">=</span> <span class="st">"branch"</span>, times <span class="op">=</span> <span class="st">"times"</span>,</span>
@@ -840,7 +737,7 @@ in the population is 14.72%, with the 95% confidence interval ranging
 from 12.55% to 18.26%. The precision of the population estimate is
 3.54%. The stratum estimates can be seen in the output of the
 <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function and are visualized below.</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-20-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
@@ -852,114 +749,13 @@ approach by pooling information between strata where possible. The call
 below evaluates the <code>allowances</code> sample using a Bayesian
 multilevel stratified evaluation procedure, in which the stratum
 estimates are poststratified to arrive at the population estimate.</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, data <span class="op">=</span> <span class="va">allowances</span>, prior <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, strata <span class="op">=</span> <span class="st">"branch"</span>, times <span class="op">=</span> <span class="st">"times"</span>,</span>
 <span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span>, N.units <span class="op">=</span> <span class="va">N.units</span>, pooling <span class="op">=</span> <span class="st">"partial"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">## SAMPLING FOR MODEL 'pp_beta' NOW (CHAIN 1).</span></span>
-<span><span class="co">## Chain 1: </span></span>
-<span><span class="co">## Chain 1: Gradient evaluation took 0.000481 seconds</span></span>
-<span><span class="co">## Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 4.81 seconds.</span></span>
-<span><span class="co">## Chain 1: Adjust your expectations accordingly!</span></span>
-<span><span class="co">## Chain 1: </span></span>
-<span><span class="co">## Chain 1: </span></span>
-<span><span class="co">## Chain 1: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
-<span><span class="co">## Chain 1: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
-<span><span class="co">## Chain 1: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
-<span><span class="co">## Chain 1: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
-<span><span class="co">## Chain 1: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
-<span><span class="co">## Chain 1: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
-<span><span class="co">## Chain 1: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
-<span><span class="co">## Chain 1: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
-<span><span class="co">## Chain 1: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
-<span><span class="co">## Chain 1: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
-<span><span class="co">## Chain 1: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
-<span><span class="co">## Chain 1: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
-<span><span class="co">## Chain 1: </span></span>
-<span><span class="co">## Chain 1:  Elapsed Time: 57.1884 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 1:                52.7677 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 1:                109.956 seconds (Total)</span></span>
-<span><span class="co">## Chain 1: </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## SAMPLING FOR MODEL 'pp_beta' NOW (CHAIN 2).</span></span>
-<span><span class="co">## Chain 2: </span></span>
-<span><span class="co">## Chain 2: Gradient evaluation took 0.000488 seconds</span></span>
-<span><span class="co">## Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 4.88 seconds.</span></span>
-<span><span class="co">## Chain 2: Adjust your expectations accordingly!</span></span>
-<span><span class="co">## Chain 2: </span></span>
-<span><span class="co">## Chain 2: </span></span>
-<span><span class="co">## Chain 2: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
-<span><span class="co">## Chain 2: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
-<span><span class="co">## Chain 2: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
-<span><span class="co">## Chain 2: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
-<span><span class="co">## Chain 2: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
-<span><span class="co">## Chain 2: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
-<span><span class="co">## Chain 2: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
-<span><span class="co">## Chain 2: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
-<span><span class="co">## Chain 2: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
-<span><span class="co">## Chain 2: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
-<span><span class="co">## Chain 2: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
-<span><span class="co">## Chain 2: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
-<span><span class="co">## Chain 2: </span></span>
-<span><span class="co">## Chain 2:  Elapsed Time: 52.2157 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 2:                51.1208 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 2:                103.336 seconds (Total)</span></span>
-<span><span class="co">## Chain 2: </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## SAMPLING FOR MODEL 'pp_beta' NOW (CHAIN 3).</span></span>
-<span><span class="co">## Chain 3: </span></span>
-<span><span class="co">## Chain 3: Gradient evaluation took 0.000265 seconds</span></span>
-<span><span class="co">## Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 2.65 seconds.</span></span>
-<span><span class="co">## Chain 3: Adjust your expectations accordingly!</span></span>
-<span><span class="co">## Chain 3: </span></span>
-<span><span class="co">## Chain 3: </span></span>
-<span><span class="co">## Chain 3: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
-<span><span class="co">## Chain 3: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
-<span><span class="co">## Chain 3: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
-<span><span class="co">## Chain 3: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
-<span><span class="co">## Chain 3: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
-<span><span class="co">## Chain 3: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
-<span><span class="co">## Chain 3: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
-<span><span class="co">## Chain 3: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
-<span><span class="co">## Chain 3: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
-<span><span class="co">## Chain 3: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
-<span><span class="co">## Chain 3: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
-<span><span class="co">## Chain 3: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
-<span><span class="co">## Chain 3: </span></span>
-<span><span class="co">## Chain 3:  Elapsed Time: 57.4976 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 3:                50.315 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 3:                107.813 seconds (Total)</span></span>
-<span><span class="co">## Chain 3: </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## SAMPLING FOR MODEL 'pp_beta' NOW (CHAIN 4).</span></span>
-<span><span class="co">## Chain 4: </span></span>
-<span><span class="co">## Chain 4: Gradient evaluation took 0.000482 seconds</span></span>
-<span><span class="co">## Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 4.82 seconds.</span></span>
-<span><span class="co">## Chain 4: Adjust your expectations accordingly!</span></span>
-<span><span class="co">## Chain 4: </span></span>
-<span><span class="co">## Chain 4: </span></span>
-<span><span class="co">## Chain 4: Iteration:    1 / 2000 [  0%]  (Warmup)</span></span>
-<span><span class="co">## Chain 4: Iteration:  200 / 2000 [ 10%]  (Warmup)</span></span>
-<span><span class="co">## Chain 4: Iteration:  400 / 2000 [ 20%]  (Warmup)</span></span>
-<span><span class="co">## Chain 4: Iteration:  600 / 2000 [ 30%]  (Warmup)</span></span>
-<span><span class="co">## Chain 4: Iteration:  800 / 2000 [ 40%]  (Warmup)</span></span>
-<span><span class="co">## Chain 4: Iteration: 1000 / 2000 [ 50%]  (Warmup)</span></span>
-<span><span class="co">## Chain 4: Iteration: 1001 / 2000 [ 50%]  (Sampling)</span></span>
-<span><span class="co">## Chain 4: Iteration: 1200 / 2000 [ 60%]  (Sampling)</span></span>
-<span><span class="co">## Chain 4: Iteration: 1400 / 2000 [ 70%]  (Sampling)</span></span>
-<span><span class="co">## Chain 4: Iteration: 1600 / 2000 [ 80%]  (Sampling)</span></span>
-<span><span class="co">## Chain 4: Iteration: 1800 / 2000 [ 90%]  (Sampling)</span></span>
-<span><span class="co">## Chain 4: Iteration: 2000 / 2000 [100%]  (Sampling)</span></span>
-<span><span class="co">## Chain 4: </span></span>
-<span><span class="co">## Chain 4:  Elapsed Time: 54.1072 seconds (Warm-up)</span></span>
-<span><span class="co">## Chain 4:                51.6088 seconds (Sampling)</span></span>
-<span><span class="co">## Chain 4:                105.716 seconds (Total)</span></span>
-<span><span class="co">## Chain 4:</span></span></code></pre>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Evaluation Summary</span></span>
 <span><span class="co">## </span></span>
@@ -1007,12 +803,12 @@ to 17%. The precision of the population estimate is 1.34%, which is
 substantially lower than that of the classical approach. The stratum
 estimates can be seen in the output of the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>
 function and are visualized below.</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-22-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>The prior and posterior distribution for the population misstatement
 can be requested via the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
-<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-23-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
