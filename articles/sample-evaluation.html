@@ -106,16 +106,22 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p align="center">
-<img src="https://github.com/koenderks/jfa/raw/development/vignettes/img/evaluation.png" alt="evaluation" width="100%"></p>
 <p>This vignette demonstrates how to evaluate a sample with the
 <code><a href="../reference/evaluation.html">evaluation()</a></code> function from the <strong>jfa</strong>
-package. In auditing, the goal of the evaluation is typically to
-estimate the misstatement in the population based on a sample, or to
-test the misstatement in the population against a critical upper limit,
-referred to as the performance materiality. Evaluating an audit sample
-using the <code><a href="../reference/evaluation.html">evaluation()</a></code> function requires that the sample
-data is available in one of two forms:</p>
+package.</p>
+<p align="center">
+<img src="https://github.com/koenderks/jfa/raw/development/vignettes/img/evaluation.png" alt="evaluation" width="100%"></p>
+<p>In auditing, the goal of the evaluation is typically to estimate the
+misstatement in the population based on a sample, or to test the
+misstatement in the population against a critical upper limit, referred
+to as the performance materiality.</p>
+</div>
+<div class="section level2">
+<h2 id="required-information">Required information<a class="anchor" aria-label="anchor" href="#required-information"></a>
+</h2>
+<p>Evaluating an audit sample using the <code><a href="../reference/evaluation.html">evaluation()</a></code>
+function requires that the sample data is available in one of two
+forms:</p>
 <ul>
 <li>
 <strong>Summary statistics:</strong> This includes (a vector of) the
@@ -130,10 +136,10 @@ factor column indicating stratum membership (<code>strata</code>).</li>
 </ul>
 <p>By default, <code><a href="../reference/evaluation.html">evaluation()</a></code> estimates the population
 misstatement and returns a point estimate as well as a
-(<code>conf.level</code> <span class="math inline">\(times\)</span>
+(<code>conf.level</code> <span class="math inline">\(\times\)</span>
 100)% confidence / credible interval around this estimate. However, in
 audit sampling, the population is typically subject to a certain maximum
-tolerable misstatement defined by the performance materiality <span class="math inline">\(theta_max\)</span>. Using the
+tolerable misstatement defined by the performance materiality <span class="math inline">\(\theta_{max}\)</span>. Using the
 <code>materiality</code> argument, you can provide this critical value
 to the <code><a href="../reference/evaluation.html">evaluation()</a></code> function as a fraction. In addition to
 the estimation that is performed by default, specifying
@@ -205,11 +211,11 @@ evidence provided by the sample in support for one of the two hypotheses
 the Bayes factor, the value of <span class="math inline">\(BF_{10} =
 10\)</span> (provided by the <code><a href="../reference/evaluation.html">evaluation()</a></code> function) can be
 interpreted as: <em>the data are 10 times more likely to have occurred
-under the hypothesis <span class="math inline">\(H_1\)</span> than under
+underthe hypothesis <span class="math inline">\(H_1\)</span> than under
 the hypothesis <span class="math inline">\(H_0\)</span></em>. <span class="math inline">\(BF_{10} &gt; 1\)</span> indicates evidence in
 favor of <span class="math inline">\(H_1\)</span> and against <span class="math inline">\(H_0\)</span>, while <span class="math inline">\(BF_{10} &lt; 1\)</span> indicates evidence in
-favor of <span class="math inline">\(H_0\)</span> and against <span class="math inline">\(H_1\)</span>. By default, the
-<code><a href="../reference/evaluation.html">evaluation()</a></code> function returns the value for <span class="math inline">\(BF_{10}\)</span>.</p>
+favor of <span class="math inline">\(H_0\)</span> and against <span class="math inline">\(H_1\)</span>. The <code><a href="../reference/evaluation.html">evaluation()</a></code>
+function returns the value for <span class="math inline">\(BF_{10}\)</span>, but <span class="math inline">\(BF_{01}\)</span> can be computed as <span class="math inline">\(\frac{1}{BF_{10}}\)</span>.</p>
 <p>Consider the previous example of an auditor who wants to verify
 whether the population contains less than 5 percent misstatement,
 implying the hypotheses <span class="math inline">\(H_1:\theta&lt;0.05\)</span> and <span class="math inline">\(H_0:\theta\geq0.05\)</span>. They have taken a
@@ -280,9 +286,9 @@ population does not contain material misstatement.</p>
 <h3 id="stratified-samples">Stratified samples<a class="anchor" aria-label="anchor" href="#stratified-samples"></a>
 </h3>
 <p>In a stratified sampling procedure, the auditor takes samples from
-different strata or subgroups in a population. An example of such a
+different strata (or subgroups) in a population. An example of such a
 situation would be a group audit where the audited organization consists
-of different components or branches. Stratification is relevant to the
+of different components or branches. Stratification is relevant for the
 group auditor if they must form an opinion on the group as a whole
 because they must aggregate the samples taken by the component
 auditors.</p>
@@ -333,7 +339,9 @@ to a classical approach only requires setting
 <code>prior = FALSE</code>.</p>
 <p>The number of units per stratum in the population can be provided
 with <code>N.units</code> to weigh the stratum estimates to determine
-population estimate (i.e., poststratification).</p>
+population estimate. This is called poststratification. If
+<code>N.units</code> is not specified, each stratum is assumed to be
+equally represented in the population.</p>
 <div class="section level4">
 <h4 id="approach-1-no-pooling">Approach 1: No pooling<a class="anchor" aria-label="anchor" href="#approach-1-no-pooling"></a>
 </h4>
