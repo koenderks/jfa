@@ -39,11 +39,11 @@
 
 \method{predict}{jfaPrior}(object, n, cumulative = FALSE, ...)
 
-\method{print}{jfaPredict}(x)
+\method{print}{jfaPredict}(x, ...)
 
 \method{plot}{jfaPrior}(x, ...)
 
-\method{plot}{jfaPredict}(x)
+\method{plot}{jfaPredict}(x, ...)
 
 \method{print}{jfaPosterior}(x, ...)
 

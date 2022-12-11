@@ -174,8 +174,8 @@ predict.jfaPrior <- function(object, n, cumulative = FALSE, ...) {
 #' @rdname jfa-methods
 #' @method print jfaPredict
 #' @export
-print.jfaPredict <- function(x) {
-  print.table(x)
+print.jfaPredict <- function(x, ...) {
+  print.table(x, ...)
 }
 
 #' @rdname jfa-methods
@@ -242,7 +242,7 @@ plot.jfaPrior <- function(x, ...) {
 #' @rdname jfa-methods
 #' @method plot jfaPredict
 #' @export
-plot.jfaPredict <- function(x) {
+plot.jfaPredict <- function(x, ...) {
   y <- NULL
   df <- data.frame(x = seq_len(length(x)) - 1, y = as.numeric(x), lab = names(x))
   yBreaks <- pretty(c(0, df$y), min.n = 4)
