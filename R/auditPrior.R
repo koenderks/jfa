@@ -545,6 +545,6 @@ auditPrior <- function(method = c(
   result[["expected"]] <- expected
   result[["conf.level"]] <- conf.level
   result[["N.units"]] <- N.units
-  class(result) <- c(class(result), "jfaPrior")
+  class(result) <- c("jfaPrior", "list")
   return(result)
 }

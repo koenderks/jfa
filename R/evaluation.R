@@ -752,7 +752,7 @@ evaluation <- function(materiality = NULL,
     }
     result[["posterior"]]$N.units <- result[["N.units"]]
     result[["posterior"]]$conf.level <- conf.level
-    class(result[["posterior"]]) <- c(class(result[["posterior"]]), "jfaPosterior")
+    class(result[["posterior"]]) <- c("jfaPosterior", "list")
   }
   # Stratum results
   if (use_stratification) {
@@ -823,6 +823,6 @@ evaluation <- function(materiality = NULL,
     result[["data"]] <- sample_data
     result[["data.name"]] <- dname
   }
-  class(result) <- c(class(result), "jfaEvaluation")
+  class(result) <- c("jfaEvaluation", "list")
   return(result)
 }

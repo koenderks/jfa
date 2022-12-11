@@ -291,6 +291,6 @@ selection <- function(data,
   }
   result[["data.name"]] <- dname
   result[["values.name"]] <- values
-  class(result) <- c(class(result), "jfaSelection")
+  class(result) <- c("jfaSelection", "list")
   return(result)
 }

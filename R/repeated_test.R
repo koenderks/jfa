@@ -147,6 +147,6 @@ repeated_test <- function(x,
   result[["check"]] <- check
   result[["method"]] <- method
   result[["data.name"]] <- dname
-  class(result) <- c(class(result), "jfaRv")
+  class(result) <- c("jfaRv", "list")
   return(result)
 }

@@ -405,8 +405,8 @@ planning <- function(materiality = NULL,
     # Additional info
     result[["posterior"]]$N.units <- N.units
     result[["posterior"]]$conf.level <- conf.level
-    class(result[["posterior"]]) <- "jfaPosterior"
+    class(result[["posterior"]]) <- c("jfaPosterior", "list")
   }
-  class(result) <- c(class(result), "jfaPlanning")
+  class(result) <- c("jfaPlanning", "list")
   return(result)
 }

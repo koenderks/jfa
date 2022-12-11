@@ -163,6 +163,6 @@ digit_test <- function(x,
   result[["reference"]] <- reference
   result[["match"]] <- split(x = seq_along(d), f = d)
   result[["data.name"]] <- dname
-  class(result) <- c(class(result), "jfaDistr")
+  class(result) <- c("jfaDistr", "list")
   return(result)
 }

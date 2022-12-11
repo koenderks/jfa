@@ -227,7 +227,7 @@ predict.jfaPrior <- function(object, n, lim = NULL, cumulative = FALSE, ...) {
       names(p) <- if (object[["description"]]$density == "gamma") paste0("n=", names(p)) else paste0("x=", names(p))
     }
   }
-  class(p) <- "jfaPredict"
+  class(p) <- c("jfaPredict", "table")
   return(p)
 }
 
