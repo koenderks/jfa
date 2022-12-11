@@ -282,7 +282,7 @@ auditPrior <- function(method = c(
     N.units <- ceiling(N.units)
   }
   accomodates_elicitation <- likelihood %in% c("poisson", "binomial", "hypergeometric")
-  stopifnot("likelihood requires method = 'param' or 'default'" = accomodates_elicitation || method == "param" || method == "default")
+  accomodates_other <- likelihood %in% c("normal", "uniform")
   # Compute prior per method
   if (method == "default") {
     prior_alpha <- switch(likelihood,
@@ -308,6 +308,7 @@ auditPrior <- function(method = c(
     prior.x <- 0
     prior.n <- 1
   } else if (method == "strict") {
+    stopifnot("'method' not supported for the current 'likelihood'" = accomodates_elicitation)
     prior_alpha <- 1
     prior_beta <- switch(likelihood,
       "poisson" = 0,
@@ -317,6 +318,7 @@ auditPrior <- function(method = c(
     prior.x <- 0
     prior.n <- 0
   } else if (method == "arm") {
+    stopifnot("'method' not supported for the current 'likelihood'" = accomodates_elicitation)
     stopifnot("missing value for 'ir' (inherent risk)" = !is.null(ir))
     valid_ir <- ir > 0 && ir <= 1
     stopifnot("'ir' (inherent risk) must be a single value between 0 and 1" = valid_ir)
@@ -336,6 +338,7 @@ auditPrior <- function(method = c(
       prior_beta <- prior.n - prior.x
     }
   } else if (method == "bram") {
+    stopifnot("'method' not supported for the current 'likelihood'" = accomodates_elicitation)
     stopifnot("missing value for 'ub'" = !is.null(ub))
     valid_ub <- length(ub) == 1 && is.numeric(ub) && ub > 0 && ub < 1 && ub > expected
     stopifnot("'ub' must be a single value between 0 and 1 and > 'expected'" = valid_ub)
@@ -373,45 +376,59 @@ auditPrior <- function(method = c(
     }
   } else if (method == "impartial" || method == "hyp") {
     if (method == "impartial") {
+      stopifnot("'method' not supported for the current 'likelihood'" = accomodates_elicitation || accomodates_other)
       p.h0 <- p.h1 <- 0.5
     } else if (method == "hyp") {
+      stopifnot("'method' not supported for the current 'likelihood'" = accomodates_elicitation)
       stopifnot("missing value for 'p.hmin'" = !is.null(p.hmin))
       p.h1 <- p.hmin
       p.h0 <- 1 - p.h1
     }
-    if (expected == 0) {
-      prior.n <- switch(likelihood,
-        "poisson" = -(log(p.h0) / materiality),
-        "binomial" = log(p.h0) / log(1 - materiality),
-        "hypergeometric" = log(2) / (log(N.units / (N.units - ceiling(materiality * N.units))))
-      )
-      prior.x <- 0
-    } else {
-      median <- Inf
-      prior.x <- 0
-      while (median > materiality) {
-        prior.x <- prior.x + 0.0001
-        if (likelihood == "poisson") {
-          prior.n <- prior.x / expected
-        } else {
-          prior.n <- 1 + prior.x / expected
+    if (accomodates_elicitation) {
+      if (expected == 0) {
+        prior.n <- switch(likelihood,
+          "poisson" = -(log(p.h0) / materiality),
+          "binomial" = log(p.h0) / log(1 - materiality),
+          "hypergeometric" = log(2) / (log(N.units / (N.units - ceiling(materiality * N.units))))
+        )
+        prior.x <- 0
+      } else {
+        median <- Inf
+        prior.x <- 0
+        while (median > materiality) {
+          prior.x <- prior.x + 0.0001
+          if (likelihood == "poisson") {
+            prior.n <- prior.x / expected
+          } else {
+            prior.n <- 1 + prior.x / expected
+          }
+          a <- 1 + prior.x
+          if (likelihood == "poisson") {
+            b <- prior.n
+          } else {
+            b <- prior.n - prior.x
+          }
+          median <- .comp_ub_bayes("less", p.h1, likelihood, a, b, N.units)
         }
-        a <- 1 + prior.x
-        if (likelihood == "poisson") {
-          b <- prior.n
-        } else {
-          b <- prior.n - prior.x
-        }
-        median <- .comp_ub_bayes("less", p.h1, likelihood, a, b, N.units)
       }
-    }
-    prior_alpha <- 1 + prior.x
-    if (likelihood == "poisson") {
-      prior_beta <- prior.n
-    } else {
-      prior_beta <- prior.n - prior.x
+      prior_alpha <- 1 + prior.x
+      if (likelihood == "poisson") {
+        prior_beta <- prior.n
+      } else {
+        prior_beta <- prior.n - prior.x
+      }
+    } else if (accomodates_other) {
+      prior_alpha <- switch(likelihood,
+        "normal" = materiality,
+        "uniform" = 0
+      )
+      prior_beta <- switch(likelihood,
+        "normal" = materiality / 3,
+        "uniform" = materiality * 2
+      )
     }
   } else if (method == "sample" || method == "factor") {
+    stopifnot("'method' not supported for the current 'likelihood'" = accomodates_elicitation)
     stopifnot("missing value for 'n'" = !is.null(n))
     valid_n <- is.numeric(n) && length(n) == 1 && n >= 0
     stopifnot("'n' must be a single value >= 0" = valid_n)
