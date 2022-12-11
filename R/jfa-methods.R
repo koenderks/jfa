@@ -21,7 +21,6 @@
 #' @param digits      an integer specifying the number of digits to which output should be rounded. Used in \code{summary}.
 #' @param type        used in \code{plot}. Specifies the type of plot to produce.
 #' @param n           used in \code{predict}. Specifies the sample size for which predictions should be made.
-#' @param lim         used in \code{predict}. Limits the number of errors for which predictions should be made.
 #' @param cumulative  used in \code{predict}. Specifies whether cumulative probabilities should be shown.
 #' @param ...         further arguments, currently ignored.
 #'
@@ -141,91 +140,32 @@ summary.jfaPrior <- function(object, digits = getOption("digits"), ...) {
 #' @rdname jfa-methods
 #' @method predict jfaPrior
 #' @export
-predict.jfaPrior <- function(object, n, lim = NULL, cumulative = FALSE, ...) {
-  nobs <- 1e5
-  if (!is.null(lim)) {
-    if (cumulative) {
-      stopifnot("'lim' must be a single value >= 0" = length(lim) == 1 && lim > 0)
-      if (object[["description"]]$density == "gamma") {
-        p <- stats::dnbinom(0:lim, object[["description"]]$alpha, 1 / (1 + object[["description"]]$beta))
-      } else if (object[["description"]]$density %in% c("beta", "beta-binomial")) {
-        p <- extraDistr::dbbinom(0:lim, n, object[["description"]]$alpha, object[["description"]]$beta)
-      } else if (object[["description"]]$density == "normal") {
-        p <- prop.table(table(rbinom(nobs, n, truncdist::rtrunc(nobs, "norm", 0, 1, mean = object[["description"]]$alpha, sd = object[["description"]]$beta))))
-      } else if (object[["description"]]$density == "uniform") {
-        p <- prop.table(table(rbinom(nobs, n, truncdist::rtrunc(nobs, "unif", 0, 1, min = object[["description"]]$alpha, max = object[["description"]]$beta))))
-      } else if (object[["description"]]$density == "Cauchy") {
-        p <- prop.table(table(rbinom(nobs, n, truncdist::rtrunc(nobs, "cauchy", 0, 1, location = object[["description"]]$alpha, scale = object[["description"]]$beta))))
-      } else if (object[["description"]]$density == "Student-t") {
-        p <- prop.table(table(rbinom(nobs, n, truncdist::rtrunc(nobs, "t", 0, 1, df = object[["description"]]$alpha))))
-      } else if (object[["description"]]$density == "chi-squared") {
-        p <- prop.table(table(rbinom(nobs, n, truncdist::rtrunc(nobs, "chisq", 0, 1, df = object[["description"]]$alpha))))
-      } else if (object[["description"]]$density == "MCMC") {
-        p <- prop.table(table(rbinom(nobs, n, sample(object[["plotsamples"]]$x, size = nobs, replace = TRUE, prob = object[["plotsamples"]]$y))))
-      }
-      p <- cumsum(p)
-      names(p) <- if (object[["description"]]$density == "gamma") paste0("n<=", names(p)) else paste0("x<=", names(p))
-    } else {
-      if (object[["description"]]$density == "gamma") {
-        p <- stats::dnbinom(lim, object[["description"]]$alpha, 1 / (1 + object[["description"]]$beta))
-      } else if (object[["description"]]$density %in% c("beta", "beta-binomial")) {
-        p <- extraDistr::dbbinom(lim, n, object[["description"]]$alpha, object[["description"]]$beta)
-      } else if (object[["description"]]$density == "normal") {
-        p <- prop.table(table(rbinom(nobs, n, truncdist::rtrunc(nobs, "norm", 0, 1, mean = object[["description"]]$alpha, sd = object[["description"]]$beta))))
-      } else if (object[["description"]]$density == "uniform") {
-        p <- prop.table(table(rbinom(nobs, n, truncdist::rtrunc(nobs, "unif", 0, 1, min = object[["description"]]$alpha, max = object[["description"]]$beta))))
-      } else if (object[["description"]]$density == "Cauchy") {
-        p <- prop.table(table(rbinom(nobs, n, truncdist::rtrunc(nobs, "cauchy", 0, 1, location = object[["description"]]$alpha, scale = object[["description"]]$beta))))
-      } else if (object[["description"]]$density == "Student-t") {
-        p <- prop.table(table(rbinom(nobs, n, truncdist::rtrunc(nobs, "t", 0, 1, df = object[["description"]]$alpha))))
-      } else if (object[["description"]]$density == "chi-squared") {
-        p <- prop.table(table(rbinom(nobs, n, truncdist::rtrunc(nobs, "chisq", 0, 1, df = object[["description"]]$alpha))))
-      } else if (object[["description"]]$density == "MCMC") {
-        p <- prop.table(table(rbinom(nobs, n, sample(object[["plotsamples"]]$x, size = nobs, replace = TRUE, prob = object[["plotsamples"]]$y))))
-      }
-      names(p) <- if (object[["description"]]$density == "gamma") paste0("n=", names(p)) else paste0("x=", names(p))
-    }
+predict.jfaPrior <- function(object, n, cumulative = FALSE, ...) {
+  nobs <- 5e5
+  if (object[["description"]]$density == "gamma") {
+    p <- stats::dnbinom(0:n, object[["description"]]$alpha, 1 / (1 + object[["description"]]$beta))
+    names(p) <- 0:n
+  } else if (object[["description"]]$density %in% c("beta", "beta-binomial")) {
+    p <- extraDistr::dbbinom(0:n, n, object[["description"]]$alpha, object[["description"]]$beta)
+    names(p) <- 0:n
+  } else if (object[["description"]]$density == "normal") {
+    p <- prop.table(table(stats::rbinom(nobs, n, truncdist::rtrunc(nobs, "norm", 0, 1, mean = object[["description"]]$alpha, sd = object[["description"]]$beta))))
+  } else if (object[["description"]]$density == "uniform") {
+    p <- prop.table(table(stats::rbinom(nobs, n, truncdist::rtrunc(nobs, "unif", 0, 1, min = object[["description"]]$alpha, max = object[["description"]]$beta))))
+  } else if (object[["description"]]$density == "Cauchy") {
+    p <- prop.table(table(stats::rbinom(nobs, n, truncdist::rtrunc(nobs, "cauchy", 0, 1, location = object[["description"]]$alpha, scale = object[["description"]]$beta))))
+  } else if (object[["description"]]$density == "Student-t") {
+    p <- prop.table(table(rstats::binom(nobs, n, truncdist::rtrunc(nobs, "t", 0, 1, df = object[["description"]]$alpha))))
+  } else if (object[["description"]]$density == "chi-squared") {
+    p <- prop.table(table(stats::rbinom(nobs, n, truncdist::rtrunc(nobs, "chisq", 0, 1, df = object[["description"]]$alpha))))
+  } else if (object[["description"]]$density == "MCMC") {
+    p <- prop.table(table(stats::rbinom(nobs, n, sample(object[["plotsamples"]]$x, size = nobs, replace = TRUE, prob = object[["plotsamples"]]$y))))
+  }
+  if (cumulative) {
+    p <- cumsum(p)
+    names(p) <- if (object[["description"]]$density == "gamma") paste0("n<=", names(p)) else paste0("x<=", names(p))
   } else {
-    if (cumulative) {
-      if (object[["description"]]$density == "gamma") {
-        p <- stats::dnbinom(0:n, object[["description"]]$alpha, 1 / (1 + object[["description"]]$beta))
-      } else if (object[["description"]]$density %in% c("beta", "beta-binomial")) {
-        p <- extraDistr::dbbinom(0:n, n, object[["description"]]$alpha, object[["description"]]$beta)
-      } else if (object[["description"]]$density == "normal") {
-        p <- prop.table(table(rbinom(nobs, n, truncdist::rtrunc(nobs, "norm", 0, 1, mean = object[["description"]]$alpha, sd = object[["description"]]$beta))))
-      } else if (object[["description"]]$density == "uniform") {
-        p <- prop.table(table(rbinom(nobs, n, truncdist::rtrunc(nobs, "unif", 0, 1, min = object[["description"]]$alpha, max = object[["description"]]$beta))))
-      } else if (object[["description"]]$density == "Cauchy") {
-        p <- prop.table(table(rbinom(nobs, n, truncdist::rtrunc(nobs, "cauchy", 0, 1, location = object[["description"]]$alpha, scale = object[["description"]]$beta))))
-      } else if (object[["description"]]$density == "Student-t") {
-        p <- prop.table(table(rbinom(nobs, n, truncdist::rtrunc(nobs, "t", 0, 1, df = object[["description"]]$alpha))))
-      } else if (object[["description"]]$density == "chi-squared") {
-        p <- prop.table(table(rbinom(nobs, n, truncdist::rtrunc(nobs, "chisq", 0, 1, df = object[["description"]]$alpha))))
-      } else if (object[["description"]]$density == "MCMC") {
-        p <- prop.table(table(rbinom(nobs, n, sample(object[["plotsamples"]]$x, size = nobs, replace = TRUE, prob = object[["plotsamples"]]$y))))
-      }
-      p <- cumsum(p)
-      names(p) <- if (object[["description"]]$density == "gamma") paste0("n<=", names(p)) else paste0("x<=", names(p))
-    } else {
-      if (object[["description"]]$density == "gamma") {
-        p <- stats::dnbinom(0:n, object[["description"]]$alpha, 1 / (1 + object[["description"]]$beta))
-      } else if (object[["description"]]$density %in% c("beta", "beta-binomial")) {
-        p <- extraDistr::dbbinom(0:n, n, object[["description"]]$alpha, object[["description"]]$beta)
-      } else if (object[["description"]]$density == "normal") {
-        p <- prop.table(table(rbinom(nobs, n, truncdist::rtrunc(nobs, "norm", 0, 1, mean = object[["description"]]$alpha, sd = object[["description"]]$beta))))
-      } else if (object[["description"]]$density == "uniform") {
-        p <- prop.table(table(rbinom(nobs, n, truncdist::rtrunc(nobs, "unif", 0, 1, min = object[["description"]]$alpha, max = object[["description"]]$beta))))
-      } else if (object[["description"]]$density == "Cauchy") {
-        p <- prop.table(table(rbinom(nobs, n, truncdist::rtrunc(nobs, "cauchy", 0, 1, location = object[["description"]]$alpha, scale = object[["description"]]$beta))))
-      } else if (object[["description"]]$density == "Student-t") {
-        p <- prop.table(table(rbinom(nobs, n, truncdist::rtrunc(nobs, "t", 0, 1, df = object[["description"]]$alpha))))
-      } else if (object[["description"]]$density == "chi-squared") {
-        p <- prop.table(table(rbinom(nobs, n, truncdist::rtrunc(nobs, "chisq", 0, 1, df = object[["description"]]$alpha))))
-      } else if (object[["description"]]$density == "MCMC") {
-        p <- prop.table(table(rbinom(nobs, n, sample(object[["plotsamples"]]$x, size = nobs, replace = TRUE, prob = object[["plotsamples"]]$y))))
-      }
-      names(p) <- if (object[["description"]]$density == "gamma") paste0("n=", names(p)) else paste0("x=", names(p))
-    }
+    names(p) <- if (object[["description"]]$density == "gamma") paste0("n=", names(p)) else paste0("x=", names(p))
   }
   class(p) <- c("jfaPredict", "table")
   return(p)
@@ -272,8 +212,8 @@ plot.jfaPrior <- function(x, ...) {
     y <- x[["plotsamples"]]$y
   }
   yMax <- if (is.infinite(max(y))) 10 else max(y)
-  yBreaks <- pretty(c(0, yMax), min.n = 5)
-  xBreaks <- pretty(xs, min.n = 5)
+  yBreaks <- pretty(c(0, yMax), min.n = 4)
+  xBreaks <- pretty(xs, min.n = 4)
   df <- data.frame(x = xs, y = y)
   p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = x, y = y))
   if (x[["description"]]$density != "beta-binomial") {
@@ -305,8 +245,8 @@ plot.jfaPrior <- function(x, ...) {
 plot.jfaPredict <- function(x) {
   y <- NULL
   df <- data.frame(x = seq_len(length(x)) - 1, y = as.numeric(x), lab = names(x))
-  yBreaks <- pretty(df$y, min.n = 5)
-  xBreaks <- pretty(df$x, min.n = 5)
+  yBreaks <- pretty(c(0, df$y), min.n = 4)
+  xBreaks <- pretty(df$x, min.n = 4)
   p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = x, y = y)) +
     ggplot2::geom_col(position = "identity", colour = "black", fill = "lightgray") +
     ggplot2::scale_x_continuous(name = "Misstatements", breaks = xBreaks, limits = c(min(xBreaks) - 0.5, max(xBreaks) + 0.5)) +
@@ -377,8 +317,8 @@ summary.jfaPosterior <- function(object, digits = getOption("digits"), ...) {
 #' @rdname jfa-methods
 #' @method predict jfaPosterior
 #' @export
-predict.jfaPosterior <- function(object, n, lim = NULL, cumulative = FALSE, ...) {
-  predict.jfaPrior(object, n, lim, cumulative, ...)
+predict.jfaPosterior <- function(object, n, cumulative = FALSE, ...) {
+  predict.jfaPrior(object, n, cumulative, ...)
 }
 
 #' @rdname jfa-methods
@@ -528,8 +468,8 @@ plot.jfaPlanning <- function(x, ...) {
   }
   df <- data.frame(x = c(x1, x2), y = c(y1, y2), type = c(rep("Prior", length(y1)), rep("Posterior", length(y2))))
   yMax <- if (is.infinite(max(df$y))) max(y2) else max(df$y)
-  yBreaks <- pretty(c(0, yMax), min.n = 5)
-  xBreaks <- pretty(df$x, min.n = 5)
+  yBreaks <- pretty(c(0, yMax), min.n = 4)
+  xBreaks <- pretty(df$x, min.n = 4)
   p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = x, y = y))
   if (x[["prior"]][["description"]]$density != "beta-binomial") {
     p <- p + ggplot2::geom_line(mapping = ggplot2::aes(linetype = type)) +
@@ -541,6 +481,11 @@ plot.jfaPlanning <- function(x, ...) {
       ggplot2::scale_fill_manual(name = NULL, values = c("darkgray", "lightgray")) +
       ggplot2::scale_x_continuous(name = "Population misstatements", breaks = xBreaks, limits = c(xBreaks[1] - 1, max(xBreaks) + 1)) +
       ggplot2::scale_y_continuous(name = "Probability", breaks = yBreaks, limits = range(yBreaks))
+  }
+  if (inherits(x, "jfaEvaluation")) {
+    p <- p + ggplot2::geom_segment(x = x[["lb"]], xend = x[["ub"]], y = max(yBreaks), yend = max(yBreaks)) +
+      ggplot2::geom_segment(x = x[["lb"]], xend = x[["lb"]], y = max(yBreaks) - ((yBreaks[2] - yBreaks[1]) / 10), yend = max(yBreaks) + ((yBreaks[2] - yBreaks[1]) / 10)) +
+      ggplot2::geom_segment(x = x[["ub"]], xend = x[["ub"]], y = max(yBreaks) - ((yBreaks[2] - yBreaks[1]) / 10), yend = max(yBreaks) + ((yBreaks[2] - yBreaks[1]) / 10))
   }
   p <- p + ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yBreaks)) +
     ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf)
@@ -961,8 +906,8 @@ print.jfaRv <- function(x, digits = getOption("digits"), ...) {
 plot.jfaRv <- function(x, ...) {
   y <- NULL
   df <- data.frame(x = as.numeric(names(x$frequencies)), y = as.numeric(x$frequencies))
-  xBreaks <- pretty(df$x, min.n = 5)
-  yBreaks <- pretty(c(0, df$y), min.n = 5)
+  xBreaks <- pretty(df$x, min.n = 4)
+  yBreaks <- pretty(c(0, df$y), min.n = 4)
   p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = x, y = y)) +
     ggplot2::geom_bar(fill = "darkgray", color = "black", linewidth = 0.2, stat = "identity") +
     ggplot2::scale_x_continuous(name = "Value", breaks = xBreaks, limits = range(xBreaks)) +

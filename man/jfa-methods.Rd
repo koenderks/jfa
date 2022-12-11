@@ -37,7 +37,7 @@
 
 \method{summary}{jfaPrior}(object, digits = getOption("digits"), ...)
 
-\method{predict}{jfaPrior}(object, n, lim = NULL, cumulative = FALSE, ...)
+\method{predict}{jfaPrior}(object, n, cumulative = FALSE, ...)
 
 \method{print}{jfaPredict}(x)
 
@@ -51,7 +51,7 @@
 
 \method{summary}{jfaPosterior}(object, digits = getOption("digits"), ...)
 
-\method{predict}{jfaPosterior}(object, n, lim = NULL, cumulative = FALSE, ...)
+\method{predict}{jfaPosterior}(object, n, cumulative = FALSE, ...)
 
 \method{plot}{jfaPosterior}(x, ...)
 
@@ -93,8 +93,6 @@
 \item{object, x}{an object of class \code{jfaPrior}, \code{jfaPosterior}, \code{jfaPlanning}, \code{jfaSelection}, \code{jfaEvaluation}, \code{jfaDistr}, or \code{jfaRv}.}
 
 \item{n}{used in \code{predict}. Specifies the sample size for which predictions should be made.}
-
-\item{lim}{used in \code{predict}. Limits the number of errors for which predictions should be made.}
 
 \item{cumulative}{used in \code{predict}. Specifies whether cumulative probabilities should be shown.}
 
