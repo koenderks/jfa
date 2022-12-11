@@ -65,6 +65,7 @@ report <- function(object,
     stop("'object' must be of class 'jfaEvaluation' or 'jfaPlanning'")
   }
   args <- list()
+  args$quiet <- TRUE
   args$input <- system.file(paste0("rmd/", name, ".Rmd"), package = "jfa")
   args$output_dir <- getwd()
   if (is.null(file)) {
@@ -78,5 +79,6 @@ report <- function(object,
   }
   args$output_file <- file
   output_file <- do.call(.markdown_call("rmarkdown::render"), args = args)
+  message(paste0("Created file in working directory: ", file))
   invisible(output_file)
 }
