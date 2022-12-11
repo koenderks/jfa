@@ -418,6 +418,7 @@ auditPrior <- function(method = c(
         prior_beta <- prior.n - prior.x
       }
     } else if (accomodates_other) {
+      stopifnot("'method' not supported for the current 'likelihood'" = method == "impartial")
       prior_alpha <- switch(likelihood,
         "normal" = materiality,
         "uniform" = 0
