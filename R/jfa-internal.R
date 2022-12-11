@@ -132,11 +132,14 @@
 
 .comp_mean_bayes <- function(family, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
   if (analytical) {
+    a <- (0 - alpha) / beta
+    b <- (1 - alpha) / beta
+    Z <- stats::pnorm(b) - stats::pnorm(a)
     mean <- switch(family,
       "poisson" = alpha / beta,
       "binomial" = alpha / (alpha + beta),
       "hypergeometric" = alpha / (alpha + beta) * N.units,
-      "normal" = alpha + (stats::dnorm((0 - alpha) / beta) - (stats::dnorm(1 - alpha) / beta)) / (stats::pnorm((0 - alpha) / beta) - (stats::pnorm(1 - alpha) / beta)) * beta,
+      "normal" = alpha + ((stats::dnorm(a) - stats::dnorm(b)) / Z) * beta,
       "uniform" = (alpha + beta) / 2,
       "cauchy" = NA,
       "t" = NA,
@@ -168,11 +171,14 @@
 
 .comp_var_bayes <- function(family, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
   if (analytical) {
+    a <- (0 - alpha) / beta
+    b <- (1 - alpha) / beta
+    Z <- stats::pnorm(b) - stats::pnorm(a)
     variance <- switch(family,
       "poisson" = alpha / beta^2,
       "binomial" = (alpha * beta) / ((alpha + beta)^2 * (alpha + beta + 1)),
       "hypergeometric" = ((N.units * alpha * beta) * (alpha + beta + N.units)) / ((alpha + beta)^2 * (alpha + beta + 1)),
-      "normal" = NA,
+      "normal" = beta^2 * (1 + ((a * stats::dnorm(a) - b * stats::dnorm(b)) / Z) - ((stats::dnorm(a) - stats::dnorm(b)) / Z)^2),
       "uniform" = (1 / 12) * (beta - alpha)^2,
       "cauchy" = NA,
       "t" = NA,
@@ -207,11 +213,14 @@
     if (family %in% c("poisson", "binomial", "hypergeometric") && (alpha == 0 || beta == 0)) {
       entropy <- -Inf
     } else {
+      a <- (0 - alpha) / beta
+      b <- (1 - alpha) / beta
+      Z <- stats::pnorm(b) - stats::pnorm(a)
       entropy <- switch(family,
         "poisson" = alpha - log(beta) + log(gamma(alpha)) + (1 - alpha) * digamma(alpha),
         "binomial" = log(beta(alpha, beta)) - (alpha - 1) * digamma(alpha) - (beta - 1) * digamma(beta) + (alpha + beta - 2) * digamma(alpha + beta),
         "hypergeometric" = log(beta(alpha, beta)) - (alpha - 1) * digamma(alpha) - (beta - 1) * digamma(beta) + (alpha + beta - 2) * digamma(alpha + beta),
-        "normal" = NA,
+        "normal" = log(sqrt(2 * pi * exp(1)) * beta * Z) + (a * stats::dnorm(a) - b * stats::dnorm(b)) / (2 * Z),
         "uniform" = log(beta - alpha),
         "cauchy" = NA,
         "t" = NA,
