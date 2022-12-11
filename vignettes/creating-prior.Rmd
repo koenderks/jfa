@@ -71,6 +71,22 @@ All prior distributions can be visually inspected via the `plot()` function.
 plot(prior)
 ```
 
+Furthermore, the `predict()` function produces the predictions of the prior
+distribution on the data level for a sample of `n` items. For example, the
+command below requests the prediction of the default beta(1, 1) prior for a
+hypothetical sample of 6 items.
+
+```{r fig.align="center", fig.height=4, fig.width=6}
+predict(prior, n = 6)
+```
+
+The predictions of the prior distribution can be visualized using the `plot()`
+function.
+
+```{r fig.align="center", fig.height=4, fig.width=6}
+plot(predict(prior, n = 10))
+```
+
 ### Priors with custom parameters (`method = 'param'`)
 
 You can manually specify the parameters of the prior distribution with
@@ -221,6 +237,15 @@ prior <- auditPrior(method = "param", likelihood = "normal", alpha = 0.025, beta
 eval <- evaluation(materiality = 0.05, x = 1, n = 60, prior = prior)
 summary(eval)
 plot(eval)
+```
+
+The predictions of the posterior distribution on the data level can be
+visualized using the `plot()` function. For example, the command below shows the
+predictions of the posterior distribution for a hypothetical (next) sample of
+10 items.
+
+```{r fig.align="center", fig.height=4, fig.width=6}
+plot(predict(eval$posterior, n = 10))
 ```
 
 ## References
