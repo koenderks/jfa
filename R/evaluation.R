@@ -109,11 +109,11 @@
 #' @param prior         a logical specifying whether to use a prior
 #'   distribution, or an object of class \code{jfaPrior} or \code{jfaPosterior}.
 #'   If this argument is specified as \code{FALSE} (default), the function
-#'   performs classical evaluation If this argument is specified as \code{TRUE}
+#'   performs classical evaluation. If this argument is specified as \code{TRUE}
 #'   or as a prior from \code{auditPrior}, this function performs Bayesian
-#'   evaluation using a prior that is conjugate to the specified \code{method}.
+#'   evaluation using the specified prior.
 #' @param ...           further arguments to be passed to evaluation. Currently
-#'   for compatibility with JASP for audit but is to be deprecated later.
+#'   for compatibility with JASP for Audit but is to be deprecated later.
 #'
 #' @details This section lists the available options for the \code{method}
 #'   argument.
@@ -320,6 +320,8 @@ evaluation <- function(materiality = NULL,
       prior[["hypotheses"]] <- hypotheses
     }
   } else if (prior) {
+    accommodates_simple_prior <- method %in% c("poisson", "binomial", "hypergeometric")
+    stopifnot("'method' should be one of 'poisson', 'binomial', or 'hypergeometric'" = accommodates_simple_prior)
     prior <- auditPrior("default", method, N.units, materiality = materiality, conf.level = conf.level)
     conjugate_prior <- TRUE
   }

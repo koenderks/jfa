@@ -106,12 +106,12 @@ options can be set globally using \code{options("mcmc.iterations")}
 \item{prior}{a logical specifying whether to use a prior
 distribution, or an object of class \code{jfaPrior} or \code{jfaPosterior}.
 If this argument is specified as \code{FALSE} (default), the function
-performs classical evaluation If this argument is specified as \code{TRUE}
+performs classical evaluation. If this argument is specified as \code{TRUE}
 or as a prior from \code{auditPrior}, this function performs Bayesian
-evaluation using a prior that is conjugate to the specified \code{method}.}
+evaluation using the specified prior.}
 
 \item{...}{further arguments to be passed to evaluation. Currently
-for compatibility with JASP for audit but is to be deprecated later.}
+for compatibility with JASP for Audit but is to be deprecated later.}
 }
 \value{
 An object of class \code{jfaEvaluation} containing:
