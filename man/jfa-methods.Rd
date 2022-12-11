@@ -7,6 +7,7 @@
 \alias{summary.jfaPrior}
 \alias{predict.jfaPrior}
 \alias{plot.jfaPrior}
+\alias{plot.jfaPredict}
 \alias{print.jfaPosterior}
 \alias{print.summary.jfaPosterior}
 \alias{summary.jfaPosterior}
@@ -38,6 +39,8 @@
 \method{predict}{jfaPrior}(object, n, lim = NULL, cumulative = FALSE, ...)
 
 \method{plot}{jfaPrior}(x, ...)
+
+\method{plot}{jfaPredict}(x)
 
 \method{print}{jfaPosterior}(x, ...)
 
