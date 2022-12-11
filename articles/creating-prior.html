@@ -405,18 +405,32 @@ performance materiality of 5% after seeing a sample of 60 items with 1
 misstatement, while using a normal(0.025, 0.05) prior distribution.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"param"</span>, likelihood <span class="op">=</span> <span class="st">"normal"</span>, alpha <span class="op">=</span> <span class="fl">0.025</span>, beta <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">60</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">eval</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">60</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">eval</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Bayesian Audit Sample Evaluation</span></span>
+<span><span class="co">##  Bayesian Audit Sample Evaluation Summary</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## data:  1 and 60</span></span>
-<span><span class="co">## number of errors = 1, number of samples = 60, taint = 1, BF₁₀ = 5.8027</span></span>
-<span><span class="co">## alternative hypothesis: true misstatement rate is less than 0.05</span></span>
-<span><span class="co">## 95 percent credible interval:</span></span>
-<span><span class="co">##  0.00000000 0.06761315</span></span>
-<span><span class="co">## most likely estimate:</span></span>
-<span><span class="co">##  0.014447 </span></span>
-<span><span class="co">## results obtained via method 'poisson' + 'prior'</span></span></code></pre>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Confidence level:               0.95 </span></span>
+<span><span class="co">##   Materiality:                    0.05 </span></span>
+<span><span class="co">##   Hypotheses:                     H₀: Θ &gt; 0.05 vs. H₁: Θ &lt; 0.05 </span></span>
+<span><span class="co">##   Method:                         poisson </span></span>
+<span><span class="co">##   Prior distribution:             normal(μ = 0.025, σ = 0.05)T[0,1] </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Data:</span></span>
+<span><span class="co">##   Sample size:                    60 </span></span>
+<span><span class="co">##   Number of errors:               1 </span></span>
+<span><span class="co">##   Sum of taints:                  1 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   Posterior distribution:         Determined via MCMC sampling </span></span>
+<span><span class="co">##   Most likely error:              0.01643 </span></span>
+<span><span class="co">##   95 percent credible interval:   [0, 0.065671] </span></span>
+<span><span class="co">##   Precision:                      0.04924 </span></span>
+<span><span class="co">##   BF₁₀:                            5.6335</span></span></code></pre>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eval</span><span class="op">)</span></span></code></pre></div>
+<p><img src="creating-prior_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
 </div>
 </div>
 <div class="section level2">
