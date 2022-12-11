@@ -155,7 +155,7 @@ predict.jfaPrior <- function(object, n, cumulative = FALSE, ...) {
   } else if (object[["description"]]$density == "Cauchy") {
     p <- prop.table(table(stats::rbinom(nobs, n, truncdist::rtrunc(nobs, "cauchy", 0, 1, location = object[["description"]]$alpha, scale = object[["description"]]$beta))))
   } else if (object[["description"]]$density == "Student-t") {
-    p <- prop.table(table(rstats::binom(nobs, n, truncdist::rtrunc(nobs, "t", 0, 1, df = object[["description"]]$alpha))))
+    p <- prop.table(table(stats::rbinom(nobs, n, truncdist::rtrunc(nobs, "t", 0, 1, df = object[["description"]]$alpha))))
   } else if (object[["description"]]$density == "chi-squared") {
     p <- prop.table(table(stats::rbinom(nobs, n, truncdist::rtrunc(nobs, "chisq", 0, 1, df = object[["description"]]$alpha))))
   } else if (object[["description"]]$density == "MCMC") {
