@@ -100,12 +100,11 @@
 #'   \code{complete} for complete pooling (i.e., all information is shared
 #'   between strata) or \code{partial} for partial pooling (i.e., some
 #'   information is shared between strata). The latter two options fit a
-#'   Bayesian model to the data using a MCMC sampling procedure whose
-#'   options can be set globally using \code{options("mcmc.iterations")}
-#'   (otherwise: 2000 for partial pooling and 100000 for no pooling),
-#'   \code{options("mcmc.warmup")} (otherwise: 1000),
-#'   \code{options("mcmc.chains")} (otherwise: 4) and
-#'   \code{options("mcmc.cores")} (otherwise: 1).
+#'   Bayesian model to the data using a MCMC sampling procedure whose options
+#'   can be set globally using \code{options("mc.iterations")} (otherwise:
+#'   2000), \code{options("mc.warmup")} (otherwise: 1000),
+#'   \code{options("mc.chains")} (otherwise: 4) and \code{options("mc.cores")}
+#'   (otherwise: 1).
 #' @param prior         a logical specifying whether to use a prior
 #'   distribution, or an object of class \code{jfaPrior} or \code{jfaPosterior}.
 #'   If this argument is specified as \code{FALSE} (default), the function
@@ -486,7 +485,7 @@ evaluation <- function(materiality = NULL,
     if (conjugate_prior) {
       stratum_samples <- NULL
     } else {
-      stratum_samples <- matrix(NA, nrow = (getOption("mcmc.iterations", 2000) - getOption("mcmc.warmup", 1000)) * getOption("mcmc.chains", 4), ncol = no_rows * 2)
+      stratum_samples <- matrix(NA, nrow = (getOption("mc.iterations", 2000) - getOption("mc.warmup", 1000)) * getOption("mc.chains", 4), ncol = no_rows * 2)
     }
   }
   mle <- lb <- ub <- precision <- p.val <- K <- numeric(nstrata)

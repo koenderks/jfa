@@ -539,10 +539,10 @@
       object = stanmodels[[paste0("cp_", likelihood)]],
       data = c(data, use_likelihood = 0),
       pars = "theta",
-      iter = getOption("mcmc.iterations", 2000),
-      warmup = getOption("mcmc.warmup", 1000),
-      chains = getOption("mcmc.chains", 4),
-      cores = getOption("mcmc.cores", 1),
+      iter = getOption("mc.iterations", 2000),
+      warmup = getOption("mc.warmup", 1000),
+      chains = getOption("mc.chains", 4),
+      cores = getOption("mc.cores", 1),
       seed = ceiling(stats::runif(1, -1000, 1000)),
       control = list(adapt_delta = 0.95),
       refresh = 0
@@ -551,10 +551,10 @@
       object = stanmodels[[paste0("cp_", likelihood)]],
       data = c(data, use_likelihood = 1),
       pars = "theta",
-      iter = getOption("mcmc.iterations", 2000),
-      warmup = getOption("mcmc.warmup", 1000),
-      chains = getOption("mcmc.chains", 4),
-      cores = getOption("mcmc.cores", 1),
+      iter = getOption("mc.iterations", 2000),
+      warmup = getOption("mc.warmup", 1000),
+      chains = getOption("mc.chains", 4),
+      cores = getOption("mc.cores", 1),
       seed = ceiling(stats::runif(1, -1000, 1000)),
       control = list(adapt_delta = 0.95),
       refresh = 0
@@ -602,10 +602,10 @@
     object = stanmodels[[paste0("pp_", likelihood)]],
     data = c(data, use_likelihood = 0),
     pars = "theta_s",
-    iter = getOption("mcmc.iterations", 2000),
-    warmup = getOption("mcmc.warmup", 1000),
-    chains = getOption("mcmc.chains", 4),
-    cores = getOption("mcmc.cores", 1),
+    iter = getOption("mc.iterations", 2000),
+    warmup = getOption("mc.warmup", 1000),
+    chains = getOption("mc.chains", 4),
+    cores = getOption("mc.cores", 1),
     seed = ceiling(stats::runif(1, -1000, 1000)),
     control = list(adapt_delta = 0.95),
     refresh = 0
@@ -614,10 +614,10 @@
     object = stanmodels[[paste0("pp_", likelihood)]],
     data = c(data, use_likelihood = 1),
     pars = "theta_s",
-    iter = getOption("mcmc.iterations", 2000),
-    warmup = getOption("mcmc.warmup", 1000),
-    chains = getOption("mcmc.chains", 4),
-    cores = getOption("mcmc.cores", 1),
+    iter = getOption("mc.iterations", 2000),
+    warmup = getOption("mc.warmup", 1000),
+    chains = getOption("mc.chains", 4),
+    cores = getOption("mc.cores", 1),
     seed = ceiling(stats::runif(1, -1000, 1000)),
     control = list(adapt_delta = 0.95),
     refresh = 0
@@ -628,7 +628,7 @@
 }
 
 .mcmc_analytical <- function(nstrata, t.obs, n.obs, N.units, prior) {
-  iterations <- getOption("mcmc.iterations", 1e5)
+  iterations <- getOption("mc.iterations", 1e5)
   samples <- matrix(NA, ncol = nstrata * 2, nrow = iterations)
   for (i in 1:nstrata) {
     samples[, i] <- switch(prior[["likelihood"]],
@@ -648,7 +648,7 @@
 }
 
 .mcmc_emulate <- function(likelihood, alternative, nstrata, t.obs, n.obs, N.units) {
-  iterations <- getOption("mcmc.iterations", 1e5)
+  iterations <- getOption("mc.iterations", 1e5)
   if (alternative == "two.sided") {
     alpha <- rep(1:0, each = iterations)
     beta <- 1 - alpha
