@@ -41,7 +41,7 @@
 #'            N.units = NULL,
 #'            N.items = NULL,
 #'            pooling = c("none", "complete", "partial"),
-#'            prior = FALSE, ...)
+#'            prior = FALSE)
 #'
 #' @param materiality   a numeric value between 0 and 1 specifying the
 #'   performance materiality (i.e., the maximum tolerable misstatement in the
@@ -111,8 +111,6 @@
 #'   performs classical evaluation. If this argument is specified as \code{TRUE}
 #'   or as a prior from \code{auditPrior}, this function performs Bayesian
 #'   evaluation using the specified prior.
-#' @param ...           further arguments to be passed to evaluation. Currently
-#'   for compatibility with JASP for Audit but is to be deprecated later.
 #'
 #' @details This section lists the available options for the \code{method}
 #'   argument.
@@ -287,7 +285,7 @@ evaluation <- function(materiality = NULL,
                        N.units = NULL,
                        N.items = NULL,
                        pooling = c("none", "complete", "partial"),
-                       prior = FALSE, ...) {
+                       prior = FALSE) {
   # Input checking
   method <- match.arg(method)
   alternative <- match.arg(alternative)

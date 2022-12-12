@@ -23,7 +23,7 @@ evaluation(materiality = NULL,
            N.units = NULL,
            N.items = NULL,
            pooling = c("none", "complete", "partial"),
-           prior = FALSE, ...)
+           prior = FALSE)
 }
 \arguments{
 \item{materiality}{a numeric value between 0 and 1 specifying the
@@ -108,9 +108,6 @@ If this argument is specified as \code{FALSE} (default), the function
 performs classical evaluation. If this argument is specified as \code{TRUE}
 or as a prior from \code{auditPrior}, this function performs Bayesian
 evaluation using the specified prior.}
-
-\item{...}{further arguments to be passed to evaluation. Currently
-for compatibility with JASP for Audit but is to be deprecated later.}
 }
 \value{
 An object of class \code{jfaEvaluation} containing:

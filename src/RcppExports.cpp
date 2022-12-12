@@ -12,6 +12,7 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 
+RcppExport SEXP _rcpp_module_boot_stan_fit4cp_beta_mod();
 RcppExport SEXP _rcpp_module_boot_stan_fit4cp_binomial_mod();
 RcppExport SEXP _rcpp_module_boot_stan_fit4cp_poisson_mod();
 RcppExport SEXP _rcpp_module_boot_stan_fit4pp_beta_mod();
@@ -19,6 +20,7 @@ RcppExport SEXP _rcpp_module_boot_stan_fit4pp_binomial_mod();
 RcppExport SEXP _rcpp_module_boot_stan_fit4pp_poisson_mod();
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_rcpp_module_boot_stan_fit4cp_beta_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4cp_beta_mod, 0},
     {"_rcpp_module_boot_stan_fit4cp_binomial_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4cp_binomial_mod, 0},
     {"_rcpp_module_boot_stan_fit4cp_poisson_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4cp_poisson_mod, 0},
     {"_rcpp_module_boot_stan_fit4pp_beta_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4pp_beta_mod, 0},

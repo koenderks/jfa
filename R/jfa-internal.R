@@ -535,7 +535,7 @@
     chisq_prior = as.numeric(prior[["likelihood"]] == "chisq")
   )
   if (x %% 1 != 0) {
-    data[["k"]] <- ceiling(x)
+    likelihood <- "beta"
   }
   suppressWarnings({
     raw_prior <- rstan::sampling(
