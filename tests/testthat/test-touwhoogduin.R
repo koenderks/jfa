@@ -18,6 +18,23 @@ context("Benchmark against Touw and Hoogduin (2011)")
 # Touw, P., and Hoogduin, L. (2011). Statistiek voor audit en controlling. Boom uitgevers, Amsterdam.
 
 # Table 1.3 on page 17
+# Touw & Hoogduin:
+#            | Materiality
+# Confidence   0.01
+# 0.95          300
+# 0.90          230
+# 0.75          140
+# 0.60           90
+# 0.50           70
+
+# jfa:
+#            | Materiality
+# Confidence   0.01
+# 0.95          300
+# 0.9           231
+# 0.75          139
+# 0.6            92
+# 0.5            70
 
 test_that(desc = "(id: f14-v0.5.1-t1) Test Sample sizes on page 17", {
   SR <- c(0.05, 0.10, 0.25, 0.40, 0.50)
@@ -33,6 +50,17 @@ test_that(desc = "(id: f14-v0.5.1-t1) Test Sample sizes on page 17", {
 })
 
 # Example on page 23
+# Touw & Hoogduin:
+#            | Materiality
+# Confidence   0.02
+# 0.95          150
+# 0.875         104
+
+# jfa:
+#            | Materiality
+# Confidence   0.02
+# 0.95          150
+# 0.875         104
 
 test_that(desc = "(id: f14-v0.5.1-t2) Test Sample sizes on page 23", {
   n <- jfa::planning(conf.level = 1 - 0.05, materiality = 100000 / 5000000, likelihood = "poisson")$n
