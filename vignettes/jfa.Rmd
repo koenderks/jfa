@@ -31,7 +31,7 @@ against Benford's law.
 
 This vignette provides a simple explanation of the functionality in the package.
 For a more detailed explanation of the functions in the package, see the other
-vignettes at the [package website](https://koenderks.github.io/).
+vignettes at the [package website](https://koenderks.github.io/jfa/).
 
 ## Audit sampling
 

@@ -24,7 +24,7 @@ library(jfa)
 Welcome to the 'Data auditing' vignette of the **jfa** package. Here you can
 find a simple explanation of the functions in the package that facilitate data
 auditing. For more detailed explanations of each function, read the other
-vignettes on the [package website](https://koenderks.github.io/jfa).
+vignettes on the [package website](https://koenderks.github.io/jfa/).
 
 ## Functions and intended usage
 
