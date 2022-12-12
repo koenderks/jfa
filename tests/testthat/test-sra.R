@@ -18,6 +18,26 @@ context("Benchmark against SRA")
 # SRA steekproefmodel https://www.sra.nl/vaktechniek/accountancy/controle/praktijkhandreikingen/praktijkhandreiking-gegevensgerichte-steekproeven
 # Retrieved on 10-11-2022
 
+# SRA:
+#            | Materiality
+# Confidence | 0.05 0.1 0.15 0.2 0.25 0.3 0.35 0.4 0.45 0.5
+# 0.95       |   60  30   20  15   12  10    9   8    7   6
+# 0.96       |   64  32   22  16   13  11   10   8    8   7
+# 0.97       |   70  35   24  18   14  12   10   9    8   8
+# 0.975      |   74  37   25  19   15  13   11  10    9   8
+# 0.98       |   78  39   26  20   16  13   12  10    9   8
+# 0.99       |   92  46   31  23   19  16   14  12   11  10
+
+# jfa:
+#            | Materiality
+# Confidence | 0.05 0.1 0.15 0.2 0.25 0.3 0.35 0.4 0.45 0.5
+# 0.95       |   60  30   20  15   12  10    9   8    7   6
+# 0.96       |   65  33   22  17   13  11   10   9    8   7
+# 0.97       |   71  36   24  18   15  12   11   9    8   8
+# 0.975      |   74  37   25  19   15  13   11  10    9   8
+# 0.98       |   79  40   27  20   16  14   12  10    9   8
+# 0.99       |   93  47   31  24   19  16   14  12   11  10
+
 test_that(desc = "(id: f13-v0.6.5-t1) Test frequentist sample sizes", {
   theta <- c(1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000) / 20000 # materiality divided by N
   confidence <- c(0.95, 0.96, 0.97, 0.975, 0.98, 0.99)
