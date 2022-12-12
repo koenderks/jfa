@@ -574,7 +574,7 @@ evaluation <- function(materiality = NULL,
         message("sum of taints in each stratum is rounded upwards")
         t.obs <- ceiling(t.obs)
       }
-      stratum_samples <- .mcmc_pp("binomial", n.obs, t.obs, t = NULL, nstrata, stratum, prior)
+      stratum_samples <- .mcmc_pp(method, n.obs, t.obs, t = NULL, nstrata, stratum, prior)
     }
     for (i in 2:nstrata) {
       if (is_bayesian) {
