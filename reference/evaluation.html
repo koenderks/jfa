@@ -202,12 +202,11 @@ for no pooling (i.e., no information is shared between strata),
 <code>complete</code> for complete pooling (i.e., all information is shared
 between strata) or <code>partial</code> for partial pooling (i.e., some
 information is shared between strata). The latter two options fit a
-Bayesian model to the data using a MCMC sampling procedure whose
-options can be set globally using <code>options("mcmc.iterations")</code>
-(otherwise: 2000 for partial pooling and 100000 for no pooling),
-<code>options("mcmc.warmup")</code> (otherwise: 1000),
-<code>options("mcmc.chains")</code> (otherwise: 4) and
-<code>options("mcmc.cores")</code> (otherwise: 1).</p></dd>
+Bayesian model to the data using a MCMC sampling procedure whose options
+can be set globally using <code>options("mc.iterations")</code> (otherwise:
+2000), <code>options("mc.warmup")</code> (otherwise: 1000),
+<code>options("mc.chains")</code> (otherwise: 4) and <code>options("mc.cores")</code>
+(otherwise: 1).</p></dd>
 
 
 <dt>prior</dt>
