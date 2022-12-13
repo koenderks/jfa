@@ -34,6 +34,6 @@ model {
     theta ~ chi_square(alpha);
   }
   if (use_likelihood) {
-    k / n ~ beta_proportion(theta, n);
+    k / n ~ beta(1 + (theta * n), 1 + (1 - theta) * n);
   }
 }
