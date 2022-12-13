@@ -13,6 +13,8 @@ data {
   int t_prior;
   int chisq_prior;
   int use_likelihood;
+  int binomial_likelihood;
+  int poisson_likelihood;
 }
 parameters {
   real<lower=0, upper=1> theta;
@@ -34,6 +36,10 @@ model {
     theta ~ chi_square(alpha);
   }
   if (use_likelihood) {
-    k ~ poisson(theta * n);
+    if (binomial_likelihood) {
+      k ~ binomial(n, theta);
+    } else if (poisson_likelihood) {
+      k ~ poisson(theta * n);
+    }
   }
 }

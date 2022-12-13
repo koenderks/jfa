@@ -535,11 +535,15 @@
     chisq_prior = as.numeric(prior[["likelihood"]] == "chisq")
   )
   if (x %% 1 != 0) {
-    likelihood <- "beta"
+    model <- stanmodels[["cp_taint"]]
+  } else {
+    model <- stanmodels[["cp_error"]]
+    data[["binomial_likelihood"]] <- as.numeric(likelihood == "binomial")
+    data[["poisson_likelihood"]] <- as.numeric(likelihood == "poisson")
   }
   suppressWarnings({
     raw_prior <- rstan::sampling(
-      object = stanmodels[[paste0("cp_", likelihood)]],
+      object = model,
       data = c(data, use_likelihood = 0),
       pars = "theta",
       iter = getOption("mc.iterations", 2000),
@@ -551,7 +555,7 @@
       refresh = 0
     )
     raw_posterior <- rstan::sampling(
-      object = stanmodels[[paste0("cp_", likelihood)]],
+      object = model,
       data = c(data, use_likelihood = 1),
       pars = "theta",
       iter = getOption("mc.iterations", 2000),
@@ -583,8 +587,11 @@
       uniform_prior = as.numeric(prior[["likelihood"]] == "uniform"),
       cauchy_prior = as.numeric(prior[["likelihood"]] == "cauchy"),
       t_prior = as.numeric(prior[["likelihood"]] == "t"),
-      chisq_prior = as.numeric(prior[["likelihood"]] == "chisq")
+      chisq_prior = as.numeric(prior[["likelihood"]] == "chisq"),
+      binomial_likelihood = as.numeric(likelihood == "binomial"),
+      poisson_likelihood = as.numeric(likelihood == "poisson")
     )
+    model <- stanmodels[["pp_error"]]
   } else if (likelihood == "beta") {
     data <- list(
       S = nstrata - 1,
@@ -600,10 +607,11 @@
       t_prior = as.numeric(prior[["likelihood"]] == "t"),
       chisq_prior = as.numeric(prior[["likelihood"]] == "chisq")
     )
+    model <- stanmodels[["pp_taint"]]
   }
   suppressWarnings({
     raw_prior <- rstan::sampling(
-      object = stanmodels[[paste0("pp_", likelihood)]],
+      object = model,
       data = c(data, use_likelihood = 0),
       pars = "theta_s",
       iter = getOption("mc.iterations", 2000),
@@ -615,7 +623,7 @@
       refresh = 0
     )
     raw_posterior <- rstan::sampling(
-      object = stanmodels[[paste0("pp_", likelihood)]],
+      object = model,
       data = c(data, use_likelihood = 1),
       pars = "theta_s",
       iter = getOption("mc.iterations", 2000),

@@ -1,8 +1,9 @@
 #include /include/license.stan
 
 data {
-  int<lower=1> n;
-  int<lower=0> k;
+  int<lower=1> S;
+  int<lower=1> n[S];
+  int<lower=0> k[S];
   real<lower=0> alpha;
   real<lower=0> beta;
   int beta_prior;
@@ -13,9 +14,17 @@ data {
   int t_prior;
   int chisq_prior;
   int use_likelihood;
+  int binomial_likelihood;
+  int poisson_likelihood;
 }
 parameters {
   real<lower=0, upper=1> theta;
+  real<lower=0> sigma;
+  vector[S] alpha_s;
+}
+transformed parameters {
+  real mu;
+  mu = logit(theta);
 }
 model {
   if (beta_prior) {
@@ -33,7 +42,21 @@ model {
   } else if (chisq_prior) {
     theta ~ chi_square(alpha);
   }
+  sigma ~ normal(0, 1);
+  alpha_s ~ normal(0, 1);
   if (use_likelihood) {
-    k ~ binomial(n, theta);
+    if (binomial_likelihood) {
+      k ~ binomial_logit(n, mu + sigma * alpha_s);
+    } else if (poisson_likelihood) {
+      for (i in 1:S){
+        k[i] ~ poisson(inv_logit(mu + sigma * alpha_s[i]) * n[i]);
+      }
+    }
+  }
+}
+generated quantities {
+  vector<lower=0, upper=1>[S] theta_s;
+  for (i in 1:S) {
+    theta_s[i] = inv_logit(mu + sigma * alpha_s[i]);
   }
 }
