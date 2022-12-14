@@ -95,7 +95,7 @@
 workflow</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2022-12-13</h4>
+            <h4 data-toc-skip class="date">2022-12-14</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/bayesian-sampling-workflow.Rmd" class="external-link"><code>vignettes/bayesian-sampling-workflow.Rmd</code></a></small>
       <div class="hidden name"><code>bayesian-sampling-workflow.Rmd</code></div>
@@ -160,7 +160,7 @@ the population.</p>
 <p>The auditor wants to make a statement that, with 95% confidence, the
 misstatement in the population is lower than the performance materiality
 of 5%. Based on last year’s audit at BuildIt, where the upper bound of
-the misstatement turned out to be 2.5%, she wants to tolerate at most
+the misstatement turned out to be 2.5%, they want to tolerate at most
 2.5% errors in the intended sample. The auditor can therefore
 re-formulate their statistical statement as that they want to conclude
 that, when 2.5% errors are found in the sample, they can conclude with
@@ -181,7 +181,7 @@ risk is the risk posed by an error in BuildIt’s financial statement that
 could be material, before consideration of any related control systems
 (e.g., computer systems). Control risk is the risk that a material
 misstatement is not prevented or detected by BuildIt’s internal control
-systems. Detection risk is the risk that Laura will fail to find
+systems. Detection risk is the risk that the auditor will fail to find
 material misstatements that exist in an BuildIt’s financial statements.
 The <em>ARM</em> is practically useful because for a given level of
 audit risk, the tolerable detection risk bears an inverse relation to
@@ -223,7 +223,7 @@ the value <code>c.adj</code> as their new value for
 <span><span class="va">c.adj</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="op">(</span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">confidence</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">ir</span> <span class="op">*</span> <span class="va">cr</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>However, in a Bayesian audit, the auditor starts at step 0 by
 defining the prior distribution that corresponds to their assessment of
-the control risk. Using the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function, she can
+the control risk. Using the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function, they can
 create a prior distribution that incorporates the information in the
 risk assessments from the <em>ARM</em>. For more information on how this
 is done, see Derks et al. (2019).</p>
@@ -238,10 +238,10 @@ function.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior</span><span class="op">)</span></span></code></pre></div>
 <p><img src="bayesian-sampling-workflow_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto;"></p>
-<p>Now that the prior distribution is specified, Laura can calculate the
-required sample size for her desired inference by using the
-<code><a href="../reference/planning.html">planning()</a></code> function. She uses the <code>prior</code> object
-as input for the <code><a href="../reference/planning.html">planning()</a></code> function.</p>
+<p>Now that the prior distribution is specified, the auditor can
+calculate the required sample size for their desired inference by using
+the <code><a href="../reference/planning.html">planning()</a></code> function. They uses the <code>prior</code>
+object as input for the <code><a href="../reference/planning.html">planning()</a></code> function.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Step 1: Calculate the required sample size.</span></span>
 <span><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">confidence</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></code></pre></div>
