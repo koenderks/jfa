@@ -69,7 +69,7 @@ the misstatement in the population.
 The auditor wants to make a statement that, with 95% confidence, the misstatement
 in the population is lower than the performance materiality of 5%. Based on last
 year's audit at BuildIt, where the upper bound of the misstatement turned out to
-be 2.5%, she wants to tolerate at most 2.5% errors in the intended sample. The
+be 2.5%, they want to tolerate at most 2.5% errors in the intended sample. The
 auditor can therefore re-formulate their statistical statement as that they want
 to conclude that, when 2.5% errors are found in the sample, they can conclude
 with 95% confidence that the misstatement in the population is lower than the
@@ -92,7 +92,7 @@ risk, and the detection risk. Inherent risk is the risk posed by an error in
 BuildIt's financial statement that could be material, before consideration of
 any related control systems (e.g., computer systems). Control risk is the risk
 that a material misstatement is not prevented or detected by BuildIt's internal
-control systems. Detection risk is the risk that Laura will fail to find
+control systems. Detection risk is the risk that the auditor will fail to find
 material misstatements that exist in an BuildIt's financial statements. The
 *ARM* is practically useful because for a given level of audit risk, the
 tolerable detection risk bears an inverse relation to the other two risks. The
@@ -134,7 +134,7 @@ c.adj <- 1 - ((1 - confidence) / (ir * cr))
 
 However, in a Bayesian audit, the auditor starts at step 0 by defining the prior
 distribution that corresponds to their assessment of the control risk. Using the
-`auditPrior()` function, she can create a prior distribution that incorporates
+`auditPrior()` function, they can create a prior distribution that incorporates
 the information in the risk assessments from the *ARM*. For more information on
 how this is done, see Derks et al. (2019).
 
@@ -152,9 +152,9 @@ The prior distribution can be shown by using the `plot()` function.
 plot(prior)
 ```
 
-Now that the prior distribution is specified, Laura can calculate the required
-sample size for her desired inference by using the `planning()` function. She
-uses the `prior` object as input for the `planning()` function.
+Now that the prior distribution is specified, the auditor can calculate the
+required sample size for their desired inference by using the `planning()`
+function. They uses the `prior` object as input for the `planning()` function.
 
 ```{r}
 # Step 1: Calculate the required sample size.
