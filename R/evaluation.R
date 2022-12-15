@@ -483,7 +483,11 @@ evaluation <- function(materiality = NULL,
     if (conjugate_prior) {
       stratum_samples <- NULL
     } else {
-      stratum_samples <- matrix(NA, nrow = (getOption("mc.iterations", 2000) - getOption("mc.warmup", 1000)) * getOption("mc.chains", 4), ncol = no_rows * 2)
+      if (pooling == "partial") {
+        stratum_samples <- matrix(NA, nrow = (getOption("mc.iterations", 2000) - getOption("mc.warmup", 1000)) * getOption("mc.chains", 4), ncol = no_rows * 2)
+      } else {
+        stratum_samples <- matrix(NA, nrow = getOption("jfa.iterations", 1e5), ncol = no_rows * 2)
+      }
     }
   }
   mle <- lb <- ub <- precision <- p.val <- K <- numeric(nstrata)

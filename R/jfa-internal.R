@@ -546,8 +546,8 @@
     likelihood <- stats::dgamma(theta, shape = 1 + x, rate = n)
   }
   posterior <- prior * likelihood
-  samples_prior <- sample(theta[!is.infinite(prior)], size = getOption("mc.iterations", 1e5), replace = TRUE, prob = prior[!is.infinite(prior)])
-  samples_post <- sample(theta[!is.infinite(posterior)], size = getOption("mc.iterations", 1e5), replace = TRUE, prob = posterior[!is.infinite(posterior)])
+  samples_prior <- sample(theta[!is.infinite(prior)], size = getOption("jfa.iterations", 1e5), replace = TRUE, prob = prior[!is.infinite(prior)])
+  samples_post <- sample(theta[!is.infinite(posterior)], size = getOption("jfa.iterations", 1e5), replace = TRUE, prob = posterior[!is.infinite(posterior)])
   samples <- cbind(samples_post, samples_prior)
   return(samples)
 }
@@ -621,7 +621,7 @@
 }
 
 .mcmc_analytical <- function(nstrata, t.obs, n.obs, N.units, prior) {
-  iterations <- getOption("mc.iterations", 1e5)
+  iterations <- getOption("jfa.iterations", 1e5)
   samples <- matrix(NA, ncol = nstrata * 2, nrow = iterations)
   for (i in 1:nstrata) {
     samples[, i] <- switch(prior[["likelihood"]],
@@ -641,7 +641,7 @@
 }
 
 .mcmc_emulate <- function(likelihood, alternative, nstrata, t.obs, n.obs, N.units) {
-  iterations <- getOption("mc.iterations", 1e5)
+  iterations <- getOption("jfa.iterations", 1e5)
   if (alternative == "two.sided") {
     alpha <- rep(1:0, each = iterations)
     beta <- 1 - alpha
