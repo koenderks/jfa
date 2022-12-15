@@ -539,12 +539,10 @@
   } else if (prior[["description"]]$density == "chi-squared") {
     prior <- truncdist::dtrunc(theta, spec = "chisq", a = 0, b = 1, df = prior[["description"]]$alpha)
   }
-  broken_errors <- x %% 1 != 0
-  if (likelihood == "binomial" || broken_errors) {
-    likelihood <- stats::dbeta(theta, shape1 = 1 + x, shape2 = 1 + n - x)
-  } else if (likelihood == "poisson") {
-    likelihood <- stats::dgamma(theta, shape = 1 + x, rate = n)
-  }
+  likelihood <- switch(likelihood,
+    "binomial" = stats::dbeta(theta, shape1 = 1 + x, shape2 = 1 + n - x),
+    "poisson" = stats::dgamma(theta, shape = 1 + x, rate = n)
+  )
   posterior <- prior * likelihood
   samples_prior <- sample(theta[!is.infinite(prior)], size = getOption("jfa.iterations", 1e5), replace = TRUE, prob = prior[!is.infinite(prior)])
   samples_post <- sample(theta[!is.infinite(posterior)], size = getOption("jfa.iterations", 1e5), replace = TRUE, prob = posterior[!is.infinite(posterior)])
