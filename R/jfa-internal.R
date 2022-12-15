@@ -521,54 +521,34 @@
 }
 
 .mcmc_cp <- function(likelihood, x, n, prior) {
-  data <- list(
-    n = n,
-    k = x,
-    alpha = prior[["description"]]$alpha,
-    beta = prior[["description"]]$beta,
-    beta_prior = as.numeric(prior[["likelihood"]] == "binomial"),
-    gamma_prior = as.numeric(prior[["likelihood"]] == "poisson"),
-    normal_prior = as.numeric(prior[["likelihood"]] == "normal"),
-    uniform_prior = as.numeric(prior[["likelihood"]] == "uniform"),
-    cauchy_prior = as.numeric(prior[["likelihood"]] == "cauchy"),
-    t_prior = as.numeric(prior[["likelihood"]] == "t"),
-    chisq_prior = as.numeric(prior[["likelihood"]] == "chisq")
-  )
-  if (x %% 1 != 0) {
-    model <- stanmodels[["cp_taint"]]
-  } else {
-    model <- stanmodels[["cp_error"]]
-    data[["binomial_likelihood"]] <- as.numeric(likelihood == "binomial")
-    data[["poisson_likelihood"]] <- as.numeric(likelihood == "poisson")
+  theta <- seq(0, 1, length.out = 1000)
+  if (prior[["description"]]$density == "gamma") {
+    prior <- stats::dgamma(theta, prior[["description"]]$alpha, prior[["description"]]$beta)
+  } else if (prior[["description"]]$density == "beta") {
+    prior <- stats::dbeta(theta, prior[["description"]]$alpha, prior[["description"]]$beta)
+  } else if (prior[["description"]]$density == "beta-binomial") {
+    prior <- extraDistr::dbbinom(theta, prior[["N.units"]], prior[["description"]]$alpha, prior[["description"]]$beta)
+  } else if (prior[["description"]]$density == "normal") {
+    prior <- truncdist::dtrunc(theta, spec = "norm", a = 0, b = 1, mean = prior[["description"]]$alpha, sd = prior[["description"]]$beta)
+  } else if (prior[["description"]]$density == "uniform") {
+    prior <- truncdist::dtrunc(theta, spec = "unif", a = 0, b = 1, min = prior[["description"]]$alpha, max = prior[["description"]]$beta)
+  } else if (prior[["description"]]$density == "Cauchy") {
+    prior <- truncdist::dtrunc(theta, spec = "cauchy", a = 0, b = 1, location = prior[["description"]]$alpha, scale = prior[["description"]]$beta)
+  } else if (prior[["description"]]$density == "Student-t") {
+    prior <- truncdist::dtrunc(theta, spec = "t", a = 0, b = 1, df = prior[["description"]]$alpha)
+  } else if (prior[["description"]]$density == "chi-squared") {
+    prior <- truncdist::dtrunc(theta, spec = "chisq", a = 0, b = 1, df = prior[["description"]]$alpha)
   }
-  suppressWarnings({
-    raw_prior <- rstan::sampling(
-      object = model,
-      data = c(data, use_likelihood = 0),
-      pars = "theta",
-      iter = getOption("mc.iterations", 2000),
-      warmup = getOption("mc.warmup", 1000),
-      chains = getOption("mc.chains", 4),
-      cores = getOption("mc.cores", 1),
-      seed = ceiling(stats::runif(1, -1000, 1000)),
-      control = list(adapt_delta = 0.95),
-      refresh = 0
-    )
-    raw_posterior <- rstan::sampling(
-      object = model,
-      data = c(data, use_likelihood = 1),
-      pars = "theta",
-      iter = getOption("mc.iterations", 2000),
-      warmup = getOption("mc.warmup", 1000),
-      chains = getOption("mc.chains", 4),
-      cores = getOption("mc.cores", 1),
-      seed = ceiling(stats::runif(1, -1000, 1000)),
-      control = list(adapt_delta = 0.95),
-      refresh = 0
-    )
-  })
-  samples <- cbind(rstan::extract(raw_posterior)$theta, rstan::extract(raw_prior)$theta)
-  stopifnot("Stan model could not be fitted..check your priors" = !is.null(samples) && ncol(samples) == 2)
+  broken_errors <- x %% 1 != 0
+  if (likelihood == "binomial" || broken_errors) {
+    likelihood <- stats::dbeta(theta, shape1 = 1 + x, shape2 = 1 + n - x)
+  } else if (likelihood == "poisson") {
+    likelihood <- stats::dgamma(theta, shape = 1 + x, rate = n)
+  }
+  posterior <- prior * likelihood
+  samples_prior <- sample(theta[!is.infinite(prior)], size = getOption("mc.iterations", 1e5), replace = TRUE, prob = prior[!is.infinite(prior)])
+  samples_post <- sample(theta[!is.infinite(posterior)], size = getOption("mc.iterations", 1e5), replace = TRUE, prob = posterior[!is.infinite(posterior)])
+  samples <- cbind(samples_post, samples_prior)
   return(samples)
 }
 
