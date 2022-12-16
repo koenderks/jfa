@@ -59,6 +59,7 @@ integrate to 1). The default priors in **jfa** are:
 * `likelihood = 'cauchy'`: Cauchy($x_0$ = 0, $\gamma$ = 1000)
 * `likelihood = 't'`: Student-t(df = 1)
 * `likelihood = 'chisq'`: chi-squared(df = 1)
+* `likelihood = 'exponential'`: exponential($\lambda$ = 1)
 
 ```{r}
 prior <- auditPrior(method = "default", likelihood = "binomial")

@@ -13,6 +13,7 @@ data {
   int cauchy_prior;
   int t_prior;
   int chisq_prior;
+  int exponential_prior;
   int use_likelihood;
   int binomial_likelihood;
   int poisson_likelihood;
@@ -41,6 +42,8 @@ model {
     theta ~ student_t(alpha, 0, 1);
   } else if (chisq_prior) {
     theta ~ chi_square(alpha);
+  } else if (exponential_prior) {
+    theta ~ exponential(alpha);
   }
   sigma ~ normal(0, 1);
   alpha_s ~ normal(0, 1);

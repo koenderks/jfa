@@ -32,7 +32,8 @@
 #'            ),
 #'            likelihood = c(
 #'              "poisson", "binomial", "hypergeometric",
-#'              "normal", "uniform", "cauchy", "t", "chisq"
+#'              "normal", "uniform", "cauchy", "t", "chisq",
+#'              "exponential"
 #'            ),
 #'            N.units = NULL,
 #'            alpha = NULL,
@@ -241,7 +242,8 @@ auditPrior <- function(method = c(
                        ),
                        likelihood = c(
                          "poisson", "binomial", "hypergeometric",
-                         "normal", "uniform", "cauchy", "t", "chisq"
+                         "normal", "uniform", "cauchy", "t", "chisq",
+                         "exponential"
                        ),
                        N.units = NULL,
                        alpha = NULL,
@@ -282,7 +284,7 @@ auditPrior <- function(method = c(
     N.units <- ceiling(N.units)
   }
   accomodates_elicitation <- likelihood %in% c("poisson", "binomial", "hypergeometric")
-  accomodates_other <- likelihood %in% c("normal", "uniform")
+  accomodates_other <- !accomodates_elicitation
   # Compute prior per method
   if (method == "default") {
     prior_alpha <- switch(likelihood,
@@ -293,7 +295,8 @@ auditPrior <- function(method = c(
       "uniform" = 0,
       "cauchy" = 0,
       "t" = 1,
-      "chisq" = 1
+      "chisq" = 1,
+      "exponential" = 1
     )
     prior_beta <- switch(likelihood,
       "poisson" = 1,
@@ -302,8 +305,9 @@ auditPrior <- function(method = c(
       "normal" = 1000,
       "uniform" = 1,
       "cauchy" = 1000,
-      "t" = NA,
-      "chisq" = NA
+      "t" = 0,
+      "chisq" = 0,
+      "exponential" = 0
     )
     prior.x <- 0
     prior.n <- 1
@@ -376,10 +380,8 @@ auditPrior <- function(method = c(
     }
   } else if (method == "impartial" || method == "hyp") {
     if (method == "impartial") {
-      stopifnot("'method' not supported for the current 'likelihood'" = accomodates_elicitation || accomodates_other)
       p.h0 <- p.h1 <- 0.5
     } else if (method == "hyp") {
-      stopifnot("'method' not supported for the current 'likelihood'" = accomodates_elicitation || accomodates_other)
       stopifnot("missing value for 'p.hmin'" = !is.null(p.hmin))
       p.h1 <- p.hmin
       p.h0 <- 1 - p.h1
@@ -420,7 +422,7 @@ auditPrior <- function(method = c(
     } else if (accomodates_other) {
       if (likelihood == "normal") {
         prior_alpha <- expected
-        for (prior_beta in seq(1, 0, -0.001)) {
+        for (prior_beta in seq(1, 0, length.out = 1e5)) {
           if (truncdist::qtrunc(p.h1, "norm", 0, 1, mean = expected, sd = prior_beta) < materiality) {
             break
           }
@@ -428,6 +430,34 @@ auditPrior <- function(method = c(
       } else if (likelihood == "uniform") {
         prior_alpha <- 0
         prior_beta <- materiality / p.h1
+      } else if (likelihood == "cauchy") {
+        prior_alpha <- expected
+        for (prior_beta in seq(1, 0, length.out = 1e5)) {
+          if (truncdist::qtrunc(p.h1, "cauchy", 0, 1, location = expected, scale = prior_beta) < materiality) {
+            break
+          }
+        }
+      } else if (likelihood == "t") {
+        for (prior_alpha in seq(0.5, 0, length.out = 1e5)) {
+          if (truncdist::qtrunc(p.h1, "t", 0, 1, df = prior_alpha) < materiality) {
+            break
+          }
+        }
+        prior_beta <- 0
+      } else if (likelihood == "chisq") {
+        for (prior_alpha in seq(1, 0, length.out = 1e5)) {
+          if (truncdist::qtrunc(p.h1, "chisq", 0, 1, df = prior_alpha) < materiality) {
+            break
+          }
+        }
+        prior_beta <- 0
+      } else if (likelihood == "exponential") {
+        for (prior_alpha in seq(1, 100, length.out = 1e5)) {
+          if (truncdist::qtrunc(p.h1, "exp", 0, 1, rate = prior_alpha) < materiality) {
+            break
+          }
+        }
+        prior_beta <- 0
       }
     }
   } else if (method == "sample" || method == "factor") {
@@ -454,15 +484,15 @@ auditPrior <- function(method = c(
   } else if (method == "param") {
     stopifnot("missing value for 'alpha'" = !is.null(alpha))
     valid_alpha <- is.numeric(alpha) && length(alpha) == 1
-    if (accomodates_elicitation || likelihood %in% c("t", "chisq")) {
+    if (accomodates_elicitation || likelihood %in% c("t", "chisq", "exponential")) {
       valid_alpha <- valid_alpha && alpha > 0
       stopifnot("'alpha' must be a single value > 0" = valid_alpha)
     } else {
       valid_alpha <- valid_alpha && alpha >= 0 && alpha <= 1
       stopifnot("'alpha' must be a single value between 0 and 1" = valid_alpha)
     }
-    stopifnot("missing value for 'beta'" = !is.null(beta) || likelihood %in% c("t", "chisq"))
-    if (accomodates_elicitation || !(likelihood %in% c("t", "chisq"))) {
+    stopifnot("missing value for 'beta'" = !is.null(beta) || likelihood %in% c("t", "chisq", "exponential"))
+    if (accomodates_elicitation || !(likelihood %in% c("t", "chisq", "exponential"))) {
       valid_beta <- is.numeric(beta) && length(beta) == 1 && beta >= 0
       stopifnot("'beta' must be a single value >= 0" = valid_beta)
     } else {

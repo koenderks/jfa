@@ -158,6 +158,8 @@ predict.jfaPrior <- function(object, n, cumulative = FALSE, ...) {
     p <- prop.table(table(stats::rbinom(nobs, n, truncdist::rtrunc(nobs, "t", 0, 1, df = object[["description"]]$alpha))))
   } else if (object[["description"]]$density == "chi-squared") {
     p <- prop.table(table(stats::rbinom(nobs, n, truncdist::rtrunc(nobs, "chisq", 0, 1, df = object[["description"]]$alpha))))
+  } else if (object[["description"]]$density == "exponential") {
+    p <- prop.table(table(stats::rbinom(nobs, n, truncdist::rtrunc(nobs, "exp", 0, 1, rate = object[["description"]]$alpha))))
   } else if (object[["description"]]$density == "MCMC") {
     p <- prop.table(table(stats::rbinom(nobs, n, sample(object[["plotsamples"]]$x, size = nobs, replace = TRUE, prob = object[["plotsamples"]]$y))))
   }
@@ -207,6 +209,9 @@ plot.jfaPrior <- function(x, ...) {
   } else if (x[["description"]]$density == "chi-squared") {
     xs <- seq(0, 1, length.out = 1000)
     y <- truncdist::dtrunc(xs, spec = "chisq", a = 0, b = 1, df = x[["description"]]$alpha)
+  } else if (x[["description"]]$density == "exponential") {
+    xs <- seq(0, 1, length.out = 1000)
+    y <- truncdist::dtrunc(xs, spec = "exp", a = 0, b = 1, rate = x[["description"]]$alpha)
   } else if (x[["description"]]$density == "MCMC") {
     xs <- x[["plotsamples"]]$x
     y <- x[["plotsamples"]]$y
@@ -449,6 +454,9 @@ plot.jfaPlanning <- function(x, ...) {
   } else if (x[["prior"]][["description"]]$density == "chi-squared") {
     x1 <- seq(0, 1, length.out = 1000)
     y1 <- truncdist::dtrunc(x1, spec = "chisq", a = 0, b = 1, df = x[["prior"]][["description"]]$alpha)
+  } else if (x[["prior"]][["description"]]$density == "exponential") {
+    x1 <- seq(0, 1, length.out = 1000)
+    y1 <- truncdist::dtrunc(x1, spec = "exp", a = 0, b = 1, rate = x[["prior"]][["description"]]$alpha)
   } else if (x[["prior"]][["description"]]$density == "MCMC") {
     x1 <- x[["prior"]][["plotsamples"]]$x
     y1 <- x[["prior"]][["plotsamples"]]$y

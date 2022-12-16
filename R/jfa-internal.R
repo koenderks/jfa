@@ -48,7 +48,8 @@
       "uniform" = "uniform",
       "cauchy" = "Cauchy",
       "t" = "Student-t",
-      "chisq" = "chi-squared"
+      "chisq" = "chi-squared",
+      "exponential" = "exponential"
     )
   } else {
     form <- "MCMC"
@@ -66,7 +67,8 @@
       "uniform" = paste0("uniform(min = ", round(alpha, 3), ", max = ", round(beta, 3), ")"),
       "cauchy" = paste0("Cauchy(x\u2080 = ", round(alpha, 3), ", \u03B3 = ", round(beta, 3), ")T[0,1]"),
       "t" = paste0("Student-t(df = ", round(alpha, 3), ")T[0,1]"),
-      "chisq" = paste0("chi-squared(df = ", round(alpha, 3), ")T[0,1]")
+      "chisq" = paste0("chi-squared(df = ", round(alpha, 3), ")T[0,1]"),
+      "exponential" = paste0("exponential(\u03BB = ", round(alpha, 3), ")T[0,1]")
     )
   } else {
     string <- "Determined via MCMC sampling"
@@ -105,7 +107,8 @@
       "uniform" = NA,
       "cauchy" = alpha,
       "t" = alpha,
-      "chisq" = alpha
+      "chisq" = alpha,
+      "exponential" = 0
     )
   } else {
     if (all(is.infinite(samples))) {
@@ -143,7 +146,8 @@
       "uniform" = (alpha + beta) / 2,
       "cauchy" = NA,
       "t" = NA,
-      "chisq" = NA
+      "chisq" = NA,
+      "exponential" = NA
     )
   } else {
     mean <- mean(samples)
@@ -161,7 +165,8 @@
       "uniform" = truncdist::qtrunc(0.5, spec = "unif", a = 0, b = 1, min = alpha, max = beta),
       "cauchy" = truncdist::qtrunc(0.5, spec = "cauchy", a = 0, b = 1, location = alpha, scale = beta),
       "t" = truncdist::qtrunc(0.5, spec = "t", a = 0, b = 1, df = alpha),
-      "chisq" = truncdist::qtrunc(0.5, spec = "chisq", a = 0, b = 1, df = alpha)
+      "chisq" = truncdist::qtrunc(0.5, spec = "chisq", a = 0, b = 1, df = alpha),
+      "exponential" = truncdist::qtrunc(0.5, spec = "exp", a = 0, b = 1, rate = alpha)
     )
   } else {
     median <- stats::median(samples)
@@ -182,7 +187,8 @@
       "uniform" = (1 / 12) * (beta - alpha)^2,
       "cauchy" = NA,
       "t" = NA,
-      "chisq" = NA
+      "chisq" = NA,
+      "exponential" = NA
     )
   } else {
     variance <- as.numeric(stats::var(samples))
@@ -200,7 +206,8 @@
       "uniform" = 0,
       "cauchy" = NA,
       "t" = NA,
-      "chisq" = NA
+      "chisq" = NA,
+      "exponential" = NA
     )
   } else {
     skewness <- moments::skewness(samples)
@@ -224,7 +231,8 @@
         "uniform" = log(beta - alpha),
         "cauchy" = NA,
         "t" = NA,
-        "chisq" = NA
+        "chisq" = NA,
+        "exponential" = NA
       )
     }
   } else {
@@ -331,7 +339,8 @@
         "uniform" = truncdist::qtrunc(prob, spec = "unif", a = 0, b = 1, min = alpha, max = beta),
         "cauchy" = truncdist::qtrunc(prob, spec = "cauchy", a = 0, b = 1, location = alpha, scale = beta),
         "t" = truncdist::qtrunc(prob, spec = "t", a = 0, b = 1, df = alpha),
-        "chisq" = truncdist::qtrunc(prob, spec = "chisq", a = 0, b = 1, df = alpha)
+        "chisq" = truncdist::qtrunc(prob, spec = "chisq", a = 0, b = 1, df = alpha),
+        "exponential" = truncdist::qtrunc(prob, spec = "exp", a = 0, b = 1, rate = alpha)
       )
     } else {
       ub <- as.numeric(stats::quantile(samples, prob))
@@ -358,7 +367,8 @@
         "uniform" = truncdist::qtrunc(prob, spec = "unif", a = 0, b = 1, min = alpha, max = beta),
         "cauchy" = truncdist::qtrunc(prob, spec = "cauchy", a = 0, b = 1, location = alpha, scale = beta),
         "t" = truncdist::qtrunc(prob, spec = "t", a = 0, b = 1, df = alpha),
-        "chisq" = truncdist::qtrunc(prob, spec = "chisq", a = 0, b = 1, df = alpha)
+        "chisq" = truncdist::qtrunc(prob, spec = "chisq", a = 0, b = 1, df = alpha),
+        "exponential" = truncdist::qtrunc(prob, spec = "exp", a = 0, b = 1, rate = alpha)
       )
     } else {
       lb <- as.numeric(stats::quantile(samples, prob))
@@ -427,7 +437,8 @@
       "uniform" = truncdist::dtrunc(materiality, spec = "unif", a = 0, b = 1, min = alpha, max = beta),
       "cauchy" = truncdist::dtrunc(materiality, spec = "cauchy", a = 0, b = 1, location = alpha, scale = beta),
       "t" = truncdist::dtrunc(materiality, spec = "t", a = 0, b = 1, df = alpha),
-      "chisq" = truncdist::dtrunc(materiality, spec = "chisq", a = 0, b = 1, df = alpha)
+      "chisq" = truncdist::dtrunc(materiality, spec = "chisq", a = 0, b = 1, df = alpha),
+      "exponential" = truncdist::dtrunc(materiality, spec = "exp", a = 0, b = 1, rate = alpha)
     )
   } else {
     if (all(is.infinite(samples))) {
@@ -450,7 +461,8 @@
       "uniform" = truncdist::ptrunc(materiality, spec = "unif", a = 0, b = 1, min = alpha, max = beta, lower.tail = lower_tail),
       "cauchy" = truncdist::ptrunc(materiality, spec = "cauchy", a = 0, b = 1, location = alpha, scale = beta, lower.tail = lower_tail),
       "t" = truncdist::ptrunc(materiality, spec = "t", a = 0, b = 1, df = alpha, lower.tail = lower_tail),
-      "chisq" = truncdist::ptrunc(materiality, spec = "chisq", a = 0, b = 1, df = alpha, lower.tail = lower_tail)
+      "chisq" = truncdist::ptrunc(materiality, spec = "chisq", a = 0, b = 1, df = alpha, lower.tail = lower_tail),
+      "exponential" = truncdist::ptrunc(materiality, spec = "exp", a = 0, b = 1, rate = alpha, lower.tail = lower_tail)
     )
   } else {
     if (lower_tail) {
@@ -538,6 +550,8 @@
     prior <- truncdist::dtrunc(theta, spec = "t", a = 0, b = 1, df = prior[["description"]]$alpha)
   } else if (prior[["description"]]$density == "chi-squared") {
     prior <- truncdist::dtrunc(theta, spec = "chisq", a = 0, b = 1, df = prior[["description"]]$alpha)
+  } else if (prior[["description"]]$density == "exponential") {
+    prior <- truncdist::dtrunc(theta, spec = "exp", a = 0, b = 1, rate = prior[["description"]]$alpha)
   }
   likelihood <- switch(likelihood,
     "binomial" = stats::dbeta(theta, shape1 = 1 + x, shape2 = 1 + n - x),
@@ -567,7 +581,8 @@
       t_prior = as.numeric(prior[["likelihood"]] == "t"),
       chisq_prior = as.numeric(prior[["likelihood"]] == "chisq"),
       binomial_likelihood = as.numeric(likelihood == "binomial"),
-      poisson_likelihood = as.numeric(likelihood == "poisson")
+      poisson_likelihood = as.numeric(likelihood == "poisson"),
+      exponential_prior = as.numeric(likelihood == "exponential")
     )
     model <- stanmodels[["pp_error"]]
   } else if (likelihood == "beta") {
@@ -583,7 +598,8 @@
       uniform_prior = as.numeric(prior[["likelihood"]] == "uniform"),
       cauchy_prior = as.numeric(prior[["likelihood"]] == "cauchy"),
       t_prior = as.numeric(prior[["likelihood"]] == "t"),
-      chisq_prior = as.numeric(prior[["likelihood"]] == "chisq")
+      chisq_prior = as.numeric(prior[["likelihood"]] == "chisq"),
+      exponential_prior = as.numeric(likelihood == "exponential")
     )
     model <- stanmodels[["pp_taint"]]
   }

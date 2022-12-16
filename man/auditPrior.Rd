@@ -10,7 +10,8 @@ auditPrior(method = c(
            ),
            likelihood = c(
              "poisson", "binomial", "hypergeometric",
-             "normal", "uniform", "cauchy", "t", "chisq"
+             "normal", "uniform", "cauchy", "t", "chisq",
+             "exponential"
            ),
            N.units = NULL,
            alpha = NULL,
