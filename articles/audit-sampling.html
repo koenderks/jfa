@@ -163,7 +163,8 @@ distribution on the data level.</p>
 <span>           <span class="op">)</span>,</span>
 <span>           likelihood <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>             <span class="st">"poisson"</span>, <span class="st">"binomial"</span>, <span class="st">"hypergeometric"</span>,</span>
-<span>             <span class="st">"normal"</span>, <span class="st">"uniform"</span>, <span class="st">"cauchy"</span>, <span class="st">"t"</span>, <span class="st">"chisq"</span></span>
+<span>             <span class="st">"normal"</span>, <span class="st">"uniform"</span>, <span class="st">"cauchy"</span>, <span class="st">"t"</span>, <span class="st">"chisq"</span>,</span>
+<span>             <span class="st">"exponential"</span></span>
 <span>           <span class="op">)</span>,</span>
 <span>           N.units <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>           alpha <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -229,6 +230,8 @@ beta-binomial prior distribution (Dyer &amp; Pierce, 1991).</li>
 <code>t</code>: Student-t prior distribution.</li>
 <li>
 <code>chisq</code>: Chi-squared prior distribution.</li>
+<li>
+<code>exponential</code>: Exponential prior distribution.</li>
 </ul>
 <p><em>Example usage:</em></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">

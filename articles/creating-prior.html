@@ -158,6 +158,8 @@ integrate to 1). The default priors in <strong>jfa</strong> are:</p>
 <code>likelihood = 't'</code>: Student-t(df = 1)</li>
 <li>
 <code>likelihood = 'chisq'</code>: chi-squared(df = 1)</li>
+<li>
+<code>likelihood = 'exponential'</code>: exponential(<span class="math inline">\(\lambda\)</span> = 1)</li>
 </ul>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"default"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span>
@@ -438,10 +440,10 @@ misstatement, while using a normal(0.025, 0.05) prior distribution.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
 <span><span class="co">##   Posterior distribution:         Determined via MCMC sampling </span></span>
-<span><span class="co">##   Most likely error:              0.016913 </span></span>
-<span><span class="co">##   95 percent credible interval:   [0, 0.067067] </span></span>
-<span><span class="co">##   Precision:                      0.050154 </span></span>
-<span><span class="co">##   BF₁₀:                            5.5998</span></span></code></pre>
+<span><span class="co">##   Most likely error:              0.017689 </span></span>
+<span><span class="co">##   95 percent credible interval:   [0, 0.066066] </span></span>
+<span><span class="co">##   Precision:                      0.048377 </span></span>
+<span><span class="co">##   BF₁₀:                            5.7495</span></span></code></pre>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eval</span><span class="op">)</span></span></code></pre></div>
 <p><img src="creating-prior_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
