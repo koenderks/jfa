@@ -379,7 +379,7 @@ auditPrior <- function(method = c(
       stopifnot("'method' not supported for the current 'likelihood'" = accomodates_elicitation || accomodates_other)
       p.h0 <- p.h1 <- 0.5
     } else if (method == "hyp") {
-      stopifnot("'method' not supported for the current 'likelihood'" = accomodates_elicitation)
+      stopifnot("'method' not supported for the current 'likelihood'" = accomodates_elicitation || accomodates_other)
       stopifnot("missing value for 'p.hmin'" = !is.null(p.hmin))
       p.h1 <- p.hmin
       p.h0 <- 1 - p.h1
@@ -418,15 +418,17 @@ auditPrior <- function(method = c(
         prior_beta <- prior.n - prior.x
       }
     } else if (accomodates_other) {
-      stopifnot("'method' not supported for the current 'likelihood'" = method == "impartial")
-      prior_alpha <- switch(likelihood,
-        "normal" = materiality,
-        "uniform" = 0
-      )
-      prior_beta <- switch(likelihood,
-        "normal" = materiality / 3,
-        "uniform" = materiality * 2
-      )
+      if (likelihood == "normal") {
+        prior_alpha <- expected
+        for (prior_beta in seq(1, 0, -0.001)) {
+          if (truncdist::qtrunc(p.h1, "norm", 0, 1, mean = expected, sd = prior_beta) < materiality) {
+            break
+          }
+        }
+      } else if (likelihood == "uniform") {
+        prior_alpha <- 0
+        prior_beta <- materiality / p.h1
+      }
     }
   } else if (method == "sample" || method == "factor") {
     stopifnot("'method' not supported for the current 'likelihood'" = accomodates_elicitation)
