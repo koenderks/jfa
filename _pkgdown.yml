@@ -83,6 +83,7 @@ reference:
       Example data sets included in the **jfa** package.
     contents:
       - allowances
+      - benchmark
       - BuildIt
       - carrier
       - retailer
