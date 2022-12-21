@@ -291,7 +291,7 @@ evaluation <- function(materiality = NULL,
   alternative <- match.arg(alternative)
   pooling <- match.arg(pooling)
   is_jfa_prior <- inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")
-  is_bayesian <- (inherits(prior, "logical") && prior) || is_jfa_prior
+  is_bayesian <- isTRUE(prior) || is_jfa_prior
   if (is_jfa_prior) {
     stopifnot("method = 'mcmc' not supported" = prior[["likelihood"]] != "mcmc")
     conjugate_prior <- method == prior[["likelihood"]]
@@ -316,7 +316,7 @@ evaluation <- function(materiality = NULL,
       hypotheses[["density"]] <- .hyp_dens(materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, N.units, N.units)
       prior[["hypotheses"]] <- hypotheses
     }
-  } else if (prior) {
+  } else if (isTRUE(prior)) {
     accommodates_simple_prior <- method %in% c("poisson", "binomial", "hypergeometric")
     stopifnot("'method' should be one of 'poisson', 'binomial', or 'hypergeometric'" = accommodates_simple_prior)
     prior <- auditPrior("default", method, N.units, materiality = materiality, conf.level = conf.level)

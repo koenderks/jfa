@@ -172,7 +172,7 @@ planning <- function(materiality = NULL,
   # Input checking
   likelihood <- match.arg(likelihood)
   is_jfa_prior <- inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")
-  is_bayesian <- (inherits(prior, "logical") && prior) || is_jfa_prior
+  is_bayesian <- isTRUE(prior) || is_jfa_prior
   if (is_jfa_prior) {
     stopifnot("method = 'mcmc' not supported" = prior[["likelihood"]] != "mcmc")
     conjugate_prior <- likelihood == prior[["likelihood"]]
@@ -197,7 +197,7 @@ planning <- function(materiality = NULL,
       hypotheses[["density"]] <- .hyp_dens(materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, N.units, N.units)
       prior[["hypotheses"]] <- hypotheses
     }
-  } else if (prior) {
+  } else if (isTRUE(prior)) {
     prior <- auditPrior("default", likelihood, N.units, materiality = materiality, conf.level = conf.level)
     conjugate_prior <- TRUE
   }
