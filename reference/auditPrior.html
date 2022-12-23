@@ -91,7 +91,7 @@ weighing) operators.</p>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">auditPrior</span><span class="op">(</span>method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>             <span class="st">"default"</span>, <span class="st">"param"</span>, <span class="st">"strict"</span>, <span class="st">"impartial"</span>, <span class="st">"hyp"</span>,</span>
-<span>             <span class="st">"arm"</span>, <span class="st">"bram"</span>, <span class="st">"sample"</span>, <span class="st">"factor"</span></span>
+<span>             <span class="st">"arm"</span>, <span class="st">"bram"</span>, <span class="st">"sample"</span>, <span class="st">"factor"</span>, <span class="st">"nonparam"</span></span>
 <span>           <span class="op">)</span>,</span>
 <span>           likelihood <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>             <span class="st">"poisson"</span>, <span class="st">"binomial"</span>, <span class="st">"hypergeometric"</span>,</span>
@@ -109,6 +109,7 @@ weighing) operators.</p>
 <span>           p.hmin <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>           x <span class="op">=</span> <span class="cn">NULL</span>, n <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>           factor <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>           samples <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>           conf.level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -201,6 +202,11 @@ units in a prior sample. Required for methods <code>sample</code> and
 <dd><p>a numeric value between 0 and 1 specifying the weight of
 a prior sample specified via <code>x</code> and <code>n</code>. Required for method
 <code>factor</code>.</p></dd>
+
+
+<dt>samples</dt>
+<dd><p>a numeric vector containing samples of the prior
+distribution. Required for method <code>nonparam</code>.</p></dd>
 
 
 <dt>conf.level</dt>
@@ -309,6 +315,9 @@ level (1 - audit risk).</p></dd>
    sample to a prior distribution.</p></li>
 <li><p><code>factor</code>:    This method translates and weighs the outcome of an
    earlier sample to a prior distribution.</p></li>
+<li><p><code>nonparam</code>:  This method takes a vector of samples from a prior
+    distribution (via <code>samples</code>) and constructs a prior density from
+    these samples.</p></li>
 </ul><p>This section elaborates on the available input options for the
 <code>likelihood</code> argument and the corresponding conjugate prior
 distributions used by <code>jfa</code>.</p>

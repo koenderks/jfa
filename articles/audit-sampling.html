@@ -159,7 +159,7 @@ distribution on the data level.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>             <span class="st">"default"</span>, <span class="st">"strict"</span>, <span class="st">"param"</span>, <span class="st">"impartial"</span>, <span class="st">"hyp"</span>,</span>
-<span>             <span class="st">"arm"</span>, <span class="st">"bram"</span>, <span class="st">"sample"</span>, <span class="st">"factor"</span></span>
+<span>             <span class="st">"arm"</span>, <span class="st">"bram"</span>, <span class="st">"sample"</span>, <span class="st">"factor"</span>, <span class="st">"nonparam"</span></span>
 <span>           <span class="op">)</span>,</span>
 <span>           likelihood <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>             <span class="st">"poisson"</span>, <span class="st">"binomial"</span>, <span class="st">"hypergeometric"</span>,</span>
@@ -178,6 +178,7 @@ distribution on the data level.</p>
 <span>           x <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>           n <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>           factor <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>           samples <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>           conf.level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></code></pre></div>
 <p><em>Supported options for the <code>method</code> argument:</em></p>
 <ul>
@@ -207,6 +208,8 @@ distribution (Touw &amp; Hoogduin, 2011).</li>
 <li>
 <code>factor</code>: Manually provide and weigh an equivalent prior
 sample (Derks et al., 2021).</li>
+<li>
+<code>nonparam</code>: Nonparametric prior based on samples.</li>
 </ul>
 <p><em>Supported options for the <code>likelihood</code>
 argument:</em></p>

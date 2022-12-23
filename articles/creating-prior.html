@@ -383,6 +383,24 @@ likelihood</em></p>
 <span><span class="co">## functional form: beta(α = 1, β = 40.6) </span></span>
 <span><span class="co">## parameters obtained via method 'factor'</span></span></code></pre>
 </div>
+<div class="section level3">
+<h3 id="nonparametric-prior-distributions-method-nonparam">Nonparametric prior distributions
+(<code>method = 'nonparam'</code>)<a class="anchor" aria-label="anchor" href="#nonparametric-prior-distributions-method-nonparam"></a>
+</h3>
+<p>You can base the prior on samples of the prior distribution using
+<code>method = 'nonparma'</code> in combination with
+<code>samples</code>. For example, the command below creates a prior on
+1000 samples of a beta(1, 10) distribution.</p>
+<p><em>The <code>likelihood</code> argument is not required and will be
+discarded in this method</em></p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"nonparam"</span>, samples <span class="op">=</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Beta.html" class="external-link">rbeta</a></span><span class="op">(</span><span class="fl">1000</span>, <span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Prior Distribution for Audit Sampling</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## functional form: Nonparametric </span></span>
+<span><span class="co">## parameters obtained via method 'nonparam'</span></span></code></pre>
+</div>
 </div>
 <div class="section level2">
 <h2 id="using-a-prior-distribution">Using a prior distribution<a class="anchor" aria-label="anchor" href="#using-a-prior-distribution"></a>
@@ -401,7 +419,7 @@ minimum sample size by providing the objected returned by the
 function. For example, the command below calculates the minimum sample
 size to test the misstatement in the population against a performance
 materiality of 5%, while using a beta(1, 10) prior distribution.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"param"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -419,7 +437,7 @@ the objected returned by the <code><a href="../reference/auditPrior.html">auditP
 evaluates the misstatement in the population with respect to a
 performance materiality of 5% after seeing a sample of 60 items with 1
 misstatement, while using a normal(0.025, 0.05) prior distribution.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"param"</span>, likelihood <span class="op">=</span> <span class="st">"normal"</span>, alpha <span class="op">=</span> <span class="fl">0.025</span>, beta <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span><span class="va">eval</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">60</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">eval</span><span class="op">)</span></span></code></pre></div>
@@ -439,21 +457,21 @@ misstatement, while using a normal(0.025, 0.05) prior distribution.</p>
 <span><span class="co">##   Sum of taints:                  1 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
-<span><span class="co">##   Posterior distribution:         Determined via MCMC sampling </span></span>
-<span><span class="co">##   Most likely error:              0.017006 </span></span>
-<span><span class="co">##   95 percent credible interval:   [0, 0.067067] </span></span>
-<span><span class="co">##   Precision:                      0.050061 </span></span>
-<span><span class="co">##   BF₁₀:                            5.7231</span></span></code></pre>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<span><span class="co">##   Posterior distribution:         Nonparametric </span></span>
+<span><span class="co">##   Most likely error:              0.018146 </span></span>
+<span><span class="co">##   95 percent credible interval:   [0, 0.066066] </span></span>
+<span><span class="co">##   Precision:                      0.04792 </span></span>
+<span><span class="co">##   BF₁₀:                            5.6667</span></span></code></pre>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eval</span><span class="op">)</span></span></code></pre></div>
-<p><img src="creating-prior_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
+<p><img src="creating-prior_files/figure-html/unnamed-chunk-15-1.png" width="700"></p>
 <p>The predictions of the posterior distribution on the data level can
 be visualized using the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function. For example, the
 command below shows the predictions of the posterior distribution for a
 hypothetical (next) sample of 10 items.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">eval</span><span class="op">$</span><span class="va">posterior</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="creating-prior_files/figure-html/unnamed-chunk-15-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="creating-prior_files/figure-html/unnamed-chunk-16-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level2">
