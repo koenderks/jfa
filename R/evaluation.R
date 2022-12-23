@@ -309,8 +309,8 @@ evaluation <- function(materiality = NULL,
       hypotheses[["hypotheses"]] <- .hyp_string(materiality, "less")
       hypotheses[["materiality"]] <- materiality
       hypotheses[["alternative"]] <- "less"
-      hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, N.units, N.units)
-      hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, N.units, N.units)
+      hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, 0, N.units, N.units)
+      hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, 0, N.units, N.units)
       hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
       hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
       hypotheses[["density"]] <- .hyp_dens(materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, N.units, N.units)
@@ -319,7 +319,7 @@ evaluation <- function(materiality = NULL,
   } else if (isTRUE(prior)) {
     accommodates_simple_prior <- method %in% c("poisson", "binomial", "hypergeometric")
     stopifnot("'method' should be one of 'poisson', 'binomial', or 'hypergeometric'" = accommodates_simple_prior)
-    prior <- auditPrior("default", method, N.units, materiality = materiality, conf.level = conf.level)
+    prior <- auditPrior("default", method, N.units[1], materiality = materiality, conf.level = conf.level)
     conjugate_prior <- TRUE
   }
   stopifnot("missing value for 'conf.level'" = !is.null(conf.level))
@@ -504,9 +504,13 @@ evaluation <- function(materiality = NULL,
               stratum_beta <- prior[["description"]]$beta + n.obs[i] - t.obs[i]
             }
             stratum_N <- N.units[i] - n.obs[i]
-            mle[i] <- .comp_mode_bayes(method, stratum_alpha, stratum_beta, stratum_N)
-            lb[i] <- .comp_lb_bayes(alternative, conf.level, method, stratum_alpha, stratum_beta, stratum_N)
-            ub[i] <- .comp_ub_bayes(alternative, conf.level, method, stratum_alpha, stratum_beta, stratum_N)
+            stratum_K <- NULL
+            if (!is.null(N.units)) {
+              stratum_K <- (0:N.units[i]) - x.obs[i]
+            }
+            mle[i] <- .comp_mode_bayes(method, stratum_alpha, stratum_beta, stratum_K, stratum_N)
+            lb[i] <- .comp_lb_bayes(alternative, conf.level, method, stratum_alpha, stratum_beta, stratum_K, stratum_N)
+            ub[i] <- .comp_ub_bayes(alternative, conf.level, method, stratum_alpha, stratum_beta, stratum_K, stratum_N)
           } else {
             stopifnot("likelihood = 'hypergeometric' does not support non-conjugate priors" = method != "hypergeometric")
             samples <- .mcmc_cp(method, t.obs[i], n.obs[i], prior)
@@ -691,6 +695,10 @@ evaluation <- function(materiality = NULL,
       post_beta <- result[["prior"]][["description"]]$beta + result[["n"]] - result[["t"]]
     }
     post_N <- result[["N.units"]] - result[["n"]]
+    post_K <- NULL
+    if (!is.null(N.units)) {
+      post_K <- (0:result[["N.units"]]) - result[["x"]]
+    }
     # Initialize posterior distribution
     result[["posterior"]] <- list()
     result[["posterior"]]$posterior <- .functional_form(method, post_alpha, post_beta, post_N, analytical)
@@ -719,15 +727,15 @@ evaluation <- function(materiality = NULL,
     result[["posterior"]][["description"]] <- description
     # Statistics
     statistics <- list()
-    statistics[["mode"]] <- .comp_mode_bayes(method, post_alpha, post_beta, post_N, analytical, post_samples)
+    statistics[["mode"]] <- .comp_mode_bayes(method, post_alpha, post_beta, post_K, post_N, analytical, post_samples)
     statistics[["mean"]] <- .comp_mean_bayes(method, post_alpha, post_beta, post_N, analytical, post_samples)
-    statistics[["median"]] <- .comp_median_bayes(method, post_alpha, post_beta, post_N, analytical, post_samples)
+    statistics[["median"]] <- .comp_median_bayes(method, post_alpha, post_beta, post_K, post_N, analytical, post_samples)
     statistics[["var"]] <- .comp_var_bayes(method, post_alpha, post_beta, post_N, analytical, post_samples)
     statistics[["skewness"]] <- .comp_skew_bayes(method, post_alpha, post_beta, post_N, analytical, post_samples)
     statistics[["entropy"]] <- .comp_entropy_bayes(method, post_alpha, post_beta, analytical, post_samples)
     statistics[["kl"]] <- .comp_kl_bayes(method, result[["prior"]][["description"]]$alpha, result[["prior"]][["description"]]$beta, post_alpha, post_beta, analytical, prior_samples, post_samples)
-    statistics[["ub"]] <- .comp_ub_bayes(alternative, conf.level, method, post_alpha, post_beta, post_N, analytical, post_samples)
-    statistics[["lb"]] <- .comp_lb_bayes(alternative, conf.level, method, post_alpha, post_beta, post_N, analytical, post_samples)
+    statistics[["ub"]] <- .comp_ub_bayes(alternative, conf.level, method, post_alpha, post_beta, post_K, post_N, analytical, post_samples)
+    statistics[["lb"]] <- .comp_lb_bayes(alternative, conf.level, method, post_alpha, post_beta, post_K, post_N, analytical, post_samples)
     statistics[["precision"]] <- .comp_precision(alternative, statistics[["mode"]], statistics[["lb"]], statistics[["ub"]])
     result[["posterior"]][["statistics"]] <- statistics
     # Hypotheses
@@ -742,8 +750,8 @@ evaluation <- function(materiality = NULL,
         hypotheses[["bf.h1"]] <- 1 / hypotheses[["bf.h0"]]
       } else {
         lower_tail <- alternative == "less"
-        hypotheses[["p.h1"]] <- .hyp_prob(lower_tail, materiality, method, post_alpha, post_beta, result[["N.units"]], post_N, analytical, post_samples)
-        hypotheses[["p.h0"]] <- .hyp_prob(!lower_tail, materiality, method, post_alpha, post_beta, result[["N.units"]], post_N, analytical, post_samples)
+        hypotheses[["p.h1"]] <- .hyp_prob(lower_tail, materiality, method, post_alpha, post_beta, result[["x"]], result[["N.units"]], post_N, analytical, post_samples)
+        hypotheses[["p.h0"]] <- .hyp_prob(!lower_tail, materiality, method, post_alpha, post_beta, result[["x"]], result[["N.units"]], post_N, analytical, post_samples)
         hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
         hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
         hypotheses[["bf.h1"]] <- hypotheses[["odds.h1"]] / result[["prior"]][["hypotheses"]]$odds.h1

@@ -193,7 +193,11 @@ plot.jfaPrior <- function(x, ...) {
     y <- stats::dbeta(xs, x[["description"]]$alpha, x[["description"]]$beta)
   } else if (x[["description"]]$density == "beta-binomial") {
     xs <- seq(0, x[["N.units"]], by = 1)
-    y <- extraDistr::dbbinom(xs, x[["N.units"]], x[["description"]]$alpha, x[["description"]]$beta)
+    if (inherits(x, "jfaPrior")) {
+      y <- extraDistr::dbbinom(xs, x[["N.units"]], x[["description"]]$alpha, x[["description"]]$beta)
+    } else {
+      y <- extraDistr::dbbinom(xs - x[["description"]]$x, x[["N.units"]] - x[["description"]]$n, x[["description"]]$alpha, x[["description"]]$beta)
+    }
   } else if (x[["description"]]$density == "normal") {
     xs <- seq(0, 1, length.out = 1000)
     y <- truncdist::dtrunc(xs, spec = "norm", a = 0, b = 1, mean = x[["description"]]$alpha, sd = x[["description"]]$beta)
@@ -468,8 +472,8 @@ plot.jfaPlanning <- function(x, ...) {
     x2 <- seq(0, 1, length.out = 1000)
     y2 <- stats::dbeta(x2, x[["posterior"]][["description"]]$alpha, x[["posterior"]][["description"]]$beta)
   } else if (x[["posterior"]][["description"]]$density == "beta-binomial") {
-    x2 <- seq(0, x[["posterior"]][["N.units"]] - x[["n"]], by = 1)
-    y2 <- extraDistr::dbbinom(x2, x[["posterior"]][["N.units"]] - x[["n"]], x[["posterior"]][["description"]]$alpha, x[["posterior"]][["description"]]$beta)
+    x2 <- seq(0, x[["N.units"]], by = 1)
+    y2 <- extraDistr::dbbinom(x2 - x[["x"]], x[["posterior"]][["N.units"]] - x[["n"]], x[["posterior"]][["description"]]$alpha, x[["posterior"]][["description"]]$beta)
   } else if (x[["posterior"]][["description"]]$density == "MCMC") {
     x2 <- x[["posterior"]][["plotsamples"]]$x
     y2 <- x[["posterior"]][["plotsamples"]]$y
@@ -491,9 +495,15 @@ plot.jfaPlanning <- function(x, ...) {
       ggplot2::scale_y_continuous(name = "Probability", breaks = yBreaks, limits = range(yBreaks))
   }
   if (inherits(x, "jfaEvaluation")) {
-    p <- p + ggplot2::geom_segment(x = x[["lb"]], xend = x[["ub"]], y = max(yBreaks), yend = max(yBreaks)) +
-      ggplot2::geom_segment(x = x[["lb"]], xend = x[["lb"]], y = max(yBreaks) - ((yBreaks[2] - yBreaks[1]) / 10), yend = max(yBreaks) + ((yBreaks[2] - yBreaks[1]) / 10)) +
-      ggplot2::geom_segment(x = x[["ub"]], xend = x[["ub"]], y = max(yBreaks) - ((yBreaks[2] - yBreaks[1]) / 10), yend = max(yBreaks) + ((yBreaks[2] - yBreaks[1]) / 10))
+    if (x[["prior"]][["description"]]$density != "beta-binomial") {
+      p <- p + ggplot2::geom_segment(x = x[["lb"]], xend = x[["ub"]], y = max(yBreaks), yend = max(yBreaks)) +
+        ggplot2::geom_segment(x = x[["lb"]], xend = x[["lb"]], y = max(yBreaks) - ((yBreaks[2] - yBreaks[1]) / 10), yend = max(yBreaks) + ((yBreaks[2] - yBreaks[1]) / 10)) +
+        ggplot2::geom_segment(x = x[["ub"]], xend = x[["ub"]], y = max(yBreaks) - ((yBreaks[2] - yBreaks[1]) / 10), yend = max(yBreaks) + ((yBreaks[2] - yBreaks[1]) / 10))
+    } else {
+      p <- p + ggplot2::geom_segment(x = ceiling(x[["lb"]] * x[["N.units"]]), xend = ceiling(x[["ub"]] * x[["N.units"]]), y = max(yBreaks), yend = max(yBreaks)) +
+        ggplot2::geom_segment(x = ceiling(x[["lb"]] * x[["N.units"]]), xend = ceiling(x[["lb"]] * x[["N.units"]]), y = max(yBreaks) - ((yBreaks[2] - yBreaks[1]) / 10), yend = max(yBreaks) + ((yBreaks[2] - yBreaks[1]) / 10)) +
+        ggplot2::geom_segment(x = ceiling(x[["ub"]] * x[["N.units"]]), xend = ceiling(x[["ub"]] * x[["N.units"]]), y = max(yBreaks) - ((yBreaks[2] - yBreaks[1]) / 10), yend = max(yBreaks) + ((yBreaks[2] - yBreaks[1]) / 10))
+    }
   }
   p <- p + ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yBreaks)) +
     ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf)

@@ -285,6 +285,10 @@ auditPrior <- function(method = c(
   }
   accomodates_elicitation <- likelihood %in% c("poisson", "binomial", "hypergeometric")
   accomodates_other <- !accomodates_elicitation
+  K <- NULL
+  if (!is.null(N.units)) {
+    K <- 0:N.units
+  }
   # Compute prior per method
   if (method == "default") {
     prior_alpha <- switch(likelihood,
@@ -369,7 +373,7 @@ auditPrior <- function(method = c(
             b <- prior.n - prior.x
           }
         }
-        bound <- .comp_ub_bayes("less", conf.level, likelihood, a, b, N.units)
+        bound <- .comp_ub_bayes("less", conf.level, likelihood, a, b, K, N.units)
       }
     }
     prior_alpha <- 1 + prior.x
@@ -410,7 +414,7 @@ auditPrior <- function(method = c(
           } else {
             b <- prior.n - prior.x
           }
-          median <- .comp_ub_bayes("less", p.h1, likelihood, a, b, N.units)
+          median <- .comp_ub_bayes("less", p.h1, likelihood, a, b, K, N.units)
         }
       }
       prior_alpha <- 1 + prior.x
@@ -524,13 +528,13 @@ auditPrior <- function(method = c(
   result[["description"]] <- description
   # Statistics
   statistics <- list()
-  statistics[["mode"]] <- .comp_mode_bayes(likelihood, prior_alpha, prior_beta, N.units)
+  statistics[["mode"]] <- .comp_mode_bayes(likelihood, prior_alpha, prior_beta, K, N.units)
   statistics[["mean"]] <- .comp_mean_bayes(likelihood, prior_alpha, prior_beta, N.units)
-  statistics[["median"]] <- .comp_median_bayes(likelihood, prior_alpha, prior_beta, N.units)
+  statistics[["median"]] <- .comp_median_bayes(likelihood, prior_alpha, prior_beta, K, N.units)
   statistics[["var"]] <- .comp_var_bayes(likelihood, prior_alpha, prior_beta, N.units)
   statistics[["skewness"]] <- .comp_skew_bayes(likelihood, prior_alpha, prior_beta, N.units)
   statistics[["entropy"]] <- .comp_entropy_bayes(likelihood, prior_alpha, prior_beta)
-  statistics[["ub"]] <- .comp_ub_bayes("less", conf.level, likelihood, prior_alpha, prior_beta, N.units)
+  statistics[["ub"]] <- .comp_ub_bayes("less", conf.level, likelihood, prior_alpha, prior_beta, K, N.units)
   statistics[["precision"]] <- .comp_precision("less", statistics[["mode"]], NULL, statistics[["ub"]])
   result[["statistics"]] <- statistics
   # Specifics
@@ -561,8 +565,8 @@ auditPrior <- function(method = c(
     hypotheses[["hypotheses"]] <- .hyp_string(materiality, "less")
     hypotheses[["materiality"]] <- materiality
     hypotheses[["alternative"]] <- "less"
-    hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, likelihood, prior_alpha, prior_beta, N.units, N.units)
-    hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, likelihood, prior_alpha, prior_beta, N.units, N.units)
+    hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, likelihood, prior_alpha, prior_beta, 0, N.units, N.units)
+    hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, likelihood, prior_alpha, prior_beta, 0, N.units, N.units)
     hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
     hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
     hypotheses[["density"]] <- .hyp_dens(materiality, likelihood, prior_alpha, prior_beta, N.units, N.units)

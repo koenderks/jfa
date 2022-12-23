@@ -93,7 +93,7 @@ test_that(desc = "(id: f5-v0.1.0-t14) Frequentist hypergeometric 5% materiality"
 test_that(desc = "(id: f5-v0.1.0-t15) Frequentist hypergeometric 5% materiality 2.5% errors", {
   jfaRes <- planning(materiality = 0.05, conf.level = 0.95, expected = 0.025, likelihood = "hypergeometric", N.units = 1000)
   expect_equal(jfaRes[["n"]], 197)
-  expect_equal(jfaRes[["x"]], 5, tolerance = 0.001)
+  expect_equal(jfaRes[["x"]], 5)
 })
 
 test_that(desc = "(id: f5-v0.1.0-t16) Frequentist hypergeometric 5% materiality 2 errors", {
@@ -105,8 +105,8 @@ test_that(desc = "(id: f5-v0.1.0-t16) Frequentist hypergeometric 5% materiality 
 test_that(desc = "(id: f5-v0.1.0-t17) Bayesian hypergeometric 5% materiality 2.5% errors", {
   prior <- auditPrior(method = "default", likelihood = "hypergeometric", N.units = 1000)
   jfaRes <- planning(materiality = 0.05, conf.level = 0.95, expected = 0.025, likelihood = "hypergeometric", N.units = 1000, prior = prior)
-  expect_equal(jfaRes[["n"]], 159)
-  expect_equal(jfaRes[["x"]], 4, tolerance = 0.001)
+  expect_equal(jfaRes[["n"]], 196)
+  expect_equal(jfaRes[["x"]], 5)
 })
 
 test_that(desc = "(id: f5-v0.1.0-t19) Bayesian binomial 2% precision 5% materiality 2.5% errors impartial prior", {
@@ -194,7 +194,7 @@ test_that(desc = "(id: f5-v0.4.0-t2) Expected Bayes factors for expected errors 
 
   prior <- auditPrior(method = "default", likelihood = "hypergeometric", N.units = 1000)
   jfaRes <- planning(conf.level = 0.95, materiality = 0.02, expected = 0.01, likelihood = "hypergeometric", prior = prior, N.units = 1000)
-  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.h1, 948.2315255, tolerance = 0.001)
+  expect_equal(jfaRes[["posterior"]][["hypotheses"]]$bf.h1, 939.0618203, tolerance = 0.001)
 })
 
 test_that(desc = "(id: f5-v0.4.0-t3) Expected Bayes factors for impartial priors", {

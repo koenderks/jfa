@@ -97,12 +97,12 @@
   return(mle)
 }
 
-.comp_mode_bayes <- function(family, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+.comp_mode_bayes <- function(family, alpha, beta, K, N.units, analytical = TRUE, samples = NULL) {
   if (analytical) {
     mode <- switch(family,
       "poisson" = (alpha - 1) / beta,
       "binomial" = (alpha - 1) / (alpha + beta - 2),
-      "hypergeometric" = .modebbinom(N.units, alpha, beta),
+      "hypergeometric" = .modebbinom(N.units, K, alpha, beta),
       "normal" = alpha,
       "uniform" = NA,
       "cauchy" = alpha,
@@ -121,7 +121,7 @@
   return(mode)
 }
 
-.modebbinom <- function(N, shape1, shape2) {
+.modebbinom <- function(N, K, shape1, shape2) {
   no_mode <- (shape1 == 1 && shape2 == 1) || shape1 == 0 || shape2 == 0
   if (no_mode) {
     return(NA)
@@ -129,7 +129,7 @@
   if (shape1 == 1 && shape2 > 1) {
     return(0)
   }
-  mode <- which.max(extraDistr::dbbinom(x = 0:N, size = N, alpha = shape1, beta = shape2)) - 1
+  mode <- which.max(extraDistr::dbbinom(x = K, size = N, alpha = shape1, beta = shape2)) - 1
   return(mode)
 }
 
@@ -155,12 +155,12 @@
   return(mean)
 }
 
-.comp_median_bayes <- function(family, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+.comp_median_bayes <- function(family, alpha, beta, K, N.units, analytical = TRUE, samples = NULL) {
   if (analytical) {
     median <- switch(family,
       "poisson" = stats::qgamma(0.5, alpha, beta),
       "binomial" = stats::qbeta(0.5, alpha, beta),
-      "hypergeometric" = .qbbinom(0.5, N.units, alpha, beta),
+      "hypergeometric" = .qbbinom(0.5, K, N.units, alpha, beta),
       "normal" = truncdist::qtrunc(0.5, spec = "norm", a = 0, b = 1, mean = alpha, sd = beta),
       "uniform" = truncdist::qtrunc(0.5, spec = "unif", a = 0, b = 1, min = alpha, max = beta),
       "cauchy" = truncdist::qtrunc(0.5, spec = "cauchy", a = 0, b = 1, location = alpha, scale = beta),
@@ -321,7 +321,7 @@
   return(max(K[cdf > (1 - p)]))
 }
 
-.comp_ub_bayes <- function(alternative, conf.level, family, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+.comp_ub_bayes <- function(alternative, conf.level, family, alpha, beta, K, N.units, analytical = TRUE, samples = NULL) {
   if (alternative == "greater") {
     ub <- 1
   } else {
@@ -334,7 +334,7 @@
       ub <- switch(family,
         "poisson" = stats::qgamma(prob, alpha, beta),
         "binomial" = stats::qbeta(prob, alpha, beta),
-        "hypergeometric" = .qbbinom(prob, N.units, alpha, beta),
+        "hypergeometric" = .qbbinom(prob, K, N.units, alpha, beta),
         "normal" = truncdist::qtrunc(prob, spec = "norm", a = 0, b = 1, mean = alpha, sd = beta),
         "uniform" = truncdist::qtrunc(prob, spec = "unif", a = 0, b = 1, min = alpha, max = beta),
         "cauchy" = truncdist::qtrunc(prob, spec = "cauchy", a = 0, b = 1, location = alpha, scale = beta),
@@ -349,7 +349,7 @@
   return(ub)
 }
 
-.comp_lb_bayes <- function(alternative, conf.level, family, alpha, beta, N.units, analytical = TRUE, samples = NULL) {
+.comp_lb_bayes <- function(alternative, conf.level, family, alpha, beta, K, N.units, analytical = TRUE, samples = NULL) {
   if (alternative == "less") {
     lb <- 0
   } else {
@@ -362,7 +362,7 @@
       lb <- switch(family,
         "poisson" = stats::qgamma(prob, alpha, beta),
         "binomial" = stats::qbeta(prob, alpha, beta),
-        "hypergeometric" = .qbbinom(prob, N.units, alpha, beta),
+        "hypergeometric" = .qbbinom(prob, K, N.units, alpha, beta),
         "normal" = truncdist::qtrunc(prob, spec = "norm", a = 0, b = 1, mean = alpha, sd = beta),
         "uniform" = truncdist::qtrunc(prob, spec = "unif", a = 0, b = 1, min = alpha, max = beta),
         "cauchy" = truncdist::qtrunc(prob, spec = "cauchy", a = 0, b = 1, location = alpha, scale = beta),
@@ -377,14 +377,14 @@
   return(lb)
 }
 
-.qbbinom <- function(p, N, shape1, shape2, lower.tail = TRUE, log.p = FALSE) {
+.qbbinom <- function(p, K, N, shape1, shape2, lower.tail = TRUE, log.p = FALSE) {
   improper <- shape1 == 0 || shape2 == 0
   if (improper) {
     return(Inf)
   }
   if (log.p) p <- exp(p)
   if (!lower.tail) p <- 1 - p
-  x <- extraDistr::dbbinom(x = 0:N, size = N, alpha = shape1, beta = shape2)
+  x <- extraDistr::dbbinom(x = K, size = N, alpha = shape1, beta = shape2)
   q <- which(cumsum(x) > p)[1] - 1
   return(q)
 }
@@ -451,12 +451,12 @@
   return(dens)
 }
 
-.hyp_prob <- function(lower_tail, materiality, family, alpha, beta, N.units, post_N, analytical = TRUE, samples = NULL) {
+.hyp_prob <- function(lower_tail, materiality, family, alpha, beta, x, N.units, post_N, analytical = TRUE, samples = NULL) {
   if (analytical) {
     prob <- switch(family,
       "poisson" = stats::pgamma(materiality, alpha, beta, lower.tail = lower_tail),
       "binomial" = stats::pbeta(materiality, alpha, beta, lower.tail = lower_tail),
-      "hypergeometric" = extraDistr::pbbinom(ceiling(materiality * N.units) - 1, post_N, alpha, beta, lower.tail = lower_tail),
+      "hypergeometric" = extraDistr::pbbinom((ceiling(materiality * N.units) - 1) - x, post_N, alpha, beta, lower.tail = lower_tail),
       "normal" = truncdist::ptrunc(materiality, spec = "norm", a = 0, b = 1, mean = alpha, sd = beta, lower.tail = lower_tail),
       "uniform" = truncdist::ptrunc(materiality, spec = "unif", a = 0, b = 1, min = alpha, max = beta, lower.tail = lower_tail),
       "cauchy" = truncdist::ptrunc(materiality, spec = "cauchy", a = 0, b = 1, location = alpha, scale = beta, lower.tail = lower_tail),
@@ -538,8 +538,6 @@
     prior <- stats::dgamma(theta, prior[["description"]]$alpha, prior[["description"]]$beta)
   } else if (prior[["description"]]$density == "beta") {
     prior <- stats::dbeta(theta, prior[["description"]]$alpha, prior[["description"]]$beta)
-  } else if (prior[["description"]]$density == "beta-binomial") {
-    prior <- extraDistr::dbbinom(theta, prior[["N.units"]], prior[["description"]]$alpha, prior[["description"]]$beta)
   } else if (prior[["description"]]$density == "normal") {
     prior <- truncdist::dtrunc(theta, spec = "norm", a = 0, b = 1, mean = prior[["description"]]$alpha, sd = prior[["description"]]$beta)
   } else if (prior[["description"]]$density == "uniform") {

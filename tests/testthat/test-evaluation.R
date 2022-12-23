@@ -244,7 +244,7 @@ test_that(desc = "(id: f3-v0.4.0-t1) Bayes factors", {
   expect_equal(jfaEval[["posterior"]][["hypotheses"]]$odds.h1, 1822.754944, tolerance = 0.001)
   prior <- auditPrior(method = "default", likelihood = "hypergeometric", N.units = 1000)
   jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "hypergeometric", times = "times", prior = prior, N.units = 1000)
-  expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf.h1, 235810.5921, tolerance = 0.001)
+  expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf.h1, 113607.5198, tolerance = 0.001)
 })
 
 # jfa version 0.5.0
@@ -369,15 +369,18 @@ test_that(desc = "(id: f3-v0.6.0-t2) Test Bayes factors for gamma prior", {
 test_that(desc = "(id: f3-v0.6.0-t3) Test Bayes factors for beta-binomial prior", {
   # Compute a Bayes factor from a noninformative beta-binomial prior
   BF <- evaluation(materiality = 0.03, n = 160, x = 1, prior = auditPrior(method = "default", likelihood = "hypergeometric", N.units = 1000))$posterior$hypotheses$bf.h1
-  expect_equal(BF, 1103.766987)
+  expect_equal(BF, 943.4715321)
 
   # Compute a Bayes factor from a noninformative beta-binomial prior
   BF <- evaluation(materiality = 0.05, n = 50, x = 1, prior = auditPrior(method = "default", likelihood = "hypergeometric", N.units = 1000))$posterior$hypotheses$bf.h1
-  expect_equal(BF, 56.53423054)
+  expect_equal(BF, 53.59899136)
 
   # Compute a default Bayes factor from an impartial beta-binomial prior
   BF <- evaluation(materiality = 0.05, n = 50, x = 1, prior = auditPrior(method = "impartial", materiality = 0.05, likelihood = "hypergeometric", N.units = 1000))$posterior$hypotheses$bf.h1
-  expect_equal(BF, 5.491157852)
+  expect_equal(BF, 5.162566438)
+
+  BF <- evaluation(materiality = 0.5, n = 2, x = 1, N.units = 11, method = "hypergeometric", prior = TRUE)$posterior$hypotheses$bf.h1
+  expect_equal(BF, 1)
 })
 
 # jfa 0.6.1 - 0.6.4
@@ -531,12 +534,38 @@ test_that(desc = "(id: f3-v0.6.5-t7) Test evaluation with non-conjugate priors",
   # Cannot test for consistency due to sampling differences on OS's
   prior <- auditPrior(method = "param", likelihood = "normal", alpha = 0.025, beta = 0.05)
   res <- evaluation(materiality = 0.03, x = 0, n = 53, prior = prior, method = "binomial")
+  expect_equal(!is.null(res), TRUE)
   prior <- auditPrior(method = "param", likelihood = "uniform", alpha = 0, beta = 0.5)
   res <- evaluation(materiality = 0.03, x = 0, n = 53, prior = prior, method = "binomial")
+  expect_equal(!is.null(res), TRUE)
   prior <- auditPrior(method = "param", likelihood = "cauchy", alpha = 0, beta = 0.5)
   res <- evaluation(materiality = 0.03, x = 0, n = 53, prior = prior, method = "binomial")
+  expect_equal(!is.null(res), TRUE)
   prior <- auditPrior(method = "param", likelihood = "t", alpha = 1)
   res <- evaluation(materiality = 0.03, x = 0, n = 53, prior = prior, method = "binomial")
+  expect_equal(!is.null(res), TRUE)
   prior <- auditPrior(method = "param", likelihood = "chisq", alpha = 1)
   res <- evaluation(materiality = 0.03, x = 0, n = 53, prior = prior, method = "binomial")
+  expect_equal(!is.null(res), TRUE)
+})
+
+test_that(desc = "(id: f3-v0.6.5-t8) Test hypergeometric and beta-binomial", {
+  N <- 10
+  n <- 2
+  x <- 1
+  x1 <- evaluation(x = x, n = n, method = "hypergeometric", N.units = N)
+  expect_equal(x1[["mle"]], 0.5)
+  expect_equal(x1[["ub"]], 0.9)
+  x2 <- evaluation(x = x, n = n, method = "hypergeometric", N.units = N, prior = TRUE)
+  expect_equal(x1[["mle"]], x2[["mle"]])
+  expect_equal(x1[["ub"]], x2[["ub"]])
+  N <- 20
+  n <- 10
+  x <- 1
+  x1 <- evaluation(x = x, n = n, method = "hypergeometric", N.units = N)
+  expect_equal(x1[["mle"]], 0.1)
+  expect_equal(x1[["ub"]], 0.3)
+  x2 <- evaluation(x = x, n = n, method = "hypergeometric", N.units = N, prior = TRUE)
+  expect_equal(x1[["mle"]], x2[["mle"]])
+  expect_equal(x1[["ub"]], x2[["ub"]])
 })

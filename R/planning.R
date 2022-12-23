@@ -190,8 +190,8 @@ planning <- function(materiality = NULL,
       hypotheses[["hypotheses"]] <- .hyp_string(materiality, "less")
       hypotheses[["materiality"]] <- materiality
       hypotheses[["alternative"]] <- "less"
-      hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, N.units, N.units)
-      hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, N.units, N.units)
+      hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, 0, N.units, N.units)
+      hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, 0, N.units, N.units)
       hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
       hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
       hypotheses[["density"]] <- .hyp_dens(materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, N.units, N.units)
@@ -255,6 +255,10 @@ planning <- function(materiality = NULL,
   sframe[1] <- 1
   iter <- 1
   sufficient <- FALSE
+  K <- NULL
+  if (!is.null(N.units)) {
+    K <- 0:N.units
+  }
   # Compute results
   while (!sufficient && iter <= length(sframe)) {
     i <- sframe[iter]
@@ -278,8 +282,8 @@ planning <- function(materiality = NULL,
         } else {
           beta <- prior[["description"]]$beta + i - x
         }
-        bound <- .comp_ub_bayes("less", conf.level, likelihood, alpha, beta, N.units - i)
-        mle <- .comp_mode_bayes(likelihood, alpha, beta, N.units - i)
+        bound <- .comp_ub_bayes("less", conf.level, likelihood, alpha, beta, K - x, N.units - i)
+        mle <- .comp_mode_bayes(likelihood, alpha, beta, K, N.units - i)
         if (likelihood == "hypergeometric") {
           bound <- bound / N.units
           mle <- mle / N.units
@@ -352,6 +356,7 @@ planning <- function(materiality = NULL,
       post_samples <- samples[, 1]
     }
     post_N <- result[["N.units"]] - result[["n"]]
+    post_K <- K - result[["x"]]
     # Initialize posterior distribution
     posterior <- list()
     posterior[["posterior"]] <- .functional_form(likelihood, post_alpha, post_beta, post_N, conjugate_prior)
@@ -378,14 +383,14 @@ planning <- function(materiality = NULL,
     result[["posterior"]][["description"]] <- description
     # Statistics
     statistics <- list()
-    statistics[["mode"]] <- .comp_mode_bayes(likelihood, post_alpha, post_beta, post_N, conjugate_prior, post_samples)
+    statistics[["mode"]] <- .comp_mode_bayes(likelihood, post_alpha, post_beta, post_K, post_N, conjugate_prior, post_samples)
     statistics[["mean"]] <- .comp_mean_bayes(likelihood, post_alpha, post_beta, post_N, conjugate_prior, post_samples)
-    statistics[["median"]] <- .comp_median_bayes(likelihood, post_alpha, post_beta, post_N, conjugate_prior, post_samples)
+    statistics[["median"]] <- .comp_median_bayes(likelihood, post_alpha, post_beta, post_K, post_N, conjugate_prior, post_samples)
     statistics[["var"]] <- .comp_var_bayes(likelihood, post_alpha, post_beta, post_N, conjugate_prior, post_samples)
     statistics[["skewness"]] <- .comp_skew_bayes(likelihood, post_alpha, post_beta, post_N, conjugate_prior, post_samples)
     statistics[["entropy"]] <- .comp_entropy_bayes(likelihood, post_alpha, post_beta, conjugate_prior, post_samples)
     statistics[["kl"]] <- .comp_kl_bayes(likelihood, result[["prior"]][["description"]]$alpha, result[["prior"]][["description"]]$beta, post_alpha, post_beta, conjugate_prior, prior_samples, post_samples)
-    statistics[["ub"]] <- .comp_ub_bayes("less", conf.level, likelihood, post_alpha, post_beta, post_N, conjugate_prior, post_samples)
+    statistics[["ub"]] <- .comp_ub_bayes("less", conf.level, likelihood, post_alpha, post_beta, post_K, post_N, conjugate_prior, post_samples)
     statistics[["precision"]] <- statistics[["ub"]] - statistics[["mode"]]
     result[["posterior"]][["statistics"]] <- statistics
     # Hypotheses
@@ -394,8 +399,8 @@ planning <- function(materiality = NULL,
       hypotheses[["hypotheses"]] <- .hyp_string(materiality, "less")
       hypotheses[["materiality"]] <- materiality
       hypotheses[["alternative"]] <- "less"
-      hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, likelihood, post_alpha, post_beta, N.units, post_N, conjugate_prior, post_samples)
-      hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, likelihood, post_alpha, post_beta, N.units, post_N, conjugate_prior, post_samples)
+      hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, likelihood, post_alpha, post_beta, result[["x"]], N.units, post_N, conjugate_prior, post_samples)
+      hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, likelihood, post_alpha, post_beta, result[["x"]], N.units, post_N, conjugate_prior, post_samples)
       hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
       hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
       hypotheses[["bf.h1"]] <- hypotheses[["odds.h1"]] / result[["prior"]][["hypotheses"]]$odds.h1
