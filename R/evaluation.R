@@ -718,7 +718,7 @@ evaluation <- function(materiality = NULL,
     # Initialize posterior distribution
     result[["posterior"]] <- list()
     result[["posterior"]]$posterior <- .functional_form(method, post_alpha, post_beta, post_N, analytical)
-    result[["posterior"]]$likelihood <- method
+    result[["posterior"]]$likelihood <- if (conjugate_prior) method else "mcmc"
     if (mcmc_posterior) {
       result[["posterior"]]$plotsamples <- stats::density(ifelse(is.infinite(post_samples), 1, post_samples), from = 0, to = 1, n = 1000)
       result[["posterior"]]$method <- "mcmc"
