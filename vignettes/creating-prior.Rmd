@@ -205,6 +205,18 @@ distribution.
 auditPrior(method = "factor", likelihood = "binomial", x = 0, n = 58, factor = 0.7)
 ```
 
+### Nonparametric prior distributions (`method = 'nonparam'`)
+
+You can base the prior on samples of the prior distribution using 
+`method = 'nonparma'` in combination with `samples`. For example, the command
+below creates a prior on 1000 samples of a beta(1, 10) distribution.
+
+*The `likelihood` argument is not required and will be discarded in this method*
+
+```{r}
+auditPrior(method = "nonparam", samples = stats::rbeta(1000, 1, 10))
+```
+
 ## Using a prior distribution
 
 The objects returned by the `auditPrior()` function can be used as input for the

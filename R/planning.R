@@ -173,8 +173,9 @@ planning <- function(materiality = NULL,
   likelihood <- match.arg(likelihood)
   is_jfa_prior <- inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")
   is_bayesian <- isTRUE(prior) || is_jfa_prior
-  if (is_jfa_prior) {
-    stopifnot("method = 'mcmc' not supported" = prior[["likelihood"]] != "mcmc")
+  mcmc_prior <- is_jfa_prior && prior[["likelihood"]] == "mcmc"
+  analytical <- TRUE
+  if (is_jfa_prior && !mcmc_prior) {
     conjugate_prior <- likelihood == prior[["likelihood"]]
     possible_match <- likelihood %in% c("poisson", "binomial", "hypergeometric") && prior[["likelihood"]] %in% c("poisson", "binomial", "hypergeometric")
     if (!conjugate_prior && possible_match) {
@@ -200,6 +201,21 @@ planning <- function(materiality = NULL,
   } else if (isTRUE(prior)) {
     prior <- auditPrior("default", likelihood, N.units, materiality = materiality, conf.level = conf.level)
     conjugate_prior <- TRUE
+  } else if (mcmc_prior) {
+    conjugate_prior <- FALSE
+    analytical <- FALSE
+    prior_samples <- sample(prior[["plotsamples"]]$x, size = 1e5, replace = TRUE, prob = prior[["plotsamples"]]$y)
+    if (!is.null(materiality) && is.null(prior[["hypotheses"]])) {
+      hypotheses <- list()
+      hypotheses[["hypotheses"]] <- .hyp_string(materiality, "less")
+      hypotheses[["materiality"]] <- materiality
+      hypotheses[["alternative"]] <- "less"
+      hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, analytical = FALSE, samples = prior_samples)
+      hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, analytical = FALSE, samples = prior_samples)
+      hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
+      hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
+      prior[["hypotheses"]] <- hypotheses
+    }
   }
   stopifnot("missing value for 'conf.level'" = !is.null(conf.level))
   valid_confidence <- is.numeric(conf.level) && length(conf.level) == 1 && conf.level > 0 && conf.level < 1
@@ -282,8 +298,8 @@ planning <- function(materiality = NULL,
         } else {
           beta <- prior[["description"]]$beta + i - x
         }
-        bound <- .comp_ub_bayes("less", conf.level, likelihood, alpha, beta, K - x, N.units - i)
-        mle <- .comp_mode_bayes(likelihood, alpha, beta, K, N.units - i)
+        bound <- .comp_ub_bayes("less", conf.level, likelihood, alpha, beta, K - x, N.units - i, analytical, prior_samples)
+        mle <- .comp_mode_bayes(likelihood, alpha, beta, K, N.units - i, analytical, prior_samples)
         if (likelihood == "hypergeometric") {
           bound <- bound / N.units
           mle <- mle / N.units
@@ -360,7 +376,7 @@ planning <- function(materiality = NULL,
     # Initialize posterior distribution
     posterior <- list()
     posterior[["posterior"]] <- .functional_form(likelihood, post_alpha, post_beta, post_N, conjugate_prior)
-    posterior[["likelihood"]] <- likelihood
+    posterior[["likelihood"]] <- if (conjugate_prior) likelihood else "mcmc"
     posterior[["method"]] <- if (conjugate_prior) "sample" else "mcmc"
     result[["posterior"]] <- posterior
     # Description

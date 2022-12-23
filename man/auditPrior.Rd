@@ -6,7 +6,7 @@
 \usage{
 auditPrior(method = c(
              "default", "param", "strict", "impartial", "hyp",
-             "arm", "bram", "sample", "factor"
+             "arm", "bram", "sample", "factor", "nonparam"
            ),
            likelihood = c(
              "poisson", "binomial", "hypergeometric",
@@ -24,6 +24,7 @@ auditPrior(method = c(
            p.hmin = NULL,
            x = NULL, n = NULL,
            factor = NULL,
+           samples = NULL,
            conf.level = 0.95)
 }
 \arguments{
@@ -87,6 +88,9 @@ units in a prior sample. Required for methods \code{sample} and
 \item{factor}{a numeric value between 0 and 1 specifying the weight of
 a prior sample specified via \code{x} and \code{n}. Required for method
 \code{factor}.}
+
+\item{samples}{a numeric vector containing samples of the prior
+distribution. Required for method \code{nonparam}.}
 
 \item{conf.level}{a numeric value between 0 and 1 specifying the confidence
 level (1 - audit risk).}
@@ -182,6 +186,9 @@ This section elaborates on the available input options for the
    sample to a prior distribution.}
  \item{\code{factor}:    This method translates and weighs the outcome of an
    earlier sample to a prior distribution.}
+ \item{\code{nonparam}:  This method takes a vector of samples from a prior
+    distribution (via \code{samples}) and constructs a prior density from
+    these samples.}
 }
 
 This section elaborates on the available input options for the

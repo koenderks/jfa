@@ -28,7 +28,7 @@
 #'
 #' @usage auditPrior(method = c(
 #'              "default", "param", "strict", "impartial", "hyp",
-#'              "arm", "bram", "sample", "factor"
+#'              "arm", "bram", "sample", "factor", "nonparam"
 #'            ),
 #'            likelihood = c(
 #'              "poisson", "binomial", "hypergeometric",
@@ -46,6 +46,7 @@
 #'            p.hmin = NULL,
 #'            x = NULL, n = NULL,
 #'            factor = NULL,
+#'            samples = NULL,
 #'            conf.level = 0.95)
 #'
 #' @param method      a character specifying the method by which the prior
@@ -95,6 +96,8 @@
 #' @param factor      a numeric value between 0 and 1 specifying the weight of
 #'   a prior sample specified via \code{x} and \code{n}. Required for method
 #'   \code{factor}.
+#' @param samples     a numeric vector containing samples of the prior
+#'   distribution. Required for method \code{nonparam}.
 #' @param conf.level  a numeric value between 0 and 1 specifying the confidence
 #'   level (1 - audit risk).
 #'
@@ -146,6 +149,9 @@
 #'    sample to a prior distribution.}
 #'  \item{\code{factor}:    This method translates and weighs the outcome of an
 #'    earlier sample to a prior distribution.}
+#'  \item{\code{nonparam}:  This method takes a vector of samples from a prior
+#'     distribution (via \code{samples}) and constructs a prior density from
+#'     these samples.}
 #' }
 #'
 #' @details This section elaborates on the available input options for the
@@ -238,7 +244,7 @@
 
 auditPrior <- function(method = c(
                          "default", "param", "strict", "impartial", "hyp",
-                         "arm", "bram", "sample", "factor"
+                         "arm", "bram", "sample", "factor", "nonparam"
                        ),
                        likelihood = c(
                          "poisson", "binomial", "hypergeometric",
@@ -257,6 +263,7 @@ auditPrior <- function(method = c(
                        x = NULL,
                        n = NULL,
                        factor = NULL,
+                       samples = NULL,
                        conf.level = 0.95) {
   # Input checking
   method <- match.arg(method)
@@ -285,6 +292,7 @@ auditPrior <- function(method = c(
   }
   accomodates_elicitation <- likelihood %in% c("poisson", "binomial", "hypergeometric")
   accomodates_other <- !accomodates_elicitation
+  analytical <- TRUE
   K <- NULL
   if (!is.null(N.units)) {
     K <- 0:N.units
@@ -512,33 +520,42 @@ auditPrior <- function(method = c(
         prior.n <- prior_beta - prior_alpha + 1
       }
     }
+  } else if (method == "nonparam") {
+    likelihood <- "mcmc"
+    prior_samples <- samples[samples >= 0 & samples <= 1]
+    analytical <- FALSE
   }
   # Initialize main results
   result <- list()
-  result[["prior"]] <- .functional_form(likelihood, prior_alpha, prior_beta, N.units)
+  result[["prior"]] <- .functional_form(likelihood, prior_alpha, prior_beta, N.units, analytical)
   # Description
   description <- list()
-  description[["density"]] <- .functional_density(likelihood)
-  description[["alpha"]] <- prior_alpha
-  description[["beta"]] <- prior_beta
-  if (accomodates_elicitation) {
-    description[["implicit.x"]] <- prior.x
-    description[["implicit.n"]] <- prior.n
+  if (analytical) {
+    description[["density"]] <- .functional_density(likelihood)
+    description[["alpha"]] <- prior_alpha
+    description[["beta"]] <- prior_beta
+    if (accomodates_elicitation) {
+      description[["implicit.x"]] <- prior.x
+      description[["implicit.n"]] <- prior.n
+    }
+  } else {
+    description[["density"]] <- "MCMC"
+    result[["plotsamples"]] <- stats::density(prior_samples, from = 0, to = 1, n = 1000)
   }
   result[["description"]] <- description
   # Statistics
   statistics <- list()
-  statistics[["mode"]] <- .comp_mode_bayes(likelihood, prior_alpha, prior_beta, K, N.units)
-  statistics[["mean"]] <- .comp_mean_bayes(likelihood, prior_alpha, prior_beta, N.units)
-  statistics[["median"]] <- .comp_median_bayes(likelihood, prior_alpha, prior_beta, K, N.units)
-  statistics[["var"]] <- .comp_var_bayes(likelihood, prior_alpha, prior_beta, N.units)
-  statistics[["skewness"]] <- .comp_skew_bayes(likelihood, prior_alpha, prior_beta, N.units)
-  statistics[["entropy"]] <- .comp_entropy_bayes(likelihood, prior_alpha, prior_beta)
-  statistics[["ub"]] <- .comp_ub_bayes("less", conf.level, likelihood, prior_alpha, prior_beta, K, N.units)
+  statistics[["mode"]] <- .comp_mode_bayes(likelihood, prior_alpha, prior_beta, K, N.units, analytical, prior_samples)
+  statistics[["mean"]] <- .comp_mean_bayes(likelihood, prior_alpha, prior_beta, N.units, analytical, prior_samples)
+  statistics[["median"]] <- .comp_median_bayes(likelihood, prior_alpha, prior_beta, K, N.units, analytical, prior_samples)
+  statistics[["var"]] <- .comp_var_bayes(likelihood, prior_alpha, prior_beta, N.units, analytical, prior_samples)
+  statistics[["skewness"]] <- .comp_skew_bayes(likelihood, prior_alpha, prior_beta, N.units, analytical, prior_samples)
+  statistics[["entropy"]] <- .comp_entropy_bayes(likelihood, prior_alpha, prior_beta, analytical, prior_samples)
+  statistics[["ub"]] <- .comp_ub_bayes("less", conf.level, likelihood, prior_alpha, prior_beta, K, N.units, analytical, prior_samples)
   statistics[["precision"]] <- .comp_precision("less", statistics[["mode"]], NULL, statistics[["ub"]])
   result[["statistics"]] <- statistics
   # Specifics
-  if (method != "default" && method != "strict") {
+  if (method != "default" && method != "strict" && method != "nonparam") {
     specifics <- list()
     if (method == "impartial" || method == "hyp") {
       specifics[["p.h1"]] <- p.h1
@@ -565,11 +582,11 @@ auditPrior <- function(method = c(
     hypotheses[["hypotheses"]] <- .hyp_string(materiality, "less")
     hypotheses[["materiality"]] <- materiality
     hypotheses[["alternative"]] <- "less"
-    hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, likelihood, prior_alpha, prior_beta, 0, N.units, N.units)
-    hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, likelihood, prior_alpha, prior_beta, 0, N.units, N.units)
+    hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, likelihood, prior_alpha, prior_beta, 0, N.units, N.units, analytical, prior_samples)
+    hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, likelihood, prior_alpha, prior_beta, 0, N.units, N.units, analytical, prior_samples)
     hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
     hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
-    hypotheses[["density"]] <- .hyp_dens(materiality, likelihood, prior_alpha, prior_beta, N.units, N.units)
+    hypotheses[["density"]] <- .hyp_dens(materiality, likelihood, prior_alpha, prior_beta, N.units, N.units, analytical, prior_samples)
     result[["hypotheses"]] <- hypotheses
   }
   # Additional info

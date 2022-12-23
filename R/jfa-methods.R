@@ -62,7 +62,8 @@ print.summary.jfaPrior <- function(x, digits = getOption("digits"), ...) {
     "sample" = paste0("earlier sample of ", x[["n.prior"]], " items with ", x[["x.prior"]], " errors"),
     "factor" = paste0("earlier sample of ", x[["n.prior"]], " items with ", x[["x.prior"]], " errors weighted by ", x[["factor"]]),
     "param" = paste0("\u03B1 = ", x[["alpha"]], "; \u03B2 = ", x[["beta"]]),
-    "mcmc" = "consolidated prior"
+    "nonparam" = "nonparametric prior",
+    "mcmc" = "nonparametric prior"
   )), "\n")
   cat("\nResults:\n")
   cat(paste("  Functional form:              ", x[["prior"]]), "\n")
@@ -510,7 +511,7 @@ plot.jfaPlanning <- function(x, ...) {
     if (x[["prior"]][["description"]]$density != "beta-binomial") {
       p <- p + ggplot2::geom_line(mapping = ggplot2::aes(linetype = type)) +
         ggplot2::scale_linetype_manual(name = NULL, values = c("solid", "dashed")) +
-        ggplot2::scale_x_continuous(name = "Population misstatement", breaks = xBreaks, limits = range(xBreaks)) +
+        ggplot2::scale_x_continuous(name = "Population misstatement", breaks = xBreaks, limits = c(0, 1)) +
         ggplot2::scale_y_continuous(name = "Density", breaks = yBreaks, limits = range(yBreaks))
     } else {
       p <- p + ggplot2::geom_col(mapping = ggplot2::aes(fill = type), alpha = 0.75, colour = "black", position = "identity") +

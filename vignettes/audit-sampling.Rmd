@@ -70,7 +70,7 @@ function to produce the predictions of the prior distribution on the data level.
 ```r
 auditPrior(method = c(
              "default", "strict", "param", "impartial", "hyp",
-             "arm", "bram", "sample", "factor"
+             "arm", "bram", "sample", "factor", "nonparam"
            ),
            likelihood = c(
              "poisson", "binomial", "hypergeometric",
@@ -89,6 +89,7 @@ auditPrior(method = c(
            x = NULL,
            n = NULL,
            factor = NULL,
+           samples = NULL,
            conf.level = 0.95)
 ```
 
@@ -103,6 +104,7 @@ auditPrior(method = c(
 - `bram`: Manually provide the upper bound of the prior distribution (Touw & Hoogduin, 2011).
 - `sample`: Manually provide an equivalent prior sample (Derks et al., 2021).
 - `factor`: Manually provide and weigh an equivalent prior sample (Derks et al., 2021).
+- `nonparam`: Nonparametric prior based on samples.
 
 *Supported options for the `likelihood` argument:*
 

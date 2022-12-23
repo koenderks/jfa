@@ -71,7 +71,7 @@
       "exponential" = paste0("exponential(\u03BB = ", round(alpha, 3), ")T[0,1]")
     )
   } else {
-    string <- "Determined via MCMC sampling"
+    string <- "Nonparametric"
   }
   return(string)
 }
@@ -550,6 +550,9 @@
     prior <- truncdist::dtrunc(theta, spec = "chisq", a = 0, b = 1, df = prior[["description"]]$alpha)
   } else if (prior[["description"]]$density == "exponential") {
     prior <- truncdist::dtrunc(theta, spec = "exp", a = 0, b = 1, rate = prior[["description"]]$alpha)
+  } else if (prior[["description"]]$density == "MCMC") {
+    theta <- prior[["plotsamples"]]$x
+    prior <- prior[["plotsamples"]]$y
   }
   likelihood <- switch(likelihood,
     "binomial" = stats::dbeta(theta, shape1 = 1 + x, shape2 = 1 + n - x),

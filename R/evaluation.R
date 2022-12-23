@@ -292,8 +292,8 @@ evaluation <- function(materiality = NULL,
   pooling <- match.arg(pooling)
   is_jfa_prior <- inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")
   is_bayesian <- isTRUE(prior) || is_jfa_prior
-  if (is_jfa_prior) {
-    stopifnot("method = 'mcmc' not supported" = prior[["likelihood"]] != "mcmc")
+  mcmc_prior <- is_jfa_prior && prior[["likelihood"]] == "mcmc"
+  if (is_jfa_prior && !mcmc_prior) {
     conjugate_prior <- method == prior[["likelihood"]]
     possible_match <- method %in% c("poisson", "binomial", "hypergeometric") && prior[["likelihood"]] %in% c("poisson", "binomial", "hypergeometric")
     if (!conjugate_prior && possible_match) {
@@ -308,9 +308,10 @@ evaluation <- function(materiality = NULL,
       hypotheses <- list()
       hypotheses[["hypotheses"]] <- .hyp_string(materiality, "less")
       hypotheses[["materiality"]] <- materiality
-      hypotheses[["alternative"]] <- "less"
-      hypotheses[["p.h1"]] <- .hyp_prob(TRUE, materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, 0, N.units, N.units)
-      hypotheses[["p.h0"]] <- .hyp_prob(FALSE, materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, 0, N.units, N.units)
+      hypotheses[["alternative"]] <- alternative
+      lower_tail <- alternative == "less"
+      hypotheses[["p.h1"]] <- .hyp_prob(lower_tail, materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, 0, N.units, N.units)
+      hypotheses[["p.h0"]] <- .hyp_prob(!lower_tail, materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, 0, N.units, N.units)
       hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
       hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
       hypotheses[["density"]] <- .hyp_dens(materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, N.units, N.units)
@@ -321,6 +322,21 @@ evaluation <- function(materiality = NULL,
     stopifnot("'method' should be one of 'poisson', 'binomial', or 'hypergeometric'" = accommodates_simple_prior)
     prior <- auditPrior("default", method, N.units[1], materiality = materiality, conf.level = conf.level)
     conjugate_prior <- TRUE
+  } else if (mcmc_prior) {
+    conjugate_prior <- FALSE
+    prior_samples <- sample(prior[["plotsamples"]]$x, size = 1e5, replace = TRUE, prob = prior[["plotsamples"]]$y)
+    if (!is.null(materiality) && is.null(prior[["hypotheses"]])) {
+      hypotheses <- list()
+      hypotheses[["materiality"]] <- materiality
+      hypotheses[["alternative"]] <- alternative
+      lower_tail <- alternative == "less"
+      hypotheses[["p.h1"]] <- .hyp_prob(lower_tail, materiality, analytical = FALSE, samples = prior_samples)
+      hypotheses[["p.h0"]] <- .hyp_prob(!lower_tail, materiality, analytical = FALSE, samples = prior_samples)
+      hypotheses[["odds.h1"]] <- hypotheses[["p.h1"]] / hypotheses[["p.h0"]]
+      hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
+      hypotheses[["density"]] <- .hyp_dens(materiality, analytical = FALSE, samples = prior_samples)
+      prior[["hypotheses"]] <- hypotheses
+    }
   }
   stopifnot("missing value for 'conf.level'" = !is.null(conf.level))
   valid_confidence <- is.numeric(conf.level) && length(conf.level) == 1 && conf.level > 0 && conf.level < 1
@@ -478,8 +494,7 @@ evaluation <- function(materiality = NULL,
   }
   no_rows <- length(t.obs) - 1
   if (is_bayesian) {
-    mcmc_prior <- nstrata > 1
-    mcmc_posterior <- nstrata > 1 || !conjugate_prior
+    mcmc_posterior <- mcmc_prior || !conjugate_prior
     if (conjugate_prior) {
       stratum_samples <- NULL
     } else {
@@ -573,6 +588,7 @@ evaluation <- function(materiality = NULL,
     }
   } else {
     stopifnot("pooling = 'partial' only possible when 'prior != FALSE'" = is_bayesian)
+    stopifnot("pooling = 'partial' requires a parametric 'prior'" = !mcmc_prior)
     if (broken_taints && has_data) {
       stratum_samples <- .mcmc_pp("beta", n.obs, t.obs, taints, nstrata, stratum, prior)
     } else {
@@ -652,7 +668,7 @@ evaluation <- function(materiality = NULL,
     # Prior distribution
     result[["prior"]] <- prior
     if (mcmc_prior) {
-      result[["prior"]]$prior <- "Determined via MCMC sampling"
+      result[["prior"]]$prior <- "Nonparametric"
       result[["prior"]]$plotsamples <- stats::density(ifelse(is.infinite(prior_samples), 1, prior_samples), from = 0, to = 1, n = 1000)
       result[["prior"]]$method <- "mcmc"
       # Description
