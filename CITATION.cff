@@ -69,6 +69,21 @@ references:
     name: R Foundation for Statistical Computing
   version: '>= 3.5.0'
 - type: software
+  title: bde
+  abstract: 'bde: Bounded Density Estimation'
+  notes: Imports
+  repository: https://CRAN.R-project.org/package=bde
+  authors:
+  - family-names: Santafe
+    given-names: Guzman
+  - family-names: Calvo
+    given-names: Borja
+  - family-names: Perez
+    given-names: Aritz
+  - family-names: Lozano
+    given-names: Jose A.
+  year: '2022'
+- type: software
   title: extraDistr
   abstract: 'extraDistr: Additional Univariate and Multivariate Distributions'
   notes: Imports
