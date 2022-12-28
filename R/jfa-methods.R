@@ -162,7 +162,7 @@ predict.jfaPrior <- function(object, n, cumulative = FALSE, ...) {
   } else if (object[["description"]]$density == "exponential") {
     p <- prop.table(table(stats::rbinom(nobs, n, truncdist::rtrunc(nobs, "exp", 0, 1, rate = object[["description"]]$alpha))))
   } else if (object[["description"]]$density == "MCMC") {
-    p <- prop.table(table(stats::rbinom(nobs, n, sample(object[["plotsamples"]]$x, size = nobs, replace = TRUE, prob = object[["plotsamples"]]$y))))
+    p <- prop.table(table(stats::rbinom(nobs, n, sample(bde::getdataPointsCache(object[["plotsamples"]]), size = nobs, replace = TRUE, prob = bde::getdensityCache(object[["plotsamples"]])))))
   }
   if (cumulative) {
     p <- cumsum(p)
@@ -218,8 +218,8 @@ plot.jfaPrior <- function(x, ...) {
     xs <- seq(0, 1, length.out = 1000)
     y <- truncdist::dtrunc(xs, spec = "exp", a = 0, b = 1, rate = x[["description"]]$alpha)
   } else if (x[["description"]]$density == "MCMC") {
-    xs <- x[["plotsamples"]]$x
-    y <- x[["plotsamples"]]$y
+    xs <- bde::getdataPointsCache(x[["plotsamples"]])
+    y <- bde::getdensityCache(x[["plotsamples"]])
   }
   yMax <- if (is.infinite(max(y))) 10 else max(y)
   yBreaks <- pretty(c(0, yMax), min.n = 4)
@@ -487,8 +487,8 @@ plot.jfaPlanning <- function(x, ...) {
       x1 <- seq(0, 1, length.out = 1000)
       y1 <- truncdist::dtrunc(x1, spec = "exp", a = 0, b = 1, rate = x[["prior"]][["description"]]$alpha)
     } else if (x[["prior"]][["description"]]$density == "MCMC") {
-      x1 <- x[["prior"]][["plotsamples"]]$x
-      y1 <- x[["prior"]][["plotsamples"]]$y
+      x1 <- bde::getdataPointsCache(x[["prior"]][["plotsamples"]])
+      y1 <- bde::getdensityCache(x[["prior"]][["plotsamples"]])
     }
     if (x[["posterior"]][["description"]]$density == "gamma") {
       x2 <- seq(0, 1, length.out = 1000)
@@ -500,8 +500,8 @@ plot.jfaPlanning <- function(x, ...) {
       x2 <- seq(0, x[["N.units"]], by = 1)
       y2 <- extraDistr::dbbinom(x2 - x[["x"]], x[["posterior"]][["N.units"]] - x[["n"]], x[["posterior"]][["description"]]$alpha, x[["posterior"]][["description"]]$beta)
     } else if (x[["posterior"]][["description"]]$density == "MCMC") {
-      x2 <- x[["posterior"]][["plotsamples"]]$x
-      y2 <- x[["posterior"]][["plotsamples"]]$y
+      x2 <- bde::getdataPointsCache(x[["posterior"]][["plotsamples"]])
+      y2 <- bde::getdensityCache(x[["posterior"]][["plotsamples"]])
     }
     df <- data.frame(x = c(x1, x2), y = c(y1, y2), type = c(rep("Prior", length(y1)), rep("Posterior", length(y2))))
     yMax <- if (is.infinite(max(df$y))) max(y2) else max(df$y)

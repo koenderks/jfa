@@ -523,6 +523,7 @@ auditPrior <- function(method = c(
   } else if (method == "nonparam") {
     likelihood <- "mcmc"
     prior_samples <- samples[samples >= 0 & samples <= 1]
+    stopifnot("no samples available between 0 and 1" = length(prior_samples) > 0)
     analytical <- FALSE
   }
   # Initialize main results
@@ -540,7 +541,12 @@ auditPrior <- function(method = c(
     }
   } else {
     description[["density"]] <- "MCMC"
-    result[["plotsamples"]] <- stats::density(prior_samples, from = 0, to = 1, n = 1000)
+    result[["plotsamples"]] <- bde::bde(
+      prior_samples,
+      estimator = "boundarykernel",
+      lower.limit = 0, upper.limit = 1,
+      dataPointsCache = seq(0, 1, length = 1001), b = 0.05
+    )
   }
   result[["description"]] <- description
   # Statistics

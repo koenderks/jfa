@@ -22,6 +22,7 @@ Description: Provides statistical methods for auditing as implemented in JASP
 Depends:
     R (>= 3.5.0)
 Imports:
+    bde,
     extraDistr,
     ggplot2,
     methods,
@@ -59,5 +60,5 @@ LazyData: true
 NeedsCompilation: yes
 SystemRequirements: GNU make
 Language: en-US
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
 Biarch: true

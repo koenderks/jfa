@@ -114,8 +114,7 @@
     if (all(is.infinite(samples))) {
       mode <- Inf
     } else {
-      dens <- stats::density(samples)
-      mode <- dens[["x"]][which.max(dens[["y"]])]
+      mode <- as.numeric(names(which.max(table(round(samples, 4)))))
     }
   }
   return(mode)
@@ -256,9 +255,19 @@
     if (any(is.infinite(samples_prior))) {
       kl <- Inf
     } else {
-      dens_prior <- stats::density(samples_prior)$y
+      dens_prior <- bde::bde(
+        as.numeric(samples_prior),
+        estimator = "boundarykernel",
+        lower.limit = 0, upper.limit = 1,
+        dataPointsCache = seq(0, 1, length = 1001), b = 0.01
+      )@densityCache
       prob_prior <- dens_prior / sum(dens_prior)
-      dens_post <- stats::density(samples_post)$y
+      dens_post <- bde::bde(
+        as.numeric(samples_post),
+        estimator = "boundarykernel",
+        lower.limit = 0, upper.limit = 1,
+        dataPointsCache = seq(0, 1, length = 1001), b = 0.01
+      )@densityCache
       prob_post <- dens_post / sum(dens_post)
       rows <- rbind(prob_post, prob_prior)
       kl <- suppressMessages({
@@ -444,8 +453,13 @@
     if (all(is.infinite(samples))) {
       dens <- 0
     } else {
-      densfit <- stats::density(samples, from = 0, to = 1)
-      dens <- stats::approx(densfit[["x"]], densfit[["y"]], materiality)$y
+      densfit <- bde::bde(
+        as.numeric(samples),
+        estimator = "boundarykernel",
+        lower.limit = 0, upper.limit = 1,
+        dataPointsCache = seq(0, 1, length = 1001), b = 0.01
+      )
+      dens <- bde::density(densfit, materiality)
     }
   }
   return(dens)
@@ -488,9 +502,19 @@
   for (i in 1:(nstrata - 1)) {
     prior_samples <- stratum_samples[, (nstrata - 1) + i]
     posterior_samples <- stratum_samples[, i]
-    prior_densfit <- stats::density(prior_samples, from = 0, to = 1)
-    post_densfit <- stats::density(posterior_samples, from = 0, to = 1)
-    bf01[i] <- stats::approx(post_densfit[["x"]], post_densfit[["y"]], materiality)$y / stats::approx(prior_densfit[["x"]], prior_densfit[["y"]], materiality)$y
+    prior_densfit <- bde::bde(
+      as.numeric(prior_samples),
+      estimator = "boundarykernel",
+      lower.limit = 0, upper.limit = 1,
+      dataPointsCache = seq(0, 1, length = 1001), b = 0.01
+    )
+    post_densfit <- bde::bde(
+      as.numeric(posterior_samples),
+      estimator = "boundarykernel",
+      lower.limit = 0, upper.limit = 1,
+      dataPointsCache = seq(0, 1, length = 1001), b = 0.01
+    )
+    bf01[i] <- bde::density(post_densfit, materiality) / bde::density(prior_densfit, materiality)
   }
   return(bf01)
 }
@@ -551,8 +575,8 @@
   } else if (prior[["description"]]$density == "exponential") {
     prior <- truncdist::dtrunc(theta, spec = "exp", a = 0, b = 1, rate = prior[["description"]]$alpha)
   } else if (prior[["description"]]$density == "MCMC") {
-    theta <- prior[["plotsamples"]]$x
-    prior <- prior[["plotsamples"]]$y
+    theta <- bde::getdataPointsCache(prior[["plotsamples"]])
+    prior <- bde::getdensityCache(prior[["plotsamples"]])
   }
   likelihood <- switch(likelihood,
     "binomial" = stats::dbeta(theta, shape1 = 1 + x, shape2 = 1 + n - x),

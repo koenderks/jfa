@@ -273,5 +273,13 @@ test_that(desc = "(id: f5-v0.5.2-t2) Test for change in beta-binomial mode calcu
   expect_equal(modeDist, 0)
 })
 
-# jfa version 0.5.3 - 0.6.1
+# jfa version 0.5.3 - 0.6.4
 # No changes to be benchmarked
+
+# jfa version 0.6.5
+
+test_that(desc = "(id: f3-v0.6.5-t1) Test planning with non-conjugate priors", {
+  prior <- auditPrior(method = "param", likelihood = "uniform", alpha = 0, beta = 1)
+  res <- planning(materiality = 0.05, prior = prior, likelihood = "binomial")
+  expect_equal(res[["n"]], 58)
+})

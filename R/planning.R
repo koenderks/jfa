@@ -204,7 +204,7 @@ planning <- function(materiality = NULL,
   } else if (mcmc_prior) {
     conjugate_prior <- FALSE
     analytical <- FALSE
-    prior_samples <- sample(prior[["plotsamples"]]$x, size = 1e5, replace = TRUE, prob = prior[["plotsamples"]]$y)
+    prior_samples <- sample(bde::getdataPointsCache(prior[["plotsamples"]]), size = getOption("jfa.iterations", 1e5), replace = TRUE, prob = bde::getdensityCache(prior[["plotsamples"]]))
     if (!is.null(materiality) && is.null(prior[["hypotheses"]])) {
       hypotheses <- list()
       hypotheses[["hypotheses"]] <- .hyp_string(materiality, "less")
@@ -394,7 +394,12 @@ planning <- function(materiality = NULL,
         description[["implicit.n"]] <- post_beta - description[["implicit.x"]]
       }
     } else {
-      result[["posterior"]][["plotsamples"]] <- stats::density(ifelse(is.infinite(post_samples), 1, post_samples), from = 0, to = 1, n = 1000)
+      result[["posterior"]][["plotsamples"]] <- bde::bde(
+        as.numeric(ifelse(is.infinite(post_samples), 1, post_samples)),
+        estimator = "boundarykernel",
+        lower.limit = 0, upper.limit = 1,
+        dataPointsCache = seq(0, 1, length = 1001), b = 0.01
+      )
     }
     result[["posterior"]][["description"]] <- description
     # Statistics
