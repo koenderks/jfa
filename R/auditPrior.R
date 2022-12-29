@@ -540,7 +540,7 @@ auditPrior <- function(method = c(
     }
   } else {
     description[["density"]] <- "MCMC"
-    result[["plotsamples"]] <- .bounded_density(prior_samples)
+    result[["fitted.density"]] <- .bounded_density(prior_samples)
   }
   result[["description"]] <- description
   # Statistics

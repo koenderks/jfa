@@ -324,7 +324,7 @@ evaluation <- function(materiality = NULL,
     conjugate_prior <- TRUE
   } else if (mcmc_prior) {
     conjugate_prior <- FALSE
-    prior_samples <- .rsample(prior[["plotsamples"]], getOption("jfa.iterations", 1e5))
+    prior_samples <- .rsample(prior[["fitted.density"]], getOption("jfa.iterations", 1e5))
     if (!is.null(materiality) && is.null(prior[["hypotheses"]])) {
       hypotheses <- list()
       hypotheses[["materiality"]] <- materiality
@@ -669,7 +669,7 @@ evaluation <- function(materiality = NULL,
     result[["prior"]] <- prior
     if (mcmc_prior || (use_stratification && pooling == "none")) {
       result[["prior"]]$prior <- "Nonparametric"
-      result[["prior"]]$plotsamples <- .bounded_density(prior_samples)
+      result[["prior"]]$fitted.density <- .bounded_density(prior_samples)
       result[["prior"]]$method <- "mcmc"
       # Description
       description <- list()
@@ -720,7 +720,7 @@ evaluation <- function(materiality = NULL,
     result[["posterior"]]$posterior <- .functional_form(method, post_alpha, post_beta, post_N, analytical)
     result[["posterior"]]$likelihood <- if (conjugate_prior) method else "mcmc"
     if (mcmc_posterior) {
-      result[["posterior"]]$plotsamples <- .bounded_density(post_samples)
+      result[["posterior"]]$fitted.density <- .bounded_density(post_samples)
       result[["posterior"]]$method <- "mcmc"
     } else {
       result[["posterior"]]$method <- "sample"

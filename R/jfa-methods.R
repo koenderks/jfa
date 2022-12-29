@@ -162,7 +162,7 @@ predict.jfaPrior <- function(object, n, cumulative = FALSE, ...) {
   } else if (object[["description"]]$density == "exponential") {
     p <- prop.table(table(stats::rbinom(nobs, n, truncdist::rtrunc(nobs, "exp", 0, 1, rate = object[["description"]]$alpha))))
   } else if (object[["description"]]$density == "MCMC") {
-    p <- prop.table(table(stats::rbinom(nobs, n, .rsample(object[["plotsamples"]], n = nobs))))
+    p <- prop.table(table(stats::rbinom(nobs, n, .rsample(object[["fitted.density"]], n = nobs))))
   }
   if (cumulative) {
     p <- cumsum(p)
@@ -211,7 +211,7 @@ plot.jfaPrior <- function(x, ...) {
   } else if (x[["description"]]$density == "exponential") {
     y <- truncdist::dtrunc(xs, spec = "exp", a = 0, b = 1, rate = x[["description"]]$alpha)
   } else if (x[["description"]]$density == "MCMC") {
-    y <- bde::getdensityCache(x[["plotsamples"]])
+    y <- x[["fitted.density"]]$y
   }
   yMax <- if (is.infinite(max(y))) 10 else max(y)
   yBreaks <- pretty(c(0, yMax), min.n = 4)
@@ -472,7 +472,7 @@ plot.jfaPlanning <- function(x, ...) {
     } else if (x[["prior"]][["description"]]$density == "exponential") {
       y1 <- truncdist::dtrunc(x1, spec = "exp", a = 0, b = 1, rate = x[["prior"]][["description"]]$alpha)
     } else if (x[["prior"]][["description"]]$density == "MCMC") {
-      y1 <- bde::getdensityCache(x[["prior"]][["plotsamples"]])
+      y1 <- x[["prior"]][["fitted.density"]]$y
     }
     if (x[["posterior"]][["description"]]$density == "gamma") {
       y2 <- stats::dgamma(x2, x[["posterior"]][["description"]]$alpha, x[["posterior"]][["description"]]$beta)
@@ -481,11 +481,11 @@ plot.jfaPlanning <- function(x, ...) {
     } else if (x[["posterior"]][["description"]]$density == "beta-binomial") {
       y2 <- extraDistr::dbbinom(x2 - x[["x"]], x[["posterior"]][["N.units"]] - x[["n"]], x[["posterior"]][["description"]]$alpha, x[["posterior"]][["description"]]$beta)
     } else if (x[["posterior"]][["description"]]$density == "MCMC") {
-      y2 <- bde::getdensityCache(x[["posterior"]][["plotsamples"]])
+      y2 <- x[["posterior"]][["fitted.density"]]$y
     }
     df <- data.frame(x = c(x1, x2), y = c(y1, y2), type = c(rep("Prior", length(y1)), rep("Posterior", length(y2))))
     yMax <- if (is.infinite(max(df$y))) max(y2) else max(df$y)
-    yBreaks <- pretty(c(0, yMax), min.n = 4)
+    yBreaks <- pretty(c(0, yMax * 1.05), min.n = 4)
     xBreaks <- pretty(df$x, min.n = 4)
     p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = x, y = y))
     if (x[["prior"]][["description"]]$density != "beta-binomial") {
@@ -503,11 +503,13 @@ plot.jfaPlanning <- function(x, ...) {
       if (x[["prior"]][["description"]]$density != "beta-binomial") {
         p <- p + ggplot2::geom_segment(x = x[["lb"]], xend = x[["ub"]], y = max(yBreaks), yend = max(yBreaks)) +
           ggplot2::geom_segment(x = x[["lb"]], xend = x[["lb"]], y = max(yBreaks) - ((yBreaks[2] - yBreaks[1]) / 10), yend = max(yBreaks) + ((yBreaks[2] - yBreaks[1]) / 10)) +
-          ggplot2::geom_segment(x = x[["ub"]], xend = x[["ub"]], y = max(yBreaks) - ((yBreaks[2] - yBreaks[1]) / 10), yend = max(yBreaks) + ((yBreaks[2] - yBreaks[1]) / 10))
+          ggplot2::geom_segment(x = x[["ub"]], xend = x[["ub"]], y = max(yBreaks) - ((yBreaks[2] - yBreaks[1]) / 10), yend = max(yBreaks) + ((yBreaks[2] - yBreaks[1]) / 10)) +
+          ggplot2::geom_point(x = x[["mle"]], y = max(yBreaks), size = 2.5, fill = "darkgray", colour = "black", shape = 21)
       } else {
         p <- p + ggplot2::geom_segment(x = ceiling(x[["lb"]] * x[["N.units"]]), xend = ceiling(x[["ub"]] * x[["N.units"]]), y = max(yBreaks), yend = max(yBreaks)) +
           ggplot2::geom_segment(x = ceiling(x[["lb"]] * x[["N.units"]]), xend = ceiling(x[["lb"]] * x[["N.units"]]), y = max(yBreaks) - ((yBreaks[2] - yBreaks[1]) / 10), yend = max(yBreaks) + ((yBreaks[2] - yBreaks[1]) / 10)) +
-          ggplot2::geom_segment(x = ceiling(x[["ub"]] * x[["N.units"]]), xend = ceiling(x[["ub"]] * x[["N.units"]]), y = max(yBreaks) - ((yBreaks[2] - yBreaks[1]) / 10), yend = max(yBreaks) + ((yBreaks[2] - yBreaks[1]) / 10))
+          ggplot2::geom_segment(x = ceiling(x[["ub"]] * x[["N.units"]]), xend = ceiling(x[["ub"]] * x[["N.units"]]), y = max(yBreaks) - ((yBreaks[2] - yBreaks[1]) / 10), yend = max(yBreaks) + ((yBreaks[2] - yBreaks[1]) / 10)) +
+          ggplot2::geom_point(x = ceiling(x[["mle"]] * x[["N.units"]]), y = max(yBreaks), size = 2.5, fill = "darkgray", colour = "black", shape = 21)
       }
     }
     p <- p + ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yBreaks)) +

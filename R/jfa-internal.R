@@ -255,9 +255,9 @@
     if (any(is.infinite(samples_prior))) {
       kl <- Inf
     } else {
-      dens_prior <- .bounded_density(as.numeric(samples_prior))@densityCache
+      dens_prior <- .bounded_density(as.numeric(samples_prior))$y
       prob_prior <- dens_prior / sum(dens_prior)
-      dens_post <- .bounded_density(as.numeric(samples_post))@densityCache
+      dens_post <- .bounded_density(as.numeric(samples_post))$y
       prob_post <- dens_post / sum(dens_post)
       rows <- rbind(prob_post, prob_prior)
       kl <- suppressMessages({
@@ -444,7 +444,7 @@
       dens <- 0
     } else {
       densfit <- .bounded_density(as.numeric(samples))
-      dens <- bde::density(densfit, materiality)
+      dens <- stats::approx(densfit[["x"]], densfit[["y"]], materiality)$y
     }
   }
   return(dens)
@@ -489,7 +489,7 @@
     posterior_samples <- stratum_samples[, i]
     prior_densfit <- .bounded_density(as.numeric(prior_samples))
     post_densfit <- .bounded_density(as.numeric(posterior_samples))
-    bf01[i] <- bde::density(post_densfit, materiality) / bde::density(prior_densfit, materiality)
+    bf01[i] <- stats::approx(post_densfit[["x"]], post_densfit[["y"]], materiality)$y / stats::approx(prior_densfit[["x"]], prior_densfit[["y"]], materiality)$y
   }
   return(bf01)
 }
@@ -550,7 +550,7 @@
   } else if (prior[["description"]]$density == "exponential") {
     prior <- truncdist::dtrunc(theta, spec = "exp", a = 0, b = 1, rate = prior[["description"]]$alpha)
   } else if (prior[["description"]]$density == "MCMC") {
-    prior <- bde::getdensityCache(prior[["plotsamples"]])
+    prior <- prior[["fitted.density"]]$y
   }
   likelihood <- switch(likelihood,
     "binomial" = stats::dbeta(theta, shape1 = 1 + x, shape2 = 1 + n - x),
@@ -692,11 +692,12 @@
     lower.limit = 0, upper.limit = 1,
     dataPointsCache = theta, b = 0.01
   )
-  return(density)
+  fit <- data.frame(x = theta, y = bde::getdensityCache(density))
+  return(fit)
 }
 
 .rsample <- function(density, n) {
-  samples <- sample(bde::getdataPointsCache(density), size = n, replace = TRUE, prob = bde::getdensityCache(density))
+  samples <- sample(density[["x"]], size = n, replace = TRUE, prob = density[["y"]])
   return(samples)
 }
 

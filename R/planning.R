@@ -204,7 +204,7 @@ planning <- function(materiality = NULL,
   } else if (mcmc_prior) {
     conjugate_prior <- FALSE
     analytical <- FALSE
-    prior_samples <- .rsample(prior[["plotsamples"]], getOption("jfa.iterations", 1e5))
+    prior_samples <- .rsample(prior[["fitted.density"]], getOption("jfa.iterations", 1e5))
     if (!is.null(materiality) && is.null(prior[["hypotheses"]])) {
       hypotheses <- list()
       hypotheses[["hypotheses"]] <- .hyp_string(materiality, "less")
@@ -394,7 +394,7 @@ planning <- function(materiality = NULL,
         description[["implicit.n"]] <- post_beta - description[["implicit.x"]]
       }
     } else {
-      result[["posterior"]][["plotsamples"]] <- .bounded_density(post_samples)
+      result[["posterior"]][["fitted.density"]] <- .bounded_density(post_samples)
     }
     result[["posterior"]][["description"]] <- description
     # Statistics
