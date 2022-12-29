@@ -278,21 +278,16 @@ test_that(desc = "(id: f5-v0.5.2-t2) Test for change in beta-binomial mode calcu
 
 # jfa version 0.6.5
 
-test_that(desc = "(id: f3-v0.6.5-t1) Test Bayesian planning with different uniform priors, 5% materiality", {
-  prior <- auditPrior(method = "default", likelihood = "binomial")
-  res <- planning(materiality = 0.05, prior = prior, likelihood = "binomial")
-  expect_equal(res[["n"]], 58)
+test_that(desc = "(id: f5-v0.6.5-t1) Test Bayesian planning with different uniform priors, 5% materiality", {
   set.seed(1)
-  prior <- auditPrior(method = "param", likelihood = "uniform", alpha = 0, beta = 1)
-  res <- planning(materiality = 0.05, prior = prior, likelihood = "binomial")
-  expect_equal(res[["n"]], 58)
-  prior <- auditPrior(method = "nonparam", samples = seq(0, 1, length.out = 10001))
-  res <- planning(materiality = 0.05, prior = prior, likelihood = "binomial")
-  expect_equal(res[["n"]], 58)
-  prior <- auditPrior(method = "nonparam", samples = runif(1000000, 0, 1))
-  res <- planning(materiality = 0.05, prior = prior, likelihood = "binomial")
-  expect_equal(res[["n"]], 58)
-  prior <- auditPrior(method = "nonparam", samples = rbeta(1000000, 1, 1))
-  res <- planning(materiality = 0.05, prior = prior, likelihood = "binomial")
-  expect_equal(res[["n"]], 58)
+  prior1 <- auditPrior(method = "default", likelihood = "binomial")
+  prior2 <- auditPrior(method = "param", likelihood = "uniform", alpha = 0, beta = 1)
+  prior3 <- auditPrior(method = "nonparam", samples = seq(0, 1, length.out = 10001))
+  prior4 <- auditPrior(method = "nonparam", samples = runif(1000000, 0, 1))
+  prior5 <- auditPrior(method = "nonparam", samples = rbeta(1000000, 1, 1))
+  priors <- list(prior1, prior2, prior3, prior4, prior5)
+  for (i in 1:5) {
+    res <- planning(materiality = 0.05, prior = priors[[i]], likelihood = "binomial")
+    expect_equal(res[["n"]], 58)
+  }
 })
