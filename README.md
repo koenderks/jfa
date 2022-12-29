@@ -51,4 +51,6 @@ If you are willing to contribute to the improvement of the package by adding a b
 
 If you use **jfa**, please cite the software as follows:
 
-Derks, K. (2022). jfa: Statistical methods for auditing. https://cran.r-project.org/package=jfa
+```
+Derks, K. (2022). jfa: Statistical methods for auditing. R package version 0.6.5.
+```

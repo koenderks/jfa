@@ -278,8 +278,21 @@ test_that(desc = "(id: f5-v0.5.2-t2) Test for change in beta-binomial mode calcu
 
 # jfa version 0.6.5
 
-test_that(desc = "(id: f3-v0.6.5-t1) Test planning with non-conjugate priors", {
+test_that(desc = "(id: f3-v0.6.5-t1) Test Bayesian planning with different uniform priors, 5% materiality", {
+  prior <- auditPrior(method = "default", likelihood = "binomial")
+  res <- planning(materiality = 0.05, prior = prior, likelihood = "binomial")
+  expect_equal(res[["n"]], 58)
+  set.seed(1)
   prior <- auditPrior(method = "param", likelihood = "uniform", alpha = 0, beta = 1)
+  res <- planning(materiality = 0.05, prior = prior, likelihood = "binomial")
+  expect_equal(res[["n"]], 58)
+  prior <- auditPrior(method = "nonparam", samples = seq(0, 1, length.out = 10001))
+  res <- planning(materiality = 0.05, prior = prior, likelihood = "binomial")
+  expect_equal(res[["n"]], 58)
+  prior <- auditPrior(method = "nonparam", samples = runif(1000000, 0, 1))
+  res <- planning(materiality = 0.05, prior = prior, likelihood = "binomial")
+  expect_equal(res[["n"]], 58)
+  prior <- auditPrior(method = "nonparam", samples = rbeta(1000000, 1, 1))
   res <- planning(materiality = 0.05, prior = prior, likelihood = "binomial")
   expect_equal(res[["n"]], 58)
 })

@@ -162,7 +162,7 @@ predict.jfaPrior <- function(object, n, cumulative = FALSE, ...) {
   } else if (object[["description"]]$density == "exponential") {
     p <- prop.table(table(stats::rbinom(nobs, n, truncdist::rtrunc(nobs, "exp", 0, 1, rate = object[["description"]]$alpha))))
   } else if (object[["description"]]$density == "MCMC") {
-    p <- prop.table(table(stats::rbinom(nobs, n, sample(bde::getdataPointsCache(object[["plotsamples"]]), size = nobs, replace = TRUE, prob = bde::getdensityCache(object[["plotsamples"]])))))
+    p <- prop.table(table(stats::rbinom(nobs, n, .rsample(object[["plotsamples"]], n = nobs))))
   }
   if (cumulative) {
     p <- cumsum(p)
@@ -186,11 +186,10 @@ print.jfaPredict <- function(x, ...) {
 #' @export
 plot.jfaPrior <- function(x, ...) {
   y <- NULL
+  xs <- seq(0, 1, length.out = 1001)
   if (x[["description"]]$density == "gamma") {
-    xs <- seq(0, 1, length.out = 1000)
     y <- stats::dgamma(xs, x[["description"]]$alpha, x[["description"]]$beta)
   } else if (x[["description"]]$density == "beta") {
-    xs <- seq(0, 1, length.out = 1000)
     y <- stats::dbeta(xs, x[["description"]]$alpha, x[["description"]]$beta)
   } else if (x[["description"]]$density == "beta-binomial") {
     xs <- seq(0, x[["N.units"]], by = 1)
@@ -200,25 +199,18 @@ plot.jfaPrior <- function(x, ...) {
       y <- extraDistr::dbbinom(xs - x[["description"]]$x, x[["N.units"]] - x[["description"]]$n, x[["description"]]$alpha, x[["description"]]$beta)
     }
   } else if (x[["description"]]$density == "normal") {
-    xs <- seq(0, 1, length.out = 1000)
     y <- truncdist::dtrunc(xs, spec = "norm", a = 0, b = 1, mean = x[["description"]]$alpha, sd = x[["description"]]$beta)
   } else if (x[["description"]]$density == "uniform") {
-    xs <- seq(0, 1, length.out = 1000)
     y <- truncdist::dtrunc(xs, spec = "unif", a = 0, b = 1, min = x[["description"]]$alpha, max = x[["description"]]$beta)
   } else if (x[["description"]]$density == "Cauchy") {
-    xs <- seq(0, 1, length.out = 1000)
     y <- truncdist::dtrunc(xs, spec = "cauchy", a = 0, b = 1, location = x[["description"]]$alpha, scale = x[["description"]]$beta)
   } else if (x[["description"]]$density == "Student-t") {
-    xs <- seq(0, 1, length.out = 1000)
     y <- truncdist::dtrunc(xs, spec = "t", a = 0, b = 1, df = x[["description"]]$alpha)
   } else if (x[["description"]]$density == "chi-squared") {
-    xs <- seq(0, 1, length.out = 1000)
     y <- truncdist::dtrunc(xs, spec = "chisq", a = 0, b = 1, df = x[["description"]]$alpha)
   } else if (x[["description"]]$density == "exponential") {
-    xs <- seq(0, 1, length.out = 1000)
     y <- truncdist::dtrunc(xs, spec = "exp", a = 0, b = 1, rate = x[["description"]]$alpha)
   } else if (x[["description"]]$density == "MCMC") {
-    xs <- bde::getdataPointsCache(x[["plotsamples"]])
     y <- bde::getdensityCache(x[["plotsamples"]])
   }
   yMax <- if (is.infinite(max(y))) 10 else max(y)
@@ -459,48 +451,36 @@ plot.jfaPlanning <- function(x, ...) {
     p <- .theme_jfa(p)
   } else {
     y <- type <- NULL
+    x1 <- x2 <- seq(0, 1, length.out = 1001)
     if (x[["prior"]][["description"]]$density == "gamma") {
-      x1 <- seq(0, 1, length.out = 1000)
       y1 <- stats::dgamma(x1, x[["prior"]][["description"]]$alpha, x[["prior"]][["description"]]$beta)
     } else if (x[["prior"]][["description"]]$density == "beta") {
-      x1 <- seq(0, 1, length.out = 1000)
       y1 <- stats::dbeta(x1, x[["prior"]][["description"]]$alpha, x[["prior"]][["description"]]$beta)
     } else if (x[["prior"]][["description"]]$density == "beta-binomial") {
-      x1 <- seq(0, x[["N.units"]], by = 1)
+      x1 <- x2 <- seq(0, x[["N.units"]], by = 1)
       y1 <- extraDistr::dbbinom(x1, x[["prior"]][["N.units"]], x[["prior"]][["description"]]$alpha, x[["prior"]][["description"]]$beta)
     } else if (x[["prior"]][["description"]]$density == "normal") {
-      x1 <- seq(0, 1, length.out = 1000)
       y1 <- truncdist::dtrunc(x1, spec = "norm", a = 0, b = 1, mean = x[["prior"]][["description"]]$alpha, sd = x[["prior"]][["description"]]$beta)
     } else if (x[["prior"]][["description"]]$density == "uniform") {
-      x1 <- seq(0, 1, length.out = 1000)
       y1 <- truncdist::dtrunc(x1, spec = "unif", a = 0, b = 1, min = x[["prior"]][["description"]]$alpha, max = x[["prior"]][["description"]]$beta)
     } else if (x[["prior"]][["description"]]$density == "Cauchy") {
-      x1 <- seq(0, 1, length.out = 1000)
       y1 <- truncdist::dtrunc(x1, spec = "cauchy", a = 0, b = 1, location = x[["prior"]][["description"]]$alpha, scale = x[["prior"]][["description"]]$beta)
     } else if (x[["prior"]][["description"]]$density == "Student-t") {
-      x1 <- seq(0, 1, length.out = 1000)
       y1 <- truncdist::dtrunc(x1, spec = "t", a = 0, b = 1, df = x[["prior"]][["description"]]$alpha)
     } else if (x[["prior"]][["description"]]$density == "chi-squared") {
-      x1 <- seq(0, 1, length.out = 1000)
       y1 <- truncdist::dtrunc(x1, spec = "chisq", a = 0, b = 1, df = x[["prior"]][["description"]]$alpha)
     } else if (x[["prior"]][["description"]]$density == "exponential") {
-      x1 <- seq(0, 1, length.out = 1000)
       y1 <- truncdist::dtrunc(x1, spec = "exp", a = 0, b = 1, rate = x[["prior"]][["description"]]$alpha)
     } else if (x[["prior"]][["description"]]$density == "MCMC") {
-      x1 <- bde::getdataPointsCache(x[["prior"]][["plotsamples"]])
       y1 <- bde::getdensityCache(x[["prior"]][["plotsamples"]])
     }
     if (x[["posterior"]][["description"]]$density == "gamma") {
-      x2 <- seq(0, 1, length.out = 1000)
       y2 <- stats::dgamma(x2, x[["posterior"]][["description"]]$alpha, x[["posterior"]][["description"]]$beta)
     } else if (x[["posterior"]][["description"]]$density == "beta") {
-      x2 <- seq(0, 1, length.out = 1000)
       y2 <- stats::dbeta(x2, x[["posterior"]][["description"]]$alpha, x[["posterior"]][["description"]]$beta)
     } else if (x[["posterior"]][["description"]]$density == "beta-binomial") {
-      x2 <- seq(0, x[["N.units"]], by = 1)
       y2 <- extraDistr::dbbinom(x2 - x[["x"]], x[["posterior"]][["N.units"]] - x[["n"]], x[["posterior"]][["description"]]$alpha, x[["posterior"]][["description"]]$beta)
     } else if (x[["posterior"]][["description"]]$density == "MCMC") {
-      x2 <- bde::getdataPointsCache(x[["posterior"]][["plotsamples"]])
       y2 <- bde::getdensityCache(x[["posterior"]][["plotsamples"]])
     }
     df <- data.frame(x = c(x1, x2), y = c(y1, y2), type = c(rep("Prior", length(y1)), rep("Posterior", length(y2))))

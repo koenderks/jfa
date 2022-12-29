@@ -255,19 +255,9 @@
     if (any(is.infinite(samples_prior))) {
       kl <- Inf
     } else {
-      dens_prior <- bde::bde(
-        as.numeric(samples_prior),
-        estimator = "boundarykernel",
-        lower.limit = 0, upper.limit = 1,
-        dataPointsCache = seq(0, 1, length = 1001), b = 0.01
-      )@densityCache
+      dens_prior <- .bounded_density(as.numeric(samples_prior))@densityCache
       prob_prior <- dens_prior / sum(dens_prior)
-      dens_post <- bde::bde(
-        as.numeric(samples_post),
-        estimator = "boundarykernel",
-        lower.limit = 0, upper.limit = 1,
-        dataPointsCache = seq(0, 1, length = 1001), b = 0.01
-      )@densityCache
+      dens_post <- .bounded_density(as.numeric(samples_post))@densityCache
       prob_post <- dens_post / sum(dens_post)
       rows <- rbind(prob_post, prob_prior)
       kl <- suppressMessages({
@@ -453,12 +443,7 @@
     if (all(is.infinite(samples))) {
       dens <- 0
     } else {
-      densfit <- bde::bde(
-        as.numeric(samples),
-        estimator = "boundarykernel",
-        lower.limit = 0, upper.limit = 1,
-        dataPointsCache = seq(0, 1, length = 1001), b = 0.01
-      )
+      densfit <- .bounded_density(as.numeric(samples))
       dens <- bde::density(densfit, materiality)
     }
   }
@@ -502,18 +487,8 @@
   for (i in 1:(nstrata - 1)) {
     prior_samples <- stratum_samples[, (nstrata - 1) + i]
     posterior_samples <- stratum_samples[, i]
-    prior_densfit <- bde::bde(
-      as.numeric(prior_samples),
-      estimator = "boundarykernel",
-      lower.limit = 0, upper.limit = 1,
-      dataPointsCache = seq(0, 1, length = 1001), b = 0.01
-    )
-    post_densfit <- bde::bde(
-      as.numeric(posterior_samples),
-      estimator = "boundarykernel",
-      lower.limit = 0, upper.limit = 1,
-      dataPointsCache = seq(0, 1, length = 1001), b = 0.01
-    )
+    prior_densfit <- .bounded_density(as.numeric(prior_samples))
+    post_densfit <- .bounded_density(as.numeric(posterior_samples))
     bf01[i] <- bde::density(post_densfit, materiality) / bde::density(prior_densfit, materiality)
   }
   return(bf01)
@@ -557,7 +532,7 @@
 }
 
 .mcmc_cp <- function(likelihood, x, n, prior) {
-  theta <- seq(0, 1, length.out = 1000)
+  theta <- seq(0, 1, length.out = 1001)
   if (prior[["description"]]$density == "gamma") {
     prior <- stats::dgamma(theta, prior[["description"]]$alpha, prior[["description"]]$beta)
   } else if (prior[["description"]]$density == "beta") {
@@ -575,7 +550,6 @@
   } else if (prior[["description"]]$density == "exponential") {
     prior <- truncdist::dtrunc(theta, spec = "exp", a = 0, b = 1, rate = prior[["description"]]$alpha)
   } else if (prior[["description"]]$density == "MCMC") {
-    theta <- bde::getdataPointsCache(prior[["plotsamples"]])
     prior <- bde::getdensityCache(prior[["plotsamples"]])
   }
   likelihood <- switch(likelihood,
@@ -707,6 +681,22 @@
       "hypergeometric" = extraDistr::rbbinom(n = iterations, N.units[i - nstrata], alpha, beta) / N.units[i - nstrata]
     )
   }
+  return(samples)
+}
+
+.bounded_density <- function(samples) {
+  theta <- seq(0, 1, length = 1001)
+  density <- bde::bde(
+    dataPoints = as.numeric(ifelse(is.infinite(samples), 1, samples)),
+    estimator = "boundarykernel",
+    lower.limit = 0, upper.limit = 1,
+    dataPointsCache = theta, b = 0.01
+  )
+  return(density)
+}
+
+.rsample <- function(density, n) {
+  samples <- sample(bde::getdataPointsCache(density), size = n, replace = TRUE, prob = bde::getdensityCache(density))
   return(samples)
 }
 

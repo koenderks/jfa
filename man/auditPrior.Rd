@@ -156,10 +156,9 @@ This section elaborates on the available input options for the
 \itemize{
  \item{\code{default}:   This method produces a \emph{gamma(1, 1)},
    \emph{beta(1, 1)}, \emph{beta-binomial(N, 1, 1)}, \emph{normal(0.5, 1000)}
-   , \emph{cauchy(0, 1000)}, \emph{student-t(1)}, or \emph{chi-squared(1)} prior
-   distribution.
-   These prior distributions are indifferent towards the possible values of
-   the misstatement.}
+   , \emph{cauchy(0, 1000)}, \emph{student-t(1)}, or \emph{chi-squared(1)}
+   prior distribution. These prior distributions are mostly indifferent about
+   the possible values of the misstatement.}
  \item{\code{param}:     This method produces a custom
    \code{gamma(alpha, beta)}, \code{beta(alpha, beta)},
    \code{beta-binomial(N, alpha, beta)} prior distribution,
@@ -186,9 +185,9 @@ This section elaborates on the available input options for the
    sample to a prior distribution.}
  \item{\code{factor}:    This method translates and weighs the outcome of an
    earlier sample to a prior distribution.}
- \item{\code{nonparam}:  This method takes a vector of samples from a prior
-    distribution (via \code{samples}) and constructs a prior density from
-    these samples.}
+ \item{\code{nonparam}:  This method takes a vector of samples from the prior
+    distribution (via \code{samples}) and constructs a bounded density
+    (between 0 and 1) on the basis of these samples to act as the prior.}
 }
 
 This section elaborates on the available input options for the

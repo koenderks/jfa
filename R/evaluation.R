@@ -324,7 +324,7 @@ evaluation <- function(materiality = NULL,
     conjugate_prior <- TRUE
   } else if (mcmc_prior) {
     conjugate_prior <- FALSE
-    prior_samples <- sample(bde::getdataPointsCache(prior[["plotsamples"]]), size = getOption("jfa.iterations", 1e5), replace = TRUE, prob = bde::getdensityCache(prior[["plotsamples"]]))
+    prior_samples <- .rsample(prior[["plotsamples"]], getOption("jfa.iterations", 1e5))
     if (!is.null(materiality) && is.null(prior[["hypotheses"]])) {
       hypotheses <- list()
       hypotheses[["materiality"]] <- materiality
@@ -669,12 +669,7 @@ evaluation <- function(materiality = NULL,
     result[["prior"]] <- prior
     if (mcmc_prior || (use_stratification && pooling == "none")) {
       result[["prior"]]$prior <- "Nonparametric"
-      result[["prior"]]$plotsamples <- bde::bde(
-        as.numeric(ifelse(is.infinite(prior_samples), 1, prior_samples)),
-        estimator = "boundarykernel",
-        lower.limit = 0, upper.limit = 1,
-        dataPointsCache = seq(0, 1, length = 1001), b = 0.01
-      )
+      result[["prior"]]$plotsamples <- .bounded_density(prior_samples)
       result[["prior"]]$method <- "mcmc"
       # Description
       description <- list()
@@ -725,12 +720,7 @@ evaluation <- function(materiality = NULL,
     result[["posterior"]]$posterior <- .functional_form(method, post_alpha, post_beta, post_N, analytical)
     result[["posterior"]]$likelihood <- if (conjugate_prior) method else "mcmc"
     if (mcmc_posterior) {
-      result[["posterior"]]$plotsamples <- bde::bde(
-        as.numeric(ifelse(is.infinite(post_samples), 1, post_samples)),
-        estimator = "boundarykernel",
-        lower.limit = 0, upper.limit = 1,
-        dataPointsCache = seq(0, 1, length = 1001), b = 0.01
-      )
+      result[["posterior"]]$plotsamples <- .bounded_density(post_samples)
       result[["posterior"]]$method <- "mcmc"
     } else {
       result[["posterior"]]$method <- "sample"
