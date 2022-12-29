@@ -504,12 +504,12 @@ plot.jfaPlanning <- function(x, ...) {
         p <- p + ggplot2::geom_segment(x = x[["lb"]], xend = x[["ub"]], y = max(yBreaks), yend = max(yBreaks)) +
           ggplot2::geom_segment(x = x[["lb"]], xend = x[["lb"]], y = max(yBreaks) - ((yBreaks[2] - yBreaks[1]) / 10), yend = max(yBreaks) + ((yBreaks[2] - yBreaks[1]) / 10)) +
           ggplot2::geom_segment(x = x[["ub"]], xend = x[["ub"]], y = max(yBreaks) - ((yBreaks[2] - yBreaks[1]) / 10), yend = max(yBreaks) + ((yBreaks[2] - yBreaks[1]) / 10)) +
-          ggplot2::geom_point(x = x[["mle"]], y = max(yBreaks), size = 2.5, fill = "darkgray", colour = "black", shape = 21)
+          ggplot2::geom_point(x = x[["mle"]], y = max(yBreaks), size = 2, fill = "darkgray", colour = "black", shape = 21)
       } else {
         p <- p + ggplot2::geom_segment(x = ceiling(x[["lb"]] * x[["N.units"]]), xend = ceiling(x[["ub"]] * x[["N.units"]]), y = max(yBreaks), yend = max(yBreaks)) +
           ggplot2::geom_segment(x = ceiling(x[["lb"]] * x[["N.units"]]), xend = ceiling(x[["lb"]] * x[["N.units"]]), y = max(yBreaks) - ((yBreaks[2] - yBreaks[1]) / 10), yend = max(yBreaks) + ((yBreaks[2] - yBreaks[1]) / 10)) +
           ggplot2::geom_segment(x = ceiling(x[["ub"]] * x[["N.units"]]), xend = ceiling(x[["ub"]] * x[["N.units"]]), y = max(yBreaks) - ((yBreaks[2] - yBreaks[1]) / 10), yend = max(yBreaks) + ((yBreaks[2] - yBreaks[1]) / 10)) +
-          ggplot2::geom_point(x = ceiling(x[["mle"]] * x[["N.units"]]), y = max(yBreaks), size = 2.5, fill = "darkgray", colour = "black", shape = 21)
+          ggplot2::geom_point(x = ceiling(x[["mle"]] * x[["N.units"]]), y = max(yBreaks), size = 2, fill = "darkgray", colour = "black", shape = 21)
       }
     }
     p <- p + ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yBreaks)) +
