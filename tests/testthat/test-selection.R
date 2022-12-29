@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-context("Consistency of function selection()")
+context("Validation of function selection()")
 
 # jfa version 0.1.0
 

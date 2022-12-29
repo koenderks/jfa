@@ -198,9 +198,6 @@ planning <- function(materiality = NULL,
       hypotheses[["density"]] <- .hyp_dens(materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, N.units, N.units)
       prior[["hypotheses"]] <- hypotheses
     }
-  } else if (isTRUE(prior)) {
-    prior <- auditPrior("default", likelihood, N.units, materiality = materiality, conf.level = conf.level)
-    conjugate_prior <- TRUE
   } else if (mcmc_prior) {
     conjugate_prior <- FALSE
     analytical <- FALSE
@@ -216,6 +213,11 @@ planning <- function(materiality = NULL,
       hypotheses[["odds.h0"]] <- 1 / hypotheses[["odds.h1"]]
       prior[["hypotheses"]] <- hypotheses
     }
+  } else if (isTRUE(prior)) {
+    prior <- auditPrior("default", likelihood, N.units, materiality = materiality, conf.level = conf.level)
+    conjugate_prior <- TRUE
+  } else if (!isFALSE(prior)) {
+    stop("object in 'prior' is incompatible")
   }
   stopifnot("missing value for 'conf.level'" = !is.null(conf.level))
   valid_confidence <- is.numeric(conf.level) && length(conf.level) == 1 && conf.level > 0 && conf.level < 1

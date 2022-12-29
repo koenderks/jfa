@@ -317,11 +317,6 @@ evaluation <- function(materiality = NULL,
       hypotheses[["density"]] <- .hyp_dens(materiality, prior[["likelihood"]], prior[["description"]]$alpha, prior[["description"]]$beta, N.units, N.units)
       prior[["hypotheses"]] <- hypotheses
     }
-  } else if (isTRUE(prior)) {
-    accommodates_simple_prior <- method %in% c("poisson", "binomial", "hypergeometric")
-    stopifnot("'method' should be one of 'poisson', 'binomial', or 'hypergeometric'" = accommodates_simple_prior)
-    prior <- auditPrior("default", method, N.units[1], materiality = materiality, conf.level = conf.level)
-    conjugate_prior <- TRUE
   } else if (mcmc_prior) {
     conjugate_prior <- FALSE
     prior_samples <- .rsample(prior[["fitted.density"]], getOption("jfa.iterations", 1e5))
@@ -337,6 +332,13 @@ evaluation <- function(materiality = NULL,
       hypotheses[["density"]] <- .hyp_dens(materiality, analytical = FALSE, samples = prior_samples)
       prior[["hypotheses"]] <- hypotheses
     }
+  } else if (isTRUE(prior)) {
+    accommodates_simple_prior <- method %in% c("poisson", "binomial", "hypergeometric")
+    stopifnot("'method' should be one of 'poisson', 'binomial', or 'hypergeometric'" = accommodates_simple_prior)
+    prior <- auditPrior("default", method, N.units[1], materiality = materiality, conf.level = conf.level)
+    conjugate_prior <- TRUE
+  } else if (!isFALSE(prior)) {
+    stop("'prior' should be FALSE, TRUE, or an object of class 'jfaPrior' or 'jfaPosterior'")
   }
   stopifnot("missing value for 'conf.level'" = !is.null(conf.level))
   valid_confidence <- is.numeric(conf.level) && length(conf.level) == 1 && conf.level > 0 && conf.level < 1
