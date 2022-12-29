@@ -696,6 +696,7 @@
     dataPointsCache = theta, b = 0.01
   )
   fit <- data.frame(x = theta, y = bde::getdensityCache(density))
+  fit[["y"]] <- ifelse(fit[["y"]] < 0, 0, fit[["y"]])
   return(fit)
 }
 
