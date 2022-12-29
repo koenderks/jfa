@@ -19,7 +19,8 @@ The functionality of the **jfa** package and its intended workflow are implement
 ### Resources
 
 - [Package website](https://koenderks.github.io/jfa/) (online documentation, vignettes)
-- [Ask a question](https://github.com/koenderks/jfa/discussions) (Discussion forum)
+- [Textbook](https://koenderks.github.io/sasr/) (theoretical information, code examples)
+- [Ask a question](https://github.com/koenderks/jfa/discussions) (discussion forum)
 - [Open an issue](https://github.com/koenderks/jfa/issues) (GitHub issues for bug reports, feature requests)
 
 ### Installation
