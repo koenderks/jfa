@@ -2,6 +2,7 @@
 
 **New features**
 
+- Additional possibilities to create, plan and evaluate using nonparametric prior distributions.
 - Added functionality for stratified evaluation in the `evaluation()` function.
 - Integrated the auditing functionality of the `digitTests` package via the `digit_test()` and `repeated_test()` functions.
 
