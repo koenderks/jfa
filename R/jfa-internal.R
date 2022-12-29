@@ -453,9 +453,9 @@
 .hyp_prob <- function(lower_tail, materiality, family, alpha, beta, x, N.units, post_N, analytical = TRUE, samples = NULL) {
   if (analytical) {
     prob <- switch(family,
-      "poisson" = stats::pgamma(materiality, alpha, beta),
-      "binomial" = stats::pbeta(materiality, alpha, beta),
-      "hypergeometric" = extraDistr::pbbinom((ceiling(materiality * N.units) - 1) - x, post_N, alpha, beta),
+      "poisson" = stats::pgamma(materiality, alpha, beta, lower.tail = lower_tail),
+      "binomial" = stats::pbeta(materiality, alpha, beta, lower.tail = lower_tail),
+      "hypergeometric" = extraDistr::pbbinom((ceiling(materiality * N.units) - 1) - x, post_N, alpha, beta, lower.tail = lower_tail),
       "normal" = truncdist::ptrunc(materiality, spec = "norm", a = 0, b = 1, mean = alpha, sd = beta),
       "uniform" = truncdist::ptrunc(materiality, spec = "unif", a = 0, b = 1, min = alpha, max = beta),
       "cauchy" = truncdist::ptrunc(materiality, spec = "cauchy", a = 0, b = 1, location = alpha, scale = beta),
@@ -463,7 +463,7 @@
       "chisq" = truncdist::ptrunc(materiality, spec = "chisq", a = 0, b = 1, df = alpha),
       "exponential" = truncdist::ptrunc(materiality, spec = "exp", a = 0, b = 1, rate = alpha)
     )
-    if (!lower_tail) {
+    if (family %in% c("normal", "uniform", "cauchy", "t", "chisq", "exponential") && !lower_tail) {
       prob <- 1 - prob
     }
   } else {
