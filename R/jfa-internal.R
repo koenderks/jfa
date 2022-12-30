@@ -560,8 +560,10 @@
     "poisson" = stats::dgamma(theta, shape = 1 + x, rate = n)
   )
   posterior <- prior * likelihood
-  samples_prior <- sample(theta[!is.infinite(prior)], size = getOption("jfa.iterations", 1e5), replace = TRUE, prob = prior[!is.infinite(prior)])
-  samples_post <- sample(theta[!is.infinite(posterior)], size = getOption("jfa.iterations", 1e5), replace = TRUE, prob = posterior[!is.infinite(posterior)])
+  prior_indices <- !is.na(prior) & !is.infinite(prior)
+  samples_prior <- sample(theta[prior_indices], size = getOption("jfa.iterations", 1e5), replace = TRUE, prob = prior[prior_indices])
+  posterior_indices <- !is.na(posterior) & !is.infinite(posterior)
+  samples_post <- sample(theta[posterior_indices], size = getOption("jfa.iterations", 1e5), replace = TRUE, prob = posterior[posterior_indices])
   samples <- cbind(samples_post, samples_prior)
   return(samples)
 }
