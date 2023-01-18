@@ -38,7 +38,7 @@ preferred-citation:
 repository: https://CRAN.R-project.org/package=jfa
 repository-code: https://github.com/koenderks/jfa
 url: https://koenderks.github.io/jfa/
-date-released: '2022-12-29'
+date-released: '2023-01-18'
 contact:
 - family-names: Derks
   given-names: Koen
@@ -64,7 +64,7 @@ references:
   - name: R Core Team
   location:
     name: Vienna, Austria
-  year: '2022'
+  year: '2023'
   institution:
     name: R Foundation for Statistical Computing
   version: '>= 3.5.0'
@@ -82,7 +82,7 @@ references:
     given-names: Aritz
   - family-names: Lozano
     given-names: Jose A.
-  year: '2022'
+  year: '2023'
 - type: software
   title: extraDistr
   abstract: 'extraDistr: Additional Univariate and Multivariate Distributions'
@@ -92,7 +92,7 @@ references:
   authors:
   - family-names: Wolodzko
     given-names: Tymoteusz
-  year: '2022'
+  year: '2023'
 - type: software
   title: ggplot2
   abstract: 'ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics'
@@ -127,7 +127,7 @@ references:
   - family-names: Dunnington
     given-names: Dewey
     orcid: https://orcid.org/0000-0002-9415-4582
-  year: '2022'
+  year: '2023'
 - type: software
   title: methods
   abstract: 'R: A Language and Environment for Statistical Computing'
@@ -136,7 +136,7 @@ references:
   - name: R Core Team
   location:
     name: Vienna, Austria
-  year: '2022'
+  year: '2023'
   institution:
     name: R Foundation for Statistical Computing
 - type: software
@@ -152,7 +152,7 @@ references:
   - family-names: Novomestky
     given-names: Frederick
     email: fnovomes@poly.edu
-  year: '2022'
+  year: '2023'
 - type: software
   title: philentropy
   abstract: 'philentropy: Similarity and Distance Quantification Between Probability
@@ -165,7 +165,7 @@ references:
     given-names: Hajk-Georg
     email: hajk-georg.drost@tuebingen.mpg.de
     orcid: https://orcid.org/0000-0002-1567-306X
-  year: '2022'
+  year: '2023'
 - type: software
   title: Rcpp
   abstract: 'Rcpp: Seamless R and C++ Integration'
@@ -191,7 +191,7 @@ references:
     given-names: Douglas
   - family-names: Chambers
     given-names: John
-  year: '2022'
+  year: '2023'
   version: '>= 0.12.0'
 - type: software
   title: RcppParallel
@@ -213,7 +213,7 @@ references:
   - family-names: Geelnard
     given-names: Marcus
   - name: Intel
-  year: '2022'
+  year: '2023'
   version: '>= 5.0.1'
 - type: software
   title: rstan
@@ -234,7 +234,7 @@ references:
   - family-names: Weber
     given-names: Sebastian
     email: sdw.post@waebers.de
-  year: '2022'
+  year: '2023'
   version: '>= 2.18.1'
 - type: software
   title: rstantools
@@ -252,7 +252,7 @@ references:
   - family-names: Lysy
     given-names: Martin
     email: mlysy@uwaterloo.ca
-  year: '2022'
+  year: '2023'
   version: '>= 2.2.0'
 - type: software
   title: stats
@@ -262,7 +262,7 @@ references:
   - name: R Core Team
   location:
     name: Vienna, Austria
-  year: '2022'
+  year: '2023'
   institution:
     name: R Foundation for Statistical Computing
 - type: software
@@ -277,7 +277,7 @@ references:
   - family-names: Nadarajah
     given-names: Saralees
     email: saralees.nadarajah@manchester.ac.uk
-  year: '2022'
+  year: '2023'
 - type: software
   title: benford.analysis
   abstract: 'benford.analysis: Benford Analysis for Data Validation and Forensic Analytics'
@@ -287,7 +287,7 @@ references:
   authors:
   - family-names: Cinelli
     given-names: Carlos
-  year: '2022'
+  year: '2023'
   version: '>= 0.1.5'
 - type: software
   title: BenfordTests
@@ -300,7 +300,7 @@ references:
   - family-names: Joenssen
     given-names: Dieter William
     email: Dieter.Joenssen@googlemail.com
-  year: '2022'
+  year: '2023'
   version: '>= 1.2.0'
 - type: software
   title: BeyondBenford
@@ -311,7 +311,7 @@ references:
   authors:
   - family-names: Stephane
     given-names: Blondeau Da Silva
-  year: '2022'
+  year: '2023'
   version: '>= 1.4'
 - type: software
   title: kableExtra
@@ -324,7 +324,7 @@ references:
     given-names: Hao
     email: haozhu233@gmail.com
     orcid: https://orcid.org/0000-0002-3386-6076
-  year: '2022'
+  year: '2023'
 - type: software
   title: knitr
   abstract: 'knitr: A General-Purpose Package for Dynamic Report Generation in R'
@@ -336,7 +336,7 @@ references:
     given-names: Yihui
     email: xie@yihui.name
     orcid: https://orcid.org/0000-0003-0645-5666
-  year: '2022'
+  year: '2023'
 - type: software
   title: MUS
   abstract: 'MUS: Monetary Unit Sampling and Estimation Methods, Widely Used in Auditing'
@@ -348,7 +348,7 @@ references:
     given-names: Henning
   - family-names: Guimarães
     given-names: André
-  year: '2022'
+  year: '2023'
   version: '>= 0.1.6'
 - type: software
   title: rmarkdown
@@ -389,7 +389,7 @@ references:
     given-names: Richard
     email: rich@rstudio.com
     orcid: https://orcid.org/0000-0003-3925-190X
-  year: '2022'
+  year: '2023'
 - type: software
   title: samplingbook
   abstract: 'samplingbook: Survey Sampling Procedures'
@@ -413,7 +413,7 @@ references:
     given-names: Nina
   - family-names: Wiesenfarth
     given-names: Manuel
-  year: '2022'
+  year: '2023'
   version: '>= 1.2.4'
 - type: software
   title: testthat
@@ -425,7 +425,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@rstudio.com
-  year: '2022'
+  year: '2023'
 - type: software
   title: BH
   abstract: 'BH: Boost C++ Header Files'
@@ -439,7 +439,7 @@ references:
     given-names: John W.
   - family-names: Kane
     given-names: Michael J.
-  year: '2022'
+  year: '2023'
   version: '>= 1.66.0'
 - type: software
   title: RcppEigen
@@ -457,7 +457,7 @@ references:
     given-names: Romain
   - family-names: Eigen
     given-names: Yixuan Qiu; the authors of Eigen for the included version of
-  year: '2022'
+  year: '2023'
   version: '>= 0.3.3.3.0'
 - type: software
   title: StanHeaders
@@ -511,5 +511,5 @@ references:
     given-names: Michael
   - family-names: Gao
     given-names: Yuanjun
-  year: '2022'
+  year: '2023'
   version: '>= 2.18.0'
