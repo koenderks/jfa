@@ -32,7 +32,7 @@ preferred-citation:
     given-names: Koen
     email: k.derks@nyenrode.nl
     orcid: https://orcid.org/0000-0002-5533-9349
-  year: '2022'
+  year: '2023'
   notes: R package version 0.6.5
   url: https://CRAN.R-project.org/package=jfa
 repository: https://CRAN.R-project.org/package=jfa
