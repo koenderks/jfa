@@ -2,7 +2,7 @@
 
 This is a submission for version 0.6.5. In this version I have:
 
-* Added new functionality to the package via additional function arguments.
+* Added new functionality to the package via additional functions and arguments.
 
 ## Test environments
 
