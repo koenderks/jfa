@@ -1,4 +1,4 @@
-context("Tests for function extract_digits")
+context("Validation of function extract_digits")
 
 # First digits
 

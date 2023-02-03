@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-context("Validation of function digit_test()")
+context("Validation of function digit_test")
 
 test_that(desc = "Print and plot call", {
   data("sinoForest")

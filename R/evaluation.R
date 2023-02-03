@@ -496,7 +496,7 @@ evaluation <- function(materiality = NULL,
   }
   no_rows <- length(t.obs) - 1
   if (is_bayesian) {
-    mcmc_posterior <- mcmc_prior || !conjugate_prior || (use_stratification && pooling == "none")
+    mcmc_posterior <- mcmc_prior || !conjugate_prior || (use_stratification && pooling != "complete")
     if (conjugate_prior) {
       stratum_samples <- NULL
     } else {
@@ -669,7 +669,7 @@ evaluation <- function(materiality = NULL,
     analytical <- !mcmc_prior && !mcmc_posterior
     # Prior distribution
     result[["prior"]] <- prior
-    if (mcmc_prior || (use_stratification && pooling == "none")) {
+    if (mcmc_prior || (use_stratification && pooling != "complete")) {
       result[["prior"]]$prior <- "Nonparametric"
       result[["prior"]]$fitted.density <- .bounded_density(prior_samples)
       result[["prior"]]$method <- "mcmc"
