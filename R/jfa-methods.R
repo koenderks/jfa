@@ -440,13 +440,13 @@ plot.jfaPlanning <- function(x, ...) {
     ncolored <- 1 + ceiling(x[["x"]])
     fill <- c(rep("firebrick", ncolored), rep("darkgray", length(xs) - ncolored))
     df <- data.frame(x = xs, y = ys)
-    y_breaks <- pretty(df$y, min.n = 4)
+    y_breaks <- pretty(c(0, df$y), min.n = 4)
     p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = x, y = y)) +
       ggplot2::geom_col(position = "identity", fill = fill, colour = "black") +
       ggplot2::annotate(geom = "text", x = df$x, y = df$y, label = round(df$y, 3), vjust = -0.5, size = 3) +
       ggplot2::scale_x_continuous(name = "Misstatements", breaks = xs) +
-      ggplot2::scale_y_continuous(name = "Probability", breaks = y_breaks, limits = range(y_breaks)) +
-      ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(y_breaks), yend = max(y_breaks)) +
+      ggplot2::scale_y_continuous(name = "Probability", breaks = y_breaks, limits = c(0, max(y_breaks))) +
+      ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(y_breaks)) +
       ggplot2::geom_segment(x = 0, xend = max(xs), y = -Inf, yend = -Inf)
     p <- .theme_jfa(p)
   } else {
