@@ -50,8 +50,22 @@ If you are willing to contribute to the improvement of the package by adding a b
 
 ### References
 
-If you use **jfa**, please cite the software as follows:
+If you want to cite **jfa** in a scientific journal or in any other context, run the following code in your R console:
 
 ```
-Derks, K. (2023). jfa: Statistical methods for auditing. R package version 0.6.5.
+citation("jfa")
+
+#>  To cite jfa in publications, please use:
+#>
+#>    Derks, K. (2023). jfa: Statistical methods for auditing. R package version 0.6.5.
+#>
+#>  A BibTeX entry for LaTeX users is
+#>
+#>    @Manual{jfa,
+#>      title = {jfa: Statistical methods for auditing},
+#>      author = {Koen Derks},
+#>      year = {2023},
+#>      note = {R package version 0.6.5},
+#>      url = {https://CRAN.R-project.org/package=jfa},
+#>    }
 ```
