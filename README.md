@@ -46,11 +46,11 @@ remotes::install_github("koenderks/jfa", INSTALL_opts = "--no-multiarch")
 
 The **jfa** project is an open-source initiative with the objective of providing value to the audit community. Therefore, the collaboration and support of the community in benchmarking and expanding the package is greatly appreciated. Participating in this endeavor does not require extensive time or expertise, as comprehensive information can be found on the repository's [Wiki](https://github.com/koenderks/jfa/wiki) page.
 
-Individuals who are interested in contributing to the validation of the package through the addition of a benchmark are encouraged to consult the Wiki page on [how to contribute a benchmark to jfa](https://github.com/koenderks/jfa/wiki/Benchmarks). Similarly, individuals who wish to contribute to the improvement of the package by incorporating a new statistical method are advised to review the Wiki page on [how to contribute a new method to jfa](https://github.com/koenderks/jfa/wiki/Methods).
+Individuals who are interested in contributing to the validation of the package through the addition of a benchmark are encouraged to consult the Wiki page on [how to contribute a benchmark to jfa](https://github.com/koenderks/jfa/wiki/Benchmarks). Similarly, individuals who wish to contribute to the improvement of the package by incorporating a statistical method are advised to review the Wiki page on [how to contribute a method to jfa](https://github.com/koenderks/jfa/wiki/Methods).
 
 ### Citation
 
-If you want to cite **jfa** in a scientific journal or in any other context, run the following code in your R console:
+To obtain the preferred citation for **jfa**, run the following code in the R console:
 
 ```
 citation("jfa")
