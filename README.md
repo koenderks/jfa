@@ -44,9 +44,9 @@ remotes::install_github("koenderks/jfa", INSTALL_opts = "--no-multiarch")
 
 ### Contributing
 
-**jfa** is an open-source project that aims to be useful for the audit community. Your help in benchmarking and extending the package is therefore greatly appreciated. Contributing does not have to take much time or knowledge, and there is extensive information available about it on the [Wiki](https://github.com/koenderks/jfa/wiki) of this repository.
+The **jfa** project is an open-source initiative with the objective of providing value to the audit community. Therefore, the collaboration and support of the community in benchmarking and expanding the package is greatly appreciated. Participating in this endeavor does not require extensive time or expertise, as comprehensive information can be found on the repository's [Wiki](https://github.com/koenderks/jfa/wiki) page.
 
-If you are willing to contribute to the improvement of the package by adding a benchmark, please check out the Wiki page on [how to contribute a benchmark to jfa](https://github.com/koenderks/jfa/wiki/Benchmarks). If you are willing to contribute to the improvement of the package by adding a new statistical method, please check the Wiki page on [how to contribute a new method to jfa](https://github.com/koenderks/jfa/wiki/Methods).
+Individuals who are interested in contributing to the validation of the package through the addition of a benchmark are encouraged to consult the Wiki page on [how to contribute a benchmark to jfa](https://github.com/koenderks/jfa/wiki/Benchmarks). Similarly, individuals who wish to contribute to the improvement of the package by incorporating a new statistical method are advised to review the Wiki page on [how to contribute a new method to jfa](https://github.com/koenderks/jfa/wiki/Methods).
 
 ### Citation
 
