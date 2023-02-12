@@ -15,7 +15,7 @@
 
 context("Benchmark against SRA")
 
-# SRA steekproefmodel https://www.sra.nl/vaktechniek/accountancy/controle/praktijkhandreikingen/praktijkhandreiking-gegevensgerichte-steekproeven
+# SRA steekproefmodel https://www.sra.nl/vaktechniek/accountancy/controle/praktijkhandreikingen/praktijkhandreiking-steekproeven-sra-steekproefmodel
 # Retrieved on 10-11-2022
 
 # SRA:

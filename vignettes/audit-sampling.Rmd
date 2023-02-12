@@ -349,7 +349,7 @@ benchmarks:
 - [MUS](https://cran.r-project.org/package=MUS) (R package version 0.1.6)
 - [samplingbook](https://cran.r-project.org/package=samplingbook) (R package version 1.2.4)
 - [SMASH21 + SMASH21-Bayes](https://steekproeven.eu/)
-- [SRA](https://www.sra.nl/vaktechniek/accountancy/controle/praktijkhandreikingen/praktijkhandreiking-gegevensgerichte-steekproeven)
+- [SRA](https://www.sra.nl/vaktechniek/accountancy/controle/praktijkhandreikingen/praktijkhandreiking-steekproeven-sra-steekproefmodel)
 - Touw, P., and Hoogduin, L. (2011). *Statistiek voor audit en controlling*. Boom uitgevers, Amsterdam.
 
 ## Statistical tables
