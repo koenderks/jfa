@@ -3,7 +3,7 @@
 \docType{data}
 \name{sinoForest}
 \alias{sinoForest}
-\title{Financial Statemens of Sino Forest Corporation's 2010 Report}
+\title{Financial Statements numbers of Sino Forest Corporation's 2010 Report.}
 \format{
 A data frame with 772 rows and 1 variable.
 }
@@ -14,7 +14,7 @@ A data frame with 772 rows and 1 variable.
 data(sinoForest)
 }
 \description{
-Financial Statemens numbers of Sino Forest Corporation's 2010 Report.
+Financial Statements numbers of Sino Forest Corporation's 2010 Report.
 }
 \examples{
 data(sinoForest)

@@ -8,7 +8,7 @@
 A data frame with 4189 rows and 5 variables.
 \describe{
   \item{item}{a unique record identification number.}
-  \item{branch}{the stratum identifyer / branch number.}
+  \item{branch}{the stratum identifier / branch number.}
   \item{bookValue}{the item book value in US dollars.}
   \item{auditValue}{the item audit (true) value in US dollars.}
   \item{times}{a sample selection indicator (\code{0} = not in sample).}

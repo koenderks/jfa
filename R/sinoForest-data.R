@@ -13,9 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#' Financial Statemens of Sino Forest Corporation's 2010 Report
-#'
-#' Financial Statemens numbers of Sino Forest Corporation's 2010 Report.
+#' Financial Statements numbers of Sino Forest Corporation's 2010 Report.
 #'
 #' @docType data
 #'

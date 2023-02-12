@@ -94,7 +94,7 @@ Bayesian hypothesis testing uses the Bayes factor, $BF_{10}$ or $BF_{01}$, to
 make a statement about the evidence provided by the sample in support for one of
 the two hypotheses $H_1$ or $H_0$. As an example of how to interpret the Bayes
 factor, the value of $BF_{10} = 10$ (provided by the `evaluation()` function)
-can be interpreted as: *the data are 10 times more likely to have occurred underthe hypothesis $H_1$ than under the hypothesis $H_0$*.
+can be interpreted as: *the data are 10 times more likely to have occurred under the hypothesis $H_1$ than under the hypothesis $H_0$*.
 $BF_{10} > 1$ indicates evidence in favor of $H_1$ and against $H_0$, while
 $BF_{10} < 1$ indicates evidence in favor of $H_0$ and against $H_1$. The
 `evaluation()` function returns the value for $BF_{10}$, but $BF_{01}$ can be
