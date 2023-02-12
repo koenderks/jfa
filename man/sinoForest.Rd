@@ -14,7 +14,7 @@ A data frame with 772 rows and 1 variable.
 data(sinoForest)
 }
 \description{
-Financial Statements numbers of Sino Forest Corporation's 2010 Report.
+Data representing the financial statements numbers of Sino Forest Corporation's 2010 Report.
 }
 \examples{
 data(sinoForest)

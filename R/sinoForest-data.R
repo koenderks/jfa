@@ -14,6 +14,8 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 #' Financial Statements numbers of Sino Forest Corporation's 2010 Report.
+#' 
+#' Data representing the financial statements numbers of Sino Forest Corporation's 2010 Report.
 #'
 #' @docType data
 #'
