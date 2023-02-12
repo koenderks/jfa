@@ -161,7 +161,7 @@ digit_test <- function(x,
   result[["check"]] <- check
   result[["digits"]] <- dig
   result[["reference"]] <- reference
-  result[["match"]] <- split(x = seq_along(d), f = d)
+  result[["match"]] <- split(x = data.frame(row = seq_along(d), value = x), f = d)
   result[["data.name"]] <- dname
   class(result) <- c("jfaDistr", "list")
   return(result)
