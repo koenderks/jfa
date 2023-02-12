@@ -19,15 +19,15 @@ The functionality of the **jfa** package and its intended workflow are implement
 ### Resources
 
 - [Package website](https://koenderks.github.io/jfa/) (online documentation, vignettes)
-- [Textbook](https://koenderks.github.io/sasr/) (theoretical information, code examples)
+- [Textbook](https://koenderks.github.io/sasr/) (detailed information, code examples)
 - [Ask a question](https://github.com/koenderks/jfa/discussions) (discussion forum)
-- [Open an issue](https://github.com/koenderks/jfa/issues) (GitHub issues for bug reports, feature requests)
+- [Open an issue](https://github.com/koenderks/jfa/issues) (bug reports, feature requests)
 
 ### Installation
 
 #### Latest Release
 
-The most recent **jfa** release can be installed from CRAN via:
+The most recent **jfa** release can be installed from [CRAN](https://cran.r-project.org/package=jfa) via:
 
 ```r
 install.packages("jfa")
@@ -48,7 +48,7 @@ remotes::install_github("koenderks/jfa", INSTALL_opts = "--no-multiarch")
 
 If you are willing to contribute to the improvement of the package by adding a benchmark, please check out the Wiki page on [how to contribute a benchmark to jfa](https://github.com/koenderks/jfa/wiki/Benchmarks). If you are willing to contribute to the improvement of the package by adding a new statistical method, please check the Wiki page on [how to contribute a new method to jfa](https://github.com/koenderks/jfa/wiki/Methods).
 
-### References
+### Citation
 
 If you want to cite **jfa** in a scientific journal or in any other context, run the following code in your R console:
 
