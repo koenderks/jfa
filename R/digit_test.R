@@ -97,6 +97,7 @@ digit_test <- function(x,
   dname <- deparse(substitute(x))
   x <- x[!is.na(x)]
   x <- x[!is.infinite(x)]
+  x <- x[x != 0]
   d <- .extract_digits(x, check = check, include.zero = FALSE)
   d <- d[!is.na(d)]
   n <- length(d)
