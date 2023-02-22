@@ -1,8 +1,9 @@
 # jfa version 0.6.5
 
-This is a submission for version 0.6.5. In this version I have:
+This is a resubmission for version 0.6.5. In this version I have:
 
-* Added new functionality to the package via additional functions and arguments.
+* Lowered the iterations used in the unit tests to adhere to CRAN check times.
+* Changed a vignette so that it builds within CRAN build times.
 
 ## Test environments
 
