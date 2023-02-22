@@ -387,7 +387,7 @@ plot(x, type = "estimates")
 
 Bayesian inference can improve upon the estimates of the classical approach by
 pooling information between strata where possible. The call below evaluates the
-`allowances` sample using a Bayesian multilevel stratified evaluation procedure,
+`allowances` sample using a Bayesian stratified evaluation procedure,
 in which the stratum estimates are poststratified to arrive at the population
 estimate.
 
@@ -395,7 +395,7 @@ estimate.
 x <- evaluation(
   materiality = 0.05, data = allowances, prior = TRUE,
   values = "bookValue", values.audit = "auditValue", strata = "branch", times = "times",
-  alternative = "two.sided", N.units = N.units, pooling = "partial"
+  alternative = "two.sided", N.units = N.units
 )
 summary(x)
 ```
