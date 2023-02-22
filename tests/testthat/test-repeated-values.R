@@ -17,15 +17,15 @@ context("Validation of function repeated_test")
 
 test_that(desc = "Print and plot call", {
   data("sanitizer")
-  res <- repeated_test(x = sanitizer$value, check = "last", method = "af", samples = 500)
+  res <- repeated_test(x = sanitizer$value, check = "last", method = "af", samples = 1) # Adjusted from 500 to 1 for check time control
   p <- plot(res)
   expect_equal(is.null(p), FALSE)
 })
 
 test_that(desc = "Validate Datacolada[77]", {
   data("sanitizer")
-  res <- repeated_test(x = sanitizer$value, check = "last", method = "af", samples = 500)
+  res <- repeated_test(x = sanitizer$value, check = "last", method = "af", samples = 1) # Adjusted from 500 to 1 for check time control
   expect_equal(as.numeric(res$statistic), 1.5225)
-  res <- repeated_test(x = sanitizer$value, check = "last", method = "entropy", samples = 500)
+  res <- repeated_test(x = sanitizer$value, check = "last", method = "entropy", samples = 1) # Adjusted from 500 to 1 for check time control
   expect_equal(as.numeric(res$statistic), 7.065769174)
 })
