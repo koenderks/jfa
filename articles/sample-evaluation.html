@@ -94,7 +94,7 @@
       <h1 data-toc-skip>Evaluating statistical audit samples</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2023-02-21</h4>
+            <h4 data-toc-skip class="date">2023-02-22</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/sample-evaluation.Rmd" class="external-link"><code>vignettes/sample-evaluation.Rmd</code></a></small>
       <div class="hidden name"><code>sample-evaluation.Rmd</code></div>
@@ -755,13 +755,13 @@ from 12.55% to 18.26%. The precision of the population estimate is
 <p>Bayesian inference can improve upon the estimates of the classical
 approach by pooling information between strata where possible. The call
 below evaluates the <code>allowances</code> sample using a Bayesian
-multilevel stratified evaluation procedure, in which the stratum
-estimates are poststratified to arrive at the population estimate.</p>
+stratified evaluation procedure, in which the stratum estimates are
+poststratified to arrive at the population estimate.</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, data <span class="op">=</span> <span class="va">allowances</span>, prior <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, strata <span class="op">=</span> <span class="st">"branch"</span>, times <span class="op">=</span> <span class="st">"times"</span>,</span>
-<span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span>, N.units <span class="op">=</span> <span class="va">N.units</span>, pooling <span class="op">=</span> <span class="st">"partial"</span></span>
+<span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span>, N.units <span class="op">=</span> <span class="va">N.units</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -776,35 +776,35 @@ estimates are poststratified to arrive at the population estimate.</p>
 <span><span class="co">##   Prior distribution:             Nonparametric </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Data:</span></span>
-<span><span class="co">##   Sample size:                    1350 </span></span>
+<span><span class="co">##   Sample size:                    1604 </span></span>
 <span><span class="co">##   Number of errors:               401 </span></span>
-<span><span class="co">##   Sum of taints:                  224.657517 </span></span>
+<span><span class="co">##   Sum of taints:                  252.9281046 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
 <span><span class="co">##   Posterior distribution:         Nonparametric </span></span>
-<span><span class="co">##   Most likely error:              0.1566 </span></span>
-<span><span class="co">##   95 percent credible interval:   [0.1458, 0.17009] </span></span>
-<span><span class="co">##   Precision:                      0.013495 </span></span>
-<span><span class="co">##   BF₁₀:                            Inf </span></span>
+<span><span class="co">##   Most likely error:              0.1558 </span></span>
+<span><span class="co">##   95 percent credible interval:   [0.13473, 0.1813] </span></span>
+<span><span class="co">##   Precision:                      0.025505 </span></span>
+<span><span class="co">##   BF₁₀:                            NaN </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Strata (16):</span></span>
-<span><span class="co">##             N   n   x         t    mle      lb      ub precision</span></span>
-<span><span class="co">## 1   317200.09  62   6   1.07814 0.0187 0.01356 0.03659   0.01789</span></span>
-<span><span class="co">## 2  2792814.33 283 233 176.87807 0.6074 0.57298 0.65128   0.04388</span></span>
-<span><span class="co">## 3  1144231.69  55   3   3.00000 0.1575 0.11682 0.24582   0.08832</span></span>
-<span><span class="co">## 4   414202.89  48  45  11.65094 0.2684 0.22254 0.34868   0.08028</span></span>
-<span><span class="co">## 5    96660.53   9   1   0.21512 0.0212 0.01055 0.08932   0.06812</span></span>
-<span><span class="co">## 6   348006.13  14   1   0.04467 0.0119 0.00723 0.04022   0.02832</span></span>
-<span><span class="co">## 7  2384079.33  44  14   6.65401 0.1409 0.09156 0.21540   0.07450</span></span>
-<span><span class="co">## 8  1840399.33  78   1   0.00813 0.0064 0.00458 0.00961   0.00321</span></span>
-<span><span class="co">## 9   563957.70  74   0   0.00000 0.0065 0.00461 0.00957   0.00307</span></span>
-<span><span class="co">## 10 3198877.73 184   7   0.89982 0.0081 0.00615 0.01074   0.00264</span></span>
-<span><span class="co">## 11 1983299.06 111   7   1.35066 0.0150 0.01077 0.02243   0.00743</span></span>
-<span><span class="co">## 12  319144.13  56   5   1.19069 0.0786 0.05625 0.14502   0.06642</span></span>
-<span><span class="co">## 13  148905.79  10   0   0.00000 0.0106 0.00636 0.04545   0.03485</span></span>
-<span><span class="co">## 14  513058.76 150   0   0.00000 0.0047 0.00377 0.00633   0.00163</span></span>
-<span><span class="co">## 15  432007.61 128  39  18.30000 0.2743 0.23217 0.33730   0.06300</span></span>
-<span><span class="co">## 16  275403.70  44  39   3.38726 0.0728 0.05784 0.10161   0.02881</span></span></code></pre>
+<span><span class="co">##             N   n   x         t     mle      lb      ub precision</span></span>
+<span><span class="co">## 1   317200.09  87   6   1.27814 0.01452 0.00380 0.06871   0.05419</span></span>
+<span><span class="co">## 2  2792814.33 305 233 193.23313 0.63148 0.54862 0.72707   0.09559</span></span>
+<span><span class="co">## 3  1144231.69  55   3   3.00000 0.05357 0.01946 0.15656   0.10299</span></span>
+<span><span class="co">## 4   414202.89  70  45  15.05094 0.21199 0.12935 0.34935   0.13736</span></span>
+<span><span class="co">## 5    96660.53  18   1   0.64537 0.03397 0.00749 0.26011   0.22614</span></span>
+<span><span class="co">## 6   348006.13  34   1   0.17866 0.00510 0.00137 0.11585   0.11075</span></span>
+<span><span class="co">## 7  2384079.33  55  14   9.44448 0.16865 0.09112 0.31548   0.14683</span></span>
+<span><span class="co">## 8  1840399.33  96   1   0.00813 0.00008 0.00027 0.03821   0.03812</span></span>
+<span><span class="co">## 9   563957.70  92   0   0.00000 0.00000 0.00027 0.03967   0.03967</span></span>
+<span><span class="co">## 10 3198877.73 201   7   0.92023 0.00456 0.00108 0.02689   0.02234</span></span>
+<span><span class="co">## 11 1983299.06 128   7   1.50034 0.01163 0.00322 0.04974   0.03811</span></span>
+<span><span class="co">## 12  319144.13  86   5   1.68141 0.01933 0.00559 0.07716   0.05784</span></span>
+<span><span class="co">## 13  148905.79  25   0   0.00000 0.00000 0.00097 0.14188   0.14188</span></span>
+<span><span class="co">## 14  513058.76 150   0   0.00000 0.00000 0.00017 0.02443   0.02443</span></span>
+<span><span class="co">## 15  432007.61 150  39  21.80000 0.14437 0.09550 0.21899   0.07462</span></span>
+<span><span class="co">## 16  275403.70  52  39   4.18726 0.07900 0.03262 0.19834   0.11933</span></span></code></pre>
 <p>The output shows that the estimate of the misstatement in the
 population is 15.66%, with the 95% credible interval ranging from 14.59%
 to 17%. The precision of the population estimate is 1.34%, which is
