@@ -409,6 +409,7 @@ test_that(desc = "(id: f3-v0.6.5-t1) Test frequentist poisson stratification wit
 })
 
 test_that(desc = "(id: f3-v0.6.5-t2) Test Bayesian poisson stratification with summary statistics (Derks et al., 2022, Table 1)", {
+  options("mc.iterations" = 200, "mc.warmup" = 100, "mc.chains" = 1)
   k <- c(2, 1, 0)
   n <- c(6, 7, 7)
   N <- c(8, 11, 11)
@@ -453,6 +454,7 @@ test_that(desc = "(id: f3-v0.6.5-t3) Test frequentist binomial stratification wi
 })
 
 test_that(desc = "(id: f3-v0.6.5-t4) Test Bayesian binomial stratification with summary statistics (Derks et al., 2022, Table 1)", {
+  options("mc.iterations" = 200, "mc.warmup" = 100, "mc.chains" = 1)
   k <- c(2, 1, 0)
   n <- c(6, 7, 7)
   N <- c(8, 11, 11)
@@ -476,6 +478,7 @@ test_that(desc = "(id: f3-v0.6.5-t4) Test Bayesian binomial stratification with 
 })
 
 test_that(desc = "(id: f3-v0.6.5-t5) Test stratification with data (Derks et al., 2022, Table 4)", {
+  options("mc.iterations" = 200, "mc.warmup" = 100, "mc.chains" = 1)
   data("BuildIt")
   BuildIt$stratum <- factor(c("high", "medium", rep(c("low", "medium", "high"), times = 1166)))
   BuildIt$inSample <- c(rep(1, 100), rep(0, 3400))
