@@ -1,7 +1,7 @@
 Package: jfa
 Title: Statistical Methods for Auditing
 Version: 0.6.5
-Date: 2023-03-04
+Date: 2023-03-08
 Authors@R:
     person(given = "Koen",
            family = "Derks",
@@ -58,7 +58,7 @@ License: GPL (>= 3)
 Encoding: UTF-8
 LazyData: true
 NeedsCompilation: yes
-SystemRequirements: GNU make
+SystemRequirements: C++17, GNU make
 Language: en-US
 RoxygenNote: 7.2.3
 Biarch: true
