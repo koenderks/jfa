@@ -37,11 +37,11 @@ The cheat sheet below will help you get started with **jfa**'s' intended audit
 sampling workflow. You can download a `pdf` version of the cheat sheet
 [here](https://github.com/koenderks/jfa/raw/development/man/figures/cheatsheet/cheatsheet.pdf).
 
-<p align='center'><img src='https://github.com/koenderks/jfa/raw/development/man/figures/cheatsheet/cheatsheet.png' alt='cheatsheet' width='1000'></p>
+<p align='center'><img src='cheatsheet.png' alt='cheatsheet' width='1000'></p>
 
 ## Functions and intended usage
 
-<p align='center'><img src='https://github.com/koenderks/jfa/raw/development/man/figures/readme/banner/jfaBanner.png' alt='banner'/></p>
+<p align='center'><img src='jfaBanner.png' alt='banner'/></p>
 
 Below you can find an explanation of the available functions in **jfa** sorted
 by their occurrence in the standard audit sampling workflow.
@@ -387,7 +387,6 @@ package.
 
 - Bickel, P. J. (1992). Inference and auditing: The Stringer bound. *International Statistical Review*, 60(2), 197–209. - [View online](https://www.jstor.org/stable/1403650)
 - Cox, D. R., & Snell, E. J. (1979). On sampling and the estimation of rare errors. *Biometrika*, 66(1), 125-132. - [View online](https://doi.org/10.1093/biomet/66.1.125)
-- Derks, K. (2022). jfa: Statistical methods for auditing. R package version 0.6.5. - [View online](https://cran.r-project.org/package=jfa)
 - Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., & Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. *International Journal of Auditing*, 25(3), 621-636. - [View online](https://doi.org/10.1111/ijau.12240)
 - Derks, K., de Swart, J., Wagenmakers, E.-J., & Wetzels, R. (2021). The Bayesian Approach to Audit Evidence: Quantifying Statistical Evidence using the Bayes Factor. *PsyArXiv* - [View online](https://doi.org/10.31234/osf.io/kzqp5)
 - Derks, K., de Swart. J., Wagenmakers, E.-J., Wille, J., & Wetzels, R. (2021). JASP for Audit: Bayesian Tools for the Auditing Practice. *Journal of Open Source Software*, 6(68), 2733. - [View online](https://doi.org/10.21105/joss.02733)

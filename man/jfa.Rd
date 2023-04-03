@@ -23,40 +23,6 @@
   
 }
 
-\section{Reference tables}{
-  Below you can find several links to reference tables that contain statistical sample sizes, upper limits, and Bayes factors. 
-  These tables are created using the \code{planning()} and \code{evaluation()} functions provided in the package. See the 
-  corresponding help files for more information about these functions and how to replicate this output.
-
-  \emph{Sample sizes}
-  \itemize{
-  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.ss.pdf}{Sample sizes based on the Poisson distribution}
-  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.ss.pdf}{Sample sizes based on the binomial distribution}
-  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.ss.pdf}{Sample sizes based on the hypergeometric distribution}
-  }
-
-  \emph{Upper limits}
-  \itemize{
-  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.ub.pdf}{Upper limits based on the Poisson distribution}
-  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.ub.pdf}{Upper limits based on the binomial distribution}
-  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.ub.pdf}{Upper limits based on the hypergeometric distribution}
-  }
-
-  \emph{One-sided p values}
-  \itemize{
-  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.p.pdf}{One sided p values based on the Poisson distribution}
-  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.p.pdf}{One sided p values based on the binomial distribution}
-  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.p.pdf}{One sided p values based on the hypergeometric distribution}
-  }
-
-  \emph{Bayes factors}
-  \itemize{
-  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.lbfi.pdf}{Impartial Bayes factors based on the gamma distribution}
-  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.lbfi.pdf}{Impartial Bayes factors based on the beta distribution}
-  \item \href{https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.lbfi.pdf}{Impartial Bayes factors based on the beta-binomial distribution}
-  }
-}
-
 \author{
   \tabular{ll}{
     Koen Derks (maintainer, author)\tab <k.derks@nyenrode.nl> \cr
@@ -71,7 +37,6 @@ Useful links:
 \itemize{
   \item The \href{https://koenderks.github.io/jfa/articles/}{vignettes} for worked examples.
   \item The \href{https://github.com/koenderks/jfa/issues}{issue page} to submit a bug report or feature request.
-  \item The \href{https://raw.githubusercontent.com/koenderks/jfa/development/man/figures/cheatsheet/cheatsheet.png}{cheat sheet} for an overview of the intended audit sampling workflow.
 }
 }
 
@@ -80,12 +45,12 @@ Useful links:
 # Load the jfa package
 library(jfa)
 
+#################################
+### Example 1: Audit sampling ###
+#################################
+
 # Load the BuildIt population
 data('BuildIt')
-
-############################################
-### Example 1: Classical audit sampling ####
-############################################
 
 # Stage 1: Planning
 stage1 <- planning(materiality = 0.03, expected = 0.01, 
@@ -107,62 +72,16 @@ stage4 <- evaluation(materiality = 0.03, method = 'stringer',
                      values = 'bookValue', values.audit = 'auditValue')
 summary(stage4)
 
-######################################################################
-### Example 2: Bayesian audit sampling using a non-informed prior ####
-######################################################################
+#################################
+### Example 2: Data auditing ####
+#################################
 
-# Create the prior distribution
-prior <- auditPrior(method = 'default', likelihood = 'poisson')
-summary(prior)
+# Load the sinoForest data set
+data('sinoForest')
 
-# Stage 1: Planning
-stage1 <- planning(materiality = 0.03, expected = 0.01,
-                   likelihood = 'poisson', conf.level = 0.95, prior = prior)
-summary(stage1)
-
-# Stage 2: Selection
-stage2 <- selection(data = BuildIt, size = stage1,
-                    units = 'values', values = 'bookValue',
-                    method = 'interval', start = 1)
-summary(stage2)
-
-# Stage 3: Execution
-sample <- stage2[['sample']]
-
-# Stage 4: Evaluation
-stage4 <- evaluation(materiality = 0.03, conf.level = 0.95, data = sample,
-                     values = 'bookValue', values.audit = 'auditValue',
-                     prior = prior)
-summary(stage4)
-
-###################################################################
-### Example 3: Bayesian audit sampling using an informed prior ####
-###################################################################
-
-# Create the prior distribution
-prior <- auditPrior(method = 'arm', likelihood = 'poisson',
-                    expected = 0.01, materiality = 0.03, cr = 0.6, ir = 1)
-summary(prior)
-
-# Stage 1: Planning
-stage1 <- planning(materiality = 0.03, expected = 0.01,
-                   likelihood = 'poisson', conf.level = 0.95, prior = prior)
-summary(stage1)
-
-# Stage 2: Selection
-stage2 <- selection(data = BuildIt, size = stage1,
-                    units = 'values', values = 'bookValue',
-                    method = 'interval', start = 1)
-summary(stage2)
-
-# Stage 3: Execution
-sample <- stage2[['sample']]
-
-# Stage 4: Evaluation
-stage4 <- evaluation(materiality = 0.03, conf.level = 0.95, data = sample,
-                     values = 'bookValue', values.audit = 'auditValue',
-                     prior = prior)
-summary(stage4)
+# Test first digits in the data against Benford's law
+bl <- digit_test(sinoForest[["value"]], check = "first", reference = "benford")
+summary(bl)
 }
 \keyword{jfa} 
 \keyword{package}

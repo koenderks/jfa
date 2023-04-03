@@ -1,9 +1,8 @@
-# jfa version 0.6.5
+# jfa version 0.6.6
 
-This is a resubmission for version 0.6.5. In this version I have:
+This is a submission for version 0.6.6. In this version I have:
 
-* Lowered the iterations used in the unit tests to adhere to CRAN check times.
-* Changed a vignette so that it builds within CRAN build times.
+* Implemented a fix to comply with the CRAN policy: `Packages which use Internet resources should fail gracefully with an informative message if the resource is not available or has changed (and not give a check warning nor error).`
 
 ## Test environments
 
