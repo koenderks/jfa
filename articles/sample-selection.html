@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">jfa</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.6.6</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@
       <h1 data-toc-skip>Selecting statistical audit samples</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2023-03-21</h4>
+            <h4 data-toc-skip class="date">2023-04-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/sample-selection.Rmd" class="external-link"><code>vignettes/sample-selection.Rmd</code></a></small>
       <div class="hidden name"><code>sample-selection.Rmd</code></div>
@@ -110,7 +110,7 @@
 for auditing and shows how to select a sample using these methods with
 the <strong>jfa</strong> package.</p>
 <p align="center">
-<img src="https://github.com/koenderks/jfa/raw/development/vignettes/img/selection.png" alt="selection" width="100%"></p>
+<img src="selection.png" alt="selection" width="100%"></p>
 <p>Auditors are often required to assess balances or processes that
 involve a large number of items. Since they cannot inspect all of these
 items individually, they need to select a subset (i.e., a sample) from
@@ -199,7 +199,7 @@ selection is deterministic and completely depends on the chosen starting
 points (using <code>start</code>).</p>
 <center>
 <div class="figure">
-<img src="img/fixedIntervalSampling.png" alt=""><p class="caption">Figure 1: Illustration of fixed interval sampling</p>
+<img src="fixedIntervalSampling.png" alt=""><p class="caption">Figure 1: Illustration of fixed interval sampling</p>
 </div>
 </center>
 <p>The fixed interval method yields a sample that allows every sampling
@@ -268,7 +268,7 @@ for each sampling unit is defined as:</p>
 <p><span class="math display">\[p(x) = \frac{1}{I}.\]</span></p>
 <center>
 <div class="figure">
-<img src="img/cellSampling.png" alt=""><p class="caption">Figure 2: Illustration of cell sampling</p>
+<img src="cellSampling.png" alt=""><p class="caption">Figure 2: Illustration of cell sampling</p>
 </div>
 </center>
 <p>The cell sampling method has the property that all items in the
@@ -329,7 +329,7 @@ in the population. To clarify this procedure, Figure 3 provides an
 illustration of the random sampling method.</p>
 <center>
 <div class="figure">
-<img src="img/randomSampling.png" alt=""><p class="caption">Figure 3: Illustration of random sampling</p>
+<img src="randomSampling.png" alt=""><p class="caption">Figure 3: Illustration of random sampling</p>
 </div>
 </center>
 <p><strong>Advantage(s):</strong> The random sampling method yields an
