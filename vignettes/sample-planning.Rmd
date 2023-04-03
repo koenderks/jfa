@@ -24,7 +24,7 @@ library(jfa)
 This vignette illustrates how to use the `planning()` function from the **jfa**
 package to calculate a minimum sample size for audit sampling.
 
-<p align='center'><img src='https://github.com/koenderks/jfa/raw/development/vignettes/img/planning.png' alt='planning' width='100%'></p>
+<p align='center'><img src='planning.png' alt='planning' width='100%'></p>
 
 ## Required information
 

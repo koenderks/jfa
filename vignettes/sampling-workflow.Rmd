@@ -62,7 +62,7 @@ determine the audit (true) value of the items it contains. Fourth, they will
 need to use the information from the inspected sample to perform inference about
 the misstatement in the population.
 
-<p align='center'><img src='https://github.com/koenderks/jfa/raw/development/vignettes/img/workflow.png' alt='workflow' width='100%'></p>
+<p align='center'><img src='workflow.png' alt='workflow' width='100%'></p>
 
 ## Setting up the audit
 
@@ -117,7 +117,7 @@ cr <- 0.6 # 60%
 
 ## Stage 1: Planning an audit sample
 
-<p align='center'><img src='https://github.com/koenderks/jfa/raw/development/vignettes/img/planning.png' alt='planning' width='100%'></p>
+<p align='center'><img src='planning.png' alt='planning' width='100%'></p>
 
 The auditor can choose to either perform a frequentist analysis, where they use
 the increased detection risk as their level of uncertainty, or perform a
@@ -147,7 +147,7 @@ summary(stage1)
 
 ## Stage 2: Selecting a sample
 
-<p align='center'><img src='https://github.com/koenderks/jfa/raw/development/vignettes/img/selection.png' alt='selection' width='100%'></p>
+<p align='center'><img src='selection.png' alt='selection' width='100%'></p>
 
 The auditor is now ready to select the required 178 items from the population.
 They can choose to do this according to one of two statistical methods. In
@@ -205,7 +205,7 @@ sample <- read.csv(file = "auditSample.csv")
 
 ## Stage 4: Evaluating the sample
 
-<p align='center'><img src='https://github.com/koenderks/jfa/raw/development/vignettes/img/evaluation.png' alt='evaluation' width='100%'></p>
+<p align='center'><img src='evaluation.png' alt='evaluation' width='100%'></p>
 
 Using the annotated sample, the auditor can perform inference about the
 misstatement in the population via the `evaluation()` function.

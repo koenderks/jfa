@@ -43,7 +43,7 @@ population.
 
 <center>
 
-![Figure 1: The audit sampling workflow](img/workflow.png)\
+![Figure 1: The audit sampling workflow](workflow.png)\
 
 </center>
 

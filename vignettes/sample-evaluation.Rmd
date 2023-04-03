@@ -24,7 +24,7 @@ library(jfa)
 This vignette demonstrates how to evaluate a sample with the `evaluation()`
 function from the **jfa** package.
 
-<p align='center'><img src='https://github.com/koenderks/jfa/raw/development/vignettes/img/evaluation.png' alt='evaluation' width='100%'></p>
+<p align='center'><img src='evaluation.png' alt='evaluation' width='100%'></p>
 
 In auditing, the goal of the evaluation is typically to estimate the
 misstatement in the population based on a sample, or to test the misstatement in

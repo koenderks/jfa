@@ -24,7 +24,7 @@ library(jfa)
 This vignette outlines the most commonly used sampling methodology for auditing
 and shows how to select a sample using these methods with the **jfa** package.
 
-<p align='center'><img src='https://github.com/koenderks/jfa/raw/development/vignettes/img/selection.png' alt='selection' width='100%'></p>
+<p align='center'><img src='selection.png' alt='selection' width='100%'></p>
 
 Auditors are often required to assess balances or processes that involve a large
 number of items. Since they cannot inspect all of these items individually, they
@@ -114,7 +114,7 @@ and completely depends on the chosen starting points (using `start`).
 
 <center>
 
-![Figure 1: Illustration of fixed interval sampling](img/fixedIntervalSampling.png)
+![Figure 1: Illustration of fixed interval sampling](fixedIntervalSampling.png)
 
 </center>
 
@@ -172,7 +172,7 @@ $$p(x) = \frac{1}{I}.$$
 
 <center>
 
-![Figure 2: Illustration of cell sampling](img/cellSampling.png)
+![Figure 2: Illustration of cell sampling](cellSampling.png)
 
 </center>
 
@@ -226,7 +226,7 @@ Figure 3 provides an illustration of the random sampling method.
 
 <center>
 
-![Figure 3: Illustration of random sampling](img/randomSampling.png)
+![Figure 3: Illustration of random sampling](randomSampling.png)
 
 </center>
 

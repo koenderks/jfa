@@ -1,3 +1,9 @@
+# jfa 0.6.6
+
+**Bug fixes**
+
+- Changed the links to the images in the vignettes from absolute links to GitHub to relative links as to avoid problems with GitHub servers being unavailable in the future.
+
 # jfa 0.6.5
 
 **New features**
