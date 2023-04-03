@@ -43,11 +43,11 @@ population.
 
 <center>
 
-![Figure 1: The audit sampling workflow](workflow.png)\
+![Figure 1: The audit sampling workflow](workflow.png)
 
 </center>
 
-See the package vignette[Audit sampling: Get started](https://koenderks.github.io/jfa/articles/audit-sampling.html)
+See the package vignette [Audit sampling: Get started](https://koenderks.github.io/jfa/articles/audit-sampling.html)
 for more details about **jfa**'s audit sampling functionality.
 
 ### Functions and intended usage
