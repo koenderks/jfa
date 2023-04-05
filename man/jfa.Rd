@@ -53,8 +53,7 @@ library(jfa)
 data('BuildIt')
 
 # Stage 1: Planning
-stage1 <- planning(materiality = 0.03, expected = 0.01, 
-                   likelihood = 'poisson', conf.level = 0.95)
+stage1 <- planning(materiality = 0.03, expected = 0.01)
 summary(stage1)
 
 # Stage 2: Selection
@@ -67,8 +66,7 @@ summary(stage2)
 sample <- stage2[['sample']]
 
 # Stage 4: Evaluation
-stage4 <- evaluation(materiality = 0.03, method = 'stringer',
-                     conf.level = 0.95, data = sample,
+stage4 <- evaluation(data = sample, method = 'stringer',
                      values = 'bookValue', values.audit = 'auditValue')
 summary(stage4)
 
@@ -80,8 +78,7 @@ summary(stage4)
 data('sinoForest')
 
 # Test first digits in the data against Benford's law
-bl <- digit_test(sinoForest[["value"]], check = "first", reference = "benford")
-summary(bl)
+digit_test(sinoForest[["value"]], check = "first", reference = "benford")
 }
 \keyword{jfa} 
 \keyword{package}
