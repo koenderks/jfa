@@ -2,8 +2,7 @@
 
 This is a resubmission for version 0.6.6. In this version I have:
 
-* Replaced the permanently moved url `https://www.aicpa.org/cpe-learning/publication/audit-sampling-audit-guide-OPL` with `https://www.aicpa-cima.com/cpe-learning/publication/audit-sampling-audit-guide-OPL`
-* Implemented a fix to comply with the CRAN policy: `Packages which use Internet resources should fail gracefully with an informative message if the resource is not available or has changed (and not give a check warning nor error).`
+* Attempted to fix the `clang-UBSAN` error `caster.h:30:25: runtime error: -468 is outside the range of representable values of type 'unsigned int'` while building a vignette by preventing negative values for the `seed` argument in the call to `rstan::sampling`.
 
 ## Test environments
 

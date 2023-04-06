@@ -616,7 +616,7 @@
       warmup = getOption("mc.warmup", 1000),
       chains = getOption("mc.chains", 4),
       cores = getOption("mc.cores", 1),
-      seed = ceiling(stats::runif(1, -1000, 1000)),
+      seed = sample.int(.Machine$integer.max, 1),
       control = list(adapt_delta = 0.95),
       refresh = 0
     )
@@ -628,7 +628,7 @@
       warmup = getOption("mc.warmup", 1000),
       chains = getOption("mc.chains", 4),
       cores = getOption("mc.cores", 1),
-      seed = ceiling(stats::runif(1, -1000, 1000)),
+      seed = sample.int(.Machine$integer.max, 1),
       control = list(adapt_delta = 0.95),
       refresh = 0
     )
