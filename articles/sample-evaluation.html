@@ -94,7 +94,7 @@
       <h1 data-toc-skip>Evaluating statistical audit samples</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2023-04-05</h4>
+            <h4 data-toc-skip class="date">2023-04-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/sample-evaluation.Rmd" class="external-link"><code>vignettes/sample-evaluation.Rmd</code></a></small>
       <div class="hidden name"><code>sample-evaluation.Rmd</code></div>
@@ -536,33 +536,33 @@ population estimate.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
 <span><span class="co">##   Posterior distribution:         Nonparametric </span></span>
-<span><span class="co">##   Most likely error:              0.0434 </span></span>
-<span><span class="co">##   95 percent credible interval:   [0.034206, 0.053522] </span></span>
-<span><span class="co">##   Precision:                      0.010122 </span></span>
-<span><span class="co">##   BF₁₀:                            0.019258 </span></span>
+<span><span class="co">##   Most likely error:              0.043 </span></span>
+<span><span class="co">##   95 percent credible interval:   [0.034228, 0.053038] </span></span>
+<span><span class="co">##   Precision:                      0.010038 </span></span>
+<span><span class="co">##   BF₁₀:                            0.026565 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Strata (20):</span></span>
 <span><span class="co">##        N   n  x  t    mle      lb      ub precision</span></span>
-<span><span class="co">## 1   5000 300 21 21 0.0482 0.03814 0.08017   0.03197</span></span>
-<span><span class="co">## 2   5000 300 16 16 0.0443 0.03328 0.06816   0.02386</span></span>
-<span><span class="co">## 3   5000 300 15 15 0.0459 0.03207 0.06407   0.01817</span></span>
-<span><span class="co">## 4   5000 300 14 14 0.0467 0.03043 0.06220   0.01550</span></span>
-<span><span class="co">## 5   5000 300 16 16 0.0475 0.03281 0.06708   0.01958</span></span>
-<span><span class="co">## 6   5000 150  5  5 0.0411 0.02367 0.05968   0.01858</span></span>
-<span><span class="co">## 7   5000 150  4  4 0.0398 0.02088 0.05677   0.01697</span></span>
-<span><span class="co">## 8   5000 150  3  3 0.0397 0.01846 0.05501   0.01531</span></span>
-<span><span class="co">## 9   5000 150  4  4 0.0439 0.02137 0.05677   0.01287</span></span>
-<span><span class="co">## 10  5000 150  5  5 0.0425 0.02328 0.05844   0.01594</span></span>
-<span><span class="co">## 11 10000  50  2  2 0.0439 0.02417 0.06688   0.02298</span></span>
-<span><span class="co">## 12 10000  50  3  3 0.0403 0.02616 0.07366   0.03336</span></span>
-<span><span class="co">## 13 10000  50  2  2 0.0410 0.02261 0.06669   0.02569</span></span>
-<span><span class="co">## 14 10000  50  1  1 0.0412 0.01993 0.06367   0.02247</span></span>
-<span><span class="co">## 15 10000  50  0  0 0.0410 0.01641 0.05928   0.01828</span></span>
-<span><span class="co">## 16 10000  15  0  0 0.0447 0.02039 0.06699   0.02229</span></span>
-<span><span class="co">## 17 10000  15  0  0 0.0442 0.02027 0.06700   0.02280</span></span>
-<span><span class="co">## 18 10000  15  0  0 0.0458 0.01984 0.06587   0.02007</span></span>
-<span><span class="co">## 19 10000  15  1  1 0.0439 0.02313 0.07342   0.02952</span></span>
-<span><span class="co">## 20  4000  15  3  3 0.0415 0.03047 0.10417   0.06267</span></span></code></pre>
+<span><span class="co">## 1   5000 300 21 21 0.0474 0.03819 0.07958   0.03218</span></span>
+<span><span class="co">## 2   5000 300 16 16 0.0433 0.03314 0.06667   0.02337</span></span>
+<span><span class="co">## 3   5000 300 15 15 0.0453 0.03164 0.06605   0.02075</span></span>
+<span><span class="co">## 4   5000 300 14 14 0.0441 0.03043 0.06141   0.01731</span></span>
+<span><span class="co">## 5   5000 300 16 16 0.0458 0.03313 0.06624   0.02044</span></span>
+<span><span class="co">## 6   5000 150  5  5 0.0415 0.02312 0.05969   0.01819</span></span>
+<span><span class="co">## 7   5000 150  4  4 0.0401 0.02092 0.05695   0.01685</span></span>
+<span><span class="co">## 8   5000 150  3  3 0.0401 0.01892 0.05468   0.01458</span></span>
+<span><span class="co">## 9   5000 150  4  4 0.0425 0.02196 0.05606   0.01356</span></span>
+<span><span class="co">## 10  5000 150  5  5 0.0453 0.02311 0.05936   0.01406</span></span>
+<span><span class="co">## 11 10000  50  2  2 0.0431 0.02295 0.06618   0.02308</span></span>
+<span><span class="co">## 12 10000  50  3  3 0.0437 0.02696 0.07403   0.03033</span></span>
+<span><span class="co">## 13 10000  50  2  2 0.0428 0.02335 0.06589   0.02309</span></span>
+<span><span class="co">## 14 10000  50  1  1 0.0430 0.02062 0.06080   0.01780</span></span>
+<span><span class="co">## 15 10000  50  0  0 0.0406 0.01787 0.05866   0.01806</span></span>
+<span><span class="co">## 16 10000  15  0  0 0.0450 0.01944 0.06729   0.02229</span></span>
+<span><span class="co">## 17 10000  15  0  0 0.0464 0.02104 0.06625   0.01985</span></span>
+<span><span class="co">## 18 10000  15  0  0 0.0435 0.01934 0.06855   0.02505</span></span>
+<span><span class="co">## 19 10000  15  1  1 0.0451 0.02416 0.07262   0.02752</span></span>
+<span><span class="co">## 20  4000  15  3  3 0.0454 0.03025 0.09897   0.05357</span></span></code></pre>
 <p>In this case, the output shows that the estimate of the misstatement
 in the population is 4.34%, with the 95% credible interval ranging from
 3.45% to 5.33%. Note that this population estimate is substantially less
