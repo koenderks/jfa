@@ -285,9 +285,6 @@ print.summary.jfaPosterior <- function(x, digits = getOption("digits"), ...) {
   cat(paste("  Variance:                     ", format(x[["var"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Skewness:                     ", format(x[["skewness"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Information entropy (nat):    ", format(x[["entropy"]], digits = max(1L, digits - 2L))), "\n")
-  if (!is.null(x[["kl"]])) {
-    cat(paste("  KL-divergence (from prior):   ", format(x[["kl"]], digits = max(1L, digits - 2L))), "\n")
-  }
   cat(paste(" ", format(x[["conf.level"]] * 100), "percent upper bound:       ", format(x[["ub"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Precision:                    ", format(x[["precision"]], digits = max(1L, digits - 2L))), "\n")
 }
@@ -309,9 +306,6 @@ summary.jfaPosterior <- function(object, digits = getOption("digits"), ...) {
     "conf.level" = object[["conf.level"]],
     stringsAsFactors = FALSE
   )
-  if (!is.null(object[["statistics"]]$kl)) {
-    out[["kl"]] <- round(object[["statistics"]]$kl, digits)
-  }
   class(out) <- c("summary.jfaPosterior", "data.frame")
   return(out)
 }

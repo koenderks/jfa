@@ -751,7 +751,6 @@ evaluation <- function(materiality = NULL,
     statistics[["var"]] <- .comp_var_bayes(method, post_alpha, post_beta, post_N, analytical, post_samples)
     statistics[["skewness"]] <- .comp_skew_bayes(method, post_alpha, post_beta, post_N, analytical, post_samples)
     statistics[["entropy"]] <- .comp_entropy_bayes(method, post_alpha, post_beta, analytical, post_samples)
-    statistics[["kl"]] <- .comp_kl_bayes(method, result[["prior"]][["description"]]$alpha, result[["prior"]][["description"]]$beta, post_alpha, post_beta, analytical, prior_samples, post_samples)
     statistics[["ub"]] <- .comp_ub_bayes(alternative, conf.level, method, post_alpha, post_beta, post_K, post_N, analytical, post_samples)
     statistics[["lb"]] <- .comp_lb_bayes(alternative, conf.level, method, post_alpha, post_beta, post_K, post_N, analytical, post_samples)
     statistics[["precision"]] <- .comp_precision(alternative, statistics[["mode"]], statistics[["lb"]], statistics[["ub"]])
