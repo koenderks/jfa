@@ -154,19 +154,6 @@ references:
     email: fnovomes@poly.edu
   year: '2023'
 - type: software
-  title: philentropy
-  abstract: 'philentropy: Similarity and Distance Quantification Between Probability
-    Functions'
-  notes: Imports
-  url: https://github.com/drostlab/philentropy
-  repository: https://CRAN.R-project.org/package=philentropy
-  authors:
-  - family-names: Drost
-    given-names: Hajk-Georg
-    email: hajk-georg.drost@tuebingen.mpg.de
-    orcid: https://orcid.org/0000-0002-1567-306X
-  year: '2023'
-- type: software
   title: Rcpp
   abstract: 'Rcpp: Seamless R and C++ Integration'
   notes: Imports
