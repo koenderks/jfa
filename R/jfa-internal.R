@@ -209,7 +209,9 @@
       "exponential" = NA
     )
   } else {
-    skewness <- moments::skewness(samples)
+    # See Joanes, D. N.; Gill, C. A. (1998). Comparing measures of sample skewness and kurtosis. Journal of the Royal Statistical Society, Series D. 47(1): 183–189.
+    # The formula below is taken from the 'skewness()' function in the 'moments' package.
+    skewness <- (sum((samples - mean(samples))^3) / length(samples)) / (sum((samples - mean(samples))^2) / length(samples))^(3 / 2)
   }
   return(skewness)
 }

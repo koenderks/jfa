@@ -1,7 +1,7 @@
 Package: jfa
 Title: Statistical Methods for Auditing
 Version: 0.6.6
-Date: 2023-04-05
+Date: 2023-04-07
 Authors@R:
     person(given = "Koen",
            family = "Derks",
@@ -26,7 +26,6 @@ Imports:
     extraDistr,
     ggplot2,
     methods,
-    moments,
     Rcpp (>= 0.12.0),
     RcppParallel (>= 5.0.1),
     rstan (>= 2.18.1),
