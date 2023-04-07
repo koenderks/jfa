@@ -38,7 +38,7 @@ preferred-citation:
 repository: https://CRAN.R-project.org/package=jfa
 repository-code: https://github.com/koenderks/jfa
 url: https://koenderks.github.io/jfa/
-date-released: '2023-04-05'
+date-released: '2023-04-07'
 contact:
 - family-names: Derks
   given-names: Koen
@@ -139,20 +139,6 @@ references:
   year: '2023'
   institution:
     name: R Foundation for Statistical Computing
-- type: software
-  title: moments
-  abstract: 'moments: Moments, Cumulants, Skewness, Kurtosis and Related Tests'
-  notes: Imports
-  url: https://www.r-project.org
-  repository: https://CRAN.R-project.org/package=moments
-  authors:
-  - family-names: Komsta
-    given-names: Lukasz
-    email: lukasz.komsta@umlub.pl
-  - family-names: Novomestky
-    given-names: Frederick
-    email: fnovomes@poly.edu
-  year: '2023'
 - type: software
   title: Rcpp
   abstract: 'Rcpp: Seamless R and C++ Integration'
