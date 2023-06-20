@@ -1,5 +1,5 @@
 # -----------------------------------------------------------
-# CITATION file created with {cffr} R package, v0.4.1
+# CITATION file created with {cffr} R package, v0.5.0
 # See also: https://docs.ropensci.org/cffr/
 # -----------------------------------------------------------
  
@@ -8,7 +8,7 @@ message: 'To cite package "jfa" in publications use:'
 type: software
 license: GPL-3.0-or-later
 title: 'jfa: Statistical Methods for Auditing'
-version: 0.6.6
+version: 0.6.7
 abstract: Provides statistical methods for auditing as implemented in JASP for Audit
   (Derks et al., 2021 <doi:10.21105/joss.02733>). First, the package makes it easy
   for an auditor to plan a statistical sample, select the sample from the population,
@@ -33,12 +33,12 @@ preferred-citation:
     email: k.derks@nyenrode.nl
     orcid: https://orcid.org/0000-0002-5533-9349
   year: '2023'
-  notes: R package version 0.6.6
+  notes: R package version 0.6.7
   url: https://CRAN.R-project.org/package=jfa
 repository: https://CRAN.R-project.org/package=jfa
 repository-code: https://github.com/koenderks/jfa
 url: https://koenderks.github.io/jfa/
-date-released: '2023-04-07'
+date-released: '2023-06-20'
 contact:
 - family-names: Derks
   given-names: Koen
@@ -402,7 +402,7 @@ references:
   authors:
   - family-names: Wickham
     given-names: Hadley
-    email: hadley@rstudio.com
+    email: hadley@posit.co
   year: '2023'
 - type: software
   title: BH
