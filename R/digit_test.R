@@ -22,17 +22,20 @@
 #' @usage digit_test(x,
 #'            check = c("first", "last", "firsttwo"),
 #'            reference = "benford",
+#'            conf.level = 0.95,
 #'            prior = FALSE)
 #'
-#' @param x         a numeric vector.
-#' @param check     location of the digits to analyze. Can be \code{first},
+#' @param x          a numeric vector.
+#' @param check      location of the digits to analyze. Can be \code{first},
 #'   \code{firsttwo}, or \code{last}.
-#' @param reference which character string given the reference distribution for
+#' @param reference  which character string given the reference distribution for
 #'   the digits, or a vector of probabilities for each digit. Can be
 #'   \code{benford} for Benford's law, \code{uniform} for the uniform
 #'   distribution. An error is given if any entry of \code{reference} is
 #'   negative. Probabilities that do not sum to one are normalized.
-#' @param prior     a logical specifying whether to use a prior distribution,
+#' @param conf.level a numeric value between 0 and 1 specifying the
+#'   confidence level (i.e., 1 - audit risk / detection risk).
+#' @param prior      a logical specifying whether to use a prior distribution,
 #'   or a numeric vector containing the prior parameters for the Dirichlet
 #'   distribution on the digit categories.
 #'
@@ -90,6 +93,7 @@
 digit_test <- function(x,
                        check = c("first", "last", "firsttwo"),
                        reference = "benford",
+                       conf.level = 0.95,
                        prior = FALSE) {
   stopifnot("'x' must be a vector" = (NCOL(x) == 1) && !is.data.frame(x))
   check <- match.arg(check)
@@ -163,6 +167,7 @@ digit_test <- function(x,
   result[["digits"]] <- dig
   result[["reference"]] <- reference
   result[["match"]] <- split(x = data.frame(row = seq_along(d), value = x), f = d)
+  result[["estimates"]] <- data.frame(d = dig, n = obs, mle = obs / n, lb = qbeta((1 - conf.level) / 2, obs, 1 + n - obs), ub = qbeta(conf.level + (1 - conf.level) / 2, 1 + obs, n - obs))
   result[["data.name"]] <- dname
   class(result) <- c("jfaDistr", "list")
   return(result)

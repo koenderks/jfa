@@ -840,7 +840,7 @@ plot.jfaDistr <- function(x, ...) {
     y = c(x$observed / x$n, x$expected / x$n),
     type = c(rep("Observed", length(x[["digits"]])), rep("Expected", length(x[["digits"]])))
   )
-  yBreaks <- pretty(c(0, df$y), min.n = 4)
+  yBreaks <- pretty(c(0, df$y, x[["estimates"]]$ub), min.n = 4)
   if (x[["check"]] == "first" || x[["check"]] == "last") {
     xBreaks <- x[["digits"]]
     xLabels <- x[["digits"]]
@@ -872,6 +872,7 @@ plot.jfaDistr <- function(x, ...) {
     ggplot2::geom_point(alpha = 0) +
     ggplot2::geom_bar(data = subset(df, type == "Expected"), mapping = ggplot2::aes(x = x, y = y), fill = "darkgray", stat = "identity", color = "black") +
     ggplot2::geom_line(data = subset(df, type == "Observed"), mapping = ggplot2::aes(x = x, y = y), color = "dodgerblue", linewidth = lineSize) +
+    ggplot2::geom_errorbar(data = x[["estimates"]], mapping = ggplot2::aes(x = d, ymin = lb, ymax = ub), width = 0.5) +
     ggplot2::geom_point(data = subset(df, type == "Observed"), mapping = ggplot2::aes(x = x, y = y), fill = "dodgerblue", size = pointSize, shape = 21) +
     ggplot2::scale_x_continuous(name = axisName, breaks = xBreaks, labels = xLabels, limits = c(min(x[["digits"]]) - 0.5, max(x[["digits"]]) + 0.5), ) +
     ggplot2::scale_y_continuous(name = "Relative frequency", breaks = yBreaks, limits = c(0, max(yBreaks))) +
