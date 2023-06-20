@@ -1,3 +1,9 @@
+# jfa 0.6.7
+
+**New features**
+
+- `digit_test()` function now returns element `estimates` containing observed proportions and their corresponding confidence intervals. The plot output also shows these intervals around the estimates.
+
 # jfa 0.6.6
 
 **Bug fixes**
