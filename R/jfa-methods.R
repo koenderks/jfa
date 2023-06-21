@@ -798,12 +798,15 @@ plot.jfaEvaluation <- function(x, type = c("posterior", "estimates"), ...) {
 #' @export
 print.jfaDistr <- function(x, digits = getOption("digits"), ...) {
   cat("\n")
-  cat(strwrap("Digit distribution test", prefix = "\t"), sep = "\n")
+  cat(strwrap("Digit Distribution Test", prefix = "\t"), sep = "\n")
   cat("\n")
   cat("data:  ", x$data.name, "\n", sep = "")
   out <- character()
   if (!is.null(x$n)) {
     out <- c(out, paste(names(x$n), "=", format(x$n, digits = max(1L, digits - 2L))))
+  }
+  if (!is.null(x$mad)) {
+    out <- c(out, paste(names(x$mad), "=", format(x$mad, digits = max(1L, digits - 2L))))
   }
   if (!is.null(x$statistic)) {
     out <- c(out, paste(names(x$statistic), "=", format(x$statistic, digits = max(1L, digits - 2L))))
@@ -828,6 +831,67 @@ print.jfaDistr <- function(x, digits = getOption("digits"), ...) {
   cat(paste0("alternative hypothesis: ", digitLabel, " digit(s) are not distributed according to the ", distLabel, " distribution."))
   cat("\n")
   invisible(x)
+}
+
+#' @rdname jfa-methods
+#' @method print summary.jfaDistr
+#' @export
+print.summary.jfaDistr <- function(x, digits = getOption("digits"), ...) {
+  cat("\n")
+  cat(strwrap("Digit Distribution Test Summary", prefix = "\t"), sep = "\n")
+  cat("\nOptions:\n")
+  cat(paste("  Confidence level:              ", format(x[["conf.level"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste("  Digits:                        ", switch(x[["check"]],
+    "first" = "Leading",
+    "firsttwo" = "First and second",
+    "last" = "Last"
+  )), "\n")
+  cat(paste("  Reference:                     ", if (x[["reference"]] == "benford") {
+    "Benford's law"
+  } else if (x[["reference"]] == "uniform") {
+    "Uniform distribution"
+  } else {
+    "Custom distribution"
+  }), "\n")
+  if (x[["type"]] == "Bayesian") {
+    cat(paste("  Prior distribution:            ", "Dirichlet(1, ..., 1)"), "\n")
+  }
+  cat("\nData:\n")
+  cat(paste("  Sample size:                   ", format(x[["n"]], digits = max(1L, digits - 2L))), "\n")
+  cat("\nResults:\n")
+  if (x[["type"]] == "Bayesian") {
+    cat(paste("  BF\u2081\u2080:\t                         ", format(x[["bf"]], digits = max(1L, digits - 2L))), "\n")
+  } else {
+    cat(paste("  p-value:                       ", format.pval(x[["p.value"]], digits = max(1L, digits - 2L))), "\n")
+  }
+  cat(paste("  Mean absolute difference (MAD):", format(x[["mad"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste0("\nDigits (", length(x[["digits"]]), "):\n"))
+  print(round(x[["estimates"]], digits = max(1L, digits - 2L)), quote = FALSE)
+}
+
+#' @rdname jfa-methods
+#' @method summary jfaDistr
+#' @export
+summary.jfaDistr <- function(object, digits = getOption("digits"), ...) {
+  out <- list(
+    "conf.level" = round(object[["conf.level"]], digits),
+    "n" = object[["n"]],
+    "check" = object[["check"]],
+    "digits" = object[["digits"]],
+    "reference" = object[["reference"]],
+    "mad" = object[["mad"]],
+    stringsAsFactors = FALSE
+  )
+  if (!is.null(object[["p.value"]])) {
+    out[["p.value"]] <- object[["p.value"]]
+    out[["type"]] <- "Classical"
+  } else if (!is.null(object[["bf"]])) {
+    out[["bf"]] <- object[["bf"]]
+    out[["type"]] <- "Bayesian"
+  }
+  out[["estimates"]] <- object[["estimates"]]
+  class(out) <- c("summary.jfaDistr", "list")
+  return(out)
 }
 
 #' @rdname jfa-methods
@@ -895,7 +959,7 @@ plot.jfaDistr <- function(x, ...) {
 #' @export
 print.jfaRv <- function(x, digits = getOption("digits"), ...) {
   cat("\n")
-  cat(strwrap("Repeated values test", prefix = "\t"), sep = "\n")
+  cat(strwrap("Repeated Values Test", prefix = "\t"), sep = "\n")
   cat("\n")
   cat("data:  ", x$data.name, "\n", sep = "")
   out <- character()

@@ -149,10 +149,13 @@ digit_test <- function(x,
     bf <- exp(log_bf10)
     names(bf) <- "BF10"
   }
+  mad <- mean(abs((obs / n) - (exp / n)))
+  names(mad) <- "MAD"
   names(n) <- "n"
   names(obs) <- dig
   names(exp) <- dig
   result <- list()
+  result[["conf.level"]] <- conf.level
   result[["observed"]] <- obs
   result[["expected"]] <- exp
   result[["n"]] <- n
@@ -163,11 +166,21 @@ digit_test <- function(x,
   } else {
     result[["bf"]] <- bf
   }
+  result[["mad"]] <- mad
   result[["check"]] <- check
   result[["digits"]] <- dig
   result[["reference"]] <- reference
   result[["match"]] <- split(x = data.frame(row = seq_along(d), value = x), f = d)
-  result[["estimates"]] <- data.frame(d = dig, n = obs, mle = obs / n, lb = qbeta((1 - conf.level) / 2, obs, 1 + n - obs), ub = qbeta(conf.level + (1 - conf.level) / 2, 1 + obs, n - obs))
+  result[["estimates"]] <- data.frame(d = dig, n = obs, p.exp = p_exp, p.obs = obs / n)
+  if (!prior) {
+    result[["estimates"]]$lb <- stats::qbeta((1 - conf.level) / 2, obs, 1 + n - obs)
+    result[["estimates"]]$ub <- stats::qbeta(conf.level + (1 - conf.level) / 2, 1 + obs, n - obs)
+    result[["estimates"]]$p.value <- apply(result[["estimates"]], 1, function(x, n) binom.test(x[2], n, x[3], alternative = "two.sided")$p.value, n = n)
+  } else {
+    result[["estimates"]]$lb <- stats::qbeta((1 - conf.level) / 2, 1 + obs, 1 + n - obs)
+    result[["estimates"]]$ub <- stats::qbeta(conf.level + (1 - conf.level) / 2, 1 + obs, 1 + n - obs)
+    result[["estimates"]]$bf01 <- dbeta(p_exp, 1 + obs, 1 + n - obs) / dbeta(p_exp, 1, 1)
+  }
   result[["data.name"]] <- dname
   class(result) <- c("jfaDistr", "list")
   return(result)

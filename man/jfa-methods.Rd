@@ -26,6 +26,8 @@
 \alias{summary.jfaEvaluation}
 \alias{plot.jfaEvaluation}
 \alias{print.jfaDistr}
+\alias{print.summary.jfaDistr}
+\alias{summary.jfaDistr}
 \alias{plot.jfaDistr}
 \alias{print.jfaRv}
 \alias{plot.jfaRv}
@@ -78,6 +80,10 @@
 \method{plot}{jfaEvaluation}(x, type = c("posterior", "estimates"), ...)
 
 \method{print}{jfaDistr}(x, digits = getOption("digits"), ...)
+
+\method{print}{summary.jfaDistr}(x, digits = getOption("digits"), ...)
+
+\method{summary}{jfaDistr}(object, digits = getOption("digits"), ...)
 
 \method{plot}{jfaDistr}(x, ...)
 
