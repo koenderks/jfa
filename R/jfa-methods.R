@@ -932,7 +932,9 @@ plot.jfaDistr <- function(x, ...) {
     "firsttwo" = "Leading digits",
     "last" = "Last digit"
   )
-  p <- ggplot2::ggplot(data = data.frame(x = c(xBreaks[1], xBreaks[1]), y = c(yBreaks[1], yBreaks[1]), type = c("Observed", "Expected")), mapping = ggplot2::aes(x = x, y = y, fill = type)) +
+  plotData <- data.frame(x = c(xBreaks[1], xBreaks[1], xBreaks[1]), y = c(yBreaks[1], yBreaks[1], yBreaks[1]), type = c("Observed", "Expected", "Suspicious"))
+  plotData[["type"]] <- factor(plotData[["type"]], levels = c("Observed", "Expected", "Suspicious"))
+  p <- ggplot2::ggplot(data = plotData, mapping = ggplot2::aes(x = x, y = y, fill = type)) +
     ggplot2::geom_point(alpha = 0) +
     ggplot2::geom_bar(data = subset(df, type == "Expected"), mapping = ggplot2::aes(x = x, y = y), fill = ifelse(x[["suspicious"]], "firebrick", "darkgray"), stat = "identity", color = "black") +
     ggplot2::geom_line(data = subset(df, type == "Observed"), mapping = ggplot2::aes(x = x, y = y), color = "dodgerblue", linewidth = lineSize) +
@@ -944,9 +946,9 @@ plot.jfaDistr <- function(x, ...) {
     ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf) +
     ggplot2::labs(fill = "") +
     ggplot2::theme(legend.text = ggplot2::element_text(margin = ggplot2::margin(l = -5, r = 50))) +
-    ggplot2::guides(fill = ggplot2::guide_legend(reverse = TRUE, override.aes = list(
-      size = c(7, 10), shape = c(21, 22),
-      fill = c("dodgerblue", "darkgray"), color = "black", alpha = 1
+    ggplot2::guides(fill = ggplot2::guide_legend(override.aes = list(
+      size = c(7, 10, 10), shape = c(21, 22, 22),
+      fill = c("dodgerblue", "darkgray", "firebrick"), color = "black", alpha = 1
     )))
   p <- .theme_jfa(p, legend.position = "top")
   return(p)
