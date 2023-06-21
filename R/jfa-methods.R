@@ -898,7 +898,7 @@ summary.jfaDistr <- function(object, digits = getOption("digits"), ...) {
 #' @method plot jfaDistr
 #' @export
 plot.jfaDistr <- function(x, ...) {
-  y <- type <- NULL
+  y <- type <- d <- lb <- ub <- NULL
   df <- data.frame(
     x = c(x[["digits"]], x[["digits"]]),
     y = c(x$observed / x$n, x$expected / x$n),
