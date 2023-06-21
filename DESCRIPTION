@@ -24,7 +24,7 @@ Depends:
 Imports:
     bde,
     extraDistr,
-    ggplot2,
+    ggplot2 (>= 3.4.2),
     methods,
     Rcpp (>= 0.12.0),
     RcppParallel (>= 5.0.1),
