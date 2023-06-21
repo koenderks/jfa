@@ -175,11 +175,11 @@ digit_test <- function(x,
   if (!prior) {
     result[["estimates"]]$lb <- stats::qbeta((1 - conf.level) / 2, obs, 1 + n - obs)
     result[["estimates"]]$ub <- stats::qbeta(conf.level + (1 - conf.level) / 2, 1 + obs, n - obs)
-    result[["estimates"]]$p.value <- apply(result[["estimates"]], 1, function(x, n) binom.test(x[2], n, x[3], alternative = "two.sided")$p.value, n = n)
+    result[["estimates"]]$p.value <- apply(result[["estimates"]], 1, function(x, n) stats::binom.test(x[2], n, x[3], alternative = "two.sided")$p.value, n = n)
   } else {
     result[["estimates"]]$lb <- stats::qbeta((1 - conf.level) / 2, 1 + obs, 1 + n - obs)
     result[["estimates"]]$ub <- stats::qbeta(conf.level + (1 - conf.level) / 2, 1 + obs, 1 + n - obs)
-    result[["estimates"]]$bf10 <- 1 / (dbeta(p_exp, 1 + obs, 1 + n - obs) / dbeta(p_exp, 1, 1))
+    result[["estimates"]]$bf10 <- 1 / (stats::dbeta(p_exp, 1 + obs, 1 + n - obs) / stats::dbeta(p_exp, 1, 1))
   }
   deviation <- result[["estimates"]]$p.exp <= result[["estimates"]]$lb | result[["estimates"]]$p.exp >= result[["estimates"]]$ub
   names(deviation) <- dig
