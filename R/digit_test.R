@@ -179,7 +179,7 @@ digit_test <- function(x,
   } else {
     result[["estimates"]]$lb <- stats::qbeta((1 - conf.level) / 2, 1 + obs, 1 + n - obs)
     result[["estimates"]]$ub <- stats::qbeta(conf.level + (1 - conf.level) / 2, 1 + obs, 1 + n - obs)
-    result[["estimates"]]$bf01 <- dbeta(p_exp, 1 + obs, 1 + n - obs) / dbeta(p_exp, 1, 1)
+    result[["estimates"]]$bf10 <- 1 / (dbeta(p_exp, 1 + obs, 1 + n - obs) / dbeta(p_exp, 1, 1))
   }
   result[["data.name"]] <- dname
   class(result) <- c("jfaDistr", "list")
