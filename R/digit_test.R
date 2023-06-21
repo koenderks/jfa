@@ -181,9 +181,9 @@ digit_test <- function(x,
     result[["estimates"]]$ub <- stats::qbeta(conf.level + (1 - conf.level) / 2, 1 + obs, 1 + n - obs)
     result[["estimates"]]$bf10 <- 1 / (dbeta(p_exp, 1 + obs, 1 + n - obs) / dbeta(p_exp, 1, 1))
   }
-  suspicious <- result[["estimates"]]$p.exp <= result[["estimates"]]$lb | result[["estimates"]]$p.exp >= result[["estimates"]]$ub
-  names(suspicious) <- dig
-  result[["suspicious"]] <- suspicious
+  deviation <- result[["estimates"]]$p.exp <= result[["estimates"]]$lb | result[["estimates"]]$p.exp >= result[["estimates"]]$ub
+  names(deviation) <- dig
+  result[["deviation"]] <- deviation
   result[["data.name"]] <- dname
   class(result) <- c("jfaDistr", "list")
   return(result)

@@ -932,11 +932,11 @@ plot.jfaDistr <- function(x, ...) {
     "firsttwo" = "Leading digits",
     "last" = "Last digit"
   )
-  plotData <- data.frame(x = c(xBreaks[1], xBreaks[1], xBreaks[1]), y = c(yBreaks[1], yBreaks[1], yBreaks[1]), type = c("Observed", "Expected", "Suspicious"))
-  plotData[["type"]] <- factor(plotData[["type"]], levels = c("Observed", "Expected", "Suspicious"))
+  plotData <- data.frame(x = c(xBreaks[1], xBreaks[1], xBreaks[1]), y = c(yBreaks[1], yBreaks[1], yBreaks[1]), type = c("Observed", "Expected", "Deviation"))
+  plotData[["type"]] <- factor(plotData[["type"]], levels = c("Observed", "Expected", "Deviation"))
   p <- ggplot2::ggplot(data = plotData, mapping = ggplot2::aes(x = x, y = y, fill = type)) +
     ggplot2::geom_point(alpha = 0) +
-    ggplot2::geom_bar(data = subset(df, type == "Expected"), mapping = ggplot2::aes(x = x, y = y), fill = ifelse(x[["suspicious"]], "firebrick", "darkgray"), stat = "identity", color = "black") +
+    ggplot2::geom_bar(data = subset(df, type == "Expected"), mapping = ggplot2::aes(x = x, y = y), fill = ifelse(x[["deviation"]], "firebrick", "darkgray"), stat = "identity", color = "black") +
     ggplot2::geom_line(data = subset(df, type == "Observed"), mapping = ggplot2::aes(x = x, y = y), color = "dodgerblue", linewidth = lineSize) +
     ggplot2::geom_errorbar(data = x[["estimates"]], mapping = ggplot2::aes(x = d, ymin = lb, ymax = ub), width = 0.5) +
     ggplot2::geom_point(data = subset(df, type == "Observed"), mapping = ggplot2::aes(x = x, y = y), fill = "dodgerblue", size = pointSize, shape = 21) +
