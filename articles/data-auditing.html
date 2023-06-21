@@ -94,7 +94,7 @@
       <h1 data-toc-skip>Data auditing: Get started</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2023-06-20</h4>
+            <h4 data-toc-skip class="date">2023-06-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/data-auditing.Rmd" class="external-link"><code>vignettes/data-auditing.Rmd</code></a></small>
       <div class="hidden name"><code>data-auditing.Rmd</code></div>
@@ -198,19 +198,19 @@ law using the code below.</p>
 <code class="sourceCode R"><span><span class="co"># Frequentist hypothesis test</span></span>
 <span><span class="fu"><a href="../reference/digit_test.html">digit_test</a></span><span class="op">(</span><span class="va">sinoForest</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"first"</span>, reference <span class="op">=</span> <span class="st">"benford"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Digit distribution test</span></span>
+<span><span class="co">##  Digit Distribution Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sinoForest$value</span></span>
-<span><span class="co">## n = 772, X-squared = 7.6517, df = 8, p-value = 0.4682</span></span>
+<span><span class="co">## n = 772, MAD = 0.0065981, X-squared = 7.6517, df = 8, p-value = 0.4682</span></span>
 <span><span class="co">## alternative hypothesis: leading digit(s) are not distributed according to the benford distribution.</span></span></code></pre>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Bayesian hypothesis test using default prior</span></span>
 <span><span class="fu"><a href="../reference/digit_test.html">digit_test</a></span><span class="op">(</span><span class="va">sinoForest</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"first"</span>, reference <span class="op">=</span> <span class="st">"benford"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Digit distribution test</span></span>
+<span><span class="co">##  Digit Distribution Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sinoForest$value</span></span>
-<span><span class="co">## n = 772, BF10 = 1.4493e-07</span></span>
+<span><span class="co">## n = 772, MAD = 0.0065981, BF10 = 1.4493e-07</span></span>
 <span><span class="co">## alternative hypothesis: leading digit(s) are not distributed according to the benford distribution.</span></span></code></pre>
 </div>
 <div class="section level3">
@@ -278,10 +278,10 @@ data were not tampered with.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/repeated_test.html">repeated_test</a></span><span class="op">(</span><span class="va">sanitizer</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"lasttwo"</span>, samples <span class="op">=</span> <span class="fl">5000</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Repeated values test</span></span>
+<span><span class="co">##  Repeated Values Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sanitizer$value</span></span>
-<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0034</span></span>
+<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0018</span></span>
 <span><span class="co">## alternative hypothesis: average frequency in data is greater than for random data.</span></span></code></pre>
 </div>
 </div>
