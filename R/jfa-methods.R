@@ -932,8 +932,22 @@ plot.jfaDistr <- function(x, ...) {
     "firsttwo" = "Leading digits",
     "last" = "Last digit"
   )
-  plotData <- data.frame(x = c(xBreaks[1], xBreaks[1], xBreaks[1]), y = c(yBreaks[1], yBreaks[1], yBreaks[1]), type = c("Observed", "Expected", "Deviation"))
-  plotData[["type"]] <- factor(plotData[["type"]], levels = c("Observed", "Expected", "Deviation"))
+  xs <- rep(xBreaks[1], 2)
+  ys <- rep(yBreaks[1], 2)
+  types <- c("Observed", "Expected")
+  sizes <- c(7, 10)
+  shapes <- c(21, 22)
+  fills <- c("dodgerblue", "darkgray")
+  if (any(x[["deviation"]])) {
+    xs <- c(xs, xBreaks[1])
+    ys <- c(ys, yBreaks[1])
+    types <- c(types, "Deviation")
+    sizes <- c(sizes, 10)
+    shapes <- c(shapes, 22)
+    fills <- c(fills, "firebrick")
+  }
+  plotData <- data.frame(x = xs, y = ys, type = types)
+  plotData[["type"]] <- factor(plotData[["type"]], levels = types)
   p <- ggplot2::ggplot(data = plotData, mapping = ggplot2::aes(x = x, y = y, fill = type)) +
     ggplot2::geom_point(alpha = 0) +
     ggplot2::geom_bar(data = subset(df, type == "Expected"), mapping = ggplot2::aes(x = x, y = y), fill = ifelse(x[["deviation"]], "firebrick", "darkgray"), stat = "identity", color = "black") +
@@ -947,8 +961,7 @@ plot.jfaDistr <- function(x, ...) {
     ggplot2::labs(fill = "") +
     ggplot2::theme(legend.text = ggplot2::element_text(margin = ggplot2::margin(l = -5, r = 50))) +
     ggplot2::guides(fill = ggplot2::guide_legend(override.aes = list(
-      size = c(7, 10, 10), shape = c(21, 22, 22),
-      fill = c("dodgerblue", "darkgray", "firebrick"), color = "black", alpha = 1
+      size = sizes, shape = shapes, fill = fills, color = "black", alpha = 1
     )))
   p <- .theme_jfa(p, legend.position = "top")
   return(p)
