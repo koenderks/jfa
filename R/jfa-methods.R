@@ -862,6 +862,8 @@ print.summary.jfaDistr <- function(x, digits = getOption("digits"), ...) {
   if (x[["type"]] == "Bayesian") {
     cat(paste("  BF\u2081\u2080:\t                         ", format(x[["bf"]], digits = max(1L, digits - 2L))), "\n")
   } else {
+    cat(paste("  X-squared:\t                 ", format(x[["statistic"]], digits = max(1L, digits - 2L))), "\n")
+    cat(paste("  Degrees of freedom:\t         ", format(x[["parameter"]], digits = max(1L, digits - 2L))), "\n")
     cat(paste("  p-value:                       ", format.pval(x[["p.value"]], digits = max(1L, digits - 2L))), "\n")
   }
   cat(paste("  Mean absolute difference (MAD):", format(x[["mad"]], digits = max(1L, digits - 2L))), "\n")
@@ -883,6 +885,8 @@ summary.jfaDistr <- function(object, digits = getOption("digits"), ...) {
     stringsAsFactors = FALSE
   )
   if (!is.null(object[["p.value"]])) {
+    out[["statistic"]] <- object[["statistic"]]
+    out[["parameter"]] <- object[["parameter"]]
     out[["p.value"]] <- object[["p.value"]]
     out[["type"]] <- "Classical"
   } else if (!is.null(object[["bf"]])) {
