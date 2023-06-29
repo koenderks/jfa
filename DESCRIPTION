@@ -1,7 +1,7 @@
 Package: jfa
 Title: Statistical Methods for Auditing
 Version: 0.6.7
-Date: 2023-06-21
+Date: 2023-06-29
 Authors@R:
     person(given = "Koen",
            family = "Derks",
@@ -22,8 +22,8 @@ Description: Provides statistical methods for auditing as implemented in JASP
 Depends:
     R (>= 3.5.0)
 Imports:
-    bde,
-    extraDistr,
+    bde (>= 1.0.1.1),
+    extraDistr (>= 1.9.1),
     ggplot2 (>= 3.4.2),
     methods,
     Rcpp (>= 0.12.0),
@@ -31,12 +31,12 @@ Imports:
     rstan (>= 2.18.1),
     rstantools (>= 2.2.0),
     stats,
-    truncdist
+    truncdist (>= 1.0-2)
 Suggests:
     benford.analysis (>= 0.1.5),
     BenfordTests (>= 1.2.0),
     BeyondBenford (>= 1.4),
-    kableExtra,
+    kableExtra (>= 1.3.4),
     knitr,
     MUS (>= 0.1.6),
     rmarkdown,
