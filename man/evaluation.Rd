@@ -4,26 +4,28 @@
 \alias{evaluation}
 \title{Audit Sampling: Evaluation}
 \usage{
-evaluation(materiality = NULL,
-           method = c(
-             "poisson", "binomial", "hypergeometric", "stringer",
-             "stringer.meikle", "stringer.lta", "stringer.pvz", "rohrbach",
-             "moment", "coxsnell", "direct", "difference", "quotient",
-             "regression", "mpu"
-           ),
-           alternative = c("less", "two.sided", "greater"),
-           conf.level = 0.95,
-           data = NULL,
-           values = NULL,
-           values.audit = NULL,
-           strata = NULL,
-           times = NULL,
-           x = NULL,
-           n = NULL,
-           N.units = NULL,
-           N.items = NULL,
-           pooling = c("none", "complete", "partial"),
-           prior = FALSE)
+evaluation(
+  materiality = NULL,
+  method = c(
+    "poisson", "binomial", "hypergeometric", "stringer",
+    "stringer.meikle", "stringer.lta", "stringer.pvz", "rohrbach",
+    "moment", "coxsnell", "direct", "difference", "quotient",
+    "regression", "mpu"
+  ),
+  alternative = c("less", "two.sided", "greater"),
+  conf.level = 0.95,
+  data = NULL,
+  values = NULL,
+  values.audit = NULL,
+  strata = NULL,
+  times = NULL,
+  x = NULL,
+  n = NULL,
+  N.units = NULL,
+  N.items = NULL,
+  pooling = c("none", "complete", "partial"),
+  prior = FALSE
+)
 }
 \arguments{
 \item{materiality}{a numeric value between 0 and 1 specifying the

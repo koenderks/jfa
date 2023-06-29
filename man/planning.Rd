@@ -4,15 +4,17 @@
 \alias{planning}
 \title{Audit Sampling: Planning}
 \usage{
-planning(materiality = NULL,
-         min.precision = NULL,
-         expected = 0,
-         likelihood = c("poisson", "binomial", "hypergeometric"),
-         conf.level = 0.95,
-         N.units = NULL,
-         by = 1,
-         max = 5000,
-         prior = FALSE)
+planning(
+  materiality = NULL,
+  min.precision = NULL,
+  expected = 0,
+  likelihood = c("poisson", "binomial", "hypergeometric"),
+  conf.level = 0.95,
+  N.units = NULL,
+  by = 1,
+  max = 5000,
+  prior = FALSE
+)
 }
 \arguments{
 \item{materiality}{a numeric value between 0 and 1 specifying the

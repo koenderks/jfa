@@ -26,28 +26,30 @@
 #' a convoluted prior using the \code{+} (for addition) and \code{*} (for
 #' weighing) operators.
 #'
-#' @usage auditPrior(method = c(
-#'              "default", "param", "strict", "impartial", "hyp",
-#'              "arm", "bram", "sample", "factor", "nonparam"
-#'            ),
-#'            likelihood = c(
-#'              "poisson", "binomial", "hypergeometric",
-#'              "normal", "uniform", "cauchy", "t", "chisq",
-#'              "exponential"
-#'            ),
-#'            N.units = NULL,
-#'            alpha = NULL,
-#'            beta = NULL,
-#'            materiality = NULL,
-#'            expected = 0,
-#'            ir = NULL,
-#'            cr = NULL,
-#'            ub = NULL,
-#'            p.hmin = NULL,
-#'            x = NULL, n = NULL,
-#'            factor = NULL,
-#'            samples = NULL,
-#'            conf.level = 0.95)
+#' @usage auditPrior(
+#'   method = c(
+#'     "default", "param", "strict", "impartial", "hyp",
+#'     "arm", "bram", "sample", "factor", "nonparam"
+#'   ),
+#'   likelihood = c(
+#'     "poisson", "binomial", "hypergeometric",
+#'     "normal", "uniform", "cauchy", "t", "chisq",
+#'     "exponential"
+#'   ),
+#'   N.units = NULL,
+#'   alpha = NULL,
+#'   beta = NULL,
+#'   materiality = NULL,
+#'   expected = 0,
+#'   ir = NULL,
+#'   cr = NULL,
+#'   ub = NULL,
+#'   p.hmin = NULL,
+#'   x = NULL, n = NULL,
+#'   factor = NULL,
+#'   samples = NULL,
+#'   conf.level = 0.95
+#' )
 #'
 #' @param method      a character specifying the method by which the prior
 #'   distribution is constructed. Possible options are \code{default},

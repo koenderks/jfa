@@ -20,8 +20,10 @@
 #' \code{html} or \code{pdf} report containing the most relevant statistical
 #' results and their interpretation.
 #'
-#' @usage report(object,
-#'        file = "report.html")
+#' @usage report(
+#'   object,
+#'   file = "report.html"
+#' )
 #'
 #' @param object an object of class \code{jfaEvaluation} as returned by the
 #'   \code{evaluation()} function.

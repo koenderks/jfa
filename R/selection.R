@@ -21,14 +21,18 @@
 #' function returns an object of class \code{jfaSelection} that can be used with
 #' the associated \code{summary()} method.
 #'
-#' @usage selection(data, size, units = c("items", "values"),
-#'           method = c("interval", "cell", "random", "sieve"),
-#'           values = NULL,
-#'           order = NULL,
-#'           decreasing = FALSE,
-#'           randomize = FALSE,
-#'           replace = FALSE,
-#'           start = 1)
+#' @usage selection(
+#'   data,
+#'   size,
+#'   units = c("items", "values"),
+#'   method = c("interval", "cell", "random", "sieve"),
+#'   values = NULL,
+#'   order = NULL,
+#'   decreasing = FALSE,
+#'   randomize = FALSE,
+#'   replace = FALSE,
+#'   start = 1
+#' )
 #'
 #' @param data       a data frame containing the population data.
 #' @param size       an integer larger than 0 specifying the number of units to

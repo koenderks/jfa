@@ -4,14 +4,18 @@
 \alias{selection}
 \title{Audit Sampling: Selection}
 \usage{
-selection(data, size, units = c("items", "values"),
-          method = c("interval", "cell", "random", "sieve"),
-          values = NULL,
-          order = NULL,
-          decreasing = FALSE,
-          randomize = FALSE,
-          replace = FALSE,
-          start = 1)
+selection(
+  data,
+  size,
+  units = c("items", "values"),
+  method = c("interval", "cell", "random", "sieve"),
+  values = NULL,
+  order = NULL,
+  decreasing = FALSE,
+  randomize = FALSE,
+  replace = FALSE,
+  start = 1
+)
 }
 \arguments{
 \item{data}{a data frame containing the population data.}

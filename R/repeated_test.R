@@ -20,10 +20,12 @@
 #' generalizations, this approach examines the entire number at once, not only
 #' the first or last digit(s).
 #'
-#' @usage repeated_test(x,
-#'               check = c("last", "lasttwo", "all"),
-#'               method = c("af", "entropy"),
-#'               samples = 2000)
+#' @usage repeated_test(
+#'   x,
+#'   check = c("last", "lasttwo", "all"),
+#'   method = c("af", "entropy"),
+#'   samples = 2000
+#' )
 #'
 #' @param x       a numeric vector of values from which the digits should be
 #'   analyzed.

@@ -4,8 +4,10 @@
 \alias{report}
 \title{Audit Sampling: Reporting}
 \usage{
-report(object,
-       file = "report.html")
+report(
+  object,
+  file = "report.html"
+)
 }
 \arguments{
 \item{object}{an object of class \code{jfaEvaluation} as returned by the
