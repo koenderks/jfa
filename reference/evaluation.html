@@ -81,26 +81,28 @@ an object of class <code>jfaEvaluation</code> that can be used with associated
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">evaluation</span><span class="op">(</span>materiality <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>             <span class="st">"poisson"</span>, <span class="st">"binomial"</span>, <span class="st">"hypergeometric"</span>, <span class="st">"stringer"</span>,</span>
-<span>             <span class="st">"stringer.meikle"</span>, <span class="st">"stringer.lta"</span>, <span class="st">"stringer.pvz"</span>, <span class="st">"rohrbach"</span>,</span>
-<span>             <span class="st">"moment"</span>, <span class="st">"coxsnell"</span>, <span class="st">"direct"</span>, <span class="st">"difference"</span>, <span class="st">"quotient"</span>,</span>
-<span>             <span class="st">"regression"</span>, <span class="st">"mpu"</span></span>
-<span>           <span class="op">)</span>,</span>
-<span>           alternative <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"less"</span>, <span class="st">"two.sided"</span>, <span class="st">"greater"</span><span class="op">)</span>,</span>
-<span>           conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
-<span>           data <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           values <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           values.audit <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           strata <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           times <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           x <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           n <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           N.units <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           N.items <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           pooling <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"complete"</span>, <span class="st">"partial"</span><span class="op">)</span>,</span>
-<span>           prior <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">evaluation</span><span class="op">(</span></span>
+<span>  materiality <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"poisson"</span>, <span class="st">"binomial"</span>, <span class="st">"hypergeometric"</span>, <span class="st">"stringer"</span>,</span>
+<span>    <span class="st">"stringer.meikle"</span>, <span class="st">"stringer.lta"</span>, <span class="st">"stringer.pvz"</span>, <span class="st">"rohrbach"</span>,</span>
+<span>    <span class="st">"moment"</span>, <span class="st">"coxsnell"</span>, <span class="st">"direct"</span>, <span class="st">"difference"</span>, <span class="st">"quotient"</span>,</span>
+<span>    <span class="st">"regression"</span>, <span class="st">"mpu"</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  alternative <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"less"</span>, <span class="st">"two.sided"</span>, <span class="st">"greater"</span><span class="op">)</span>,</span>
+<span>  conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  values <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  values.audit <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  strata <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  times <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  x <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  n <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  N.units <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  N.items <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pooling <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"complete"</span>, <span class="st">"partial"</span><span class="op">)</span>,</span>
+<span>  prior <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">

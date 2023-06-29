@@ -89,28 +89,30 @@ weighing) operators.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">auditPrior</span><span class="op">(</span>method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>             <span class="st">"default"</span>, <span class="st">"param"</span>, <span class="st">"strict"</span>, <span class="st">"impartial"</span>, <span class="st">"hyp"</span>,</span>
-<span>             <span class="st">"arm"</span>, <span class="st">"bram"</span>, <span class="st">"sample"</span>, <span class="st">"factor"</span>, <span class="st">"nonparam"</span></span>
-<span>           <span class="op">)</span>,</span>
-<span>           likelihood <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>             <span class="st">"poisson"</span>, <span class="st">"binomial"</span>, <span class="st">"hypergeometric"</span>,</span>
-<span>             <span class="st">"normal"</span>, <span class="st">"uniform"</span>, <span class="st">"cauchy"</span>, <span class="st">"t"</span>, <span class="st">"chisq"</span>,</span>
-<span>             <span class="st">"exponential"</span></span>
-<span>           <span class="op">)</span>,</span>
-<span>           N.units <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           alpha <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           beta <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           materiality <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           expected <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>           ir <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           cr <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           ub <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           p.hmin <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           x <span class="op">=</span> <span class="cn">NULL</span>, n <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           factor <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           samples <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           conf.level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">auditPrior</span><span class="op">(</span></span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"default"</span>, <span class="st">"param"</span>, <span class="st">"strict"</span>, <span class="st">"impartial"</span>, <span class="st">"hyp"</span>,</span>
+<span>    <span class="st">"arm"</span>, <span class="st">"bram"</span>, <span class="st">"sample"</span>, <span class="st">"factor"</span>, <span class="st">"nonparam"</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  likelihood <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"poisson"</span>, <span class="st">"binomial"</span>, <span class="st">"hypergeometric"</span>,</span>
+<span>    <span class="st">"normal"</span>, <span class="st">"uniform"</span>, <span class="st">"cauchy"</span>, <span class="st">"t"</span>, <span class="st">"chisq"</span>,</span>
+<span>    <span class="st">"exponential"</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  N.units <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  beta <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  materiality <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  expected <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  ir <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cr <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ub <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  p.hmin <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  x <span class="op">=</span> <span class="cn">NULL</span>, n <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  factor <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  samples <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  conf.level <span class="op">=</span> <span class="fl">0.95</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
