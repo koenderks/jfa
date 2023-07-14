@@ -38,7 +38,7 @@ preferred-citation:
 repository: https://CRAN.R-project.org/package=jfa
 repository-code: https://github.com/koenderks/jfa
 url: https://koenderks.github.io/jfa/
-date-released: '2023-06-29'
+date-released: '2023-07-14'
 contact:
 - family-names: Derks
   given-names: Koen
