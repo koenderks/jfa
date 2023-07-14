@@ -13,10 +13,11 @@ This is a resubmission for version 0.6.7. In this version I have:
 ## R CMD check results
 There were no ERRORs or WARNINGs.
 
-There were 2 NOTES:
+There were 3 NOTES:
 
 * checking installed package size ... NOTE. installed size is 5.7Mb. sub-directories of 1Mb or more: doc 2.3Mb; lib: 2.7Mb
 * GNU make is a SystemRequirements.
+* Namespaces in Imports field not imported from: 'RcppParallel'; 'rstantools'; All declared Imports should be used. 
 
 ## Downstream dependencies
 There are currently no downstream dependencies for this package.
