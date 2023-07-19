@@ -23,7 +23,7 @@
 #' parity, false negative rate parity, false positive rate parity, true positive
 #' rate parity, negative predicted value parity, and statistical parity and
 #' decide whether groups are fair to a certain degree and within a certain
-#' tolerance.
+#' materiality threshold.
 #'
 #' @usage model_bias(
 #'   data,
@@ -31,15 +31,15 @@
 #'   observed,
 #'   predicted,
 #'   reference,
-#'   tolerance = 0.8
+#'   materiality = 0.2
 #' )
 #'
-#' @param data       The input data.
-#' @param grouping   The column name indicating the grouping variable.
-#' @param observed   The column name indicating the observed class labels.
-#' @param predicted  The column name indicating the predicted class labels.
-#' @param reference  The reference class for computing fairness metrics.
-#' @param tolerance  The tolerance value for determining fairness.
+#' @param data         The input data.
+#' @param grouping     The column name indicating the grouping variable.
+#' @param observed     The column name indicating the observed class labels.
+#' @param predicted    The column name indicating the predicted class labels.
+#' @param reference    The reference class for computing fairness metrics.
+#' @param materiality  The materiality value for determining fairness.
 #'
 #' @details The following fairness metrics are computed:
 #'
@@ -77,7 +77,8 @@
 #'   parity.}
 #' \item{ratio}{A data frame containing fairness ratios for each metric,
 #'   comparing each group to the reference group.}
-#' \item{tolerance}{The tolerance value used to determine fairness.}
+#' \item{materiality}{The materiality value used to determine the out of bounds
+#'   metrics.}
 #' \item{data.name}{The name of the input data object.}
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
@@ -106,7 +107,7 @@ model_bias <- function(data,
                        observed,
                        predicted,
                        reference,
-                       tolerance = 0.8) {
+                       materiality = 0.2) {
   dname <- deparse(substitute(data))
   data <- as.data.frame(data, row.names = seq_len(nrow(data)))
   stopifnot("'grouping' does not exist in 'data'" = grouping %in% colnames(data))
@@ -115,7 +116,7 @@ model_bias <- function(data,
   stopifnot("'observed' must be a factor column" = is.factor(data[, observed]))
   stopifnot("'predicted' does not exist in 'data'" = predicted %in% colnames(data))
   stopifnot("'predicted' must be a factor column" = is.factor(data[, predicted]))
-  stopifnot("'tolerance' must be a single value between 0 and 1" = tolerance > 0 && tolerance < 1)
+  stopifnot("'materiality' must be a single value between 0 and 1" = materiality > 0 && materiality < 1)
   groupLevels <- levels(data[, grouping])
   stopifnot("error" = reference %in% groupLevels)
   refIndex <- which(groupLevels == reference)
@@ -147,7 +148,7 @@ model_bias <- function(data,
   ratio <- as.data.frame(apply(fairness[, -1], 2, function(x, ref) as.numeric(x) / as.numeric(x[ref]), ref = refIndex))
   ratio <- cbind(ratio, deviation = apply(ratio, 1, function(x) {
     x <- x[!is.na(x)]
-    return(sum(x < tolerance | x > 1 + (1 - tolerance)))
+    return(sum(x < 1 - materiality | x > 1 + materiality))
   }))
   ratio <- cbind(group = fairness[, 1], ratio)
   names(confmat) <- groupLevels
@@ -157,7 +158,7 @@ model_bias <- function(data,
   result[["performance"]] <- performance
   result[["fairness"]] <- fairness
   result[["ratio"]] <- ratio
-  result[["tolerance"]] <- tolerance
+  result[["materiality"]] <- materiality
   result[["data.name"]] <- dname
   class(result) <- c("jfaModelBias", "list")
   return(result)

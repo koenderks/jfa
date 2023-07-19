@@ -10,7 +10,7 @@ model_bias(
   observed,
   predicted,
   reference,
-  tolerance = 0.8
+  materiality = 0.2
 )
 }
 \arguments{
@@ -24,7 +24,7 @@ model_bias(
 
 \item{reference}{The reference class for computing fairness metrics.}
 
-\item{tolerance}{The tolerance value for determining fairness.}
+\item{materiality}{The materiality value for determining fairness.}
 }
 \value{
 An object of class \code{jfaModelBias} containing:
@@ -40,7 +40,8 @@ An object of class \code{jfaModelBias} containing:
   parity.}
 \item{ratio}{A data frame containing fairness ratios for each metric,
   comparing each group to the reference group.}
-\item{tolerance}{The tolerance value used to determine fairness.}
+\item{materiality}{The materiality value used to determine the out of bounds
+  metrics.}
 \item{data.name}{The name of the input data object.}
 }
 \description{
@@ -52,7 +53,7 @@ demographic parity, predictive parity, predictive rate parity, accuracy
 parity, false negative rate parity, false positive rate parity, true positive
 rate parity, negative predicted value parity, and statistical parity and
 decide whether groups are fair to a certain degree and within a certain
-tolerance.
+materiality threshold.
 }
 \details{
 The following fairness metrics are computed:
