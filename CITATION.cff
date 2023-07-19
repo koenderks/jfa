@@ -18,7 +18,8 @@ abstract: Provides statistical methods for auditing as implemented in JASP for A
   in Derks et al. (2021) <doi:10.1111/ijau.12240>, Derks et al. (2021) <doi:10.31234/osf.io/kzqp5>,
   and Derks et al. (2022) <doi:10.31234/osf.io/8nf3e>. Second, the package provides
   statistical methods for auditing data, including (Bayesian) tests of digit distributions
-  and tests for repeated values.
+  and tests for repeated values. Finally, the package includes methods for auditing
+  algorithms on the aspect of fairness and bias.
 authors:
 - family-names: Derks
   given-names: Koen
@@ -330,6 +331,23 @@ references:
     given-names: André
   year: '2023'
   version: '>= 0.1.6'
+- type: software
+  title: randomForest
+  abstract: 'randomForest: Breiman and Cutler''s Random Forests for Classification
+    and Regression'
+  notes: Suggests
+  url: https://www.stat.berkeley.edu/~breiman/RandomForests/
+  repository: https://CRAN.R-project.org/package=randomForest
+  authors:
+  - family-names: Breiman
+    given-names: Fortran original by Leo
+  - family-names: Cutler
+    given-names: Adele
+  - family-names: Liaw
+    given-names: R port by Andy
+  - family-names: Wiener.
+    given-names: Matthew
+  year: '2023'
 - type: software
   title: rmarkdown
   abstract: 'rmarkdown: Dynamic Documents for R'
