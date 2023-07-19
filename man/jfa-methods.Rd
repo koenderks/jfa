@@ -103,8 +103,7 @@
 
 \method{plot}{jfaModelBias}(
   x,
-  measures = c("dp", "pp", "prp", "ap", "fnrp", "fprp", "tprp", "npvp", "sp"),
-  ratio = TRUE
+  type = c("dp", "pp", "prp", "ap", "fnrp", "fprp", "tprp", "npvp", "sp")
 )
 }
 \arguments{
