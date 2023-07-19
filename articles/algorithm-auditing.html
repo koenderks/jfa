@@ -108,23 +108,32 @@
 </h2>
 <p>Welcome to the ‘Algorithm auditing’ vignette of the
 <strong>jfa</strong> package. Here you can find a detailed explanation
-of the functions in the package that facilitate auditing of algorithms.
-For more detailed explanations of each function, read the other
-vignettes on the <a href="https://koenderks.github.io/jfa/">package
-website</a>.</p>
+of the functions in the package that facilitate auditing of algorithms
+and predictive models. For more detailed explanations of each function,
+read the other vignettes on the <a href="https://koenderks.github.io/jfa/">package website</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="functions-and-intended-usage">Functions and intended usage<a class="anchor" aria-label="anchor" href="#functions-and-intended-usage"></a>
 </h2>
-<p>Below you can find an explanation of the available data auditing
+<p>Below you can find an explanation of the available algorithm auditing
 functions in <strong>jfa</strong>.</p>
 <ul>
-<li><a href="#assess-algorithmic-fairness-with-model-fairness"><code>model_fairness()</code></a></li>
+<li><a href="#assess-algorithmic-fairness-with-model_fairness"><code>model_fairness()</code></a></li>
 </ul>
 <div class="section level3">
 <h3 id="assess-algorithmic-fairness-with-model_fairness">Assess algorithmic fairness with <code>model_fairness()</code><a class="anchor" aria-label="anchor" href="#assess-algorithmic-fairness-with-model_fairness"></a>
 </h3>
 <p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></p>
+<p>The function <code><a href="../reference/model_fairness.html">model_fairness()</a></code> function detects bias in
+algorithmic decision-making systems by computing various fairness
+metrics. It provides an assessment of fairness across different groups
+based on the observed and predicted outcomes. The function allows for
+evaluating fairness using metrics such as demographic parity, predictive
+parity, predictive rate parity, accuracy parity, false negative rate
+parity, false positive rate parity, true positive rate parity, negative
+predicted value parity, and statistical parity and decide whether groups
+are fair to a certain degree and within a certain materiality
+threshold.</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
@@ -133,7 +142,9 @@ functions in <strong>jfa</strong>.</p>
 <span>  <span class="va">target</span>,</span>
 <span>  <span class="va">predictions</span>,</span>
 <span>  reference <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  positive <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  positive <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  materiality <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>  conf.level <span class="op">=</span> <span class="fl">0.95</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><em>Example usage:</em></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -168,6 +179,10 @@ following benchmarks:</p>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
+<ul>
+<li>Kozodoi N, V. Varga T (2021). fairness: Algorithmic Fairness
+Metrics. R package version 1.2.2.</li>
+</ul>
 </div>
   </div>
 
