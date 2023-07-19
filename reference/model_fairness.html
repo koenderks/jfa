@@ -133,6 +133,11 @@ column is used.</p></dd>
 <dd><p>The materiality value for determining fairness.</p></dd>
 
 
+<dt>alternative</dt>
+<dd><p>The type of confidence interval to produce. Possible
+options are <code>two.sided</code> (the default), <code>greater</code> and <code>less</code>.</p></dd>
+
+
 <dt>conf.level</dt>
 <dd><p>a numeric value between 0 and 1 specifying the
 confidence level (i.e., 1 - audit risk / detection risk).</p></dd>
@@ -148,6 +153,9 @@ confidence level (i.e., 1 - audit risk / detection risk).</p></dd>
 
 <dt>positive</dt>
 <dd><p>The positive class used in computing the fairness metrics.</p></dd>
+
+<dt>alternative</dt>
+<dd><p>The type of confidence interval.</p></dd>
 
 <dt>confusion.matrix</dt>
 <dd><p>A list of confusion matrices for each group.</p></dd>
@@ -177,25 +185,30 @@ confidence level (i.e., 1 - audit risk / detection risk).</p></dd>
 </dl></div>
     <div id="details">
     <h2>Details</h2>
-    <p>The following fairness metrics are computed:</p>
-<ul><li><p>Demographic paritymeasures whether the observed variable is
-    distributed equally across different groups.</p></li>
-<li><p>Predictive paritymeasures whether the predicted variable is
-    distributed equally across different groups.</p></li>
-<li><p>Predictive rate paritymeasures whether the positive prediction rate
-    is the same across different groups.</p></li>
-<li><p>Accuracy paritymeasures whether the overall accuracy is the same
-    across different groups.</p></li>
-<li><p>False negative rate paritymeasures whether the false negative rate
-    is the same across different groups.</p></li>
-<li><p>False positive rate paritymeasures whether the false positive rate
-    is the same across different groups.</p></li>
-<li><p>True positive rate paritymeasures whether the true positive rate is
-    the same across different groups.</p></li>
-<li><p>Negative predicted value paritymeasures whether the negative
-    predicted value is the same across different groups.</p></li>
-<li><p>Statistical paritymeasures whether the predicted variable is
-    distributed equally across different groups.</p></li>
+    <p>The following fairness metrics are computed on the basis of the
+  true positives (TP), false positives (FP), true negative (TN) and false
+  negatives (FN) in the confusion matrix for each group.</p>
+<ul><li><p>Demographic parity: measures whether the observed variable is
+    distributed equally across different groups, calculated as TP + FP.</p></li>
+<li><p>Predictive parity: measures whether the predicted variable is
+    distributed equally across different groups, calculated as (TP + FP) /
+    (TP + FP + TN + FN).</p></li>
+<li><p>Predictive rate parity: measures whether the positive prediction rate
+    is the same across different groups, calculated as TP / (TP + FP).</p></li>
+<li><p>Accuracy parity: measures whether the overall accuracy is the same
+    across different groups, calculated as (TP + TN) / (TP + FP + TN + FN).</p></li>
+<li><p>False negative rate parity: measures whether the false negative rate
+    is the same across different groups, calculated as FN / (FP + FN).</p></li>
+<li><p>False positive rate parity: measures whether the false positive rate
+    is the same across different groups, calculated as FP / (TN + FP).</p></li>
+<li><p>True positive rate parity: measures whether the true positive rate is
+    the same across different groups, calculated as TP / (TP + FN).</p></li>
+<li><p>Negative predicted value parity: measures whether the negative
+    predicted value is the same across different groups, calculated as TN /
+    (TN + FN).</p></li>
+<li><p>Statistical parity: measures whether the predicted variable is
+    distributed equally across different groups, calculated as TN / (TN +
+    FP).</p></li>
 </ul></div>
     <div id="author">
     <h2>Author</h2>
