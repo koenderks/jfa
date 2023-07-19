@@ -89,9 +89,9 @@ materiality threshold.</p>
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">model_fairness</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
-<span>  <span class="va">grouping</span>,</span>
-<span>  <span class="va">observed</span>,</span>
-<span>  <span class="va">predicted</span>,</span>
+<span>  <span class="va">sensitive</span>,</span>
+<span>  <span class="va">target</span>,</span>
+<span>  <span class="va">predictions</span>,</span>
 <span>  <span class="va">reference</span>,</span>
 <span>  materiality <span class="op">=</span> <span class="fl">0.2</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -103,16 +103,16 @@ materiality threshold.</p>
 <dd><p>The input data.</p></dd>
 
 
-<dt>grouping</dt>
-<dd><p>The column name indicating the grouping variable.</p></dd>
+<dt>sensitive</dt>
+<dd><p>The column name indicating the sensitive variable.</p></dd>
 
 
-<dt>observed</dt>
-<dd><p>The column name indicating the observed class labels.</p></dd>
+<dt>target</dt>
+<dd><p>The column name indicating the target class labels.</p></dd>
 
 
-<dt>predicted</dt>
-<dd><p>The column name indicating the predicted class labels.</p></dd>
+<dt>predictions</dt>
+<dd><p>The column name indicating the predictions class labels.</p></dd>
 
 
 <dt>reference</dt>
