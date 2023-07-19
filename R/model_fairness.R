@@ -104,7 +104,9 @@ model_fairness <- function(data,
                            predictions,
                            reference = NULL,
                            positive = NULL,
-                           materiality = 0.2) {
+                           materiality = 0.2,
+                           alternative = c("two.sided", "greater", "less"),
+                           conf.level = 0.95) {
   dname <- deparse(substitute(data))
   data <- as.data.frame(data, row.names = seq_len(nrow(data)))
   stopifnot("'sensitive' does not exist in 'data'" = sensitive %in% colnames(data))
@@ -126,8 +128,10 @@ model_fairness <- function(data,
   stopifnot("'positive' is not a class in 'target'" = positive %in% targetLevels)
   negative <- targetLevels[-which(targetLevels == positive)]
   refIndex <- which(groupLevels == reference)
-  fairness <- data.frame()
+  mle <- data.frame()
   performance <- data.frame()
+  lb <- data.frame()
+  ub <- data.frame()
   confmat <- list()
   for (i in seq_len(nlevels(data[, sensitive]))) {
     group <- levels(data[, sensitive])[i]
@@ -139,16 +143,37 @@ model_fairness <- function(data,
       tn = confmat[[i]][negative, negative],
       fn = confmat[[i]][positive, negative]
     )
+    # Most likely values
     dp <- counts[["tp"]] + counts[["fp"]]
     pp <- (counts[["tp"]] + counts[["fp"]]) / (counts[["tp"]] + counts[["fp"]] + counts[["tn"]] + counts[["fn"]])
     prp <- counts[["tp"]] / (counts[["tp"]] + counts[["fp"]])
     ap <- (counts[["tp"]] + counts[["tn"]]) / (counts[["tp"]] + counts[["fp"]] + counts[["tn"]] + counts[["fn"]])
     fnrp <- counts[["fn"]] / (counts[["tp"]] + counts[["fn"]])
     fprp <- counts[["fp"]] / (counts[["tn"]] + counts[["fp"]])
-    tprp <- (counts[["tp"]] / (counts[["tp"]] + counts[["fn"]]))
+    tprp <- counts[["tp"]] / (counts[["tp"]] + counts[["fn"]])
     npvp <- counts[["tn"]] / (counts[["tn"]] + counts[["fn"]])
     sp <- counts[["tn"]] / (counts[["tn"]] + counts[["fp"]])
-    fairness <- rbind(fairness, data.frame(group, dp, pp, prp, ap, fnrp, fprp, tprp, npvp, sp))
+    # Upper bounds
+    pp_ub <- stats::qbeta(conf.level + (1 - conf.level) / 2, 1 + counts[["tp"]] + counts[["fp"]], counts[["tn"]] + counts[["fn"]])
+    prp_ub <- stats::qbeta(conf.level + (1 - conf.level) / 2, 1 + counts[["tp"]], counts[["fp"]])
+    ap_ub <- stats::qbeta(conf.level + (1 - conf.level) / 2, 1 + counts[["tp"]] + counts[["tn"]], counts[["fp"]] + counts[["fn"]])
+    fnrp_ub <- stats::qbeta(conf.level + (1 - conf.level) / 2, 1 + counts[["fn"]], counts[["tp"]])
+    fprp_ub <- stats::qbeta(conf.level + (1 - conf.level) / 2, 1 + counts[["fp"]], counts[["fp"]])
+    tprp_ub <- stats::qbeta(conf.level + (1 - conf.level) / 2, 1 + counts[["tp"]], counts[["fn"]])
+    npvp_ub <- stats::qbeta(conf.level + (1 - conf.level) / 2, 1 + counts[["tn"]], counts[["fn"]])
+    sp_ub <- stats::qbeta(conf.level + (1 - conf.level) / 2, 1 + counts[["tn"]], counts[["fp"]])
+    # Lower bounds
+    pp_lb <- stats::qbeta((1 - conf.level) / 2, counts[["tp"]] + counts[["fp"]], 1 + counts[["tn"]] + counts[["fn"]])
+    prp_lb <- stats::qbeta((1 - conf.level) / 2, counts[["tp"]], 1 + counts[["fp"]])
+    ap_lb <- stats::qbeta((1 - conf.level) / 2, counts[["tp"]] + counts[["tn"]], 1 + counts[["fp"]] + counts[["fn"]])
+    fnrp_lb <- stats::qbeta((1 - conf.level) / 2, counts[["fn"]], 1 + counts[["tp"]])
+    fprp_lb <- stats::qbeta((1 - conf.level) / 2, counts[["fp"]], 1 + counts[["tn"]])
+    tprp_lb <- stats::qbeta((1 - conf.level) / 2, counts[["tp"]], 1 + counts[["fn"]])
+    npvp_lb <- stats::qbeta((1 - conf.level) / 2, counts[["tn"]], 1 + counts[["fn"]])
+    sp_lb <- stats::qbeta((1 - conf.level) / 2, counts[["tn"]], 1 + counts[["fp"]])
+    mle <- rbind(mle, data.frame(group, dp, pp, prp, ap, fnrp, fprp, tprp, npvp, sp))
+    ub <- rbind(ub, data.frame(group, pp = pp_ub, prp = prp_ub, ap = ap_ub, fnrp = fnrp_ub, fprp = fprp_ub, tprp = tprp_ub, npvp = npvp_ub, sp = sp_ub))
+    lb <- rbind(lb, data.frame(group, pp = pp_lb, prp = prp_lb, ap = ap_lb, fnrp = fnrp_lb, fprp = fprp_lb, tprp = tprp_lb, npvp = npvp_lb, sp = sp_lb))
     support <- sum(counts[1, ])
     accuracy <- (counts[["tp"]] + counts[["tn"]]) / (counts[["tp"]] + counts[["fn"]] + counts[["fp"]] + counts[["tn"]])
     precision <- counts[["tp"]] / (counts[["tp"]] + counts[["fp"]])
@@ -156,20 +181,32 @@ model_fairness <- function(data,
     f1.score <- 2 * ((precision * recall) / (precision + recall))
     performance <- rbind(performance, data.frame(group, support, accuracy, precision, recall, f1.score))
   }
-  ratio <- as.data.frame(apply(fairness[, -1], 2, function(x, ref) as.numeric(x) / as.numeric(x[ref]), ref = refIndex))
-  ratio <- cbind(ratio, deviation = apply(ratio, 1, function(x) {
+  mle_ratio <- as.data.frame(apply(mle[, -1], 2, function(x, ref) as.numeric(x) / as.numeric(x[ref]), ref = refIndex))
+  mle_ratio <- cbind(mle_ratio, deviation = apply(mle_ratio, 1, function(x) {
     x <- x[!is.na(x)]
     return(sum(x < 1 - materiality | x > 1 + materiality))
   }))
-  ratio <- cbind(group = fairness[, 1], ratio)
+  mle_ratio <- cbind(group = mle[, 1], mle_ratio)
+  ub_ratio <- ub
+  lb_ratio <- lb
+  for (i in seq_len(nrow(ub))) {
+    for (j in 2:ncol(ub)) {
+      ub_ratio[i, j] <- ub[i, j] / mle[refIndex, j + 1]
+      lb_ratio[i, j] <- lb[i, j] / mle[refIndex, j + 1]
+    }
+  }
   names(confmat) <- groupLevels
   result <- list()
   result[["reference"]] <- reference
   result[["positive"]] <- positive
   result[["confusion.matrix"]] <- confmat
   result[["performance"]] <- performance
-  result[["fairness"]] <- fairness
-  result[["ratio"]] <- ratio
+  result[["mle"]] <- mle
+  result[["ub"]] <- ub
+  result[["lb"]] <- lb
+  result[["mle_ratio"]] <- mle_ratio
+  result[["ub_ratio"]] <- ub_ratio
+  result[["lb_ratio"]] <- lb_ratio
   result[["materiality"]] <- materiality
   result[["data.name"]] <- dname
   class(result) <- c("jfaModelBias", "list")
