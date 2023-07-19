@@ -1,8 +1,8 @@
-# jfa version 0.6.7
+# jfa version 0.7.0
 
-This is a resubmission for version 0.6.7. In this version I have:
+This is a resubmission for version 0.7.0. In this version I have:
 
-* Added new output to one of the functions.
+* Added a new function.
 
 ## Test environments
 

@@ -1,3 +1,13 @@
+# jfa 0.7.0
+
+**New features**
+
+- Added a function to compute fairness metrics for algorithm auditing.
+
+**Minor changes**
+
+- Compatibility with `rstantools 2.3.1`.
+
 # jfa 0.6.7
 
 **New features**
