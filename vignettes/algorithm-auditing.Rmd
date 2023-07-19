@@ -21,22 +21,32 @@ library(jfa)
 
 ## Introduction
 
-Welcome to the 'Algorithm auditing' vignette of the **jfa** package. Here you can
-find a detailed explanation of the functions in the package that facilitate
-auditing of algorithms. For more detailed explanations of each
-function, read the other vignettes on the
+Welcome to the 'Algorithm auditing' vignette of the **jfa** package. Here you
+can find a detailed explanation of the functions in the package that facilitate
+auditing of algorithms and predictive models. For more detailed explanations of
+each function, read the other vignettes on the
 [package website](https://koenderks.github.io/jfa/).
 
 ## Functions and intended usage
 
-Below you can find an explanation of the available data auditing functions in
-**jfa**.
+Below you can find an explanation of the available algorithm auditing functions
+in **jfa**.
 
-- [`model_fairness()`](#assess-algorithmic-fairness-with-model-fairness)
+- [`model_fairness()`](#assess-algorithmic-fairness-with-model_fairness)
 
 ### Assess algorithmic fairness with `model_fairness()`
 
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+
+The function `model_fairness()` function detects bias in algorithmic
+decision-making systems by computing various fairness metrics. It provides an
+assessment of fairness across different groups based on the observed and
+predicted outcomes. The function allows for evaluating fairness using metrics
+such as demographic parity, predictive parity, predictive rate parity, accuracy
+parity, false negative rate parity, false positive rate parity, true positive
+rate parity, negative predicted value parity, and statistical parity and decide
+whether groups are fair to a certain degree and within a certain materiality
+threshold.
 
 *Full function with default arguments:*
 
@@ -47,7 +57,9 @@ model_fairness(
   target,
   predictions,
   reference = NULL,
-  positive = NULL
+  positive = NULL,
+  materiality = 0.2,
+  conf.level = 0.95
 )
 ```
 
@@ -67,3 +79,5 @@ benchmarks:
 - [fairness](https://cran.r-project.org/package=fairness) (R package version 1.2.2)
 
 ## References
+
+- Kozodoi N, V. Varga T (2021). fairness: Algorithmic Fairness Metrics. R package version 1.2.2.
