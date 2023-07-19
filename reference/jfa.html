@@ -205,6 +205,29 @@ For documentation on jfa itself, including the manual and user guide
 <span class="r-out co"><span class="r-pr">#&gt;</span> data:  sinoForest[["value"]]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> n = 772, MAD = 0.0065981, X-squared = 7.6517, df = 8, p-value = 0.4682</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> alternative hypothesis: leading digit(s) are not distributed according to the benford distribution.</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">######################################</span></span></span>
+<span class="r-in"><span><span class="co">### Example 3: Algorithm auditing ####</span></span></span>
+<span class="r-in"><span><span class="co">######################################</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Load the sinoForest data set</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">'compas'</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Test first digits in the data against Benford's law</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span></span>
+<span class="r-in"><span>               reference <span class="op">=</span> <span class="st">"Caucasian"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Fairness Metrics and Bias Detection</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> data:  compas</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> reference group:  Caucasian</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Sensitive groups (5):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  African_American: 5 measures outside tolerance region</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Asian: 4 measures outside tolerance region</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Hispanic: 1 measures outside tolerance region</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Native_American: 2 measures outside tolerance region</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Other: 1 measures outside tolerance region</span>
 </code></pre></div>
     </div>
   </div>

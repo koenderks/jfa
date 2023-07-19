@@ -251,15 +251,15 @@ misstatement in the sample.</p>
 <div class="section level2">
 <h2 id="data-auditing">Data auditing<a class="anchor" aria-label="anchor" href="#data-auditing"></a>
 </h2>
-<p>The <code><a href="../reference/digit_test.html">digit_test()</a></code> function can be used to test the
-distribution of leading or last digits in a variable against a
-pre-specified distribution (e.g., Benford’s law).</p>
 <p>See the package vignette <a href="https://koenderks.github.io/jfa/articles/data-auditing.html">Data
 auditing: Get started</a> for more details about <strong>jfa</strong>’s
 data auditing functionality.</p>
 <div class="section level3">
 <h3 id="functions-and-intended-usage-1">Functions and intended usage<a class="anchor" aria-label="anchor" href="#functions-and-intended-usage-1"></a>
 </h3>
+<p>The <code><a href="../reference/digit_test.html">digit_test()</a></code> function can be used to test the
+distribution of leading or last digits in a variable against a
+pre-specified distribution (e.g., Benford’s law).</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Digit distribution test</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/digit_test.html">digit_test</a></span><span class="op">(</span><span class="va">sinoForest</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"first"</span>, reference <span class="op">=</span> <span class="st">"benford"</span><span class="op">)</span></span>
@@ -283,11 +283,44 @@ numbers in a variable for repeated values.</p>
 <span><span class="co">##  Repeated Values Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sanitizer$value</span></span>
-<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.002</span></span>
+<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0028</span></span>
 <span><span class="co">## alternative hypothesis: average frequency in data is greater than for random data.</span></span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <p><img src="jfa_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto;"></p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="algorithm-auditing">Algorithm auditing<a class="anchor" aria-label="anchor" href="#algorithm-auditing"></a>
+</h2>
+<p>See the package vignette <a href="https://koenderks.github.io/jfa/articles/algorithm-auditing.html">Algorithm
+auditing: Get started</a> for more details about <strong>jfa</strong>’s
+algorithm auditing functionality.</p>
+<div class="section level3">
+<h3 id="functions-and-intended-usage-2">Functions and intended usage<a class="anchor" aria-label="anchor" href="#functions-and-intended-usage-2"></a>
+</h3>
+<p>The <code><a href="../reference/model_fairness.html">model_fairness()</a></code> function can be used to assess
+fairness and bias in a machine learning algorithm.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Model Fairness</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
+<span>               reference <span class="op">=</span> <span class="st">"Caucasian"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Fairness Metrics and Bias Detection</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## data:  compas</span></span>
+<span><span class="co">## reference group:  Caucasian</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Sensitive groups (5):</span></span>
+<span><span class="co">##  African_American: 5 measures outside tolerance region</span></span>
+<span><span class="co">##  Asian: 4 measures outside tolerance region</span></span>
+<span><span class="co">##  Hispanic: 1 measures outside tolerance region</span></span>
+<span><span class="co">##  Native_American: 2 measures outside tolerance region</span></span>
+<span><span class="co">##  Other: 1 measures outside tolerance region</span></span></code></pre>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<p><img src="jfa_files/figure-html/unnamed-chunk-8-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 </div>
   </div>

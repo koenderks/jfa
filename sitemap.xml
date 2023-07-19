@@ -73,6 +73,9 @@
     <loc>https://koenderks.github.io/jfa/reference/carrier.html</loc>
   </url>
   <url>
+    <loc>https://koenderks.github.io/jfa/reference/compas.html</loc>
+  </url>
+  <url>
     <loc>https://koenderks.github.io/jfa/reference/digit_test.html</loc>
   </url>
   <url>
@@ -88,7 +91,7 @@
     <loc>https://koenderks.github.io/jfa/reference/jfa.html</loc>
   </url>
   <url>
-    <loc>https://koenderks.github.io/jfa/reference/model_bias.html</loc>
+    <loc>https://koenderks.github.io/jfa/reference/model_fairness.html</loc>
   </url>
   <url>
     <loc>https://koenderks.github.io/jfa/reference/planning.html</loc>
