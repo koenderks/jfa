@@ -94,7 +94,8 @@ materiality threshold. Currently, it only supports binary classification.</p>
 <span>  <span class="va">predictions</span>,</span>
 <span>  reference <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  positive <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  materiality <span class="op">=</span> <span class="fl">0.2</span></span>
+<span>  materiality <span class="op">=</span> <span class="fl">0.2</span>,</span>
+<span>  conf.level <span class="op">=</span> <span class="fl">0.95</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -130,6 +131,11 @@ column is used.</p></dd>
 
 <dt>materiality</dt>
 <dd><p>The materiality value for determining fairness.</p></dd>
+
+
+<dt>conf.level</dt>
+<dd><p>a numeric value between 0 and 1 specifying the
+confidence level (i.e., 1 - audit risk / detection risk).</p></dd>
 
 </dl></div>
     <div id="value">
