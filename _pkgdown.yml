@@ -86,9 +86,9 @@ reference:
       - repeated_test
   - title: "Algorithm auditing"
     desc: >
-      Functions for algorithm auditing, such as determining fairness.
+      Functions for auditing the output of algorithms with respect to fairness.
     contents:
-      - model_bias
+      - model_fairness
   - title: "Data sets"
     desc: >
       Example data sets included in the **jfa** package.
@@ -97,6 +97,7 @@ reference:
       - benchmark
       - BuildIt
       - carrier
+      - compas
       - retailer
       - sanitizer
       - sinoForest

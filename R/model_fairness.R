@@ -25,7 +25,7 @@
 #' decide whether groups are fair to a certain degree and within a certain
 #' materiality threshold.
 #'
-#' @usage model_bias(
+#' @usage model_fairness(
 #'   data,
 #'   grouping,
 #'   observed,
@@ -86,28 +86,16 @@
 #' @keywords algorithm audit bias fairness model performance
 #'
 #' @examples
-#' library(randomForest)
-#' data(iris)
-#' set.seed(1)
-#'
-#' iris$Priveledged <- factor(sample(c("Yes", "No", "Unknown"), nrow(iris), TRUE))
-#' train_index <- sample.int(nrow(iris), 100)
-#' train <- iris[train_index, ]
-#' test <- iris[-train_index, ]
-#' model <- randomForest(Species ~ ., data = train)
-#' iris$Predicted <- factor(predict(model, newdata = test))
-#'
-#' model_bias(iris, "Priveledged", "Species", "Predicted",
-#'   reference = "No"
-#' )
+#' model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
+#'                reference = "Caucasian")
 #' @export
 
-model_bias <- function(data,
-                       grouping,
-                       observed,
-                       predicted,
-                       reference,
-                       materiality = 0.2) {
+model_fairness <- function(data,
+                           grouping,
+                           observed,
+                           predicted,
+                           reference,
+                           materiality = 0.2) {
   dname <- deparse(substitute(data))
   data <- as.data.frame(data, row.names = seq_len(nrow(data)))
   stopifnot("'grouping' does not exist in 'data'" = grouping %in% colnames(data))
@@ -118,7 +106,7 @@ model_bias <- function(data,
   stopifnot("'predicted' must be a factor column" = is.factor(data[, predicted]))
   stopifnot("'materiality' must be a single value between 0 and 1" = materiality > 0 && materiality < 1)
   groupLevels <- levels(data[, grouping])
-  stopifnot("error" = reference %in% groupLevels)
+  stopifnot("'reference' is not a class in 'grouping'" = reference %in% groupLevels)
   refIndex <- which(groupLevels == reference)
   targetLevels <- levels(data[, observed])
   fairness <- data.frame()

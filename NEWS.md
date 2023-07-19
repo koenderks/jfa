@@ -2,7 +2,7 @@
 
 **New features**
 
-- Added a new function `model_bias()` to compute fairness metrics for algorithm auditing on the basis of predictions of an algorithm.
+- Added a new function `model_fairness()` to compute fairness metrics for algorithm auditing on the basis of predictions of an algorithm.
 
 **Minor changes**
 

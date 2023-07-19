@@ -110,14 +110,14 @@ summary(stage4)
 
 ## Data auditing
 
-The `digit_test()` function can be used to test the distribution of leading or
-last digits in a variable against a pre-specified distribution (e.g., Benford's
-law).
-
 See the package vignette [Data auditing: Get started](https://koenderks.github.io/jfa/articles/data-auditing.html)
 for more details about **jfa**'s data auditing functionality.
 
 ### Functions and intended usage
+
+The `digit_test()` function can be used to test the distribution of leading or
+last digits in a variable against a pre-specified distribution (e.g., Benford's
+law).
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 # Digit distribution test
@@ -132,6 +132,24 @@ repeated values.
 ```{r fig.align="center", fig.height=4, fig.width=6}
 # Repeated values test
 x <- repeated_test(sanitizer$value, check = "lasttwo", samples = 5000)
+print(x)
+plot(x)
+```
+
+## Algorithm auditing
+
+See the package vignette [Algorithm auditing: Get started](https://koenderks.github.io/jfa/articles/algorithm-auditing.html)
+for more details about **jfa**'s algorithm auditing functionality.
+
+### Functions and intended usage
+
+The `model_fairness()` function can be used to assess fairness and bias in a
+machine learning algorithm.
+
+```{r fig.align="center", fig.height=4, fig.width=6}
+# Model Fairness
+x <- model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
+               reference = "Caucasian")
 print(x)
 plot(x)
 ```
