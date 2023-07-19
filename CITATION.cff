@@ -294,6 +294,21 @@ references:
   year: '2023'
   version: '>= 1.4'
 - type: software
+  title: fairness
+  abstract: 'fairness: Algorithmic Fairness Metrics'
+  notes: Suggests
+  url: https://kozodoi.me/r/fairness/packages/2020/05/01/fairness-tutorial.html
+  repository: https://CRAN.R-project.org/package=fairness
+  authors:
+  - family-names: Kozodoi
+    given-names: Nikita
+    email: n.kozodoi@icloud.com
+  - family-names: V. Varga
+    given-names: Tibor
+    email: tirgit@hotmail.com
+    orcid: https://orcid.org/0000-0002-2383-699X
+  year: '2023'
+- type: software
   title: kableExtra
   abstract: 'kableExtra: Construct Complex Table with ''kable'' and Pipe Syntax'
   notes: Suggests
