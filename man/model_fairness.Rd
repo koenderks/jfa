@@ -11,7 +11,8 @@ model_fairness(
   predictions,
   reference = NULL,
   positive = NULL,
-  materiality = 0.2
+  materiality = 0.2,
+  conf.level = 0.95
 )
 }
 \arguments{
@@ -32,6 +33,9 @@ If \code{NULL} (the default), the first level of the \code{target}
 column is used.}
 
 \item{materiality}{The materiality value for determining fairness.}
+
+\item{conf.level}{a numeric value between 0 and 1 specifying the
+confidence level (i.e., 1 - audit risk / detection risk).}
 }
 \value{
 An object of class \code{jfaModelBias} containing:

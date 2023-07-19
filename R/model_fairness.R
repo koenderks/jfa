@@ -32,7 +32,8 @@
 #'   predictions,
 #'   reference = NULL,
 #'   positive = NULL,
-#'   materiality = 0.2
+#'   materiality = 0.2,
+#'   conf.level = 0.95
 #' )
 #'
 #' @param data         The input data.
@@ -46,6 +47,8 @@
 #'   If \code{NULL} (the default), the first level of the \code{target}
 #'   column is used.
 #' @param materiality  The materiality value for determining fairness.
+#' @param conf.level   a numeric value between 0 and 1 specifying the
+#'   confidence level (i.e., 1 - audit risk / detection risk).
 #'
 #' @details The following fairness metrics are computed:
 #'
@@ -105,7 +108,6 @@ model_fairness <- function(data,
                            reference = NULL,
                            positive = NULL,
                            materiality = 0.2,
-                           alternative = c("two.sided", "greater", "less"),
                            conf.level = 0.95) {
   dname <- deparse(substitute(data))
   data <- as.data.frame(data, row.names = seq_len(nrow(data)))

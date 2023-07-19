@@ -1121,48 +1121,57 @@ plot.jfaModelBias <- function(x, type = c("dp", "pp", "prp", "ap", "fnrp", "fprp
   groupLevels <- names(x[["confusion.matrix"]])
   ind <- which(groupLevels == x[["reference"]])
   groupLevels <- groupLevels[-ind]
-  mle <- x$mle_ratio[-ind, type]
+  mle_ratio <- x$mle_ratio[, type, drop = FALSE]
   mle <- stats::reshape(
-    mle,
+    mle_ratio[-ind, , drop = FALSE],
     direction = "long",
     idvar = "group",
     varying = type,
     v.names = "value",
     timevar = "variable"
   )
-  lb <- x$lb_ratio[-ind, type[type != "dp"]]
-  lb <- stats::reshape(
-    lb,
-    direction = "long",
-    idvar = "group",
-    varying = type[type != "dp"],
-    v.names = "value",
-    timevar = "variable"
-  )
-  lb$variable <- lb$variable + 1
-  ub <- x$ub_ratio[-ind, type[type != "dp"]]
-  ub <- stats::reshape(
-    ub,
-    direction = "long",
-    idvar = "group",
-    varying = type[type != "dp"],
-    v.names = "value",
-    timevar = "variable"
-  )
-  ub$variable <- ub$variable + 1
-  ratio <- cbind(mle, lb = c(x$mle_ratio$dp[-ind], lb[, 2]), ub = c(x$mle_ratio$dp[-ind], ub[, 2]))
+  if (length(type[type != "dp"]) > 0) {
+    lb_ratio <- x$lb_ratio[, type[type != "dp"], drop = FALSE]
+    lb <- stats::reshape(
+      lb_ratio[-ind, , drop = FALSE],
+      direction = "long",
+      idvar = "group",
+      varying = type[type != "dp"],
+      v.names = "value",
+      timevar = "variable"
+    )
+    ub_ratio <- x$ub_ratio[, type[type != "dp"], drop = FALSE]
+    ub <- stats::reshape(
+      ub_ratio[-ind, , drop = FALSE],
+      direction = "long",
+      idvar = "group",
+      varying = type[type != "dp"],
+      v.names = "value",
+      timevar = "variable"
+    )
+    if ("dp" %in% type) {
+      lb$variable <- lb$variable + 1
+      ub$variable <- ub$variable + 1
+    }
+    prefix <- if ("dp" %in% type) mle_ratio$dp[-ind] else NULL
+    ratio <- cbind(mle, lb = c(prefix, lb[, 2]), ub = c(prefix, ub[, 2]))
+  } else {
+    ratio <- mle
+  }
   ratio[["group"]] <- factor(groupLevels[ratio[["group"]]], levels = groupLevels)
   ratio[["variable"]] <- factor(toupper(type[ratio[["variable"]]]), levels = toupper(type))
   yBreaks <- pretty(c(0, ratio[["value"]], 1 + (1 - x[["materiality"]]), ratio[["ub"]]), min.n = 4)
   p <- ggplot2::ggplot(data = ratio, mapping = ggplot2::aes(x = group, y = value, fill = variable)) +
     ggplot2::geom_col(colour = "black", position = ggplot2::position_dodge()) +
-    ggplot2::geom_errorbar(mapping = ggplot2::aes(ymin = lb, ymax = ub), width = 0.5, position = ggplot2::position_dodge(width = 0.9)) +
     ggplot2::scale_x_discrete(name = "Sensitive Group") +
-    ggplot2::scale_y_continuous(name = paste0("Ratio to Group '", x[["reference"]], "'"), breaks = yBreaks, limits = range(yBreaks)) +
+    ggplot2::scale_y_continuous(name = "Ratio to Reference Group", breaks = yBreaks, limits = range(yBreaks)) +
     ggplot2::annotate(geom = "rect", xmin = -Inf, xmax = Inf, ymin = 1 - x[["materiality"]], ymax = 1 + x[["materiality"]], fill = "lightgray", alpha = 0.5) +
     ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks)) +
     ggplot2::geom_segment(x = -Inf, xend = Inf, y = 1, yend = 1, linetype = "dashed", color = "black", linewidth = 0.35) +
     ggplot2::scale_fill_brewer(name = "Measure", type = "div")
+  if (length(type[type != "dp"]) > 0) {
+    p <- p + ggplot2::geom_errorbar(mapping = ggplot2::aes(ymin = lb, ymax = ub), width = 0.5, position = ggplot2::position_dodge(width = 0.9))
+  }
   p <- .theme_jfa(p)
   return(p)
 }
