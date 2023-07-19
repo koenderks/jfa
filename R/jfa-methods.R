@@ -1031,12 +1031,12 @@ print.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
   cat("\n")
   cat(strwrap("Fairness Metrics and Bias Detection", prefix = "\t"), sep = "\n")
   cat("\n")
-  cat("data:  ", x$data.name, "\n", sep = "")
+  cat("data:  ", x[["data.name"]], "\n", sep = "")
   groupLevels <- names(x$confusion.matrix)
-  cat(paste0("reference group:  ", x$reference, "\n"))
+  cat(paste0("reference group:  ", x[["reference"]], "\n"))
   cat(paste0("\nSensitive groups (", length(groupLevels) - 1, "):"))
   for (i in seq_len(length(groupLevels))) {
-    if (groupLevels[i] == x$reference) {
+    if (groupLevels[i] == x[["reference"]]) {
       next
     }
     cat("\n", paste0(groupLevels[i], ": ", x[["ratio"]][[11]][i], " measures outside tolerance region"))
@@ -1049,9 +1049,9 @@ print.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
 print.summary.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
   cat("\n")
   cat(strwrap("Fairness Metrics and Bias Detection Summary", prefix = "\t"), sep = "\n")
-  groupLevels <- names(x$confusion.matrix)
-  ind <- which(groupLevels == x$reference)
-  cat(paste0("\nReference group:  ", x$reference, "\n"))
+  groupLevels <- names(x[["confusion.matrix"]])
+  ind <- which(groupLevels == x[["reference"]])
+  cat(paste0("\nReference group:  ", x[["reference"]], "\n"))
   cat("\nConfusion matrix:\n")
   print(x[["confusion.matrix"]][[ind]])
   cat("\nModel performance:\n")
@@ -1116,10 +1116,10 @@ summary.jfaModelBias <- function(object, digits = getOption("digits"), ...) {
 #' @export
 plot.jfaModelBias <- function(x, type = c("dp", "pp", "prp", "ap", "fnrp", "fprp", "tprp", "npvp", "sp")) {
   value <- variable <- group <- NULL
-  stopifnot("'type' should be one of" = all(type %in% c("dp", "pp", "prp", "ap", "fnrp", "fprp", "tprp", "npvp", "sp")))
+  stopifnot("'type' should be one or more of 'dp', 'pp', 'prp', 'ap', 'fnrp', 'tprp', 'npvp' or 'sp'" = all(type %in% c("dp", "pp", "prp", "ap", "fnrp", "fprp", "tprp", "npvp", "sp")))
   ratio <- x$ratio[, type]
   groupLevels <- names(x[["confusion.matrix"]])
-  ind <- which(groupLevels == x$reference)
+  ind <- which(groupLevels == x[["reference"]])
   ratio <- ratio[-ind, ]
   groupLevels <- groupLevels[-ind]
   ratio <- stats::reshape(
@@ -1130,16 +1130,16 @@ plot.jfaModelBias <- function(x, type = c("dp", "pp", "prp", "ap", "fnrp", "fprp
     v.names = "value",
     timevar = "variable"
   )
-  ratio$group <- factor(groupLevels[ratio$group], levels = groupLevels)
-  ratio$variable <- factor(toupper(type[ratio$variable]), levels = toupper(type))
-  yBreaks <- pretty(c(0, ratio$value, 1 + (1 - x$materiality)), min.n = 4)
+  ratio[["group"]] <- factor(groupLevels[ratio[["group"]]], levels = groupLevels)
+  ratio[["variable"]] <- factor(toupper(type[ratio[["variable"]]]), levels = toupper(type))
+  yBreaks <- pretty(c(0, ratio[["value"]], 1 + (1 - x[["materiality"]])), min.n = 4)
   p <- ggplot2::ggplot(data = ratio, mapping = ggplot2::aes(x = group, y = value)) +
     ggplot2::geom_col(mapping = ggplot2::aes(fill = variable), colour = "black", position = "dodge") +
     ggplot2::scale_x_discrete(name = "Sensitive Group") +
-    ggplot2::scale_y_continuous(name = paste0("Ratio to Group '", x$reference, "'"), breaks = yBreaks, limits = range(yBreaks)) +
-    ggplot2::annotate(geom = "rect", xmin = -Inf, xmax = Inf, ymin = 1 - x$materiality, ymax = 1 + x$materiality, fill = "lightgray", alpha = 0.5) +
+    ggplot2::scale_y_continuous(name = paste0("Ratio to Group '", x[["reference"]], "'"), breaks = yBreaks, limits = range(yBreaks)) +
+    ggplot2::annotate(geom = "rect", xmin = -Inf, xmax = Inf, ymin = 1 - x[["materiality"]], ymax = 1 + x[["materiality"]], fill = "lightgray", alpha = 0.5) +
     ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks)) +
-    ggplot2::geom_segment(x = 1, xend = nlevels(ratio$group), y = -Inf, yend = -Inf) +
+    ggplot2::geom_segment(x = 1, xend = nlevels(ratio[["group"]]), y = -Inf, yend = -Inf) +
     ggplot2::geom_segment(x = -Inf, xend = Inf, y = 1, yend = 1, linetype = "dashed", color = "black", linewidth = 0.35) +
     ggplot2::scale_fill_brewer(name = "Measure", type = "div")
   p <- .theme_jfa(p)

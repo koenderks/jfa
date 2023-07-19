@@ -87,7 +87,8 @@
 #'
 #' @examples
 #' model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-#'                reference = "Caucasian")
+#'   reference = "Caucasian"
+#' )
 #' @export
 
 model_fairness <- function(data,
@@ -117,19 +118,19 @@ model_fairness <- function(data,
     groupDat <- data[data[, sensitive] == group, ]
     confmat[[i]] <- table("target" = groupDat[, target], "predictions" = groupDat[, predictions])
     counts <- data.frame(tp = confmat[[i]][2, 2], fp = confmat[[i]][2, 1], tn = confmat[[i]][1, 1], fn = confmat[[i]][1, 2])
-    dp <- counts$tp + counts$fp
-    pp <- (counts$tp + counts$fp) / (counts$tp + counts$fp + counts$tn + counts$fn)
-    prp <- counts$tp / (counts$tp + counts$fp)
-    ap <- (counts$tp + counts$tn) / (counts$tp + counts$fp + counts$tn + counts$fn)
-    fnrp <- counts$fn / (counts$tp + counts$fn)
-    fprp <- counts$fp / (counts$tn + counts$fp)
-    tprp <- (counts$tp / (counts$tp + counts$fn))
-    npvp <- counts$tn / (counts$tn + counts$fn)
-    sp <- counts$tn / (counts$tn + counts$fp)
+    dp <- counts[["tp"]] + counts[["fp"]]
+    pp <- (counts[["tp"]] + counts[["fp"]]) / (counts[["tp"]] + counts[["fp"]] + counts[["tn"]] + counts[["fn"]])
+    prp <- counts[["tp"]] / (counts[["tp"]] + counts[["fp"]])
+    ap <- (counts[["tp"]] + counts[["tn"]]) / (counts[["tp"]] + counts[["fp"]] + counts[["tn"]] + counts[["fn"]])
+    fnrp <- counts[["fn"]] / (counts[["tp"]] + counts[["fn"]])
+    fprp <- counts[["fp"]] / (counts[["tn"]] + counts[["fp"]])
+    tprp <- (counts[["tp"]] / (counts[["tp"]] + counts[["fn"]]))
+    npvp <- counts[["tn"]] / (counts[["tn"]] + counts[["fn"]])
+    sp <- counts[["tn"]] / (counts[["tn"]] + counts[["fp"]])
     fairness <- rbind(fairness, data.frame(group, dp, pp, prp, ap, fnrp, fprp, tprp, npvp, sp))
-    accuracy <- (counts$tp + counts$tn) / (counts$tp + counts$fn + counts$fp + counts$tn)
-    precision <- counts$tp / (counts$tp + counts$fp)
-    recall <- counts$tp / (counts$tp + counts$fn)
+    accuracy <- (counts[["tp"]] + counts[["tn"]]) / (counts[["tp"]] + counts[["fn"]] + counts[["fp"]] + counts[["tn"]])
+    precision <- counts[["tp"]] / (counts[["tp"]] + counts[["fp"]])
+    recall <- counts[["tp"]] / (counts[["tp"]] + counts[["fn"]])
     f1.score <- 2 * ((precision * recall) / (precision + recall))
     performance <- rbind(performance, data.frame(group, accuracy, precision, recall, f1.score))
   }
