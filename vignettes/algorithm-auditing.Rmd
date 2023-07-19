@@ -54,9 +54,7 @@ model_fairness(
 *Example usage:*
 
 ```{r}
-model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-  reference = "Caucasian", positive = "yes"
-)
+model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted", reference = "Caucasian", positive = "yes")
 ```
 
 ## Benchmarks
