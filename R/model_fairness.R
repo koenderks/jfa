@@ -27,17 +27,17 @@
 #'
 #' @usage model_fairness(
 #'   data,
-#'   grouping,
-#'   observed,
-#'   predicted,
+#'   sensitive,
+#'   target,
+#'   predictions,
 #'   reference,
 #'   materiality = 0.2
 #' )
 #'
 #' @param data         The input data.
-#' @param grouping     The column name indicating the grouping variable.
-#' @param observed     The column name indicating the observed class labels.
-#' @param predicted    The column name indicating the predicted class labels.
+#' @param sensitive     The column name indicating the sensitive variable.
+#' @param target     The column name indicating the target class labels.
+#' @param predictions    The column name indicating the predictions class labels.
 #' @param reference    The reference class for computing fairness metrics.
 #' @param materiality  The materiality value for determining fairness.
 #'
@@ -91,31 +91,31 @@
 #' @export
 
 model_fairness <- function(data,
-                           grouping,
-                           observed,
-                           predicted,
+                           sensitive,
+                           target,
+                           predictions,
                            reference,
                            materiality = 0.2) {
   dname <- deparse(substitute(data))
   data <- as.data.frame(data, row.names = seq_len(nrow(data)))
-  stopifnot("'grouping' does not exist in 'data'" = grouping %in% colnames(data))
-  stopifnot("'grouping' must be a factor column" = is.factor(data[, grouping]))
-  stopifnot("'observed' does not exist in 'data'" = observed %in% colnames(data))
-  stopifnot("'observed' must be a factor column" = is.factor(data[, observed]))
-  stopifnot("'predicted' does not exist in 'data'" = predicted %in% colnames(data))
-  stopifnot("'predicted' must be a factor column" = is.factor(data[, predicted]))
+  stopifnot("'sensitive' does not exist in 'data'" = sensitive %in% colnames(data))
+  stopifnot("'sensitive' must be a factor column" = is.factor(data[, sensitive]))
+  stopifnot("'target' does not exist in 'data'" = target %in% colnames(data))
+  stopifnot("'target' must be a factor column" = is.factor(data[, target]))
+  stopifnot("'predictions' does not exist in 'data'" = predictions %in% colnames(data))
+  stopifnot("'predictions' must be a factor column" = is.factor(data[, predictions]))
   stopifnot("'materiality' must be a single value between 0 and 1" = materiality > 0 && materiality < 1)
-  groupLevels <- levels(data[, grouping])
-  stopifnot("'reference' is not a class in 'grouping'" = reference %in% groupLevels)
+  groupLevels <- levels(data[, sensitive])
+  stopifnot("'reference' is not a class in 'sensitive'" = reference %in% groupLevels)
   refIndex <- which(groupLevels == reference)
-  targetLevels <- levels(data[, observed])
+  targetLevels <- levels(data[, target])
   fairness <- data.frame()
   performance <- data.frame()
   confmat <- list()
-  for (i in seq_len(nlevels(data[, grouping]))) {
-    group <- levels(data[, grouping])[i]
-    groupDat <- data[data[, grouping] == group, ]
-    confmat[[i]] <- table("Observed" = groupDat[, observed], "Predicted" = groupDat[, predicted])
+  for (i in seq_len(nlevels(data[, sensitive]))) {
+    group <- levels(data[, sensitive])[i]
+    groupDat <- data[data[, sensitive] == group, ]
+    confmat[[i]] <- table("target" = groupDat[, target], "predictions" = groupDat[, predictions])
     counts <- data.frame(tp = confmat[[i]][2, 2], fp = confmat[[i]][2, 1], tn = confmat[[i]][1, 1], fn = confmat[[i]][1, 2])
     dp <- counts$tp + counts$fp
     pp <- (counts$tp + counts$fp) / (counts$tp + counts$fp + counts$tn + counts$fn)

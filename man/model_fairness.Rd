@@ -6,9 +6,9 @@
 \usage{
 model_fairness(
   data,
-  grouping,
-  observed,
-  predicted,
+  sensitive,
+  target,
+  predictions,
   reference,
   materiality = 0.2
 )
@@ -16,11 +16,11 @@ model_fairness(
 \arguments{
 \item{data}{The input data.}
 
-\item{grouping}{The column name indicating the grouping variable.}
+\item{sensitive}{The column name indicating the sensitive variable.}
 
-\item{observed}{The column name indicating the observed class labels.}
+\item{target}{The column name indicating the target class labels.}
 
-\item{predicted}{The column name indicating the predicted class labels.}
+\item{predictions}{The column name indicating the predictions class labels.}
 
 \item{reference}{The reference class for computing fairness metrics.}
 
