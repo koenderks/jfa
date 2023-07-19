@@ -47,36 +47,44 @@
 #'   If \code{NULL} (the default), the first level of the \code{target}
 #'   column is used.
 #' @param materiality  The materiality value for determining fairness.
+#' @param alternative  The type of confidence interval to produce. Possible
+#'   options are \code{two.sided} (the default), \code{greater} and \code{less}.
 #' @param conf.level   a numeric value between 0 and 1 specifying the
 #'   confidence level (i.e., 1 - audit risk / detection risk).
 #'
-#' @details The following fairness metrics are computed:
+#' @details The following fairness metrics are computed on the basis of the
+#'   true positives (TP), false positives (FP), true negative (TN) and false
+#'   negatives (FN) in the confusion matrix for each group.
 #'
 #' \itemize{
-#'   \item{Demographic parity}{measures whether the observed variable is
-#'     distributed equally across different groups.}
-#'   \item{Predictive parity}{measures whether the predicted variable is
-#'     distributed equally across different groups.}
-#'   \item{Predictive rate parity}{measures whether the positive prediction rate
-#'     is the same across different groups.}
-#'   \item{Accuracy parity}{measures whether the overall accuracy is the same
-#'     across different groups.}
-#'   \item{False negative rate parity}{measures whether the false negative rate
-#'     is the same across different groups.}
-#'   \item{False positive rate parity}{measures whether the false positive rate
-#'     is the same across different groups.}
-#'   \item{True positive rate parity}{measures whether the true positive rate is
-#'     the same across different groups.}
-#'   \item{Negative predicted value parity}{measures whether the negative
-#'     predicted value is the same across different groups.}
-#'   \item{Statistical parity}{measures whether the predicted variable is
-#'     distributed equally across different groups.}
+#'   \item{Demographic parity: }{measures whether the observed variable is
+#'     distributed equally across different groups, calculated as TP + FP.}
+#'   \item{Predictive parity: }{measures whether the predicted variable is
+#'     distributed equally across different groups, calculated as (TP + FP) /
+#'     (TP + FP + TN + FN).}
+#'   \item{Predictive rate parity: }{measures whether the positive prediction rate
+#'     is the same across different groups, calculated as TP / (TP + FP).}
+#'   \item{Accuracy parity: }{measures whether the overall accuracy is the same
+#'     across different groups, calculated as (TP + TN) / (TP + FP + TN + FN).}
+#'   \item{False negative rate parity: }{measures whether the false negative rate
+#'     is the same across different groups, calculated as FN / (FP + FN).}
+#'   \item{False positive rate parity: }{measures whether the false positive rate
+#'     is the same across different groups, calculated as FP / (TN + FP).}
+#'   \item{True positive rate parity: }{measures whether the true positive rate is
+#'     the same across different groups, calculated as TP / (TP + FN).}
+#'   \item{Negative predicted value parity: }{measures whether the negative
+#'     predicted value is the same across different groups, calculated as TN /
+#'     (TN + FN).}
+#'   \item{Statistical parity: }{measures whether the predicted variable is
+#'     distributed equally across different groups, calculated as TN / (TN +
+#'     FP).}
 #' }
 #'
 #' @return An object of class \code{jfaModelBias} containing:
 #'
 #' \item{reference}{The reference group for computing the fairness metrics.}
 #' \item{positive}{The positive class used in computing the fairness metrics.}
+#' \item{alternative}{The type of confidence interval.}
 #' \item{confusion.matrix}{A list of confusion matrices for each group.}
 #' \item{performance}{A data frame containing performance metrics for each
 #'   group, including accuracy, precision, recall, and F1 score.}
@@ -108,7 +116,9 @@ model_fairness <- function(data,
                            reference = NULL,
                            positive = NULL,
                            materiality = 0.2,
+                           alternative = c("two.sided", "greater", "less"),
                            conf.level = 0.95) {
+  alternative <- match.arg(alternative)
   dname <- deparse(substitute(data))
   data <- as.data.frame(data, row.names = seq_len(nrow(data)))
   stopifnot("'sensitive' does not exist in 'data'" = sensitive %in% colnames(data))
@@ -145,34 +155,39 @@ model_fairness <- function(data,
       tn = confmat[[i]][negative, negative],
       fn = confmat[[i]][positive, negative]
     )
-    # Most likely values
-    dp <- counts[["tp"]] + counts[["fp"]]
-    pp <- (counts[["tp"]] + counts[["fp"]]) / (counts[["tp"]] + counts[["fp"]] + counts[["tn"]] + counts[["fn"]])
-    prp <- counts[["tp"]] / (counts[["tp"]] + counts[["fp"]])
-    ap <- (counts[["tp"]] + counts[["tn"]]) / (counts[["tp"]] + counts[["fp"]] + counts[["tn"]] + counts[["fn"]])
-    fnrp <- counts[["fn"]] / (counts[["tp"]] + counts[["fn"]])
-    fprp <- counts[["fp"]] / (counts[["tn"]] + counts[["fp"]])
-    tprp <- counts[["tp"]] / (counts[["tp"]] + counts[["fn"]])
-    npvp <- counts[["tn"]] / (counts[["tn"]] + counts[["fn"]])
-    sp <- counts[["tn"]] / (counts[["tn"]] + counts[["fp"]])
-    # Upper bounds
-    pp_ub <- stats::qbeta(conf.level + (1 - conf.level) / 2, 1 + counts[["tp"]] + counts[["fp"]], counts[["tn"]] + counts[["fn"]])
-    prp_ub <- stats::qbeta(conf.level + (1 - conf.level) / 2, 1 + counts[["tp"]], counts[["fp"]])
-    ap_ub <- stats::qbeta(conf.level + (1 - conf.level) / 2, 1 + counts[["tp"]] + counts[["tn"]], counts[["fp"]] + counts[["fn"]])
-    fnrp_ub <- stats::qbeta(conf.level + (1 - conf.level) / 2, 1 + counts[["fn"]], counts[["tp"]])
-    fprp_ub <- stats::qbeta(conf.level + (1 - conf.level) / 2, 1 + counts[["fp"]], counts[["fp"]])
-    tprp_ub <- stats::qbeta(conf.level + (1 - conf.level) / 2, 1 + counts[["tp"]], counts[["fn"]])
-    npvp_ub <- stats::qbeta(conf.level + (1 - conf.level) / 2, 1 + counts[["tn"]], counts[["fn"]])
-    sp_ub <- stats::qbeta(conf.level + (1 - conf.level) / 2, 1 + counts[["tn"]], counts[["fp"]])
-    # Lower bounds
-    pp_lb <- stats::qbeta((1 - conf.level) / 2, counts[["tp"]] + counts[["fp"]], 1 + counts[["tn"]] + counts[["fn"]])
-    prp_lb <- stats::qbeta((1 - conf.level) / 2, counts[["tp"]], 1 + counts[["fp"]])
-    ap_lb <- stats::qbeta((1 - conf.level) / 2, counts[["tp"]] + counts[["tn"]], 1 + counts[["fp"]] + counts[["fn"]])
-    fnrp_lb <- stats::qbeta((1 - conf.level) / 2, counts[["fn"]], 1 + counts[["tp"]])
-    fprp_lb <- stats::qbeta((1 - conf.level) / 2, counts[["fp"]], 1 + counts[["tn"]])
-    tprp_lb <- stats::qbeta((1 - conf.level) / 2, counts[["tp"]], 1 + counts[["fn"]])
-    npvp_lb <- stats::qbeta((1 - conf.level) / 2, counts[["tn"]], 1 + counts[["fn"]])
-    sp_lb <- stats::qbeta((1 - conf.level) / 2, counts[["tn"]], 1 + counts[["fp"]])
+    dp <- counts[["tp"]] + counts[["fp"]] # Demographic parity
+    pp <- (counts[["tp"]] + counts[["fp"]]) / (counts[["tp"]] + counts[["fp"]] + counts[["tn"]] + counts[["fn"]]) # Predictive parity
+    prp <- counts[["tp"]] / (counts[["tp"]] + counts[["fp"]]) # Predictive rate parity
+    ap <- (counts[["tp"]] + counts[["tn"]]) / (counts[["tp"]] + counts[["fp"]] + counts[["tn"]] + counts[["fn"]]) # Accuracy parity
+    fnrp <- counts[["fn"]] / (counts[["tp"]] + counts[["fn"]]) # False negative rate parity
+    fprp <- counts[["fp"]] / (counts[["tn"]] + counts[["fp"]]) # False positive rate parity
+    tprp <- counts[["tp"]] / (counts[["tp"]] + counts[["fn"]]) # True positive rate parity
+    npvp <- counts[["tn"]] / (counts[["tn"]] + counts[["fn"]]) # Negative predicted value parity
+    sp <- counts[["tn"]] / (counts[["tn"]] + counts[["fp"]]) # Statistical parity
+    test_pp <- stats::binom.test(x = counts[["tp"]] + counts[["fp"]], n = counts[["tp"]] + counts[["fp"]] + counts[["tn"]] + counts[["fn"]], conf.level = conf.level, alternative = alternative)
+    test_prp <- stats::binom.test(x = counts[["tp"]], n = counts[["tp"]] + counts[["fp"]], conf.level = conf.level, alternative = alternative)
+    test_ap <- stats::binom.test(x = counts[["tp"]] + counts[["tn"]], n = counts[["tp"]] + counts[["tn"]] + counts[["fp"]] + counts[["fn"]], conf.level = conf.level, alternative = alternative)
+    test_fnrp <- stats::binom.test(x = counts[["fn"]], n = counts[["fn"]] + counts[["tp"]], conf.level = conf.level, alternative = alternative)
+    test_fprp <- stats::binom.test(x = counts[["fp"]], n = counts[["tn"]] + counts[["fp"]], conf.level = conf.level, alternative = alternative)
+    test_tprp <- stats::binom.test(x = counts[["tp"]], n = counts[["tp"]] + counts[["fn"]], conf.level = conf.level, alternative = alternative)
+    test_npvp <- stats::binom.test(x = counts[["tn"]], n = counts[["tn"]] + counts[["fn"]], conf.level = conf.level, alternative = alternative)
+    test_sp <- stats::binom.test(x = counts[["tn"]], n = counts[["tn"]] + counts[["fp"]], conf.level = conf.level, alternative = alternative)
+    pp_lb <- test_pp$conf.int[1]
+    prp_lb <- test_prp$conf.int[1]
+    ap_lb <- test_ap$conf.int[1]
+    fnrp_lb <- test_fnrp$conf.int[1]
+    fprp_lb <- test_fprp$conf.int[1]
+    tprp_lb <- test_tprp$conf.int[1]
+    npvp_lb <- test_npvp$conf.int[1]
+    sp_lb <- test_sp$conf.int[1]
+    pp_ub <- test_pp$conf.int[2]
+    prp_ub <- test_prp$conf.int[2]
+    ap_ub <- test_ap$conf.int[2]
+    fnrp_ub <- test_fnrp$conf.int[2]
+    fprp_ub <- test_fprp$conf.int[2]
+    tprp_ub <- test_tprp$conf.int[2]
+    npvp_ub <- test_npvp$conf.int[2]
+    sp_ub <- test_sp$conf.int[2]
     mle <- rbind(mle, data.frame(group, dp, pp, prp, ap, fnrp, fprp, tprp, npvp, sp))
     ub <- rbind(ub, data.frame(group, pp = pp_ub, prp = prp_ub, ap = ap_ub, fnrp = fnrp_ub, fprp = fprp_ub, tprp = tprp_ub, npvp = npvp_ub, sp = sp_ub))
     lb <- rbind(lb, data.frame(group, pp = pp_lb, prp = prp_lb, ap = ap_lb, fnrp = fnrp_lb, fprp = fprp_lb, tprp = tprp_lb, npvp = npvp_lb, sp = sp_lb))
@@ -201,6 +216,7 @@ model_fairness <- function(data,
   result <- list()
   result[["reference"]] <- reference
   result[["positive"]] <- positive
+  result[["alternative"]] <- alternative
   result[["confusion.matrix"]] <- confmat
   result[["performance"]] <- performance
   result[["mle"]] <- mle

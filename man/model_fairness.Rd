@@ -34,6 +34,9 @@ column is used.}
 
 \item{materiality}{The materiality value for determining fairness.}
 
+\item{alternative}{The type of confidence interval to produce. Possible
+options are \code{two.sided} (the default), \code{greater} and \code{less}.}
+
 \item{conf.level}{a numeric value between 0 and 1 specifying the
 confidence level (i.e., 1 - audit risk / detection risk).}
 }
@@ -42,6 +45,7 @@ An object of class \code{jfaModelBias} containing:
 
 \item{reference}{The reference group for computing the fairness metrics.}
 \item{positive}{The positive class used in computing the fairness metrics.}
+\item{alternative}{The type of confidence interval.}
 \item{confusion.matrix}{A list of confusion matrices for each group.}
 \item{performance}{A data frame containing performance metrics for each
   group, including accuracy, precision, recall, and F1 score.}
@@ -68,27 +72,32 @@ decide whether groups are fair to a certain degree and within a certain
 materiality threshold. Currently, it only supports binary classification.
 }
 \details{
-The following fairness metrics are computed:
+The following fairness metrics are computed on the basis of the
+  true positives (TP), false positives (FP), true negative (TN) and false
+  negatives (FN) in the confusion matrix for each group.
 
 \itemize{
-  \item{Demographic parity}{measures whether the observed variable is
-    distributed equally across different groups.}
-  \item{Predictive parity}{measures whether the predicted variable is
-    distributed equally across different groups.}
-  \item{Predictive rate parity}{measures whether the positive prediction rate
-    is the same across different groups.}
-  \item{Accuracy parity}{measures whether the overall accuracy is the same
-    across different groups.}
-  \item{False negative rate parity}{measures whether the false negative rate
-    is the same across different groups.}
-  \item{False positive rate parity}{measures whether the false positive rate
-    is the same across different groups.}
-  \item{True positive rate parity}{measures whether the true positive rate is
-    the same across different groups.}
-  \item{Negative predicted value parity}{measures whether the negative
-    predicted value is the same across different groups.}
-  \item{Statistical parity}{measures whether the predicted variable is
-    distributed equally across different groups.}
+  \item{Demographic parity: }{measures whether the observed variable is
+    distributed equally across different groups, calculated as TP + FP.}
+  \item{Predictive parity: }{measures whether the predicted variable is
+    distributed equally across different groups, calculated as (TP + FP) /
+    (TP + FP + TN + FN).}
+  \item{Predictive rate parity: }{measures whether the positive prediction rate
+    is the same across different groups, calculated as TP / (TP + FP).}
+  \item{Accuracy parity: }{measures whether the overall accuracy is the same
+    across different groups, calculated as (TP + TN) / (TP + FP + TN + FN).}
+  \item{False negative rate parity: }{measures whether the false negative rate
+    is the same across different groups, calculated as FN / (FP + FN).}
+  \item{False positive rate parity: }{measures whether the false positive rate
+    is the same across different groups, calculated as FP / (TN + FP).}
+  \item{True positive rate parity: }{measures whether the true positive rate is
+    the same across different groups, calculated as TP / (TP + FN).}
+  \item{Negative predicted value parity: }{measures whether the negative
+    predicted value is the same across different groups, calculated as TN /
+    (TN + FN).}
+  \item{Statistical parity: }{measures whether the predicted variable is
+    distributed equally across different groups, calculated as TN / (TN +
+    FP).}
 }
 }
 \examples{
