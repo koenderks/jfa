@@ -9,7 +9,8 @@ model_fairness(
   sensitive,
   target,
   predictions,
-  reference,
+  reference = NULL,
+  positive = NULL,
   materiality = 0.2
 )
 }
@@ -22,14 +23,21 @@ model_fairness(
 
 \item{predictions}{The column name indicating the predictions class labels.}
 
-\item{reference}{The reference class for computing fairness metrics.}
+\item{reference}{The reference class for computing the fairness metrics.
+If \code{NULL} (the default), the first level of the \code{sensitive}
+column is used.}
+
+\item{positive}{The positive class for computing the fairness metrics.
+If \code{NULL} (the default), the first level of the \code{target}
+column is used.}
 
 \item{materiality}{The materiality value for determining fairness.}
 }
 \value{
 An object of class \code{jfaModelBias} containing:
 
-\item{reference}{The reference group for computing fairness metrics.}
+\item{reference}{The reference group for computing the fairness metrics.}
+\item{positive}{The positive class used in computing the fairness metrics.}
 \item{confusion.matrix}{A list of confusion matrices for each group.}
 \item{performance}{A data frame containing performance metrics for each
   group, including accuracy, precision, recall, and F1 score.}
@@ -53,7 +61,7 @@ demographic parity, predictive parity, predictive rate parity, accuracy
 parity, false negative rate parity, false positive rate parity, true positive
 rate parity, negative predicted value parity, and statistical parity and
 decide whether groups are fair to a certain degree and within a certain
-materiality threshold.
+materiality threshold. Currently, it only supports binary classification.
 }
 \details{
 The following fairness metrics are computed:
@@ -81,7 +89,8 @@ The following fairness metrics are computed:
 }
 \examples{
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-               reference = "Caucasian")
+  reference = "Caucasian", positive = "yes"
+)
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}

@@ -103,7 +103,8 @@
 
 \method{plot}{jfaModelBias}(
   x,
-  type = c("dp", "pp", "prp", "ap", "fnrp", "fprp", "tprp", "npvp", "sp")
+  type = c("dp", "pp", "prp", "ap", "fnrp", "fprp", "tprp", "npvp", "sp"),
+  ...
 )
 }
 \arguments{

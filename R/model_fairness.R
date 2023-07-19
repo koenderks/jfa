@@ -23,22 +23,28 @@
 #' parity, false negative rate parity, false positive rate parity, true positive
 #' rate parity, negative predicted value parity, and statistical parity and
 #' decide whether groups are fair to a certain degree and within a certain
-#' materiality threshold.
+#' materiality threshold. Currently, it only supports binary classification.
 #'
 #' @usage model_fairness(
 #'   data,
 #'   sensitive,
 #'   target,
 #'   predictions,
-#'   reference,
+#'   reference = NULL,
+#'   positive = NULL,
 #'   materiality = 0.2
 #' )
 #'
 #' @param data         The input data.
-#' @param sensitive     The column name indicating the sensitive variable.
-#' @param target     The column name indicating the target class labels.
-#' @param predictions    The column name indicating the predictions class labels.
-#' @param reference    The reference class for computing fairness metrics.
+#' @param sensitive    The column name indicating the sensitive variable.
+#' @param target       The column name indicating the target class labels.
+#' @param predictions  The column name indicating the predictions class labels.
+#' @param reference    The reference class for computing the fairness metrics.
+#'   If \code{NULL} (the default), the first level of the \code{sensitive}
+#'   column is used.
+#' @param positive     The positive class for computing the fairness metrics.
+#'   If \code{NULL} (the default), the first level of the \code{target}
+#'   column is used.
 #' @param materiality  The materiality value for determining fairness.
 #'
 #' @details The following fairness metrics are computed:
@@ -66,7 +72,8 @@
 #'
 #' @return An object of class \code{jfaModelBias} containing:
 #'
-#' \item{reference}{The reference group for computing fairness metrics.}
+#' \item{reference}{The reference group for computing the fairness metrics.}
+#' \item{positive}{The positive class used in computing the fairness metrics.}
 #' \item{confusion.matrix}{A list of confusion matrices for each group.}
 #' \item{performance}{A data frame containing performance metrics for each
 #'   group, including accuracy, precision, recall, and F1 score.}
@@ -87,7 +94,7 @@
 #'
 #' @examples
 #' model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-#'   reference = "Caucasian"
+#'   reference = "Caucasian", positive = "yes"
 #' )
 #' @export
 
@@ -95,7 +102,8 @@ model_fairness <- function(data,
                            sensitive,
                            target,
                            predictions,
-                           reference,
+                           reference = NULL,
+                           positive = NULL,
                            materiality = 0.2) {
   dname <- deparse(substitute(data))
   data <- as.data.frame(data, row.names = seq_len(nrow(data)))
@@ -107,17 +115,30 @@ model_fairness <- function(data,
   stopifnot("'predictions' must be a factor column" = is.factor(data[, predictions]))
   stopifnot("'materiality' must be a single value between 0 and 1" = materiality > 0 && materiality < 1)
   groupLevels <- levels(data[, sensitive])
-  stopifnot("'reference' is not a class in 'sensitive'" = reference %in% groupLevels)
-  refIndex <- which(groupLevels == reference)
   targetLevels <- levels(data[, target])
+  if (is.null(reference)) {
+    reference <- groupLevels[1]
+  }
+  stopifnot("'reference' is not a class in 'sensitive'" = reference %in% groupLevels)
+  if (is.null(positive)) {
+    positive <- targetLevels[1]
+  }
+  stopifnot("'positive' is not a class in 'target'" = positive %in% targetLevels)
+  negative <- targetLevels[-which(targetLevels == positive)]
+  refIndex <- which(groupLevels == reference)
   fairness <- data.frame()
   performance <- data.frame()
   confmat <- list()
   for (i in seq_len(nlevels(data[, sensitive]))) {
     group <- levels(data[, sensitive])[i]
     groupDat <- data[data[, sensitive] == group, ]
-    confmat[[i]] <- table("target" = groupDat[, target], "predictions" = groupDat[, predictions])
-    counts <- data.frame(tp = confmat[[i]][2, 2], fp = confmat[[i]][2, 1], tn = confmat[[i]][1, 1], fn = confmat[[i]][1, 2])
+    confmat[[i]] <- table("Actual" = groupDat[, target], "Predicted" = groupDat[, predictions])
+    counts <- data.frame(
+      tp = confmat[[i]][positive, positive],
+      fp = confmat[[i]][negative, positive],
+      tn = confmat[[i]][negative, negative],
+      fn = confmat[[i]][positive, negative]
+    )
     dp <- counts[["tp"]] + counts[["fp"]]
     pp <- (counts[["tp"]] + counts[["fp"]]) / (counts[["tp"]] + counts[["fp"]] + counts[["tn"]] + counts[["fn"]])
     prp <- counts[["tp"]] / (counts[["tp"]] + counts[["fp"]])
@@ -128,11 +149,12 @@ model_fairness <- function(data,
     npvp <- counts[["tn"]] / (counts[["tn"]] + counts[["fn"]])
     sp <- counts[["tn"]] / (counts[["tn"]] + counts[["fp"]])
     fairness <- rbind(fairness, data.frame(group, dp, pp, prp, ap, fnrp, fprp, tprp, npvp, sp))
+    support <- sum(counts[1, ])
     accuracy <- (counts[["tp"]] + counts[["tn"]]) / (counts[["tp"]] + counts[["fn"]] + counts[["fp"]] + counts[["tn"]])
     precision <- counts[["tp"]] / (counts[["tp"]] + counts[["fp"]])
     recall <- counts[["tp"]] / (counts[["tp"]] + counts[["fn"]])
     f1.score <- 2 * ((precision * recall) / (precision + recall))
-    performance <- rbind(performance, data.frame(group, accuracy, precision, recall, f1.score))
+    performance <- rbind(performance, data.frame(group, support, accuracy, precision, recall, f1.score))
   }
   ratio <- as.data.frame(apply(fairness[, -1], 2, function(x, ref) as.numeric(x) / as.numeric(x[ref]), ref = refIndex))
   ratio <- cbind(ratio, deviation = apply(ratio, 1, function(x) {
@@ -143,6 +165,7 @@ model_fairness <- function(data,
   names(confmat) <- groupLevels
   result <- list()
   result[["reference"]] <- reference
+  result[["positive"]] <- positive
   result[["confusion.matrix"]] <- confmat
   result[["performance"]] <- performance
   result[["fairness"]] <- fairness

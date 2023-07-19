@@ -1033,7 +1033,7 @@ print.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
   cat("\n")
   cat("data:  ", x[["data.name"]], "\n", sep = "")
   groupLevels <- names(x$confusion.matrix)
-  cat(paste0("reference group:  ", x[["reference"]], "\n"))
+  cat(paste0("reference group:  ", x[["reference"]], ", positive class:  ", x[["positive"]], "\n"))
   cat(paste0("\nSensitive groups (", length(groupLevels) - 1, "):"))
   for (i in seq_len(length(groupLevels))) {
     if (groupLevels[i] == x[["reference"]]) {
@@ -1057,11 +1057,12 @@ print.summary.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
   cat("\nModel performance:\n")
   df <- data.frame(matrix(NA, nrow = 4, ncol = length(groupLevels)))
   for (i in seq_len(length(groupLevels))) {
-    for (j in seq_len(4)) {
+    for (j in seq_len(5)) {
       df[j, i] <- format(x[["performance"]][[j + 1]][i], digits = max(1L, digits - 2L))
     }
   }
   rownames(df) <- c(
+    "  Support",
     "  Accuracy",
     "  Precision",
     "  Recall",
@@ -1114,7 +1115,7 @@ summary.jfaModelBias <- function(object, digits = getOption("digits"), ...) {
 #' @rdname jfa-methods
 #' @method plot jfaModelBias
 #' @export
-plot.jfaModelBias <- function(x, type = c("dp", "pp", "prp", "ap", "fnrp", "fprp", "tprp", "npvp", "sp")) {
+plot.jfaModelBias <- function(x, type = c("dp", "pp", "prp", "ap", "fnrp", "fprp", "tprp", "npvp", "sp"), ...) {
   value <- variable <- group <- NULL
   stopifnot("'type' should be one or more of 'dp', 'pp', 'prp', 'ap', 'fnrp', 'tprp', 'npvp' or 'sp'" = all(type %in% c("dp", "pp", "prp", "ap", "fnrp", "fprp", "tprp", "npvp", "sp")))
   ratio <- x$ratio[, type]

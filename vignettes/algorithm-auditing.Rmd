@@ -27,4 +27,45 @@ auditing of algorithms. For more detailed explanations of each
 function, read the other vignettes on the
 [package website](https://koenderks.github.io/jfa/).
 
-This page is under construction and will be part of the CRAN release of `jfa 0.7.0`!
+## Functions and intended usage
+
+Below you can find an explanation of the available data auditing functions in
+**jfa**.
+
+- [`model_fairness()`](#assess-algorithmic-fairness-with-model-fairness)
+
+### Assess algorithmic fairness with `model_fairness()`
+
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+
+*Full function with default arguments:*
+
+```r
+model_fairness(
+  data,
+  sensitive,
+  target,
+  predictions,
+  reference = NULL,
+  positive = NULL
+)
+```
+
+*Example usage:*
+
+```{r}
+model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
+  reference = "Caucasian", positive = "yes"
+)
+```
+
+## Benchmarks
+
+To validate the statistical results, **jfa**'s automated
+[unit tests](https://github.com/koenderks/jfa/tree/development/tests/testthat)
+regularly verify the main output from the package against the following
+benchmarks:
+
+- [fairness](https://cran.r-project.org/package=fairness) (R package version 1.2.2)
+
+## References

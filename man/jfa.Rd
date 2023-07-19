@@ -89,7 +89,7 @@ data('compas')
 
 # Test first digits in the data against Benford's law
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-               reference = "Caucasian")
+               reference = "Caucasian", positive = "yes")
 }
 \keyword{jfa} 
 \keyword{package}
