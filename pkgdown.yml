@@ -2,6 +2,7 @@ pandoc: 2.19.2
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
+  algorithm-auditing: algorithm-auditing.html
   audit-sampling: audit-sampling.html
   bayesian-sampling-workflow: bayesian-sampling-workflow.html
   creating-prior: creating-prior.html
@@ -12,7 +13,7 @@ articles:
   sample-planning: sample-planning.html
   sample-selection: sample-selection.html
   sampling-workflow: sampling-workflow.html
-last_built: 2023-07-19T06:59Z
+last_built: 2023-07-19T13:30Z
 urls:
   reference: https://koenderks.github.io/jfa/reference
   article: https://koenderks.github.io/jfa/articles

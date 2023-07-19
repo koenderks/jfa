@@ -13,6 +13,9 @@
     <loc>https://koenderks.github.io/jfa/LICENSE.html</loc>
   </url>
   <url>
+    <loc>https://koenderks.github.io/jfa/articles/algorithm-auditing.html</loc>
+  </url>
+  <url>
     <loc>https://koenderks.github.io/jfa/articles/audit-sampling.html</loc>
   </url>
   <url>
@@ -83,6 +86,9 @@
   </url>
   <url>
     <loc>https://koenderks.github.io/jfa/reference/jfa.html</loc>
+  </url>
+  <url>
+    <loc>https://koenderks.github.io/jfa/reference/model_bias.html</loc>
   </url>
   <url>
     <loc>https://koenderks.github.io/jfa/reference/planning.html</loc>
