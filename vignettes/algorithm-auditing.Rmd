@@ -1,0 +1,30 @@
+---
+title: "Algorithm auditing: Get started"
+author: Koen Derks
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 3
+vignette: >
+  %\VignetteIndexEntry{Algorithm auditing: Get started}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteDepends{jfa}
+  %\VignetteKeywords{algorithm, audit, bias, fairness, model, performance}
+  %\VignettePackage{jfa}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+library(jfa)
+```
+
+## Introduction
+
+Welcome to the 'Algorithm auditing' vignette of the **jfa** package. Here you can
+find a detailed explanation of the functions in the package that facilitate
+auditing of algorithms. For more detailed explanations of each
+function, read the other vignettes on the
+[package website](https://koenderks.github.io/jfa/).
+
+This page is under construction and will be part of the CRAN release of `jfa 0.7.0`!

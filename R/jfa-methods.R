@@ -1021,3 +1021,126 @@ plot.jfaRv <- function(x, ...) {
   p <- .theme_jfa(p)
   return(p)
 }
+
+# Methods for class: jfaModelBias ##############################################
+
+#' @rdname jfa-methods
+#' @method print jfaModelBias
+#' @export
+print.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
+  cat("\n")
+  cat(strwrap("Fairness Metrics and Bias Detection", prefix = "\t"), sep = "\n")
+  cat("\n")
+  cat("data:  ", x$data.name, "\n", sep = "")
+  groupLevels <- names(x$confusion.matrix)
+  cat(paste0("reference group:  ", x$reference, "\n"))
+  cat(paste0("\nSensitive groups (", length(groupLevels) - 1, "):"))
+  for (i in seq_len(length(groupLevels))) {
+    if (groupLevels[i] == x$reference) {
+      next
+    }
+    cat("\n", paste0(groupLevels[i], ": ", x[["ratio"]][[11]][i], " measures outside tolerance region"))
+  }
+}
+
+#' @rdname jfa-methods
+#' @method print summary.jfaModelBias
+#' @export
+print.summary.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
+  cat("\n")
+  cat(strwrap("Fairness Metrics and Bias Detection Summary", prefix = "\t"), sep = "\n")
+  groupLevels <- names(x$confusion.matrix)
+  ind <- which(groupLevels == x$reference)
+  cat(paste0("\nReference group:  ", x$reference, "\n"))
+  cat("\nConfusion matrix:\n")
+  print(x[["confusion.matrix"]][[ind]])
+  cat("\nModel performance:\n")
+  df <- data.frame(matrix(NA, nrow = 4, ncol = length(groupLevels)))
+  for (i in seq_len(length(groupLevels))) {
+    for (j in seq_len(4)) {
+      df[j, i] <- format(x[["performance"]][[j + 1]][i], digits = max(1L, digits - 2L))
+    }
+  }
+  rownames(df) <- c(
+    "  Accuracy",
+    "  Precision",
+    "  Recall",
+    "  F1 score"
+  )
+  colnames(df) <- groupLevels
+  print(df)
+  cat("\nFairness metrics (ratios against reference):\n")
+  df <- data.frame(matrix(NA, nrow = 10, ncol = length(groupLevels)))
+  for (i in seq_len(length(groupLevels))) {
+    for (j in seq_len(10)) {
+      if (j %in% 1:9) {
+        df[j, i] <- paste0(format(x[["fairness"]][[j + 1]][i], digits = max(1L, digits - 2L)), " (", format(x[["ratio"]][[j + 1]][i], digits = max(1L, digits - 2L)), ")")
+      } else {
+        df[j, i] <- x[["ratio"]][[j + 1]][i]
+      }
+    }
+  }
+  rownames(df) <- c(
+    "  Demographic parity",
+    "  Predictive parity",
+    "  Predictive rate parity",
+    "  Accuracy parity",
+    "  False negative rate parity",
+    "  False positive rate parity",
+    "  True positive rate parity",
+    "  Negative predicted value parity",
+    "  Statistical parity",
+    "  Deviations"
+  )
+  df["  Deviations", ind] <- ""
+  colnames(df) <- groupLevels
+  print(df)
+}
+
+#' @rdname jfa-methods
+#' @method summary jfaModelBias
+#' @export
+summary.jfaModelBias <- function(object, digits = getOption("digits"), ...) {
+  out <- list()
+  out[["reference"]] <- object[["reference"]]
+  out[["confusion.matrix"]] <- object[["confusion.matrix"]]
+  out[["fairness"]] <- object[["fairness"]]
+  out[["performance"]] <- object[["performance"]]
+  out[["ratio"]] <- object[["ratio"]]
+  class(out) <- c("summary.jfaModelBias", "list")
+  return(out)
+}
+
+#' @rdname jfa-methods
+#' @method plot jfaModelBias
+#' @export
+plot.jfaModelBias <- function(x, measures = c("dp", "pp", "prp", "ap", "fnrp", "fprp", "tprp", "npvp", "sp"), ratio = TRUE) {
+  value <- variable <- group <- NULL
+  ratio <- x$ratio
+  ratio <- ratio[, measures]
+  ratio <- ratio[-which(names(x[["confusion.matrix"]]) == x$reference), ]
+  ratio <- stats::reshape(
+    ratio,
+    direction = "long",
+    idvar = "group",
+    varying = measures,
+    v.names = "value",
+    timevar = "variable"
+  )
+  ratio$variable <- toupper(measures[ratio$variable])
+  ratio$group <- names(x$confusion.matrix)[ratio$group]
+  ratio$variable <- factor(ratio$variable)
+  ratio$group <- factor(ratio$group)
+  yBreaks <- pretty(c(0, ratio$value, 1 + (1 - x$tolerance)), min.n = 4)
+  p <- ggplot2::ggplot(data = ratio, mapping = ggplot2::aes(x = group, y = value)) +
+    ggplot2::geom_col(mapping = ggplot2::aes(fill = variable), colour = "black", position = "dodge") +
+    ggplot2::scale_x_discrete(name = "Sensitive Groups") +
+    ggplot2::scale_y_continuous(name = "Ratio to Reference Group", breaks = yBreaks, limits = range(yBreaks)) +
+    ggplot2::annotate(geom = "rect", xmin = -Inf, xmax = Inf, ymin = x$tolerance, ymax = 1 + (1 - x$tolerance), fill = "lightgreen", alpha = 0.5) +
+    ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks)) +
+    ggplot2::geom_segment(x = 1, xend = nlevels(ratio$group), y = -Inf, yend = -Inf) +
+    ggplot2::geom_segment(x = -Inf, xend = Inf, y = 1, yend = 1, linetype = "dashed", color = "black", linewidth = 0.35) +
+    ggplot2::scale_fill_brewer(name = "Measure")
+  p <- jfa:::.theme_jfa(p)
+  return(p)
+}

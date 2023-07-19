@@ -54,6 +54,12 @@ articles:
     contents:
       - data-auditing
       - digit-analysis
+  - title: "Algorithm Auditing"
+    desc: >
+      These vignettes provide an introduction to algorithm auditing using the **jfa**
+      package.
+    contents:
+      - algorithm-auditing
 
 reference:
   - title: "Overview"
@@ -78,6 +84,11 @@ reference:
     contents:
       - digit_test
       - repeated_test
+  - title: "Algorithm auditing"
+    desc: >
+      Functions for algorithm auditing, such as determining fairness.
+    contents:
+      - model_bias
   - title: "Data sets"
     desc: >
       Example data sets included in the **jfa** package.

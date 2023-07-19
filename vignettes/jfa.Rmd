@@ -23,11 +23,12 @@ library(jfa)
 
 Welcome to the 'Get started' vignette of the **jfa** package. **jfa** is an R
 package that provides Bayesian and classical statistical methods for audit
-sampling and data auditing. First, the package provides functions for planning,
-performing, evaluating, and reporting an audit sample compliant with
-international standards on auditing. Second, the package includes functions for
-auditing data, such as testing the distribution of first digits of a data set
-against Benford's law.
+sampling, data auditing, and algorithm auditing. First, the package provides
+functions for planning, performing, evaluating, and reporting an audit sample
+compliant with international standards on auditing. Second, the package includes
+functions for auditing data, such as testing the distribution of first digits of
+a data set against Benford's law. Finally, the package implements functions to
+perform bias detection and compute fairness metrics for predictive models.
 
 This vignette provides a simple explanation of the functionality in the package.
 For a more detailed explanation of the functions in the package, see the other
