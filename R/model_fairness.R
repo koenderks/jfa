@@ -80,6 +80,9 @@
 #'     is the same across different groups, calculated as TN / (TN + FP).}
 #' }
 #'
+#' \if{html}{\figure{fairness-tree.png}{options: width=100% alt="fairness-tree"}}
+#' \if{latex}{\figure{fairness-tree.png}{options: width=\textwidth}}
+#'
 #' @return An object of class \code{jfaModelBias} containing:
 #'
 #' \item{reference}{The reference group for computing the fairness metrics.}

@@ -36,6 +36,12 @@ rate parity, negative predicted value parity, and specificity parity. Moreover,
 the function helps to decide whether groups are treated fairly to a certain
 degree and within a certain materiality threshold.
 
+Not all fairness measures are useful in all situations. The fairness tree below
+helps with picking which fairness measure is appropriate for the situation at
+hand (Büyük, 2023).
+
+<p align='center'><img src='fairness-tree.png' alt='fairness-tree' width="100%"/></p>
+
 *Example:*
 
 For this example, we will use data from the COMPAS algorithm. The COMPAS
@@ -195,4 +201,5 @@ rates (e.g., for reoffenders) of each ethnic group with the reference group.
 
 ## References
 
+- Büyük, S. (2023). *Automatic Fairness Criteria and Fair Model Selection for Critical ML Tasks*, Master Thesis, Utrecht University. - [View Online](https://studenttheses.uu.nl/handle/20.500.12932/44225)
 - Pessach, D. & Shmueli, E. (2022). A review on fairness in machine learning. *ACM Computing Surveys*, 55(3), 1-44. - [View Online](https://doi.org/10.1145/3494672)
