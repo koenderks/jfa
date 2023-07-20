@@ -40,7 +40,7 @@ Not all fairness measures are useful in all situations. The fairness tree below
 helps with picking which fairness measure is appropriate for the situation at
 hand (Büyük, 2023).
 
-<p align='center'><img src='fairness-tree.png' alt='fairness-tree' width="100%"/></p>
+<p align='center'><img src='fairness-tree.pdf' alt='fairness-tree' width="100%"/></p>
 
 *Example:*
 

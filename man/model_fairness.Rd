@@ -99,6 +99,8 @@ The following fairness metrics are computed on the basis of the
   \item{Specificity parity: }{measures whether the true positive rate
     is the same across different groups, calculated as TN / (TN + FP).}
 }
+
+
 }
 \examples{
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
@@ -106,6 +108,9 @@ model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
 )
 }
 \references{
+Büyük, S. (2023). \emph{Automatic Fairness Criteria and Fair
+  Model Selection for Critical ML Tasks}, Master Thesis, Utrecht University.
+
 Pessach, D. & Shmueli, E. (2022). A review on fairness in machine
   learning. \emph{ACM Computing Surveys}, 55(3), 1-44. \doi{10.1145/3494672}
 }

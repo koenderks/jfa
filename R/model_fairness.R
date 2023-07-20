@@ -63,16 +63,16 @@
 #'   \item{Proportional parity: }{measures whether the positive rate is
 #'     distributed equally across different groups, calculated as (TP + FP) /
 #'     (TP + FP + TN + FN).}
-#'   \item{Predictive rate parity: }{measures whether the positive prediction rate
-#'     is the same across different groups, calculated as TP / (TP + FP).}
+#'   \item{Predictive rate parity: }{measures whether the positive prediction
+#'     rate is the same across different groups, calculated as TP / (TP + FP).}
 #'   \item{Accuracy parity: }{measures whether the overall accuracy is the same
 #'     across different groups, calculated as (TP + TN) / (TP + FP + TN + FN).}
-#'   \item{False negative rate parity: }{measures whether the false negative rate
-#'     is the same across different groups, calculated as FN / (FP + FN).}
-#'   \item{False positive rate parity: }{measures whether the false positive rate
-#'     is the same across different groups, calculated as FP / (TN + FP).}
-#'   \item{True positive rate parity: }{measures whether the true positive rate is
-#'     the same across different groups, calculated as TP / (TP + FN).}
+#'   \item{False negative rate parity: }{measures whether the false negative
+#'     rate is the same across different groups, calculated as FN / (FP + FN).}
+#'   \item{False positive rate parity: }{measures whether the false positive
+#'     rate is the same across different groups, calculated as FP / (TN + FP).}
+#'   \item{True positive rate parity: }{measures whether the true positive rate
+#'     is the same across different groups, calculated as TP / (TP + FN).}
 #'   \item{Negative predicted value parity: }{measures whether the negative
 #'     predicted value is the same across different groups, calculated as TN /
 #'     (TN + FN).}
@@ -80,8 +80,12 @@
 #'     is the same across different groups, calculated as TN / (TN + FP).}
 #' }
 #'
-#' \if{html}{\figure{fairness-tree.png}{options: width=100% alt="fairness-tree"}}
-#' \if{latex}{\figure{fairness-tree.png}{options: width=\textwidth}}
+#' @details Not all fairness measures are useful in all situations. The fairness
+#'   tree below helps with picking which fairness measure is appropriate for the
+#'   situation at hand (Büyük, 2023).
+#'
+#' \if{html}{\figure{fairness-tree.pdf}{options: width=100% alt="fairness-tree"}}
+#' \if{latex}{\figure{fairness-tree.pdf}{options: width=\textwidth}}
 #'
 #' @return An object of class \code{jfaModelBias} containing:
 #'
@@ -104,6 +108,8 @@
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
+#' @references Büyük, S. (2023). \emph{Automatic Fairness Criteria and Fair
+#'   Model Selection for Critical ML Tasks}, Master Thesis, Utrecht University.
 #' @references Pessach, D. & Shmueli, E. (2022). A review on fairness in machine
 #'   learning. \emph{ACM Computing Surveys}, 55(3), 1-44. \doi{10.1145/3494672}
 #'
