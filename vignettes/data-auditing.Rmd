@@ -51,10 +51,12 @@ distribution and produces a Bayes factor (Kass & Raftery, 1995).
 *Full function with default arguments:*
 
 ```r
-digit_test(x,
-           check = c("first", "last", "firsttwo"),
-           reference = "benford",
-           prior = FALSE)
+digit_test(
+  x,
+  check = c("first", "last", "firsttwo"),
+  reference = "benford",
+  prior = FALSE
+)
 ```
 
 *Supported options for the `check` argument:*
@@ -106,10 +108,12 @@ digit. For the technical details of this procedure, see Simohnsohn (2019).
 *Full function with default arguments:*
 
 ```r
-repeated_test(x,
-              check = "last",
-              method = "af",
-              samples = 2000)
+repeated_test(
+  x,
+  check = "last",
+  method = "af",
+  samples = 2000
+)
 ```
 
 *Supported options for the `check` argument:*

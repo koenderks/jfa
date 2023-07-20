@@ -21,7 +21,7 @@
 #' outcomes. The function allows for evaluating fairness using metrics such as
 #' demographic parity, predictive parity, predictive rate parity, accuracy
 #' parity, false negative rate parity, false positive rate parity, true positive
-#' rate parity, negative predicted value parity, and statistical parity and
+#' rate parity, negative predicted value parity, and specificity parity and
 #' decide whether groups are fair to a certain degree and within a certain
 #' materiality threshold. Currently, it only supports binary classification.
 #'
@@ -76,9 +76,8 @@
 #'   \item{Negative predicted value parity: }{measures whether the negative
 #'     predicted value is the same across different groups, calculated as TN /
 #'     (TN + FN).}
-#'   \item{Statistical parity: }{measures whether the predicted variable is
-#'     distributed equally across different groups, calculated as TN / (TN +
-#'     FP).}
+#'   \item{Specificity parity: }{measures whether the true positive rate
+#'     is the same across different groups, calculated as TN / (TN + FP).}
 #' }
 #'
 #' @return An object of class \code{jfaModelBias} containing:
@@ -101,6 +100,9 @@
 #' \item{data.name}{The name of the input data object.}
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
+#'
+#' @references Pessach, D. & Shmueli, E. (2022). A review on fairness in machine
+#'   learning. \emph{ACM Computing Surveys}, 55(3), 1-44. \doi{10.1145/3494672}
 #'
 #' @keywords algorithm audit bias fairness model performance
 #'
@@ -164,7 +166,7 @@ model_fairness <- function(data,
     fprp <- counts[["fp"]] / (counts[["tn"]] + counts[["fp"]]) # False positive rate parity
     tprp <- counts[["tp"]] / (counts[["tp"]] + counts[["fn"]]) # True positive rate parity
     npvp <- counts[["tn"]] / (counts[["tn"]] + counts[["fn"]]) # Negative predicted value parity
-    sp <- counts[["tn"]] / (counts[["tn"]] + counts[["fp"]]) # Statistical parity
+    sp <- counts[["tn"]] / (counts[["tn"]] + counts[["fp"]]) # Specificity parity
     test_pp <- stats::binom.test(x = counts[["tp"]] + counts[["fp"]], n = counts[["tp"]] + counts[["fp"]] + counts[["tn"]] + counts[["fn"]], conf.level = conf.level, alternative = alternative)
     test_prp <- stats::binom.test(x = counts[["tp"]], n = counts[["tp"]] + counts[["fp"]], conf.level = conf.level, alternative = alternative)
     test_ap <- stats::binom.test(x = counts[["tp"]] + counts[["tn"]], n = counts[["tp"]] + counts[["tn"]] + counts[["fp"]] + counts[["fn"]], conf.level = conf.level, alternative = alternative)

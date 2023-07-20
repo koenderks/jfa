@@ -38,15 +38,14 @@ in **jfa**.
 
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
-The function `model_fairness()` function detects bias in algorithmic
-decision-making systems by computing various fairness metrics. It provides an
-assessment of fairness across different groups based on the observed and
-predicted outcomes. The function allows for evaluating fairness using metrics
-such as demographic parity, predictive parity, predictive rate parity, accuracy
-parity, false negative rate parity, false positive rate parity, true positive
-rate parity, negative predicted value parity, and statistical parity and decide
-whether groups are fair to a certain degree and within a certain materiality
-threshold.
+The function `model_fairness()` function assesses bias in algorithmic
+decision-making systems by computing various fairness metrics based on the
+observed and predicted classes. The function allows for evaluating fairness
+using metrics such as demographic parity, predictive parity, predictive rate
+parity, accuracy parity, false negative rate parity, false positive rate parity,
+true positive rate parity, negative predicted value parity, and specificity
+parity. Moreover, the function helps to decide whether groups are treated fairly
+to a certain degree and within a certain materiality threshold.
 
 *Full function with default arguments:*
 
@@ -80,4 +79,4 @@ benchmarks:
 
 ## References
 
-- Kozodoi N, V. Varga T (2021). fairness: Algorithmic Fairness Metrics. R package version 1.2.2.
+- Pessach, D. & Shmueli, E. (2022). A review on fairness in machine learning. *ACM Computing Surveys*, 55(3), 1-44. - [View Online](https://doi.org/10.1145/3494672)

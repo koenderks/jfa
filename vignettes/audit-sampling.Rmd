@@ -68,29 +68,31 @@ function to produce the predictions of the prior distribution on the data level.
 *Full function with default arguments:*
 
 ```r
-auditPrior(method = c(
-             "default", "strict", "param", "impartial", "hyp",
-             "arm", "bram", "sample", "factor", "nonparam"
-           ),
-           likelihood = c(
-             "poisson", "binomial", "hypergeometric",
-             "normal", "uniform", "cauchy", "t", "chisq",
-             "exponential"
-           ),
-           N.units = NULL,
-           alpha = NULL,
-           beta = NULL,
-           materiality = NULL,
-           expected = 0,
-           ir = NULL,
-           cr = NULL,
-           ub = NULL,
-           p.hmin = NULL,
-           x = NULL,
-           n = NULL,
-           factor = NULL,
-           samples = NULL,
-           conf.level = 0.95)
+auditPrior(
+  method = c(
+    "default", "strict", "param", "impartial", "hyp",
+    "arm", "bram", "sample", "factor", "nonparam"
+  ),
+  likelihood = c(
+    "poisson", "binomial", "hypergeometric",
+    "normal", "uniform", "cauchy", "t", "chisq",
+    "exponential"
+  ),
+  N.units = NULL,
+  alpha = NULL,
+  beta = NULL,
+  materiality = NULL,
+  expected = 0,
+  ir = NULL,
+  cr = NULL,
+  ub = NULL,
+  p.hmin = NULL,
+  x = NULL,
+  n = NULL,
+  factor = NULL,
+  samples = NULL,
+  conf.level = 0.95
+)
 ```
 
 *Supported options for the `method` argument:*
@@ -150,15 +152,17 @@ function.
 *Full function with default arguments:*
 
 ```r
-planning(materiality = NULL,
-         min.precision = NULL,
-         expected = 0,
-         likelihood = c("poisson", "binomial", "hypergeometric"),
-         conf.level = 0.95,
-         N.units = NULL,
-         by = 1,
-         max = 5000,
-         prior = FALSE)
+planning(
+  materiality = NULL,
+  min.precision = NULL,
+  expected = 0,
+  likelihood = c("poisson", "binomial", "hypergeometric"),
+  conf.level = 0.95,
+  N.units = NULL,
+  by = 1,
+  max = 5000,
+  prior = FALSE
+)
 ```
 
 *Supported options for the `likelihood` argument:*
@@ -199,16 +203,18 @@ object of class `jfaPlanning` as returned by the `planning()` function.
 *Full function with default arguments:*
 
 ```r
-selection(data,
-          size,
-          units = c("items", "values"),
-          method = c("interval", "cell", "random", "sieve"),
-          values = NULL,
-          order = NULL,
-          decreasing = FALSE,
-          randomize = FALSE,
-          replace = FALSE,
-          start = 1)
+selection(
+  data,
+  size,
+  units = c("items", "values"),
+  method = c("interval", "cell", "random", "sieve"),
+  values = NULL,
+  order = NULL,
+  decreasing = FALSE,
+  randomize = FALSE,
+  replace = FALSE,
+  start = 1
+)
 ```
 
 *Supported options for the `units` argument:*
@@ -253,26 +259,28 @@ evaluation, the input for the `prior` argument can be an object of class
 *Full function with default arguments:*
 
 ```r
-evaluation(materiality = NULL, 
-           method = c(
-             "poisson", "binomial", "hypergeometric",
-             "stringer", "stringer.meikle", "stringer.lta", "stringer.pvz",
-             "rohrbach", "moment", "coxsnell",
-             "direct", "difference", "quotient", "regression", "mpu"
-           ),
-           alternative = c("less", "two.sided", "greater"),
-           conf.level = 0.95,
-           data = NULL,
-           values = NULL,
-           values.audit = NULL,
-           strata = NULL,
-           times = NULL,
-           x = NULL,
-           n = NULL,
-           N.units = NULL,
-           N.items = NULL,
-           pooling = c("none", "complete", "partial"), 
-           prior = FALSE)
+evaluation(
+  materiality = NULL, 
+  method = c(
+    "poisson", "binomial", "hypergeometric",
+    "stringer", "stringer.meikle", "stringer.lta", "stringer.pvz",
+    "rohrbach", "moment", "coxsnell",
+    "direct", "difference", "quotient", "regression", "mpu"
+  ),
+  alternative = c("less", "two.sided", "greater"),
+  conf.level = 0.95,
+  data = NULL,
+  values = NULL,
+  values.audit = NULL,
+  strata = NULL,
+  times = NULL,
+  x = NULL,
+  n = NULL,
+  N.units = NULL,
+  N.items = NULL,
+  pooling = c("none", "complete", "partial"), 
+  prior = FALSE
+)
 ```
 
 *Supported options for the `method` argument:*
@@ -322,9 +330,11 @@ containing the analysis results and their interpretation.
 *Full function with default arguments:*
 
 ```r
-report(object,
-       file = "report.html",
-       format = c("html_document", "pdf_document"))
+report(
+  object,
+  file = "report.html",
+  format = c("html_document", "pdf_document")
+)
 ```
 
 *Example usage:*
@@ -385,21 +395,21 @@ package.
 
 ## References
 
-- Bickel, P. J. (1992). Inference and auditing: The Stringer bound. *International Statistical Review*, 60(2), 197–209. - [View online](https://www.jstor.org/stable/1403650)
+- Bickel, P. J. (1992). Inference and auditing: The Stringer bound. *International Statistical Review*, 60(2), 197-209. - [View online](https://www.jstor.org/stable/1403650)
 - Cox, D. R., & Snell, E. J. (1979). On sampling and the estimation of rare errors. *Biometrika*, 66(1), 125-132. - [View online](https://doi.org/10.1093/biomet/66.1.125)
 - Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., & Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. *International Journal of Auditing*, 25(3), 621-636. - [View online](https://doi.org/10.1111/ijau.12240)
 - Derks, K., de Swart, J., Wagenmakers, E.-J., & Wetzels, R. (2021). The Bayesian Approach to Audit Evidence: Quantifying Statistical Evidence using the Bayes Factor. *PsyArXiv* - [View online](https://doi.org/10.31234/osf.io/kzqp5)
 - Derks, K., de Swart. J., Wagenmakers, E.-J., Wille, J., & Wetzels, R. (2021). JASP for Audit: Bayesian Tools for the Auditing Practice. *Journal of Open Source Software*, 6(68), 2733. - [View online](https://doi.org/10.21105/joss.02733)
 - Derks, K., de Swart, J., Wagenmakers, E.-J., & Wetzels, R. (2022). An Impartial Bayesian Hypothesis Test for Audit Sampling. *PsyArXiv* - [View online](https://doi.org/10.31234/osf.io/8nf3e)
 - Derks, K., de Swart, J., Wagenmakers, E.-J., & Wetzels, R. (2022). Bayesian Generalized Linear Modeling: How to Incorporate Audit Information into the Statistical Model. *PsyArXiv* - [View online](https://doi.org/10.31234/osf.io/byj2a)
-- Dworin, L. D. and Grimlund, R. A. (1984). Dollar-unit sampling for accounts receivable and inventory. *The Accounting Review*, 59(2), 218–241. - [View online](https://www.jstor.org/stable/247296)
+- Dworin, L. D. and Grimlund, R. A. (1984). Dollar-unit sampling for accounts receivable and inventory. *The Accounting Review*, 59(2), 218-241. - [View online](https://www.jstor.org/stable/247296)
 - Dyer, D., & Pierce, R. L. (1993). On the choice of the prior distribution in hypergeometric sampling. *Communications in Statistics - Theory and Methods*, 22(8), 2125-2146. - [View online](https://www.tandfonline.com/doi/abs/10.1080/03610929308831139)
 - Hoogduin, L. A., Hall, T. W., & Tsay, J. J. (2010). Modified sieve sampling: A method for single-and multi-stage probability-proportional-to-size sampling. *Auditing: A Journal of Practice & Theory*, 29(1), 125-148. - [View online](https://doi.org/10.2308/aud.2010.29.1.125)
 - International Auditing and Assurance Standards Board (IAASB). (2018). *Handbook of international quality control, auditing review, other assurance, and related services pronouncements (Vol. I)*. New York: International Federation of Accountants.
 - Meikle, G. R. (1972). *Statistical Sampling in an Audit Context*. Canadian Institute of Chartered Accountants.
 - Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). *Dollar-unit Sampling: A Practical Guide for Auditors*. London: Pitman.
 - Pap, G., & van Zuijlen, M. C. (1996). On the asymptotic behaviour of the Stringer bound. *Statistica Neerlandica*, 50(3), 367-389. - [View online](https://doi.org/10.1111/j.1467-9574.1996.tb01503.x)
-- Rietveld, C. (1978). De zeefmethode als selectiemethode voor statistische steekproeven in de controlepraktijk (1). *Compact: Computer en Accountant*, 15, 2–11.
+- Rietveld, C. (1978). De zeefmethode als selectiemethode voor statistische steekproeven in de controlepraktijk (1). *Compact: Computer en Accountant*, 15, 2-11.
 - Rohrbach, K. J. (1993). Variance augmentation to achieve nominal coverage probability in sampling from audit populations. *Auditing: A Journal of Practice & Theory*, 12(2), 79-97.
 - Steele, A. (1992). *Audit Risk and Audit Evidence: The Bayesian Approach to Statistical Auditing*. San Diego: Academic Press.
 - Stewart, T. R. (2012). *Technical Notes on the AICPA Audit Guide Audit Sampling*. American Institute of Certified Public Accountants, New York. - [View online](https://us.aicpa.org/content/dam/aicpa/publications/accountingauditing/keytopics/downloadabledocuments/sampling-guide-technical-notes.pdf)

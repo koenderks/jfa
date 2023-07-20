@@ -68,7 +68,7 @@ fairness across different groups based on the observed and predicted
 outcomes. The function allows for evaluating fairness using metrics such as
 demographic parity, predictive parity, predictive rate parity, accuracy
 parity, false negative rate parity, false positive rate parity, true positive
-rate parity, negative predicted value parity, and statistical parity and
+rate parity, negative predicted value parity, and specificity parity and
 decide whether groups are fair to a certain degree and within a certain
 materiality threshold. Currently, it only supports binary classification.
 }
@@ -96,15 +96,18 @@ The following fairness metrics are computed on the basis of the
   \item{Negative predicted value parity: }{measures whether the negative
     predicted value is the same across different groups, calculated as TN /
     (TN + FN).}
-  \item{Statistical parity: }{measures whether the predicted variable is
-    distributed equally across different groups, calculated as TN / (TN +
-    FP).}
+  \item{Specificity parity: }{measures whether the true positive rate
+    is the same across different groups, calculated as TN / (TN + FP).}
 }
 }
 \examples{
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
   reference = "Caucasian", positive = "yes"
 )
+}
+\references{
+Pessach, D. & Shmueli, E. (2022). A review on fairness in machine
+  learning. \emph{ACM Computing Surveys}, 55(3), 1-44. \doi{10.1145/3494672}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}

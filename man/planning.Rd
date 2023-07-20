@@ -154,7 +154,7 @@ Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., &
 
 Dyer, D. and Pierce, R.L. (1993). On the choice of the prior
 distribution in hypergeometric sampling. \emph{Communications in Statistics -
-Theory and Methods}, 22(8), 2125 - 2146. \doi{10.1080/03610929308831139}
+Theory and Methods}, 22(8), 2125-2146. \doi{10.1080/03610929308831139}
 }
 \seealso{
 \code{\link{auditPrior}}

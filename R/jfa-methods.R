@@ -1090,7 +1090,7 @@ print.summary.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
     "  False positive rate parity",
     "  True positive rate parity",
     "  Negative predicted value parity",
-    "  Statistical parity",
+    "  Specificity parity",
     "  Outside tolerance region"
   )
   df["  Outside tolerance region", ind] <- ""

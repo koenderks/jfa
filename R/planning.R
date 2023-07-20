@@ -146,7 +146,7 @@
 #'   \doi{10.21105/joss.02733}
 #' @references Dyer, D. and Pierce, R.L. (1993). On the choice of the prior
 #' distribution in hypergeometric sampling. \emph{Communications in Statistics -
-#' Theory and Methods}, 22(8), 2125 - 2146. \doi{10.1080/03610929308831139}
+#' Theory and Methods}, 22(8), 2125-2146. \doi{10.1080/03610929308831139}
 #'
 #' @keywords audit evaluation planning prior
 #'
