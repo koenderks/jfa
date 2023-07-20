@@ -60,6 +60,7 @@ articles:
       package.
     contents:
       - algorithm-auditing
+      - model-fairness
 
 reference:
   - title: "Overview"

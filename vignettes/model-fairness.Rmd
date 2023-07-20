@@ -27,14 +27,14 @@ incorporate the `model_fairness()` function provided by the package.
 
 ## Function: `model_fairness()`
 
-The function `model_fairness()` function assesses bias in algorithmic
-decision-making systems by computing various fairness metrics based on the
-observed and predicted classes. The function allows for evaluating fairness
-using metrics such as demographic parity, predictive parity, predictive rate
-parity, accuracy parity, false negative rate parity, false positive rate parity,
-true positive rate parity, negative predicted value parity, and specificity
-parity. Moreover, the function helps to decide whether groups are treated fairly
-to a certain degree and within a certain materiality threshold.
+The `model_fairness()` function assesses bias in algorithmic decision-making
+systems by computing various fairness metrics based on the observed and
+predicted classes. The function allows for evaluating fairness using metrics
+such as demographic parity, predictive parity, predictive rate parity, accuracy
+parity, false negative rate parity, false positive rate parity, true positive
+rate parity, negative predicted value parity, and specificity parity. Moreover,
+the function helps to decide whether groups are treated fairly to a certain
+degree and within a certain materiality threshold.
 
 *Example:*
 
@@ -54,6 +54,7 @@ potentially modify the algorithm to ensure fairness in its predictions.
 
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
+data("compas")
 x <- model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted", reference = "Caucasian", positive = "yes")
 summary(x)
 plot(x)
