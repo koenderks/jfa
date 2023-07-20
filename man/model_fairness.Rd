@@ -12,6 +12,7 @@ model_fairness(
   reference = NULL,
   positive = NULL,
   materiality = 0.2,
+  alternative = c("two.sided", "greater", "less"),
   conf.level = 0.95
 )
 }
