@@ -189,30 +189,36 @@ confidence level (i.e., 1 - audit risk / detection risk).</p></dd>
     <p>The following fairness metrics are computed on the basis of the
   true positives (TP), false positives (FP), true negative (TN) and false
   negatives (FN) in the confusion matrix for each group.</p>
-<ul><li><p>Demographic parity: measures whether the observed variable is
+<p></p><ul><li><p>Demographic parity: measures whether the observed variable is
     distributed equally across different groups, calculated as TP + FP.</p></li>
 <li><p>Proportional parity: measures whether the positive rate is
-    distributed equally across different groups, calculated as (TP + FP) /
-    (TP + FP + TN + FN).</p></li>
-<li><p>Predictive rate parity: measures whether the positive prediction rate
-    is the same across different groups, calculated as TP / (TP + FP).</p></li>
+      distributed equally across different groups, calculated as (TP + FP) /
+      (TP + FP + TN + FN).</p></li>
+<li><p>Predictive rate parity: measures whether the positive prediction
+      rate is the same across different groups, calculated as TP / (TP + FP).</p></li>
 <li><p>Accuracy parity: measures whether the overall accuracy is the same
-    across different groups, calculated as (TP + TN) / (TP + FP + TN + FN).</p></li>
-<li><p>False negative rate parity: measures whether the false negative rate
-    is the same across different groups, calculated as FN / (FP + FN).</p></li>
-<li><p>False positive rate parity: measures whether the false positive rate
-    is the same across different groups, calculated as FP / (TN + FP).</p></li>
-<li><p>True positive rate parity: measures whether the true positive rate is
-    the same across different groups, calculated as TP / (TP + FN).</p></li>
+      across different groups, calculated as (TP + TN) / (TP + FP + TN + FN).</p></li>
+<li><p>False negative rate parity: measures whether the false negative
+      rate is the same across different groups, calculated as FN / (FP + FN).</p></li>
+<li><p>False positive rate parity: measures whether the false positive
+      rate is the same across different groups, calculated as FP / (TN + FP).</p></li>
+<li><p>True positive rate parity: measures whether the true positive rate
+      is the same across different groups, calculated as TP / (TP + FN).</p></li>
 <li><p>Negative predicted value parity: measures whether the negative
-    predicted value is the same across different groups, calculated as TN /
-    (TN + FN).</p></li>
+      predicted value is the same across different groups, calculated as TN /
+      (TN + FN).</p></li>
 <li><p>Specificity parity: measures whether the true positive rate
-    is the same across different groups, calculated as TN / (TN + FP).</p></li>
-</ul></div>
+      is the same across different groups, calculated as TN / (TN + FP).</p></li>
+</ul><p>Not all fairness measures are useful in all situations. The fairness
+  tree below helps with picking which fairness measure is appropriate for the
+  situation at hand (Büyük, 2023).</p>
+<p><img src="figures/fairness-tree.pdf" width="600" alt="fairness-tree"></p>
+    </div>
     <div id="references">
     <h2>References</h2>
-    <p>Pessach, D. &amp; Shmueli, E. (2022). A review on fairness in machine
+    <p>Büyük, S. (2023). <em>Automatic Fairness Criteria and Fair
+  Model Selection for Critical ML Tasks</em>, Master Thesis, Utrecht University.</p>
+<p>Pessach, D. &amp; Shmueli, E. (2022). A review on fairness in machine
   learning. <em>ACM Computing Surveys</em>, 55(3), 1-44. <a href="https://doi.org/10.1145/3494672" class="external-link">doi:10.1145/3494672</a></p>
     </div>
     <div id="author">
