@@ -41,7 +41,7 @@ in **jfa**.
 The function `model_fairness()` function assesses bias in algorithmic
 decision-making systems by computing various fairness metrics based on the
 observed and predicted classes. The function allows for evaluating fairness
-using metrics such as demographic parity, predictive parity, predictive rate
+using metrics such as demographic parity, proportional parity, predictive rate
 parity, accuracy parity, false negative rate parity, false positive rate parity,
 true positive rate parity, negative predicted value parity, and specificity
 parity. Moreover, the function helps to decide whether groups are treated fairly

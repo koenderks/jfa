@@ -1083,7 +1083,7 @@ print.summary.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
   }
   rownames(df) <- c(
     "  Demographic parity",
-    "  Predictive parity",
+    "  Proportional parity",
     "  Predictive rate parity",
     "  Accuracy parity",
     "  False negative rate parity",

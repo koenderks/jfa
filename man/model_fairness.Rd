@@ -51,7 +51,7 @@ An object of class \code{jfaModelBias} containing:
 \item{performance}{A data frame containing performance metrics for each
   group, including accuracy, precision, recall, and F1 score.}
 \item{fairness}{A data frame containing fairness metrics for each group,
-  including demographic parity, predictive parity, predictive rate parity,
+  including demographic parity, proportional parity, predictive rate parity,
   accuracy parity, false negative rate parity, false positive rate parity,
   true positive rate parity, negative predicted value parity, and statistical
   parity.}
@@ -66,7 +66,7 @@ This function detects bias in algorithmic decision-making
 systems by computing various fairness metrics. It provides an assessment of
 fairness across different groups based on the observed and predicted
 outcomes. The function allows for evaluating fairness using metrics such as
-demographic parity, predictive parity, predictive rate parity, accuracy
+demographic parity, proportional parity, predictive rate parity, accuracy
 parity, false negative rate parity, false positive rate parity, true positive
 rate parity, negative predicted value parity, and specificity parity and
 decide whether groups are fair to a certain degree and within a certain
@@ -80,7 +80,7 @@ The following fairness metrics are computed on the basis of the
 \itemize{
   \item{Demographic parity: }{measures whether the observed variable is
     distributed equally across different groups, calculated as TP + FP.}
-  \item{Predictive parity: }{measures whether the predicted variable is
+  \item{Proportional parity: }{measures whether the positive rate is
     distributed equally across different groups, calculated as (TP + FP) /
     (TP + FP + TN + FN).}
   \item{Predictive rate parity: }{measures whether the positive prediction rate

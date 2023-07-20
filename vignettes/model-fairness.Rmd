@@ -30,7 +30,7 @@ incorporate the `model_fairness()` function provided by the package.
 The `model_fairness()` function assesses bias in algorithmic decision-making
 systems by computing various fairness metrics based on the observed and
 predicted classes. The function allows for evaluating fairness using metrics
-such as demographic parity, predictive parity, predictive rate parity, accuracy
+such as demographic parity, proportional parity, predictive rate parity, accuracy
 parity, false negative rate parity, false positive rate parity, true positive
 rate parity, negative predicted value parity, and specificity parity. Moreover,
 the function helps to decide whether groups are treated fairly to a certain
@@ -76,14 +76,14 @@ Caucasians, suggesting fair treatment.
 likely to be positively predicted as reoffenders compared to Caucasians. This
 suggests potential underestimation of reoffenders among Hispanics.
 
-2. Predictive parity: Compares the positive prediction rates (e.g., true
+2. Proportional parity: Compares the positive prediction rates (e.g., true
 positive rate) of each ethnic group with the reference group (Caucasian).
 - African American: The ratio of true positive rates (TPRs) for African
 Americans compared to Caucasians is 1.8521. This indicates that the TPR for
 African Americans is approximately 1.85 times higher than for Caucasians. Again,
 this suggests potential bias in the algorithm's predictions against African
 Americans.
-- Asian: The predictive parity ratio for Asians is 0.4038, indicating that their
+- Asian: The proportional parity ratio for Asians is 0.4038, indicating that their
 TPR is lower than for Caucasians. This suggests potential underestimation of
 reoffenders among Asians.
 - Hispanic: The ratio for Hispanics is 0.91609, suggesting that their TPR is

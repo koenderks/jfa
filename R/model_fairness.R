@@ -19,7 +19,7 @@
 #' systems by computing various fairness metrics. It provides an assessment of
 #' fairness across different groups based on the observed and predicted
 #' outcomes. The function allows for evaluating fairness using metrics such as
-#' demographic parity, predictive parity, predictive rate parity, accuracy
+#' demographic parity, proportional parity, predictive rate parity, accuracy
 #' parity, false negative rate parity, false positive rate parity, true positive
 #' rate parity, negative predicted value parity, and specificity parity and
 #' decide whether groups are fair to a certain degree and within a certain
@@ -60,7 +60,7 @@
 #' \itemize{
 #'   \item{Demographic parity: }{measures whether the observed variable is
 #'     distributed equally across different groups, calculated as TP + FP.}
-#'   \item{Predictive parity: }{measures whether the predicted variable is
+#'   \item{Proportional parity: }{measures whether the positive rate is
 #'     distributed equally across different groups, calculated as (TP + FP) /
 #'     (TP + FP + TN + FN).}
 #'   \item{Predictive rate parity: }{measures whether the positive prediction rate
@@ -89,7 +89,7 @@
 #' \item{performance}{A data frame containing performance metrics for each
 #'   group, including accuracy, precision, recall, and F1 score.}
 #' \item{fairness}{A data frame containing fairness metrics for each group,
-#'   including demographic parity, predictive parity, predictive rate parity,
+#'   including demographic parity, proportional parity, predictive rate parity,
 #'   accuracy parity, false negative rate parity, false positive rate parity,
 #'   true positive rate parity, negative predicted value parity, and statistical
 #'   parity.}
@@ -159,7 +159,7 @@ model_fairness <- function(data,
       fn = confmat[[i]][positive, negative]
     )
     dp <- counts[["tp"]] + counts[["fp"]] # Demographic parity
-    pp <- (counts[["tp"]] + counts[["fp"]]) / (counts[["tp"]] + counts[["fp"]] + counts[["tn"]] + counts[["fn"]]) # Predictive parity
+    pp <- (counts[["tp"]] + counts[["fp"]]) / (counts[["tp"]] + counts[["fp"]] + counts[["tn"]] + counts[["fn"]]) # Proportional parity
     prp <- counts[["tp"]] / (counts[["tp"]] + counts[["fp"]]) # Predictive rate parity
     ap <- (counts[["tp"]] + counts[["tn"]]) / (counts[["tp"]] + counts[["fp"]] + counts[["tn"]] + counts[["fn"]]) # Accuracy parity
     fnrp <- counts[["fn"]] / (counts[["tp"]] + counts[["fn"]]) # False negative rate parity
