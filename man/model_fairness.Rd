@@ -104,7 +104,7 @@ The following fairness metrics are computed on the basis of the
   tree below helps with picking which fairness measure is appropriate for the
   situation at hand (Büyük, 2023).
 
-  \if{html}{\figure{fairness-tree.pdf}{options: width=600 alt="fairness-tree"}}
+  \if{html}{\figure{fairness-tree.png}{options: width="100\%" alt="fairness-tree"}}
   \if{latex}{\figure{fairness-tree.pdf}{options: width=5in}}
 }
 \examples{
