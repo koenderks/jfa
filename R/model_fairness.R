@@ -57,35 +57,35 @@
 #'   true positives (TP), false positives (FP), true negative (TN) and false
 #'   negatives (FN) in the confusion matrix for each group.
 #'
-#' \itemize{
-#'   \item{Demographic parity: }{measures whether the observed variable is
+#'   \itemize{
+#'     \item{Demographic parity: }{measures whether the observed variable is
 #'     distributed equally across different groups, calculated as TP + FP.}
-#'   \item{Proportional parity: }{measures whether the positive rate is
-#'     distributed equally across different groups, calculated as (TP + FP) /
-#'     (TP + FP + TN + FN).}
-#'   \item{Predictive rate parity: }{measures whether the positive prediction
-#'     rate is the same across different groups, calculated as TP / (TP + FP).}
-#'   \item{Accuracy parity: }{measures whether the overall accuracy is the same
-#'     across different groups, calculated as (TP + TN) / (TP + FP + TN + FN).}
-#'   \item{False negative rate parity: }{measures whether the false negative
-#'     rate is the same across different groups, calculated as FN / (FP + FN).}
-#'   \item{False positive rate parity: }{measures whether the false positive
-#'     rate is the same across different groups, calculated as FP / (TN + FP).}
-#'   \item{True positive rate parity: }{measures whether the true positive rate
-#'     is the same across different groups, calculated as TP / (TP + FN).}
-#'   \item{Negative predicted value parity: }{measures whether the negative
-#'     predicted value is the same across different groups, calculated as TN /
-#'     (TN + FN).}
-#'   \item{Specificity parity: }{measures whether the true positive rate
-#'     is the same across different groups, calculated as TN / (TN + FP).}
-#' }
+#'     \item{Proportional parity: }{measures whether the positive rate is
+#'       distributed equally across different groups, calculated as (TP + FP) /
+#'       (TP + FP + TN + FN).}
+#'     \item{Predictive rate parity: }{measures whether the positive prediction
+#'       rate is the same across different groups, calculated as TP / (TP + FP).}
+#'     \item{Accuracy parity: }{measures whether the overall accuracy is the same
+#'       across different groups, calculated as (TP + TN) / (TP + FP + TN + FN).}
+#'     \item{False negative rate parity: }{measures whether the false negative
+#'       rate is the same across different groups, calculated as FN / (FP + FN).}
+#'     \item{False positive rate parity: }{measures whether the false positive
+#'       rate is the same across different groups, calculated as FP / (TN + FP).}
+#'     \item{True positive rate parity: }{measures whether the true positive rate
+#'       is the same across different groups, calculated as TP / (TP + FN).}
+#'     \item{Negative predicted value parity: }{measures whether the negative
+#'       predicted value is the same across different groups, calculated as TN /
+#'       (TN + FN).}
+#'     \item{Specificity parity: }{measures whether the true positive rate
+#'       is the same across different groups, calculated as TN / (TN + FP).}
+#'   }
 #'
-#' @details Not all fairness measures are useful in all situations. The fairness
+#'   Not all fairness measures are useful in all situations. The fairness
 #'   tree below helps with picking which fairness measure is appropriate for the
 #'   situation at hand (Büyük, 2023).
 #'
-#' \if{html}{\figure{fairness-tree.pdf}{options: width=100% alt="fairness-tree"}}
-#' \if{latex}{\figure{fairness-tree.pdf}{options: width=\textwidth}}
+#'   \if{html}{\figure{fairness-tree.pdf}{options: width=600 alt="fairness-tree"}}
+#'   \if{latex}{\figure{fairness-tree.pdf}{options: width=5in}}
 #'
 #' @return An object of class \code{jfaModelBias} containing:
 #'
