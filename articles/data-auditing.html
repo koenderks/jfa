@@ -137,10 +137,12 @@ to the reference distribution and produces a Bayes factor (Kass &amp;
 Raftery, 1995).</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/digit_test.html">digit_test</a></span><span class="op">(</span><span class="va">x</span>,</span>
-<span>           check <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"first"</span>, <span class="st">"last"</span>, <span class="st">"firsttwo"</span><span class="op">)</span>,</span>
-<span>           reference <span class="op">=</span> <span class="st">"benford"</span>,</span>
-<span>           prior <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/digit_test.html">digit_test</a></span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  check <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"first"</span>, <span class="st">"last"</span>, <span class="st">"firsttwo"</span><span class="op">)</span>,</span>
+<span>  reference <span class="op">=</span> <span class="st">"benford"</span>,</span>
+<span>  prior <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><em>Supported options for the <code>check</code> argument:</em></p>
 <table class="table">
 <thead><tr class="header">
@@ -224,10 +226,12 @@ once, not only the first or last digit. For the technical details of
 this procedure, see Simohnsohn (2019).</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/repeated_test.html">repeated_test</a></span><span class="op">(</span><span class="va">x</span>,</span>
-<span>              check <span class="op">=</span> <span class="st">"last"</span>,</span>
-<span>              method <span class="op">=</span> <span class="st">"af"</span>,</span>
-<span>              samples <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/repeated_test.html">repeated_test</a></span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  check <span class="op">=</span> <span class="st">"last"</span>,</span>
+<span>  method <span class="op">=</span> <span class="st">"af"</span>,</span>
+<span>  samples <span class="op">=</span> <span class="fl">2000</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><em>Supported options for the <code>check</code> argument:</em></p>
 <table class="table">
 <thead><tr class="header">
@@ -281,7 +285,7 @@ data were not tampered with.</p>
 <span><span class="co">##  Repeated Values Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sanitizer$value</span></span>
-<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.002</span></span>
+<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0016</span></span>
 <span><span class="co">## alternative hypothesis: average frequency in data is greater than for random data.</span></span></code></pre>
 </div>
 </div>

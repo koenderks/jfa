@@ -5,7 +5,7 @@ fairness across different groups based on the observed and predicted
 outcomes. The function allows for evaluating fairness using metrics such as
 demographic parity, predictive parity, predictive rate parity, accuracy
 parity, false negative rate parity, false positive rate parity, true positive
-rate parity, negative predicted value parity, and statistical parity and
+rate parity, negative predicted value parity, and specificity parity and
 decide whether groups are fair to a certain degree and within a certain
 materiality threshold. Currently, it only supports binary classification."><meta property="og:image" content="https://koenderks.github.io/jfa/logo.png"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -81,7 +81,7 @@ fairness across different groups based on the observed and predicted
 outcomes. The function allows for evaluating fairness using metrics such as
 demographic parity, predictive parity, predictive rate parity, accuracy
 parity, false negative rate parity, false positive rate parity, true positive
-rate parity, negative predicted value parity, and statistical parity and
+rate parity, negative predicted value parity, and specificity parity and
 decide whether groups are fair to a certain degree and within a certain
 materiality threshold. Currently, it only supports binary classification.</p>
     </div>
@@ -207,10 +207,14 @@ confidence level (i.e., 1 - audit risk / detection risk).</p></dd>
 <li><p>Negative predicted value parity: measures whether the negative
     predicted value is the same across different groups, calculated as TN /
     (TN + FN).</p></li>
-<li><p>Statistical parity: measures whether the predicted variable is
-    distributed equally across different groups, calculated as TN / (TN +
-    FP).</p></li>
+<li><p>Specificity parity: measures whether the true positive rate
+    is the same across different groups, calculated as TN / (TN + FP).</p></li>
 </ul></div>
+    <div id="references">
+    <h2>References</h2>
+    <p>Pessach, D. &amp; Shmueli, E. (2022). A review on fairness in machine
+  learning. <em>ACM Computing Surveys</em>, 55(3), 1-44. <a href="https://doi.org/10.1145/3494672" class="external-link">doi:10.1145/3494672</a></p>
+    </div>
     <div id="author">
     <h2>Author</h2>
     <p>Koen Derks, <a href="mailto:k.derks@nyenrode.nl">k.derks@nyenrode.nl</a></p>

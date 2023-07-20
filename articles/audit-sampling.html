@@ -157,29 +157,31 @@ input for the <code>prior</code> argument in other functions. Moreover,
 distribution on the data level.</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>             <span class="st">"default"</span>, <span class="st">"strict"</span>, <span class="st">"param"</span>, <span class="st">"impartial"</span>, <span class="st">"hyp"</span>,</span>
-<span>             <span class="st">"arm"</span>, <span class="st">"bram"</span>, <span class="st">"sample"</span>, <span class="st">"factor"</span>, <span class="st">"nonparam"</span></span>
-<span>           <span class="op">)</span>,</span>
-<span>           likelihood <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>             <span class="st">"poisson"</span>, <span class="st">"binomial"</span>, <span class="st">"hypergeometric"</span>,</span>
-<span>             <span class="st">"normal"</span>, <span class="st">"uniform"</span>, <span class="st">"cauchy"</span>, <span class="st">"t"</span>, <span class="st">"chisq"</span>,</span>
-<span>             <span class="st">"exponential"</span></span>
-<span>           <span class="op">)</span>,</span>
-<span>           N.units <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           alpha <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           beta <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           materiality <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           expected <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>           ir <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           cr <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           ub <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           p.hmin <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           x <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           n <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           factor <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           samples <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           conf.level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span></span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"default"</span>, <span class="st">"strict"</span>, <span class="st">"param"</span>, <span class="st">"impartial"</span>, <span class="st">"hyp"</span>,</span>
+<span>    <span class="st">"arm"</span>, <span class="st">"bram"</span>, <span class="st">"sample"</span>, <span class="st">"factor"</span>, <span class="st">"nonparam"</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  likelihood <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"poisson"</span>, <span class="st">"binomial"</span>, <span class="st">"hypergeometric"</span>,</span>
+<span>    <span class="st">"normal"</span>, <span class="st">"uniform"</span>, <span class="st">"cauchy"</span>, <span class="st">"t"</span>, <span class="st">"chisq"</span>,</span>
+<span>    <span class="st">"exponential"</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  N.units <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  alpha <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  beta <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  materiality <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  expected <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  ir <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  cr <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ub <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  p.hmin <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  x <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  n <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  factor <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  samples <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  conf.level <span class="op">=</span> <span class="fl">0.95</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><em>Supported options for the <code>method</code> argument:</em></p>
 <ul>
 <li>
@@ -291,15 +293,17 @@ an object of class <code>jfaPrior</code> as returned by the
 function.</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>         min.precision <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>         expected <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>         likelihood <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"poisson"</span>, <span class="st">"binomial"</span>, <span class="st">"hypergeometric"</span><span class="op">)</span>,</span>
-<span>         conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
-<span>         N.units <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>         by <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>         max <span class="op">=</span> <span class="fl">5000</span>,</span>
-<span>         prior <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span></span>
+<span>  materiality <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  min.precision <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  expected <span class="op">=</span> <span class="fl">0</span>,</span>
+<span>  likelihood <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"poisson"</span>, <span class="st">"binomial"</span>, <span class="st">"hypergeometric"</span><span class="op">)</span>,</span>
+<span>  conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  N.units <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  by <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  max <span class="op">=</span> <span class="fl">5000</span>,</span>
+<span>  prior <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><em>Supported options for the <code>likelihood</code>
 argument:</em></p>
 <ul>
@@ -361,16 +365,18 @@ the <code>size</code> argument can be an object of class
 function.</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span><span class="va">data</span>,</span>
-<span>          <span class="va">size</span>,</span>
-<span>          units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"items"</span>, <span class="st">"values"</span><span class="op">)</span>,</span>
-<span>          method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"interval"</span>, <span class="st">"cell"</span>, <span class="st">"random"</span>, <span class="st">"sieve"</span><span class="op">)</span>,</span>
-<span>          values <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>          order <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>          decreasing <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>          randomize <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>          replace <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>          start <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span></span>
+<span>  <span class="va">data</span>,</span>
+<span>  <span class="va">size</span>,</span>
+<span>  units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"items"</span>, <span class="st">"values"</span><span class="op">)</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"interval"</span>, <span class="st">"cell"</span>, <span class="st">"random"</span>, <span class="st">"sieve"</span><span class="op">)</span>,</span>
+<span>  values <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  order <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  decreasing <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  randomize <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  replace <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  start <span class="op">=</span> <span class="fl">1</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><em>Supported options for the <code>units</code> argument:</em></p>
 <ul>
 <li>
@@ -440,26 +446,28 @@ be an object of class <code>jfaPrior</code> as returned by the
 function.</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="cn">NULL</span>, </span>
-<span>           method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>             <span class="st">"poisson"</span>, <span class="st">"binomial"</span>, <span class="st">"hypergeometric"</span>,</span>
-<span>             <span class="st">"stringer"</span>, <span class="st">"stringer.meikle"</span>, <span class="st">"stringer.lta"</span>, <span class="st">"stringer.pvz"</span>,</span>
-<span>             <span class="st">"rohrbach"</span>, <span class="st">"moment"</span>, <span class="st">"coxsnell"</span>,</span>
-<span>             <span class="st">"direct"</span>, <span class="st">"difference"</span>, <span class="st">"quotient"</span>, <span class="st">"regression"</span>, <span class="st">"mpu"</span></span>
-<span>           <span class="op">)</span>,</span>
-<span>           alternative <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"less"</span>, <span class="st">"two.sided"</span>, <span class="st">"greater"</span><span class="op">)</span>,</span>
-<span>           conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
-<span>           data <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           values <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           values.audit <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           strata <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           times <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           x <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           n <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           N.units <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           N.items <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>           pooling <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"complete"</span>, <span class="st">"partial"</span><span class="op">)</span>, </span>
-<span>           prior <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
+<span>  materiality <span class="op">=</span> <span class="cn">NULL</span>, </span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"poisson"</span>, <span class="st">"binomial"</span>, <span class="st">"hypergeometric"</span>,</span>
+<span>    <span class="st">"stringer"</span>, <span class="st">"stringer.meikle"</span>, <span class="st">"stringer.lta"</span>, <span class="st">"stringer.pvz"</span>,</span>
+<span>    <span class="st">"rohrbach"</span>, <span class="st">"moment"</span>, <span class="st">"coxsnell"</span>,</span>
+<span>    <span class="st">"direct"</span>, <span class="st">"difference"</span>, <span class="st">"quotient"</span>, <span class="st">"regression"</span>, <span class="st">"mpu"</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  alternative <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"less"</span>, <span class="st">"two.sided"</span>, <span class="st">"greater"</span><span class="op">)</span>,</span>
+<span>  conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  values <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  values.audit <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  strata <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  times <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  x <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  n <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  N.units <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  N.items <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  pooling <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"complete"</span>, <span class="st">"partial"</span><span class="op">)</span>, </span>
+<span>  prior <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><em>Supported options for the <code>method</code> argument:</em></p>
 <ul>
 <li>
@@ -553,9 +561,11 @@ function and automatically creates a <code>html</code> or
 interpretation.</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span><span class="va">object</span>,</span>
-<span>       file <span class="op">=</span> <span class="st">"report.html"</span>,</span>
-<span>       format <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"html_document"</span>, <span class="st">"pdf_document"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span></span>
+<span>  <span class="va">object</span>,</span>
+<span>  file <span class="op">=</span> <span class="st">"report.html"</span>,</span>
+<span>  format <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"html_document"</span>, <span class="st">"pdf_document"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><em>Example usage:</em></p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Generate an automatic report</span></span>
@@ -638,7 +648,7 @@ Bayes factors based on the beta-binomial distribution</a></li>
 </h2>
 <ul>
 <li>Bickel, P. J. (1992). Inference and auditing: The Stringer bound.
-<em>International Statistical Review</em>, 60(2), 197–209. - <a href="https://www.jstor.org/stable/1403650" class="external-link">View online</a>
+<em>International Statistical Review</em>, 60(2), 197-209. - <a href="https://www.jstor.org/stable/1403650" class="external-link">View online</a>
 </li>
 <li>Cox, D. R., &amp; Snell, E. J. (1979). On sampling and the
 estimation of rare errors. <em>Biometrika</em>, 66(1), 125-132. - <a href="https://doi.org/10.1093/biomet/66.1.125" class="external-link">View online</a>
@@ -669,7 +679,7 @@ Information into the Statistical Model. <em>PsyArXiv</em> - <a href="https://doi
 </li>
 <li>Dworin, L. D. and Grimlund, R. A. (1984). Dollar-unit sampling for
 accounts receivable and inventory. <em>The Accounting Review</em>,
-59(2), 218–241. - <a href="https://www.jstor.org/stable/247296" class="external-link">View
+59(2), 218-241. - <a href="https://www.jstor.org/stable/247296" class="external-link">View
 online</a>
 </li>
 <li>Dyer, D., &amp; Pierce, R. L. (1993). On the choice of the prior
@@ -698,7 +708,7 @@ online</a>
 </li>
 <li>Rietveld, C. (1978). De zeefmethode als selectiemethode voor
 statistische steekproeven in de controlepraktijk (1). <em>Compact:
-Computer en Accountant</em>, 15, 2–11.</li>
+Computer en Accountant</em>, 15, 2-11.</li>
 <li>Rohrbach, K. J. (1993). Variance augmentation to achieve nominal
 coverage probability in sampling from audit populations. <em>Auditing: A
 Journal of Practice &amp; Theory</em>, 12(2), 79-97.</li>
