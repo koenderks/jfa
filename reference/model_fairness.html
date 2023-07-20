@@ -3,7 +3,7 @@
 systems by computing various fairness metrics. It provides an assessment of
 fairness across different groups based on the observed and predicted
 outcomes. The function allows for evaluating fairness using metrics such as
-demographic parity, predictive parity, predictive rate parity, accuracy
+demographic parity, proportional parity, predictive rate parity, accuracy
 parity, false negative rate parity, false positive rate parity, true positive
 rate parity, negative predicted value parity, and specificity parity and
 decide whether groups are fair to a certain degree and within a certain
@@ -79,7 +79,7 @@ materiality threshold. Currently, it only supports binary classification."><meta
 systems by computing various fairness metrics. It provides an assessment of
 fairness across different groups based on the observed and predicted
 outcomes. The function allows for evaluating fairness using metrics such as
-demographic parity, predictive parity, predictive rate parity, accuracy
+demographic parity, proportional parity, predictive rate parity, accuracy
 parity, false negative rate parity, false positive rate parity, true positive
 rate parity, negative predicted value parity, and specificity parity and
 decide whether groups are fair to a certain degree and within a certain
@@ -167,7 +167,7 @@ confidence level (i.e., 1 - audit risk / detection risk).</p></dd>
 
 <dt>fairness</dt>
 <dd><p>A data frame containing fairness metrics for each group,
-  including demographic parity, predictive parity, predictive rate parity,
+  including demographic parity, proportional parity, predictive rate parity,
   accuracy parity, false negative rate parity, false positive rate parity,
   true positive rate parity, negative predicted value parity, and statistical
   parity.</p></dd>
@@ -191,7 +191,7 @@ confidence level (i.e., 1 - audit risk / detection risk).</p></dd>
   negatives (FN) in the confusion matrix for each group.</p>
 <ul><li><p>Demographic parity: measures whether the observed variable is
     distributed equally across different groups, calculated as TP + FP.</p></li>
-<li><p>Predictive parity: measures whether the predicted variable is
+<li><p>Proportional parity: measures whether the positive rate is
     distributed equally across different groups, calculated as (TP + FP) /
     (TP + FP + TN + FN).</p></li>
 <li><p>Predictive rate parity: measures whether the positive prediction rate

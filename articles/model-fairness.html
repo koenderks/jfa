@@ -118,7 +118,7 @@ detailed examples of how you can incorporate the
 algorithmic decision-making systems by computing various fairness
 metrics based on the observed and predicted classes. The function allows
 for evaluating fairness using metrics such as demographic parity,
-predictive parity, predictive rate parity, accuracy parity, false
+proportional parity, predictive rate parity, accuracy parity, false
 negative rate parity, false positive rate parity, true positive rate
 parity, negative predicted value parity, and specificity parity.
 Moreover, the function helps to decide whether groups are treated fairly
@@ -164,7 +164,7 @@ ensure fairness in its predictions.</p>
 <span><span class="co">## Fairness metrics (ratios against reference):</span></span>
 <span><span class="co">##                                     Caucasian  African_American</span></span>
 <span><span class="co">##   Demographic parity                  672 (1)     1879 (2.7961)</span></span>
-<span><span class="co">##   Predictive parity               0.31954 (1)  0.59181 (1.8521)</span></span>
+<span><span class="co">##   Proportional parity             0.31954 (1)  0.59181 (1.8521)</span></span>
 <span><span class="co">##   Predictive rate parity          0.57738 (1)  0.66525 (1.1522)</span></span>
 <span><span class="co">##   Accuracy parity                 0.65858 (1)   0.67244 (1.021)</span></span>
 <span><span class="co">##   False negative rate parity      0.52798 (1) 0.24744 (0.46866)</span></span>
@@ -175,7 +175,7 @@ ensure fairness in its predictions.</p>
 <span><span class="co">##   Outside tolerance region                                    6</span></span>
 <span><span class="co">##                                                Asian          Hispanic</span></span>
 <span><span class="co">##   Demographic parity                   4 (0.0059524)     149 (0.22173)</span></span>
-<span><span class="co">##   Predictive parity                 0.12903 (0.4038) 0.29273 (0.91609)</span></span>
+<span><span class="co">##   Proportional parity               0.12903 (0.4038) 0.29273 (0.91609)</span></span>
 <span><span class="co">##   Predictive rate parity               0.5 (0.86598)   0.5906 (1.0229)</span></span>
 <span><span class="co">##   Accuracy parity                   0.74194 (1.1266)  0.68173 (1.0351)</span></span>
 <span><span class="co">##   False negative rate parity           0.75 (1.4205)  0.53439 (1.0121)</span></span>
@@ -186,7 +186,7 @@ ensure fairness in its predictions.</p>
 <span><span class="co">##   Outside tolerance region                         5                 1</span></span>
 <span><span class="co">##                                     Native_American             Other</span></span>
 <span><span class="co">##   Demographic parity                  5 (0.0074405)      85 (0.12649)</span></span>
-<span><span class="co">##   Predictive parity                0.45455 (1.4225) 0.24781 (0.77552)</span></span>
+<span><span class="co">##   Proportional parity              0.45455 (1.4225) 0.24781 (0.77552)</span></span>
 <span><span class="co">##   Predictive rate parity               0.6 (1.0392)  0.61176 (1.0596)</span></span>
 <span><span class="co">##   Accuracy parity                 0.63636 (0.96626)  0.69388 (1.0536)</span></span>
 <span><span class="co">##   False negative rate parity           0.4 (0.7576)  0.58065 (1.0997)</span></span>
@@ -220,7 +220,7 @@ Caucasians. This suggests potential underestimation of reoffenders among
 Hispanics.</li>
 </ul>
 <ol start="2" style="list-style-type: decimal">
-<li>Predictive parity: Compares the positive prediction rates (e.g.,
+<li>Proportional parity: Compares the positive prediction rates (e.g.,
 true positive rate) of each ethnic group with the reference group
 (Caucasian).</li>
 </ol>
@@ -230,9 +230,9 @@ African Americans compared to Caucasians is 1.8521. This indicates that
 the TPR for African Americans is approximately 1.85 times higher than
 for Caucasians. Again, this suggests potential bias in the algorithm’s
 predictions against African Americans.</li>
-<li>Asian: The predictive parity ratio for Asians is 0.4038, indicating
-that their TPR is lower than for Caucasians. This suggests potential
-underestimation of reoffenders among Asians.</li>
+<li>Asian: The proportional parity ratio for Asians is 0.4038,
+indicating that their TPR is lower than for Caucasians. This suggests
+potential underestimation of reoffenders among Asians.</li>
 <li>Hispanic: The ratio for Hispanics is 0.91609, suggesting that their
 TPR is close to the reference group (Caucasians). This indicates
 relatively fair treatment of Hispanics in the algorithm’s
