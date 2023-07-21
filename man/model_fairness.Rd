@@ -11,7 +11,7 @@ model_fairness(
   predictions,
   reference = NULL,
   positive = NULL,
-  materiality = 0.2,
+  materiality = 0.8,
   alternative = c("two.sided", "greater", "less"),
   conf.level = 0.95
 )
@@ -41,7 +41,7 @@ positive class.}
 \item{materiality}{a numeric value between 0 and 1 specifying the
 materiality used to decide whether the statistics are out of bound. The
 tolerance range is defined on the parity statistics as
-\code{1 - materiality} and \code{1 + materiality}.}
+\code{materiality} and \code{1 / materiality}.}
 
 \item{alternative}{the type of confidence interval to produce. Possible
 options are \code{two.sided} (the default), \code{greater} and \code{less}.}

@@ -1160,12 +1160,12 @@ plot.jfaModelBias <- function(x, type = c("dp", "pp", "prp", "ap", "fnrp", "fprp
   }
   ratio[["group"]] <- factor(groupLevels[ratio[["group"]]], levels = groupLevels)
   ratio[["variable"]] <- factor(toupper(type[ratio[["variable"]]]), levels = toupper(type))
-  yBreaks <- pretty(c(0, ratio[["value"]], 1 + (1 - x[["materiality"]]), ratio[["ub"]]), min.n = 4)
+  yBreaks <- pretty(c(0, ratio[["value"]], 1 / x[["materiality"]], ratio[["ub"]]), min.n = 4)
   p <- ggplot2::ggplot(data = ratio, mapping = ggplot2::aes(x = group, y = value, fill = variable)) +
     ggplot2::geom_col(colour = "black", position = ggplot2::position_dodge()) +
     ggplot2::scale_x_discrete(name = "Sensitive Group") +
     ggplot2::scale_y_continuous(name = "Ratio to Reference Group", breaks = yBreaks, limits = range(yBreaks)) +
-    ggplot2::annotate(geom = "rect", xmin = -Inf, xmax = Inf, ymin = 1 - x[["materiality"]], ymax = 1 + x[["materiality"]], fill = "darkgray", alpha = 0.5) +
+    ggplot2::annotate(geom = "rect", xmin = -Inf, xmax = Inf, ymin = x[["materiality"]], ymax = 1 / x[["materiality"]], fill = "darkgray", alpha = 0.5) +
     ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks)) +
     ggplot2::geom_segment(x = -Inf, xend = Inf, y = 1, yend = 1, linetype = "dashed", color = "black", linewidth = 0.35) +
     ggplot2::scale_fill_brewer(name = "Measure", type = "div")

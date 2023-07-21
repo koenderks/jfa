@@ -57,7 +57,7 @@ model_fairness(
   predictions,
   reference = NULL,
   positive = NULL,
-  materiality = 0.2,
+  materiality = 0.8,
   conf.level = 0.95
 )
 ```
