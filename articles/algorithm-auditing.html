@@ -124,15 +124,16 @@ functions in <strong>jfa</strong>.</p>
 <h3 id="assess-algorithmic-fairness-with-model_fairness">Assess algorithmic fairness with <code>model_fairness()</code><a class="anchor" aria-label="anchor" href="#assess-algorithmic-fairness-with-model_fairness"></a>
 </h3>
 <p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></p>
-<p>The function <code><a href="../reference/model_fairness.html">model_fairness()</a></code> function assesses bias in
-algorithmic decision-making systems by computing various fairness
-metrics based on the observed and predicted classes. The function allows
-for evaluating fairness using metrics such as demographic parity,
-proportional parity, predictive rate parity, accuracy parity, false
-negative rate parity, false positive rate parity, true positive rate
-parity, negative predicted value parity, and specificity parity.
-Moreover, the function helps to decide whether groups are treated fairly
-to a certain degree and within a certain materiality threshold.</p>
+<p>The <code><a href="../reference/model_fairness.html">model_fairness()</a></code> function provides a model-agnotic
+method to asses bias in predictive algorithms by computing various
+fairness metrics based on the observed and predicted classes. The
+function allows for evaluating fairness using metrics such as
+demographic parity, proportional parity, predictive rate parity,
+accuracy parity, false negative rate parity, false positive rate parity,
+true positive rate parity, negative predicted value parity, and
+specificity parity. Moreover, the function helps to decide whether
+groups are treated fairly to a certain degree and within a certain
+materiality threshold.</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>

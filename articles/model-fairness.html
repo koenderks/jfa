@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fairness metrics and bias detection • jfa</title>
+<title>Algorithmic fairness • jfa</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Fairness metrics and bias detection">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Algorithmic fairness">
 <meta property="og:description" content="jfa">
 <meta property="og:image" content="https://koenderks.github.io/jfa/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -91,7 +91,7 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Fairness metrics and bias detection</h1>
+      <h1 data-toc-skip>Algorithmic fairness</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
             <h4 data-toc-skip class="date">2023-07-21</h4>
@@ -106,44 +106,73 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>Welcome to the ‘Fairness metrics and bias detection’ vignette of the
-<strong>jfa</strong> package. In this vignette you are able to find
-detailed examples of how you can incorporate the
-<code><a href="../reference/model_fairness.html">model_fairness()</a></code> function provided by the package.</p>
+<p>Welcome to the ‘Algorithmic fairness’ vignette of the
+<strong>jfa</strong> package. In this vignette you can find a detailed
+example of how you can use the <code><a href="../reference/model_fairness.html">model_fairness()</a></code> function
+provided by the package.</p>
 </div>
 <div class="section level2">
 <h2 id="function-model_fairness">Function: <code>model_fairness()</code><a class="anchor" aria-label="anchor" href="#function-model_fairness"></a>
 </h2>
-<p>The <code><a href="../reference/model_fairness.html">model_fairness()</a></code> function assesses bias in
-algorithmic decision-making systems by computing various fairness
-metrics based on the observed and predicted classes. The function allows
-for evaluating fairness using metrics such as demographic parity,
+<p>The <code><a href="../reference/model_fairness.html">model_fairness()</a></code> function provides a method to
+assess fairness in algorithmic decision-making systems by computing
+various model-agnostic metrics based on the observed and predicted
+labels in a data set. Calculated metrics include demographic parity,
 proportional parity, predictive rate parity, accuracy parity, false
 negative rate parity, false positive rate parity, true positive rate
-parity, negative predicted value parity, and specificity parity.
-Moreover, the function helps to decide whether groups are treated fairly
-to a certain degree and within a certain materiality threshold.</p>
-<p>Not all fairness measures are useful in all situations. The fairness
-tree below helps with picking which fairness measure is appropriate for
-the situation at hand (Büyük, 2023).</p>
+parity, negative predicted value parity, and specificity parity. Other
+than computing these metrics, the function helps to decide whether
+groups are treated fairly to a certain degree and within a certain
+materiality threshold.</p>
+<p>Note that, in an audit context, not all fairness measures are equally
+appropriate in all situations. The decision tree below aids with
+choosing which measure is best for the situation at hand (Büyük,
+2023).</p>
 <p align="center">
 <img src="fairness-tree.png" alt="fairness" width="80%"></p>
 <p><em>Example:</em></p>
-<p>For this example, we will use data from the COMPAS algorithm. The
-COMPAS (Correctional Offender Management Profiling for Alternative
-Sanctions) software is is a case management and decision support tool
-used by some U.S. courts to assess the likelihood of a defendant
-becoming a recidivist. The <code>compas</code> data is included in the
-package and can be loaded with <code>data("compas")</code>.</p>
-<p>A positive prediction in this case means that a person is classified
-as a reoffender. The fairness metrics offer information on whether there
-are any disparities in the algorithm’s predictions across different
-ethnic groups. By calculating and reviewing these metrics, we can get an
-indication of whether the algorithm exhibits any discriminatory behavior
-towards specific ethnic groups. If substantial disparities exist, we may
-need to investigate further and potentially modify the algorithm to
-ensure fairness in its predictions.</p>
+<p>To illustrate how to use the <code><a href="../reference/model_fairness.html">model_fairness()</a></code> function,
+we will use a well-known data set called COMPAS. The COMPAS
+(Correctional Offender Management Profiling for Alternative Sanctions)
+software is is a case management and decision support tool used by some
+U.S. courts to assess the likelihood of a defendant becoming a
+recidivist (repeated offender).</p>
+<p>The <code>compas</code> data is included in the package and contains
+predictions of the COMPAS software for several cases. The data can be
+loaded with <code>data("compas")</code> and contains for each defendant,
+whether the defendant did commit a crime within two years after the
+court case (<code>TwoYrRecidivism</code>), some personal characteristics
+like gender and ethnicity, and whether the software predicted the
+defendant to be a recidivist (<code>Predicted</code>).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"compas"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">compas</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##    TwoYrRecidivism AgeAboveFoutryFive AgeBelowTwentyFive Gender Misdemeanor</span></span>
+<span><span class="co">## 4               no                 no                 no   Male         yes</span></span>
+<span><span class="co">## 5              yes                 no                 no   Male          no</span></span>
+<span><span class="co">## 7               no                 no                 no Female         yes</span></span>
+<span><span class="co">## 11              no                 no                 no   Male          no</span></span>
+<span><span class="co">## 14              no                 no                 no   Male         yes</span></span>
+<span><span class="co">## 24              no                 no                 no   Male         yes</span></span>
+<span><span class="co">##           Ethnicity Predicted</span></span>
+<span><span class="co">## 4             Other        no</span></span>
+<span><span class="co">## 5         Caucasian       yes</span></span>
+<span><span class="co">## 7         Caucasian        no</span></span>
+<span><span class="co">## 11 African_American        no</span></span>
+<span><span class="co">## 14         Hispanic        no</span></span>
+<span><span class="co">## 24            Other        no</span></span></code></pre>
+<p>We will investigate whether the algorithm is fair with respect to the
+sensitive attribute race. Considering the context, a positive prediction
+means that a defendant is classified as a reoffender, and a negative
+prediction means that a defendant is classified as a non-reoffender. The
+fairness metrics offer information on whether there are any disparities
+in the algorithm’s predictions across different ethnic groups. By
+calculating and reviewing these metrics, we can get an indication of
+whether the algorithm exhibits any discriminatory behavior towards
+specific ethnic groups. If substantial disparities exist, we may need to
+investigate further and potentially modify the algorithm to ensure
+fairness in its predictions.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"compas"</span><span class="op">)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>, reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
@@ -200,9 +229,9 @@ ensure fairness in its predictions.</p>
 <span><span class="co">##   Negative predicted value parity 0.66667 (0.95687)  0.72093 (1.0348)</span></span>
 <span><span class="co">##   Specificity parity              0.66667 (0.85657)  0.84932 (1.0912)</span></span>
 <span><span class="co">##   Outside tolerance region                        5                 3</span></span></code></pre>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
-<p><img src="model-fairness_files/figure-html/unnamed-chunk-2-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="model-fairness_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;"></p>
 <p>Let’s interpret the fairness metrics for the African American, Asian,
 and Hispanic groups in comparison to the reference group
 (Caucasian).</p>
@@ -216,17 +245,16 @@ ethnic group and the reference group.</li>
 <li>
 <em>African American</em>: The ratio of positive predictions for
 African Americans compared to Caucasians is 2.7961, indicating that
-African Americans are nearly three times more likely to be predicted as
+there are nearly three times more African Americans predicted as
 reoffenders than Caucasians.</li>
 <li>
-<em>Asian</em>: The ratio for Asians is very close to 0 (0.0059524),
-indicating that the algorithm’s positive predictions for Asians are much
-less frequent as Caucasians, suggesting no unfair treatment.</li>
+<em>Asian</em>: The ratio for Asians is very close to zero
+(0.0059524), indicating that there are many less Asians that are
+predicted as reoffenders in these data than there are Caucasians.</li>
 <li>
 <em>Hispanic</em>: The ratio for Hispanics is 0.22173, meaning that
-they are less likely to be positively predicted as reoffenders compared
-to Caucasians. This suggests potential underestimation of reoffenders
-among Hispanics.</li>
+there are about five times less Hispanics predicted as reoffenders than
+that there are Caucasians.</li>
 </ul>
 <ol start="2" style="list-style-type: decimal">
 <li>
