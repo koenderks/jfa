@@ -1,5 +1,5 @@
 ---
-title: "Fairness metrics and bias detection"
+title: "Algorithmic fairness"
 author: Koen Derks
 date: "`r Sys.Date()`"
 output: 
@@ -7,7 +7,7 @@ output:
     toc: true
     toc_depth: 3
 vignette: >
-  %\VignetteIndexEntry{Fairness metrics and bias detection}
+  %\VignetteIndexEntry{Algorithmic fairness}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteDepends{jfa}
   %\VignetteKeywords{algorithm, audit, bias, fairness, model, performance}
@@ -21,45 +21,61 @@ library(jfa)
 
 ## Introduction
 
-Welcome to the 'Fairness metrics and bias detection' vignette of the **jfa**
-package. In this vignette you are able to find detailed examples of how you can
-incorporate the `model_fairness()` function provided by the package.
+Welcome to the 'Algorithmic fairness' vignette of the **jfa** package. In this
+vignette you can find a detailed example of how you can use the
+`model_fairness()` function provided by the package.
 
 ## Function: `model_fairness()`
 
-The `model_fairness()` function assesses bias in algorithmic decision-making
-systems by computing various fairness metrics based on the observed and
-predicted classes. The function allows for evaluating fairness using metrics
-such as demographic parity, proportional parity, predictive rate parity, accuracy
-parity, false negative rate parity, false positive rate parity, true positive
-rate parity, negative predicted value parity, and specificity parity. Moreover,
-the function helps to decide whether groups are treated fairly to a certain
-degree and within a certain materiality threshold.
+The `model_fairness()` function provides a method to assess fairness in
+algorithmic decision-making systems by computing various model-agnostic metrics
+based on the observed and predicted labels in a data set. Calculated metrics
+include demographic parity, proportional parity, predictive rate parity,
+accuracy parity, false negative rate parity, false positive rate parity, true
+positive rate parity, negative predicted value parity, and specificity parity.
+Other than computing these metrics, the function helps to decide whether groups
+are treated fairly to a certain degree and within a certain materiality
+threshold.
 
-Not all fairness measures are useful in all situations. The fairness tree below
-helps with picking which fairness measure is appropriate for the situation at
-hand (Büyük, 2023).
+Note that, in an audit context, not all fairness measures are equally
+appropriate in all situations. The decision tree below aids with choosing which
+measure is best for the situation at hand (Büyük, 2023).
 
 <p align='center'><img src='fairness-tree.png' alt='fairness' width='80%'></p>
 
 *Example:*
 
-For this example, we will use data from the COMPAS algorithm. The COMPAS
-(Correctional Offender Management Profiling for Alternative Sanctions) software
-is is a case management and decision support tool used by some U.S. courts to
-assess the likelihood of a defendant becoming a recidivist. The `compas` data
-is included in the package and can be loaded with `data("compas")`.
+To illustrate how to use the `model_fairness()` function, we will use a
+well-known data set called COMPAS. The COMPAS (Correctional Offender Management
+Profiling for Alternative Sanctions) software is is a case management and
+decision support tool used by some U.S. courts to assess the likelihood of a
+defendant becoming a recidivist (repeated offender). 
 
-A positive prediction in this case means that a person is classified as a
-reoffender. The fairness metrics offer information on whether there are any
-disparities in the algorithm's predictions across different ethnic groups. By
-calculating and reviewing these metrics, we can get an indication of whether the
-algorithm exhibits any discriminatory behavior towards specific ethnic groups.
-If substantial disparities exist, we may need to investigate further and
-potentially modify the algorithm to ensure fairness in its predictions.
+The `compas` data is included in the package and contains predictions of the
+COMPAS software for several cases. The data can be loaded with `data("compas")`
+and contains for each defendant, whether the defendant did commit a crime within two
+years after the court case (`TwoYrRecidivism`), some personal characteristics
+like gender and ethnicity, and whether the software predicted the defendant to
+be a recidivist (`Predicted`). 
+
+```{r}
+data("compas")
+head(compas)
+```
+
+We will investigate whether the algorithm is fair with respect to the sensitive
+attribute race. Considering the context, a positive prediction means that a
+defendant is classified as a reoffender, and a negative prediction means that a
+defendant is classified as a non-reoffender. The fairness metrics offer
+information on whether there are any disparities in the algorithm's predictions
+across different ethnic groups. By calculating and reviewing these metrics, we
+can get an indication of whether the algorithm exhibits any discriminatory
+behavior towards specific ethnic groups. If substantial disparities exist, we 
+may need to investigate further and potentially modify the algorithm to ensure
+fairness in its predictions.
 
 
-```{r fig.align="center", fig.height=4, fig.width=6}
+```{r fig.align="center", fig.height=5, fig.width=7}
 data("compas")
 x <- model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted", reference = "Caucasian", positive = "yes")
 summary(x)
@@ -73,15 +89,14 @@ Hispanic groups in comparison to the reference group (Caucasian).
 predictions (e.g., reoffenders) between each ethnic group and the reference
 group.
   - *African American*: The ratio of positive predictions for African Americans
-    compared to Caucasians is 2.7961, indicating that African Americans are
-    nearly three times more likely to be predicted as reoffenders than
+    compared to Caucasians is 2.7961, indicating that there are nearly three
+    times more African Americans predicted as reoffenders than Caucasians.
+  - *Asian*: The ratio for Asians is very close to zero (0.0059524), indicating
+    that there are many less Asians that are predicted as reoffenders in these
+    data than there are Caucasians.
+  - *Hispanic*: The ratio for Hispanics is 0.22173, meaning that there are about
+    five times less Hispanics predicted as reoffenders than that there are
     Caucasians.
-  - *Asian*: The ratio for Asians is very close to 0 (0.0059524), indicating
-    that the algorithm's positive predictions for Asians are much less frequent
-    as Caucasians, suggesting no unfair treatment.
-  - *Hispanic*: The ratio for Hispanics is 0.22173, meaning that they are less
-    likely to be positively predicted as reoffenders compared to Caucasians.
-    This suggests potential underestimation of reoffenders among Hispanics.
 
 2. **Proportional parity (Disparate impact)**: Compares the positive prediction
 rates (e.g., true positive rate) of each ethnic group with the reference group.

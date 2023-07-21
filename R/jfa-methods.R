@@ -1039,7 +1039,7 @@ print.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
     if (groupLevels[i] == x[["reference"]]) {
       next
     }
-    cat("\n", paste0(groupLevels[i], ": ", x[["mle_ratio"]][[11]][i], " measures outside tolerance region"))
+    cat("\n", paste0(groupLevels[i], ": ", x[["ratio"]][["mle"]][[11]][i], " measures outside tolerance region"))
   }
 }
 
@@ -1075,9 +1075,9 @@ print.summary.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
   for (i in seq_len(length(groupLevels))) {
     for (j in seq_len(10)) {
       if (j %in% 1:9) {
-        df[j, i] <- paste0(format(x[["mle"]][[j + 1]][i], digits = max(1L, digits - 2L)), " (", format(x[["mle_ratio"]][[j + 1]][i], digits = max(1L, digits - 2L)), ")")
+        df[j, i] <- paste0(format(x[["metrics"]][["mle"]][[j + 1]][i], digits = max(1L, digits - 2L)), " (", format(x[["ratio"]][["mle"]][[j + 1]][i], digits = max(1L, digits - 2L)), ")")
       } else {
-        df[j, i] <- x[["mle_ratio"]][[j + 1]][i]
+        df[j, i] <- x[["ratio"]][["mle"]][[j + 1]][i]
       }
     }
   }
@@ -1105,9 +1105,9 @@ summary.jfaModelBias <- function(object, digits = getOption("digits"), ...) {
   out <- list()
   out[["reference"]] <- object[["reference"]]
   out[["confusion.matrix"]] <- object[["confusion.matrix"]]
-  out[["mle"]] <- object[["mle"]]
+  out[["metrics"]] <- object[["metrics"]]
   out[["performance"]] <- object[["performance"]]
-  out[["mle_ratio"]] <- object[["mle_ratio"]]
+  out[["ratio"]] <- object[["ratio"]]
   class(out) <- c("summary.jfaModelBias", "list")
   return(out)
 }
@@ -1121,7 +1121,7 @@ plot.jfaModelBias <- function(x, type = c("dp", "pp", "prp", "ap", "fnrp", "fprp
   groupLevels <- names(x[["confusion.matrix"]])
   ind <- which(groupLevels == x[["reference"]])
   groupLevels <- groupLevels[-ind]
-  mle_ratio <- x$mle_ratio[, type, drop = FALSE]
+  mle_ratio <- x[["ratio"]][["mle"]][, type, drop = FALSE]
   mle <- stats::reshape(
     mle_ratio[-ind, , drop = FALSE],
     direction = "long",
@@ -1131,7 +1131,7 @@ plot.jfaModelBias <- function(x, type = c("dp", "pp", "prp", "ap", "fnrp", "fprp
     timevar = "variable"
   )
   if (length(type[type != "dp"]) > 0) {
-    lb_ratio <- x$lb_ratio[, type[type != "dp"], drop = FALSE]
+    lb_ratio <- x[["ratio"]][["lb"]][, type[type != "dp"], drop = FALSE]
     lb <- stats::reshape(
       lb_ratio[-ind, , drop = FALSE],
       direction = "long",
@@ -1140,7 +1140,7 @@ plot.jfaModelBias <- function(x, type = c("dp", "pp", "prp", "ap", "fnrp", "fprp
       v.names = "value",
       timevar = "variable"
     )
-    ub_ratio <- x$ub_ratio[, type[type != "dp"], drop = FALSE]
+    ub_ratio <- x[["ratio"]][["ub"]][, type[type != "dp"], drop = FALSE]
     ub <- stats::reshape(
       ub_ratio[-ind, , drop = FALSE],
       direction = "long",

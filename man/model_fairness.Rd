@@ -17,25 +17,33 @@ model_fairness(
 )
 }
 \arguments{
-\item{data}{The input data.}
+\item{data}{a data frame containing the input data.}
 
-\item{sensitive}{The column name indicating the sensitive variable.}
+\item{sensitive}{a character specifying the column name in \code{data}
+indicating the sensitive variable.}
 
-\item{target}{The column name indicating the target class labels.}
+\item{target}{A character specifying the column name in \code{data}
+indicating the actual values of the target (to be predicted) variable.}
 
-\item{predictions}{The column name indicating the predictions class labels.}
+\item{predictions}{a character specifying the column name in \code{data}
+indicating the predicted values of the target variable.}
 
-\item{reference}{The reference class for computing the fairness metrics.
-If \code{NULL} (the default), the first level of the \code{sensitive}
-column is used.}
+\item{reference}{a character specifying the class in the column
+\code{sensitive} used as the reference class for computing the fairness
+metrics. If \code{NULL} (the default), the first factor level of the
+\code{sensitive} column is used as the reference group.}
 
-\item{positive}{The positive class for computing the fairness metrics.
-If \code{NULL} (the default), the first level of the \code{target}
-column is used.}
+\item{positive}{a character specifying the positive class in the column
+\code{target} used for computing the fairness metrics. If \code{NULL} (the
+default), the first factor level of the \code{target} column is used as the
+positive class.}
 
-\item{materiality}{The materiality value for determining fairness.}
+\item{materiality}{a numeric value between 0 and 1 specifying the
+materiality used to decide whether the statistics are out of bound. The
+tolerance range is defined on the parity statistics as
+\code{1 - materiality} and \code{1 + materiality}.}
 
-\item{alternative}{The type of confidence interval to produce. Possible
+\item{alternative}{the type of confidence interval to produce. Possible
 options are \code{two.sided} (the default), \code{greater} and \code{less}.}
 
 \item{conf.level}{a numeric value between 0 and 1 specifying the
@@ -50,12 +58,12 @@ An object of class \code{jfaModelBias} containing:
 \item{confusion.matrix}{A list of confusion matrices for each group.}
 \item{performance}{A data frame containing performance metrics for each
   group, including accuracy, precision, recall, and F1 score.}
-\item{fairness}{A data frame containing fairness metrics for each group,
+\item{metrics}{A data frame containing fairness metrics for each group,
   including demographic parity, proportional parity, predictive rate parity,
   accuracy parity, false negative rate parity, false positive rate parity,
   true positive rate parity, negative predicted value parity, and statistical
   parity.}
-\item{ratio}{A data frame containing fairness ratios for each metric,
+\item{ratio}{A data frame containing fairness parity for each metric,
   comparing each group to the reference group.}
 \item{materiality}{The materiality value used to determine the out of bounds
   metrics.}
@@ -63,19 +71,20 @@ An object of class \code{jfaModelBias} containing:
 }
 \description{
 This function detects bias in algorithmic decision-making
-systems by computing various fairness metrics. It provides an assessment of
-fairness across different groups based on the observed and predicted
-outcomes. The function allows for evaluating fairness using metrics such as
+systems by computing various model-agnostic fairness metrics. These measures
+quantify fairness across different groups based on the observed and predicted
+outcomes of the model. The calculated metrics are commonly used and include
 demographic parity, proportional parity, predictive rate parity, accuracy
 parity, false negative rate parity, false positive rate parity, true positive
-rate parity, negative predicted value parity, and specificity parity and
-decide whether groups are fair to a certain degree and within a certain
-materiality threshold. Currently, it only supports binary classification.
+rate parity, negative predicted value parity, and specificity parity. In
+addition, the user can specify a materiality threshold to decide whether
+the algorithm is fair to a certain degree and within a certain range.
+Currently, this function only supports binary classification.
 }
 \details{
-The following fairness metrics are computed on the basis of the
-  true positives (TP), false positives (FP), true negative (TN) and false
-  negatives (FN) in the confusion matrix for each group.
+The following model-agnostic fairness metrics are computed based on
+  the confusion matrix for each sensitive group, using the  true positives
+  (TP), false positives (FP), true negative (TN) and false negatives (FN).
 
   \itemize{
     \item{Demographic parity: }{measures whether the observed variable is
@@ -100,9 +109,10 @@ The following fairness metrics are computed on the basis of the
       is the same across different groups, calculated as TN / (TN + FP).}
   }
 
-  Not all fairness measures are useful in all situations. The fairness
-  tree below helps with picking which fairness measure is appropriate for the
-  situation at hand (Büyük, 2023).
+  Note that, in an audit context, not all fairness measures are equally
+  appropriate in all situations. The fairness tree below aids in choosing
+  which fairness measure is appropriate for the situation at hand (Büyük,
+  2023).
 
   \if{html}{\figure{fairness-tree.png}{options: width="100\%" alt="fairness-tree"}}
   \if{latex}{\figure{fairness-tree.pdf}{options: width=5in}}

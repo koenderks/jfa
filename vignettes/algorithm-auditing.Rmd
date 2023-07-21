@@ -38,8 +38,8 @@ in **jfa**.
 
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
-The function `model_fairness()` function assesses bias in algorithmic
-decision-making systems by computing various fairness metrics based on the
+The `model_fairness()` function provides a model-agnotic method to asses bias
+in predictive algorithms  by computing various fairness metrics based on the
 observed and predicted classes. The function allows for evaluating fairness
 using metrics such as demographic parity, proportional parity, predictive rate
 parity, accuracy parity, false negative rate parity, false positive rate parity,
