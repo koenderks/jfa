@@ -1100,6 +1100,25 @@ print.summary.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
   df["  Outside tolerance region", ind] <- ""
   colnames(df) <- groupLevels
   print(df)
+  cat("\nOdds ratio (p-value):\n")
+  df <- data.frame(matrix(NA, nrow = 8, ncol = length(groupLevels)))
+  for (i in seq_len(length(groupLevels))) {
+    for (j in seq_len(8)) {
+      df[j, i] <- paste0(format(x[["odds.ratio"]][["all"]][i, j], digits = max(1L, digits - 2L)), " (", format.pval(x[["odds.ratio"]][[j + 1]][[groupLevels[i]]][["p.value"]], digits = max(1L, digits - 2L)), ")")
+    }
+  }
+  rownames(df) <- c(
+    "  Proportional parity",
+    "  Predictive rate parity",
+    "  Accuracy parity",
+    "  False negative rate parity",
+    "  False positive rate parity",
+    "  True positive rate parity",
+    "  Negative predicted value parity",
+    "  Specificity parity"
+  )
+  colnames(df) <- groupLevels
+  print(df)
 }
 
 #' @rdname jfa-methods
@@ -1112,6 +1131,7 @@ summary.jfaModelBias <- function(object, digits = getOption("digits"), ...) {
   out[["metrics"]] <- object[["metrics"]]
   out[["performance"]] <- object[["performance"]]
   out[["parity"]] <- object[["parity"]]
+  out[["odds.ratio"]] <- object[["odds.ratio"]]
   class(out) <- c("summary.jfaModelBias", "list")
   return(out)
 }
