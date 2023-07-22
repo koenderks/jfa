@@ -228,7 +228,36 @@ fairness in its predictions.</p>
 <span><span class="co">##   True positive rate parity            0.6 (1.2711) 0.41935 (0.88843)</span></span>
 <span><span class="co">##   Negative predicted value parity 0.66667 (0.95687)  0.72093 (1.0348)</span></span>
 <span><span class="co">##   Specificity parity              0.66667 (0.85657)  0.84932 (1.0912)</span></span>
-<span><span class="co">##   Outside tolerance region                        5                 3</span></span></code></pre>
+<span><span class="co">##   Outside tolerance region                        5                 3</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Odds ratio (p-value):</span></span>
+<span><span class="co">##                                   Caucasian     African_American</span></span>
+<span><span class="co">##   Proportional parity                 1 (1)  1.5353 (&lt; 2.22e-16)</span></span>
+<span><span class="co">##   Predictive rate parity              1 (1)  1.0914 (5.4523e-05)</span></span>
+<span><span class="co">##   Accuracy parity                     1 (1)     1.0126 (0.29669)</span></span>
+<span><span class="co">##   False negative rate parity          1 (1) 0.57405 (&lt; 2.22e-16)</span></span>
+<span><span class="co">##   False positive rate parity          1 (1)  1.6174 (&lt; 2.22e-16)</span></span>
+<span><span class="co">##   True positive rate parity           1 (1)  1.3391 (&lt; 2.22e-16)</span></span>
+<span><span class="co">##   Negative predicted value parity     1 (1)    0.98819 (0.45551)</span></span>
+<span><span class="co">##   Specificity parity                  1 (1) 0.84289 (&lt; 2.22e-16)</span></span>
+<span><span class="co">##                                                Asian          Hispanic</span></span>
+<span><span class="co">##   Proportional parity             0.47194 (0.030318) 0.93509 (0.26386)</span></span>
+<span><span class="co">##   Predictive rate parity                 0.91065 (1)  1.0144 (0.78393)</span></span>
+<span><span class="co">##   Accuracy parity                   1.0727 (0.44521)  1.0209 (0.34691)</span></span>
+<span><span class="co">##   False negative rate parity        1.2403 (0.29386)  1.0079 (0.93562)</span></span>
+<span><span class="co">##   False positive rate parity       0.44085 (0.19944) 0.88227 (0.25424)</span></span>
+<span><span class="co">##   True positive rate parity        0.62371 (0.29386) 0.99073 (0.93562)</span></span>
+<span><span class="co">##   Negative predicted value parity   1.0654 (0.52546)   1.019 (0.43956)</span></span>
+<span><span class="co">##   Specificity parity                1.0905 (0.19944)  1.0221 (0.25424)</span></span>
+<span><span class="co">##                                     Native_American              Other</span></span>
+<span><span class="co">##   Proportional parity               1.2905 (0.3444) 0.8201 (0.0080834)</span></span>
+<span><span class="co">##   Predictive rate parity                 1.0245 (1)    1.0369 (0.5621)</span></span>
+<span><span class="co">##   Accuracy parity                       0.97938 (1)   1.0316 (0.21778)</span></span>
+<span><span class="co">##   False negative rate parity      0.82686 (0.67157)   1.0631 (0.28911)</span></span>
+<span><span class="co">##   False positive rate parity       1.3776 (0.61986) 0.72162 (0.019574)</span></span>
+<span><span class="co">##   True positive rate parity        1.1695 (0.67157)  0.92139 (0.28911)</span></span>
+<span><span class="co">##   Negative predicted value parity       0.97412 (1)   1.0202 (0.46084)</span></span>
+<span><span class="co">##   Specificity parity              0.91394 (0.61986)  1.0493 (0.019574)</span></span></code></pre>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <p><img src="model-fairness_files/figure-html/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;"></p>
