@@ -154,6 +154,8 @@ model_fairness <- function(data,
   stopifnot("'materiality' must be a single value between 0 and 1" = materiality > 0 && materiality < 1)
   groupLevels <- levels(data[, sensitive])
   targetLevels <- levels(data[, target])
+  stopifnot("number of factor levels in 'target' must be 2" = length(targetLevels) == 2)
+  stopifnot("number of factor levels in 'predictions' must be 2" = nlevels(data[, predictions]) == 2)
   measures <- c("dp", "pp", "prp", "ap", "fnrp", "fprp", "tprp", "npvp", "sp")
   if (is.null(reference)) {
     reference <- groupLevels[1]

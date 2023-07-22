@@ -1054,8 +1054,6 @@ print.summary.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
   groupLevels <- names(x[["confusion.matrix"]])
   ind <- which(groupLevels == x[["reference"]])
   cat(paste0("\nReference group:  ", x[["reference"]], "\n"))
-  cat("\nConfusion matrix:\n")
-  print(x[["confusion.matrix"]][[ind]][["matrix"]])
   cat("\nModel performance:\n")
   df <- data.frame(matrix(NA, nrow = 5, ncol = length(groupLevels)))
   for (i in seq_len(length(groupLevels))) {
