@@ -152,6 +152,7 @@ model_fairness <- function(data,
   stopifnot("'materiality' must be a single value between 0 and 1" = materiality > 0 && materiality < 1)
   groupLevels <- levels(data[, sensitive])
   targetLevels <- levels(data[, target])
+  measures <- c("dp", "pp", "prp", "ap", "fnrp", "fprp", "tprp", "npvp", "sp")
   if (is.null(reference)) {
     reference <- groupLevels[1]
   }
@@ -161,79 +162,78 @@ model_fairness <- function(data,
   }
   stopifnot("'positive' is not a class in 'target'" = positive %in% targetLevels)
   negative <- targetLevels[-which(targetLevels == positive)]
-  refIndex <- which(groupLevels == reference)
-  mle <- data.frame()
-  performance <- data.frame()
-  lb <- data.frame()
-  ub <- data.frame()
+  metrics <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = 9)))
+  odds <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = 9)))
+  performance <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = 5)))
   confmat <- list()
   for (i in seq_len(nlevels(data[, sensitive]))) {
     group <- levels(data[, sensitive])[i]
     groupDat <- data[data[, sensitive] == group, ]
-    confmat[[i]] <- table("Actual" = groupDat[, target], "Predicted" = groupDat[, predictions])
-    counts <- data.frame(
-      tp = confmat[[i]][positive, positive],
-      fp = confmat[[i]][negative, positive],
-      tn = confmat[[i]][negative, negative],
-      fn = confmat[[i]][positive, negative]
-    )
-    dp <- counts[["tp"]] + counts[["fp"]] # Demographic parity
-    pp <- (counts[["tp"]] + counts[["fp"]]) / (counts[["tp"]] + counts[["fp"]] + counts[["tn"]] + counts[["fn"]]) # Proportional parity
-    prp <- counts[["tp"]] / (counts[["tp"]] + counts[["fp"]]) # Predictive rate parity
-    ap <- (counts[["tp"]] + counts[["tn"]]) / (counts[["tp"]] + counts[["fp"]] + counts[["tn"]] + counts[["fn"]]) # Accuracy parity
-    fnrp <- counts[["fn"]] / (counts[["tp"]] + counts[["fn"]]) # False negative rate parity
-    fprp <- counts[["fp"]] / (counts[["tn"]] + counts[["fp"]]) # False positive rate parity
-    tprp <- counts[["tp"]] / (counts[["tp"]] + counts[["fn"]]) # True positive rate parity
-    npvp <- counts[["tn"]] / (counts[["tn"]] + counts[["fn"]]) # Negative predicted value parity
-    sp <- counts[["tn"]] / (counts[["tn"]] + counts[["fp"]]) # Specificity parity
-    test_pp <- stats::binom.test(x = counts[["tp"]] + counts[["fp"]], n = counts[["tp"]] + counts[["fp"]] + counts[["tn"]] + counts[["fn"]], conf.level = conf.level, alternative = alternative)
-    test_prp <- stats::binom.test(x = counts[["tp"]], n = counts[["tp"]] + counts[["fp"]], conf.level = conf.level, alternative = alternative)
-    test_ap <- stats::binom.test(x = counts[["tp"]] + counts[["tn"]], n = counts[["tp"]] + counts[["tn"]] + counts[["fp"]] + counts[["fn"]], conf.level = conf.level, alternative = alternative)
-    test_fnrp <- stats::binom.test(x = counts[["fn"]], n = counts[["fn"]] + counts[["tp"]], conf.level = conf.level, alternative = alternative)
-    test_fprp <- stats::binom.test(x = counts[["fp"]], n = counts[["tn"]] + counts[["fp"]], conf.level = conf.level, alternative = alternative)
-    test_tprp <- stats::binom.test(x = counts[["tp"]], n = counts[["tp"]] + counts[["fn"]], conf.level = conf.level, alternative = alternative)
-    test_npvp <- stats::binom.test(x = counts[["tn"]], n = counts[["tn"]] + counts[["fn"]], conf.level = conf.level, alternative = alternative)
-    test_sp <- stats::binom.test(x = counts[["tn"]], n = counts[["tn"]] + counts[["fp"]], conf.level = conf.level, alternative = alternative)
-    pp_lb <- test_pp$conf.int[1]
-    prp_lb <- test_prp$conf.int[1]
-    ap_lb <- test_ap$conf.int[1]
-    fnrp_lb <- test_fnrp$conf.int[1]
-    fprp_lb <- test_fprp$conf.int[1]
-    tprp_lb <- test_tprp$conf.int[1]
-    npvp_lb <- test_npvp$conf.int[1]
-    sp_lb <- test_sp$conf.int[1]
-    pp_ub <- test_pp$conf.int[2]
-    prp_ub <- test_prp$conf.int[2]
-    ap_ub <- test_ap$conf.int[2]
-    fnrp_ub <- test_fnrp$conf.int[2]
-    fprp_ub <- test_fprp$conf.int[2]
-    tprp_ub <- test_tprp$conf.int[2]
-    npvp_ub <- test_npvp$conf.int[2]
-    sp_ub <- test_sp$conf.int[2]
-    mle <- rbind(mle, data.frame(group, dp, pp, prp, ap, fnrp, fprp, tprp, npvp, sp))
-    ub <- rbind(ub, data.frame(group, pp = pp_ub, prp = prp_ub, ap = ap_ub, fnrp = fnrp_ub, fprp = fprp_ub, tprp = tprp_ub, npvp = npvp_ub, sp = sp_ub))
-    lb <- rbind(lb, data.frame(group, pp = pp_lb, prp = prp_lb, ap = ap_lb, fnrp = fnrp_lb, fprp = fprp_lb, tprp = tprp_lb, npvp = npvp_lb, sp = sp_lb))
-    support <- sum(counts[1, ])
-    accuracy <- (counts[["tp"]] + counts[["tn"]]) / (counts[["tp"]] + counts[["fn"]] + counts[["fp"]] + counts[["tn"]])
-    precision <- counts[["tp"]] / (counts[["tp"]] + counts[["fp"]])
-    recall <- counts[["tp"]] / (counts[["tp"]] + counts[["fn"]])
-    f1.score <- 2 * ((precision * recall) / (precision + recall))
-    performance <- rbind(performance, data.frame(group, support, accuracy, precision, recall, f1.score))
-  }
-  mle_ratio <- as.data.frame(apply(mle[, -1], 2, function(x, ref) as.numeric(x) / as.numeric(x[ref]), ref = refIndex))
-  mle_ratio <- cbind(mle_ratio, deviation = apply(mle_ratio, 1, function(x) {
-    x <- x[!is.na(x)]
-    return(sum(x < materiality | x > 1 / materiality))
-  }))
-  mle_ratio <- cbind(group = mle[, 1], mle_ratio)
-  ub_ratio <- ub
-  lb_ratio <- lb
-  for (i in seq_len(nrow(ub))) {
-    for (j in 2:ncol(ub)) {
-      ub_ratio[i, j] <- ub[i, j] / mle[refIndex, j + 1]
-      lb_ratio[i, j] <- lb[i, j] / mle[refIndex, j + 1]
+    # Confusion matrices
+    confmat[[group]][["matrix"]] <- table("Actual" = groupDat[, target], "Predicted" = groupDat[, predictions])
+    confmat[[group]][["tp"]] <- tp <- confmat[[group]][["matrix"]][positive, positive]
+    confmat[[group]][["fp"]] <- fp <- confmat[[group]][["matrix"]][negative, positive]
+    confmat[[group]][["tn"]] <- tn <- confmat[[group]][["matrix"]][negative, negative]
+    confmat[[group]][["fn"]] <- fn <- confmat[[group]][["matrix"]][positive, negative]
+    # Performance measures
+    performance[[group]][["support"]] <- performance[["all"]][i, 1] <- sum(confmat[[group]][["matrix"]])
+    performance[[group]][["accuracy"]] <- performance[["all"]][i, 2] <- (confmat[[group]][["tp"]] + confmat[[group]][["tn"]]) / (confmat[[group]][["tp"]] + confmat[[group]][["tn"]] + confmat[[group]][["fp"]] + confmat[[group]][["fn"]])
+    performance[[group]][["precision"]] <- performance[["all"]][i, 3] <- confmat[[group]][["tp"]] / (confmat[[group]][["tp"]] + confmat[[group]][["fp"]])
+    performance[[group]][["recall"]] <- performance[["all"]][i, 4] <- confmat[[group]][["tp"]] / (confmat[[group]][["tp"]] + confmat[[group]][["fn"]])
+    performance[[group]][["f1.score"]] <- performance[["all"]][i, 5] <- 2 * ((performance[[group]][["precision"]] * performance[[group]][["recall"]]) / (performance[[group]][["precision"]] + performance[[group]][["recall"]]))
+    # Fairness metrics
+    for (j in seq_len(length(measures))) {
+      metric <- measures[j]
+      if (metric == "dp") {
+        metrics[[metric]][[group]][["mle"]] <- tp + fp
+      } else {
+        metrics[[metric]][[group]][["numerator"]] <- num <- switch(metric,
+          "pp" = tp + fp,
+          "prp" = tp,
+          "ap" = tp + tn,
+          "fnrp" = fn,
+          "fprp" = fp,
+          "tprp" = tp,
+          "npvp" = tn,
+          "sp" = tn
+        )
+        metrics[[metric]][[group]][["denominator"]] <- denom <- switch(metric,
+          "pp" = tp + fp + tn + fn,
+          "prp" = tp + fp,
+          "ap" = tp + fp + tn + fn,
+          "fnrp" = tp + fn,
+          "fprp" = tn + fp,
+          "tprp" = tp + fn,
+          "npvp" = tn + fn,
+          "sp" = tn + fp
+        )
+        metrics[[metric]][[group]][["mle"]] <- num / denom
+        test <- stats::binom.test(x = num, n = denom, conf.level = conf.level, alternative = alternative)
+        metrics[[metric]][[group]][["lb"]] <- test$conf.int[1]
+        metrics[[metric]][[group]][["ub"]] <- test$conf.int[2]
+      }
+      metrics[["all"]][i, j] <- metrics[[metric]][[group]][["mle"]]
     }
   }
+  rownames(metrics[["all"]]) <- rownames(performance[["all"]]) <- groupLevels
+  colnames(metrics[["all"]]) <- measures
+  colnames(performance[["all"]]) <- c("support", "accuracy", "precision", "recall", "f1.score")
+  # Parity ratios
+  for (i in seq_len(nlevels(data[, sensitive]))) {
+    group <- levels(data[, sensitive])[i]
+    for (j in seq_len(length(measures))) {
+      metric <- measures[j]
+      odds[[metric]][[group]][["mle"]] <- metrics[[metric]][[group]][["mle"]] / metrics[[metric]][[reference]][["mle"]]
+      if (metric != "dp") {
+        odds[[metric]][[group]][["lb"]] <- metrics[[metric]][[group]][["lb"]] / metrics[[metric]][[reference]][["mle"]]
+        odds[[metric]][[group]][["ub"]] <- metrics[[metric]][[group]][["ub"]] / metrics[[metric]][[reference]][["mle"]]
+      }
+      odds[[metric]][[group]][["deviation"]] <- ((odds[[metric]][[group]][["mle"]] < materiality) || (odds[[metric]][[group]][["mle"]] > 1 / materiality))
+      odds[["all"]][i, j] <- odds[[metric]][[group]][["mle"]]
+    }
+  }
+  rownames(odds[["all"]]) <- groupLevels
+  colnames(odds[["all"]]) <- measures
   names(confmat) <- groupLevels
   result <- list()
   result[["reference"]] <- reference
@@ -241,13 +241,8 @@ model_fairness <- function(data,
   result[["alternative"]] <- alternative
   result[["confusion.matrix"]] <- confmat
   result[["performance"]] <- performance
-  result[["metrics"]] <- list()
-  result[["metrics"]][["mle"]] <- mle
-  result[["metrics"]][["ub"]] <- ub
-  result[["metrics"]][["lb"]] <- lb
-  result[["ratio"]][["mle"]] <- mle_ratio
-  result[["ratio"]][["ub"]] <- ub_ratio
-  result[["ratio"]][["lb"]] <- lb_ratio
+  result[["metrics"]] <- metrics
+  result[["odds"]] <- odds
   result[["materiality"]] <- materiality
   result[["data.name"]] <- dname
   class(result) <- c("jfaModelBias", "list")

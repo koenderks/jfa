@@ -1029,7 +1029,7 @@ plot.jfaRv <- function(x, ...) {
 #' @export
 print.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
   cat("\n")
-  cat(strwrap("Fairness Metrics and Bias Detection", prefix = "\t"), sep = "\n")
+  cat(strwrap("Algorithmic Fairness Metrics", prefix = "\t"), sep = "\n")
   cat("\n")
   cat("data:  ", x[["data.name"]], "\n", sep = "")
   groupLevels <- names(x$confusion.matrix)
@@ -1039,7 +1039,9 @@ print.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
     if (groupLevels[i] == x[["reference"]]) {
       next
     }
-    cat("\n", paste0(groupLevels[i], ": ", x[["ratio"]][["mle"]][[11]][i], " measures outside tolerance region"))
+    cat("\n", paste0(groupLevels[i], ": ", sum(sapply(c("dp", "pp", "prp", "ap", "fnrp", "fprp", "tprp", "npvp", "sp"), function(measure) {
+      x[["odds"]][[measure]][[groupLevels[i]]][["deviation"]]
+    })), " measures outside tolerance region"))
   }
 }
 
@@ -1048,17 +1050,17 @@ print.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
 #' @export
 print.summary.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
   cat("\n")
-  cat(strwrap("Fairness Metrics and Bias Detection Summary", prefix = "\t"), sep = "\n")
+  cat(strwrap("Algorithmic Fairness Metrics Summary", prefix = "\t"), sep = "\n")
   groupLevels <- names(x[["confusion.matrix"]])
   ind <- which(groupLevels == x[["reference"]])
   cat(paste0("\nReference group:  ", x[["reference"]], "\n"))
   cat("\nConfusion matrix:\n")
-  print(x[["confusion.matrix"]][[ind]])
+  print(x[["confusion.matrix"]][[ind]][["matrix"]])
   cat("\nModel performance:\n")
-  df <- data.frame(matrix(NA, nrow = 4, ncol = length(groupLevels)))
+  df <- data.frame(matrix(NA, nrow = 5, ncol = length(groupLevels)))
   for (i in seq_len(length(groupLevels))) {
-    for (j in seq_len(5)) {
-      df[j, i] <- format(x[["performance"]][[j + 1]][i], digits = max(1L, digits - 2L))
+    for (j in seq_len(nrow(df))) {
+      df[j, i] <- format(x[["performance"]][["all"]][i, j], digits = max(1L, digits - 2L))
     }
   }
   rownames(df) <- c(
@@ -1075,9 +1077,11 @@ print.summary.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
   for (i in seq_len(length(groupLevels))) {
     for (j in seq_len(10)) {
       if (j %in% 1:9) {
-        df[j, i] <- paste0(format(x[["metrics"]][["mle"]][[j + 1]][i], digits = max(1L, digits - 2L)), " (", format(x[["ratio"]][["mle"]][[j + 1]][i], digits = max(1L, digits - 2L)), ")")
+        df[j, i] <- paste0(format(x[["metrics"]][["all"]][i, j], digits = max(1L, digits - 2L)), " (", format(x[["odds"]][["all"]][i, j], digits = max(1L, digits - 2L)), ")")
       } else {
-        df[j, i] <- x[["ratio"]][["mle"]][[j + 1]][i]
+        df[j, i] <- sum(sapply(c("dp", "pp", "prp", "ap", "fnrp", "fprp", "tprp", "npvp", "sp"), function(measure) {
+          x[["odds"]][[measure]][[groupLevels[i]]][["deviation"]]
+        }))
       }
     }
   }
@@ -1107,7 +1111,7 @@ summary.jfaModelBias <- function(object, digits = getOption("digits"), ...) {
   out[["confusion.matrix"]] <- object[["confusion.matrix"]]
   out[["metrics"]] <- object[["metrics"]]
   out[["performance"]] <- object[["performance"]]
-  out[["ratio"]] <- object[["ratio"]]
+  out[["odds"]] <- object[["odds"]]
   class(out) <- c("summary.jfaModelBias", "list")
   return(out)
 }
@@ -1117,34 +1121,42 @@ summary.jfaModelBias <- function(object, digits = getOption("digits"), ...) {
 #' @export
 plot.jfaModelBias <- function(x, type = c("dp", "pp", "prp", "ap", "fnrp", "fprp", "tprp", "npvp", "sp"), ...) {
   value <- variable <- group <- NULL
-  stopifnot("'type' should be one or more of 'dp', 'pp', 'prp', 'ap', 'fnrp', 'tprp', 'npvp' or 'sp'" = all(type %in% c("dp", "pp", "prp", "ap", "fnrp", "fprp", "tprp", "npvp", "sp")))
+  measures <- c("dp", "pp", "prp", "ap", "fnrp", "fprp", "tprp", "npvp", "sp")
+  stopifnot("'type' should be one or more of 'dp', 'pp', 'prp', 'ap', 'fnrp', 'tprp', 'npvp' or 'sp'" = all(type %in% measures))
   groupLevels <- names(x[["confusion.matrix"]])
   ind <- which(groupLevels == x[["reference"]])
   groupLevels <- groupLevels[-ind]
-  mle_ratio <- x[["ratio"]][["mle"]][, type, drop = FALSE]
+  mle_ratio <- x[["odds"]][["all"]][, type, drop = FALSE]
   mle <- stats::reshape(
     mle_ratio[-ind, , drop = FALSE],
     direction = "long",
-    idvar = "group",
     varying = type,
     v.names = "value",
     timevar = "variable"
   )
   if (length(type[type != "dp"]) > 0) {
-    lb_ratio <- x[["ratio"]][["lb"]][, type[type != "dp"], drop = FALSE]
+    lb_ratio <- data.frame(row.names = groupLevels)
+    for (measure in type[type != "dp"]) {
+      lb_ratio[[measure]] <- sapply(groupLevels, function(group) {
+        x$odds[[measure]][[group]]$lb
+      })
+    }
     lb <- stats::reshape(
-      lb_ratio[-ind, , drop = FALSE],
+      lb_ratio[, , drop = FALSE],
       direction = "long",
-      idvar = "group",
       varying = type[type != "dp"],
       v.names = "value",
       timevar = "variable"
     )
-    ub_ratio <- x[["ratio"]][["ub"]][, type[type != "dp"], drop = FALSE]
+    ub_ratio <- data.frame(row.names = groupLevels)
+    for (measure in type[type != "dp"]) {
+      ub_ratio[[measure]] <- sapply(groupLevels, function(group) {
+        x$odds[[measure]][[group]]$ub
+      })
+    }
     ub <- stats::reshape(
-      ub_ratio[-ind, , drop = FALSE],
+      ub_ratio[, , drop = FALSE],
       direction = "long",
-      idvar = "group",
       varying = type[type != "dp"],
       v.names = "value",
       timevar = "variable"
@@ -1158,7 +1170,7 @@ plot.jfaModelBias <- function(x, type = c("dp", "pp", "prp", "ap", "fnrp", "fprp
   } else {
     ratio <- mle
   }
-  ratio[["group"]] <- factor(groupLevels[ratio[["group"]]], levels = groupLevels)
+  ratio[["group"]] <- rep(groupLevels, length(type))
   ratio[["variable"]] <- factor(toupper(type[ratio[["variable"]]]), levels = toupper(type))
   yBreaks <- pretty(c(0, ratio[["value"]], 1 / x[["materiality"]], ratio[["ub"]]), min.n = 4)
   p <- ggplot2::ggplot(data = ratio, mapping = ggplot2::aes(x = group, y = value, fill = variable)) +
