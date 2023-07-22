@@ -110,8 +110,10 @@
 #'   accuracy parity, false negative rate parity, false positive rate parity,
 #'   true positive rate parity, negative predicted value parity, and statistical
 #'   parity.}
-#' \item{ratio}{A data frame containing fairness parity for each metric,
+#' \item{parity}{A data frame containing fairness parity for each metric,
 #'   comparing each group to the reference group.}
+#' \item{odds.ratio}{A data frame containing odds ratio of the fairness parity
+#'   for each metric, comparing each group to the reference group.}
 #' \item{materiality}{The materiality value used to determine the out of bounds
 #'   metrics.}
 #' \item{data.name}{The name of the input data object.}
@@ -162,8 +164,9 @@ model_fairness <- function(data,
   }
   stopifnot("'positive' is not a class in 'target'" = positive %in% targetLevels)
   negative <- targetLevels[-which(targetLevels == positive)]
-  metrics <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = 9)))
-  odds <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = 9)))
+  metrics <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = length(measures))))
+  parity <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = length(measures))))
+  odds.ratio <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = length(measures) - 1)))
   performance <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = 5)))
   confmat <- list()
   for (i in seq_len(nlevels(data[, sensitive]))) {
@@ -223,17 +226,42 @@ model_fairness <- function(data,
     group <- levels(data[, sensitive])[i]
     for (j in seq_len(length(measures))) {
       metric <- measures[j]
-      odds[[metric]][[group]][["mle"]] <- metrics[[metric]][[group]][["mle"]] / metrics[[metric]][[reference]][["mle"]]
+      parity[[metric]][[group]][["mle"]] <- metrics[[metric]][[group]][["mle"]] / metrics[[metric]][[reference]][["mle"]]
       if (metric != "dp") {
-        odds[[metric]][[group]][["lb"]] <- metrics[[metric]][[group]][["lb"]] / metrics[[metric]][[reference]][["mle"]]
-        odds[[metric]][[group]][["ub"]] <- metrics[[metric]][[group]][["ub"]] / metrics[[metric]][[reference]][["mle"]]
+        parity[[metric]][[group]][["lb"]] <- metrics[[metric]][[group]][["lb"]] / metrics[[metric]][[reference]][["mle"]]
+        parity[[metric]][[group]][["ub"]] <- metrics[[metric]][[group]][["ub"]] / metrics[[metric]][[reference]][["mle"]]
       }
-      odds[[metric]][[group]][["deviation"]] <- ((odds[[metric]][[group]][["mle"]] < materiality) || (odds[[metric]][[group]][["mle"]] > 1 / materiality))
-      odds[["all"]][i, j] <- odds[[metric]][[group]][["mle"]]
+      parity[[metric]][[group]][["deviation"]] <- ((parity[[metric]][[group]][["mle"]] < materiality) || (parity[[metric]][[group]][["mle"]] > 1 / materiality))
+      parity[["all"]][i, j] <- parity[[metric]][[group]][["mle"]]
     }
   }
-  rownames(odds[["all"]]) <- groupLevels
-  colnames(odds[["all"]]) <- measures
+  rownames(parity[["all"]]) <- groupLevels
+  colnames(parity[["all"]]) <- measures
+  names(confmat) <- groupLevels
+  # Odds ratios
+  for (i in seq_len(nlevels(data[, sensitive]))) {
+    group <- levels(data[, sensitive])[i]
+    for (j in 2:length(measures)) {
+      metric <- measures[j]
+      odds.ratio[[metric]][[group]][["mle"]] <- (metrics[[metric]][[group]][["mle"]] / (1 + metrics[[metric]][[group]][["mle"]])) / (metrics[[metric]][[reference]][["mle"]] / (1 + metrics[[metric]][[reference]][["mle"]]))
+      test <- stats::fisher.test(
+        matrix(c(
+          metrics[[metric]][[group]][["numerator"]],
+          metrics[[metric]][[group]][["denominator"]] - metrics[[metric]][[group]][["numerator"]],
+          metrics[[metric]][[reference]][["numerator"]],
+          metrics[[metric]][[reference]][["denominator"]] - metrics[[metric]][[reference]][["numerator"]]
+        ), ncol = 2),
+        alternative = alternative,
+        conf.level = conf.level
+      )
+      odds.ratio[[metric]][[group]][["lb"]] <- test$conf.int[1]
+      odds.ratio[[metric]][[group]][["ub"]] <- test$conf.int[1]
+      odds.ratio[[metric]][[group]][["p.value"]] <- test$p.value
+      odds.ratio[["all"]][i, j - 1] <- odds.ratio[[metric]][[group]][["mle"]]
+    }
+  }
+  rownames(odds.ratio[["all"]]) <- groupLevels
+  colnames(odds.ratio[["all"]]) <- measures[-1]
   names(confmat) <- groupLevels
   result <- list()
   result[["reference"]] <- reference
@@ -242,7 +270,8 @@ model_fairness <- function(data,
   result[["confusion.matrix"]] <- confmat
   result[["performance"]] <- performance
   result[["metrics"]] <- metrics
-  result[["odds"]] <- odds
+  result[["parity"]] <- parity
+  result[["odds.ratio"]] <- odds.ratio
   result[["materiality"]] <- materiality
   result[["data.name"]] <- dname
   class(result) <- c("jfaModelBias", "list")

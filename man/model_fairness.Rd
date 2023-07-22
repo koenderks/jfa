@@ -63,8 +63,10 @@ An object of class \code{jfaModelBias} containing:
   accuracy parity, false negative rate parity, false positive rate parity,
   true positive rate parity, negative predicted value parity, and statistical
   parity.}
-\item{ratio}{A data frame containing fairness parity for each metric,
+\item{parity}{A data frame containing fairness parity for each metric,
   comparing each group to the reference group.}
+\item{odds.ratio}{A data frame containing odds ratio of the fairness parity
+  for each metric, comparing each group to the reference group.}
 \item{materiality}{The materiality value used to determine the out of bounds
   metrics.}
 \item{data.name}{The name of the input data object.}

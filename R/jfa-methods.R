@@ -1040,7 +1040,7 @@ print.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
       next
     }
     cat("\n", paste0(groupLevels[i], ": ", sum(sapply(c("dp", "pp", "prp", "ap", "fnrp", "fprp", "tprp", "npvp", "sp"), function(measure) {
-      x[["odds"]][[measure]][[groupLevels[i]]][["deviation"]]
+      x[["parity"]][[measure]][[groupLevels[i]]][["deviation"]]
     })), " measures outside tolerance region"))
   }
 }
@@ -1072,15 +1072,15 @@ print.summary.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
   )
   colnames(df) <- groupLevels
   print(df)
-  cat("\nFairness metrics (ratios against reference):\n")
+  cat("\nFairness metrics (parity ratio):\n")
   df <- data.frame(matrix(NA, nrow = 10, ncol = length(groupLevels)))
   for (i in seq_len(length(groupLevels))) {
     for (j in seq_len(10)) {
       if (j %in% 1:9) {
-        df[j, i] <- paste0(format(x[["metrics"]][["all"]][i, j], digits = max(1L, digits - 2L)), " (", format(x[["odds"]][["all"]][i, j], digits = max(1L, digits - 2L)), ")")
+        df[j, i] <- paste0(format(x[["metrics"]][["all"]][i, j], digits = max(1L, digits - 2L)), " (", format(x[["parity"]][["all"]][i, j], digits = max(1L, digits - 2L)), ")")
       } else {
         df[j, i] <- sum(sapply(c("dp", "pp", "prp", "ap", "fnrp", "fprp", "tprp", "npvp", "sp"), function(measure) {
-          x[["odds"]][[measure]][[groupLevels[i]]][["deviation"]]
+          x[["parity"]][[measure]][[groupLevels[i]]][["deviation"]]
         }))
       }
     }
@@ -1111,7 +1111,7 @@ summary.jfaModelBias <- function(object, digits = getOption("digits"), ...) {
   out[["confusion.matrix"]] <- object[["confusion.matrix"]]
   out[["metrics"]] <- object[["metrics"]]
   out[["performance"]] <- object[["performance"]]
-  out[["odds"]] <- object[["odds"]]
+  out[["parity"]] <- object[["parity"]]
   class(out) <- c("summary.jfaModelBias", "list")
   return(out)
 }
@@ -1126,7 +1126,7 @@ plot.jfaModelBias <- function(x, type = c("dp", "pp", "prp", "ap", "fnrp", "fprp
   groupLevels <- names(x[["confusion.matrix"]])
   ind <- which(groupLevels == x[["reference"]])
   groupLevels <- groupLevels[-ind]
-  mle_ratio <- x[["odds"]][["all"]][, type, drop = FALSE]
+  mle_ratio <- x[["parity"]][["all"]][, type, drop = FALSE]
   mle <- stats::reshape(
     mle_ratio[-ind, , drop = FALSE],
     direction = "long",
@@ -1138,7 +1138,7 @@ plot.jfaModelBias <- function(x, type = c("dp", "pp", "prp", "ap", "fnrp", "fprp
     lb_ratio <- data.frame(row.names = groupLevels)
     for (measure in type[type != "dp"]) {
       lb_ratio[[measure]] <- sapply(groupLevels, function(group) {
-        x$odds[[measure]][[group]]$lb
+        x$parity[[measure]][[group]]$lb
       })
     }
     lb <- stats::reshape(
@@ -1151,7 +1151,7 @@ plot.jfaModelBias <- function(x, type = c("dp", "pp", "prp", "ap", "fnrp", "fprp
     ub_ratio <- data.frame(row.names = groupLevels)
     for (measure in type[type != "dp"]) {
       ub_ratio[[measure]] <- sapply(groupLevels, function(group) {
-        x$odds[[measure]][[group]]$ub
+        x$parity[[measure]][[group]]$ub
       })
     }
     ub <- stats::reshape(
@@ -1176,7 +1176,7 @@ plot.jfaModelBias <- function(x, type = c("dp", "pp", "prp", "ap", "fnrp", "fprp
   p <- ggplot2::ggplot(data = ratio, mapping = ggplot2::aes(x = group, y = value, fill = variable)) +
     ggplot2::geom_col(colour = "black", position = ggplot2::position_dodge()) +
     ggplot2::scale_x_discrete(name = "Sensitive Group") +
-    ggplot2::scale_y_continuous(name = "Ratio to Reference Group", breaks = yBreaks, limits = range(yBreaks)) +
+    ggplot2::scale_y_continuous(name = "Parity Ratio", breaks = yBreaks, limits = range(yBreaks)) +
     ggplot2::annotate(geom = "rect", xmin = -Inf, xmax = Inf, ymin = x[["materiality"]], ymax = 1 / x[["materiality"]], fill = "darkgray", alpha = 0.5) +
     ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks)) +
     ggplot2::geom_segment(x = -Inf, xend = Inf, y = 1, yend = 1, linetype = "dashed", color = "black", linewidth = 0.35) +
