@@ -255,7 +255,7 @@ model_fairness <- function(data,
         conf.level = conf.level
       )
       odds.ratio[[metric]][[group]][["lb"]] <- test$conf.int[1]
-      odds.ratio[[metric]][[group]][["ub"]] <- test$conf.int[1]
+      odds.ratio[[metric]][[group]][["ub"]] <- test$conf.int[2]
       odds.ratio[[metric]][[group]][["p.value"]] <- test$p.value
       odds.ratio[["all"]][i, j - 1] <- odds.ratio[[metric]][[group]][["mle"]]
     }
