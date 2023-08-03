@@ -283,7 +283,7 @@ numbers in a variable for repeated values.</p>
 <span><span class="co">##  Repeated Values Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sanitizer$value</span></span>
-<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0032</span></span>
+<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0022</span></span>
 <span><span class="co">## alternative hypothesis: average frequency in data is greater than for random data.</span></span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
@@ -311,14 +311,15 @@ fairness and bias in a machine learning algorithm.</p>
 <span><span class="co">##  Algorithmic Fairness Metrics</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  compas</span></span>
-<span><span class="co">## reference group:  Caucasian, positive class:  yes</span></span>
+<span><span class="co">## reference group: Caucasian, positive class: yes</span></span>
+<span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Sensitive groups (5):</span></span>
-<span><span class="co">##  African_American: 6 measures outside tolerance region</span></span>
-<span><span class="co">##  Asian: 5 measures outside tolerance region</span></span>
-<span><span class="co">##  Hispanic: 1 measures outside tolerance region</span></span>
-<span><span class="co">##  Native_American: 5 measures outside tolerance region</span></span>
-<span><span class="co">##  Other: 3 measures outside tolerance region</span></span></code></pre>
+<span><span class="co">## 9 fairness measures (5 sensitive groups):</span></span>
+<span><span class="co">##  African_American: 6 measure(s) outside tolerance region</span></span>
+<span><span class="co">##  Asian: 5 measure(s) outside tolerance region</span></span>
+<span><span class="co">##  Hispanic: 1 measure(s) outside tolerance region</span></span>
+<span><span class="co">##  Native_American: 5 measure(s) outside tolerance region</span></span>
+<span><span class="co">##  Other: 3 measure(s) outside tolerance region</span></span></code></pre>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <p><img src="jfa_files/figure-html/unnamed-chunk-8-1.png" width="576" style="display: block; margin: auto;"></p>
