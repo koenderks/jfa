@@ -1046,15 +1046,15 @@ print.jfaModelFairness <- function(x, digits = getOption("digits"), ...) {
       "npvp" = "Negative predictive value parity",
       "sp" = "Specificity parity"
     )
-    cat(paste0("\n", measure, " (", length(groupLevels) - 1, " sensitive groups):"))
+    cat(paste0("\n", measure, " ratio (", length(groupLevels) - 1, " sensitive groups):"))
     for (i in seq_len(length(groupLevels))) {
       if (groupLevels[i] == x[["reference"]]) {
         next
       }
       if (!x[["prior"]]) {
-        cat("\n", paste0(groupLevels[i], ": p-value = ", format.pval(x[["odds.ratio"]][[colnames(x[["metrics"]]$all)]][[groupLevels[i]]]$p.value, digits = max(1L, digits - 2L))))
+        cat("\n", paste0(groupLevels[i], ": ", format(x[["parity"]][[colnames(x[["metrics"]]$all)]][[groupLevels[i]]]$mle, digits = max(1L, digits - 2L)), " [", format(x[["parity"]][[colnames(x[["metrics"]]$all)]][[groupLevels[i]]]$lb, digits = max(1L, digits - 2L)), ", ", format(x[["parity"]][[colnames(x[["metrics"]]$all)]][[groupLevels[i]]]$ub, digits = max(1L, digits - 2L)), "], p-value = ", format.pval(x[["odds.ratio"]][[colnames(x[["metrics"]]$all)]][[groupLevels[i]]]$p.value, digits = max(1L, digits - 2L))))
       } else {
-        cat("\n", paste0(groupLevels[i], ": BF\u2081\u2080 = ", format(x[["odds.ratio"]][[colnames(x[["metrics"]]$all)]][[groupLevels[i]]]$bf10, digits = max(1L, digits - 2L))))
+        cat("\n", paste0(groupLevels[i], ": ", format(x[["parity"]][[colnames(x[["metrics"]]$all)]][[groupLevels[i]]]$mle, digits = max(1L, digits - 2L)), " [", format(x[["parity"]][[colnames(x[["metrics"]]$all)]][[groupLevels[i]]]$lb, digits = max(1L, digits - 2L)), ", ", format(x[["parity"]][[colnames(x[["metrics"]]$all)]][[groupLevels[i]]]$ub, digits = max(1L, digits - 2L)), "], BF\u2081\u2080 = ", format(x[["odds.ratio"]][[colnames(x[["metrics"]]$all)]][[groupLevels[i]]]$bf10, digits = max(1L, digits - 2L))))
       }
     }
   } else {
