@@ -1022,33 +1022,58 @@ plot.jfaRv <- function(x, ...) {
   return(p)
 }
 
-# Methods for class: jfaModelBias ##############################################
+# Methods for class: jfaModelFairness ##############################################
 
 #' @rdname jfa-methods
-#' @method print jfaModelBias
+#' @method print jfaModelFairness
 #' @export
-print.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
+print.jfaModelFairness <- function(x, digits = getOption("digits"), ...) {
   cat("\n")
   cat(strwrap("Algorithmic Fairness Metrics", prefix = "\t"), sep = "\n")
   cat("\n")
   cat("data:  ", x[["data.name"]], "\n", sep = "")
   groupLevels <- names(x$confusion.matrix)
-  cat(paste0("reference group:  ", x[["reference"]], ", positive class:  ", x[["positive"]], "\n"))
-  cat(paste0("\nSensitive groups (", length(groupLevels) - 1, "):"))
-  for (i in seq_len(length(groupLevels))) {
-    if (groupLevels[i] == x[["reference"]]) {
-      next
+  cat(paste0("reference group: ", x[["reference"]], ", positive class: ", x[["positive"]], "\n"))
+  cat("alternative hypothesis: true odds ratio is not equal to 1\n")
+  if (length(x[["measure"]]) == 1 && x[["measure"]] != "dp") {
+    measure <- switch(x[["measure"]],
+      "pp" = "Proportional parity",
+      "prp" = "Predictive rate parity",
+      "ap" = "Accuracy parity",
+      "fnrp" = "False negative rate parity",
+      "fprp" = "False positive rate parity",
+      "tprp" = "True positive rate parity",
+      "npvp" = "Negative predictive value parity",
+      "sp" = "Specificity parity"
+    )
+    cat(paste0("\n", measure, " (", length(groupLevels) - 1, " sensitive groups):"))
+    for (i in seq_len(length(groupLevels))) {
+      if (groupLevels[i] == x[["reference"]]) {
+        next
+      }
+      if (!x[["prior"]]) {
+        cat("\n", paste0(groupLevels[i], ": p-value = ", format.pval(x[["odds.ratio"]][[x[["measure"]]]][[groupLevels[i]]]$p.value, digits = max(1L, digits - 2L))))
+      } else {
+        cat("\n", paste0(groupLevels[i], ": BF\u2081\u2080 = ", format(x[["odds.ratio"]][[x[["measure"]]]][[groupLevels[i]]]$bf10, digits = max(1L, digits - 2L))))
+      }
     }
-    cat("\n", paste0(groupLevels[i], ": ", sum(sapply(c("dp", "pp", "prp", "ap", "fnrp", "fprp", "tprp", "npvp", "sp"), function(measure) {
-      x[["parity"]][[measure]][[groupLevels[i]]][["deviation"]]
-    })), " measures outside tolerance region"))
+  } else {
+    cat(paste0("\n", length(x[["measure"]]), " fairness measures (", length(groupLevels) - 1, " sensitive groups):"))
+    for (i in seq_len(length(groupLevels))) {
+      if (groupLevels[i] == x[["reference"]]) {
+        next
+      }
+      cat("\n", paste0(groupLevels[i], ": ", sum(sapply(x[["measure"]], function(measure) {
+        x[["parity"]][[measure]][[groupLevels[i]]][["deviation"]]
+      })), " measure(s) outside tolerance region"))
+    }
   }
 }
 
 #' @rdname jfa-methods
-#' @method print summary.jfaModelBias
+#' @method print summary.jfaModelFairness
 #' @export
-print.summary.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
+print.summary.jfaModelFairness <- function(x, digits = getOption("digits"), ...) {
   cat("\n")
   cat(strwrap("Algorithmic Fairness Metrics Summary", prefix = "\t"), sep = "\n")
   groupLevels <- names(x[["confusion.matrix"]])
@@ -1056,7 +1081,7 @@ print.summary.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
   cat(paste0("\nReference group:  ", x[["reference"]], "\n"))
   cat("\nModel performance:\n")
   df <- data.frame(matrix(NA, nrow = 5, ncol = length(groupLevels)))
-  for (i in seq_len(length(groupLevels))) {
+  for (i in seq_along(groupLevels)) {
     for (j in seq_len(nrow(df))) {
       df[j, i] <- format(x[["performance"]][["all"]][i, j], digits = max(1L, digits - 2L))
     }
@@ -1071,68 +1096,77 @@ print.summary.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
   colnames(df) <- groupLevels
   print(df)
   cat("\nFairness metrics (parity ratio):\n")
-  df <- data.frame(matrix(NA, nrow = 10, ncol = length(groupLevels)))
-  for (i in seq_len(length(groupLevels))) {
-    for (j in seq_len(10)) {
-      if (j %in% 1:9) {
+  df <- data.frame(matrix(NA, nrow = length(x[["measure"]]) + 1, ncol = length(groupLevels)))
+  rownames <- c(x[["measure"]], "out")
+  for (i in seq_along(groupLevels)) {
+    for (j in seq_along(rownames)) {
+      if (j %in% seq_along(x[["measure"]])) {
         df[j, i] <- paste0(format(x[["metrics"]][["all"]][i, j], digits = max(1L, digits - 2L)), " (", format(x[["parity"]][["all"]][i, j], digits = max(1L, digits - 2L)), ")")
       } else {
-        df[j, i] <- sum(sapply(c("dp", "pp", "prp", "ap", "fnrp", "fprp", "tprp", "npvp", "sp"), function(measure) {
+        df[j, i] <- sum(sapply(x[["measure"]], function(measure) {
           x[["parity"]][[measure]][[groupLevels[i]]][["deviation"]]
         }))
       }
     }
   }
-  rownames(df) <- c(
-    "  Demographic parity",
-    "  Proportional parity",
-    "  Predictive rate parity",
-    "  Accuracy parity",
-    "  False negative rate parity",
-    "  False positive rate parity",
-    "  True positive rate parity",
-    "  Negative predicted value parity",
-    "  Specificity parity",
-    "  Outside tolerance region"
-  )
+  rownames <- replace(rownames, rownames == "dp", "  Demographic parity")
+  rownames <- replace(rownames, rownames == "pp", "  Proportional parity")
+  rownames <- replace(rownames, rownames == "prp", "  Predictive rate parity")
+  rownames <- replace(rownames, rownames == "ap", "  Accuracy parity")
+  rownames <- replace(rownames, rownames == "fnrp", "  False negative rate parity")
+  rownames <- replace(rownames, rownames == "fprp", "  False positive rate parity")
+  rownames <- replace(rownames, rownames == "tprp", "  True positive rate parity")
+  rownames <- replace(rownames, rownames == "npvp", "  Negative predicted value parity")
+  rownames <- replace(rownames, rownames == "sp", "  Specificity parity")
+  rownames <- replace(rownames, rownames == "out", "  Outside tolerance region")
+  rownames(df) <- rownames
   df["  Outside tolerance region", ind] <- ""
   colnames(df) <- groupLevels
-  print(df)
-  if (!x[["prior"]]) {
-    cat("\nOdds ratio (p-value):\n")
-  } else {
-    cat("\nOdds ratio (BF\u2081\u2080):\n")
+  if (length(x[["measure"]]) == 1) {
+    df <- as.data.frame(t(df))
+    df <- df[, -ncol(df), drop = FALSE]
   }
-  groupLevels <- groupLevels[-ind]
-  df <- data.frame(matrix(NA, nrow = 8, ncol = length(groupLevels)))
-  for (i in seq_len(length(groupLevels))) {
-    for (j in seq_len(8)) {
-      if (!x[["prior"]]) {
-        crit <- format.pval(x[["odds.ratio"]][[j + 1]][[groupLevels[i]]][["p.value"]], digits = max(1L, digits - 2L))
-      } else {
-        crit <- format(x[["odds.ratio"]][[j + 1]][[groupLevels[i]]][["bf10"]], digits = max(1L, digits - 2L))
-      }
-      df[j, i] <- paste0(format(x[["odds.ratio"]][["all"]][i, j], digits = max(1L, digits - 2L)), " (", crit, ")")
+  print(df)
+  if (!(length(x[["measure"]]) == 1 && x[["measure"]] == "dp")) {
+    if (!x[["prior"]]) {
+      cat("\nOdds ratio (p-value):\n")
+    } else {
+      cat("\nOdds ratio (BF\u2081\u2080):\n")
     }
+    groupLevels <- groupLevels[-ind]
+    df <- data.frame(matrix(NA, nrow = length(subset(x[["measure"]], x[["measure"]] != "dp")), ncol = length(groupLevels)))
+    for (i in seq_along(groupLevels)) {
+      for (j in seq_along(subset(x[["measure"]], x[["measure"]] != "dp"))) {
+        if (!x[["prior"]]) {
+          crit <- format.pval(x[["odds.ratio"]][[j + 1]][[groupLevels[i]]][["p.value"]], digits = max(1L, digits - 2L))
+        } else {
+          crit <- format(x[["odds.ratio"]][[j + 1]][[groupLevels[i]]][["bf10"]], digits = max(1L, digits - 2L))
+        }
+        df[j, i] <- paste0(format(x[["odds.ratio"]][["all"]][i, j], digits = max(1L, digits - 2L)), " (", crit, ")")
+      }
+    }
+    rownames <- subset(x[["measure"]], x[["measure"]] != "dp")
+    rownames <- replace(rownames, rownames == "pp", "  Proportional parity")
+    rownames <- replace(rownames, rownames == "prp", "  Predictive rate parity")
+    rownames <- replace(rownames, rownames == "ap", "  Accuracy parity")
+    rownames <- replace(rownames, rownames == "fnrp", "  False negative rate parity")
+    rownames <- replace(rownames, rownames == "fprp", "  False positive rate parity")
+    rownames <- replace(rownames, rownames == "tprp", "  True positive rate parity")
+    rownames <- replace(rownames, rownames == "npvp", "  Negative predicted value parity")
+    rownames <- replace(rownames, rownames == "sp", "  Specificity parity")
+    rownames(df) <- rownames
+    colnames(df) <- groupLevels
+    if (length(x[["measure"]]) == 1) {
+      df <- as.data.frame(t(df))
+    }
+    print(df)
   }
-  rownames(df) <- c(
-    "  Proportional parity",
-    "  Predictive rate parity",
-    "  Accuracy parity",
-    "  False negative rate parity",
-    "  False positive rate parity",
-    "  True positive rate parity",
-    "  Negative predicted value parity",
-    "  Specificity parity"
-  )
-  colnames(df) <- groupLevels
-  print(df)
 }
 
 #' @rdname jfa-methods
-#' @method summary jfaModelBias
+#' @method summary jfaModelFairness
 #' @export
-summary.jfaModelBias <- function(object, digits = getOption("digits"), ...) {
+summary.jfaModelFairness <- function(object, digits = getOption("digits"), ...) {
   out <- list()
   out[["reference"]] <- object[["reference"]]
   out[["confusion.matrix"]] <- object[["confusion.matrix"]]
@@ -1141,31 +1175,31 @@ summary.jfaModelBias <- function(object, digits = getOption("digits"), ...) {
   out[["parity"]] <- object[["parity"]]
   out[["odds.ratio"]] <- object[["odds.ratio"]]
   out[["prior"]] <- object[["prior"]]
-  class(out) <- c("summary.jfaModelBias", "list")
+  out[["measure"]] <- object[["measure"]]
+  class(out) <- c("summary.jfaModelFairness", "list")
   return(out)
 }
 
 #' @rdname jfa-methods
-#' @method plot jfaModelBias
+#' @method plot jfaModelFairness
 #' @export
-plot.jfaModelBias <- function(x, type = c("dp", "pp", "prp", "ap", "fnrp", "fprp", "tprp", "npvp", "sp"), ...) {
+plot.jfaModelFairness <- function(x, ...) {
   value <- variable <- group <- NULL
-  measures <- c("dp", "pp", "prp", "ap", "fnrp", "fprp", "tprp", "npvp", "sp")
-  stopifnot("'type' should be one or more of 'dp', 'pp', 'prp', 'ap', 'fnrp', 'tprp', 'npvp' or 'sp'" = all(type %in% measures))
+  measures <- x[["measure"]]
   groupLevels <- names(x[["confusion.matrix"]])
   ind <- which(groupLevels == x[["reference"]])
   groupLevels <- groupLevels[-ind]
-  mle_ratio <- x[["parity"]][["all"]][, type, drop = FALSE]
+  mle_ratio <- x[["parity"]][["all"]][, measures, drop = FALSE]
   mle <- stats::reshape(
     mle_ratio[-ind, , drop = FALSE],
     direction = "long",
-    varying = type,
+    varying = measures,
     v.names = "value",
     timevar = "variable"
   )
-  if (length(type[type != "dp"]) > 0) {
+  if (length(measures[measures != "dp"]) > 0) {
     lb_ratio <- data.frame(row.names = groupLevels)
-    for (measure in type[type != "dp"]) {
+    for (measure in measures[measures != "dp"]) {
       lb_ratio[[measure]] <- sapply(groupLevels, function(group) {
         x$parity[[measure]][[group]]$lb
       })
@@ -1173,12 +1207,12 @@ plot.jfaModelBias <- function(x, type = c("dp", "pp", "prp", "ap", "fnrp", "fprp
     lb <- stats::reshape(
       lb_ratio[, , drop = FALSE],
       direction = "long",
-      varying = type[type != "dp"],
+      varying = measures[measures != "dp"],
       v.names = "value",
       timevar = "variable"
     )
     ub_ratio <- data.frame(row.names = groupLevels)
-    for (measure in type[type != "dp"]) {
+    for (measure in measures[measures != "dp"]) {
       ub_ratio[[measure]] <- sapply(groupLevels, function(group) {
         x$parity[[measure]][[group]]$ub
       })
@@ -1186,21 +1220,21 @@ plot.jfaModelBias <- function(x, type = c("dp", "pp", "prp", "ap", "fnrp", "fprp
     ub <- stats::reshape(
       ub_ratio[, , drop = FALSE],
       direction = "long",
-      varying = type[type != "dp"],
+      varying = measures[measures != "dp"],
       v.names = "value",
       timevar = "variable"
     )
-    if ("dp" %in% type) {
+    if ("dp" %in% measures) {
       lb$variable <- lb$variable + 1
       ub$variable <- ub$variable + 1
     }
-    prefix <- if ("dp" %in% type) mle_ratio$dp[-ind] else NULL
+    prefix <- if ("dp" %in% measures) mle_ratio$dp[-ind] else NULL
     ratio <- cbind(mle, lb = c(prefix, lb[, 2]), ub = c(prefix, ub[, 2]))
   } else {
     ratio <- mle
   }
-  ratio[["group"]] <- rep(groupLevels, length(type))
-  ratio[["variable"]] <- factor(toupper(type[ratio[["variable"]]]), levels = toupper(type))
+  ratio[["group"]] <- rep(groupLevels, length(measures))
+  ratio[["variable"]] <- factor(toupper(measures[ratio[["variable"]]]), levels = toupper(measures))
   yBreaks <- pretty(c(0, ratio[["value"]], 1 / x[["materiality"]], ratio[["ub"]]), min.n = 4)
   p <- ggplot2::ggplot(data = ratio, mapping = ggplot2::aes(x = group, y = value, fill = variable)) +
     ggplot2::geom_col(colour = "black", position = ggplot2::position_dodge()) +
@@ -1210,7 +1244,7 @@ plot.jfaModelBias <- function(x, type = c("dp", "pp", "prp", "ap", "fnrp", "fprp
     ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks)) +
     ggplot2::geom_segment(x = -Inf, xend = Inf, y = 1, yend = 1, linetype = "dashed", color = "black", linewidth = 0.35) +
     ggplot2::scale_fill_brewer(name = "Measure", type = "div")
-  if (length(type[type != "dp"]) > 0) {
+  if (length(measures[measures != "dp"]) > 0) {
     p <- p + ggplot2::geom_errorbar(mapping = ggplot2::aes(ymin = lb, ymax = ub), width = 0.5, position = ggplot2::position_dodge(width = 0.9))
   }
   p <- .theme_jfa(p)

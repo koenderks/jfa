@@ -11,9 +11,14 @@ model_fairness(
   predictions,
   reference = NULL,
   positive = NULL,
+  measure = c(
+    "dp", "pp", "prp", "ap", "fnrp",
+    "fprp", "tprp", "npvp", "sp"
+  ),
   materiality = 0.8,
   alternative = c("two.sided", "greater", "less"),
-  conf.level = 0.95
+  conf.level = 0.95,
+  prior = FALSE
 )
 }
 \arguments{
@@ -38,6 +43,9 @@ metrics. If \code{NULL} (the default), the first factor level of the
 default), the first factor level of the \code{target} column is used as the
 positive class.}
 
+\item{measure}{a character (vector) indicating the fairness measure(s)
+to compute. See the Details section for more information.}
+
 \item{materiality}{a numeric value between 0 and 1 specifying the
 materiality used to decide whether the statistics are out of bound. The
 tolerance range is defined on the parity statistics as
@@ -55,7 +63,7 @@ performs classical evaluation. If this argument is \code{TRUE}, this
 function performs Bayesian evaluation using a default prior.}
 }
 \value{
-An object of class \code{jfaModelBias} containing:
+An object of class \code{jfaModelFairness} containing:
 
 \item{reference}{The reference group for computing the fairness metrics.}
 \item{positive}{The positive class used in computing the fairness metrics.}
