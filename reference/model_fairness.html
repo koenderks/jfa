@@ -96,7 +96,7 @@ Currently, this function only supports binary classification.</p>
 <span>  <span class="va">predictions</span>,</span>
 <span>  reference <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  positive <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  measure <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>  metric <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    <span class="st">"dp"</span>, <span class="st">"pp"</span>, <span class="st">"prp"</span>, <span class="st">"ap"</span>, <span class="st">"fnrp"</span>,</span>
 <span>    <span class="st">"fprp"</span>, <span class="st">"tprp"</span>, <span class="st">"npvp"</span>, <span class="st">"sp"</span></span>
 <span>  <span class="op">)</span>,</span>
@@ -142,8 +142,8 @@ default), the first factor level of the <code>target</code> column is used as th
 positive class.</p></dd>
 
 
-<dt>measure</dt>
-<dd><p>a character (vector) indicating the fairness measure(s)
+<dt>metric</dt>
+<dd><p>a character (vector) indicating the fairness metrics(s)
 to compute. See the Details section for more information.</p></dd>
 
 
@@ -261,7 +261,7 @@ function performs Bayesian evaluation using a default prior.</p></dd>
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">model_fairness</span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span></span>
-<span class="r-in"><span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span></span></span>
+<span class="r-in"><span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"sp"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Algorithmic Fairness Metrics</span>
@@ -270,12 +270,12 @@ function performs Bayesian evaluation using a default prior.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> reference group: Caucasian, positive class: yes</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> alternative hypothesis: true odds ratio is not equal to 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9 fairness measures (5 sensitive groups):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  African_American: 6 measure(s) outside tolerance region</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Asian: 5 measure(s) outside tolerance region</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Hispanic: 1 measure(s) outside tolerance region</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Native_American: 5 measure(s) outside tolerance region</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Other: 3 measure(s) outside tolerance region</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Specificity parity (5 sensitive groups):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  African_American: p-value = &lt; 2.22e-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Asian: p-value = 0.19944</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Hispanic: p-value = 0.25424</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Native_American: p-value = 0.61986</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Other: p-value = 0.019574</span>
 </code></pre></div>
     </div>
   </div>
