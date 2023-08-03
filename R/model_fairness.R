@@ -173,8 +173,8 @@ model_fairness <- function(data,
   stopifnot("'materiality' must be a single value between 0 and 1" = materiality > 0 && materiality < 1)
   groupLevels <- levels(data[, sensitive])
   targetLevels <- levels(data[, target])
-  stopifnot("'target' must contain exactly 2 factor levels" = length(targetLevels) == 2)
-  stopifnot("'predictions' must contain exactly 2 factor levels" = nlevels(data[, predictions]) == 2)
+  stopifnot("'target' must contain exactly 2 factor levels" = length(targetLevels) == 2) # Binary classification only
+  stopifnot("'predictions' must contain exactly 2 factor levels" = nlevels(data[, predictions]) == 2) # Binary classification only
   if (is.null(reference)) {
     reference <- groupLevels[1]
   }

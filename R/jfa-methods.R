@@ -1263,12 +1263,17 @@ plot.jfaModelFairness <- function(x, type = c("estimates", "posterior"), ...) {
     yBreaks <- pretty(plotdata$y, min.n = 4)
     p <- ggplot2::ggplot(data = plotdata, mapping = ggplot2::aes(x = x, y = y, group = factor(group), color = factor(group))) +
       ggplot2::geom_line() +
-      ggplot2::scale_color_brewer(name = "Sensitive group", type = "div") +
       ggplot2::scale_y_continuous(name = "Density", breaks = yBreaks, limits = range(yBreaks)) +
       ggplot2::scale_x_continuous(name = "Odds ratio", breaks = xBreaks, limits = c(0, max(xBreaks))) +
-      ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks)) +
-      ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf)
-    p <- .theme_jfa(p, legend.position = c(0.75, 0.75))
+      ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks), inherit.aes = FALSE) +
+      ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf, inherit.aes = FALSE)
+    if (length(groupLevels) == 1) {
+      p <- .theme_jfa(p, legend.position = "none")
+      p <- p + ggplot2::scale_color_manual(name = NULL, values = "black")
+    } else {
+      p <- .theme_jfa(p, legend.position = "top")
+      p <- p + ggplot2::scale_color_brewer(name = NULL, type = "div")
+    }
   }
   return(p)
 }
