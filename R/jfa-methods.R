@@ -1098,11 +1098,21 @@ print.summary.jfaModelBias <- function(x, digits = getOption("digits"), ...) {
   df["  Outside tolerance region", ind] <- ""
   colnames(df) <- groupLevels
   print(df)
-  cat("\nOdds ratio (p-value):\n")
+  if (!x[["prior"]]) {
+    cat("\nOdds ratio (p-value):\n")
+  } else {
+    cat("\nOdds ratio (BF\u2081\u2080):\n")
+  }
+  groupLevels <- groupLevels[-ind]
   df <- data.frame(matrix(NA, nrow = 8, ncol = length(groupLevels)))
   for (i in seq_len(length(groupLevels))) {
     for (j in seq_len(8)) {
-      df[j, i] <- paste0(format(x[["odds.ratio"]][["all"]][i, j], digits = max(1L, digits - 2L)), " (", format.pval(x[["odds.ratio"]][[j + 1]][[groupLevels[i]]][["p.value"]], digits = max(1L, digits - 2L)), ")")
+      if (!x[["prior"]]) {
+        crit <- format.pval(x[["odds.ratio"]][[j + 1]][[groupLevels[i]]][["p.value"]], digits = max(1L, digits - 2L))
+      } else {
+        crit <- format(x[["odds.ratio"]][[j + 1]][[groupLevels[i]]][["bf10"]], digits = max(1L, digits - 2L))
+      }
+      df[j, i] <- paste0(format(x[["odds.ratio"]][["all"]][i, j], digits = max(1L, digits - 2L)), " (", crit, ")")
     }
   }
   rownames(df) <- c(
@@ -1130,6 +1140,7 @@ summary.jfaModelBias <- function(object, digits = getOption("digits"), ...) {
   out[["performance"]] <- object[["performance"]]
   out[["parity"]] <- object[["parity"]]
   out[["odds.ratio"]] <- object[["odds.ratio"]]
+  out[["prior"]] <- object[["prior"]]
   class(out) <- c("summary.jfaModelBias", "list")
   return(out)
 }

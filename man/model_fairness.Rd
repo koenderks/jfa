@@ -48,6 +48,11 @@ options are \code{two.sided} (the default), \code{greater} and \code{less}.}
 
 \item{conf.level}{a numeric value between 0 and 1 specifying the
 confidence level (i.e., 1 - audit risk / detection risk).}
+
+\item{prior}{a logical specifying whether to use a prior distribution.
+If this argument is specified as \code{FALSE} (default), the function
+performs classical evaluation. If this argument is \code{TRUE}, this
+function performs Bayesian evaluation using a default prior.}
 }
 \value{
 An object of class \code{jfaModelBias} containing:

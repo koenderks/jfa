@@ -61,6 +61,10 @@
 #'   options are \code{two.sided} (the default), \code{greater} and \code{less}.
 #' @param conf.level   a numeric value between 0 and 1 specifying the
 #'   confidence level (i.e., 1 - audit risk / detection risk).
+#' @param prior        a logical specifying whether to use a prior distribution.
+#'   If this argument is specified as \code{FALSE} (default), the function
+#'   performs classical evaluation. If this argument is \code{TRUE}, this
+#'   function performs Bayesian evaluation using a default prior.
 #'
 #' @details The following model-agnostic fairness metrics are computed based on
 #'   the confusion matrix for each sensitive group, using the  true positives
@@ -141,10 +145,12 @@ model_fairness <- function(data,
                            positive = NULL,
                            materiality = 0.8,
                            alternative = c("two.sided", "greater", "less"),
-                           conf.level = 0.95) {
+                           conf.level = 0.95,
+                           prior = FALSE) {
   alternative <- match.arg(alternative)
   dname <- deparse(substitute(data))
   data <- as.data.frame(data, row.names = seq_len(nrow(data)))
+  stopifnot("'prior' must be TRUE or FALSE" = is.logical(prior))
   stopifnot("'sensitive' does not exist in 'data'" = sensitive %in% colnames(data))
   stopifnot("'sensitive' must be a factor column" = is.factor(data[, sensitive]))
   stopifnot("'target' does not exist in 'data'" = target %in% colnames(data))
@@ -168,7 +174,7 @@ model_fairness <- function(data,
   negative <- targetLevels[-which(targetLevels == positive)]
   metrics <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = length(measures))))
   parity <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = length(measures))))
-  odds.ratio <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = length(measures) - 1)))
+  odds.ratio <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels) - 1, ncol = length(measures) - 1)))
   performance <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = 5)))
   confmat <- list()
   for (i in seq_len(nlevels(data[, sensitive]))) {
@@ -241,28 +247,34 @@ model_fairness <- function(data,
   colnames(parity[["all"]]) <- measures
   names(confmat) <- groupLevels
   # Odds ratios
-  for (i in seq_len(nlevels(data[, sensitive]))) {
-    group <- levels(data[, sensitive])[i]
+  sensitiveGroupLevels <- groupLevels[-which(groupLevels == reference)]
+  for (i in seq_len(length(sensitiveGroupLevels))) {
+    group <- sensitiveGroupLevels[i]
     for (j in 2:length(measures)) {
       metric <- measures[j]
-      odds.ratio[[metric]][[group]][["mle"]] <- (metrics[[metric]][[group]][["mle"]] / (1 + metrics[[metric]][[group]][["mle"]])) / (metrics[[metric]][[reference]][["mle"]] / (1 + metrics[[metric]][[reference]][["mle"]]))
-      test <- stats::fisher.test(
-        matrix(c(
-          metrics[[metric]][[group]][["numerator"]],
-          metrics[[metric]][[group]][["denominator"]] - metrics[[metric]][[group]][["numerator"]],
-          metrics[[metric]][[reference]][["numerator"]],
-          metrics[[metric]][[reference]][["denominator"]] - metrics[[metric]][[reference]][["numerator"]]
-        ), ncol = 2),
-        alternative = alternative,
-        conf.level = conf.level
-      )
-      odds.ratio[[metric]][[group]][["lb"]] <- test$conf.int[1]
-      odds.ratio[[metric]][[group]][["ub"]] <- test$conf.int[2]
-      odds.ratio[[metric]][[group]][["p.value"]] <- test$p.value
+      contingencyTable <- matrix(c(
+        metrics[[metric]][[group]][["numerator"]],
+        metrics[[metric]][[group]][["denominator"]] - metrics[[metric]][[group]][["numerator"]],
+        metrics[[metric]][[reference]][["numerator"]],
+        metrics[[metric]][[reference]][["denominator"]] - metrics[[metric]][[reference]][["numerator"]]
+      ), ncol = 2)
+      if (!prior) {
+        odds.ratio[[metric]][[group]][["mle"]] <- (metrics[[metric]][[group]][["mle"]] / (1 + metrics[[metric]][[group]][["mle"]])) / (metrics[[metric]][[reference]][["mle"]] / (1 + metrics[[metric]][[reference]][["mle"]]))
+        test <- stats::fisher.test(contingencyTable, alternative = alternative, conf.level = conf.level)
+        odds.ratio[[metric]][[group]][["lb"]] <- test$conf.int[1]
+        odds.ratio[[metric]][[group]][["ub"]] <- test$conf.int[2]
+        odds.ratio[[metric]][[group]][["p.value"]] <- test$p.value
+      } else {
+        samples <- .mcmc_or(counts = c(contingencyTable))
+        odds.ratio[[metric]][[group]][["mle"]] <- .comp_mode_bayes(analytical = FALSE, samples = samples[, 1])
+        odds.ratio[[metric]][[group]][["lb"]] <- .comp_lb_bayes(alternative, conf.level, analytical = FALSE, samples = samples[, 1])
+        odds.ratio[[metric]][[group]][["ub"]] <- .comp_ub_bayes(alternative, conf.level, analytical = FALSE, samples = samples[, 1])
+        odds.ratio[[metric]][[group]][["bf10"]] <- .contingencyTableBf(contingencyTable)
+      }
       odds.ratio[["all"]][i, j - 1] <- odds.ratio[[metric]][[group]][["mle"]]
     }
   }
-  rownames(odds.ratio[["all"]]) <- groupLevels
+  rownames(odds.ratio[["all"]]) <- sensitiveGroupLevels
   colnames(odds.ratio[["all"]]) <- measures[-1]
   names(confmat) <- groupLevels
   result <- list()
@@ -276,6 +288,7 @@ model_fairness <- function(data,
   result[["odds.ratio"]] <- odds.ratio
   result[["materiality"]] <- materiality
   result[["data.name"]] <- dname
+  result[["prior"]] <- prior
   class(result) <- c("jfaModelBias", "list")
   return(result)
 }

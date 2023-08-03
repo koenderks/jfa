@@ -753,3 +753,57 @@
   }
   return(digits)
 }
+
+.contingencyTableBf <- function(y) {
+  C <- ncol(y)
+  R <- nrow(y)
+  ystardot <- rowSums(y)
+  ydotstar <- colSums(y)
+  alphastarstar <- matrix(1, nrow = 2, ncol = 2)
+  alphastardot <- rowSums(alphastarstar)
+  alphadotstar <- colSums(alphastarstar)
+  xistardot <- alphastardot - (C - 1)
+  xidotstar <- alphadotstar - (R - 1)
+  ldirichlet <- function(a) {
+    sum(lgamma(a)) - lgamma(sum(a))
+  }
+  part1 <- ldirichlet(ystardot + xistardot) - ldirichlet(xistardot)
+  part2 <- ldirichlet(ydotstar + xidotstar) - ldirichlet(xidotstar)
+  part3 <- ldirichlet(alphastarstar) - ldirichlet(y + alphastarstar)
+  logBF01 <- part1 + part2 + part3
+  BF01 <- exp(logBF01)
+  BF10 <- 1 / BF01
+  return(BF10)
+}
+
+.mcmc_or <- function(counts) {
+  suppressWarnings({
+    raw_prior <- rstan::sampling(
+      object = stanmodels[["or_fairness"]],
+      data = list(y = counts, use_likelihood = 0),
+      pars = "OR",
+      iter = getOption("mc.iterations", 2000),
+      warmup = getOption("mc.warmup", 1000),
+      chains = getOption("mc.chains", 4),
+      cores = getOption("mc.cores", 1),
+      seed = sample.int(.Machine$integer.max, 1),
+      control = list(adapt_delta = 0.95),
+      refresh = 0
+    )
+    raw_posterior <- rstan::sampling(
+      object = stanmodels[["or_fairness"]],
+      data = list(y = counts, use_likelihood = 1),
+      pars = "OR",
+      iter = getOption("mc.iterations", 2000),
+      warmup = getOption("mc.warmup", 1000),
+      chains = getOption("mc.chains", 4),
+      cores = getOption("mc.cores", 1),
+      seed = sample.int(.Machine$integer.max, 1),
+      control = list(adapt_delta = 0.95),
+      refresh = 0
+    )
+  })
+  samples <- cbind(rstan::extract(raw_posterior)$OR, rstan::extract(raw_prior)$OR)
+  stopifnot("Stan model could not be fitted...check your priors" = !is.null(samples))
+  return(samples)
+}
