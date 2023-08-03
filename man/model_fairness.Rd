@@ -11,7 +11,7 @@ model_fairness(
   predictions,
   reference = NULL,
   positive = NULL,
-  measure = c(
+  metric = c(
     "dp", "pp", "prp", "ap", "fnrp",
     "fprp", "tprp", "npvp", "sp"
   ),
@@ -43,7 +43,7 @@ metrics. If \code{NULL} (the default), the first factor level of the
 default), the first factor level of the \code{target} column is used as the
 positive class.}
 
-\item{measure}{a character (vector) indicating the fairness measure(s)
+\item{metric}{a character (vector) indicating the fairness metrics(s)
 to compute. See the Details section for more information.}
 
 \item{materiality}{a numeric value between 0 and 1 specifying the
@@ -134,7 +134,7 @@ The following model-agnostic fairness metrics are computed based on
 }
 \examples{
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-  reference = "Caucasian", positive = "yes"
+  reference = "Caucasian", positive = "yes", metric = "sp"
 )
 }
 \references{

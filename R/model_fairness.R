@@ -33,7 +33,7 @@
 #'   predictions,
 #'   reference = NULL,
 #'   positive = NULL,
-#'   measure = c(
+#'   metric = c(
 #'     "dp", "pp", "prp", "ap", "fnrp",
 #'     "fprp", "tprp", "npvp", "sp"
 #'   ),
@@ -58,7 +58,7 @@
 #'   \code{target} used for computing the fairness metrics. If \code{NULL} (the
 #'   default), the first factor level of the \code{target} column is used as the
 #'   positive class.
-#' @param measure      a character (vector) indicating the fairness measure(s)
+#' @param metric      a character (vector) indicating the fairness metrics(s)
 #'   to compute. See the Details section for more information.
 #' @param materiality  a numeric value between 0 and 1 specifying the
 #'   materiality used to decide whether the statistics are out of bound. The
@@ -140,7 +140,7 @@
 #'
 #' @examples
 #' model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-#'   reference = "Caucasian", positive = "yes"
+#'   reference = "Caucasian", positive = "yes", metric = "sp"
 #' )
 #' @export
 
@@ -150,7 +150,7 @@ model_fairness <- function(data,
                            predictions,
                            reference = NULL,
                            positive = NULL,
-                           measure = c(
+                           metric = c(
                              "dp", "pp", "prp", "ap", "fnrp",
                              "fprp", "tprp", "npvp", "sp"
                            ),
@@ -158,8 +158,8 @@ model_fairness <- function(data,
                            alternative = c("two.sided", "greater", "less"),
                            conf.level = 0.95,
                            prior = FALSE) {
-  measure <- match.arg(measure, several.ok = TRUE)
-  inferenceMeasures <- subset(measure, measure != "dp")
+  mets <- match.arg(metric, several.ok = TRUE)
+  inferenceMetrics <- subset(mets, mets != "dp")
   alternative <- match.arg(alternative)
   dname <- deparse(substitute(data))
   data <- as.data.frame(data, row.names = seq_len(nrow(data)))
@@ -173,8 +173,8 @@ model_fairness <- function(data,
   stopifnot("'materiality' must be a single value between 0 and 1" = materiality > 0 && materiality < 1)
   groupLevels <- levels(data[, sensitive])
   targetLevels <- levels(data[, target])
-  stopifnot("number of factor levels in 'target' must be 2" = length(targetLevels) == 2)
-  stopifnot("number of factor levels in 'predictions' must be 2" = nlevels(data[, predictions]) == 2)
+  stopifnot("'target' must contain exactly 2 factor levels" = length(targetLevels) == 2)
+  stopifnot("'predictions' must contain exactly 2 factor levels" = nlevels(data[, predictions]) == 2)
   if (is.null(reference)) {
     reference <- groupLevels[1]
   }
@@ -184,9 +184,9 @@ model_fairness <- function(data,
   }
   stopifnot("'positive' is not a class in 'target'" = positive %in% targetLevels)
   negative <- targetLevels[-which(targetLevels == positive)]
-  metrics <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = length(measure))))
-  parity <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = length(measure))))
-  odds.ratio <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels) - 1, ncol = length(inferenceMeasures))))
+  metrics <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = length(mets))))
+  parity <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = length(mets))))
+  odds.ratio <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels) - 1, ncol = length(inferenceMetrics))))
   performance <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = 5)))
   confmat <- list()
   for (i in seq_len(nlevels(data[, sensitive]))) {
@@ -205,8 +205,8 @@ model_fairness <- function(data,
     performance[[group]][["recall"]] <- performance[["all"]][i, 4] <- confmat[[group]][["tp"]] / (confmat[[group]][["tp"]] + confmat[[group]][["fn"]])
     performance[[group]][["f1.score"]] <- performance[["all"]][i, 5] <- 2 * ((performance[[group]][["precision"]] * performance[[group]][["recall"]]) / (performance[[group]][["precision"]] + performance[[group]][["recall"]]))
     # Fairness metrics
-    for (j in seq_along(measure)) {
-      metric <- measure[j]
+    for (j in seq_along(mets)) {
+      metric <- mets[j]
       if (metric == "dp") {
         metrics[[metric]][[group]][["mle"]] <- tp + fp
       } else {
@@ -239,13 +239,13 @@ model_fairness <- function(data,
     }
   }
   rownames(metrics[["all"]]) <- rownames(performance[["all"]]) <- groupLevels
-  colnames(metrics[["all"]]) <- measure
+  colnames(metrics[["all"]]) <- mets
   colnames(performance[["all"]]) <- c("support", "accuracy", "precision", "recall", "f1.score")
   # Parity ratios
   for (i in seq_len(nlevels(data[, sensitive]))) {
     group <- levels(data[, sensitive])[i]
-    for (j in seq_len(length(measure))) {
-      metric <- measure[j]
+    for (j in seq_len(length(mets))) {
+      metric <- mets[j]
       parity[[metric]][[group]][["mle"]] <- metrics[[metric]][[group]][["mle"]] / metrics[[metric]][[reference]][["mle"]]
       if (metric != "dp") {
         parity[[metric]][[group]][["lb"]] <- metrics[[metric]][[group]][["lb"]] / metrics[[metric]][[reference]][["mle"]]
@@ -256,14 +256,14 @@ model_fairness <- function(data,
     }
   }
   rownames(parity[["all"]]) <- groupLevels
-  colnames(parity[["all"]]) <- measure
+  colnames(parity[["all"]]) <- mets
   names(confmat) <- groupLevels
   # Odds ratios
   sensitiveGroupLevels <- groupLevels[-which(groupLevels == reference)]
   for (i in seq_along(sensitiveGroupLevels)) {
     group <- sensitiveGroupLevels[i]
-    for (j in seq_along(inferenceMeasures)) {
-      metric <- inferenceMeasures[j]
+    for (j in seq_along(inferenceMetrics)) {
+      metric <- inferenceMetrics[j]
       contingencyTable <- matrix(c(
         metrics[[metric]][[group]][["numerator"]],
         metrics[[metric]][[group]][["denominator"]] - metrics[[metric]][[group]][["numerator"]],
@@ -289,7 +289,7 @@ model_fairness <- function(data,
     }
   }
   rownames(odds.ratio[["all"]]) <- sensitiveGroupLevels
-  colnames(odds.ratio[["all"]]) <- inferenceMeasures
+  colnames(odds.ratio[["all"]]) <- inferenceMetrics
   names(confmat) <- groupLevels
   result <- list()
   result[["reference"]] <- reference
@@ -302,7 +302,6 @@ model_fairness <- function(data,
   result[["odds.ratio"]] <- odds.ratio
   result[["materiality"]] <- materiality
   result[["prior"]] <- prior
-  result[["measure"]] <- measure
   result[["data.name"]] <- dname
   class(result) <- c("jfaModelFairness", "list")
   return(result)

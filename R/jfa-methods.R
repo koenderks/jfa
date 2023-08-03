@@ -1035,8 +1035,8 @@ print.jfaModelFairness <- function(x, digits = getOption("digits"), ...) {
   groupLevels <- names(x$confusion.matrix)
   cat(paste0("reference group: ", x[["reference"]], ", positive class: ", x[["positive"]], "\n"))
   cat("alternative hypothesis: true odds ratio is not equal to 1\n")
-  if (length(x[["measure"]]) == 1 && x[["measure"]] != "dp") {
-    measure <- switch(x[["measure"]],
+  if (length(colnames(x[["metrics"]]$all)) == 1 && colnames(x[["metrics"]]$all) != "dp") {
+    measure <- switch(colnames(x[["metrics"]]$all),
       "pp" = "Proportional parity",
       "prp" = "Predictive rate parity",
       "ap" = "Accuracy parity",
@@ -1052,18 +1052,18 @@ print.jfaModelFairness <- function(x, digits = getOption("digits"), ...) {
         next
       }
       if (!x[["prior"]]) {
-        cat("\n", paste0(groupLevels[i], ": p-value = ", format.pval(x[["odds.ratio"]][[x[["measure"]]]][[groupLevels[i]]]$p.value, digits = max(1L, digits - 2L))))
+        cat("\n", paste0(groupLevels[i], ": p-value = ", format.pval(x[["odds.ratio"]][[colnames(x[["metrics"]]$all)]][[groupLevels[i]]]$p.value, digits = max(1L, digits - 2L))))
       } else {
-        cat("\n", paste0(groupLevels[i], ": BF\u2081\u2080 = ", format(x[["odds.ratio"]][[x[["measure"]]]][[groupLevels[i]]]$bf10, digits = max(1L, digits - 2L))))
+        cat("\n", paste0(groupLevels[i], ": BF\u2081\u2080 = ", format(x[["odds.ratio"]][[colnames(x[["metrics"]]$all)]][[groupLevels[i]]]$bf10, digits = max(1L, digits - 2L))))
       }
     }
   } else {
-    cat(paste0("\n", length(x[["measure"]]), " fairness measures (", length(groupLevels) - 1, " sensitive groups):"))
+    cat(paste0("\n", length(colnames(x[["metrics"]]$all)), " fairness measures (", length(groupLevels) - 1, " sensitive groups):"))
     for (i in seq_len(length(groupLevels))) {
       if (groupLevels[i] == x[["reference"]]) {
         next
       }
-      cat("\n", paste0(groupLevels[i], ": ", sum(sapply(x[["measure"]], function(measure) {
+      cat("\n", paste0(groupLevels[i], ": ", sum(sapply(colnames(x[["metrics"]]$all), function(measure) {
         x[["parity"]][[measure]][[groupLevels[i]]][["deviation"]]
       })), " measure(s) outside tolerance region"))
     }
@@ -1096,14 +1096,14 @@ print.summary.jfaModelFairness <- function(x, digits = getOption("digits"), ...)
   colnames(df) <- groupLevels
   print(df)
   cat("\nFairness metrics (parity ratio):\n")
-  df <- data.frame(matrix(NA, nrow = length(x[["measure"]]) + 1, ncol = length(groupLevels)))
-  rownames <- c(x[["measure"]], "out")
+  df <- data.frame(matrix(NA, nrow = length(colnames(x[["metrics"]]$all)) + 1, ncol = length(groupLevels)))
+  rownames <- c(colnames(x[["metrics"]]$all), "out")
   for (i in seq_along(groupLevels)) {
     for (j in seq_along(rownames)) {
-      if (j %in% seq_along(x[["measure"]])) {
+      if (j %in% seq_along(colnames(x[["metrics"]]$all))) {
         df[j, i] <- paste0(format(x[["metrics"]][["all"]][i, j], digits = max(1L, digits - 2L)), " (", format(x[["parity"]][["all"]][i, j], digits = max(1L, digits - 2L)), ")")
       } else {
-        df[j, i] <- sum(sapply(x[["measure"]], function(measure) {
+        df[j, i] <- sum(sapply(colnames(x[["metrics"]]$all), function(measure) {
           x[["parity"]][[measure]][[groupLevels[i]]][["deviation"]]
         }))
       }
@@ -1122,21 +1122,21 @@ print.summary.jfaModelFairness <- function(x, digits = getOption("digits"), ...)
   rownames(df) <- rownames
   df["  Outside tolerance region", ind] <- ""
   colnames(df) <- groupLevels
-  if (length(x[["measure"]]) == 1) {
+  if (length(colnames(x[["metrics"]]$all)) == 1) {
     df <- as.data.frame(t(df))
     df <- df[, -ncol(df), drop = FALSE]
   }
   print(df)
-  if (!(length(x[["measure"]]) == 1 && x[["measure"]] == "dp")) {
+  if (!(length(colnames(x[["metrics"]]$all)) == 1 && colnames(x[["metrics"]]$all) == "dp")) {
     if (!x[["prior"]]) {
       cat("\nOdds ratio (p-value):\n")
     } else {
       cat("\nOdds ratio (BF\u2081\u2080):\n")
     }
     groupLevels <- groupLevels[-ind]
-    df <- data.frame(matrix(NA, nrow = length(subset(x[["measure"]], x[["measure"]] != "dp")), ncol = length(groupLevels)))
+    df <- data.frame(matrix(NA, nrow = length(subset(colnames(x[["metrics"]]$all), colnames(x[["metrics"]]$all) != "dp")), ncol = length(groupLevels)))
     for (i in seq_along(groupLevels)) {
-      for (j in seq_along(subset(x[["measure"]], x[["measure"]] != "dp"))) {
+      for (j in seq_along(subset(colnames(x[["metrics"]]$all), colnames(x[["metrics"]]$all) != "dp"))) {
         if (!x[["prior"]]) {
           crit <- format.pval(x[["odds.ratio"]][[j + 1]][[groupLevels[i]]][["p.value"]], digits = max(1L, digits - 2L))
         } else {
@@ -1145,7 +1145,7 @@ print.summary.jfaModelFairness <- function(x, digits = getOption("digits"), ...)
         df[j, i] <- paste0(format(x[["odds.ratio"]][["all"]][i, j], digits = max(1L, digits - 2L)), " (", crit, ")")
       }
     }
-    rownames <- subset(x[["measure"]], x[["measure"]] != "dp")
+    rownames <- subset(colnames(x[["metrics"]]$all), colnames(x[["metrics"]]$all) != "dp")
     rownames <- replace(rownames, rownames == "pp", "  Proportional parity")
     rownames <- replace(rownames, rownames == "prp", "  Predictive rate parity")
     rownames <- replace(rownames, rownames == "ap", "  Accuracy parity")
@@ -1156,7 +1156,7 @@ print.summary.jfaModelFairness <- function(x, digits = getOption("digits"), ...)
     rownames <- replace(rownames, rownames == "sp", "  Specificity parity")
     rownames(df) <- rownames
     colnames(df) <- groupLevels
-    if (length(x[["measure"]]) == 1) {
+    if (length(colnames(x[["metrics"]]$all)) == 1) {
       df <- as.data.frame(t(df))
     }
     print(df)
@@ -1175,7 +1175,6 @@ summary.jfaModelFairness <- function(object, digits = getOption("digits"), ...) 
   out[["parity"]] <- object[["parity"]]
   out[["odds.ratio"]] <- object[["odds.ratio"]]
   out[["prior"]] <- object[["prior"]]
-  out[["measure"]] <- object[["measure"]]
   class(out) <- c("summary.jfaModelFairness", "list")
   return(out)
 }
@@ -1186,7 +1185,7 @@ summary.jfaModelFairness <- function(object, digits = getOption("digits"), ...) 
 plot.jfaModelFairness <- function(x, type = c("estimates", "posterior"), ...) {
   type <- match.arg(type)
   value <- variable <- group <- NULL
-  measures <- x[["measure"]]
+  measures <- colnames(x[["metrics"]]$all)
   groupLevels <- names(x[["confusion.matrix"]])
   ind <- which(groupLevels == x[["reference"]])
   groupLevels <- groupLevels[-ind]
@@ -1251,7 +1250,8 @@ plot.jfaModelFairness <- function(x, type = c("estimates", "posterior"), ...) {
     }
     p <- .theme_jfa(p)
   } else {
-    stopifnot("plot not supported for frequentist inference" = x[["prior"]])
+    y <- group <- NULL
+    stopifnot("plot not supported for frequentist inference" = isTRUE(x[["prior"]]))
     stopifnot("plot not supported for multiple measures" = length(measures) == 1)
     stopifnot("plot not supported for demographic parity" = measures != "dp")
     plotdata <- data.frame(x = numeric(), y = numeric(), group = numeric())
