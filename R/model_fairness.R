@@ -282,6 +282,8 @@ model_fairness <- function(data,
         odds.ratio[[metric]][[group]][["lb"]] <- .comp_lb_bayes(alternative, conf.level, analytical = FALSE, samples = post_samples)
         odds.ratio[[metric]][[group]][["ub"]] <- .comp_ub_bayes(alternative, conf.level, analytical = FALSE, samples = post_samples)
         odds.ratio[[metric]][[group]][["bf10"]] <- .contingencyTableBf(contingencyTable)
+        density_post <- density(post_samples, from = 0, to = max(post_samples))
+        odds.ratio[[metric]][[group]][["density"]] <- list(x = density_post$x, y = density_post$y)
       }
       odds.ratio[["all"]][i, j] <- odds.ratio[[metric]][[group]][["mle"]]
     }

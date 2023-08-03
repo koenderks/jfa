@@ -1183,70 +1183,92 @@ summary.jfaModelFairness <- function(object, digits = getOption("digits"), ...) 
 #' @rdname jfa-methods
 #' @method plot jfaModelFairness
 #' @export
-plot.jfaModelFairness <- function(x, ...) {
+plot.jfaModelFairness <- function(x, type = c("estimates", "posterior"), ...) {
+  type <- match.arg(type)
   value <- variable <- group <- NULL
   measures <- x[["measure"]]
   groupLevels <- names(x[["confusion.matrix"]])
   ind <- which(groupLevels == x[["reference"]])
   groupLevels <- groupLevels[-ind]
-  mle_ratio <- x[["parity"]][["all"]][, measures, drop = FALSE]
-  mle <- stats::reshape(
-    mle_ratio[-ind, , drop = FALSE],
-    direction = "long",
-    varying = measures,
-    v.names = "value",
-    timevar = "variable"
-  )
-  if (length(measures[measures != "dp"]) > 0) {
-    lb_ratio <- data.frame(row.names = groupLevels)
-    for (measure in measures[measures != "dp"]) {
-      lb_ratio[[measure]] <- sapply(groupLevels, function(group) {
-        x$parity[[measure]][[group]]$lb
-      })
-    }
-    lb <- stats::reshape(
-      lb_ratio[, , drop = FALSE],
+  if (type == "estimates") {
+    mle_ratio <- x[["parity"]][["all"]][, measures, drop = FALSE]
+    mle <- stats::reshape(
+      mle_ratio[-ind, , drop = FALSE],
       direction = "long",
-      varying = measures[measures != "dp"],
+      varying = measures,
       v.names = "value",
       timevar = "variable"
     )
-    ub_ratio <- data.frame(row.names = groupLevels)
-    for (measure in measures[measures != "dp"]) {
-      ub_ratio[[measure]] <- sapply(groupLevels, function(group) {
-        x$parity[[measure]][[group]]$ub
-      })
+    if (length(measures[measures != "dp"]) > 0) {
+      lb_ratio <- data.frame(row.names = groupLevels)
+      for (measure in measures[measures != "dp"]) {
+        lb_ratio[[measure]] <- sapply(groupLevels, function(group) {
+          x$parity[[measure]][[group]]$lb
+        })
+      }
+      lb <- stats::reshape(
+        lb_ratio[, , drop = FALSE],
+        direction = "long",
+        varying = measures[measures != "dp"],
+        v.names = "value",
+        timevar = "variable"
+      )
+      ub_ratio <- data.frame(row.names = groupLevels)
+      for (measure in measures[measures != "dp"]) {
+        ub_ratio[[measure]] <- sapply(groupLevels, function(group) {
+          x$parity[[measure]][[group]]$ub
+        })
+      }
+      ub <- stats::reshape(
+        ub_ratio[, , drop = FALSE],
+        direction = "long",
+        varying = measures[measures != "dp"],
+        v.names = "value",
+        timevar = "variable"
+      )
+      if ("dp" %in% measures) {
+        lb$variable <- lb$variable + 1
+        ub$variable <- ub$variable + 1
+      }
+      prefix <- if ("dp" %in% measures) mle_ratio$dp[-ind] else NULL
+      ratio <- cbind(mle, lb = c(prefix, lb[, 2]), ub = c(prefix, ub[, 2]))
+    } else {
+      ratio <- mle
     }
-    ub <- stats::reshape(
-      ub_ratio[, , drop = FALSE],
-      direction = "long",
-      varying = measures[measures != "dp"],
-      v.names = "value",
-      timevar = "variable"
-    )
-    if ("dp" %in% measures) {
-      lb$variable <- lb$variable + 1
-      ub$variable <- ub$variable + 1
+    ratio[["group"]] <- rep(groupLevels, length(measures))
+    ratio[["variable"]] <- factor(toupper(measures[ratio[["variable"]]]), levels = toupper(measures))
+    yBreaks <- pretty(c(0, ratio[["value"]], 1 / x[["materiality"]], ratio[["ub"]]), min.n = 4)
+    p <- ggplot2::ggplot(data = ratio, mapping = ggplot2::aes(x = group, y = value, fill = variable)) +
+      ggplot2::geom_col(colour = "black", position = ggplot2::position_dodge()) +
+      ggplot2::scale_x_discrete(name = "Sensitive Group") +
+      ggplot2::scale_y_continuous(name = "Parity Ratio", breaks = yBreaks, limits = range(yBreaks)) +
+      ggplot2::annotate(geom = "rect", xmin = -Inf, xmax = Inf, ymin = x[["materiality"]], ymax = 1 / x[["materiality"]], fill = "darkgray", alpha = 0.5) +
+      ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks)) +
+      ggplot2::geom_segment(x = -Inf, xend = Inf, y = 1, yend = 1, linetype = "dashed", color = "black", linewidth = 0.35) +
+      ggplot2::scale_fill_brewer(name = "Measure", type = "div")
+    if (length(measures[measures != "dp"]) > 0) {
+      p <- p + ggplot2::geom_errorbar(mapping = ggplot2::aes(ymin = lb, ymax = ub), width = 0.5, position = ggplot2::position_dodge(width = 0.9))
     }
-    prefix <- if ("dp" %in% measures) mle_ratio$dp[-ind] else NULL
-    ratio <- cbind(mle, lb = c(prefix, lb[, 2]), ub = c(prefix, ub[, 2]))
+    p <- .theme_jfa(p)
   } else {
-    ratio <- mle
+    stopifnot("plot not supported for frequentist inference" = x[["prior"]])
+    stopifnot("plot not supported for multiple measures" = length(measures) == 1)
+    stopifnot("plot not supported for demographic parity" = measures != "dp")
+    plotdata <- data.frame(x = numeric(), y = numeric(), group = numeric())
+    for (i in seq_along(groupLevels)) {
+      tmp <- data.frame(x = x[["odds.ratio"]][[measures]][[groupLevels[i]]]$density$x, y = x[["odds.ratio"]][[measures]][[groupLevels[i]]]$density$y, group = groupLevels[i])
+      plotdata <- rbind(plotdata, tmp)
+    }
+    xBreaks <- pretty(c(0, plotdata$x), min.n = 4)
+    yBreaks <- pretty(plotdata$y, min.n = 4)
+    p <- ggplot2::ggplot(data = plotdata, mapping = ggplot2::aes(x = x, y = y, group = factor(group), color = factor(group))) +
+      ggplot2::geom_line() +
+      ggplot2::scale_color_brewer(name = "Sensitive group", type = "div") +
+      ggplot2::scale_y_continuous(name = "Density", breaks = yBreaks, limits = range(yBreaks)) +
+      ggplot2::scale_x_continuous(name = "Odds ratio", breaks = xBreaks, limits = c(0, max(xBreaks))) +
+      ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks)) +
+      ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf)
+    p <- .theme_jfa(p, legend.position = c(0.75, 0.75))
   }
-  ratio[["group"]] <- rep(groupLevels, length(measures))
-  ratio[["variable"]] <- factor(toupper(measures[ratio[["variable"]]]), levels = toupper(measures))
-  yBreaks <- pretty(c(0, ratio[["value"]], 1 / x[["materiality"]], ratio[["ub"]]), min.n = 4)
-  p <- ggplot2::ggplot(data = ratio, mapping = ggplot2::aes(x = group, y = value, fill = variable)) +
-    ggplot2::geom_col(colour = "black", position = ggplot2::position_dodge()) +
-    ggplot2::scale_x_discrete(name = "Sensitive Group") +
-    ggplot2::scale_y_continuous(name = "Parity Ratio", breaks = yBreaks, limits = range(yBreaks)) +
-    ggplot2::annotate(geom = "rect", xmin = -Inf, xmax = Inf, ymin = x[["materiality"]], ymax = 1 / x[["materiality"]], fill = "darkgray", alpha = 0.5) +
-    ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks)) +
-    ggplot2::geom_segment(x = -Inf, xend = Inf, y = 1, yend = 1, linetype = "dashed", color = "black", linewidth = 0.35) +
-    ggplot2::scale_fill_brewer(name = "Measure", type = "div")
-  if (length(measures[measures != "dp"]) > 0) {
-    p <- p + ggplot2::geom_errorbar(mapping = ggplot2::aes(ymin = lb, ymax = ub), width = 0.5, position = ggplot2::position_dodge(width = 0.9))
-  }
-  p <- .theme_jfa(p)
   return(p)
 }
