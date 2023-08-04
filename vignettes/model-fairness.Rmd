@@ -84,15 +84,15 @@ model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
 )
 ```
 
-- *African American*: The ratio of positive predictions for African Americans
-  compared to Caucasians is 2.7961, indicating that there are nearly three
-  times more African Americans predicted as reoffenders than Caucasians.
-- *Asian*: The ratio for Asians is very close to zero (0.0059524), indicating
-  that there are many less Asians (4) that are predicted as reoffenders in
-  these data than there are Caucasians.
-- *Hispanic*: The ratio for Hispanics is 0.22173, meaning that there are about
-  five times less Hispanics predicted as reoffenders than that there are
-  Caucasians.
+  - *African American*: The ratio of positive predictions for African Americans
+    compared to Caucasians is 2.7961, indicating that there are nearly three
+    times more African Americans predicted as reoffenders than Caucasians.
+  - *Asian*: The ratio for Asians is very close to zero (0.0059524), indicating
+    that there are many less Asians (4) that are predicted as reoffenders in
+    these data than there are Caucasians.
+  - *Hispanic*: The ratio for Hispanics is 0.22173, meaning that there are about
+    five times less Hispanics predicted as reoffenders than that there are
+    Caucasians.
 
 2. **Proportional parity (Disparate impact)**: Compares the positive prediction
 rates (e.g., true positive rate) of each ethnic group with the reference group.

@@ -313,7 +313,8 @@ model_fairness <- function(data,
         odds.ratio[[group]][["ub"]] <- odds.ratio[["all"]][i, 3] <- .comp_ub_bayes(alternative, conf.level, analytical = FALSE, samples = samples_list[[group]]$OR)
         odds.ratio[[group]][["bf10"]] <- odds.ratio[["all"]][i, 4] <- .contingencyTableBf(contingencyTable, prior_a = prior)
         density_post <- density(log(samples_list[[group]]$OR), n = 1000)
-        odds.ratio[[group]][["density"]] <- list(x = density_post$x, y = density_post$y)
+        density_post_alt <- density(log(samples_list[[group]]$OR), n = 10000, from = -10, to = 10)
+        odds.ratio[[group]][["density"]] <- list(x = density_post_alt$x, y = density_post_alt$y, xmin = min(density_post$x), xmax = max(density_post$x))
       }
       rowIndex <- rowIndex + 1
     }

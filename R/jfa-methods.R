@@ -1189,7 +1189,7 @@ plot.jfaModelFairness <- function(x, type = c("estimates", "posterior"), ...) {
       ggplot2::geom_col(colour = "black") +
       ggplot2::scale_x_discrete(name = "Sensitive Group") +
       ggplot2::scale_y_continuous(name = yTitle, breaks = yBreaks, limits = range(yBreaks)) +
-      ggplot2::scale_fill_manual(name = NULL, values = c("dodgerblue", "lightgray", "firebrick")) +
+      ggplot2::scale_fill_manual(name = NULL, values = c("dodgerblue", "lightgray", "firebrick"), breaks = c("Reference", "Expected", "Deviation")) +
       ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks))
     if (x[["measure"]] != "dp") {
       p <- p + ggplot2::geom_errorbar(mapping = ggplot2::aes(ymin = lb, ymax = ub), width = 0.5, position = ggplot2::position_dodge(width = 0.9))
@@ -1197,17 +1197,20 @@ plot.jfaModelFairness <- function(x, type = c("estimates", "posterior"), ...) {
   } else {
     stopifnot("plot not supported for frequentist inference" = !isFALSE(x[["prior"]]))
     stopifnot("plot not supported for demographic parity" = x[["measure"]] != "dp")
-    plotdata <- data.frame(x = numeric(), y = numeric(), group = numeric())
+    plotdata <- data.frame(x = numeric(), y = numeric(), group = numeric(), xmin = numeric(), xmax = numeric())
     for (i in seq_along(inferenceLevels)) {
       tmp <- data.frame(
         x = x[["odds.ratio"]][[inferenceLevels[i]]]$density$x,
         y = x[["odds.ratio"]][[inferenceLevels[i]]]$density$y,
-        group = inferenceLevels[i]
+        group = inferenceLevels[i],
+        xmin = x[["odds.ratio"]][[inferenceLevels[i]]]$density$xmin,
+        xmax = x[["odds.ratio"]][[inferenceLevels[i]]]$density$xmax
       )
       plotdata <- rbind(plotdata, tmp)
     }
-    xBreaks <- pretty(c(0, plotdata$x), min.n = 4)
+    xBreaks <- pretty(c(0, plotdata$xmin, plotdata$xmax), min.n = 4)
     yBreaks <- pretty(c(0, plotdata$y), min.n = 4)
+    plotdata <- plotdata[-which(plotdata$x < min(xBreaks) | plotdata$x > max(xBreaks)), ]
     p <- ggplot2::ggplot(data = plotdata, mapping = ggplot2::aes(x = x, y = y, group = factor(group), color = factor(group))) +
       ggplot2::geom_segment(x = 0, xend = 0, y = 0, yend = max(yBreaks), inherit.aes = FALSE, linetype = "dashed") +
       ggplot2::geom_line() +
