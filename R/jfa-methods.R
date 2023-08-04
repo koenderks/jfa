@@ -797,9 +797,8 @@ plot.jfaEvaluation <- function(x, type = c("posterior", "estimates"), ...) {
 #' @method print jfaDistr
 #' @export
 print.jfaDistr <- function(x, digits = getOption("digits"), ...) {
-  cat("\n")
-  cat(strwrap("Digit Distribution Test", prefix = "\t"), sep = "\n")
-  cat("\n")
+  type <- if (!is.null(x$p.value)) "Classical" else "Bayesian"
+  cat(paste0("\n\t", type, " Digit Distribution Test\n\n"))
   cat("data:  ", x$data.name, "\n", sep = "")
   out <- character()
   if (!is.null(x$n)) {
@@ -837,8 +836,8 @@ print.jfaDistr <- function(x, digits = getOption("digits"), ...) {
 #' @method print summary.jfaDistr
 #' @export
 print.summary.jfaDistr <- function(x, digits = getOption("digits"), ...) {
-  cat("\n")
-  cat(strwrap("Digit Distribution Test Summary", prefix = "\t"), sep = "\n")
+  type <- if (!is.null(x$p.value)) "Classical" else "Bayesian"
+  cat(paste0("\n\t", type, " Digit Distribution Test Summary\n"))
   cat("\nOptions:\n")
   cat(paste("  Confidence level:              ", format(x[["conf.level"]], digits = max(1L, digits - 2L))), "\n")
   cat(paste("  Digits:                        ", switch(x[["check"]],
@@ -978,7 +977,7 @@ plot.jfaDistr <- function(x, ...) {
 #' @export
 print.jfaRv <- function(x, digits = getOption("digits"), ...) {
   cat("\n")
-  cat(strwrap("Repeated Values Test", prefix = "\t"), sep = "\n")
+  cat(strwrap("Classical Repeated Values Test", prefix = "\t"), sep = "\n")
   cat("\n")
   cat("data:  ", x$data.name, "\n", sep = "")
   out <- character()
