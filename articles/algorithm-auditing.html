@@ -94,7 +94,7 @@
       <h1 data-toc-skip>Algorithm auditing: Get started</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2023-08-03</h4>
+            <h4 data-toc-skip class="date">2023-08-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/algorithm-auditing.Rmd" class="external-link"><code>vignettes/algorithm-auditing.Rmd</code></a></small>
       <div class="hidden name"><code>algorithm-auditing.Rmd</code></div>
@@ -143,8 +143,13 @@ materiality threshold.</p>
 <span>  <span class="va">predictions</span>,</span>
 <span>  reference <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  positive <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  materiality <span class="op">=</span> <span class="fl">0.8</span>,</span>
-<span>  conf.level <span class="op">=</span> <span class="fl">0.95</span></span>
+<span>  metric <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
+<span>    <span class="st">"prp"</span>, <span class="st">"pp"</span>, <span class="st">"ap"</span>, <span class="st">"fnrp"</span>, <span class="st">"fprp"</span>,</span>
+<span>    <span class="st">"tprp"</span>, <span class="st">"npvp"</span>, <span class="st">"sp"</span>, <span class="st">"dp"</span></span>
+<span>  <span class="op">)</span>,</span>
+<span>  alternative <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"two.sided"</span>, <span class="st">"greater"</span>, <span class="st">"less"</span><span class="op">)</span>,</span>
+<span>  conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  prior <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><em>Example usage:</em></p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -154,21 +159,22 @@ materiality threshold.</p>
 <span>  target <span class="op">=</span> <span class="st">"TwoYrRecidivism"</span>,</span>
 <span>  predictions <span class="op">=</span> <span class="st">"Predicted"</span>,</span>
 <span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>,</span>
-<span>  positive <span class="op">=</span> <span class="st">"yes"</span></span>
+<span>  positive <span class="op">=</span> <span class="st">"yes"</span>,</span>
+<span>  metric <span class="op">=</span> <span class="st">"prp"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Algorithmic Fairness Metrics</span></span>
+<span><span class="co">##  Algorithmic Fairness Test</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## data:  compas</span></span>
+<span><span class="co">## data: compas</span></span>
 <span><span class="co">## reference group: Caucasian, positive class: yes</span></span>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## 9 fairness measures (5 sensitive groups):</span></span>
-<span><span class="co">##  African_American: 6 measure(s) outside tolerance region</span></span>
-<span><span class="co">##  Asian: 5 measure(s) outside tolerance region</span></span>
-<span><span class="co">##  Hispanic: 1 measure(s) outside tolerance region</span></span>
-<span><span class="co">##  Native_American: 5 measure(s) outside tolerance region</span></span>
-<span><span class="co">##  Other: 3 measure(s) outside tolerance region</span></span></code></pre>
+<span><span class="co">## Predictive rate parity ratio (5 sensitive groups):</span></span>
+<span><span class="co">##  African_American: 1.1522 [1.1143, 1.1891], p-value = 5.4523e-05</span></span>
+<span><span class="co">##  Asian: 0.86598 [0.11706, 1.6149], p-value = 1</span></span>
+<span><span class="co">##  Hispanic: 1.0229 [0.87836, 1.1611], p-value = 0.78393</span></span>
+<span><span class="co">##  Native_American: 1.0392 [0.25396, 1.6406], p-value = 1</span></span>
+<span><span class="co">##  Other: 1.0596 [0.86578, 1.2394], p-value = 0.5621</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
