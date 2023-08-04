@@ -186,9 +186,9 @@ ethnic group and the reference group.</li>
 <span><span class="co">##  Algorithmic Fairness Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data: compas</span></span>
-<span><span class="co">## reference group: Caucasian, positive class: yes</span></span>
+<span><span class="co">## metric: demographic parity, reference group: Caucasian, positive class: yes</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Demographic parity ratio (5 sensitive groups):</span></span>
+<span><span class="co">## Sample estimates (parity ratio):</span></span>
 <span><span class="co">##  African_American: 2.7961</span></span>
 <span><span class="co">##  Asian: 0.0059524</span></span>
 <span><span class="co">##  Hispanic: 0.22173</span></span>
@@ -221,10 +221,11 @@ group with the reference group.</li>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Algorithmic Fairness Metrics Summary</span></span>
+<span><span class="co">##  Algorithmic Fairness Test Summary</span></span>
 <span><span class="co">## </span></span>
+<span><span class="co">## Fairness metric: Proportional parity</span></span>
 <span><span class="co">## Reference group: Caucasian</span></span>
-<span><span class="co">## Positive class:  yes</span></span>
+<span><span class="co">## Positive class:  yes </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Model performance:</span></span>
 <span><span class="co">##                  Support  Accuracy Precision    Recall  F1 score</span></span>
@@ -235,8 +236,8 @@ group with the reference group.</li>
 <span><span class="co">## Native_American       11 0.6363636 0.6000000 0.6000000 0.6000000</span></span>
 <span><span class="co">## Other                343 0.6938776 0.6117647 0.4193548 0.4976077</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Proportional parity (5 sensitive groups):</span></span>
-<span><span class="co">##                                     Estimate               Parity ratio</span></span>
+<span><span class="co">## Sample estimates:</span></span>
+<span><span class="co">##                                       Metric               Parity ratio</span></span>
 <span><span class="co">## Caucasian (R)     0.31954 [0.29964, 0.33995]                          -</span></span>
 <span><span class="co">## African_American  0.59181 [0.57448, 0.60897]    1.8521 [1.7978, 1.9058]</span></span>
 <span><span class="co">## Asian            0.12903 [0.036302, 0.29834]   0.4038 [0.1136, 0.93363]</span></span>
@@ -281,10 +282,10 @@ different ethnic groups with the reference group.</li>
 <span><span class="co">##  Algorithmic Fairness Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data: compas</span></span>
-<span><span class="co">## reference group: Caucasian, positive class: yes</span></span>
+<span><span class="co">## metric: predictive rate parity, reference group: Caucasian, positive class: yes</span></span>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Predictive rate parity ratio (5 sensitive groups):</span></span>
+<span><span class="co">## Sample estimates (parity ratio):</span></span>
 <span><span class="co">##  African_American: 1.1522 [1.1143, 1.1891], p-value = 5.4523e-05</span></span>
 <span><span class="co">##  Asian: 0.86598 [0.11706, 1.6149], p-value = 1</span></span>
 <span><span class="co">##  Hispanic: 1.0229 [0.87836, 1.1611], p-value = 0.78393</span></span>
@@ -322,10 +323,10 @@ ethnic group’s predictions with the reference group.</li>
 <span><span class="co">##  Algorithmic Fairness Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data: compas</span></span>
-<span><span class="co">## reference group: Caucasian, positive class: yes</span></span>
+<span><span class="co">## metric: accuracy parity, reference group: Caucasian, positive class: yes</span></span>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Accuracy parity ratio (5 sensitive groups):</span></span>
+<span><span class="co">## Sample estimates (parity ratio):</span></span>
 <span><span class="co">##  African_American: 1.021 [0.99578, 1.0458], p-value = 0.29669</span></span>
 <span><span class="co">##  Asian: 1.1266 [0.841, 1.3384], p-value = 0.44521</span></span>
 <span><span class="co">##  Hispanic: 1.0351 [0.97074, 1.0963], p-value = 0.34691</span></span>
@@ -359,10 +360,10 @@ group with the reference group.</li>
 <span><span class="co">##  Algorithmic Fairness Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data: compas</span></span>
-<span><span class="co">## reference group: Caucasian, positive class: yes</span></span>
+<span><span class="co">## metric: false negative rate parity, reference group: Caucasian, positive class: yes</span></span>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## False negative rate parity ratio (5 sensitive groups):</span></span>
+<span><span class="co">## Sample estimates (parity ratio):</span></span>
 <span><span class="co">##  African_American: 0.46866 [0.42965, 0.50936], p-value = &lt; 2.22e-16</span></span>
 <span><span class="co">##  Asian: 1.4205 [0.66128, 1.8337], p-value = 0.29386</span></span>
 <span><span class="co">##  Hispanic: 1.0121 [0.87234, 1.1499], p-value = 0.93562</span></span>
@@ -399,10 +400,10 @@ reference group.</li>
 <span><span class="co">##  Algorithmic Fairness Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data: compas</span></span>
-<span><span class="co">## reference group: Caucasian, positive class: yes</span></span>
+<span><span class="co">## metric: false positive rate parity, reference group: Caucasian, positive class: yes</span></span>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## False positive rate parity ratio (5 sensitive groups):</span></span>
+<span><span class="co">## Sample estimates (parity ratio):</span></span>
 <span><span class="co">##  African_American: 1.8739 [1.7613, 1.988], p-value = &lt; 2.22e-16</span></span>
 <span><span class="co">##  Asian: 0.39222 [0.048308, 1.2647], p-value = 0.19944</span></span>
 <span><span class="co">##  Hispanic: 0.85983 [0.67237, 1.0736], p-value = 0.25424</span></span>
@@ -442,10 +443,10 @@ group with the reference group.</li>
 <span><span class="co">##  Algorithmic Fairness Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data: compas</span></span>
-<span><span class="co">## reference group: Caucasian, positive class: yes</span></span>
+<span><span class="co">## metric: Ttrue positive rate parity, reference group: Caucasian, positive class: yes</span></span>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## True positive rate parity ratio (5 sensitive groups):</span></span>
+<span><span class="co">## Sample estimates (parity ratio):</span></span>
 <span><span class="co">##  African_American: 1.5943 [1.5488, 1.638], p-value = &lt; 2.22e-16</span></span>
 <span><span class="co">##  Asian: 0.52964 [0.067485, 1.3789], p-value = 0.29386</span></span>
 <span><span class="co">##  Hispanic: 0.98642 [0.83236, 1.1428], p-value = 0.93562</span></span>
@@ -484,10 +485,10 @@ group with the reference group.</li>
 <span><span class="co">##  Algorithmic Fairness Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data: compas</span></span>
-<span><span class="co">## reference group: Caucasian, positive class: yes</span></span>
+<span><span class="co">## metric: negative predictive value parity, reference group: Caucasian, positive class: yes</span></span>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Negative predictive value parity ratio (5 sensitive groups):</span></span>
+<span><span class="co">## Sample estimates (parity ratio):</span></span>
 <span><span class="co">##  African_American: 0.98013 [0.94264, 1.0164], p-value = 0.45551</span></span>
 <span><span class="co">##  Asian: 1.1163 [0.82877, 1.3116], p-value = 0.52546</span></span>
 <span><span class="co">##  Hispanic: 1.0326 [0.96161, 1.0984], p-value = 0.43956</span></span>
@@ -525,10 +526,10 @@ the reference group.</li>
 <span><span class="co">##  Algorithmic Fairness Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data: compas</span></span>
-<span><span class="co">## reference group: Caucasian, positive class: yes</span></span>
+<span><span class="co">## metric: specificity parity, reference group: Caucasian, positive class: yes</span></span>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Specificity parity ratio (5 sensitive groups):</span></span>
+<span><span class="co">## Sample estimates (parity ratio):</span></span>
 <span><span class="co">##  African_American: 0.75105 [0.71855, 0.78314], p-value = &lt; 2.22e-16</span></span>
 <span><span class="co">##  Asian: 1.1731 [0.92461, 1.2711], p-value = 0.19944</span></span>
 <span><span class="co">##  Hispanic: 1.0399 [0.97904, 1.0933], p-value = 0.25424</span></span>
