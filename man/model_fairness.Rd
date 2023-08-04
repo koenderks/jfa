@@ -12,10 +12,9 @@ model_fairness(
   reference = NULL,
   positive = NULL,
   metric = c(
-    "dp", "pp", "prp", "ap", "fnrp",
-    "fprp", "tprp", "npvp", "sp"
+    "prp", "pp", "ap", "fnrp", "fprp",
+    "tprp", "npvp", "sp", "dp"
   ),
-  materiality = 0.8,
   alternative = c("two.sided", "greater", "less"),
   conf.level = 0.95,
   prior = FALSE
@@ -46,11 +45,6 @@ positive class.}
 \item{metric}{a character (vector) indicating the fairness metrics(s)
 to compute. See the Details section for more information.}
 
-\item{materiality}{a numeric value between 0 and 1 specifying the
-materiality used to decide whether the statistics are out of bound. The
-tolerance range is defined on the parity statistics as
-\code{materiality} and \code{1 / materiality}.}
-
 \item{alternative}{the type of confidence interval to produce. Possible
 options are \code{two.sided} (the default), \code{greater} and \code{less}.}
 
@@ -71,30 +65,28 @@ An object of class \code{jfaModelFairness} containing:
 \item{confusion.matrix}{A list of confusion matrices for each group.}
 \item{performance}{A data frame containing performance metrics for each
   group, including accuracy, precision, recall, and F1 score.}
-\item{metrics}{A data frame containing fairness metrics for each group,
-  including demographic parity, proportional parity, predictive rate parity,
-  accuracy parity, false negative rate parity, false positive rate parity,
-  true positive rate parity, negative predicted value parity, and statistical
-  parity.}
-\item{parity}{A data frame containing fairness parity for each metric,
-  comparing each group to the reference group.}
-\item{odds.ratio}{A data frame containing odds ratio of the fairness parity
-  for each metric, comparing each group to the reference group.}
-\item{materiality}{The materiality value used to determine the out of bounds
-  metrics.}
+\item{metric}{A data frame containing, for each group, the estimates of the
+  fairness metric along with the associated confidence / credible interval.}
+\item{parity}{A data frame containing, for each sensitive group, the parity
+  ratio and associated confidence / credible interval when compared to the
+  reference group.}
+\item{odds.ratio}{A data frame containing, for each sensitive group, the odds
+  ratio of the fairness meatrics and associated confidence/credible interval,
+  along with any inferential measures, for the comparison to the reference
+  group.}
 \item{data.name}{The name of the input data object.}
 }
 \description{
-This function detects bias in algorithmic decision-making
-systems by computing various model-agnostic fairness metrics. These measures
-quantify fairness across different groups based on the observed and predicted
-outcomes of the model. The calculated metrics are commonly used and include
-demographic parity, proportional parity, predictive rate parity, accuracy
-parity, false negative rate parity, false positive rate parity, true positive
-rate parity, negative predicted value parity, and specificity parity. In
-addition, the user can specify a materiality threshold to decide whether
-the algorithm is fair to a certain degree and within a certain range.
-Currently, this function only supports binary classification.
+This function aims to assess fairness and bias in algorithmic
+decision-making systems by computing and testing one of several
+model-agnostic fairness metrics. These metrics quantify fairness across
+groups in the data based on the predictions of the algorithm in several ways.
+The calculated metrics are commonly used and include predictive rate parity,
+proportional parity, true positive rate parity, accuracy parity, false
+negative rate parity, false positive rate parity, true positive
+rate parity, negative predicted value parity, specificity parity, and
+demographic parity. Currently, this function only supports binary
+classification.
 }
 \details{
 The following model-agnostic fairness metrics are computed based on
@@ -102,26 +94,26 @@ The following model-agnostic fairness metrics are computed based on
   (TP), false positives (FP), true negative (TN) and false negatives (FN).
 
   \itemize{
-    \item{Demographic parity: }{measures whether the observed variable is
-    distributed equally across different groups, calculated as TP + FP.}
-    \item{Proportional parity: }{measures whether the positive rate is
+    \item{Predictive rate parity (\code{prp}): }{measures whether the positive prediction
+      rate is the same across different groups, calculated as TP / (TP + FP).}
+    \item{Proportional parity (\code{pp}): }{measures whether the positive rate is
       distributed equally across different groups, calculated as (TP + FP) /
       (TP + FP + TN + FN).}
-    \item{Predictive rate parity: }{measures whether the positive prediction
-      rate is the same across different groups, calculated as TP / (TP + FP).}
-    \item{Accuracy parity: }{measures whether the overall accuracy is the same
+    \item{Accuracy parity (\code{ap}): }{measures whether the overall accuracy is the same
       across different groups, calculated as (TP + TN) / (TP + FP + TN + FN).}
-    \item{False negative rate parity: }{measures whether the false negative
+    \item{False negative rate parity (\code{fnrp}): }{measures whether the false negative
       rate is the same across different groups, calculated as FN / (FP + FN).}
-    \item{False positive rate parity: }{measures whether the false positive
+    \item{False positive rate parity (\code{fprp}): }{measures whether the false positive
       rate is the same across different groups, calculated as FP / (TN + FP).}
-    \item{True positive rate parity: }{measures whether the true positive rate
+    \item{True positive rate parity (\code{tprp}): }{measures whether the true positive rate
       is the same across different groups, calculated as TP / (TP + FN).}
-    \item{Negative predicted value parity: }{measures whether the negative
+    \item{Negative predicted value parity (\code{npvp}): }{measures whether the negative
       predicted value is the same across different groups, calculated as TN /
       (TN + FN).}
-    \item{Specificity parity: }{measures whether the true positive rate
+    \item{Specificity parity (\code{sp}): }{measures whether the true positive rate
       is the same across different groups, calculated as TN / (TN + FP).}
+    \item{Demographic parity (\code{dp}): }{measures whether the observed variable is
+      distributed equally across different groups, calculated as TP + FP.}
   }
 
   Note that, in an audit context, not all fairness measures are equally
@@ -133,8 +125,14 @@ The following model-agnostic fairness metrics are computed based on
   \if{latex}{\figure{fairness-tree.pdf}{options: width=5in}}
 }
 \examples{
+# Frequentist estimation of specificy parity
+model_fairness(compas, "Gender", "TwoYrRecidivism", "Predicted",
+  reference = "Male", positive = "yes", metric = "sp"
+)
+
+# Bayesian estimation of predictive rate parity
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-  reference = "Caucasian", positive = "yes", metric = "sp"
+  reference = "Caucasian", positive = "yes", metric = "prp", prior = TRUE
 )
 }
 \references{

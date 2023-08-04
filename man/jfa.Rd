@@ -84,12 +84,12 @@ digit_test(sinoForest[["value"]], check = "first", reference = "benford")
 ### Example 3: Algorithm auditing ####
 ######################################
 
-# Load the sinoForest data set
+# Load the compas data set
 data('compas')
 
-# Test first digits in the data against Benford's law
+# Test algorithmic fairness against Caucasian ethnicity
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-               reference = "Caucasian", positive = "yes")
+               reference = "Caucasian", positive = "yes", metric = "tprp")
 }
 \keyword{jfa} 
 \keyword{package}

@@ -33,9 +33,6 @@ based on the observed and predicted labels in a data set. Calculated metrics
 include demographic parity, proportional parity, predictive rate parity,
 accuracy parity, false negative rate parity, false positive rate parity, true
 positive rate parity, negative predicted value parity, and specificity parity.
-Other than computing these metrics, the function helps to decide whether groups
-are treated fairly to a certain degree and within a certain materiality
-threshold.
 
 Note that, in an audit context, not all fairness measures are equally
 appropriate in all situations. The decision tree below aids with choosing which
@@ -74,13 +71,6 @@ behavior towards specific ethnic groups. If substantial disparities exist, we
 may need to investigate further and potentially modify the algorithm to ensure
 fairness in its predictions.
 
-```{r fig.align="center", fig.height=5, fig.width=7}
-x <- model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-  reference = "Caucasian", positive = "yes"
-)
-plot(x)
-```
-
 Let's interpret the fairness metrics for the African American, Asian, and
 Hispanic groups in comparison to the reference group (Caucasian).
 
@@ -89,11 +79,9 @@ predictions (e.g., reoffenders) between each ethnic group and the reference
 group.
 
 ```{r fig.align="center", fig.height=5, fig.width=7}
-data("compas")
-x <- model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
+model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
   reference = "Caucasian", positive = "yes", metric = "dp"
 )
-summary(x)
 ```
 
   - *African American*: The ratio of positive predictions for African Americans

@@ -781,7 +781,7 @@
     raw_posterior <- rstan::sampling(
       object = stanmodels[["or_fairness"]],
       data = list(y = counts, use_likelihood = 1),
-      pars = "OR",
+      pars = c("OR", "prob"),
       iter = getOption("mc.iterations", 2000),
       warmup = getOption("mc.warmup", 1000),
       chains = getOption("mc.chains", 4),
@@ -791,7 +791,7 @@
       refresh = 0
     )
   })
-  samples <- rstan::extract(raw_posterior)$OR
+  samples <- data.frame(OR = rstan::extract(raw_posterior)$OR, prob = rstan::extract(raw_posterior)$prob)
   stopifnot("Stan model could not be fitted...check your priors" = !is.null(samples))
   return(samples)
 }

@@ -15,16 +15,16 @@
 
 #' Algorithm Auditing: Fairness Metrics and Bias Detection
 #'
-#' @description This function detects bias in algorithmic decision-making
-#' systems by computing various model-agnostic fairness metrics. These measures
-#' quantify fairness across different groups based on the observed and predicted
-#' outcomes of the model. The calculated metrics are commonly used and include
-#' demographic parity, proportional parity, predictive rate parity, accuracy
-#' parity, false negative rate parity, false positive rate parity, true positive
-#' rate parity, negative predicted value parity, and specificity parity. In
-#' addition, the user can specify a materiality threshold to decide whether
-#' the algorithm is fair to a certain degree and within a certain range.
-#' Currently, this function only supports binary classification.
+#' @description This function aims to assess fairness and bias in algorithmic
+#' decision-making systems by computing and testing one of several
+#' model-agnostic fairness metrics. These metrics quantify fairness across
+#' groups in the data based on the predictions of the algorithm in several ways.
+#' The calculated metrics are commonly used and include predictive rate parity,
+#' proportional parity, true positive rate parity, accuracy parity, false
+#' negative rate parity, false positive rate parity, true positive
+#' rate parity, negative predicted value parity, specificity parity, and
+#' demographic parity. Currently, this function only supports binary
+#' classification.
 #'
 #' @usage model_fairness(
 #'   data,
@@ -34,10 +34,9 @@
 #'   reference = NULL,
 #'   positive = NULL,
 #'   metric = c(
-#'     "dp", "pp", "prp", "ap", "fnrp",
-#'     "fprp", "tprp", "npvp", "sp"
+#'     "prp", "pp", "ap", "fnrp", "fprp",
+#'     "tprp", "npvp", "sp", "dp"
 #'   ),
-#'   materiality = 0.8,
 #'   alternative = c("two.sided", "greater", "less"),
 #'   conf.level = 0.95,
 #'   prior = FALSE
@@ -60,10 +59,6 @@
 #'   positive class.
 #' @param metric      a character (vector) indicating the fairness metrics(s)
 #'   to compute. See the Details section for more information.
-#' @param materiality  a numeric value between 0 and 1 specifying the
-#'   materiality used to decide whether the statistics are out of bound. The
-#'   tolerance range is defined on the parity statistics as
-#'   \code{materiality} and \code{1 / materiality}.
 #' @param alternative  the type of confidence interval to produce. Possible
 #'   options are \code{two.sided} (the default), \code{greater} and \code{less}.
 #' @param conf.level   a numeric value between 0 and 1 specifying the
@@ -78,26 +73,26 @@
 #'   (TP), false positives (FP), true negative (TN) and false negatives (FN).
 #'
 #'   \itemize{
-#'     \item{Demographic parity: }{measures whether the observed variable is
-#'     distributed equally across different groups, calculated as TP + FP.}
-#'     \item{Proportional parity: }{measures whether the positive rate is
+#'     \item{Predictive rate parity (\code{prp}): }{measures whether the positive prediction
+#'       rate is the same across different groups, calculated as TP / (TP + FP).}
+#'     \item{Proportional parity (\code{pp}): }{measures whether the positive rate is
 #'       distributed equally across different groups, calculated as (TP + FP) /
 #'       (TP + FP + TN + FN).}
-#'     \item{Predictive rate parity: }{measures whether the positive prediction
-#'       rate is the same across different groups, calculated as TP / (TP + FP).}
-#'     \item{Accuracy parity: }{measures whether the overall accuracy is the same
+#'     \item{Accuracy parity (\code{ap}): }{measures whether the overall accuracy is the same
 #'       across different groups, calculated as (TP + TN) / (TP + FP + TN + FN).}
-#'     \item{False negative rate parity: }{measures whether the false negative
+#'     \item{False negative rate parity (\code{fnrp}): }{measures whether the false negative
 #'       rate is the same across different groups, calculated as FN / (FP + FN).}
-#'     \item{False positive rate parity: }{measures whether the false positive
+#'     \item{False positive rate parity (\code{fprp}): }{measures whether the false positive
 #'       rate is the same across different groups, calculated as FP / (TN + FP).}
-#'     \item{True positive rate parity: }{measures whether the true positive rate
+#'     \item{True positive rate parity (\code{tprp}): }{measures whether the true positive rate
 #'       is the same across different groups, calculated as TP / (TP + FN).}
-#'     \item{Negative predicted value parity: }{measures whether the negative
+#'     \item{Negative predicted value parity (\code{npvp}): }{measures whether the negative
 #'       predicted value is the same across different groups, calculated as TN /
 #'       (TN + FN).}
-#'     \item{Specificity parity: }{measures whether the true positive rate
+#'     \item{Specificity parity (\code{sp}): }{measures whether the true positive rate
 #'       is the same across different groups, calculated as TN / (TN + FP).}
+#'     \item{Demographic parity (\code{dp}): }{measures whether the observed variable is
+#'       distributed equally across different groups, calculated as TP + FP.}
 #'   }
 #'
 #'   Note that, in an audit context, not all fairness measures are equally
@@ -116,17 +111,15 @@
 #' \item{confusion.matrix}{A list of confusion matrices for each group.}
 #' \item{performance}{A data frame containing performance metrics for each
 #'   group, including accuracy, precision, recall, and F1 score.}
-#' \item{metrics}{A data frame containing fairness metrics for each group,
-#'   including demographic parity, proportional parity, predictive rate parity,
-#'   accuracy parity, false negative rate parity, false positive rate parity,
-#'   true positive rate parity, negative predicted value parity, and statistical
-#'   parity.}
-#' \item{parity}{A data frame containing fairness parity for each metric,
-#'   comparing each group to the reference group.}
-#' \item{odds.ratio}{A data frame containing odds ratio of the fairness parity
-#'   for each metric, comparing each group to the reference group.}
-#' \item{materiality}{The materiality value used to determine the out of bounds
-#'   metrics.}
+#' \item{metric}{A data frame containing, for each group, the estimates of the
+#'   fairness metric along with the associated confidence / credible interval.}
+#' \item{parity}{A data frame containing, for each sensitive group, the parity
+#'   ratio and associated confidence / credible interval when compared to the
+#'   reference group.}
+#' \item{odds.ratio}{A data frame containing, for each sensitive group, the odds
+#'   ratio of the fairness meatrics and associated confidence/credible interval,
+#'   along with any inferential measures, for the comparison to the reference
+#'   group.}
 #' \item{data.name}{The name of the input data object.}
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
@@ -139,8 +132,14 @@
 #' @keywords algorithm audit bias fairness model performance
 #'
 #' @examples
+#' # Frequentist estimation of specificy parity
+#' model_fairness(compas, "Gender", "TwoYrRecidivism", "Predicted",
+#'   reference = "Male", positive = "yes", metric = "sp"
+#' )
+#'
+#' # Bayesian estimation of predictive rate parity
 #' model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-#'   reference = "Caucasian", positive = "yes", metric = "sp"
+#'   reference = "Caucasian", positive = "yes", metric = "prp", prior = TRUE
 #' )
 #' @export
 
@@ -151,15 +150,13 @@ model_fairness <- function(data,
                            reference = NULL,
                            positive = NULL,
                            metric = c(
-                             "dp", "pp", "prp", "ap", "fnrp",
-                             "fprp", "tprp", "npvp", "sp"
+                             "prp", "pp", "ap", "fnrp", "fprp",
+                             "tprp", "npvp", "sp", "dp"
                            ),
-                           materiality = 0.8,
                            alternative = c("two.sided", "greater", "less"),
                            conf.level = 0.95,
                            prior = FALSE) {
-  mets <- match.arg(metric, several.ok = TRUE)
-  inferenceMetrics <- subset(mets, mets != "dp")
+  metric <- match.arg(metric)
   alternative <- match.arg(alternative)
   dname <- deparse(substitute(data))
   data <- as.data.frame(data, row.names = seq_len(nrow(data)))
@@ -170,7 +167,6 @@ model_fairness <- function(data,
   stopifnot("'target' must be a factor column" = is.factor(data[, target]))
   stopifnot("'predictions' does not exist in 'data'" = predictions %in% colnames(data))
   stopifnot("'predictions' must be a factor column" = is.factor(data[, predictions]))
-  stopifnot("'materiality' must be a single value between 0 and 1" = materiality > 0 && materiality < 1)
   groupLevels <- levels(data[, sensitive])
   targetLevels <- levels(data[, target])
   stopifnot("'target' must contain exactly 2 factor levels" = length(targetLevels) == 2) # Binary classification only
@@ -183,124 +179,130 @@ model_fairness <- function(data,
     positive <- targetLevels[1]
   }
   stopifnot("'positive' is not a class in 'target'" = positive %in% targetLevels)
-  negative <- targetLevels[-which(targetLevels == positive)]
-  metrics <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = length(mets))))
-  parity <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = length(mets))))
-  odds.ratio <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels) - 1, ncol = length(inferenceMetrics))))
-  performance <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = 5)))
   confmat <- list()
+  samples_list <- list()
+  inferenceLevels <- groupLevels[-which(groupLevels == reference)]
+  negative <- targetLevels[-which(targetLevels == positive)]
+  performance <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = 5), row.names = groupLevels))
+  colnames(performance[["all"]]) <- c("support", "accuracy", "precision", "recall", "f1.score")
+  metrics <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = if (metric == "dp") 1 else 3), row.names = groupLevels))
+  parity <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = if (metric == "dp") 1 else 3), row.names = groupLevels))
+  colnames(metrics[["all"]]) <- colnames(parity[["all"]]) <- if (metric != "dp") c("estimate", "lb", "ub") else "estimate"
+  odds.ratio <- list(all = as.data.frame(matrix(NA, nrow = length(inferenceLevels), ncol = 4), row.names = inferenceLevels))
+  colnames(odds.ratio[["all"]]) <- if (prior) c("estimate", "lb", "ub", "bf10") else c("estimate", "lb", "ub", "p.value")
   for (i in seq_len(nlevels(data[, sensitive]))) {
     group <- levels(data[, sensitive])[i]
     groupDat <- data[data[, sensitive] == group, ]
-    # Confusion matrices
+    # Confusion matrices for each group
     confmat[[group]][["matrix"]] <- table("Actual" = groupDat[, target], "Predicted" = groupDat[, predictions])
     confmat[[group]][["tp"]] <- tp <- confmat[[group]][["matrix"]][positive, positive]
     confmat[[group]][["fp"]] <- fp <- confmat[[group]][["matrix"]][negative, positive]
     confmat[[group]][["tn"]] <- tn <- confmat[[group]][["matrix"]][negative, negative]
     confmat[[group]][["fn"]] <- fn <- confmat[[group]][["matrix"]][positive, negative]
-    # Performance measures
+    # Performance measures for each group
     performance[[group]][["support"]] <- performance[["all"]][i, 1] <- sum(confmat[[group]][["matrix"]])
     performance[[group]][["accuracy"]] <- performance[["all"]][i, 2] <- (confmat[[group]][["tp"]] + confmat[[group]][["tn"]]) / (confmat[[group]][["tp"]] + confmat[[group]][["tn"]] + confmat[[group]][["fp"]] + confmat[[group]][["fn"]])
     performance[[group]][["precision"]] <- performance[["all"]][i, 3] <- confmat[[group]][["tp"]] / (confmat[[group]][["tp"]] + confmat[[group]][["fp"]])
     performance[[group]][["recall"]] <- performance[["all"]][i, 4] <- confmat[[group]][["tp"]] / (confmat[[group]][["tp"]] + confmat[[group]][["fn"]])
     performance[[group]][["f1.score"]] <- performance[["all"]][i, 5] <- 2 * ((performance[[group]][["precision"]] * performance[[group]][["recall"]]) / (performance[[group]][["precision"]] + performance[[group]][["recall"]]))
-    # Fairness metrics
-    for (j in seq_along(mets)) {
-      metric <- mets[j]
-      if (metric == "dp") {
-        metrics[[metric]][[group]][["mle"]] <- tp + fp
-      } else {
-        metrics[[metric]][[group]][["numerator"]] <- num <- switch(metric,
-          "pp" = tp + fp,
-          "prp" = tp,
-          "ap" = tp + tn,
-          "fnrp" = fn,
-          "fprp" = fp,
-          "tprp" = tp,
-          "npvp" = tn,
-          "sp" = tn
-        )
-        metrics[[metric]][[group]][["denominator"]] <- denom <- switch(metric,
-          "pp" = tp + fp + tn + fn,
-          "prp" = tp + fp,
-          "ap" = tp + fp + tn + fn,
-          "fnrp" = tp + fn,
-          "fprp" = tn + fp,
-          "tprp" = tp + fn,
-          "npvp" = tn + fn,
-          "sp" = tn + fp
-        )
-        metrics[[metric]][[group]][["mle"]] <- num / denom
-        test <- stats::binom.test(x = num, n = denom, conf.level = conf.level, alternative = alternative)
-        metrics[[metric]][[group]][["lb"]] <- test$conf.int[1]
-        metrics[[metric]][[group]][["ub"]] <- test$conf.int[2]
-      }
-      metrics[["all"]][i, j] <- metrics[[metric]][[group]][["mle"]]
+    if (metric == "dp") {
+      metrics[[group]][["estimate"]] <- metrics[["all"]][i, 1] <- tp + fp
+    } else {
+      metrics[[group]][["numerator"]] <- switch(metric,
+        "pp" = tp + fp,
+        "prp" = tp,
+        "ap" = tp + tn,
+        "fnrp" = fn,
+        "fprp" = fp,
+        "tprp" = tp,
+        "npvp" = tn,
+        "sp" = tn
+      )
+      metrics[[group]][["denominator"]] <- switch(metric,
+        "pp" = tp + fp + tn + fn,
+        "prp" = tp + fp,
+        "ap" = tp + fp + tn + fn,
+        "fnrp" = tp + fn,
+        "fprp" = tn + fp,
+        "tprp" = tp + fn,
+        "npvp" = tn + fn,
+        "sp" = tn + fp
+      )
     }
   }
-  rownames(metrics[["all"]]) <- rownames(performance[["all"]]) <- groupLevels
-  colnames(metrics[["all"]]) <- mets
-  colnames(performance[["all"]]) <- c("support", "accuracy", "precision", "recall", "f1.score")
-  # Parity ratios
-  for (i in seq_len(nlevels(data[, sensitive]))) {
-    group <- levels(data[, sensitive])[i]
-    for (j in seq_len(length(mets))) {
-      metric <- mets[j]
-      parity[[metric]][[group]][["mle"]] <- metrics[[metric]][[group]][["mle"]] / metrics[[metric]][[reference]][["mle"]]
-      if (metric != "dp") {
-        parity[[metric]][[group]][["lb"]] <- metrics[[metric]][[group]][["lb"]] / metrics[[metric]][[reference]][["mle"]]
-        parity[[metric]][[group]][["ub"]] <- metrics[[metric]][[group]][["ub"]] / metrics[[metric]][[reference]][["mle"]]
-      }
-      parity[[metric]][[group]][["deviation"]] <- ((parity[[metric]][[group]][["mle"]] < materiality) || (parity[[metric]][[group]][["mle"]] > 1 / materiality))
-      parity[["all"]][i, j] <- parity[[metric]][[group]][["mle"]]
-    }
-  }
-  rownames(parity[["all"]]) <- groupLevels
-  colnames(parity[["all"]]) <- mets
   names(confmat) <- groupLevels
-  # Odds ratios
-  sensitiveGroupLevels <- groupLevels[-which(groupLevels == reference)]
-  for (i in seq_along(sensitiveGroupLevels)) {
-    group <- sensitiveGroupLevels[i]
-    for (j in seq_along(inferenceMetrics)) {
-      metric <- inferenceMetrics[j]
+  # Estimates
+  if (metric != "dp") {
+    for (i in seq_len(nlevels(data[, sensitive]))) {
+      group <- levels(data[, sensitive])[i]
+      if (!prior) {
+        binom_test <- stats::binom.test(x = metrics[[group]][["numerator"]], n = metrics[[group]][["denominator"]], conf.level = conf.level, alternative = alternative)
+        metrics[[group]][["estimate"]] <- metrics[["all"]][i, 1] <- as.numeric(binom_test$estimate)
+        metrics[[group]][["lb"]] <- metrics[["all"]][i, 2] <- as.numeric(binom_test$conf.int[1])
+        metrics[[group]][["ub"]] <- metrics[["all"]][i, 3] <- as.numeric(binom_test$conf.int[2])
+      } else {
+        contingencyTable <- matrix(c(
+          metrics[[group]][["numerator"]],
+          metrics[[group]][["denominator"]] - metrics[[group]][["numerator"]],
+          metrics[[reference]][["numerator"]],
+          metrics[[reference]][["denominator"]] - metrics[[reference]][["numerator"]]
+        ), ncol = 2)
+        samples_list[[group]] <- .mcmc_or(counts = c(contingencyTable))
+        metrics[[group]][["estimate"]] <- metrics[["all"]][i, 1] <- .comp_mode_bayes(analytical = FALSE, samples = samples_list[[group]]$prob)
+        metrics[[group]][["lb"]] <- metrics[["all"]][i, 2] <- .comp_lb_bayes(alternative, conf.level, analytical = FALSE, samples = samples_list[[group]]$prob)
+        metrics[[group]][["ub"]] <- metrics[["all"]][i, 3] <- .comp_ub_bayes(alternative, conf.level, analytical = FALSE, samples = samples_list[[group]]$prob)
+      }
+    }
+  }
+  # Parity ratio
+  rowIndex <- 1
+  for (group in groupLevels) {
+    parity[[group]][["estimate"]] <- parity[["all"]][rowIndex, 1] <- metrics[[group]][["estimate"]] / metrics[[reference]][["estimate"]]
+    if (metric != "dp") {
+      parity[[group]][["lb"]] <- parity[["all"]][rowIndex, 2] <- metrics[[group]][["lb"]] / metrics[[reference]][["estimate"]]
+      parity[[group]][["ub"]] <- parity[["all"]][rowIndex, 3] <- metrics[[group]][["ub"]] / metrics[[reference]][["estimate"]]
+    }
+    rowIndex <- rowIndex + 1
+  }
+  # Odds ratio
+  if (metric != "dp") {
+    rowIndex <- 1
+    for (group in inferenceLevels) {
       contingencyTable <- matrix(c(
-        metrics[[metric]][[group]][["numerator"]],
-        metrics[[metric]][[group]][["denominator"]] - metrics[[metric]][[group]][["numerator"]],
-        metrics[[metric]][[reference]][["numerator"]],
-        metrics[[metric]][[reference]][["denominator"]] - metrics[[metric]][[reference]][["numerator"]]
+        metrics[[group]][["numerator"]],
+        metrics[[group]][["denominator"]] - metrics[[group]][["numerator"]],
+        metrics[[reference]][["numerator"]],
+        metrics[[reference]][["denominator"]] - metrics[[reference]][["numerator"]]
       ), ncol = 2)
       if (!prior) {
-        odds.ratio[[metric]][[group]][["mle"]] <- (metrics[[metric]][[group]][["mle"]] / (1 + metrics[[metric]][[group]][["mle"]])) / (metrics[[metric]][[reference]][["mle"]] / (1 + metrics[[metric]][[reference]][["mle"]]))
-        test <- stats::fisher.test(contingencyTable, alternative = alternative, conf.level = conf.level)
-        odds.ratio[[metric]][[group]][["lb"]] <- test$conf.int[1]
-        odds.ratio[[metric]][[group]][["ub"]] <- test$conf.int[2]
-        odds.ratio[[metric]][[group]][["p.value"]] <- test$p.value
+        fisher_test <- stats::fisher.test(contingencyTable, alternative = alternative, conf.level = conf.level)
+        odds.ratio[[group]][["estimate"]] <- odds.ratio[["all"]][rowIndex, 1] <- as.numeric(fisher_test$estimate)
+        odds.ratio[[group]][["lb"]] <- odds.ratio[["all"]][rowIndex, 2] <- as.numeric(fisher_test$conf.int[1])
+        odds.ratio[[group]][["ub"]] <- odds.ratio[["all"]][rowIndex, 3] <- as.numeric(fisher_test$conf.int[2])
+        odds.ratio[[group]][["p.value"]] <- odds.ratio[["all"]][rowIndex, 4] <- as.numeric(fisher_test$p.value)
       } else {
-        post_samples <- .mcmc_or(counts = c(contingencyTable))
-        odds.ratio[[metric]][[group]][["mle"]] <- .comp_mode_bayes(analytical = FALSE, samples = post_samples)
-        odds.ratio[[metric]][[group]][["lb"]] <- .comp_lb_bayes(alternative, conf.level, analytical = FALSE, samples = post_samples)
-        odds.ratio[[metric]][[group]][["ub"]] <- .comp_ub_bayes(alternative, conf.level, analytical = FALSE, samples = post_samples)
-        odds.ratio[[metric]][[group]][["bf10"]] <- .contingencyTableBf(contingencyTable)
-        density_post <- density(post_samples, from = 0, to = max(post_samples))
-        odds.ratio[[metric]][[group]][["density"]] <- list(x = density_post$x, y = density_post$y)
+        odds.ratio[[group]][["estimate"]] <- odds.ratio[["all"]][i, 1] <- .comp_mode_bayes(analytical = FALSE, samples = samples_list[[group]]$OR)
+        odds.ratio[[group]][["lb"]] <- odds.ratio[["all"]][i, 2] <- .comp_lb_bayes(alternative, conf.level, analytical = FALSE, samples = samples_list[[group]]$OR)
+        odds.ratio[[group]][["ub"]] <- odds.ratio[["all"]][i, 3] <- .comp_ub_bayes(alternative, conf.level, analytical = FALSE, samples = samples_list[[group]]$OR)
+        odds.ratio[[group]][["bf10"]] <- odds.ratio[["all"]][i, 4] <- .contingencyTableBf(contingencyTable)
+        density_post <- density(log(samples_list[[group]]$OR), n = 1000)
+        odds.ratio[[group]][["density"]] <- list(x = density_post$x, y = density_post$y)
       }
-      odds.ratio[["all"]][i, j] <- odds.ratio[[metric]][[group]][["mle"]]
+      rowIndex <- rowIndex + 1
     }
   }
-  rownames(odds.ratio[["all"]]) <- sensitiveGroupLevels
-  colnames(odds.ratio[["all"]]) <- inferenceMetrics
-  names(confmat) <- groupLevels
   result <- list()
   result[["reference"]] <- reference
   result[["positive"]] <- positive
   result[["alternative"]] <- alternative
+  result[["measure"]] <- metric
   result[["confusion.matrix"]] <- confmat
   result[["performance"]] <- performance
-  result[["metrics"]] <- metrics
+  result[["metric"]] <- metrics
   result[["parity"]] <- parity
-  result[["odds.ratio"]] <- odds.ratio
-  result[["materiality"]] <- materiality
+  if (result[["measure"]] != "dp") {
+    result[["odds.ratio"]] <- odds.ratio
+  }
   result[["prior"]] <- prior
   result[["data.name"]] <- dname
   class(result) <- c("jfaModelFairness", "list")
