@@ -231,7 +231,7 @@ model_fairness <- function(data,
     }
   }
   names(confmat) <- groupLevels
-  # Estimates
+  # Sample estimates for each group
   if (metric != "dp") {
     for (i in seq_len(nlevels(data[, sensitive]))) {
       group <- levels(data[, sensitive])[i]
@@ -254,7 +254,7 @@ model_fairness <- function(data,
       }
     }
   }
-  # Parity ratio
+  # Parity ratio for each group
   rowIndex <- 1
   for (group in groupLevels) {
     parity[[group]][["estimate"]] <- parity[["all"]][rowIndex, 1] <- metrics[[group]][["estimate"]] / metrics[[reference]][["estimate"]]
@@ -264,7 +264,7 @@ model_fairness <- function(data,
     }
     rowIndex <- rowIndex + 1
   }
-  # Odds ratio
+  # Odds ratio for each sensitive group
   if (metric != "dp") {
     rowIndex <- 1
     for (group in inferenceLevels) {

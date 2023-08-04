@@ -1072,15 +1072,15 @@ print.jfaModelFairness <- function(x, digits = getOption("digits"), ...) {
 print.summary.jfaModelFairness <- function(x, digits = getOption("digits"), ...) {
   cat("\n\tAlgorithmic Fairness Test Summary\n")
   measure <- switch(x[["measure"]],
-    "pp" = "Proportional parity",
-    "prp" = "Predictive rate parity",
+    "pp" = "Proportional parity (Disparate impact)",
+    "prp" = "Predictive rate parity (Equalized odds)",
     "ap" = "Accuracy parity",
     "fnrp" = "False negative rate parity",
     "fprp" = "False positive rate parity",
-    "tprp" = "True positive rate parity",
+    "tprp" = "True positive rate parity (Equal opportunity)",
     "npvp" = "Negative predictive value parity",
-    "sp" = "Specificity parity",
-    "dp" = "Demographic parity"
+    "sp" = "Specificity parity (True negative rate parity)",
+    "dp" = "Demographic parity (Statistical parity)"
   )
   cat("\nFairness metric:", measure)
   cat(paste0("\nReference group: ", x[["reference"]]))
@@ -1209,7 +1209,7 @@ plot.jfaModelFairness <- function(x, type = c("estimates", "posterior"), ...) {
     p <- ggplot2::ggplot(data = plotdata, mapping = ggplot2::aes(x = x, y = y, group = factor(group), color = factor(group))) +
       ggplot2::geom_line() +
       ggplot2::scale_y_continuous(name = "Density", breaks = yBreaks, limits = range(yBreaks)) +
-      ggplot2::scale_x_continuous(name = "ln(Odds ratio)", breaks = xBreaks, limits = range(xBreaks)) +
+      ggplot2::scale_x_continuous(name = "Log Odds Ratio", breaks = xBreaks, limits = range(xBreaks)) +
       ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks), inherit.aes = FALSE) +
       ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf, inherit.aes = FALSE) +
       (if (length(inferenceLevels) == 1) ggplot2::scale_color_manual(name = NULL, values = "black") else ggplot2::scale_color_brewer(name = NULL, palette = "Dark2"))
