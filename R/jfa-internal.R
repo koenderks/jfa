@@ -754,12 +754,12 @@
   return(digits)
 }
 
-.contingencyTableBf <- function(y) {
+.contingencyTableBf <- function(y, prior_a) {
   C <- ncol(y)
   R <- nrow(y)
   ystardot <- rowSums(y)
   ydotstar <- colSums(y)
-  alphastarstar <- matrix(1, nrow = 2, ncol = 2)
+  alphastarstar <- matrix(prior_a, nrow = 2, ncol = 2)
   alphastardot <- rowSums(alphastarstar)
   alphadotstar <- colSums(alphastarstar)
   xistardot <- alphastardot - (C - 1)
@@ -776,11 +776,11 @@
   return(BF10)
 }
 
-.mcmc_or <- function(counts) {
+.mcmc_or <- function(counts, prior_a) {
   suppressWarnings({
     raw_posterior <- rstan::sampling(
       object = stanmodels[["or_fairness"]],
-      data = list(y = counts, use_likelihood = 1),
+      data = list(y = counts, prior_a = prior_a),
       pars = c("OR", "prob"),
       iter = getOption("mc.iterations", 2000),
       warmup = getOption("mc.warmup", 1000),

@@ -51,10 +51,12 @@ options are \code{two.sided} (the default), \code{greater} and \code{less}.}
 \item{conf.level}{a numeric value between 0 and 1 specifying the
 confidence level (i.e., 1 - audit risk / detection risk).}
 
-\item{prior}{a logical specifying whether to use a prior distribution.
-If this argument is specified as \code{FALSE} (default), the function
-performs classical evaluation. If this argument is \code{TRUE}, this
-function performs Bayesian evaluation using a default prior.}
+\item{prior}{a logical specifying whether to use a prior distribution,
+or a numeric value larger than 1 specifying the prior concentration
+parameter. If this argument is specified as \code{FALSE} (default), the
+function performs classical evaluation. If this argument is \code{TRUE},
+the function performs Bayesian evaluation using a default prior with a
+concentration parameter of 1.}
 }
 \value{
 An object of class \code{jfaModelFairness} containing:
@@ -74,6 +76,7 @@ An object of class \code{jfaModelFairness} containing:
   ratio of the fairness meatrics and associated confidence/credible interval,
   along with any inferential measures, for the comparison to the reference
   group.}
+\item{measure}{The abbreviation of the selected fairness metric.}
 \item{data.name}{The name of the input data object.}
 }
 \description{
@@ -125,19 +128,39 @@ The following model-agnostic fairness metrics are computed based on
   \if{latex}{\figure{fairness-tree.pdf}{options: width=5in}}
 }
 \examples{
-# Frequentist estimation of specificy parity
-model_fairness(compas, "Gender", "TwoYrRecidivism", "Predicted",
-  reference = "Male", positive = "yes", metric = "sp"
+# Frequentist test of specificy parity
+model_fairness(
+  data = compas,
+  sensitive = "Gender",
+  target = "TwoYrRecidivism",
+  predictions = "Predicted",
+  reference = "Male",
+  positive = "yes",
+  metric = "sp"
 )
 
-# Bayesian estimation of predictive rate parity
-model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-  reference = "Caucasian", positive = "yes", metric = "prp", prior = TRUE
+# Bayesian test of predictive rate parity
+model_fairness(
+  data = compas,
+  sensitive = "Ethnicity",
+  target = "TwoYrRecidivism",
+  predictions = "Predicted",
+  reference = "Caucasian",
+  positive = "yes",
+  metric = "prp"
 )
 }
 \references{
 Büyük, S. (2023). \emph{Automatic Fairness Criteria and Fair
   Model Selection for Critical ML Tasks}, Master Thesis, Utrecht University.
+
+Fisher, R. A. (1970). Statistical Methods for Research Workers.
+  Oliver & Boyd.
+
+Jamil, T., Ly, A., Morey, R. D., Love, J., Marsman, M., &
+  Wagenmakers, E. J. (2017). Default "Gunel and Dickey" Bayes factors for
+  contingency tables. \emph{Behavior Research Methods}, 49, 638-652.
+  \doi{10.3758/s13428-016-0739-8}
 
 Pessach, D. & Shmueli, E. (2022). A review on fairness in machine
   learning. \emph{ACM Computing Surveys}, 55(3), 1-44. \doi{10.1145/3494672}

@@ -1027,7 +1027,7 @@ plot.jfaRv <- function(x, ...) {
 #' @method print jfaModelFairness
 #' @export
 print.jfaModelFairness <- function(x, digits = getOption("digits"), ...) {
-  type <- if (!x[["prior"]]) "Classical" else "Bayesian"
+  type <- if (isFALSE(x[["prior"]])) "Classical" else "Bayesian"
   cat(paste0("\n\t", type, " Algorithmic Fairness Test\n\n"))
   cat("data: ", x[["data.name"]], "\n", sep = "")
   measure <- switch(x[["measure"]],
@@ -1055,7 +1055,7 @@ print.jfaModelFairness <- function(x, digits = getOption("digits"), ...) {
     if (x[["measure"]] == "dp") {
       cat("\n", paste0(i, ": ", format(x[["parity"]][[i]]$estimate, digits = max(1L, digits - 2L))))
     } else {
-      if (!x[["prior"]]) {
+      if (isFALSE(x[["prior"]])) {
         cat("\n", paste0(i, ": ", format(x[["parity"]][[i]]$estimate, digits = max(1L, digits - 2L)), " [", format(x[["parity"]][[i]]$lb, digits = max(1L, digits - 2L)), ", ", format(x[["parity"]][[i]]$ub, digits = max(1L, digits - 2L)), "], p-value = ", format.pval(x[["odds.ratio"]][[i]]$p.value, digits = max(1L, digits - 2L))))
       } else {
         cat("\n", paste0(i, ": ", format(x[["parity"]][[i]]$estimate, digits = max(1L, digits - 2L)), " [", format(x[["parity"]][[i]]$lb, digits = max(1L, digits - 2L)), ", ", format(x[["parity"]][[i]]$ub, digits = max(1L, digits - 2L)), "], BF\u2081\u2080 = ", format(x[["odds.ratio"]][[i]]$bf10, digits = max(1L, digits - 2L))))
@@ -1068,7 +1068,7 @@ print.jfaModelFairness <- function(x, digits = getOption("digits"), ...) {
 #' @method print summary.jfaModelFairness
 #' @export
 print.summary.jfaModelFairness <- function(x, digits = getOption("digits"), ...) {
-  type <- if (!x[["prior"]]) "Classical" else "Bayesian"
+  type <- if (isFALSE(x[["prior"]])) "Classical" else "Bayesian"
   cat(paste0("\n\t", type, " Algorithmic Fairness Test Summary\n"))
   measure <- switch(x[["measure"]],
     "pp" = "Proportional parity (Disparate impact)",
@@ -1100,7 +1100,7 @@ print.summary.jfaModelFairness <- function(x, digits = getOption("digits"), ...)
   df <- data.frame(matrix("-", nrow = length(groupLevels), ncol = if (x[["measure"]] == "dp") 2 else 4), row.names = rownames)
   colnames <- c("Metric", "Parity ratio")
   if (x[["measure"]] != "dp") {
-    if (!x[["prior"]]) {
+    if (isFALSE(x[["prior"]])) {
       colnames <- c(colnames, "Odds ratio", "p-value")
     } else {
       colnames <- c(colnames, "Odds ratio", "BF\u2081\u2080")
@@ -1128,7 +1128,7 @@ print.summary.jfaModelFairness <- function(x, digits = getOption("digits"), ...)
         odds_ratio_lb <- format(x[["odds.ratio"]][[groupLevels[i]]]$lb, digits = max(1L, digits - 2L))
         odds_ratio_ub <- format(x[["odds.ratio"]][[groupLevels[i]]]$ub, digits = max(1L, digits - 2L))
         df[i, 3] <- paste0(odds_ratio_est, " [", odds_ratio_lb, ", ", odds_ratio_ub, "]")
-        if (!x[["prior"]]) {
+        if (isFALSE(x[["prior"]])) {
           df[i, 4] <- format.pval(x[["odds.ratio"]][[groupLevels[i]]][["p.value"]], digits = max(1L, digits - 2L))
         } else {
           df[i, 4] <- format(x[["odds.ratio"]][[groupLevels[i]]][["bf10"]], digits = max(1L, digits - 2L))
@@ -1162,13 +1162,12 @@ summary.jfaModelFairness <- function(object, digits = getOption("digits"), ...) 
 #' @export
 plot.jfaModelFairness <- function(x, type = c("estimates", "posterior"), ...) {
   type <- match.arg(type)
-  estimate <- lb <- ub <- group <- y <- NULL
+  estimate <- lb <- ub <- group <- y <- color <- NULL
   groupLevels <- names(x[["confusion.matrix"]])
   ind <- which(groupLevels == x[["reference"]])
   inferenceLevels <- groupLevels[-ind]
   if (type == "estimates") {
     ratio <- x[["parity"]][["all"]]
-    ratio <- ratio[-ind, ]
     ratio[["group"]] <- rownames(ratio)
     yBreaks <- pretty(c(0, ratio[["estimate"]], 1, ratio[["ub"]]), min.n = 4)
     yTitle <- switch(x[["measure"]],
@@ -1182,18 +1181,20 @@ plot.jfaModelFairness <- function(x, type = c("estimates", "posterior"), ...) {
       sp = "Specificity Parity Ratio",
       dp = "Demographic Parity Ratio"
     )
-    cols <- ifelse(x[["measure"]] == "dp" | (ratio$ub < 1 | ratio$lb > 1), yes = "firebrick", no = "lightgray")
-    p <- ggplot2::ggplot(data = ratio, mapping = ggplot2::aes(x = group, y = estimate, fill = group)) +
-      ggplot2::geom_col(colour = "black", fill = cols) +
+    ratio$type <- ifelse(x[["measure"]] == "dp" | (ratio$ub < 1 | ratio$lb > 1), yes = "Deviation", no = "Expected")
+    ratio$type[which(groupLevels == x[["reference"]])] <- "Reference"
+    ratio$type <- factor(ratio$type, levels = c("Reference", "Expected", "Deviation"))
+    p <- ggplot2::ggplot(data = ratio, mapping = ggplot2::aes(x = group, y = estimate, group = group, fill = type)) +
+      ggplot2::geom_col(colour = "black") +
       ggplot2::scale_x_discrete(name = "Sensitive Group") +
       ggplot2::scale_y_continuous(name = yTitle, breaks = yBreaks, limits = range(yBreaks)) +
-      ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks)) +
-      ggplot2::geom_segment(x = -Inf, xend = Inf, y = 1, yend = 1, linetype = "dashed", color = "black", linewidth = 0.35)
+      ggplot2::scale_fill_manual(name = NULL, values = c("dodgerblue", "lightgray", "firebrick")) +
+      ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks))
     if (x[["measure"]] != "dp") {
       p <- p + ggplot2::geom_errorbar(mapping = ggplot2::aes(ymin = lb, ymax = ub), width = 0.5, position = ggplot2::position_dodge(width = 0.9))
     }
   } else {
-    stopifnot("plot not supported for frequentist inference" = isTRUE(x[["prior"]]))
+    stopifnot("plot not supported for frequentist inference" = !isFALSE(x[["prior"]]))
     stopifnot("plot not supported for demographic parity" = x[["measure"]] != "dp")
     plotdata <- data.frame(x = numeric(), y = numeric(), group = numeric())
     for (i in seq_along(inferenceLevels)) {
@@ -1207,6 +1208,7 @@ plot.jfaModelFairness <- function(x, type = c("estimates", "posterior"), ...) {
     xBreaks <- pretty(c(0, plotdata$x), min.n = 4)
     yBreaks <- pretty(c(0, plotdata$y), min.n = 4)
     p <- ggplot2::ggplot(data = plotdata, mapping = ggplot2::aes(x = x, y = y, group = factor(group), color = factor(group))) +
+      ggplot2::geom_segment(x = 0, xend = 0, y = 0, yend = max(yBreaks), inherit.aes = FALSE, linetype = "dashed") +
       ggplot2::geom_line() +
       ggplot2::scale_y_continuous(name = "Density", breaks = yBreaks, limits = range(yBreaks)) +
       ggplot2::scale_x_continuous(name = "Log Odds Ratio", breaks = xBreaks, limits = range(xBreaks)) +
@@ -1214,6 +1216,6 @@ plot.jfaModelFairness <- function(x, type = c("estimates", "posterior"), ...) {
       ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf, inherit.aes = FALSE) +
       (if (length(inferenceLevels) == 1) ggplot2::scale_color_manual(name = NULL, values = "black") else ggplot2::scale_color_brewer(name = NULL, palette = "Dark2"))
   }
-  p <- .theme_jfa(p, legend.position = if (length(inferenceLevels) == 1 || type == "estimates") "none" else "top")
+  p <- .theme_jfa(p, legend.position = if (length(inferenceLevels) == 1 && type == "posterior") "none" else "top")
   return(p)
 }

@@ -63,10 +63,12 @@
 #'   options are \code{two.sided} (the default), \code{greater} and \code{less}.
 #' @param conf.level   a numeric value between 0 and 1 specifying the
 #'   confidence level (i.e., 1 - audit risk / detection risk).
-#' @param prior        a logical specifying whether to use a prior distribution.
-#'   If this argument is specified as \code{FALSE} (default), the function
-#'   performs classical evaluation. If this argument is \code{TRUE}, this
-#'   function performs Bayesian evaluation using a default prior.
+#' @param prior        a logical specifying whether to use a prior distribution,
+#'   or a numeric value larger than 1 specifying the prior concentration
+#'   parameter. If this argument is specified as \code{FALSE} (default), the
+#'   function performs classical evaluation. If this argument is \code{TRUE},
+#'   the function performs Bayesian evaluation using a default prior with a
+#'   concentration parameter of 1.
 #'
 #' @details The following model-agnostic fairness metrics are computed based on
 #'   the confusion matrix for each sensitive group, using the  true positives
@@ -120,26 +122,45 @@
 #'   ratio of the fairness meatrics and associated confidence/credible interval,
 #'   along with any inferential measures, for the comparison to the reference
 #'   group.}
+#' \item{measure}{The abbreviation of the selected fairness metric.}
 #' \item{data.name}{The name of the input data object.}
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
 #' @references Büyük, S. (2023). \emph{Automatic Fairness Criteria and Fair
 #'   Model Selection for Critical ML Tasks}, Master Thesis, Utrecht University.
+#' @references Fisher, R. A. (1970). Statistical Methods for Research Workers.
+#'   Oliver & Boyd.
+#' @references Jamil, T., Ly, A., Morey, R. D., Love, J., Marsman, M., &
+#'   Wagenmakers, E. J. (2017). Default "Gunel and Dickey" Bayes factors for
+#'   contingency tables. \emph{Behavior Research Methods}, 49, 638-652.
+#'   \doi{10.3758/s13428-016-0739-8}
 #' @references Pessach, D. & Shmueli, E. (2022). A review on fairness in machine
 #'   learning. \emph{ACM Computing Surveys}, 55(3), 1-44. \doi{10.1145/3494672}
 #'
 #' @keywords algorithm audit bias fairness model performance
 #'
 #' @examples
-#' # Frequentist estimation of specificy parity
-#' model_fairness(compas, "Gender", "TwoYrRecidivism", "Predicted",
-#'   reference = "Male", positive = "yes", metric = "sp"
+#' # Frequentist test of specificy parity
+#' model_fairness(
+#'   data = compas,
+#'   sensitive = "Gender",
+#'   target = "TwoYrRecidivism",
+#'   predictions = "Predicted",
+#'   reference = "Male",
+#'   positive = "yes",
+#'   metric = "sp"
 #' )
 #'
-#' # Bayesian estimation of predictive rate parity
-#' model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-#'   reference = "Caucasian", positive = "yes", metric = "prp", prior = TRUE
+#' # Bayesian test of predictive rate parity
+#' model_fairness(
+#'   data = compas,
+#'   sensitive = "Ethnicity",
+#'   target = "TwoYrRecidivism",
+#'   predictions = "Predicted",
+#'   reference = "Caucasian",
+#'   positive = "yes",
+#'   metric = "prp"
 #' )
 #' @export
 
@@ -160,7 +181,9 @@ model_fairness <- function(data,
   alternative <- match.arg(alternative)
   dname <- deparse(substitute(data))
   data <- as.data.frame(data, row.names = seq_len(nrow(data)))
-  stopifnot("'prior' must be TRUE or FALSE" = is.logical(prior))
+  valid_prior <- (is.logical(prior)) || (is.numeric(prior) && prior >= 1)
+  is_bayesian <- (is.logical(prior) && isTRUE(prior)) || (is.numeric(prior) && prior >= 1)
+  stopifnot("'prior' must be TRUE or FALSE, or a numeric value >= 1 representing the prior concentration parameter" = valid_prior)
   stopifnot("'sensitive' does not exist in 'data'" = sensitive %in% colnames(data))
   stopifnot("'sensitive' must be a factor column" = is.factor(data[, sensitive]))
   stopifnot("'target' does not exist in 'data'" = target %in% colnames(data))
@@ -189,7 +212,7 @@ model_fairness <- function(data,
   parity <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = if (metric == "dp") 1 else 3), row.names = groupLevels))
   colnames(metrics[["all"]]) <- colnames(parity[["all"]]) <- if (metric != "dp") c("estimate", "lb", "ub") else "estimate"
   odds.ratio <- list(all = as.data.frame(matrix(NA, nrow = length(inferenceLevels), ncol = 4), row.names = inferenceLevels))
-  colnames(odds.ratio[["all"]]) <- if (prior) c("estimate", "lb", "ub", "bf10") else c("estimate", "lb", "ub", "p.value")
+  colnames(odds.ratio[["all"]]) <- if (is_bayesian) c("estimate", "lb", "ub", "bf10") else c("estimate", "lb", "ub", "p.value")
   for (i in seq_len(nlevels(data[, sensitive]))) {
     group <- levels(data[, sensitive])[i]
     groupDat <- data[data[, sensitive] == group, ]
@@ -235,7 +258,7 @@ model_fairness <- function(data,
   if (metric != "dp") {
     for (i in seq_len(nlevels(data[, sensitive]))) {
       group <- levels(data[, sensitive])[i]
-      if (!prior) {
+      if (!is_bayesian) {
         binom_test <- stats::binom.test(x = metrics[[group]][["numerator"]], n = metrics[[group]][["denominator"]], conf.level = conf.level, alternative = alternative)
         metrics[[group]][["estimate"]] <- metrics[["all"]][i, 1] <- as.numeric(binom_test$estimate)
         metrics[[group]][["lb"]] <- metrics[["all"]][i, 2] <- as.numeric(binom_test$conf.int[1])
@@ -247,7 +270,7 @@ model_fairness <- function(data,
           metrics[[reference]][["numerator"]],
           metrics[[reference]][["denominator"]] - metrics[[reference]][["numerator"]]
         ), ncol = 2)
-        samples_list[[group]] <- .mcmc_or(counts = c(contingencyTable))
+        samples_list[[group]] <- .mcmc_or(counts = c(contingencyTable), prior_a = prior)
         metrics[[group]][["estimate"]] <- metrics[["all"]][i, 1] <- .comp_mode_bayes(analytical = FALSE, samples = samples_list[[group]]$prob)
         metrics[[group]][["lb"]] <- metrics[["all"]][i, 2] <- .comp_lb_bayes(alternative, conf.level, analytical = FALSE, samples = samples_list[[group]]$prob)
         metrics[[group]][["ub"]] <- metrics[["all"]][i, 3] <- .comp_ub_bayes(alternative, conf.level, analytical = FALSE, samples = samples_list[[group]]$prob)
@@ -257,10 +280,14 @@ model_fairness <- function(data,
   # Parity ratio for each group
   rowIndex <- 1
   for (group in groupLevels) {
-    parity[[group]][["estimate"]] <- parity[["all"]][rowIndex, 1] <- metrics[[group]][["estimate"]] / metrics[[reference]][["estimate"]]
-    if (metric != "dp") {
-      parity[[group]][["lb"]] <- parity[["all"]][rowIndex, 2] <- metrics[[group]][["lb"]] / metrics[[reference]][["estimate"]]
-      parity[[group]][["ub"]] <- parity[["all"]][rowIndex, 3] <- metrics[[group]][["ub"]] / metrics[[reference]][["estimate"]]
+    if (group == reference) {
+      parity[[group]][["estimate"]] <- parity[[group]][["lb"]] <- parity[[group]][["ub"]] <- parity[["all"]][rowIndex, 1] <- parity[["all"]][rowIndex, 2] <- parity[["all"]][rowIndex, 3] <- 1
+    } else {
+      parity[[group]][["estimate"]] <- parity[["all"]][rowIndex, 1] <- metrics[[group]][["estimate"]] / metrics[[reference]][["estimate"]]
+      if (metric != "dp") {
+        parity[[group]][["lb"]] <- parity[["all"]][rowIndex, 2] <- metrics[[group]][["lb"]] / metrics[[reference]][["estimate"]]
+        parity[[group]][["ub"]] <- parity[["all"]][rowIndex, 3] <- metrics[[group]][["ub"]] / metrics[[reference]][["estimate"]]
+      }
     }
     rowIndex <- rowIndex + 1
   }
@@ -274,7 +301,7 @@ model_fairness <- function(data,
         metrics[[reference]][["numerator"]],
         metrics[[reference]][["denominator"]] - metrics[[reference]][["numerator"]]
       ), ncol = 2)
-      if (!prior) {
+      if (!is_bayesian) {
         fisher_test <- stats::fisher.test(contingencyTable, alternative = alternative, conf.level = conf.level)
         odds.ratio[[group]][["estimate"]] <- odds.ratio[["all"]][rowIndex, 1] <- as.numeric(fisher_test$estimate)
         odds.ratio[[group]][["lb"]] <- odds.ratio[["all"]][rowIndex, 2] <- as.numeric(fisher_test$conf.int[1])
@@ -284,7 +311,7 @@ model_fairness <- function(data,
         odds.ratio[[group]][["estimate"]] <- odds.ratio[["all"]][i, 1] <- .comp_mode_bayes(analytical = FALSE, samples = samples_list[[group]]$OR)
         odds.ratio[[group]][["lb"]] <- odds.ratio[["all"]][i, 2] <- .comp_lb_bayes(alternative, conf.level, analytical = FALSE, samples = samples_list[[group]]$OR)
         odds.ratio[[group]][["ub"]] <- odds.ratio[["all"]][i, 3] <- .comp_ub_bayes(alternative, conf.level, analytical = FALSE, samples = samples_list[[group]]$OR)
-        odds.ratio[[group]][["bf10"]] <- odds.ratio[["all"]][i, 4] <- .contingencyTableBf(contingencyTable)
+        odds.ratio[[group]][["bf10"]] <- odds.ratio[["all"]][i, 4] <- .contingencyTableBf(contingencyTable, prior_a = prior)
         density_post <- density(log(samples_list[[group]]$OR), n = 1000)
         odds.ratio[[group]][["density"]] <- list(x = density_post$x, y = density_post$y)
       }

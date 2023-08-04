@@ -2,16 +2,14 @@
 
 data {
   int<lower=0> y[4];
-  int use_likelihood;
+  real<lower=1> prior_a;
 }
 parameters {
   simplex[4] theta;
 }
 model {
-  theta ~ dirichlet(rep_vector(1, 4));
-  if (use_likelihood) {
-    y ~ multinomial(theta);
-  }
+  theta ~ dirichlet(rep_vector(prior_a, 4));
+  y ~ multinomial(theta);
 }
 generated quantities {
   real OR;
