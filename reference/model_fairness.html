@@ -157,10 +157,12 @@ confidence level (i.e., 1 - audit risk / detection risk).</p></dd>
 
 
 <dt>prior</dt>
-<dd><p>a logical specifying whether to use a prior distribution.
-If this argument is specified as <code>FALSE</code> (default), the function
-performs classical evaluation. If this argument is <code>TRUE</code>, this
-function performs Bayesian evaluation using a default prior.</p></dd>
+<dd><p>a logical specifying whether to use a prior distribution,
+or a numeric value larger than 1 specifying the prior concentration
+parameter. If this argument is specified as <code>FALSE</code> (default), the
+function performs classical evaluation. If this argument is <code>TRUE</code>,
+the function performs Bayesian evaluation using a default prior with a
+concentration parameter of 1.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -198,6 +200,9 @@ function performs Bayesian evaluation using a default prior.</p></dd>
   ratio of the fairness meatrics and associated confidence/credible interval,
   along with any inferential measures, for the comparison to the reference
   group.</p></dd>
+
+<dt>measure</dt>
+<dd><p>The abbreviation of the selected fairness metric.</p></dd>
 
 <dt>data.name</dt>
 <dd><p>The name of the input data object.</p></dd>
@@ -238,6 +243,12 @@ function performs Bayesian evaluation using a default prior.</p></dd>
     <h2>References</h2>
     <p>Büyük, S. (2023). <em>Automatic Fairness Criteria and Fair
   Model Selection for Critical ML Tasks</em>, Master Thesis, Utrecht University.</p>
+<p>Fisher, R. A. (1970). Statistical Methods for Research Workers.
+  Oliver &amp; Boyd.</p>
+<p>Jamil, T., Ly, A., Morey, R. D., Love, J., Marsman, M., &amp;
+  Wagenmakers, E. J. (2017). Default "Gunel and Dickey" Bayes factors for
+  contingency tables. <em>Behavior Research Methods</em>, 49, 638-652.
+  <a href="https://doi.org/10.3758/s13428-016-0739-8" class="external-link">doi:10.3758/s13428-016-0739-8</a></p>
 <p>Pessach, D. &amp; Shmueli, E. (2022). A review on fairness in machine
   learning. <em>ACM Computing Surveys</em>, 55(3), 1-44. <a href="https://doi.org/10.1145/3494672" class="external-link">doi:10.1145/3494672</a></p>
     </div>
@@ -248,9 +259,15 @@ function performs Bayesian evaluation using a default prior.</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Frequentist estimation of specificy parity</span></span></span>
-<span class="r-in"><span><span class="fu">model_fairness</span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Gender"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span></span>
-<span class="r-in"><span>  reference <span class="op">=</span> <span class="st">"Male"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"sp"</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Frequentist test of specificy parity</span></span></span>
+<span class="r-in"><span><span class="fu">model_fairness</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">compas</span>,</span></span>
+<span class="r-in"><span>  sensitive <span class="op">=</span> <span class="st">"Gender"</span>,</span></span>
+<span class="r-in"><span>  target <span class="op">=</span> <span class="st">"TwoYrRecidivism"</span>,</span></span>
+<span class="r-in"><span>  predictions <span class="op">=</span> <span class="st">"Predicted"</span>,</span></span>
+<span class="r-in"><span>  reference <span class="op">=</span> <span class="st">"Male"</span>,</span></span>
+<span class="r-in"><span>  positive <span class="op">=</span> <span class="st">"yes"</span>,</span></span>
+<span class="r-in"><span>  metric <span class="op">=</span> <span class="st">"sp"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Classical Algorithmic Fairness Test</span>
@@ -262,23 +279,29 @@ function performs Bayesian evaluation using a default prior.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sample estimates (parity ratio):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Female: 1.3203 [1.2794, 1.3568], p-value = &lt; 2.22e-16</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Bayesian estimation of predictive rate parity</span></span></span>
-<span class="r-in"><span><span class="fu">model_fairness</span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span></span>
-<span class="r-in"><span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"prp"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span></span></span>
+<span class="r-in"><span><span class="co"># Bayesian test of predictive rate parity</span></span></span>
+<span class="r-in"><span><span class="fu">model_fairness</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  data <span class="op">=</span> <span class="va">compas</span>,</span></span>
+<span class="r-in"><span>  sensitive <span class="op">=</span> <span class="st">"Ethnicity"</span>,</span></span>
+<span class="r-in"><span>  target <span class="op">=</span> <span class="st">"TwoYrRecidivism"</span>,</span></span>
+<span class="r-in"><span>  predictions <span class="op">=</span> <span class="st">"Predicted"</span>,</span></span>
+<span class="r-in"><span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>,</span></span>
+<span class="r-in"><span>  positive <span class="op">=</span> <span class="st">"yes"</span>,</span></span>
+<span class="r-in"><span>  metric <span class="op">=</span> <span class="st">"prp"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 	Bayesian Algorithmic Fairness Test</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Classical Algorithmic Fairness Test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> data: compas</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> metric: predictive rate parity, reference group: Caucasian, positive class: yes</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> alternative hypothesis: true odds ratio is not equal to 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Sample estimates (parity ratio):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  African_American: 1.1484 [1.1069, 1.1801], BF₁₀ = 231.16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Asian: 0.70146 [0.22307, 1.4765], BF₁₀ = 0.024614</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Hispanic: 0.97266 [0.87625, 1.1469], BF₁₀ = 0.1037</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Native_American: 0.71814 [0.39033, 1.5174], BF₁₀ = 0.025534</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Other: 1.0683 [0.85773, 1.2222], BF₁₀ = 0.10106</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  African_American: 1.1522 [1.1143, 1.1891], p-value = 5.4523e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Asian: 0.86598 [0.11706, 1.6149], p-value = 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Hispanic: 1.0229 [0.87836, 1.1611], p-value = 0.78393</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Native_American: 1.0392 [0.25396, 1.6406], p-value = 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Other: 1.0596 [0.86578, 1.2394], p-value = 0.5621</span>
 </code></pre></div>
     </div>
   </div>
