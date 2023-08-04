@@ -1081,10 +1081,13 @@ print.summary.jfaModelFairness <- function(x, digits = getOption("digits"), ...)
     "sp" = "Specificity parity (True negative rate parity)",
     "dp" = "Demographic parity (Statistical parity)"
   )
-  cat("\nFairness metric:", measure)
-  cat("\nModel type:      Binary classification")
-  cat(paste0("\nReference group: ", x[["reference"]]))
-  cat("\nPositive class: ", x[["positive"]], "\n")
+  cat("\nFairness metric:   ", measure)
+  cat("\nModel type:         Binary classification")
+  cat(paste0("\nReference group:    ", x[["reference"]]))
+  cat("\nPositive class:    ", x[["positive"]], "\n")
+  if (!isFALSE(x[["prior"]])) {
+    cat("Prior distribution:", paste0("Dirichlet(", paste0(rep(as.numeric(x[["prior"]]), 4), collapse = ", "), ")"), "\n")
+  }
   cat("\nModel performance:\n")
   colnames(x[["performance"]][["all"]]) <- c(
     "Support",
@@ -1099,7 +1102,18 @@ print.summary.jfaModelFairness <- function(x, digits = getOption("digits"), ...)
   rownames <- groupLevels
   rownames[which(rownames == x[["reference"]])] <- paste0(rownames[which(rownames == x[["reference"]])], " (R)")
   df <- data.frame(matrix("-", nrow = length(groupLevels), ncol = if (x[["measure"]] == "dp") 2 else 4), row.names = rownames)
-  colnames <- c("Metric", "Parity ratio")
+  measure <- switch(x[["measure"]],
+    "pp" = "Proportional parity",
+    "prp" = "Predictive rate parity",
+    "ap" = "Accuracy parity",
+    "fnrp" = "False negative rate parity",
+    "fprp" = "False positive rate parity",
+    "tprp" = "True positive rate parity",
+    "npvp" = "Negative predictive value parity",
+    "sp" = "Specificity parity",
+    "dp" = "Demographic parity"
+  )
+  colnames <- c(measure, "Parity ratio")
   if (x[["measure"]] != "dp") {
     if (isFALSE(x[["prior"]])) {
       colnames <- c(colnames, "Odds ratio", "p-value")

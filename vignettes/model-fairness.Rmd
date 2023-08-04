@@ -121,7 +121,7 @@ For this (and all of the following) metrics, Bayesian inference is supported and
 provides credible intervals and Bayes factors. Like in the other functions in
 `jfa`, performing a Bayesian analysis using a default prior can be achieved by
 setting `prior = TRUE`. The resulting Bayes factors in favor of rejection of the
-null hypothesis ($BF_{01}$) are shown in the output below.
+null hypothesis ($BF_{10}$) are shown in the output below.
 
 ```{r fig.align="center", fig.height=5, fig.width=7}
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
