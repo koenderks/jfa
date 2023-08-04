@@ -257,7 +257,7 @@ supported and provides credible intervals and Bayes factors. Like in the
 other functions in <code>jfa</code>, performing a Bayesian analysis
 using a default prior can be achieved by setting
 <code>prior = TRUE</code>. The resulting Bayes factors in favor of
-rejection of the null hypothesis (<span class="math inline">\(BF_{01}\)</span>) are shown in the output
+rejection of the null hypothesis (<span class="math inline">\(BF_{10}\)</span>) are shown in the output
 below.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
@@ -271,11 +271,11 @@ below.</p>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Sample estimates (parity ratio):</span></span>
-<span><span class="co">##  African_American: 1.8599 [1.7978, 1.904], BF₁₀ = 4.1528e+81</span></span>
-<span><span class="co">##  Asian: 0.35053 [0.16705, 0.91577], BF₁₀ = 0.26796</span></span>
-<span><span class="co">##  Hispanic: 0.91432 [0.79528, 1.0436], BF₁₀ = 0.10615</span></span>
-<span><span class="co">##  Native_American: 1.2195 [0.65359, 2.2541], BF₁₀ = 0.018438</span></span>
-<span><span class="co">##  Other: 0.77205 [0.64752, 0.92028], BF₁₀ = 1.815</span></span></code></pre>
+<span><span class="co">##  African_American: 1.8784 [1.8169, 1.9226], BF₁₀ = 4.1528e+81</span></span>
+<span><span class="co">##  Asian: 0.34397 [0.16208, 0.91726], BF₁₀ = 0.26796</span></span>
+<span><span class="co">##  Hispanic: 0.90272 [0.80514, 1.0514], BF₁₀ = 0.10615</span></span>
+<span><span class="co">##  Native_American: 2.0505 [0.70535, 2.2768], BF₁₀ = 0.018438</span></span>
+<span><span class="co">##  Other: 0.7669 [0.64358, 0.93442], BF₁₀ = 1.815</span></span></code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>
 <strong>Predictive rate parity (Equalized odds)</strong>: Compares
