@@ -76,7 +76,8 @@ Hispanic groups in comparison to the reference group (Caucasian) one by one.
 
 1. **Demographic parity (Statistical parity)**: Compares the number of positive
 predictions (e.g., reoffenders) between each ethnic group and the reference
-group.
+group. Note that `jfa` does not support statistical inference for demographic
+parity as of now.
 
 ```{r fig.align="center", fig.height=5, fig.width=7}
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
@@ -107,13 +108,26 @@ model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
   Americans compared to Caucasians is 1.8521. This indicates that the TPR for
   African Americans is approximately 1.85 times higher than for Caucasians.
   Again, this suggests potential bias in the algorithm's predictions against
-  African Americans.
+  African Americans. The p-value is smaller than .05, indicating that the null
+  hypothesis of equal proportional parity should be rejected.
 - *Asian*: The proportional parity ratio for Asians is 0.4038, indicating that
   their TPR is lower than for Caucasians. This suggests potential
   underestimation of reoffenders among Asians.
 - *Hispanic*: The ratio for Hispanics is 0.91609, suggesting that their TPR is
   close to the reference group (Caucasians). This indicates relatively fair
   treatment of Hispanics in the algorithm's predictions.
+
+For this (and all of the following) metrics, Bayesian inference is supported and
+provides credible intervals and Bayes factors. Like in the other functions in
+`jfa`, performing a Bayesian analysis using a default prior can be achieved by
+setting `prior = TRUE`. The resulting Bayes factors in favor of rejection of the
+null hypothesis ($BF_{01}$) are shown in the output below.
+
+```{r fig.align="center", fig.height=5, fig.width=7}
+model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
+  reference = "Caucasian", positive = "yes", metric = "pp", prior = TRUE
+)
+```
 
 3. **Predictive rate parity (Equalized odds)**: Compares the overall positive
 prediction rates (e.g., reoffender prediction) of different ethnic groups with
