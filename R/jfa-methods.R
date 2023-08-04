@@ -1169,6 +1169,7 @@ plot.jfaModelFairness <- function(x, type = c("estimates", "posterior"), ...) {
   inferenceLevels <- groupLevels[-ind]
   if (type == "estimates") {
     ratio <- x[["parity"]][["all"]]
+	ratio <- ratio[-ind, ]
     ratio[["group"]] <- rownames(ratio)
     yBreaks <- pretty(c(0, ratio[["estimate"]], 1, ratio[["ub"]]), min.n = 4)
     yTitle <- switch(x[["measure"]],
