@@ -1028,9 +1028,8 @@ plot.jfaRv <- function(x, ...) {
 #' @method print jfaModelFairness
 #' @export
 print.jfaModelFairness <- function(x, digits = getOption("digits"), ...) {
-  cat("\n")
-  cat(strwrap("Algorithmic Fairness Test", prefix = "\t"), sep = "\n")
-  cat("\n")
+  type <- if (!x[["prior"]]) "Classical" else "Bayesian"
+  cat(paste0("\n\t", type, " Algorithmic Fairness Test\n\n"))
   cat("data: ", x[["data.name"]], "\n", sep = "")
   measure <- switch(x[["measure"]],
     "pp" = "proportional parity",
@@ -1070,7 +1069,8 @@ print.jfaModelFairness <- function(x, digits = getOption("digits"), ...) {
 #' @method print summary.jfaModelFairness
 #' @export
 print.summary.jfaModelFairness <- function(x, digits = getOption("digits"), ...) {
-  cat("\n\tAlgorithmic Fairness Test Summary\n")
+  type <- if (!x[["prior"]]) "Classical" else "Bayesian"
+  cat(paste0("\n\t", type, " Algorithmic Fairness Test Summary\n"))
   measure <- switch(x[["measure"]],
     "pp" = "Proportional parity (Disparate impact)",
     "prp" = "Predictive rate parity (Equalized odds)",
@@ -1169,7 +1169,7 @@ plot.jfaModelFairness <- function(x, type = c("estimates", "posterior"), ...) {
   inferenceLevels <- groupLevels[-ind]
   if (type == "estimates") {
     ratio <- x[["parity"]][["all"]]
-	ratio <- ratio[-ind, ]
+    ratio <- ratio[-ind, ]
     ratio[["group"]] <- rownames(ratio)
     yBreaks <- pretty(c(0, ratio[["estimate"]], 1, ratio[["ub"]]), min.n = 4)
     yTitle <- switch(x[["measure"]],
