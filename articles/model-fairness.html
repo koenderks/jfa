@@ -170,8 +170,8 @@ specific ethnic groups. If substantial disparities exist, we may need to
 investigate further and potentially modify the algorithm to ensure
 fairness in its predictions.</p>
 <p>Let’s interpret the fairness metrics for the African American, Asian,
-and Hispanic groups in comparison to the reference group
-(Caucasian).</p>
+and Hispanic groups in comparison to the reference group (Caucasian) one
+by one.</p>
 <ol style="list-style-type: decimal">
 <li>
 <strong>Demographic parity (Statistical parity)</strong>: Compares
@@ -183,7 +183,7 @@ ethnic group and the reference group.</li>
 <span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"dp"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Algorithmic Fairness Test</span></span>
+<span><span class="co">##  Classical Algorithmic Fairness Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data: compas</span></span>
 <span><span class="co">## metric: demographic parity, reference group: Caucasian, positive class: yes</span></span>
@@ -216,41 +216,22 @@ the positive prediction rates (e.g., true positive rate) of each ethnic
 group with the reference group.</li>
 </ol>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
 <span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"pp"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Algorithmic Fairness Test Summary</span></span>
+<span><span class="co">##  Classical Algorithmic Fairness Test</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Fairness metric: Proportional parity (Disparate impact)</span></span>
-<span><span class="co">## Reference group: Caucasian</span></span>
-<span><span class="co">## Positive class:  yes </span></span>
+<span><span class="co">## data: compas</span></span>
+<span><span class="co">## metric: proportional parity, reference group: Caucasian, positive class: yes</span></span>
+<span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Model performance:</span></span>
-<span><span class="co">##                  Support  Accuracy Precision    Recall  F1 score</span></span>
-<span><span class="co">## Caucasian           2103 0.6585830 0.5773810 0.4720195 0.5194110</span></span>
-<span><span class="co">## African_American    3175 0.6724409 0.6652475 0.7525587 0.7062147</span></span>
-<span><span class="co">## Asian                 31 0.7419355 0.5000000 0.2500000 0.3333333</span></span>
-<span><span class="co">## Hispanic             509 0.6817289 0.5906040 0.4656085 0.5207101</span></span>
-<span><span class="co">## Native_American       11 0.6363636 0.6000000 0.6000000 0.6000000</span></span>
-<span><span class="co">## Other                343 0.6938776 0.6117647 0.4193548 0.4976077</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Sample estimates:</span></span>
-<span><span class="co">##                                       Metric               Parity ratio</span></span>
-<span><span class="co">## Caucasian (R)     0.31954 [0.29964, 0.33995]                          -</span></span>
-<span><span class="co">## African_American  0.59181 [0.57448, 0.60897]    1.8521 [1.7978, 1.9058]</span></span>
-<span><span class="co">## Asian            0.12903 [0.036302, 0.29834]   0.4038 [0.1136, 0.93363]</span></span>
-<span><span class="co">## Hispanic          0.29273 [0.25352, 0.33437]  0.91609 [0.79339, 1.0464]</span></span>
-<span><span class="co">## Native_American   0.45455 [0.16749, 0.76621]   1.4225 [0.52415, 2.3978]</span></span>
-<span><span class="co">## Other             0.24781 [0.20302, 0.29702] 0.77552 [0.63533, 0.92953]</span></span>
-<span><span class="co">##                                   Odds ratio    p-value</span></span>
-<span><span class="co">## Caucasian (R)                              -          -</span></span>
-<span><span class="co">## African_American     3.0866 [2.7453, 3.4726] &lt; 2.22e-16</span></span>
-<span><span class="co">## Asian            0.31561 [0.079942, 0.91095]   0.030318</span></span>
-<span><span class="co">## Hispanic           0.88138 [0.70792, 1.0939]    0.26386</span></span>
-<span><span class="co">## Native_American     1.7739 [0.42669, 7.0041]     0.3444</span></span>
-<span><span class="co">## Other             0.70166 [0.53338, 0.91633]  0.0080834</span></span></code></pre>
+<span><span class="co">## Sample estimates (parity ratio):</span></span>
+<span><span class="co">##  African_American: 1.8521 [1.7978, 1.9058], p-value = &lt; 2.22e-16</span></span>
+<span><span class="co">##  Asian: 0.4038 [0.1136, 0.93363], p-value = 0.030318</span></span>
+<span><span class="co">##  Hispanic: 0.91609 [0.79339, 1.0464], p-value = 0.26386</span></span>
+<span><span class="co">##  Native_American: 1.4225 [0.52415, 2.3978], p-value = 0.3444</span></span>
+<span><span class="co">##  Other: 0.77552 [0.63533, 0.92953], p-value = 0.0080834</span></span></code></pre>
 <ul>
 <li>
 <em>African American</em>: The ratio of true positive rates (TPRs)
@@ -279,7 +260,7 @@ different ethnic groups with the reference group.</li>
 <span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"prp"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Algorithmic Fairness Test</span></span>
+<span><span class="co">##  Classical Algorithmic Fairness Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data: compas</span></span>
 <span><span class="co">## metric: predictive rate parity, reference group: Caucasian, positive class: yes</span></span>
@@ -320,7 +301,7 @@ ethnic group’s predictions with the reference group.</li>
 <span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"ap"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Algorithmic Fairness Test</span></span>
+<span><span class="co">##  Classical Algorithmic Fairness Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data: compas</span></span>
 <span><span class="co">## metric: accuracy parity, reference group: Caucasian, positive class: yes</span></span>
@@ -357,7 +338,7 @@ group with the reference group.</li>
 <span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"fnrp"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Algorithmic Fairness Test</span></span>
+<span><span class="co">##  Classical Algorithmic Fairness Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data: compas</span></span>
 <span><span class="co">## metric: false negative rate parity, reference group: Caucasian, positive class: yes</span></span>
@@ -397,7 +378,7 @@ reference group.</li>
 <span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"fprp"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Algorithmic Fairness Test</span></span>
+<span><span class="co">##  Classical Algorithmic Fairness Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data: compas</span></span>
 <span><span class="co">## metric: false positive rate parity, reference group: Caucasian, positive class: yes</span></span>
@@ -440,7 +421,7 @@ group with the reference group.</li>
 <span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"tprp"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Algorithmic Fairness Test</span></span>
+<span><span class="co">##  Classical Algorithmic Fairness Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data: compas</span></span>
 <span><span class="co">## metric: Ttrue positive rate parity, reference group: Caucasian, positive class: yes</span></span>
@@ -482,7 +463,7 @@ group with the reference group.</li>
 <span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"npvp"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Algorithmic Fairness Test</span></span>
+<span><span class="co">##  Classical Algorithmic Fairness Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data: compas</span></span>
 <span><span class="co">## metric: negative predictive value parity, reference group: Caucasian, positive class: yes</span></span>
@@ -523,7 +504,7 @@ the reference group.</li>
 <span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"sp"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Algorithmic Fairness Test</span></span>
+<span><span class="co">##  Classical Algorithmic Fairness Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data: compas</span></span>
 <span><span class="co">## metric: specificity parity, reference group: Caucasian, positive class: yes</span></span>
