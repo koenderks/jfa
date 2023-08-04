@@ -200,7 +200,7 @@ law using the code below.</p>
 <code class="sourceCode R"><span><span class="co"># Frequentist hypothesis test</span></span>
 <span><span class="fu"><a href="../reference/digit_test.html">digit_test</a></span><span class="op">(</span><span class="va">sinoForest</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"first"</span>, reference <span class="op">=</span> <span class="st">"benford"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Digit Distribution Test</span></span>
+<span><span class="co">##  Classical Digit Distribution Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sinoForest$value</span></span>
 <span><span class="co">## n = 772, MAD = 0.0065981, X-squared = 7.6517, df = 8, p-value = 0.4682</span></span>
@@ -209,7 +209,7 @@ law using the code below.</p>
 <code class="sourceCode R"><span><span class="co"># Bayesian hypothesis test using default prior</span></span>
 <span><span class="fu"><a href="../reference/digit_test.html">digit_test</a></span><span class="op">(</span><span class="va">sinoForest</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"first"</span>, reference <span class="op">=</span> <span class="st">"benford"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Digit Distribution Test</span></span>
+<span><span class="co">##  Bayesian Digit Distribution Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sinoForest$value</span></span>
 <span><span class="co">## n = 772, MAD = 0.0065981, BF10 = 1.4493e-07</span></span>
@@ -282,10 +282,10 @@ data were not tampered with.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/repeated_test.html">repeated_test</a></span><span class="op">(</span><span class="va">sanitizer</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"lasttwo"</span>, samples <span class="op">=</span> <span class="fl">5000</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Repeated Values Test</span></span>
+<span><span class="co">##  Classical Repeated Values Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sanitizer$value</span></span>
-<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0018</span></span>
+<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0024</span></span>
 <span><span class="co">## alternative hypothesis: average frequency in data is greater than for random data.</span></span></code></pre>
 </div>
 </div>

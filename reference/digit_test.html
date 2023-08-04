@@ -182,7 +182,7 @@ distribution on the digit categories.</p></dd>
 <span class="r-in"><span><span class="co"># First digit analysis against Benford's law</span></span></span>
 <span class="r-in"><span><span class="fu">digit_test</span><span class="op">(</span><span class="va">x</span>, check <span class="op">=</span> <span class="st">"first"</span>, reference <span class="op">=</span> <span class="st">"benford"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 	Digit Distribution Test</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Classical Digit Distribution Test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> data:  x</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> n = 100, MAD = 0.033314, X-squared = 14.557, df = 8, p-value = 0.06836</span>
@@ -191,7 +191,7 @@ distribution on the digit categories.</p></dd>
 <span class="r-in"><span><span class="co"># Bayesian first digit analysis against Benford's law</span></span></span>
 <span class="r-in"><span><span class="fu">digit_test</span><span class="op">(</span><span class="va">x</span>, check <span class="op">=</span> <span class="st">"first"</span>, reference <span class="op">=</span> <span class="st">"benford"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 	Digit Distribution Test</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Bayesian Digit Distribution Test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> data:  x</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> n = 100, MAD = 0.033314, BF10 = 0.019696</span>
@@ -200,7 +200,7 @@ distribution on the digit categories.</p></dd>
 <span class="r-in"><span><span class="co"># Last digit analysis against the uniform distribution</span></span></span>
 <span class="r-in"><span><span class="fu">digit_test</span><span class="op">(</span><span class="va">x</span>, check <span class="op">=</span> <span class="st">"last"</span>, reference <span class="op">=</span> <span class="st">"uniform"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 	Digit Distribution Test</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Classical Digit Distribution Test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> data:  x</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> n = 100, MAD = 0.019012, X-squared = 4.22, df = 8, p-value = 0.8367</span>
@@ -209,7 +209,7 @@ distribution on the digit categories.</p></dd>
 <span class="r-in"><span><span class="co"># Bayesian last digit analysis against the uniform distribution</span></span></span>
 <span class="r-in"><span><span class="fu">digit_test</span><span class="op">(</span><span class="va">x</span>, check <span class="op">=</span> <span class="st">"last"</span>, reference <span class="op">=</span> <span class="st">"uniform"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 	Digit Distribution Test</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Bayesian Digit Distribution Test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> data:  x</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> n = 100, MAD = 0.019012, BF10 = 0.00018458</span>
@@ -218,7 +218,7 @@ distribution on the digit categories.</p></dd>
 <span class="r-in"><span><span class="co"># First digit analysis against a custom distribution</span></span></span>
 <span class="r-in"><span><span class="fu">digit_test</span><span class="op">(</span><span class="va">x</span>, check <span class="op">=</span> <span class="st">"last"</span>, reference <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">9</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 	Digit Distribution Test</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Classical Digit Distribution Test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> data:  x</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> n = 100, MAD = 0.054568, X-squared = 86.689, df = 8, p-value =</span>
@@ -228,7 +228,7 @@ distribution on the digit categories.</p></dd>
 <span class="r-in"><span><span class="co"># Bayesian first digit analysis against a custom distribution</span></span></span>
 <span class="r-in"><span><span class="fu">digit_test</span><span class="op">(</span><span class="va">x</span>, check <span class="op">=</span> <span class="st">"last"</span>, reference <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">9</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 	Digit Distribution Test</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Bayesian Digit Distribution Test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> data:  x</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> n = 100, MAD = 0.054568, BF10 = 1970104</span>
