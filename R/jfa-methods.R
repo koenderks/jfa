@@ -1082,6 +1082,7 @@ print.summary.jfaModelFairness <- function(x, digits = getOption("digits"), ...)
     "dp" = "Demographic parity (Statistical parity)"
   )
   cat("\nFairness metric:", measure)
+  cat("\nModel type:      Binary classification")
   cat(paste0("\nReference group: ", x[["reference"]]))
   cat("\nPositive class: ", x[["positive"]], "\n")
   cat("\nModel performance:\n")
