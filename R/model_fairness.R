@@ -281,7 +281,10 @@ model_fairness <- function(data,
   rowIndex <- 1
   for (group in groupLevels) {
     if (group == reference) {
-      parity[[group]][["estimate"]] <- parity[[group]][["lb"]] <- parity[[group]][["ub"]] <- parity[["all"]][rowIndex, 1] <- parity[["all"]][rowIndex, 2] <- parity[["all"]][rowIndex, 3] <- 1
+      parity[[group]][["estimate"]] <- parity[["all"]][rowIndex, 1] <- 1
+      if (metric != "dp") {
+        parity[[group]][["lb"]] <- parity[[group]][["ub"]] <- parity[["all"]][rowIndex, 2] <- parity[["all"]][rowIndex, 3] <- 1
+      }
     } else {
       parity[[group]][["estimate"]] <- parity[["all"]][rowIndex, 1] <- metrics[[group]][["estimate"]] / metrics[[reference]][["estimate"]]
       if (metric != "dp") {

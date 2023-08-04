@@ -1163,7 +1163,7 @@ summary.jfaModelFairness <- function(object, digits = getOption("digits"), ...) 
 #' @export
 plot.jfaModelFairness <- function(x, type = c("estimates", "posterior"), ...) {
   type <- match.arg(type)
-  estimate <- lb <- ub <- group <- y <- color <- NULL
+  estimate <- lb <- ub <- group <- y <- NULL
   groupLevels <- names(x[["confusion.matrix"]])
   ind <- which(groupLevels == x[["reference"]])
   inferenceLevels <- groupLevels[-ind]
@@ -1187,12 +1187,12 @@ plot.jfaModelFairness <- function(x, type = c("estimates", "posterior"), ...) {
     ratio$type <- factor(ratio$type, levels = c("Reference", "Expected", "Deviation"))
     p <- ggplot2::ggplot(data = ratio, mapping = ggplot2::aes(x = group, y = estimate, group = group, fill = type)) +
       ggplot2::geom_col(colour = "black") +
-      ggplot2::scale_x_discrete(name = "Sensitive Group") +
+      ggplot2::scale_x_discrete(name = "Sensitive Attribute") +
       ggplot2::scale_y_continuous(name = yTitle, breaks = yBreaks, limits = range(yBreaks)) +
       ggplot2::scale_fill_manual(name = NULL, values = c("dodgerblue", "lightgray", "firebrick"), breaks = c("Reference", "Expected", "Deviation")) +
       ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks))
     if (x[["measure"]] != "dp") {
-      p <- p + ggplot2::geom_errorbar(mapping = ggplot2::aes(ymin = lb, ymax = ub), width = 0.5, position = ggplot2::position_dodge(width = 0.9))
+      p <- p + ggplot2::geom_errorbar(mapping = ggplot2::aes(ymin = lb, ymax = ub), width = 0.5)
     }
   } else {
     stopifnot("plot not supported for frequentist inference" = !isFALSE(x[["prior"]]))
