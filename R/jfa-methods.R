@@ -1050,7 +1050,7 @@ print.jfaModelFairness <- function(x, digits = getOption("digits"), ...) {
     )
     cat(paste0(alternative, "\n"))
   }
-  cat(paste0("\nSample estimates (parity ratio):"))
+  cat(paste0("\nsample estimates (parity ratio):"))
   for (i in names(x[["confusion.matrix"]])[-which(names(x[["confusion.matrix"]]) == x[["reference"]])]) {
     if (x[["measure"]] == "dp") {
       cat("\n", paste0(i, ": ", format(x[["parity"]][[i]]$estimate, digits = max(1L, digits - 2L))))
