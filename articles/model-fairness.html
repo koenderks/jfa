@@ -217,12 +217,11 @@ comparison to the reference group (Caucasian). See Pessach &amp; Shmueli
 (2022) for a more detailed explanation of these metrics.</p>
 <ol style="list-style-type: decimal">
 <li>
-<strong>Demographic parity (Statistical parity)</strong>: Compares
-the number of positive predictions (e.g., reoffenders) between each
-ethnic group and the reference group. Note that, since demographic
+<p><strong>Demographic parity (Statistical parity)</strong>:
+Compares the number of positive predictions (e.g., reoffenders) between
+each ethnic group and the reference group. Note that, since demographic
 parity is not a proportion, statistical inference about its equality to
-the reference group is not supported for this metric.</li>
-</ol>
+the reference group is not supported for this metric.</p>
 <p>The formula for the demographic parity metric is <span class="math inline">\(DP = TP + FP\)</span>, and the parity ratio for
 sensitive group <span class="math inline">\(i\)</span> is given by <span class="math inline">\(\frac{DP_{i}}{DP_{reference}}\)</span>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -263,14 +262,13 @@ predicted as reoffenders in these data than there are Caucasians
 there are about five times less Hispanics predicted as reoffenders in
 these data than that there are Caucasians.</li>
 </ul>
-<ol start="2" style="list-style-type: decimal">
+</li>
 <li>
-<strong>Proportional parity (Disparate impact)</strong>: Compares
+<p><strong>Proportional parity (Disparate impact)</strong>: Compares
 the proportion of positive predictions of each ethnic group with that in
 the reference group. For example, in the case that a positive prediction
 represents a reoffender, equal proportional parity requires the
-proportion of predicted reoffenders to be similar across groups.</li>
-</ol>
+proportion of predicted reoffenders to be similar across groups.</p>
 <p>The formula for the proportional parity metric is <span class="math inline">\(PP = \frac{TP + FP}{TP + FP + TN + FN}\)</span>,
 and the parity ratio for sensitive group <span class="math inline">\(i\)</span> is given by <span class="math inline">\(\frac{PP_{i}}{PP_{reference}}\)</span>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -320,7 +318,7 @@ supported and provides credible intervals and Bayes factors. Like in the
 other functions in <code>jfa</code>, performing a Bayesian analysis
 using a default prior can be achieved by setting
 <code>prior = TRUE</code>. The resulting Bayes factors in favor of
-rejection of the null hypothesis (<span class="math inline">\(BF_{10}\)</span>) are shown in the output
+rejection of the null hypothesis of equality (<span class="math inline">\(BF_{10}\)</span>) are shown in the output
 below.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
@@ -341,11 +339,11 @@ below.</p>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Sample estimates (parity ratio):</span></span>
-<span><span class="co">##  African_American: 1.8627 [1.8051, 1.913], BF₁₀ = 4.1528e+81</span></span>
-<span><span class="co">##  Asian: 0.54274 [0.16668, 0.92734], BF₁₀ = 0.26796</span></span>
-<span><span class="co">##  Hispanic: 0.89189 [0.80245, 1.0519], BF₁₀ = 0.10615</span></span>
-<span><span class="co">##  Native_American: 1.5063 [0.66273, 2.2925], BF₁₀ = 0.018438</span></span>
-<span><span class="co">##  Other: 0.80044 [0.65027, 0.92179], BF₁₀ = 1.815</span></span></code></pre>
+<span><span class="co">##  African_American: 1.87 [1.8092, 1.9172], BF₁₀ = 4.1528e+81</span></span>
+<span><span class="co">##  Asian: 0.33753 [0.15756, 0.91598], BF₁₀ = 0.26796</span></span>
+<span><span class="co">##  Hispanic: 0.92412 [0.80901, 1.0491], BF₁₀ = 0.10615</span></span>
+<span><span class="co">##  Native_American: 1.4405 [0.68171, 2.2847], BF₁₀ = 0.018438</span></span>
+<span><span class="co">##  Other: 0.79786 [0.6472, 0.93926], BF₁₀ = 1.815</span></span></code></pre>
 <p>This is probably also a good time to show the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>
 and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> functions associated with the
 <code><a href="../reference/model_fairness.html">model_fairness()</a></code> function. Let’s examine the frequentist
@@ -399,12 +397,11 @@ object.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <p><img src="model-fairness_files/figure-html/unnamed-chunk-6-1.png" width="576" style="display: block; margin: auto;"></p>
-<ol start="3" style="list-style-type: decimal">
+</li>
 <li>
-<strong>Predictive rate parity (Equalized odds)</strong>: Compares
-the overall positive prediction rates (e.g., reoffender prediction) of
-different ethnic groups with the reference group.</li>
-</ol>
+<p><strong>Predictive rate parity (Equalized odds)</strong>:
+Compares the overall positive prediction rates (e.g., reoffender
+prediction) of different ethnic groups with the reference group.</p>
 <p>The formula for the predictive rate parity metric is <span class="math inline">\(PRP = \frac{TP}{TP + FP}\)</span>, and the parity
 ratio for sensitive group <span class="math inline">\(i\)</span> is
 given by <span class="math inline">\(\frac{PRP_{i}}{PRP_{reference}}\)</span>.</p>
@@ -450,11 +447,10 @@ the algorithm.</li>
 to that of the reference group (Caucasians). This indicates relatively
 fair treatment in the algorithm’s overall positive predictions.</li>
 </ul>
-<ol start="4" style="list-style-type: decimal">
+</li>
 <li>
-<strong>Accuracy parity</strong>: Compares the accuracy of each
-ethnic group’s predictions with the reference group.</li>
-</ol>
+<p><strong>Accuracy parity</strong>: Compares the accuracy of each
+ethnic group’s predictions with the reference group.</p>
 <p>The formula for the accuracy parity metric is <span class="math inline">\(AP = \frac{TP + TN}{TP + FP + TN + FN}\)</span>,
 and the parity ratio for sensitive group <span class="math inline">\(i\)</span> is given by <span class="math inline">\(\frac{AP_{i}}{AP_{reference}}\)</span>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
@@ -494,12 +490,11 @@ indicating potential favoritism in overall accuracy.</li>
 their accuracy is slightly higher than for Caucasians, indicating
 potential favoritism in overall accuracy.</li>
 </ul>
-<ol start="5" style="list-style-type: decimal">
+</li>
 <li>
-<strong>False negative rate parity (Treatment equality)</strong>:
+<p><strong>False negative rate parity (Treatment equality)</strong>:
 Compares the false negative rates (e.g., for reoffenders) of each ethnic
-group with the reference group.</li>
-</ol>
+group with the reference group.</p>
 <p>The formula for the false negative rate parity metric is <span class="math inline">\(FNRP = \frac{FN}{TP + FN}\)</span>, and the parity
 ratio for sensitive group <span class="math inline">\(i\)</span> is
 given by <span class="math inline">\(\frac{FNRP_{i}}{FNRP_{reference}}\)</span>.</p>
@@ -543,12 +538,11 @@ Asians.</li>
 indicating relatively similar rates as the reference group (Caucasians),
 suggesting fair treatment in this aspect.</li>
 </ul>
-<ol start="6" style="list-style-type: decimal">
+</li>
 <li>
-<strong>False positive rate parity</strong>: Compares the false
+<p><strong>False positive rate parity</strong>: Compares the false
 positive rates (e.g., for non-reoffenders) of each ethnic group with the
-reference group.</li>
-</ol>
+reference group.</p>
 <p>The formula for the false positive rate parity metric is <span class="math inline">\(FPRP = \frac{FP}{TN + FP}\)</span>, and the parity
 ratio for sensitive group <span class="math inline">\(i\)</span> is
 given by <span class="math inline">\(\frac{FPRP_{i}}{FPRP_{reference}}\)</span>.</p>
@@ -595,12 +589,11 @@ predicted as reoffenders compared to Caucasians. This indicates
 potential fair treatment of Hispanics in false positive
 predictions.</li>
 </ul>
-<ol start="7" style="list-style-type: decimal">
+</li>
 <li>
-<strong>True positive rate parity (Equal opportunity)</strong>:
+<p><strong>True positive rate parity (Equal opportunity)</strong>:
 Compares the true positive rates (e.g., for reoffenders) of each ethnic
-group with the reference group.</li>
-</ol>
+group with the reference group.</p>
 <p>The formula for the true positive rate parity metric is <span class="math inline">\(TPRP = \frac{TP}{TP + FN}\)</span>, and the parity
 ratio for sensitive group <span class="math inline">\(i\)</span> is
 given by <span class="math inline">\(\frac{TPRP_{i}}{TPRP_{reference}}\)</span>.</p>
@@ -646,12 +639,11 @@ is 0.98642, suggesting their true positive rate is very close to that of
 the reference group (Caucasians). This indicates relatively fair
 treatment in the algorithm’s true positive predictions.</li>
 </ul>
-<ol start="8" style="list-style-type: decimal">
+</li>
 <li>
-<strong>Negative predicted value parity</strong>: Compares the
+<p><strong>Negative predicted value parity</strong>: Compares the
 negative predicted values (e.g., for non-reoffenders) of each ethnic
-group with the reference group.</li>
-</ol>
+group with the reference group.</p>
 <p>The formula for the negative predicted value parity metric is <span class="math inline">\(NPVP = \frac{TN}{TN + FN}\)</span>, and the parity
 ratio for sensitive group <span class="math inline">\(i\)</span> is
 given by <span class="math inline">\(\frac{NPVP_{i}}{NPVP_{reference}}\)</span>.</p>
@@ -696,12 +688,11 @@ suggesting that their NPV is slightly higher than for Caucasians. This
 indicates potential favoritism towards Hispanics in predicting
 non-reoffenders.</li>
 </ul>
-<ol start="9" style="list-style-type: decimal">
+</li>
 <li>
-<strong>Specificity parity (True negative rate parity)</strong>:
+<p><strong>Specificity parity (True negative rate parity)</strong>:
 Compares the specificity (true negative rate) of each ethnic group with
-the reference group.</li>
-</ol>
+the reference group.</p>
 <p>The formula for the specificity parity metric is <span class="math inline">\(SP = \frac{TN}{TN + FP}\)</span>, and the parity
 ratio for sensitive group <span class="math inline">\(i\)</span> is
 given by <span class="math inline">\(\frac{SP_{i}}{SP_{reference}}\)</span>.</p>
@@ -743,9 +734,11 @@ non-reoffenders among Asians.</li>
 <li>
 <em>Hispanic</em>: The specificity parity ratio for Hispanics is
 1.0399, suggesting that their specificity is very close to the reference
-group (Caucasians). This indicates relatively fair treatment in
-correctly identifying non-reoffenders among Hispanics.</li>
+group. This indicates relatively fair treatment in correctly identifying
+non-reoffenders among Hispanics.</li>
 </ul>
+</li>
+</ol>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -767,16 +760,15 @@ Data</em>. Mary Ann Liebert Inc. - <a href="https://doi.org/10.1089/big.2016.00
 <li>Feldman, M., Friedler, S. A., Moeller, J., Scheidegger, C., &amp;
 Venkatasubramanian, S. (2015). Certifying and Removing Disparate Impact.
 In *Proceedings of the 21th ACM SIGKDD International Conference on
-Knowledge Discovery and Data Mining. ACM. - <a href="https://doi.org/10.1145/2783258.2783311" class="external-link">View Online</a>
+Knowledge Discovery and Data Mining. - <a href="https://doi.org/10.1145/2783258.2783311" class="external-link">View Online</a>
 </li>
 <li>Fisher, R. A. (1970). <em>Statistical Methods for Research
 Workers</em>. Oliver &amp; Boyd.</li>
 <li>Friedler, S. A., Scheidegger, C., Venkatasubramanian, S., Choudhary,
 S., Hamilton, E. P., &amp; Roth, D. (2019). A comparative study of
 fairness-enhancing interventions in machine learning. In <em>Proceedings
-of the Conference on Fairness, Accountability, and Transparency</em>.
-ACM. - <a href="https://doi.org/10.1145/3287560.3287589" class="external-link">View
-Online</a>
+of the Conference on Fairness, Accountability, and Transparency</em>. -
+<a href="https://doi.org/10.1145/3287560.3287589" class="external-link">View Online</a>
 </li>
 <li>Jamil, T., Ly, A., Morey, R. D., Love, J., Marsman, M., &amp;
 Wagenmakers, E. J. (2017). Default “Gunel and Dickey” Bayes factors for
