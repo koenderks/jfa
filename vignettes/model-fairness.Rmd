@@ -112,6 +112,7 @@ model_fairness(
 )
     ```
 
+    **Interpretation:**
     - *African American*: The parity ratio for African Americans compared to
       Caucasians is 2.7961, indicating that there are nearly three times more
       African Americans predicted as reoffenders in these data by the algorithm
@@ -145,6 +146,7 @@ model_fairness(
 )
     ```
 
+    **Interpretation:**
     - *African American*: The ratio of true positive rates (TPRs) for African
       Americans compared to Caucasians is 1.8521. This indicates that the TPR
       for African Americans is approximately 1.85 times higher than for
@@ -187,7 +189,7 @@ plot(x)
       shown in the output below. The prior and posterior distribution on the log
       odds ratio is displayed in the figure.
 
-    ```{r}
+    ```{r, fig.align="center", fig.height=4, fig.width=6}
 x <- model_fairness(
   data = compas,
   sensitive = "Ethnicity",
@@ -222,6 +224,7 @@ model_fairness(
 )
     ```
 
+    **Interpretation:**
     - *African American*: The predictive rate parity ratio for African Americans
       is 1.1522. This suggests that the overall positive prediction rate for
       African Americans is approximately 1.15 times higher than for Caucasians.
@@ -254,6 +257,7 @@ model_fairness(
 )
     ```
 
+    **Interpretation:**
     - African American: The accuracy parity ratio for African Americans is
       1.021, suggesting their accuracy is very similar to the reference group
       (Caucasians). This indicates fair treatment concerning overall accuracy.
@@ -284,6 +288,7 @@ model_fairness(
 )
     ```
 
+    **Interpretation:**
     - *African American*: The ratio of false negative rates (FNRs) for African
       Americans compared to Caucasians is 0.46866. A value lower than 1 suggests
       that African Americans are less likely to be falsely classified as
@@ -315,6 +320,7 @@ model_fairness(
 )
     ```
 
+    **Interpretation:**
     - *African American*: The false positive rate parity ratio for African
       Americans is 1.8739. This indicates that African Americans are
       approximately 1.87 times more likely to be falsely predicted as
@@ -347,6 +353,7 @@ model_fairness(
 )
     ```
 
+    **Interpretation:**
     - *African American*: The true positive rate parity ratio for African
       Americans is 1.5943. This indicates that African Americans are
       approximately 1.59 times more likely to be correctly predicted as
@@ -380,6 +387,7 @@ model_fairness(
 )
     ```
 
+    **Interpretation:**
     - *African American*: The Negative predicted value (NPV) parity ratio for
       African Americans is 0.98013. A value close to 1 indicates that the NPV
       for African Americans is very similar to the reference group (Caucasians).
@@ -411,6 +419,7 @@ model_fairness(
 )
     ```
 
+    **Interpretation:**
     - *African American*: The specificity parity ratio for African Americans is
       0.75105. A value lower than 1 indicates that the specificity for African
       Americans is lower than for Caucasians. This suggests potential bias in
