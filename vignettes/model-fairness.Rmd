@@ -71,6 +71,20 @@ behavior towards specific ethnic groups. If substantial disparities exist, we
 may need to investigate further and potentially modify the algorithm to ensure
 fairness in its predictions.
 
+Before starting, let's briefly explain the foundation of all fairness metrics:
+the confusion matrix. This matrix presents observed versus predicted labels,
+shedding light on the algorithm's prediction mistakes. Comprising the confusion
+matrix are the true positives (TP), false positives (FP), true negatives (TN),
+and false negatives (FN). To illustrate, the confusion matrix pertaining to the
+`African American` group is displayed below. For example, there are 629 people
+in this group that are incorrectly predicted to be a reoffender, which
+represents a false positive in the confusion matrix.
+
+|                | Predicted = `No` | Predicted = `Yes`   |
+| :----------- : | :--------------: | :-----------------: |
+| Actual = `No`  | 885 (`TN`)       | 629 (`FP`)          |
+| Actual = `Yes` | 411 (`FN`)       | 1250 (`TP`)         |
+
 Let's interpret the fairness metrics for the African American, Asian, and
 Hispanic groups in comparison to the reference group (Caucasian) one by one.
 
@@ -79,6 +93,8 @@ predictions (e.g., reoffenders) between each ethnic group and the reference
 group. Note that, since demographic parity is not a proportion, statistical
 inference about its equality to the reference group is not supported for this
 metric.
+
+$$DP = TP + FP$$
 
 ```{r}
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
@@ -99,6 +115,8 @@ model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
 
 2. **Proportional parity (Disparate impact)**: Compares the positive prediction
 rates (e.g., true positive rate) of each ethnic group with the reference group.
+
+$$PP = (TP + FP) / (TP + FP + TN + FN)$$
 
 ```{r}
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
@@ -135,6 +153,8 @@ model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
 prediction rates (e.g., reoffender prediction) of different ethnic groups with
 the reference group.
 
+$$PRP = TP / (TP + FP)$$
+
 ```{r}
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
   reference = "Caucasian", positive = "yes", metric = "prp"
@@ -157,6 +177,8 @@ model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
 4. **Accuracy parity**: Compares the accuracy of each ethnic group's predictions
 with the reference group.
 
+$$AP = (TP + TN) / (TP + FP + TN + FN)$$
+
 ```{r}
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
   reference = "Caucasian", positive = "yes", metric = "ap"
@@ -176,6 +198,8 @@ model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
 5. **False negative rate parity (Treatment equality)**: Compares the false
 negative rates (e.g., for reoffenders) of each ethnic group with the reference
 group.
+
+$$FNRP = FN / (TP + FN)$$
 
 ```{r}
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
@@ -198,6 +222,8 @@ model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
 6. **False positive rate parity**: Compares the false positive rates (e.g., for
 non-reoffenders) of each ethnic group with the reference group.
 
+$$FPRP = FP / (TN + FP)$$
+
 ```{r}
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
   reference = "Caucasian", positive = "yes", metric = "fprp"
@@ -219,6 +245,8 @@ model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
 
 7. **True positive rate parity (Equal opportunity)**: Compares the true positive
 rates (e.g., for reoffenders) of each ethnic group with the reference group.
+
+$$TPRP = TP / (TP + FN)$$
 
 ```{r}
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
@@ -243,6 +271,8 @@ model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
 8. **Negative predicted value parity**: Compares the negative predicted values
 (e.g., for non-reoffenders) of each ethnic group with the reference group.
 
+$$NPVP = TN / (TN + FN)$$
+
 ```{r}
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
   reference = "Caucasian", positive = "yes", metric = "npvp"
@@ -263,6 +293,8 @@ model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
 
 9. **Specificity parity (True negative rate parity)**: Compares the specificity
 (true negative rate) of each ethnic group with the reference group.
+
+$$SP = TN / (TN + FP)$$
 
 ```{r}
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
