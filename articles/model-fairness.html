@@ -179,13 +179,38 @@ illustrate, the confusion matrix pertaining to the
 there are 629 people in this group that are incorrectly predicted to be
 a reoffender, which represents a false positive in the confusion
 matrix.</p>
-<div class="line-block">               | Predicted = <code>No</code> |
-Predicted = <code>Yes</code> |<br>
-:———– : | :————–: | :—————–: |<br>
-Actual = <code>No</code> | 885 (<code>TN</code>) | 629 (<code>FP</code>)
-|<br>
-Actual = <code>Yes</code> | 411 (<code>FN</code>) | 1250
-(<code>TP</code>) |</div>
+<table class="table">
+<colgroup>
+<col width="39%">
+<col width="28%">
+<col width="32%">
+</colgroup>
+<thead><tr class="header">
+<th align="right"></th>
+<th align="center">
+<code>Predicted</code> = <code>no</code>
+</th>
+<th align="center">
+<code>Predicted</code> = <code>yes</code>
+</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td align="right">
+<code>TwoYrRecidivism</code> = <code>no</code>
+</td>
+<td align="center">885 (<code>TN</code>)</td>
+<td align="center">629 (<code>FP</code>)</td>
+</tr>
+<tr class="even">
+<td align="right">
+<code>TwoYrRecidivism</code> = <code>yes</code>
+</td>
+<td align="center">411 (<code>FN</code>)</td>
+<td align="center">1250 (<code>TP</code>)</td>
+</tr>
+</tbody>
+</table>
 <p>Let’s interpret the fairness metrics for the African American, Asian,
 and Hispanic groups in comparison to the reference group (Caucasian) one
 by one.</p>
@@ -199,8 +224,14 @@ the reference group is not supported for this metric.</li>
 </ol>
 <p><span class="math display">\[DP = TP + FP\]</span></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
-<span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"dp"</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
+<span>  sensitive <span class="op">=</span> <span class="st">"Ethnicity"</span>,</span>
+<span>  target <span class="op">=</span> <span class="st">"TwoYrRecidivism"</span>,</span>
+<span>  predictions <span class="op">=</span> <span class="st">"Predicted"</span>,</span>
+<span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>,</span>
+<span>  positive <span class="op">=</span> <span class="st">"yes"</span>,</span>
+<span>  metric <span class="op">=</span> <span class="st">"dp"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Classical Algorithmic Fairness Test</span></span>
@@ -239,8 +270,14 @@ group with the reference group.</li>
 <p><span class="math display">\[PP = (TP + FP) / (TP + FP + TN +
 FN)\]</span></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
-<span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"pp"</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
+<span>  sensitive <span class="op">=</span> <span class="st">"Ethnicity"</span>,</span>
+<span>  target <span class="op">=</span> <span class="st">"TwoYrRecidivism"</span>,</span>
+<span>  predictions <span class="op">=</span> <span class="st">"Predicted"</span>,</span>
+<span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>,</span>
+<span>  positive <span class="op">=</span> <span class="st">"yes"</span>,</span>
+<span>  metric <span class="op">=</span> <span class="st">"pp"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Classical Algorithmic Fairness Test</span></span>
@@ -282,8 +319,15 @@ using a default prior can be achieved by setting
 rejection of the null hypothesis (<span class="math inline">\(BF_{10}\)</span>) are shown in the output
 below.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
-<span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"pp"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
+<span>  sensitive <span class="op">=</span> <span class="st">"Ethnicity"</span>,</span>
+<span>  target <span class="op">=</span> <span class="st">"TwoYrRecidivism"</span>,</span>
+<span>  predictions <span class="op">=</span> <span class="st">"Predicted"</span>,</span>
+<span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>,</span>
+<span>  positive <span class="op">=</span> <span class="st">"yes"</span>,</span>
+<span>  metric <span class="op">=</span> <span class="st">"pp"</span>,</span>
+<span>  prior <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Algorithmic Fairness Test</span></span>
@@ -293,11 +337,11 @@ below.</p>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Sample estimates (parity ratio):</span></span>
-<span><span class="co">##  African_American: 1.8561 [1.8128, 1.922], BF₁₀ = 4.1528e+81</span></span>
-<span><span class="co">##  Asian: 0.37405 [0.15421, 0.90326], BF₁₀ = 0.26796</span></span>
-<span><span class="co">##  Hispanic: 0.91761 [0.80506, 1.0515], BF₁₀ = 0.10615</span></span>
-<span><span class="co">##  Native_American: 1.4012 [0.61444, 2.3333], BF₁₀ = 0.018438</span></span>
-<span><span class="co">##  Other: 0.76547 [0.65578, 0.93005], BF₁₀ = 1.815</span></span></code></pre>
+<span><span class="co">##  African_American: 1.836 [1.7823, 1.8895], BF₁₀ = 4.1528e+81</span></span>
+<span><span class="co">##  Asian: 0.33137 [0.16613, 0.89923], BF₁₀ = 0.26796</span></span>
+<span><span class="co">##  Hispanic: 0.90608 [0.78334, 1.0368], BF₁₀ = 0.10615</span></span>
+<span><span class="co">##  Native_American: 1.2266 [0.63817, 2.2448], BF₁₀ = 0.018438</span></span>
+<span><span class="co">##  Other: 0.74613 [0.63713, 0.92111], BF₁₀ = 1.815</span></span></code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>
 <strong>Predictive rate parity (Equalized odds)</strong>: Compares
@@ -306,8 +350,14 @@ different ethnic groups with the reference group.</li>
 </ol>
 <p><span class="math display">\[PRP = TP / (TP + FP)\]</span></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
-<span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"prp"</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
+<span>  sensitive <span class="op">=</span> <span class="st">"Ethnicity"</span>,</span>
+<span>  target <span class="op">=</span> <span class="st">"TwoYrRecidivism"</span>,</span>
+<span>  predictions <span class="op">=</span> <span class="st">"Predicted"</span>,</span>
+<span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>,</span>
+<span>  positive <span class="op">=</span> <span class="st">"yes"</span>,</span>
+<span>  metric <span class="op">=</span> <span class="st">"prp"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Classical Algorithmic Fairness Test</span></span>
@@ -349,8 +399,14 @@ ethnic group’s predictions with the reference group.</li>
 <p><span class="math display">\[AP = (TP + TN) / (TP + FP + TN +
 FN)\]</span></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
-<span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"ap"</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
+<span>  sensitive <span class="op">=</span> <span class="st">"Ethnicity"</span>,</span>
+<span>  target <span class="op">=</span> <span class="st">"TwoYrRecidivism"</span>,</span>
+<span>  predictions <span class="op">=</span> <span class="st">"Predicted"</span>,</span>
+<span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>,</span>
+<span>  positive <span class="op">=</span> <span class="st">"yes"</span>,</span>
+<span>  metric <span class="op">=</span> <span class="st">"ap"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Classical Algorithmic Fairness Test</span></span>
@@ -387,8 +443,14 @@ group with the reference group.</li>
 </ol>
 <p><span class="math display">\[FNRP = FN / (TP + FN)\]</span></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
-<span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"fnrp"</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
+<span>  sensitive <span class="op">=</span> <span class="st">"Ethnicity"</span>,</span>
+<span>  target <span class="op">=</span> <span class="st">"TwoYrRecidivism"</span>,</span>
+<span>  predictions <span class="op">=</span> <span class="st">"Predicted"</span>,</span>
+<span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>,</span>
+<span>  positive <span class="op">=</span> <span class="st">"yes"</span>,</span>
+<span>  metric <span class="op">=</span> <span class="st">"fnrp"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Classical Algorithmic Fairness Test</span></span>
@@ -428,8 +490,14 @@ reference group.</li>
 </ol>
 <p><span class="math display">\[FPRP = FP / (TN + FP)\]</span></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
-<span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"fprp"</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
+<span>  sensitive <span class="op">=</span> <span class="st">"Ethnicity"</span>,</span>
+<span>  target <span class="op">=</span> <span class="st">"TwoYrRecidivism"</span>,</span>
+<span>  predictions <span class="op">=</span> <span class="st">"Predicted"</span>,</span>
+<span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>,</span>
+<span>  positive <span class="op">=</span> <span class="st">"yes"</span>,</span>
+<span>  metric <span class="op">=</span> <span class="st">"fprp"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Classical Algorithmic Fairness Test</span></span>
@@ -472,8 +540,14 @@ group with the reference group.</li>
 </ol>
 <p><span class="math display">\[TPRP = TP / (TP + FN)\]</span></p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
-<span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"tprp"</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
+<span>  sensitive <span class="op">=</span> <span class="st">"Ethnicity"</span>,</span>
+<span>  target <span class="op">=</span> <span class="st">"TwoYrRecidivism"</span>,</span>
+<span>  predictions <span class="op">=</span> <span class="st">"Predicted"</span>,</span>
+<span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>,</span>
+<span>  positive <span class="op">=</span> <span class="st">"yes"</span>,</span>
+<span>  metric <span class="op">=</span> <span class="st">"tprp"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Classical Algorithmic Fairness Test</span></span>
@@ -515,8 +589,14 @@ group with the reference group.</li>
 </ol>
 <p><span class="math display">\[NPVP = TN / (TN + FN)\]</span></p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
-<span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"npvp"</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
+<span>  sensitive <span class="op">=</span> <span class="st">"Ethnicity"</span>,</span>
+<span>  target <span class="op">=</span> <span class="st">"TwoYrRecidivism"</span>,</span>
+<span>  predictions <span class="op">=</span> <span class="st">"Predicted"</span>,</span>
+<span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>,</span>
+<span>  positive <span class="op">=</span> <span class="st">"yes"</span>,</span>
+<span>  metric <span class="op">=</span> <span class="st">"npvp"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Classical Algorithmic Fairness Test</span></span>
@@ -557,8 +637,14 @@ the reference group.</li>
 </ol>
 <p><span class="math display">\[SP = TN / (TN + FP)\]</span></p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
-<span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"sp"</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
+<span>  sensitive <span class="op">=</span> <span class="st">"Ethnicity"</span>,</span>
+<span>  target <span class="op">=</span> <span class="st">"TwoYrRecidivism"</span>,</span>
+<span>  predictions <span class="op">=</span> <span class="st">"Predicted"</span>,</span>
+<span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>,</span>
+<span>  positive <span class="op">=</span> <span class="st">"yes"</span>,</span>
+<span>  metric <span class="op">=</span> <span class="st">"sp"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Classical Algorithmic Fairness Test</span></span>
