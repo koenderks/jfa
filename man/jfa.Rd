@@ -89,7 +89,7 @@ data('compas')
 
 # Test algorithmic fairness against Caucasian ethnicity
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-               reference = "Caucasian", positive = "yes", metric = "tprp")
+               privileged = "Caucasian", positive = "yes")
 }
 \keyword{jfa} 
 \keyword{package}

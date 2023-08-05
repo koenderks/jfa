@@ -1041,7 +1041,7 @@ print.jfaModelFairness <- function(x, digits = getOption("digits"), ...) {
     "sp" = "specificity parity",
     "dp" = "demographic parity"
   )
-  cat(paste0("metric: ", measure, ", reference group: ", x[["reference"]], ", positive class: ", x[["positive"]], "\n"))
+  cat(paste0("metric: ", measure, ", privileged class: ", x[["privileged"]], ", positive class: ", x[["positive"]], "\n"))
   if (x[["measure"]] != "dp") {
     alternative <- switch(x[["alternative"]],
       "two.sided" = "alternative hypothesis: true odds ratio is not equal to 1",
@@ -1050,8 +1050,8 @@ print.jfaModelFairness <- function(x, digits = getOption("digits"), ...) {
     )
     cat(paste0(alternative, "\n"))
   }
-  cat(paste0("\nsample estimates (parity ratio):"))
-  for (i in names(x[["confusion.matrix"]])[-which(names(x[["confusion.matrix"]]) == x[["reference"]])]) {
+  cat(paste0("\nsample estimates:"))
+  for (i in names(x[["confusion.matrix"]])[-which(names(x[["confusion.matrix"]]) == x[["privileged"]])]) {
     if (x[["measure"]] == "dp") {
       cat("\n", paste0(i, ": ", format(x[["parity"]][[i]]$estimate, digits = max(1L, digits - 2L))))
     } else {
@@ -1083,7 +1083,7 @@ print.summary.jfaModelFairness <- function(x, digits = getOption("digits"), ...)
   )
   cat("\nFairness metric:   ", measure)
   cat("\nModel type:         Binary classification")
-  cat(paste0("\nReference group:    ", x[["reference"]]))
+  cat(paste0("\nPrivileged class:   ", x[["privileged"]]))
   cat("\nPositive class:    ", x[["positive"]], "\n")
   if (!isFALSE(x[["prior"]])) {
     cat("Prior distribution:", paste0("Dirichlet(", paste0(rep(as.numeric(x[["prior"]]), 4), collapse = ", "), ")"), "\n")
@@ -1100,20 +1100,20 @@ print.summary.jfaModelFairness <- function(x, digits = getOption("digits"), ...)
   groupLevels <- names(x[["confusion.matrix"]])
   cat(paste0("\nSample estimates:\n"))
   rownames <- groupLevels
-  rownames[which(rownames == x[["reference"]])] <- paste0(rownames[which(rownames == x[["reference"]])], " (R)")
+  rownames[which(rownames == x[["privileged"]])] <- paste0(rownames[which(rownames == x[["privileged"]])], " (R)")
   df <- data.frame(matrix("-", nrow = length(groupLevels), ncol = if (x[["measure"]] == "dp") 2 else 4), row.names = rownames)
   measure <- switch(x[["measure"]],
-    "pp" = "Proportional parity",
-    "prp" = "Predictive rate parity",
-    "ap" = "Accuracy parity",
-    "fnrp" = "False negative rate parity",
-    "fprp" = "False positive rate parity",
-    "tprp" = "True positive rate parity",
-    "npvp" = "Negative predictive value parity",
-    "sp" = "Specificity parity",
-    "dp" = "Demographic parity"
+    "pp" = "Proportion",
+    "prp" = "Precision",
+    "ap" = "Accuracy",
+    "fnrp" = "False negative rate",
+    "fprp" = "False positive rate",
+    "tprp" = "True positive rate",
+    "npvp" = "Negative predictive value",
+    "sp" = "Specificity",
+    "dp" = "Positively classified"
   )
-  colnames <- c(measure, "Parity ratio")
+  colnames <- c(measure, "Parity")
   if (x[["measure"]] != "dp") {
     if (isFALSE(x[["prior"]])) {
       colnames <- c(colnames, "Odds ratio", "p-value")
@@ -1131,7 +1131,7 @@ print.summary.jfaModelFairness <- function(x, digits = getOption("digits"), ...)
       metric_ub <- format(x[["metric"]][[groupLevels[i]]]$ub, digits = max(1L, digits - 2L))
       df[i, 1] <- paste0(metric_est, " [", metric_lb, ", ", metric_ub, "]")
     }
-    if (groupLevels[i] != x[["reference"]]) {
+    if (groupLevels[i] != x[["privileged"]]) {
       parity_est <- format(x[["parity"]][[groupLevels[i]]]$estimate, digits = max(1L, digits - 2L))
       if (x[["measure"]] == "dp") {
         df[i, 2] <- parity_est
@@ -1159,7 +1159,7 @@ print.summary.jfaModelFairness <- function(x, digits = getOption("digits"), ...)
 #' @export
 summary.jfaModelFairness <- function(object, digits = getOption("digits"), ...) {
   out <- list()
-  out[["reference"]] <- object[["reference"]]
+  out[["privileged"]] <- object[["privileged"]]
   out[["positive"]] <- object[["positive"]]
   out[["confusion.matrix"]] <- object[["confusion.matrix"]]
   out[["metric"]] <- object[["metric"]]
@@ -1179,31 +1179,35 @@ plot.jfaModelFairness <- function(x, type = c("estimates", "posterior"), ...) {
   type <- match.arg(type)
   estimate <- lb <- ub <- group <- y <- NULL
   groupLevels <- names(x[["confusion.matrix"]])
-  ind <- which(groupLevels == x[["reference"]])
+  ind <- which(groupLevels == x[["privileged"]])
   inferenceLevels <- groupLevels[-ind]
   if (type == "estimates") {
     ratio <- x[["parity"]][["all"]]
     ratio[["group"]] <- rownames(ratio)
     yBreaks <- pretty(c(0, ratio[["estimate"]], 1, ratio[["ub"]]), min.n = 4)
     yTitle <- switch(x[["measure"]],
-      pp = "Proportional parity ratio",
-      prp = "Predictive rate parity ratio",
-      ap = "Accuracy parity ratio",
-      fnrp = "False negative rate parity ratio",
-      fprp = "False positive rate parity ratio",
-      tprp = "True positive rate parity ratio",
-      npvp = "Negative predictive value parity Ratio",
-      sp = "Specificity parity ratio",
-      dp = "Demographic parity ratio"
+      pp = "Proportional parity",
+      prp = "Predictive rate parity",
+      ap = "Accuracy parity",
+      fnrp = "False negative rate parity",
+      fprp = "False positive rate parity",
+      tprp = "True positive rate parity",
+      npvp = "Negative predictive value parity",
+      sp = "Specificity parity",
+      dp = "Demographic parity"
     )
-    ratio$type <- ifelse(x[["measure"]] == "dp" | (ratio$ub < 1 | ratio$lb > 1), yes = "Deviation", no = "Expected")
-    ratio$type[which(groupLevels == x[["reference"]])] <- "Reference"
-    ratio$type <- factor(ratio$type, levels = c("Reference", "Expected", "Deviation"))
+    if (x[["measure"]] == "dp") {
+      ratio$type <- "Expected"
+    } else {
+      ratio$type <- ifelse(ratio$ub < 1 | ratio$lb > 1, yes = "Deviation", no = "Expected")
+    }
+    ratio$type[which(groupLevels == x[["privileged"]])] <- "Privileged class"
+    ratio$type <- factor(ratio$type, levels = c("Privileged class", "Expected", "Deviation"))
     p <- ggplot2::ggplot(data = ratio, mapping = ggplot2::aes(x = group, y = estimate, group = group, fill = type)) +
       ggplot2::geom_col(colour = "black") +
-      ggplot2::scale_x_discrete(name = "Sensitive attribute") +
+      ggplot2::scale_x_discrete(name = "Protected class") +
       ggplot2::scale_y_continuous(name = yTitle, breaks = yBreaks, limits = range(yBreaks)) +
-      ggplot2::scale_fill_manual(name = NULL, values = c("dodgerblue", "lightgray", "firebrick"), breaks = c("Reference", "Expected", "Deviation")) +
+      ggplot2::scale_fill_manual(name = NULL, values = c("dodgerblue", "lightgray", "firebrick"), breaks = c("Privileged class", "Expected", "Deviation")) +
       ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks))
     if (x[["measure"]] != "dp") {
       p <- p + ggplot2::geom_errorbar(mapping = ggplot2::aes(ymin = lb, ymax = ub), width = 0.5)

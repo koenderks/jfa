@@ -6,16 +6,16 @@
 \usage{
 model_fairness(
   data,
-  sensitive,
+  protected,
   target,
   predictions,
-  reference = NULL,
+  privileged = NULL,
   positive = NULL,
   metric = c(
     "prp", "pp", "ap", "fnrp", "fprp",
     "tprp", "npvp", "sp", "dp"
   ),
-  alternative = c("two.sided", "greater", "less"),
+  alternative = c("two.sided", "less", "greater"),
   conf.level = 0.95,
   prior = FALSE
 )
@@ -23,30 +23,30 @@ model_fairness(
 \arguments{
 \item{data}{a data frame containing the input data.}
 
-\item{sensitive}{a character specifying the column name in \code{data}
-indicating the sensitive variable.}
+\item{protected}{a character specifying the column name in \code{data}
+containing the protected classes (i.e., the sensitive attribute).}
 
-\item{target}{A character specifying the column name in \code{data}
-indicating the actual values of the target (to be predicted) variable.}
+\item{target}{a character specifying the column name in \code{data}
+containing the true labels of the target (i.e., to be predicted) variable.}
 
 \item{predictions}{a character specifying the column name in \code{data}
-indicating the predicted values of the target variable.}
+containing the predicted labels of the target variable.}
 
-\item{reference}{a character specifying the class in the column
-\code{sensitive} used as the reference class for computing the fairness
-metrics. If \code{NULL} (the default), the first factor level of the
-\code{sensitive} column is used as the reference group.}
+\item{privileged}{a character specifying the factor level of the column
+\code{protected} to be used as the privileged class. If \code{NULL} (the
+default), the first factor level of the \code{protected} column is used.}
 
-\item{positive}{a character specifying the positive class in the column
-\code{target} used for computing the fairness metrics. If \code{NULL} (the
-default), the first factor level of the \code{target} column is used as the
-positive class.}
+\item{positive}{a character specifying the factor level positive class of
+the column \code{target} to be used as the positive class. If \code{NULL}
+(the default), the first factor level of the \code{target} column is used..}
 
-\item{metric}{a character (vector) indicating the fairness metrics(s)
-to compute. See the Details section for more information.}
+\item{metric}{a character indicating the fairness metrics to compute.
+See the Details section below for more information.}
 
-\item{alternative}{the type of confidence interval to produce. Possible
-options are \code{two.sided} (the default), \code{greater} and \code{less}.}
+\item{alternative}{a character indicating the alternative hypothesis and
+the type of confidence / credible interval returned by the function.
+Possible options are  \code{two.sided} (default), \code{less}, or
+\code{greater}.}
 
 \item{conf.level}{a numeric value between 0 and 1 specifying the
 confidence level (i.e., 1 - audit risk / detection risk).}
@@ -61,7 +61,7 @@ performed.}
 \value{
 An object of class \code{jfaModelFairness} containing:
 
-\item{reference}{The reference group for computing the fairness metrics.}
+\item{privileged}{The privileged class for computing the fairness metrics.}
 \item{positive}{The positive class used in computing the fairness metrics.}
 \item{alternative}{The type of confidence interval.}
 \item{confusion.matrix}{A list of confusion matrices for each group.}
@@ -69,13 +69,12 @@ An object of class \code{jfaModelFairness} containing:
   group, including accuracy, precision, recall, and F1 score.}
 \item{metric}{A data frame containing, for each group, the estimates of the
   fairness metric along with the associated confidence / credible interval.}
-\item{parity}{A data frame containing, for each sensitive group, the parity
-  ratio and associated confidence / credible interval when compared to the
-  reference group.}
-\item{odds.ratio}{A data frame containing, for each sensitive group, the odds
-  ratio of the fairness meatrics and associated confidence/credible interval,
-  along with any inferential measures, for the comparison to the reference
-  group.}
+\item{parity}{A data frame containing, for each unprivileged class, the
+  parity and associated confidence / credible interval when compared to the
+  privileged class.}
+\item{odds.ratio}{A data frame containing, for each unprivileged class, the
+  odds ratio of the fairness metric and its associated confidence/credible
+  interval, along with inferential measures.}
 \item{measure}{The abbreviation of the selected fairness metric.}
 \item{data.name}{The name of the input data object.}
 }
@@ -83,18 +82,17 @@ An object of class \code{jfaModelFairness} containing:
 This function aims to assess fairness and bias in algorithmic
 decision-making systems by computing and testing the equality in one of
 several model-agnostic fairness metrics. These metrics aim to quantify
-fairness across sensitive groups in the data based on the predictions of the
-algorithm. The metrics that can be calculated include predictive rate parity,
-proportional parity, accuracy parity, false negative rate parity, false
-positive rate parity, true positive rate parity, negative predicted value
-parity, specificity parity, and demographic parity. Currently, this function
-only supports binary classification. The function returns an object of class
-\code{jfaModelBias} that can be used with associated \code{summary()} and
-\code{plot()} methods.
+fairness across protected classes in the data based on a set of true labels
+and the predictions of an algorithm. Available metrics include predictive
+rate parity, proportional parity, accuracy parity, false negative rate
+parity, false positive rate parity, true positive rate parity, negative
+predicted value parity, specificity parity, and demographic parity. The
+function returns an object of class \code{jfaModelBias} that can be used with
+associated \code{summary()} and \code{plot()} methods.
 }
 \details{
 The following model-agnostic fairness metrics are computed based on
-  the confusion matrix for each sensitive group, using the true positives
+  the confusion matrix for each protected class, using the true positives
   (TP), false positives (FP), true negative (TN) and false negatives (FN).
   See Pessach & Shmueli (2022) for a more detailed explanation of the
   individual metrics. The equality of metrics across groups is done according
@@ -102,11 +100,11 @@ The following model-agnostic fairness metrics are computed based on
 
   \itemize{
     \item{Predictive rate parity (\code{prp}): }{calculated as TP / (TP +
-      FP), quantifies whether the positive prediction rate is the same across
-      groups.}
+      FP), its ratio quantifies whether the predictive rate is equal across
+      protected classes.}
     \item{Proportional parity (\code{pp}): }{calculated as (TP + FP) / (TP +
-      FP + TN + FN), quantifies whether the positive prediction rate is equal
-      across groups.}
+      FP + TN + FN), its ratio quantifies whether the positive prediction
+      rate is equal across protected classes.}
     \item{Accuracy parity (\code{ap}): }{calculated as (TP + TN) / (TP + FP +
       TN + FN), quantifies whether the accuracy is the same across groups.}
     \item{False negative rate parity (\code{fnrp}): }{calculated as FN / (FP
@@ -139,10 +137,10 @@ The following model-agnostic fairness metrics are computed based on
 # Frequentist test of specificy parity
 model_fairness(
   data = compas,
-  sensitive = "Gender",
+  protected = "Gender",
   target = "TwoYrRecidivism",
   predictions = "Predicted",
-  reference = "Male",
+  privileged = "Male",
   positive = "yes",
   metric = "sp"
 )
@@ -150,10 +148,10 @@ model_fairness(
 # Bayesian test of predictive rate parity
 model_fairness(
   data = compas,
-  sensitive = "Ethnicity",
+  protected = "Ethnicity",
   target = "TwoYrRecidivism",
   predictions = "Predicted",
-  reference = "Caucasian",
+  privileged = "Caucasian",
   positive = "yes",
   metric = "prp",
   prior = TRUE

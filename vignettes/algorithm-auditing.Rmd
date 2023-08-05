@@ -39,29 +39,28 @@ in **jfa**.
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 
 The `model_fairness()` function provides a model-agnotic method to asses bias
-in predictive algorithms  by computing various fairness metrics based on the
+in predictive algorithms by computing various fairness metrics based on the
 observed and predicted classes. The function allows for evaluating fairness
 using metrics such as demographic parity, proportional parity, predictive rate
 parity, accuracy parity, false negative rate parity, false positive rate parity,
 true positive rate parity, negative predicted value parity, and specificity
-parity. Moreover, the function helps to decide whether groups are treated fairly
-to a certain degree and within a certain materiality threshold.
+parity. Moreover, the function tests these metrics for equality.
 
 *Full function with default arguments:*
 
 ```r
 model_fairness(
   data,
-  sensitive,
+  protected,
   target,
   predictions,
-  reference = NULL,
+  privileged = NULL,
   positive = NULL,
   metric = c(
     "prp", "pp", "ap", "fnrp", "fprp",
     "tprp", "npvp", "sp", "dp"
   ),
-  alternative = c("two.sided", "greater", "less"),
+  alternative = c("two.sided", "less", "greater"),
   conf.level = 0.95,
   prior = FALSE
 )
@@ -72,10 +71,10 @@ model_fairness(
 ```{r}
 model_fairness(
   data = compas,
-  sensitive = "Ethnicity",
+  protected = "Ethnicity",
   target = "TwoYrRecidivism",
   predictions = "Predicted",
-  reference = "Caucasian",
+  privileged = "Caucasian",
   positive = "yes",
   metric = "prp"
 )

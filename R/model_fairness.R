@@ -18,50 +18,49 @@
 #' @description This function aims to assess fairness and bias in algorithmic
 #' decision-making systems by computing and testing the equality in one of
 #' several model-agnostic fairness metrics. These metrics aim to quantify
-#' fairness across sensitive groups in the data based on the predictions of the
-#' algorithm. The metrics that can be calculated include predictive rate parity,
-#' proportional parity, accuracy parity, false negative rate parity, false
-#' positive rate parity, true positive rate parity, negative predicted value
-#' parity, specificity parity, and demographic parity. Currently, this function
-#' only supports binary classification. The function returns an object of class
-#' \code{jfaModelBias} that can be used with associated \code{summary()} and
-#' \code{plot()} methods.
+#' fairness across protected classes in the data based on a set of true labels
+#' and the predictions of an algorithm. Available metrics include predictive
+#' rate parity, proportional parity, accuracy parity, false negative rate
+#' parity, false positive rate parity, true positive rate parity, negative
+#' predicted value parity, specificity parity, and demographic parity. The
+#' function returns an object of class \code{jfaModelBias} that can be used with
+#' associated \code{summary()} and \code{plot()} methods.
 #'
 #' @usage model_fairness(
 #'   data,
-#'   sensitive,
+#'   protected,
 #'   target,
 #'   predictions,
-#'   reference = NULL,
+#'   privileged = NULL,
 #'   positive = NULL,
 #'   metric = c(
 #'     "prp", "pp", "ap", "fnrp", "fprp",
 #'     "tprp", "npvp", "sp", "dp"
 #'   ),
-#'   alternative = c("two.sided", "greater", "less"),
+#'   alternative = c("two.sided", "less", "greater"),
 #'   conf.level = 0.95,
 #'   prior = FALSE
 #' )
 #'
 #' @param data         a data frame containing the input data.
-#' @param sensitive    a character specifying the column name in \code{data}
-#'   indicating the sensitive variable.
-#' @param target       A character specifying the column name in \code{data}
-#'   indicating the actual values of the target (to be predicted) variable.
+#' @param protected    a character specifying the column name in \code{data}
+#'   containing the protected classes (i.e., the sensitive attribute).
+#' @param target       a character specifying the column name in \code{data}
+#'   containing the true labels of the target (i.e., to be predicted) variable.
 #' @param predictions  a character specifying the column name in \code{data}
-#'   indicating the predicted values of the target variable.
-#' @param reference    a character specifying the class in the column
-#'   \code{sensitive} used as the reference class for computing the fairness
-#'   metrics. If \code{NULL} (the default), the first factor level of the
-#'   \code{sensitive} column is used as the reference group.
-#' @param positive     a character specifying the positive class in the column
-#'   \code{target} used for computing the fairness metrics. If \code{NULL} (the
-#'   default), the first factor level of the \code{target} column is used as the
-#'   positive class.
-#' @param metric      a character (vector) indicating the fairness metrics(s)
-#'   to compute. See the Details section for more information.
-#' @param alternative  the type of confidence interval to produce. Possible
-#'   options are \code{two.sided} (the default), \code{greater} and \code{less}.
+#'   containing the predicted labels of the target variable.
+#' @param privileged  a character specifying the factor level of the column
+#'   \code{protected} to be used as the privileged class. If \code{NULL} (the
+#'   default), the first factor level of the \code{protected} column is used.
+#' @param positive     a character specifying the factor level positive class of
+#'   the column \code{target} to be used as the positive class. If \code{NULL}
+#'   (the default), the first factor level of the \code{target} column is used..
+#' @param metric      a character indicating the fairness metrics to compute.
+#'   See the Details section below for more information.
+#' @param alternative   a character indicating the alternative hypothesis and
+#'   the type of confidence / credible interval returned by the function.
+#'   Possible options are  \code{two.sided} (default), \code{less}, or
+#'   \code{greater}.
 #' @param conf.level   a numeric value between 0 and 1 specifying the
 #'   confidence level (i.e., 1 - audit risk / detection risk).
 #' @param prior        a logical specifying whether to use a prior distribution,
@@ -72,7 +71,7 @@
 #'   performed.
 #'
 #' @details The following model-agnostic fairness metrics are computed based on
-#'   the confusion matrix for each sensitive group, using the true positives
+#'   the confusion matrix for each protected class, using the true positives
 #'   (TP), false positives (FP), true negative (TN) and false negatives (FN).
 #'   See Pessach & Shmueli (2022) for a more detailed explanation of the
 #'   individual metrics. The equality of metrics across groups is done according
@@ -80,11 +79,11 @@
 #'
 #'   \itemize{
 #'     \item{Predictive rate parity (\code{prp}): }{calculated as TP / (TP +
-#'       FP), quantifies whether the positive prediction rate is the same across
-#'       groups.}
+#'       FP), its ratio quantifies whether the predictive rate is equal across
+#'       protected classes.}
 #'     \item{Proportional parity (\code{pp}): }{calculated as (TP + FP) / (TP +
-#'       FP + TN + FN), quantifies whether the positive prediction rate is equal
-#'       across groups.}
+#'       FP + TN + FN), its ratio quantifies whether the positive prediction
+#'       rate is equal across protected classes.}
 #'     \item{Accuracy parity (\code{ap}): }{calculated as (TP + TN) / (TP + FP +
 #'       TN + FN), quantifies whether the accuracy is the same across groups.}
 #'     \item{False negative rate parity (\code{fnrp}): }{calculated as FN / (FP
@@ -115,7 +114,7 @@
 #'
 #' @return An object of class \code{jfaModelFairness} containing:
 #'
-#' \item{reference}{The reference group for computing the fairness metrics.}
+#' \item{privileged}{The privileged class for computing the fairness metrics.}
 #' \item{positive}{The positive class used in computing the fairness metrics.}
 #' \item{alternative}{The type of confidence interval.}
 #' \item{confusion.matrix}{A list of confusion matrices for each group.}
@@ -123,13 +122,12 @@
 #'   group, including accuracy, precision, recall, and F1 score.}
 #' \item{metric}{A data frame containing, for each group, the estimates of the
 #'   fairness metric along with the associated confidence / credible interval.}
-#' \item{parity}{A data frame containing, for each sensitive group, the parity
-#'   ratio and associated confidence / credible interval when compared to the
-#'   reference group.}
-#' \item{odds.ratio}{A data frame containing, for each sensitive group, the odds
-#'   ratio of the fairness meatrics and associated confidence/credible interval,
-#'   along with any inferential measures, for the comparison to the reference
-#'   group.}
+#' \item{parity}{A data frame containing, for each unprivileged class, the
+#'   parity and associated confidence / credible interval when compared to the
+#'   privileged class.}
+#' \item{odds.ratio}{A data frame containing, for each unprivileged class, the
+#'   odds ratio of the fairness metric and its associated confidence/credible
+#'   interval, along with inferential measures.}
 #' \item{measure}{The abbreviation of the selected fairness metric.}
 #' \item{data.name}{The name of the input data object.}
 #'
@@ -172,10 +170,10 @@
 #' # Frequentist test of specificy parity
 #' model_fairness(
 #'   data = compas,
-#'   sensitive = "Gender",
+#'   protected = "Gender",
 #'   target = "TwoYrRecidivism",
 #'   predictions = "Predicted",
-#'   reference = "Male",
+#'   privileged = "Male",
 #'   positive = "yes",
 #'   metric = "sp"
 #' )
@@ -183,10 +181,10 @@
 #' # Bayesian test of predictive rate parity
 #' model_fairness(
 #'   data = compas,
-#'   sensitive = "Ethnicity",
+#'   protected = "Ethnicity",
 #'   target = "TwoYrRecidivism",
 #'   predictions = "Predicted",
-#'   reference = "Caucasian",
+#'   privileged = "Caucasian",
 #'   positive = "yes",
 #'   metric = "prp",
 #'   prior = TRUE
@@ -194,16 +192,16 @@
 #' @export
 
 model_fairness <- function(data,
-                           sensitive,
+                           protected,
                            target,
                            predictions,
-                           reference = NULL,
+                           privileged = NULL,
                            positive = NULL,
                            metric = c(
                              "prp", "pp", "ap", "fnrp", "fprp",
                              "tprp", "npvp", "sp", "dp"
                            ),
-                           alternative = c("two.sided", "greater", "less"),
+                           alternative = c("two.sided", "less", "greater"),
                            conf.level = 0.95,
                            prior = FALSE) {
   metric <- match.arg(metric)
@@ -213,27 +211,27 @@ model_fairness <- function(data,
   valid_prior <- (is.logical(prior)) || (is.numeric(prior) && prior >= 1)
   is_bayesian <- (is.logical(prior) && isTRUE(prior)) || (is.numeric(prior) && prior >= 1)
   stopifnot("'prior' must be TRUE or FALSE, or a numeric value >= 1 representing the prior concentration parameter" = valid_prior)
-  stopifnot("'sensitive' does not exist in 'data'" = sensitive %in% colnames(data))
-  stopifnot("'sensitive' must be a factor column" = is.factor(data[, sensitive]))
+  stopifnot("'protected' does not exist in 'data'" = protected %in% colnames(data))
+  stopifnot("'protected' must be a factor column" = is.factor(data[, protected]))
   stopifnot("'target' does not exist in 'data'" = target %in% colnames(data))
   stopifnot("'target' must be a factor column" = is.factor(data[, target]))
   stopifnot("'predictions' does not exist in 'data'" = predictions %in% colnames(data))
   stopifnot("'predictions' must be a factor column" = is.factor(data[, predictions]))
-  groupLevels <- levels(data[, sensitive])
+  groupLevels <- levels(data[, protected])
   targetLevels <- levels(data[, target])
   stopifnot("'target' must contain exactly 2 factor levels" = length(targetLevels) == 2) # Binary classification only
   stopifnot("'predictions' must contain exactly 2 factor levels" = nlevels(data[, predictions]) == 2) # Binary classification only
-  if (is.null(reference)) {
-    reference <- groupLevels[1]
+  if (is.null(privileged)) {
+    privileged <- groupLevels[1]
   }
-  stopifnot("'reference' is not a class in 'sensitive'" = reference %in% groupLevels)
+  stopifnot("'privileged' is not a class in 'protected'" = privileged %in% groupLevels)
   if (is.null(positive)) {
     positive <- targetLevels[1]
   }
   stopifnot("'positive' is not a class in 'target'" = positive %in% targetLevels)
   confmat <- list()
   samples_list <- list()
-  inferenceLevels <- groupLevels[-which(groupLevels == reference)]
+  inferenceLevels <- groupLevels[-which(groupLevels == privileged)]
   negative <- targetLevels[-which(targetLevels == positive)]
   performance <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = 5), row.names = groupLevels))
   colnames(performance[["all"]]) <- c("support", "accuracy", "precision", "recall", "f1.score")
@@ -242,9 +240,9 @@ model_fairness <- function(data,
   colnames(metrics[["all"]]) <- colnames(parity[["all"]]) <- if (metric != "dp") c("estimate", "lb", "ub") else "estimate"
   odds.ratio <- list(all = as.data.frame(matrix(NA, nrow = length(inferenceLevels), ncol = 4), row.names = inferenceLevels))
   colnames(odds.ratio[["all"]]) <- if (is_bayesian) c("estimate", "lb", "ub", "bf10") else c("estimate", "lb", "ub", "p.value")
-  for (i in seq_len(nlevels(data[, sensitive]))) {
-    group <- levels(data[, sensitive])[i]
-    groupDat <- data[data[, sensitive] == group, ]
+  for (i in seq_len(nlevels(data[, protected]))) {
+    group <- levels(data[, protected])[i]
+    groupDat <- data[data[, protected] == group, ]
     # Confusion matrices for each group
     confmat[[group]][["matrix"]] <- table("Actual" = groupDat[, target], "Predicted" = groupDat[, predictions])
     confmat[[group]][["tp"]] <- tp <- confmat[[group]][["matrix"]][positive, positive]
@@ -285,8 +283,8 @@ model_fairness <- function(data,
   names(confmat) <- groupLevels
   # Sample estimates for each group
   if (metric != "dp") {
-    for (i in seq_len(nlevels(data[, sensitive]))) {
-      group <- levels(data[, sensitive])[i]
+    for (i in seq_len(nlevels(data[, protected]))) {
+      group <- levels(data[, protected])[i]
       if (!is_bayesian) {
         binom_test <- stats::binom.test(x = metrics[[group]][["numerator"]], n = metrics[[group]][["denominator"]], conf.level = conf.level, alternative = alternative)
         metrics[[group]][["estimate"]] <- metrics[["all"]][i, 1] <- as.numeric(binom_test$estimate)
@@ -296,8 +294,8 @@ model_fairness <- function(data,
         contingencyTable <- matrix(c(
           metrics[[group]][["numerator"]],
           metrics[[group]][["denominator"]] - metrics[[group]][["numerator"]],
-          metrics[[reference]][["numerator"]],
-          metrics[[reference]][["denominator"]] - metrics[[reference]][["numerator"]]
+          metrics[[privileged]][["numerator"]],
+          metrics[[privileged]][["denominator"]] - metrics[[privileged]][["numerator"]]
         ), ncol = 2)
         samples_list[[group]] <- .mcmc_or(counts = c(contingencyTable), prior_a = prior)
         metrics[[group]][["estimate"]] <- metrics[["all"]][i, 1] <- .comp_mode_bayes(analytical = FALSE, samples = samples_list[[group]]$prob)
@@ -306,32 +304,32 @@ model_fairness <- function(data,
       }
     }
   }
-  # Parity ratio for each group
+  # Parity for each group
   rowIndex <- 1
   for (group in groupLevels) {
-    if (group == reference) {
+    if (group == privileged) {
       parity[[group]][["estimate"]] <- parity[["all"]][rowIndex, 1] <- 1
       if (metric != "dp") {
         parity[[group]][["lb"]] <- parity[[group]][["ub"]] <- parity[["all"]][rowIndex, 2] <- parity[["all"]][rowIndex, 3] <- 1
       }
     } else {
-      parity[[group]][["estimate"]] <- parity[["all"]][rowIndex, 1] <- metrics[[group]][["estimate"]] / metrics[[reference]][["estimate"]]
+      parity[[group]][["estimate"]] <- parity[["all"]][rowIndex, 1] <- metrics[[group]][["estimate"]] / metrics[[privileged]][["estimate"]]
       if (metric != "dp") {
-        parity[[group]][["lb"]] <- parity[["all"]][rowIndex, 2] <- metrics[[group]][["lb"]] / metrics[[reference]][["estimate"]]
-        parity[[group]][["ub"]] <- parity[["all"]][rowIndex, 3] <- metrics[[group]][["ub"]] / metrics[[reference]][["estimate"]]
+        parity[[group]][["lb"]] <- parity[["all"]][rowIndex, 2] <- metrics[[group]][["lb"]] / metrics[[privileged]][["estimate"]]
+        parity[[group]][["ub"]] <- parity[["all"]][rowIndex, 3] <- metrics[[group]][["ub"]] / metrics[[privileged]][["estimate"]]
       }
     }
     rowIndex <- rowIndex + 1
   }
-  # Odds ratio for each sensitive group
+  # Odds ratio for each protected class
   if (metric != "dp") {
     rowIndex <- 1
     for (group in inferenceLevels) {
       contingencyTable <- matrix(c(
         metrics[[group]][["numerator"]],
         metrics[[group]][["denominator"]] - metrics[[group]][["numerator"]],
-        metrics[[reference]][["numerator"]],
-        metrics[[reference]][["denominator"]] - metrics[[reference]][["numerator"]]
+        metrics[[privileged]][["numerator"]],
+        metrics[[privileged]][["denominator"]] - metrics[[privileged]][["numerator"]]
       ), ncol = 2)
       if (!is_bayesian) {
         fisher_test <- stats::fisher.test(contingencyTable, alternative = alternative, conf.level = conf.level)
@@ -353,7 +351,7 @@ model_fairness <- function(data,
     }
   }
   result <- list()
-  result[["reference"]] <- reference
+  result[["privileged"]] <- privileged
   result[["positive"]] <- positive
   result[["alternative"]] <- alternative
   result[["measure"]] <- metric
