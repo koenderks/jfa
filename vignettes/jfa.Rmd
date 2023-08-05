@@ -149,7 +149,7 @@ machine learning algorithm.
 ```{r fig.align="center", fig.height=4, fig.width=6}
 # Model Fairness
 x <- model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-  reference = "Caucasian", positive = "yes"
+  privileged = "Caucasian", positive = "yes"
 )
 print(x)
 plot(x)
