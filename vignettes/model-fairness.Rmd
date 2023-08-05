@@ -112,7 +112,7 @@ model_fairness(
 )
     ```
 
-    **Interpretation:**
+    *Interpretation:*
     - *African American*: The parity ratio for African Americans compared to
       Caucasians is 2.7961, indicating that there are nearly three times more
       African Americans predicted as reoffenders in these data by the algorithm
@@ -123,8 +123,6 @@ model_fairness(
     - *Hispanic*: The ratio for Hispanics is 0.22173, meaning that there are
       about five times less Hispanics predicted as reoffenders in these data
       than that there are Caucasians.
-
-` `
 
 2. **Proportional parity (Disparate impact)**: Compares the proportion of
   positive predictions of each ethnic group with that in the reference group.
@@ -148,7 +146,7 @@ model_fairness(
 )
     ```
 
-    **Interpretation:**
+    *Interpretation:*
     - *African American*: The ratio of true positive rates (TPRs) for African
       Americans compared to Caucasians is 1.8521. This indicates that the TPR
       for African Americans is approximately 1.85 times higher than for
@@ -206,8 +204,6 @@ print(x)
 plot(x, type = "posterior")
     ```
 
-` `
-
 3. **Predictive rate parity (Equalized odds)**: Compares the overall positive
 prediction rates (e.g., reoffender prediction) of different ethnic groups with
 the reference group.
@@ -228,7 +224,7 @@ model_fairness(
 )
     ```
 
-    **Interpretation:**
+    *Interpretation:*
     - *African American*: The predictive rate parity ratio for African Americans
       is 1.1522. This suggests that the overall positive prediction rate for
       African Americans is approximately 1.15 times higher than for Caucasians.
@@ -241,8 +237,6 @@ model_fairness(
       suggesting their overall positive prediction rate is very close to that of
       the reference group (Caucasians). This indicates relatively fair treatment
       in the algorithm's overall positive predictions.
-
-` `
 
 4. **Accuracy parity**: Compares the accuracy of each ethnic group's predictions
 with the reference group.
@@ -263,7 +257,7 @@ model_fairness(
 )
     ```
 
-    **Interpretation:**
+    *Interpretation:*
     - African American: The accuracy parity ratio for African Americans is
       1.021, suggesting their accuracy is very similar to the reference group
       (Caucasians). This indicates fair treatment concerning overall accuracy.
@@ -273,8 +267,6 @@ model_fairness(
     - *Hispanic*: The ratio for Hispanics is 1.0351, suggesting their accuracy
       is slightly higher than for Caucasians, indicating potential favoritism in
       overall accuracy.
-
-` `
 
 5. **False negative rate parity (Treatment equality)**: Compares the false
 negative rates (e.g., for reoffenders) of each ethnic group with the reference
@@ -296,7 +288,7 @@ model_fairness(
 )
     ```
 
-    **Interpretation:**
+    *Interpretation:*
     - *African American*: The ratio of false negative rates (FNRs) for African
       Americans compared to Caucasians is 0.46866. A value lower than 1 suggests
       that African Americans are less likely to be falsely classified as
@@ -308,8 +300,6 @@ model_fairness(
     - *Hispanic*: The FNR parity ratio for Hispanics is 1.0121, indicating
       relatively similar rates as the reference group (Caucasians), suggesting
       fair treatment in this aspect.
-
-` `
 
 6. **False positive rate parity**: Compares the false positive rates (e.g., for
 non-reoffenders) of each ethnic group with the reference group.
@@ -330,7 +320,7 @@ model_fairness(
 )
     ```
 
-    **Interpretation:**
+    *Interpretation:*
     - *African American*: The false positive rate parity ratio for African
       Americans is 1.8739. This indicates that African Americans are
       approximately 1.87 times more likely to be falsely predicted as
@@ -343,8 +333,6 @@ model_fairness(
       suggesting they are less likely to be falsely predicted as reoffenders
       compared to Caucasians. This indicates potential fair treatment of
       Hispanics in false positive predictions.
-
-` `
 
 7. **True positive rate parity (Equal opportunity)**: Compares the true positive
 rates (e.g., for reoffenders) of each ethnic group with the reference group.
@@ -365,7 +353,7 @@ model_fairness(
 )
     ```
 
-    **Interpretation:**
+    *Interpretation:*
     - *African American*: The true positive rate parity ratio for African
       Americans is 1.5943. This indicates that African Americans are
       approximately 1.59 times more likely to be correctly predicted as
@@ -379,8 +367,6 @@ model_fairness(
       suggesting their true positive rate is very close to that of the reference
       group (Caucasians). This indicates relatively fair treatment in the
       algorithm's true positive predictions.
-
-` `
 
 8. **Negative predicted value parity**: Compares the negative predicted values
 (e.g., for non-reoffenders) of each ethnic group with the reference group.
@@ -401,7 +387,7 @@ model_fairness(
 )
     ```
 
-    **Interpretation:**
+    *Interpretation:*
     - *African American*: The Negative predicted value (NPV) parity ratio for
       African Americans is 0.98013. A value close to 1 indicates that the NPV
       for African Americans is very similar to the reference group (Caucasians).
@@ -413,8 +399,6 @@ model_fairness(
     - *Hispanic*: The NPV parity ratio for Hispanics is 1.0326, suggesting that
       their NPV is slightly higher than for Caucasians. This indicates potential
       favoritism towards Hispanics in predicting non-reoffenders.
-
-` `
 
 9. **Specificity parity (True negative rate parity)**: Compares the specificity
 (true negative rate) of each ethnic group with the reference group.
@@ -435,7 +419,7 @@ model_fairness(
 )
     ```
 
-    **Interpretation:**
+    *Interpretation:*
     - *African American*: The specificity parity ratio for African Americans is
       0.75105. A value lower than 1 indicates that the specificity for African
       Americans is lower than for Caucasians. This suggests potential bias in
