@@ -1164,7 +1164,9 @@ print.summary.jfaFairness <- function(x, digits = getOption("digits"), ...) {
 summary.jfaFairness <- function(object, digits = getOption("digits"), ...) {
   out <- list()
   out[["privileged"]] <- object[["privileged"]]
+  out[["unprivileged"]] <- object[["unprivileged"]]
   out[["positive"]] <- object[["positive"]]
+  out[["negative"]] <- object[["negative"]]
   out[["confusion.matrix"]] <- object[["confusion.matrix"]]
   out[["metric"]] <- object[["metric"]]
   out[["performance"]] <- object[["performance"]]
