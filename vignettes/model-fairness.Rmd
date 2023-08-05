@@ -85,16 +85,19 @@ represents a false positive in the confusion matrix.
 | `TwoYrRecidivism` = `no`  | 885 (`TN`)         | 629 (`FP`)            |
 | `TwoYrRecidivism` = `yes` | 411 (`FN`)         | 1250 (`TP`)           |
 
-Let's interpret the fairness metrics for the African American, Asian, and
-Hispanic groups in comparison to the reference group (Caucasian) one by one.
+For illustrative purposes, let's interpret the full set of fairness metrics for
+the African American, Asian, and Hispanic groups in comparison to the reference
+group (Caucasian). See Pessach & Shmueli (2022) for a more detailed explanation
+of these metrics.
 
 1. **Demographic parity (Statistical parity)**: Compares the number of positive
 predictions (e.g., reoffenders) between each ethnic group and the reference
 group. Note that, since demographic parity is not a proportion, statistical
 inference about its equality to the reference group is not supported for this
-metric.
+metric. 
 
-$$DP = TP + FP$$
+The formula for the demographic parity metric is $DP = TP + FP$, and the parity
+ratio for sensitive group $i$ is given by $\frac{DP_{i}}{DP_{reference}}$.
 
 ```{r}
 model_fairness(
@@ -119,10 +122,15 @@ model_fairness(
   five times less Hispanics predicted as reoffenders in these data than that
   there are Caucasians.
 
-2. **Proportional parity (Disparate impact)**: Compares the positive prediction
-rates (e.g., true positive rate) of each ethnic group with the reference group.
+2. **Proportional parity (Disparate impact)**: Compares the proportion of
+positive predictions of each ethnic group with that in the reference group. For
+example, in the case that a positive prediction represents a reoffender, equal
+proportional parity requires the proportion of predicted reoffenders to be
+similar across groups.
 
-$$PP = \frac{TP + FP}{TP + FP + TN + FN}$$
+The formula for the proportional parity metric is 
+$PP = \frac{TP + FP}{TP + FP + TN + FN}$, and the parity ratio for sensitive
+group $i$ is given by $\frac{PP_{i}}{PP_{reference}}$.
 
 ```{r}
 model_fairness(
@@ -174,7 +182,7 @@ function call again, but instead of printing the output to the console, this
 time we store the output in `x` and run the `summary()` and `plot()` functions
 on this object.
 
-```{r}
+```{r, fig.align="center", fig.height=4, fig.width=6}
 x <- model_fairness(
   data = compas,
   sensitive = "Ethnicity",
@@ -192,7 +200,9 @@ plot(x)
 prediction rates (e.g., reoffender prediction) of different ethnic groups with
 the reference group.
 
-$$PRP = \frac{TP}{TP + FP}$$
+The formula for the predictive rate parity metric is $PRP = \frac{TP}{TP + FP}$,
+and the parity ratio for sensitive group $i$ is given by
+$\frac{PRP_{i}}{PRP_{reference}}$.
 
 ```{r}
 model_fairness(
@@ -222,7 +232,9 @@ model_fairness(
 4. **Accuracy parity**: Compares the accuracy of each ethnic group's predictions
 with the reference group.
 
-$$AP = \frac{TP + TN}{TP + FP + TN + FN}$$
+The formula for the accuracy parity metric is
+$AP = \frac{TP + TN}{TP + FP + TN + FN}$, and the parity ratio for sensitive
+group $i$ is given by $\frac{AP_{i}}{AP_{reference}}$.
 
 ```{r}
 model_fairness(
@@ -250,7 +262,9 @@ model_fairness(
 negative rates (e.g., for reoffenders) of each ethnic group with the reference
 group.
 
-$$FNRP = \frac{FN}{TP + FN}$$
+The formula for the false negative rate parity metric is
+$FNRP = \frac{FN}{TP + FN}$, and the parity ratio for sensitive group $i$ is
+given by $\frac{FNRP_{i}}{FNRP_{reference}}$.
 
 ```{r}
 model_fairness(
@@ -279,7 +293,9 @@ model_fairness(
 6. **False positive rate parity**: Compares the false positive rates (e.g., for
 non-reoffenders) of each ethnic group with the reference group.
 
-$$FPRP = \frac{FP}{TN + FP}$$
+The formula for the false positive rate parity metric is
+$FPRP = \frac{FP}{TN + FP}$, and the parity ratio for sensitive group $i$ is
+given by $\frac{FPRP_{i}}{FPRP_{reference}}$.
 
 ```{r}
 model_fairness(
@@ -309,7 +325,9 @@ model_fairness(
 7. **True positive rate parity (Equal opportunity)**: Compares the true positive
 rates (e.g., for reoffenders) of each ethnic group with the reference group.
 
-$$TPRP = \frac{TP}{TP + FN}$$
+The formula for the true positive rate parity metric is
+$TPRP = \frac{TP}{TP + FN}$, and the parity ratio for sensitive group $i$ is
+given by $\frac{TPRP_{i}}{TPRP_{reference}}$.
 
 ```{r}
 model_fairness(
@@ -340,7 +358,9 @@ model_fairness(
 8. **Negative predicted value parity**: Compares the negative predicted values
 (e.g., for non-reoffenders) of each ethnic group with the reference group.
 
-$$NPVP = \frac{TN}{TN + FN}$$
+The formula for the negative predicted value parity metric is
+$NPVP = \frac{TN}{TN + FN}$, and the parity ratio for sensitive group $i$ is
+given by $\frac{NPVP_{i}}{NPVP_{reference}}$.
 
 ```{r}
 model_fairness(
@@ -369,7 +389,9 @@ model_fairness(
 9. **Specificity parity (True negative rate parity)**: Compares the specificity
 (true negative rate) of each ethnic group with the reference group.
 
-$$SP = \frac{TN}{TN + FP}$$
+The formula for the specificity parity metric is $SP = \frac{TN}{TN + FP}$, and
+the parity ratio for sensitive group $i$ is given by
+$\frac{SP_{i}}{SP_{reference}}$.
 
 ```{r}
 model_fairness(
