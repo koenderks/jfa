@@ -117,7 +117,9 @@
 #' @return An object of class \code{jfaFairness} containing:
 #'
 #' \item{privileged}{The privileged class for computing the fairness metrics.}
+#' \item{unprivileged}{The unprivileged class(es).}
 #' \item{positive}{The positive class used in computing the fairness metrics.}
+#' \item{negative}{The negative class used in computing the fairness metrics.}
 #' \item{alternative}{The type of confidence interval.}
 #' \item{confusion.matrix}{A list of confusion matrices for each group.}
 #' \item{performance}{A data frame containing performance metrics for each
@@ -221,8 +223,9 @@ model_fairness <- function(data,
   stopifnot("'predictions' must be a factor column" = is.factor(data[, predictions]))
   groups <- levels(data[, protected])
   targetLevels <- levels(data[, target])
-  stopifnot("'target' must contain exactly 2 factor levels" = length(targetLevels) == 2) # Binary classification only
-  stopifnot("'predictions' must contain exactly 2 factor levels" = nlevels(data[, predictions]) == 2) # Binary classification only
+  stopifnot("'target' must contain at least 2 factor levels" = length(targetLevels) > 1)
+  stopifnot("'predictions' must contain at least 1 factor level" = nlevels(data[, predictions]) > 0)
+  stopifnot("'predictions' contain a factor level not in 'target'" = all(levels(data[, predictions]) %in% targetLevels))
   if (is.null(privileged)) {
     privileged <- groups[1]
   }
@@ -248,9 +251,9 @@ model_fairness <- function(data,
     # Confusion matrices for each group
     confmat[[group]][["matrix"]] <- table("Actual" = groupDat[, target], "Predicted" = groupDat[, predictions])
     confmat[[group]][["tp"]] <- tp <- confmat[[group]][["matrix"]][positive, positive]
-    confmat[[group]][["fp"]] <- fp <- confmat[[group]][["matrix"]][negative, positive]
-    confmat[[group]][["tn"]] <- tn <- confmat[[group]][["matrix"]][negative, negative]
-    confmat[[group]][["fn"]] <- fn <- confmat[[group]][["matrix"]][positive, negative]
+    confmat[[group]][["fp"]] <- fp <- sum(confmat[[group]][["matrix"]][negative, positive])
+    confmat[[group]][["tn"]] <- tn <- sum(confmat[[group]][["matrix"]][negative, negative])
+    confmat[[group]][["fn"]] <- fn <- sum(confmat[[group]][["matrix"]][positive, negative])
     # Performance measures for each group
     performance[[group]][["support"]] <- performance[["all"]][i, 1] <- sum(confmat[[group]][["matrix"]])
     performance[[group]][["accuracy"]] <- performance[["all"]][i, 2] <- (confmat[[group]][["tp"]] + confmat[[group]][["tn"]]) / (confmat[[group]][["tp"]] + confmat[[group]][["tn"]] + confmat[[group]][["fp"]] + confmat[[group]][["fn"]])
@@ -354,7 +357,9 @@ model_fairness <- function(data,
   }
   result <- list()
   result[["privileged"]] <- privileged
+  result[["unprivileged"]] <- unprivileged
   result[["positive"]] <- positive
+  result[["negative"]] <- negative
   result[["alternative"]] <- alternative
   result[["measure"]] <- metric
   result[["confusion.matrix"]] <- confmat

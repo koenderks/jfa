@@ -62,7 +62,9 @@ performed.}
 An object of class \code{jfaFairness} containing:
 
 \item{privileged}{The privileged class for computing the fairness metrics.}
+\item{unprivileged}{The unprivileged class(es).}
 \item{positive}{The positive class used in computing the fairness metrics.}
+\item{negative}{The negative class used in computing the fairness metrics.}
 \item{alternative}{The type of confidence interval.}
 \item{confusion.matrix}{A list of confusion matrices for each group.}
 \item{performance}{A data frame containing performance metrics for each

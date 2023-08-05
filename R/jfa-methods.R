@@ -1082,7 +1082,11 @@ print.summary.jfaFairness <- function(x, digits = getOption("digits"), ...) {
     "dp" = "Demographic parity (Statistical parity)"
   )
   cat("\nFairness metric:   ", measure)
-  cat("\nModel type:         Binary classification")
+  if (length(x[["negative"]]) == 1) {
+    cat("\nModel type:         Binary classification")
+  } else {
+    cat("\nModel type:         Multi-class classification")
+  }
   cat(paste0("\nPrivileged class:   ", x[["privileged"]]))
   cat("\nPositive class:    ", x[["positive"]], "\n")
   if (!isFALSE(x[["prior"]])) {
