@@ -1097,11 +1097,11 @@ print.summary.jfaFairness <- function(x, digits = getOption("digits"), ...) {
     "F1 score"
   )
   print(x[["performance"]][["all"]])
-  groupLevels <- names(x[["confusion.matrix"]])
+  groups <- names(x[["confusion.matrix"]])
   cat(paste0("\nSample estimates:\n"))
-  rownames <- groupLevels
+  rownames <- groups
   rownames[which(rownames == x[["privileged"]])] <- paste0(rownames[which(rownames == x[["privileged"]])], " (P)")
-  df <- data.frame(matrix("-", nrow = length(groupLevels), ncol = if (x[["measure"]] == "dp") 2 else 4), row.names = rownames)
+  df <- data.frame(matrix("-", nrow = length(groups), ncol = if (x[["measure"]] == "dp") 2 else 4), row.names = rownames)
   measure <- switch(x[["measure"]],
     "pp" = "Proportion",
     "prp" = "Precision",
@@ -1122,31 +1122,31 @@ print.summary.jfaFairness <- function(x, digits = getOption("digits"), ...) {
     }
   }
   colnames(df) <- colnames
-  for (i in seq_along(groupLevels)) {
-    metric_est <- format(x[["metric"]][[groupLevels[i]]]$estimate, digits = max(1L, digits - 2L))
+  for (i in seq_along(groups)) {
+    metric_est <- format(x[["metric"]][[groups[i]]]$estimate, digits = max(1L, digits - 2L))
     if (x[["measure"]] == "dp") {
       df[i, 1] <- metric_est
     } else {
-      metric_lb <- format(x[["metric"]][[groupLevels[i]]]$lb, digits = max(1L, digits - 2L))
-      metric_ub <- format(x[["metric"]][[groupLevels[i]]]$ub, digits = max(1L, digits - 2L))
+      metric_lb <- format(x[["metric"]][[groups[i]]]$lb, digits = max(1L, digits - 2L))
+      metric_ub <- format(x[["metric"]][[groups[i]]]$ub, digits = max(1L, digits - 2L))
       df[i, 1] <- paste0(metric_est, " [", metric_lb, ", ", metric_ub, "]")
     }
-    if (groupLevels[i] != x[["privileged"]]) {
-      parity_est <- format(x[["parity"]][[groupLevels[i]]]$estimate, digits = max(1L, digits - 2L))
+    if (groups[i] != x[["privileged"]]) {
+      parity_est <- format(x[["parity"]][[groups[i]]]$estimate, digits = max(1L, digits - 2L))
       if (x[["measure"]] == "dp") {
         df[i, 2] <- parity_est
       } else {
-        parity_lb <- format(x[["parity"]][[groupLevels[i]]]$lb, digits = max(1L, digits - 2L))
-        parity_ub <- format(x[["parity"]][[groupLevels[i]]]$ub, digits = max(1L, digits - 2L))
+        parity_lb <- format(x[["parity"]][[groups[i]]]$lb, digits = max(1L, digits - 2L))
+        parity_ub <- format(x[["parity"]][[groups[i]]]$ub, digits = max(1L, digits - 2L))
         df[i, 2] <- paste0(parity_est, " [", parity_lb, ", ", parity_ub, "]")
-        odds_ratio_est <- format(x[["odds.ratio"]][[groupLevels[i]]]$estimate, digits = max(1L, digits - 2L))
-        odds_ratio_lb <- format(x[["odds.ratio"]][[groupLevels[i]]]$lb, digits = max(1L, digits - 2L))
-        odds_ratio_ub <- format(x[["odds.ratio"]][[groupLevels[i]]]$ub, digits = max(1L, digits - 2L))
+        odds_ratio_est <- format(x[["odds.ratio"]][[groups[i]]]$estimate, digits = max(1L, digits - 2L))
+        odds_ratio_lb <- format(x[["odds.ratio"]][[groups[i]]]$lb, digits = max(1L, digits - 2L))
+        odds_ratio_ub <- format(x[["odds.ratio"]][[groups[i]]]$ub, digits = max(1L, digits - 2L))
         df[i, 3] <- paste0(odds_ratio_est, " [", odds_ratio_lb, ", ", odds_ratio_ub, "]")
         if (isFALSE(x[["prior"]])) {
-          df[i, 4] <- format.pval(x[["odds.ratio"]][[groupLevels[i]]][["p.value"]], digits = max(1L, digits - 2L))
+          df[i, 4] <- format.pval(x[["odds.ratio"]][[groups[i]]][["p.value"]], digits = max(1L, digits - 2L))
         } else {
-          df[i, 4] <- format(x[["odds.ratio"]][[groupLevels[i]]][["bf10"]], digits = max(1L, digits - 2L))
+          df[i, 4] <- format(x[["odds.ratio"]][[groups[i]]][["bf10"]], digits = max(1L, digits - 2L))
         }
       }
     }
@@ -1178,9 +1178,9 @@ summary.jfaFairness <- function(object, digits = getOption("digits"), ...) {
 plot.jfaFairness <- function(x, type = c("estimates", "posterior"), ...) {
   type <- match.arg(type)
   estimate <- lb <- ub <- group <- y <- NULL
-  groupLevels <- names(x[["confusion.matrix"]])
-  ind <- which(groupLevels == x[["privileged"]])
-  inferenceLevels <- groupLevels[-ind]
+  groups <- names(x[["confusion.matrix"]])
+  ind <- which(groups == x[["privileged"]])
+  unprivileged <- groups[-ind]
   if (type == "estimates") {
     ratio <- x[["parity"]][["all"]]
     ratio[["group"]] <- rownames(ratio)
@@ -1201,7 +1201,7 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior"), ...) {
     } else {
       ratio$type <- ifelse(ratio$ub < 1 | ratio$lb > 1, yes = "Deviation", no = "Expected")
     }
-    ratio$type[which(groupLevels == x[["privileged"]])] <- "Privileged class"
+    ratio$type[which(groups == x[["privileged"]])] <- "Privileged class"
     ratio$type <- factor(ratio$type, levels = c("Privileged class", "Expected", "Deviation"))
     p <- ggplot2::ggplot(data = ratio, mapping = ggplot2::aes(x = group, y = estimate, group = group, fill = type)) +
       ggplot2::geom_col(colour = "black") +
@@ -1216,23 +1216,23 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior"), ...) {
     stopifnot("plot not supported for frequentist inference" = !isFALSE(x[["prior"]]))
     stopifnot("plot not supported for demographic parity" = x[["measure"]] != "dp")
     plotdata <- data.frame(x = numeric(), y = numeric(), group = character(), xmin = numeric(), xmax = numeric(), type = character())
-    for (i in seq_along(inferenceLevels)) {
+    for (i in seq_along(unprivileged)) {
       tmp <- data.frame(
-        x = x[["odds.ratio"]][[inferenceLevels[i]]]$density$x,
-        y = x[["odds.ratio"]][[inferenceLevels[i]]]$density$y,
-        group = inferenceLevels[i],
-        xmin = x[["odds.ratio"]][[inferenceLevels[i]]]$density$xmin,
-        xmax = x[["odds.ratio"]][[inferenceLevels[i]]]$density$xmax,
+        x = x[["odds.ratio"]][[unprivileged[i]]]$density$x,
+        y = x[["odds.ratio"]][[unprivileged[i]]]$density$y,
+        group = unprivileged[i],
+        xmin = x[["odds.ratio"]][[unprivileged[i]]]$density$xmin,
+        xmax = x[["odds.ratio"]][[unprivileged[i]]]$density$xmax,
         type = "Posterior"
       )
       plotdata <- rbind(plotdata, tmp)
     }
     tmp_prior <- data.frame(
-      x = x[["odds.ratio"]][[inferenceLevels[1]]]$density$prior_x,
-      y = x[["odds.ratio"]][[inferenceLevels[1]]]$density$prior_y,
-      group = inferenceLevels[1],
-      xmin = x[["odds.ratio"]][[inferenceLevels[1]]]$density$xmin,
-      xmax = x[["odds.ratio"]][[inferenceLevels[1]]]$density$xmax,
+      x = x[["odds.ratio"]][[unprivileged[1]]]$density$prior_x,
+      y = x[["odds.ratio"]][[unprivileged[1]]]$density$prior_y,
+      group = unprivileged[1],
+      xmin = x[["odds.ratio"]][[unprivileged[1]]]$density$xmin,
+      xmax = x[["odds.ratio"]][[unprivileged[1]]]$density$xmax,
       type = "Prior"
     )
     plotdata <- rbind(plotdata, tmp_prior)
@@ -1249,8 +1249,8 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior"), ...) {
       ggplot2::scale_x_continuous(name = "Log odds ratio", breaks = xBreaks, limits = range(xBreaks)) +
       ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks), inherit.aes = FALSE) +
       ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf, inherit.aes = FALSE) +
-      (if (length(inferenceLevels) == 1) ggplot2::scale_color_manual(name = NULL, values = "black") else ggplot2::scale_color_brewer(name = NULL, palette = "Dark2"))
+      (if (length(unprivileged) == 1) ggplot2::scale_color_manual(name = NULL, values = "black") else ggplot2::scale_color_brewer(name = NULL, palette = "Dark2"))
   }
-  p <- .theme_jfa(p, legend.position = if (length(inferenceLevels) == 1 && type == "posterior") "none" else "top")
+  p <- .theme_jfa(p, legend.position = if (length(unprivileged) == 1 && type == "posterior") "none" else "top")
   return(p)
 }

@@ -219,28 +219,28 @@ model_fairness <- function(data,
   stopifnot("'target' must be a factor column" = is.factor(data[, target]))
   stopifnot("'predictions' does not exist in 'data'" = predictions %in% colnames(data))
   stopifnot("'predictions' must be a factor column" = is.factor(data[, predictions]))
-  groupLevels <- levels(data[, protected])
+  groups <- levels(data[, protected])
   targetLevels <- levels(data[, target])
   stopifnot("'target' must contain exactly 2 factor levels" = length(targetLevels) == 2) # Binary classification only
   stopifnot("'predictions' must contain exactly 2 factor levels" = nlevels(data[, predictions]) == 2) # Binary classification only
   if (is.null(privileged)) {
-    privileged <- groupLevels[1]
+    privileged <- groups[1]
   }
-  stopifnot("'privileged' is not a class in 'protected'" = privileged %in% groupLevels)
+  stopifnot("'privileged' is not a class in 'protected'" = privileged %in% groups)
   if (is.null(positive)) {
     positive <- targetLevels[1]
   }
   stopifnot("'positive' is not a class in 'target'" = positive %in% targetLevels)
   confmat <- list()
   samples_list <- list()
-  inferenceLevels <- groupLevels[-which(groupLevels == privileged)]
+  unprivileged <- groups[-which(groups == privileged)]
   negative <- targetLevels[-which(targetLevels == positive)]
-  performance <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = 5), row.names = groupLevels))
+  performance <- list(all = as.data.frame(matrix(NA, nrow = length(groups), ncol = 5), row.names = groups))
   colnames(performance[["all"]]) <- c("support", "accuracy", "precision", "recall", "f1.score")
-  metrics <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = if (metric == "dp") 1 else 3), row.names = groupLevels))
-  parity <- list(all = as.data.frame(matrix(NA, nrow = length(groupLevels), ncol = if (metric == "dp") 1 else 3), row.names = groupLevels))
+  metrics <- list(all = as.data.frame(matrix(NA, nrow = length(groups), ncol = if (metric == "dp") 1 else 3), row.names = groups))
+  parity <- list(all = as.data.frame(matrix(NA, nrow = length(groups), ncol = if (metric == "dp") 1 else 3), row.names = groups))
   colnames(metrics[["all"]]) <- colnames(parity[["all"]]) <- if (metric != "dp") c("estimate", "lb", "ub") else "estimate"
-  odds.ratio <- list(all = as.data.frame(matrix(NA, nrow = length(inferenceLevels), ncol = 4), row.names = inferenceLevels))
+  odds.ratio <- list(all = as.data.frame(matrix(NA, nrow = length(unprivileged), ncol = 4), row.names = unprivileged))
   colnames(odds.ratio[["all"]]) <- if (is_bayesian) c("estimate", "lb", "ub", "bf10") else c("estimate", "lb", "ub", "p.value")
   for (i in seq_len(nlevels(data[, protected]))) {
     group <- levels(data[, protected])[i]
@@ -282,7 +282,7 @@ model_fairness <- function(data,
       )
     }
   }
-  names(confmat) <- groupLevels
+  names(confmat) <- groups
   # Sample estimates for each group
   if (metric != "dp") {
     for (i in seq_len(nlevels(data[, protected]))) {
@@ -308,7 +308,7 @@ model_fairness <- function(data,
   }
   # Parity for each group
   rowIndex <- 1
-  for (group in groupLevels) {
+  for (group in groups) {
     if (group == privileged) {
       parity[[group]][["estimate"]] <- parity[["all"]][rowIndex, 1] <- 1
       if (metric != "dp") {
@@ -326,7 +326,7 @@ model_fairness <- function(data,
   # Odds ratio for each protected class
   if (metric != "dp") {
     rowIndex <- 1
-    for (group in inferenceLevels) {
+    for (group in unprivileged) {
       contingencyTable <- matrix(c(
         metrics[[group]][["numerator"]],
         metrics[[group]][["denominator"]] - metrics[[group]][["numerator"]],
