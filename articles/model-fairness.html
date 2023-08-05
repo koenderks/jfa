@@ -264,6 +264,9 @@ there are about five times less Hispanics predicted as reoffenders in
 these data than that there are Caucasians.</li>
 </ul>
 </li>
+</ol>
+<p><code></code></p>
+<ol start="2" style="list-style-type: decimal">
 <li>
 <p><strong>Proportional parity (Disparate impact)</strong>: Compares
 the proportion of positive predictions of each ethnic group with that in
@@ -396,15 +399,18 @@ in the figure.</p>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## sample estimates (parity ratio):</span></span>
-<span><span class="co">##  African_American: 1.8822 [1.8159, 1.9238], BF₁₀ = 4.1528e+81</span></span>
-<span><span class="co">##  Asian: 0.39122 [0.16999, 0.92201], BF₁₀ = 0.26796</span></span>
-<span><span class="co">##  Hispanic: 0.92075 [0.8009, 1.0484], BF₁₀ = 0.10615</span></span>
-<span><span class="co">##  Native_American: 1.012 [0.65621, 2.2806], BF₁₀ = 0.018438</span></span>
-<span><span class="co">##  Other: 0.77929 [0.65137, 0.92955], BF₁₀ = 1.815</span></span></code></pre>
+<span><span class="co">##  African_American: 1.8432 [1.8072, 1.9171], BF₁₀ = 4.1528e+81</span></span>
+<span><span class="co">##  Asian: 0.48757 [0.165, 0.90182], BF₁₀ = 0.26796</span></span>
+<span><span class="co">##  Hispanic: 0.9276 [0.80204, 1.0534], BF₁₀ = 0.10615</span></span>
+<span><span class="co">##  Native_American: 0.95845 [0.64846, 2.2854], BF₁₀ = 0.018438</span></span>
+<span><span class="co">##  Other: 0.76613 [0.64516, 0.94005], BF₁₀ = 1.815</span></span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="model-fairness_files/figure-html/unnamed-chunk-6-1.png" width="576" style="display: block; margin: auto;"></p>
 </li>
+</ol>
+<p><code></code></p>
+<ol start="3" style="list-style-type: decimal">
 <li>
 <p><strong>Predictive rate parity (Equalized odds)</strong>:
 Compares the overall positive prediction rates (e.g., reoffender
@@ -456,6 +462,9 @@ to that of the reference group (Caucasians). This indicates relatively
 fair treatment in the algorithm’s overall positive predictions.</li>
 </ul>
 </li>
+</ol>
+<p><code></code></p>
+<ol start="4" style="list-style-type: decimal">
 <li>
 <p><strong>Accuracy parity</strong>: Compares the accuracy of each
 ethnic group’s predictions with the reference group.</p>
@@ -500,6 +509,9 @@ their accuracy is slightly higher than for Caucasians, indicating
 potential favoritism in overall accuracy.</li>
 </ul>
 </li>
+</ol>
+<p><code></code></p>
+<ol start="5" style="list-style-type: decimal">
 <li>
 <p><strong>False negative rate parity (Treatment equality)</strong>:
 Compares the false negative rates (e.g., for reoffenders) of each ethnic
@@ -549,6 +561,9 @@ indicating relatively similar rates as the reference group (Caucasians),
 suggesting fair treatment in this aspect.</li>
 </ul>
 </li>
+</ol>
+<p><code></code></p>
+<ol start="6" style="list-style-type: decimal">
 <li>
 <p><strong>False positive rate parity</strong>: Compares the false
 positive rates (e.g., for non-reoffenders) of each ethnic group with the
@@ -601,6 +616,9 @@ potential fair treatment of Hispanics in false positive
 predictions.</li>
 </ul>
 </li>
+</ol>
+<p><code></code></p>
+<ol start="7" style="list-style-type: decimal">
 <li>
 <p><strong>True positive rate parity (Equal opportunity)</strong>:
 Compares the true positive rates (e.g., for reoffenders) of each ethnic
@@ -652,6 +670,9 @@ the reference group (Caucasians). This indicates relatively fair
 treatment in the algorithm’s true positive predictions.</li>
 </ul>
 </li>
+</ol>
+<p><code></code></p>
+<ol start="8" style="list-style-type: decimal">
 <li>
 <p><strong>Negative predicted value parity</strong>: Compares the
 negative predicted values (e.g., for non-reoffenders) of each ethnic
@@ -702,6 +723,9 @@ indicates potential favoritism towards Hispanics in predicting
 non-reoffenders.</li>
 </ul>
 </li>
+</ol>
+<p><code></code></p>
+<ol start="9" style="list-style-type: decimal">
 <li>
 <p><strong>Specificity parity (True negative rate parity)</strong>:
 Compares the specificity (true negative rate) of each ethnic group with
