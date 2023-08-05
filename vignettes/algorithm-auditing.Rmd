@@ -25,7 +25,7 @@ Welcome to the 'Algorithm auditing' vignette of the **jfa** package. Here you
 can find a detailed explanation of the functions in the package that facilitate
 auditing of algorithms and predictive models. For more detailed explanations of
 each function, read the other vignettes on the
-[package website](https://koenderks.github.io/jfa/).
+[package website](https://koenderks.github.io/jfa/articles/index.html).
 
 ## Functions and intended usage
 

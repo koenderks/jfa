@@ -29,7 +29,7 @@ a population, and evaluate misstatement in a data sample. The **jfa** package
 enables users to create a prior probability distribution to perform Bayesian
 audit sampling using these functions. For more detailed explanations of each
 function, read the other vignettes on the
-[package website](https://koenderks.github.io/jfa/).
+[package website](https://koenderks.github.io/jfa/articles/index.html).
 
 ## Cheat sheet
 
