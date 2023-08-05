@@ -1100,7 +1100,7 @@ print.summary.jfaModelFairness <- function(x, digits = getOption("digits"), ...)
   groupLevels <- names(x[["confusion.matrix"]])
   cat(paste0("\nSample estimates:\n"))
   rownames <- groupLevels
-  rownames[which(rownames == x[["privileged"]])] <- paste0(rownames[which(rownames == x[["privileged"]])], " (R)")
+  rownames[which(rownames == x[["privileged"]])] <- paste0(rownames[which(rownames == x[["privileged"]])], " (P)")
   df <- data.frame(matrix("-", nrow = length(groupLevels), ncol = if (x[["measure"]] == "dp") 2 else 4), row.names = rownames)
   measure <- switch(x[["measure"]],
     "pp" = "Proportion",
