@@ -50,10 +50,10 @@ defendant becoming a recidivist (repeated offender).
 
 The `compas` data is included in the package and contains predictions of the
 COMPAS software for several cases. The data can be loaded with `data("compas")`
-and contains for each defendant, whether the defendant did commit a crime within two
-years after the court case (`TwoYrRecidivism`), some personal characteristics
-like gender and ethnicity, and whether the software predicted the defendant to
-be a recidivist (`Predicted`). 
+and contains for each defendant, whether the defendant did commit a crime within
+two years after the court case (`TwoYrRecidivism`), some personal
+characteristics like gender and ethnicity, and whether the software predicted
+the defendant to be a recidivist (`Predicted`). 
 
 ```{r}
 data("compas")
@@ -61,9 +61,9 @@ head(compas)
 ```
 
 We will investigate whether the algorithm is fair with respect to the sensitive
-attribute race. Considering the context, a positive prediction means that a
-defendant is classified as a reoffender, and a negative prediction means that a
-defendant is classified as a non-reoffender. The fairness metrics offer
+attribute `Ethnicity`. Considering the context, a positive prediction means that
+a defendant is classified as a reoffender, and a negative prediction means that
+a defendant is classified as a non-reoffender. The fairness metrics offer
 information on whether there are any disparities in the algorithm's predictions
 across different ethnic groups. By calculating and reviewing these metrics, we
 can get an indication of whether the algorithm exhibits any discriminatory
@@ -76,29 +76,31 @@ Hispanic groups in comparison to the reference group (Caucasian) one by one.
 
 1. **Demographic parity (Statistical parity)**: Compares the number of positive
 predictions (e.g., reoffenders) between each ethnic group and the reference
-group. Note that `jfa` does not support statistical inference for demographic
-parity as of now.
+group. Note that, since demographic parity is not a proportion, statistical
+inference about its equality to the reference group is not supported for this
+metric.
 
-```{r fig.align="center", fig.height=5, fig.width=7}
+```{r}
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
   reference = "Caucasian", positive = "yes", metric = "dp"
 )
 ```
 
-- *African American*: The ratio of positive predictions for African Americans
-  compared to Caucasians is 2.7961, indicating that there are nearly three
-  times more African Americans predicted as reoffenders than Caucasians.
+- *African American*: The parity ratio for African Americans compared to
+  Caucasians is 2.7961, indicating that there are nearly three times more
+  African Americans predicted as reoffenders in these data by the algorithm than
+  Caucasians.
 - *Asian*: The ratio for Asians is very close to zero (0.0059524), indicating
   that there are many less Asians (4) that are predicted as reoffenders in
-  these data than there are Caucasians.
+  these data than there are Caucasians (672).
 - *Hispanic*: The ratio for Hispanics is 0.22173, meaning that there are about
-  five times less Hispanics predicted as reoffenders than that there are
-  Caucasians.
+  five times less Hispanics predicted as reoffenders in these data than that
+  there are Caucasians.
 
 2. **Proportional parity (Disparate impact)**: Compares the positive prediction
 rates (e.g., true positive rate) of each ethnic group with the reference group.
 
-```{r fig.align="center", fig.height=5, fig.width=7}
+```{r}
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
   reference = "Caucasian", positive = "yes", metric = "pp"
 )
@@ -123,7 +125,7 @@ provides credible intervals and Bayes factors. Like in the other functions in
 setting `prior = TRUE`. The resulting Bayes factors in favor of rejection of the
 null hypothesis ($BF_{10}$) are shown in the output below.
 
-```{r fig.align="center", fig.height=5, fig.width=7}
+```{r}
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
   reference = "Caucasian", positive = "yes", metric = "pp", prior = TRUE
 )
@@ -133,7 +135,7 @@ model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
 prediction rates (e.g., reoffender prediction) of different ethnic groups with
 the reference group.
 
-```{r fig.align="center", fig.height=5, fig.width=7}
+```{r}
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
   reference = "Caucasian", positive = "yes", metric = "prp"
 )
@@ -155,7 +157,7 @@ model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
 4. **Accuracy parity**: Compares the accuracy of each ethnic group's predictions
 with the reference group.
 
-```{r fig.align="center", fig.height=5, fig.width=7}
+```{r}
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
   reference = "Caucasian", positive = "yes", metric = "ap"
 )
@@ -175,7 +177,7 @@ model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
 negative rates (e.g., for reoffenders) of each ethnic group with the reference
 group.
 
-```{r fig.align="center", fig.height=5, fig.width=7}
+```{r}
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
   reference = "Caucasian", positive = "yes", metric = "fnrp"
 )
@@ -196,7 +198,7 @@ model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
 6. **False positive rate parity**: Compares the false positive rates (e.g., for
 non-reoffenders) of each ethnic group with the reference group.
 
-```{r fig.align="center", fig.height=5, fig.width=7}
+```{r}
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
   reference = "Caucasian", positive = "yes", metric = "fprp"
 )
@@ -218,7 +220,7 @@ model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
 7. **True positive rate parity (Equal opportunity)**: Compares the true positive
 rates (e.g., for reoffenders) of each ethnic group with the reference group.
 
-```{r fig.align="center", fig.height=5, fig.width=7}
+```{r}
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
   reference = "Caucasian", positive = "yes", metric = "tprp"
 )
@@ -241,7 +243,7 @@ model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
 8. **Negative predicted value parity**: Compares the negative predicted values
 (e.g., for non-reoffenders) of each ethnic group with the reference group.
 
-```{r fig.align="center", fig.height=5, fig.width=7}
+```{r}
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
   reference = "Caucasian", positive = "yes", metric = "npvp"
 )
@@ -262,7 +264,7 @@ model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
 9. **Specificity parity (True negative rate parity)**: Compares the specificity
 (true negative rate) of each ethnic group with the reference group.
 
-```{r fig.align="center", fig.height=5, fig.width=7}
+```{r}
 model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
   reference = "Caucasian", positive = "yes", metric = "sp"
 )
@@ -283,6 +285,11 @@ model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
 ## References
 
 - Büyük, S. (2023). *Automatic Fairness Criteria and Fair Model Selection for Critical ML Tasks*, Master Thesis, Utrecht University. - [View Online](https://studenttheses.uu.nl/handle/20.500.12932/44225)
+- Calders, T., & Verwer, S. (2010). Three naive Bayes approaches for discrimination-free classification. In *Data Mining and Knowledge Discovery*. Springer Science and Business Media LLC. - [View Online](https://doi.org/10.1007/s10618-010-0190-x)
+- Chouldechova, A. (2017). Fair Prediction with Disparate Impact: A Study of Bias in Recidivism Prediction Instruments. In *Big Data*. Mary Ann Liebert Inc.  - [View Online](https://doi.org/10.1089/big.2016.0047)
+- Feldman, M., Friedler, S. A., Moeller, J., Scheidegger, C., & Venkatasubramanian, S. (2015). Certifying and Removing Disparate Impact. In *Proceedings of the 21th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining. ACM. - [View Online](https://doi.org/10.1145/2783258.2783311)
 - Fisher, R. A. (1970). *Statistical Methods for Research Workers*. Oliver & Boyd.
+- Friedler, S. A., Scheidegger, C., Venkatasubramanian, S., Choudhary, S., Hamilton, E. P., & Roth, D. (2019). A comparative study of fairness-enhancing interventions in machine learning. In *Proceedings of the Conference on Fairness, Accountability, and Transparency*. ACM. - [View Online](https://doi.org/10.1145/3287560.3287589)
 - Jamil, T., Ly, A., Morey, R. D., Love, J., Marsman, M., & Wagenmakers, E. J. (2017). Default "Gunel and Dickey" Bayes factors for contingency tables. \emph{Behavior Research Methods}, 49, 638-652. - [View Online](https://doi.org/10.3758/s13428-016-0739-8)
 - Pessach, D. & Shmueli, E. (2022). A review on fairness in machine learning. *ACM Computing Surveys*, 55(3), 1-44. - [View Online](https://doi.org/10.1145/3494672)
+- Zafar, M. B., Valera, I., Gomez Rodriguez, M., & Gummadi, K. P. (2017). Fairness Beyond Disparate Treatment & Disparate Impact. In *Proceedings of the 26th International Conference on World Wide Web*. - [View Online](https://doi.org/10.1145/3038912.3052660)

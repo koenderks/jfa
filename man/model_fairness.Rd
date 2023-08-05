@@ -52,11 +52,11 @@ options are \code{two.sided} (the default), \code{greater} and \code{less}.}
 confidence level (i.e., 1 - audit risk / detection risk).}
 
 \item{prior}{a logical specifying whether to use a prior distribution,
-or a numeric value larger than 1 specifying the prior concentration
-parameter. If this argument is specified as \code{FALSE} (default), the
-function performs classical evaluation. If this argument is \code{TRUE},
-the function performs Bayesian evaluation using a default prior with a
-concentration parameter of 1.}
+or a numeric value equal to or larger than 1 specifying the prior
+concentration parameter. If this argument is specified as \code{FALSE}
+(default), classical estimation is performed and if it is \code{TRUE},
+Bayesian estimation using a default prior with concentration parameter 1 is
+performed.}
 }
 \value{
 An object of class \code{jfaModelFairness} containing:
@@ -81,42 +81,50 @@ An object of class \code{jfaModelFairness} containing:
 }
 \description{
 This function aims to assess fairness and bias in algorithmic
-decision-making systems by computing and testing one of several
-model-agnostic fairness metrics. These metrics quantify fairness across
-groups in the data based on the predictions of the algorithm in several ways.
-The calculated metrics are commonly used and include predictive rate parity,
-proportional parity, true positive rate parity, accuracy parity, false
-negative rate parity, false positive rate parity, true positive
-rate parity, negative predicted value parity, specificity parity, and
-demographic parity. Currently, this function only supports binary
-classification.
+decision-making systems by computing and testing the equality in one of
+several model-agnostic fairness metrics. These metrics aim to quantify
+fairness across sensitive groups in the data based on the predictions of the
+algorithm. The metrics that can be calculated include predictive rate parity,
+proportional parity, accuracy parity, false negative rate parity, false
+positive rate parity, true positive rate parity, negative predicted value
+parity, specificity parity, and demographic parity. Currently, this function
+only supports binary classification. The function returns an object of class
+\code{jfaModelBias} that can be used with associated \code{summary()} and
+\code{plot()} methods.
 }
 \details{
 The following model-agnostic fairness metrics are computed based on
-  the confusion matrix for each sensitive group, using the  true positives
+  the confusion matrix for each sensitive group, using the true positives
   (TP), false positives (FP), true negative (TN) and false negatives (FN).
+  See Pessach & Shmueli (2022) for a more detailed explanation of the
+  individual metrics. The equality of metrics across groups is done according
+  to the methodology described in Fisher (1970) and Jamil et al. (2017).
 
   \itemize{
-    \item{Predictive rate parity (\code{prp}): }{measures whether the positive prediction
-      rate is the same across different groups, calculated as TP / (TP + FP).}
-    \item{Proportional parity (\code{pp}): }{measures whether the positive rate is
-      distributed equally across different groups, calculated as (TP + FP) /
-      (TP + FP + TN + FN).}
-    \item{Accuracy parity (\code{ap}): }{measures whether the overall accuracy is the same
-      across different groups, calculated as (TP + TN) / (TP + FP + TN + FN).}
-    \item{False negative rate parity (\code{fnrp}): }{measures whether the false negative
-      rate is the same across different groups, calculated as FN / (FP + FN).}
-    \item{False positive rate parity (\code{fprp}): }{measures whether the false positive
-      rate is the same across different groups, calculated as FP / (TN + FP).}
-    \item{True positive rate parity (\code{tprp}): }{measures whether the true positive rate
-      is the same across different groups, calculated as TP / (TP + FN).}
-    \item{Negative predicted value parity (\code{npvp}): }{measures whether the negative
-      predicted value is the same across different groups, calculated as TN /
-      (TN + FN).}
-    \item{Specificity parity (\code{sp}): }{measures whether the true positive rate
-      is the same across different groups, calculated as TN / (TN + FP).}
-    \item{Demographic parity (\code{dp}): }{measures whether the observed variable is
-      distributed equally across different groups, calculated as TP + FP.}
+    \item{Predictive rate parity (\code{prp}): }{calculated as TP / (TP +
+      FP), quantifies whether the positive prediction rate is the same across
+      groups.}
+    \item{Proportional parity (\code{pp}): }{calculated as (TP + FP) / (TP +
+      FP + TN + FN), quantifies whether the positive prediction rate is equal
+      across groups.}
+    \item{Accuracy parity (\code{ap}): }{calculated as (TP + TN) / (TP + FP +
+      TN + FN), quantifies whether the accuracy is the same across groups.}
+    \item{False negative rate parity (\code{fnrp}): }{calculated as FN / (FP
+      + FN), quantifies whether the false negative rate is the same across
+      groups.}
+    \item{False positive rate parity (\code{fprp}): }{calculated as FP / (TN
+      + FP), quantifes whether the false positive rate is the same across
+      groups.}
+    \item{True positive rate parity (\code{tprp}): }{calculated as TP / (TP +
+      FN), quantifies whether the true positive rate is the same across
+      groups.}
+    \item{Negative predicted value parity (\code{npvp}): }{calculated as TN /
+      (TN + FN), quantifies whether the negative predicted value is equal
+      across groups.}
+    \item{Specificity parity (\code{sp}): }{calculated as TN / (TN + FP),
+      quantifies whether the true positive rate is the same across groups.}
+    \item{Demographic parity (\code{dp}): }{calculated as TP + FP, quantifies
+      whether the positive predictions are equal across groups.}
   }
 
   Note that, in an audit context, not all fairness measures are equally
@@ -147,15 +155,36 @@ model_fairness(
   predictions = "Predicted",
   reference = "Caucasian",
   positive = "yes",
-  metric = "prp"
+  metric = "prp",
+  prior = TRUE
 )
 }
 \references{
 Büyük, S. (2023). \emph{Automatic Fairness Criteria and Fair
   Model Selection for Critical ML Tasks}, Master Thesis, Utrecht University.
 
-Fisher, R. A. (1970). Statistical Methods for Research Workers.
-  Oliver & Boyd.
+Calders, T., & Verwer, S. (2010). Three naive Bayes approaches
+  for discrimination-free classification. In \emph{Data Mining and Knowledge
+  Discovery}. Springer Science and Business Media LLC.
+  \doi{10.1007/s10618-010-0190-x}
+
+Chouldechova, A. (2017). Fair Pprediction with disparate impact:
+  A study of bias in recidivism prediction instruments. In \emph{Big Data}.
+  Mary Ann Liebert Inc. \doi{10.1089/big.2016.0047}
+
+Feldman, M., Friedler, S. A., Moeller, J., Scheidegger, C., &
+  Venkatasubramanian, S. (2015). Certifying and removing disparate impact. In
+  \emph{Proceedings of the 21th ACM SIGKDD International Conference on
+  Knowledge Discovery and Data Mining}. \doi{10.1145/2783258.2783311}
+
+Friedler, S. A., Scheidegger, C., Venkatasubramanian, S.,
+  Choudhary, S., Hamilton, E. P., & Roth, D. (2019). A comparative study of
+  fairness-enhancing interventions in machine learning. In \emph{Proceedings
+  of the Conference on Fairness, Accountability, and Transparency}.
+  \doi{10.1145/3287560.3287589}
+
+Fisher, R. A. (1970). \emph{Statistical Methods for Research
+  Workers}. Oliver & Boyd.
 
 Jamil, T., Ly, A., Morey, R. D., Love, J., Marsman, M., &
   Wagenmakers, E. J. (2017). Default "Gunel and Dickey" Bayes factors for
@@ -164,6 +193,11 @@ Jamil, T., Ly, A., Morey, R. D., Love, J., Marsman, M., &
 
 Pessach, D. & Shmueli, E. (2022). A review on fairness in machine
   learning. \emph{ACM Computing Surveys}, 55(3), 1-44. \doi{10.1145/3494672}
+
+Zafar, M. B., Valera, I., Gomez Rodriguez, M., & Gummadi, K. P.
+  (2017). Fairness beyond disparate Ttreatment & disparate impact. In
+  \emph{Proceedings of the 26th International Conference on World Wide Web}.
+  \doi{10.1145/3038912.3052660}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}
