@@ -215,20 +215,20 @@ For documentation on jfa itself, including the manual and user guide
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Test algorithmic fairness against Caucasian ethnicity</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span></span>
-<span class="r-in"><span>               reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"tprp"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>               privileged <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Classical Algorithmic Fairness Test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> data: compas</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> metric: Ttrue positive rate parity, reference group: Caucasian, positive class: yes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> metric: predictive rate parity, privileged class: Caucasian, positive class: yes</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> alternative hypothesis: true odds ratio is not equal to 1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> sample estimates (parity ratio):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  African_American: 1.5943 [1.5488, 1.638], p-value = &lt; 2.22e-16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Asian: 0.52964 [0.067485, 1.3789], p-value = 0.29386</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Hispanic: 0.98642 [0.83236, 1.1428], p-value = 0.93562</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Native_American: 1.2711 [0.31065, 2.0068], p-value = 0.67157</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Other: 0.88843 [0.70202, 1.0832], p-value = 0.28911</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> sample estimates:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  African_American: 1.1522 [1.1143, 1.1891], p-value = 5.4523e-05</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Asian: 0.86598 [0.11706, 1.6149], p-value = 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Hispanic: 1.0229 [0.87836, 1.1611], p-value = 0.78393</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Native_American: 1.0392 [0.25396, 1.6406], p-value = 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Other: 1.0596 [0.86578, 1.2394], p-value = 0.5621</span>
 </code></pre></div>
     </div>
   </div>
