@@ -91,15 +91,16 @@ group (Caucasian). See Pessach & Shmueli (2022) for a more detailed explanation
 of these metrics.
 
 1. **Demographic parity (Statistical parity)**: Compares the number of positive
-predictions (e.g., reoffenders) between each ethnic group and the reference
-group. Note that, since demographic parity is not a proportion, statistical
-inference about its equality to the reference group is not supported for this
-metric. 
+  predictions (e.g., reoffenders) between each ethnic group and the reference
+  group. Note that, since demographic parity is not a proportion, statistical
+  inference about its equality to the reference group is not supported for this
+  metric.
 
-The formula for the demographic parity metric is $DP = TP + FP$, and the parity
-ratio for sensitive group $i$ is given by $\frac{DP_{i}}{DP_{reference}}$.
+    The formula for the demographic parity metric is $DP = TP + FP$, and the
+      parity ratio for sensitive group $i$ is given by
+      $\frac{DP_{i}}{DP_{reference}}$.
 
-```{r}
+    ```{r}
 model_fairness(
   data = compas,
   sensitive = "Ethnicity",
@@ -109,30 +110,30 @@ model_fairness(
   positive = "yes",
   metric = "dp"
 )
-```
+    ```
 
-- *African American*: The parity ratio for African Americans compared to
-  Caucasians is 2.7961, indicating that there are nearly three times more
-  African Americans predicted as reoffenders in these data by the algorithm than
-  Caucasians.
-- *Asian*: The ratio for Asians is very close to zero (0.0059524), indicating
-  that there are many less Asians (4) that are predicted as reoffenders in
-  these data than there are Caucasians (672).
-- *Hispanic*: The ratio for Hispanics is 0.22173, meaning that there are about
-  five times less Hispanics predicted as reoffenders in these data than that
-  there are Caucasians.
+    - *African American*: The parity ratio for African Americans compared to
+      Caucasians is 2.7961, indicating that there are nearly three times more
+      African Americans predicted as reoffenders in these data by the algorithm
+      than Caucasians.
+    - *Asian*: The ratio for Asians is very close to zero (0.0059524),
+      indicating that there are many less Asians (4) that are predicted as
+      reoffenders in these data than there are Caucasians (672).
+    - *Hispanic*: The ratio for Hispanics is 0.22173, meaning that there are
+      about five times less Hispanics predicted as reoffenders in these data
+      than that there are Caucasians.
 
 2. **Proportional parity (Disparate impact)**: Compares the proportion of
-positive predictions of each ethnic group with that in the reference group. For
-example, in the case that a positive prediction represents a reoffender, equal
-proportional parity requires the proportion of predicted reoffenders to be
-similar across groups.
+  positive predictions of each ethnic group with that in the reference group.
+  For example, in the case that a positive prediction represents a reoffender,
+  equal proportional parity requires the proportion of predicted reoffenders to
+  be similar across groups.
 
-The formula for the proportional parity metric is 
-$PP = \frac{TP + FP}{TP + FP + TN + FN}$, and the parity ratio for sensitive
-group $i$ is given by $\frac{PP_{i}}{PP_{reference}}$.
+    The formula for the proportional parity metric is 
+      $PP = \frac{TP + FP}{TP + FP + TN + FN}$, and the parity ratio for
+      sensitive group $i$ is given by $\frac{PP_{i}}{PP_{reference}}$.
 
-```{r}
+    ```{r}
 model_fairness(
   data = compas,
   sensitive = "Ethnicity",
@@ -142,28 +143,30 @@ model_fairness(
   positive = "yes",
   metric = "pp"
 )
-```
+    ```
 
-- *African American*: The ratio of true positive rates (TPRs) for African
-  Americans compared to Caucasians is 1.8521. This indicates that the TPR for
-  African Americans is approximately 1.85 times higher than for Caucasians.
-  Again, this suggests potential bias in the algorithm's predictions against
-  African Americans. The p-value is smaller than .05, indicating that the null
-  hypothesis of equal proportional parity should be rejected.
-- *Asian*: The proportional parity ratio for Asians is 0.4038, indicating that
-  their TPR is lower than for Caucasians. This suggests potential
-  underestimation of reoffenders among Asians.
-- *Hispanic*: The ratio for Hispanics is 0.91609, suggesting that their TPR is
-  close to the reference group (Caucasians). This indicates relatively fair
-  treatment of Hispanics in the algorithm's predictions.
+    - *African American*: The ratio of true positive rates (TPRs) for African
+      Americans compared to Caucasians is 1.8521. This indicates that the TPR
+      for African Americans is approximately 1.85 times higher than for
+      Caucasians. Again, this suggests potential bias in the algorithm's
+      predictions against African Americans. The p-value is smaller than .05,
+      indicating that the null hypothesis of equal proportional parity should be
+      rejected.
+    - *Asian*: The proportional parity ratio for Asians is 0.4038, indicating
+      that their TPR is lower than for Caucasians. This suggests potential
+      underestimation of reoffenders among Asians.
+    - *Hispanic*: The ratio for Hispanics is 0.91609, suggesting that their TPR
+      is close to the reference group (Caucasians). This indicates relatively
+      fair treatment of Hispanics in the algorithm's predictions.
 
-For this (and all of the following) metrics, Bayesian inference is supported and
-provides credible intervals and Bayes factors. Like in the other functions in
-`jfa`, performing a Bayesian analysis using a default prior can be achieved by
-setting `prior = TRUE`. The resulting Bayes factors in favor of rejection of the
-null hypothesis ($BF_{10}$) are shown in the output below.
+    For this (and all of the following) metrics, Bayesian inference is supported
+      and provides credible intervals and Bayes factors. Like in the other
+      functions in `jfa`, performing a Bayesian analysis using a default prior
+      can be achieved by setting `prior = TRUE`. The resulting Bayes factors in
+      favor of rejection of the null hypothesis of equality ($BF_{10}$) are
+      shown in the output below.
 
-```{r}
+    ```{r}
 model_fairness(
   data = compas,
   sensitive = "Ethnicity",
@@ -174,15 +177,15 @@ model_fairness(
   metric = "pp",
   prior = TRUE
 )
-```
+    ```
 
-This is probably also a good time to show the `summary()` and `plot()` functions
-associated with the `model_fairness()` function. Let's examine the frequentist
-function call again, but instead of printing the output to the console, this
-time we store the output in `x` and run the `summary()` and `plot()` functions
-on this object.
+    This is probably also a good time to show the `summary()` and `plot()`
+      functions associated with the `model_fairness()` function. Let's examine
+      the frequentist function call again, but instead of printing the output to
+      the console, this time we store the output in `x` and run the `summary()`
+      and `plot()` functions on this object.
 
-```{r, fig.align="center", fig.height=4, fig.width=6}
+    ```{r, fig.align="center", fig.height=4, fig.width=6}
 x <- model_fairness(
   data = compas,
   sensitive = "Ethnicity",
@@ -194,17 +197,17 @@ x <- model_fairness(
 )
 summary(x)
 plot(x)
-```
+    ```
 
 3. **Predictive rate parity (Equalized odds)**: Compares the overall positive
 prediction rates (e.g., reoffender prediction) of different ethnic groups with
 the reference group.
 
-The formula for the predictive rate parity metric is $PRP = \frac{TP}{TP + FP}$,
-and the parity ratio for sensitive group $i$ is given by
-$\frac{PRP_{i}}{PRP_{reference}}$.
+    The formula for the predictive rate parity metric is
+      $PRP = \frac{TP}{TP + FP}$, and the parity ratio for sensitive group $i$
+      is given by $\frac{PRP_{i}}{PRP_{reference}}$.
 
-```{r}
+    ```{r}
 model_fairness(
   data = compas,
   sensitive = "Ethnicity",
@@ -214,29 +217,29 @@ model_fairness(
   positive = "yes",
   metric = "prp"
 )
-```
+    ```
 
-- *African American*: The predictive rate parity ratio for African Americans
-  is 1.1522. This suggests that the overall positive prediction rate for
-  African Americans is approximately 1.15 times higher than for Caucasians.
-  This indicates potential favoritism towards African Americans in the overall
-  positive predictions made by the algorithm.
-- *Asian*: The ratio for Asians is 0.86598, indicating that their overall
-  positive prediction rate is lower than for Caucasians. This suggests
-  potential underestimation of reoffenders among Asians by the algorithm.
-- *Hispanic*: The predictive rate parity ratio for Hispanics is 1.0229,
-  suggesting their overall positive prediction rate is very close to that of
-  the reference group (Caucasians). This indicates relatively fair treatment
-  in the algorithm's overall positive predictions.
+    - *African American*: The predictive rate parity ratio for African Americans
+      is 1.1522. This suggests that the overall positive prediction rate for
+      African Americans is approximately 1.15 times higher than for Caucasians.
+      This indicates potential favoritism towards African Americans in the
+      overall positive predictions made by the algorithm.
+    - *Asian*: The ratio for Asians is 0.86598, indicating that their overall
+      positive prediction rate is lower than for Caucasians. This suggests
+      potential underestimation of reoffenders among Asians by the algorithm.
+    - *Hispanic*: The predictive rate parity ratio for Hispanics is 1.0229,
+      suggesting their overall positive prediction rate is very close to that of
+      the reference group (Caucasians). This indicates relatively fair treatment
+      in the algorithm's overall positive predictions.
 
 4. **Accuracy parity**: Compares the accuracy of each ethnic group's predictions
 with the reference group.
 
-The formula for the accuracy parity metric is
-$AP = \frac{TP + TN}{TP + FP + TN + FN}$, and the parity ratio for sensitive
-group $i$ is given by $\frac{AP_{i}}{AP_{reference}}$.
+    The formula for the accuracy parity metric is
+      $AP = \frac{TP + TN}{TP + FP + TN + FN}$, and the parity ratio for
+      sensitive group $i$ is given by $\frac{AP_{i}}{AP_{reference}}$.
 
-```{r}
+    ```{r}
 model_fairness(
   data = compas,
   sensitive = "Ethnicity",
@@ -246,27 +249,27 @@ model_fairness(
   positive = "yes",
   metric = "ap"
 )
-```
+    ```
 
-- African American: The accuracy parity ratio for African Americans is 1.021,
-  suggesting their accuracy is very similar to the reference group
-  (Caucasians). This indicates fair treatment concerning overall accuracy.
-- *Asian*: The accuracy parity ratio for Asians is 1.1266, suggesting their
-  accuracy is slightly higher than for Caucasians, indicating potential
-  favoritism in overall accuracy.
-- *Hispanic*: The ratio for Hispanics is 1.0351, suggesting their accuracy
-  is slightly higher than for Caucasians, indicating potential favoritism in
-  overall accuracy.
+    - African American: The accuracy parity ratio for African Americans is
+      1.021, suggesting their accuracy is very similar to the reference group
+      (Caucasians). This indicates fair treatment concerning overall accuracy.
+    - *Asian*: The accuracy parity ratio for Asians is 1.1266, suggesting their
+      accuracy is slightly higher than for Caucasians, indicating potential
+      favoritism in overall accuracy.
+    - *Hispanic*: The ratio for Hispanics is 1.0351, suggesting their accuracy
+      is slightly higher than for Caucasians, indicating potential favoritism in
+      overall accuracy.
 
 5. **False negative rate parity (Treatment equality)**: Compares the false
 negative rates (e.g., for reoffenders) of each ethnic group with the reference
 group.
 
-The formula for the false negative rate parity metric is
-$FNRP = \frac{FN}{TP + FN}$, and the parity ratio for sensitive group $i$ is
-given by $\frac{FNRP_{i}}{FNRP_{reference}}$.
+    The formula for the false negative rate parity metric is
+      $FNRP = \frac{FN}{TP + FN}$, and the parity ratio for sensitive group $i$
+      is given by $\frac{FNRP_{i}}{FNRP_{reference}}$.
 
-```{r}
+    ```{r}
 model_fairness(
   data = compas,
   sensitive = "Ethnicity",
@@ -276,28 +279,28 @@ model_fairness(
   positive = "yes",
   metric = "fnrp"
 )
-```
+    ```
 
-- *African American*: The ratio of false negative rates (FNRs) for African
-  Americans compared to Caucasians is 0.46866. A value lower than 1 suggests
-  that African Americans are less likely to be falsely classified as
-  non-reoffenders, indicating potential bias against this group in this
-  aspect.
-- *Asian*: The ratio for Asians is 1.4205, indicating that they are more
-  likely to be falsely classified as non-reoffenders compared to Caucasians,
-  suggesting potential underestimation of reoffenders among Asians.
-- *Hispanic*: The FNR parity ratio for Hispanics is 1.0121, indicating
-  relatively similar rates as the reference group (Caucasians), suggesting
-  fair treatment in this aspect.
+    - *African American*: The ratio of false negative rates (FNRs) for African
+      Americans compared to Caucasians is 0.46866. A value lower than 1 suggests
+      that African Americans are less likely to be falsely classified as
+      non-reoffenders, indicating potential bias against this group in this
+      aspect.
+    - *Asian*: The ratio for Asians is 1.4205, indicating that they are more
+      likely to be falsely classified as non-reoffenders compared to Caucasians,
+      suggesting potential underestimation of reoffenders among Asians.
+    - *Hispanic*: The FNR parity ratio for Hispanics is 1.0121, indicating
+      relatively similar rates as the reference group (Caucasians), suggesting
+      fair treatment in this aspect.
 
 6. **False positive rate parity**: Compares the false positive rates (e.g., for
 non-reoffenders) of each ethnic group with the reference group.
 
-The formula for the false positive rate parity metric is
-$FPRP = \frac{FP}{TN + FP}$, and the parity ratio for sensitive group $i$ is
-given by $\frac{FPRP_{i}}{FPRP_{reference}}$.
+    The formula for the false positive rate parity metric is
+      $FPRP = \frac{FP}{TN + FP}$, and the parity ratio for sensitive group $i$
+      is given by $\frac{FPRP_{i}}{FPRP_{reference}}$.
 
-```{r}
+    ```{r}
 model_fairness(
   data = compas,
   sensitive = "Ethnicity",
@@ -307,29 +310,29 @@ model_fairness(
   positive = "yes",
   metric = "fprp"
 )
-```
+    ```
 
-- *African American*: The false positive rate parity ratio for African
-  Americans is 1.8739. This indicates that African Americans are approximately
-  1.87 times more likely to be falsely predicted as reoffenders than
-  Caucasians. This suggests potential bias in the algorithm's false positive
-  predictions in favor of African Americans.
-- *Asian*: The ratio for Asians is 0.39222, indicating that they are less
-  likely to be falsely predicted as reoffenders compared to Caucasians. This
-  suggests potential fair treatment of Asians in false positive predictions.
-- *Hispanic*: The false positive rate parity ratio for Hispanics is 0.85983,
-  suggesting they are less likely to be falsely predicted as reoffenders
-  compared to Caucasians. This indicates potential fair treatment of Hispanics
-  in false positive predictions.
+    - *African American*: The false positive rate parity ratio for African
+      Americans is 1.8739. This indicates that African Americans are
+      approximately 1.87 times more likely to be falsely predicted as
+      reoffenders than Caucasians. This suggests potential bias in the
+      algorithm's false positive predictions in favor of African Americans.
+    - *Asian*: The ratio for Asians is 0.39222, indicating that they are less
+      likely to be falsely predicted as reoffenders compared to Caucasians. This
+      suggests potential fair treatment of Asians in false positive predictions.
+    - *Hispanic*: The false positive rate parity ratio for Hispanics is 0.85983,
+      suggesting they are less likely to be falsely predicted as reoffenders
+      compared to Caucasians. This indicates potential fair treatment of
+      Hispanics in false positive predictions.
 
 7. **True positive rate parity (Equal opportunity)**: Compares the true positive
 rates (e.g., for reoffenders) of each ethnic group with the reference group.
 
-The formula for the true positive rate parity metric is
-$TPRP = \frac{TP}{TP + FN}$, and the parity ratio for sensitive group $i$ is
-given by $\frac{TPRP_{i}}{TPRP_{reference}}$.
+    The formula for the true positive rate parity metric is
+      $TPRP = \frac{TP}{TP + FN}$, and the parity ratio for sensitive group $i$
+      is given by $\frac{TPRP_{i}}{TPRP_{reference}}$.
 
-```{r}
+    ```{r}
 model_fairness(
   data = compas,
   sensitive = "Ethnicity",
@@ -339,30 +342,30 @@ model_fairness(
   positive = "yes",
   metric = "tprp"
 )
-```
+    ```
 
-- *African American*: The true positive rate parity ratio for African
-  Americans is 1.5943. This indicates that African Americans are approximately
-  1.59 times more likely to be correctly predicted as reoffenders than
-  Caucasians. This suggests potential favoritism towards African Americans in
-  true positive predictions made by the algorithm.
-- *Asian*: The ratio for Asians is 0.52964, indicating that they are less
-  likely to be correctly predicted as reoffenders compared to Caucasians. This
-  suggests potential underestimation of reoffenders among Asians by the
-  algorithm.
-- *Hispanic:* The true positive rate parity ratio for Hispanics is 0.98642,
-  suggesting their true positive rate is very close to that of the reference
-  group (Caucasians). This indicates relatively fair treatment in the
-  algorithm's true positive predictions.
+    - *African American*: The true positive rate parity ratio for African
+      Americans is 1.5943. This indicates that African Americans are
+      approximately 1.59 times more likely to be correctly predicted as
+      reoffenders than Caucasians. This suggests potential favoritism towards
+      African Americans in true positive predictions made by the algorithm.
+    - *Asian*: The ratio for Asians is 0.52964, indicating that they are less
+      likely to be correctly predicted as reoffenders compared to Caucasians.
+      This suggests potential underestimation of reoffenders among Asians by the
+      algorithm.
+    - *Hispanic:* The true positive rate parity ratio for Hispanics is 0.98642,
+      suggesting their true positive rate is very close to that of the reference
+      group (Caucasians). This indicates relatively fair treatment in the
+      algorithm's true positive predictions.
 
 8. **Negative predicted value parity**: Compares the negative predicted values
 (e.g., for non-reoffenders) of each ethnic group with the reference group.
 
-The formula for the negative predicted value parity metric is
-$NPVP = \frac{TN}{TN + FN}$, and the parity ratio for sensitive group $i$ is
-given by $\frac{NPVP_{i}}{NPVP_{reference}}$.
+    The formula for the negative predicted value parity metric is
+      $NPVP = \frac{TN}{TN + FN}$, and the parity ratio for sensitive group $i$
+      is given by $\frac{NPVP_{i}}{NPVP_{reference}}$.
 
-```{r}
+    ```{r}
 model_fairness(
   data = compas,
   sensitive = "Ethnicity",
@@ -372,28 +375,28 @@ model_fairness(
   positive = "yes",
   metric = "npvp"
 )
-```
+    ```
 
-- *African American*: The Negative predicted value (NPV) parity ratio for
-  African Americans is 0.98013. A value close to 1 indicates that the NPV for
-  African Americans is very similar to the reference group (Caucasians). This
-  suggests fair treatment in predicting non-reoffenders among African
-  Americans.
-- *Asian*: The NPV parity ratio for Asians is 1.1163, indicating that their
-  NPV is slightly higher than for Caucasians. This could suggest potential
-  favoritism towards Asians in predicting non-reoffenders.
-- *Hispanic*: The NPV parity ratio for Hispanics is 1.0326, suggesting that
-  their NPV is slightly higher than for Caucasians. This indicates potential
-  favoritism towards Hispanics in predicting non-reoffenders.
+    - *African American*: The Negative predicted value (NPV) parity ratio for
+      African Americans is 0.98013. A value close to 1 indicates that the NPV
+      for African Americans is very similar to the reference group (Caucasians).
+      This suggests fair treatment in predicting non-reoffenders among African
+      Americans.
+    - *Asian*: The NPV parity ratio for Asians is 1.1163, indicating that their
+      NPV is slightly higher than for Caucasians. This could suggest potential
+      favoritism towards Asians in predicting non-reoffenders.
+    - *Hispanic*: The NPV parity ratio for Hispanics is 1.0326, suggesting that
+      their NPV is slightly higher than for Caucasians. This indicates potential
+      favoritism towards Hispanics in predicting non-reoffenders.
 
 9. **Specificity parity (True negative rate parity)**: Compares the specificity
 (true negative rate) of each ethnic group with the reference group.
 
-The formula for the specificity parity metric is $SP = \frac{TN}{TN + FP}$, and
-the parity ratio for sensitive group $i$ is given by
-$\frac{SP_{i}}{SP_{reference}}$.
+    The formula for the specificity parity metric is $SP = \frac{TN}{TN + FP}$,
+      and the parity ratio for sensitive group $i$ is given by
+      $\frac{SP_{i}}{SP_{reference}}$.
 
-```{r}
+    ```{r}
 model_fairness(
   data = compas,
   sensitive = "Ethnicity",
@@ -403,19 +406,20 @@ model_fairness(
   positive = "yes",
   metric = "sp"
 )
-```
+    ```
 
-- *African American*: The specificity parity ratio for African Americans is
-  0.75105. A value lower than 1 indicates that the specificity for African
-  Americans is lower than for Caucasians. This suggests potential bias in
-  correctly identifying non-reoffenders among African Americans.
-- *Asian*: The specificity parity ratio for Asians is 1.1731, indicating their
-  specificity is slightly higher than for Caucasians. This could suggest
-  potential favoritism in correctly identifying non-reoffenders among Asians.
-- *Hispanic*: The specificity parity ratio for Hispanics is 1.0399, suggesting
-  that their specificity is very close to the reference group (Caucasians).
-  This indicates relatively fair treatment in correctly identifying
-  non-reoffenders among Hispanics.
+    - *African American*: The specificity parity ratio for African Americans is
+      0.75105. A value lower than 1 indicates that the specificity for African
+      Americans is lower than for Caucasians. This suggests potential bias in
+      correctly identifying non-reoffenders among African Americans.
+    - *Asian*: The specificity parity ratio for Asians is 1.1731, indicating
+      their specificity is slightly higher than for Caucasians. This could
+      suggest potential favoritism in correctly identifying non-reoffenders
+      among Asians.
+    - *Hispanic*: The specificity parity ratio for Hispanics is 1.0399,
+      suggesting that their specificity is very close to the reference group.
+      This indicates relatively fair treatment in correctly identifying
+      non-reoffenders among Hispanics.
 
 ## References
 
