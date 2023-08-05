@@ -94,7 +94,7 @@
       <h1 data-toc-skip>Algorithmic fairness</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2023-08-04</h4>
+            <h4 data-toc-skip class="date">2023-08-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/model-fairness.Rmd" class="external-link"><code>vignettes/model-fairness.Rmd</code></a></small>
       <div class="hidden name"><code>model-fairness.Rmd</code></div>
@@ -159,16 +159,16 @@ defendant to be a recidivist (<code>Predicted</code>).</p>
 <span><span class="co">## 14         Hispanic        no</span></span>
 <span><span class="co">## 24            Other        no</span></span></code></pre>
 <p>We will investigate whether the algorithm is fair with respect to the
-sensitive attribute race. Considering the context, a positive prediction
-means that a defendant is classified as a reoffender, and a negative
-prediction means that a defendant is classified as a non-reoffender. The
-fairness metrics offer information on whether there are any disparities
-in the algorithm’s predictions across different ethnic groups. By
-calculating and reviewing these metrics, we can get an indication of
-whether the algorithm exhibits any discriminatory behavior towards
-specific ethnic groups. If substantial disparities exist, we may need to
-investigate further and potentially modify the algorithm to ensure
-fairness in its predictions.</p>
+sensitive attribute <code>Ethnicity</code>. Considering the context, a
+positive prediction means that a defendant is classified as a
+reoffender, and a negative prediction means that a defendant is
+classified as a non-reoffender. The fairness metrics offer information
+on whether there are any disparities in the algorithm’s predictions
+across different ethnic groups. By calculating and reviewing these
+metrics, we can get an indication of whether the algorithm exhibits any
+discriminatory behavior towards specific ethnic groups. If substantial
+disparities exist, we may need to investigate further and potentially
+modify the algorithm to ensure fairness in its predictions.</p>
 <p>Let’s interpret the fairness metrics for the African American, Asian,
 and Hispanic groups in comparison to the reference group (Caucasian) one
 by one.</p>
@@ -176,8 +176,9 @@ by one.</p>
 <li>
 <strong>Demographic parity (Statistical parity)</strong>: Compares
 the number of positive predictions (e.g., reoffenders) between each
-ethnic group and the reference group. Note that <code>jfa</code> does
-not support statistical inference for demographic parity as of now.</li>
+ethnic group and the reference group. Note that, since demographic
+parity is not a proportion, statistical inference about its equality to
+the reference group is not supported for this metric.</li>
 </ol>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
@@ -197,18 +198,19 @@ not support statistical inference for demographic parity as of now.</li>
 <span><span class="co">##  Other: 0.12649</span></span></code></pre>
 <ul>
 <li>
-<em>African American</em>: The ratio of positive predictions for
-African Americans compared to Caucasians is 2.7961, indicating that
-there are nearly three times more African Americans predicted as
-reoffenders than Caucasians.</li>
+<em>African American</em>: The parity ratio for African Americans
+compared to Caucasians is 2.7961, indicating that there are nearly three
+times more African Americans predicted as reoffenders in these data by
+the algorithm than Caucasians.</li>
 <li>
 <em>Asian</em>: The ratio for Asians is very close to zero
 (0.0059524), indicating that there are many less Asians (4) that are
-predicted as reoffenders in these data than there are Caucasians.</li>
+predicted as reoffenders in these data than there are Caucasians
+(672).</li>
 <li>
 <em>Hispanic</em>: The ratio for Hispanics is 0.22173, meaning that
-there are about five times less Hispanics predicted as reoffenders than
-that there are Caucasians.</li>
+there are about five times less Hispanics predicted as reoffenders in
+these data than that there are Caucasians.</li>
 </ul>
 <ol start="2" style="list-style-type: decimal">
 <li>
@@ -271,11 +273,11 @@ below.</p>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Sample estimates (parity ratio):</span></span>
-<span><span class="co">##  African_American: 1.8537 [1.7957, 1.9014], BF₁₀ = 4.1528e+81</span></span>
-<span><span class="co">##  Asian: 0.37469 [0.16396, 0.89683], BF₁₀ = 0.26796</span></span>
-<span><span class="co">##  Hispanic: 0.87156 [0.79534, 1.0402], BF₁₀ = 0.10615</span></span>
-<span><span class="co">##  Native_American: 1.2331 [0.63192, 2.2486], BF₁₀ = 0.018438</span></span>
-<span><span class="co">##  Other: 0.76 [0.6396, 0.92334], BF₁₀ = 1.815</span></span></code></pre>
+<span><span class="co">##  African_American: 1.8589 [1.8043, 1.9145], BF₁₀ = 4.1528e+81</span></span>
+<span><span class="co">##  Asian: 0.42772 [0.1741, 0.89071], BF₁₀ = 0.26796</span></span>
+<span><span class="co">##  Hispanic: 0.92238 [0.80363, 1.0441], BF₁₀ = 0.10615</span></span>
+<span><span class="co">##  Native_American: 1.2392 [0.6625, 2.2699], BF₁₀ = 0.018438</span></span>
+<span><span class="co">##  Other: 0.75707 [0.64814, 0.92661], BF₁₀ = 1.815</span></span></code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>
 <strong>Predictive rate parity (Equalized odds)</strong>: Compares
@@ -571,14 +573,40 @@ Selection for Critical ML Tasks</em>, Master Thesis, Utrecht University.
 - <a href="https://studenttheses.uu.nl/handle/20.500.12932/44225" class="external-link">View
 Online</a>
 </li>
+<li>Calders, T., &amp; Verwer, S. (2010). Three naive Bayes approaches
+for discrimination-free classification. In <em>Data Mining and Knowledge
+Discovery</em>. Springer Science and Business Media LLC. - <a href="https://doi.org/10.1007/s10618-010-0190-x" class="external-link">View Online</a>
+</li>
+<li>Chouldechova, A. (2017). Fair Prediction with Disparate Impact: A
+Study of Bias in Recidivism Prediction Instruments. In <em>Big
+Data</em>. Mary Ann Liebert Inc. - <a href="https://doi.org/10.1089/big.2016.0047" class="external-link">View Online</a>
+</li>
+<li>Feldman, M., Friedler, S. A., Moeller, J., Scheidegger, C., &amp;
+Venkatasubramanian, S. (2015). Certifying and Removing Disparate Impact.
+In *Proceedings of the 21th ACM SIGKDD International Conference on
+Knowledge Discovery and Data Mining. ACM. - <a href="https://doi.org/10.1145/2783258.2783311" class="external-link">View Online</a>
+</li>
 <li>Fisher, R. A. (1970). <em>Statistical Methods for Research
 Workers</em>. Oliver &amp; Boyd.</li>
+<li>Friedler, S. A., Scheidegger, C., Venkatasubramanian, S., Choudhary,
+S., Hamilton, E. P., &amp; Roth, D. (2019). A comparative study of
+fairness-enhancing interventions in machine learning. In <em>Proceedings
+of the Conference on Fairness, Accountability, and Transparency</em>.
+ACM. - <a href="https://doi.org/10.1145/3287560.3287589" class="external-link">View
+Online</a>
+</li>
 <li>Jamil, T., Ly, A., Morey, R. D., Love, J., Marsman, M., &amp;
 Wagenmakers, E. J. (2017). Default “Gunel and Dickey” Bayes factors for
 contingency tables. , 49, 638-652. - <a href="https://doi.org/10.3758/s13428-016-0739-8" class="external-link">View Online</a>
 </li>
 <li>Pessach, D. &amp; Shmueli, E. (2022). A review on fairness in
 machine learning. <em>ACM Computing Surveys</em>, 55(3), 1-44. - <a href="https://doi.org/10.1145/3494672" class="external-link">View Online</a>
+</li>
+<li>Zafar, M. B., Valera, I., Gomez Rodriguez, M., &amp; Gummadi, K. P.
+(2017). Fairness Beyond Disparate Treatment &amp; Disparate Impact. In
+<em>Proceedings of the 26th International Conference on World Wide
+Web</em>. - <a href="https://doi.org/10.1145/3038912.3052660" class="external-link">View
+Online</a>
 </li>
 </ul>
 </div>
