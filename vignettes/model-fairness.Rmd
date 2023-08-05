@@ -122,7 +122,7 @@ model_fairness(
 2. **Proportional parity (Disparate impact)**: Compares the positive prediction
 rates (e.g., true positive rate) of each ethnic group with the reference group.
 
-$$PP = (TP + FP) / (TP + FP + TN + FN)$$
+$$PP = \frac{TP + FP}{TP + FP + TN + FN}$$
 
 ```{r}
 model_fairness(
@@ -192,7 +192,7 @@ plot(x)
 prediction rates (e.g., reoffender prediction) of different ethnic groups with
 the reference group.
 
-$$PRP = TP / (TP + FP)$$
+$$PRP = \frac{TP}{TP + FP}$$
 
 ```{r}
 model_fairness(
@@ -222,7 +222,7 @@ model_fairness(
 4. **Accuracy parity**: Compares the accuracy of each ethnic group's predictions
 with the reference group.
 
-$$AP = (TP + TN) / (TP + FP + TN + FN)$$
+$$AP = \frac{TP + TN}{TP + FP + TN + FN}$$
 
 ```{r}
 model_fairness(
@@ -250,7 +250,7 @@ model_fairness(
 negative rates (e.g., for reoffenders) of each ethnic group with the reference
 group.
 
-$$FNRP = FN / (TP + FN)$$
+$$FNRP = \frac{FN}{TP + FN}$$
 
 ```{r}
 model_fairness(
@@ -279,7 +279,7 @@ model_fairness(
 6. **False positive rate parity**: Compares the false positive rates (e.g., for
 non-reoffenders) of each ethnic group with the reference group.
 
-$$FPRP = FP / (TN + FP)$$
+$$FPRP = \frac{FP}{TN + FP}$$
 
 ```{r}
 model_fairness(
@@ -309,7 +309,7 @@ model_fairness(
 7. **True positive rate parity (Equal opportunity)**: Compares the true positive
 rates (e.g., for reoffenders) of each ethnic group with the reference group.
 
-$$TPRP = TP / (TP + FN)$$
+$$TPRP = \frac{TP}{TP + FN}$$
 
 ```{r}
 model_fairness(
@@ -340,7 +340,7 @@ model_fairness(
 8. **Negative predicted value parity**: Compares the negative predicted values
 (e.g., for non-reoffenders) of each ethnic group with the reference group.
 
-$$NPVP = TN / (TN + FN)$$
+$$NPVP = \frac{TN}{TN + FN}$$
 
 ```{r}
 model_fairness(
@@ -369,7 +369,7 @@ model_fairness(
 9. **Specificity parity (True negative rate parity)**: Compares the specificity
 (true negative rate) of each ethnic group with the reference group.
 
-$$SP = TN / (TN + FP)$$
+$$SP = \frac{TN}{TN + FP}$$
 
 ```{r}
 model_fairness(
