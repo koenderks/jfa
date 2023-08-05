@@ -1021,12 +1021,12 @@ plot.jfaRv <- function(x, ...) {
   return(p)
 }
 
-# Methods for class: jfaModelFairness ##############################################
+# Methods for class: jfaFairness ##############################################
 
 #' @rdname jfa-methods
-#' @method print jfaModelFairness
+#' @method print jfaFairness
 #' @export
-print.jfaModelFairness <- function(x, digits = getOption("digits"), ...) {
+print.jfaFairness <- function(x, digits = getOption("digits"), ...) {
   type <- if (isFALSE(x[["prior"]])) "Classical" else "Bayesian"
   cat(paste0("\n\t", type, " Algorithmic Fairness Test\n\n"))
   cat("data: ", x[["data.name"]], "\n", sep = "")
@@ -1065,9 +1065,9 @@ print.jfaModelFairness <- function(x, digits = getOption("digits"), ...) {
 }
 
 #' @rdname jfa-methods
-#' @method print summary.jfaModelFairness
+#' @method print summary.jfaFairness
 #' @export
-print.summary.jfaModelFairness <- function(x, digits = getOption("digits"), ...) {
+print.summary.jfaFairness <- function(x, digits = getOption("digits"), ...) {
   type <- if (isFALSE(x[["prior"]])) "Classical" else "Bayesian"
   cat(paste0("\n\t", type, " Algorithmic Fairness Test Summary\n"))
   measure <- switch(x[["measure"]],
@@ -1155,9 +1155,9 @@ print.summary.jfaModelFairness <- function(x, digits = getOption("digits"), ...)
 }
 
 #' @rdname jfa-methods
-#' @method summary jfaModelFairness
+#' @method summary jfaFairness
 #' @export
-summary.jfaModelFairness <- function(object, digits = getOption("digits"), ...) {
+summary.jfaFairness <- function(object, digits = getOption("digits"), ...) {
   out <- list()
   out[["privileged"]] <- object[["privileged"]]
   out[["positive"]] <- object[["positive"]]
@@ -1168,14 +1168,14 @@ summary.jfaModelFairness <- function(object, digits = getOption("digits"), ...) 
   out[["odds.ratio"]] <- object[["odds.ratio"]]
   out[["prior"]] <- object[["prior"]]
   out[["measure"]] <- object[["measure"]]
-  class(out) <- c("summary.jfaModelFairness", "list")
+  class(out) <- c("summary.jfaFairness", "list")
   return(out)
 }
 
 #' @rdname jfa-methods
-#' @method plot jfaModelFairness
+#' @method plot jfaFairness
 #' @export
-plot.jfaModelFairness <- function(x, type = c("estimates", "posterior"), ...) {
+plot.jfaFairness <- function(x, type = c("estimates", "posterior"), ...) {
   type <- match.arg(type)
   estimate <- lb <- ub <- group <- y <- NULL
   groupLevels <- names(x[["confusion.matrix"]])

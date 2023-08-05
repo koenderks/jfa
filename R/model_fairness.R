@@ -13,18 +13,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#' Algorithm Auditing: Fairness Metrics and Bias Detection
+#' Algorithm Auditing: Fairness Metrics and Parity
 #'
-#' @description This function aims to assess fairness and bias in algorithmic
-#' decision-making systems by computing and testing the equality in one of
-#' several model-agnostic fairness metrics. These metrics aim to quantify
-#' fairness across protected classes in the data based on a set of true labels
-#' and the predictions of an algorithm. Available metrics include predictive
-#' rate parity, proportional parity, accuracy parity, false negative rate
-#' parity, false positive rate parity, true positive rate parity, negative
-#' predicted value parity, specificity parity, and demographic parity. The
-#' function returns an object of class \code{jfaModelBias} that can be used with
-#' associated \code{summary()} and \code{plot()} methods.
+#' @description This function aims to assess fairness in algorithmic
+#' decision-making systems by computing and testing the equality of one of
+#' several model-agnostic fairness metrics between protected classes based on a
+#' set of true labels and the predictions of an algorithm. The ratio of these
+#' metrics between an unpriveleged protected class and a priveleged protected
+#' class is called parity, and quantifies  relative fairness in the algorithms
+#' predictions. Available parity metrics include predictive rate parity,
+#' proportional parity, accuracy parity, false negative rate parity, false
+#' positive rate parity, true positive rate parity, negative predicted value
+#' parity, specificity parity, and demographic parity. The function returns an
+#' object of class \code{jfaFairness} that can be used with associated
+#' \code{summary()} and \code{plot()} methods.
 #'
 #' @usage model_fairness(
 #'   data,
@@ -112,7 +114,7 @@
 #'   \if{html}{\figure{fairness-tree.png}{options: width="100\%" alt="fairness-tree"}}
 #'   \if{latex}{\figure{fairness-tree.pdf}{options: width=5in}}
 #'
-#' @return An object of class \code{jfaModelFairness} containing:
+#' @return An object of class \code{jfaFairness} containing:
 #'
 #' \item{privileged}{The privileged class for computing the fairness metrics.}
 #' \item{positive}{The positive class used in computing the fairness metrics.}
@@ -364,6 +366,6 @@ model_fairness <- function(data,
   }
   result[["prior"]] <- prior
   result[["data.name"]] <- dname
-  class(result) <- c("jfaModelFairness", "list")
+  class(result) <- c("jfaFairness", "list")
   return(result)
 }

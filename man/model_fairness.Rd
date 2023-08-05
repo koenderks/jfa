@@ -2,7 +2,7 @@
 % Please edit documentation in R/model_fairness.R
 \name{model_fairness}
 \alias{model_fairness}
-\title{Algorithm Auditing: Fairness Metrics and Bias Detection}
+\title{Algorithm Auditing: Fairness Metrics and Parity}
 \usage{
 model_fairness(
   data,
@@ -59,7 +59,7 @@ Bayesian estimation using a default prior with concentration parameter 1 is
 performed.}
 }
 \value{
-An object of class \code{jfaModelFairness} containing:
+An object of class \code{jfaFairness} containing:
 
 \item{privileged}{The privileged class for computing the fairness metrics.}
 \item{positive}{The positive class used in computing the fairness metrics.}
@@ -79,16 +79,18 @@ An object of class \code{jfaModelFairness} containing:
 \item{data.name}{The name of the input data object.}
 }
 \description{
-This function aims to assess fairness and bias in algorithmic
-decision-making systems by computing and testing the equality in one of
-several model-agnostic fairness metrics. These metrics aim to quantify
-fairness across protected classes in the data based on a set of true labels
-and the predictions of an algorithm. Available metrics include predictive
-rate parity, proportional parity, accuracy parity, false negative rate
-parity, false positive rate parity, true positive rate parity, negative
-predicted value parity, specificity parity, and demographic parity. The
-function returns an object of class \code{jfaModelBias} that can be used with
-associated \code{summary()} and \code{plot()} methods.
+This function aims to assess fairness in algorithmic
+decision-making systems by computing and testing the equality of one of
+several model-agnostic fairness metrics between protected classes based on a
+set of true labels and the predictions of an algorithm. The ratio of these
+metrics between an unpriveleged protected class and a priveleged protected
+class is called parity, and quantifies  relative fairness in the algorithms
+predictions. Available parity metrics include predictive rate parity,
+proportional parity, accuracy parity, false negative rate parity, false
+positive rate parity, true positive rate parity, negative predicted value
+parity, specificity parity, and demographic parity. The function returns an
+object of class \code{jfaFairness} that can be used with associated
+\code{summary()} and \code{plot()} methods.
 }
 \details{
 The following model-agnostic fairness metrics are computed based on

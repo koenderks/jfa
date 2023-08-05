@@ -31,10 +31,10 @@
 \alias{plot.jfaDistr}
 \alias{print.jfaRv}
 \alias{plot.jfaRv}
-\alias{print.jfaModelFairness}
-\alias{print.summary.jfaModelFairness}
-\alias{summary.jfaModelFairness}
-\alias{plot.jfaModelFairness}
+\alias{print.jfaFairness}
+\alias{print.summary.jfaFairness}
+\alias{summary.jfaFairness}
+\alias{plot.jfaFairness}
 \title{Methods for jfa objects}
 \usage{
 \method{print}{jfaPrior}(x, ...)
@@ -95,13 +95,13 @@
 
 \method{plot}{jfaRv}(x, ...)
 
-\method{print}{jfaModelFairness}(x, digits = getOption("digits"), ...)
+\method{print}{jfaFairness}(x, digits = getOption("digits"), ...)
 
-\method{print}{summary.jfaModelFairness}(x, digits = getOption("digits"), ...)
+\method{print}{summary.jfaFairness}(x, digits = getOption("digits"), ...)
 
-\method{summary}{jfaModelFairness}(object, digits = getOption("digits"), ...)
+\method{summary}{jfaFairness}(object, digits = getOption("digits"), ...)
 
-\method{plot}{jfaModelFairness}(x, type = c("estimates", "posterior"), ...)
+\method{plot}{jfaFairness}(x, type = c("estimates", "posterior"), ...)
 }
 \arguments{
 \item{...}{further arguments, currently ignored.}
