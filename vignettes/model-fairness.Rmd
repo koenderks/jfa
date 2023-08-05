@@ -80,10 +80,10 @@ and false negatives (FN). To illustrate, the confusion matrix pertaining to the
 in this group that are incorrectly predicted to be a reoffender, which
 represents a false positive in the confusion matrix.
 
-|                | Predicted = `No` | Predicted = `Yes`   |
-| :----------- : | :--------------: | :-----------------: |
-| Actual = `No`  | 885 (`TN`)       | 629 (`FP`)          |
-| Actual = `Yes` | 411 (`FN`)       | 1250 (`TP`)         |
+|                           | `Predicted` = `no` | `Predicted` = `yes`   |
+| ------------------------: | :----------------: | :-------------------: |
+| `TwoYrRecidivism` = `no`  | 885 (`TN`)         | 629 (`FP`)            |
+| `TwoYrRecidivism` = `yes` | 411 (`FN`)         | 1250 (`TP`)           |
 
 Let's interpret the fairness metrics for the African American, Asian, and
 Hispanic groups in comparison to the reference group (Caucasian) one by one.
@@ -97,8 +97,14 @@ metric.
 $$DP = TP + FP$$
 
 ```{r}
-model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-  reference = "Caucasian", positive = "yes", metric = "dp"
+model_fairness(
+  data = compas,
+  sensitive = "Ethnicity",
+  target = "TwoYrRecidivism",
+  predictions = "Predicted",
+  reference = "Caucasian",
+  positive = "yes",
+  metric = "dp"
 )
 ```
 
@@ -119,8 +125,14 @@ rates (e.g., true positive rate) of each ethnic group with the reference group.
 $$PP = (TP + FP) / (TP + FP + TN + FN)$$
 
 ```{r}
-model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-  reference = "Caucasian", positive = "yes", metric = "pp"
+model_fairness(
+  data = compas,
+  sensitive = "Ethnicity",
+  target = "TwoYrRecidivism",
+  predictions = "Predicted",
+  reference = "Caucasian",
+  positive = "yes",
+  metric = "pp"
 )
 ```
 
@@ -144,8 +156,15 @@ setting `prior = TRUE`. The resulting Bayes factors in favor of rejection of the
 null hypothesis ($BF_{10}$) are shown in the output below.
 
 ```{r}
-model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-  reference = "Caucasian", positive = "yes", metric = "pp", prior = TRUE
+model_fairness(
+  data = compas,
+  sensitive = "Ethnicity",
+  target = "TwoYrRecidivism",
+  predictions = "Predicted",
+  reference = "Caucasian",
+  positive = "yes",
+  metric = "pp",
+  prior = TRUE
 )
 ```
 
@@ -156,8 +175,14 @@ the reference group.
 $$PRP = TP / (TP + FP)$$
 
 ```{r}
-model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-  reference = "Caucasian", positive = "yes", metric = "prp"
+model_fairness(
+  data = compas,
+  sensitive = "Ethnicity",
+  target = "TwoYrRecidivism",
+  predictions = "Predicted",
+  reference = "Caucasian",
+  positive = "yes",
+  metric = "prp"
 )
 ```
 
@@ -180,8 +205,14 @@ with the reference group.
 $$AP = (TP + TN) / (TP + FP + TN + FN)$$
 
 ```{r}
-model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-  reference = "Caucasian", positive = "yes", metric = "ap"
+model_fairness(
+  data = compas,
+  sensitive = "Ethnicity",
+  target = "TwoYrRecidivism",
+  predictions = "Predicted",
+  reference = "Caucasian",
+  positive = "yes",
+  metric = "ap"
 )
 ```
 
@@ -202,8 +233,14 @@ group.
 $$FNRP = FN / (TP + FN)$$
 
 ```{r}
-model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-  reference = "Caucasian", positive = "yes", metric = "fnrp"
+model_fairness(
+  data = compas,
+  sensitive = "Ethnicity",
+  target = "TwoYrRecidivism",
+  predictions = "Predicted",
+  reference = "Caucasian",
+  positive = "yes",
+  metric = "fnrp"
 )
 ```
 
@@ -225,8 +262,14 @@ non-reoffenders) of each ethnic group with the reference group.
 $$FPRP = FP / (TN + FP)$$
 
 ```{r}
-model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-  reference = "Caucasian", positive = "yes", metric = "fprp"
+model_fairness(
+  data = compas,
+  sensitive = "Ethnicity",
+  target = "TwoYrRecidivism",
+  predictions = "Predicted",
+  reference = "Caucasian",
+  positive = "yes",
+  metric = "fprp"
 )
 ```
 
@@ -249,8 +292,14 @@ rates (e.g., for reoffenders) of each ethnic group with the reference group.
 $$TPRP = TP / (TP + FN)$$
 
 ```{r}
-model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-  reference = "Caucasian", positive = "yes", metric = "tprp"
+model_fairness(
+  data = compas,
+  sensitive = "Ethnicity",
+  target = "TwoYrRecidivism",
+  predictions = "Predicted",
+  reference = "Caucasian",
+  positive = "yes",
+  metric = "tprp"
 )
 ```
 
@@ -274,8 +323,14 @@ model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
 $$NPVP = TN / (TN + FN)$$
 
 ```{r}
-model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-  reference = "Caucasian", positive = "yes", metric = "npvp"
+model_fairness(
+  data = compas,
+  sensitive = "Ethnicity",
+  target = "TwoYrRecidivism",
+  predictions = "Predicted",
+  reference = "Caucasian",
+  positive = "yes",
+  metric = "npvp"
 )
 ```
 
@@ -297,8 +352,14 @@ model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
 $$SP = TN / (TN + FP)$$
 
 ```{r}
-model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-  reference = "Caucasian", positive = "yes", metric = "sp"
+model_fairness(
+  data = compas,
+  sensitive = "Ethnicity",
+  target = "TwoYrRecidivism",
+  predictions = "Predicted",
+  reference = "Caucasian",
+  positive = "yes",
+  metric = "sp"
 )
 ```
 
