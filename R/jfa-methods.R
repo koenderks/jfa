@@ -1186,22 +1186,22 @@ plot.jfaModelFairness <- function(x, type = c("estimates", "posterior"), ...) {
     ratio[["group"]] <- rownames(ratio)
     yBreaks <- pretty(c(0, ratio[["estimate"]], 1, ratio[["ub"]]), min.n = 4)
     yTitle <- switch(x[["measure"]],
-      pp = "Proportional Parity Ratio",
-      prp = "Predictive Rate Parity Ratio",
-      ap = "Accuracy Parity Ratio",
-      fnrp = "False Negative Rate Parity Ratio",
-      fprp = "False Positive Rate Parity Ratio",
-      tprp = "True Positive Rate Parity Ratio",
-      npvp = "Negative Predictive Value Parity Ratio",
-      sp = "Specificity Parity Ratio",
-      dp = "Demographic Parity Ratio"
+      pp = "Proportional parity ratio",
+      prp = "Predictive rate parity ratio",
+      ap = "Accuracy parity ratio",
+      fnrp = "False negative rate parity ratio",
+      fprp = "False positive rate parity ratio",
+      tprp = "True positive rate parity ratio",
+      npvp = "Negative predictive value parity Ratio",
+      sp = "Specificity parity ratio",
+      dp = "Demographic parity ratio"
     )
     ratio$type <- ifelse(x[["measure"]] == "dp" | (ratio$ub < 1 | ratio$lb > 1), yes = "Deviation", no = "Expected")
     ratio$type[which(groupLevels == x[["reference"]])] <- "Reference"
     ratio$type <- factor(ratio$type, levels = c("Reference", "Expected", "Deviation"))
     p <- ggplot2::ggplot(data = ratio, mapping = ggplot2::aes(x = group, y = estimate, group = group, fill = type)) +
       ggplot2::geom_col(colour = "black") +
-      ggplot2::scale_x_discrete(name = "Sensitive Attribute") +
+      ggplot2::scale_x_discrete(name = "Sensitive attribute") +
       ggplot2::scale_y_continuous(name = yTitle, breaks = yBreaks, limits = range(yBreaks)) +
       ggplot2::scale_fill_manual(name = NULL, values = c("dodgerblue", "lightgray", "firebrick"), breaks = c("Reference", "Expected", "Deviation")) +
       ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks))
@@ -1242,7 +1242,7 @@ plot.jfaModelFairness <- function(x, type = c("estimates", "posterior"), ...) {
       ggplot2::geom_path(data = subset(plotdata, plotdata$type == "Prior"), linetype = "dashed", color = "black") +
       ggplot2::geom_path(data = subset(plotdata, plotdata$type == "Posterior"), linetype = "solid") +
       ggplot2::scale_y_continuous(name = "Density", breaks = yBreaks, limits = range(yBreaks)) +
-      ggplot2::scale_x_continuous(name = "Log Odds Ratio", breaks = xBreaks, limits = range(xBreaks)) +
+      ggplot2::scale_x_continuous(name = "Log odds ratio", breaks = xBreaks, limits = range(xBreaks)) +
       ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks), inherit.aes = FALSE) +
       ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf, inherit.aes = FALSE) +
       (if (length(inferenceLevels) == 1) ggplot2::scale_color_manual(name = NULL, values = "black") else ggplot2::scale_color_brewer(name = NULL, palette = "Dark2"))
