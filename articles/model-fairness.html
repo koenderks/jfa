@@ -337,11 +337,64 @@ below.</p>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Sample estimates (parity ratio):</span></span>
-<span><span class="co">##  African_American: 1.836 [1.7823, 1.8895], BF₁₀ = 4.1528e+81</span></span>
-<span><span class="co">##  Asian: 0.33137 [0.16613, 0.89923], BF₁₀ = 0.26796</span></span>
-<span><span class="co">##  Hispanic: 0.90608 [0.78334, 1.0368], BF₁₀ = 0.10615</span></span>
-<span><span class="co">##  Native_American: 1.2266 [0.63817, 2.2448], BF₁₀ = 0.018438</span></span>
-<span><span class="co">##  Other: 0.74613 [0.63713, 0.92111], BF₁₀ = 1.815</span></span></code></pre>
+<span><span class="co">##  African_American: 1.8363 [1.794, 1.8977], BF₁₀ = 4.1528e+81</span></span>
+<span><span class="co">##  Asian: 0.4442 [0.15894, 0.89089], BF₁₀ = 0.26796</span></span>
+<span><span class="co">##  Hispanic: 0.90118 [0.79298, 1.0397], BF₁₀ = 0.10615</span></span>
+<span><span class="co">##  Native_American: 1.1587 [0.67527, 2.2451], BF₁₀ = 0.018438</span></span>
+<span><span class="co">##  Other: 0.77182 [0.64314, 0.91894], BF₁₀ = 1.815</span></span></code></pre>
+<p>This is probably also a good time to show the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>
+and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> functions associated with the
+<code><a href="../reference/model_fairness.html">model_fairness()</a></code> function. Let’s examine the frequentist
+function call again, but instead of printing the output to the console,
+this time we store the output in <code>x</code> and run the
+<code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> functions on this
+object.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
+<span>  sensitive <span class="op">=</span> <span class="st">"Ethnicity"</span>,</span>
+<span>  target <span class="op">=</span> <span class="st">"TwoYrRecidivism"</span>,</span>
+<span>  predictions <span class="op">=</span> <span class="st">"Predicted"</span>,</span>
+<span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>,</span>
+<span>  positive <span class="op">=</span> <span class="st">"yes"</span>,</span>
+<span>  metric <span class="op">=</span> <span class="st">"pp"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Classical Algorithmic Fairness Test Summary</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Fairness metric:    Proportional parity (Disparate impact)</span></span>
+<span><span class="co">## Model type:         Binary classification</span></span>
+<span><span class="co">## Reference group:    Caucasian</span></span>
+<span><span class="co">## Positive class:     yes </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Model performance:</span></span>
+<span><span class="co">##                  Support  Accuracy Precision    Recall  F1 score</span></span>
+<span><span class="co">## Caucasian           2103 0.6585830 0.5773810 0.4720195 0.5194110</span></span>
+<span><span class="co">## African_American    3175 0.6724409 0.6652475 0.7525587 0.7062147</span></span>
+<span><span class="co">## Asian                 31 0.7419355 0.5000000 0.2500000 0.3333333</span></span>
+<span><span class="co">## Hispanic             509 0.6817289 0.5906040 0.4656085 0.5207101</span></span>
+<span><span class="co">## Native_American       11 0.6363636 0.6000000 0.6000000 0.6000000</span></span>
+<span><span class="co">## Other                343 0.6938776 0.6117647 0.4193548 0.4976077</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Sample estimates:</span></span>
+<span><span class="co">##                          Proportional parity               Parity ratio</span></span>
+<span><span class="co">## Caucasian (R)     0.31954 [0.29964, 0.33995]                          -</span></span>
+<span><span class="co">## African_American  0.59181 [0.57448, 0.60897]    1.8521 [1.7978, 1.9058]</span></span>
+<span><span class="co">## Asian            0.12903 [0.036302, 0.29834]   0.4038 [0.1136, 0.93363]</span></span>
+<span><span class="co">## Hispanic          0.29273 [0.25352, 0.33437]  0.91609 [0.79339, 1.0464]</span></span>
+<span><span class="co">## Native_American   0.45455 [0.16749, 0.76621]   1.4225 [0.52415, 2.3978]</span></span>
+<span><span class="co">## Other             0.24781 [0.20302, 0.29702] 0.77552 [0.63533, 0.92953]</span></span>
+<span><span class="co">##                                   Odds ratio    p-value</span></span>
+<span><span class="co">## Caucasian (R)                              -          -</span></span>
+<span><span class="co">## African_American     3.0866 [2.7453, 3.4726] &lt; 2.22e-16</span></span>
+<span><span class="co">## Asian            0.31561 [0.079942, 0.91095]   0.030318</span></span>
+<span><span class="co">## Hispanic           0.88138 [0.70792, 1.0939]    0.26386</span></span>
+<span><span class="co">## Native_American     1.7739 [0.42669, 7.0041]     0.3444</span></span>
+<span><span class="co">## Other             0.70166 [0.53338, 0.91633]  0.0080834</span></span></code></pre>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<p><img src="model-fairness_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
 <ol start="3" style="list-style-type: decimal">
 <li>
 <strong>Predictive rate parity (Equalized odds)</strong>: Compares
@@ -349,7 +402,7 @@ the overall positive prediction rates (e.g., reoffender prediction) of
 different ethnic groups with the reference group.</li>
 </ol>
 <p><span class="math display">\[PRP = TP / (TP + FP)\]</span></p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
 <span>  sensitive <span class="op">=</span> <span class="st">"Ethnicity"</span>,</span>
@@ -398,7 +451,7 @@ ethnic group’s predictions with the reference group.</li>
 </ol>
 <p><span class="math display">\[AP = (TP + TN) / (TP + FP + TN +
 FN)\]</span></p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
 <span>  sensitive <span class="op">=</span> <span class="st">"Ethnicity"</span>,</span>
@@ -442,7 +495,7 @@ Compares the false negative rates (e.g., for reoffenders) of each ethnic
 group with the reference group.</li>
 </ol>
 <p><span class="math display">\[FNRP = FN / (TP + FN)\]</span></p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
 <span>  sensitive <span class="op">=</span> <span class="st">"Ethnicity"</span>,</span>
@@ -489,7 +542,7 @@ positive rates (e.g., for non-reoffenders) of each ethnic group with the
 reference group.</li>
 </ol>
 <p><span class="math display">\[FPRP = FP / (TN + FP)\]</span></p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
 <span>  sensitive <span class="op">=</span> <span class="st">"Ethnicity"</span>,</span>
@@ -539,7 +592,7 @@ Compares the true positive rates (e.g., for reoffenders) of each ethnic
 group with the reference group.</li>
 </ol>
 <p><span class="math display">\[TPRP = TP / (TP + FN)\]</span></p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
 <span>  sensitive <span class="op">=</span> <span class="st">"Ethnicity"</span>,</span>
@@ -588,7 +641,7 @@ negative predicted values (e.g., for non-reoffenders) of each ethnic
 group with the reference group.</li>
 </ol>
 <p><span class="math display">\[NPVP = TN / (TN + FN)\]</span></p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
 <span>  sensitive <span class="op">=</span> <span class="st">"Ethnicity"</span>,</span>
@@ -636,7 +689,7 @@ Compares the specificity (true negative rate) of each ethnic group with
 the reference group.</li>
 </ol>
 <p><span class="math display">\[SP = TN / (TN + FP)\]</span></p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
 <span>  sensitive <span class="op">=</span> <span class="st">"Ethnicity"</span>,</span>
