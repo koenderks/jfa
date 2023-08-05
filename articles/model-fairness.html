@@ -169,6 +169,23 @@ metrics, we can get an indication of whether the algorithm exhibits any
 discriminatory behavior towards specific ethnic groups. If substantial
 disparities exist, we may need to investigate further and potentially
 modify the algorithm to ensure fairness in its predictions.</p>
+<p>Before starting, let’s briefly explain the foundation of all fairness
+metrics: the confusion matrix. This matrix presents observed versus
+predicted labels, shedding light on the algorithm’s prediction mistakes.
+Comprising the confusion matrix are the true positives (TP), false
+positives (FP), true negatives (TN), and false negatives (FN). To
+illustrate, the confusion matrix pertaining to the
+<code>African American</code> group is displayed below. For example,
+there are 629 people in this group that are incorrectly predicted to be
+a reoffender, which represents a false positive in the confusion
+matrix.</p>
+<div class="line-block">               | Predicted = <code>No</code> |
+Predicted = <code>Yes</code> |<br>
+:———– : | :————–: | :—————–: |<br>
+Actual = <code>No</code> | 885 (<code>TN</code>) | 629 (<code>FP</code>)
+|<br>
+Actual = <code>Yes</code> | 411 (<code>FN</code>) | 1250
+(<code>TP</code>) |</div>
 <p>Let’s interpret the fairness metrics for the African American, Asian,
 and Hispanic groups in comparison to the reference group (Caucasian) one
 by one.</p>
@@ -180,6 +197,7 @@ ethnic group and the reference group. Note that, since demographic
 parity is not a proportion, statistical inference about its equality to
 the reference group is not supported for this metric.</li>
 </ol>
+<p><span class="math display">\[DP = TP + FP\]</span></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
 <span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"dp"</span></span>
@@ -218,6 +236,8 @@ these data than that there are Caucasians.</li>
 the positive prediction rates (e.g., true positive rate) of each ethnic
 group with the reference group.</li>
 </ol>
+<p><span class="math display">\[PP = (TP + FP) / (TP + FP + TN +
+FN)\]</span></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
 <span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"pp"</span></span>
@@ -273,17 +293,18 @@ below.</p>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Sample estimates (parity ratio):</span></span>
-<span><span class="co">##  African_American: 1.8589 [1.8043, 1.9145], BF₁₀ = 4.1528e+81</span></span>
-<span><span class="co">##  Asian: 0.42772 [0.1741, 0.89071], BF₁₀ = 0.26796</span></span>
-<span><span class="co">##  Hispanic: 0.92238 [0.80363, 1.0441], BF₁₀ = 0.10615</span></span>
-<span><span class="co">##  Native_American: 1.2392 [0.6625, 2.2699], BF₁₀ = 0.018438</span></span>
-<span><span class="co">##  Other: 0.75707 [0.64814, 0.92661], BF₁₀ = 1.815</span></span></code></pre>
+<span><span class="co">##  African_American: 1.8561 [1.8128, 1.922], BF₁₀ = 4.1528e+81</span></span>
+<span><span class="co">##  Asian: 0.37405 [0.15421, 0.90326], BF₁₀ = 0.26796</span></span>
+<span><span class="co">##  Hispanic: 0.91761 [0.80506, 1.0515], BF₁₀ = 0.10615</span></span>
+<span><span class="co">##  Native_American: 1.4012 [0.61444, 2.3333], BF₁₀ = 0.018438</span></span>
+<span><span class="co">##  Other: 0.76547 [0.65578, 0.93005], BF₁₀ = 1.815</span></span></code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>
 <strong>Predictive rate parity (Equalized odds)</strong>: Compares
 the overall positive prediction rates (e.g., reoffender prediction) of
 different ethnic groups with the reference group.</li>
 </ol>
+<p><span class="math display">\[PRP = TP / (TP + FP)\]</span></p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
 <span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"prp"</span></span>
@@ -325,6 +346,8 @@ fair treatment in the algorithm’s overall positive predictions.</li>
 <strong>Accuracy parity</strong>: Compares the accuracy of each
 ethnic group’s predictions with the reference group.</li>
 </ol>
+<p><span class="math display">\[AP = (TP + TN) / (TP + FP + TN +
+FN)\]</span></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
 <span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"ap"</span></span>
@@ -362,6 +385,7 @@ potential favoritism in overall accuracy.</li>
 Compares the false negative rates (e.g., for reoffenders) of each ethnic
 group with the reference group.</li>
 </ol>
+<p><span class="math display">\[FNRP = FN / (TP + FN)\]</span></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
 <span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"fnrp"</span></span>
@@ -402,6 +426,7 @@ suggesting fair treatment in this aspect.</li>
 positive rates (e.g., for non-reoffenders) of each ethnic group with the
 reference group.</li>
 </ol>
+<p><span class="math display">\[FPRP = FP / (TN + FP)\]</span></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
 <span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"fprp"</span></span>
@@ -445,6 +470,7 @@ predictions.</li>
 Compares the true positive rates (e.g., for reoffenders) of each ethnic
 group with the reference group.</li>
 </ol>
+<p><span class="math display">\[TPRP = TP / (TP + FN)\]</span></p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
 <span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"tprp"</span></span>
@@ -487,6 +513,7 @@ treatment in the algorithm’s true positive predictions.</li>
 negative predicted values (e.g., for non-reoffenders) of each ethnic
 group with the reference group.</li>
 </ol>
+<p><span class="math display">\[NPVP = TN / (TN + FN)\]</span></p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
 <span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"npvp"</span></span>
@@ -528,6 +555,7 @@ non-reoffenders.</li>
 Compares the specificity (true negative rate) of each ethnic group with
 the reference group.</li>
 </ol>
+<p><span class="math display">\[SP = TN / (TN + FP)\]</span></p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
 <span>  reference <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span>, metric <span class="op">=</span> <span class="st">"sp"</span></span>
