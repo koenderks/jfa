@@ -215,6 +215,7 @@ matrix.</p>
 metrics for the African American, Asian, and Hispanic groups in
 comparison to the reference group (Caucasian). See Pessach &amp; Shmueli
 (2022) for a more detailed explanation of these metrics.</p>
+<p> </p>
 <ol style="list-style-type: decimal">
 <li>
 <p><strong>Demographic parity (Statistical parity)</strong>:
@@ -246,7 +247,7 @@ sensitive group <span class="math inline">\(i\)</span> is given by <span class="
 <span><span class="co">##  Hispanic: 0.22173</span></span>
 <span><span class="co">##  Native_American: 0.0074405</span></span>
 <span><span class="co">##  Other: 0.12649</span></span></code></pre>
-<p><em>Interpretation:</em></p>
+<p><strong><em>Interpretation:</em></strong></p>
 <ul>
 <li>
 <em>African American</em>: The parity ratio for African Americans
@@ -264,6 +265,9 @@ there are about five times less Hispanics predicted as reoffenders in
 these data than that there are Caucasians.</li>
 </ul>
 </li>
+</ol>
+<p> </p>
+<ol start="2" style="list-style-type: decimal">
 <li>
 <p><strong>Proportional parity (Disparate impact)</strong>: Compares
 the proportion of positive predictions of each ethnic group with that in
@@ -295,7 +299,7 @@ and the parity ratio for sensitive group <span class="math inline">\(i\)</span> 
 <span><span class="co">##  Hispanic: 0.91609 [0.79339, 1.0464], p-value = 0.26386</span></span>
 <span><span class="co">##  Native_American: 1.4225 [0.52415, 2.3978], p-value = 0.3444</span></span>
 <span><span class="co">##  Other: 0.77552 [0.63533, 0.92953], p-value = 0.0080834</span></span></code></pre>
-<p><em>Interpretation:</em></p>
+<p><strong><em>Interpretation:</em></strong></p>
 <ul>
 <li>
 <em>African American</em>: The ratio of true positive rates (TPRs)
@@ -396,15 +400,18 @@ in the figure.</p>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## sample estimates (parity ratio):</span></span>
-<span><span class="co">##  African_American: 1.8971 [1.8415, 1.9515], BF₁₀ = 4.1528e+81</span></span>
-<span><span class="co">##  Asian: 0.42308 [0.16784, 0.91393], BF₁₀ = 0.26796</span></span>
-<span><span class="co">##  Hispanic: 0.93526 [0.81334, 1.0697], BF₁₀ = 0.10615</span></span>
-<span><span class="co">##  Native_American: 1.5362 [0.68796, 2.3747], BF₁₀ = 0.018438</span></span>
-<span><span class="co">##  Other: 0.83494 [0.65134, 0.95469], BF₁₀ = 1.815</span></span></code></pre>
+<span><span class="co">##  African_American: 1.8246 [1.7777, 1.8813], BF₁₀ = 4.1528e+81</span></span>
+<span><span class="co">##  Asian: 0.37612 [0.15413, 0.89298], BF₁₀ = 0.26796</span></span>
+<span><span class="co">##  Hispanic: 0.9202 [0.78702, 1.0252], BF₁₀ = 0.10615</span></span>
+<span><span class="co">##  Native_American: 1.4383 [0.68969, 2.244], BF₁₀ = 0.018438</span></span>
+<span><span class="co">##  Other: 0.78658 [0.63396, 0.91255], BF₁₀ = 1.815</span></span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="model-fairness_files/figure-html/unnamed-chunk-6-1.png" width="576" style="display: block; margin: auto;"></p>
 </li>
+</ol>
+<p> </p>
+<ol start="3" style="list-style-type: decimal">
 <li>
 <p><strong>Predictive rate parity (Equalized odds)</strong>:
 Compares the overall positive prediction rates (e.g., reoffender
@@ -435,7 +442,7 @@ given by <span class="math inline">\(\frac{PRP_{i}}{PRP_{reference}}\)</span>.</
 <span><span class="co">##  Hispanic: 1.0229 [0.87836, 1.1611], p-value = 0.78393</span></span>
 <span><span class="co">##  Native_American: 1.0392 [0.25396, 1.6406], p-value = 1</span></span>
 <span><span class="co">##  Other: 1.0596 [0.86578, 1.2394], p-value = 0.5621</span></span></code></pre>
-<p><em>Interpretation:</em></p>
+<p><strong><em>Interpretation:</em></strong></p>
 <ul>
 <li>
 <em>African American</em>: The predictive rate parity ratio for
@@ -456,6 +463,9 @@ to that of the reference group (Caucasians). This indicates relatively
 fair treatment in the algorithm’s overall positive predictions.</li>
 </ul>
 </li>
+</ol>
+<p> </p>
+<ol start="4" style="list-style-type: decimal">
 <li>
 <p><strong>Accuracy parity</strong>: Compares the accuracy of each
 ethnic group’s predictions with the reference group.</p>
@@ -484,7 +494,7 @@ and the parity ratio for sensitive group <span class="math inline">\(i\)</span> 
 <span><span class="co">##  Hispanic: 1.0351 [0.97074, 1.0963], p-value = 0.34691</span></span>
 <span><span class="co">##  Native_American: 0.96626 [0.46753, 1.3525], p-value = 1</span></span>
 <span><span class="co">##  Other: 1.0536 [0.975, 1.127], p-value = 0.21778</span></span></code></pre>
-<p><em>Interpretation:</em></p>
+<p><strong><em>Interpretation:</em></strong></p>
 <ul>
 <li>African American: The accuracy parity ratio for African Americans is
 1.021, suggesting their accuracy is very similar to the reference group
@@ -500,6 +510,9 @@ their accuracy is slightly higher than for Caucasians, indicating
 potential favoritism in overall accuracy.</li>
 </ul>
 </li>
+</ol>
+<p> </p>
+<ol start="5" style="list-style-type: decimal">
 <li>
 <p><strong>False negative rate parity (Treatment equality)</strong>:
 Compares the false negative rates (e.g., for reoffenders) of each ethnic
@@ -530,7 +543,7 @@ given by <span class="math inline">\(\frac{FNRP_{i}}{FNRP_{reference}}\)</span>.
 <span><span class="co">##  Hispanic: 1.0121 [0.87234, 1.1499], p-value = 0.93562</span></span>
 <span><span class="co">##  Native_American: 0.7576 [0.099899, 1.6163], p-value = 0.67157</span></span>
 <span><span class="co">##  Other: 1.0997 [0.92563, 1.2664], p-value = 0.28911</span></span></code></pre>
-<p><em>Interpretation:</em></p>
+<p><strong><em>Interpretation:</em></strong></p>
 <ul>
 <li>
 <em>African American</em>: The ratio of false negative rates (FNRs)
@@ -549,6 +562,9 @@ indicating relatively similar rates as the reference group (Caucasians),
 suggesting fair treatment in this aspect.</li>
 </ul>
 </li>
+</ol>
+<p> </p>
+<ol start="6" style="list-style-type: decimal">
 <li>
 <p><strong>False positive rate parity</strong>: Compares the false
 positive rates (e.g., for non-reoffenders) of each ethnic group with the
@@ -579,7 +595,7 @@ given by <span class="math inline">\(\frac{FPRP_{i}}{FPRP_{reference}}\)</span>.
 <span><span class="co">##  Hispanic: 0.85983 [0.67237, 1.0736], p-value = 0.25424</span></span>
 <span><span class="co">##  Native_American: 1.5035 [0.19518, 3.5057], p-value = 0.61986</span></span>
 <span><span class="co">##  Other: 0.67967 [0.47835, 0.92493], p-value = 0.019574</span></span></code></pre>
-<p><em>Interpretation:</em></p>
+<p><strong><em>Interpretation:</em></strong></p>
 <ul>
 <li>
 <em>African American</em>: The false positive rate parity ratio for
@@ -601,6 +617,9 @@ potential fair treatment of Hispanics in false positive
 predictions.</li>
 </ul>
 </li>
+</ol>
+<p> </p>
+<ol start="7" style="list-style-type: decimal">
 <li>
 <p><strong>True positive rate parity (Equal opportunity)</strong>:
 Compares the true positive rates (e.g., for reoffenders) of each ethnic
@@ -631,7 +650,7 @@ given by <span class="math inline">\(\frac{TPRP_{i}}{TPRP_{reference}}\)</span>.
 <span><span class="co">##  Hispanic: 0.98642 [0.83236, 1.1428], p-value = 0.93562</span></span>
 <span><span class="co">##  Native_American: 1.2711 [0.31065, 2.0068], p-value = 0.67157</span></span>
 <span><span class="co">##  Other: 0.88843 [0.70202, 1.0832], p-value = 0.28911</span></span></code></pre>
-<p><em>Interpretation:</em></p>
+<p><strong><em>Interpretation:</em></strong></p>
 <ul>
 <li>
 <em>African American</em>: The true positive rate parity ratio for
@@ -652,6 +671,9 @@ the reference group (Caucasians). This indicates relatively fair
 treatment in the algorithm’s true positive predictions.</li>
 </ul>
 </li>
+</ol>
+<p> </p>
+<ol start="8" style="list-style-type: decimal">
 <li>
 <p><strong>Negative predicted value parity</strong>: Compares the
 negative predicted values (e.g., for non-reoffenders) of each ethnic
@@ -682,7 +704,7 @@ given by <span class="math inline">\(\frac{NPVP_{i}}{NPVP_{reference}}\)</span>.
 <span><span class="co">##  Hispanic: 1.0326 [0.96161, 1.0984], p-value = 0.43956</span></span>
 <span><span class="co">##  Native_American: 0.95687 [0.31975, 1.3732], p-value = 1</span></span>
 <span><span class="co">##  Other: 1.0348 [0.95007, 1.112], p-value = 0.46084</span></span></code></pre>
-<p><em>Interpretation:</em></p>
+<p><strong><em>Interpretation:</em></strong></p>
 <ul>
 <li>
 <em>African American</em>: The Negative predicted value (NPV) parity
@@ -702,6 +724,9 @@ indicates potential favoritism towards Hispanics in predicting
 non-reoffenders.</li>
 </ul>
 </li>
+</ol>
+<p> </p>
+<ol start="9" style="list-style-type: decimal">
 <li>
 <p><strong>Specificity parity (True negative rate parity)</strong>:
 Compares the specificity (true negative rate) of each ethnic group with
@@ -732,7 +757,7 @@ given by <span class="math inline">\(\frac{SP_{i}}{SP_{reference}}\)</span>.</p>
 <span><span class="co">##  Hispanic: 1.0399 [0.97904, 1.0933], p-value = 0.25424</span></span>
 <span><span class="co">##  Native_American: 0.85657 [0.28624, 1.2293], p-value = 0.61986</span></span>
 <span><span class="co">##  Other: 1.0912 [1.0214, 1.1486], p-value = 0.019574</span></span></code></pre>
-<p><em>Interpretation:</em></p>
+<p><strong><em>Interpretation:</em></strong></p>
 <ul>
 <li>
 <em>African American</em>: The specificity parity ratio for African
