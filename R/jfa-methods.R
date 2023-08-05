@@ -1211,23 +1211,36 @@ plot.jfaModelFairness <- function(x, type = c("estimates", "posterior"), ...) {
   } else {
     stopifnot("plot not supported for frequentist inference" = !isFALSE(x[["prior"]]))
     stopifnot("plot not supported for demographic parity" = x[["measure"]] != "dp")
-    plotdata <- data.frame(x = numeric(), y = numeric(), group = numeric(), xmin = numeric(), xmax = numeric())
+    plotdata <- data.frame(x = numeric(), y = numeric(), group = character(), xmin = numeric(), xmax = numeric(), type = character())
     for (i in seq_along(inferenceLevels)) {
       tmp <- data.frame(
         x = x[["odds.ratio"]][[inferenceLevels[i]]]$density$x,
         y = x[["odds.ratio"]][[inferenceLevels[i]]]$density$y,
         group = inferenceLevels[i],
         xmin = x[["odds.ratio"]][[inferenceLevels[i]]]$density$xmin,
-        xmax = x[["odds.ratio"]][[inferenceLevels[i]]]$density$xmax
+        xmax = x[["odds.ratio"]][[inferenceLevels[i]]]$density$xmax,
+        type = "Posterior"
       )
       plotdata <- rbind(plotdata, tmp)
     }
+    tmp_prior <- data.frame(
+      x = x[["odds.ratio"]][[inferenceLevels[1]]]$density$prior_x,
+      y = x[["odds.ratio"]][[inferenceLevels[1]]]$density$prior_y,
+      group = inferenceLevels[1],
+      xmin = x[["odds.ratio"]][[inferenceLevels[1]]]$density$xmin,
+      xmax = x[["odds.ratio"]][[inferenceLevels[1]]]$density$xmax,
+      type = "Prior"
+    )
+    plotdata <- rbind(plotdata, tmp_prior)
     xBreaks <- pretty(c(0, plotdata$xmin, plotdata$xmax), min.n = 4)
     yBreaks <- pretty(c(0, plotdata$y), min.n = 4)
-    plotdata <- plotdata[-which(plotdata$x < min(xBreaks) | plotdata$x > max(xBreaks)), ]
-    p <- ggplot2::ggplot(data = plotdata, mapping = ggplot2::aes(x = x, y = y, group = factor(group), color = factor(group))) +
-      ggplot2::geom_segment(x = 0, xend = 0, y = 0, yend = max(yBreaks), inherit.aes = FALSE, linetype = "dashed") +
-      ggplot2::geom_line() +
+    indexes <- which(plotdata$x < min(xBreaks) | plotdata$x > max(xBreaks))
+    if (length(indexes) > 0) {
+      plotdata <- plotdata[-indexes, ]
+    }
+    p <- ggplot2::ggplot(data = plotdata, mapping = ggplot2::aes(x = x, y = y, color = factor(group))) +
+      ggplot2::geom_path(data = subset(plotdata, plotdata$type == "Prior"), linetype = "dashed", color = "black") +
+      ggplot2::geom_path(data = subset(plotdata, plotdata$type == "Posterior"), linetype = "solid") +
       ggplot2::scale_y_continuous(name = "Density", breaks = yBreaks, limits = range(yBreaks)) +
       ggplot2::scale_x_continuous(name = "Log Odds Ratio", breaks = xBreaks, limits = range(xBreaks)) +
       ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks), inherit.aes = FALSE) +

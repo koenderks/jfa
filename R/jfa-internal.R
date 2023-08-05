@@ -778,9 +778,21 @@
 
 .mcmc_or <- function(counts, prior_a) {
   suppressWarnings({
+    raw_prior <- rstan::sampling(
+      object = stanmodels[["or_fairness"]],
+      data = list(y = counts, prior_a = prior_a, use_likelihood = 0),
+      pars = "OR",
+      iter = getOption("mc.iterations", 2000),
+      warmup = getOption("mc.warmup", 1000),
+      chains = getOption("mc.chains", 4),
+      cores = getOption("mc.cores", 1),
+      seed = sample.int(.Machine$integer.max, 1),
+      control = list(adapt_delta = 0.95),
+      refresh = 0
+    )
     raw_posterior <- rstan::sampling(
       object = stanmodels[["or_fairness"]],
-      data = list(y = counts, prior_a = prior_a),
+      data = list(y = counts, prior_a = prior_a, use_likelihood = 1),
       pars = c("OR", "prob"),
       iter = getOption("mc.iterations", 2000),
       warmup = getOption("mc.warmup", 1000),
@@ -791,7 +803,11 @@
       refresh = 0
     )
   })
-  samples <- data.frame(OR = rstan::extract(raw_posterior)$OR, prob = rstan::extract(raw_posterior)$prob)
+  samples <- data.frame(
+    prior = rstan::extract(raw_prior)$OR,
+    OR = rstan::extract(raw_posterior)$OR,
+    prob = rstan::extract(raw_posterior)$prob
+  )
   stopifnot("Stan model could not be fitted...check your priors" = !is.null(samples))
   return(samples)
 }
