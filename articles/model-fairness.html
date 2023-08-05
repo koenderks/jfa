@@ -211,9 +211,10 @@ matrix.</p>
 </tr>
 </tbody>
 </table>
-<p>Let’s interpret the fairness metrics for the African American, Asian,
-and Hispanic groups in comparison to the reference group (Caucasian) one
-by one.</p>
+<p>For illustrative purposes, let’s interpret the full set of fairness
+metrics for the African American, Asian, and Hispanic groups in
+comparison to the reference group (Caucasian). See Pessach &amp; Shmueli
+(2022) for a more detailed explanation of these metrics.</p>
 <ol style="list-style-type: decimal">
 <li>
 <strong>Demographic parity (Statistical parity)</strong>: Compares
@@ -222,7 +223,8 @@ ethnic group and the reference group. Note that, since demographic
 parity is not a proportion, statistical inference about its equality to
 the reference group is not supported for this metric.</li>
 </ol>
-<p><span class="math display">\[DP = TP + FP\]</span></p>
+<p>The formula for the demographic parity metric is <span class="math inline">\(DP = TP + FP\)</span>, and the parity ratio for
+sensitive group <span class="math inline">\(i\)</span> is given by <span class="math inline">\(\frac{DP_{i}}{DP_{reference}}\)</span>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
@@ -264,11 +266,13 @@ these data than that there are Caucasians.</li>
 <ol start="2" style="list-style-type: decimal">
 <li>
 <strong>Proportional parity (Disparate impact)</strong>: Compares
-the positive prediction rates (e.g., true positive rate) of each ethnic
-group with the reference group.</li>
+the proportion of positive predictions of each ethnic group with that in
+the reference group. For example, in the case that a positive prediction
+represents a reoffender, equal proportional parity requires the
+proportion of predicted reoffenders to be similar across groups.</li>
 </ol>
-<p><span class="math display">\[PP = \frac{TP + FP}{TP + FP + TN +
-FN}\]</span></p>
+<p>The formula for the proportional parity metric is <span class="math inline">\(PP = \frac{TP + FP}{TP + FP + TN + FN}\)</span>,
+and the parity ratio for sensitive group <span class="math inline">\(i\)</span> is given by <span class="math inline">\(\frac{PP_{i}}{PP_{reference}}\)</span>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
@@ -337,11 +341,11 @@ below.</p>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Sample estimates (parity ratio):</span></span>
-<span><span class="co">##  African_American: 1.8585 [1.8155, 1.9213], BF₁₀ = 4.1528e+81</span></span>
-<span><span class="co">##  Asian: 0.45845 [0.17573, 0.9353], BF₁₀ = 0.26796</span></span>
-<span><span class="co">##  Hispanic: 0.92196 [0.80481, 1.0528], BF₁₀ = 0.10615</span></span>
-<span><span class="co">##  Native_American: 1.4866 [0.67209, 2.3223], BF₁₀ = 0.018438</span></span>
-<span><span class="co">##  Other: 0.80348 [0.65077, 0.93824], BF₁₀ = 1.815</span></span></code></pre>
+<span><span class="co">##  African_American: 1.8627 [1.8051, 1.913], BF₁₀ = 4.1528e+81</span></span>
+<span><span class="co">##  Asian: 0.54274 [0.16668, 0.92734], BF₁₀ = 0.26796</span></span>
+<span><span class="co">##  Hispanic: 0.89189 [0.80245, 1.0519], BF₁₀ = 0.10615</span></span>
+<span><span class="co">##  Native_American: 1.5063 [0.66273, 2.2925], BF₁₀ = 0.018438</span></span>
+<span><span class="co">##  Other: 0.80044 [0.65027, 0.92179], BF₁₀ = 1.815</span></span></code></pre>
 <p>This is probably also a good time to show the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>
 and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> functions associated with the
 <code><a href="../reference/model_fairness.html">model_fairness()</a></code> function. Let’s examine the frequentist
@@ -394,14 +398,16 @@ object.</p>
 <span><span class="co">## Other             0.70166 [0.53338, 0.91633]  0.0080834</span></span></code></pre>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
-<p><img src="model-fairness_files/figure-html/unnamed-chunk-6-1.png" width="700"></p>
+<p><img src="model-fairness_files/figure-html/unnamed-chunk-6-1.png" width="576" style="display: block; margin: auto;"></p>
 <ol start="3" style="list-style-type: decimal">
 <li>
 <strong>Predictive rate parity (Equalized odds)</strong>: Compares
 the overall positive prediction rates (e.g., reoffender prediction) of
 different ethnic groups with the reference group.</li>
 </ol>
-<p><span class="math display">\[PRP = \frac{TP}{TP + FP}\]</span></p>
+<p>The formula for the predictive rate parity metric is <span class="math inline">\(PRP = \frac{TP}{TP + FP}\)</span>, and the parity
+ratio for sensitive group <span class="math inline">\(i\)</span> is
+given by <span class="math inline">\(\frac{PRP_{i}}{PRP_{reference}}\)</span>.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
@@ -449,8 +455,8 @@ fair treatment in the algorithm’s overall positive predictions.</li>
 <strong>Accuracy parity</strong>: Compares the accuracy of each
 ethnic group’s predictions with the reference group.</li>
 </ol>
-<p><span class="math display">\[AP = \frac{TP + TN}{TP + FP + TN +
-FN}\]</span></p>
+<p>The formula for the accuracy parity metric is <span class="math inline">\(AP = \frac{TP + TN}{TP + FP + TN + FN}\)</span>,
+and the parity ratio for sensitive group <span class="math inline">\(i\)</span> is given by <span class="math inline">\(\frac{AP_{i}}{AP_{reference}}\)</span>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
@@ -494,7 +500,9 @@ potential favoritism in overall accuracy.</li>
 Compares the false negative rates (e.g., for reoffenders) of each ethnic
 group with the reference group.</li>
 </ol>
-<p><span class="math display">\[FNRP = \frac{FN}{TP + FN}\]</span></p>
+<p>The formula for the false negative rate parity metric is <span class="math inline">\(FNRP = \frac{FN}{TP + FN}\)</span>, and the parity
+ratio for sensitive group <span class="math inline">\(i\)</span> is
+given by <span class="math inline">\(\frac{FNRP_{i}}{FNRP_{reference}}\)</span>.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
@@ -541,7 +549,9 @@ suggesting fair treatment in this aspect.</li>
 positive rates (e.g., for non-reoffenders) of each ethnic group with the
 reference group.</li>
 </ol>
-<p><span class="math display">\[FPRP = \frac{FP}{TN + FP}\]</span></p>
+<p>The formula for the false positive rate parity metric is <span class="math inline">\(FPRP = \frac{FP}{TN + FP}\)</span>, and the parity
+ratio for sensitive group <span class="math inline">\(i\)</span> is
+given by <span class="math inline">\(\frac{FPRP_{i}}{FPRP_{reference}}\)</span>.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
@@ -591,7 +601,9 @@ predictions.</li>
 Compares the true positive rates (e.g., for reoffenders) of each ethnic
 group with the reference group.</li>
 </ol>
-<p><span class="math display">\[TPRP = \frac{TP}{TP + FN}\]</span></p>
+<p>The formula for the true positive rate parity metric is <span class="math inline">\(TPRP = \frac{TP}{TP + FN}\)</span>, and the parity
+ratio for sensitive group <span class="math inline">\(i\)</span> is
+given by <span class="math inline">\(\frac{TPRP_{i}}{TPRP_{reference}}\)</span>.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
@@ -640,7 +652,9 @@ treatment in the algorithm’s true positive predictions.</li>
 negative predicted values (e.g., for non-reoffenders) of each ethnic
 group with the reference group.</li>
 </ol>
-<p><span class="math display">\[NPVP = \frac{TN}{TN + FN}\]</span></p>
+<p>The formula for the negative predicted value parity metric is <span class="math inline">\(NPVP = \frac{TN}{TN + FN}\)</span>, and the parity
+ratio for sensitive group <span class="math inline">\(i\)</span> is
+given by <span class="math inline">\(\frac{NPVP_{i}}{NPVP_{reference}}\)</span>.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
@@ -688,7 +702,9 @@ non-reoffenders.</li>
 Compares the specificity (true negative rate) of each ethnic group with
 the reference group.</li>
 </ol>
-<p><span class="math display">\[SP = \frac{TN}{TN + FP}\]</span></p>
+<p>The formula for the specificity parity metric is <span class="math inline">\(SP = \frac{TN}{TN + FP}\)</span>, and the parity
+ratio for sensitive group <span class="math inline">\(i\)</span> is
+given by <span class="math inline">\(\frac{SP_{i}}{SP_{reference}}\)</span>.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
