@@ -125,15 +125,19 @@ functions in <strong>jfa</strong>.</p>
 <h3 id="assess-algorithmic-fairness-with-model_fairness">Assess algorithmic fairness with <code>model_fairness()</code><a class="anchor" aria-label="anchor" href="#assess-algorithmic-fairness-with-model_fairness"></a>
 </h3>
 <p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></p>
-<p>The <code><a href="../reference/model_fairness.html">model_fairness()</a></code> function provides a model-agnotic
-method to asses bias in predictive algorithms by computing various
-fairness metrics based on the observed and predicted classes. The
-function allows for evaluating fairness using metrics such as
-demographic parity, proportional parity, predictive rate parity,
+<p>The <code>model_fairnesS()</code> function aims to assess fairness in
+algorithmic decision-making systems by computing and testing the
+equality of one of several model-agnostic fairness metrics between
+protected classes based on a set of true labels and the predictions of
+an algorithm. The ratio of these metrics between an unpriveleged
+protected class and a priveleged protected class is called parity, and
+quantifies relative fairness in the algorithms predictions. Available
+parity metrics include predictive rate parity, proportional parity,
 accuracy parity, false negative rate parity, false positive rate parity,
-true positive rate parity, negative predicted value parity, and
-specificity parity. Moreover, the function tests these metrics for
-equality.</p>
+true positive rate parity, negative predicted value parity, specificity
+parity, and demographic parity. The function returns an object of class
+<code>jfaFairness</code> that can be used with associated
+<code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods.</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
@@ -199,39 +203,14 @@ Selection for Critical ML Tasks</em>, Master Thesis, Utrecht University.
 - <a href="https://studenttheses.uu.nl/handle/20.500.12932/44225" class="external-link">View
 Online</a>
 </li>
-<li>Calders, T., &amp; Verwer, S. (2010). Three naive Bayes approaches
-for discrimination-free classification. In <em>Data Mining and Knowledge
-Discovery</em>. Springer Science and Business Media LLC. - <a href="https://doi.org/10.1007/s10618-010-0190-x" class="external-link">View Online</a>
-</li>
-<li>Chouldechova, A. (2017). Fair Prediction with Disparate Impact: A
-Study of Bias in Recidivism Prediction Instruments. In <em>Big
-Data</em>. Mary Ann Liebert Inc. - <a href="https://doi.org/10.1089/big.2016.0047" class="external-link">View Online</a>
-</li>
-<li>Feldman, M., Friedler, S. A., Moeller, J., Scheidegger, C., &amp;
-Venkatasubramanian, S. (2015). Certifying and Removing Disparate Impact.
-In *Proceedings of the 21th ACM SIGKDD International Conference on
-Knowledge Discovery and Data Mining. - <a href="https://doi.org/10.1145/2783258.2783311" class="external-link">View Online</a>
-</li>
-<li>Fisher, R. A. (1970). <em>Statistical Methods for Research
-Workers</em>. Oliver &amp; Boyd.</li>
 <li>Friedler, S. A., Scheidegger, C., Venkatasubramanian, S., Choudhary,
 S., Hamilton, E. P., &amp; Roth, D. (2019). A comparative study of
 fairness-enhancing interventions in machine learning. In <em>Proceedings
 of the Conference on Fairness, Accountability, and Transparency</em>. -
 <a href="https://doi.org/10.1145/3287560.3287589" class="external-link">View Online</a>
 </li>
-<li>Jamil, T., Ly, A., Morey, R. D., Love, J., Marsman, M., &amp;
-Wagenmakers, E. J. (2017). Default “Gunel and Dickey” Bayes factors for
-contingency tables. , 49, 638-652. - <a href="https://doi.org/10.3758/s13428-016-0739-8" class="external-link">View Online</a>
-</li>
 <li>Pessach, D. &amp; Shmueli, E. (2022). A review on fairness in
 machine learning. <em>ACM Computing Surveys</em>, 55(3), 1-44. - <a href="https://doi.org/10.1145/3494672" class="external-link">View Online</a>
-</li>
-<li>Zafar, M. B., Valera, I., Gomez Rodriguez, M., &amp; Gummadi, K. P.
-(2017). Fairness Beyond Disparate Treatment &amp; Disparate Impact. In
-<em>Proceedings of the 26th International Conference on World Wide
-Web</em>. - <a href="https://doi.org/10.1145/3038912.3052660" class="external-link">View
-Online</a>
 </li>
 </ul>
 </div>

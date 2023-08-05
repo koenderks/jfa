@@ -175,7 +175,7 @@ predicted labels, shedding light on the algorithm’s prediction mistakes.
 Comprising the confusion matrix are the true positives (TP), false
 positives (FP), true negatives (TN), and false negatives (FN). To
 illustrate, the confusion matrix pertaining to the
-<code>African American</code> group is displayed below. For example,
+<code>African_American</code> group is displayed below. For example,
 there are 629 people in this group that are incorrectly predicted to be
 a reoffender, which represents a false positive in the confusion
 matrix.</p>
@@ -254,7 +254,7 @@ by <span class="math inline">\(DP =
 <p><strong><em>Interpretation:</em></strong></p>
 <ul>
 <li>
-<em>African American</em>: The demographi parity for African
+<em>African American</em>: The demographic parity for African
 Americans compared to Caucasians is 2.7961, indicating that for these
 data there are nearly three times more African Americans predicted as
 reoffenders by the algorithm than Caucasians.</li>
@@ -262,12 +262,8 @@ reoffenders by the algorithm than Caucasians.</li>
 <em>Asian</em>: The demographic parity for Asians is very close to
 zero (0.0059524), indicating that there are many less Asians (4) that
 are predicted as reoffenders in these data than there are Caucasians
-(672). Naturally, this can be explained because of the lack of many
-Asian people
-<ol start="31" style="list-style-type: decimal">
-<li>in the data.</li>
-</ol>
-</li>
+(672). Naturally, this can be explained because of the lack of Asian
+people (31) in the data.</li>
 <li>
 <em>Hispanic</em>: The demographic parity for Hispanics is 0.22173,
 meaning that there are about five times less Hispanics predicted as
@@ -281,8 +277,8 @@ reoffenders in these data than that there are Caucasians.</li>
 <p><strong>Proportional parity (Disparate impact)</strong>: Compares
 the proportion of positive predictions of each unprivileged group to
 that in the privileged group. For example, in the case that a positive
-prediction represents a reoffender, equal proportional parity requires
-the proportion of predicted reoffenders to be similar across ethnic
+prediction represents a reoffender, proportional parity requires the
+proportion of predicted reoffenders to be similar across ethnic
 groups.</p>
 <p>The formula for the proportion of positive predictions is <span class="math inline">\(PP = \frac{TP + FP}{TP + FP + TN + FN}\)</span>,
 and the proportional parity for unprivileged group <span class="math inline">\(i\)</span> is given by <span class="math inline">\(\frac{PP_{i}}{PP_{privileged}}\)</span>.</p>
@@ -317,8 +313,8 @@ Americans compared to Caucasians is 1.8521. This indicates that African
 Americans are approximately 1.85 times more likely to get a positive
 prediction than Caucasians. Again, this suggests potential bias in the
 algorithm’s predictions against African Americans. The p-value is
-smaller than .05, indicating that the null hypothesis of equal
-proportions should be rejected.</li>
+smaller than .05, indicating that the null hypothesis of proportional
+parity should be rejected.</li>
 <li>
 <em>Asian</em>: The proportional parity for Asians is 0.4038,
 indicating that their positive prediction rate is lower than for
@@ -332,7 +328,7 @@ in the algorithm’s predictions.</li>
 </ul>
 <p>This is a good time to show the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> functions associated with the
-<code><a href="../reference/model_fairness.html">model_fairness()</a></code> function. Let’s examine the frequentist
+<code><a href="../reference/model_fairness.html">model_fairness()</a></code> function. Let’s examine the previous
 function call again, but instead of printing the output to the console,
 this time we store the output in <code>x</code> and run the
 <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> functions on this
@@ -414,11 +410,11 @@ odds ratio, see the figure below).</p>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## sample estimates:</span></span>
-<span><span class="co">##  African_American: 1.8447 [1.7836, 1.8908], BF₁₀ = 4.1528e+81</span></span>
-<span><span class="co">##  Asian: 0.32174 [0.16529, 0.8732], BF₁₀ = 0.26796</span></span>
-<span><span class="co">##  Hispanic: 0.9205 [0.79355, 1.03], BF₁₀ = 0.10615</span></span>
-<span><span class="co">##  Native_American: 1.3826 [0.6893, 2.2658], BF₁₀ = 0.018438</span></span>
-<span><span class="co">##  Other: 0.75124 [0.63827, 0.92161], BF₁₀ = 1.815</span></span></code></pre>
+<span><span class="co">##  African_American: 1.819 [1.7581, 1.8649], BF₁₀ = 4.1528e+81</span></span>
+<span><span class="co">##  Asian: 0.31047 [0.1607, 0.89335], BF₁₀ = 0.26796</span></span>
+<span><span class="co">##  Hispanic: 0.92652 [0.78501, 1.0256], BF₁₀ = 0.10615</span></span>
+<span><span class="co">##  Native_American: 1.117 [0.66651, 2.1923], BF₁₀ = 0.018438</span></span>
+<span><span class="co">##  Other: 0.7523 [0.62521, 0.91016], BF₁₀ = 1.815</span></span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="model-fairness_files/figure-html/unnamed-chunk-6-1.png" width="576" style="display: block; margin: auto;"></p>
@@ -693,8 +689,8 @@ treatment in the algorithm’s true positive predictions.</li>
 <ol start="8" style="list-style-type: decimal">
 <li>
 <p><strong>Negative predicted value parity</strong>: Compares the
-negative predicted values (e.g., for non-reoffenders) of each
-unprivileged group with the privileged group.</p>
+negative predicted value (e.g., for non-reoffenders) of each
+unprivileged group with that of the privileged group.</p>
 <p>The formula for the negative predicted value is <span class="math inline">\(NPV = \frac{TN}{TN + FN}\)</span>, and the
 negative predicted value parity for unprivileged group <span class="math inline">\(i\)</span> is given by <span class="math inline">\(NPVP =
 \frac{NPV_{i}}{NPV_{privileged}}\)</span>.</p>
@@ -724,20 +720,21 @@ negative predicted value parity for unprivileged group <span class="math inline"
 <p><strong><em>Interpretation:</em></strong></p>
 <ul>
 <li>
-<em>African American</em>: The Negative predicted value (NPV) parity
-for African Americans is 0.98013. A value close to 1 indicates that the
-NPV for African Americans is very similar to the privileged group
-(Caucasians). This suggests fair treatment in predicting non-reoffenders
-among African Americans.</li>
+<em>African American</em>: The negative predicted value parity for
+African Americans is 0.98013. A value close to 1 indicates that the
+negative predicted value for African Americans is very similar to the
+privileged group (Caucasians). This suggests fair treatment in
+predicting non-reoffenders among African Americans.</li>
 <li>
-<em>Asian</em>: The NPV parity for Asians is 1.1163, indicating that
-their NPV is slightly higher than for Caucasians. This could suggest
-potential favoritism towards Asians in predicting non-reoffenders.</li>
+<em>Asian</em>: The negative predicted value parity for Asians is
+1.1163, indicating that their negative predicted value is slightly
+higher than for Caucasians. This could suggest potential favoritism
+towards Asians in predicting non-reoffenders.</li>
 <li>
-<em>Hispanic</em>: The NPV parity for Hispanics is 1.0326,
-suggesting that their NPV is slightly higher than for Caucasians. This
-indicates potential favoritism towards Hispanics in predicting
-non-reoffenders.</li>
+<em>Hispanic</em>: The negative predicted value parity for Hispanics
+is 1.0326, suggesting that their negative predicted value is slightly
+higher than for Caucasians. This indicates potential favoritism towards
+Hispanics in predicting non-reoffenders.</li>
 </ul>
 </li>
 </ol>
@@ -746,7 +743,7 @@ non-reoffenders.</li>
 <li>
 <p><strong>Specificity parity (True negative rate parity)</strong>:
 Compares the specificity (true negative rate) of each unprivileged group
-with the privileged class.</p>
+with the privileged group.</p>
 <p>The formula for the specificity is <span class="math inline">\(S =
 \frac{TN}{TN + FP}\)</span>, and the specificity parity for unprivileged
 group <span class="math inline">\(i\)</span> is given by <span class="math inline">\(SP = \frac{S_{i}}{S_{privileged}}\)</span>.</p>
