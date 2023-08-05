@@ -168,6 +168,26 @@ model_fairness(
 )
 ```
 
+This is probably also a good time to show the `summary()` and `plot()` functions
+associated with the `model_fairness()` function. Let's examine the frequentist
+function call again, but instead of printing the output to the console, this
+time we store the output in `x` and run the `summary()` and `plot()` functions
+on this object.
+
+```{r}
+x <- model_fairness(
+  data = compas,
+  sensitive = "Ethnicity",
+  target = "TwoYrRecidivism",
+  predictions = "Predicted",
+  reference = "Caucasian",
+  positive = "yes",
+  metric = "pp"
+)
+summary(x)
+plot(x)
+```
+
 3. **Predictive rate parity (Equalized odds)**: Compares the overall positive
 prediction rates (e.g., reoffender prediction) of different ethnic groups with
 the reference group.
