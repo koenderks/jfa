@@ -399,22 +399,22 @@ using a default prior can be achieved by setting
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## sample estimates:</span></span>
-<span><span class="co">##  African_American: 1.8607 [1.7952, 1.901], BF₁₀ = 4.1528e+81</span></span>
-<span><span class="co">##  Asian: 0.34416 [0.17276, 0.91884], BF₁₀ = 0.26796</span></span>
-<span><span class="co">##  Hispanic: 0.88819 [0.79373, 1.0432], BF₁₀ = 0.10615</span></span>
-<span><span class="co">##  Native_American: 1.3195 [0.66535, 2.2687], BF₁₀ = 0.018438</span></span>
-<span><span class="co">##  Other: 0.7767 [0.64055, 0.92579], BF₁₀ = 1.815</span></span></code></pre>
-<p>Bayesian inference measures evidence using the Bayes factor $BF_{01},
-which quantifies the evidence in favor of algorithmic fairness (i.e.,
-equal fairness metrics) over algorithmic bias or <span class="math inline">\(BF_{10}\)</span>, which quantifies the evidence in
-favor of algorithmic bias over algorithmic fairness. By default,
-<strong>jfa</strong> reports <span class="math inline">\(BF_{10}\)</span>, but <span class="math inline">\(BF_{01} = \frac{1}{BF_{10}}. The resulting  Bayes
-factors in favor of rejection of the null hypothesis of
-equality  (\)</span>BF_{10}$) are shown in the output above. As can be
-seen, for the African American group <span class="math inline">\(BF_{10}\)</span> &gt; 1000, indicating extreme
-evidence in favor of bias. For the Asian, Hispanic and Native American
-groups, <span class="math inline">\(BF_{10}\)</span> &lt; 1, indicating
-evidence in favor of fairness.</p>
+<span><span class="co">##  African_American: 1.8751 [1.8203, 1.9297], BF₁₀ = 4.1528e+81</span></span>
+<span><span class="co">##  Asian: 0.30808 [0.16589, 0.90729], BF₁₀ = 0.26796</span></span>
+<span><span class="co">##  Hispanic: 0.90143 [0.80831, 1.0542], BF₁₀ = 0.10615</span></span>
+<span><span class="co">##  Native_American: 1.5211 [0.66093, 2.3104], BF₁₀ = 0.018438</span></span>
+<span><span class="co">##  Other: 0.79017 [0.65513, 0.93682], BF₁₀ = 1.815</span></span></code></pre>
+<p>Bayesian inference measures evidence using the Bayes factor <span class="math inline">\(BF_{01}\)</span>, which quantifies the evidence in
+favor of algorithmic fairness (i.e., equal fairness metrics) over
+algorithmic bias or <span class="math inline">\(BF_{10}\)</span>, which
+quantifies the evidence in favor of algorithmic bias over algorithmic
+fairness. By default, <strong>jfa</strong> reports <span class="math inline">\(BF_{10}\)</span>, but <span class="math inline">\(BF_{01} = \frac{1}{BF_{10}}\)</span>. The
+resulting Bayes factors in favor of rejection of the null hypothesis of
+equality (<span class="math inline">\(BF_{10}\)</span>) are shown in the
+output above. As can be seen, for the African American group <span class="math inline">\(BF_{10}\)</span> &gt; 1000, which indicates
+extreme evidence in favor of bias. For the Asian, Hispanic and Native
+American groups, <span class="math inline">\(BF_{10}\)</span> &lt; 1,
+indicating evidence in favor of fairness.</p>
 <p>In a Bayesian analysis, the auditor specifies a prior distribution
 that can incorporate relevant audit information. The prior distribution
 for this analysis is expressed on the log odds ratio and can be adjusted
