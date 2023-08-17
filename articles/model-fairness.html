@@ -94,7 +94,7 @@
       <h1 data-toc-skip>Algorithmic fairness</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2023-08-05</h4>
+            <h4 data-toc-skip class="date">2023-08-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/model-fairness.Rmd" class="external-link"><code>vignettes/model-fairness.Rmd</code></a></small>
       <div class="hidden name"><code>model-fairness.Rmd</code></div>
@@ -383,13 +383,7 @@ object.</p>
 supported and provides credible intervals and Bayes factors. Like in the
 other functions in <code>jfa</code>, performing a Bayesian analysis
 using a default prior can be achieved by setting
-<code>prior = TRUE</code>. The resulting Bayes factors in favor of
-rejection of the null hypothesis of equality (<span class="math inline">\(BF_{10}\)</span>) are shown in the output below.
-The prior distribution can be adjusted by setting <code>prior = 1</code>
-(the default), or providing a number representing the prior
-concentration parameter (see <code>plot(x, type = "posterior")</code>
-for a visualization of the prior and posterior distribution on the log
-odds ratio, see the figure below).</p>
+<code>prior = TRUE</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
@@ -410,14 +404,35 @@ odds ratio, see the figure below).</p>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## sample estimates:</span></span>
-<span><span class="co">##  African_American: 1.8379 [1.7789, 1.8828], BF₁₀ = 4.1528e+81</span></span>
-<span><span class="co">##  Asian: 0.46799 [0.17099, 0.90908], BF₁₀ = 0.26796</span></span>
-<span><span class="co">##  Hispanic: 0.87597 [0.78632, 1.036], BF₁₀ = 0.10615</span></span>
-<span><span class="co">##  Native_American: 1.6276 [0.63128, 2.2509], BF₁₀ = 0.018438</span></span>
-<span><span class="co">##  Other: 0.74544 [0.63243, 0.92212], BF₁₀ = 1.815</span></span></code></pre>
+<span><span class="co">##  African_American: 1.8441 [1.8059, 1.9104], BF₁₀ = 4.1528e+81</span></span>
+<span><span class="co">##  Asian: 0.27278 [0.16545, 0.93002], BF₁₀ = 0.26796</span></span>
+<span><span class="co">##  Hispanic: 0.91829 [0.79847, 1.0516], BF₁₀ = 0.10615</span></span>
+<span><span class="co">##  Native_American: 1.2612 [0.67715, 2.2464], BF₁₀ = 0.018438</span></span>
+<span><span class="co">##  Other: 0.78096 [0.64381, 0.93107], BF₁₀ = 1.815</span></span></code></pre>
+<p>Bayesian inference measures evidence using the Bayes factor $BF_{01},
+which quantifies the evidence in favor of algorithmic fairness (i.e.,
+equal fairness metrics) over algorithmic bias or <span class="math inline">\(BF_{10}\)</span>, which quantifies the evidence in
+favor of algorithmic bias over algorithmic fairness. By default,
+<strong>jfa</strong> reports <span class="math inline">\(BF_{10}\)</span>, but <span class="math inline">\(BF_{01} = \frac{1}{BF_{10}}. The resulting  Bayes
+factors in favor of rejection of the null hypothesis of
+equality  (\)</span>BF_{10}$) are shown in the output above. As can be
+seen, for the African American group <span class="math inline">\(BF_{10}\)</span> &gt; 1000, indicating extreme
+evidence in favor of bias. For the Asian, Hispanic and Native American
+groups, <span class="math inline">\(BF_{10}\)</span> &lt; 1, indicating
+evidence in favor of fairness.</p>
+<p>In a Bayesian analysis, the auditor specifies a prior distribution
+that can incorporate relevant audit information. The prior distribution
+for this analysis is expressed on the log odds ratio and can be adjusted
+by setting <code>prior = 1</code> (the default), or providing a number
+&gt; 1 representing the prior concentration parameter. The larger the
+concentration parameter, the more the prior distribution is concentrated
+around zero, meaning equal metrics are assumed to be more likely. The
+prior and posterior distributions on the log odds ratio can be
+visualized via the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function using
+<code>type = "posterior"</code>, see the figure below.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="model-fairness_files/figure-html/unnamed-chunk-6-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="model-fairness_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto;"></p>
 </li>
 </ol>
 <p> </p>
