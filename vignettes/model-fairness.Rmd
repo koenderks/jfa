@@ -191,15 +191,9 @@ plot(x)
     For this (and all of the following) metrics, Bayesian inference is supported
       and provides credible intervals and Bayes factors. Like in the other
       functions in `jfa`, performing a Bayesian analysis using a default prior
-      can be achieved by setting `prior = TRUE`. The resulting Bayes factors in
-      favor of rejection of the null hypothesis of equality ($BF_{10}$) are
-      shown in the output below. The prior distribution can be
-      adjusted by setting `prior = 1` (the default), or providing a number
-      representing the prior concentration parameter
-      (see `plot(x, type = "posterior")` for a visualization of the prior and
-      posterior distribution on the log odds ratio, see the figure below).
+      can be achieved by setting `prior = TRUE`.
 
-    ```{r, fig.align="center", fig.height=4, fig.width=6}
+    ```{r}
 x <- model_fairness(
   data = compas,
   protected = "Ethnicity",
@@ -211,6 +205,30 @@ x <- model_fairness(
   prior = TRUE
 )
 print(x)
+    ```
+
+    Bayesian inference measures evidence using the Bayes factor $BF_{01}, which
+    quantifies the evidence in favor of algorithmic fairness (i.e., equal
+    fairness metrics) over algorithmic bias or $BF_{10}$, which quantifies the
+    evidence in favor of algorithmic bias over algorithmic fairness. By default,
+    **jfa** reports $BF_{10}$, but $BF_{01} = \frac{1}{BF_{10}}. The resulting
+    Bayes factors in favor of rejection of the null hypothesis of equality
+    ($BF_{10}$) are shown in the output above. As can be seen, for the African
+    American group $BF_{10}$ > 1000, indicating extreme evidence in favor of
+    bias. For the Asian, Hispanic and Native American groups, $BF_{10}$ < 1,
+    indicating evidence in favor of fairness.
+
+    In a Bayesian analysis, the auditor specifies a prior distribution that can
+    incorporate relevant audit information. The prior distribution for this
+    analysis is expressed on the log odds ratio and can be adjusted by setting
+    `prior = 1` (the default), or providing a number > 1 representing the prior
+    concentration parameter. The larger the concentration parameter, the more
+    the prior distribution is concentrated around zero, meaning equal metrics
+    are assumed to be more likely. The prior and posterior distributions on the
+    log odds ratio can be visualized via the `plot()` function using
+    `type = "posterior"`, see the figure below.
+
+    ```{r, fig.align="center", fig.height=4, fig.width=6}
 plot(x, type = "posterior")
     ```
 
