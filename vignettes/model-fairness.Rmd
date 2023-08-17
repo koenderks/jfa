@@ -202,15 +202,15 @@ x <- model_fairness(
 print(x)
     ```
 
-    Bayesian inference measures evidence using the Bayes factor $BF_{01}, which
+    Bayesian inference measures evidence using the Bayes factor $BF_{01}$, which
     quantifies the evidence in favor of algorithmic fairness (i.e., equal
     fairness metrics) over algorithmic bias or $BF_{10}$, which quantifies the
     evidence in favor of algorithmic bias over algorithmic fairness. By default,
-    **jfa** reports $BF_{10}$, but $BF_{01} = \frac{1}{BF_{10}}. The resulting
+    **jfa** reports $BF_{10}$, but $BF_{01} = \frac{1}{BF_{10}}$. The resulting
     Bayes factors in favor of rejection of the null hypothesis of equality
     ($BF_{10}$) are shown in the output above. As can be seen, for the African
-    American group $BF_{10}$ > 1000, indicating extreme evidence in favor of
-    bias. For the Asian, Hispanic and Native American groups, $BF_{10}$ < 1,
+    American group $BF_{10}$ > 1000, which indicates extreme evidence in favor
+    of bias. For the Asian, Hispanic and Native American groups, $BF_{10}$ < 1,
     indicating evidence in favor of fairness.
 
     In a Bayesian analysis, the auditor specifies a prior distribution that can
