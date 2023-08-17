@@ -121,12 +121,6 @@ labels in a data set. Calculated metrics include demographic parity,
 proportional parity, predictive rate parity, accuracy parity, false
 negative rate parity, false positive rate parity, true positive rate
 parity, negative predicted value parity, and specificity parity.</p>
-<p>Note that, in an audit context, not all fairness measures are equally
-appropriate in all situations. The decision tree below aids with
-choosing which measure is best for the situation at hand (Büyük,
-2023).</p>
-<p align="center">
-<img src="fairness-tree.png" alt="fairness" width="80%"></p>
 <p><em>Example:</em></p>
 <p>To illustrate how to use the <code><a href="../reference/model_fairness.html">model_fairness()</a></code> function,
 we will use a well-known data set called COMPAS. The COMPAS
@@ -214,9 +208,13 @@ matrix.</p>
 <p>For illustrative purposes, let’s interpret the full set of fairness
 metrics for the African American, Asian, and Hispanic groups in
 comparison to the privileged group (Caucasian). See Pessach &amp;
-Shmueli (2022) for a more detailed explanation of some of these
-metrics.</p>
-<p> </p>
+Shmueli (2022) for a more detailed explanation of some of these metrics.
+However, note that not all fairness measures are equally appropriate in
+all audit situations. The decision tree below aids the auditor with
+choosing which measure is best for the situation at hand (Büyük,
+2023).</p>
+<p align="center">
+<img src="fairness-tree.png" alt="fairness" width="80%"></p>
 <ol style="list-style-type: decimal">
 <li>
 <p><strong>Demographic parity (Statistical parity)</strong>:
@@ -270,9 +268,6 @@ meaning that there are about five times less Hispanics predicted as
 reoffenders in these data than that there are Caucasians.</li>
 </ul>
 </li>
-</ol>
-<p> </p>
-<ol start="2" style="list-style-type: decimal">
 <li>
 <p><strong>Proportional parity (Disparate impact)</strong>: Compares
 the proportion of positive predictions of each unprivileged group to
@@ -404,11 +399,11 @@ using a default prior can be achieved by setting
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## sample estimates:</span></span>
-<span><span class="co">##  African_American: 1.8441 [1.8059, 1.9104], BF₁₀ = 4.1528e+81</span></span>
-<span><span class="co">##  Asian: 0.27278 [0.16545, 0.93002], BF₁₀ = 0.26796</span></span>
-<span><span class="co">##  Hispanic: 0.91829 [0.79847, 1.0516], BF₁₀ = 0.10615</span></span>
-<span><span class="co">##  Native_American: 1.2612 [0.67715, 2.2464], BF₁₀ = 0.018438</span></span>
-<span><span class="co">##  Other: 0.78096 [0.64381, 0.93107], BF₁₀ = 1.815</span></span></code></pre>
+<span><span class="co">##  African_American: 1.8607 [1.7952, 1.901], BF₁₀ = 4.1528e+81</span></span>
+<span><span class="co">##  Asian: 0.34416 [0.17276, 0.91884], BF₁₀ = 0.26796</span></span>
+<span><span class="co">##  Hispanic: 0.88819 [0.79373, 1.0432], BF₁₀ = 0.10615</span></span>
+<span><span class="co">##  Native_American: 1.3195 [0.66535, 2.2687], BF₁₀ = 0.018438</span></span>
+<span><span class="co">##  Other: 0.7767 [0.64055, 0.92579], BF₁₀ = 1.815</span></span></code></pre>
 <p>Bayesian inference measures evidence using the Bayes factor $BF_{01},
 which quantifies the evidence in favor of algorithmic fairness (i.e.,
 equal fairness metrics) over algorithmic bias or <span class="math inline">\(BF_{10}\)</span>, which quantifies the evidence in
@@ -434,9 +429,6 @@ visualized via the <code><a href="https://rdrr.io/r/graphics/plot.default.html" 
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="model-fairness_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto;"></p>
 </li>
-</ol>
-<p> </p>
-<ol start="3" style="list-style-type: decimal">
 <li>
 <p><strong>Predictive rate parity (Equalized odds)</strong>:
 Compares the overall positive prediction rates (e.g., the precision) of
@@ -489,9 +481,6 @@ to that of the privileged group (Caucasians). This indicates relatively
 fair treatment in the algorithm’s overall positive predictions.</li>
 </ul>
 </li>
-</ol>
-<p> </p>
-<ol start="4" style="list-style-type: decimal">
 <li>
 <p><strong>Accuracy parity</strong>: Compares the accuracy of each
 unprivileged group’s predictions with the privileged group.</p>
@@ -539,9 +528,6 @@ suggesting their accuracy is slightly higher than for Caucasians,
 indicating potential favoritism in overall accuracy.</li>
 </ul>
 </li>
-</ol>
-<p> </p>
-<ol start="5" style="list-style-type: decimal">
 <li>
 <p><strong>False negative rate parity (Treatment equality)</strong>:
 Compares the false negative rates of each unprivileged group with the
@@ -591,9 +577,6 @@ indicating relatively similar rates as the privileged group
 (Caucasians), suggesting fair treatment in this aspect.</li>
 </ul>
 </li>
-</ol>
-<p> </p>
-<ol start="6" style="list-style-type: decimal">
 <li>
 <p><strong>False positive rate parity</strong>: Compares the false
 positive rates (e.g., for non-reoffenders) of each unprivileged group
@@ -645,9 +628,6 @@ reoffenders compared to Caucasians. This indicates potential fair
 treatment of Hispanics in false positive predictions.</li>
 </ul>
 </li>
-</ol>
-<p> </p>
-<ol start="7" style="list-style-type: decimal">
 <li>
 <p><strong>True positive rate parity (Equal opportunity)</strong>:
 Compares the true positive rates (e.g., for reoffenders) of each
@@ -699,9 +679,6 @@ the privileged group (Caucasians). This indicates relatively fair
 treatment in the algorithm’s true positive predictions.</li>
 </ul>
 </li>
-</ol>
-<p> </p>
-<ol start="8" style="list-style-type: decimal">
 <li>
 <p><strong>Negative predicted value parity</strong>: Compares the
 negative predicted value (e.g., for non-reoffenders) of each
@@ -752,9 +729,6 @@ higher than for Caucasians. This indicates potential favoritism towards
 Hispanics in predicting non-reoffenders.</li>
 </ul>
 </li>
-</ol>
-<p> </p>
-<ol start="9" style="list-style-type: decimal">
 <li>
 <p><strong>Specificity parity (True negative rate parity)</strong>:
 Compares the specificity (true negative rate) of each unprivileged group
@@ -826,8 +800,8 @@ Data</em>. Mary Ann Liebert Inc. - <a href="https://doi.org/10.1089/big.2016.00
 </li>
 <li>Feldman, M., Friedler, S. A., Moeller, J., Scheidegger, C., &amp;
 Venkatasubramanian, S. (2015). Certifying and Removing Disparate Impact.
-In *Proceedings of the 21th ACM SIGKDD International Conference on
-Knowledge Discovery and Data Mining. - <a href="https://doi.org/10.1145/2783258.2783311" class="external-link">View Online</a>
+In <em>Proceedings of the 21th ACM SIGKDD International Conference on
+Knowledge Discovery and Data Mining.</em> - <a href="https://doi.org/10.1145/2783258.2783311" class="external-link">View Online</a>
 </li>
 <li>Fisher, R. A. (1970). <em>Statistical Methods for Research
 Workers</em>. Oliver &amp; Boyd.</li>
@@ -839,7 +813,8 @@ of the Conference on Fairness, Accountability, and Transparency</em>. -
 </li>
 <li>Jamil, T., Ly, A., Morey, R. D., Love, J., Marsman, M., &amp;
 Wagenmakers, E. J. (2017). Default “Gunel and Dickey” Bayes factors for
-contingency tables. , 49, 638-652. - <a href="https://doi.org/10.3758/s13428-016-0739-8" class="external-link">View Online</a>
+contingency tables. <em>Behavior Research Methods</em>, 49, 638-652. -
+<a href="https://doi.org/10.3758/s13428-016-0739-8" class="external-link">View Online</a>
 </li>
 <li>Pessach, D. &amp; Shmueli, E. (2022). A review on fairness in
 machine learning. <em>ACM Computing Surveys</em>, 55(3), 1-44. - <a href="https://doi.org/10.1145/3494672" class="external-link">View Online</a>
