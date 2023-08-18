@@ -87,7 +87,7 @@ measures are equally appropriate in all audit situations. The decision tree
 below aids the auditor with choosing which measure is best for the situation at
 hand (Büyük, 2023).
 
-<p align='center'><img src='fairness-tree.png' alt='fairness' width='80%'></p>
+<p align='center'><img src='fairness-tree.png' alt='fairness' width='90%'></p>
 
 1. **Demographic parity (Statistical parity)**: Compares the number of positive
   predictions (i.e., reoffenders) between each unprivileged (i.e., ethnic) group
