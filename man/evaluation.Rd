@@ -8,7 +8,7 @@ evaluation(
   materiality = NULL,
   method = c(
     "poisson", "binomial", "hypergeometric",
-    "stringer.poisson", "stringer.binomial" "stringer.hypergeometric",
+    "stringer.poisson", "stringer.binomial", "stringer.hypergeometric",
     "stringer.meikle", "stringer.lta", "stringer.pvz", "stringer",
     "rohrbach", "moment", "coxsnell", "mpu",
     "direct", "difference", "quotient", "regression"
