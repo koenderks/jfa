@@ -51,7 +51,7 @@ test_that(desc = "(id: f7-v0.5.5-t1) Statistical Sample Sizes based on the Binom
       } else {
         p <- try(
           {
-            suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "binomial", materiality = m[columns]))
+            suppressMessages(ss <- planning(conf.level = conf.level, expected = expected[rows], likelihood = "binomial", materiality = m[columns]))
           },
           silent = TRUE
         )
@@ -100,7 +100,7 @@ test_that(desc = "(id: f7-v0.5.5-t2) Statistical Sample Sizes based on the Binom
       } else {
         p <- try(
           {
-            suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "binomial", materiality = m[columns]))
+            suppressMessages(ss <- planning(conf.level = conf.level, expected = expected[rows], likelihood = "binomial", materiality = m[columns]))
           },
           silent = TRUE
         )
@@ -149,7 +149,7 @@ test_that(desc = "(id: f7-v0.5.5-t3) Statistical Sample Sizes based on the Binom
       } else {
         p <- try(
           {
-            suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "binomial", materiality = m[columns]))
+            suppressMessages(ss <- planning(conf.level = conf.level, expected = expected[rows], likelihood = "binomial", materiality = m[columns]))
           },
           silent = TRUE
         )
@@ -198,7 +198,7 @@ test_that(desc = "(id: f7-v0.5.5-t4) Statistical Sample Sizes based on the Binom
       } else {
         p <- try(
           {
-            suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "binomial", materiality = m[columns]))
+            suppressMessages(ss <- planning(conf.level = conf.level, expected = expected[rows], likelihood = "binomial", materiality = m[columns]))
           },
           silent = TRUE
         )
@@ -249,7 +249,7 @@ test_that(desc = "(id: f7-v0.5.5-t5) Statistical Sample Sizes based on the Poiss
       } else {
         p <- try(
           {
-            suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "poisson", materiality = m[columns]))
+            suppressMessages(ss <- planning(conf.level = conf.level, expected = expected[rows], likelihood = "poisson", materiality = m[columns]))
           },
           silent = TRUE
         )
@@ -298,7 +298,7 @@ test_that(desc = "(id: f7-v0.5.5-t6) Statistical Sample Sizes based on the Poiss
       } else {
         p <- try(
           {
-            suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "poisson", materiality = m[columns]))
+            suppressMessages(ss <- planning(conf.level = conf.level, expected = expected[rows], likelihood = "poisson", materiality = m[columns]))
           },
           silent = TRUE
         )
@@ -347,7 +347,7 @@ test_that(desc = "(id: f7-v0.5.5-t7) Statistical Sample Sizes based on the Poiss
       } else {
         p <- try(
           {
-            suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "poisson", materiality = m[columns]))
+            suppressMessages(ss <- planning(conf.level = conf.level, expected = expected[rows], likelihood = "poisson", materiality = m[columns]))
           },
           silent = TRUE
         )
@@ -396,7 +396,7 @@ test_that(desc = "(id: f7-v0.5.5-t8) Statistical Sample Sizes based on the Poiss
       } else {
         p <- try(
           {
-            suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "poisson", materiality = m[columns]))
+            suppressMessages(ss <- planning(conf.level = conf.level, expected = expected[rows], likelihood = "poisson", materiality = m[columns]))
           },
           silent = TRUE
         )
@@ -454,7 +454,7 @@ test_that(desc = "(id: f7-v0.5.5-t9) Statistical Sample Sizes based on the Hyper
       } else {
         p <- try(
           {
-            suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
+            suppressMessages(ss <- planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
           },
           silent = TRUE
         )
@@ -504,7 +504,7 @@ test_that(desc = "(id: f7-v0.5.5-t10) Statistical Sample Sizes based on the Hype
       } else {
         p <- try(
           {
-            suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
+            suppressMessages(ss <- planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
           },
           silent = TRUE
         )
@@ -554,7 +554,7 @@ test_that(desc = "(id: f7-v0.5.5-t11) Statistical Sample Sizes based on the Hype
       } else {
         p <- try(
           {
-            suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
+            suppressMessages(ss <- planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
           },
           silent = TRUE
         )
@@ -604,7 +604,7 @@ test_that(desc = "(id: f7-v0.5.5-t12) Statistical Sample Sizes based on the Hype
       } else {
         p <- try(
           {
-            suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
+            suppressMessages(ss <- planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
           },
           silent = TRUE
         )
@@ -654,7 +654,7 @@ test_that(desc = "(id: f7-v0.5.5-t13) Statistical Sample Sizes based on the Hype
       } else {
         p <- try(
           {
-            suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
+            suppressMessages(ss <- planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
           },
           silent = TRUE
         )
@@ -704,7 +704,7 @@ test_that(desc = "(id: f7-v0.5.5-t14) Statistical Sample Sizes based on the Hype
       } else {
         p <- try(
           {
-            suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
+            suppressMessages(ss <- planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
           },
           silent = TRUE
         )
@@ -754,7 +754,7 @@ test_that(desc = "(id: f7-v0.5.5-t15) Statistical Sample Sizes based on the Hype
       } else {
         p <- try(
           {
-            suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
+            suppressMessages(ss <- planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
           },
           silent = TRUE
         )
@@ -804,7 +804,7 @@ test_that(desc = "(id: f7-v0.5.5-t16) Statistical Sample Sizes based on the Hype
       } else {
         p <- try(
           {
-            suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
+            suppressMessages(ss <- planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
           },
           silent = TRUE
         )
@@ -854,7 +854,7 @@ test_that(desc = "(id: f7-v0.5.5-t17) Statistical Sample Sizes based on the Hype
       } else {
         p <- try(
           {
-            suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
+            suppressMessages(ss <- planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
           },
           silent = TRUE
         )
@@ -904,7 +904,7 @@ test_that(desc = "(id: f7-v0.5.5-t18) Statistical Sample Sizes based on the Hype
       } else {
         p <- try(
           {
-            suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
+            suppressMessages(ss <- planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
           },
           silent = TRUE
         )
@@ -954,7 +954,7 @@ test_that(desc = "(id: f7-v0.5.5-t19) Statistical Sample Sizes based on the Hype
       } else {
         p <- try(
           {
-            suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
+            suppressMessages(ss <- planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
           },
           silent = TRUE
         )
@@ -1004,7 +1004,7 @@ test_that(desc = "(id: f7-v0.5.5-t20) Statistical Sample Sizes based on the Hype
       } else {
         p <- try(
           {
-            suppressMessages(ss <- jfa::planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
+            suppressMessages(ss <- planning(conf.level = conf.level, expected = expected[rows], likelihood = "hypergeometric", materiality = m[columns], N.units = N))
           },
           silent = TRUE
         )
@@ -1053,7 +1053,7 @@ test_that(desc = "(id: f7-v0.5.5-21) Statistical Sampling Results based on the B
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
   for (rows in seq_along(n)) {
     for (columns in seq_along(k)) {
-      ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "binomial")
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "binomial")
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
@@ -1089,7 +1089,7 @@ test_that(desc = "(id: f7-v0.5.5-22) Statistical Sampling Results based on the B
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
   for (rows in seq_along(n)) {
     for (columns in seq_along(k)) {
-      ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "binomial")
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "binomial")
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
@@ -1125,7 +1125,7 @@ test_that(desc = "(id: f7-v0.5.5-23) Statistical Sampling Results based on the B
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
   for (rows in seq_along(n)) {
     for (columns in seq_along(k)) {
-      ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "binomial")
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "binomial")
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
@@ -1161,7 +1161,7 @@ test_that(desc = "(id: f7-v0.5.5-24) Statistical Sampling Results based on the B
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
   for (rows in seq_along(n)) {
     for (columns in seq_along(k)) {
-      ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "binomial")
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "binomial")
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
@@ -1199,7 +1199,7 @@ test_that(desc = "(id: f7-v0.5.5-25) Statistical Sampling Results based on the P
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
   for (rows in seq_along(n)) {
     for (columns in seq_along(k)) {
-      ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "poisson")
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "poisson")
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
@@ -1235,7 +1235,7 @@ test_that(desc = "(id: f7-v0.5.5-26) Statistical Sampling Results based on the P
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
   for (rows in seq_along(n)) {
     for (columns in seq_along(k)) {
-      ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "poisson")
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "poisson")
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
@@ -1271,7 +1271,7 @@ test_that(desc = "(id: f7-v0.5.5-27) Statistical Sampling Results based on the P
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
   for (rows in seq_along(n)) {
     for (columns in seq_along(k)) {
-      ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "poisson")
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "poisson")
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
@@ -1307,7 +1307,7 @@ test_that(desc = "(id: f7-v0.5.5-28) Statistical Sampling Results based on the P
   tab <- matrix(NA, nrow = length(n), ncol = length(k))
   for (rows in seq_along(n)) {
     for (columns in seq_along(k)) {
-      ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "poisson")
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "poisson")
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
@@ -1349,7 +1349,7 @@ test_that(desc = "(id: f7-v0.5.5-29) Statistical Sampling Results based on the H
       if (n[rows] >= N) {
         next
       }
-      ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "hypergeometric", N.units = N)
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "hypergeometric", N.units = N)
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
@@ -1389,7 +1389,7 @@ test_that(desc = "(id: f7-v0.5.5-30) Statistical Sampling Results based on the H
       if (n[rows] >= N) {
         next
       }
-      ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "hypergeometric", N.units = N)
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "hypergeometric", N.units = N)
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
@@ -1429,7 +1429,7 @@ test_that(desc = "(id: f7-v0.5.5-31) Statistical Sampling Results based on the H
       if (n[rows] >= N) {
         next
       }
-      ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "hypergeometric", N.units = N)
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "hypergeometric", N.units = N)
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
@@ -1469,7 +1469,7 @@ test_that(desc = "(id: f7-v0.5.5-32) Statistical Sampling Results based on the H
       if (n[rows] >= N) {
         next
       }
-      ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "hypergeometric", N.units = N)
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "hypergeometric", N.units = N)
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
@@ -1509,7 +1509,7 @@ test_that(desc = "(id: f7-v0.5.5-33) Statistical Sampling Results based on the H
       if (n[rows] >= N) {
         next
       }
-      ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "hypergeometric", N.units = N)
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "hypergeometric", N.units = N)
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
@@ -1549,7 +1549,7 @@ test_that(desc = "(id: f7-v0.5.5-34) Statistical Sampling Results based on the H
       if (n[rows] >= N) {
         next
       }
-      ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "hypergeometric", N.units = N)
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "hypergeometric", N.units = N)
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
@@ -1589,7 +1589,7 @@ test_that(desc = "(id: f7-v0.5.5-35) Statistical Sampling Results based on the H
       if (n[rows] >= N) {
         next
       }
-      ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "hypergeometric", N.units = N)
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "hypergeometric", N.units = N)
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
@@ -1629,7 +1629,7 @@ test_that(desc = "(id: f7-v0.5.5-36) Statistical Sampling Results based on the H
       if (n[rows] >= N) {
         next
       }
-      ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "hypergeometric", N.units = N)
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "hypergeometric", N.units = N)
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
@@ -1669,7 +1669,7 @@ test_that(desc = "(id: f7-v0.5.5-37) Statistical Sampling Results based on the H
       if (n[rows] >= N) {
         next
       }
-      ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "hypergeometric", N.units = N)
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "hypergeometric", N.units = N)
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
@@ -1709,7 +1709,7 @@ test_that(desc = "(id: f7-v0.5.5-38) Statistical Sampling Results based on the H
       if (n[rows] >= N) {
         next
       }
-      ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "hypergeometric", N.units = N)
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "hypergeometric", N.units = N)
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
@@ -1749,7 +1749,7 @@ test_that(desc = "(id: f7-v0.5.5-39) Statistical Sampling Results based on the H
       if (n[rows] >= N) {
         next
       }
-      ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "hypergeometric", N.units = N)
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "hypergeometric", N.units = N)
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }
@@ -1789,7 +1789,7 @@ test_that(desc = "(id: f7-v0.5.5-40) Statistical Sampling Results based on the H
       if (n[rows] >= N) {
         next
       }
-      ss <- jfa::evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "hypergeometric", N.units = N)
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.99, method = "hypergeometric", N.units = N)
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
     }
   }

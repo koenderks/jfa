@@ -263,9 +263,10 @@ evaluation(
   materiality = NULL, 
   method = c(
     "poisson", "binomial", "hypergeometric",
-    "stringer", "stringer.meikle", "stringer.lta", "stringer.pvz",
-    "rohrbach", "moment", "coxsnell",
-    "direct", "difference", "quotient", "regression", "mpu"
+    "stringer.poisson", "stringer.binomial", "stringer.hypergeometric",
+    "stringer.meikle", "stringer.lta", "stringer.pvz",
+    "rohrbach", "moment", "coxsnell", "mpu",
+    "direct", "difference", "quotient", "regression"
   ),
   alternative = c("less", "two.sided", "greater"),
   conf.level = 0.95,
@@ -288,7 +289,9 @@ evaluation(
 - `poisson`: Poisson likelihood (Stewart, 2012).
 - `binomial`: Binomial likelihood (Stewart, 2012).
 - `hypergeometric`: Hypergeometric likelihood (Stewart, 2012).
-- `stringer`: Stringer bound (Bickel, 1992).
+- `stringer.poisson`: Stringer bound using Poisson distribution (Touw & Hoogduin, 2011).
+- `stringer.binomial`: Stringer bound using binomial distribution (Bickel, 1992).
+- `stringer.hypergeometric`: Stringer bound using hypergeometric distribution.
 - `stringer.meikle`: Stringer bound with Meikle's correction (Meikle, 1972).
 - `stringer.lta`: Stringer bound with LTA correction (Leslie, Teitlebaum, & Anderson, 1979).
 - `stringer.pvz`: Modified Stringer bound (Pap & van Zuijlen, 1996).

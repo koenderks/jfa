@@ -41,7 +41,7 @@ test_that(desc = "(id: f14-v0.5.1-t1) Test Sample sizes on page 17", {
   materiality <- 0.01
   n <- numeric(length(SR))
   for (i in seq_along(SR)) {
-    n[i] <- jfa::planning(conf.level = 1 - SR[i], materiality = materiality, likelihood = "poisson")$n
+    n[i] <- planning(conf.level = 1 - SR[i], materiality = materiality, likelihood = "poisson")$n
   }
   expect_equal(n, c(300, 230 + 1, 140 - 1, 90 + 2, 70))
   # Second entry: 230 --> 231 as qgamma(p = 0.90, shape = 1, rate = 230) > 0.1
@@ -63,8 +63,8 @@ test_that(desc = "(id: f14-v0.5.1-t1) Test Sample sizes on page 17", {
 # 0.875         104
 
 test_that(desc = "(id: f14-v0.5.1-t2) Test Sample sizes on page 23", {
-  n <- jfa::planning(conf.level = 1 - 0.05, materiality = 100000 / 5000000, likelihood = "poisson")$n
+  n <- planning(conf.level = 1 - 0.05, materiality = 100000 / 5000000, likelihood = "poisson")$n
   expect_equal(n, 150)
-  n <- jfa::planning(conf.level = 1 - 0.125, materiality = 100000 / 5000000, likelihood = "poisson")$n
+  n <- planning(conf.level = 1 - 0.125, materiality = 100000 / 5000000, likelihood = "poisson")$n
   expect_equal(n, 104)
 })

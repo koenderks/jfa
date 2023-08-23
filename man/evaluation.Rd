@@ -7,10 +7,11 @@
 evaluation(
   materiality = NULL,
   method = c(
-    "poisson", "binomial", "hypergeometric", "stringer",
-    "stringer.meikle", "stringer.lta", "stringer.pvz", "rohrbach",
-    "moment", "coxsnell", "direct", "difference", "quotient",
-    "regression", "mpu"
+    "poisson", "binomial", "hypergeometric",
+    "stringer.poisson", "stringer.binomial" "stringer.hypergeometric", "stringer",
+    "stringer.meikle", "stringer.lta", "stringer.pvz",
+    "rohrbach", "moment", "coxsnell", "mpu",
+    "direct", "difference", "quotient", "regression"
   ),
   alternative = c("less", "two.sided", "greater"),
   conf.level = 0.95,
@@ -36,10 +37,11 @@ Can be \code{NULL}. Not used for methods \code{direct}, \code{difference},
 
 \item{method}{a character specifying the statistical method. Possible
 options are \code{poisson} (default), \code{binomial},
-\code{hypergeometric}, \code{mpu}, \code{stringer}, \code{stringer.meikle},
+\code{hypergeometric}, \code{stringer.poisson}, \code{stringer.binomial},
+\code{stringer.hypergeometric}, \code{stringer.meikle},
 \code{stringer.lta}, \code{stringer.pvz}, \code{rohrbach}, \code{moment},
-\code{direct}, \code{difference}, \code{quotient}, or \code{regression}.
-See the details section for more information.}
+\code{mpu}, \code{direct}, \code{difference}, \code{quotient}, or
+\code{regression}. See the details section for more information.}
 
 \item{alternative}{a character indicating the alternative hypothesis and
 the type of confidence / credible interval returned by the function.
@@ -164,41 +166,46 @@ This section lists the available options for the \code{method}
   argument.
 
 \itemize{
- \item{\code{poisson}:         Evaluates the sample with the Poisson
+ \item{\code{poisson}:                 Evaluates the sample with the Poisson
    distribution. If combined with \code{prior = TRUE}, performs Bayesian
    evaluation using a \emph{gamma} prior.}
- \item{\code{binomial}:        Evaluates the sample with the binomial
+ \item{\code{binomial}:                Evaluates the sample with the binomial
    distribution. If combined with \code{prior = TRUE}, performs Bayesian
    evaluation using a \emph{beta} prior.}
- \item{\code{hypergeometric}:  Evaluates the sample with the hypergeometric
-   distribution. If combined with \code{prior = TRUE}, performs Bayesian
-   evaluation using a \emph{beta-binomial} prior.}
- \item{\code{mpu}:             Evaluates the sample using the mean-per-unit
-   estimator.}
- \item{\code{stringer}:        Evaluates the sample using the Stringer
-   bound (Stringer, 1963).}
- \item{\code{stringer.meikle}: Evaluates the sample using the Stringer bound
-   with Meikle's correction for understatements (Meikle, 1972).}
- \item{\code{stringer.lta}:    Evaluates the sample using the Stringer bound
-   with LTA correction for understatements (Leslie, Teitlebaum, and Anderson,
-   1979).}
- \item{\code{stringer.pvz}:    Evaluates the sample using the Stringer bound
-   with Pap and van Zuijlen's correction for understatements (Pap and van
-   Zuijlen, 1996).}
- \item{\code{rohrbach}:        Evaluates the sample using Rohrbach's
+ \item{\code{hypergeometric}:          Evaluates the sample with the
+   hypergeometric distribution. If combined with \code{prior = TRUE},
+   performs Bayesian evaluation using a \emph{beta-binomial} prior.}
+ \item{\code{stringer.poisson}:        Evaluates the sample with the Stringer
+   bound using the Poisson distribution.}
+ \item{\code{stringer.binomial}:       Evaluates the sample with the Stringer
+   bound using the binomial distribution (Stringer, 1963).}
+ \item{\code{stringer.hypergeometric}: Evaluates the sample with the Stringer
+   bound using the hypergeometric distribution.}
+ \item{\code{stringer.meikle}:         Evaluates the sample using the
+   Stringer bound with Meikle's correction for understatements
+   (Meikle, 1972).}
+ \item{\code{stringer.lta}:            Evaluates the sample using the
+   Stringer bound with LTA correction for understatements (Leslie,
+   Teitlebaum, and Anderson, 1979).}
+ \item{\code{stringer.pvz}:            Evaluates the sample using the
+   Stringer bound with Pap and van Zuijlen's correction for understatements
+   (Pap and van Zuijlen, 1996).}
+ \item{\code{rohrbach}:                Evaluates the sample using Rohrbach's
    augmented variance bound (Rohrbach, 1993).}
- \item{\code{moment}:          Evaluates the sample using the modified moment
-   bound (Dworin and Grimlund, 1984).}
- \item{\code{coxsnell}:        Evaluates the sample using the Cox and Snell
-   bound (Cox and Snell, 1979).}
- \item{\code{direct}:          Evaluates the sample using the direct
+ \item{\code{moment}:                  Evaluates the sample using the
+   modified moment bound (Dworin and Grimlund, 1984).}
+ \item{\code{coxsnell}:                Evaluates the sample using the Cox and
+   Snell bound (Cox and Snell, 1979).}
+ \item{\code{mpu}:                     Evaluates the sample using the
+   mean-per-unit estimator.}
+ \item{\code{direct}:                  Evaluates the sample using the direct
    estimator (Touw and Hoogduin, 2011).}
- \item{\code{difference}:      Evaluates the sample using the difference
-   estimator (Touw and Hoogduin, 2011).}
- \item{\code{quotient}:        Evaluates the sample using the quotient
-   estimator (Touw and Hoogduin, 2011).}
- \item{\code{regression}:      Evaluates the sample using the regression
-   estimator (Touw and Hoogduin, 2011).}
+ \item{\code{difference}:              Evaluates the sample using the
+   difference estimator (Touw and Hoogduin, 2011).}
+ \item{\code{quotient}:                Evaluates the sample using the
+   quotient estimator (Touw and Hoogduin, 2011).}
+ \item{\code{regression}:              Evaluates the sample using the
+   regression estimator (Touw and Hoogduin, 2011).}
 }
 }
 \examples{
@@ -213,10 +220,12 @@ levs <- c("low", "medium", "high")
 BuildIt$stratum <- factor(c(levs[3], levs[2], rep(levs, times = 1166)))
 sample <- subset(BuildIt, BuildIt$inSample == 1)
 
+# Non-stratified evaluation
 evaluation(
   materiality = 0.05, data = sample,
   values = "bookValue", values.audit = "auditValue"
 )
+# Stratified evaluation
 evaluation(
   materiality = 0.05, data = sample, values = "bookValue",
   values.audit = "auditValue", strata = "stratum"

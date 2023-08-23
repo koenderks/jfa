@@ -616,13 +616,13 @@ print.jfaEvaluation <- function(x, digits = getOption("digits"), ...) {
   cat(strwrap(paste(out, collapse = ", ")), sep = "\n")
   if (!is.null(x[["p.value"]]) || !is.null(x[["posterior"]]$hypotheses)) {
     if (x[["alternative"]] == "less") {
-      cat(paste0("alternative hypothesis: true misstatement rate is less than ", x[["materiality"]]), sep = "\n")
+      cat(paste0("alternative hypothesis: true misstatement rate is less than ", format(x[["materiality"]], digits = max(1L, digits - 2L))), sep = "\n")
     }
     if (x[["alternative"]] == "two.sided") {
-      cat(paste0("alternative hypothesis: true misstatement rate is not equal to ", x[["materiality"]]), sep = "\n")
+      cat(paste0("alternative hypothesis: true misstatement rate is not equal to ", format(x[["materiality"]], digits = max(1L, digits - 2L))), sep = "\n")
     }
     if (x[["alternative"]] == "greater") {
-      cat(paste0("alternative hypothesis: true misstatement rate is greater than ", x[["materiality"]]), sep = "\n")
+      cat(paste0("alternative hypothesis: true misstatement rate is greater than ", format(x[["materiality"]], digits = max(1L, digits - 2L))), sep = "\n")
     }
   }
   if (!is.null(x[["ub"]])) {

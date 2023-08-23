@@ -25,10 +25,11 @@
 #' @usage evaluation(
 #'   materiality = NULL,
 #'   method = c(
-#'     "poisson", "binomial", "hypergeometric", "stringer",
-#'     "stringer.meikle", "stringer.lta", "stringer.pvz", "rohrbach",
-#'     "moment", "coxsnell", "direct", "difference", "quotient",
-#'     "regression", "mpu"
+#'     "poisson", "binomial", "hypergeometric",
+#'     "stringer.poisson", "stringer.binomial" "stringer.hypergeometric", "stringer",
+#'     "stringer.meikle", "stringer.lta", "stringer.pvz",
+#'     "rohrbach", "moment", "coxsnell", "mpu",
+#'     "direct", "difference", "quotient", "regression"
 #'   ),
 #'   alternative = c("less", "two.sided", "greater"),
 #'   conf.level = 0.95,
@@ -52,10 +53,11 @@
 #'   \code{quotient}, and \code{regression}.
 #' @param method        a character specifying the statistical method. Possible
 #'   options are \code{poisson} (default), \code{binomial},
-#'   \code{hypergeometric}, \code{mpu}, \code{stringer}, \code{stringer.meikle},
+#'   \code{hypergeometric}, \code{stringer.poisson}, \code{stringer.binomial},
+#'   \code{stringer.hypergeometric}, \code{stringer.meikle},
 #'   \code{stringer.lta}, \code{stringer.pvz}, \code{rohrbach}, \code{moment},
-#'   \code{direct}, \code{difference}, \code{quotient}, or \code{regression}.
-#'   See the details section for more information.
+#'   \code{mpu}, \code{direct}, \code{difference}, \code{quotient}, or
+#'   \code{regression}. See the details section for more information.
 #' @param alternative   a character indicating the alternative hypothesis and
 #'   the type of confidence / credible interval returned by the function.
 #'   Possible options are  \code{less} (default), \code{two.sided}, or
@@ -118,41 +120,46 @@
 #'   argument.
 #'
 #' \itemize{
-#'  \item{\code{poisson}:         Evaluates the sample with the Poisson
+#'  \item{\code{poisson}:                 Evaluates the sample with the Poisson
 #'    distribution. If combined with \code{prior = TRUE}, performs Bayesian
 #'    evaluation using a \emph{gamma} prior.}
-#'  \item{\code{binomial}:        Evaluates the sample with the binomial
+#'  \item{\code{binomial}:                Evaluates the sample with the binomial
 #'    distribution. If combined with \code{prior = TRUE}, performs Bayesian
 #'    evaluation using a \emph{beta} prior.}
-#'  \item{\code{hypergeometric}:  Evaluates the sample with the hypergeometric
-#'    distribution. If combined with \code{prior = TRUE}, performs Bayesian
-#'    evaluation using a \emph{beta-binomial} prior.}
-#'  \item{\code{mpu}:             Evaluates the sample using the mean-per-unit
-#'    estimator.}
-#'  \item{\code{stringer}:        Evaluates the sample using the Stringer
-#'    bound (Stringer, 1963).}
-#'  \item{\code{stringer.meikle}: Evaluates the sample using the Stringer bound
-#'    with Meikle's correction for understatements (Meikle, 1972).}
-#'  \item{\code{stringer.lta}:    Evaluates the sample using the Stringer bound
-#'    with LTA correction for understatements (Leslie, Teitlebaum, and Anderson,
-#'    1979).}
-#'  \item{\code{stringer.pvz}:    Evaluates the sample using the Stringer bound
-#'    with Pap and van Zuijlen's correction for understatements (Pap and van
-#'    Zuijlen, 1996).}
-#'  \item{\code{rohrbach}:        Evaluates the sample using Rohrbach's
+#'  \item{\code{hypergeometric}:          Evaluates the sample with the
+#'    hypergeometric distribution. If combined with \code{prior = TRUE},
+#'    performs Bayesian evaluation using a \emph{beta-binomial} prior.}
+#'  \item{\code{stringer.poisson}:        Evaluates the sample with the Stringer
+#'    bound using the Poisson distribution.}
+#'  \item{\code{stringer.binomial}:       Evaluates the sample with the Stringer
+#'    bound using the binomial distribution (Stringer, 1963).}
+#'  \item{\code{stringer.hypergeometric}: Evaluates the sample with the Stringer
+#'    bound using the hypergeometric distribution.}
+#'  \item{\code{stringer.meikle}:         Evaluates the sample using the
+#'    Stringer bound with Meikle's correction for understatements
+#'    (Meikle, 1972).}
+#'  \item{\code{stringer.lta}:            Evaluates the sample using the
+#'    Stringer bound with LTA correction for understatements (Leslie,
+#'    Teitlebaum, and Anderson, 1979).}
+#'  \item{\code{stringer.pvz}:            Evaluates the sample using the
+#'    Stringer bound with Pap and van Zuijlen's correction for understatements
+#'    (Pap and van Zuijlen, 1996).}
+#'  \item{\code{rohrbach}:                Evaluates the sample using Rohrbach's
 #'    augmented variance bound (Rohrbach, 1993).}
-#'  \item{\code{moment}:          Evaluates the sample using the modified moment
-#'    bound (Dworin and Grimlund, 1984).}
-#'  \item{\code{coxsnell}:        Evaluates the sample using the Cox and Snell
-#'    bound (Cox and Snell, 1979).}
-#'  \item{\code{direct}:          Evaluates the sample using the direct
+#'  \item{\code{moment}:                  Evaluates the sample using the
+#'    modified moment bound (Dworin and Grimlund, 1984).}
+#'  \item{\code{coxsnell}:                Evaluates the sample using the Cox and
+#'    Snell bound (Cox and Snell, 1979).}
+#'  \item{\code{mpu}:                     Evaluates the sample using the
+#'    mean-per-unit estimator.}
+#'  \item{\code{direct}:                  Evaluates the sample using the direct
 #'    estimator (Touw and Hoogduin, 2011).}
-#'  \item{\code{difference}:      Evaluates the sample using the difference
-#'    estimator (Touw and Hoogduin, 2011).}
-#'  \item{\code{quotient}:        Evaluates the sample using the quotient
-#'    estimator (Touw and Hoogduin, 2011).}
-#'  \item{\code{regression}:      Evaluates the sample using the regression
-#'    estimator (Touw and Hoogduin, 2011).}
+#'  \item{\code{difference}:              Evaluates the sample using the
+#'    difference estimator (Touw and Hoogduin, 2011).}
+#'  \item{\code{quotient}:                Evaluates the sample using the
+#'    quotient estimator (Touw and Hoogduin, 2011).}
+#'  \item{\code{regression}:              Evaluates the sample using the
+#'    regression estimator (Touw and Hoogduin, 2011).}
 #' }
 #'
 #' @references Cox, D. and Snell, E. (1979). On sampling and the estimation of
@@ -258,10 +265,12 @@
 #' BuildIt$stratum <- factor(c(levs[3], levs[2], rep(levs, times = 1166)))
 #' sample <- subset(BuildIt, BuildIt$inSample == 1)
 #'
+#' # Non-stratified evaluation
 #' evaluation(
 #'   materiality = 0.05, data = sample,
 #'   values = "bookValue", values.audit = "auditValue"
 #' )
+#' # Stratified evaluation
 #' evaluation(
 #'   materiality = 0.05, data = sample, values = "bookValue",
 #'   values.audit = "auditValue", strata = "stratum"
@@ -270,10 +279,11 @@
 
 evaluation <- function(materiality = NULL,
                        method = c(
-                         "poisson", "binomial", "hypergeometric", "stringer",
+                         "poisson", "binomial", "hypergeometric",
+                         "stringer.poisson", "stringer.binomial", "stringer.hypergeometric", "stringer",
                          "stringer.meikle", "stringer.lta", "stringer.pvz",
-                         "rohrbach", "moment", "coxsnell", "direct", "difference",
-                         "quotient", "regression", "mpu"
+                         "rohrbach", "moment", "coxsnell", "mpu",
+                         "direct", "difference", "quotient", "regression"
                        ),
                        alternative = c("less", "two.sided", "greater"),
                        conf.level = 0.95,
@@ -290,6 +300,9 @@ evaluation <- function(materiality = NULL,
                        prior = FALSE) {
   # Input checking
   method <- match.arg(method)
+  if (method == "stringer") { # Backwards compatibility
+    method <- "stringer.binomial"
+  }
   alternative <- match.arg(alternative)
   pooling <- match.arg(pooling)
   is_jfa_prior <- inherits(prior, "jfaPrior") || inherits(prior, "jfaPosterior")
@@ -353,7 +366,7 @@ evaluation <- function(materiality = NULL,
   if (is_bayesian) {
     stopifnot("'method' should be one of 'poisson', 'binomial', or 'hypergeometric'" = valid_test_method)
   }
-  is_stringer_method <- method %in% c("stringer", "stringer.meikle", "stringer.lta", "stringer.pvz")
+  is_stringer_method <- method %in% c("stringer.poisson", "stringer.binomial", "stringer.hypergeometric", "stringer.meikle", "stringer.lta", "stringer.pvz")
   if (alternative %in% c("two.sided", "greater") && is_stringer_method) {
     stop(paste0("'method = ", method, "' does not accomodate 'alternative = ", alternative, "'"))
   }
@@ -362,7 +375,8 @@ evaluation <- function(materiality = NULL,
   has_data <- !is.null(data)
   if (has_summary_statistics) {
     valid_method <- !(method %in% c(
-      "stringer", "stringer.meikle", "stringer.lta", "stringer.pvz",
+      "stringer.poisson", "stringer.binomial", "stringer.hypergeometric",
+      "stringer.meikle", "stringer.lta", "stringer.pvz",
       "coxsnell", "rohrbach", "moment", "mpu",
       "direct", "difference", "quotient", "regression"
     ))
@@ -563,10 +577,12 @@ evaluation <- function(materiality = NULL,
         }
       } else {
         out <- switch(method,
-          "stringer" = .stringer(taints[[i]], conf.level, n.obs[i]),
-          "stringer.meikle" = .stringer(taints[[i]], conf.level, n.obs[i], "meikle"),
-          "stringer.lta" = .stringer(taints[[i]], conf.level, n.obs[i], "lta"),
-          "stringer.pvz" = .stringer(taints[[i]], conf.level, n.obs[i], "pvz"),
+          "stringer.poisson" = .stringer(taints[[i]], conf.level, n.obs[i], "poisson", "none"),
+          "stringer.binomial" = .stringer(taints[[i]], conf.level, n.obs[i], "binomial", "none"),
+          "stringer.hypergeometric" = .stringer(taints[[i]], conf.level, n.obs[i], "hypergeometric", "none", N.units[i]),
+          "stringer.meikle" = .stringer(taints[[i]], conf.level, n.obs[i], "binomial", "meikle"),
+          "stringer.lta" = .stringer(taints[[i]], conf.level, n.obs[i], "binomial", "lta"),
+          "stringer.pvz" = .stringer(taints[[i]], conf.level, n.obs[i], "binomial", "pvz"),
           "rohrbach" = .rohrbach(taints[[i]], conf.level, n.obs[i], alternative, N.units[i], 2.7),
           "moment" = .moment(taints[[i]], conf.level, n.obs[i], alternative, "accounts"),
           "coxsnell" = .coxsnell(taints[[i]], conf.level, n.obs[i], alternative, 1, 3, 0.5, 1, 1),

@@ -13,39 +13,54 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-.stringer <- function(taints, conf.level, n, correction = NULL) {
+.stringer <- function(taints, conf.level, n, likelihood = "binomial", correction = "none", N.units = NULL) {
   mle <- sum(taints) / n
   t <- ifelse(taints < 0, yes = 0, no = taints)
   t <- ifelse(taints > 1, yes = 1, no = taints)
   t <- sort(subset(t, t > 0), decreasing = TRUE)
-  bound <- 1 - (1 - conf.level)^(1 / n)
+  if (likelihood == "hypergeometric") {
+    stopifnot("missing value for 'N.units'" = !is.null(N.units))
+  }
+  bound <- switch(likelihood,
+    "binomial" = 1 - (1 - conf.level)^(1 / n),
+    "poisson" = stats::qgamma(p = conf.level, shape = 1, rate = n),
+    "hypergeometric" = .qhyper(p = conf.level, N = N.units, n = n, k = 0) / N.units
+  )
   if (length(t) > 0) {
     propSum <- 0
     for (i in seq_along(t)) {
-      propSum <- propSum + (stats::qbeta(p = conf.level, shape1 = i + 1, shape2 = n - i) - stats::qbeta(p = conf.level, shape1 = (i - 1) + 1, shape2 = n - (i - 1))) * t[i]
+      propSum <- switch(likelihood,
+        "binomial" = propSum + (stats::qbeta(p = conf.level, shape1 = i + 1, shape2 = n - i) - stats::qbeta(p = conf.level, shape1 = (i - 1) + 1, shape2 = n - (i - 1))) * t[i],
+        "poisson" = propSum + (stats::qgamma(p = conf.level, shape = i + 1, rate = n) - stats::qgamma(p = conf.level, shape = (i - 1) + 1, rate = n)) * t[i],
+        "hypergeometric" = propSum + (.qhyper(p = conf.level, N = N.units, k = i, n = n) - .qhyper(p = conf.level, N = N.units, k = i - 1, n = n)) / N.units * t[i],
+      )
     }
     bound <- bound + propSum
   }
-  if (!is.null(correction) && correction == "meikle") {
+  if (correction == "meikle") {
     tmin <- sort(subset(taints, taints < 0), decreasing = FALSE)
     if (length(tmin) > 0) {
       prop.sum.min <- stats::qbeta(1 + 1, n - 1, p = conf.level) * abs(tmin[1])
       if (length(tmin) > 2) {
         prop.sum.min.2 <- 0
         for (i in 2:length(tmin)) {
-          prop.sum.min.2 <- prop.sum.min.2 + (stats::qbeta(i + 1, n - 1, p = conf.level) - stats::qbeta((i - 1) + 1, n - 1, p = conf.level)) * abs(tmin[i])
+          prop.sum.min.2 <- switch(likelihood,
+            "binomial" = prop.sum.min.2 + (stats::qbeta(shape1 = i + 1, shape2 = n - 1, p = conf.level) - stats::qbeta(shape1 = (i - 1) + 1, shape2 = n - 1, p = conf.level)) * abs(tmin[i]),
+            "poisson" = prop.sum.min.2 + (stats::gamma(shape = i + 1, rate = n, p = conf.level) - stats::qgamma(shape = (i - 1) + 1, rate = n, p = conf.level)) * abs(tmin[i]),
+            "hypergeometric" = prop.sum.min.2 + (.qhyper(p = conf.level, N = N.units, k = i, n = n) - .qhyper(p = conf.level, N = N.units, k = i - 1, n = n)) / N.units * abs(tmin[i]),
+          )
         }
         prop.sum.min <- prop.sum.min + prop.sum.min.2
       }
       bound <- bound - prop.sum.min
     }
-  } else if (!is.null(correction) && correction == "lta") {
+  } else if (correction == "lta") {
     tmin <- subset(taints, taints < 0)
     if (length(tmin) > 0) {
       ltaCorrection <- (1 / n) * sum(abs(tmin))
       bound <- bound - ltaCorrection
     }
-  } else if (!is.null(correction) && correction == "pvz") {
+  } else if (correction == "pvz") {
     taints <- ifelse(taints < 0, 0, taints)
     tmin <- sort(subset(taints, taints > 0))
     if (length(tmin) > 0) {

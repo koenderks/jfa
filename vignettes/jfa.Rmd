@@ -101,7 +101,7 @@ sample.
 ```{r}
 # Stage 4: Evaluation
 stage4 <- evaluation(
-  materiality = 0.03, method = "stringer",
+  materiality = 0.03, method = "stringer.poisson",
   conf.level = 0.95, data = sample,
   values = "bookValue", values.audit = "auditValue"
 )

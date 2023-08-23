@@ -66,7 +66,7 @@ summary(stage2)
 sample <- stage2[['sample']]
 
 # Stage 4: Evaluation
-stage4 <- evaluation(data = sample, method = 'stringer',
+stage4 <- evaluation(data = sample, method = 'stringer.binomial',
                      values = 'bookValue', values.audit = 'auditValue')
 summary(stage4)
 

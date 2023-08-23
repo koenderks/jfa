@@ -84,7 +84,7 @@ test_that(desc = "(id: f3-v0.1.0-t7) Evaluation with stringer method", {
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "poisson")
   samp <- selection(population, size = jfaRes, units = "items", method = "random")$sample
   samp$auditValue <- samp[["bookValue"]]
-  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "stringer")
+  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "stringer.binomial")
   expect_equal(jfaEval[["ub"]], 0.04870291, tolerance = 0.001)
 })
 
@@ -224,7 +224,7 @@ test_that(desc = "(id: f3-v0.3.0-t1) Evaluation with counts and stringer method"
   samp$auditValue[1:3] <- samp$bookValue[1:3] * 0.4
   counts <- c(2, 2, 3, rep(1, nrow(samp) - 3))
   samp <- cbind(samp, counts)
-  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "stringer", times = "counts")
+  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "stringer.binomial", times = "counts")
   expect_equal(jfaEval[["ub"]], 0.0326619, tolerance = 0.001)
 })
 
@@ -256,7 +256,7 @@ test_that(desc = "(id: f3-v0.5.0-t1) Test for mpu estimator", {
   sample$soll[1] <- 100
   sample$ist[2] <- 100
   sample$soll[2] <- 120
-  jfaEval <- jfa::evaluation(conf.level = 0.95, method = "mpu", data = sample, materiality = 0.1, values = "ist", values.audit = "soll")
+  jfaEval <- evaluation(conf.level = 0.95, method = "mpu", data = sample, materiality = 0.1, values = "ist", values.audit = "soll")
   expect_equal(jfaEval[["ub"]], 0.003970126, tolerance = 0.001)
 })
 
@@ -585,4 +585,26 @@ test_that(desc = "(id: f3-v0.6.5-t9) Test Bayesian evaluation with different uni
     res <- evaluation(materiality = 0.05, prior = priors[[i]], method = "binomial", x = 1, n = 100)
     expect_equal(res[["mle"]], 0.01, tolerance = 0.01)
   }
+})
+
+# jfa 0.7.0
+
+test_that(desc = "(id: f3-v0.7.0-t1) Evaluation with stringer.poisson method", {
+  set.seed(1)
+  population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
+  jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "poisson")
+  samp <- selection(population, size = jfaRes, units = "items", method = "random")$sample
+  samp$auditValue <- samp[["bookValue"]]
+  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "stringer.poisson")
+  expect_equal(jfaEval[["ub"]], 0.04992887, tolerance = 0.001)
+})
+
+test_that(desc = "(id: f3-v0.7.0-t2) Evaluation with stringer.hypergeometric method", {
+  set.seed(1)
+  population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
+  jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "poisson")
+  samp <- selection(population, size = jfaRes, units = "items", method = "random")$sample
+  samp$auditValue <- samp[["bookValue"]]
+  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "stringer.hypergeometric", N.units = sum(population$bookValue))
+  expect_equal(jfaEval[["ub"]], 0.04869673, tolerance = 0.001)
 })
