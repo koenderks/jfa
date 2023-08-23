@@ -94,7 +94,7 @@
       <h1 data-toc-skip>Get started with the jfa package</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2023-08-18</h4>
+            <h4 data-toc-skip class="date">2023-08-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/jfa.Rmd" class="external-link"><code>vignettes/jfa.Rmd</code></a></small>
       <div class="hidden name"><code>jfa.Rmd</code></div>
@@ -224,7 +224,7 @@ misstatement in the sample.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Stage 4: Evaluation</span></span>
 <span><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
-<span>  materiality <span class="op">=</span> <span class="fl">0.03</span>, method <span class="op">=</span> <span class="st">"stringer"</span>,</span>
+<span>  materiality <span class="op">=</span> <span class="fl">0.03</span>, method <span class="op">=</span> <span class="st">"stringer.poisson"</span>,</span>
 <span>  conf.level <span class="op">=</span> <span class="fl">0.95</span>, data <span class="op">=</span> <span class="va">sample</span>,</span>
 <span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span></span>
 <span><span class="op">)</span></span>
@@ -235,7 +235,7 @@ misstatement in the sample.</p>
 <span><span class="co">## Options:</span></span>
 <span><span class="co">##   Confidence level:               0.95 </span></span>
 <span><span class="co">##   Materiality:                    0.03 </span></span>
-<span><span class="co">##   Method:                         stringer </span></span>
+<span><span class="co">##   Method:                         stringer.poisson </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Data:</span></span>
 <span><span class="co">##   Sample size:                    220 </span></span>
@@ -244,8 +244,8 @@ misstatement in the sample.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
 <span><span class="co">##   Most likely error:              0.013636 </span></span>
-<span><span class="co">##   95 percent confidence interval: [0, 0.033724] </span></span>
-<span><span class="co">##   Precision:                      0.020087</span></span></code></pre>
+<span><span class="co">##   95 percent confidence interval: [0, 0.034119] </span></span>
+<span><span class="co">##   Precision:                      0.020482</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
@@ -283,7 +283,7 @@ numbers in a variable for repeated values.</p>
 <span><span class="co">##  Classical Repeated Values Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sanitizer$value</span></span>
-<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0014</span></span>
+<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0028</span></span>
 <span><span class="co">## alternative hypothesis: average frequency in data is greater than for random data.</span></span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>

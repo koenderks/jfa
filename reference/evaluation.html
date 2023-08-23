@@ -81,28 +81,29 @@ an object of class <code>jfaEvaluation</code> that can be used with associated
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">evaluation</span><span class="op">(</span></span>
-<span>  materiality <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    <span class="st">"poisson"</span>, <span class="st">"binomial"</span>, <span class="st">"hypergeometric"</span>, <span class="st">"stringer"</span>,</span>
-<span>    <span class="st">"stringer.meikle"</span>, <span class="st">"stringer.lta"</span>, <span class="st">"stringer.pvz"</span>, <span class="st">"rohrbach"</span>,</span>
-<span>    <span class="st">"moment"</span>, <span class="st">"coxsnell"</span>, <span class="st">"direct"</span>, <span class="st">"difference"</span>, <span class="st">"quotient"</span>,</span>
-<span>    <span class="st">"regression"</span>, <span class="st">"mpu"</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  alternative <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"less"</span>, <span class="st">"two.sided"</span>, <span class="st">"greater"</span><span class="op">)</span>,</span>
-<span>  conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
-<span>  data <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  values <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  values.audit <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  strata <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  times <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  x <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  n <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  N.units <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  N.items <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  pooling <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"none"</span>, <span class="st">"complete"</span>, <span class="st">"partial"</span><span class="op">)</span>,</span>
-<span>  prior <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre><code>evaluation(
+  materiality = NULL,
+  method = c(
+    "poisson", "binomial", "hypergeometric",
+    "stringer.poisson", "stringer.binomial" "stringer.hypergeometric", "stringer",
+    "stringer.meikle", "stringer.lta", "stringer.pvz",
+    "rohrbach", "moment", "coxsnell", "mpu",
+    "direct", "difference", "quotient", "regression"
+  ),
+  alternative = c("less", "two.sided", "greater"),
+  conf.level = 0.95,
+  data = NULL,
+  values = NULL,
+  values.audit = NULL,
+  strata = NULL,
+  times = NULL,
+  x = NULL,
+  n = NULL,
+  N.units = NULL,
+  N.items = NULL,
+  pooling = c("none", "complete", "partial"),
+  prior = FALSE
+)</code></pre></div>
     </div>
 
     <div id="arguments">
@@ -118,10 +119,11 @@ Can be <code>NULL</code>. Not used for methods <code>direct</code>, <code>differ
 <dt>method</dt>
 <dd><p>a character specifying the statistical method. Possible
 options are <code>poisson</code> (default), <code>binomial</code>,
-<code>hypergeometric</code>, <code>mpu</code>, <code>stringer</code>, <code>stringer.meikle</code>,
+<code>hypergeometric</code>, <code>stringer.poisson</code>, <code>stringer.binomial</code>,
+<code>stringer.hypergeometric</code>, <code>stringer.meikle</code>,
 <code>stringer.lta</code>, <code>stringer.pvz</code>, <code>rohrbach</code>, <code>moment</code>,
-<code>direct</code>, <code>difference</code>, <code>quotient</code>, or <code>regression</code>.
-See the details section for more information.</p></dd>
+<code>mpu</code>, <code>direct</code>, <code>difference</code>, <code>quotient</code>, or
+<code>regression</code>. See the details section for more information.</p></dd>
 
 
 <dt>alternative</dt>
@@ -306,41 +308,46 @@ evaluation using the specified prior.</p></dd>
     <h2>Details</h2>
     <p>This section lists the available options for the <code>method</code>
   argument.</p>
-<ul><li><p><code>poisson</code>:         Evaluates the sample with the Poisson
+<ul><li><p><code>poisson</code>:                 Evaluates the sample with the Poisson
    distribution. If combined with <code>prior = TRUE</code>, performs Bayesian
    evaluation using a <em>gamma</em> prior.</p></li>
-<li><p><code>binomial</code>:        Evaluates the sample with the binomial
+<li><p><code>binomial</code>:                Evaluates the sample with the binomial
    distribution. If combined with <code>prior = TRUE</code>, performs Bayesian
    evaluation using a <em>beta</em> prior.</p></li>
-<li><p><code>hypergeometric</code>:  Evaluates the sample with the hypergeometric
-   distribution. If combined with <code>prior = TRUE</code>, performs Bayesian
-   evaluation using a <em>beta-binomial</em> prior.</p></li>
-<li><p><code>mpu</code>:             Evaluates the sample using the mean-per-unit
-   estimator.</p></li>
-<li><p><code>stringer</code>:        Evaluates the sample using the Stringer
-   bound (Stringer, 1963).</p></li>
-<li><p><code>stringer.meikle</code>: Evaluates the sample using the Stringer bound
-   with Meikle's correction for understatements (Meikle, 1972).</p></li>
-<li><p><code>stringer.lta</code>:    Evaluates the sample using the Stringer bound
-   with LTA correction for understatements (Leslie, Teitlebaum, and Anderson,
-   1979).</p></li>
-<li><p><code>stringer.pvz</code>:    Evaluates the sample using the Stringer bound
-   with Pap and van Zuijlen's correction for understatements (Pap and van
-   Zuijlen, 1996).</p></li>
-<li><p><code>rohrbach</code>:        Evaluates the sample using Rohrbach's
+<li><p><code>hypergeometric</code>:          Evaluates the sample with the
+   hypergeometric distribution. If combined with <code>prior = TRUE</code>,
+   performs Bayesian evaluation using a <em>beta-binomial</em> prior.</p></li>
+<li><p><code>stringer.poisson</code>:        Evaluates the sample with the Stringer
+   bound using the Poisson distribution.</p></li>
+<li><p><code>stringer.binomial</code>:       Evaluates the sample with the Stringer
+   bound using the binomial distribution (Stringer, 1963).</p></li>
+<li><p><code>stringer.hypergeometric</code>: Evaluates the sample with the Stringer
+   bound using the hypergeometric distribution.</p></li>
+<li><p><code>stringer.meikle</code>:         Evaluates the sample using the
+   Stringer bound with Meikle's correction for understatements
+   (Meikle, 1972).</p></li>
+<li><p><code>stringer.lta</code>:            Evaluates the sample using the
+   Stringer bound with LTA correction for understatements (Leslie,
+   Teitlebaum, and Anderson, 1979).</p></li>
+<li><p><code>stringer.pvz</code>:            Evaluates the sample using the
+   Stringer bound with Pap and van Zuijlen's correction for understatements
+   (Pap and van Zuijlen, 1996).</p></li>
+<li><p><code>rohrbach</code>:                Evaluates the sample using Rohrbach's
    augmented variance bound (Rohrbach, 1993).</p></li>
-<li><p><code>moment</code>:          Evaluates the sample using the modified moment
-   bound (Dworin and Grimlund, 1984).</p></li>
-<li><p><code>coxsnell</code>:        Evaluates the sample using the Cox and Snell
-   bound (Cox and Snell, 1979).</p></li>
-<li><p><code>direct</code>:          Evaluates the sample using the direct
+<li><p><code>moment</code>:                  Evaluates the sample using the
+   modified moment bound (Dworin and Grimlund, 1984).</p></li>
+<li><p><code>coxsnell</code>:                Evaluates the sample using the Cox and
+   Snell bound (Cox and Snell, 1979).</p></li>
+<li><p><code>mpu</code>:                     Evaluates the sample using the
+   mean-per-unit estimator.</p></li>
+<li><p><code>direct</code>:                  Evaluates the sample using the direct
    estimator (Touw and Hoogduin, 2011).</p></li>
-<li><p><code>difference</code>:      Evaluates the sample using the difference
-   estimator (Touw and Hoogduin, 2011).</p></li>
-<li><p><code>quotient</code>:        Evaluates the sample using the quotient
-   estimator (Touw and Hoogduin, 2011).</p></li>
-<li><p><code>regression</code>:      Evaluates the sample using the regression
-   estimator (Touw and Hoogduin, 2011).</p></li>
+<li><p><code>difference</code>:              Evaluates the sample using the
+   difference estimator (Touw and Hoogduin, 2011).</p></li>
+<li><p><code>quotient</code>:                Evaluates the sample using the
+   quotient estimator (Touw and Hoogduin, 2011).</p></li>
+<li><p><code>regression</code>:              Evaluates the sample using the
+   regression estimator (Touw and Hoogduin, 2011).</p></li>
 </ul></div>
     <div id="references">
     <h2>References</h2>
@@ -437,6 +444,7 @@ evaluation using the specified prior.</p></dd>
 <span class="r-in"><span><span class="va">BuildIt</span><span class="op">$</span><span class="va">stratum</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">levs</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>, <span class="va">levs</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">levs</span>, times <span class="op">=</span> <span class="fl">1166</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">BuildIt</span>, <span class="va">BuildIt</span><span class="op">$</span><span class="va">inSample</span> <span class="op">==</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Non-stratified evaluation</span></span></span>
 <span class="r-in"><span><span class="fu">evaluation</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, data <span class="op">=</span> <span class="va">sample</span>,</span></span>
 <span class="r-in"><span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span></span></span>
@@ -453,6 +461,7 @@ evaluation using the specified prior.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> most likely estimate:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  0.03 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> results obtained via method 'poisson' </span>
+<span class="r-in"><span><span class="co"># Stratified evaluation</span></span></span>
 <span class="r-in"><span><span class="fu">evaluation</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>,</span></span>
 <span class="r-in"><span>  values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, strata <span class="op">=</span> <span class="st">"stratum"</span></span></span>

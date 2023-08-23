@@ -70,7 +70,8 @@
 <p><strong>New features</strong></p>
 <ul><li>Added a new function <code><a href="../reference/model_fairness.html">model_fairness()</a></code> to compute fairness metrics for algorithm auditing on the basis of predictions of an algorithm.</li>
 </ul><p><strong>Minor changes</strong></p>
-<ul><li>Compatibility with <code>rstantools 2.3.1</code>.</li>
+<ul><li>In the <code><a href="../reference/evaluation.html">evaluation()</a></code> function, the typical stringer bound has been changed from <code>method = "stringer"</code> to <code>method = "stringer.binomial"</code>. Furthermore, additional methods <code>stringer.poisson</code> and <code>stringer.hypergeometric</code> are added that apply the stringer bound using the Poisson and hypergeometric distributions, respectively. The <code>stringer</code> method will remain for now but redirect to <code>stringer.binomial</code>.</li>
+<li>Compatibility with <code>rstantools 2.3.1</code>.</li>
 </ul></div>
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.6.7" id="jfa-067">jfa 0.6.7<small>2023-07-16</small><a class="anchor" aria-label="anchor" href="#jfa-067"></a></h2>

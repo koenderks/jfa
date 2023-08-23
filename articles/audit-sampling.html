@@ -94,7 +94,7 @@
       <h1 data-toc-skip>Audit sampling: Get started</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2023-08-18</h4>
+            <h4 data-toc-skip class="date">2023-08-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/audit-sampling.Rmd" class="external-link"><code>vignettes/audit-sampling.Rmd</code></a></small>
       <div class="hidden name"><code>audit-sampling.Rmd</code></div>
@@ -451,9 +451,10 @@ function.</p>
 <span>  materiality <span class="op">=</span> <span class="cn">NULL</span>, </span>
 <span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    <span class="st">"poisson"</span>, <span class="st">"binomial"</span>, <span class="st">"hypergeometric"</span>,</span>
-<span>    <span class="st">"stringer"</span>, <span class="st">"stringer.meikle"</span>, <span class="st">"stringer.lta"</span>, <span class="st">"stringer.pvz"</span>,</span>
-<span>    <span class="st">"rohrbach"</span>, <span class="st">"moment"</span>, <span class="st">"coxsnell"</span>,</span>
-<span>    <span class="st">"direct"</span>, <span class="st">"difference"</span>, <span class="st">"quotient"</span>, <span class="st">"regression"</span>, <span class="st">"mpu"</span></span>
+<span>    <span class="st">"stringer.poisson"</span>, <span class="st">"stringer.binomial"</span>, <span class="st">"stringer.hypergeometric"</span>,</span>
+<span>    <span class="st">"stringer.meikle"</span>, <span class="st">"stringer.lta"</span>, <span class="st">"stringer.pvz"</span>,</span>
+<span>    <span class="st">"rohrbach"</span>, <span class="st">"moment"</span>, <span class="st">"coxsnell"</span>, <span class="st">"mpu"</span>,</span>
+<span>    <span class="st">"direct"</span>, <span class="st">"difference"</span>, <span class="st">"quotient"</span>, <span class="st">"regression"</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  alternative <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"less"</span>, <span class="st">"two.sided"</span>, <span class="st">"greater"</span><span class="op">)</span>,</span>
 <span>  conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
@@ -479,7 +480,14 @@ function.</p>
 <code>hypergeometric</code>: Hypergeometric likelihood (Stewart,
 2012).</li>
 <li>
-<code>stringer</code>: Stringer bound (Bickel, 1992).</li>
+<code>stringer.poisson</code>: Stringer bound using Poisson
+distribution (Touw &amp; Hoogduin, 2011).</li>
+<li>
+<code>stringer.binomial</code>: Stringer bound using binomial
+distribution (Bickel, 1992).</li>
+<li>
+<code>stringer.hypergeometric</code>: Stringer bound using
+hypergeometric distribution.</li>
 <li>
 <code>stringer.meikle</code>: Stringer bound with Meikle’s
 correction (Meikle, 1972).</li>

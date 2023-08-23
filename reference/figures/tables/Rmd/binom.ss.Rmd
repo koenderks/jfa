@@ -41,7 +41,7 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(conf.level = 0.90, expected = expected[rows], likelihood = "binomial", materiality = m[columns])) }, silent = T)
+      p <- try({ suppressMessages(ss <- planning(conf.level = 0.90, expected = expected[rows], likelihood = "binomial", materiality = m[columns])) }, silent = T)
       if(inherits(p, "try-error")){
         next 
       }
@@ -91,7 +91,7 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(conf.level = 0.95, expected = expected[rows], likelihood = "binomial", materiality = m[columns])) }, silent = T)
+      p <- try({ suppressMessages(ss <- planning(conf.level = 0.95, expected = expected[rows], likelihood = "binomial", materiality = m[columns])) }, silent = T)
       if(inherits(p, "try-error")){
         next 
       }
@@ -141,7 +141,7 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(conf.level = 0.975, expected = expected[rows], likelihood = "binomial", materiality = m[columns])) }, silent = T)
+      p <- try({ suppressMessages(ss <- planning(conf.level = 0.975, expected = expected[rows], likelihood = "binomial", materiality = m[columns])) }, silent = T)
       if(inherits(p, "try-error")){
         next 
       }
@@ -191,7 +191,7 @@ for(rows in 1:length(expected)){
     if(expected[rows] >= m[columns]){
       next
     } else {
-      p <- try({ suppressMessages(ss <- jfa::planning(conf.level = 0.99, expected = expected[rows], likelihood = "binomial", materiality = m[columns])) }, silent = T)
+      p <- try({ suppressMessages(ss <- planning(conf.level = 0.99, expected = expected[rows], likelihood = "binomial", materiality = m[columns])) }, silent = T)
       if(inherits(p, "try-error")){
         next 
       }
