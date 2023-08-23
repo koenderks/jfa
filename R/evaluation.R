@@ -26,8 +26,8 @@
 #'   materiality = NULL,
 #'   method = c(
 #'     "poisson", "binomial", "hypergeometric",
-#'     "stringer.poisson", "stringer.binomial" "stringer.hypergeometric", "stringer",
-#'     "stringer.meikle", "stringer.lta", "stringer.pvz",
+#'     "stringer.poisson", "stringer.binomial" "stringer.hypergeometric",
+#'     "stringer.meikle", "stringer.lta", "stringer.pvz", "stringer",
 #'     "rohrbach", "moment", "coxsnell", "mpu",
 #'     "direct", "difference", "quotient", "regression"
 #'   ),
@@ -255,8 +255,8 @@
 #'
 #' @examples
 #' # Using summary statistics
-#' evaluation(materiality = 0.05, x = 0, n = 100)
-#' evaluation(materiality = 0.05, x = c(2, 1, 0), n = c(50, 70, 40))
+#' evaluation(materiality = 0.05, x = 0, n = 100) # Non-stratified
+#' evaluation(materiality = 0.05, x = c(2, 1, 0), n = c(50, 70, 40)) # Stratified
 #'
 #' # Using data
 #' data("BuildIt")
@@ -280,8 +280,8 @@
 evaluation <- function(materiality = NULL,
                        method = c(
                          "poisson", "binomial", "hypergeometric",
-                         "stringer.poisson", "stringer.binomial", "stringer.hypergeometric", "stringer",
-                         "stringer.meikle", "stringer.lta", "stringer.pvz",
+                         "stringer.poisson", "stringer.binomial", "stringer.hypergeometric",
+                         "stringer.meikle", "stringer.lta", "stringer.pvz", "stringer",
                          "rohrbach", "moment", "coxsnell", "mpu",
                          "direct", "difference", "quotient", "regression"
                        ),

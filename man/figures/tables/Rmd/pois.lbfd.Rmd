@@ -14,9 +14,13 @@ colorize <- function(x, color) {
   if (knitr::is_latex_output()) {
     sprintf("\\textcolor{%s}{%s}", color, x)
   } else if (knitr::is_html_output()) {
-    sprintf("<span style='color: %s;'>%s</span>", color, 
-      x)
-  } else x
+    sprintf(
+      "<span style='color: %s;'>%s</span>", color,
+      x
+    )
+  } else {
+    x
+  }
 }
 library(jfa)
 ```
@@ -31,38 +35,37 @@ library(jfa)
 ```
 
 ```{r, include = F}
-
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
-for(rows in 1:length(n)){
-  for(columns in 1:length(k)){
-      tab[rows, columns] <- log(evaluation(materiality = 0.10, n = n[rows], x = k[columns], method = 'poisson', prior = TRUE)$posterior$hypotheses$bf.h1)
+for (rows in 1:length(n)) {
+  for (columns in 1:length(k)) {
+    tab[rows, columns] <- log(evaluation(materiality = 0.10, n = n[rows], x = k[columns], method = "poisson", prior = TRUE)$posterior$hypotheses$bf.h1)
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
-colnames(table) <- c('Sample Size', k)
-
+colnames(table) <- c("Sample Size", k)
 ```
 
 ```{r, echo = FALSE}
-ktable <- knitr::kable(table, 
-                       digits = 2, 
-                       caption = "<center>Table 1: Statistical Sampling Results based on the Gamma Distribution — <br>Logarithmic Default Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 10 Percent</center>",
-                       align = "l", 
-                       format = "html", 
-                       row.names = FALSE, 
-                       format.args = list(big.mark = ",", scientific = FALSE),
-                       table.attr = "style='width:150%;'")
-ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
+ktable <- knitr::kable(table,
+  digits = 2,
+  caption = "<center>Table 1: Statistical Sampling Results based on the Gamma Distribution — <br>Logarithmic Default Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 10 Percent</center>",
+  align = "l",
+  format = "html",
+  row.names = FALSE,
+  format.args = list(big.mark = ",", scientific = FALSE),
+  table.attr = "style='width:150%;'"
+)
+ktable <- kableExtra::kable_classic(ktable, position = "center", html_font = "Cambria")
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Sum of Taints Found" = 11))
 ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on no prior information\nBF = e^log(BF)")
-ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
+ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table) - 1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
-kableExtra::kable_paper(ktable, "striped") 
+kableExtra::kable_paper(ktable, "striped")
 ```
 
 \newpage
@@ -72,38 +75,37 @@ kableExtra::kable_paper(ktable, "striped")
 </p>
 
 ```{r, include = F}
-
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
-for(rows in 1:length(n)){
-  for(columns in 1:length(k)){
-      tab[rows, columns] <- log(evaluation(materiality = 0.05, n = n[rows], x = k[columns], method = 'poisson', prior = TRUE)$posterior$hypotheses$bf.h1)
+for (rows in 1:length(n)) {
+  for (columns in 1:length(k)) {
+    tab[rows, columns] <- log(evaluation(materiality = 0.05, n = n[rows], x = k[columns], method = "poisson", prior = TRUE)$posterior$hypotheses$bf.h1)
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
-colnames(table) <- c('Sample Size', k)
-
+colnames(table) <- c("Sample Size", k)
 ```
 
 ```{r, echo = FALSE}
-ktable <- knitr::kable(table, 
-                       digits = 2, 
-                       caption = "<center>Table 2: Statistical Sampling Results based on the Gamma Distribution — <br>Logarithmic Default Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 5 Percent</center>",
-                       align = "l", 
-                       format = "html", 
-                       row.names = FALSE, 
-                       format.args = list(big.mark = ",", scientific = FALSE),
-                       table.attr = "style='width:150%;'")
-ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
+ktable <- knitr::kable(table,
+  digits = 2,
+  caption = "<center>Table 2: Statistical Sampling Results based on the Gamma Distribution — <br>Logarithmic Default Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 5 Percent</center>",
+  align = "l",
+  format = "html",
+  row.names = FALSE,
+  format.args = list(big.mark = ",", scientific = FALSE),
+  table.attr = "style='width:150%;'"
+)
+ktable <- kableExtra::kable_classic(ktable, position = "center", html_font = "Cambria")
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Sum of Taints Found" = 11))
 ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on no prior information\nBF = e^log(BF)")
-ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
+ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table) - 1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
-kableExtra::kable_paper(ktable, "striped") 
+kableExtra::kable_paper(ktable, "striped")
 ```
 
 \newpage
@@ -113,38 +115,37 @@ kableExtra::kable_paper(ktable, "striped")
 </p>
 
 ```{r, include = F}
-
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
-for(rows in 1:length(n)){
-  for(columns in 1:length(k)){
-      tab[rows, columns] <- log(evaluation(materiality = 0.02, n = n[rows], x = k[columns], method = 'poisson', prior = TRUE)$posterior$hypotheses$bf.h1)
+for (rows in 1:length(n)) {
+  for (columns in 1:length(k)) {
+    tab[rows, columns] <- log(evaluation(materiality = 0.02, n = n[rows], x = k[columns], method = "poisson", prior = TRUE)$posterior$hypotheses$bf.h1)
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
-colnames(table) <- c('Sample Size', k)
-
+colnames(table) <- c("Sample Size", k)
 ```
 
 ```{r, echo = FALSE}
-ktable <- knitr::kable(table, 
-                       digits = 2, 
-                       caption = "<center>Table 3: Statistical Sampling Results based on the Gamma Distribution — <br>Logarithmic Default Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 2 Percent</center>",
-                       align = "l", 
-                       format = "html", 
-                       row.names = FALSE, 
-                       format.args = list(big.mark = ",", scientific = FALSE),
-                       table.attr = "style='width:150%;'")
-ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
+ktable <- knitr::kable(table,
+  digits = 2,
+  caption = "<center>Table 3: Statistical Sampling Results based on the Gamma Distribution — <br>Logarithmic Default Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 2 Percent</center>",
+  align = "l",
+  format = "html",
+  row.names = FALSE,
+  format.args = list(big.mark = ",", scientific = FALSE),
+  table.attr = "style='width:150%;'"
+)
+ktable <- kableExtra::kable_classic(ktable, position = "center", html_font = "Cambria")
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Sum of Taints Found" = 11))
 ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on no prior information\nBF = e^log(BF)")
-ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
+ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table) - 1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
-kableExtra::kable_paper(ktable, "striped") 
+kableExtra::kable_paper(ktable, "striped")
 ```
 
 \newpage
@@ -154,36 +155,35 @@ kableExtra::kable_paper(ktable, "striped")
 </p>
 
 ```{r, include = F}
-
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
-for(rows in 1:length(n)){
-  for(columns in 1:length(k)){
-      tab[rows, columns] <- log(evaluation(materiality = 0.01, n = n[rows], x = k[columns], method = 'poisson', prior = TRUE)$posterior$hypotheses$bf.h1)
+for (rows in 1:length(n)) {
+  for (columns in 1:length(k)) {
+    tab[rows, columns] <- log(evaluation(materiality = 0.01, n = n[rows], x = k[columns], method = "poisson", prior = TRUE)$posterior$hypotheses$bf.h1)
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
-colnames(table) <- c('Sample Size', k)
-
+colnames(table) <- c("Sample Size", k)
 ```
 
 ```{r, echo = FALSE}
-ktable <- knitr::kable(table, 
-                       digits = 2, 
-                       caption = "<center>Table 4: Statistical Sampling Results based on the Gamma Distribution — <br>Logarithmic Default Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 1 Percent</center>",
-                       align = "l", 
-                       format = "html", 
-                       row.names = FALSE, 
-                       format.args = list(big.mark = ",", scientific = FALSE),
-                       table.attr = "style='width:150%;'")
-ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
+ktable <- knitr::kable(table,
+  digits = 2,
+  caption = "<center>Table 4: Statistical Sampling Results based on the Gamma Distribution — <br>Logarithmic Default Bayes Factors in favor of Tolerable Misstatement for a Performance Materiality of 1 Percent</center>",
+  align = "l",
+  format = "html",
+  row.names = FALSE,
+  format.args = list(big.mark = ",", scientific = FALSE),
+  table.attr = "style='width:150%;'"
+)
+ktable <- kableExtra::kable_classic(ktable, position = "center", html_font = "Cambria")
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Sum of Taints Found" = 11))
 ktable <- kableExtra::footnote(ktable, general = "This table presents Bayes factors based on no prior information\nBF = e^log(BF)")
-ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
+ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table) - 1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
-kableExtra::kable_paper(ktable, "striped") 
+kableExtra::kable_paper(ktable, "striped")
 ```

@@ -45,7 +45,8 @@
 #'   cr = NULL,
 #'   ub = NULL,
 #'   p.hmin = NULL,
-#'   x = NULL, n = NULL,
+#'   x = NULL,
+#'   n = NULL,
 #'   factor = NULL,
 #'   samples = NULL,
 #'   conf.level = 0.95

@@ -14,11 +14,15 @@ colorize <- function(x, color) {
   if (knitr::is_latex_output()) {
     sprintf("\\textcolor{%s}{%s}", color, x)
   } else if (knitr::is_html_output()) {
-    sprintf("<span style='color: %s;'>%s</span>", color, 
-      x)
-  } else x
+    sprintf(
+      "<span style='color: %s;'>%s</span>", color,
+      x
+    )
+  } else {
+    x
+  }
 }
-options(knitr.kable.NA = '')
+options(knitr.kable.NA = "")
 library(jfa)
 ```
 
@@ -32,43 +36,43 @@ library(jfa)
 ```
 
 ```{r, include = F}
-
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 100
 
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
-for(rows in 1:length(n)){
-  for(columns in 1:length(k)){
-    if(n[rows] >= N)
+for (rows in 1:length(n)) {
+  for (columns in 1:length(k)) {
+    if (n[rows] >= N) {
       next
-      tab[rows, columns] <- evaluation(materiality = 0.10, n = n[rows], x = k[columns], method = "hypergeometric", N.units = N)$p.value
+    }
+    tab[rows, columns] <- evaluation(materiality = 0.10, n = n[rows], x = k[columns], method = "hypergeometric", N.units = N)$p.value
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
-colnames(table) <- c('Sample Size', k)
+colnames(table) <- c("Sample Size", k)
 table[, 2:12] <- format.pval(table[, 2:12], digits = 2, eps = 0.01)
 table[table == "NA"] <- NA
-
 ```
 
 ```{r, echo = FALSE}
-ktable <- knitr::kable(table, 
-                       digits = 2, 
-                       caption = "<center>Table 1: Statistical Sampling Results based on the Hypergeometric Distribution (N = 100) — <br>One-sided <i>p</i> Values against a Performance Materiality of 10 Percent</center>",
-                       align = "l", 
-                       format = "html", 
-                       row.names = FALSE, 
-                       format.args = list(big.mark = ",", scientific = FALSE),
-                       table.attr = "style='width:150%;'")
-ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
+ktable <- knitr::kable(table,
+  digits = 2,
+  caption = "<center>Table 1: Statistical Sampling Results based on the Hypergeometric Distribution (N = 100) — <br>One-sided <i>p</i> Values against a Performance Materiality of 10 Percent</center>",
+  align = "l",
+  format = "html",
+  row.names = FALSE,
+  format.args = list(big.mark = ",", scientific = FALSE),
+  table.attr = "style='width:150%;'"
+)
+ktable <- kableExtra::kable_classic(ktable, position = "center", html_font = "Cambria")
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
 ktable <- kableExtra::footnote(ktable, general = "This table presents one-sided p values against the null hypothesis \u03B8 = 0.1")
-ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
+ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table) - 1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
-kableExtra::kable_paper(ktable, "striped") 
+kableExtra::kable_paper(ktable, "striped")
 ```
 
 \newpage
@@ -78,43 +82,43 @@ kableExtra::kable_paper(ktable, "striped")
 </p>
 
 ```{r, include = F}
-
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 500
 
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
-for(rows in 1:length(n)){
-  for(columns in 1:length(k)){
-    if(n[rows] >= N)
+for (rows in 1:length(n)) {
+  for (columns in 1:length(k)) {
+    if (n[rows] >= N) {
       next
-      tab[rows, columns] <- evaluation(materiality = 0.10, n = n[rows], x = k[columns], method = "hypergeometric", N.units = N)$p.value
+    }
+    tab[rows, columns] <- evaluation(materiality = 0.10, n = n[rows], x = k[columns], method = "hypergeometric", N.units = N)$p.value
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
-colnames(table) <- c('Sample Size', k)
+colnames(table) <- c("Sample Size", k)
 table[, 2:12] <- format.pval(table[, 2:12], digits = 2, eps = 0.01)
 table[table == "NA"] <- NA
-
 ```
 
 ```{r, echo = FALSE}
-ktable <- knitr::kable(table, 
-                       digits = 2, 
-                       caption = "<center>Table 2: Statistical Sampling Results based on the Hypergeometric Distribution (N = 500) — <br>One-sided <i>p</i> Values against a Performance Materiality of 10 Percent</center>",
-                       align = "l", 
-                       format = "html", 
-                       row.names = FALSE, 
-                       format.args = list(big.mark = ",", scientific = FALSE),
-                       table.attr = "style='width:150%;'")
-ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
+ktable <- knitr::kable(table,
+  digits = 2,
+  caption = "<center>Table 2: Statistical Sampling Results based on the Hypergeometric Distribution (N = 500) — <br>One-sided <i>p</i> Values against a Performance Materiality of 10 Percent</center>",
+  align = "l",
+  format = "html",
+  row.names = FALSE,
+  format.args = list(big.mark = ",", scientific = FALSE),
+  table.attr = "style='width:150%;'"
+)
+ktable <- kableExtra::kable_classic(ktable, position = "center", html_font = "Cambria")
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
 ktable <- kableExtra::footnote(ktable, general = "This table presents one-sided p values against the null hypothesis \u03B8 = 0.1")
-ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
+ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table) - 1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
-kableExtra::kable_paper(ktable, "striped") 
+kableExtra::kable_paper(ktable, "striped")
 ```
 
 \newpage
@@ -124,43 +128,43 @@ kableExtra::kable_paper(ktable, "striped")
 </p>
 
 ```{r, include = F}
-
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 1000
 
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
-for(rows in 1:length(n)){
-  for(columns in 1:length(k)){
-    if(n[rows] >= N)
+for (rows in 1:length(n)) {
+  for (columns in 1:length(k)) {
+    if (n[rows] >= N) {
       next
-      tab[rows, columns] <- evaluation(materiality = 0.10, n = n[rows], x = k[columns], method = "hypergeometric", N.units = N)$p.value
+    }
+    tab[rows, columns] <- evaluation(materiality = 0.10, n = n[rows], x = k[columns], method = "hypergeometric", N.units = N)$p.value
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
-colnames(table) <- c('Sample Size', k)
+colnames(table) <- c("Sample Size", k)
 table[, 2:12] <- format.pval(table[, 2:12], digits = 2, eps = 0.01)
 table[table == "NA"] <- NA
-
 ```
 
 ```{r, echo = FALSE}
-ktable <- knitr::kable(table, 
-                       digits = 2, 
-                       caption = "<center>Table 3: Statistical Sampling Results based on the Hypergeometric Distribution (N = 1000) — <br>One-sided <i>p</i> Values against a Performance Materiality of 10 Percent</center>",
-                       align = "l", 
-                       format = "html", 
-                       row.names = FALSE, 
-                       format.args = list(big.mark = ",", scientific = FALSE),
-                       table.attr = "style='width:150%;'")
-ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
+ktable <- knitr::kable(table,
+  digits = 2,
+  caption = "<center>Table 3: Statistical Sampling Results based on the Hypergeometric Distribution (N = 1000) — <br>One-sided <i>p</i> Values against a Performance Materiality of 10 Percent</center>",
+  align = "l",
+  format = "html",
+  row.names = FALSE,
+  format.args = list(big.mark = ",", scientific = FALSE),
+  table.attr = "style='width:150%;'"
+)
+ktable <- kableExtra::kable_classic(ktable, position = "center", html_font = "Cambria")
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
 ktable <- kableExtra::footnote(ktable, general = "This table presents one-sided p values against the null hypothesis \u03B8 = 0.1")
-ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
+ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table) - 1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
-kableExtra::kable_paper(ktable, "striped") 
+kableExtra::kable_paper(ktable, "striped")
 ```
 
 \newpage
@@ -170,7 +174,6 @@ kableExtra::kable_paper(ktable, "striped")
 </p>
 
 ```{r, include = F}
-
 confidence <- 0.95
 materiality <- 0.05
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
@@ -178,37 +181,38 @@ k <- 0:10
 N <- 100
 
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
-for(rows in 1:length(n)){
-  for(columns in 1:length(k)){
-    if(n[rows] >= N)
+for (rows in 1:length(n)) {
+  for (columns in 1:length(k)) {
+    if (n[rows] >= N) {
       next
-      tab[rows, columns] <- evaluation(materiality = 0.05, n = n[rows], x = k[columns], method = "hypergeometric", N.units = N)$p.value
+    }
+    tab[rows, columns] <- evaluation(materiality = 0.05, n = n[rows], x = k[columns], method = "hypergeometric", N.units = N)$p.value
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
-colnames(table) <- c('Sample Size', k)
+colnames(table) <- c("Sample Size", k)
 table[, 2:12] <- format.pval(table[, 2:12], digits = 2, eps = 0.01)
 table[table == "NA"] <- NA
-
 ```
 
 ```{r, echo = FALSE}
-ktable <- knitr::kable(table, 
-                       digits = 2, 
-                       caption = "<center>Table 4: Statistical Sampling Results based on the Hypergeometric Distribution (N = 100) — <br>One-sided <i>p</i> Values against a Performance Materiality of 5 Percent</center>",
-                       align = "l", 
-                       format = "html", 
-                       row.names = FALSE, 
-                       format.args = list(big.mark = ",", scientific = FALSE),
-                       table.attr = "style='width:150%;'")
-ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
+ktable <- knitr::kable(table,
+  digits = 2,
+  caption = "<center>Table 4: Statistical Sampling Results based on the Hypergeometric Distribution (N = 100) — <br>One-sided <i>p</i> Values against a Performance Materiality of 5 Percent</center>",
+  align = "l",
+  format = "html",
+  row.names = FALSE,
+  format.args = list(big.mark = ",", scientific = FALSE),
+  table.attr = "style='width:150%;'"
+)
+ktable <- kableExtra::kable_classic(ktable, position = "center", html_font = "Cambria")
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
 ktable <- kableExtra::footnote(ktable, general = "This table presents one-sided p values against the null hypothesis \u03B8 = 0.05")
-ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
+ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table) - 1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
-kableExtra::kable_paper(ktable, "striped") 
+kableExtra::kable_paper(ktable, "striped")
 ```
 
 \newpage
@@ -218,43 +222,43 @@ kableExtra::kable_paper(ktable, "striped")
 </p>
 
 ```{r, include = F}
-
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 500
 
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
-for(rows in 1:length(n)){
-  for(columns in 1:length(k)){
-    if(n[rows] >= N)
+for (rows in 1:length(n)) {
+  for (columns in 1:length(k)) {
+    if (n[rows] >= N) {
       next
-      tab[rows, columns] <- evaluation(materiality = 0.05, n = n[rows], x = k[columns], method = "hypergeometric", N.units = N)$p.value
+    }
+    tab[rows, columns] <- evaluation(materiality = 0.05, n = n[rows], x = k[columns], method = "hypergeometric", N.units = N)$p.value
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
-colnames(table) <- c('Sample Size', k)
+colnames(table) <- c("Sample Size", k)
 table[, 2:12] <- format.pval(table[, 2:12], digits = 2, eps = 0.01)
 table[table == "NA"] <- NA
-
 ```
 
 ```{r, echo = FALSE}
-ktable <- knitr::kable(table, 
-                       digits = 2, 
-                       caption = "<center>Table 5: Statistical Sampling Results based on the Hypergeometric Distribution (N = 500) — <br>One-sided <i>p</i> Values against a Performance Materiality of 5 Percent</center>",
-                       align = "l", 
-                       format = "html", 
-                       row.names = FALSE, 
-                       format.args = list(big.mark = ",", scientific = FALSE),
-                       table.attr = "style='width:150%;'")
-ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
+ktable <- knitr::kable(table,
+  digits = 2,
+  caption = "<center>Table 5: Statistical Sampling Results based on the Hypergeometric Distribution (N = 500) — <br>One-sided <i>p</i> Values against a Performance Materiality of 5 Percent</center>",
+  align = "l",
+  format = "html",
+  row.names = FALSE,
+  format.args = list(big.mark = ",", scientific = FALSE),
+  table.attr = "style='width:150%;'"
+)
+ktable <- kableExtra::kable_classic(ktable, position = "center", html_font = "Cambria")
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
 ktable <- kableExtra::footnote(ktable, general = "This table presents one-sided p values against the null hypothesis \u03B8 = 0.05")
-ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
+ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table) - 1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
-kableExtra::kable_paper(ktable, "striped") 
+kableExtra::kable_paper(ktable, "striped")
 ```
 
 \newpage
@@ -264,43 +268,43 @@ kableExtra::kable_paper(ktable, "striped")
 </p>
 
 ```{r, include = F}
-
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 1000
 
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
-for(rows in 1:length(n)){
-  for(columns in 1:length(k)){
-    if(n[rows] >= N)
+for (rows in 1:length(n)) {
+  for (columns in 1:length(k)) {
+    if (n[rows] >= N) {
       next
-      tab[rows, columns] <- evaluation(materiality = 0.05, n = n[rows], x = k[columns], method = "hypergeometric", N.units = N)$p.value
+    }
+    tab[rows, columns] <- evaluation(materiality = 0.05, n = n[rows], x = k[columns], method = "hypergeometric", N.units = N)$p.value
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
-colnames(table) <- c('Sample Size', k)
+colnames(table) <- c("Sample Size", k)
 table[, 2:12] <- format.pval(table[, 2:12], digits = 2, eps = 0.01)
 table[table == "NA"] <- NA
-
 ```
 
 ```{r, echo = FALSE}
-ktable <- knitr::kable(table, 
-                       digits = 2, 
-                       caption = "<center>Table 6: Statistical Sampling Results based on the Hypergeometric Distribution (N = 1000) — <br>One-sided <i>p</i> Values against a Performance Materiality of 5 Percent</center>",
-                       align = "l", 
-                       format = "html", 
-                       row.names = FALSE, 
-                       format.args = list(big.mark = ",", scientific = FALSE),
-                       table.attr = "style='width:150%;'")
-ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
+ktable <- knitr::kable(table,
+  digits = 2,
+  caption = "<center>Table 6: Statistical Sampling Results based on the Hypergeometric Distribution (N = 1000) — <br>One-sided <i>p</i> Values against a Performance Materiality of 5 Percent</center>",
+  align = "l",
+  format = "html",
+  row.names = FALSE,
+  format.args = list(big.mark = ",", scientific = FALSE),
+  table.attr = "style='width:150%;'"
+)
+ktable <- kableExtra::kable_classic(ktable, position = "center", html_font = "Cambria")
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
 ktable <- kableExtra::footnote(ktable, general = "This table presents one-sided p values against the null hypothesis \u03B8 = 0.05")
-ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
+ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table) - 1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
-kableExtra::kable_paper(ktable, "striped") 
+kableExtra::kable_paper(ktable, "striped")
 ```
 
 \newpage
@@ -310,43 +314,43 @@ kableExtra::kable_paper(ktable, "striped")
 </p>
 
 ```{r, include = F}
-
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 100
 
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
-for(rows in 1:length(n)){
-  for(columns in 1:length(k)){
-    if(n[rows] >= N)
+for (rows in 1:length(n)) {
+  for (columns in 1:length(k)) {
+    if (n[rows] >= N) {
       next
-      tab[rows, columns] <- evaluation(materiality = 0.02, n = n[rows], x = k[columns], method = "hypergeometric", N.units = N)$p.value
+    }
+    tab[rows, columns] <- evaluation(materiality = 0.02, n = n[rows], x = k[columns], method = "hypergeometric", N.units = N)$p.value
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
-colnames(table) <- c('Sample Size', k)
+colnames(table) <- c("Sample Size", k)
 table[, 2:12] <- format.pval(table[, 2:12], digits = 2, eps = 0.01)
 table[table == "NA"] <- NA
-
 ```
 
 ```{r, echo = FALSE}
-ktable <- knitr::kable(table, 
-                       digits = 2, 
-                       caption = "<center>Table 7: Statistical Sampling Results based on the Hypergeometric Distribution (N = 100) — <br>One-sided <i>p</i> Values against a Performance Materiality of 2 Percent</center>",
-                       align = "l", 
-                       format = "html", 
-                       row.names = FALSE, 
-                       format.args = list(big.mark = ",", scientific = FALSE),
-                       table.attr = "style='width:150%;'")
-ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
+ktable <- knitr::kable(table,
+  digits = 2,
+  caption = "<center>Table 7: Statistical Sampling Results based on the Hypergeometric Distribution (N = 100) — <br>One-sided <i>p</i> Values against a Performance Materiality of 2 Percent</center>",
+  align = "l",
+  format = "html",
+  row.names = FALSE,
+  format.args = list(big.mark = ",", scientific = FALSE),
+  table.attr = "style='width:150%;'"
+)
+ktable <- kableExtra::kable_classic(ktable, position = "center", html_font = "Cambria")
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
 ktable <- kableExtra::footnote(ktable, general = "This table presents one-sided p values against the null hypothesis \u03B8 = 0.02")
-ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
+ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table) - 1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
-kableExtra::kable_paper(ktable, "striped") 
+kableExtra::kable_paper(ktable, "striped")
 ```
 
 \newpage
@@ -356,43 +360,43 @@ kableExtra::kable_paper(ktable, "striped")
 </p>
 
 ```{r, include = F}
-
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 500
 
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
-for(rows in 1:length(n)){
-  for(columns in 1:length(k)){
-    if(n[rows] >= N)
+for (rows in 1:length(n)) {
+  for (columns in 1:length(k)) {
+    if (n[rows] >= N) {
       next
-      tab[rows, columns] <- evaluation(materiality = 0.02, n = n[rows], x = k[columns], method = "hypergeometric", N.units = N)$p.value
+    }
+    tab[rows, columns] <- evaluation(materiality = 0.02, n = n[rows], x = k[columns], method = "hypergeometric", N.units = N)$p.value
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
-colnames(table) <- c('Sample Size', k)
+colnames(table) <- c("Sample Size", k)
 table[, 2:12] <- format.pval(table[, 2:12], digits = 2, eps = 0.01)
 table[table == "NA"] <- NA
-
 ```
 
 ```{r, echo = FALSE}
-ktable <- knitr::kable(table, 
-                       digits = 2, 
-                       caption = "<center>Table 8: Statistical Sampling Results based on the Hypergeometric Distribution (N = 500) — <br>One-sided <i>p</i> Values against a Performance Materiality of 2 Percent</center>",
-                       align = "l", 
-                       format = "html", 
-                       row.names = FALSE, 
-                       format.args = list(big.mark = ",", scientific = FALSE),
-                       table.attr = "style='width:150%;'")
-ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
+ktable <- knitr::kable(table,
+  digits = 2,
+  caption = "<center>Table 8: Statistical Sampling Results based on the Hypergeometric Distribution (N = 500) — <br>One-sided <i>p</i> Values against a Performance Materiality of 2 Percent</center>",
+  align = "l",
+  format = "html",
+  row.names = FALSE,
+  format.args = list(big.mark = ",", scientific = FALSE),
+  table.attr = "style='width:150%;'"
+)
+ktable <- kableExtra::kable_classic(ktable, position = "center", html_font = "Cambria")
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
 ktable <- kableExtra::footnote(ktable, general = "This table presents one-sided p values against the null hypothesis \u03B8 = 0.02")
-ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
+ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table) - 1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
-kableExtra::kable_paper(ktable, "striped") 
+kableExtra::kable_paper(ktable, "striped")
 ```
 
 \newpage
@@ -402,43 +406,43 @@ kableExtra::kable_paper(ktable, "striped")
 </p>
 
 ```{r, include = F}
-
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 1000
 
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
-for(rows in 1:length(n)){
-  for(columns in 1:length(k)){
-    if(n[rows] >= N)
+for (rows in 1:length(n)) {
+  for (columns in 1:length(k)) {
+    if (n[rows] >= N) {
       next
-      tab[rows, columns] <- evaluation(materiality = 0.02, n = n[rows], x = k[columns], method = "hypergeometric", N.units = N)$p.value
+    }
+    tab[rows, columns] <- evaluation(materiality = 0.02, n = n[rows], x = k[columns], method = "hypergeometric", N.units = N)$p.value
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
-colnames(table) <- c('Sample Size', k)
+colnames(table) <- c("Sample Size", k)
 table[, 2:12] <- format.pval(table[, 2:12], digits = 2, eps = 0.01)
 table[table == "NA"] <- NA
-
 ```
 
 ```{r, echo = FALSE}
-ktable <- knitr::kable(table, 
-                       digits = 2, 
-                       caption = "<center>Table 9: Statistical Sampling Results based on the Hypergeometric Distribution (N = 1000) — <br>One-sided <i>p</i> Values against a Performance Materiality of 2 Percent</center>",
-                       align = "l", 
-                       format = "html", 
-                       row.names = FALSE, 
-                       format.args = list(big.mark = ",", scientific = FALSE),
-                       table.attr = "style='width:150%;'")
-ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
+ktable <- knitr::kable(table,
+  digits = 2,
+  caption = "<center>Table 9: Statistical Sampling Results based on the Hypergeometric Distribution (N = 1000) — <br>One-sided <i>p</i> Values against a Performance Materiality of 2 Percent</center>",
+  align = "l",
+  format = "html",
+  row.names = FALSE,
+  format.args = list(big.mark = ",", scientific = FALSE),
+  table.attr = "style='width:150%;'"
+)
+ktable <- kableExtra::kable_classic(ktable, position = "center", html_font = "Cambria")
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
 ktable <- kableExtra::footnote(ktable, general = "This table presents one-sided p values against the null hypothesis \u03B8 = 0.02")
-ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
+ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table) - 1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
-kableExtra::kable_paper(ktable, "striped") 
+kableExtra::kable_paper(ktable, "striped")
 ```
 
 \newpage
@@ -448,43 +452,43 @@ kableExtra::kable_paper(ktable, "striped")
 </p>
 
 ```{r, include = F}
-
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 100
 
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
-for(rows in 1:length(n)){
-  for(columns in 1:length(k)){
-    if(n[rows] >= N)
+for (rows in 1:length(n)) {
+  for (columns in 1:length(k)) {
+    if (n[rows] >= N) {
       next
-      tab[rows, columns] <- evaluation(materiality = 0.01, n = n[rows], x = k[columns], method = "hypergeometric", N.units = N)$p.value
+    }
+    tab[rows, columns] <- evaluation(materiality = 0.01, n = n[rows], x = k[columns], method = "hypergeometric", N.units = N)$p.value
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
-colnames(table) <- c('Sample Size', k)
+colnames(table) <- c("Sample Size", k)
 table[, 2:12] <- format.pval(table[, 2:12], digits = 2, eps = 0.01)
 table[table == "NA"] <- NA
-
 ```
 
 ```{r, echo = FALSE}
-ktable <- knitr::kable(table, 
-                       digits = 2, 
-                       caption = "<center>Table 10: Statistical Sampling Results based on the Hypergeometric Distribution (N = 100) — <br>One-sided <i>p</i> Values against a Performance Materiality of 1 Percent</center>",
-                       align = "l", 
-                       format = "html", 
-                       row.names = FALSE, 
-                       format.args = list(big.mark = ",", scientific = FALSE),
-                       table.attr = "style='width:150%;'")
-ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
+ktable <- knitr::kable(table,
+  digits = 2,
+  caption = "<center>Table 10: Statistical Sampling Results based on the Hypergeometric Distribution (N = 100) — <br>One-sided <i>p</i> Values against a Performance Materiality of 1 Percent</center>",
+  align = "l",
+  format = "html",
+  row.names = FALSE,
+  format.args = list(big.mark = ",", scientific = FALSE),
+  table.attr = "style='width:150%;'"
+)
+ktable <- kableExtra::kable_classic(ktable, position = "center", html_font = "Cambria")
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
 ktable <- kableExtra::footnote(ktable, general = "This table presents one-sided p values against the null hypothesis \u03B8 = 0.01")
-ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
+ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table) - 1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
-kableExtra::kable_paper(ktable, "striped") 
+kableExtra::kable_paper(ktable, "striped")
 ```
 
 \newpage
@@ -494,43 +498,43 @@ kableExtra::kable_paper(ktable, "striped")
 </p>
 
 ```{r, include = F}
-
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 500
 
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
-for(rows in 1:length(n)){
-  for(columns in 1:length(k)){
-    if(n[rows] >= N)
+for (rows in 1:length(n)) {
+  for (columns in 1:length(k)) {
+    if (n[rows] >= N) {
       next
-      tab[rows, columns] <- evaluation(materiality = 0.01, n = n[rows], x = k[columns], method = "hypergeometric", N.units = N)$p.value
+    }
+    tab[rows, columns] <- evaluation(materiality = 0.01, n = n[rows], x = k[columns], method = "hypergeometric", N.units = N)$p.value
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
-colnames(table) <- c('Sample Size', k)
+colnames(table) <- c("Sample Size", k)
 table[, 2:12] <- format.pval(table[, 2:12], digits = 2, eps = 0.01)
 table[table == "NA"] <- NA
-
 ```
 
 ```{r, echo = FALSE}
-ktable <- knitr::kable(table, 
-                       digits = 2, 
-                       caption = "<center>Table 11: Statistical Sampling Results based on the Hypergeometric Distribution (N = 500) — <br>One-sided <i>p</i> Values against a Performance Materiality of 1 Percent</center>",
-                       align = "l", 
-                       format = "html", 
-                       row.names = FALSE, 
-                       format.args = list(big.mark = ",", scientific = FALSE),
-                       table.attr = "style='width:150%;'")
-ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
+ktable <- knitr::kable(table,
+  digits = 2,
+  caption = "<center>Table 11: Statistical Sampling Results based on the Hypergeometric Distribution (N = 500) — <br>One-sided <i>p</i> Values against a Performance Materiality of 1 Percent</center>",
+  align = "l",
+  format = "html",
+  row.names = FALSE,
+  format.args = list(big.mark = ",", scientific = FALSE),
+  table.attr = "style='width:150%;'"
+)
+ktable <- kableExtra::kable_classic(ktable, position = "center", html_font = "Cambria")
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
 ktable <- kableExtra::footnote(ktable, general = "This table presents one-sided p values against the null hypothesis \u03B8 = 0.01")
-ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
+ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table) - 1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
-kableExtra::kable_paper(ktable, "striped") 
+kableExtra::kable_paper(ktable, "striped")
 ```
 
 \newpage
@@ -540,41 +544,41 @@ kableExtra::kable_paper(ktable, "striped")
 </p>
 
 ```{r, include = F}
-
 n <- c(seq(20, 100, 5), 125, 150, 200, 300, 400, 500)
 k <- 0:10
 N <- 1000
 
 tab <- matrix(NA, nrow = length(n), ncol = length(k))
-for(rows in 1:length(n)){
-  for(columns in 1:length(k)){
-    if(n[rows] >= N)
+for (rows in 1:length(n)) {
+  for (columns in 1:length(k)) {
+    if (n[rows] >= N) {
       next
-      tab[rows, columns] <- evaluation(materiality = 0.01, n = n[rows], x = k[columns], method = "hypergeometric", N.units = N)$p.value
+    }
+    tab[rows, columns] <- evaluation(materiality = 0.01, n = n[rows], x = k[columns], method = "hypergeometric", N.units = N)$p.value
   }
 }
 
 table <- as.data.frame(tab)
 table <- cbind(n = n, table)
-colnames(table) <- c('Sample Size', k)
+colnames(table) <- c("Sample Size", k)
 table[, 2:12] <- format.pval(table[, 2:12], digits = 2, eps = 0.01)
 table[table == "NA"] <- NA
-
 ```
 
 ```{r, echo = FALSE}
-ktable <- knitr::kable(table, 
-                       digits = 2, 
-                       caption = "<center>Table 12: Statistical Sampling Results based on the Hypergeometric Distribution (N = 1000) — <br>One-sided <i>p</i> Values against a Performance Materiality of 1 Percent</center>",
-                       align = "l", 
-                       format = "html", 
-                       row.names = FALSE, 
-                       format.args = list(big.mark = ",", scientific = FALSE),
-                       table.attr = "style='width:150%;'")
-ktable <- kableExtra::kable_classic(ktable, position="center", html_font = "Cambria") 
+ktable <- knitr::kable(table,
+  digits = 2,
+  caption = "<center>Table 12: Statistical Sampling Results based on the Hypergeometric Distribution (N = 1000) — <br>One-sided <i>p</i> Values against a Performance Materiality of 1 Percent</center>",
+  align = "l",
+  format = "html",
+  row.names = FALSE,
+  format.args = list(big.mark = ",", scientific = FALSE),
+  table.attr = "style='width:150%;'"
+)
+ktable <- kableExtra::kable_classic(ktable, position = "center", html_font = "Cambria")
 ktable <- kableExtra::add_header_above(ktable, header = c(" " = 1, "Actual Number of Misstatements Found" = 11))
 ktable <- kableExtra::footnote(ktable, general = "This table presents one-sided p values against the null hypothesis \u03B8 = 0.01")
-ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table)-1, 2), background = "#F0F8FF")
+ktable <- kableExtra::row_spec(ktable, seq(2, nrow(table) - 1, 2), background = "#F0F8FF")
 ktable <- kableExtra::kable_styling(ktable, font_size = 11)
-kableExtra::kable_paper(ktable, "striped") 
+kableExtra::kable_paper(ktable, "striped")
 ```
