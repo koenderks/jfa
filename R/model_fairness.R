@@ -347,9 +347,9 @@ model_fairness <- function(data,
         odds.ratio[[group]][["lb"]] <- odds.ratio[["all"]][rowIndex, 2] <- .comp_lb_bayes(alternative, conf.level, analytical = FALSE, samples = samples_list[[group]]$OR)
         odds.ratio[[group]][["ub"]] <- odds.ratio[["all"]][rowIndex, 3] <- .comp_ub_bayes(alternative, conf.level, analytical = FALSE, samples = samples_list[[group]]$OR)
         odds.ratio[[group]][["bf10"]] <- odds.ratio[["all"]][rowIndex, 4] <- .contingencyTableBf(contingencyTable, prior_a = prior)
-        density_post <- density(log(samples_list[[group]]$OR), n = 1000)
-        density_post_alt <- density(log(samples_list[[group]]$OR), n = 10000, from = -10, to = 10)
-        density_prior_alt <- density(log(samples_list[[group]]$prior), n = 10000, from = -10, to = 10)
+        density_post <- stats::density(log(samples_list[[group]]$OR), n = 1000)
+        density_post_alt <- stats::density(log(samples_list[[group]]$OR), n = 10000, from = -10, to = 10)
+        density_prior_alt <- stats::density(log(samples_list[[group]]$prior), n = 10000, from = -10, to = 10)
         odds.ratio[[group]][["density"]] <- list(x = density_post_alt$x, y = density_post_alt$y, xmin = min(c(density_post$x, -2)), xmax = max(c(density_post$x, 2)), prior_x = density_prior_alt$x, prior_y = density_prior_alt$y)
       }
       rowIndex <- rowIndex + 1
