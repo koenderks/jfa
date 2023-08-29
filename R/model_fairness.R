@@ -346,7 +346,11 @@ model_fairness <- function(data,
         odds.ratio[[group]][["estimate"]] <- odds.ratio[["all"]][rowIndex, 1] <- .comp_mode_bayes(analytical = FALSE, samples = samples_list[[group]]$OR)
         odds.ratio[[group]][["lb"]] <- odds.ratio[["all"]][rowIndex, 2] <- .comp_lb_bayes(alternative, conf.level, analytical = FALSE, samples = samples_list[[group]]$OR)
         odds.ratio[[group]][["ub"]] <- odds.ratio[["all"]][rowIndex, 3] <- .comp_ub_bayes(alternative, conf.level, analytical = FALSE, samples = samples_list[[group]]$OR)
-        odds.ratio[[group]][["bf10"]] <- odds.ratio[["all"]][rowIndex, 4] <- .contingencyTableBf(contingencyTable, prior_a = prior)
+        odds.ratio[[group]][["bf10"]] <- odds.ratio[["all"]][rowIndex, 4] <- switch(alternative,
+          "two.sided" = .contingencyTableBf(contingencyTable, prior_a = prior),
+          "less" = (length(which(samples_list[[group]]$OR < 1)) / length(samples_list[[group]]$OR)) / (length(which(samples_list[[group]]$OR > 1)) / length(samples_list[[group]]$OR)),
+          "greater" = (length(which(samples_list[[group]]$OR > 1)) / length(samples_list[[group]]$OR)) / (length(which(samples_list[[group]]$OR < 1)) / length(samples_list[[group]]$OR))
+        )
         density_post <- stats::density(log(samples_list[[group]]$OR), n = 1000)
         density_post_alt <- stats::density(log(samples_list[[group]]$OR), n = 10000, from = -10, to = 10)
         density_prior_alt <- stats::density(log(samples_list[[group]]$prior), n = 10000, from = -10, to = 10)
