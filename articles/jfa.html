@@ -94,7 +94,7 @@
       <h1 data-toc-skip>Get started with the jfa package</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2023-08-29</h4>
+            <h4 data-toc-skip class="date">2023-09-02</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/jfa.Rmd" class="external-link"><code>vignettes/jfa.Rmd</code></a></small>
       <div class="hidden name"><code>jfa.Rmd</code></div>
@@ -283,7 +283,7 @@ numbers in a variable for repeated values.</p>
 <span><span class="co">##  Classical Repeated Values Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sanitizer$value</span></span>
-<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0028</span></span>
+<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0022</span></span>
 <span><span class="co">## alternative hypothesis: average frequency in data is greater than for random data.</span></span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
@@ -311,15 +311,16 @@ fairness and bias in a machine learning algorithm.</p>
 <span><span class="co">##  Classical Algorithmic Fairness Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data: compas</span></span>
-<span><span class="co">## metric: predictive rate parity, privileged class: Caucasian, positive class: yes</span></span>
-<span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span>
+<span><span class="co">## n = 6172, X-squared = 18.799, df = 5, p-value = 0.002095</span></span>
+<span><span class="co">## alternative hypothesis: fairness metrics are not equal across groups</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## sample estimates:</span></span>
 <span><span class="co">##  African_American: 1.1522 [1.1143, 1.1891], p-value = 5.4523e-05</span></span>
 <span><span class="co">##  Asian: 0.86598 [0.11706, 1.6149], p-value = 1</span></span>
 <span><span class="co">##  Hispanic: 1.0229 [0.87836, 1.1611], p-value = 0.78393</span></span>
 <span><span class="co">##  Native_American: 1.0392 [0.25396, 1.6406], p-value = 1</span></span>
-<span><span class="co">##  Other: 1.0596 [0.86578, 1.2394], p-value = 0.5621</span></span></code></pre>
+<span><span class="co">##  Other: 1.0596 [0.86578, 1.2394], p-value = 0.5621</span></span>
+<span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span></code></pre>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <p><img src="jfa_files/figure-html/unnamed-chunk-8-1.png" width="576" style="display: block; margin: auto;"></p>

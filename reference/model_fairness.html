@@ -150,9 +150,10 @@ See the Details section below for more information.</p></dd>
 
 <dt>alternative</dt>
 <dd><p>a character indicating the alternative hypothesis and
-the type of confidence / credible interval returned by the function.
-Possible options are  <code>two.sided</code> (default), <code>less</code>, or
-<code>greater</code>.</p></dd>
+the type of confidence / credible interval used in the individual
+comparisons to the privileged group. Possible options are  <code>two.sided</code>
+(default), <code>less</code>, or <code>greater</code>. The alternative hypothesis
+relating to the overall equality is always two sided.</p></dd>
 
 
 <dt>conf.level</dt>
@@ -309,11 +310,12 @@ performed.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Classical Algorithmic Fairness Test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> data: compas</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> metric: specificity parity, privileged class: Male, positive class: yes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> alternative hypothesis: true odds ratio is not equal to 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n = 6172, X-squared = 121.26, df = 1, p-value &lt; 2.2e-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> alternative hypothesis: fairness metrics are not equal across groups</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sample estimates:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Female: 1.3203 [1.2794, 1.3568], p-value = &lt; 2.22e-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> alternative hypothesis: true odds ratio is not equal to 1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Bayesian test of predictive rate parity</span></span></span>
 <span class="r-in"><span><span class="fu">model_fairness</span><span class="op">(</span></span></span>
@@ -330,8 +332,8 @@ performed.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Bayesian Algorithmic Fairness Test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> data: compas</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> metric: predictive rate parity, privileged class: Caucasian, positive class: yes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> alternative hypothesis: true odds ratio is not equal to 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n = 6172, BF10 = 0.00071407</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> alternative hypothesis: fairness metrics are not equal across groups</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sample estimates:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  African_American: 1.1623 [1.13, 1.2002], BF₁₀ = 231.16</span>
@@ -339,6 +341,7 @@ performed.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Hispanic: 1.0456 [0.89428, 1.1655], BF₁₀ = 0.1037</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Native_American: 0.80007 [0.38065, 1.5506], BF₁₀ = 0.025534</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  Other: 1.1046 [0.88985, 1.2299], BF₁₀ = 0.10106</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> alternative hypothesis: true odds ratio is not equal to 1</span>
 </code></pre></div>
     </div>
   </div>
