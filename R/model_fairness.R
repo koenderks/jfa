@@ -60,9 +60,10 @@
 #' @param metric      a character indicating the fairness metrics to compute.
 #'   See the Details section below for more information.
 #' @param alternative   a character indicating the alternative hypothesis and
-#'   the type of confidence / credible interval returned by the function.
-#'   Possible options are  \code{two.sided} (default), \code{less}, or
-#'   \code{greater}.
+#'   the type of confidence / credible interval used in the individual
+#'   comparisons to the privileged group. Possible options are  \code{two.sided}
+#'   (default), \code{less}, or \code{greater}. The alternative hypothesis
+#'   relating to the overall equality is always two sided.
 #' @param conf.level   a numeric value between 0 and 1 specifying the
 #'   confidence level (i.e., 1 - audit risk / detection risk).
 #' @param prior        a logical specifying whether to use a prior distribution,
@@ -131,7 +132,8 @@
 #'   privileged class.}
 #' \item{odds.ratio}{A data frame containing, for each unprivileged class, the
 #'   odds ratio of the fairness metric and its associated confidence/credible
-#'   interval, along with inferential measures.}
+#'   interval, along with inferential measures such as uncorrected p-values or
+#'   Bayes factors.}
 #' \item{measure}{The abbreviation of the selected fairness metric.}
 #' \item{data.name}{The name of the input data object.}
 #'
@@ -359,6 +361,23 @@ model_fairness <- function(data,
       rowIndex <- rowIndex + 1
     }
   }
+  # Test for overall effect
+  n <- nrow(data)
+  names(n) <- "n"
+  if (metric != "dp") {
+    nums <- unlist(lapply(metrics, function(group) group[["numerator"]]))
+    denoms <- unlist(lapply(metrics, function(group) group[["denominator"]]))
+    crossTab <- matrix(c(nums, denoms - nums), nrow = 2, byrow = TRUE)
+    colnames(crossTab) <- groups
+    if (!is_bayesian) {
+      suppressWarnings({ # Temporary until better solution
+        test <- stats::chisq.test(crossTab)
+      })
+    } else {
+      bf <- .contingencyTableBf(crossTab, prior_a = prior)
+      names(bf) <- "BF10"
+    }
+  }
   result <- list()
   result[["privileged"]] <- privileged
   result[["unprivileged"]] <- unprivileged
@@ -366,6 +385,17 @@ model_fairness <- function(data,
   result[["negative"]] <- negative
   result[["alternative"]] <- alternative
   result[["measure"]] <- metric
+  result[["n"]] <- n
+  if (metric != "dp") {
+    result[["crossTab"]] <- crossTab
+    if (!is_bayesian) {
+      result[["statistic"]] <- test[["statistic"]]
+      result[["parameter"]] <- test[["parameter"]]
+      result[["p.value"]] <- test[["p.value"]]
+    } else {
+      result[["bf"]] <- bf
+    }
+  }
   result[["confusion.matrix"]] <- confmat
   result[["performance"]] <- performance
   result[["metric"]] <- metrics

@@ -44,9 +44,10 @@ the column \code{target} to be used as the positive class. If \code{NULL}
 See the Details section below for more information.}
 
 \item{alternative}{a character indicating the alternative hypothesis and
-the type of confidence / credible interval returned by the function.
-Possible options are  \code{two.sided} (default), \code{less}, or
-\code{greater}.}
+the type of confidence / credible interval used in the individual
+comparisons to the privileged group. Possible options are  \code{two.sided}
+(default), \code{less}, or \code{greater}. The alternative hypothesis
+relating to the overall equality is always two sided.}
 
 \item{conf.level}{a numeric value between 0 and 1 specifying the
 confidence level (i.e., 1 - audit risk / detection risk).}

@@ -1030,25 +1030,26 @@ print.jfaFairness <- function(x, digits = getOption("digits"), ...) {
   type <- if (isFALSE(x[["prior"]])) "Classical" else "Bayesian"
   cat(paste0("\n\t", type, " Algorithmic Fairness Test\n\n"))
   cat("data: ", x[["data.name"]], "\n", sep = "")
-  measure <- switch(x[["measure"]],
-    "pp" = "proportional parity",
-    "prp" = "predictive rate parity",
-    "ap" = "accuracy parity",
-    "fnrp" = "false negative rate parity",
-    "fprp" = "false positive rate parity",
-    "tprp" = "Ttrue positive rate parity",
-    "npvp" = "negative predictive value parity",
-    "sp" = "specificity parity",
-    "dp" = "demographic parity"
-  )
-  cat(paste0("metric: ", measure, ", privileged class: ", x[["privileged"]], ", positive class: ", x[["positive"]], "\n"))
+  out <- character()
+  if (!is.null(x$n)) {
+    out <- c(out, paste(names(x$n), "=", format(x$n, digits = max(1L, digits - 2L))))
+  }
+  if (!is.null(x$statistic)) {
+    out <- c(out, paste(names(x$statistic), "=", format(x$statistic, digits = max(1L, digits - 2L))))
+  }
+  if (!is.null(x$parameter)) {
+    out <- c(out, paste(names(x$parameter), "=", format(x$parameter, digits = max(1L, digits - 2L))))
+  }
+  if (!is.null(x$bf)) {
+    out <- c(out, paste("BF10", "=", format(x$bf, digits = max(1L, digits - 2L))))
+  }
+  if (!is.null(x$p.value)) {
+    fp <- format.pval(x$p.value, digits = max(1L, digits - 3L))
+    out <- c(out, paste("p-value", if (startsWith(fp, "<")) fp else paste("=", fp)))
+  }
+  cat(strwrap(paste(out, collapse = ", ")), sep = "\n")
   if (x[["measure"]] != "dp") {
-    alternative <- switch(x[["alternative"]],
-      "two.sided" = "alternative hypothesis: true odds ratio is not equal to 1",
-      "less" = "alternative hypothesis: true odds ratio is less than 1",
-      "greater" = "alternative hypothesis: true odds ratio is greater than 1"
-    )
-    cat(paste0(alternative, "\n"))
+    cat("alternative hypothesis: fairness metrics are not equal across groups\n")
   }
   cat(paste0("\nsample estimates:"))
   for (i in names(x[["confusion.matrix"]])[-which(names(x[["confusion.matrix"]]) == x[["privileged"]])]) {
@@ -1061,6 +1062,14 @@ print.jfaFairness <- function(x, digits = getOption("digits"), ...) {
         cat("\n", paste0(i, ": ", format(x[["parity"]][[i]]$estimate, digits = max(1L, digits - 2L)), " [", format(x[["parity"]][[i]]$lb, digits = max(1L, digits - 2L)), ", ", format(x[["parity"]][[i]]$ub, digits = max(1L, digits - 2L)), "], BF\u2081\u2080 = ", format(x[["odds.ratio"]][[i]]$bf10, digits = max(1L, digits - 2L))))
       }
     }
+  }
+  if (x[["measure"]] != "dp") {
+    alternative <- switch(x[["alternative"]],
+      "two.sided" = "alternative hypothesis: true odds ratio is not equal to 1",
+      "less" = "alternative hypothesis: true odds ratio is less than 1",
+      "greater" = "alternative hypothesis: true odds ratio is greater than 1"
+    )
+    cat(paste0("\n", alternative))
   }
 }
 
@@ -1081,28 +1090,29 @@ print.summary.jfaFairness <- function(x, digits = getOption("digits"), ...) {
     "sp" = "Specificity parity (True negative rate parity)",
     "dp" = "Demographic parity (Statistical parity)"
   )
-  cat("\nFairness metric:   ", measure)
+  cat("\nFairness metric:      ", measure)
   if (length(x[["negative"]]) == 1) {
-    cat("\nModel type:         Binary classification")
+    cat("\nModel type:            Binary classification")
   } else {
-    cat("\nModel type:         Multi-class classification")
+    cat("\nModel type:            Multi-class classification")
   }
-  cat(paste0("\nPrivileged class:   ", x[["privileged"]]))
-  cat("\nPositive class:    ", x[["positive"]], "\n")
-  if (!isFALSE(x[["prior"]])) {
-    cat("Prior distribution:", paste0("Dirichlet(", paste0(rep(as.numeric(x[["prior"]]), 4), collapse = ", "), ")"), "\n")
+  cat(paste0("\nPrivileged class:      ", x[["privileged"]]))
+  cat("\nPositive class:       ", x[["positive"]], "\n")
+  if (!isFALSE(x[["prior"]]) && x[["measure"]] != "dp") {
+    cat("Prior distribution:   ", paste0("Dirichlet (", as.numeric(x[["prior"]]), ", ..., ", as.numeric(x[["prior"]]), ")"), "\n")
   }
-  cat("\nModel performance:\n")
-  colnames(x[["performance"]][["all"]]) <- c(
-    "Support",
-    "Accuracy",
-    "Precision",
-    "Recall",
-    "F1 score"
-  )
-  print(x[["performance"]][["all"]])
+  if (x[["measure"]] != "dp") {
+    cat("\nResults:\n")
+    if (!isFALSE(x[["prior"]])) {
+      cat(paste("  BF\u2081\u2080:               ", format(x[["bf"]], digits = max(1L, digits - 2L))), "\n")
+    } else {
+      cat(paste("  X-squared:          ", format(x[["statistic"]], digits = max(1L, digits - 2L))), "\n")
+      cat(paste("  Degrees of freedom: ", format(x[["parameter"]], digits = max(1L, digits - 2L))), "\n")
+      cat(paste("  p-value:            ", format.pval(x[["p.value"]], digits = max(1L, digits - 2L))), "\n")
+    }
+  }
+  cat(paste0("\nComparisons to privileged (P) group:\n"))
   groups <- names(x[["confusion.matrix"]])
-  cat(paste0("\nSample estimates:\n"))
   rownames <- groups
   rownames[which(rownames == x[["privileged"]])] <- paste0(rownames[which(rownames == x[["privileged"]])], " (P)")
   df <- data.frame(matrix("-", nrow = length(groups), ncol = if (x[["measure"]] == "dp") 2 else 4), row.names = rownames)
@@ -1156,6 +1166,15 @@ print.summary.jfaFairness <- function(x, digits = getOption("digits"), ...) {
     }
   }
   print(df)
+  cat("\nModel performance:\n")
+  colnames(x[["performance"]][["all"]]) <- c(
+    "Support",
+    "Accuracy",
+    "Precision",
+    "Recall",
+    "F1 score"
+  )
+  print(x[["performance"]][["all"]])
 }
 
 #' @rdname jfa-methods
@@ -1174,6 +1193,14 @@ summary.jfaFairness <- function(object, digits = getOption("digits"), ...) {
   out[["odds.ratio"]] <- object[["odds.ratio"]]
   out[["prior"]] <- object[["prior"]]
   out[["measure"]] <- object[["measure"]]
+  if (!is.null(object[["bf"]])) {
+    out[["bf"]] <- object[["bf"]]
+  }
+  if (!is.null(object[["p.value"]])) {
+    out[["statistic"]] <- object[["statistic"]]
+    out[["parameter"]] <- object[["parameter"]]
+    out[["p.value"]] <- object[["p.value"]]
+  }
   class(out) <- c("summary.jfaFairness", "list")
   return(out)
 }

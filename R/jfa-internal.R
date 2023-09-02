@@ -759,7 +759,7 @@
   R <- nrow(y)
   ystardot <- rowSums(y)
   ydotstar <- colSums(y)
-  alphastarstar <- matrix(prior_a, nrow = 2, ncol = 2)
+  alphastarstar <- matrix(prior_a, nrow = R, ncol = C)
   alphastardot <- rowSums(alphastarstar)
   alphadotstar <- colSums(alphastarstar)
   xistardot <- alphastardot - (C - 1)
