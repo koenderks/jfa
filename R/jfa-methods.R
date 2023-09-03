@@ -866,8 +866,10 @@ print.summary.jfaDistr <- function(x, digits = getOption("digits"), ...) {
     cat(paste("  p-value:                       ", format.pval(x[["p.value"]], digits = max(1L, digits - 2L))), "\n")
   }
   cat(paste("  Mean absolute difference (MAD):", format(x[["mad"]], digits = max(1L, digits - 2L))), "\n")
-  cat(paste0("\nDigits (", length(x[["digits"]]), "):\n"))
-  print(round(x[["estimates"]], digits = max(1L, digits - 2L)), quote = FALSE)
+  cat(paste0("\nSample estimates (", length(x[["digits"]]), "):\n"))
+  x[["estimates"]] <- round(x[["estimates"]], digits = max(1L, digits - 2L))
+  x[["estimates"]][["d"]] <- paste0(" ", x[["estimates"]][["d"]])
+  print(x[["estimates"]], quote = FALSE, row.names = FALSE)
 }
 
 #' @rdname jfa-methods
@@ -1054,12 +1056,12 @@ print.jfaFairness <- function(x, digits = getOption("digits"), ...) {
   cat(paste0("\nsample estimates:"))
   for (i in names(x[["confusion.matrix"]])[-which(names(x[["confusion.matrix"]]) == x[["privileged"]])]) {
     if (x[["measure"]] == "dp") {
-      cat("\n", paste0(i, ": ", format(x[["parity"]][[i]]$estimate, digits = max(1L, digits - 2L))))
+      cat("\n ", paste0(i, ": ", format(x[["parity"]][[i]]$estimate, digits = max(1L, digits - 2L))))
     } else {
       if (isFALSE(x[["prior"]])) {
-        cat("\n", paste0(i, ": ", format(x[["parity"]][[i]]$estimate, digits = max(1L, digits - 2L)), " [", format(x[["parity"]][[i]]$lb, digits = max(1L, digits - 2L)), ", ", format(x[["parity"]][[i]]$ub, digits = max(1L, digits - 2L)), "], p-value = ", format.pval(x[["odds.ratio"]][[i]]$p.value, digits = max(1L, digits - 2L))))
+        cat("\n ", paste0(i, ": ", format(x[["parity"]][[i]]$estimate, digits = max(1L, digits - 2L)), " [", format(x[["parity"]][[i]]$lb, digits = max(1L, digits - 2L)), ", ", format(x[["parity"]][[i]]$ub, digits = max(1L, digits - 2L)), "], p-value = ", format.pval(x[["odds.ratio"]][[i]]$p.value, digits = max(1L, digits - 2L))))
       } else {
-        cat("\n", paste0(i, ": ", format(x[["parity"]][[i]]$estimate, digits = max(1L, digits - 2L)), " [", format(x[["parity"]][[i]]$lb, digits = max(1L, digits - 2L)), ", ", format(x[["parity"]][[i]]$ub, digits = max(1L, digits - 2L)), "], BF\u2081\u2080 = ", format(x[["odds.ratio"]][[i]]$bf10, digits = max(1L, digits - 2L))))
+        cat("\n ", paste0(i, ": ", format(x[["parity"]][[i]]$estimate, digits = max(1L, digits - 2L)), " [", format(x[["parity"]][[i]]$lb, digits = max(1L, digits - 2L)), ", ", format(x[["parity"]][[i]]$ub, digits = max(1L, digits - 2L)), "], BF\u2081\u2080 = ", format(x[["odds.ratio"]][[i]]$bf10, digits = max(1L, digits - 2L))))
       }
     }
   }
@@ -1115,7 +1117,7 @@ print.summary.jfaFairness <- function(x, digits = getOption("digits"), ...) {
   groups <- names(x[["confusion.matrix"]])
   rownames <- groups
   rownames[which(rownames == x[["privileged"]])] <- paste0(rownames[which(rownames == x[["privileged"]])], " (P)")
-  df <- data.frame(matrix("-", nrow = length(groups), ncol = if (x[["measure"]] == "dp") 2 else 4), row.names = rownames)
+  df <- data.frame(matrix("-", nrow = length(groups), ncol = if (x[["measure"]] == "dp") 2 else 4), row.names = paste0("  ", rownames))
   measure <- switch(x[["measure"]],
     "pp" = "Proportion",
     "prp" = "Precision",
@@ -1174,6 +1176,7 @@ print.summary.jfaFairness <- function(x, digits = getOption("digits"), ...) {
     "Recall",
     "F1 score"
   )
+  rownames(x[["performance"]][["all"]]) <- paste0("  ", rownames(x[["performance"]][["all"]]))
   print(x[["performance"]][["all"]])
 }
 
