@@ -28,8 +28,9 @@ negative. Probabilities that do not sum to one are normalized.}
 confidence level (i.e., 1 - audit risk / detection risk).}
 
 \item{prior}{a logical specifying whether to use a prior distribution,
-or a numeric vector containing the prior parameters for the Dirichlet
-distribution on the digit categories.}
+or a numeric value equal to or larger than 1 specifying the prior
+concentration parameter, or a numeric vector containing the prior
+parameters for the Dirichlet distribution on the digit categories.}
 }
 \value{
 An object of class \code{jfaDistr} containing:

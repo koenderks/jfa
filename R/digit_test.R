@@ -38,8 +38,9 @@
 #' @param conf.level a numeric value between 0 and 1 specifying the
 #'   confidence level (i.e., 1 - audit risk / detection risk).
 #' @param prior      a logical specifying whether to use a prior distribution,
-#'   or a numeric vector containing the prior parameters for the Dirichlet
-#'   distribution on the digit categories.
+#'   or a numeric value equal to or larger than 1 specifying the prior
+#'   concentration parameter, or a numeric vector containing the prior
+#'   parameters for the Dirichlet distribution on the digit categories.
 #'
 #' @details Benford's law is defined as \eqn{p(d) = log10(1/d)}. The uniform
 #'   distribution is defined as \eqn{p(d) = 1/d}.
@@ -136,7 +137,10 @@ digit_test <- function(x,
   } else {
     if (is.logical(prior)) {
       alpha <- rep(1, length(dig))
-    } else if (length(prior) != length(dig)) {
+    } else if (is.numeric(prior) && length(prior) == 1) {
+      stopifnot("'prior' must be a numeric value >= 1" = prior >= 1)
+      alpha <- rep(prior, length(dig))
+    } else if (is.numeric(prior) && length(prior) != length(dig)) {
       stop("number of elements in 'prior' must be equal to number of digits")
     } else {
       alpha <- prior
