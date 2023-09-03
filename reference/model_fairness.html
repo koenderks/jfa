@@ -209,7 +209,8 @@ performed.</p></dd>
 <dt>odds.ratio</dt>
 <dd><p>A data frame containing, for each unprivileged class, the
   odds ratio of the fairness metric and its associated confidence/credible
-  interval, along with inferential measures.</p></dd>
+  interval, along with inferential measures such as uncorrected p-values or
+  Bayes factors.</p></dd>
 
 <dt>measure</dt>
 <dd><p>The abbreviation of the selected fairness metric.</p></dd>
@@ -332,15 +333,15 @@ performed.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Bayesian Algorithmic Fairness Test</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> data: compas</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> n = 6172, BF10 = 0.00071407</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n = 6172, BF10 = 2.124</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> alternative hypothesis: fairness metrics are not equal across groups</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sample estimates:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  African_American: 1.1623 [1.13, 1.2002], BF₁₀ = 231.16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Asian: 0.79061 [0.24553, 1.5071], BF₁₀ = 0.024614</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Hispanic: 1.0456 [0.89428, 1.1655], BF₁₀ = 0.1037</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Native_American: 0.80007 [0.38065, 1.5506], BF₁₀ = 0.025534</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  Other: 1.1046 [0.88985, 1.2299], BF₁₀ = 0.10106</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  African_American: 1.1623 [1.13, 1.2002], BF₁₀ = 198.55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Asian: 0.79061 [0.24553, 1.5071], BF₁₀ = 0.56125</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Hispanic: 1.0456 [0.89428, 1.1655], BF₁₀ = 0.11611</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Native_American: 0.80007 [0.38065, 1.5506], BF₁₀ = 0.4866</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  Other: 1.1046 [0.88985, 1.2299], BF₁₀ = 0.16787</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> alternative hypothesis: true odds ratio is not equal to 1</span>
 </code></pre></div>
     </div>

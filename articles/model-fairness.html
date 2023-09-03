@@ -94,7 +94,7 @@
       <h1 data-toc-skip>Algorithmic fairness</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2023-09-02</h4>
+            <h4 data-toc-skip class="date">2023-09-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/model-fairness.Rmd" class="external-link"><code>vignettes/model-fairness.Rmd</code></a></small>
       <div class="hidden name"><code>model-fairness.Rmd</code></div>
@@ -401,15 +401,15 @@ using a default prior can be achieved by setting
 <span><span class="co">##  Bayesian Algorithmic Fairness Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data: compas</span></span>
-<span><span class="co">## n = 6172, BF10 = 9.3953e+107</span></span>
+<span><span class="co">## n = 6172, BF10 = 3.497e+110</span></span>
 <span><span class="co">## alternative hypothesis: fairness metrics are not equal across groups</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## sample estimates:</span></span>
-<span><span class="co">##  African_American: 1.8452 [1.7925, 1.9004], BF₁₀ = 4.1528e+81</span></span>
-<span><span class="co">##  Asian: 0.37141 [0.16266, 0.91889], BF₁₀ = 0.26796</span></span>
-<span><span class="co">##  Hispanic: 0.93414 [0.79674, 1.0416], BF₁₀ = 0.10615</span></span>
-<span><span class="co">##  Native_American: 1.3967 [0.64508, 2.2652], BF₁₀ = 0.018438</span></span>
-<span><span class="co">##  Other: 0.74064 [0.64151, 0.92383], BF₁₀ = 1.815</span></span>
+<span><span class="co">##  African_American: 1.8611 [1.8002, 1.9084], BF₁₀ = 2.8881e+81</span></span>
+<span><span class="co">##  Asian: 0.38495 [0.15928, 0.89969], BF₁₀ = 3.0278</span></span>
+<span><span class="co">##  Hispanic: 0.90439 [0.80044, 1.0429], BF₁₀ = 0.1127</span></span>
+<span><span class="co">##  Native_American: 1.5455 [0.66445, 2.2767], BF₁₀ = 0.54521</span></span>
+<span><span class="co">##  Other: 0.83103 [0.64707, 0.92802], BF₁₀ = 2.5057</span></span>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span></code></pre>
 <p>Bayesian inference measures evidence using the Bayes factor <span class="math inline">\(BF_{01}\)</span>, which quantifies the evidence in
 favor of algorithmic fairness (i.e., equal fairness metrics) over
