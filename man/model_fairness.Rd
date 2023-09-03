@@ -77,7 +77,8 @@ An object of class \code{jfaFairness} containing:
   privileged class.}
 \item{odds.ratio}{A data frame containing, for each unprivileged class, the
   odds ratio of the fairness metric and its associated confidence/credible
-  interval, along with inferential measures.}
+  interval, along with inferential measures such as uncorrected p-values or
+  Bayes factors.}
 \item{measure}{The abbreviation of the selected fairness metric.}
 \item{data.name}{The name of the input data object.}
 }

@@ -754,7 +754,8 @@
   return(digits)
 }
 
-.contingencyTableBf <- function(y, prior_a) {
+.contingencyTableBf <- function(y, prior_a, fixed = c("none", "rows", "columns")) {
+  # For the calculations, see Jamil, T., Ly, A., Morey, R. D., Love, J., Marsman, M., & Wagenmakers, E. J. (2017). Default “Gunel and Dickey” Bayes factors for contingency tables. Behavior Research Methods, 49, 638-652.
   C <- ncol(y)
   R <- nrow(y)
   ystardot <- rowSums(y)
@@ -767,8 +768,16 @@
   ldirichlet <- function(a) {
     sum(lgamma(a)) - lgamma(sum(a))
   }
-  part1 <- ldirichlet(ystardot + xistardot) - ldirichlet(xistardot)
-  part2 <- ldirichlet(ydotstar + xidotstar) - ldirichlet(xidotstar)
+  part1 <- switch(fixed,
+    "none" = ldirichlet(ystardot + xistardot) - ldirichlet(xistardot),
+    "rows" = ldirichlet(ydotstar + xidotstar) - ldirichlet(xidotstar),
+    "columns" = ldirichlet(ystardot + xistardot) - ldirichlet(xistardot)
+  )
+  part2 <- switch(fixed,
+    "none" = ldirichlet(ydotstar + xidotstar) - ldirichlet(xidotstar),
+    "rows" = ldirichlet(ystardot + alphastardot) - ldirichlet(alphastardot),
+    "columns" = ldirichlet(ydotstar + alphadotstar) - ldirichlet(alphadotstar)
+  )
   part3 <- ldirichlet(alphastarstar) - ldirichlet(y + alphastarstar)
   logBF01 <- part1 + part2 + part3
   BF01 <- exp(logBF01)
