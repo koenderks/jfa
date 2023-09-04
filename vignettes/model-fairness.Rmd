@@ -455,7 +455,7 @@ model_fairness(
       suggest potential favoritism in correctly identifying non-reoffenders
       among Asians.
     - *Hispanic*: The specificity parity for Hispanics is 1.0399,
-      suggesting that their specificity is very close to the privileged class.
+      suggesting that their specificity is very close to the privileged group.
       This indicates relatively fair treatment in correctly identifying
       non-reoffenders among Hispanics.
 

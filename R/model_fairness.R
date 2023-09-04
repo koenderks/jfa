@@ -52,7 +52,7 @@
 #' @param predictions  a character specifying the column name in \code{data}
 #'   containing the predicted labels of the target variable.
 #' @param privileged  a character specifying the factor level of the column
-#'   \code{protected} to be used as the privileged class. If \code{NULL} (the
+#'   \code{protected} to be used as the privileged group. If \code{NULL} (the
 #'   default), the first factor level of the \code{protected} column is used.
 #' @param positive     a character specifying the factor level positive class of
 #'   the column \code{target} to be used as the positive class. If \code{NULL}
@@ -117,8 +117,8 @@
 #'
 #' @return An object of class \code{jfaFairness} containing:
 #'
-#' \item{privileged}{The privileged class for computing the fairness metrics.}
-#' \item{unprivileged}{The unprivileged class(es).}
+#' \item{privileged}{The privileged group for computing the fairness metrics.}
+#' \item{unprivileged}{The unprivileged group(s).}
 #' \item{positive}{The positive class used in computing the fairness metrics.}
 #' \item{negative}{The negative class used in computing the fairness metrics.}
 #' \item{alternative}{The type of confidence interval.}
@@ -127,10 +127,10 @@
 #'   group, including accuracy, precision, recall, and F1 score.}
 #' \item{metric}{A data frame containing, for each group, the estimates of the
 #'   fairness metric along with the associated confidence / credible interval.}
-#' \item{parity}{A data frame containing, for each unprivileged class, the
+#' \item{parity}{A data frame containing, for each unprivileged group, the
 #'   parity and associated confidence / credible interval when compared to the
-#'   privileged class.}
-#' \item{odds.ratio}{A data frame containing, for each unprivileged class, the
+#'   privileged group.}
+#' \item{odds.ratio}{A data frame containing, for each unprivileged group, the
 #'   odds ratio of the fairness metric and its associated confidence/credible
 #'   interval, along with inferential measures such as uncorrected p-values or
 #'   Bayes factors.}
@@ -379,8 +379,10 @@ model_fairness <- function(data,
     }
   }
   result <- list()
+  result[["conf.level"]] <- conf.level
   result[["privileged"]] <- privileged
   result[["unprivileged"]] <- unprivileged
+  result[["protected"]] <- protected
   result[["positive"]] <- positive
   result[["negative"]] <- negative
   result[["alternative"]] <- alternative

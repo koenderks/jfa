@@ -693,6 +693,7 @@ print.summary.jfaEvaluation <- function(x, digits = getOption("digits"), ...) {
   }
   if (!is.null(x[["strata"]])) {
     cat(paste0("\nStrata (", nrow(x[["strata"]]), "):\n"))
+    rownames(x[["strata"]]) <- paste0("  ", rownames(x[["strata"]]))
     print(round(x[["strata"]], digits = max(1L, digits - 2L)), quote = FALSE)
   }
 }
@@ -866,7 +867,7 @@ print.summary.jfaDistr <- function(x, digits = getOption("digits"), ...) {
     cat(paste("  p-value:                       ", format.pval(x[["p.value"]], digits = max(1L, digits - 2L))), "\n")
   }
   cat(paste("  Mean absolute difference (MAD):", format(x[["mad"]], digits = max(1L, digits - 2L))), "\n")
-  cat(paste0("\nSample estimates (", length(x[["digits"]]), "):\n"))
+  cat(paste0("\nDigits (", length(x[["digits"]]), "):\n"))
   x[["estimates"]] <- round(x[["estimates"]], digits = max(1L, digits - 2L))
   x[["estimates"]][["d"]] <- paste0(" ", x[["estimates"]][["d"]])
   print(x[["estimates"]], quote = FALSE, row.names = FALSE)
@@ -1081,6 +1082,8 @@ print.jfaFairness <- function(x, digits = getOption("digits"), ...) {
 print.summary.jfaFairness <- function(x, digits = getOption("digits"), ...) {
   type <- if (isFALSE(x[["prior"]])) "Classical" else "Bayesian"
   cat(paste0("\n\t", type, " Algorithmic Fairness Test Summary\n"))
+  cat("\nOptions:\n")
+  cat(paste("  Confidence level:   ", format(x[["conf.level"]], digits = max(1L, digits - 2L))), "\n")
   measure <- switch(x[["measure"]],
     "pp" = "Proportional parity (Disparate impact)",
     "prp" = "Predictive rate parity (Equalized odds)",
@@ -1092,17 +1095,20 @@ print.summary.jfaFairness <- function(x, digits = getOption("digits"), ...) {
     "sp" = "Specificity parity (True negative rate parity)",
     "dp" = "Demographic parity (Statistical parity)"
   )
-  cat("\nFairness metric:      ", measure)
+  cat("  Fairness metric:    ", measure)
   if (length(x[["negative"]]) == 1) {
-    cat("\nModel type:            Binary classification")
+    cat("\n  Model type:          Binary classification")
   } else {
-    cat("\nModel type:            Multi-class classification")
+    cat("\n  Model type:          Multi-class classification")
   }
-  cat(paste0("\nPrivileged class:      ", x[["privileged"]]))
-  cat("\nPositive class:       ", x[["positive"]], "\n")
+  cat(paste0("\n  Privileged group:    ", x[["privileged"]]))
+  cat("\n  Positive class:     ", x[["positive"]], "\n")
   if (!isFALSE(x[["prior"]]) && x[["measure"]] != "dp") {
-    cat("Prior distribution:   ", paste0("Dirichlet (", as.numeric(x[["prior"]]), ", ..., ", as.numeric(x[["prior"]]), ")"), "\n")
+    cat("  Prior distribution: ", paste0("Dirichlet (", as.numeric(x[["prior"]]), ", ..., ", as.numeric(x[["prior"]]), ")"), "\n")
   }
+  cat("\nData:\n")
+  cat(paste("  Sample size:        ", format(x[["n"]], digits = max(1L, digits - 2L))), "\n")
+  cat(paste("  Unprivileged groups:", format(length(x[["unprivileged"]]), digits = max(1L, digits - 2L))), "\n")
   if (x[["measure"]] != "dp") {
     cat("\nResults:\n")
     if (!isFALSE(x[["prior"]])) {
@@ -1196,6 +1202,8 @@ summary.jfaFairness <- function(object, digits = getOption("digits"), ...) {
   out[["odds.ratio"]] <- object[["odds.ratio"]]
   out[["prior"]] <- object[["prior"]]
   out[["measure"]] <- object[["measure"]]
+  out[["conf.level"]] <- object[["conf.level"]]
+  out[["n"]] <- object[["n"]]
   if (!is.null(object[["bf"]])) {
     out[["bf"]] <- object[["bf"]]
   }
@@ -1237,13 +1245,13 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior"), ...) {
     } else {
       ratio$type <- ifelse(ratio$ub < 1 | ratio$lb > 1, yes = "Deviation", no = "Expected")
     }
-    ratio$type[which(groups == x[["privileged"]])] <- "Privileged class"
-    ratio$type <- factor(ratio$type, levels = c("Privileged class", "Expected", "Deviation"))
+    ratio$type[which(groups == x[["privileged"]])] <- "Privileged group"
+    ratio$type <- factor(ratio$type, levels = c("Privileged group", "Expected", "Deviation"))
     p <- ggplot2::ggplot(data = ratio, mapping = ggplot2::aes(x = group, y = estimate, group = group, fill = type)) +
       ggplot2::geom_col(colour = "black") +
-      ggplot2::scale_x_discrete(name = "Protected class") +
+      ggplot2::scale_x_discrete(name = x[["protected"]]) +
       ggplot2::scale_y_continuous(name = yTitle, breaks = yBreaks, limits = range(yBreaks)) +
-      ggplot2::scale_fill_manual(name = NULL, values = c("dodgerblue", "lightgray", "firebrick"), breaks = c("Privileged class", "Expected", "Deviation")) +
+      ggplot2::scale_fill_manual(name = NULL, values = c("dodgerblue", "lightgray", "firebrick"), breaks = c("Privileged group", "Expected", "Deviation")) +
       ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks))
     if (x[["measure"]] != "dp") {
       p <- p + ggplot2::geom_errorbar(mapping = ggplot2::aes(ymin = lb, ymax = ub), width = 0.5)
