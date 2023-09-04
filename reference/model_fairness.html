@@ -133,7 +133,7 @@ containing the predicted labels of the target variable.</p></dd>
 
 <dt>privileged</dt>
 <dd><p>a character specifying the factor level of the column
-<code>protected</code> to be used as the privileged class. If <code>NULL</code> (the
+<code>protected</code> to be used as the privileged group. If <code>NULL</code> (the
 default), the first factor level of the <code>protected</code> column is used.</p></dd>
 
 
@@ -176,10 +176,10 @@ performed.</p></dd>
 
 <p>An object of class <code>jfaFairness</code> containing:</p>
 <dl><dt>privileged</dt>
-<dd><p>The privileged class for computing the fairness metrics.</p></dd>
+<dd><p>The privileged group for computing the fairness metrics.</p></dd>
 
 <dt>unprivileged</dt>
-<dd><p>The unprivileged class(es).</p></dd>
+<dd><p>The unprivileged group(s).</p></dd>
 
 <dt>positive</dt>
 <dd><p>The positive class used in computing the fairness metrics.</p></dd>
@@ -202,12 +202,12 @@ performed.</p></dd>
   fairness metric along with the associated confidence / credible interval.</p></dd>
 
 <dt>parity</dt>
-<dd><p>A data frame containing, for each unprivileged class, the
+<dd><p>A data frame containing, for each unprivileged group, the
   parity and associated confidence / credible interval when compared to the
-  privileged class.</p></dd>
+  privileged group.</p></dd>
 
 <dt>odds.ratio</dt>
-<dd><p>A data frame containing, for each unprivileged class, the
+<dd><p>A data frame containing, for each unprivileged group, the
   odds ratio of the fairness metric and its associated confidence/credible
   interval, along with inferential measures such as uncorrected p-values or
   Bayes factors.</p></dd>

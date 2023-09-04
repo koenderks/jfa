@@ -94,7 +94,7 @@
       <h1 data-toc-skip>Algorithmic fairness</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2023-09-03</h4>
+            <h4 data-toc-skip class="date">2023-09-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/model-fairness.Rmd" class="external-link"><code>vignettes/model-fairness.Rmd</code></a></small>
       <div class="hidden name"><code>model-fairness.Rmd</code></div>
@@ -343,10 +343,16 @@ object.</p>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Classical Algorithmic Fairness Test Summary</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Fairness metric:       Proportional parity (Disparate impact)</span></span>
-<span><span class="co">## Model type:            Binary classification</span></span>
-<span><span class="co">## Privileged class:      Caucasian</span></span>
-<span><span class="co">## Positive class:        yes </span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Confidence level:    0.95 </span></span>
+<span><span class="co">##   Fairness metric:     Proportional parity (Disparate impact)</span></span>
+<span><span class="co">##   Model type:          Binary classification</span></span>
+<span><span class="co">##   Privileged group:    Caucasian</span></span>
+<span><span class="co">##   Positive class:      yes </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Data:</span></span>
+<span><span class="co">##   Sample size:         6172 </span></span>
+<span><span class="co">##   Unprivileged groups: 5 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
 <span><span class="co">##   X-squared:           522.28 </span></span>
@@ -405,11 +411,11 @@ using a default prior can be achieved by setting
 <span><span class="co">## alternative hypothesis: fairness metrics are not equal across groups</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## sample estimates:</span></span>
-<span><span class="co">##   African_American: 1.8618 [1.8015, 1.9057], BF₁₀ = 2.8881e+81</span></span>
-<span><span class="co">##   Asian: 0.35746 [0.16445, 0.90354], BF₁₀ = 3.0278</span></span>
-<span><span class="co">##   Hispanic: 0.92387 [0.79791, 1.0501], BF₁₀ = 0.1127</span></span>
-<span><span class="co">##   Native_American: 1.4778 [0.68323, 2.2584], BF₁₀ = 0.54521</span></span>
-<span><span class="co">##   Other: 0.75752 [0.6473, 0.92695], BF₁₀ = 2.5057</span></span>
+<span><span class="co">##   African_American: 1.8086 [1.7696, 1.8736], BF₁₀ = 2.8881e+81</span></span>
+<span><span class="co">##   Asian: 0.41459 [0.15325, 0.9043], BF₁₀ = 3.0278</span></span>
+<span><span class="co">##   Hispanic: 0.89474 [0.7747, 1.0306], BF₁₀ = 0.1127</span></span>
+<span><span class="co">##   Native_American: 1.1576 [0.62304, 2.1937], BF₁₀ = 0.54521</span></span>
+<span><span class="co">##   Other: 0.74761 [0.62933, 0.91204], BF₁₀ = 2.5057</span></span>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span></code></pre>
 <p>Bayesian inference measures evidence using the Bayes factor <span class="math inline">\(BF_{01}\)</span>, which quantifies the evidence in
 favor of algorithmic fairness (i.e., equal fairness metrics) over
@@ -788,7 +794,7 @@ This could suggest potential favoritism in correctly identifying
 non-reoffenders among Asians.</li>
 <li>
 <em>Hispanic</em>: The specificity parity for Hispanics is 1.0399,
-suggesting that their specificity is very close to the privileged class.
+suggesting that their specificity is very close to the privileged group.
 This indicates relatively fair treatment in correctly identifying
 non-reoffenders among Hispanics.</li>
 </ul>
