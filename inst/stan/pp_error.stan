@@ -2,8 +2,8 @@
 
 data {
   int<lower=1> S;
-  int<lower=1> n[S];
-  int<lower=0> k[S];
+  array[S] int<lower=1> n;
+  array[S] int<lower=0> k;
   real<lower=0> alpha;
   real<lower=0> beta;
   int beta_prior;
