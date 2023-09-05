@@ -815,7 +815,7 @@ print.jfaDistr <- function(x, digits = getOption("digits"), ...) {
     out <- c(out, paste(names(x$parameter), "=", format(x$parameter, digits = max(1L, digits - 2L))))
   }
   if (!is.null(x$bf)) {
-    out <- c(out, paste("BF10", "=", format(x$bf, digits = max(1L, digits - 2L))))
+    out <- c(out, paste("BF\u2081\u2080", "=", format(x$bf, digits = max(1L, digits - 2L))))
   }
   if (!is.null(x$p.value)) {
     fp <- format.pval(x$p.value, digits = max(1L, digits - 3L))
@@ -1044,7 +1044,7 @@ print.jfaFairness <- function(x, digits = getOption("digits"), ...) {
     out <- c(out, paste(names(x$parameter), "=", format(x$parameter, digits = max(1L, digits - 2L))))
   }
   if (!is.null(x$bf)) {
-    out <- c(out, paste("BF10", "=", format(x$bf, digits = max(1L, digits - 2L))))
+    out <- c(out, paste("BF\u2081\u2080", "=", format(x$bf, digits = max(1L, digits - 2L))))
   }
   if (!is.null(x$p.value)) {
     fp <- format.pval(x$p.value, digits = max(1L, digits - 3L))
