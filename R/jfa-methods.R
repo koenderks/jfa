@@ -1322,7 +1322,7 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior", "robustness")
       ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks), inherit.aes = FALSE) +
       ggplot2::geom_segment(x = 1, xend = 101, y = -Inf, yend = -Inf, inherit.aes = FALSE) +
       ggplot2::guides(fill = ggplot2::guide_legend(nrow = 5, byrow = TRUE)) +
-      ggplot2::theme(legend.spacing.y = ggplot2::unit(0, "cm"))
+      ggplot2::theme(legend.spacing.y = ggplot2::unit(0, "cm"), legend.margin = ggplot2::margin(0, 0, -0.75, 0, "cm"))
   }
   p <- .theme_jfa(p, legend.position = if (length(unprivileged) == 1 && type == "posterior") "none" else "top")
   return(p)
