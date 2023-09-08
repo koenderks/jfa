@@ -56,7 +56,7 @@ plot(x)
 # Bayesian hypothesis test using default prior
 x <- digit_test(sinoForest$value, check = "first", reference = "benford", prior = TRUE)
 print(x)
-plot(x)
+plot(x, type = "robustness")
 ```
 
 ## Function: `repeated_test()`
