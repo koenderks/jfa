@@ -89,7 +89,7 @@
 
 \method{summary}{jfaDistr}(object, digits = getOption("digits"), ...)
 
-\method{plot}{jfaDistr}(x, type = c("estimates", "robustness"))
+\method{plot}{jfaDistr}(x, type = c("estimates", "robustness"), ...)
 
 \method{print}{jfaRv}(x, digits = getOption("digits"), ...)
 
@@ -108,7 +108,7 @@
 
 \item{digits}{an integer specifying the number of digits to which output should be rounded. Used in \code{summary}.}
 
-\item{object, x}{an object of class \code{jfaPrior}, \code{jfaPosterior}, \code{jfaPlanning}, \code{jfaSelection}, \code{jfaEvaluation}, \code{jfaDistr}, or \code{jfaRv}.}
+\item{object, x}{an object of class \code{jfaPrior}, \code{jfaPosterior}, \code{jfaPlanning}, \code{jfaSelection}, \code{jfaEvaluation}, \code{jfaDistr}, \code{jfaRv}, or \code{jfaFairness}.}
 
 \item{n}{used in \code{predict}. Specifies the sample size for which predictions should be made.}
 

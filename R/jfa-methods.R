@@ -17,7 +17,7 @@
 #'
 #' Methods defined for objects returned from the \code{\link{auditPrior}}, \code{\link{planning}}, \code{\link{selection}}, and \code{\link{evaluation}} functions.
 #'
-#' @param object,x    an object of class \code{jfaPrior}, \code{jfaPosterior}, \code{jfaPlanning}, \code{jfaSelection}, \code{jfaEvaluation}, \code{jfaDistr}, or \code{jfaRv}.
+#' @param object,x    an object of class \code{jfaPrior}, \code{jfaPosterior}, \code{jfaPlanning}, \code{jfaSelection}, \code{jfaEvaluation}, \code{jfaDistr}, \code{jfaRv}, or \code{jfaFairness}.
 #' @param digits      an integer specifying the number of digits to which output should be rounded. Used in \code{summary}.
 #' @param type        used in \code{plot}. Specifies the type of plot to produce.
 #' @param n           used in \code{predict}. Specifies the sample size for which predictions should be made.
@@ -903,7 +903,7 @@ summary.jfaDistr <- function(object, digits = getOption("digits"), ...) {
 #' @rdname jfa-methods
 #' @method plot jfaDistr
 #' @export
-plot.jfaDistr <- function(x, type = c("estimates", "robustness")) {
+plot.jfaDistr <- function(x, type = c("estimates", "robustness"), ...) {
   type <- match.arg(type)
   if (type == "estimates") {
     y <- type <- d <- lb <- ub <- NULL
