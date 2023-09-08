@@ -38,22 +38,22 @@ preferred-citation:
 repository: https://CRAN.R-project.org/package=jfa
 repository-code: https://github.com/koenderks/jfa
 url: https://koenderks.github.io/jfa/
-date-released: '2023-09-05'
+date-released: '2023-09-08'
 contact:
 - family-names: Derks
   given-names: Koen
   email: k.derks@nyenrode.nl
   orcid: https://orcid.org/0000-0002-5533-9349
 keywords:
+- algorithm-auditing
 - audit
 - audit-sampling
 - bayesian
-- data-audit
-- digit-analysis
+- data-auditing
+- jasp
 - r
 - r-package
 - rstats
-- sampling
 - statistics
 references:
 - type: software
