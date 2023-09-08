@@ -977,7 +977,6 @@ plot.jfaDistr <- function(x, type = c("estimates", "robustness")) {
     for (i in seq_len(nrow(plotdata))) {
       plotdata[i, "y"] <- .multinomialBf(x[["observed"]], x[["estimates"]][["p.exp"]], rep(plotdata[i, "x"], length(x[["observed"]])))
     }
-    yBreaks <- pretty(c(0, 3, plotdata$y), min.n = 4)
     maxbfLevel <- paste0("max. BF:                        ", format(plotdata$y[which.max(plotdata$y)], digits = 3), " at \u03B1 = ", plotdata$x[which.max(plotdata$y)])
     userPriorLevel <- paste0("user prior:                      BF = ", format(x[["bf"]], digits = 3))
     uniformPriorLevel <- paste0("uniform prior:                 BF = ", format(plotdata$y[1], digits = 3))
@@ -988,12 +987,39 @@ plot.jfaDistr <- function(x, type = c("estimates", "robustness")) {
       y = c(plotdata$y[which.max(plotdata$y)], x[["bf"]], plotdata$y[1], plotdata$y[which(plotdata$x == 10)], plotdata$y[which(plotdata$x == 50)]),
       type = factor(c(maxbfLevel, userPriorLevel, uniformPriorLevel, concPriorLevel, ultraConcPriorLevel), levels = c(maxbfLevel, userPriorLevel, uniformPriorLevel, concPriorLevel, ultraConcPriorLevel))
     )
+    plotdata$y <- log(plotdata$y)
+    pointdata$y <- log(pointdata$y)
+    yRange <- range(plotdata$y)
+    if (all(abs(yRange) <= log(100))) {
+      yBreaks <- log(c(1 / 100, 1 / 30, 1 / 10, 1 / 3, 1, 3, 10, 30, 100))
+      yLabels <- c("1 / 100", "1 / 30", "1 / 10", "1 / 3", "1", "3", "10", "30", "100")
+    } else {
+      yRange <- yRange * log10(exp(1))
+      plotdata$y <- plotdata$y * log10(exp(1))
+      pointdata$y <- pointdata$y * log10(exp(1))
+      from <- floor(yRange[1L])
+      to <- ceiling(yRange[2L])
+      yBreaks <- unique(as.integer(pretty(x = c(from, to))))
+      step <- yBreaks[2L] - yBreaks[1L]
+      if (yBreaks[1L] == 0) {
+        yBreaks <- c(-step, yBreaks)
+      }
+      if (yBreaks[length(yBreaks)] == 0) {
+        yBreaks <- c(yBreaks, step)
+      }
+      if (max(abs(yBreaks)) < 6L) {
+        idx <- yBreaks < 0
+        yLabels <- c(paste("1 /", formatC(10^abs(yBreaks[idx]), format = "fg")), formatC(10^yBreaks[!idx], format = "fg"))
+      } else {
+        yLabels <- parse(text = paste0("10^", yBreaks))
+      }
+    }
     p <- ggplot2::ggplot(data = pointdata, mapping = ggplot2::aes(x = x, y = y, fill = type)) +
-      ggplot2::geom_segment(x = 1, xend = 101, y = 1, yend = 1, inherit.aes = FALSE) +
+      ggplot2::geom_segment(x = 1, xend = 101, y = 0, yend = 0, linewidth = 0.25, inherit.aes = FALSE) +
       ggplot2::geom_path(data = plotdata, mapping = ggplot2::aes(x = x, y = y), inherit.aes = FALSE) +
       ggplot2::geom_point(shape = 21, size = 2) +
       ggplot2::scale_x_continuous(name = "Dirichlet prior concentration", breaks = seq(1, 101, 20), limits = c(1, 101)) +
-      ggplot2::scale_y_continuous(name = expression(BF[10]), breaks = yBreaks, limits = range(yBreaks)) +
+      ggplot2::scale_y_continuous(name = expression(BF[10]), breaks = yBreaks, limits = range(yBreaks), labels = yLabels) +
       ggplot2::scale_fill_manual(name = NULL, values = c("red", "lightgray", "black", "white", "cornsilk2")) +
       ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks), inherit.aes = FALSE) +
       ggplot2::geom_segment(x = 1, xend = 101, y = -Inf, yend = -Inf, inherit.aes = FALSE) +
@@ -1332,7 +1358,6 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior", "robustness")
     for (i in seq_len(nrow(plotdata))) {
       plotdata[i, "y"] <- .contingencyTableBf(x[["crossTab"]], plotdata[i, "x"], "columns")
     }
-    yBreaks <- pretty(c(0, 3, plotdata$y), min.n = 4)
     maxbfLevel <- paste0("max. BF:                        ", format(plotdata$y[which.max(plotdata$y)], digits = 3), " at \u03B1 = ", plotdata$x[which.max(plotdata$y)])
     userPriorLevel <- paste0("user prior:                      BF = ", format(x[["bf"]], digits = 3))
     uniformPriorLevel <- paste0("uniform prior:                 BF = ", format(plotdata$y[1], digits = 3))
@@ -1343,12 +1368,39 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior", "robustness")
       y = c(plotdata$y[which.max(plotdata$y)], x[["bf"]], plotdata$y[1], plotdata$y[which(plotdata$x == 10)], plotdata$y[which(plotdata$x == 50)]),
       type = factor(c(maxbfLevel, userPriorLevel, uniformPriorLevel, concPriorLevel, ultraConcPriorLevel), levels = c(maxbfLevel, userPriorLevel, uniformPriorLevel, concPriorLevel, ultraConcPriorLevel))
     )
+    plotdata$y <- log(plotdata$y)
+    pointdata$y <- log(pointdata$y)
+    yRange <- range(plotdata$y)
+    if (all(abs(yRange) <= log(100))) {
+      yBreaks <- log(c(1 / 100, 1 / 30, 1 / 10, 1 / 3, 1, 3, 10, 30, 100))
+      yLabels <- c("1 / 100", "1 / 30", "1 / 10", "1 / 3", "1", "3", "10", "30", "100")
+    } else {
+      yRange <- yRange * log10(exp(1))
+      plotdata$y <- plotdata$y * log10(exp(1))
+      pointdata$y <- pointdata$y * log10(exp(1))
+      from <- floor(yRange[1L])
+      to <- ceiling(yRange[2L])
+      yBreaks <- unique(as.integer(pretty(x = c(from, to))))
+      step <- yBreaks[2L] - yBreaks[1L]
+      if (yBreaks[1L] == 0) {
+        yBreaks <- c(-step, yBreaks)
+      }
+      if (yBreaks[length(yBreaks)] == 0) {
+        yBreaks <- c(yBreaks, step)
+      }
+      if (max(abs(yBreaks)) < 6L) {
+        idx <- yBreaks < 0
+        yLabels <- c(paste("1 /", formatC(10^abs(yBreaks[idx]), format = "fg")), formatC(10^yBreaks[!idx], format = "fg"))
+      } else {
+        yLabels <- parse(text = paste0("10^", yBreaks))
+      }
+    }
     p <- ggplot2::ggplot(data = pointdata, mapping = ggplot2::aes(x = x, y = y, fill = type)) +
-      ggplot2::geom_segment(x = 1, xend = 101, y = 1, yend = 1, inherit.aes = FALSE) +
+      ggplot2::geom_segment(x = 1, xend = 101, y = 0, yend = 0, linewidth = 0.25, inherit.aes = FALSE) +
       ggplot2::geom_path(data = plotdata, mapping = ggplot2::aes(x = x, y = y), inherit.aes = FALSE) +
       ggplot2::geom_point(shape = 21, size = 2) +
       ggplot2::scale_x_continuous(name = "Dirichlet prior concentration", breaks = seq(1, 101, 20), limits = c(1, 101)) +
-      ggplot2::scale_y_continuous(name = expression(BF[10]), breaks = yBreaks, limits = range(yBreaks)) +
+      ggplot2::scale_y_continuous(name = expression(BF[10]), breaks = yBreaks, limits = range(yBreaks), labels = yLabels) +
       ggplot2::scale_fill_manual(name = NULL, values = c("red", "lightgray", "black", "white", "cornsilk2")) +
       ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks), inherit.aes = FALSE) +
       ggplot2::geom_segment(x = 1, xend = 101, y = -Inf, yend = -Inf, inherit.aes = FALSE) +
