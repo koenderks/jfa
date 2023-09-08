@@ -1219,7 +1219,7 @@ summary.jfaFairness <- function(object, digits = getOption("digits"), ...) {
 #' @rdname jfa-methods
 #' @method plot jfaFairness
 #' @export
-plot.jfaFairness <- function(x, type = c("estimates", "posterior"), ...) {
+plot.jfaFairness <- function(x, type = c("estimates", "posterior", "robustness"), ...) {
   type <- match.arg(type)
   estimate <- lb <- ub <- group <- y <- NULL
   groups <- names(x[["confusion.matrix"]])
@@ -1256,7 +1256,7 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior"), ...) {
     if (x[["measure"]] != "dp") {
       p <- p + ggplot2::geom_errorbar(mapping = ggplot2::aes(ymin = lb, ymax = ub), width = 0.5)
     }
-  } else {
+  } else if (type == "posterior") {
     stopifnot("plot not supported for frequentist inference" = !isFALSE(x[["prior"]]))
     stopifnot("plot not supported for demographic parity" = x[["measure"]] != "dp")
     plotdata <- data.frame(x = numeric(), y = numeric(), group = character(), xmin = numeric(), xmax = numeric(), type = character())
@@ -1294,6 +1294,35 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior"), ...) {
       ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks), inherit.aes = FALSE) +
       ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf, inherit.aes = FALSE) +
       (if (length(unprivileged) == 1) ggplot2::scale_color_manual(name = NULL, values = "black") else ggplot2::scale_color_brewer(name = NULL, palette = "Dark2"))
+  } else if (type == "robustness") {
+    stopifnot("plot not supported for frequentist inference" = !isFALSE(x[["prior"]]))
+    stopifnot("plot not supported for demographic parity" = x[["measure"]] != "dp")
+    plotdata <- data.frame(x = seq(1, 101, 0.1), y = 0)
+    for (i in seq_len(nrow(plotdata))) {
+      plotdata[i, "y"] <- .contingencyTableBf(x[["crossTab"]], prior_a = plotdata[i, "x"], fixed = "columns")
+    }
+    yBreaks <- pretty(c(0, 3, plotdata$y), min.n = 4)
+    maxbfLevel <- paste0("max. BF:                        ", format(plotdata$y[which.max(plotdata$y)], digits = 3), " at \u03B1 = ", plotdata$x[which.max(plotdata$y)])
+    userPriorLevel <- paste0("user prior:                      BF = ", format(x[["bf"]], digits = 3))
+    uniformPriorLevel <- paste0("uniform prior:                 BF = ", format(plotdata$y[1], digits = 3))
+    concPriorLevel <- paste0("concentrated prior:        BF = ", format(plotdata$y[which(plotdata$x == 10)], digits = 3))
+    ultraConcPriorLevel <- paste0("ultraconcentrated prior: BF = ", format(plotdata$y[which(plotdata$x == 50)], digits = 3))
+    pointdata <- data.frame(
+      x = c(plotdata$x[which.max(plotdata$y)], as.numeric(x[["prior"]]), 1, 10, 50),
+      y = c(plotdata$y[which.max(plotdata$y)], x[["bf"]], plotdata$y[1], plotdata$y[which(plotdata$x == 10)], plotdata$y[which(plotdata$x == 50)]),
+      type = factor(c(maxbfLevel, userPriorLevel, uniformPriorLevel, concPriorLevel, ultraConcPriorLevel), levels = c(maxbfLevel, userPriorLevel, uniformPriorLevel, concPriorLevel, ultraConcPriorLevel))
+    )
+    p <- ggplot2::ggplot(data = pointdata, mapping = ggplot2::aes(x = x, y = y, fill = type)) +
+      ggplot2::geom_segment(x = 1, xend = 101, y = 1, yend = 1, inherit.aes = FALSE) +
+      ggplot2::geom_path(data = plotdata, mapping = ggplot2::aes(x = x, y = y), inherit.aes = FALSE) +
+      ggplot2::geom_point(shape = 21, size = 2) +
+      ggplot2::scale_x_continuous(name = "Dirichlet prior concentration", breaks = seq(1, 101, 20), limits = c(1, 101)) +
+      ggplot2::scale_y_continuous(name = expression(BF[10]), breaks = yBreaks, limits = range(yBreaks)) +
+      ggplot2::scale_fill_manual(name = NULL, values = c("red", "lightgray", "black", "white", "cornsilk2")) +
+      ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks), inherit.aes = FALSE) +
+      ggplot2::geom_segment(x = 1, xend = 101, y = -Inf, yend = -Inf, inherit.aes = FALSE) +
+      ggplot2::guides(fill = ggplot2::guide_legend(nrow = 5, byrow = TRUE)) +
+      ggplot2::theme(legend.spacing.y = ggplot2::unit(0, "cm"))
   }
   p <- .theme_jfa(p, legend.position = if (length(unprivileged) == 1 && type == "posterior") "none" else "top")
   return(p)
