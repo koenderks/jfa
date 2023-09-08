@@ -89,7 +89,7 @@
 
 \method{summary}{jfaDistr}(object, digits = getOption("digits"), ...)
 
-\method{plot}{jfaDistr}(x, ...)
+\method{plot}{jfaDistr}(x, type = c("estimates", "robustness"))
 
 \method{print}{jfaRv}(x, digits = getOption("digits"), ...)
 

@@ -349,7 +349,7 @@ model_fairness <- function(data,
         odds.ratio[[group]][["lb"]] <- odds.ratio[["all"]][rowIndex, 2] <- .comp_lb_bayes(alternative, conf.level, analytical = FALSE, samples = samples_list[[group]]$OR)
         odds.ratio[[group]][["ub"]] <- odds.ratio[["all"]][rowIndex, 3] <- .comp_ub_bayes(alternative, conf.level, analytical = FALSE, samples = samples_list[[group]]$OR)
         odds.ratio[[group]][["bf10"]] <- odds.ratio[["all"]][rowIndex, 4] <- switch(alternative,
-          "two.sided" = .contingencyTableBf(contingencyTable, prior_a = prior, fixed = "columns"),
+          "two.sided" = .contingencyTableBf(contingencyTable, prior, "columns"),
           "less" = (length(which(samples_list[[group]]$OR < 1)) / length(samples_list[[group]]$OR)) / (length(which(samples_list[[group]]$OR > 1)) / length(samples_list[[group]]$OR)),
           "greater" = (length(which(samples_list[[group]]$OR > 1)) / length(samples_list[[group]]$OR)) / (length(which(samples_list[[group]]$OR < 1)) / length(samples_list[[group]]$OR))
         )
@@ -374,7 +374,7 @@ model_fairness <- function(data,
         test <- stats::chisq.test(crossTab)
       })
     } else {
-      bf <- .contingencyTableBf(crossTab, prior_a = prior, fixed = "columns")
+      bf <- .contingencyTableBf(crossTab, prior, "columns")
       names(bf) <- "BF10"
     }
   }

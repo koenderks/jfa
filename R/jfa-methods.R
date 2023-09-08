@@ -903,72 +903,103 @@ summary.jfaDistr <- function(object, digits = getOption("digits"), ...) {
 #' @rdname jfa-methods
 #' @method plot jfaDistr
 #' @export
-plot.jfaDistr <- function(x, ...) {
-  y <- type <- d <- lb <- ub <- NULL
-  df <- data.frame(
-    x = c(x[["digits"]], x[["digits"]]),
-    y = c(x$observed / x$n, x$expected / x$n),
-    type = c(rep("Observed", length(x[["digits"]])), rep("Expected", length(x[["digits"]])))
-  )
-  yBreaks <- pretty(c(0, df$y, x[["estimates"]]$ub), min.n = 4)
-  if (x[["check"]] == "first" || x[["check"]] == "last") {
-    xBreaks <- x[["digits"]]
-    xLabels <- x[["digits"]]
-    pointSize <- 5
-    lineSize <- 1.5
-  } else {
-    xBreaks <- x[["digits"]]
-    xLabels <- c(
-      10, rep("", 9),
-      20, rep("", 9),
-      30, rep("", 9),
-      40, rep("", 9),
-      50, rep("", 9),
-      60, rep("", 9),
-      70, rep("", 9),
-      80, rep("", 9),
-      90, rep("", 8),
-      99
+plot.jfaDistr <- function(x, type = c("estimates", "robustness")) {
+  type <- match.arg(type)
+  if (type == "estimates") {
+    y <- type <- d <- lb <- ub <- NULL
+    df <- data.frame(
+      x = c(x[["digits"]], x[["digits"]]),
+      y = c(x$observed / x$n, x$expected / x$n),
+      type = c(rep("Observed", length(x[["digits"]])), rep("Expected", length(x[["digits"]])))
     )
-    pointSize <- 2
-    lineSize <- 1.2
+    yBreaks <- pretty(c(0, df$y, x[["estimates"]]$ub), min.n = 4)
+    if (x[["check"]] == "first" || x[["check"]] == "last") {
+      xBreaks <- x[["digits"]]
+      xLabels <- x[["digits"]]
+      pointSize <- 5
+      lineSize <- 1.5
+    } else {
+      xBreaks <- x[["digits"]]
+      xLabels <- c(
+        10, rep("", 9),
+        20, rep("", 9),
+        30, rep("", 9),
+        40, rep("", 9),
+        50, rep("", 9),
+        60, rep("", 9),
+        70, rep("", 9),
+        80, rep("", 9),
+        90, rep("", 8),
+        99
+      )
+      pointSize <- 2
+      lineSize <- 1.2
+    }
+    axisName <- switch(x[["check"]],
+      "first" = "Leading digit",
+      "firsttwo" = "Leading digits",
+      "last" = "Last digit"
+    )
+    xs <- rep(xBreaks[1], 2)
+    ys <- rep(yBreaks[1], 2)
+    types <- c("Observed", "Expected")
+    sizes <- c(7, 10)
+    shapes <- c(21, 22)
+    fills <- c("dodgerblue", "darkgray")
+    if (any(x[["deviation"]])) {
+      xs <- c(xs, xBreaks[1])
+      ys <- c(ys, yBreaks[1])
+      types <- c(types, "Deviation")
+      sizes <- c(sizes, 10)
+      shapes <- c(shapes, 22)
+      fills <- c(fills, "firebrick")
+    }
+    plotData <- data.frame(x = xs, y = ys, type = types)
+    plotData[["type"]] <- factor(plotData[["type"]], levels = types)
+    p <- ggplot2::ggplot(data = plotData, mapping = ggplot2::aes(x = x, y = y, fill = type)) +
+      ggplot2::geom_point(alpha = 0) +
+      ggplot2::geom_bar(data = subset(df, type == "Expected"), mapping = ggplot2::aes(x = x, y = y), fill = ifelse(x[["deviation"]], "firebrick", "darkgray"), stat = "identity", color = "black") +
+      ggplot2::geom_line(data = subset(df, type == "Observed"), mapping = ggplot2::aes(x = x, y = y), color = "dodgerblue", linewidth = lineSize) +
+      ggplot2::geom_errorbar(data = x[["estimates"]], mapping = ggplot2::aes(x = d, ymin = lb, ymax = ub), width = 0.5) +
+      ggplot2::geom_point(data = subset(df, type == "Observed"), mapping = ggplot2::aes(x = x, y = y), fill = "dodgerblue", size = pointSize, shape = 21) +
+      ggplot2::scale_x_continuous(name = axisName, breaks = xBreaks, labels = xLabels, limits = c(min(x[["digits"]]) - 0.5, max(x[["digits"]]) + 0.5), ) +
+      ggplot2::scale_y_continuous(name = "Relative frequency", breaks = yBreaks, limits = c(0, max(yBreaks))) +
+      ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yBreaks)) +
+      ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf) +
+      ggplot2::labs(fill = "") +
+      ggplot2::theme(legend.text = ggplot2::element_text(margin = ggplot2::margin(l = -5, r = 50))) +
+      ggplot2::guides(fill = ggplot2::guide_legend(override.aes = list(
+        size = sizes, shape = shapes, fill = fills, color = "black", alpha = 1
+      )))
+  } else if (type == "robustness") {
+    stopifnot("plot not supported for frequentist inference" = !isFALSE(x[["prior"]]))
+    plotdata <- data.frame(x = seq(1, 101, 0.1), y = 0)
+    for (i in seq_len(nrow(plotdata))) {
+      plotdata[i, "y"] <- .multinomialBf(x[["observed"]], x[["estimates"]][["p.exp"]], rep(plotdata[i, "x"], length(x[["observed"]])))
+    }
+    yBreaks <- pretty(c(0, 3, plotdata$y), min.n = 4)
+    maxbfLevel <- paste0("max. BF:                        ", format(plotdata$y[which.max(plotdata$y)], digits = 3), " at \u03B1 = ", plotdata$x[which.max(plotdata$y)])
+    userPriorLevel <- paste0("user prior:                      BF = ", format(x[["bf"]], digits = 3))
+    uniformPriorLevel <- paste0("uniform prior:                 BF = ", format(plotdata$y[1], digits = 3))
+    concPriorLevel <- paste0("concentrated prior:        BF = ", format(plotdata$y[which(plotdata$x == 10)], digits = 3))
+    ultraConcPriorLevel <- paste0("ultraconcentrated prior: BF = ", format(plotdata$y[which(plotdata$x == 50)], digits = 3))
+    pointdata <- data.frame(
+      x = c(plotdata$x[which.max(plotdata$y)], as.numeric(x[["prior"]]), 1, 10, 50),
+      y = c(plotdata$y[which.max(plotdata$y)], x[["bf"]], plotdata$y[1], plotdata$y[which(plotdata$x == 10)], plotdata$y[which(plotdata$x == 50)]),
+      type = factor(c(maxbfLevel, userPriorLevel, uniformPriorLevel, concPriorLevel, ultraConcPriorLevel), levels = c(maxbfLevel, userPriorLevel, uniformPriorLevel, concPriorLevel, ultraConcPriorLevel))
+    )
+    p <- ggplot2::ggplot(data = pointdata, mapping = ggplot2::aes(x = x, y = y, fill = type)) +
+      ggplot2::geom_segment(x = 1, xend = 101, y = 1, yend = 1, inherit.aes = FALSE) +
+      ggplot2::geom_path(data = plotdata, mapping = ggplot2::aes(x = x, y = y), inherit.aes = FALSE) +
+      ggplot2::geom_point(shape = 21, size = 2) +
+      ggplot2::scale_x_continuous(name = "Dirichlet prior concentration", breaks = seq(1, 101, 20), limits = c(1, 101)) +
+      ggplot2::scale_y_continuous(name = expression(BF[10]), breaks = yBreaks, limits = range(yBreaks)) +
+      ggplot2::scale_fill_manual(name = NULL, values = c("red", "lightgray", "black", "white", "cornsilk2")) +
+      ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks), inherit.aes = FALSE) +
+      ggplot2::geom_segment(x = 1, xend = 101, y = -Inf, yend = -Inf, inherit.aes = FALSE) +
+      ggplot2::guides(fill = ggplot2::guide_legend(nrow = 5, byrow = TRUE)) +
+      ggplot2::theme(legend.spacing.y = ggplot2::unit(0, "cm"), legend.margin = ggplot2::margin(0, 0, -0.75, 0, "cm"))
   }
-  axisName <- switch(x[["check"]],
-    "first" = "Leading digit",
-    "firsttwo" = "Leading digits",
-    "last" = "Last digit"
-  )
-  xs <- rep(xBreaks[1], 2)
-  ys <- rep(yBreaks[1], 2)
-  types <- c("Observed", "Expected")
-  sizes <- c(7, 10)
-  shapes <- c(21, 22)
-  fills <- c("dodgerblue", "darkgray")
-  if (any(x[["deviation"]])) {
-    xs <- c(xs, xBreaks[1])
-    ys <- c(ys, yBreaks[1])
-    types <- c(types, "Deviation")
-    sizes <- c(sizes, 10)
-    shapes <- c(shapes, 22)
-    fills <- c(fills, "firebrick")
-  }
-  plotData <- data.frame(x = xs, y = ys, type = types)
-  plotData[["type"]] <- factor(plotData[["type"]], levels = types)
-  p <- ggplot2::ggplot(data = plotData, mapping = ggplot2::aes(x = x, y = y, fill = type)) +
-    ggplot2::geom_point(alpha = 0) +
-    ggplot2::geom_bar(data = subset(df, type == "Expected"), mapping = ggplot2::aes(x = x, y = y), fill = ifelse(x[["deviation"]], "firebrick", "darkgray"), stat = "identity", color = "black") +
-    ggplot2::geom_line(data = subset(df, type == "Observed"), mapping = ggplot2::aes(x = x, y = y), color = "dodgerblue", linewidth = lineSize) +
-    ggplot2::geom_errorbar(data = x[["estimates"]], mapping = ggplot2::aes(x = d, ymin = lb, ymax = ub), width = 0.5) +
-    ggplot2::geom_point(data = subset(df, type == "Observed"), mapping = ggplot2::aes(x = x, y = y), fill = "dodgerblue", size = pointSize, shape = 21) +
-    ggplot2::scale_x_continuous(name = axisName, breaks = xBreaks, labels = xLabels, limits = c(min(x[["digits"]]) - 0.5, max(x[["digits"]]) + 0.5), ) +
-    ggplot2::scale_y_continuous(name = "Relative frequency", breaks = yBreaks, limits = c(0, max(yBreaks))) +
-    ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yBreaks)) +
-    ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf) +
-    ggplot2::labs(fill = "") +
-    ggplot2::theme(legend.text = ggplot2::element_text(margin = ggplot2::margin(l = -5, r = 50))) +
-    ggplot2::guides(fill = ggplot2::guide_legend(override.aes = list(
-      size = sizes, shape = shapes, fill = fills, color = "black", alpha = 1
-    )))
   p <- .theme_jfa(p, legend.position = "top")
   return(p)
 }
@@ -1299,7 +1330,7 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior", "robustness")
     stopifnot("plot not supported for demographic parity" = x[["measure"]] != "dp")
     plotdata <- data.frame(x = seq(1, 101, 0.1), y = 0)
     for (i in seq_len(nrow(plotdata))) {
-      plotdata[i, "y"] <- .contingencyTableBf(x[["crossTab"]], prior_a = plotdata[i, "x"], fixed = "columns")
+      plotdata[i, "y"] <- .contingencyTableBf(x[["crossTab"]], plotdata[i, "x"], "columns")
     }
     yBreaks <- pretty(c(0, 3, plotdata$y), min.n = 4)
     maxbfLevel <- paste0("max. BF:                        ", format(plotdata$y[which.max(plotdata$y)], digits = 3), " at \u03B1 = ", plotdata$x[which.max(plotdata$y)])

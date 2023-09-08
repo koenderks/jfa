@@ -135,24 +135,17 @@ digit_test <- function(x,
     names(statistic) <- "X-squared"
     names(parameter) <- "df"
   } else {
-    if (is.logical(prior)) {
-      alpha <- rep(1, length(dig))
+    if (isTRUE(prior)) {
+      prior_vec <- rep(1, length(dig))
     } else if (is.numeric(prior) && length(prior) == 1) {
       stopifnot("'prior' must be a numeric value >= 1" = prior >= 1)
-      alpha <- rep(prior, length(dig))
+      prior_vec <- rep(prior, length(dig))
     } else if (is.numeric(prior) && length(prior) != length(dig)) {
       stop("number of elements in 'prior' must be equal to number of digits")
     } else {
-      alpha <- prior
+      prior_vec <- prior
     }
-    lbeta_xa <- sum(lgamma(alpha + obs)) - lgamma(sum(alpha + obs))
-    lbeta_a <- sum(lgamma(alpha)) - lgamma(sum(alpha))
-    if (any(rowSums(cbind(p_exp, obs)) == 0)) {
-      log_bf10 <- (lbeta_xa - lbeta_a)
-    } else {
-      log_bf10 <- (lbeta_xa - lbeta_a) + (0 - sum(obs * log(p_exp)))
-    }
-    bf <- exp(log_bf10)
+    bf <- .multinomialBf(obs, p_exp, prior_vec)
     names(bf) <- "BF10"
   }
   mad <- mean(abs((obs / n) - (exp / n)))
@@ -190,6 +183,7 @@ digit_test <- function(x,
   deviation <- result[["estimates"]]$p.exp <= result[["estimates"]]$lb | result[["estimates"]]$p.exp >= result[["estimates"]]$ub
   names(deviation) <- dig
   result[["deviation"]] <- deviation
+  result[["prior"]] <- prior
   result[["data.name"]] <- dname
   class(result) <- c("jfaDistr", "list")
   return(result)

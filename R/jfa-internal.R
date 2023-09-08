@@ -754,8 +754,21 @@
   return(digits)
 }
 
+.multinomialBf <- function(y, p, prior_a_vec) {
+  # For more specific calculations, see Sarafoglou, A., Haaf, J. M., Ly, A., Gronau, Q. F., Wagenmakers, E. J., & Marsman, M. (2023). Evaluating multinomial order restrictions with bridge sampling. Psychological Methods, 28(2), 322.
+  lbeta_xa <- sum(lgamma(prior_a_vec + y)) - lgamma(sum(prior_a_vec + y))
+  lbeta_a <- sum(lgamma(prior_a_vec)) - lgamma(sum(prior_a_vec))
+  if (any(rowSums(cbind(p, y)) == 0)) {
+    log_bf10 <- (lbeta_xa - lbeta_a)
+  } else {
+    log_bf10 <- (lbeta_xa - lbeta_a) + (0 - sum(y * log(p)))
+  }
+  bf10 <- exp(log_bf10)
+  return(bf10)
+}
+
 .contingencyTableBf <- function(y, prior_a, fixed = c("none", "rows", "columns")) {
-  # For the calculations, see Jamil, T., Ly, A., Morey, R. D., Love, J., Marsman, M., & Wagenmakers, E. J. (2017). Default “Gunel and Dickey” Bayes factors for contingency tables. Behavior Research Methods, 49, 638-652.
+  # For more specific calculations, see Jamil, T., Ly, A., Morey, R. D., Love, J., Marsman, M., & Wagenmakers, E. J. (2017). Default “Gunel and Dickey” Bayes factors for contingency tables. Behavior Research Methods, 49, 638-652.
   C <- ncol(y)
   R <- nrow(y)
   ystardot <- rowSums(y)
