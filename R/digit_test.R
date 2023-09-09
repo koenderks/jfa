@@ -154,6 +154,7 @@ digit_test <- function(x,
   names(obs) <- dig
   names(exp) <- dig
   result <- list()
+  result[["data"]] <- x
   result[["conf.level"]] <- conf.level
   result[["observed"]] <- obs
   result[["expected"]] <- exp

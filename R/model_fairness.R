@@ -379,6 +379,7 @@ model_fairness <- function(data,
     }
   }
   result <- list()
+  result[["data"]] <- data
   result[["conf.level"]] <- conf.level
   result[["privileged"]] <- privileged
   result[["unprivileged"]] <- unprivileged

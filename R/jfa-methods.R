@@ -903,7 +903,7 @@ summary.jfaDistr <- function(object, digits = getOption("digits"), ...) {
 #' @rdname jfa-methods
 #' @method plot jfaDistr
 #' @export
-plot.jfaDistr <- function(x, type = c("estimates", "robustness"), ...) {
+plot.jfaDistr <- function(x, type = c("estimates", "robustness", "sequential"), ...) {
   type <- match.arg(type)
   if (type == "estimates") {
     y <- type <- d <- lb <- ub <- NULL
@@ -973,11 +973,43 @@ plot.jfaDistr <- function(x, type = c("estimates", "robustness"), ...) {
       )))
   } else if (type == "robustness") {
     stopifnot("plot not supported for frequentist inference" = !isFALSE(x[["prior"]]))
-    plotdata <- data.frame(x = seq(1, 101, 0.1), y = 0)
+    plotdata <- data.frame(x = seq(1, 101, 0.1), y = 1)
     for (i in seq_len(nrow(plotdata))) {
       plotdata[i, "y"] <- .multinomialBf(x[["observed"]], x[["estimates"]][["p.exp"]], rep(plotdata[i, "x"], length(x[["observed"]])))
     }
     p <- .plotBfRobustness(x, plotdata)
+  } else if (type == "sequential") {
+    stopifnot("plot not supported for frequentist inference" = !isFALSE(x[["prior"]]))
+    plotdata <- data.frame(x = rep(1:x[["n"]], 4), y = 1, type = NA)
+    loc <- 1
+    for (j in 1:4) {
+      prior_param <- switch(j,
+        "1" = as.numeric(x[["prior"]]),
+        "2" = 1,
+        "3" = 10,
+        "4" = 50
+      )
+      for (i in seq_len(x[["n"]])) {
+        d <- .extract_digits(x[["data"]][1:i], check = x[["check"]], include.zero = FALSE)
+        d <- d[!is.na(d)]
+        d_tab <- table(d)
+        dig <- if (x[["check"]] == "firsttwo") 10:99 else 1:9
+        obs <- rep(0, length(dig))
+        d_included <- as.numeric(names(d_tab))
+        index <- if (x[["check"]] == "firsttwo") d_included - 9 else d_included
+        obs[index] <- as.numeric(d_tab)
+        plotdata[loc, "y"] <- .multinomialBf(obs, x[["estimates"]][["p.exp"]], rep(prior_param, length(x[["observed"]])))
+        plotdata[loc, "type"] <- switch(j,
+          "1" = "user",
+          "2" = "uniform",
+          "3" = "concentrated",
+          "4" = "ultraconcentrated"
+        )
+        loc <- loc + 1
+      }
+    }
+    plotdata$type <- factor(plotdata$type, levels = c("user", "uniform", "concentrated", "ultraconcentrated"))
+    p <- .plotBfSequential(x, plotdata)
   }
   p <- .theme_jfa(p, legend.position = "top")
   return(p)

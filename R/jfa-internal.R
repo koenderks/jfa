@@ -917,3 +917,74 @@
     )
   return(p)
 }
+
+.plotBfSequential <- function(x, plotdata) {
+  y <- xend <- yend <- label <- type <- NULL
+  plotdata$y <- log(plotdata$y)
+  yRange <- range(plotdata$y)
+  xBreaks <- pretty(plotdata$x, min.n = 4)
+  if (all(abs(yRange) <= log(100))) {
+    yBreaks <- log(c(1 / 100, 1 / 30, 1 / 10, 1 / 3, 1, 3, 10, 30, 100))
+    yLabels <- c("1 / 100", "1 / 30", "1 / 10", "1 / 3", "1", "3", "10", "30", "100")
+    idx <- findInterval(yRange, 1.05 * yBreaks, all.inside = TRUE)
+    if (idx[2L] == 5L && abs(yRange[2L]) <= 0.05493061) {
+      idx[2L] <- 4L
+    }
+    idx <- max(1L, idx[1L] - 1L):min(length(yBreaks), idx[2L] + 2L)
+    yBreaks <- yBreaks[idx]
+    yLabels <- yLabels[idx]
+  } else {
+    yRange <- yRange * log10(exp(1))
+    plotdata$y <- plotdata$y * log10(exp(1))
+    from <- floor(yRange[1L])
+    to <- ceiling(yRange[2L])
+    yBreaks <- unique(as.integer(pretty(x = c(from, to))))
+    step <- yBreaks[2L] - yBreaks[1L]
+    yBreaks <- c(yBreaks[1L] - step, yBreaks, yBreaks[length(yBreaks)] + step)
+    if (yBreaks[1L] == 0) {
+      yBreaks <- c(-step, yBreaks)
+    }
+    if (yBreaks[length(yBreaks)] == 0) {
+      yBreaks <- c(yBreaks, step)
+    }
+    if (max(abs(yBreaks)) < 6L) {
+      idx <- yBreaks < 0
+      yLabels <- c(paste("1 /", formatC(10^abs(yBreaks[idx]), format = "fg")), formatC(10^yBreaks[!idx], format = "fg"))
+    } else {
+      yLabels <- parse(text = paste0("10^", yBreaks))
+    }
+  }
+  n <- length(yBreaks) - 1L
+  d1 <- yBreaks[1L] - yBreaks[2L]
+  d2 <- yBreaks[n + 1L] - yBreaks[n]
+  xlocation <- (xBreaks[length(xBreaks)] - xBreaks[1L]) * 0.1
+  dfArrow <- data.frame(x = xlocation, xend = xlocation, y = c(yBreaks[2L] + 0.25 * d1, yBreaks[n] + 0.25 * d2), yend = c(yBreaks[2L] + 0.75 * d1, yBreaks[n] + 0.75 * d2))
+  evidenceBase <- gettext("Evidence~'for'~H%s")
+  arrowLabel <- c(sprintf(evidenceBase, "[0]"), sprintf(evidenceBase, "[1]"))
+  dfArrowTxt <- data.frame(y = (dfArrow$y + dfArrow$yend) / 2, x = 1.5 * xlocation, label = arrowLabel, stringsAsFactors = FALSE)
+  if (0 < min(yBreaks)) {
+    dfArrow <- dfArrow[-1L, ]
+    dfArrowTxt <- dfArrowTxt[-1L, ]
+  } else if (0 > max(yBreaks)) {
+    dfArrow <- dfArrow[-2L, ]
+    dfArrowTxt <- dfArrowTxt[-2L, ]
+  }
+  p <- ggplot2::ggplot(data = plotdata, mapping = ggplot2::aes(x = x, y = y, linetype = type, color = type)) +
+    ggplot2::geom_segment(data = data.frame(x = min(xBreaks), xend = max(xBreaks), y = yBreaks, yend = yBreaks), mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend), inherit.aes = FALSE, linetype = "dashed", colour = "lightgray") +
+    ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = 0, yend = 0, linewidth = 0.25, inherit.aes = FALSE) +
+    ggplot2::geom_path() +
+    ggplot2::scale_x_continuous(name = "n", breaks = xBreaks, limits = range(xBreaks)) +
+    ggplot2::scale_y_continuous(name = expression(BF[10]), breaks = yBreaks, limits = range(yBreaks), labels = yLabels) +
+    ggplot2::scale_linetype_manual(name = NULL, values = c("solid", "solid", "dashed", "dotted")) +
+    ggplot2::scale_colour_manual(name = NULL, values = c("black", "darkgray", "black", "black")) +
+    ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks), inherit.aes = FALSE) +
+    ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf, inherit.aes = FALSE) +
+    ggplot2::geom_segment(data = dfArrow, ggplot2::aes(x = x, y = y, xend = xend, yend = yend), lineend = "round", linejoin = "bevel", arrow = ggplot2::arrow(length = ggplot2::unit(0.4, "cm")), size = 1, inherit.aes = FALSE) +
+    ggplot2::geom_text(data = dfArrowTxt, mapping = ggplot2::aes(x = x, y = y, label = label), parse = TRUE, size = 0.4 * 12, inherit.aes = FALSE, hjust = 0) +
+    ggplot2::guides(linetype = ggplot2::guide_legend(nrow = 2, ncol = 2, byrow = FALSE), colour = ggplot2::guide_legend(nrow = 2, ncol = 2, byrow = TRUE)) +
+    ggplot2::theme(
+      legend.spacing.y = ggplot2::unit(0, "cm"),
+      legend.margin = ggplot2::margin(0, 0, -0.5, 0, "cm")
+    )
+  return(p)
+}
