@@ -836,11 +836,11 @@
 
 .plotBfRobustness <- function(x, plotdata) {
   y <- xend <- yend <- label <- type <- NULL
-  maxPrior <- paste0("max. BF\u2081\u2080:                      ", format(plotdata$y[which.max(plotdata$y)], digits = 3), " at \u03B1 = ", plotdata$x[which.max(plotdata$y)])
-  userPrior <- paste0("user prior:                     BF\u2081\u2080 = ", format(x[["bf"]], digits = 3))
-  uniPrior <- paste0("uniform prior:                BF\u2081\u2080 = ", format(plotdata$y[1], digits = 3))
-  concPrior <- paste0("concentrated prior:        BF\u2081\u2080 = ", format(plotdata$y[which(plotdata$x == 10)], digits = 3))
-  uconcPrior <- paste0("ultraconcentrated prior: BF\u2081\u2080 = ", format(plotdata$y[which(plotdata$x == 50)], digits = 3))
+  maxPrior <- paste0("max.~BF[10]:~~~~~~~~~~~~~~~~~~~~~~~'", format(plotdata$y[which.max(plotdata$y)], digits = 3), "'~at~\u03B1~`=`~", plotdata$x[which.max(plotdata$y)])
+  userPrior <- paste0("user~prior:~~~~~~~~~~~~~~~~~~~~~~~~BF[10]:~'", format(x[["bf"]], digits = 3), "'")
+  uniPrior <- paste0("uniform~prior:~~~~~~~~~~~~~~~~~~~BF[10]:~'", format(plotdata$y[1], digits = 3), "'")
+  concPrior <- paste0("concentrated~prior:~~~~~~~~~BF[10]:~'", format(plotdata$y[which(plotdata$x == 10)], digits = 3), "'")
+  uconcPrior <- paste0("ultraconcentrated~prior:~\tBF[10]:~'", format(plotdata$y[which(plotdata$x == 50)], digits = 3), "'")
   pointdata <- data.frame(
     x = c(plotdata$x[which.max(plotdata$y)], as.numeric(x[["prior"]]), 1, 10, 50),
     y = c(plotdata$y[which.max(plotdata$y)], x[["bf"]], plotdata$y[1], plotdata$y[which(plotdata$x == 10)], plotdata$y[which(plotdata$x == 50)]),
@@ -927,7 +927,7 @@
     ggplot2::geom_point(shape = 21, size = 2.5) +
     ggplot2::scale_x_continuous(name = "Dirichlet prior concentration", breaks = seq(1, 101, 20), limits = c(1, 101)) +
     ggplot2::scale_y_continuous(name = expression(BF[10]), breaks = yBreaks, limits = range(yBreaks), labels = yLabels, sec.axis = secAxis) +
-    ggplot2::scale_fill_manual(name = NULL, values = c("red", "lightgray", "black", "white", "cornsilk2")) +
+    ggplot2::scale_fill_manual(name = NULL, values = c("red", "lightgray", "black", "white", "cornsilk2"), labels = function(x) parse(text = x)) +
     ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks), inherit.aes = FALSE) +
     ggplot2::geom_segment(x = 1, xend = 101, y = -Inf, yend = -Inf, inherit.aes = FALSE) +
     ggplot2::geom_segment(data = dfArrow, ggplot2::aes(x = x, y = y, xend = xend, yend = yend), lineend = "round", linejoin = "bevel", arrow = ggplot2::arrow(length = ggplot2::unit(0.4, "cm")), size = 1, inherit.aes = FALSE) +
@@ -936,7 +936,7 @@
     ggplot2::theme(
       legend.spacing.y = ggplot2::unit(0, "cm"),
       legend.margin = ggplot2::margin(0, 0, -0.5, 0, "cm"),
-      legend.text = ggplot2::element_text("HiraKakuProN-W3")
+      legend.text.align = 0
     )
   if (hasRightAxis) {
     p <- p + rightAxisLine + ggplot2::theme(axis.ticks.y.right = ggplot2::element_line(colour = rep(c("black", NA), length = length(yBreaksR))))
