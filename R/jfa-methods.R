@@ -1000,15 +1000,15 @@ plot.jfaDistr <- function(x, type = c("estimates", "robustness", "sequential"), 
         obs[index] <- as.numeric(d_tab)
         plotdata[loc, "y"] <- .multinomialBf(obs, x[["estimates"]][["p.exp"]], rep(prior_param, length(x[["observed"]])))
         plotdata[loc, "type"] <- switch(j,
-          "1" = "user",
-          "2" = "uniform",
-          "3" = "concentrated",
-          "4" = "ultraconcentrated"
+          "1" = "user prior",
+          "2" = "uniform prior",
+          "3" = "concentrated prior",
+          "4" = "ultraconcentrated prior"
         )
         loc <- loc + 1
       }
     }
-    plotdata$type <- factor(plotdata$type, levels = c("user", "uniform", "concentrated", "ultraconcentrated"))
+    plotdata$type <- factor(plotdata$type, levels = c("user prior", "uniform prior", "concentrated prior", "ultraconcentrated prior"))
     p <- .plotBfSequential(x, plotdata)
   }
   p <- .theme_jfa(p, legend.position = "top")
