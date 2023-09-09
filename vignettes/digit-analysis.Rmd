@@ -52,11 +52,30 @@ using the code below.
 x <- digit_test(sinoForest$value, check = "first", reference = "benford")
 print(x)
 plot(x)
+```
 
+You can also perform this analysis in a Bayesian fashion by setting
+`prior = TRUE`, or providing a value for the prior concentration parameter.
+
+```{r fig.align="center", fig.height=4, fig.width=6}
 # Bayesian hypothesis test using default prior
 x <- digit_test(sinoForest$value, check = "first", reference = "benford", prior = TRUE)
 print(x)
+```
+
+You can then check the robustness of the Bayes factor to the choice of prior
+distribution using the `plot()` function with `type = "robustness"`.
+
+```{r fig.align="center", fig.height=4, fig.width=6}
 plot(x, type = "robustness")
+```
+
+You can perform a sequential analysis of the Bayes factor using the `plot()`
+function with the argument `type = "sequential"`. The sequential analysis
+includes a robustness check as well.
+
+```{r fig.align="center", fig.height=4, fig.width=6}
+plot(x, type = "sequential")
 ```
 
 ## Function: `repeated_test()`
