@@ -840,7 +840,7 @@
   userPrior <- paste0("user~prior:~~~~~~~~~~~~~~~~~~~~~~~~BF[10]:~'", format(x[["bf"]], digits = 3), "'")
   uniPrior <- paste0("uniform~prior:~~~~~~~~~~~~~~~~~~~BF[10]:~'", format(plotdata$y[1], digits = 3), "'")
   concPrior <- paste0("concentrated~prior:~~~~~~~~~BF[10]:~'", format(plotdata$y[which(plotdata$x == 10)], digits = 3), "'")
-  uconcPrior <- paste0("ultraconcentrated~prior:~\tBF[10]:~'", format(plotdata$y[which(plotdata$x == 50)], digits = 3), "'")
+  uconcPrior <- paste0("ultraconcentrated~prior:~BF[10]:~'", format(plotdata$y[which(plotdata$x == 50)], digits = 3), "'")
   pointdata <- data.frame(
     x = c(plotdata$x[which.max(plotdata$y)], as.numeric(x[["prior"]]), 1, 10, 50),
     y = c(plotdata$y[which.max(plotdata$y)], x[["bf"]], plotdata$y[1], plotdata$y[which(plotdata$x == 10)], plotdata$y[which(plotdata$x == 50)]),
