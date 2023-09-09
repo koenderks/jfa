@@ -860,7 +860,9 @@
     idx <- max(1L, idx[1L] - 1L):min(length(yBreaks), idx[2L] + 2L)
     yBreaks <- yBreaks[idx]
     yLabels <- yLabels[idx]
+    hasRightAxis <- TRUE
   } else {
+    hasRightAxis <- FALSE
     yRange <- yRange * log10(exp(1))
     plotdata$y <- plotdata$y * log10(exp(1))
     pointdata$y <- pointdata$y * log10(exp(1))
@@ -881,6 +883,27 @@
     } else {
       yLabels <- parse(text = paste0("10^", yBreaks))
     }
+  }
+  if (hasRightAxis) {
+    allEvidenceLabels <- c("Anecdotal", "Moderate", "Strong", "Very strong", "Extreme")
+    allYlabelR <- allEvidenceLabels
+    allYlabelR <- c(rev(allYlabelR), allYlabelR)
+    nr <- 2 * length(yBreaks) - 1
+    yBreaksR <- numeric(nr)
+    yLabelsR <- character(nr)
+    colsRight <- character(nr)
+    idxOdd <- seq(1, nr, 2)
+    idxEven <- seq(2, nr, 2)
+    yBreaksR[idxOdd] <- yBreaks
+    yBreaksR[idxEven] <- (yBreaks[-1] + yBreaks[-length(yBreaks)]) / 2
+    yLabelsR[idxEven] <- allYlabelR[idx][-1L]
+    colsRight[idxOdd] <- "black"
+    colsRight[idxEven] <- NA_character_
+    dfRightAxisLines <- data.frame(x = Inf, xend = Inf, y = yBreaksR[1L], yend = yBreaksR[length(yBreaksR)])
+    rightAxisLine <- ggplot2::geom_segment(data = dfRightAxisLines, mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend), inherit.aes = FALSE)
+    secAxis <- ggplot2::sec_axis(trans = ~., name = "Evidence", breaks = yBreaksR, labels = yLabelsR)
+  } else {
+    secAxis <- ggplot2::waiver()
   }
   n <- length(yBreaks) - 1L
   d1 <- yBreaks[1L] - yBreaks[2L]
@@ -903,7 +926,7 @@
     ggplot2::geom_path(data = plotdata, mapping = ggplot2::aes(x = x, y = y), inherit.aes = FALSE) +
     ggplot2::geom_point(shape = 21, size = 2.5) +
     ggplot2::scale_x_continuous(name = "Dirichlet prior concentration", breaks = seq(1, 101, 20), limits = c(1, 101)) +
-    ggplot2::scale_y_continuous(name = expression(BF[10]), breaks = yBreaks, limits = range(yBreaks), labels = yLabels) +
+    ggplot2::scale_y_continuous(name = expression(BF[10]), breaks = yBreaks, limits = range(yBreaks), labels = yLabels, sec.axis = secAxis) +
     ggplot2::scale_fill_manual(name = NULL, values = c("red", "lightgray", "black", "white", "cornsilk2")) +
     ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks), inherit.aes = FALSE) +
     ggplot2::geom_segment(x = 1, xend = 101, y = -Inf, yend = -Inf, inherit.aes = FALSE) +
@@ -915,6 +938,9 @@
       legend.margin = ggplot2::margin(0, 0, -0.5, 0, "cm"),
       legend.text = ggplot2::element_text("HiraKakuProN-W3")
     )
+  if (hasRightAxis) {
+    p <- p + rightAxisLine + ggplot2::theme(axis.ticks.y.right = ggplot2::element_line(colour = rep(c("black", NA), length = length(yBreaksR))))
+  }
   return(p)
 }
 
@@ -933,7 +959,9 @@
     idx <- max(1L, idx[1L] - 1L):min(length(yBreaks), idx[2L] + 2L)
     yBreaks <- yBreaks[idx]
     yLabels <- yLabels[idx]
+    hasRightAxis <- TRUE
   } else {
+    hasRightAxis <- FALSE
     yRange <- yRange * log10(exp(1))
     plotdata$y <- plotdata$y * log10(exp(1))
     from <- floor(yRange[1L])
@@ -953,6 +981,27 @@
     } else {
       yLabels <- parse(text = paste0("10^", yBreaks))
     }
+  }
+  if (hasRightAxis) {
+    allEvidenceLabels <- c("Anecdotal", "Moderate", "Strong", "Very strong", "Extreme")
+    allYlabelR <- allEvidenceLabels
+    allYlabelR <- c(rev(allYlabelR), allYlabelR)
+    nr <- 2 * length(yBreaks) - 1
+    yBreaksR <- numeric(nr)
+    yLabelsR <- character(nr)
+    colsRight <- character(nr)
+    idxOdd <- seq(1, nr, 2)
+    idxEven <- seq(2, nr, 2)
+    yBreaksR[idxOdd] <- yBreaks
+    yBreaksR[idxEven] <- (yBreaks[-1] + yBreaks[-length(yBreaks)]) / 2
+    yLabelsR[idxEven] <- allYlabelR[idx][-1L]
+    colsRight[idxOdd] <- "black"
+    colsRight[idxEven] <- NA_character_
+    dfRightAxisLines <- data.frame(x = Inf, xend = Inf, y = yBreaksR[1L], yend = yBreaksR[length(yBreaksR)])
+    rightAxisLine <- ggplot2::geom_segment(data = dfRightAxisLines, mapping = ggplot2::aes(x = x, y = y, xend = xend, yend = yend), inherit.aes = FALSE)
+    secAxis <- ggplot2::sec_axis(trans = ~., name = "Evidence", breaks = yBreaksR, labels = yLabelsR)
+  } else {
+    secAxis <- ggplot2::waiver()
   }
   n <- length(yBreaks) - 1L
   d1 <- yBreaks[1L] - yBreaks[2L]
@@ -974,7 +1023,7 @@
     ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = 0, yend = 0, linewidth = 0.25, inherit.aes = FALSE) +
     ggplot2::geom_path() +
     ggplot2::scale_x_continuous(name = "n", breaks = xBreaks, limits = range(xBreaks)) +
-    ggplot2::scale_y_continuous(name = expression(BF[10]), breaks = yBreaks, limits = range(yBreaks), labels = yLabels) +
+    ggplot2::scale_y_continuous(name = expression(BF[10]), breaks = yBreaks, limits = range(yBreaks), labels = yLabels, sec.axis = secAxis) +
     ggplot2::scale_linetype_manual(name = NULL, values = c("solid", "solid", "dashed", "dotted")) +
     ggplot2::scale_colour_manual(name = NULL, values = c("black", "darkgray", "black", "black")) +
     ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks), inherit.aes = FALSE) +
@@ -986,5 +1035,8 @@
       legend.spacing.y = ggplot2::unit(0, "cm"),
       legend.margin = ggplot2::margin(0, 0, -0.5, 0, "cm")
     )
+  if (hasRightAxis) {
+    p <- p + rightAxisLine + ggplot2::theme(axis.ticks.y.right = ggplot2::element_line(colour = rep(c("black", NA), length = length(yBreaksR))))
+  }
   return(p)
 }
