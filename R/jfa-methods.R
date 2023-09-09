@@ -980,7 +980,10 @@ plot.jfaDistr <- function(x, type = c("estimates", "robustness", "sequential"), 
     p <- .plotBfRobustness(x, plotdata)
   } else if (type == "sequential") {
     stopifnot("plot not supported for frequentist inference" = !isFALSE(x[["prior"]]))
-    plotdata <- data.frame(x = rep(1:x[["n"]], 4), y = 1, type = NA)
+    plotdata <- data.frame(
+      x = rep(0:x[["n"]], 4), y = 1,
+      type = rep(c("user prior", "uniform prior", "concentrated prior", "ultraconcentrated prior"), each = x[["n"]] + 1)
+    )
     loc <- 1
     for (j in 1:4) {
       prior_param <- switch(j,
@@ -989,22 +992,18 @@ plot.jfaDistr <- function(x, type = c("estimates", "robustness", "sequential"), 
         "3" = 10,
         "4" = 50
       )
-      for (i in seq_len(x[["n"]])) {
-        d <- .extract_digits(x[["data"]][1:i], check = x[["check"]], include.zero = FALSE)
-        d <- d[!is.na(d)]
-        d_tab <- table(d)
-        dig <- if (x[["check"]] == "firsttwo") 10:99 else 1:9
-        obs <- rep(0, length(dig))
-        d_included <- as.numeric(names(d_tab))
-        index <- if (x[["check"]] == "firsttwo") d_included - 9 else d_included
-        obs[index] <- as.numeric(d_tab)
-        plotdata[loc, "y"] <- .multinomialBf(obs, x[["estimates"]][["p.exp"]], rep(prior_param, length(x[["observed"]])))
-        plotdata[loc, "type"] <- switch(j,
-          "1" = "user prior",
-          "2" = "uniform prior",
-          "3" = "concentrated prior",
-          "4" = "ultraconcentrated prior"
-        )
+      for (i in seq_len(x[["n"]] + 1)) {
+        if (plotdata$x[loc] != 0) {
+          d <- .extract_digits(x[["data"]][1:i], check = x[["check"]], include.zero = FALSE)
+          d <- d[!is.na(d)]
+          d_tab <- table(d)
+          dig <- if (x[["check"]] == "firsttwo") 10:99 else 1:9
+          obs <- rep(0, length(dig))
+          d_included <- as.numeric(names(d_tab))
+          index <- if (x[["check"]] == "firsttwo") d_included - 9 else d_included
+          obs[index] <- as.numeric(d_tab)
+          plotdata[loc, "y"] <- .multinomialBf(obs, x[["estimates"]][["p.exp"]], rep(prior_param, length(x[["observed"]])))
+        }
         loc <- loc + 1
       }
     }
