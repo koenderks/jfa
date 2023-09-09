@@ -972,14 +972,14 @@ plot.jfaDistr <- function(x, type = c("estimates", "robustness", "sequential"), 
         size = sizes, shape = shapes, fill = fills, color = "black", alpha = 1
       )))
   } else if (type == "robustness") {
-    stopifnot("plot not supported for frequentist inference" = !isFALSE(x[["prior"]]))
+    stopifnot('plot(..., type = "robustness") not supported for frequentist analyses' = !isFALSE(x[["prior"]]))
     plotdata <- data.frame(x = seq(1, 101, 0.1), y = 1)
     for (i in seq_len(nrow(plotdata))) {
       plotdata[i, "y"] <- .multinomialBf(x[["observed"]], x[["estimates"]][["p.exp"]], rep(plotdata[i, "x"], length(x[["observed"]])))
     }
     p <- .plotBfRobustness(x, plotdata)
   } else if (type == "sequential") {
-    stopifnot("plot not supported for frequentist inference" = !isFALSE(x[["prior"]]))
+    stopifnot('plot(..., type = "sequential") not supported for frequentist analyses' = !isFALSE(x[["prior"]]))
     plotdata <- data.frame(
       x = rep(0:x[["n"]], 4), y = 1,
       type = rep(c("user prior", "uniform prior", "concentrated prior", "ultraconcentrated prior"), each = x[["n"]] + 1)
@@ -1298,8 +1298,8 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior", "robustness")
       p <- p + ggplot2::geom_errorbar(mapping = ggplot2::aes(ymin = lb, ymax = ub), width = 0.5)
     }
   } else if (type == "posterior") {
-    stopifnot("plot not supported for frequentist inference" = !isFALSE(x[["prior"]]))
-    stopifnot("plot not supported for demographic parity" = x[["measure"]] != "dp")
+    stopifnot('plot(..., type = "posterior") not supported for frequentist analyses' = !isFALSE(x[["prior"]]))
+    stopifnot('plot(..., type = "posterior") not supported for demographic parity' = x[["measure"]] != "dp")
     plotdata <- data.frame(x = numeric(), y = numeric(), group = character(), xmin = numeric(), xmax = numeric(), type = character())
     for (i in seq_along(unprivileged)) {
       tmp <- data.frame(
@@ -1336,8 +1336,8 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior", "robustness")
       ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf, inherit.aes = FALSE) +
       (if (length(unprivileged) == 1) ggplot2::scale_color_manual(name = NULL, values = "black") else ggplot2::scale_color_brewer(name = NULL, palette = "Dark2"))
   } else if (type == "robustness") {
-    stopifnot("plot not supported for frequentist inference" = !isFALSE(x[["prior"]]))
-    stopifnot("plot not supported for demographic parity" = x[["measure"]] != "dp")
+    stopifnot('plot(..., type = "robustness") not supported for frequentist analyses' = !isFALSE(x[["prior"]]))
+    stopifnot('plot(..., type = "robustness") not supported for demographic parity' = x[["measure"]] != "dp")
     plotdata <- data.frame(x = seq(1, 101, 0.1), y = 0)
     for (i in seq_len(nrow(plotdata))) {
       plotdata[i, "y"] <- .contingencyTableBf(x[["crossTab"]], plotdata[i, "x"], "columns")
