@@ -383,6 +383,8 @@ model_fairness <- function(data,
   result[["conf.level"]] <- conf.level
   result[["privileged"]] <- privileged
   result[["unprivileged"]] <- unprivileged
+  result[["target"]] <- target
+  result[["predictions"]] <- predictions
   result[["protected"]] <- protected
   result[["positive"]] <- positive
   result[["negative"]] <- negative

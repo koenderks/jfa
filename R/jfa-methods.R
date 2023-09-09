@@ -1260,7 +1260,7 @@ summary.jfaFairness <- function(object, digits = getOption("digits"), ...) {
 #' @rdname jfa-methods
 #' @method plot jfaFairness
 #' @export
-plot.jfaFairness <- function(x, type = c("estimates", "posterior", "robustness"), ...) {
+plot.jfaFairness <- function(x, type = c("estimates", "posterior", "robustness", "sequential"), ...) {
   type <- match.arg(type)
   estimate <- lb <- ub <- group <- y <- NULL
   groups <- names(x[["confusion.matrix"]])
@@ -1343,6 +1343,63 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior", "robustness")
       plotdata[i, "y"] <- .contingencyTableBf(x[["crossTab"]], plotdata[i, "x"], "columns")
     }
     p <- .plotBfRobustness(x, plotdata)
+  } else if (type == "sequential") {
+    stopifnot('plot(..., type = "sequential") not supported for frequentist analyses' = !isFALSE(x[["prior"]]))
+    stopifnot('plot(..., type = "sequential") not supported for demographic parity' = x[["measure"]] != "dp")
+    plotdata <- data.frame(
+      x = rep(0:x[["n"]], 4), y = 1,
+      type = rep(c("user prior", "uniform prior", "concentrated prior", "ultraconcentrated prior"), each = x[["n"]] + 1)
+    )
+    loc <- 1
+    for (j in 1:4) {
+      prior_param <- switch(j,
+        "1" = as.numeric(x[["prior"]]),
+        "2" = 1,
+        "3" = 10,
+        "4" = 50
+      )
+      for (i in seq_len(x[["n"]] + 1)) {
+        if (plotdata$x[loc] != 0) {
+          crossTab <- matrix(0, nrow = 2, ncol = length(x[["unprivileged"]]) + 1)
+          tmpdat <- x[["data"]][1:i, ]
+          for (i in seq_len(nlevels(x[["data"]][, x[["protected"]]]))) {
+            group <- levels(x[["data"]][, x[["protected"]]])[i]
+            groupDat <- tmpdat[tmpdat[, x[["protected"]]] == group, ]
+            matrix <- table("Actual" = groupDat[, x[["target"]]], "Predicted" = groupDat[, x[["predictions"]]])
+            tp <- matrix[x[["positive"]], x[["positive"]]]
+            fp <- sum(matrix[x[["negative"]], x[["positive"]]])
+            tn <- sum(matrix[x[["negative"]], x[["negative"]]])
+            fn <- sum(matrix[x[["positive"]], x[["negative"]]])
+            num <- switch(x[["measure"]],
+              "pp" = tp + fp,
+              "prp" = tp,
+              "ap" = tp + tn,
+              "fnrp" = fn,
+              "fprp" = fp,
+              "tprp" = tp,
+              "npvp" = tn,
+              "sp" = tn
+            )
+            denom <- switch(x[["measure"]],
+              "pp" = tp + fp + tn + fn,
+              "prp" = tp + fp,
+              "ap" = tp + fp + tn + fn,
+              "fnrp" = tp + fn,
+              "fprp" = tn + fp,
+              "tprp" = tp + fn,
+              "npvp" = tn + fn,
+              "sp" = tn + fp
+            )
+            crossTab[1, i] <- num
+            crossTab[2, i] <- denom - num
+          }
+          plotdata[loc, "y"] <- .contingencyTableBf(crossTab, prior_param, "columns")
+        }
+        loc <- loc + 1
+      }
+    }
+    plotdata$type <- factor(plotdata$type, levels = c("user prior", "uniform prior", "concentrated prior", "ultraconcentrated prior"))
+    p <- .plotBfSequential(x, plotdata)
   }
   p <- .theme_jfa(p, legend.position = if (length(unprivileged) == 1 && type == "posterior") "none" else "top")
   return(p)

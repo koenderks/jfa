@@ -101,7 +101,7 @@
 
 \method{summary}{jfaFairness}(object, digits = getOption("digits"), ...)
 
-\method{plot}{jfaFairness}(x, type = c("estimates", "posterior", "robustness"), ...)
+\method{plot}{jfaFairness}(x, type = c("estimates", "posterior", "robustness", "sequential"), ...)
 }
 \arguments{
 \item{...}{further arguments, currently ignored.}
