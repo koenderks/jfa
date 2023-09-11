@@ -1329,7 +1329,7 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior", "robustness",
     }
     p <- ggplot2::ggplot(data = plotdata, mapping = ggplot2::aes(x = x, y = y, color = factor(group))) +
       ggplot2::geom_path(data = subset(plotdata, plotdata$type == "Prior"), linetype = "dashed", color = "black") +
-      ggplot2::geom_path(data = subset(plotdata, plotdata$type == "Posterior"), linetype = "solid") +
+      ggplot2::geom_path(data = subset(plotdata, plotdata$type == "Posterior"), linetype = "solid", show.legend = length(unprivileged) > 1) +
       ggplot2::scale_y_continuous(name = "Density", breaks = yBreaks, limits = range(yBreaks)) +
       ggplot2::scale_x_continuous(name = "Log odds ratio", breaks = xBreaks, limits = range(xBreaks)) +
       ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks), inherit.aes = FALSE) +
@@ -1338,8 +1338,15 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior", "robustness",
       ggplot2::theme(
         legend.spacing.y = ggplot2::unit(0, "cm"),
         legend.margin = ggplot2::margin(0, 0, if (length(groups) > 3) -0.5 else 0, 0, "cm")
-      ) +
-      (if (length(unprivileged) == 1) ggplot2::scale_color_manual(name = NULL, values = "black") else ggplot2::scale_color_brewer(name = NULL, palette = "Dark2"))
+      )
+    if (length(unprivileged) == 1) {
+      pointdata <- data.frame(x = c(0, 0, 0, 0), y = c(0, 0, 0, 0), type = factor(c("Prior", "Prior", "Posterior", "Posterior"), levels = c("Posterior", "Prior")))
+      p <- p + ggplot2::geom_path(data = pointdata, mapping = ggplot2::aes(x = x, y = y, linetype = factor(type)), inherit.aes = FALSE) +
+        ggplot2::scale_color_manual(name = NULL, values = "black") +
+        ggplot2::scale_linetype_manual(name = NULL, values = c("solid", "dashed"))
+    } else {
+      p <- p + ggplot2::scale_color_brewer(name = NULL, palette = "Dark2")
+    }
   } else if (type == "robustness") {
     stopifnot('plot(..., type = "robustness") not supported for frequentist analyses' = !isFALSE(x[["prior"]]))
     stopifnot('plot(..., type = "robustness") not supported for demographic parity' = x[["measure"]] != "dp")
@@ -1408,6 +1415,6 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior", "robustness",
     plotdata$type <- factor(plotdata$type, levels = c("user prior", "uniform prior", "concentrated prior", "ultraconcentrated prior"))
     p <- .plotBfSequential(x, plotdata)
   }
-  p <- .theme_jfa(p, legend.position = if (length(unprivileged) == 1 && type == "posterior") "none" else "top")
+  p <- .theme_jfa(p, legend.position = if (length(unprivileged) == 1 && type == "posterior") c(0.8, 0.8) else "top")
   return(p)
 }
