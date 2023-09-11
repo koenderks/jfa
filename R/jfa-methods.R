@@ -1334,6 +1334,11 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior", "robustness",
       ggplot2::scale_x_continuous(name = "Log odds ratio", breaks = xBreaks, limits = range(xBreaks)) +
       ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks), inherit.aes = FALSE) +
       ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf, inherit.aes = FALSE) +
+      ggplot2::guides(color = ggplot2::guide_legend(nrow = if (length(groups) > 3) 2 else 1, byrow = TRUE)) +
+      ggplot2::theme(
+        legend.spacing.y = ggplot2::unit(0, "cm"),
+        legend.margin = ggplot2::margin(0, 0, if (length(groups) > 3) -0.5 else 0, 0, "cm")
+      ) +
       (if (length(unprivileged) == 1) ggplot2::scale_color_manual(name = NULL, values = "black") else ggplot2::scale_color_brewer(name = NULL, palette = "Dark2"))
   } else if (type == "robustness") {
     stopifnot('plot(..., type = "robustness") not supported for frequentist analyses' = !isFALSE(x[["prior"]]))
