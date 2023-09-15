@@ -19,30 +19,30 @@ data {
   int poisson_likelihood;
 }
 parameters {
-  real<lower=0, upper=1> mu;
-  real<lower=0> kappa;
+  real<lower=0, upper=1> phi;
+  real<lower=0> nu;
   vector<lower=0, upper=1>[S] theta_s;
 }
 model {
   if (beta_prior) {
-    mu ~ beta(alpha, beta);
+    phi ~ beta(alpha, beta);
   } else if (gamma_prior) {
-    mu ~ gamma(alpha, beta);
+    phi ~ gamma(alpha, beta);
   } else if (normal_prior) {
-    mu ~ normal(alpha, beta);
+    phi ~ normal(alpha, beta);
   } else if (uniform_prior) {
-    mu ~ uniform(alpha, beta);
+    phi ~ uniform(alpha, beta);
   } else if (cauchy_prior) {
-    mu ~ cauchy(alpha, beta);
+    phi ~ cauchy(alpha, beta);
   } else if (t_prior) {
-    mu ~ student_t(alpha, 0, 1);
+    phi ~ student_t(alpha, 0, 1);
   } else if (chisq_prior) {
-    mu ~ chi_square(alpha);
+    phi ~ chi_square(alpha);
   } else if (exponential_prior) {
-    mu ~ exponential(alpha);
+    phi ~ exponential(alpha);
   }
-  kappa ~ pareto(1, 1.5);
-  theta_s ~ beta_proportion(mu, kappa);
+  nu ~ pareto(1, 1.5);
+  theta_s ~ beta_proportion(phi, nu);
   if (use_likelihood) {
     if (binomial_likelihood) {
       k ~ binomial(n, theta_s);
