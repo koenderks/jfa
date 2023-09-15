@@ -207,11 +207,14 @@ references:
   - family-names: Goodrich
     given-names: Ben
     email: benjamin.goodrich@columbia.edu
+  - family-names: Johnson
+    given-names: Andrew
+    email: andrew.johnson@arjohnsonau.com
   - family-names: Weber
     given-names: Sebastian
     email: sdw.post@waebers.de
   year: '2023'
-  version: '>= 2.18.1'
+  version: '>= 2.26.0'
 - type: software
   title: rstantools
   abstract: 'rstantools: Tools for Developing R Packages Interfacing with ''Stan'''
@@ -510,4 +513,4 @@ references:
   - family-names: Gao
     given-names: Yuanjun
   year: '2023'
-  version: '>= 2.18.0'
+  version: '>= 2.26.0'
