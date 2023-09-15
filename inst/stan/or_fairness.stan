@@ -1,7 +1,7 @@
 #include /include/license.stan
 
 data {
-  int<lower=0> y[4];
+  array[4] int<lower=0> y;
   real<lower=1> prior_a;
   int use_likelihood;
 }

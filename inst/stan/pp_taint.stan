@@ -3,8 +3,8 @@
 data {
   int<lower=1> S;
   int<lower=0> n;
-  int<lower=1> s[n];
-  real<lower=0, upper=1> t[n];
+  array[n] int<lower=1> s;
+  array[n] real<lower=0, upper=1> t;
   real<lower=0> alpha;
   real<lower=0> beta;
   int beta_prior;
