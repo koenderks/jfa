@@ -18,42 +18,36 @@ data {
   int use_likelihood;
 }
 parameters {
-  real<lower=0, upper=1> theta;
-  real<lower=0> sigma;
-  vector[S] alpha_s;
-  real<lower=0> mu;
-  real<lower=0> rho;
-  vector<lower=0>[S] xi_s;
-}
-transformed parameters {
+  real<lower=0, upper=1> phi;
+  real<lower=0> nu;
   vector<lower=0, upper=1>[S] theta_s;
+  real<lower=0> mu;
+  real<lower=0> sigma;
   vector<lower=0>[S] kappa_s;
-  theta_s = inv_logit(logit(theta) + sigma * alpha_s);
-  kappa_s = mu + rho * xi_s;
 }
 model {
   if (beta_prior) {
-    theta ~ beta(alpha, beta);
+    phi ~ beta(alpha, beta);
   } else if (gamma_prior) {
-    theta ~ gamma(alpha, beta);
+    phi ~ gamma(alpha, beta);
   } else if (normal_prior) {
-    theta ~ normal(alpha, beta);
+    phi ~ normal(alpha, beta);
   } else if (uniform_prior) {
-    theta ~ uniform(alpha, beta);
+    phi ~ uniform(alpha, beta);
   } else if (cauchy_prior) {
-    theta ~ cauchy(alpha, beta);
+    phi ~ cauchy(alpha, beta);
   } else if (t_prior) {
-    theta ~ student_t(alpha, 0, 1);
+    phi ~ student_t(alpha, 0, 1);
   } else if (chisq_prior) {
-    theta ~ chi_square(alpha);
+    phi ~ chi_square(alpha);
   } else if (exponential_prior) {
-    theta ~ exponential(alpha);
+    phi ~ exponential(alpha);
   }
-  sigma ~ normal(0, 1);
-  alpha_s ~ normal(0, 1);
-  mu ~ normal(0, 100);
-  rho ~ normal(0, 1);
-  xi_s ~ normal(0, 1);
+  nu ~ pareto(1, 1.5);
+  theta_s ~ beta_proportion(phi, nu);
+  mu ~ normal(1, 100);
+  sigma ~ normal(0, 10);
+  kappa_s ~ normal(mu, sigma);
   if (use_likelihood) {
     for (i in 1:n) {
       t[i] ~ beta_proportion(theta_s[s[i]], kappa_s[s[i]]);
