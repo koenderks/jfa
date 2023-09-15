@@ -2,7 +2,7 @@
 
 data {
   int<lower=1> S;
-  array[S] int<lower=1> n;
+  array[S] int<lower=0> n;
   array[S] int<lower=0> k;
   real<lower=0> alpha;
   real<lower=0> beta;
@@ -19,47 +19,37 @@ data {
   int poisson_likelihood;
 }
 parameters {
-  real<lower=0, upper=1> theta;
-  real<lower=0> sigma;
-  vector[S] alpha_s;
-}
-transformed parameters {
-  real mu;
-  mu = logit(theta);
+  real<lower=0, upper=1> mu;
+  real<lower=0> kappa;
+  vector<lower=0, upper=1>[S] theta_s;
 }
 model {
   if (beta_prior) {
-    theta ~ beta(alpha, beta);
+    mu ~ beta(alpha, beta);
   } else if (gamma_prior) {
-    theta ~ gamma(alpha, beta);
+    mu ~ gamma(alpha, beta);
   } else if (normal_prior) {
-    theta ~ normal(alpha, beta);
+    mu ~ normal(alpha, beta);
   } else if (uniform_prior) {
-    theta ~ uniform(alpha, beta);
+    mu ~ uniform(alpha, beta);
   } else if (cauchy_prior) {
-    theta ~ cauchy(alpha, beta);
+    mu ~ cauchy(alpha, beta);
   } else if (t_prior) {
-    theta ~ student_t(alpha, 0, 1);
+    mu ~ student_t(alpha, 0, 1);
   } else if (chisq_prior) {
-    theta ~ chi_square(alpha);
+    mu ~ chi_square(alpha);
   } else if (exponential_prior) {
-    theta ~ exponential(alpha);
+    mu ~ exponential(alpha);
   }
-  sigma ~ normal(0, 1);
-  alpha_s ~ normal(0, 1);
+  kappa ~ pareto(1, 1.5);
+  theta_s ~ beta_proportion(mu, kappa);
   if (use_likelihood) {
     if (binomial_likelihood) {
-      k ~ binomial_logit(n, mu + sigma * alpha_s);
+      k ~ binomial(n, theta_s);
     } else if (poisson_likelihood) {
-      for (i in 1:S){
-        k[i] ~ poisson(inv_logit(mu + sigma * alpha_s[i]) * n[i]);
+      for (i in 1:S) {
+        k[i] ~ poisson(n[i] * theta_s[i]);
       }
     }
-  }
-}
-generated quantities {
-  vector<lower=0, upper=1>[S] theta_s;
-  for (i in 1:S) {
-    theta_s[i] = inv_logit(mu + sigma * alpha_s[i]);
   }
 }
