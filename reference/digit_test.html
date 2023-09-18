@@ -120,7 +120,14 @@ parameters for the Dirichlet distribution on the digit categories.</p></dd>
     
 
 <p>An object of class <code>jfaDistr</code> containing:</p>
-<dl><dt>observed</dt>
+<dl><dt>data</dt>
+<dd><p>the specified data.</p></dd>
+
+<dt>conf.level</dt>
+<dd><p>a numeric value between 0 and 1 giving the confidence
+  level.</p></dd>
+
+<dt>observed</dt>
 <dd><p>the observed counts.</p></dd>
 
 <dt>expected</dt>
@@ -151,6 +158,13 @@ parameters for the Dirichlet distribution on the digit categories.</p></dd>
 <dt>match</dt>
 <dd><p>a list containing the row numbers corresponding to the
   observations matching each digit.</p></dd>
+
+<dt>deviation</dt>
+<dd><p>a vector indicating which digits deviate from their
+  expected relative frequency under the reference distribution.</p></dd>
+
+<dt>prior</dt>
+<dd><p>a logical indicating whether a prior distribution was used.</p></dd>
 
 <dt>data.name</dt>
 <dd><p>a character string giving the name(s) of the data.</p></dd>
