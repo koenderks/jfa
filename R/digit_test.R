@@ -47,6 +47,9 @@
 #'
 #' @return An object of class \code{jfaDistr} containing:
 #'
+#' \item{data}{the specified data.}
+#' \item{conf.level}{a numeric value between 0 and 1 giving the confidence
+#'   level.}
 #' \item{observed}{the observed counts.}
 #' \item{expected}{the expected counts under the null hypothesis.}
 #' \item{n}{the number of observations in \code{x}.}
@@ -59,6 +62,9 @@
 #' \item{reference}{reference distribution}
 #' \item{match}{a list containing the row numbers corresponding to the
 #'   observations matching each digit.}
+#' \item{deviation}{a vector indicating which digits deviate from their
+#'   expected relative frequency under the reference distribution.}
+#' \item{prior}{a logical indicating whether a prior distribution was used.}
 #' \item{data.name}{a character string giving the name(s) of the data.}
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}

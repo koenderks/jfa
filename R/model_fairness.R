@@ -17,16 +17,17 @@
 #'
 #' @description This function aims to assess fairness in algorithmic
 #' decision-making systems by computing and testing the equality of one of
-#' several model-agnostic fairness metrics between protected classes based on a
-#' set of true labels and the predictions of an algorithm. The ratio of these
-#' metrics between an unpriveleged protected class and a priveleged protected
-#' class is called parity, and quantifies  relative fairness in the algorithms
-#' predictions. Available parity metrics include predictive rate parity,
-#' proportional parity, accuracy parity, false negative rate parity, false
-#' positive rate parity, true positive rate parity, negative predicted value
-#' parity, specificity parity, and demographic parity. The function returns an
-#' object of class \code{jfaFairness} that can be used with associated
-#' \code{summary()} and \code{plot()} methods.
+#' several model-agnostic fairness metrics between protected classes. The
+#' metrics are computed based on a set of true labels and the predictions of an
+#' algorithm. The ratio of these metrics between any unpriveleged protected
+#' class and the priveleged protected class is called parity. This measure can
+#' quantify potential fairness or discrimination in the algorithms predictions.
+#' Available parity metrics include predictive rate parity, proportional parity,
+#' accuracy parity, false negative rate parity, false positive rate parity, true
+#' positive rate parity, negative predicted value parity, specificity parity,
+#' and demographic parity. The function returns an object of class
+#' \code{jfaFairness} that can be used with associated \code{summary()} and
+#' \code{plot()} methods.
 #'
 #' @usage model_fairness(
 #'   data,
@@ -56,7 +57,7 @@
 #'   default), the first factor level of the \code{protected} column is used.
 #' @param positive     a character specifying the factor level positive class of
 #'   the column \code{target} to be used as the positive class. If \code{NULL}
-#'   (the default), the first factor level of the \code{target} column is used..
+#'   (the default), the first factor level of the \code{target} column is used.
 #' @param metric      a character indicating the fairness metrics to compute.
 #'   See the Details section below for more information.
 #' @param alternative   a character indicating the alternative hypothesis and
@@ -117,8 +118,14 @@
 #'
 #' @return An object of class \code{jfaFairness} containing:
 #'
+#' \item{data}{the specified data.}
+#' \item{conf.level}{a numeric value between 0 and 1 giving the confidence
+#'   level.}
 #' \item{privileged}{The privileged group for computing the fairness metrics.}
 #' \item{unprivileged}{The unprivileged group(s).}
+#' \item{target}{The target variable used in computing the fairness metrics.}
+#' \item{predictions}{The predictions used to compute the fairness metrics.}
+#' \item{protected}{The variable indicating the protected classes.}
 #' \item{positive}{The positive class used in computing the fairness metrics.}
 #' \item{negative}{The negative class used in computing the fairness metrics.}
 #' \item{alternative}{The type of confidence interval.}
@@ -135,6 +142,7 @@
 #'   interval, along with inferential measures such as uncorrected p-values or
 #'   Bayes factors.}
 #' \item{measure}{The abbreviation of the selected fairness metric.}
+#' \item{prior}{a logical indicating whether a prior distribution was used.}
 #' \item{data.name}{The name of the input data object.}
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
@@ -182,18 +190,6 @@
 #'   privileged = "Male",
 #'   positive = "yes",
 #'   metric = "sp"
-#' )
-#'
-#' # Bayesian test of predictive rate parity
-#' model_fairness(
-#'   data = compas,
-#'   protected = "Ethnicity",
-#'   target = "TwoYrRecidivism",
-#'   predictions = "Predicted",
-#'   privileged = "Caucasian",
-#'   positive = "yes",
-#'   metric = "prp",
-#'   prior = TRUE
 #' )
 #' @export
 

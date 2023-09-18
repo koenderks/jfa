@@ -2,7 +2,8 @@
 
 This is a resubmission for version 0.7.0. In this version I have:
 
-* Added a new function.
+* Added a new function for algorithmic auditing.
+* Fixed deprecated stan syntax for new CRAN version.
 
 ## Test environments
 
