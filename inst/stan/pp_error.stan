@@ -19,13 +19,13 @@ data {
   int poisson_likelihood;
 }
 parameters {
-  real<lower=0, upper=1> phi;
-  real<lower=0> nu;
-  vector<lower=0, upper=1>[S] theta_s;
+  real<lower=0, upper=1> phi;          // population probability of misstatement
+  real<lower=1> nu;                    // population concentration
+  vector<lower=0, upper=1>[S] theta_s; // stratum probability of misstatement
 }
 model {
   if (beta_prior) {
-    phi ~ beta(alpha, beta);
+    phi ~ beta(alpha, beta); // hyperprior
   } else if (gamma_prior) {
     phi ~ gamma(alpha, beta);
   } else if (normal_prior) {
@@ -41,11 +41,11 @@ model {
   } else if (exponential_prior) {
     phi ~ exponential(alpha);
   }
-  nu ~ pareto(1, 1.5);
-  theta_s ~ beta_proportion(phi, nu);
+  nu ~ pareto(1, 1.5); // hyperprior
+  theta_s ~ beta(phi * nu, (1 - phi) * nu); // prior
   if (use_likelihood) {
     if (binomial_likelihood) {
-      k ~ binomial(n, theta_s);
+      k ~ binomial(n, theta_s); // likelihood
     } else if (poisson_likelihood) {
       for (i in 1:S) {
         k[i] ~ poisson(n[i] * theta_s[i]);

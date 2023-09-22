@@ -19,11 +19,11 @@ data {
 }
 parameters {
   real<lower=0, upper=1> phi;
-  real<lower=0> nu;
+  real<lower=1> nu;
   vector<lower=0, upper=1>[S] theta_s;
   real<lower=0> mu;
   real<lower=0> sigma;
-  vector<lower=0>[S] kappa_s;
+  vector<lower=1>[S] kappa_s;
 }
 model {
   if (beta_prior) {
