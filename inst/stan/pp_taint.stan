@@ -18,16 +18,16 @@ data {
   int use_likelihood;
 }
 parameters {
-  real<lower=0, upper=1> phi;
-  real<lower=1> nu;
-  vector<lower=0, upper=1>[S] theta_s;
-  real<lower=0> mu;
-  real<lower=0> sigma;
-  vector<lower=1>[S] kappa_s;
+  real<lower=0, upper=1> phi; // population probability of misstatement
+  real<lower=1> nu; // population probability of misstatement concentration
+  vector<lower=0, upper=1>[S] theta_s; // stratum probability of misstatement
+  real<lower=0> mu; // average stratum concentration
+  real<lower=0> sigma; // stratum concentration standard deviation
+  vector<lower=1>[S] kappa_s; // stratum concentration
 }
 model {
   if (beta_prior) {
-    phi ~ beta(alpha, beta);
+    phi ~ beta(alpha, beta); // hyperprior
   } else if (gamma_prior) {
     phi ~ gamma(alpha, beta);
   } else if (normal_prior) {
@@ -43,14 +43,14 @@ model {
   } else if (exponential_prior) {
     phi ~ exponential(alpha);
   }
-  nu ~ pareto(1, 1.5);
-  theta_s ~ beta_proportion(phi, nu);
-  mu ~ normal(1, 100);
-  sigma ~ normal(0, 10);
-  kappa_s ~ normal(mu, sigma);
+  nu ~ pareto(1, 1.5); // hyperprior
+  mu ~ normal(1, 100); // hyperprior
+  sigma ~ normal(0, 10); // hyperprior
+  theta_s ~ beta(phi * nu, (1 - phi) * nu); // prior
+  kappa_s ~ normal(mu, sigma); // prior
   if (use_likelihood) {
     for (i in 1:n) {
-      t[i] ~ beta_proportion(theta_s[s[i]], kappa_s[s[i]]);
+      t[i] ~ beta_proportion(theta_s[s[i]], kappa_s[s[i]]); // likelihood
     }
   }
 }
