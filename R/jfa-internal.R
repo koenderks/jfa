@@ -592,7 +592,7 @@
       cores = getOption("mc.cores", 1),
       seed = sample.int(.Machine$integer.max, 1),
       control = list(adapt_delta = 0.95),
-      refresh = 0
+      refresh = getOption("mc.refresh", 0)
     )
     raw_posterior <- rstan::sampling(
       object = model,
@@ -604,7 +604,7 @@
       cores = getOption("mc.cores", 1),
       seed = sample.int(.Machine$integer.max, 1),
       control = list(adapt_delta = 0.95),
-      refresh = 0
+      refresh = getOption("mc.refresh", 0)
     )
   })
   samples <- cbind(rstan::extract(raw_posterior)$theta_s, rstan::extract(raw_prior)$theta_s)
@@ -810,7 +810,7 @@
       cores = getOption("mc.cores", 1),
       seed = sample.int(.Machine$integer.max, 1),
       control = list(adapt_delta = 0.95),
-      refresh = 0
+      refresh = getOption("mc.refresh", 0)
     )
     raw_posterior <- rstan::sampling(
       object = stanmodels[["or_fairness"]],
@@ -822,7 +822,7 @@
       cores = getOption("mc.cores", 1),
       seed = sample.int(.Machine$integer.max, 1),
       control = list(adapt_delta = 0.95),
-      refresh = 0
+      refresh = getOption("mc.refresh", 0)
     )
   })
   samples <- data.frame(
