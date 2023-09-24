@@ -47,9 +47,7 @@ model {
     if (binomial_likelihood) {
       k ~ binomial(n, theta_s);             // likelihood
     } else if (poisson_likelihood) {
-      for (i in 1:S) {
-        k[i] ~ poisson(n[i] * theta_s[i]);  // likelihood
-      }
+      k ~ poisson(to_vector(n) .* theta_s); // likelihood
     }
   }
 }
