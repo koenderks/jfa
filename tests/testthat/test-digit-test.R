@@ -16,6 +16,7 @@
 context("Validation of function digit_test")
 
 test_that(desc = "Print and plot call", {
+  testthat::skip_on_cran()
   data("sinoForest")
   res <- digit_test(x = sinoForest$value, check = "first", reference = "benford")
   p <- plot(res)
@@ -32,6 +33,7 @@ test_that(desc = "Validate Derks et al. (2020)", {
 })
 
 test_that(desc = "Validate uniform distribution", {
+  testthat::skip_on_cran()
   res <- digit_test(x = 1:9, check = "first", reference = "uniform")
   expect_equal(as.numeric(res$n), 9)
   expect_equal(as.numeric(res$statistic), 0)
@@ -40,6 +42,7 @@ test_that(desc = "Validate uniform distribution", {
 })
 
 test_that(desc = "Validate benford.analysis package first digits", {
+  testthat::skip_on_cran()
   ba <- benford.analysis::benford(data = sinoForest$value, number.of.digits = 1)
   dt <- digit_test(x = sinoForest$value, check = "first")
   expect_equal(as.numeric(ba$bfd$data.dist.freq), as.numeric(dt$observed))
@@ -49,6 +52,7 @@ test_that(desc = "Validate benford.analysis package first digits", {
 })
 
 test_that(desc = "Validate benford.analysis package first and second digits", {
+  testthat::skip_on_cran()
   ba <- benford.analysis::benford(data = sinoForest$value, number.of.digits = 2)
   dt <- digit_test(x = sinoForest$value, check = "firsttwo")
   expect_equal(as.numeric(ba$bfd$data.dist.freq), as.numeric(dt$observed))
@@ -58,6 +62,7 @@ test_that(desc = "Validate benford.analysis package first and second digits", {
 })
 
 test_that(desc = "Validate BenfordTests package first digits", {
+  testthat::skip_on_cran()
   bt <- BenfordTests::chisq.benftest(x = sinoForest$value, digits = 1)
   dt <- digit_test(x = sinoForest$value, check = "first")
   expect_equal(as.numeric(bt$statistic), as.numeric(dt$statistic))
@@ -65,6 +70,7 @@ test_that(desc = "Validate BenfordTests package first digits", {
 })
 
 test_that(desc = "Validate BeyondBenford package first digits", {
+  testthat::skip_on_cran()
   bb <- BeyondBenford::chi2(sinoForest$value, mod = "ben", dig = 1, pval = 1)
   dt <- digit_test(x = sinoForest$value, check = "first")
   expect_equal(as.numeric(bb$chi2[2]), as.numeric(dt$statistic))
@@ -78,11 +84,13 @@ test_that(desc = "Validate Derks et al. (2020)", {
 })
 
 test_that(desc = "Validate uniform distribution", {
+  testthat::skip_on_cran()
   res <- digit_test(x = 1:9, check = "first", reference = "uniform", prior = TRUE)
   expect_equal(1 / as.numeric(res$bf), 22.77012458)
 })
 
 test_that(desc = "Validate benford.analysis package", {
+  testthat::skip_on_cran()
   ba <- benford.analysis::benford(data = sinoForest$value, number.of.digits = 1)
   dt <- digit_test(x = sinoForest$value, check = "first")
   expect_equal(as.numeric(ba$bfd$data.dist.freq), as.numeric(dt$observed))

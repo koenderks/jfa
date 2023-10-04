@@ -16,6 +16,7 @@
 context("Validation of function repeated_test")
 
 test_that(desc = "Print and plot call", {
+  testthat::skip_on_cran()
   data("sanitizer")
   res <- repeated_test(x = sanitizer$value, check = "last", method = "af", samples = 1) # Adjusted from 500 to 1 for check time control
   p <- plot(res)
@@ -23,6 +24,7 @@ test_that(desc = "Print and plot call", {
 })
 
 test_that(desc = "Validate Datacolada[77]", {
+  testthat::skip_on_cran()
   data("sanitizer")
   res <- repeated_test(x = sanitizer$value, check = "last", method = "af", samples = 1) # Adjusted from 500 to 1 for check time control
   expect_equal(as.numeric(res$statistic), 1.5225)

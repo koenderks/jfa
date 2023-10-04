@@ -16,6 +16,7 @@
 context("Validation of function model_fairness")
 
 test_that(desc = "Benchmark against fairness package", {
+  testthat::skip_on_cran()
   data("compas")
   # Demographic parity
   jfa_dp <- model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted", privileged = "Caucasian", positive = "yes", metric = "dp")

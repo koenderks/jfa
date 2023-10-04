@@ -46,6 +46,7 @@ test_that(desc = "(id: f2-v0.1.0-t2) Test for method = 'impartial'", {
 })
 
 test_that(desc = "(id: f2-v0.1.0-t3) Test for method = 'hyp'", {
+  testthat::skip_on_cran()
   prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "hyp", likelihood = "binomial", p.hmin = 0.3)
   expect_equal(prior[["description"]]$alpha, 1)
   expect_equal(prior[["description"]]$beta, 6.954, tolerance = 0.001)
@@ -60,6 +61,7 @@ test_that(desc = "(id: f2-v0.1.0-t3) Test for method = 'hyp'", {
 })
 
 test_that(desc = "(id: f2-v0.1.0-t4) Test for method = 'arm'", {
+  testthat::skip_on_cran()
   prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "arm", likelihood = "binomial", ir = 0.6, cr = 0.6)
   expect_equal(prior[["description"]]$alpha, 1)
   expect_equal(prior[["description"]]$beta, 20, tolerance = 0.001)
@@ -74,6 +76,7 @@ test_that(desc = "(id: f2-v0.1.0-t4) Test for method = 'arm'", {
 })
 
 test_that(desc = "(id: f2-v0.1.0-t5) Test for method = 'sample'", {
+  testthat::skip_on_cran()
   prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "sample", likelihood = "binomial", n = 30, x = 1)
   expect_equal(prior[["description"]]$alpha, 2)
   expect_equal(prior[["description"]]$beta, 29)
@@ -88,6 +91,7 @@ test_that(desc = "(id: f2-v0.1.0-t5) Test for method = 'sample'", {
 })
 
 test_that(desc = "(id: f2-v0.1.0-t6) Test for method = 'factor'", {
+  testthat::skip_on_cran()
   prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "factor", likelihood = "binomial", n = 30, x = 1, factor = 0.6)
   expect_equal(prior[["description"]]$alpha, 1.6, tolerance = 0.001)
   expect_equal(prior[["description"]]$beta, 17.4, tolerance = 0.001)
@@ -127,6 +131,7 @@ test_that(desc = "(id: f2-v0.4.0-t1) Test for method = 'impartial' with expected
 # jfa version 0.5.0
 
 test_that(desc = "(id: f2-v0.5.0-t1) Test for summary and print function", {
+  testthat::skip_on_cran()
   prior <- auditPrior(conf.level = 0.95, likelihood = "binomial", method = "default")
   invisible(capture.output(print(prior)))
   invisible(capture.output(summary(prior)))
@@ -135,6 +140,7 @@ test_that(desc = "(id: f2-v0.5.0-t1) Test for summary and print function", {
 })
 
 test_that(desc = "(id: f2-v0.5.0-t2) Test for plot function", {
+  testthat::skip_on_cran()
   prior <- auditPrior(conf.level = 0.95, likelihood = "binomial", method = "default", materiality = 0.05)
   p <- plot(prior)
   expect_equal(is.null(prior), FALSE)
@@ -154,6 +160,7 @@ test_that(desc = "(id: f2-v0.5.0-t2) Test for plot function", {
 # jfa version 0.5.3
 
 test_that(desc = "(id: f2-v0.5.3-t1) Test for bram method binomial", {
+  testthat::skip_on_cran()
   N <- 20000
   materiality <- 2000
   expectedMisstatement <- 300
@@ -167,6 +174,7 @@ test_that(desc = "(id: f2-v0.5.3-t1) Test for bram method binomial", {
 })
 
 test_that(desc = "(id: f2-v0.5.3-t2) Test for bram method poisson", {
+  testthat::skip_on_cran()
   N <- 20000
   materiality <- 2000
   expectedMisstatement <- 300
@@ -185,18 +193,21 @@ test_that(desc = "(id: f2-v0.5.3-t2) Test for bram method poisson", {
 # jfa version 0.6.0
 
 test_that(desc = "(id: f2-v0.6.0-t1) Test for param method binomial", {
+  testthat::skip_on_cran()
   prior <- auditPrior(materiality = 0.05, likelihood = "binomial", method = "param", alpha = 5, beta = 10)
   expect_equal(prior[["description"]]$alpha, 5)
   expect_equal(prior[["description"]]$beta, 10)
 })
 
 test_that(desc = "(id: f2-v0.6.0-t2) Test for param method poisson", {
+  testthat::skip_on_cran()
   prior <- auditPrior(materiality = 0.05, likelihood = "poisson", method = "param", alpha = 5, beta = 10)
   expect_equal(prior[["description"]]$alpha, 5)
   expect_equal(prior[["description"]]$beta, 10)
 })
 
 test_that(desc = "(id: f2-v0.6.0-t1) Test for param method hypergeometric", {
+  testthat::skip_on_cran()
   prior <- auditPrior(materiality = 0.05, likelihood = "hypergeometric", method = "param", alpha = 5, beta = 10, N = 100)
   expect_equal(prior[["description"]]$alpha, 5)
   expect_equal(prior[["description"]]$beta, 10)
