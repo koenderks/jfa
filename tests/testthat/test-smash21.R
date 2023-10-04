@@ -19,6 +19,7 @@ context("Benchmark against SMASH21 + SMASH21-Bayes")
 # Retrieved on 27-04-2021 from https://steekproeven.eu/wp-content/uploads/2021/01/SMASH21-PRO-kopie.xlsx
 
 test_that(desc = "(id: f13-v0.5.3-t1) Test frequentist sample sizes", {
+  testthat::skip_on_cran()
   theta <- c(1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000) / 20000 # materiality divided by N
   expected <- c(100, 200, 300, 400, 500, 600) / 20000 # exp.error divided by N
   sampleSizeMatrix <- matrix(NA, nrow = length(expected), ncol = length(theta))
@@ -48,6 +49,7 @@ test_that(desc = "(id: f13-v0.5.3-t1) Test frequentist sample sizes", {
 # Retrieved on 27-04-2021 from https://steekproeven.eu/wp-content/uploads/2021/01/SMASH21-Bayes-kopie.xlsx
 
 test_that(desc = "(id: f13-v0.5.3-t2) Test Bayesian sample sizes (N = 20,000)", {
+  testthat::skip_on_cran()
   N <- 20000
   materiality <- 2000 / N
   expected <- c(300, 500, 700, 900, 1000) / N # 1.5%, 2.5%, 3.5%, 4.5%, 5%
@@ -77,6 +79,7 @@ test_that(desc = "(id: f13-v0.5.3-t2) Test Bayesian sample sizes (N = 20,000)", 
 })
 
 test_that(desc = "(id: f13-v0.5.3-t3) Test Bayesian sample sizes (N = 100,000)", {
+  testthat::skip_on_cran()
   N <- 100000
   materiality <- 6000 / N
   expected <- c(1000, 2000, 3000, 4000, 5000) / N # 1%, 2%, 3%, 4%, 5%

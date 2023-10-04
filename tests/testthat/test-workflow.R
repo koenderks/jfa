@@ -18,6 +18,7 @@ context("Validation of workflow functionality")
 # jfa version 0.1.0
 
 test_that(desc = "(id: f8-v0.1.0-t1) Test for workflow elements", {
+  testthat::skip_on_cran()
   set.seed(1)
   # Generate some audit data (N = 1000).
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
@@ -44,6 +45,7 @@ test_that(desc = "(id: f8-v0.1.0-t1) Test for workflow elements", {
 })
 
 test_that(desc = "(id: f8-v0.1.0-t1) Test for use of jfaPrior and jfaPosterior", {
+  testthat::skip_on_cran()
   conf.level <- 0.90 # 90% conf.level
   tolerance <- 0.05 # 5% tolerance (materiality)
   # Construct a prior distribution
@@ -62,6 +64,7 @@ test_that(desc = "(id: f8-v0.1.0-t1) Test for use of jfaPrior and jfaPosterior",
 })
 
 test_that(desc = "(id: f8-v0.6.5-t1) Test for use of pipe in planning-selection", {
+  testthat::skip_on_cran()
   res <- planning(materiality = 0.03) |> selection(data = BuildIt)
   expect_equal(nrow(res[["sample"]]), 100)
 })

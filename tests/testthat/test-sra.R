@@ -39,6 +39,7 @@ context("Benchmark against SRA")
 # 0.99       |   93  47   31  24   19  16   14  12   11  10
 
 test_that(desc = "(id: f13-v0.6.5-t1) Test frequentist sample sizes", {
+  testthat::skip_on_cran()
   theta <- c(1000, 2000, 3000, 4000, 5000, 6000, 7000, 8000, 9000, 10000) / 20000 # materiality divided by N
   confidence <- c(0.95, 0.96, 0.97, 0.975, 0.98, 0.99)
   sampleSizeMatrix <- matrix(NA, nrow = length(confidence), ncol = length(theta))

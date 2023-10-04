@@ -37,6 +37,7 @@ context("Benchmark against Touw and Hoogduin (2011)")
 # 0.5            70
 
 test_that(desc = "(id: f14-v0.5.1-t1) Test Sample sizes on page 17", {
+  testthat::skip_on_cran()
   SR <- c(0.05, 0.10, 0.25, 0.40, 0.50)
   materiality <- 0.01
   n <- numeric(length(SR))

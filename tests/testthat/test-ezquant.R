@@ -19,6 +19,7 @@ context("Benchmark against EZ-quant software")
 # Retrieved on 02-03-2022 from https://www.dcaa.mil/Checklists-Tools/EZ-Quant-Applications/
 
 test_that(desc = "(id: f12-v0.5.4-t1) Test Sample sizes for hypergeometric distribution", {
+  testthat::skip_on_cran()
   # Plan for 0 expected errors
   populationSize <- rep(c(rep(500, 4), rep(1000, 4), rep(5000, 4)), 3)
   tolerableErrorRate <- rep(rep(c(0.08, 0.06, 0.04, 0.02), times = 3), 3)

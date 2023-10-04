@@ -389,6 +389,7 @@ test_that(desc = "(id: f3-v0.6.0-t3) Test Bayes factors for beta-binomial prior"
 # jfa 0.6.5
 
 test_that(desc = "(id: f3-v0.6.5-t1) Test frequentist poisson stratification with summary statistics (Derks et al., 2022, Table 1)", {
+  testthat::skip_on_cran()
   k <- c(2, 1, 0)
   n <- c(6, 7, 7)
   N <- c(8, 11, 11)
@@ -409,6 +410,7 @@ test_that(desc = "(id: f3-v0.6.5-t1) Test frequentist poisson stratification wit
 })
 
 test_that(desc = "(id: f3-v0.6.5-t2) Test Bayesian poisson stratification with summary statistics (Derks et al., 2022, Table 1)", {
+  testthat::skip_on_cran()
   options("mc.iterations" = 200, "mc.warmup" = 100, "mc.chains" = 1)
   k <- c(2, 1, 0)
   n <- c(6, 7, 7)
@@ -434,6 +436,7 @@ test_that(desc = "(id: f3-v0.6.5-t2) Test Bayesian poisson stratification with s
 })
 
 test_that(desc = "(id: f3-v0.6.5-t3) Test frequentist binomial stratification with summary statistics (Derks et al., 2022, Table 1)", {
+  testthat::skip_on_cran()
   k <- c(2, 1, 0)
   n <- c(6, 7, 7)
   N <- c(8, 11, 11)
@@ -454,6 +457,7 @@ test_that(desc = "(id: f3-v0.6.5-t3) Test frequentist binomial stratification wi
 })
 
 test_that(desc = "(id: f3-v0.6.5-t4) Test Bayesian binomial stratification with summary statistics (Derks et al., 2022, Table 1)", {
+  testthat::skip_on_cran()
   options("mc.iterations" = 200, "mc.warmup" = 100, "mc.chains" = 1)
   k <- c(2, 1, 0)
   n <- c(6, 7, 7)
@@ -478,6 +482,7 @@ test_that(desc = "(id: f3-v0.6.5-t4) Test Bayesian binomial stratification with 
 })
 
 test_that(desc = "(id: f3-v0.6.5-t5) Test stratification with data (Derks et al., 2022, Table 4)", {
+  testthat::skip_on_cran()
   options("mc.iterations" = 200, "mc.warmup" = 100, "mc.chains" = 1)
   data("BuildIt")
   BuildIt$stratum <- factor(c("high", "medium", rep(c("low", "medium", "high"), times = 1166)))
@@ -522,6 +527,7 @@ test_that(desc = "(id: f3-v0.6.5-t5) Test stratification with data (Derks et al.
 })
 
 test_that(desc = "(id: f3-v0.6.5-t6) Validate poststratification with stan examples", {
+  testthat::skip_on_cran()
   # https://mc-stan.org/docs/2_23/stan-users-guide/some-examples.html
   # 28.1.2 Polling
   set.seed(1)
@@ -553,6 +559,7 @@ test_that(desc = "(id: f3-v0.6.5-t7) Test evaluation with non-conjugate priors",
 })
 
 test_that(desc = "(id: f3-v0.6.5-t8) Test hypergeometric and beta-binomial", {
+  testthat::skip_on_cran()
   N <- 10
   n <- 2
   x <- 1
@@ -574,6 +581,7 @@ test_that(desc = "(id: f3-v0.6.5-t8) Test hypergeometric and beta-binomial", {
 })
 
 test_that(desc = "(id: f3-v0.6.5-t9) Test Bayesian evaluation with different uniform priors, 5% materiality", {
+  testthat::skip_on_cran()
   set.seed(1)
   prior1 <- auditPrior(method = "default", likelihood = "binomial")
   prior2 <- auditPrior(method = "param", likelihood = "uniform", alpha = 0, beta = 1)
@@ -590,6 +598,7 @@ test_that(desc = "(id: f3-v0.6.5-t9) Test Bayesian evaluation with different uni
 # jfa 0.7.0
 
 test_that(desc = "(id: f3-v0.7.0-t1) Evaluation with stringer.poisson method", {
+  testthat::skip_on_cran()
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "poisson")
@@ -600,6 +609,7 @@ test_that(desc = "(id: f3-v0.7.0-t1) Evaluation with stringer.poisson method", {
 })
 
 test_that(desc = "(id: f3-v0.7.0-t2) Evaluation with stringer.hypergeometric method", {
+  testthat::skip_on_cran()
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "poisson")

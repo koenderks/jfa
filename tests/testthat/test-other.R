@@ -18,6 +18,7 @@ context("Validation of other functionality")
 # jfa version 0.5.0
 
 test_that(desc = "(id: f4-v0.5.0-t1) Function test .markdown_call()", {
+  testthat::skip_on_cran()
   x <- .markdown_call("rmarkdown::render")
   expect_equal(length(x), 1)
 })

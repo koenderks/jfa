@@ -18,6 +18,7 @@ context("Benchmark against R package samplingbook")
 # samplingbook R package (version 1.2.4)
 
 test_that(desc = "(id: f15-v0.6.3-t1) Validate hypergeometric 99% upper bounds", {
+  testthat::skip_on_cran()
   ub_level <- 0.99
   interval_level <- ub_level - (1 - ub_level)
   index <- 1
@@ -38,6 +39,7 @@ test_that(desc = "(id: f15-v0.6.3-t1) Validate hypergeometric 99% upper bounds",
 })
 
 test_that(desc = "(id: f15-v0.6.3-t2) Validate hypergeometric 95% upper bounds", {
+  testthat::skip_on_cran()
   ub_level <- 0.95
   interval_level <- ub_level - (1 - ub_level)
   index <- 1
@@ -58,6 +60,7 @@ test_that(desc = "(id: f15-v0.6.3-t2) Validate hypergeometric 95% upper bounds",
 })
 
 test_that(desc = "(id: f15-v0.6.3-t3) Validate hypergeometric 90% upper bounds", {
+  testthat::skip_on_cran()
   ub_level <- 0.90
   interval_level <- ub_level - (1 - ub_level)
   index <- 1
