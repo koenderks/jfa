@@ -270,7 +270,8 @@ selection <- function(data,
   names_match <- match(unique(sample_items), names(table(sample_items)))
   row_match <- match(unique(sample_items), row_numbers)
   count <- as.numeric(table(sample_items)[names_match])
-  sample <- cbind(unique(sample_items), count, data[row_match, ])
+  rows_index <- as.numeric(unique(sample_items))
+  sample <- cbind.data.frame(rows_index, count, data[row_match, ])
   colnames(sample) <- c("row", "times", colnames(data))
   # Initialize results
   result <- list()

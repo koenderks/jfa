@@ -1,9 +1,8 @@
-# jfa version 0.7.0
+# jfa version 0.7.1
 
-This is a resubmission for version 0.7.0. In this version I have:
+This is a resubmission for version 0.7.1. In this version I have:
 
-* Added a new function for algorithmic auditing.
-* Fixed deprecated stan syntax for new CRAN version.
+* Fixed a bug.
 
 ## Test environments
 

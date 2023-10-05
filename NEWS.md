@@ -1,3 +1,9 @@
+# jfa 0.7.1
+
+**Bug fixes**
+
+- Fixed a bug in `selection()` where the numeric data in the sample was returned as character if the original data was entered as character only.
+
 # jfa 0.7.0
 
 **New features**
