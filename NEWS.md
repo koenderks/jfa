@@ -2,7 +2,8 @@
 
 **Bug fixes**
 
-- Fixed a bug in `selection()` where the numeric data in the sample was returned as character if the original data was entered as character only.
+- Fixed a bug in `selection()` where the numeric data in the sample was returned as character if the original data was entered as character only (i.e., `selection(data.frame(x = c("hello", "bye", "hi")), size = 2)`).
+- `N.units` is now only taken from the prior if the user does not provide it manually to the `planning()` and `evaluation()` functions.
 
 # jfa 0.7.0
 

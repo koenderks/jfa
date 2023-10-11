@@ -184,7 +184,7 @@ planning <- function(materiality = NULL,
       likelihood <- prior[["likelihood"]]
       conjugate_prior <- TRUE
     }
-    if (!is.null(prior[["N.units"]])) {
+    if (!is.null(prior[["N.units"]]) && is.null(N.units)) {
       message(paste0("Using 'N.units = ", prior[["N.units"]], "' from 'prior'"))
       N.units <- prior[["N.units"]]
     }
