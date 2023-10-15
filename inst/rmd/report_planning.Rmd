@@ -33,7 +33,7 @@ color: rgb(255, 255, 255);
 
 ---
 
-<img src="jfaLogo.png" width="133" height="154" alt="logo" align="right" margin-left="20" margin-right="20"/>
+<img src="logo.png" width="133" height="154" alt="logo" align="right" margin-left="20" margin-right="20"/>
 
 This report was created by `r version$version.string` and its package **jfa** (version `r utils::packageVersion("jfa")`). 
 **jfa** is free software and you can redistribute it and or modify it under the terms of the GNU GPL-3 as published by the 
