@@ -42,7 +42,7 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- evaluation(conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
   }
 }
@@ -88,7 +88,7 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- evaluation(conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
   }
 }
@@ -134,7 +134,7 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- evaluation(conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
   }
 }
@@ -180,7 +180,7 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- evaluation(conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
   }
 }
@@ -226,7 +226,7 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- evaluation(conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
   }
 }
@@ -272,7 +272,7 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- evaluation(conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
   }
 }
@@ -318,7 +318,7 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- evaluation(conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
   }
 }
@@ -364,7 +364,7 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- evaluation(conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
   }
 }
@@ -410,7 +410,7 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- evaluation(conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
   }
 }
@@ -456,7 +456,7 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- evaluation(conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
   }
 }
@@ -502,7 +502,7 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- evaluation(conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
   }
 }
@@ -548,7 +548,7 @@ for(rows in 1:length(n)){
   for(columns in 1:length(k)){
     if(n[rows] >= N)
       next
-      ss <- evaluation(conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
+      ss <- evaluation(conf.level = conf.level, n = n[rows], x = k[columns], materiality = 0.05, method = "hypergeometric", N.units = N)
       tab[rows, columns] <- ceiling(ss$ub * 1000) / 10
   }
 }
