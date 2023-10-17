@@ -749,7 +749,7 @@ summary.jfaEvaluation <- function(object, digits = getOption("digits"), ...) {
 #' @rdname jfa-methods
 #' @method plot jfaEvaluation
 #' @export
-plot.jfaEvaluation <- function(x, type = c("posterior", "estimates"), ...) {
+plot.jfaEvaluation <- function(x, type = c("estimates", "posterior"), ...) {
   y <- lb <- ub <- NULL
   type <- match.arg(type)
   if (type == "posterior") {

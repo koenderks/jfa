@@ -51,7 +51,7 @@ using the code below.
 # Frequentist hypothesis test
 x <- digit_test(sinoForest$value, check = "first", reference = "benford")
 print(x)
-plot(x)
+plot(x, type = "estimates")
 ```
 
 You can also perform this analysis in a Bayesian fashion by setting

@@ -81,7 +81,7 @@
 
 \method{summary}{jfaEvaluation}(object, digits = getOption("digits"), ...)
 
-\method{plot}{jfaEvaluation}(x, type = c("posterior", "estimates"), ...)
+\method{plot}{jfaEvaluation}(x, type = c("estimates", "posterior"), ...)
 
 \method{print}{jfaDistr}(x, digits = getOption("digits"), ...)
 

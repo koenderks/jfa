@@ -180,7 +180,7 @@ x <- model_fairness(
   metric = "pp"
 )
 summary(x)
-plot(x)
+plot(x, type = "estimates")
     ```
 
 3. **Predictive rate parity (Equalized odds)**: Compares the overall positive

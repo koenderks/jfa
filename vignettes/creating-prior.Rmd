@@ -249,7 +249,7 @@ with 1 misstatement, while using a normal(0.025, 0.05) prior distribution.
 prior <- auditPrior(method = "param", likelihood = "normal", alpha = 0.025, beta = 0.05)
 eval <- evaluation(materiality = 0.05, x = 1, n = 60, prior = prior)
 summary(eval)
-plot(eval)
+plot(eval, type = "posterior")
 ```
 
 The predictions of the posterior distribution on the data level can be

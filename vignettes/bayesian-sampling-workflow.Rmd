@@ -270,7 +270,7 @@ They can inspect the prior and posterior distribution by using the `plot()`
 function.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
-plot(stage4)
+plot(stage4, type = "posterior")
 ```
 
 ## Conclusion

@@ -123,7 +123,7 @@ law).
 # Digit distribution test
 x <- digit_test(sinoForest$value, check = "first", reference = "benford")
 print(x)
-plot(x)
+plot(x, type = "estimates")
 ```
 
 The `repeated_test()` function can be used to test the numbers in a variable for
@@ -152,5 +152,5 @@ x <- model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
   privileged = "Caucasian", positive = "yes"
 )
 print(x)
-plot(x)
+plot(x, type = "estimates")
 ```
