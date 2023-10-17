@@ -67,7 +67,9 @@
 
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.7.1" id="jfa-071">jfa 0.7.1<a class="anchor" aria-label="anchor" href="#jfa-071"></a></h2>
-<p><strong>Bug fixes</strong></p>
+<p><strong>Minor changes</strong></p>
+<ul><li>For all plotting functions, <code>type = "estimates"</code> is now the default option.</li>
+</ul><p><strong>Bug fixes</strong></p>
 <ul><li>Fixed a bug in <code><a href="../reference/selection.html">selection()</a></code> where the numeric data in the sample was returned as character if the original data was entered as character only (i.e., <code>selection(data.frame(x = c("hello", "bye", "hi")), size = 2)</code>).</li>
 <li>
 <code>N.units</code> is now only taken from the prior if the user does not provide it manually to the <code><a href="../reference/planning.html">planning()</a></code> and <code><a href="../reference/evaluation.html">evaluation()</a></code> functions.</li>

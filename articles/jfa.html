@@ -94,7 +94,7 @@
       <h1 data-toc-skip>Get started with the jfa package</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2023-10-15</h4>
+            <h4 data-toc-skip class="date">2023-10-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/jfa.Rmd" class="external-link"><code>vignettes/jfa.Rmd</code></a></small>
       <div class="hidden name"><code>jfa.Rmd</code></div>
@@ -271,7 +271,7 @@ pre-specified distribution (e.g., Benford’s law).</p>
 <span><span class="co">## n = 772, MAD = 0.0065981, X-squared = 7.6517, df = 8, p-value = 0.4682</span></span>
 <span><span class="co">## alternative hypothesis: leading digit(s) are not distributed according to the benford distribution.</span></span></code></pre>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="jfa_files/figure-html/unnamed-chunk-6-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>The <code><a href="../reference/repeated_test.html">repeated_test()</a></code> function can be used to test the
 numbers in a variable for repeated values.</p>
@@ -283,7 +283,7 @@ numbers in a variable for repeated values.</p>
 <span><span class="co">##  Classical Repeated Values Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sanitizer$value</span></span>
-<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0018</span></span>
+<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0012</span></span>
 <span><span class="co">## alternative hypothesis: average frequency in data is greater than for random data.</span></span></code></pre>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
@@ -322,7 +322,7 @@ fairness and bias in a machine learning algorithm.</p>
 <span><span class="co">##   Other: 1.0596 [0.86578, 1.2394], p-value = 0.5621</span></span>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span></code></pre>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="jfa_files/figure-html/unnamed-chunk-8-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 </div>
