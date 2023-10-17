@@ -38,7 +38,7 @@ preferred-citation:
 repository: https://CRAN.R-project.org/package=jfa
 repository-code: https://github.com/koenderks/jfa
 url: https://koenderks.github.io/jfa/
-date-released: '2023-10-15'
+date-released: '2023-10-17'
 contact:
 - family-names: Derks
   given-names: Koen
@@ -213,6 +213,10 @@ references:
   - family-names: Weber
     given-names: Sebastian
     email: sdw.post@waebers.de
+  - family-names: Badr
+    given-names: Hamada S.
+    email: badr@jhu.edu
+    orcid: https://orcid.org/0000-0002-9808-2344
   year: '2023'
   version: '>= 2.26.0'
 - type: software
