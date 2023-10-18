@@ -252,6 +252,7 @@ model_fairness <- function(data,
     confmat[[group]][["fp"]] <- fp <- sum(confmat[[group]][["matrix"]][negative, positive])
     confmat[[group]][["tn"]] <- tn <- sum(confmat[[group]][["matrix"]][negative, negative])
     confmat[[group]][["fn"]] <- fn <- sum(confmat[[group]][["matrix"]][positive, negative])
+    confmat[[group]][["n"]] <- sum(confmat[[group]][["matrix"]])
     # Performance measures for each group
     performance[[group]][["support"]] <- performance[["all"]][i, 1] <- sum(confmat[[group]][["matrix"]])
     performance[[group]][["accuracy"]] <- performance[["all"]][i, 2] <- (confmat[[group]][["tp"]] + confmat[[group]][["tn"]]) / (confmat[[group]][["tp"]] + confmat[[group]][["tn"]] + confmat[[group]][["fp"]] + confmat[[group]][["fn"]])
@@ -363,7 +364,7 @@ model_fairness <- function(data,
   if (metric != "dp") {
     nums <- unlist(lapply(metrics, function(group) group[["numerator"]]))
     denoms <- unlist(lapply(metrics, function(group) group[["denominator"]]))
-    crossTab <- matrix(c(nums, denoms - nums), nrow = 2, byrow = TRUE)
+    crossTab <- matrix(c(nums, denoms - nums), nrow = 2, byrow = TRUE) # Contingency table used for bf robustness check
     colnames(crossTab) <- groups
     if (!is_bayesian) {
       suppressWarnings({ # Temporary until better solution
