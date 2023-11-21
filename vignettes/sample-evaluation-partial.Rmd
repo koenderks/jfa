@@ -31,6 +31,19 @@ misstatement in the population based on a sample, or to test the misstatement in
 the population against a critical upper limit, referred to as the performance
 materiality.
 
+## Modeling partial misstatements
+
+Partial misstatements occur when there is only a partial discrepancy between
+the true value of an item in the sample and its recorded value. From a data
+perspective, this implies that the misstatements are sometimes non-binary.
+However, there is often a large amount of correct items in the population. This
+can be taken into account when modeling the misstatement in the population,
+thereby increasing efficiency.
+
+As an example, we look at a realistic sample from a financial audit. The sample
+consists of 50 items, each having a recorded (book) value and a true (audit)
+value.
+
 ```{r}
 set.seed(1)
 data("allowances")
@@ -39,16 +52,15 @@ sample <- population[sample.int(nrow(population), size = 50), ]
 head(sample)
 ```
 
-## Modeling partial misstatements
-
 ### Beta distribution
 
-The simplest way to take into account partial errors is to preted they do not
-exist and analyze the sum of partial misstatements (i.e., the total taint).
-Because of its simplicity, it is common practice to do this. In the Bayesian
-framework this would entail using a prior and updating this prior with the
-aggregated information from the sample. For the binomial likelihood, this is
-done using `method = "binomial"`.
+The simplest way to analyze partial misstatements is to preted they can be
+aggregated and use sum of partial misstatements (i.e., the total taint) to
+project to the population. Because of its simplicity, it is common practice to
+do this. In the Bayesian framework this would entail using a prior and updating
+this prior with the aggregated information from the sample. For the binomial
+likelihood, this is done using `method = "binomial"` in combination with
+`prior = TRUE`.
 
 ```{r}
 eval2 <- evaluation(method = "binomial", data = sample, values = "bookValue", values.audit = "auditValue", prior = TRUE)
@@ -94,8 +106,10 @@ that you specify the number of items (`N.items`) and the number of monetary
 units (`N.units`) in the population.
 
 ```{r}
-eval3 <- evaluation(method = "inflated.beta", data = sample, values = "bookValue", values.audit = "auditValue", 
-                    N.items = nrow(population), N.units = sum(population$bookValue), prior = TRUE)
+eval3 <- evaluation(
+  method = "inflated.beta", data = sample, values = "bookValue", values.audit = "auditValue",
+  N.items = nrow(population), N.units = sum(population$bookValue), prior = TRUE
+)
 print(eval3)
 ```
 
@@ -116,8 +130,10 @@ the option `method = "inflated.poisson"`, the auditor can apply the assumption
 of inflated zeros to the misstatement amounts.
 
 ```{r}
-eval4 <- evaluation(method = "inflated.poisson", data = sample, values = "bookValue", values.audit = "auditValue",
-                    N.items = nrow(population), N.units = sum(population$bookValue), prior = TRUE)
+eval4 <- evaluation(
+  method = "inflated.poisson", data = sample, values = "bookValue", values.audit = "auditValue",
+  N.items = nrow(population), N.units = sum(population$bookValue), prior = TRUE
+)
 print(eval4)
 ```
 
