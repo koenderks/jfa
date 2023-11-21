@@ -371,6 +371,7 @@ evaluation <- function(materiality = NULL,
     stopifnot("'materiality' must be a single value between 0 and 1" = valid_materiality)
   }
   valid_test_method <- method %in% c("poisson", "inflated.poisson", "binomial", "inflated.beta", "hypergeometric", "normal", "uniform", "cauchy", "t", "chisq", "exponential")
+  stopifnot("method = 'inflated.poisson' and method = 'inflated.beta' require 'prior != FALSE'" = !(isFALSE(prior) && method %in% c("inflated.poisson", "inflated.beta")))
   if (is_bayesian) {
     stopifnot("'method' should be one of 'poisson', 'binomial', or 'hypergeometric'" = valid_test_method)
   }
