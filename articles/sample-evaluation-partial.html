@@ -116,6 +116,19 @@ from the <strong>jfa</strong> package.</p>
 misstatement in the population based on a sample, or to test the
 misstatement in the population against a critical upper limit, referred
 to as the performance materiality.</p>
+</div>
+<div class="section level2">
+<h2 id="modeling-partial-misstatements">Modeling partial misstatements<a class="anchor" aria-label="anchor" href="#modeling-partial-misstatements"></a>
+</h2>
+<p>Partial misstatements occur when there is only a partial discrepancy
+between the true value of an item in the sample and its recorded value.
+From a data perspective, this implies that the misstatements are
+sometimes non-binary. However, there is often a large amount of correct
+items in the population. This can be taken into account when modeling
+the misstatement in the population, thereby increasing efficiency.</p>
+<p>As an example, we look at a realistic sample from a financial audit.
+The sample consists of 50 items, each having a recorded (book) value and
+a true (audit) value.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"allowances"</span><span class="op">)</span></span>
@@ -129,20 +142,17 @@ to as the performance materiality.</p>
 <span><span class="co">## 3471 3471  499.4546   499.4546</span></span>
 <span><span class="co">## 1667 1667 4914.8513  4914.8513</span></span>
 <span><span class="co">## 1230 1230  995.0000   995.0000</span></span></code></pre>
-</div>
-<div class="section level2">
-<h2 id="modeling-partial-misstatements">Modeling partial misstatements<a class="anchor" aria-label="anchor" href="#modeling-partial-misstatements"></a>
-</h2>
 <div class="section level3">
 <h3 id="beta-distribution">Beta distribution<a class="anchor" aria-label="anchor" href="#beta-distribution"></a>
 </h3>
-<p>The simplest way to take into account partial errors is to preted
-they do not exist and analyze the sum of partial misstatements (i.e.,
-the total taint). Because of its simplicity, it is common practice to do
-this. In the Bayesian framework this would entail using a prior and
-updating this prior with the aggregated information from the sample. For
-the binomial likelihood, this is done using
-<code>method = "binomial"</code>.</p>
+<p>The simplest way to analyze partial misstatements is to preted they
+can be aggregated and use sum of partial misstatements (i.e., the total
+taint) to project to the population. Because of its simplicity, it is
+common practice to do this. In the Bayesian framework this would entail
+using a prior and updating this prior with the aggregated information
+from the sample. For the binomial likelihood, this is done using
+<code>method = "binomial"</code> in combination with
+<code>prior = TRUE</code>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eval2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"binomial"</span>, data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">eval2</span><span class="op">)</span></span></code></pre></div>
@@ -205,8 +215,10 @@ that <code>prior = TRUE</code> or an object created via the
 that you specify the number of items (<code>N.items</code>) and the
 number of monetary units (<code>N.units</code>) in the population.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eval3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"inflated.beta"</span>, data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, </span>
-<span>                    N.items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">population</span><span class="op">)</span>, N.units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">population</span><span class="op">$</span><span class="va">bookValue</span><span class="op">)</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">eval3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
+<span>  method <span class="op">=</span> <span class="st">"inflated.beta"</span>, data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>,</span>
+<span>  N.items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">population</span><span class="op">)</span>, N.units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">population</span><span class="op">$</span><span class="va">bookValue</span><span class="op">)</span>, prior <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">eval3</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Evaluation</span></span>
@@ -236,8 +248,10 @@ process. With the option <code>method = "inflated.poisson"</code>, the
 auditor can apply the assumption of inflated zeros to the misstatement
 amounts.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eval4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"inflated.poisson"</span>, data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>,</span>
-<span>                    N.items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">population</span><span class="op">)</span>, N.units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">population</span><span class="op">$</span><span class="va">bookValue</span><span class="op">)</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">eval4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
+<span>  method <span class="op">=</span> <span class="st">"inflated.poisson"</span>, data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>,</span>
+<span>  N.items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">population</span><span class="op">)</span>, N.units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">population</span><span class="op">$</span><span class="va">bookValue</span><span class="op">)</span>, prior <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">eval4</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Evaluation</span></span>
