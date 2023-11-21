@@ -26,6 +26,7 @@
 #'   materiality = NULL,
 #'   method = c(
 #'     "poisson", "binomial", "hypergeometric",
+#'     "inflated.poisson", "inflated.beta",
 #'     "stringer.poisson", "stringer.binomial", "stringer.hypergeometric",
 #'     "stringer.meikle", "stringer.lta", "stringer.pvz", "stringer",
 #'     "rohrbach", "moment", "coxsnell", "mpu",
@@ -129,6 +130,8 @@
 #'  \item{\code{hypergeometric}:          Evaluates the sample with the
 #'    hypergeometric distribution. If combined with \code{prior = TRUE},
 #'    performs Bayesian evaluation using a \emph{beta-binomial} prior.}
+#'  \item{\code{inflated.poisson}:        Inflated Poisson model.}
+#'  \item{\code{inflated.beta}:           Inflated beta model.}
 #'  \item{\code{stringer.poisson}:        Evaluates the sample with the Stringer
 #'    bound using the Poisson distribution.}
 #'  \item{\code{stringer.binomial}:       Evaluates the sample with the Stringer
