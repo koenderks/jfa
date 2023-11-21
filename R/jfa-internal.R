@@ -542,6 +542,77 @@
   return(samples)
 }
 
+.mcmc_inflated_cp <- function(likelihood, n.obs, taints, diff, N.items, E, N.units, prior) {
+  if (likelihood == "inflated.beta") {
+    data <- list(
+      n = n.obs,
+      y = taints,
+      N = N.items,
+      E = E,
+      alpha = prior[["description"]]$alpha,
+      beta = prior[["description"]]$beta,
+      beta_prior = as.numeric(prior[["likelihood"]] == "binomial"),
+      gamma_prior = as.numeric(prior[["likelihood"]] == "poisson"),
+      normal_prior = as.numeric(prior[["likelihood"]] == "normal"),
+      uniform_prior = as.numeric(prior[["likelihood"]] == "uniform"),
+      cauchy_prior = as.numeric(prior[["likelihood"]] == "cauchy"),
+      t_prior = as.numeric(prior[["likelihood"]] == "t"),
+      chisq_prior = as.numeric(prior[["likelihood"]] == "chisq"),
+      binomial_likelihood = as.numeric(likelihood == "binomial"),
+      poisson_likelihood = as.numeric(likelihood == "poisson"),
+      exponential_prior = as.numeric(likelihood == "exponential")
+    )
+    model <- stanmodels[["inflated_beta"]]
+  } else if (likelihood == "inflated.poisson") {
+    data <- list(
+      n = n.obs,
+      y = round(diff),
+      N = N.items,
+      B = N.units,
+      alpha = prior[["description"]]$alpha,
+      beta = prior[["description"]]$beta,
+      beta_prior = as.numeric(prior[["likelihood"]] == "binomial"),
+      gamma_prior = as.numeric(prior[["likelihood"]] == "poisson"),
+      normal_prior = as.numeric(prior[["likelihood"]] == "normal"),
+      uniform_prior = as.numeric(prior[["likelihood"]] == "uniform"),
+      cauchy_prior = as.numeric(prior[["likelihood"]] == "cauchy"),
+      t_prior = as.numeric(prior[["likelihood"]] == "t"),
+      chisq_prior = as.numeric(prior[["likelihood"]] == "chisq"),
+      exponential_prior = as.numeric(likelihood == "exponential")
+    )
+    model <- stanmodels[["inflated_poisson"]]
+  }
+  suppressWarnings({
+    raw_prior <- rstan::sampling(
+      object = model,
+      data = c(data, use_likelihood = 0),
+      pars = "theta",
+      iter = getOption("mc.iterations", 2000),
+      warmup = getOption("mc.warmup", 1000),
+      chains = getOption("mc.chains", 4),
+      cores = getOption("mc.cores", 1),
+      seed = sample.int(.Machine$integer.max, 1),
+      control = list(adapt_delta = 0.95),
+      refresh = getOption("mc.refresh", 0)
+    )
+    raw_posterior <- rstan::sampling(
+      object = model,
+      data = c(data, use_likelihood = 1),
+      pars = "theta",
+      iter = getOption("mc.iterations", 2000),
+      warmup = getOption("mc.warmup", 1000),
+      chains = getOption("mc.chains", 4),
+      cores = getOption("mc.cores", 1),
+      seed = sample.int(.Machine$integer.max, 1),
+      control = list(adapt_delta = 0.95),
+      refresh = getOption("mc.refresh", 0)
+    )
+  })
+  samples <- cbind(rstan::extract(raw_posterior)$theta, rstan::extract(raw_prior)$theta)
+  stopifnot("Stan model could not be fitted...check your priors" = !is.null(samples) && ncol(samples) == 2)
+  return(samples)
+}
+
 .mcmc_pp <- function(likelihood, n.obs, t.obs, t, nstrata, stratum, prior) {
   stopifnot("'method = hypergeometric' does not support pooling" = prior[["likelihood"]] != "hypergeometric")
   if (likelihood == "binomial" || likelihood == "poisson") {
@@ -930,7 +1001,7 @@
     ggplot2::scale_fill_manual(name = NULL, values = c("red", "lightgray", "black", "white", "cornsilk2"), labels = function(x) parse(text = x)) +
     ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks), inherit.aes = FALSE) +
     ggplot2::geom_segment(x = 1, xend = 101, y = -Inf, yend = -Inf, inherit.aes = FALSE) +
-    ggplot2::geom_segment(data = dfArrow, ggplot2::aes(x = x, y = y, xend = xend, yend = yend), lineend = "round", linejoin = "bevel", arrow = ggplot2::arrow(length = ggplot2::unit(0.4, "cm")), size = 1, inherit.aes = FALSE) +
+    ggplot2::geom_segment(data = dfArrow, ggplot2::aes(x = x, y = y, xend = xend, yend = yend), lineend = "round", linejoin = "bevel", arrow = ggplot2::arrow(length = ggplot2::unit(0.4, "cm")), linewidth = 1, inherit.aes = FALSE) +
     ggplot2::geom_text(data = dfArrowTxt, mapping = ggplot2::aes(x = x, y = y, label = label), parse = TRUE, size = 0.4 * 12, inherit.aes = FALSE, hjust = 0) +
     ggplot2::guides(fill = ggplot2::guide_legend(nrow = 5, byrow = TRUE)) +
     ggplot2::theme(
@@ -1028,7 +1099,7 @@
     ggplot2::scale_colour_manual(name = NULL, values = c("black", "darkgray", "black", "black")) +
     ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks), inherit.aes = FALSE) +
     ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf, inherit.aes = FALSE) +
-    ggplot2::geom_segment(data = dfArrow, ggplot2::aes(x = x, y = y, xend = xend, yend = yend), lineend = "round", linejoin = "bevel", arrow = ggplot2::arrow(length = ggplot2::unit(0.4, "cm")), size = 1, inherit.aes = FALSE) +
+    ggplot2::geom_segment(data = dfArrow, ggplot2::aes(x = x, y = y, xend = xend, yend = yend), lineend = "round", linejoin = "bevel", arrow = ggplot2::arrow(length = ggplot2::unit(0.4, "cm")), linewidth = 1, inherit.aes = FALSE) +
     ggplot2::geom_text(data = dfArrowTxt, mapping = ggplot2::aes(x = x, y = y, label = label), parse = TRUE, size = 0.4 * 12, inherit.aes = FALSE, hjust = 0) +
     ggplot2::guides(linetype = ggplot2::guide_legend(nrow = 2, ncol = 2, byrow = FALSE), colour = ggplot2::guide_legend(nrow = 2, ncol = 2, byrow = TRUE)) +
     ggplot2::theme(

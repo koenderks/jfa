@@ -280,6 +280,7 @@
 evaluation <- function(materiality = NULL,
                        method = c(
                          "poisson", "binomial", "hypergeometric",
+                         "inflated.poisson", "inflated.beta",
                          "stringer.poisson", "stringer.binomial", "stringer.hypergeometric",
                          "stringer.meikle", "stringer.lta", "stringer.pvz", "stringer",
                          "rohrbach", "moment", "coxsnell", "mpu",
@@ -348,9 +349,16 @@ evaluation <- function(materiality = NULL,
       prior[["hypotheses"]] <- hypotheses
     }
   } else if (isTRUE(prior)) {
-    accommodates_simple_prior <- method %in% c("poisson", "binomial", "hypergeometric")
+    accommodates_simple_prior <- method %in% c("poisson", "inflated.poisson", "binomial", "inflated.beta", "hypergeometric")
+    if (method %in% c("poisson", "inflated.poisson")) {
+      priorMethod <- "poisson"
+    } else if (method %in% c("binomial", "inflated.beta")) {
+      priorMethod <- "binomial"
+    } else {
+      priorMethod <- "hypergeometric"
+    }
     stopifnot("'method' should be one of 'poisson', 'binomial', or 'hypergeometric'" = accommodates_simple_prior)
-    prior <- auditPrior("default", method, N.units[1], materiality = materiality, conf.level = conf.level)
+    prior <- auditPrior("default", priorMethod, N.units[1], materiality = materiality, conf.level = conf.level)
     conjugate_prior <- TRUE
   } else if (!isFALSE(prior)) {
     stop("'prior' should be FALSE, TRUE, or an object of class 'jfaPrior' or 'jfaPosterior'")
@@ -362,7 +370,7 @@ evaluation <- function(materiality = NULL,
     valid_materiality <- is.numeric(materiality) && materiality > 0 && materiality < 1
     stopifnot("'materiality' must be a single value between 0 and 1" = valid_materiality)
   }
-  valid_test_method <- method %in% c("poisson", "binomial", "hypergeometric", "normal", "uniform", "cauchy", "t", "chisq", "exponential")
+  valid_test_method <- method %in% c("poisson", "inflated.poisson", "binomial", "inflated.beta", "hypergeometric", "normal", "uniform", "cauchy", "t", "chisq", "exponential")
   if (is_bayesian) {
     stopifnot("'method' should be one of 'poisson', 'binomial', or 'hypergeometric'" = valid_test_method)
   }
@@ -378,7 +386,8 @@ evaluation <- function(materiality = NULL,
       "stringer.poisson", "stringer.binomial", "stringer.hypergeometric",
       "stringer.meikle", "stringer.lta", "stringer.pvz",
       "coxsnell", "rohrbach", "moment", "mpu",
-      "direct", "difference", "quotient", "regression"
+      "direct", "difference", "quotient", "regression",
+      "inflated.poisson", "inflated.beta"
     ))
     stopifnot("missing value for 'data'" = valid_method)
     stopifnot("missing value for 'n'" = !is.null(n))
@@ -413,11 +422,13 @@ evaluation <- function(materiality = NULL,
     if (has_summary_statistics) {
       message("'data' is used while 'x' or 'n' are also specified")
     }
+    allBook <- NULL
     if (!is.null(times)) {
       stopifnot("column 'times' not found in 'data'" = times %in% colnames(data))
       times <- data[, times]
       stopifnot("'times' contains missing values" = sum(!is.na(times)) == nrow(data))
       stopifnot("column 'times' in 'data' must be a vector of integers" = all(times %% 1 == 0))
+      allBook <- data[, values]
       data <- data[times > 0, ]
       times <- times[times > 0]
       n.obs <- sum(times)
@@ -512,7 +523,7 @@ evaluation <- function(materiality = NULL,
   }
   no_rows <- length(t.obs) - 1
   if (is_bayesian) {
-    mcmc_posterior <- mcmc_prior || !conjugate_prior || (use_stratification && pooling != "complete")
+    mcmc_posterior <- mcmc_prior || !conjugate_prior || (use_stratification && pooling != "complete") || (method %in% c("inflated.poisson", "inflated.beta"))
     if (conjugate_prior) {
       stratum_samples <- NULL
     } else {
@@ -526,10 +537,10 @@ evaluation <- function(materiality = NULL,
   mle <- lb <- ub <- precision <- p.val <- K <- numeric(nstrata)
   # Compute results
   if (!use_stratification || pooling != "partial") {
-    for (i in 1:nstrata) {
+    for (i in seq_len(nstrata)) {
       if (valid_test_method) {
         if (is_bayesian) {
-          if (conjugate_prior) {
+          if (conjugate_prior && !(method %in% c("inflated.poisson", "inflated.beta"))) {
             stratum_alpha <- prior[["description"]]$alpha + t.obs[i]
             if (method == "poisson") {
               stratum_beta <- prior[["description"]]$beta + n.obs[i]
@@ -546,7 +557,18 @@ evaluation <- function(materiality = NULL,
             ub[i] <- .comp_ub_bayes(alternative, conf.level, method, stratum_alpha, stratum_beta, stratum_K, stratum_N)
           } else {
             stopifnot("likelihood = 'hypergeometric' does not support non-conjugate priors" = method != "hypergeometric")
-            samples <- .mcmc_cp(method, t.obs[i], n.obs[i], prior)
+            if (method %in% c("inflated.poisson", "inflated.beta")) {
+              stopifnot("inflated methods do not support stratification" = !use_stratification)
+              mcmc_prior <- TRUE
+              stopifnot("missing value for 'N.items'" = !is.null(N.items))
+              if (method == "inflated.poisson" || is.null(allBook)) {
+                stopifnot("missing value for 'N.units'" = !is.null(N.units))
+                allBook <- rep(N.units[i] / N.items[i], N.items[i])
+              }
+              samples <- .mcmc_inflated_cp(method, n.obs[i], taints[[i]], book_values[i][[1]] - audit_values[i][[1]], N.items[i], allBook, N.units[i], prior)
+            } else {
+              samples <- .mcmc_cp(method, t.obs[i], n.obs[i], prior)
+            }
             prior_samples <- samples[, 2]
             post_samples <- samples[, 1]
             mle[i] <- .comp_mode_bayes(analytical = FALSE, samples = post_samples)

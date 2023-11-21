@@ -1,5 +1,9 @@
 # jfa 0.7.1
 
+**New features**
+
+- Added inflated methods to evaluate taintings in the evaluation function via `method = "inflated.poisson"` and `method = "inflated.beta"`. Since these methods rely on mcmc sampling, they can take any form of prior.
+
 **Minor changes**
 
 - For all plotting functions, `type = "estimates"` is now the default option.
