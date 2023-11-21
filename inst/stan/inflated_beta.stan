@@ -89,9 +89,6 @@ model {
       target += N_ones * log(prob[2]);
     }
     target += size(y_non_discrete) * log(prob[3]) + beta_proportion_lpdf(y_non_discrete | phi, nu);
-    // for (i in 1:size(y_non_discrete)) { 
-    //   target += log(prob[3]) + beta_proportion_lpdf(y_non_discrete[i] | phi, nu);
-    // }
   }
 }
 generated quantities {

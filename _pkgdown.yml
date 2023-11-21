@@ -45,6 +45,7 @@ articles:
       - sample-planning
       - sample-selection
       - sample-evaluation
+      - sample-evaluation-partial
       - sampling-workflow
       - bayesian-sampling-workflow
   - title: "Data Auditing"

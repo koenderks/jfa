@@ -1,0 +1,130 @@
+---
+title: "Evaluating samples with partial misstatements"
+author: Koen Derks
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 3
+vignette: >
+  %\VignetteIndexEntry{Evaluating samples with partial misstatements}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteDepends{jfa}
+  %\VignetteKeywords{audit, evaluation, jfa}
+  %\VignettePackage{jfa}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+library(jfa)
+```
+
+## Introduction
+
+This vignette demonstrates how to efficiently evaluate a sample with non-binary
+misstatements using the `evaluation()` function from the **jfa** package.
+
+<p align='center'><img src='evaluation.png' alt='evaluation' width='100%'></p>
+
+In auditing, the goal of the evaluation is typically to estimate the
+misstatement in the population based on a sample, or to test the misstatement in
+the population against a critical upper limit, referred to as the performance
+materiality.
+
+```{r}
+set.seed(1)
+data("allowances")
+population <- allowances[allowances$bookValue > 0 & !is.na(allowances$auditValue) & allowances$auditValue > 0, c(1, 3, 4)]
+sample <- population[sample.int(nrow(population), size = 50), ]
+head(sample)
+```
+
+## Modeling partial misstatements
+
+### Beta distribution
+
+The simplest way to take into account partial errors is to preted they do not
+exist and analyze the sum of partial misstatements (i.e., the total taint).
+Because of its simplicity, it is common practice to do this. In the Bayesian
+framework this would entail using a prior and updating this prior with the
+aggregated information from the sample. For the binomial likelihood, this is
+done using `method = "binomial"`.
+
+```{r}
+eval2 <- evaluation(method = "binomial", data = sample, values = "bookValue", values.audit = "auditValue", prior = TRUE)
+print(eval2)
+```
+
+As can be seen from the output, the most likely misstatement is estimated to be
+5.12 percent, with a 95 percent upper bound of 13.3 percent. Note that this
+estimate is not very efficient, as it does not take into account the information
+in the distribution of the taints. The prior and posterior distribution can be
+visualized via the `plot()` function.
+
+```{r fig.align="center", fig.height=4, fig.width=6}
+plot(eval2, type = "posterior")
+```
+
+### Stringer bound
+
+The Stringer bound is a method to improve efficiency by taking into account the
+differences between the partial misstatements (i.e., taints). While conservative,
+this method can reduce the upper bound on the misstatement compared to the beta
+distribution. This can be done using `method = "stringer"`.
+
+```{r}
+eval1 <- evaluation(method = "stringer", data = sample, values = "bookValue", values.audit = "auditValue")
+print(eval1)
+```
+
+As can be seen from the output, the most likely misstatement is estimated to be
+5.12 percent, with a 95 percent upper bound of 12.8 percent. Since the upper
+bound of the Stringer method is lower than that of the beta distribution, the
+Stringer bound is more efficient.
+
+### Zero-inflated beta distribution
+
+When compared to the Stringer bound and the beta distribution, efficiency can
+be bolstered even further by explicitly modeling the probability of a taint
+being zero. The reason that this is good practice is because most of the observed
+taints will be zero in practice. This can be done using
+`method = "inflated.beta"`, which requires that `prior = TRUE` or an object
+created via the `auditPrior()` function. Note that this method also requires
+that you specify the number of items (`N.items`) and the number of monetary
+units (`N.units`) in the population.
+
+```{r}
+eval3 <- evaluation(method = "inflated.beta", data = sample, values = "bookValue", values.audit = "auditValue", 
+                    N.items = nrow(population), N.units = sum(population$bookValue), prior = TRUE)
+print(eval3)
+```
+
+As can be seen from the output, the most likely misstatement is estimated to be
+around 4 percent, with a 95 percent upper bound of around 10 percent. The prior
+and posterior distribution can be visualized via the `plot()` function.
+
+```{r fig.align="center", fig.height=4, fig.width=6}
+plot(eval3, type = "posterior")
+```
+
+### Zero-inflated Poisson distribution
+
+Depending on whether the auditor thinks it is likely that the taints follow a
+beta distribution, they can also decide that it is more likely that the
+misstatements themselves can be described in terms of a Poisson process. With
+the option `method = "inflated.poisson"`, the auditor can apply the assumption
+of inflated zeros to the misstatement amounts.
+
+```{r}
+eval4 <- evaluation(method = "inflated.poisson", data = sample, values = "bookValue", values.audit = "auditValue",
+                    N.items = nrow(population), N.units = sum(population$bookValue), prior = TRUE)
+print(eval4)
+```
+
+As can be seen from the output, the most likely misstatement is estimated to be
+around 4 percent, with a 95 percent upper bound of around 7 percent. The prior
+and posterior distribution can be visualized via the `plot()` function.
+
+```{r fig.align="center", fig.height=4, fig.width=6}
+plot(eval4, type = "posterior")
+```
