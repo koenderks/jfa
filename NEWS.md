@@ -2,7 +2,7 @@
 
 **New features**
 
-- Added inflated methods to evaluate taintings in the evaluation function via `method = "inflated.poisson"` and `method = "inflated.beta"`. Since these methods rely on mcmc sampling, they can take any form of prior.
+- Added inflated methods to evaluate taintings in the evaluation function via `method = "inflated.poisson"` and `method = "hurdle.beta"`. Since these methods rely on mcmc sampling, they can take any form of prior.
 
 **Minor changes**
 

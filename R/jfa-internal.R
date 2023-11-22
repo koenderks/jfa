@@ -542,8 +542,8 @@
   return(samples)
 }
 
-.mcmc_inflated_cp <- function(likelihood, n.obs, taints, diff, N.items, E, N.units, prior) {
-  if (likelihood == "inflated.beta") {
+.mcmc_twopart_cp <- function(likelihood, n.obs, taints, diff, N.items, E, N.units, prior) {
+  if (likelihood == "hurdle.beta") {
     data <- list(
       n = n.obs,
       y = taints,

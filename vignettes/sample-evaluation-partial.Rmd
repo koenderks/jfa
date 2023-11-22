@@ -126,19 +126,28 @@ percent, with a 95 percent upper bound of 17.23 percent. Since the upper bound o
 the Stringer method is (slightly) lower than that of the beta distribution, the
 Stringer bound is more efficient.
 
-### Zero-inflated beta distribution
+### Beta hurdle model
 
 Efficiency can be further improved by explicitly modeling the probability of a
 taint being zero (i.e., zero-inflation). This is a more realistic method
 because, in practice, most taints are zero. A zero-inflated variant of the beta
-distribution can be fitted using `method = "inflated.beta"`, which requires that
+distribution can be fitted using `method = "hurdle.beta"`, which requires that
 `prior = TRUE` (or an object created via the `auditPrior()` function). Note that
 this method also requires specifying the number of items (`N.items`) and the
 number of monetary units (`N.units`) in the population.
 
+In the context of a “zero-inflated Poisson” model (i.e., `inflated.poisson` in
+`evaluation()`), we essentially incorporate "extra" zeros into the zeros already
+present in the Poisson distribution. However, this concept doesn't directly
+apply to a "zero-inflated beta" model. Since beta regression cannot accommodate
+zeros, there are no zeros to inflate. A more appropriate term for this model
+is a Hurdle model. This terminology better reflects the fact that the model has
+to overcome the hurdle of zero values which are not inherently part of the beta
+distribution.
+
 ```{r}
 eval_zib <- evaluation(
-  method = "inflated.beta", data = sample, materiality = 0.1,
+  method = "hurdle.beta", data = sample, materiality = 0.1,
   values = "bookValue", values.audit = "auditValue",
   N.items = nrow(population), N.units = sum(population$bookValue),
   prior = TRUE
@@ -148,9 +157,9 @@ print(eval_zib)
 
 As shown in the output, the most likely misstatement is estimated to be around
 6.9 percent, with a 95 percent upper bound of around 14.44 percent. Since the
-upper bound of the zero-inflated beta distribution is lower than that of the
-Stringer bound, the zero-inflated beta distribution is more efficient. The prior
-and posterior distribution can be visualized via the `plot()` function.
+upper bound of the hurdle beta distribution is lower than that of the Stringer
+bound, the hurdle beta distribution is more efficient. The prior and posterior
+distribution can be visualized via the `plot()` function.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(eval_zib, type = "posterior")
