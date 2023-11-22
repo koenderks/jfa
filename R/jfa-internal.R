@@ -562,7 +562,7 @@
       poisson_likelihood = as.numeric(likelihood == "poisson"),
       exponential_prior = as.numeric(likelihood == "exponential")
     )
-    model <- stanmodels[["inflated_beta"]]
+    model <- stanmodels[["hurdle_beta"]]
   } else if (likelihood == "inflated.poisson") {
     data <- list(
       n = n.obs,
