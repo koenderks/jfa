@@ -95,7 +95,7 @@
 misstatements</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2023-11-21</h4>
+            <h4 data-toc-skip class="date">2023-11-22</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/sample-evaluation-partial.Rmd" class="external-link"><code>vignettes/sample-evaluation-partial.Rmd</code></a></small>
       <div class="hidden name"><code>sample-evaluation-partial.Rmd</code></div>
@@ -107,168 +107,179 @@ misstatements</h1>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>This vignette demonstrates how to efficiently evaluate a sample with
-non-binary misstatements using the <code><a href="../reference/evaluation.html">evaluation()</a></code> function
-from the <strong>jfa</strong> package.</p>
+<p>This vignette illustrates the efficient evaluation of samples with
+partial misstatements using the <code><a href="../reference/evaluation.html">evaluation()</a></code> function from
+the <strong>jfa</strong> package.</p>
 <p align="center">
 <img src="evaluation.png" alt="evaluation" width="100%"></p>
-<p>In auditing, the goal of the evaluation is typically to estimate the
-misstatement in the population based on a sample, or to test the
-misstatement in the population against a critical upper limit, referred
-to as the performance materiality.</p>
+<p>In auditing, the objective of evaluation is typically to estimate the
+misstatement in the population based on a sample or to test the
+misstatement against a critical upper limit, known as performance
+materiality.</p>
 </div>
 <div class="section level2">
 <h2 id="modeling-partial-misstatements">Modeling partial misstatements<a class="anchor" aria-label="anchor" href="#modeling-partial-misstatements"></a>
 </h2>
 <p>Partial misstatements occur when there is only a partial discrepancy
 between the true value of an item in the sample and its recorded value.
-From a data perspective, this implies that the misstatements are
-sometimes non-binary. However, there is often a large amount of correct
-items in the population. This can be taken into account when modeling
-the misstatement in the population, thereby increasing efficiency.</p>
-<p>As an example, we look at a realistic sample from a financial audit.
-The sample consists of 50 items, each having a recorded (book) value and
-a true (audit) value.</p>
+From a data perspective, this implies that misstatements are often
+non-binary. However, there is usually a large number of correct items in
+the population.</p>
+<p>As an example, we examine a realistic sample from a financial audit
+using the <code>allowances</code> data set included in the package. For
+clarity, we perform some data pre-processing to arrive at an example
+population.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"allowances"</span><span class="op">)</span></span>
+<span><span class="va">population</span> <span class="op">&lt;-</span> <span class="va">allowances</span></span>
+<span><span class="va">population</span> <span class="op">&lt;-</span> <span class="va">population</span><span class="op">[</span><span class="va">population</span><span class="op">[[</span><span class="st">"bookValue"</span><span class="op">]</span><span class="op">]</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="op">]</span></span>
+<span><span class="va">population</span> <span class="op">&lt;-</span> <span class="va">population</span><span class="op">[</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">population</span><span class="op">[[</span><span class="st">"auditValue"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span>, <span class="op">]</span></span>
+<span><span class="va">population</span> <span class="op">&lt;-</span> <span class="va">population</span><span class="op">[</span><span class="va">population</span><span class="op">[[</span><span class="st">"auditValue"</span><span class="op">]</span><span class="op">]</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">population</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##    item bookValue auditValue</span></span>
+<span><span class="co">## 1     1      1600       1600</span></span>
+<span><span class="co">## 4     4      1250       1250</span></span>
+<span><span class="co">## 7     7      1150       1150</span></span>
+<span><span class="co">## 10   10      1250       1250</span></span>
+<span><span class="co">## 12   12      6700       6700</span></span>
+<span><span class="co">## 13   13      1450       1450</span></span></code></pre>
+<p>To decide whether the misstatement in the population is lower than
+the performance materiality of ten percent, a sample of 50 items is
+selected from the population, each consisting of a book value and a true
+value. In this case, the sample is selected using a fixed interval
+sampling method in which the items in the population are randomized
+before selection.</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"allowances"</span><span class="op">)</span></span>
-<span><span class="va">population</span> <span class="op">&lt;-</span> <span class="va">allowances</span><span class="op">[</span><span class="va">allowances</span><span class="op">$</span><span class="va">bookValue</span> <span class="op">&gt;</span> <span class="fl">0</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">allowances</span><span class="op">$</span><span class="va">auditValue</span><span class="op">)</span> <span class="op">&amp;</span> <span class="va">allowances</span><span class="op">$</span><span class="va">auditValue</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">3</span>, <span class="fl">4</span><span class="op">)</span><span class="op">]</span></span>
-<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">population</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample.int</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">population</span><span class="op">)</span>, size <span class="op">=</span> <span class="fl">50</span><span class="op">)</span>, <span class="op">]</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">sample</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##      item bookValue auditValue</span></span>
-<span><span class="co">## 3709 3709  817.7943   817.7943</span></span>
-<span><span class="co">## 2955 2955 3084.5041  2313.3781</span></span>
-<span><span class="co">## 554   554  330.1700   330.1700</span></span>
-<span><span class="co">## 3471 3471  499.4546   499.4546</span></span>
-<span><span class="co">## 1667 1667 4914.8513  4914.8513</span></span>
-<span><span class="co">## 1230 1230  995.0000   995.0000</span></span></code></pre>
+<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">population</span>, size <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>  method <span class="op">=</span> <span class="st">"interval"</span>, units <span class="op">=</span> <span class="st">"values"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>,</span>
+<span>  randomize <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span><span class="op">$</span><span class="va">sample</span></span></code></pre></div>
+<p>As can often be seen in practice, the sample contains many taints
+(i.e., proportional misstatements) that are zero, and only some taints
+that are non-zero. The table below shows the distribution of the
+taints.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">sample</span><span class="op">[[</span><span class="st">"difference"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sample</span><span class="op">[[</span><span class="st">"bookValue"</span><span class="op">]</span><span class="op">]</span> <span class="op">-</span> <span class="va">sample</span><span class="op">[[</span><span class="st">"auditValue"</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">sample</span><span class="op">[[</span><span class="st">"taint"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sample</span><span class="op">[[</span><span class="st">"difference"</span><span class="op">]</span><span class="op">]</span> <span class="op">/</span> <span class="va">sample</span><span class="op">[[</span><span class="st">"bookValue"</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">sample</span><span class="op">[[</span><span class="st">"taint"</span><span class="op">]</span><span class="op">]</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##     0 0.045   0.1  0.25 0.333  0.35   0.5 0.531  0.67  0.75 </span></span>
+<span><span class="co">##    38     1     2     2     1     2     1     1     1     1</span></span></code></pre>
+<p>Taking into account the abundance of zeros in the data when modeling
+misstatement in the population can increase efficiency. In the sections
+below, we demonstrate several methods that can be used to achieve
+this.</p>
 <div class="section level3">
 <h3 id="beta-distribution">Beta distribution<a class="anchor" aria-label="anchor" href="#beta-distribution"></a>
 </h3>
-<p>The simplest way to analyze partial misstatements is to preted they
-can be aggregated and use sum of partial misstatements (i.e., the total
-taint) to project to the population. Because of its simplicity, it is
-common practice to do this. In the Bayesian framework this would entail
-using a prior and updating this prior with the aggregated information
-from the sample. For the binomial likelihood, this is done using
+<p>The simplest way to analyze partial misstatements is to aggregate
+them and use the sum of partial misstatements (i.e., the total taint) to
+project to the population. In the Bayesian framework, this involves
+using a prior and updating it with the aggregated information from the
+sample. For the binomial likelihood, this is done using
 <code>method = "binomial"</code> in combination with
 <code>prior = TRUE</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eval2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"binomial"</span>, data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">eval2</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eval_beta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
+<span>  method <span class="op">=</span> <span class="st">"binomial"</span>, data <span class="op">=</span> <span class="va">sample</span>, materiality <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>,</span>
+<span>  prior <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">eval_beta</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Evaluation</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sample</span></span>
-<span><span class="co">## number of errors = 10, number of samples = 50, taint = 2.5607</span></span>
+<span><span class="co">## number of errors = 12, number of samples = 50, taint = 4.2294, BF₁₀ =</span></span>
+<span><span class="co">## 10.728</span></span>
+<span><span class="co">## alternative hypothesis: true misstatement rate is less than 0.1</span></span>
 <span><span class="co">## 95 percent credible interval:</span></span>
-<span><span class="co">##  0.0000000 0.1335162</span></span>
+<span><span class="co">##  0.0000000 0.1762701</span></span>
 <span><span class="co">## most likely estimate:</span></span>
-<span><span class="co">##  0.051214 </span></span>
+<span><span class="co">##  0.084588 </span></span>
 <span><span class="co">## results obtained via method 'binomial' + 'prior'</span></span></code></pre>
-<p>As can be seen from the output, the most likely misstatement is
-estimated to be 5.12 percent, with a 95 percent upper bound of 13.3
-percent. Note that this estimate is not very efficient, as it does not
-take into account the information in the distribution of the taints. The
-prior and posterior distribution can be visualized via the
-<code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eval2</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation-partial_files/figure-html/unnamed-chunk-4-1.png" width="576" style="display: block; margin: auto;"></p>
+<p>As shown in the output, the most likely misstatement is estimated to
+be 8.46 percent, with a 95 percent upper bound of 17.63 percent. Note
+that this estimate is not very efficient, as it does not take into
+account the information in the distribution of the taints. The prior and
+posterior distribution can be visualized via the
+<code>plot(..., type = "posterior")</code> function.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eval_beta</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="sample-evaluation-partial_files/figure-html/unnamed-chunk-6-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="stringer-bound">Stringer bound<a class="anchor" aria-label="anchor" href="#stringer-bound"></a>
 </h3>
 <p>The Stringer bound is a method to improve efficiency by taking into
-account the differences between the partial misstatements (i.e.,
-taints). While conservative, this method can reduce the upper bound on
-the misstatement compared to the beta distribution. This can be done
-using <code>method = "stringer"</code>.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eval1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"stringer"</span>, data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">eval1</span><span class="op">)</span></span></code></pre></div>
+account the differences between the taints. While conservative, this
+method can reduce the upper bound on the misstatement compared to the
+beta distribution. This can be done using
+<code>method = "stringer"</code> in combination with
+<code>prior = FALSE</code>.</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eval_stringer</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
+<span>  method <span class="op">=</span> <span class="st">"stringer"</span>, data <span class="op">=</span> <span class="va">sample</span>, materiality <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">eval_stringer</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Classical Audit Sample Evaluation</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sample</span></span>
-<span><span class="co">## number of errors = 10, number of samples = 50, taint = 2.5607</span></span>
+<span><span class="co">## number of errors = 12, number of samples = 50, taint = 4.2294</span></span>
 <span><span class="co">## 95 percent confidence interval:</span></span>
-<span><span class="co">##  0.0000000 0.1280455</span></span>
+<span><span class="co">##  0.0000000 0.1722946</span></span>
 <span><span class="co">## most likely estimate:</span></span>
-<span><span class="co">##  0.051214 </span></span>
+<span><span class="co">##  0.084588 </span></span>
 <span><span class="co">## results obtained via method 'stringer.binomial'</span></span></code></pre>
-<p>As can be seen from the output, the most likely misstatement is
-estimated to be 5.12 percent, with a 95 percent upper bound of 12.8
-percent. Since the upper bound of the Stringer method is lower than that
-of the beta distribution, the Stringer bound is more efficient.</p>
+<p>As shown in the output, the most likely misstatement is estimated to
+be 8.46 percent, with a 95 percent upper bound of 17.23 percent. Since
+the upper bound of the Stringer method is (slightly) lower than that of
+the beta distribution, the Stringer bound is more efficient.</p>
 </div>
 <div class="section level3">
 <h3 id="zero-inflated-beta-distribution">Zero-inflated beta distribution<a class="anchor" aria-label="anchor" href="#zero-inflated-beta-distribution"></a>
 </h3>
-<p>When compared to the Stringer bound and the beta distribution,
-efficiency can be bolstered even further by explicitly modeling the
-probability of a taint being zero. The reason that this is good practice
-is because most of the observed taints will be zero in practice. This
-can be done using <code>method = "inflated.beta"</code>, which requires
-that <code>prior = TRUE</code> or an object created via the
-<code><a href="../reference/auditPrior.html">auditPrior()</a></code> function. Note that this method also requires
-that you specify the number of items (<code>N.items</code>) and the
-number of monetary units (<code>N.units</code>) in the population.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eval3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
-<span>  method <span class="op">=</span> <span class="st">"inflated.beta"</span>, data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>,</span>
-<span>  N.items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">population</span><span class="op">)</span>, N.units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">population</span><span class="op">$</span><span class="va">bookValue</span><span class="op">)</span>, prior <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">eval3</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Bayesian Audit Sample Evaluation</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## data:  sample</span></span>
-<span><span class="co">## number of errors = 10, number of samples = 50, taint = 2.5607</span></span>
-<span><span class="co">## 95 percent credible interval:</span></span>
-<span><span class="co">##  0.00000000 0.09568718</span></span>
-<span><span class="co">## most likely estimate:</span></span>
-<span><span class="co">##  0.0453 </span></span>
-<span><span class="co">## results obtained via method 'inflated.beta' + 'prior'</span></span></code></pre>
-<p>As can be seen from the output, the most likely misstatement is
-estimated to be around 4 percent, with a 95 percent upper bound of
-around 10 percent. The prior and posterior distribution can be
-visualized via the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eval3</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation-partial_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto;"></p>
-</div>
-<div class="section level3">
-<h3 id="zero-inflated-poisson-distribution">Zero-inflated Poisson distribution<a class="anchor" aria-label="anchor" href="#zero-inflated-poisson-distribution"></a>
-</h3>
-<p>Depending on whether the auditor thinks it is likely that the taints
-follow a beta distribution, they can also decide that it is more likely
-that the misstatements themselves can be described in terms of a Poisson
-process. With the option <code>method = "inflated.poisson"</code>, the
-auditor can apply the assumption of inflated zeros to the misstatement
-amounts.</p>
+<p>Efficiency can be further improved by explicitly modeling the
+probability of a taint being zero (i.e., zero-inflation). This is a more
+realistic method because, in practice, most taints are zero. A
+zero-inflated variant of the beta distribution can be fitted using
+<code>method = "inflated.beta"</code>, which requires that
+<code>prior = TRUE</code> (or an object created via the
+<code><a href="../reference/auditPrior.html">auditPrior()</a></code> function). Note that this method also requires
+specifying the number of items (<code>N.items</code>) and the number of
+monetary units (<code>N.units</code>) in the population.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eval4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
-<span>  method <span class="op">=</span> <span class="st">"inflated.poisson"</span>, data <span class="op">=</span> <span class="va">sample</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>,</span>
-<span>  N.items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">population</span><span class="op">)</span>, N.units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">population</span><span class="op">$</span><span class="va">bookValue</span><span class="op">)</span>, prior <span class="op">=</span> <span class="cn">TRUE</span></span>
+<code class="sourceCode R"><span><span class="va">eval_zib</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
+<span>  method <span class="op">=</span> <span class="st">"inflated.beta"</span>, data <span class="op">=</span> <span class="va">sample</span>, materiality <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>,</span>
+<span>  N.items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">population</span><span class="op">)</span>, N.units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">population</span><span class="op">$</span><span class="va">bookValue</span><span class="op">)</span>,</span>
+<span>  prior <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">eval4</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">eval_zib</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Evaluation</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sample</span></span>
-<span><span class="co">## number of errors = 10, number of samples = 50, taint = 2.5607</span></span>
+<span><span class="co">## number of errors = 12, number of samples = 50, taint = 4.2294, BF₁₀ =</span></span>
+<span><span class="co">## 3.5469</span></span>
+<span><span class="co">## alternative hypothesis: true misstatement rate is less than 0.1</span></span>
 <span><span class="co">## 95 percent credible interval:</span></span>
-<span><span class="co">##  0.00000000 0.06588473</span></span>
+<span><span class="co">##  0.0000000 0.1444657</span></span>
 <span><span class="co">## most likely estimate:</span></span>
-<span><span class="co">##  0.0423 </span></span>
-<span><span class="co">## results obtained via method 'inflated.poisson' + 'prior'</span></span></code></pre>
-<p>As can be seen from the output, the most likely misstatement is
-estimated to be around 4 percent, with a 95 percent upper bound of
-around 7 percent. The prior and posterior distribution can be visualized
-via the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
+<span><span class="co">##  0.0689 </span></span>
+<span><span class="co">## results obtained via method 'inflated.beta' + 'prior'</span></span></code></pre>
+<p>As shown in the output, the most likely misstatement is estimated to
+be around 6.9 percent, with a 95 percent upper bound of around 14.44
+percent. Since the upper bound of the zero-inflated beta distribution is
+lower than that of the Stringer bound, the zero-inflated beta
+distribution is more efficient. The prior and posterior distribution can
+be visualized via the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eval4</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eval_zib</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation-partial_files/figure-html/unnamed-chunk-9-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 </div>
