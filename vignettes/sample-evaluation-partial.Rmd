@@ -21,126 +21,137 @@ library(jfa)
 
 ## Introduction
 
-This vignette demonstrates how to efficiently evaluate a sample with non-binary
+This vignette illustrates the efficient evaluation of samples with partial
 misstatements using the `evaluation()` function from the **jfa** package.
 
 <p align='center'><img src='evaluation.png' alt='evaluation' width='100%'></p>
 
-In auditing, the goal of the evaluation is typically to estimate the
-misstatement in the population based on a sample, or to test the misstatement in
-the population against a critical upper limit, referred to as the performance
-materiality.
+In auditing, the objective of evaluation is typically to estimate the
+misstatement in the population based on a sample or to test the misstatement
+against a critical upper limit, known as performance materiality.
 
 ## Modeling partial misstatements
 
-Partial misstatements occur when there is only a partial discrepancy between
-the true value of an item in the sample and its recorded value. From a data
-perspective, this implies that the misstatements are sometimes non-binary.
-However, there is often a large amount of correct items in the population. This
-can be taken into account when modeling the misstatement in the population,
-thereby increasing efficiency.
+Partial misstatements occur when there is only a partial discrepancy between the
+true value of an item in the sample and its recorded value. From a data
+perspective, this implies that misstatements are often non-binary. However,
+there is usually a large number of correct items in the population.
 
-As an example, we look at a realistic sample from a financial audit. The sample
-consists of 50 items, each having a recorded (book) value and a true (audit)
-value.
+As an example, we examine a realistic sample from a financial audit using the
+`allowances` data set included in the package. For clarity, we perform some data
+pre-processing to arrive at an example population.
+
+```{r}
+data("allowances")
+population <- allowances
+population <- population[population[["bookValue"]] > 0, ]
+population <- population[!is.na(population[["auditValue"]]), ]
+population <- population[population[["auditValue"]] > 0, c(1, 3, 4)]
+head(population)
+```
+
+To decide whether the misstatement in the population is lower than the
+performance materiality of ten percent, a sample of 50 items is selected from the
+population, each consisting of a book value and a true value. In this case, the
+sample is selected using a fixed interval sampling method in which the items in
+the population are randomized before selection.
 
 ```{r}
 set.seed(1)
-data("allowances")
-population <- allowances[allowances$bookValue > 0 & !is.na(allowances$auditValue) & allowances$auditValue > 0, c(1, 3, 4)]
-sample <- population[sample.int(nrow(population), size = 50), ]
-head(sample)
+sample <- selection(
+  data = population, size = 50,
+  method = "interval", units = "values", values = "bookValue",
+  randomize = TRUE
+)$sample
 ```
+
+As can often be seen in practice, the sample contains many taints (i.e.,
+proportional misstatements) that are zero, and only some taints that are
+non-zero. The table below shows the distribution of the taints.
+
+```{r}
+sample[["difference"]] <- sample[["bookValue"]] - sample[["auditValue"]]
+sample[["taint"]] <- sample[["difference"]] / sample[["bookValue"]]
+table(round(sample[["taint"]], 3))
+```
+
+Taking into account the abundance of zeros in the data when modeling
+misstatement in the population can increase efficiency. In the sections below,
+we demonstrate several methods that can be used to achieve this.
 
 ### Beta distribution
 
-The simplest way to analyze partial misstatements is to preted they can be
-aggregated and use sum of partial misstatements (i.e., the total taint) to
-project to the population. Because of its simplicity, it is common practice to
-do this. In the Bayesian framework this would entail using a prior and updating
-this prior with the aggregated information from the sample. For the binomial
-likelihood, this is done using `method = "binomial"` in combination with
-`prior = TRUE`.
+The simplest way to analyze partial misstatements is to aggregate them and use
+the sum of partial misstatements (i.e., the total taint) to project to the
+population. In the Bayesian framework, this involves using a prior and updating
+it with the aggregated information from the sample. For the binomial likelihood,
+this is done using `method = "binomial"` in combination with `prior = TRUE`.
 
 ```{r}
-eval2 <- evaluation(method = "binomial", data = sample, values = "bookValue", values.audit = "auditValue", prior = TRUE)
-print(eval2)
+eval_beta <- evaluation(
+  method = "binomial", data = sample, materiality = 0.1,
+  values = "bookValue", values.audit = "auditValue",
+  prior = TRUE
+)
+print(eval_beta)
 ```
 
-As can be seen from the output, the most likely misstatement is estimated to be
-5.12 percent, with a 95 percent upper bound of 13.3 percent. Note that this
-estimate is not very efficient, as it does not take into account the information
-in the distribution of the taints. The prior and posterior distribution can be
-visualized via the `plot()` function.
+As shown in the output, the most likely misstatement is estimated to be 8.46
+percent, with a 95 percent upper bound of 17.63 percent. Note that this estimate
+is not very efficient, as it does not take into account the information in the
+distribution of the taints. The prior and posterior distribution can be
+visualized via the `plot(..., type = "posterior")` function.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
-plot(eval2, type = "posterior")
+plot(eval_beta, type = "posterior")
 ```
 
 ### Stringer bound
 
 The Stringer bound is a method to improve efficiency by taking into account the
-differences between the partial misstatements (i.e., taints). While conservative,
-this method can reduce the upper bound on the misstatement compared to the beta
-distribution. This can be done using `method = "stringer"`.
+differences between the taints. While conservative, this method can reduce the
+upper bound on the misstatement compared to the beta distribution. This can be
+done using `method = "stringer"` in combination with `prior = FALSE`.
 
 ```{r}
-eval1 <- evaluation(method = "stringer", data = sample, values = "bookValue", values.audit = "auditValue")
-print(eval1)
+eval_stringer <- evaluation(
+  method = "stringer", data = sample, materiality = 0.1,
+  values = "bookValue", values.audit = "auditValue"
+)
+print(eval_stringer)
 ```
 
-As can be seen from the output, the most likely misstatement is estimated to be
-5.12 percent, with a 95 percent upper bound of 12.8 percent. Since the upper
-bound of the Stringer method is lower than that of the beta distribution, the
+As shown in the output, the most likely misstatement is estimated to be 8.46
+percent, with a 95 percent upper bound of 17.23 percent. Since the upper bound of
+the Stringer method is (slightly) lower than that of the beta distribution, the
 Stringer bound is more efficient.
 
 ### Zero-inflated beta distribution
 
-When compared to the Stringer bound and the beta distribution, efficiency can
-be bolstered even further by explicitly modeling the probability of a taint
-being zero. The reason that this is good practice is because most of the observed
-taints will be zero in practice. This can be done using
-`method = "inflated.beta"`, which requires that `prior = TRUE` or an object
-created via the `auditPrior()` function. Note that this method also requires
-that you specify the number of items (`N.items`) and the number of monetary
-units (`N.units`) in the population.
+Efficiency can be further improved by explicitly modeling the probability of a
+taint being zero (i.e., zero-inflation). This is a more realistic method
+because, in practice, most taints are zero. A zero-inflated variant of the beta
+distribution can be fitted using `method = "inflated.beta"`, which requires that
+`prior = TRUE` (or an object created via the `auditPrior()` function). Note that
+this method also requires specifying the number of items (`N.items`) and the
+number of monetary units (`N.units`) in the population.
 
 ```{r}
-eval3 <- evaluation(
-  method = "inflated.beta", data = sample, values = "bookValue", values.audit = "auditValue",
-  N.items = nrow(population), N.units = sum(population$bookValue), prior = TRUE
+eval_zib <- evaluation(
+  method = "inflated.beta", data = sample, materiality = 0.1,
+  values = "bookValue", values.audit = "auditValue",
+  N.items = nrow(population), N.units = sum(population$bookValue),
+  prior = TRUE
 )
-print(eval3)
+print(eval_zib)
 ```
 
-As can be seen from the output, the most likely misstatement is estimated to be
-around 4 percent, with a 95 percent upper bound of around 10 percent. The prior
+As shown in the output, the most likely misstatement is estimated to be around
+6.9 percent, with a 95 percent upper bound of around 14.44 percent. Since the
+upper bound of the zero-inflated beta distribution is lower than that of the
+Stringer bound, the zero-inflated beta distribution is more efficient. The prior
 and posterior distribution can be visualized via the `plot()` function.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
-plot(eval3, type = "posterior")
-```
-
-### Zero-inflated Poisson distribution
-
-Depending on whether the auditor thinks it is likely that the taints follow a
-beta distribution, they can also decide that it is more likely that the
-misstatements themselves can be described in terms of a Poisson process. With
-the option `method = "inflated.poisson"`, the auditor can apply the assumption
-of inflated zeros to the misstatement amounts.
-
-```{r}
-eval4 <- evaluation(
-  method = "inflated.poisson", data = sample, values = "bookValue", values.audit = "auditValue",
-  N.items = nrow(population), N.units = sum(population$bookValue), prior = TRUE
-)
-print(eval4)
-```
-
-As can be seen from the output, the most likely misstatement is estimated to be
-around 4 percent, with a 95 percent upper bound of around 7 percent. The prior
-and posterior distribution can be visualized via the `plot()` function.
-
-```{r fig.align="center", fig.height=4, fig.width=6}
-plot(eval4, type = "posterior")
+plot(eval_zib, type = "posterior")
 ```
