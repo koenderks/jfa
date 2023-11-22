@@ -86,6 +86,16 @@ the sum of partial misstatements (i.e., the total taint) to project to the
 population. In the Bayesian framework, this involves using a prior and updating
 it with the aggregated information from the sample. For the binomial likelihood,
 this is done using `method = "binomial"` in combination with `prior = TRUE`.
+Under the hood, what this does is use a beta(1, 1) prior distribution, which
+is then updated using the sum of the taints $t$. The posterior distribution is
+
+$$\text{Beta}(\alpha = 1 + \sum t, \beta = 1 + n - \sum t).$$
+
+While this may not adhere to a strictly 'clean' modeling approach, as the
+binomial likelihood is only defined for binary data representing complete
+misstatements, it proves to be effective in estimating the misstatement (Broeze,
+2006, Chapter 4.3). Despite its somewhat unconventional nature, the analytical
+feasibility of this approach makes it convenient and therefore commonly used.
 
 ```{r}
 eval_beta <- evaluation(
@@ -97,10 +107,11 @@ print(eval_beta)
 ```
 
 As shown in the output, the most likely misstatement is estimated to be 8.46
-percent, with a 95 percent upper bound of 17.63 percent. Note that this estimate
-is not very efficient, as it does not take into account the information in the
-distribution of the taints. The prior and posterior distribution can be
-visualized via the `plot(..., type = "posterior")` function.
+percent, with a 95 percent upper bound of 17.63 percent. The prior and posterior
+distribution can be visualized via the `plot(..., type = "posterior")` function.
+Note that this approach is effective but not not very efficient, as it does not
+take into account the information in the distribution of the taints. This
+results in a relatively high upper bound on the misstatement.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(eval_beta, type = "posterior")
@@ -108,10 +119,11 @@ plot(eval_beta, type = "posterior")
 
 ### Stringer bound
 
-The Stringer bound is a method to improve efficiency by taking into account the
-differences between the taints. While conservative, this method can reduce the
-upper bound on the misstatement compared to the beta distribution. This can be
-done using `method = "stringer"` in combination with `prior = FALSE`.
+The Stringer bound is a frequentist method to improve efficiency by taking into
+account the differences between the magnitude of the taints (Stringer, 1963;
+Bickel, 1992). While conservative, this method can reduce the upper bound on
+the misstatement compared to the beta distribution. This can be done using
+`method = "stringer"` in combination with `prior = FALSE`.
 
 ```{r}
 eval_stringer <- evaluation(
@@ -164,3 +176,9 @@ distribution can be visualized via the `plot()` function.
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(eval_zib, type = "posterior")
 ```
+
+# References
+
+- Bickel, P. J. (1992). Inference and Auditing: The Stringer Bound. *International Statistical Review / Revue Internationale de Statistique*, 60(2), 197-209. - [View online](https://www.jstor.org/stable/1403650)
+- Broeze, G. B. (2006). *Validation of Risk Assessment in Auditing*. PhD-Thesis, Vrije Universiteit Amsterdam. Limperg Instituut. - [View online](https://research.vu.nl/ws/portalfiles/portal/42174612/complete+dissertation.pdf)
+- Stringer, K. W. (1963). Practical aspects of statistical sampling in auditing. *Proceedings of Business and Economic Statistics Section*, American Statistical Association.
