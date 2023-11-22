@@ -104,9 +104,9 @@ misstatements</h1>
 
     
     
-<div class="section level2">
-<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
-</h2>
+<div class="section level3">
+<h3 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+</h3>
 <p>This vignette illustrates the efficient evaluation of samples with
 partial misstatements using the <code><a href="../reference/evaluation.html">evaluation()</a></code> function from
 the <strong>jfa</strong> package.</p>
@@ -117,9 +117,9 @@ misstatement in the population based on a sample or to test the
 misstatement against a critical upper limit, known as performance
 materiality.</p>
 </div>
-<div class="section level2">
-<h2 id="modeling-partial-misstatements">Modeling partial misstatements<a class="anchor" aria-label="anchor" href="#modeling-partial-misstatements"></a>
-</h2>
+<div class="section level3">
+<h3 id="modeling-partial-misstatements">Modeling partial misstatements<a class="anchor" aria-label="anchor" href="#modeling-partial-misstatements"></a>
+</h3>
 <p>Partial misstatements occur when there is only a partial discrepancy
 between the true value of an item in the sample and its recorded value.
 From a data perspective, this implies that misstatements are often
@@ -171,16 +171,27 @@ taints.</p>
 misstatement in the population can increase efficiency. In the sections
 below, we demonstrate several methods that can be used to achieve
 this.</p>
-<div class="section level3">
-<h3 id="beta-distribution">Beta distribution<a class="anchor" aria-label="anchor" href="#beta-distribution"></a>
-</h3>
+<div class="section level4">
+<h4 id="beta-distribution">Beta distribution<a class="anchor" aria-label="anchor" href="#beta-distribution"></a>
+</h4>
 <p>The simplest way to analyze partial misstatements is to aggregate
 them and use the sum of partial misstatements (i.e., the total taint) to
 project to the population. In the Bayesian framework, this involves
 using a prior and updating it with the aggregated information from the
 sample. For the binomial likelihood, this is done using
 <code>method = "binomial"</code> in combination with
-<code>prior = TRUE</code>.</p>
+<code>prior = TRUE</code>. Under the hood, what this does is use a
+beta(1, 1) prior distribution, which is then updated using the sum of
+the taints <span class="math inline">\(t\)</span>. The posterior
+distribution is</p>
+<p><span class="math display">\[\text{Beta}(\alpha = 1 + \sum t, \beta =
+1 + n - \sum t).\]</span></p>
+<p>While this may not adhere to a strictly ‘clean’ modeling approach, as
+the binomial likelihood is only defined for binary data representing
+complete misstatements, it proves to be effective in estimating the
+misstatement (Broeze, 2006, Chapter 4.3). Despite its somewhat
+unconventional nature, the analytical feasibility of this approach makes
+it convenient and therefore commonly used.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eval_beta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  method <span class="op">=</span> <span class="st">"binomial"</span>, data <span class="op">=</span> <span class="va">sample</span>, materiality <span class="op">=</span> <span class="fl">0.1</span>,</span>
@@ -201,24 +212,25 @@ sample. For the binomial likelihood, this is done using
 <span><span class="co">##  0.084588 </span></span>
 <span><span class="co">## results obtained via method 'binomial' + 'prior'</span></span></code></pre>
 <p>As shown in the output, the most likely misstatement is estimated to
-be 8.46 percent, with a 95 percent upper bound of 17.63 percent. Note
-that this estimate is not very efficient, as it does not take into
-account the information in the distribution of the taints. The prior and
-posterior distribution can be visualized via the
-<code>plot(..., type = "posterior")</code> function.</p>
+be 8.46 percent, with a 95 percent upper bound of 17.63 percent. The
+prior and posterior distribution can be visualized via the
+<code>plot(..., type = "posterior")</code> function. Note that this
+approach is effective but not not very efficient, as it does not take
+into account the information in the distribution of the taints. This
+results in a relatively high upper bound on the misstatement.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eval_beta</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation-partial_files/figure-html/unnamed-chunk-6-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
-<div class="section level3">
-<h3 id="stringer-bound">Stringer bound<a class="anchor" aria-label="anchor" href="#stringer-bound"></a>
-</h3>
-<p>The Stringer bound is a method to improve efficiency by taking into
-account the differences between the taints. While conservative, this
-method can reduce the upper bound on the misstatement compared to the
-beta distribution. This can be done using
-<code>method = "stringer"</code> in combination with
-<code>prior = FALSE</code>.</p>
+<div class="section level4">
+<h4 id="stringer-bound">Stringer bound<a class="anchor" aria-label="anchor" href="#stringer-bound"></a>
+</h4>
+<p>The Stringer bound is a frequentist method to improve efficiency by
+taking into account the differences between the magnitude of the taints
+(Stringer, 1963; Bickel, 1992). While conservative, this method can
+reduce the upper bound on the misstatement compared to the beta
+distribution. This can be done using <code>method = "stringer"</code> in
+combination with <code>prior = FALSE</code>.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eval_stringer</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  method <span class="op">=</span> <span class="st">"stringer"</span>, data <span class="op">=</span> <span class="va">sample</span>, materiality <span class="op">=</span> <span class="fl">0.1</span>,</span>
@@ -240,9 +252,9 @@ be 8.46 percent, with a 95 percent upper bound of 17.23 percent. Since
 the upper bound of the Stringer method is (slightly) lower than that of
 the beta distribution, the Stringer bound is more efficient.</p>
 </div>
-<div class="section level3">
-<h3 id="beta-hurdle-model">Beta hurdle model<a class="anchor" aria-label="anchor" href="#beta-hurdle-model"></a>
-</h3>
+<div class="section level4">
+<h4 id="beta-hurdle-model">Beta hurdle model<a class="anchor" aria-label="anchor" href="#beta-hurdle-model"></a>
+</h4>
 <p>Efficiency can be further improved by explicitly modeling the
 probability of a taint being zero (i.e., zero-inflation). This is a more
 realistic method because, in practice, most taints are zero. A
@@ -291,6 +303,24 @@ the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eval_zib</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation-partial_files/figure-html/unnamed-chunk-9-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
+</div>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<ul>
+<li>Bickel, P. J. (1992). Inference and Auditing: The Stringer Bound.
+<em>International Statistical Review / Revue Internationale de
+Statistique</em>, 60(2), 197-209. - <a href="https://www.jstor.org/stable/1403650" class="external-link">View online</a>
+</li>
+<li>Broeze, G. B. (2006). <em>Validation of Risk Assessment in
+Auditing</em>. PhD-Thesis, Vrije Universiteit Amsterdam. Limperg
+Instituut. - <a href="https://research.vu.nl/ws/portalfiles/portal/42174612/complete+dissertation.pdf" class="external-link">View
+online</a>
+</li>
+<li>Stringer, K. W. (1963). Practical aspects of statistical sampling in
+auditing. <em>Proceedings of Business and Economic Statistics
+Section</em>, American Statistical Association.</li>
+</ul>
 </div>
   </div>
 
