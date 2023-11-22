@@ -241,20 +241,29 @@ the upper bound of the Stringer method is (slightly) lower than that of
 the beta distribution, the Stringer bound is more efficient.</p>
 </div>
 <div class="section level3">
-<h3 id="zero-inflated-beta-distribution">Zero-inflated beta distribution<a class="anchor" aria-label="anchor" href="#zero-inflated-beta-distribution"></a>
+<h3 id="beta-hurdle-model">Beta hurdle model<a class="anchor" aria-label="anchor" href="#beta-hurdle-model"></a>
 </h3>
 <p>Efficiency can be further improved by explicitly modeling the
 probability of a taint being zero (i.e., zero-inflation). This is a more
 realistic method because, in practice, most taints are zero. A
 zero-inflated variant of the beta distribution can be fitted using
-<code>method = "inflated.beta"</code>, which requires that
+<code>method = "hurdle.beta"</code>, which requires that
 <code>prior = TRUE</code> (or an object created via the
 <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function). Note that this method also requires
 specifying the number of items (<code>N.items</code>) and the number of
 monetary units (<code>N.units</code>) in the population.</p>
+<p>In the context of a “zero-inflated Poisson” model (i.e.,
+<code>inflated.poisson</code> in <code><a href="../reference/evaluation.html">evaluation()</a></code>), we
+essentially incorporate “extra” zeros into the zeros already present in
+the Poisson distribution. However, this concept doesn’t directly apply
+to a “zero-inflated beta” model. Since beta regression cannot
+accommodate zeros, there are no zeros to inflate. A more appropriate
+term for this model is a Hurdle model. This terminology better reflects
+the fact that the model has to overcome the hurdle of zero values which
+are not inherently part of the beta distribution.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eval_zib</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
-<span>  method <span class="op">=</span> <span class="st">"inflated.beta"</span>, data <span class="op">=</span> <span class="va">sample</span>, materiality <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  method <span class="op">=</span> <span class="st">"hurdle.beta"</span>, data <span class="op">=</span> <span class="va">sample</span>, materiality <span class="op">=</span> <span class="fl">0.1</span>,</span>
 <span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>,</span>
 <span>  N.items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">population</span><span class="op">)</span>, N.units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">population</span><span class="op">$</span><span class="va">bookValue</span><span class="op">)</span>,</span>
 <span>  prior <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -271,13 +280,13 @@ monetary units (<code>N.units</code>) in the population.</p>
 <span><span class="co">##  0.0000000 0.1444657</span></span>
 <span><span class="co">## most likely estimate:</span></span>
 <span><span class="co">##  0.0689 </span></span>
-<span><span class="co">## results obtained via method 'inflated.beta' + 'prior'</span></span></code></pre>
+<span><span class="co">## results obtained via method 'hurdle.beta' + 'prior'</span></span></code></pre>
 <p>As shown in the output, the most likely misstatement is estimated to
 be around 6.9 percent, with a 95 percent upper bound of around 14.44
-percent. Since the upper bound of the zero-inflated beta distribution is
-lower than that of the Stringer bound, the zero-inflated beta
-distribution is more efficient. The prior and posterior distribution can
-be visualized via the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
+percent. Since the upper bound of the hurdle beta distribution is lower
+than that of the Stringer bound, the hurdle beta distribution is more
+efficient. The prior and posterior distribution can be visualized via
+the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eval_zib</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation-partial_files/figure-html/unnamed-chunk-9-1.png" width="576" style="display: block; margin: auto;"></p>
