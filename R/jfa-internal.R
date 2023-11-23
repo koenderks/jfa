@@ -676,7 +676,7 @@
       })
     })
     out <- list()
-    out[["mle"]] <- mean(raw$theta_tilde[, "theta"])
+    out[["mle"]] <- .comp_mode_bayes(analytical = FALSE, sample = raw$theta_tilde[, "theta"])
     out[["lb"]] <- switch(alternative,
       "less" = 0,
       "two.sided" = stats::quantile(raw$theta_tilde[, "theta"], (1 - conf.level) / 2),
