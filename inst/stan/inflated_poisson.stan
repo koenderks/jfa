@@ -70,19 +70,10 @@ model {
   }
 }
 generated quantities {
-  // Model predicted data
-  real<lower=0> y_rep;
-   if (bernoulli_rng(p_zero)) {
-    y_rep = 0;
-  } else {
-    y_rep = poisson_rng(lambda);
-  }
   // Model predicted misstatement
   real<lower=0> E_rep = 0;
   for (i in 1:N) {
-    if (bernoulli_rng(p_zero)) {
-      E_rep += 0;
-    } else {
+    if (bernoulli_rng(p_zero) == 0) {
       E_rep += poisson_rng(lambda);
     }
   }

@@ -374,7 +374,6 @@ evaluation <- function(materiality = NULL,
     stopifnot("'materiality' must be a single value between 0 and 1" = valid_materiality)
   }
   valid_test_method <- method %in% c("poisson", "inflated.poisson", "binomial", "hurdle.beta", "hypergeometric", "normal", "uniform", "cauchy", "t", "chisq", "exponential")
-  stopifnot("method = 'inflated.poisson' and method = 'hurdle.beta' require 'prior != FALSE'" = !(isFALSE(prior) && method %in% c("inflated.poisson", "hurdle.beta")))
   if (is_bayesian) {
     stopifnot("'method' should be one of 'poisson', 'binomial', or 'hypergeometric'" = valid_test_method)
   }
@@ -426,13 +425,13 @@ evaluation <- function(materiality = NULL,
     if (has_summary_statistics) {
       message("'data' is used while 'x' or 'n' are also specified")
     }
-    allBook <- NULL
+    all_book <- NULL
     if (!is.null(times)) {
       stopifnot("column 'times' not found in 'data'" = times %in% colnames(data))
       times <- data[, times]
       stopifnot("'times' contains missing values" = sum(!is.na(times)) == nrow(data))
       stopifnot("column 'times' in 'data' must be a vector of integers" = all(times %% 1 == 0))
-      allBook <- data[, values]
+      all_book <- data[, values]
       data <- data[times > 0, ]
       times <- times[times > 0]
       n.obs <- sum(times)
@@ -565,11 +564,11 @@ evaluation <- function(materiality = NULL,
               stopifnot("inflated methods do not support stratification" = !use_stratification)
               mcmc_prior <- TRUE
               stopifnot("missing value for 'N.items'" = !is.null(N.items))
-              if (method == "inflated.poisson" || is.null(allBook)) {
+              if (method == "inflated.poisson" || is.null(all_book)) {
                 stopifnot("missing value for 'N.units'" = !is.null(N.units))
-                allBook <- rep(N.units[i] / N.items[i], N.items[i])
+                all_book <- rep(N.units[i] / N.items[i], N.items[i])
               }
-              samples <- .mcmc_twopart_cp(method, n.obs[i], taints[[i]], book_values[i][[1]] - audit_values[i][[1]], N.items[i], allBook, N.units[i], prior)
+              samples <- .mcmc_twopart_cp(method, n.obs[i], taints[[i]], book_values[i][[1]] - audit_values[i][[1]], N.items[i], all_book, N.units[i], prior)
             } else {
               samples <- .mcmc_cp(method, t.obs[i], n.obs[i], prior)
             }
@@ -584,14 +583,25 @@ evaluation <- function(materiality = NULL,
             }
           }
         } else {
-          if (method == "hypergeometric") {
-            K[i] <- ceiling(materiality * N.units[i])
-          }
-          mle[i] <- .comp_mle_freq(method, n.obs[i], x.obs[i], t.obs[i], N.units[i])
-          lb[i] <- .comp_lb_freq(alternative, conf.level, method, n.obs[i], x.obs[i], t.obs[i], N.units[i])
-          ub[i] <- .comp_ub_freq(alternative, conf.level, method, n.obs[i], x.obs[i], t.obs[i], N.units[i])
-          if (materiality < 1) {
-            p.val[i] <- .comp_pval(alternative, materiality, method, n.obs[i], x.obs[i], t.obs[i], N.units[i], K[i])
+          if (method %in% c("poisson", "binomial", "hypergeometric")) {
+            if (method == "hypergeometric") {
+              K[i] <- ceiling(materiality * N.units[i])
+            }
+            mle[i] <- .comp_mle_freq(method, n.obs[i], x.obs[i], t.obs[i], N.units[i])
+            lb[i] <- .comp_lb_freq(alternative, conf.level, method, n.obs[i], x.obs[i], t.obs[i], N.units[i])
+            ub[i] <- .comp_ub_freq(alternative, conf.level, method, n.obs[i], x.obs[i], t.obs[i], N.units[i])
+            if (materiality < 1) {
+              p.val[i] <- .comp_pval(alternative, materiality, method, n.obs[i], x.obs[i], t.obs[i], N.units[i], K[i])
+            }
+          } else if (method %in% c("inflated.poisson", "hurdle.beta")) {
+            if (method == "inflated.poisson" || is.null(all_book)) {
+              stopifnot("missing value for 'N.units'" = !is.null(N.units))
+              all_book <- rep(N.units[i] / N.items[i], N.items[i])
+            }
+            out <- .optim_twopart_cp(method, n.obs[i], taints[[i]], book_values[i][[1]] - audit_values[i][[1]], N.items[i], all_book, N.units[i], alternative, conf.level)
+            mle[i] <- out[["mle"]]
+            lb[i] <- out[["lb"]]
+            ub[i] <- out[["ub"]]
           }
         }
         if (method == "hypergeometric") {

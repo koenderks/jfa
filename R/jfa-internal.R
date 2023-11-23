@@ -613,6 +613,81 @@
   return(samples)
 }
 
+.optim_twopart_cp <- function(likelihood, n.obs, taints, diff, N.items, E, N.units, alternative, conf.level) {
+  if (likelihood == "hurdle.beta") {
+    data <- list(
+      n = n.obs,
+      y = taints,
+      N = N.items,
+      E = E,
+      alpha = 0,
+      beta = 0,
+      beta_prior = 0,
+      gamma_prior = 0,
+      normal_prior = 0,
+      uniform_prior = 0,
+      cauchy_prior = 0,
+      t_prior = 0,
+      chisq_prior = 0,
+      binomial_likelihood = 0,
+      poisson_likelihood = 0,
+      exponential_prior = 0
+    )
+    model <- stanmodels[["hurdle_beta"]]
+  } else if (likelihood == "inflated.poisson") {
+    data <- list(
+      n = n.obs,
+      y = round(diff),
+      N = N.items,
+      B = N.units,
+      alpha = 0,
+      beta = 0,
+      beta_prior = 0,
+      gamma_prior = 0,
+      normal_prior = 0,
+      uniform_prior = 0,
+      cauchy_prior = 0,
+      t_prior = 0,
+      chisq_prior = 0,
+      binomial_likelihood = 0,
+      poisson_likelihood = 0,
+      exponential_prior = 0
+    )
+    model <- stanmodels[["inflated_poisson"]]
+  }
+  suppressWarnings({
+    raw <- rstan::optimizing(
+      object = model,
+      data = c(data, use_likelihood = 1),
+      iter = getOption("mc.iterations", 2000),
+      seed = sample.int(.Machine$integer.max, 1),
+      refresh = getOption("mc.refresh", 0)
+    )
+  })
+  out <- list()
+  if (likelihood == "inflated.poisson") {
+    binom <- rbinom(N.items * getOption("mc.iterations", 2000), 1, 1 - raw$par["p_zero"])
+    pois <- rpois(N.items * getOption("mc.iterations", 2000), raw$par["lambda"])
+    theta <- colSums(matrix(binom * pois, nrow = N.items)) / sum(E)
+  } else if (likelihood == "hurdle.beta") {
+    binom <- rbinom(N.items * getOption("mc.iterations", 2000), 1, 1 - raw$par["prob[1]"])
+    beta <- rbeta(N.items * getOption("mc.iterations", 2000), raw$par["phi"] * raw$par["nu"], (1 - raw$par["phi"]) * raw$par["nu"])
+    theta <- colSums(matrix(binom * beta * E, nrow = N.items)) / sum(E)
+  }
+  out[["mle"]] <- .comp_mode_bayes(analytical = FALSE, samples = theta)
+  out[["lb"]] <- as.numeric(switch(alternative,
+    "less" = 0,
+    "two.sided" = quantile(theta, (1 - conf.level) / 2),
+    "greater" = quantile(theta, 1 - conf.level)
+  ))
+  out[["ub"]] <- as.numeric(switch(alternative,
+    "less" = quantile(theta, conf.level),
+    "two.sided" = quantile(theta, conf.level + (1 - conf.level) / 2),
+    "greater" = 1
+  ))
+  return(out)
+}
+
 .mcmc_pp <- function(likelihood, n.obs, t.obs, t, nstrata, stratum, prior) {
   stopifnot("'method = hypergeometric' does not support pooling" = prior[["likelihood"]] != "hypergeometric")
   if (likelihood == "binomial" || likelihood == "poisson") {

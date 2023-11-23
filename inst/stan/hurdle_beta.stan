@@ -92,27 +92,18 @@ model {
   }
 }
 generated quantities {
-  // Model predicted data
-  real<lower=0> y_rep;
-  int pick = categorical_rng(prob);
-  if (pick == 1) {
-    y_rep = 0;
-  } else if (pick == 2) {
-    y_rep = 1;
-  } else {
-    y_rep = beta_proportion_rng(phi, nu);
-  }
   // Model predicted misstatement
   real<lower=0> E_rep = 0;
+  int<lower=1, upper=3> pick;
   for (i in 1:N) {
     pick = categorical_rng(prob);
-    if (pick == 1) {
-      E_rep += 0;
-    } else if (pick == 2) {
-      E_rep += E[i];
-    } else {
-      E_rep += beta_proportion_rng(phi, nu) * E[i];
-    }
+    if (pick != 1) {
+      if (pick == 2) {
+        E_rep += E[i];
+      } else {
+        E_rep += beta_proportion_rng(phi, nu) * E[i];
+      }
+	}
   }
   real<lower=0, upper=1> theta = E_rep / sum(E);
 }
