@@ -661,17 +661,33 @@
       data = c(data, use_likelihood = 1),
       iter = getOption("mc.iterations", 2000),
       seed = sample.int(.Machine$integer.max, 1),
-      refresh = getOption("mc.refresh", 0)
+      refresh = getOption("mc.refresh", 0),
+      hessian = TRUE
     )
   })
+  sds <- try(
+    {
+      diag(solve(-raw$hessian))
+    },
+    silent = TRUE
+  )
+  if (inherits(sds, "try-error")) {
+    message("Warning: Could not solve the hessian matrix, using point estimates to estimate the confidence interval")
+    sds <- list("p_error" = 0.001, "lambda" = 0.001, "p_discrete" = 0.001, "phi" = 0.001, "nu" = 0.001)
+  }
   out <- list()
   if (likelihood == "inflated.poisson") {
-    binom <- stats::rbinom(N.items * getOption("mc.iterations", 2000), 1, 1 - raw$par["p_zero"])
-    pois <- stats::rpois(N.items * getOption("mc.iterations", 2000), raw$par["lambda"])
+    p_error <- truncdist::rtrunc(N.items, "norm", a = 0, b = 1, mean = as.numeric(raw$par["p_error"]), sd = as.numeric(sds["p_error"]))
+    binom <- stats::rbinom(N.items * getOption("mc.iterations", 2000), 1, p_error)
+    lambda <- truncdist::rtrunc(N.items, "norm", a = 0, mean = as.numeric(raw$par["lambda"]), sd = as.numeric(sds["lambda"]))
+    pois <- stats::rpois(N.items * getOption("mc.iterations", 2000), lambda)
     theta <- colSums(matrix(binom * pois, nrow = N.items)) / sum(E)
   } else if (likelihood == "hurdle.beta") {
-    binom <- stats::rbinom(N.items * getOption("mc.iterations", 2000), 1, 1 - raw$par["prob[1]"])
-    beta <- stats::rbeta(N.items * getOption("mc.iterations", 2000), raw$par["phi"] * raw$par["nu"], (1 - raw$par["phi"]) * raw$par["nu"])
+    p_correct <- truncdist::rtrunc(N.items, "norm", a = 0, b = 1, mean = as.numeric(raw$par["p_discrete"]), sd = as.numeric(sds["p_discrete"]))
+    binom <- stats::rbinom(N.items * getOption("mc.iterations", 2000), 1, 1 - p_correct)
+    phi <- truncdist::rtrunc(N.items, "norm", a = 0, b = 1, mean = as.numeric(raw$par["phi"]), sd = as.numeric(sds["phi"]))
+    nu <- truncdist::rtrunc(N.items, "norm", a = 1, mean = as.numeric(raw$par["nu"]), sd = as.numeric(sds["nu"]))
+    beta <- stats::rbeta(N.items * getOption("mc.iterations", 2000), phi * nu, (1 - phi) * nu)
     theta <- colSums(matrix(binom * beta * E, nrow = N.items)) / sum(E)
   }
   out[["mle"]] <- .comp_mode_bayes(analytical = FALSE, samples = theta)
