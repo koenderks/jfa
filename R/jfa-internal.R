@@ -666,23 +666,23 @@
   })
   out <- list()
   if (likelihood == "inflated.poisson") {
-    binom <- rbinom(N.items * getOption("mc.iterations", 2000), 1, 1 - raw$par["p_zero"])
-    pois <- rpois(N.items * getOption("mc.iterations", 2000), raw$par["lambda"])
+    binom <- stats::rbinom(N.items * getOption("mc.iterations", 2000), 1, 1 - raw$par["p_zero"])
+    pois <- stats::rpois(N.items * getOption("mc.iterations", 2000), raw$par["lambda"])
     theta <- colSums(matrix(binom * pois, nrow = N.items)) / sum(E)
   } else if (likelihood == "hurdle.beta") {
-    binom <- rbinom(N.items * getOption("mc.iterations", 2000), 1, 1 - raw$par["prob[1]"])
-    beta <- rbeta(N.items * getOption("mc.iterations", 2000), raw$par["phi"] * raw$par["nu"], (1 - raw$par["phi"]) * raw$par["nu"])
+    binom <- stats::rbinom(N.items * getOption("mc.iterations", 2000), 1, 1 - raw$par["prob[1]"])
+    beta <- stats::rbeta(N.items * getOption("mc.iterations", 2000), raw$par["phi"] * raw$par["nu"], (1 - raw$par["phi"]) * raw$par["nu"])
     theta <- colSums(matrix(binom * beta * E, nrow = N.items)) / sum(E)
   }
   out[["mle"]] <- .comp_mode_bayes(analytical = FALSE, samples = theta)
   out[["lb"]] <- as.numeric(switch(alternative,
     "less" = 0,
-    "two.sided" = quantile(theta, (1 - conf.level) / 2),
-    "greater" = quantile(theta, 1 - conf.level)
+    "two.sided" = stats::quantile(theta, (1 - conf.level) / 2),
+    "greater" = stats::quantile(theta, 1 - conf.level)
   ))
   out[["ub"]] <- as.numeric(switch(alternative,
-    "less" = quantile(theta, conf.level),
-    "two.sided" = quantile(theta, conf.level + (1 - conf.level) / 2),
+    "less" = stats::quantile(theta, conf.level),
+    "two.sided" = stats::quantile(theta, conf.level + (1 - conf.level) / 2),
     "greater" = 1
   ))
   return(out)
