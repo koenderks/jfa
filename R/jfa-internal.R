@@ -663,6 +663,7 @@
     )
     model <- stanmodels[["poisson_zero"]]
   }
+  out <- list()
   p <- try(
     {
       suppressWarnings({
@@ -676,18 +677,6 @@
           )
         })
       })
-      out <- list()
-      out[["mle"]] <- .comp_mode_bayes(analytical = FALSE, sample = raw$theta_tilde[, "theta"])
-      out[["lb"]] <- switch(alternative,
-        "less" = 0,
-        "two.sided" = stats::quantile(raw$theta_tilde[, "theta"], (1 - conf.level) / 2),
-        "greater" = stats::quantile(raw$theta_tilde[, "theta"], 1 - conf.level)
-      )
-      out[["ub"]] <- switch(alternative,
-        "less" = stats::quantile(raw$theta_tilde[, "theta"], conf.level),
-        "two.sided" = stats::quantile(raw$theta_tilde[, "theta"], conf.level + (1 - conf.level) / 2),
-        "greater" = 1
-      )
     },
     silent = TRUE
   )
@@ -703,8 +692,6 @@
         )
       })
     })
-    out <- list()
-    out[["mle"]] <- mean(raw$theta_tilde[, "theta"])
     out[["lb"]] <- switch(alternative,
       "less" = 0,
       "two.sided" = NA,
@@ -715,7 +702,19 @@
       "two.sided" = NA,
       "greater" = 1
     )
+  } else {
+    out[["lb"]] <- switch(alternative,
+      "less" = 0,
+      "two.sided" = stats::quantile(raw$theta_tilde[, "theta"], (1 - conf.level) / 2),
+      "greater" = stats::quantile(raw$theta_tilde[, "theta"], 1 - conf.level)
+    )
+    out[["ub"]] <- switch(alternative,
+      "less" = stats::quantile(raw$theta_tilde[, "theta"], conf.level),
+      "two.sided" = stats::quantile(raw$theta_tilde[, "theta"], conf.level + (1 - conf.level) / 2),
+      "greater" = 1
+    )
   }
+  out[["mle"]] <- as.numeric(raw$par["theta"])
   return(out)
 }
 
