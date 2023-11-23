@@ -663,45 +663,45 @@
     )
     model <- stanmodels[["poisson_zero"]]
   }
-  p <- try({
+  p <- try(
+    {
+      suppressWarnings({
+        utils::capture.output({
+          raw <- rstan::optimizing(
+            object = model,
+            data = c(data, use_likelihood = 1),
+            draws = getOption("mc.iterations", 2000),
+            seed = sample.int(.Machine$integer.max, 1),
+            refresh = getOption("mc.refresh", 0)
+          )
+        })
+      })
+      out <- list()
+      out[["mle"]] <- .comp_mode_bayes(analytical = FALSE, sample = raw$theta_tilde[, "theta"])
+      out[["lb"]] <- switch(alternative,
+        "less" = 0,
+        "two.sided" = stats::quantile(raw$theta_tilde[, "theta"], (1 - conf.level) / 2),
+        "greater" = stats::quantile(raw$theta_tilde[, "theta"], 1 - conf.level)
+      )
+      out[["ub"]] <- switch(alternative,
+        "less" = stats::quantile(raw$theta_tilde[, "theta"], conf.level),
+        "two.sided" = stats::quantile(raw$theta_tilde[, "theta"], conf.level + (1 - conf.level) / 2),
+        "greater" = 1
+      )
+    },
+    silent = TRUE
+  )
+  if (inherits(p, "try-error")) {
+    message("Warning: Could not calculate upper and lower limits, showing NA")
     suppressWarnings({
       utils::capture.output({
         raw <- rstan::optimizing(
           object = model,
           data = c(data, use_likelihood = 1),
-          draws = getOption("mc.iterations", 2000),
           seed = sample.int(.Machine$integer.max, 1),
           refresh = getOption("mc.refresh", 0)
         )
       })
-    })
-    out <- list()
-    out[["mle"]] <- .comp_mode_bayes(analytical = FALSE, sample = raw$theta_tilde[, "theta"])
-    out[["lb"]] <- switch(alternative,
-      "less" = 0,
-      "two.sided" = stats::quantile(raw$theta_tilde[, "theta"], (1 - conf.level) / 2),
-      "greater" = stats::quantile(raw$theta_tilde[, "theta"], 1 - conf.level)
-    )
-    out[["ub"]] <- switch(alternative,
-      "less" = stats::quantile(raw$theta_tilde[, "theta"], conf.level),
-      "two.sided" = stats::quantile(raw$theta_tilde[, "theta"], conf.level + (1 - conf.level) / 2),
-      "greater" = 1
-    )
-  })
-  if (inherits(p, "try-error")) {
-    message("Warning: Could not calculate upper and lower limits")
-    suppressWarnings({
-      utils::capture.output(
-        {
-          raw <- rstan::optimizing(
-            object = model,
-            data = c(data, use_likelihood = 1),
-            seed = sample.int(.Machine$integer.max, 1),
-            refresh = getOption("mc.refresh", 0)
-          )
-        },
-        silent = TRUE
-      )
     })
     out <- list()
     out[["mle"]] <- mean(raw$theta_tilde[, "theta"])
