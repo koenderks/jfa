@@ -53,12 +53,7 @@ parameters {
 transformed parameters {
   real p_discrete = 1 - p_error; // Probability of y being 0 or 1
   // Probability of y being 0, 1, and (0, 1)
-  simplex[3] prob;
-  if (N_ones > 0) {
-    prob = [p_discrete * (1 - p_discrete_one), p_discrete * p_discrete_one, 1 - p_discrete]';
-  } else {
-    prob = [p_discrete, 0, 1 - p_discrete]';
-  }
+  simplex[3] prob = [p_discrete * (1 - p_discrete_one), p_discrete * p_discrete_one, 1 - p_discrete]';
 }
 model {
   // Prior distributions
@@ -85,9 +80,7 @@ model {
   // Likelihood
   if (use_likelihood) { 
     target += N_zeroes * log(prob[1]);
-    if (N_ones > 0) {
-      target += N_ones * log(prob[2]);
-    }
+    target += N_ones * log(prob[2]);
     target += size(y_non_discrete) * log(prob[3]) + beta_proportion_lpdf(y_non_discrete | phi, nu);
   }
 }
@@ -103,7 +96,7 @@ generated quantities {
       } else {
         E_rep += beta_proportion_rng(phi, nu) * E[i];
       }
-	}
+    }
   }
   real<lower=0, upper=1> theta = E_rep / sum(E);
 }

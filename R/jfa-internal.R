@@ -562,7 +562,11 @@
       poisson_likelihood = as.numeric(likelihood == "poisson"),
       exponential_prior = as.numeric(likelihood == "exponential")
     )
-    model <- stanmodels[["hurdle_beta"]]
+    if (any(taints == 1)) {
+      model <- stanmodels[["beta_zero_one"]]
+    } else {
+      model <- stanmodels[["beta_zero"]]
+    }
   } else if (likelihood == "inflated.poisson") {
     data <- list(
       n = n.obs,
@@ -580,7 +584,7 @@
       chisq_prior = as.numeric(prior[["likelihood"]] == "chisq"),
       exponential_prior = as.numeric(likelihood == "exponential")
     )
-    model <- stanmodels[["inflated_poisson"]]
+    model <- stanmodels[["poisson_zero"]]
   }
   suppressWarnings({
     raw_prior <- rstan::sampling(
@@ -633,7 +637,11 @@
       poisson_likelihood = 0,
       exponential_prior = 0
     )
-    model <- stanmodels[["hurdle_beta"]]
+    if (any(taints == 1)) {
+      model <- stanmodels[["beta_zero_one"]]
+    } else {
+      model <- stanmodels[["beta_zero"]]
+    }
   } else if (likelihood == "inflated.poisson") {
     data <- list(
       n = n.obs,
@@ -653,54 +661,61 @@
       poisson_likelihood = 0,
       exponential_prior = 0
     )
-    model <- stanmodels[["inflated_poisson"]]
+    model <- stanmodels[["poisson_zero"]]
   }
-  suppressWarnings({
-    raw <- rstan::optimizing(
-      object = model,
-      data = c(data, use_likelihood = 1),
-      iter = getOption("mc.iterations", 2000),
-      seed = sample.int(.Machine$integer.max, 1),
-      refresh = getOption("mc.refresh", 0),
-      hessian = TRUE
+  p <- try({
+    suppressWarnings({
+      utils::capture.output({
+        raw <- rstan::optimizing(
+          object = model,
+          data = c(data, use_likelihood = 1),
+          draws = getOption("mc.iterations", 2000),
+          seed = sample.int(.Machine$integer.max, 1),
+          refresh = getOption("mc.refresh", 0)
+        )
+      })
+    })
+    out <- list()
+    out[["mle"]] <- mean(raw$theta_tilde[, "theta"])
+    out[["lb"]] <- switch(alternative,
+      "less" = 0,
+      "two.sided" = stats::quantile(raw$theta_tilde[, "theta"], (1 - conf.level) / 2),
+      "greater" = stats::quantile(raw$theta_tilde[, "theta"], 1 - conf.level)
+    )
+    out[["ub"]] <- switch(alternative,
+      "less" = stats::quantile(raw$theta_tilde[, "theta"], conf.level),
+      "two.sided" = stats::quantile(raw$theta_tilde[, "theta"], conf.level + (1 - conf.level) / 2),
+      "greater" = 1
     )
   })
-  sds <- try(
-    {
-      diag(solve(-raw$hessian))
-    },
-    silent = TRUE
-  )
-  if (inherits(sds, "try-error")) {
-    message("Warning: Could not solve the hessian matrix, using point estimates to estimate the confidence interval")
-    sds <- list("p_error" = 0.001, "lambda" = 0.001, "p_discrete" = 0.001, "phi" = 0.001, "nu" = 0.001)
+  if (inherits(p, "try-error")) {
+    message("Warning: Could not calculate upper and lower limits")
+    suppressWarnings({
+      utils::capture.output(
+        {
+          raw <- rstan::optimizing(
+            object = model,
+            data = c(data, use_likelihood = 1),
+            seed = sample.int(.Machine$integer.max, 1),
+            refresh = getOption("mc.refresh", 0)
+          )
+        },
+        silent = TRUE
+      )
+    })
+    out <- list()
+    out[["mle"]] <- mean(raw$theta_tilde[, "theta"])
+    out[["lb"]] <- switch(alternative,
+      "less" = 0,
+      "two.sided" = NA,
+      "greater" = NA
+    )
+    out[["ub"]] <- switch(alternative,
+      "less" = NA,
+      "two.sided" = NA,
+      "greater" = 1
+    )
   }
-  out <- list()
-  if (likelihood == "inflated.poisson") {
-    p_error <- truncdist::rtrunc(N.items, "norm", a = 0, b = 1, mean = as.numeric(raw$par["p_error"]), sd = as.numeric(sds["p_error"]))
-    binom <- stats::rbinom(N.items * getOption("mc.iterations", 2000), 1, p_error)
-    lambda <- truncdist::rtrunc(N.items, "norm", a = 0, mean = as.numeric(raw$par["lambda"]), sd = as.numeric(sds["lambda"]))
-    pois <- stats::rpois(N.items * getOption("mc.iterations", 2000), lambda)
-    theta <- colSums(matrix(binom * pois, nrow = N.items)) / sum(E)
-  } else if (likelihood == "hurdle.beta") {
-    p_correct <- truncdist::rtrunc(N.items, "norm", a = 0, b = 1, mean = as.numeric(raw$par["p_discrete"]), sd = as.numeric(sds["p_discrete"]))
-    binom <- stats::rbinom(N.items * getOption("mc.iterations", 2000), 1, 1 - p_correct)
-    phi <- truncdist::rtrunc(N.items, "norm", a = 0, b = 1, mean = as.numeric(raw$par["phi"]), sd = as.numeric(sds["phi"]))
-    nu <- truncdist::rtrunc(N.items, "norm", a = 1, mean = as.numeric(raw$par["nu"]), sd = as.numeric(sds["nu"]))
-    beta <- stats::rbeta(N.items * getOption("mc.iterations", 2000), phi * nu, (1 - phi) * nu)
-    theta <- colSums(matrix(binom * beta * E, nrow = N.items)) / sum(E)
-  }
-  out[["mle"]] <- .comp_mode_bayes(analytical = FALSE, samples = theta)
-  out[["lb"]] <- as.numeric(switch(alternative,
-    "less" = 0,
-    "two.sided" = stats::quantile(theta, (1 - conf.level) / 2),
-    "greater" = stats::quantile(theta, 1 - conf.level)
-  ))
-  out[["ub"]] <- as.numeric(switch(alternative,
-    "less" = stats::quantile(theta, conf.level),
-    "two.sided" = stats::quantile(theta, conf.level + (1 - conf.level) / 2),
-    "greater" = 1
-  ))
   return(out)
 }
 

@@ -12,16 +12,18 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 
-RcppExport SEXP _rcpp_module_boot_stan_fit4hurdle_beta_mod();
-RcppExport SEXP _rcpp_module_boot_stan_fit4inflated_poisson_mod();
+RcppExport SEXP _rcpp_module_boot_stan_fit4beta_zero_mod();
+RcppExport SEXP _rcpp_module_boot_stan_fit4beta_zero_one_mod();
 RcppExport SEXP _rcpp_module_boot_stan_fit4or_fairness_mod();
+RcppExport SEXP _rcpp_module_boot_stan_fit4poisson_zero_mod();
 RcppExport SEXP _rcpp_module_boot_stan_fit4pp_error_mod();
 RcppExport SEXP _rcpp_module_boot_stan_fit4pp_taint_mod();
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_rcpp_module_boot_stan_fit4hurdle_beta_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4hurdle_beta_mod, 0},
-    {"_rcpp_module_boot_stan_fit4inflated_poisson_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4inflated_poisson_mod, 0},
+    {"_rcpp_module_boot_stan_fit4beta_zero_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4beta_zero_mod, 0},
+    {"_rcpp_module_boot_stan_fit4beta_zero_one_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4beta_zero_one_mod, 0},
     {"_rcpp_module_boot_stan_fit4or_fairness_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4or_fairness_mod, 0},
+    {"_rcpp_module_boot_stan_fit4poisson_zero_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4poisson_zero_mod, 0},
     {"_rcpp_module_boot_stan_fit4pp_error_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4pp_error_mod, 0},
     {"_rcpp_module_boot_stan_fit4pp_taint_mod", (DL_FUNC) &_rcpp_module_boot_stan_fit4pp_taint_mod, 0},
     {NULL, NULL, 0}
