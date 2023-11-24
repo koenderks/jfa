@@ -95,6 +95,7 @@ reference:
     desc: >
       Example data sets included in the **jfa** package.
     contents:
+      - accounts
       - allowances
       - benchmark
       - BuildIt
