@@ -65,9 +65,14 @@ sample <- selection(
 )$sample
 ```
 
-As can often be seen in practice, the sample contains many taints (i.e.,
-proportional misstatements) that are zero, and only some taints that are
-non-zero. The table below shows the distribution of the taints.
+When evaluating partial misstatements, auditors often calculate the 'taint' $t$
+of each item, which is defined as the proportional misstatment in the item: 
+$t = \frac{\text{Book value} - \text{Audit value}}{\text{Book value}}$. For
+instance, an item that is booked for $1,000 but has an audit value of $500,
+consequently has a taint of $t = 0.5$. On the other hand, if an item does not
+contain misstatement, its taint is $t = 0$. As is often the case in practice,
+this audit sample contains many taints that are zero, and only some taints that
+are greater than zero. The table below shows this distribution of taints.
 
 ```{r}
 sample[["difference"]] <- sample[["bookValue"]] - sample[["auditValue"]]
@@ -75,31 +80,36 @@ sample[["taint"]] <- sample[["difference"]] / sample[["bookValue"]]
 table(round(sample[["taint"]], 3))
 ```
 
-Taking into account the abundance of zeros in the data when modeling
-misstatement in the population can increase efficiency. In the sections below,
-we demonstrate several methods that can be used to achieve this.
+Normally, techniques for assessing audit samples overlook the prevalence of
+zeros in the data. Yet, considering the abundance of zeros in the data during
+the modeling of misstatements in the population can enhance efficiency. In the
+following sections, we demonstrate two approaches that can be used to deal with
+partial misstatements.
 
 ### Classical approaches
 
-Classical (i.e., frequentist) approaches rely on the data to estimate the
-parameters in a statistical model. The classical approach is standard practice
-in the audit, which is why we will discuss it first in this vignette.
+Traditional (i.e., frequentist) methods depend on the data for estimating
+parameters in a statistical model through maximum likelihood estimation. This
+methodology is widely adopted in auditing, and therefore we will discuss it
+first in this vignette.
 
 #### Binomial likelihood
 
 The simplest way to analyze partial misstatements is to aggregate them and use
 the sum of partial misstatements (i.e., the total taint) to project to the
-population. For the classical binomial likelihood, this can be done using
-`method = "binomial"`. Under the hood, what this does is use a binomial
-likelihood, which is then fitted using the sum of the taints
-$k = \sum_{i=0}^n t_i$. Note that this does not yet take into account the
-abundance of zeros in the data.
+population. Under the hood, this employs a binomial likelihood fitted with the
+sum of the taints, denoted as $k = \sum_{i=0}^n t_i$. Note that this approach
+does not yet take into account the abundance of zeros in the data.
 
-While this may not adhere to a strictly 'clean' modeling approach, as the
-binomial likelihood is only defined for binary data representing complete
-misstatements, it proves to be effective in estimating the misstatement (Broeze,
-2006, Chapter 4.3). Despite its somewhat unconventional nature, the analytical
-feasibility of this approach makes it convenient and therefore commonly used.
+While aggregating the taints may not adhere to a strictly 'clean' modeling
+approach, as the binomial likelihood is only defined for binary data
+representing complete misstatements, it proves to be effective in estimating the
+misstatement (Broeze, 2006, Chapter 4.3). Despite its somewhat unconventional
+nature, the analytical feasibility of this approach makes it easy to use and
+therefore commonly applied.
+
+For the classical binomial likelihood, aggregating the taints can be done using
+`method = "binomial"`. 
 
 ```{r}
 eval_binom <- evaluation(
@@ -120,7 +130,8 @@ take into account the information in the distribution of the taints.
 The Stringer bound is a frequentist method to improve efficiency by taking into
 account the differences between the magnitude of the taints (Stringer, 1963;
 Bickel, 1992). The bound is a variant of the binomial distribution, but
-considers the non-binary nature of the taints. The upper bound is given by
+considers the non-binary nature of the taints. The Stringer upper bound on the
+population misstatement is given by
 
 $$p(0, 1 - \alpha) + \sum_{i=1}^k [p(i, 1 - \alpha) - p(i - 1, 1 - \alpha)] \times t_i.$$
 
@@ -128,8 +139,8 @@ In the formula above, $p(i; 1 - \alpha)$ is the $1 - \alpha$ upper limit for at
 most $i$ misstatements in $n$ items according to the binomial distribution
 (Clopper and Pearson, 1934). This is equal to the $1 - \alpha$ percentile of a
 beta($1 + i$, $n - i$) distribution (Pearson, 1934). When calculating the
-Stringer bound in the case of taints, the taints are placed in descending order
-in the formula as a form of conservatism. 
+Stringer bound, the taints are placed in descending order in the formula as a
+form of conservatism.
 
 In `jfa`, the Stringer bound can be applied using `method = "stringer"`.
 
@@ -180,21 +191,26 @@ bound, the hurdle beta model is more efficient.
 
 ### Bayesian approaches
 
-In Bayesian evaluation we specify a prior distribution for the parameters in the
-model. The advantage of this approach for these types of models is that the
-prior has a regularizing effect, thereby needing less data to make inferences.
+Within the Bayesian framework, we define a prior distribution for the parameters
+in the model. This approach offers a notable advantage for models dealing with
+partial misstatement, as the prior distribution exerts a regularizing influence,
+reducing the amount of data required for reliable inferences. Additionally, the
+prior distribution enables auditors to integrate pre-existing information about
+the misstatement into the statistical analysis.
 
 #### Beta distribution 
 
-The Bayesian counterpart of the binomial likelihood is the beta distribution.
-Similar to the way that we deal with taints in the binomial likelihood, the
-taints can also be aggregated and analyzed using a beta distribution.
-In that case, the posterior distribution is
+The Bayesian equivalent to the binomial likelihood is represented by the beta
+distribution. Just as we handle taints in the binomial likelihood, they can also
+be aggregated and examined utilizing a beta distribution. Given that we start
+with the default beta(1, 1) prior (`prior = TRUE`), the posterior distribution
+is
 
 $$\text{Beta}(\alpha = 1 + \sum t, \beta = 1 + n - \sum t).$$
 
-For the classical binomial likelihood, the Bayesian model can be applied using
-`method = "binomial"` in comination with `prior = TRUE`.
+For the binomial likelihood, the Bayesian model can be applied using
+`method = "binomial"` in comination with `prior = TRUE`. As usual, `prior` can
+also be an object created by the `auditPrior()` function.
 
 ```{r}
 eval_beta <- evaluation(
