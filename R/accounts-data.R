@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#' Accounts receivable
+#' Accounts Receivable
 #'
 #' Audit sample obtained from a population of N = 87 accounts receivable,
 #' totaling $612,824 in book value (Higgins and Nandram, 2009; Lohr, 2021).

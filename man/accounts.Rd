@@ -3,7 +3,7 @@
 \docType{data}
 \name{accounts}
 \alias{accounts}
-\title{Accounts receivable}
+\title{Accounts Receivable}
 \format{
 A data frame with 20 rows and 3 variables.
 \describe{
