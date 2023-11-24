@@ -519,6 +519,7 @@ evaluation <- function(materiality = NULL,
     N.units <- ceiling(N.units)
   }
   use_stratification <- length(t.obs) > 1
+  stopifnot("inflated methods do not currently support stratification" = !(method %in% c("inflated.poisson", "hurdle.beta") && use_stratification))
   if (pooling == "complete") {
     nstrata <- 1
   } else {
@@ -561,7 +562,6 @@ evaluation <- function(materiality = NULL,
           } else {
             stopifnot("likelihood = 'hypergeometric' does not support non-conjugate priors" = method != "hypergeometric")
             if (method %in% c("inflated.poisson", "hurdle.beta")) {
-              stopifnot("inflated methods do not support stratification" = !use_stratification)
               mcmc_prior <- TRUE
               stopifnot("missing value for 'N.items'" = !is.null(N.items))
               if (method == "inflated.poisson" || is.null(all_book)) {
