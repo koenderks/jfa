@@ -714,6 +714,15 @@
       "greater" = 1
     )
   }
+  if (likelihood == "inflated.poisson") {
+    out[["mle"]] <- (raw$par["p_error"] * raw$par["lambda"] * N.items) / N.units
+  } else {
+    if (any(taints == 1)) {
+      out[["mle"]] <- raw$par["prob[3]"] * raw$par["phi"] + raw$par["prob[2]"]
+    } else {
+      out[["mle"]] <- raw$par["p_error"] * raw$par["phi"]
+    }
+  }
   out[["mle"]] <- switch(likelihood,
     "inflated.poisson" = (raw$par["p_error"] * raw$par["lambda"] * N.items) / N.units,
     "hurdle.beta" = raw$par["p_error"] * raw$par["phi"]
