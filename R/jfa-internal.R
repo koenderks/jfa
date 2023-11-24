@@ -667,15 +667,15 @@
   p <- try(
     {
       suppressWarnings({
-        utils::capture.output({
-          raw <- rstan::optimizing(
-            object = model,
-            data = c(data, use_likelihood = 1),
-            draws = getOption("mc.iterations", 2000),
-            seed = sample.int(.Machine$integer.max, 1),
-            refresh = getOption("mc.refresh", 0)
-          )
-        })
+        raw <- rstan::optimizing(
+          object = model,
+          data = c(data, use_likelihood = 1),
+          iter = getOption("mc.iterations", 2000),
+          draws = getOption("mc.iterations", 2000),
+          seed = sample.int(.Machine$integer.max, 1),
+          refresh = getOption("mc.refresh", 0),
+          verbose = FALSE
+        )
       })
     },
     silent = TRUE
@@ -683,14 +683,14 @@
   if (inherits(p, "try-error")) {
     message("Warning: Could not calculate upper and lower limits, showing NA")
     suppressWarnings({
-      utils::capture.output({
-        raw <- rstan::optimizing(
-          object = model,
-          data = c(data, use_likelihood = 1),
-          seed = sample.int(.Machine$integer.max, 1),
-          refresh = getOption("mc.refresh", 0)
-        )
-      })
+      raw <- rstan::optimizing(
+        object = model,
+        data = c(data, use_likelihood = 1),
+        iter = getOption("mc.iterations", 2000),
+        seed = sample.int(.Machine$integer.max, 1),
+        refresh = getOption("mc.refresh", 0),
+        verbose = FALSE
+      )
     })
     out[["lb"]] <- switch(alternative,
       "less" = 0,

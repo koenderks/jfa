@@ -1,5 +1,5 @@
 ---
-title: "Evaluating samples with partial misstatements"
+title: "Evaluating audit samples with partial misstatements"
 author: Koen Derks
 date: "`r Sys.Date()`"
 output: 
@@ -7,7 +7,7 @@ output:
     toc: true
     toc_depth: 3
 vignette: >
-  %\VignetteIndexEntry{Evaluating samples with partial misstatements}
+  %\VignetteIndexEntry{Evaluating audit samples with partial misstatements}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteDepends{jfa}
   %\VignetteKeywords{audit, evaluation, jfa}
@@ -79,23 +79,122 @@ Taking into account the abundance of zeros in the data when modeling
 misstatement in the population can increase efficiency. In the sections below,
 we demonstrate several methods that can be used to achieve this.
 
-### Beta distribution
+### Classical approaches
+
+Classical (i.e., frequentist) approaches rely on the data to estimate the
+parameters in a statistical model. The classical approach is standard practice
+in the audit, which is why we will discuss it first in this vignette.
+
+#### Binomial likelihood
 
 The simplest way to analyze partial misstatements is to aggregate them and use
 the sum of partial misstatements (i.e., the total taint) to project to the
-population. In the Bayesian framework, this involves using a prior and updating
-it with the aggregated information from the sample. For the binomial likelihood,
-this is done using `method = "binomial"` in combination with `prior = TRUE`.
-Under the hood, what this does is use a beta(1, 1) prior distribution, which
-is then updated using the sum of the taints $t$. The posterior distribution is
-
-$$\text{Beta}(\alpha = 1 + \sum t, \beta = 1 + n - \sum t).$$
+population. For the classical binomial likelihood, this can be done using
+`method = "binomial"`. Under the hood, what this does is use a binomial
+likelihood, which is then fitted using the sum of the taints
+$k = \sum_{i=0}^n t_i$. Note that this does not yet take into account the
+abundance of zeros in the data.
 
 While this may not adhere to a strictly 'clean' modeling approach, as the
 binomial likelihood is only defined for binary data representing complete
 misstatements, it proves to be effective in estimating the misstatement (Broeze,
 2006, Chapter 4.3). Despite its somewhat unconventional nature, the analytical
 feasibility of this approach makes it convenient and therefore commonly used.
+
+```{r}
+eval_binom <- evaluation(
+  method = "binomial", data = sample, materiality = 0.1,
+  values = "bookValue", values.audit = "auditValue"
+)
+print(eval_binom)
+```
+
+As shown in the output, the most likely misstatement is estimated to be 8.46
+percent, with a 95 percent upper bound of 17.96 percent. Note that this approach
+might be effective (i.e., estimate the misstatement well) but not not very
+efficient (i.e., has a relatively high upper bound). That is because it does not
+take into account the information in the distribution of the taints.
+
+#### Stringer bound
+
+The Stringer bound is a frequentist method to improve efficiency by taking into
+account the differences between the magnitude of the taints (Stringer, 1963;
+Bickel, 1992). The bound is a variant of the binomial distribution, but
+considers the non-binary nature of the taints. The upper bound is given by
+
+$$p(0, 1 - \alpha) + \sum_{i=1}^k [p(i, 1 - \alpha) - p(i - 1, 1 - \alpha)] \times t_i.$$
+
+In the formula above, $p(i; 1 - \alpha)$ is the $1 - \alpha$ upper limit for at
+most $i$ misstatements in $n$ items according to the binomial distribution
+(Clopper and Pearson, 1934). This is equal to the $1 - \alpha$ percentile of a
+beta($1 + i$, $n - i$) distribution (Pearson, 1934). When calculating the
+Stringer bound in the case of taints, the taints are placed in descending order
+in the formula as a form of conservatism. 
+
+In `jfa`, the Stringer bound can be applied using `method = "stringer"`.
+
+```{r}
+eval_stringer <- evaluation(
+  method = "stringer", data = sample, materiality = 0.1,
+  values = "bookValue", values.audit = "auditValue"
+)
+print(eval_stringer)
+```
+
+As shown in the output, the most likely misstatement is estimated to be 8.46
+percent, with a 95 percent upper bound of 17.23 percent. Since the upper bound of
+the Stringer method is (slightly) lower than that of the binomial likelihood,
+the Stringer bound is more efficient.
+
+#### Hurdle beta model
+
+Efficiency can be further improved by explicitly modeling the probability of a
+taint being zero (i.e., zero-inflation). This is a more realistic method
+because, in practice, most taints are zero. In in the context of a zero-inflated
+Poisson model (i.e., `method = inflated.poisson`), the idea is to incorporate
+extra zeros into the zeros already present in the Poisson distribution. However,
+this idea does not directly apply to a "zero-inflated beta" model. Since beta
+regression cannot accommodate zeros, there are no zeros to inflate. An
+appropriate name for this model is therefore a hurdle (i.e., two-component) beta
+model. This terminology reflects the idea that the model has to overcome the
+hurdle of zero values which are not inherently part of the beta distribution.
+
+In `jfa`, the hurdle beta model can be fitted using `method = "hurdle.beta"`.
+Note that this requires specifying the number of items (`N.items`) and the
+number of monetary units (`N.units`) in the population.
+
+```{r}
+set.seed(1)
+eval_hurdle <- evaluation(
+  method = "hurdle.beta", data = sample, materiality = 0.1,
+  values = "bookValue", values.audit = "auditValue",
+  N.items = nrow(population), N.units = sum(population$bookValue)
+)
+print(eval_hurdle)
+```
+
+As shown in the output, the most likely misstatement is estimated to be around
+7.8 percent, with a 95 percent upper bound of around 14.44 percent. Since the
+upper bound of the hurdle beta model is lower than that of the Stringer
+bound, the hurdle beta model is more efficient.
+
+### Bayesian approaches
+
+In Bayesian evaluation we specify a prior distribution for the parameters in the
+model. The advantage of this approach for these types of models is that the
+prior has a regularizing effect, thereby needing less data to make inferences.
+
+#### Beta distribution 
+
+The Bayesian counterpart of the binomial likelihood is the beta distribution.
+Similar to the way that we deal with taints in the binomial likelihood, the
+taints can also be aggregated and analyzed using a beta distribution.
+In that case, the posterior distribution is
+
+$$\text{Beta}(\alpha = 1 + \sum t, \beta = 1 + n - \sum t).$$
+
+For the classical binomial likelihood, the Bayesian model can be applied using
+`method = "binomial"` in comination with `prior = TRUE`.
 
 ```{r}
 eval_beta <- evaluation(
@@ -109,76 +208,40 @@ print(eval_beta)
 As shown in the output, the most likely misstatement is estimated to be 8.46
 percent, with a 95 percent upper bound of 17.63 percent. The prior and posterior
 distribution can be visualized via the `plot(..., type = "posterior")` function.
-Note that this approach is effective but not not very efficient, as it does not
-take into account the information in the distribution of the taints. This
-results in a relatively high upper bound on the misstatement.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(eval_beta, type = "posterior")
 ```
 
-### Stringer bound
+#### Hurdle beta model
 
-The Stringer bound is a frequentist method to improve efficiency by taking into
-account the differences between the magnitude of the taints (Stringer, 1963;
-Bickel, 1992). While conservative, this method can reduce the upper bound on
-the misstatement compared to the beta distribution. This can be done using
-`method = "stringer"` in combination with `prior = FALSE`.
+It is also possible to fit a Bayesian variant of the hurlde beta model. This can
+be done using `method = "hurdle.beta"` in comination with `prior = TRUE` (or an
+object created by the `auditPrior()` function).
 
 ```{r}
-eval_stringer <- evaluation(
-  method = "stringer", data = sample, materiality = 0.1,
-  values = "bookValue", values.audit = "auditValue"
-)
-print(eval_stringer)
-```
-
-As shown in the output, the most likely misstatement is estimated to be 8.46
-percent, with a 95 percent upper bound of 17.23 percent. Since the upper bound of
-the Stringer method is (slightly) lower than that of the beta distribution, the
-Stringer bound is more efficient.
-
-### Beta hurdle model
-
-Efficiency can be further improved by explicitly modeling the probability of a
-taint being zero (i.e., zero-inflation). This is a more realistic method
-because, in practice, most taints are zero. A zero-inflated variant of the beta
-distribution can be fitted using `method = "hurdle.beta"`, which requires that
-`prior = TRUE` (or an object created via the `auditPrior()` function). Note that
-this method also requires specifying the number of items (`N.items`) and the
-number of monetary units (`N.units`) in the population.
-
-In the context of a “zero-inflated Poisson” model (i.e., `inflated.poisson` in
-`evaluation()`), we essentially incorporate "extra" zeros into the zeros already
-present in the Poisson distribution. However, this concept doesn't directly
-apply to a "zero-inflated beta" model. Since beta regression cannot accommodate
-zeros, there are no zeros to inflate. A more appropriate term for this model
-is a Hurdle model. This terminology better reflects the fact that the model has
-to overcome the hurdle of zero values which are not inherently part of the beta
-distribution.
-
-```{r}
-eval_zib <- evaluation(
+set.seed(1)
+eval_hurdle_bayes <- evaluation(
   method = "hurdle.beta", data = sample, materiality = 0.1,
   values = "bookValue", values.audit = "auditValue",
   N.items = nrow(population), N.units = sum(population$bookValue),
   prior = TRUE
 )
-print(eval_zib)
+print(eval_hurdle_bayes)
 ```
 
 As shown in the output, the most likely misstatement is estimated to be around
-6.9 percent, with a 95 percent upper bound of around 14.44 percent. Since the
-upper bound of the hurdle beta distribution is lower than that of the Stringer
-bound, the hurdle beta distribution is more efficient. The prior and posterior
-distribution can be visualized via the `plot()` function.
+8.4 percent, with a 95 percent upper bound of around 14.5 percent. The prior and
+posterior distribution can be visualized using the `plot()` function.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
-plot(eval_zib, type = "posterior")
+plot(eval_hurdle_bayes, type = "posterior")
 ```
 
 # References
 
 - Bickel, P. J. (1992). Inference and Auditing: The Stringer Bound. *International Statistical Review / Revue Internationale de Statistique*, 60(2), 197-209. - [View online](https://www.jstor.org/stable/1403650)
 - Broeze, G. B. (2006). *Validation of Risk Assessment in Auditing*. PhD-Thesis, Vrije Universiteit Amsterdam. Limperg Instituut. - [View online](https://research.vu.nl/ws/portalfiles/portal/42174612/complete+dissertation.pdf)
+- Clopper, C. J., & Pearson, E. S. (1934). The use of confidence or fiducial limits illustrated in the case of the binomial. *Biometrika*, 26(4), 404-413. - [View online](https://doi.org/10.2307/2331986)
+- Pearson, K. (1934). *Tables of the Incomplete Beta Function*, London: Biometrika Office.
 - Stringer, K. W. (1963). Practical aspects of statistical sampling in auditing. *Proceedings of Business and Economic Statistics Section*, American Statistical Association.

@@ -29,12 +29,12 @@ data {
   int use_likelihood;            // Apply the likelihood
 }
 transformed data {
-  int N_zeroes = 0;
+  int N_zeros = 0;
   vector[num_non_discrete(y)] y_non_discrete;
   int j = 1; 
   for (i in 1:n) {
     if (y[i] == 0) {
-      N_zeroes += 1; 
+      N_zeros += 1; 
     } else {
       y_non_discrete[j] = y[i];
       j += 1; 
@@ -74,7 +74,7 @@ model {
   nu ~ pareto(1, 1.5);
   // Likelihood
   if (use_likelihood) { 
-    target += N_zeroes * log(prob[1]);
+    target += N_zeros * log(prob[1]);
     target += size(y_non_discrete) * log(prob[2]) + beta_proportion_lpdf(y_non_discrete | phi, nu);
   }
 }
