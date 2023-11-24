@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Evaluating samples with partial misstatements • jfa</title>
+<title>Evaluating audit samples with partial misstatements • jfa</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
@@ -17,7 +17,7 @@
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Evaluating samples with partial misstatements">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Evaluating audit samples with partial misstatements">
 <meta property="og:description" content="jfa">
 <meta property="og:image" content="https://koenderks.github.io/jfa/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -91,11 +91,11 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Evaluating samples with partial
+      <h1 data-toc-skip>Evaluating audit samples with partial
 misstatements</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2023-11-23</h4>
+            <h4 data-toc-skip class="date">2023-11-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/sample-evaluation-partial.Rmd" class="external-link"><code>vignettes/sample-evaluation-partial.Rmd</code></a></small>
       <div class="hidden name"><code>sample-evaluation-partial.Rmd</code></div>
@@ -156,10 +156,16 @@ before selection.</p>
 <span>  method <span class="op">=</span> <span class="st">"interval"</span>, units <span class="op">=</span> <span class="st">"values"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>,</span>
 <span>  randomize <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span><span class="op">$</span><span class="va">sample</span></span></code></pre></div>
-<p>As can often be seen in practice, the sample contains many taints
-(i.e., proportional misstatements) that are zero, and only some taints
-that are non-zero. The table below shows the distribution of the
-taints.</p>
+<p>When evaluating partial misstatements, auditors often calculate the
+‘taint’ <span class="math inline">\(t\)</span> of each item, which is
+defined as the proportional misstatment in the item: <span class="math inline">\(t = \frac{\text{Book value} - \text{Audit
+value}}{\text{Book value}}\)</span>. For instance, an item that is
+booked for $1,000 but has an audit value of $500, consequently has a
+taint of <span class="math inline">\(t = 0.5\)</span>. On the other
+hand, if an item does not contain misstatement, its taint is <span class="math inline">\(t = 0\)</span>. As is often the case in practice,
+this audit sample contains many taints that are zero, and only some
+taints that are greater than zero. The table below shows this
+distribution of taints.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sample</span><span class="op">[[</span><span class="st">"difference"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sample</span><span class="op">[[</span><span class="st">"bookValue"</span><span class="op">]</span><span class="op">]</span> <span class="op">-</span> <span class="va">sample</span><span class="op">[[</span><span class="st">"auditValue"</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">sample</span><span class="op">[[</span><span class="st">"taint"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sample</span><span class="op">[[</span><span class="st">"difference"</span><span class="op">]</span><span class="op">]</span> <span class="op">/</span> <span class="va">sample</span><span class="op">[[</span><span class="st">"bookValue"</span><span class="op">]</span><span class="op">]</span></span>
@@ -167,32 +173,171 @@ taints.</p>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##     0 0.045   0.1  0.25 0.333  0.35   0.5 0.531  0.67  0.75 </span></span>
 <span><span class="co">##    38     1     2     2     1     2     1     1     1     1</span></span></code></pre>
-<p>Taking into account the abundance of zeros in the data when modeling
-misstatement in the population can increase efficiency. In the sections
-below, we demonstrate several methods that can be used to achieve
-this.</p>
+<p>Normally, techniques for assessing audit samples overlook the
+prevalence of zeros in the data. Yet, considering the abundance of zeros
+in the data during the modeling of misstatements in the population can
+enhance efficiency. In the following sections, we demonstrate two
+approaches that can be used to deal with partial misstatements.</p>
 <div class="section level4">
-<h4 id="beta-distribution">Beta distribution<a class="anchor" aria-label="anchor" href="#beta-distribution"></a>
+<h4 id="classical-approaches">Classical approaches<a class="anchor" aria-label="anchor" href="#classical-approaches"></a>
 </h4>
+<p>Traditional (i.e., frequentist) methods depend on the data for
+estimating parameters in a statistical model through maximum likelihood
+estimation. This methodology is widely adopted in auditing, and
+therefore we will discuss it first in this vignette.</p>
+<div class="section level5">
+<h5 id="binomial-likelihood">Binomial likelihood<a class="anchor" aria-label="anchor" href="#binomial-likelihood"></a>
+</h5>
 <p>The simplest way to analyze partial misstatements is to aggregate
 them and use the sum of partial misstatements (i.e., the total taint) to
-project to the population. In the Bayesian framework, this involves
-using a prior and updating it with the aggregated information from the
-sample. For the binomial likelihood, this is done using
-<code>method = "binomial"</code> in combination with
-<code>prior = TRUE</code>. Under the hood, what this does is use a
-beta(1, 1) prior distribution, which is then updated using the sum of
-the taints <span class="math inline">\(t\)</span>. The posterior
-distribution is</p>
+project to the population. Under the hood, this employs a binomial
+likelihood fitted with the sum of the taints, denoted as <span class="math inline">\(k = \sum_{i=0}^n t_i\)</span>. Note that this
+approach does not yet take into account the abundance of zeros in the
+data.</p>
+<p>While aggregating the taints may not adhere to a strictly ‘clean’
+modeling approach, as the binomial likelihood is only defined for binary
+data representing complete misstatements, it proves to be effective in
+estimating the misstatement (Broeze, 2006, Chapter 4.3). Despite its
+somewhat unconventional nature, the analytical feasibility of this
+approach makes it easy to use and therefore commonly applied.</p>
+<p>For the classical binomial likelihood, aggregating the taints can be
+done using <code>method = "binomial"</code>.</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eval_binom</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
+<span>  method <span class="op">=</span> <span class="st">"binomial"</span>, data <span class="op">=</span> <span class="va">sample</span>, materiality <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">eval_binom</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Classical Audit Sample Evaluation</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## data:  sample</span></span>
+<span><span class="co">## number of errors = 12, number of samples = 50, taint = 4.2294, p-value</span></span>
+<span><span class="co">## = 0.47475</span></span>
+<span><span class="co">## alternative hypothesis: true misstatement rate is less than 0.1</span></span>
+<span><span class="co">## 95 percent confidence interval:</span></span>
+<span><span class="co">##  0.000000 0.179607</span></span>
+<span><span class="co">## most likely estimate:</span></span>
+<span><span class="co">##  0.084588 </span></span>
+<span><span class="co">## results obtained via method 'binomial'</span></span></code></pre>
+<p>As shown in the output, the most likely misstatement is estimated to
+be 8.46 percent, with a 95 percent upper bound of 17.96 percent. Note
+that this approach might be effective (i.e., estimate the misstatement
+well) but not not very efficient (i.e., has a relatively high upper
+bound). That is because it does not take into account the information in
+the distribution of the taints.</p>
+</div>
+<div class="section level5">
+<h5 id="stringer-bound">Stringer bound<a class="anchor" aria-label="anchor" href="#stringer-bound"></a>
+</h5>
+<p>The Stringer bound is a frequentist method to improve efficiency by
+taking into account the differences between the magnitude of the taints
+(Stringer, 1963; Bickel, 1992). The bound is a variant of the binomial
+distribution, but considers the non-binary nature of the taints. The
+Stringer upper bound on the population misstatement is given by</p>
+<p><span class="math display">\[p(0, 1 - \alpha) + \sum_{i=1}^k [p(i, 1
+- \alpha) - p(i - 1, 1 - \alpha)] \times t_i.\]</span></p>
+<p>In the formula above, <span class="math inline">\(p(i; 1 -
+\alpha)\)</span> is the <span class="math inline">\(1 - \alpha\)</span>
+upper limit for at most <span class="math inline">\(i\)</span>
+misstatements in <span class="math inline">\(n\)</span> items according
+to the binomial distribution (Clopper and Pearson, 1934). This is equal
+to the <span class="math inline">\(1 - \alpha\)</span> percentile of a
+beta(<span class="math inline">\(1 + i\)</span>, <span class="math inline">\(n - i\)</span>) distribution (Pearson, 1934). When
+calculating the Stringer bound, the taints are placed in descending
+order in the formula as a form of conservatism.</p>
+<p>In <code>jfa</code>, the Stringer bound can be applied using
+<code>method = "stringer"</code>.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">eval_stringer</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
+<span>  method <span class="op">=</span> <span class="st">"stringer"</span>, data <span class="op">=</span> <span class="va">sample</span>, materiality <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">eval_stringer</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Classical Audit Sample Evaluation</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## data:  sample</span></span>
+<span><span class="co">## number of errors = 12, number of samples = 50, taint = 4.2294</span></span>
+<span><span class="co">## 95 percent confidence interval:</span></span>
+<span><span class="co">##  0.0000000 0.1722946</span></span>
+<span><span class="co">## most likely estimate:</span></span>
+<span><span class="co">##  0.084588 </span></span>
+<span><span class="co">## results obtained via method 'stringer.binomial'</span></span></code></pre>
+<p>As shown in the output, the most likely misstatement is estimated to
+be 8.46 percent, with a 95 percent upper bound of 17.23 percent. Since
+the upper bound of the Stringer method is (slightly) lower than that of
+the binomial likelihood, the Stringer bound is more efficient.</p>
+</div>
+<div class="section level5">
+<h5 id="hurdle-beta-model">Hurdle beta model<a class="anchor" aria-label="anchor" href="#hurdle-beta-model"></a>
+</h5>
+<p>Efficiency can be further improved by explicitly modeling the
+probability of a taint being zero (i.e., zero-inflation). This is a more
+realistic method because, in practice, most taints are zero. In in the
+context of a zero-inflated Poisson model (i.e.,
+<code>method = inflated.poisson</code>), the idea is to incorporate
+extra zeros into the zeros already present in the Poisson distribution.
+However, this idea does not directly apply to a “zero-inflated beta”
+model. Since beta regression cannot accommodate zeros, there are no
+zeros to inflate. An appropriate name for this model is therefore a
+hurdle (i.e., two-component) beta model. This terminology reflects the
+idea that the model has to overcome the hurdle of zero values which are
+not inherently part of the beta distribution.</p>
+<p>In <code>jfa</code>, the hurdle beta model can be fitted using
+<code>method = "hurdle.beta"</code>. Note that this requires specifying
+the number of items (<code>N.items</code>) and the number of monetary
+units (<code>N.units</code>) in the population.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">eval_hurdle</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
+<span>  method <span class="op">=</span> <span class="st">"hurdle.beta"</span>, data <span class="op">=</span> <span class="va">sample</span>, materiality <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>,</span>
+<span>  N.items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">population</span><span class="op">)</span>, N.units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">population</span><span class="op">$</span><span class="va">bookValue</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">eval_hurdle</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Classical Audit Sample Evaluation</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## data:  sample</span></span>
+<span><span class="co">## number of errors = 12, number of samples = 50, taint = 4.2294</span></span>
+<span><span class="co">## alternative hypothesis: true misstatement rate is less than 0.1</span></span>
+<span><span class="co">## 95 percent confidence interval:</span></span>
+<span><span class="co">##  0.0000000 0.1444796</span></span>
+<span><span class="co">## most likely estimate:</span></span>
+<span><span class="co">##  0.078118 </span></span>
+<span><span class="co">## results obtained via method 'hurdle.beta'</span></span></code></pre>
+<p>As shown in the output, the most likely misstatement is estimated to
+be around 7.8 percent, with a 95 percent upper bound of around 14.44
+percent. Since the upper bound of the hurdle beta model is lower than
+that of the Stringer bound, the hurdle beta model is more efficient.</p>
+</div>
+</div>
+<div class="section level4">
+<h4 id="bayesian-approaches">Bayesian approaches<a class="anchor" aria-label="anchor" href="#bayesian-approaches"></a>
+</h4>
+<p>Within the Bayesian framework, we define a prior distribution for the
+parameters in the model. This approach offers a notable advantage for
+models dealing with partial misstatement, as the prior distribution
+exerts a regularizing influence, reducing the amount of data required
+for reliable inferences. Additionally, the prior distribution enables
+auditors to integrate pre-existing information about the misstatement
+into the statistical analysis.</p>
+<div class="section level5">
+<h5 id="beta-distribution">Beta distribution<a class="anchor" aria-label="anchor" href="#beta-distribution"></a>
+</h5>
+<p>The Bayesian equivalent to the binomial likelihood is represented by
+the beta distribution. Just as we handle taints in the binomial
+likelihood, they can also be aggregated and examined utilizing a beta
+distribution. Given that we start with the default beta(1, 1) prior
+(<code>prior = TRUE</code>), the posterior distribution is</p>
 <p><span class="math display">\[\text{Beta}(\alpha = 1 + \sum t, \beta =
 1 + n - \sum t).\]</span></p>
-<p>While this may not adhere to a strictly ‘clean’ modeling approach, as
-the binomial likelihood is only defined for binary data representing
-complete misstatements, it proves to be effective in estimating the
-misstatement (Broeze, 2006, Chapter 4.3). Despite its somewhat
-unconventional nature, the analytical feasibility of this approach makes
-it convenient and therefore commonly used.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<p>For the binomial likelihood, the Bayesian model can be applied using
+<code>method = "binomial"</code> in comination with
+<code>prior = TRUE</code>. As usual, <code>prior</code> can also be an
+object created by the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eval_beta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  method <span class="op">=</span> <span class="st">"binomial"</span>, data <span class="op">=</span> <span class="va">sample</span>, materiality <span class="op">=</span> <span class="fl">0.1</span>,</span>
 <span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>,</span>
@@ -214,94 +359,47 @@ it convenient and therefore commonly used.</p>
 <p>As shown in the output, the most likely misstatement is estimated to
 be 8.46 percent, with a 95 percent upper bound of 17.63 percent. The
 prior and posterior distribution can be visualized via the
-<code>plot(..., type = "posterior")</code> function. Note that this
-approach is effective but not not very efficient, as it does not take
-into account the information in the distribution of the taints. This
-results in a relatively high upper bound on the misstatement.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code>plot(..., type = "posterior")</code> function.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eval_beta</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation-partial_files/figure-html/unnamed-chunk-6-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample-evaluation-partial_files/figure-html/unnamed-chunk-9-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
-<div class="section level4">
-<h4 id="stringer-bound">Stringer bound<a class="anchor" aria-label="anchor" href="#stringer-bound"></a>
-</h4>
-<p>The Stringer bound is a frequentist method to improve efficiency by
-taking into account the differences between the magnitude of the taints
-(Stringer, 1963; Bickel, 1992). While conservative, this method can
-reduce the upper bound on the misstatement compared to the beta
-distribution. This can be done using <code>method = "stringer"</code> in
-combination with <code>prior = FALSE</code>.</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eval_stringer</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
-<span>  method <span class="op">=</span> <span class="st">"stringer"</span>, data <span class="op">=</span> <span class="va">sample</span>, materiality <span class="op">=</span> <span class="fl">0.1</span>,</span>
-<span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">eval_stringer</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Classical Audit Sample Evaluation</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## data:  sample</span></span>
-<span><span class="co">## number of errors = 12, number of samples = 50, taint = 4.2294</span></span>
-<span><span class="co">## 95 percent confidence interval:</span></span>
-<span><span class="co">##  0.0000000 0.1722946</span></span>
-<span><span class="co">## most likely estimate:</span></span>
-<span><span class="co">##  0.084588 </span></span>
-<span><span class="co">## results obtained via method 'stringer.binomial'</span></span></code></pre>
-<p>As shown in the output, the most likely misstatement is estimated to
-be 8.46 percent, with a 95 percent upper bound of 17.23 percent. Since
-the upper bound of the Stringer method is (slightly) lower than that of
-the beta distribution, the Stringer bound is more efficient.</p>
-</div>
-<div class="section level4">
-<h4 id="beta-hurdle-model">Beta hurdle model<a class="anchor" aria-label="anchor" href="#beta-hurdle-model"></a>
-</h4>
-<p>Efficiency can be further improved by explicitly modeling the
-probability of a taint being zero (i.e., zero-inflation). This is a more
-realistic method because, in practice, most taints are zero. A
-zero-inflated variant of the beta distribution can be fitted using
-<code>method = "hurdle.beta"</code>, which requires that
-<code>prior = TRUE</code> (or an object created via the
-<code><a href="../reference/auditPrior.html">auditPrior()</a></code> function). Note that this method also requires
-specifying the number of items (<code>N.items</code>) and the number of
-monetary units (<code>N.units</code>) in the population.</p>
-<p>In the context of a “zero-inflated Poisson” model (i.e.,
-<code>inflated.poisson</code> in <code><a href="../reference/evaluation.html">evaluation()</a></code>), we
-essentially incorporate “extra” zeros into the zeros already present in
-the Poisson distribution. However, this concept doesn’t directly apply
-to a “zero-inflated beta” model. Since beta regression cannot
-accommodate zeros, there are no zeros to inflate. A more appropriate
-term for this model is a Hurdle model. This terminology better reflects
-the fact that the model has to overcome the hurdle of zero values which
-are not inherently part of the beta distribution.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">eval_zib</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
+<div class="section level5">
+<h5 id="hurdle-beta-model-1">Hurdle beta model<a class="anchor" aria-label="anchor" href="#hurdle-beta-model-1"></a>
+</h5>
+<p>It is also possible to fit a Bayesian variant of the hurlde beta
+model. This can be done using <code>method = "hurdle.beta"</code> in
+comination with <code>prior = TRUE</code> (or an object created by the
+<code><a href="../reference/auditPrior.html">auditPrior()</a></code> function).</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
+<span><span class="va">eval_hurdle_bayes</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  method <span class="op">=</span> <span class="st">"hurdle.beta"</span>, data <span class="op">=</span> <span class="va">sample</span>, materiality <span class="op">=</span> <span class="fl">0.1</span>,</span>
 <span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>,</span>
 <span>  N.items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">population</span><span class="op">)</span>, N.units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">population</span><span class="op">$</span><span class="va">bookValue</span><span class="op">)</span>,</span>
 <span>  prior <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">eval_zib</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">eval_hurdle_bayes</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Evaluation</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sample</span></span>
 <span><span class="co">## number of errors = 12, number of samples = 50, taint = 4.2294, BF₁₀ =</span></span>
-<span><span class="co">## 3.8027</span></span>
+<span><span class="co">## 3.358</span></span>
 <span><span class="co">## alternative hypothesis: true misstatement rate is less than 0.1</span></span>
 <span><span class="co">## 95 percent credible interval:</span></span>
-<span><span class="co">##  0.0000000 0.1442619</span></span>
+<span><span class="co">##  0.0000000 0.1454389</span></span>
 <span><span class="co">## most likely estimate:</span></span>
-<span><span class="co">##  0.0707 </span></span>
+<span><span class="co">##  0.084 </span></span>
 <span><span class="co">## results obtained via method 'hurdle.beta' + 'prior'</span></span></code></pre>
 <p>As shown in the output, the most likely misstatement is estimated to
-be around 6.9 percent, with a 95 percent upper bound of around 14.44
-percent. Since the upper bound of the hurdle beta distribution is lower
-than that of the Stringer bound, the hurdle beta distribution is more
-efficient. The prior and posterior distribution can be visualized via
+be around 8.4 percent, with a 95 percent upper bound of around 14.5
+percent. The prior and posterior distribution can be visualized using
 the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eval_zib</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation-partial_files/figure-html/unnamed-chunk-9-1.png" width="576" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eval_hurdle_bayes</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="sample-evaluation-partial_files/figure-html/unnamed-chunk-11-1.png" width="576" style="display: block; margin: auto;"></p>
+</div>
 </div>
 </div>
 <div class="section level2">
@@ -317,6 +415,12 @@ Auditing</em>. PhD-Thesis, Vrije Universiteit Amsterdam. Limperg
 Instituut. - <a href="https://research.vu.nl/ws/portalfiles/portal/42174612/complete+dissertation.pdf" class="external-link">View
 online</a>
 </li>
+<li>Clopper, C. J., &amp; Pearson, E. S. (1934). The use of confidence
+or fiducial limits illustrated in the case of the binomial.
+<em>Biometrika</em>, 26(4), 404-413. - <a href="https://doi.org/10.2307/2331986" class="external-link">View online</a>
+</li>
+<li>Pearson, K. (1934). <em>Tables of the Incomplete Beta Function</em>,
+London: Biometrika Office.</li>
 <li>Stringer, K. W. (1963). Practical aspects of statistical sampling in
 auditing. <em>Proceedings of Business and Economic Statistics
 Section</em>, American Statistical Association.</li>
