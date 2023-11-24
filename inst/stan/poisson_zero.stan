@@ -70,13 +70,6 @@ model {
   }
 }
 generated quantities {
-  // Model predicted misstatement
-  real<lower=0> E_rep = 0;
-  for (i in 1:N) {
-    if (bernoulli_rng(p_zero) == 0) {
-      E_rep += poisson_rng(lambda);
-    }
-  }
-  // Posterior distribution proportional misstatement
-  real<lower=0> theta = E_rep / B;
+  // Posterior distribution misstatement
+  real<lower=0> theta = (p_error * lambda * N) / B;
 }

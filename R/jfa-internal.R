@@ -542,13 +542,11 @@
   return(samples)
 }
 
-.mcmc_twopart_cp <- function(likelihood, n.obs, taints, diff, N.items, E, N.units, prior) {
+.mcmc_twopart_cp <- function(likelihood, n.obs, taints, diff, N.items, N.units, prior) {
   if (likelihood == "hurdle.beta") {
     data <- list(
       n = n.obs,
       y = taints,
-      N = N.items,
-      E = E,
       alpha = prior[["description"]]$alpha,
       beta = prior[["description"]]$beta,
       beta_prior = as.numeric(prior[["likelihood"]] == "binomial"),
@@ -617,13 +615,11 @@
   return(samples)
 }
 
-.optim_twopart_cp <- function(likelihood, n.obs, taints, diff, N.items, E, N.units, alternative, conf.level) {
+.optim_twopart_cp <- function(likelihood, n.obs, taints, diff, N.items, N.units, alternative, conf.level) {
   if (likelihood == "hurdle.beta") {
     data <- list(
       n = n.obs,
       y = taints,
-      N = N.items,
-      E = E,
       alpha = 0,
       beta = 0,
       beta_prior = 0,
@@ -664,69 +660,28 @@
     model <- stanmodels[["poisson_zero"]]
   }
   out <- list()
-  p <- try(
-    {
-      suppressWarnings({
-        raw <- rstan::optimizing(
-          object = model,
-          data = c(data, use_likelihood = 1),
-          iter = getOption("mc.iterations", 2000),
-          draws = getOption("mc.iterations", 2000),
-          seed = sample.int(.Machine$integer.max, 1),
-          refresh = getOption("mc.refresh", 0),
-          verbose = FALSE
-        )
-      })
-    },
-    silent = TRUE
+  suppressWarnings({
+    raw <- rstan::optimizing(
+      object = model,
+      data = c(data, use_likelihood = 1),
+      iter = getOption("mc.iterations", 2000),
+      draws = getOption("mc.iterations", 2000),
+      seed = sample.int(.Machine$integer.max, 1),
+      refresh = getOption("mc.refresh", 0),
+      verbose = FALSE
+    )
+  })
+  out[["lb"]] <- switch(alternative,
+    "less" = 0,
+    "two.sided" = stats::quantile(raw$theta_tilde[, "theta"], (1 - conf.level) / 2),
+    "greater" = stats::quantile(raw$theta_tilde[, "theta"], 1 - conf.level)
   )
-  if (inherits(p, "try-error")) {
-    message("Warning: Could not calculate upper and / or lower limit(s)")
-    suppressWarnings({
-      raw <- rstan::optimizing(
-        object = model,
-        data = c(data, use_likelihood = 1),
-        iter = getOption("mc.iterations", 2000),
-        seed = sample.int(.Machine$integer.max, 1),
-        refresh = getOption("mc.refresh", 0),
-        verbose = FALSE
-      )
-    })
-    out[["lb"]] <- switch(alternative,
-      "less" = 0,
-      "two.sided" = NA,
-      "greater" = NA
-    )
-    out[["ub"]] <- switch(alternative,
-      "less" = NA,
-      "two.sided" = NA,
-      "greater" = 1
-    )
-  } else {
-    out[["lb"]] <- switch(alternative,
-      "less" = 0,
-      "two.sided" = stats::quantile(raw$theta_tilde[, "theta"], (1 - conf.level) / 2),
-      "greater" = stats::quantile(raw$theta_tilde[, "theta"], 1 - conf.level)
-    )
-    out[["ub"]] <- switch(alternative,
-      "less" = stats::quantile(raw$theta_tilde[, "theta"], conf.level),
-      "two.sided" = stats::quantile(raw$theta_tilde[, "theta"], conf.level + (1 - conf.level) / 2),
-      "greater" = 1
-    )
-  }
-  if (likelihood == "inflated.poisson") {
-    out[["mle"]] <- (raw$par["p_error"] * raw$par["lambda"] * N.items) / N.units
-  } else {
-    if (any(taints == 1)) {
-      out[["mle"]] <- raw$par["prob[3]"] * raw$par["phi"] + raw$par["prob[2]"]
-    } else {
-      out[["mle"]] <- raw$par["p_error"] * raw$par["phi"]
-    }
-  }
-  out[["mle"]] <- switch(likelihood,
-    "inflated.poisson" = (raw$par["p_error"] * raw$par["lambda"] * N.items) / N.units,
-    "hurdle.beta" = raw$par["p_error"] * raw$par["phi"]
+  out[["ub"]] <- switch(alternative,
+    "less" = stats::quantile(raw$theta_tilde[, "theta"], conf.level),
+    "two.sided" = stats::quantile(raw$theta_tilde[, "theta"], conf.level + (1 - conf.level) / 2),
+    "greater" = 1
   )
+  out[["mle"]] <- as.numeric(raw$par["theta"])
   return(out)
 }
 

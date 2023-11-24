@@ -14,8 +14,6 @@ functions {
 data {
   int<lower=0> n;                // Number of observations in sample
   vector<lower=0, upper=1>[n] y; // Sample taints
-  int<lower=0> N;                // Number of items in population
-  vector<lower=0>[N] E;          // Book values of items in population
   real<lower=0> alpha;           // prior parameter alpha
   real<lower=0> beta;            // prior parameter beta
   int beta_prior;                // beta prior {0 = no, 1 = yes}
@@ -85,18 +83,6 @@ model {
   }
 }
 generated quantities {
-  // Model predicted misstatement
-  real<lower=0> E_rep = 0;
-  int<lower=1, upper=3> pick;
-  for (i in 1:N) {
-    pick = categorical_rng(prob);
-    if (pick != 1) {
-      if (pick == 2) {
-        E_rep += E[i];
-      } else {
-        E_rep += beta_proportion_rng(phi, nu) * E[i];
-      }
-    }
-  }
-  real<lower=0, upper=1> theta = E_rep / sum(E);
+  // Posterior distribution misstatement
+  real<lower=0, upper=1> theta = prob[3] * phi + prob[2];
 }

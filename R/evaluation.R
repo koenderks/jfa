@@ -425,13 +425,11 @@ evaluation <- function(materiality = NULL,
     if (has_summary_statistics) {
       message("'data' is used while 'x' or 'n' are also specified")
     }
-    all_book <- NULL
     if (!is.null(times)) {
       stopifnot("column 'times' not found in 'data'" = times %in% colnames(data))
       times <- data[, times]
       stopifnot("'times' contains missing values" = sum(!is.na(times)) == nrow(data))
       stopifnot("column 'times' in 'data' must be a vector of integers" = all(times %% 1 == 0))
-      all_book <- data[, values]
       data <- data[times > 0, ]
       times <- times[times > 0]
       n.obs <- sum(times)
@@ -563,12 +561,11 @@ evaluation <- function(materiality = NULL,
             stopifnot("likelihood = 'hypergeometric' does not support non-conjugate priors" = method != "hypergeometric")
             if (method %in% c("inflated.poisson", "hurdle.beta")) {
               mcmc_prior <- TRUE
-              stopifnot("missing value for 'N.items'" = !is.null(N.items))
-              if (method == "inflated.poisson" || is.null(all_book)) {
+              if (method == "inflated.poisson") {
+                stopifnot("missing value for 'N.items'" = !is.null(N.items))
                 stopifnot("missing value for 'N.units'" = !is.null(N.units))
-                all_book <- rep(N.units[i] / N.items[i], N.items[i])
               }
-              samples <- .mcmc_twopart_cp(method, n.obs[i], taints[[i]], book_values[i][[1]] - audit_values[i][[1]], N.items[i], all_book, N.units[i], prior)
+              samples <- .mcmc_twopart_cp(method, n.obs[i], taints[[i]], book_values[i][[1]] - audit_values[i][[1]], N.items[i], N.units[i], prior)
             } else {
               samples <- .mcmc_cp(method, t.obs[i], n.obs[i], prior)
             }
@@ -594,12 +591,11 @@ evaluation <- function(materiality = NULL,
               p.val[i] <- .comp_pval(alternative, materiality, method, n.obs[i], x.obs[i], t.obs[i], N.units[i], K[i])
             }
           } else if (method %in% c("inflated.poisson", "hurdle.beta")) {
-            stopifnot("missing value for 'N.items'" = !is.null(N.items))
-            if (method == "inflated.poisson" || is.null(all_book)) {
+            if (method == "inflated.poisson") {
+              stopifnot("missing value for 'N.items'" = !is.null(N.items))
               stopifnot("missing value for 'N.units'" = !is.null(N.units))
-              all_book <- rep(N.units[i] / N.items[i], N.items[i])
             }
-            out <- .optim_twopart_cp(method, n.obs[i], taints[[i]], book_values[i][[1]] - audit_values[i][[1]], N.items[i], all_book, N.units[i], alternative, conf.level)
+            out <- .optim_twopart_cp(method, n.obs[i], taints[[i]], book_values[i][[1]] - audit_values[i][[1]], N.items[i], N.units[i], alternative, conf.level)
             mle[i] <- out[["mle"]]
             lb[i] <- out[["lb"]]
             ub[i] <- out[["ub"]]
