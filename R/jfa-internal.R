@@ -714,7 +714,10 @@
       "greater" = 1
     )
   }
-  out[["mle"]] <- as.numeric(raw$par["theta"])
+  out[["mle"]] <- switch(likelihood,
+    "inflated.poisson" = (raw$par["p_error"] * raw$par["lambda"] * N.items) / N.units,
+    "hurdle.beta" = raw$par["p_error"] * raw$par["phi"]
+  )
   return(out)
 }
 
