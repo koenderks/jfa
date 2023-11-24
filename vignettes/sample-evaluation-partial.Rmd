@@ -66,9 +66,9 @@ sample <- selection(
 ```
 
 When evaluating partial misstatements, auditors often calculate the 'taint' $t$
-of each item, which is defined as the proportional misstatment in the item: 
-$t = \frac{\text{Book value} - \text{Audit value}}{\text{Book value}}$. For
-instance, an item that is booked for $1,000 but has an audit value of $500,
+of each item, which is defined as the proportional misstatement in the item: 
+$t = \frac{\text{Book value} \, -  \, \text{Audit value}}{\text{Book value}}$.
+For instance, an item that is booked for $1,000 but has an audit value of $500,
 consequently has a taint of $t = 0.5$. On the other hand, if an item does not
 contain misstatement, its taint is $t = 0$. As is often the case in practice,
 this audit sample contains many taints that are zero, and only some taints that
@@ -185,7 +185,7 @@ print(eval_hurdle)
 ```
 
 As shown in the output, the most likely misstatement is estimated to be around
-7.8 percent, with a 95 percent upper bound of around 14.44 percent. Since the
+8.88 percent, with a 95 percent upper bound of around 14.44 percent. Since the
 upper bound of the hurdle beta model is lower than that of the Stringer
 bound, the hurdle beta model is more efficient.
 
@@ -247,7 +247,7 @@ print(eval_hurdle_bayes)
 ```
 
 As shown in the output, the most likely misstatement is estimated to be around
-8.4 percent, with a 95 percent upper bound of around 14.5 percent. The prior and
+8 percent, with a 95 percent upper bound of around 14 percent. The prior and
 posterior distribution can be visualized using the `plot()` function.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
