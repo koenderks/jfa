@@ -86,14 +86,14 @@ the modeling of misstatements in the population can enhance efficiency. In the
 following sections, we demonstrate two approaches that can be used to deal with
 partial misstatements.
 
-### Classical approaches
+## Classical approaches
 
 Traditional (i.e., frequentist) methods depend on the data for estimating
 parameters in a statistical model through maximum likelihood estimation. This
 methodology is widely adopted in auditing, and therefore we will discuss it
 first in this vignette.
 
-#### Binomial likelihood
+### Binomial likelihood
 
 The simplest way to analyze partial misstatements is to aggregate them and use
 the sum of partial misstatements (i.e., the total taint) to project to the
@@ -125,7 +125,7 @@ might be effective (i.e., estimate the misstatement well) but not not very
 efficient (i.e., has a relatively high upper bound). That is because it does not
 take into account the information in the distribution of the taints.
 
-#### Stringer bound
+### Stringer bound
 
 The Stringer bound is a frequentist method to improve efficiency by taking into
 account the differences between the magnitude of the taints (Stringer, 1963;
@@ -157,7 +157,7 @@ percent, with a 95 percent upper bound of 17.23 percent. Since the upper bound o
 the Stringer method is (slightly) lower than that of the binomial likelihood,
 the Stringer bound is more efficient.
 
-#### Hurdle beta model
+### Hurdle beta model
 
 Efficiency can be further improved by explicitly modeling the probability of a
 taint being zero (i.e., zero-inflation). This is a more realistic method
@@ -189,7 +189,7 @@ As shown in the output, the most likely misstatement is estimated to be around
 upper bound of the hurdle beta model is lower than that of the Stringer
 bound, the hurdle beta model is more efficient.
 
-### Bayesian approaches
+## Bayesian approaches
 
 Within the Bayesian framework, we define a prior distribution for the parameters
 in the model. This approach offers a notable advantage for models dealing with
@@ -198,7 +198,7 @@ reducing the amount of data required for reliable inferences. Additionally, the
 prior distribution enables auditors to integrate pre-existing information about
 the misstatement into the statistical analysis.
 
-#### Beta distribution 
+### Beta distribution 
 
 The Bayesian equivalent to the binomial likelihood is represented by the beta
 distribution. Just as we handle taints in the binomial likelihood, they can also
@@ -229,7 +229,7 @@ distribution can be visualized via the `plot(..., type = "posterior")` function.
 plot(eval_beta, type = "posterior")
 ```
 
-#### Hurdle beta model
+### Hurdle beta model
 
 It is also possible to fit a Bayesian variant of the hurlde beta model. This can
 be done using `method = "hurdle.beta"` in comination with `prior = TRUE` (or an
@@ -254,7 +254,7 @@ posterior distribution can be visualized using the `plot()` function.
 plot(eval_hurdle_bayes, type = "posterior")
 ```
 
-# References
+## References
 
 - Bickel, P. J. (1992). Inference and Auditing: The Stringer Bound. *International Statistical Review / Revue Internationale de Statistique*, 60(2), 197-209. - [View online](https://www.jstor.org/stable/1403650)
 - Broeze, G. B. (2006). *Validation of Risk Assessment in Auditing*. PhD-Thesis, Vrije Universiteit Amsterdam. Limperg Instituut. - [View online](https://research.vu.nl/ws/portalfiles/portal/42174612/complete+dissertation.pdf)

@@ -681,7 +681,7 @@
     silent = TRUE
   )
   if (inherits(p, "try-error")) {
-    message("Warning: Could not calculate upper and lower limits, showing NA")
+    message("Warning: Could not calculate upper and / or lower limit(s)")
     suppressWarnings({
       raw <- rstan::optimizing(
         object = model,

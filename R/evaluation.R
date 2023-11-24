@@ -594,6 +594,7 @@ evaluation <- function(materiality = NULL,
               p.val[i] <- .comp_pval(alternative, materiality, method, n.obs[i], x.obs[i], t.obs[i], N.units[i], K[i])
             }
           } else if (method %in% c("inflated.poisson", "hurdle.beta")) {
+            stopifnot("missing value for 'N.items'" = !is.null(N.items))
             if (method == "inflated.poisson" || is.null(all_book)) {
               stopifnot("missing value for 'N.units'" = !is.null(N.units))
               all_book <- rep(N.units[i] / N.items[i], N.items[i])
