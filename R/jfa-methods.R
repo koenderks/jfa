@@ -753,6 +753,11 @@ plot.jfaEvaluation <- function(x, type = c("estimates", "posterior"), ...) {
   y <- lb <- ub <- NULL
   type <- match.arg(type)
   if (type == "posterior") {
+    if (!(x[["method"]] %in% c("binomial", "poisson", "hypergeometric", "inflated.poisson", "hurdle.beta"))) {
+      stop(paste0('plot(..., type = "posterior") not supported for method = "', x[["method"]], '"'))
+    } else if (x[["method"]] %in% c("inflated.poisson", "hurdle.beta") && is.null(x[["prior"]])) {
+      stop(paste0('plot(..., type = "posterior") not supported for method = "', x[["method"]], '" without "prior = TRUE"'))
+    }
     p <- plot.jfaPlanning(x, ...)
   } else {
     xs <- 0
