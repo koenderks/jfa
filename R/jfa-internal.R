@@ -616,6 +616,12 @@
 }
 
 .optim_twopart_cp <- function(likelihood, n.obs, taints, diff, N.items, N.units, alternative, conf.level) {
+  no_nonzero_taints <- all(taints == 0)
+  if (no_nonzero_taints) {
+    num_draws <- 0
+  } else {
+    num_draws <- getOption("mc.iterations", 2000)
+  }
   if (likelihood == "hurdle.beta") {
     data <- list(
       n = n.obs,
@@ -665,22 +671,36 @@
       object = model,
       data = c(data, use_likelihood = 1),
       iter = getOption("mc.iterations", 2000),
-      draws = getOption("mc.iterations", 2000),
+      draws = num_draws,
       seed = sample.int(.Machine$integer.max, 1),
       refresh = getOption("mc.refresh", 0),
       verbose = FALSE
     )
   })
-  out[["lb"]] <- switch(alternative,
-    "less" = 0,
-    "two.sided" = stats::quantile(raw$theta_tilde[, "theta"], (1 - conf.level) / 2),
-    "greater" = stats::quantile(raw$theta_tilde[, "theta"], 1 - conf.level)
-  )
-  out[["ub"]] <- switch(alternative,
-    "less" = stats::quantile(raw$theta_tilde[, "theta"], conf.level),
-    "two.sided" = stats::quantile(raw$theta_tilde[, "theta"], conf.level + (1 - conf.level) / 2),
-    "greater" = 1
-  )
+  if (no_nonzero_taints) {
+    message("Warning: No taints observed, cannot calculate upper and / or lower bound(s)")
+    out[["lb"]] <- switch(alternative,
+      "less" = 0,
+      "two.sided" = NA,
+      "greater" = NA
+    )
+    out[["ub"]] <- switch(alternative,
+      "less" = NA,
+      "two.sided" = NA,
+      "greater" = 1
+    )
+  } else {
+    out[["lb"]] <- switch(alternative,
+      "less" = 0,
+      "two.sided" = stats::quantile(raw$theta_tilde[, "theta"], (1 - conf.level) / 2),
+      "greater" = stats::quantile(raw$theta_tilde[, "theta"], 1 - conf.level)
+    )
+    out[["ub"]] <- switch(alternative,
+      "less" = stats::quantile(raw$theta_tilde[, "theta"], conf.level),
+      "two.sided" = stats::quantile(raw$theta_tilde[, "theta"], conf.level + (1 - conf.level) / 2),
+      "greater" = 1
+    )
+  }
   out[["mle"]] <- as.numeric(raw$par["theta"])
   return(out)
 }
