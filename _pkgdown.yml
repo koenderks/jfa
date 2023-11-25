@@ -78,7 +78,6 @@ reference:
       - planning
       - selection
       - evaluation
-      - report
   - title: "Data auditing"
     desc: >
       Functions for data auditing, such as testing the distribution of leading
