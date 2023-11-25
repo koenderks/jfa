@@ -124,7 +124,8 @@ nature, the analytical feasibility of this approach makes it easy to use and
 therefore it is commonly applied in practice.
 
 For the classical binomial likelihood, aggregating the taints can be done using
-`method = "binomial"` in the `evaluation()` function.
+`method = "binomial"` in the `evaluation()` function. Using maximum likelihood
+estimation, $\theta = \frac{\sum t}{n} = \frac{4.2294}{50} = 0.084588$.
 
 ```{r}
 eval_binom <- evaluation(
@@ -158,7 +159,8 @@ Stringer bound, the taints are placed in descending order in the formula as a
 form of conservatism.
 
 In `jfa`, the Stringer bound can be applied using `method = "stringer"` in the
-`evaluation()` function.
+`evaluation()` function. Using maximum likelihood estimation,
+$\theta = \frac{\sum t}{n} = \frac{4.2294}{50} = 0.084588$.
 
 ```{r}
 eval_stringer <- evaluation(
@@ -189,14 +191,25 @@ hurdle of zero values which are not inherently part of the beta distribution.
 $$
 t =
 \begin{cases}
-    0 & \text{with probability}\, p\\
-    \text{Beta}(\alpha, \beta) & \text{with probability}\, 1 - p
+    0 & \text{with probability}\, 1 - p\\
+    \text{Beta}(\phi \nu,\, (1 - \phi) \nu) & \text{with probability}\, p
 \end{cases}
 $$
 
-In `jfa`, the hurdle beta model can be fitted using `method = "hurdle.beta"` in
-the `evaluation()` function. To estimate the parameters in this model using
-maximum likelihood estimation, we use the default option `prior = FALSE`.
+Here, $p$ is the probability of a non-zero taint occurring, $\phi$ is the
+average non-zero taint and $\nu$ is the concentration of the taints (equal to
+$n + 2$). The estimate of the average misstatement in the population is
+$\theta = p \times \phi$. In `jfa`, this hurdle beta model can be fitted using
+`method = "hurdle.beta"` in the `evaluation()` function. To estimate the
+parameters in this model using maximum likelihood estimation, we use the default
+option `prior = FALSE`. Using maximum likelihood estimation,
+$p = \frac{n_t}{n} = \frac{12}{50} = 0.24$, where $n_t$ is the number of
+non-zero taints. Furthermore,
+$\phi = \frac{\sum t}{n_t} = \frac{4.2294}{12} = 0.35245$. Hence, the most
+likely misstatement is estimated as $\theta = p \times \phi = 0.084588$ (results
+can differ slightly due to optimization). The upper bound cannot be derived
+analytically and has to be determined by drawing samples from the fitted model.
+Hence, it is recommended to call `set.seed()` to make the results reproducible.
 
 ```{r}
 set.seed(1)
@@ -209,32 +222,44 @@ print(eval_hurdle)
 
 As shown in the output, the most likely misstatement is estimated to be around
 8.88 percent, with a 95 percent upper bound of around 14.44 percent. Since the
-upper bound of the hurdle beta model is lower than that of the Stringer
-bound, the hurdle beta model is more efficient.
+upper bound of the hurdle beta model is lower than that of the Stringer bound,
+the hurdle beta model is more efficient.
 
 ## Bayesian approaches
 
-Within the Bayesian framework, we define a prior distribution for the parameters
-in the model. This approach offers a notable advantage for models dealing with
-partial misstatement, as the prior distribution exerts a regularizing influence,
-reducing the amount of data required for reliable inferences. Additionally, the
-prior distribution enables auditors to integrate pre-existing information about
-the misstatement into the statistical analysis.
+In the Bayesian framework, the auditor defines a prior distribution for the
+parameters in the model. This approach offers a notable advantage for models
+dealing with partial misstatement, as the prior distribution has a regularizing
+effect, reducing the amount of data required for reliable inferences. More
+specifically, frequentist models cannot be optimized when there are no non-zero
+taints in the sample. Additionally, the prior distribution enables auditors to
+integrate pre-existing information about the misstatement into the statistical
+analysis, thereby increasing efficiency when the auditor has pre-existing
+information about the misstatement.
 
 ### Beta distribution 
 
-The Bayesian equivalent to the binomial likelihood is represented by the beta
+The prior distribution we typically assign in the binomial model is the beta
 distribution. Just as we handle taints in the binomial likelihood, they can also
-be aggregated and examined utilizing a beta distribution. Given that we start
-with the default beta(1, 1) prior (`prior = TRUE`), the posterior distribution
+be aggregated given the prior distribution. The statistical model is:
+
+$$
+\begin{align}
+  k &\sim \text{Binomial}(n, \theta)\\
+  \theta &\sim \text{Beta}(\alpha, \, \beta)
+\end{align}
+$$
+
+Given the data $n$ and $k = \sum t$, the posterior distribution for the default
+beta(1, 1) prior distribution (`prior = TRUE`) can be derived analytically and
 is
 
-$$\text{Beta}(\alpha = 1 + \sum t, \beta = 1 + n - \sum t).$$
+$$\text{Beta}(\alpha = 1 + \sum t, \, \beta = 1 + n - \sum t).$$
 
-For the binomial likelihood, the Bayesian model can be applied using
-`method = "binomial"` in comination with `prior = TRUE` in the `evaluation()`
-function. As usual, `prior` can also be an object created by the `auditPrior()`
-function.
+For the binomial likelihood, this Bayesian model can be applied in the
+`evaluation()` function using `method = "binomial"` in comination with
+`prior = TRUE`. However, the input for the `prior` argument can also be an
+object created by the `auditPrior()` function.
 
 ```{r}
 eval_beta <- evaluation(
@@ -247,7 +272,7 @@ print(eval_beta)
 
 As shown in the output, the most likely misstatement is estimated to be 8.46
 percent, with a 95 percent upper bound of 17.63 percent. The prior and posterior
-distribution can be visualized via the `plot(..., type = "posterior")` function.
+distribution can be visualized via the `plot(..., type = "posterior")` command.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(eval_beta, type = "posterior")
@@ -255,11 +280,24 @@ plot(eval_beta, type = "posterior")
 
 ### Hurdle beta model
 
-It is also possible to fit a Bayesian variant of the hurdle beta model. This can
-be done using `method = "hurdle.beta"` in combination with `prior = TRUE` (or an
-object created by the `auditPrior()` function) in the `evaluation()` function.
-In this case, the posterior distribution cannot be determined analytically and
-must be determined using MCMC sampling, which is why `set.seed(1)` is called.
+It is also possible to fit a Bayesian variant of the hurdle beta model. This
+entails applying prior distributions for the parameters $p$, $\phi$, and $\nu$.
+The prior distributions used by **jfa** for the Bayesian hurdle beta model are:
+
+$$
+\begin{align}
+  p &\sim \text{Beta}(\alpha, \, \beta)\\
+  \phi &\sim \text{Beta}(1, \, 1)\\
+  \nu &\sim \text{Pareto}(1, \, 1.5)
+\end{align}
+$$
+
+This Bayesian hurdle beta model can be applied using `method = "hurdle.beta"` in
+combination with `prior = TRUE` (or an object created by the `auditPrior()`
+function) in the `evaluation()` function. In this case, the posterior
+distribution cannot be determined analytically and must be determined using MCMC
+sampling, which is why it is recommended to call `set.seed()` before computing
+the results.
 
 ```{r}
 set.seed(1)
