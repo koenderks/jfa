@@ -231,8 +231,8 @@ units.</p>
 <code>prior</code> argument in the <code><a href="../reference/planning.html">planning()</a></code> function.
 Setting <code>prior = TRUE</code> performs Bayesian planning using a <a href="https://koenderks.github.io/jfa/articles/creating-prior.html#default-priors-method-default">default
 prior</a> conjugate to the specified <code>likelihood</code>. For
-example, the command below uses a default gamma(1, 1) prior distribution
-to plan the sample.</p>
+example, the command below uses a default gamma(<span class="math inline">\(\alpha = 1\)</span>, <span class="math inline">\(\beta = 1\)</span>) prior distribution to plan the
+sample.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plan</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, expected <span class="op">=</span> <span class="fl">0</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">plan</span><span class="op">)</span></span></code></pre></div>
@@ -267,8 +267,8 @@ expected misstatements.</p>
 created by the <code>auditPrior</code> function. If
 <code><a href="../reference/planning.html">planning()</a></code> receives a prior for which there is a conjugate
 likelihood available, it will inherit the likelihood from the prior. For
-example, the command below uses a custom beta(1, 10) prior distribution
-to plan the sample using the binomial likelihood.</p>
+example, the command below uses a custom beta(<span class="math inline">\(\alpha = 1\)</span>, <span class="math inline">\(\beta = 10\)</span>) prior distribution to plan
+the sample using the binomial likelihood.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"param"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, expected <span class="op">=</span> <span class="fl">0</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></code></pre></div>
@@ -277,6 +277,21 @@ to plan the sample using the binomial likelihood.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## minimum sample size = 49 </span></span>
 <span><span class="co">## sample size obtained in 50 iterations via method 'binomial' + 'prior'</span></span></code></pre>
+<p>However, when there is no conjugate likelihood available, specifying
+the <code>likelihood</code> argument in <code><a href="../reference/planning.html">planning()</a></code> is
+required. For instance, the command below uses a Normal(<span class="math inline">\(\mu = 0\)</span>, <span class="math inline">\(\sigma = 0.1\)</span>) prior in combination with
+the binomial likelihood to plan the sample size.</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"param"</span>, likelihood <span class="op">=</span> <span class="st">"normal"</span>, alpha <span class="op">=</span> <span class="fl">0</span>, beta <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span></span>
+<span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, expected <span class="op">=</span> <span class="fl">0</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
+<span>  likelihood <span class="op">=</span> <span class="st">"binomial"</span>, prior <span class="op">=</span> <span class="va">prior</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Bayesian Audit Sample Planning</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## minimum sample size = 55 </span></span>
+<span><span class="co">## sample size obtained in 56 iterations via method 'binomial' + 'prior'</span></span></code></pre>
 </div>
 </div>
   </div>
