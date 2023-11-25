@@ -36,12 +36,16 @@ against a critical upper limit, known as performance materiality.
 
 Partial misstatements occur when there is only a partial discrepancy between the
 true value of an item in the sample and its recorded value. From a data
-perspective, this implies that misstatements are often non-binary. However,
-there is usually a large number of correct items in the population.
+perspective, this implies that the misstatements in the sample are not binary
+(i.e., 0 or 1) but often lie between 0 and 1. In practice, this means that the
+usual methods for evaluating audit samples do not suffice.
 
-As an example, we examine a realistic sample from a financial audit using the
-`allowances` data set included in the package. For clarity, we perform some data
-pre-processing to arrive at an example population.
+To illustrate how auditors can adequately deal with this type of misstatements,
+we examine a realistic sample from a financial audit using the `allowances` data
+set included in the package. For clarity, we perform some data pre-processing to
+arrive at the population for our example. In this case, the performance
+materiality (i.e., the maximum tolerable misstatement) for the population is set
+to ten percent.
 
 ```{r}
 data("allowances")
@@ -53,10 +57,10 @@ head(population)
 ```
 
 To decide whether the misstatement in the population is lower than the
-performance materiality of ten percent, a sample of 50 items is selected from the
-population, each consisting of a book value and a true value. In this case, the
-sample is selected using a fixed interval sampling method in which the items in
-the population are randomized before selection.
+performance materiality of ten percent, a sample of 50 items is selected from
+the population of 1177 items. In this case, the sample is selected using a fixed
+interval sampling method in which the items in the population are randomized
+before selection.
 
 ```{r}
 set.seed(1)
@@ -67,14 +71,20 @@ sample <- selection(
 )$sample
 ```
 
-When evaluating partial misstatements, auditors often calculate the 'taint' $t$
-of each item, which is defined as the proportional misstatement in the item: 
-$t = \frac{\text{Book value} \, -  \, \text{Audit value}}{\text{Book value}}$.
-For instance, an item that is booked for $1,000 but has an audit value of $500,
-consequently has a taint of $t = 0.5$. On the other hand, if an item does not
-contain misstatement, its taint is $t = 0$. As is often the case in practice,
-this audit sample contains many taints that are zero, and only some taints that
-are greater than zero. The table below shows this distribution of taints.
+After inspecting the items in the sample, each item is annotated with its
+recorded (i.e., book) value and its true (i.e., audit) value. When evaluating
+partial misstatements, auditors often calculate the 'taint' $t$ of each item,
+which is defined as the proportional misstatement in the item:
+
+$$t = \frac{\text{Book value} \, -  \, \text{Audit value}}{\text{Book value}}.$$
+
+For instance, an item that is booked for $1,000 but has an audit value of $500
+has a taint of $t = 0.5$. On the other hand, if an item does not contain any
+misstatement, it has a taint of $t = 0$.
+
+As is often the case in practice, this audit sample contains many taints that
+are zero, and only some taints that are greater than zero. The table below shows
+this distribution of taints.
 
 ```{r}
 sample[["difference"]] <- sample[["bookValue"]] - sample[["auditValue"]]
@@ -82,39 +92,39 @@ sample[["taint"]] <- sample[["difference"]] / sample[["bookValue"]]
 table(round(sample[["taint"]], 3))
 ```
 
-Normally, techniques for assessing audit samples overlook the prevalence of
-zeros in the data. Yet, considering the abundance of zeros in the data during
-the modeling of misstatements in the population can enhance efficiency. In the
+Typically, techniques for evaluating audit samples overlook the prevalence of
+many zeros in the data. Yet, considering the abundance of zeros while modeling
+the misstatement in the population can enhance the auditor's efficiency. In the
 following sections, we demonstrate two approaches that can be used to deal with
-partial misstatements.
+partial misstatements and show how they improve the auditor's efficiency.
 
 ## Classical approaches
 
-Traditional (i.e., frequentist) methods depend on the data for estimating
-parameters in a statistical model through maximum likelihood estimation. This
+Classical (i.e., frequentist) methods solely look to the data for estimating the
+parameters in a statistical model via maximum likelihood estimation. This
 methodology is widely adopted in auditing, and therefore we will discuss it
 first in this vignette.
 
 ### Binomial likelihood
 
 The simplest way to analyze partial misstatements is to aggregate them and use
-the sum of partial misstatements (i.e., the total taint) to project to the
+the sum of proportional misstatements (i.e., the total taint) to project to the
 population. Under the hood, this approach employs a binomial likelihood to
 estimate the misstatement in the population $\theta$. The method uses the sum of
-the taints, denoted as $k = \sum_{i=0}^n t_i$. as the number of errors and
-therefore does not take into account the abundance of zeros in the data.
+the taints, denoted as $k = \sum_{i=0}^n t_i$, as the number of errors and
+therefore does not take into account the fact that the data contain many zeros.
 
 $$k \sim \text{Binomial}(n, \theta)$$
 
-While aggregating the taints may not adhere to a strictly 'clean' modeling
-approach, as the binomial likelihood is only defined for binary data
+While aggregating the taints in this manner may not adhere to a strictly 'clean'
+modeling approach, as the binomial likelihood is only defined for binary data
 representing complete misstatements, it proves to be effective in estimating the
-misstatement [@broeze_2006, Chapter 4.4]. Despite its somewhat unconventional
+misstatement [@broeze_2006, Chapter 4.3]. Despite its somewhat unconventional
 nature, the analytical feasibility of this approach makes it easy to use and
-therefore commonly applied.
+therefore it is commonly applied in practice.
 
 For the classical binomial likelihood, aggregating the taints can be done using
-`method = "binomial"`. 
+`method = "binomial"` in the `evaluation()` function.
 
 ```{r}
 eval_binom <- evaluation(
@@ -147,7 +157,8 @@ beta($1 + i$, $n - i$) distribution [@pearson_1948]. When calculating the
 Stringer bound, the taints are placed in descending order in the formula as a
 form of conservatism.
 
-In `jfa`, the Stringer bound can be applied using `method = "stringer"`.
+In `jfa`, the Stringer bound can be applied using `method = "stringer"` in the
+`evaluation()` function.
 
 ```{r}
 eval_stringer <- evaluation(
@@ -183,9 +194,9 @@ t =
 \end{cases}
 $$
 
-In `jfa`, the hurdle beta model can be fitted using `method = "hurdle.beta"`. To
-estimate the parameters in this model using maximum likelihood estimation, we
-use the default option `prior = FALSE`.
+In `jfa`, the hurdle beta model can be fitted using `method = "hurdle.beta"` in
+the `evaluation()` function. To estimate the parameters in this model using
+maximum likelihood estimation, we use the default option `prior = FALSE`.
 
 ```{r}
 set.seed(1)
@@ -221,8 +232,9 @@ is
 $$\text{Beta}(\alpha = 1 + \sum t, \beta = 1 + n - \sum t).$$
 
 For the binomial likelihood, the Bayesian model can be applied using
-`method = "binomial"` in comination with `prior = TRUE`. As usual, `prior` can
-also be an object created by the `auditPrior()` function.
+`method = "binomial"` in comination with `prior = TRUE` in the `evaluation()`
+function. As usual, `prior` can also be an object created by the `auditPrior()`
+function.
 
 ```{r}
 eval_beta <- evaluation(
@@ -245,9 +257,9 @@ plot(eval_beta, type = "posterior")
 
 It is also possible to fit a Bayesian variant of the hurdle beta model. This can
 be done using `method = "hurdle.beta"` in combination with `prior = TRUE` (or an
-object created by the `auditPrior()` function). In this case, the posterior
-distribution cannot be determined analytically and must be determined using MCMC
-sampling, which is why `set.seed(1)` is called.
+object created by the `auditPrior()` function) in the `evaluation()` function.
+In this case, the posterior distribution cannot be determined analytically and
+must be determined using MCMC sampling, which is why `set.seed(1)` is called.
 
 ```{r}
 set.seed(1)
