@@ -95,7 +95,7 @@
 misstatements</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2023-11-24</h4>
+            <h4 data-toc-skip class="date">2023-11-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/sample-evaluation-partial.Rmd" class="external-link"><code>vignettes/sample-evaluation-partial.Rmd</code></a></small>
       <div class="hidden name"><code>sample-evaluation-partial.Rmd</code></div>
@@ -198,9 +198,10 @@ data.</p>
 <p>While aggregating the taints may not adhere to a strictly ‘clean’
 modeling approach, as the binomial likelihood is only defined for binary
 data representing complete misstatements, it proves to be effective in
-estimating the misstatement (Broeze, 2006, Chapter 4.3). Despite its
-somewhat unconventional nature, the analytical feasibility of this
-approach makes it easy to use and therefore commonly applied.</p>
+estimating the misstatement <span class="citation">(Broeze, 2006,
+Chapter 4.4)</span>. Despite its somewhat unconventional nature, the
+analytical feasibility of this approach makes it easy to use and
+therefore commonly applied.</p>
 <p>For the classical binomial likelihood, aggregating the taints can be
 done using <code>method = "binomial"</code>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
@@ -233,19 +234,20 @@ the distribution of the taints.</p>
 </h3>
 <p>The Stringer bound is a frequentist method to improve efficiency by
 taking into account the differences between the magnitude of the taints
-(Stringer, 1963; Bickel, 1992). The bound is a variant of the binomial
-distribution, but considers the non-binary nature of the taints. The
-Stringer upper bound on the population misstatement is given by</p>
+<span class="citation">(Bickel, 1992; Stringer, 1963)</span>. The bound
+is a variant of the binomial distribution, but considers the non-binary
+nature of the taints. The Stringer upper bound on the population
+misstatement is given by</p>
 <p><span class="math display">\[p(0, 1 - \alpha) + \sum_{i=1}^k [p(i, 1
 - \alpha) - p(i - 1, 1 - \alpha)] \times t_i.\]</span></p>
 <p>In the formula above, <span class="math inline">\(p(i; 1 -
 \alpha)\)</span> is the <span class="math inline">\(1 - \alpha\)</span>
 upper limit for at most <span class="math inline">\(i\)</span>
 misstatements in <span class="math inline">\(n\)</span> items according
-to the binomial distribution (Clopper and Pearson, 1934). This is equal
-to the <span class="math inline">\(1 - \alpha\)</span> percentile of a
-beta(<span class="math inline">\(1 + i\)</span>, <span class="math inline">\(n - i\)</span>) distribution (Pearson, 1934). When
-calculating the Stringer bound, the taints are placed in descending
+to the binomial distribution <span class="citation">(Clopper &amp;
+Pearson, 1934)</span>. This is equal to the <span class="math inline">\(1 - \alpha\)</span> percentile of a beta(<span class="math inline">\(1 + i\)</span>, <span class="math inline">\(n -
+i\)</span>) distribution <span class="citation">(Pearson, 1948)</span>.
+When calculating the Stringer bound, the taints are placed in descending
 order in the formula as a form of conservatism.</p>
 <p>In <code>jfa</code>, the Stringer bound can be applied using
 <code>method = "stringer"</code>.</p>
@@ -405,26 +407,31 @@ The prior and posterior distribution can be visualized using the
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<ul>
-<li>Bickel, P. J. (1992). Inference and Auditing: The Stringer Bound.
-<em>International Statistical Review / Revue Internationale de
-Statistique</em>, 60(2), 197-209. - <a href="https://www.jstor.org/stable/1403650" class="external-link">View online</a>
-</li>
-<li>Broeze, G. B. (2006). <em>Validation of Risk Assessment in
-Auditing</em>. PhD-Thesis, Vrije Universiteit Amsterdam. Limperg
-Instituut. - <a href="https://research.vu.nl/ws/portalfiles/portal/42174612/complete+dissertation.pdf" class="external-link">View
-online</a>
-</li>
-<li>Clopper, C. J., &amp; Pearson, E. S. (1934). The use of confidence
-or fiducial limits illustrated in the case of the binomial.
-<em>Biometrika</em>, 26(4), 404-413. - <a href="https://doi.org/10.2307/2331986" class="external-link">View online</a>
-</li>
-<li>Pearson, K. (1934). <em>Tables of the Incomplete Beta Function</em>,
-London: Biometrika Office.</li>
-<li>Stringer, K. W. (1963). Practical aspects of statistical sampling in
-auditing. <em>Proceedings of Business and Economic Statistics
-Section</em>, American Statistical Association.</li>
-</ul>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-bickel_1992" class="csl-entry">
+Bickel, P. J. (1992). Inference and auditing: The stringer bound.
+<em>International Statistical Review/Revue Internationale de
+Statistique</em>, 197–209. <a href="https://doi.org/10.2307/1403650" class="external-link">https://doi.org/10.2307/1403650</a>
+</div>
+<div id="ref-broeze_2006" class="csl-entry">
+Broeze, G. B. (2006). <em>Validation of risk assessment in auditing</em>
+[PhD thesis, Vrije Universiteit]. <a href="https://research.vu.nl/ws/portalfiles/portal/42174612/complete+dissertation.pdf" class="external-link">https://research.vu.nl/ws/portalfiles/portal/42174612/complete+dissertation.pdf</a>
+</div>
+<div id="ref-clopper_1934" class="csl-entry">
+Clopper, C. J., &amp; Pearson, E. S. (1934). The use of confidence or
+fiducial limits illustrated in the case of the binomial.
+<em>Biometrika</em>, <em>26</em>(4), 404–413. <a href="https://doi.org/10.2307/2331986" class="external-link">https://doi.org/10.2307/2331986</a>
+</div>
+<div id="ref-pearson_1948" class="csl-entry">
+Pearson, K. (1948). <em>Tables of the incomplete beta-function</em>.
+Biometrika.
+</div>
+<div id="ref-stringer_1963" class="csl-entry">
+Stringer, K. W. (1963). Practical aspects of statistical sampling in
+auditing. <em>Proceedings of the Business and Economic Statistics
+Section</em>, 405–411.
+</div>
+</div>
 </div>
   </div>
 

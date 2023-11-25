@@ -94,7 +94,7 @@
       <h1 data-toc-skip>Algorithm auditing: Get started</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2023-11-24</h4>
+            <h4 data-toc-skip class="date">2023-11-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/algorithm-auditing.Rmd" class="external-link"><code>vignettes/algorithm-auditing.Rmd</code></a></small>
       <div class="hidden name"><code>algorithm-auditing.Rmd</code></div>
@@ -135,9 +135,10 @@ quantifies relative fairness in the algorithms predictions. Available
 parity metrics include predictive rate parity, proportional parity,
 accuracy parity, false negative rate parity, false positive rate parity,
 true positive rate parity, negative predicted value parity, specificity
-parity, and demographic parity. The function returns an object of class
-<code>jfaFairness</code> that can be used with associated
-<code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods.</p>
+parity, and demographic parity <span class="citation">(Friedler et al.,
+2019; Pessach &amp; Shmueli, 2022)</span>. The function returns an
+object of class <code>jfaFairness</code> that can be used with
+associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods.</p>
 <p><em>Full function with default arguments:</em></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
@@ -198,22 +199,22 @@ following benchmarks:</p>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<ul>
-<li>Büyük, S. (2023). <em>Automatic Fairness Criteria and Fair Model
-Selection for Critical ML Tasks</em>, Master Thesis, Utrecht University.
-- <a href="https://studenttheses.uu.nl/handle/20.500.12932/44225" class="external-link">View
-Online</a>
-</li>
-<li>Friedler, S. A., Scheidegger, C., Venkatasubramanian, S., Choudhary,
-S., Hamilton, E. P., &amp; Roth, D. (2019). A comparative study of
-fairness-enhancing interventions in machine learning. In <em>Proceedings
-of the Conference on Fairness, Accountability, and Transparency</em>. -
-<a href="https://doi.org/10.1145/3287560.3287589" class="external-link">View Online</a>
-</li>
-<li>Pessach, D. &amp; Shmueli, E. (2022). A review on fairness in
-machine learning. <em>ACM Computing Surveys</em>, 55(3), 1-44. - <a href="https://doi.org/10.1145/3494672" class="external-link">View Online</a>
-</li>
-</ul>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-friedler_2019" class="csl-entry">
+Friedler, S. A., Scheidegger, C., Venkatasubramanian, S., Choudhary, S.,
+Hamilton, E. P., &amp; Roth, D. (2019). A comparative study of
+fairness-enhancing interventions in machine learning. <em>Proceedings of
+the Conference on Fairness, Accountability, and Transparency</em>. <a href="https://doi.org/10.1145/3287560.3287589" class="external-link">https://doi.org/10.1145/3287560.3287589</a>
+</div>
+<div id="ref-kozodoi_2021" class="csl-entry">
+Kozodoi, N., &amp; V. Varga, T. (2021). <em>Fairness: Algorithmic
+fairness metrics</em>. <a href="https://CRAN.R-project.org/package=fairness" class="external-link">https://CRAN.R-project.org/package=fairness</a>
+</div>
+<div id="ref-pessach_2022" class="csl-entry">
+Pessach, D., &amp; Shmueli, E. (2022). A review on fairness in machine
+learning. <em>ACM Computing Surveys</em>, <em>55</em>(3), 1–44. <a href="https://doi.org/10.1145/3494672" class="external-link">https://doi.org/10.1145/3494672</a>
+</div>
+</div>
 </div>
   </div>
 
