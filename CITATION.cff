@@ -315,19 +315,6 @@ references:
     orcid: https://orcid.org/0000-0002-2383-699X
   year: '2023'
 - type: software
-  title: kableExtra
-  abstract: 'kableExtra: Construct Complex Table with ''kable'' and Pipe Syntax'
-  notes: Suggests
-  url: http://haozhu233.github.io/kableExtra/
-  repository: https://CRAN.R-project.org/package=kableExtra
-  authors:
-  - family-names: Zhu
-    given-names: Hao
-    email: haozhu233@gmail.com
-    orcid: https://orcid.org/0000-0002-3386-6076
-  year: '2023'
-  version: '>= 1.3.4'
-- type: software
   title: knitr
   abstract: 'knitr: A General-Purpose Package for Dynamic Report Generation in R'
   notes: Suggests
