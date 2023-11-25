@@ -71,6 +71,8 @@
 <ul><li>Added inflated methods to evaluate taintings in the evaluation function via <code>method = "inflated.poisson"</code> and <code>method = "hurdle.beta"</code>. Since these methods rely on mcmc sampling, they can take any form of prior.</li>
 </ul><p><strong>Minor changes</strong></p>
 <ul><li>For all plotting functions, <code>type = "estimates"</code> is now the default option.</li>
+</ul><p><strong>Major changes</strong></p>
+<ul><li>Removed the <code>report()</code> function.</li>
 </ul><p><strong>Bug fixes</strong></p>
 <ul><li>Fixed a bug in <code><a href="../reference/selection.html">selection()</a></code> where the numeric data in the sample was returned as character if the original data was entered as character only (i.e., <code>selection(data.frame(x = c("hello", "bye", "hi")), size = 2)</code>).</li>
 <li>
@@ -297,7 +299,7 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.5.0" id="jfa-050">jfa 0.5.0<small>2021-01-04</small><a class="anchor" aria-label="anchor" href="#jfa-050"></a></h2>
 <p><strong>New features</strong></p>
-<ul><li>Add a function <code><a href="../reference/report.html">report()</a></code> that automatically generates an audit report.</li>
+<ul><li>Add a function <code>report()</code> that automatically generates an audit report.</li>
 </ul><p><strong>Major changes</strong></p>
 <ul><li>Removed the <code>sampling()</code> function, which is now replaced entirely with the <code><a href="../reference/selection.html">selection()</a></code> function.</li>
 <li>Changed the output of the <code><a href="../reference/evaluation.html">evaluation()</a></code> function when an estimator is used.</li>

@@ -147,8 +147,10 @@ documentation</a> on the package website.</p>
 <p><em>Example usage:</em></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Beta prior based on inherent risk (70%) and control risk (50%)</span></span>
-<span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"arm"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>,</span>
-<span>                    materiality <span class="op">=</span> <span class="fl">0.05</span>, ir <span class="op">=</span> <span class="fl">0.7</span>, cr <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span>
+<span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span></span>
+<span>  method <span class="op">=</span> <span class="st">"arm"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>,</span>
+<span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, ir <span class="op">=</span> <span class="fl">0.7</span>, cr <span class="op">=</span> <span class="fl">0.5</span></span>
+<span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">prior</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Prior Distribution Summary</span></span>
