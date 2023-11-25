@@ -35,30 +35,12 @@ audit sampling using these functions. For more detailed explanations of each
 function, read the other vignettes on the
 [package website](https://koenderks.github.io/jfa/articles/index.html).
 
-## Cheat sheet
-
-The cheat sheet below will help you get started with **jfa**'s' intended audit
-sampling workflow. You can download a `pdf` version of the cheat sheet
-[here](https://github.com/koenderks/jfa/raw/development/man/figures/cheatsheet/cheatsheet.pdf).
-
-<p align='center'><img src='cheatsheet.png' alt='cheatsheet' width='1000'></p>
-
 ## Functions and intended usage
 
-<p align='center'><img src='jfaBanner.png' alt='banner'/></p>
-
-Below you can find an explanation of the available functions in **jfa** sorted
+Below you can find an explanation of the available functions in **jfa**, sorted
 by their occurrence in the standard audit sampling workflow.
 
-- [`auditPrior()`](#create-a-prior-distribution-with-auditprior)
-- [`planning()`](#plan-a-sample-with-planning)
-- [`selection()`](#select-sample-items-with-selection)
-- [`evaluation()`](#evaluate-a-sample-with-evaluation)
-- [`report()`](#create-a-report-with-report)
-
-### Create a prior distribution with `auditPrior()`
-
-[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+### Creating a prior distribution
 
 The `auditPrior()` function is used to specify a prior distribution for Bayesian
 audit sampling. The interface allows a complete customization of the prior
@@ -69,80 +51,20 @@ class `jfaPrior` can also be used as input for the `prior` argument in other
 functions. Moreover, `jfaPrior` objects have a corresponding `predict()`
 function to produce the predictions of the prior distribution on the data level.
 
-*Full function with default arguments:*
-
-```r
-auditPrior(
-  method = c(
-    "default", "strict", "param", "impartial", "hyp",
-    "arm", "bram", "sample", "factor", "nonparam"
-  ),
-  likelihood = c(
-    "poisson", "binomial", "hypergeometric",
-    "normal", "uniform", "cauchy", "t", "chisq",
-    "exponential"
-  ),
-  N.units = NULL,
-  alpha = NULL,
-  beta = NULL,
-  materiality = NULL,
-  expected = 0,
-  ir = NULL,
-  cr = NULL,
-  ub = NULL,
-  p.hmin = NULL,
-  x = NULL,
-  n = NULL,
-  factor = NULL,
-  samples = NULL,
-  conf.level = 0.95
-)
-```
-
-*Supported options for the `method` argument:*
-
-- `default`: Indifferent / noninformative prior distribution.
-- `param`: Manually set the prior parameters.
-- `strict`: Improper prior distribution [@derks_2022; @weiler_1965].
-- `impartial`: Impartial prior distribution [@derks_2022].
-- `hyp`: Manually provide the prior probability for tolerable misstatement [@derks_2021].
-- `arm`: Manually provide the inherent risk and internal control risk [@derks_2021].
-- `bram`: Manually provide the upper bound of the prior distribution [@touw_2011].
-- `sample`: Manually provide an equivalent prior sample [@derks_2021].
-- `factor`: Manually provide and weigh an equivalent prior sample [@derks_2021].
-- `nonparam`: Nonparametric prior based on samples.
-
-*Supported options for the `likelihood` argument:*
-
-- `poisson`: Poisson likelihood and conjugate gamma prior distribution [@stewart_2013].
-- `binomial`: Binomial likelihood and conjugate beta prior distribution [@steele_1992].
-- `hypergeometric`: Hypergeometric likelihood and conjugate beta-binomial prior distribution [@dyer_1993].
-- `normal`: Normal prior distribution.
-- `uniform`: Uniform prior distribution.
-- `cauchy`: Cauchy prior distribution.
-- `t`: Student-t prior distribution.
-- `chisq`: Chi-squared prior distribution.
-- `exponential`: Exponential prior distribution.
+For more information about this function, see the
+[function documentation](https://koenderks.github.io/jfa/reference/auditPrior.html)
+on the package website.
 
 *Example usage:*
 
 ```{r}
-# Default beta(1, 1) prior distribution
-x <- auditPrior(method = "default", likelihood = "binomial")
-
-# Custom gamma(1, 10) prior distribution
-x <- auditPrior(method = "param", likelihood = "poisson", alpha = 1, beta = 10)
-
-# Beta prior distribution incorporating inherent risk (70%) and control risk (50%)
-x <- auditPrior(method = "arm", likelihood = "binomial", materiality = 0.05, ir = 0.7, cr = 0.5)
-
-summary(x) # Prints information about the prior distribution
-predict(x, n = 20, cumulative = TRUE) # Predictions for a sample of n = 20
+# Beta prior based on inherent risk (70%) and control risk (50%)
+prior <- auditPrior(method = "arm", likelihood = "binomial",
+                    materiality = 0.05, ir = 0.7, cr = 0.5)
+summary(prior)
 ```
 
-### Plan a sample with `planning()`
-
-[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+### Planning a sample
 
 The `planning()` function is used to calculate a minimum sample size for audit
 samples. It allows specification of statistical requirements for the sample with
@@ -153,49 +75,23 @@ argument can be an object of class `jfaPrior` as returned by the `auditPrior()`
 function, or an object of class `jfaPosterior` as returned by the `evaluation()`
 function.
 
-*Full function with default arguments:*
-
-```r
-planning(
-  materiality = NULL,
-  min.precision = NULL,
-  expected = 0,
-  likelihood = c("poisson", "binomial", "hypergeometric"),
-  conf.level = 0.95,
-  N.units = NULL,
-  by = 1,
-  max = 5000,
-  prior = FALSE
-)
-```
-
-*Supported options for the `likelihood` argument:*
-
-- `poisson`: Poisson likelihood [@stewart_2012].
-- `binomial`: Binomial likelihood [@stewart_2012].
-- `hypergeometric`: Hypergeometric likelihood [@stewart_2012; @talens_2005].
+For more information about this function, see the
+[function documentation](https://koenderks.github.io/jfa/reference/planning.html)
+on the package website.
 
 *Example usage:*
 
 ```{r}
-# Classical planning using the Poisson likelihood
+# Poisson likelihood
 x <- planning(materiality = 0.03, likelihood = "poisson")
-
-# Bayesian planning using a default beta(1, 1) prior and binomial likelihood
+# Default beta prior and binomial likelihood
 x <- planning(materiality = 0.03, likelihood = "binomial", prior = TRUE)
-
-# Bayesian planning using a custom beta(1, 10) prior and binomial likelihood
-x <- planning(
-  materiality = 0.03,
-  prior = auditPrior(method = "param", likelihood = "binomial", alpha = 1, beta = 10)
-)
-
-summary(x) # Prints information about the planning
+# Custom beta prior and binomial likelihood
+x <- planning(materiality = 0.03, likelihood = "binomial", prior = prior)
+summary(x)
 ```
 
-### Select sample items with `selection()`
-
-[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+### Selecting a sample
 
 The `selection()` function is used to perform statistical selection of audit
 samples. It offers flexible implementations of the most common audit sampling
@@ -204,53 +100,22 @@ returns an object of class `jfaSelection` which can be used with associated
 `summary()` and `plot()` methods. The input for the `size` argument can be an
 object of class `jfaPlanning` as returned by the `planning()` function.
 
-*Full function with default arguments:*
-
-```r
-selection(
-  data,
-  size,
-  units = c("items", "values"),
-  method = c("interval", "cell", "random", "sieve"),
-  values = NULL,
-  order = NULL,
-  decreasing = FALSE,
-  randomize = FALSE,
-  replace = FALSE,
-  start = 1
-)
-```
-
-*Supported options for the `units` argument:*
-
-- `items`: Sampling units are items (rows) [@leslie_1979].
-- `values`: Sampling units are monetary units [@leslie_1979].
-
-*Supported options for the `method` argument:*
-
-- `interval`: Select a fixed unit from each interval.
-- `cell`: Select a random unit within each interval.
-- `random`: Select random units without an interval.
-- `sieve`: Select units using modified sieve sampling [@hoogduin_2010].
+For more information about this function, see the
+[function documentation](https://koenderks.github.io/jfa/reference/selection.html)
+on the package website.
 
 *Example usage:*
 
 ```{r}
-# Selection using random record (attributes) sampling
-x <- selection(data = BuildIt, size = 100, units = "items", method = "random")
-
-# Selection using fixed interval monetary unit sampling (using column 'bookValue' in BuildIt)
+# Fixed interval monetary unit sampling
 x <- selection(
   data = BuildIt, size = 100, units = "values",
   method = "interval", values = "bookValue"
 )
-
-summary(x) # Prints information about the selection
+summary(x)
 ```
 
-### Evaluate a sample with `evaluation()`
-
-[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
+### Evaluating a sample
 
 The `evaluation()` function takes a sample or summary statistics of the sample
 and performs evaluation according to the specified method and sampling
@@ -260,98 +125,21 @@ evaluation, the input for the `prior` argument can be an object of class
 `jfaPrior` as returned by the `auditPrior()` function, or an object of class
 `jfaPosterior` as returned by the `evaluation()` function.
 
-*Full function with default arguments:*
-
-```r
-evaluation(
-  materiality = NULL, 
-  method = c(
-    "poisson", "binomial", "hypergeometric",
-    "stringer.poisson", "stringer.binomial", "stringer.hypergeometric",
-    "stringer.meikle", "stringer.lta", "stringer.pvz",
-    "rohrbach", "moment", "coxsnell", "mpu",
-    "direct", "difference", "quotient", "regression"
-  ),
-  alternative = c("less", "two.sided", "greater"),
-  conf.level = 0.95,
-  data = NULL,
-  values = NULL,
-  values.audit = NULL,
-  strata = NULL,
-  times = NULL,
-  x = NULL,
-  n = NULL,
-  N.units = NULL,
-  N.items = NULL,
-  pooling = c("none", "complete", "partial"), 
-  prior = FALSE
-)
-```
-
-*Supported options for the `method` argument:*
-
-- `poisson`: Poisson likelihood [@stewart_2012].
-- `binomial`: Binomial likelihood [@stewart_2012].
-- `hypergeometric`: Hypergeometric likelihood [@stewart_2012].
-- `stringer.poisson`: Stringer bound using the Poisson distribution [@touw_2011].
-- `stringer.binomial`: Stringer bound using the binomial distribution [@bickel_1992].
-- `stringer.hypergeometric`: Stringer bound using the hypergeometric distribution.
-- `stringer.meikle`: Stringer bound with Meikle's correction [@meikle_1972].
-- `stringer.lta`: Stringer bound with LTA correction [@leslie_1979].
-- `stringer.pvz`: Modified Stringer bound [@pap_1996].
-- `rohrbach`: Rohrbach's augmented variance estimator [@rohrbach_1993].
-- `moment`: Modified moment bound [@dworin_1984].
-- `coxsnell`: Cox and Snell bound [@cox_1979].
-- `mpu`: Mean-per-unit estimator [@touw_2011].
-- `direct`: Direct estimator [@touw_2011].
-- `difference`: Difference estimator [@touw_2011].
-- `quotient`: Quotient (ratio) estimator [@touw_2011].
-- `regression`: Regression estimator [@touw_2011].
+For more information about this function, see the
+[function documentation](https://koenderks.github.io/jfa/reference/evaluation.html)
+on the package website.
 
 *Example usage:*
 
-```{r}
-# Classical evaluation using the Poisson likelihood (and summary statistics)
-x <- evaluation(materiality = 0.03, x = 1, n = 100, method = "poisson")
-
-# Bayesian evaluation using a default minimal information prior (and summary statistics)
-x <- evaluation(materiality = 0.03, x = 1, n = 100, method = "poisson", prior = TRUE)
-
-# Bayesian evaluation using a custom beta(1, 10) prior (and summary statistics)
-x <- evaluation(
-  materiality = 0.03, x = 1, n = 100,
-  prior = auditPrior(method = "param", likelihood = "binomial", alpha = 1, beta = 10)
-)
-
-summary(x) # Prints information about the evaluation
+```{r}	
+# Poisson likelihood
+x <- evaluation(x = 1, n = 100, method = "poisson")
+# Default beta prior and binomial likelihood
+x <- evaluation(x = 1, n = 100, method = "binomial", prior = TRUE)
+# Custom beta prior and binomial likelihood
+x <- evaluation(x = 1, n = 100, method = "binomial", prior = prior)
+summary(x)
 ```
-
-### Create a report with `report()`
-
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-
-The `report()` function takes an object of class `jfaEvaluation` as returned by
-the `evaluation()` function and automatically creates a `html` or `pdf` report
-containing the analysis results and their interpretation.
-
-*Full function with default arguments:*
-
-```r
-report(
-  object,
-  file = "report.html",
-  format = c("html_document", "pdf_document")
-)
-```
-
-*Example usage:*
-
-```r
-# Generate an automatic report
-report(object = x, file = 'myReport.html')
-```
-
-For an example report, see the following [link](https://github.com/koenderks/jfa/raw/development/man/figures/readme/report/report.pdf).
 
 ## Benchmarks
 
@@ -369,36 +157,13 @@ benchmarks:
 - [SRA](https://www.sra.nl/vaktechniek/accountancy/controle/praktijkhandreikingen/praktijkhandreiking-steekproeven-sra-steekproefmodel)
 - Touw, P., and Hoogduin, L. (2011). *Statistiek voor audit en controlling*. Boom uitgevers, Amsterdam.
 
-## Statistical tables
+## Cheat sheet
 
-Below you can find several informative tables that contain statistical sample
-sizes, upper limits, one-sided *p* values, and Bayes factors. These tables are
-created using the `planning()` and `evaluation()` functions provided in the
-package.
+The cheat sheet below will help you get started with **jfa**'s' intended audit
+sampling workflow. You can download a `pdf` version of the cheat sheet
+[here](https://github.com/koenderks/jfa/raw/development/man/figures/cheatsheet/cheatsheet.pdf).
 
-*Sample sizes*
-
-- [Sample sizes based on the Poisson distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.ss.pdf)
-- [Sample sizes based on the binomial distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.ss.pdf)
-- [Sample sizes based on the hypergeometric distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.ss.pdf)
-
-*Upper limits*
-
-- [Upper limits based on the Poisson distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.ub.pdf)
-- [Upper limits based on the binomial distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.ub.pdf)
-- [Upper limits based on the hypergeometric distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables//pdf/hyper.ub.pdf)
-
-*One-sided p values*
-
-- [One-sided *p* values based on the Poisson distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.p.pdf)
-- [One-sided *p* values based on the binomial distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.p.pdf)
-- [One-sided *p* values based on the hypergeometric distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.p.pdf)
-
-*Bayes factors*
-
-- [Impartial Bayes factors based on the gamma distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/pois.lbfi.pdf)
-- [Impartial Bayes factors based on the beta distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/binom.lbfi.pdf)
-- [Impartial Bayes factors based on the beta-binomial distribution](https://github.com/koenderks/jfa/raw/development/man/figures/tables/pdf/hyper.lbfi.pdf)
+<p align='center'><img src='cheatsheet.png' alt='cheatsheet' width='1000'></p>
 
 ## References
 <div id="refs"></div>

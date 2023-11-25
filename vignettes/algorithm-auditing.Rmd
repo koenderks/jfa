@@ -40,8 +40,6 @@ in **jfa**.
 
 ### Assess algorithmic fairness with `model_fairness()`
 
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-
 The `model_fairnesS()` function aims to assess fairness in algorithmic
 decision-making systems by computing and testing the equality of one of
 several model-agnostic fairness metrics between protected classes based on a
@@ -55,30 +53,15 @@ parity, specificity parity, and demographic parity [@friedler_2019;
 @pessach_2022]. The function returns an object of class `jfaFairness` that can
 be used with associated `summary()` and `plot()` methods.
 
-*Full function with default arguments:*
-
-```r
-model_fairness(
-  data,
-  protected,
-  target,
-  predictions,
-  privileged = NULL,
-  positive = NULL,
-  metric = c(
-    "prp", "pp", "ap", "fnrp", "fprp",
-    "tprp", "npvp", "sp", "dp"
-  ),
-  alternative = c("two.sided", "less", "greater"),
-  conf.level = 0.95,
-  prior = FALSE
-)
-```
+For more information about this function, see the
+[function documentation](https://koenderks.github.io/jfa/reference/auditPrior.html)
+on the package website.
 
 *Example usage:*
 
 ```{r}
-model_fairness(
+# Compare predictive rate parity
+x <- model_fairness(
   data = compas,
   protected = "Ethnicity",
   target = "TwoYrRecidivism",
@@ -87,6 +70,7 @@ model_fairness(
   positive = "yes",
   metric = "prp"
 )
+summry(x)
 ```
 
 ## Benchmarks

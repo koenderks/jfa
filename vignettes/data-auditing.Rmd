@@ -40,8 +40,6 @@ Below you can find an explanation of the available data auditing functions in
 
 ### Test digit distributions with `digit_test()`
 
-[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
-
 The function `digit_test()` takes a vector of numeric values, extract the
 requested digits, and compares the frequencies of these digits to a reference
 distribution. By default, the function performs a frequentist hypothesis test of
@@ -52,32 +50,9 @@ distributed according to the reference distribution against the alternative
 hypothesis that the digits are not distributed according to the reference
 distribution and produces a Bayes factor [@kass_1995].
 
-*Full function with default arguments:*
-
-```r
-digit_test(
-  x,
-  check = c("first", "last", "firsttwo"),
-  reference = "benford",
-  prior = FALSE
-)
-```
-
-*Supported options for the `check` argument:*
-
-| `check` | Returns |
-| :----------- | :----------- |
-| `fist` | First digit |
-| `firsttwo` | First and second digit |
-| `last` | Last digit |
-
-*Supported options for the `reference` argument:*
-
-| `check` | Returns |
-| :----------- | :----------- |
-| `benford` | Benford's law |
-| `uniform` | Uniform distribution |
-| Vector of probabilities | Custom distribution |
+For more information about this function, see the
+[function documentation](https://koenderks.github.io/jfa/reference/digit_test.html)
+on the package website.
 
 *Example usage:*
 
@@ -93,47 +68,20 @@ The distribution of leading digits in a data set of financial transaction values
 frequencies under Benford's law using the code below.
 
 ```{r}
-# Frequentist hypothesis test
-digit_test(sinoForest$value, check = "first", reference = "benford")
-
-# Bayesian hypothesis test using default prior
-digit_test(sinoForest$value, check = "first", reference = "benford", prior = TRUE)
+# Compare first digits to Benford's law
+digit_test(sinoForest[["value"]], check = "first", reference = "benford")
 ```
 
 ### Test for repeated values with `repeated_test()`
-
-[![Lifecycle: stable](https://img.shields.io/badge/lifecycle-stable-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html#stable)
 
 The function `repeated_test()` analyzes the frequency with which values get
 repeated within a set of numbers. Unlike Benford's law, and its generalizations,
 this approach examines the entire number at once, not only the first or last
 digit. For the technical details of this procedure, see [@simonsohn_2019].
 
-*Full function with default arguments:*
-
-```r
-repeated_test(
-  x,
-  check = "last",
-  method = "af",
-  samples = 2000
-)
-```
-
-*Supported options for the `check` argument:*
-
-| `check` | Returns |
-| :----------- | :----------- |
-| `last` | Last decimal |
-| `lasttwo` | Last two decimals |
-| `all` | All decimals |
-
-*Supported options for the `method` argument:*
-
-| `check` | Returns |
-| :----------- | :----------- |
-| `af` | Average frequency |
-| `entropy` | Entropy |
+For more information about this function, see the
+[function documentation](https://koenderks.github.io/jfa/reference/repeated_test.html)
+on the package website.
 
 *Example usage:*
 
@@ -146,7 +94,8 @@ also contain a greater amount of repeated values than expected if the data were
 not tampered with.
 
 ```{r}
-repeated_test(sanitizer$value, check = "lasttwo", samples = 5000)
+# Inspect last two digits for repeated values
+repeated_test(sanitizer[["value"]], check = "lasttwo", samples = 5000)
 ```
 
 ## Benchmarks
