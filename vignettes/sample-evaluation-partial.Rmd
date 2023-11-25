@@ -221,7 +221,7 @@ print(eval_hurdle)
 ```
 
 As shown in the output, the most likely misstatement is estimated to be around
-8.88 percent, with a 95 percent upper bound of around 14.44 percent. Since the
+8.5 percent, with a 95 percent upper bound of around 14.44 percent. Since the
 upper bound of the hurdle beta model is lower than that of the Stringer bound,
 the hurdle beta model is more efficient.
 
