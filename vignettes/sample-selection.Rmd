@@ -271,7 +271,7 @@ $$S_i = \frac{Y_i}{R_i}$$
 is computed for each item by dividing the book value of that item by the random
 number. Lastly, the items in the population are sorted by their sieve ratio $S$
 (in decreasing order) and the top $n$ items are selected for inspection. In
-contrast to the classical sieve sampling method (Rietveld, 1978), the modified
+contrast to the classical sieve sampling method [@rietveld_1978], the modified
 sieve sampling method provides precise control over sample sizes.
 
 As an example, the code below shows how to apply the modified sieve sampling
