@@ -120,7 +120,9 @@ various model-agnostic metrics based on the observed and predicted
 labels in a data set. Calculated metrics include demographic parity,
 proportional parity, predictive rate parity, accuracy parity, false
 negative rate parity, false positive rate parity, true positive rate
-parity, negative predicted value parity, and specificity parity.</p>
+parity, negative predicted value parity, and specificity parity <span class="citation">(Calders &amp; Verwer, 2010; Chouldechova, 2017;
+Feldman et al., 2015; Friedler et al., 2019; Zafar et al.,
+2017)</span>.</p>
 <p><em>Example:</em></p>
 <p>To illustrate how to use the <code><a href="../reference/model_fairness.html">model_fairness()</a></code> function,
 we will use a well-known data set called COMPAS. The COMPAS
@@ -207,12 +209,12 @@ matrix.</p>
 </table>
 <p>For illustrative purposes, let’s interpret the full set of fairness
 metrics for the African American, Asian, and Hispanic groups in
-comparison to the privileged group (Caucasian). See Pessach &amp;
-Shmueli (2022) for a more detailed explanation of some of these metrics.
-However, note that not all fairness measures are equally appropriate in
-all audit situations. The decision tree below aids the auditor with
-choosing which measure is best for the situation at hand (Büyük,
-2023).</p>
+comparison to the privileged group (Caucasian). See <span class="citation">Pessach &amp; Shmueli (2022)</span> for a more detailed
+explanation of some of these metrics. However, note that not all
+fairness measures are equally appropriate in all audit situations. The
+decision tree below aids the auditor with choosing which measure is best
+for the situation at hand <span class="citation">(Büyük,
+2023)</span>.</p>
 <p align="center">
 <img src="fairness-tree.png" alt="fairness" width="90%"></p>
 <ol style="list-style-type: decimal">
@@ -310,7 +312,8 @@ Americans are approximately 1.85 times more likely to get a positive
 prediction than Caucasians. Again, this suggests potential bias in the
 algorithm’s predictions against African Americans. The p-value is
 smaller than .05, indicating that the null hypothesis of proportional
-parity should be rejected.</li>
+parity should be rejected <span class="citation">(Fisher,
+1970)</span>.</li>
 <li>
 <em>Asian</em>: The proportional parity for Asians is 0.4038,
 indicating that their positive prediction rate is lower than for
@@ -749,10 +752,9 @@ non-reoffenders among Hispanics.</li>
 <h3 id="bayesian-analysis">Bayesian Analysis<a class="anchor" aria-label="anchor" href="#bayesian-analysis"></a>
 </h3>
 <p>For all metrics except demongraphic parity, Bayesian inference is
-supported and provides credible intervals and Bayes factors. Like in the
-other functions in <code>jfa</code>, performing a Bayesian analysis
-using a default prior can be achieved by setting
-<code>prior = TRUE</code>.</p>
+supported and provides credible intervals and Bayes factors <span class="citation">(Jamil et al., 2017)</span>. Like in the other
+functions in <code>jfa</code>, performing a Bayesian analysis using a
+default prior can be achieved by setting <code>prior = TRUE</code>.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
@@ -773,11 +775,11 @@ using a default prior can be achieved by setting
 <span><span class="co">## alternative hypothesis: fairness metrics are not equal across groups</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## sample estimates:</span></span>
-<span><span class="co">##   African_American: 1.8433 [1.7951, 1.8992], BF₁₀ = 2.8881e+81</span></span>
-<span><span class="co">##   Asian: 0.40137 [0.15518, 0.90777], BF₁₀ = 3.0278</span></span>
-<span><span class="co">##   Hispanic: 0.92697 [0.79265, 1.0371], BF₁₀ = 0.1127</span></span>
-<span><span class="co">##   Native_American: 1.5758 [0.63955, 2.2882], BF₁₀ = 0.54521</span></span>
-<span><span class="co">##   Other: 0.78683 [0.64131, 0.92806], BF₁₀ = 2.5057</span></span>
+<span><span class="co">##   African_American: 1.8424 [1.7819, 1.8883], BF₁₀ = 2.8881e+81</span></span>
+<span><span class="co">##   Asian: 0.33592 [0.15961, 0.88245], BF₁₀ = 3.0278</span></span>
+<span><span class="co">##   Hispanic: 0.9085 [0.79077, 1.0315], BF₁₀ = 0.1127</span></span>
+<span><span class="co">##   Native_American: 1.536 [0.64408, 2.2584], BF₁₀ = 0.54521</span></span>
+<span><span class="co">##   Other: 0.77885 [0.63748, 0.91612], BF₁₀ = 2.5057</span></span>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span></code></pre>
 <p>Bayesian inference measures evidence using the Bayes factor <span class="math inline">\(BF_{01}\)</span>, which quantifies the evidence in
 favor of algorithmic fairness (i.e., equal fairness metrics across all
@@ -812,48 +814,54 @@ prior distribution via the <code><a href="https://rdrr.io/r/graphics/plot.defaul
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<ul>
-<li>Büyük, S. (2023). <em>Automatic Fairness Criteria and Fair Model
-Selection for Critical ML Tasks</em>, Master Thesis, Utrecht University.
-- <a href="https://studenttheses.uu.nl/handle/20.500.12932/44225" class="external-link">View
-Online</a>
-</li>
-<li>Calders, T., &amp; Verwer, S. (2010). Three naive Bayes approaches
-for discrimination-free classification. In <em>Data Mining and Knowledge
-Discovery</em>. Springer Science and Business Media LLC. - <a href="https://doi.org/10.1007/s10618-010-0190-x" class="external-link">View Online</a>
-</li>
-<li>Chouldechova, A. (2017). Fair Prediction with Disparate Impact: A
-Study of Bias in Recidivism Prediction Instruments. In <em>Big
-Data</em>. Mary Ann Liebert Inc. - <a href="https://doi.org/10.1089/big.2016.0047" class="external-link">View Online</a>
-</li>
-<li>Feldman, M., Friedler, S. A., Moeller, J., Scheidegger, C., &amp;
-Venkatasubramanian, S. (2015). Certifying and Removing Disparate Impact.
-In <em>Proceedings of the 21th ACM SIGKDD International Conference on
-Knowledge Discovery and Data Mining.</em> - <a href="https://doi.org/10.1145/2783258.2783311" class="external-link">View Online</a>
-</li>
-<li>Fisher, R. A. (1970). <em>Statistical Methods for Research
-Workers</em>. Oliver &amp; Boyd.</li>
-<li>Friedler, S. A., Scheidegger, C., Venkatasubramanian, S., Choudhary,
-S., Hamilton, E. P., &amp; Roth, D. (2019). A comparative study of
-fairness-enhancing interventions in machine learning. In <em>Proceedings
-of the Conference on Fairness, Accountability, and Transparency</em>. -
-<a href="https://doi.org/10.1145/3287560.3287589" class="external-link">View Online</a>
-</li>
-<li>Jamil, T., Ly, A., Morey, R. D., Love, J., Marsman, M., &amp;
-Wagenmakers, E. J. (2017). Default “Gunel and Dickey” Bayes factors for
-contingency tables. <em>Behavior Research Methods</em>, 49, 638-652. -
-<a href="https://doi.org/10.3758/s13428-016-0739-8" class="external-link">View Online</a>
-</li>
-<li>Pessach, D. &amp; Shmueli, E. (2022). A review on fairness in
-machine learning. <em>ACM Computing Surveys</em>, 55(3), 1-44. - <a href="https://doi.org/10.1145/3494672" class="external-link">View Online</a>
-</li>
-<li>Zafar, M. B., Valera, I., Gomez Rodriguez, M., &amp; Gummadi, K. P.
-(2017). Fairness Beyond Disparate Treatment &amp; Disparate Impact. In
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-buyuk_2023" class="csl-entry">
+Büyük, S. (2023). <em>Automatic fairness criteria and fair model
+selection for critical ML tasks</em> [Master’s thesis, Utrecht
+University]. <a href="https://studenttheses.uu.nl/handle/20.500.12932/44225" class="external-link">https://studenttheses.uu.nl/handle/20.500.12932/44225</a>
+</div>
+<div id="ref-calders_2010" class="csl-entry">
+Calders, T., &amp; Verwer, S. (2010). Three naive bayes approaches for
+discrimination-free classification. <em>Data Mining and Knowledge
+Discovery</em>. <a href="https://doi.org/10.1007/s10618-010-0190-x" class="external-link">https://doi.org/10.1007/s10618-010-0190-x</a>
+</div>
+<div id="ref-chouldechova_2017" class="csl-entry">
+Chouldechova, A. (2017). Fair prediction with disparate impact: A study
+of bias in recidivism prediction instruments. <em>Big Data</em>. <a href="https://doi.org/10.1089/big.2016.0047" class="external-link">https://doi.org/10.1089/big.2016.0047</a>
+</div>
+<div id="ref-feldman_2015" class="csl-entry">
+Feldman, M., Friedler, S. A., Moeller, J., Scheidegger, C., &amp;
+Venkatasubramanian, S. (2015). Certifying and removing disparate impact.
+<em>Proceedings of the 21th ACM SIGKDD International Conference on
+Knowledge Discovery and Data Mining</em>. <a href="https://doi.org/10.1145/2783258.2783311" class="external-link">https://doi.org/10.1145/2783258.2783311</a>
+</div>
+<div id="ref-fisher_1970" class="csl-entry">
+Fisher, R. A. (1970). <em>Statistical methods for research workers</em>.
+Oliver &amp; Boyd.
+</div>
+<div id="ref-friedler_2019" class="csl-entry">
+Friedler, S. A., Scheidegger, C., Venkatasubramanian, S., Choudhary, S.,
+Hamilton, E. P., &amp; Roth, D. (2019). A comparative study of
+fairness-enhancing interventions in machine learning. <em>Proceedings of
+the Conference on Fairness, Accountability, and Transparency</em>. <a href="https://doi.org/10.1145/3287560.3287589" class="external-link">https://doi.org/10.1145/3287560.3287589</a>
+</div>
+<div id="ref-jamil_2017" class="csl-entry">
+Jamil, T., Ly, A., Morey, R. D., Love, J., Marsman, M., &amp;
+Wagenmakers, E.-J. (2017). Default "gunel and dickey" bayes factors for
+contingency tables. <em>Behavior Research Methods</em>, <em>49</em>,
+638–652. <a href="https://doi.org/10.3758/s13428-016-0739-8" class="external-link">https://doi.org/10.3758/s13428-016-0739-8</a>
+</div>
+<div id="ref-pessach_2022" class="csl-entry">
+Pessach, D., &amp; Shmueli, E. (2022). A review on fairness in machine
+learning. <em>ACM Computing Surveys</em>, <em>55</em>(3), 1–44. <a href="https://doi.org/10.1145/3494672" class="external-link">https://doi.org/10.1145/3494672</a>
+</div>
+<div id="ref-zafar_2017" class="csl-entry">
+Zafar, M. B., Valera, I., Gomez Rodriguez, M., &amp; Gummadi, K. P.
+(2017). Fairness beyond disparate treatment &amp; disparate impact.
 <em>Proceedings of the 26th International Conference on World Wide
-Web</em>. - <a href="https://doi.org/10.1145/3038912.3052660" class="external-link">View
-Online</a>
-</li>
-</ul>
+Web</em>. <a href="https://doi.org/10.1145/3038912.3052660" class="external-link">https://doi.org/10.1145/3038912.3052660</a>
+</div>
+</div>
 </div>
   </div>
 

@@ -125,7 +125,7 @@ they might influence the decision of stakeholders relying on these
 financial statements. The performance materiality is the materiality
 that applies to each of the populations on which the financial
 statements are based. For this example, the performance materiality is
-set at 5% of the total value of the population.</p>
+set at 5 percent of the total value of the population.</p>
 <p>In this example, we focus on the <code>BuildIt</code> data set that
 comes with the <strong>jfa</strong> package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -157,15 +157,16 @@ the population.</p>
 <div class="section level2">
 <h2 id="setting-up-the-audit">Setting up the audit<a class="anchor" aria-label="anchor" href="#setting-up-the-audit"></a>
 </h2>
-<p>The auditor wants to make a statement that, with 95% confidence, the
-misstatement in the population is lower than the performance materiality
-of 5%. Based on last year’s audit at BuildIt, where the upper bound of
-the misstatement turned out to be 2.5%, they want to tolerate at most
-2.5% errors in the intended sample. The auditor can therefore
-re-formulate their statistical statement as that they want to conclude
-that, when 2.5% errors are found in the sample, they can conclude with
-95% confidence that the misstatement in the population is lower than the
-performance materiality of 5%.</p>
+<p>The auditor wants to make a statement that, with 95 percent
+confidence, the misstatement in the population is lower than the
+performance materiality of 5 percent. Based on last year’s audit at
+BuildIt, where the upper bound of the misstatement turned out to be 2.5
+percent, they want to tolerate at most 2.5 percent errors in the
+intended sample. The auditor can therefore re-formulate their
+statistical statement as that they want to conclude that, when 2.5
+percent errors are found in the sample, they can conclude with 95
+percent confidence that the misstatement in the population is lower than
+the performance materiality of 5 percent.</p>
 <p>Below, the auditor defines the performance materiality, confidence
 level, and expected misstatements in the sample.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -249,8 +250,9 @@ object as input for the <code><a href="../reference/planning.html">planning()</a
 by using the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function. The result show that,
 given the prior distribution, the auditor needs to select a sample of
 178 items so that, when at most 4.45 misstatements are found, they can
-conclude with 95% confidence that the misstatement in BuildIt’s
-financial statements is lower the performance materiality of 5%.</p>
+conclude with 95 percent confidence that the misstatement in BuildIt’s
+financial statements is lower the performance materiality of 5
+percent.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -374,8 +376,8 @@ with the prior distribution.</p>
 <p>The auditor can inspect the outcomes of their inference by using the
 <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function. The resulting upper bound is 2.278%,
 which is lower than the performance materiality of 5%. Therefore, the
-auditor can concluse that there is a 95% probability that the
-misstatement in BuildIt’s population is lower than 2.278%.</p>
+auditor can concluse that there is a 95 percent probability that the
+misstatement in BuildIt’s population is lower than 2.278 percent.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -408,12 +410,12 @@ misstatement in BuildIt’s population is lower than 2.278%.</p>
 <div class="section level2">
 <h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
 </h2>
-<p>Since the 95% upper credible bound on the misstatement in population
-is lower than the performance materiality, the auditor has obtained
-sufficient evidence to conclude that the population does not contain
-material misstatements. The auditor can create a <code>html</code> or
-<code>pdf</code> report of the statistical results using the
-<code><a href="../reference/report.html">report()</a></code> function, as shown below.</p>
+<p>Since the 95 percentupper credible bound on the misstatement in
+population is lower than the performance materiality, the auditor has
+obtained sufficient evidence to conclude that the population does not
+contain material misstatement. The auditor can create a
+<code>html</code> or <code>pdf</code> report of the statistical results
+using the <code><a href="../reference/report.html">report()</a></code> function, as shown below.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/report.html">report</a></span><span class="op">(</span><span class="va">stage4</span>, file <span class="op">=</span> <span class="st">"report.html"</span><span class="op">)</span></span></code></pre></div>
 </div>
