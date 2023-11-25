@@ -109,9 +109,11 @@
 <p>Welcome to the ‘Algorithm auditing’ vignette of the
 <strong>jfa</strong> package. Here you can find a detailed explanation
 of the functions in the package that facilitate auditing of algorithms
-and predictive models. For more detailed explanations of each function,
-read the other vignettes on the <a href="https://koenderks.github.io/jfa/articles/index.html">package
-website</a>.</p>
+and predictive models. Specifically, the functions in this section
+implement techniques to calculate and test fairness metrics. The
+<strong>jfa</strong> package enables users to create a prior probability
+distribution to perform Bayesian algorithm auditing using these
+functions.</p>
 </div>
 <div class="section level2">
 <h2 id="functions-and-intended-usage">Functions and intended usage<a class="anchor" aria-label="anchor" href="#functions-and-intended-usage"></a>
@@ -119,13 +121,12 @@ website</a>.</p>
 <p>Below you can find an explanation of the available algorithm auditing
 functions in <strong>jfa</strong>.</p>
 <ul>
-<li><a href="#assess-algorithmic-fairness-with-model_fairness"><code>model_fairness()</code></a></li>
+<li><a href="#testing-algorithmic-fairness"><code>model_fairness()</code></a></li>
 </ul>
 <div class="section level3">
-<h3 id="assess-algorithmic-fairness-with-model_fairness">Assess algorithmic fairness with <code>model_fairness()</code><a class="anchor" aria-label="anchor" href="#assess-algorithmic-fairness-with-model_fairness"></a>
+<h3 id="testing-algorithmic-fairness">Testing algorithmic fairness<a class="anchor" aria-label="anchor" href="#testing-algorithmic-fairness"></a>
 </h3>
-<p><a href="https://lifecycle.r-lib.org/articles/stages.html#experimental" class="external-link"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></p>
-<p>The <code>model_fairnesS()</code> function aims to assess fairness in
+<p>The <code><a href="../reference/model_fairness.html">model_fairness()</a></code> function aims to assess fairness in
 algorithmic decision-making systems by computing and testing the
 equality of one of several model-agnostic fairness metrics between
 protected classes based on a set of true labels and the predictions of
@@ -139,26 +140,12 @@ parity, and demographic parity <span class="citation">(Friedler et al.,
 2019; Pessach &amp; Shmueli, 2022)</span>. The function returns an
 object of class <code>jfaFairness</code> that can be used with
 associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods.</p>
-<p><em>Full function with default arguments:</em></p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
-<span>  <span class="va">data</span>,</span>
-<span>  <span class="va">protected</span>,</span>
-<span>  <span class="va">target</span>,</span>
-<span>  <span class="va">predictions</span>,</span>
-<span>  privileged <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  positive <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  metric <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
-<span>    <span class="st">"prp"</span>, <span class="st">"pp"</span>, <span class="st">"ap"</span>, <span class="st">"fnrp"</span>, <span class="st">"fprp"</span>,</span>
-<span>    <span class="st">"tprp"</span>, <span class="st">"npvp"</span>, <span class="st">"sp"</span>, <span class="st">"dp"</span></span>
-<span>  <span class="op">)</span>,</span>
-<span>  alternative <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"two.sided"</span>, <span class="st">"less"</span>, <span class="st">"greater"</span><span class="op">)</span>,</span>
-<span>  conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
-<span>  prior <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<p>For more information about this function, see the <a href="https://koenderks.github.io/jfa/reference/model_fairness.html">function
+documentation</a> on the package website.</p>
 <p><em>Example usage:</em></p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Compare predictive rate parity</span></span>
+<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
 <span>  protected <span class="op">=</span> <span class="st">"Ethnicity"</span>,</span>
 <span>  target <span class="op">=</span> <span class="st">"TwoYrRecidivism"</span>,</span>
@@ -166,21 +153,51 @@ associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-l
 <span>  privileged <span class="op">=</span> <span class="st">"Caucasian"</span>,</span>
 <span>  positive <span class="op">=</span> <span class="st">"yes"</span>,</span>
 <span>  metric <span class="op">=</span> <span class="st">"prp"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Classical Algorithmic Fairness Test</span></span>
+<span><span class="co">##  Classical Algorithmic Fairness Test Summary</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## data: compas</span></span>
-<span><span class="co">## n = 6172, X-squared = 18.799, df = 5, p-value = 0.002095</span></span>
-<span><span class="co">## alternative hypothesis: fairness metrics are not equal across groups</span></span>
+<span><span class="co">## Options:</span></span>
+<span><span class="co">##   Confidence level:    0.95 </span></span>
+<span><span class="co">##   Fairness metric:     Predictive rate parity (Equalized odds)</span></span>
+<span><span class="co">##   Model type:          Binary classification</span></span>
+<span><span class="co">##   Privileged group:    Caucasian</span></span>
+<span><span class="co">##   Positive class:      yes </span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## sample estimates:</span></span>
-<span><span class="co">##   African_American: 1.1522 [1.1143, 1.1891], p-value = 5.4523e-05</span></span>
-<span><span class="co">##   Asian: 0.86598 [0.11706, 1.6149], p-value = 1</span></span>
-<span><span class="co">##   Hispanic: 1.0229 [0.87836, 1.1611], p-value = 0.78393</span></span>
-<span><span class="co">##   Native_American: 1.0392 [0.25396, 1.6406], p-value = 1</span></span>
-<span><span class="co">##   Other: 1.0596 [0.86578, 1.2394], p-value = 0.5621</span></span>
-<span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span></code></pre>
+<span><span class="co">## Data:</span></span>
+<span><span class="co">##   Sample size:         6172 </span></span>
+<span><span class="co">##   Unprivileged groups: 5 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Results:</span></span>
+<span><span class="co">##   X-squared:           18.799 </span></span>
+<span><span class="co">##   Degrees of freedom:  5 </span></span>
+<span><span class="co">##   p-value:             0.0020951 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Comparisons to privileged (P) group:</span></span>
+<span><span class="co">##                                     Precision                    Parity</span></span>
+<span><span class="co">##   Caucasian (P)    0.57738 [0.53902, 0.61506]                         -</span></span>
+<span><span class="co">##   African_American  0.66525 [0.6434, 0.68658]   1.1522 [1.1143, 1.1891]</span></span>
+<span><span class="co">##   Asian               0.5 [0.067586, 0.93241] 0.86598 [0.11706, 1.6149]</span></span>
+<span><span class="co">##   Hispanic          0.5906 [0.50715, 0.67038]  1.0229 [0.87836, 1.1611]</span></span>
+<span><span class="co">##   Native_American      0.6 [0.14663, 0.94726]  1.0392 [0.25396, 1.6406]</span></span>
+<span><span class="co">##   Other            0.61176 [0.49988, 0.71562]  1.0596 [0.86578, 1.2394]</span></span>
+<span><span class="co">##                                    Odds ratio    p-value</span></span>
+<span><span class="co">##   Caucasian (P)                             -          -</span></span>
+<span><span class="co">##   African_American    1.4543 [1.2087, 1.7491] 5.4523e-05</span></span>
+<span><span class="co">##   Asian            0.73231 [0.052801, 10.156]          1</span></span>
+<span><span class="co">##   Hispanic           1.0559 [0.72564, 1.5432]    0.78393</span></span>
+<span><span class="co">##   Native_American     1.0978 [0.1249, 13.228]          1</span></span>
+<span><span class="co">##   Other               1.1532 [0.7105, 1.8933]     0.5621</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Model performance:</span></span>
+<span><span class="co">##                    Support  Accuracy Precision    Recall  F1 score</span></span>
+<span><span class="co">##   Caucasian           2103 0.6585830 0.5773810 0.4720195 0.5194110</span></span>
+<span><span class="co">##   African_American    3175 0.6724409 0.6652475 0.7525587 0.7062147</span></span>
+<span><span class="co">##   Asian                 31 0.7419355 0.5000000 0.2500000 0.3333333</span></span>
+<span><span class="co">##   Hispanic             509 0.6817289 0.5906040 0.4656085 0.5207101</span></span>
+<span><span class="co">##   Native_American       11 0.6363636 0.6000000 0.6000000 0.6000000</span></span>
+<span><span class="co">##   Other                343 0.6938776 0.6117647 0.4193548 0.4976077</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">

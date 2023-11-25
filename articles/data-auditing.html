@@ -108,8 +108,13 @@
 </h2>
 <p>Welcome to the ‘Data auditing’ vignette of the <strong>jfa</strong>
 package. Here you can find a simple explanation of the functions in the
-package that facilitate data auditing. For more detailed explanations of
-each function, read the other vignettes on the <a href="https://koenderks.github.io/jfa/">package website</a>.</p>
+package that facilitate data auditing. Specifically, the functions in
+this section implement techniques to test the distribution of (leading)
+digits against a reference distribution (e.g., Benford’s law) and
+techniques to assess whether values are repeated more often than
+expected. The <strong>jfa</strong> package enables users to create a
+prior probability distribution to perform Bayesian data auditing using
+these functions.</p>
 </div>
 <div class="section level2">
 <h2 id="functions-and-intended-usage">Functions and intended usage<a class="anchor" aria-label="anchor" href="#functions-and-intended-usage"></a>
@@ -117,13 +122,12 @@ each function, read the other vignettes on the <a href="https://koenderks.github
 <p>Below you can find an explanation of the available data auditing
 functions in <strong>jfa</strong>.</p>
 <ul>
-<li><a href="#test-digit-distributions-with-digit-test"><code>digit_test()</code></a></li>
-<li><a href="#test-for-repeated-values-with-repeated-test"><code>repeated_test()</code></a></li>
+<li><a href="#testing-digit-distributions"><code>digit_test()</code></a></li>
+<li><a href="#testing-for-repeated-values"><code>repeated_test()</code></a></li>
 </ul>
 <div class="section level3">
-<h3 id="test-digit-distributions-with-digit_test">Test digit distributions with <code>digit_test()</code><a class="anchor" aria-label="anchor" href="#test-digit-distributions-with-digit_test"></a>
+<h3 id="testing-digit-distributions">Testing digit distributions<a class="anchor" aria-label="anchor" href="#testing-digit-distributions"></a>
 </h3>
-<p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
 <p>The function <code><a href="../reference/digit_test.html">digit_test()</a></code> takes a vector of numeric
 values, extract the requested digits, and compares the frequencies of
 these digits to a reference distribution. By default, the function
@@ -134,57 +138,8 @@ performs a Bayesian hypothesis test of the null hypothesis that the
 digits are distributed according to the reference distribution against
 the alternative hypothesis that the digits are not distributed according
 to the reference distribution and produces a Bayes factor <span class="citation">(Kass &amp; Raftery, 1995)</span>.</p>
-<p><em>Full function with default arguments:</em></p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/digit_test.html">digit_test</a></span><span class="op">(</span></span>
-<span>  <span class="va">x</span>,</span>
-<span>  check <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"first"</span>, <span class="st">"last"</span>, <span class="st">"firsttwo"</span><span class="op">)</span>,</span>
-<span>  reference <span class="op">=</span> <span class="st">"benford"</span>,</span>
-<span>  prior <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p><em>Supported options for the <code>check</code> argument:</em></p>
-<table class="table">
-<thead><tr class="header">
-<th align="left"><code>check</code></th>
-<th align="left">Returns</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left"><code>fist</code></td>
-<td align="left">First digit</td>
-</tr>
-<tr class="even">
-<td align="left"><code>firsttwo</code></td>
-<td align="left">First and second digit</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>last</code></td>
-<td align="left">Last digit</td>
-</tr>
-</tbody>
-</table>
-<p><em>Supported options for the <code>reference</code>
-argument:</em></p>
-<table class="table">
-<thead><tr class="header">
-<th align="left"><code>check</code></th>
-<th align="left">Returns</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left"><code>benford</code></td>
-<td align="left">Benford’s law</td>
-</tr>
-<tr class="even">
-<td align="left"><code>uniform</code></td>
-<td align="left">Uniform distribution</td>
-</tr>
-<tr class="odd">
-<td align="left">Vector of probabilities</td>
-<td align="left">Custom distribution</td>
-</tr>
-</tbody>
-</table>
+<p>For more information about this function, see the <a href="https://koenderks.github.io/jfa/reference/digit_test.html">function
+documentation</a> on the package website.</p>
 <p><em>Example usage:</em></p>
 <p>Benford’s law <span class="citation">(Benford, 1938)</span> is a
 principle that describes a pattern in many naturally-occurring numbers.
@@ -196,96 +151,43 @@ probability:</p>
 transaction values (e.g., the <code>sinoForest</code> data) can be
 extracted and tested against the expected frequencies under Benford’s
 law using the code below.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Frequentist hypothesis test</span></span>
-<span><span class="fu"><a href="../reference/digit_test.html">digit_test</a></span><span class="op">(</span><span class="va">sinoForest</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"first"</span>, reference <span class="op">=</span> <span class="st">"benford"</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Compare first digits to Benford's law</span></span>
+<span><span class="fu"><a href="../reference/digit_test.html">digit_test</a></span><span class="op">(</span><span class="va">sinoForest</span><span class="op">[[</span><span class="st">"value"</span><span class="op">]</span><span class="op">]</span>, check <span class="op">=</span> <span class="st">"first"</span>, reference <span class="op">=</span> <span class="st">"benford"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Classical Digit Distribution Test</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## data:  sinoForest$value</span></span>
+<span><span class="co">## data:  sinoForest[["value"]]</span></span>
 <span><span class="co">## n = 772, MAD = 0.0065981, X-squared = 7.6517, df = 8, p-value = 0.4682</span></span>
-<span><span class="co">## alternative hypothesis: leading digit(s) are not distributed according to the benford distribution.</span></span></code></pre>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Bayesian hypothesis test using default prior</span></span>
-<span><span class="fu"><a href="../reference/digit_test.html">digit_test</a></span><span class="op">(</span><span class="va">sinoForest</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"first"</span>, reference <span class="op">=</span> <span class="st">"benford"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Bayesian Digit Distribution Test</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## data:  sinoForest$value</span></span>
-<span><span class="co">## n = 772, MAD = 0.0065981, BF₁₀ = 1.4493e-07</span></span>
 <span><span class="co">## alternative hypothesis: leading digit(s) are not distributed according to the benford distribution.</span></span></code></pre>
 </div>
 <div class="section level3">
-<h3 id="test-for-repeated-values-with-repeated_test">Test for repeated values with <code>repeated_test()</code><a class="anchor" aria-label="anchor" href="#test-for-repeated-values-with-repeated_test"></a>
+<h3 id="testing-for-repeated-values">Testing for repeated values<a class="anchor" aria-label="anchor" href="#testing-for-repeated-values"></a>
 </h3>
-<p><a href="https://lifecycle.r-lib.org/articles/stages.html#stable" class="external-link"><img src="https://img.shields.io/badge/lifecycle-stable-brightgreen.svg" alt="Lifecycle: stable"></a></p>
 <p>The function <code><a href="../reference/repeated_test.html">repeated_test()</a></code> analyzes the frequency with
 which values get repeated within a set of numbers. Unlike Benford’s law,
 and its generalizations, this approach examines the entire number at
 once, not only the first or last digit. For the technical details of
 this procedure, see <span class="citation">(Simonsohn, 2019)</span>.</p>
-<p><em>Full function with default arguments:</em></p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/repeated_test.html">repeated_test</a></span><span class="op">(</span></span>
-<span>  <span class="va">x</span>,</span>
-<span>  check <span class="op">=</span> <span class="st">"last"</span>,</span>
-<span>  method <span class="op">=</span> <span class="st">"af"</span>,</span>
-<span>  samples <span class="op">=</span> <span class="fl">2000</span></span>
-<span><span class="op">)</span></span></code></pre></div>
-<p><em>Supported options for the <code>check</code> argument:</em></p>
-<table class="table">
-<thead><tr class="header">
-<th align="left"><code>check</code></th>
-<th align="left">Returns</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left"><code>last</code></td>
-<td align="left">Last decimal</td>
-</tr>
-<tr class="even">
-<td align="left"><code>lasttwo</code></td>
-<td align="left">Last two decimals</td>
-</tr>
-<tr class="odd">
-<td align="left"><code>all</code></td>
-<td align="left">All decimals</td>
-</tr>
-</tbody>
-</table>
-<p><em>Supported options for the <code>method</code> argument:</em></p>
-<table class="table">
-<thead><tr class="header">
-<th align="left"><code>check</code></th>
-<th align="left">Returns</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td align="left"><code>af</code></td>
-<td align="left">Average frequency</td>
-</tr>
-<tr class="even">
-<td align="left"><code>entropy</code></td>
-<td align="left">Entropy</td>
-</tr>
-</tbody>
-</table>
+<p>For more information about this function, see the <a href="https://koenderks.github.io/jfa/reference/repeated_test.html">function
+documentation</a> on the package website.</p>
 <p><em>Example usage:</em></p>
 <p>In this example, we analyze a data set from a (retracted) paper that
 describes three experiments run in Chinese factories, where workers were
 nudged to use more hand-sanitizer. These data were shown to exhibited
 two classic markers of data tampering: impossibly similar means and the
 uneven distribution of last digits <span class="citation">(Yu et al.,
-2018)</span>. We can use the <code>rv.test()</code> function to test if
-these data also contain a greater amount of repeated values than
+2018)</span>. We can use the <code>repeated.test()</code> function to
+test if these data also contain a greater amount of repeated values than
 expected if the data were not tampered with.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/repeated_test.html">repeated_test</a></span><span class="op">(</span><span class="va">sanitizer</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"lasttwo"</span>, samples <span class="op">=</span> <span class="fl">5000</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Inspect last two digits for repeated values</span></span>
+<span><span class="fu"><a href="../reference/repeated_test.html">repeated_test</a></span><span class="op">(</span><span class="va">sanitizer</span><span class="op">[[</span><span class="st">"value"</span><span class="op">]</span><span class="op">]</span>, check <span class="op">=</span> <span class="st">"lasttwo"</span>, samples <span class="op">=</span> <span class="fl">5000</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Classical Repeated Values Test</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## data:  sanitizer$value</span></span>
-<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0026</span></span>
+<span><span class="co">## data:  sanitizer[["value"]]</span></span>
+<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.003</span></span>
 <span><span class="co">## alternative hypothesis: average frequency in data is greater than for random data.</span></span></code></pre>
 </div>
 </div>

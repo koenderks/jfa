@@ -109,221 +109,84 @@
 <p>Welcome to the ‘Get started’ vignette of the <strong>jfa</strong>
 package. <strong>jfa</strong> is an R package that provides Bayesian and
 classical statistical methods for audit sampling, data auditing, and
-algorithm auditing. First, the package provides functions for planning,
-performing, evaluating, and reporting an audit sample compliant with
-international standards on auditing. Second, the package includes
-functions for auditing data, such as testing the distribution of first
-digits of a data set against Benford’s law. Finally, the package
-implements functions to perform bias detection and compute fairness
-metrics for predictive models.</p>
-<p>This vignette provides a simple explanation of the functionality in
-the package. For a more detailed explanation of the functions in the
-package, see the other vignettes at the <a href="https://koenderks.github.io/jfa/">package website</a>.</p>
+algorithm auditing. The package is divided into three sections: audit
+sampling, data auditing, and algorithm auditing. This page points you to
+the vignettes accompanying each of the three sections.</p>
 </div>
 <div class="section level2">
 <h2 id="audit-sampling">Audit sampling<a class="anchor" aria-label="anchor" href="#audit-sampling"></a>
 </h2>
-<p><strong>jfa</strong> provides a user-friendly interface for
-statistical audit sampling. The standard audit sampling workflow is
-divided into four distinct parts: planning a sample, selecting the
-sample from the population, executing the audit and evaluating the
-misstatement by extrapolating the errors in the sample to the
-population.</p>
-<center>
-<div class="figure">
-<img src="workflow.png" alt=""><p class="caption">Figure 1: The audit sampling workflow</p>
-</div>
-</center>
-<p>See the package vignette <a href="https://koenderks.github.io/jfa/articles/audit-sampling.html">Audit
-sampling: Get started</a> for more details about <strong>jfa</strong>’s
-audit sampling functionality.</p>
-<div class="section level3">
-<h3 id="functions-and-intended-usage">Functions and intended usage<a class="anchor" aria-label="anchor" href="#functions-and-intended-usage"></a>
-</h3>
-<p>To illustrate <strong>jfa</strong>’s’ statistical audit sampling
-functionality, consider the <code>BuildIt</code> data set that comes
-with the package. This data consists of 3500 items from a financial
-statement line item, each of which has a booked value and (for
-illustrative purposes) a true (audit) value.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Load the BuildIt population</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"BuildIt"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">BuildIt</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##      ID bookValue auditValue</span></span>
-<span><span class="co">## 1 82884    242.61     242.61</span></span>
-<span><span class="co">## 2 25064    642.99     642.99</span></span>
-<span><span class="co">## 3 81235    628.53     628.53</span></span>
-<span><span class="co">## 4 71769    431.87     431.87</span></span>
-<span><span class="co">## 5 55080    620.88     620.88</span></span>
-<span><span class="co">## 6 93224    501.76     501.76</span></span></code></pre>
-<p>The first step in the audit sampling workflow is to calculate a
-minimum required sample size given the purpose of the sample. You can
-use the sample to 1) obtain evidence for or against the hypothesis that
-the misstatement in the population is lower than the performance
-materiality and / or 2) estimate the misstatement in the population. The
-<code><a href="../reference/planning.html">planning()</a></code> function can be used to calculate this minimum
-required sample size.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Stage 1: Planning</span></span>
-<span><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span></span>
-<span>  materiality <span class="op">=</span> <span class="fl">0.03</span>, expected <span class="op">=</span> <span class="fl">0.01</span>,</span>
-<span>  likelihood <span class="op">=</span> <span class="st">"poisson"</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Classical Audit Sample Planning Summary</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Options:</span></span>
-<span><span class="co">##   Confidence level:              0.95 </span></span>
-<span><span class="co">##   Materiality:                   0.03 </span></span>
-<span><span class="co">##   Hypotheses:                    H₀: Θ &gt;= 0.03 vs. H₁: Θ &lt; 0.03 </span></span>
-<span><span class="co">##   Expected:                      0.01 </span></span>
-<span><span class="co">##   Likelihood:                    poisson </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Results:</span></span>
-<span><span class="co">##   Minimum sample size:           220 </span></span>
-<span><span class="co">##   Tolerable errors:              2.2 </span></span>
-<span><span class="co">##   Expected most likely error:    0.01 </span></span>
-<span><span class="co">##   Expected upper bound:          0.02997 </span></span>
-<span><span class="co">##   Expected precision:            0.01997 </span></span>
-<span><span class="co">##   Expected p-value:              0.049761</span></span></code></pre>
-<p>The <code><a href="../reference/selection.html">selection()</a></code> function can be used to select the
-required samples from the population.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Stage 2: Selection</span></span>
-<span><span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="va">stage1</span>,</span>
-<span>  units <span class="op">=</span> <span class="st">"values"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>,</span>
-<span>  method <span class="op">=</span> <span class="st">"interval"</span>, start <span class="op">=</span> <span class="fl">1</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage2</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Audit Sample Selection Summary</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Options:</span></span>
-<span><span class="co">##   Requested sample size:         220 </span></span>
-<span><span class="co">##   Sampling units:                monetary units </span></span>
-<span><span class="co">##   Method:                        fixed interval sampling </span></span>
-<span><span class="co">##   Starting point:                1 </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Data:</span></span>
-<span><span class="co">##   Population size:               3500 </span></span>
-<span><span class="co">##   Population value:              1403221 </span></span>
-<span><span class="co">##   Selection interval:            6378.3 </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Results:</span></span>
-<span><span class="co">##   Selected sampling units:       220 </span></span>
-<span><span class="co">##   Proportion of value:           0.080554 </span></span>
-<span><span class="co">##   Selected items:                220 </span></span>
-<span><span class="co">##   Proportion of size:            0.062857</span></span></code></pre>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Stage 3: Execution</span></span>
-<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">stage2</span><span class="op">[[</span><span class="st">"sample"</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
-<p>The <code><a href="../reference/evaluation.html">evaluation()</a></code> function can be used to evaluate the
-misstatement in the sample.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Stage 4: Evaluation</span></span>
-<span><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
-<span>  materiality <span class="op">=</span> <span class="fl">0.03</span>, method <span class="op">=</span> <span class="st">"stringer.poisson"</span>,</span>
-<span>  conf.level <span class="op">=</span> <span class="fl">0.95</span>, data <span class="op">=</span> <span class="va">sample</span>,</span>
-<span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Classical Audit Sample Evaluation Summary</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Options:</span></span>
-<span><span class="co">##   Confidence level:               0.95 </span></span>
-<span><span class="co">##   Materiality:                    0.03 </span></span>
-<span><span class="co">##   Method:                         stringer.poisson </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Data:</span></span>
-<span><span class="co">##   Sample size:                    220 </span></span>
-<span><span class="co">##   Number of errors:               5 </span></span>
-<span><span class="co">##   Sum of taints:                  2.9999929 </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Results:</span></span>
-<span><span class="co">##   Most likely error:              0.013636 </span></span>
-<span><span class="co">##   95 percent confidence interval: [0, 0.034119] </span></span>
-<span><span class="co">##   Precision:                      0.020482</span></span></code></pre>
-</div>
+<p>Firstly, the package provides functions for planning, performing, and
+evaluating an audit sample compliant with international standards on
+auditing <span class="citation">(American Institute of Certified Public
+Accountants (AICPA), 2021; International Auditing and Assurance
+Standards Board (IAASB), 2018; Public Company Accounting Oversight Board
+(PCAOB), 2020)</span>.</p>
+<ul>
+<li><a href="https://koenderks.github.io/jfa/articles/audit-sampling.html">Audit
+sampling: Get started</a></li>
+<li><a href="https://koenderks.github.io/jfa/articles/creating-prior.html">Creating
+a prior distribution for audit sampling</a></li>
+<li><a href="https://koenderks.github.io/jfa/articles/sample-planning.html">Planning
+statistical audit samples</a></li>
+<li><a href="https://koenderks.github.io/jfa/articles/sample-selection.html">Selecting
+statistical audit samples</a></li>
+<li><a href="https://koenderks.github.io/jfa/articles/sample-evaluation.html">Evaluating
+statistical audit samples</a></li>
+<li><a href="https://koenderks.github.io/jfa/articles/sample-evaluation-partial.html">Evaluating
+audit samples with partial misstatements</a></li>
+<li><a href="https://koenderks.github.io/jfa/articles/sampling-workflow.html">Walkthrough
+of the classical audit sampling workflow</a></li>
+<li><a href="https://koenderks.github.io/jfa/articles/bayesian-sampling-workflow.html">Walkthrough
+of the Bayesian audit sampling workflow</a></li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="data-auditing">Data auditing<a class="anchor" aria-label="anchor" href="#data-auditing"></a>
 </h2>
-<p>See the package vignette <a href="https://koenderks.github.io/jfa/articles/data-auditing.html">Data
-auditing: Get started</a> for more details about <strong>jfa</strong>’s
-data auditing functionality.</p>
-<div class="section level3">
-<h3 id="functions-and-intended-usage-1">Functions and intended usage<a class="anchor" aria-label="anchor" href="#functions-and-intended-usage-1"></a>
-</h3>
-<p>The <code><a href="../reference/digit_test.html">digit_test()</a></code> function can be used to test the
-distribution of leading or last digits in a variable against a
-pre-specified distribution (e.g., Benford’s law).</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Digit distribution test</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/digit_test.html">digit_test</a></span><span class="op">(</span><span class="va">sinoForest</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"first"</span>, reference <span class="op">=</span> <span class="st">"benford"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Classical Digit Distribution Test</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## data:  sinoForest$value</span></span>
-<span><span class="co">## n = 772, MAD = 0.0065981, X-squared = 7.6517, df = 8, p-value = 0.4682</span></span>
-<span><span class="co">## alternative hypothesis: leading digit(s) are not distributed according to the benford distribution.</span></span></code></pre>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="jfa_files/figure-html/unnamed-chunk-6-1.png" width="576" style="display: block; margin: auto;"></p>
-<p>The <code><a href="../reference/repeated_test.html">repeated_test()</a></code> function can be used to test the
-numbers in a variable for repeated values.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Repeated values test</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/repeated_test.html">repeated_test</a></span><span class="op">(</span><span class="va">sanitizer</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"lasttwo"</span>, samples <span class="op">=</span> <span class="fl">5000</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Classical Repeated Values Test</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## data:  sanitizer$value</span></span>
-<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0012</span></span>
-<span><span class="co">## alternative hypothesis: average frequency in data is greater than for random data.</span></span></code></pre>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
-<p><img src="jfa_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto;"></p>
-</div>
+<p>Secondly, the package includes functions for auditing data, such as
+testing the distribution of first digits of a data set against Benford’s
+law, or assessing the amount of repeated values in a data set.</p>
+<ul>
+<li><a href="https://koenderks.github.io/jfa/articles/data-auditing.html">Data
+auditing: Get started</a></li>
+<li><a href="https://koenderks.github.io/jfa/articles/digit-analysis.html">Digit
+analysis</a></li>
+</ul>
 </div>
 <div class="section level2">
 <h2 id="algorithm-auditing">Algorithm auditing<a class="anchor" aria-label="anchor" href="#algorithm-auditing"></a>
 </h2>
-<p>See the package vignette <a href="https://koenderks.github.io/jfa/articles/algorithm-auditing.html">Algorithm
-auditing: Get started</a> for more details about <strong>jfa</strong>’s
-algorithm auditing functionality.</p>
-<div class="section level3">
-<h3 id="functions-and-intended-usage-2">Functions and intended usage<a class="anchor" aria-label="anchor" href="#functions-and-intended-usage-2"></a>
-</h3>
-<p>The <code><a href="../reference/model_fairness.html">model_fairness()</a></code> function can be used to assess
-fairness and bias in a machine learning algorithm.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Model Fairness</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span><span class="va">compas</span>, <span class="st">"Ethnicity"</span>, <span class="st">"TwoYrRecidivism"</span>, <span class="st">"Predicted"</span>,</span>
-<span>  privileged <span class="op">=</span> <span class="st">"Caucasian"</span>, positive <span class="op">=</span> <span class="st">"yes"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Classical Algorithmic Fairness Test</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## data: compas</span></span>
-<span><span class="co">## n = 6172, X-squared = 18.799, df = 5, p-value = 0.002095</span></span>
-<span><span class="co">## alternative hypothesis: fairness metrics are not equal across groups</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## sample estimates:</span></span>
-<span><span class="co">##   African_American: 1.1522 [1.1143, 1.1891], p-value = 5.4523e-05</span></span>
-<span><span class="co">##   Asian: 0.86598 [0.11706, 1.6149], p-value = 1</span></span>
-<span><span class="co">##   Hispanic: 1.0229 [0.87836, 1.1611], p-value = 0.78393</span></span>
-<span><span class="co">##   Native_American: 1.0392 [0.25396, 1.6406], p-value = 1</span></span>
-<span><span class="co">##   Other: 1.0596 [0.86578, 1.2394], p-value = 0.5621</span></span>
-<span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span></code></pre>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="jfa_files/figure-html/unnamed-chunk-8-1.png" width="576" style="display: block; margin: auto;"></p>
+<p>Finally, the package implements functions for auditing algorithms,
+such as computing and testing fairness metrics for predictive
+models.</p>
+<ul>
+<li><a href="https://koenderks.github.io/jfa/articles/algorithm-auditing.html">Algorithm
+auditing: Get started</a></li>
+<li><a href="https://koenderks.github.io/jfa/articles/model-fairness.html">Algorithmic
+fairness</a></li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-aicpa_2021" class="csl-entry">
+American Institute of Certified Public Accountants (AICPA). (2021).
+<em>Clarified statements on auditing standards</em>. <span>American
+Institute of Certified Public Accountants (<span>AICPA</span>)</span>.
+</div>
+<div id="ref-iaasb_2018" class="csl-entry">
+International Auditing and Assurance Standards Board (IAASB). (2018).
+<em>Handbook of international quality control, auditing review, other
+assurance, and related services pronouncements (vol. i)</em>.
+<span>International Federation of Accountants</span>.
+</div>
+<div id="ref-pcaob_2020" class="csl-entry">
+Public Company Accounting Oversight Board (PCAOB). (2020). <em>Auditing
+standards</em>. <span>Public Company Accounting Oversight Board
+(<span>PCAOB</span>)</span>.
+</div>
 </div>
 </div>
   </div>
