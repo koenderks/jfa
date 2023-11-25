@@ -240,9 +240,8 @@ distribution.</p>
 properties using <code>method = 'strict'</code>. The posterior
 distribution of from this prior yields the same results as the classical
 methodology with respect to sample sizes and upper limits, but is only
-proper once a single non-misstated unit is present in the sample (Derks
-et al., 2022). For example, the command below creates an improper
-beta(1, 0) prior distribution.</p>
+proper once a single non-misstated unit is present in the sample <span class="citation">(Derks et al., 2022)</span>. For example, the command
+below creates an improper beta(1, 0) prior distribution.</p>
 <p><em>This method requires the <code>poisson</code>,
 <code>binomial</code>, or <code>hypergeometric</code>
 likelihood</em></p>
@@ -258,10 +257,10 @@ likelihood</em></p>
 <h3 id="impartial-priors-method-impartial">Impartial priors (<code>method = 'impartial'</code>)<a class="anchor" aria-label="anchor" href="#impartial-priors-method-impartial"></a>
 </h3>
 <p>You can incorporate the assumption that tolerable misstatement is
-equally likely as intolerable misstatement (Derks et al., 2022) using
-<code>method = 'impartial'</code>. For example, the command below
-creates an impartial beta prior distribution for a performance
-materiality of 5 percent.</p>
+equally likely as intolerable misstatement <span class="citation">(Derks
+et al., 2022)</span> using <code>method = 'impartial'</code>. For
+example, the command below creates an impartial beta prior distribution
+for a performance materiality of 5 percent.</p>
 <p><em>This method requires that you specify a value for the
 <code>materiality</code>.</em></p>
 <p><em>This method requires the <code>poisson</code>,
@@ -281,10 +280,11 @@ likelihood</em></p>
 </h3>
 <p>You can manually assign prior probabilities to the hypothesis of
 tolerable misstatement and the hypotheses of intolerable misstatement
-(Derks et al., 2021) with <code>method = 'hyp'</code> in combination
-with <code>p.hmin</code>. For example, the command below incorporates
-the information that the hypothesis of tolerable misstatement has a
-probability of 60% into a beta prior distribution.</p>
+<span class="citation">(Derks et al., 2021)</span> with
+<code>method = 'hyp'</code> in combination with <code>p.hmin</code>. For
+example, the command below incorporates the information that the
+hypothesis of tolerable misstatement has a probability of 60 percent
+into a beta prior distribution.</p>
 <p><em>This method requires that you specify a value for the
 <code>materiality</code>.</em></p>
 <p><em>This method requires the <code>poisson</code>,
@@ -304,10 +304,11 @@ likelihood</em></p>
 </h3>
 <p>You can translate risk assessments from the Audit Risk Model
 (inherent risk and internal control risk) into a prior distribution
-(Derks et al., 2021) using <code>method = 'arm'</code> in combination
-with the <code>ir</code> and <code>cr</code> arguments. For example, the
-command below incorporates the information that the inherent risk is
-equal to 90% and internal control risk is equal to 60% into a beta prior
+<span class="citation">(Derks et al., 2021)</span> using
+<code>method = 'arm'</code> in combination with the <code>ir</code> and
+<code>cr</code> arguments. For example, the command below incorporates
+the information that the inherent risk is equal to 90 percent and
+internal control risk is equal to 60 percent into a beta prior
 distribution.</p>
 <p><em>This method requires the <code>poisson</code>,
 <code>binomial</code>, or <code>hypergeometric</code>
@@ -327,8 +328,8 @@ likelihood</em></p>
 <p>You can incorporate information about the mode and the upper bound of
 the prior distribution using <code>method = 'bram'</code>. For example,
 the code below incorporates the information that the mode of the prior
-distribution is 1% and the upper bound is 60% into a beta prior
-distribution.</p>
+distribution is 1 percent and the upper bound is 60 percent into a beta
+prior distribution.</p>
 <p><em>This method requires the <code>poisson</code>,
 <code>binomial</code>, or <code>hypergeometric</code>
 likelihood</em></p>
@@ -345,11 +346,11 @@ likelihood</em></p>
 (<code>method = 'sample'</code>)<a class="anchor" aria-label="anchor" href="#priors-based-on-an-earlier-sample-method-sample"></a>
 </h3>
 <p>You can incorporate information from an earlier sample into the prior
-distribution (Derks et al., 2021) using <code>method = 'sample'</code>
-in combination with <code>x</code> and <code>n</code>. For example, the
-command below incorporates the information from an earlier sample of 30
-items in which 0 misstatements were found into a beta prior
-distribution.</p>
+distribution <span class="citation">(Derks et al., 2021)</span> using
+<code>method = 'sample'</code> in combination with <code>x</code> and
+<code>n</code>. For example, the command below incorporates the
+information from an earlier sample of 30 items in which 0 misstatements
+were found into a beta prior distribution.</p>
 <p><em>This method requires the <code>poisson</code>,
 <code>binomial</code>, or <code>hypergeometric</code>
 likelihood</em></p>
@@ -366,12 +367,12 @@ likelihood</em></p>
 (<code>method = 'factor'</code>)<a class="anchor" aria-label="anchor" href="#priors-based-on-a-weighted-earlier-sample-method-factor"></a>
 </h3>
 <p>You can incorporate information from last years results, weighted by
-a factor (Derks et al., 2021), into the prior distribution using
-<code>method = 'factor'</code> in combination with <code>x</code> and
-<code>n</code>. For example, the command below incorporates the
-information from a last years results (a sample of 58 items in which 0
-misstatements were found), weighted by a factor 0.7, into a beta prior
-distribution.</p>
+a factor <span class="citation">(Derks et al., 2021)</span>, into the
+prior distribution using <code>method = 'factor'</code> in combination
+with <code>x</code> and <code>n</code>. For example, the command below
+incorporates the information from a last years results (a sample of 58
+items in which 0 misstatements were found), weighted by a factor 0.7,
+into a beta prior distribution.</p>
 <p><em>This method requires the <code>poisson</code>,
 <code>binomial</code>, or <code>hypergeometric</code>
 likelihood</em></p>
@@ -418,7 +419,8 @@ minimum sample size by providing the objected returned by the
 <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function to the <code><a href="../reference/planning.html">planning()</a></code>
 function. For example, the command below calculates the minimum sample
 size to test the misstatement in the population against a performance
-materiality of 5%, while using a beta(1, 10) prior distribution.</p>
+materiality of 5 percent, while using a beta(1, 10) prior
+distribution.</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"param"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></code></pre></div>
@@ -435,8 +437,9 @@ materiality of 5%, while using a beta(1, 10) prior distribution.</p>
 the objected returned by the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function to the
 <code><a href="../reference/evaluation.html">evaluation()</a></code> function. For example, the command below
 evaluates the misstatement in the population with respect to a
-performance materiality of 5% after seeing a sample of 60 items with 1
-misstatement, while using a normal(0.025, 0.05) prior distribution.</p>
+performance materiality of 5 percent after seeing a sample of 60 items
+with 1 misstatement, while using a normal(0.025, 0.05) prior
+distribution.</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"param"</span>, likelihood <span class="op">=</span> <span class="st">"normal"</span>, alpha <span class="op">=</span> <span class="fl">0.025</span>, beta <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
 <span><span class="va">eval</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">60</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span>
@@ -458,10 +461,10 @@ misstatement, while using a normal(0.025, 0.05) prior distribution.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
 <span><span class="co">##   Posterior distribution:         Nonparametric </span></span>
-<span><span class="co">##   Most likely error:              0.016 </span></span>
-<span><span class="co">##   95 percent credible interval:   [0, 0.066] </span></span>
-<span><span class="co">##   Precision:                      0.05 </span></span>
-<span><span class="co">##   BF₁₀:                            4.8978</span></span></code></pre>
+<span><span class="co">##   Most likely error:              0.019 </span></span>
+<span><span class="co">##   95 percent credible interval:   [0, 0.067] </span></span>
+<span><span class="co">##   Precision:                      0.048 </span></span>
+<span><span class="co">##   BF₁₀:                            4.8455</span></span></code></pre>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eval</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="creating-prior_files/figure-html/unnamed-chunk-15-1.png" width="700"></p>
@@ -477,18 +480,19 @@ hypothetical (next) sample of 10 items.</p>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<ul>
-<li>Derks, K., de Swart, J., Wagenmakers, E.-J., and Wetzels, R. (2022).
-An impartial Bayesian hypothesis test for audit sampling.
-<em>PsyArXiv</em>. <a href="https://doi.org/10.31234/osf.io/8nf3e" class="external-link uri">https://doi.org/10.31234/osf.io/8nf3e</a>
-</li>
-<li>Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., and
-Wetzels, R. (2021). Priors in a Bayesian audit: How integration of
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-derks_2021" class="csl-entry">
+Derks, K., Swart, J. de, Batenburg, P. van, Wagenmakers, E.-J., &amp;
+Wetzels, R. (2021). Priors in a bayesian audit: How integration of
 existing information into the prior distribution can improve audit
 transparency and efficiency. <em>International Journal of Auditing</em>,
-25(3), 621-636. <a href="https://doi.org/10.1111/ijau.12240" class="external-link uri">https://doi.org/10.1111/ijau.12240</a>
-</li>
-</ul>
+<em>25</em>(3), 621–636. <a href="https://doi.org/10.1111/ijau.12240" class="external-link">https://doi.org/10.1111/ijau.12240</a>
+</div>
+<div id="ref-derks_2022" class="csl-entry">
+Derks, K., Swart, J. de, Wagenmakers, E.-J., &amp; Wetzels, R. (2022).
+<em>An impartial bayesian hypothesis test for audit sampling</em>. <a href="https://doi.org/10.31234/osf.io/8nf3e" class="external-link">https://doi.org/10.31234/osf.io/8nf3e</a>
+</div>
+</div>
 </div>
   </div>
 

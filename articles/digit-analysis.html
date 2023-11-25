@@ -126,12 +126,12 @@ in <code>prior</code>) that the digits are not distributed according to
 the reference distribution and produces a Bayes factor (Kass &amp;
 Raftery, 1995).</p>
 <p><em>Example:</em></p>
-<p>Benford’s law (Benford, 1938) is a principle that describes a pattern
-in many naturally-occurring numbers. According to Benford’s law, each
-possible leading digit <em>d</em> in a naturally occurring, or
-non-manipulated, set of numbers occurs with a probability
-<code>p(d) = log10(1 + 1/d)</code>. The distribution of leading digits
-in a data set of financial transaction values (e.g., the
+<p>Benford’s law <span class="citation">(Benford, 1938)</span> is a
+principle that describes a pattern in many naturally-occurring numbers.
+According to Benford’s law, each possible leading digit <em>d</em> in a
+naturally occurring, or non-manipulated, set of numbers occurs with a
+probability <code>p(d) = log10(1 + 1/d)</code>. The distribution of
+leading digits in a data set of financial transaction values (e.g., the
 <code>sinoForest</code> data) can be extracted and tested against the
 expected frequencies under Benford’s law using the code below.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -181,16 +181,16 @@ robustness check as well.</p>
 which values get repeated within a set of numbers. Unlike Benford’s law,
 and its generalizations, this approach examines the entire number at
 once, not only the first or last digit. For the technical details of
-this procedure, see Simohnsohn (2019).</p>
+this procedure, see <span class="citation">(Simonsohn, 2019)</span>.</p>
 <p><em>Example:</em></p>
 <p>In this example we analyze a data set from a (retracted) paper that
 describes three experiments run in Chinese factories, where workers were
 nudged to use more hand-sanitizer. These data were shown to exhibited
 two classic markers of data tampering: impossibly similar means and the
-uneven distribution of last digits (Yu, Nelson, &amp; Simohnson, 2018).
-We can use the <code><a href="../reference/repeated_test.html">repeated_test()</a></code> function to test if these
-data also contain a greater amount of repeated values than expected if
-the data were not tampered with.</p>
+uneven distribution of last digits <span class="citation">(Yu et al.,
+2018)</span>. We can use the <code><a href="../reference/repeated_test.html">repeated_test()</a></code> function to
+test if these data also contain a greater amount of repeated values than
+expected if the data were not tampered with.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/repeated_test.html">repeated_test</a></span><span class="op">(</span><span class="va">sanitizer</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"lasttwo"</span>, samples <span class="op">=</span> <span class="fl">2000</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
@@ -198,7 +198,7 @@ the data were not tampered with.</p>
 <span><span class="co">##  Classical Repeated Values Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sanitizer$value</span></span>
-<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0025</span></span>
+<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.003</span></span>
 <span><span class="co">## alternative hypothesis: average frequency in data is greater than for random data.</span></span></code></pre>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
@@ -207,18 +207,21 @@ the data were not tampered with.</p>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<ul>
-<li>Benford, F. (1938). The law of anomalous numbers. In <em>Proceedings
-of the American Philosophical Society</em>, 551-572. <a href="https://www.jstor.org/stable/984802" class="external-link uri">https://www.jstor.org/stable/984802</a>
-</li>
-<li>Simohnsohn, U. (2019, May 25). <em>Number-Bunching: A New Tool for
-Forensic Data Analysis</em>. <a href="https://datacolada.org/77" class="external-link uri">https://datacolada.org/77</a>
-</li>
-<li>Yo, F., Nelson, L., &amp; Simonsohn, U. (2018, December 5). <em>In
-Press at Psychological Science: A New ‘Nudge’ Supported by Implausible
-Data</em>. <a href="https://datacolada.org/74" class="external-link uri">https://datacolada.org/74</a>
-</li>
-</ul>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-benford_1938" class="csl-entry">
+Benford, F. (1938). The law of anomalous numbers. <em>Proceedings of the
+American Philosophical Society</em>, <em>78</em>, 551–572. <a href="https://www.jstor.org/stable/984802" class="external-link">https://www.jstor.org/stable/984802</a>
+</div>
+<div id="ref-simonsohn_2019" class="csl-entry">
+Simonsohn, U. (2019). <em>Number-bunching: A new tool for forensic data
+analysis</em>. <a href="https://datacolada.org/77" class="external-link">https://datacolada.org/77</a>
+</div>
+<div id="ref-yu_2018" class="csl-entry">
+Yu, F., Nelson, L., &amp; Simonsohn, U. (2018). <em>In press at
+psychological science: A new ’nudge’ supported by implausible data</em>.
+<a href="https://datacolada.org/74" class="external-link">https://datacolada.org/74</a>
+</div>
+</div>
 </div>
   </div>
 

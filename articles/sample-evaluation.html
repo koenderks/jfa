@@ -137,9 +137,10 @@ factor column indicating stratum membership (<code>strata</code>).</li>
 <p>By default, <code><a href="../reference/evaluation.html">evaluation()</a></code> estimates the population
 misstatement and returns a point estimate as well as a
 (<code>conf.level</code> <span class="math inline">\(\times\)</span>
-100)% confidence / credible interval around this estimate. However, in
-audit sampling, the population is typically subject to a certain maximum
-tolerable misstatement defined by the performance materiality <span class="math inline">\(\theta_{max}\)</span>. Using the
+100) percent confidence / credible interval around this estimate.
+However, in audit sampling, the population is typically subject to a
+certain maximum tolerable misstatement defined by the performance
+materiality <span class="math inline">\(\theta_{max}\)</span>. Using the
 <code>materiality</code> argument, you can provide this critical value
 to the <code><a href="../reference/evaluation.html">evaluation()</a></code> function as a fraction. In addition to
 the estimation that is performed by default, specifying
@@ -179,7 +180,7 @@ sample of 100 items, of which 1 contained an error. They set the
 significance level for the <em>p</em>-value to 0.05, implying that <span class="math inline">\(p &lt; 0.05\)</span> will be enough to reject the
 hypothesis <span class="math inline">\(H_0\)</span>. The call below
 evaluates the sample using a classical non-stratified evaluation
-procedure.</p>
+procedure <span class="citation">(Stewart, 2012)</span>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -195,20 +196,22 @@ procedure.</p>
 <span><span class="co">##  0.01 </span></span>
 <span><span class="co">## results obtained via method 'poisson'</span></span></code></pre>
 <p>The output shows that the most likely error in the population is
-estimated to be 1 / 100 = 1% and that the 95% (one-sided) confidence
-interval ranges from 0% to 4.74%. The output also shows that the
-<em>p</em>-value is lower than 0.05 implying that the hypothesis <span class="math inline">\(H_0\)</span> can be rejected. Hence, the auditor
-is able to conclude that the sample provides sufficient evidence to
-state with reasonable assurance that the population does not contain
-material misstatement.</p>
+estimated to be 1 / 100 = 1 percent and that the 95 percent (one-sided)
+confidence interval ranges from 0 percent to 4.74 percent. The output
+also shows that the <em>p</em>-value is lower than 0.05 implying that
+the hypothesis <span class="math inline">\(H_0\)</span> can be rejected.
+Hence, the auditor is able to conclude that the sample provides
+sufficient evidence to state with reasonable assurance that the
+population does not contain material misstatement.</p>
 </div>
 <div class="section level4">
 <h4 id="bayesian-evaluation">Bayesian evaluation<a class="anchor" aria-label="anchor" href="#bayesian-evaluation"></a>
 </h4>
 <p>Bayesian hypothesis testing uses the Bayes factor, <span class="math inline">\(BF_{10}\)</span> or <span class="math inline">\(BF_{01}\)</span>, to make a statement about the
 evidence provided by the sample in support for one of the two hypotheses
-<span class="math inline">\(H_1\)</span> or <span class="math inline">\(H_0\)</span>. As an example of how to interpret
-the Bayes factor, the value of <span class="math inline">\(BF_{10} =
+<span class="math inline">\(H_1\)</span> or <span class="math inline">\(H_0\)</span> <span class="citation">(Derks, Swart,
+Wagenmakers, et al., 2021)</span>. As an example of how to interpret the
+Bayes factor, the value of <span class="math inline">\(BF_{10} =
 10\)</span> (provided by the <code><a href="../reference/evaluation.html">evaluation()</a></code> function) can be
 interpreted as: <em>the data are 10 times more likely to have occurred
 under the hypothesis <span class="math inline">\(H_1\)</span> than under
@@ -222,7 +225,8 @@ implying the hypotheses <span class="math inline">\(H_1:\theta&lt;0.05\)</span> 
 sample of 100 items, of which 1 was found to contain a misstatement. The
 prior distribution is assumed to be a default <em>beta(1,1)</em> prior.
 The call below evaluates the sample using a Bayesian non-stratified
-evaluation procedure.</p>
+evaluation procedure <span class="citation">(Derks, Swart, Batenburg, et
+al., 2021; Stewart, 2013)</span>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"default"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></code></pre></div>
@@ -238,12 +242,12 @@ evaluation procedure.</p>
 <span><span class="co">##  0.01 </span></span>
 <span><span class="co">## results obtained via method 'binomial' + 'prior'</span></span></code></pre>
 <p>The output shows that the most likely error in the population is
-estimated to be 1 / 100 = 1% and that the 95% (one-sided) credible
-interval ranges from 0% to 4.61%. The small difference between the
-classical and default Bayesian results is due to the prior distribution,
-which must be proper in order to calculate a Bayes factor (classical
-results can be emulated by constructing a prior with
-<code>method = "strict"</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code>
+estimated to be 1 / 100 = 1 percent and that the 95 percent (one-sided)
+credible interval ranges from 0 percent to 4.61 percent. The small
+difference between the classical and default Bayesian results is due to
+the prior distribution, which must be proper in order to calculate a
+Bayes factor (classical results can be emulated by constructing a prior
+with <code>method = "strict"</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code>
 function). The Bayes factor in this case is shown to be <span class="math inline">\(BF_{10}=515\)</span>, meaning that the data from
 the sample are about 515 times more likely to occur under the hypothesis
 of tolerable misstatement than under the hypothesis of material
@@ -257,7 +261,8 @@ tolerable misstatement, the Bayes factor tends to over quantify the
 evidence in favor of this hypothesis. You can mitigate this dependency
 by using a prior distribution that is impartial with respect to the
 hypotheses via <code>method = "impartial"</code> in the
-<code><a href="../reference/auditPrior.html">auditPrior()</a></code> function (Derks et al., 2022).</p>
+<code><a href="../reference/auditPrior.html">auditPrior()</a></code> function <span class="citation">(Derks et al.,
+2022a)</span>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"impartial"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></code></pre></div>
@@ -322,21 +327,20 @@ group auditor.</p>
 <span><span class="co">## 19      19 10000      15      1</span></span>
 <span><span class="co">## 20      20  4000      15      3</span></span></code></pre>
 <p>In general, there are three approaches to evaluating a stratified
-sample: no pooling, complete pooling, and partial pooling (see Derks et
-al., 2022). When using <code><a href="../reference/evaluation.html">evaluation()</a></code>, you must to indicate
-which type of pooling to use via the <code>pooling</code> argument. No
-pooling assumes no similarities between strata, which means that all
-strata are analyzed independently. Complete pooling assumes no
-difference between strata, which means that all data is aggregated and
-analyzed as a whole. Finally, partial pooling assumes differences and
-similarities between strata, which means that information can be shared
-between strata. Partial pooling (i.e., multilevel/hierarchical modeling)
-is a powerful technique that can result in more efficient population and
-stratum estimates but is currently only feasible when performing a
-Bayesian analysis. For this reason, this vignette only describes the
-Bayesian approach to stratified evaluation but going from this approach
-to a classical approach only requires setting
-<code>prior = FALSE</code>.</p>
+sample: no pooling, complete pooling, and partial pooling <span class="citation">(see Derks et al., 2022b)</span>. When using
+<code><a href="../reference/evaluation.html">evaluation()</a></code>, you must to indicate which type of pooling to
+use via the <code>pooling</code> argument. No pooling assumes no
+similarities between strata, which means that all strata are analyzed
+independently. Complete pooling assumes no difference between strata,
+which means that all data is aggregated and analyzed as a whole.
+Finally, partial pooling assumes differences and similarities between
+strata, which means that information can be shared between strata.
+Partial pooling (i.e., multilevel/hierarchical modeling) is a powerful
+technique that can result in more efficient population and stratum
+estimates but is currently only feasible when performing a Bayesian
+analysis. For this reason, this vignette only describes the Bayesian
+approach to stratified evaluation but going from this approach to a
+classical approach only requires setting <code>prior = FALSE</code>.</p>
 <p>The number of units per stratum in the population can be provided
 with <code>N.units</code> to weigh the stratum estimates to determine
 population estimate. This is called poststratification. If
@@ -407,10 +411,10 @@ are poststratified to arrive at the population estimate.</p>
 <span><span class="co">##   19 10000  15  1  1 0.06667 0.01551 0.30232   0.23565</span></span>
 <span><span class="co">##   20  4000  15  3  3 0.20000 0.07266 0.45646   0.25646</span></span></code></pre>
 <p>In this case, the output of the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function shows
-that the estimate of the misstatement in the population is 5.85%, with
-the 95% credible interval ranging from 4.28% to 8.22%. The stratum
-estimates differ substantially from each other but are relatively
-uncertain.</p>
+that the estimate of the misstatement in the population is 5.85 percent,
+with the 95 percent credible interval ranging from 4.28 percent to 8.22
+percent. The stratum estimates differ substantially from each other but
+are relatively uncertain.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result_np</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto;"></p>
@@ -485,12 +489,12 @@ strata are assumed to be the same.</p>
 <span><span class="co">##   19 10000  15  1  1 0.04466 0.03735 0.05335   0.00869 0.02273</span></span>
 <span><span class="co">##   20  4000  15  3  3 0.04466 0.03735 0.05335   0.00869 0.02273</span></span></code></pre>
 <p>For example, the output of the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function shows
-that the estimate of the misstatement in the population is 4.47%, with
-the 95% credible interval ranging from 3.74% to 5.33%. Since the data is
-aggregated, the stratum estimates contain relatively little uncertainty.
-However, the probability of misstatement in stratum 20 (many
-misstatements) under this assumption is the same as that of stratum 15
-(few misstatements).</p>
+that the estimate of the misstatement in the population is 4.47 percent,
+with the 95 percent credible interval ranging from 3.74 percent to 5.33
+percent. Since the data is aggregated, the stratum estimates contain
+relatively little uncertainty. However, the probability of misstatement
+in stratum 20 (many misstatements) under this assumption is the same as
+that of stratum 15 (few misstatements).</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result_cp</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-10-1.png" width="576" style="display: block; margin: auto;"></p>
@@ -536,39 +540,40 @@ population estimate.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
 <span><span class="co">##   Posterior distribution:         Nonparametric </span></span>
-<span><span class="co">##   Most likely error:              0.0408 </span></span>
-<span><span class="co">##   95 percent credible interval:   [0.032695, 0.053314] </span></span>
-<span><span class="co">##   Precision:                      0.012514 </span></span>
-<span><span class="co">##   BF₁₀:                            0.046423 </span></span>
+<span><span class="co">##   Most likely error:              0.0415 </span></span>
+<span><span class="co">##   95 percent credible interval:   [0.032845, 0.053643] </span></span>
+<span><span class="co">##   Precision:                      0.012143 </span></span>
+<span><span class="co">##   BF₁₀:                            0.042979 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Strata (20):</span></span>
 <span><span class="co">##          N   n  x  t    mle      lb      ub precision</span></span>
-<span><span class="co">##   1   5000 300 21 21 0.0605 0.03949 0.08845   0.02795</span></span>
-<span><span class="co">##   2   5000 300 16 16 0.0464 0.03201 0.07198   0.02558</span></span>
-<span><span class="co">##   3   5000 300 15 15 0.0477 0.03024 0.07115   0.02345</span></span>
-<span><span class="co">##   4   5000 300 14 14 0.0420 0.02798 0.06680   0.02480</span></span>
-<span><span class="co">##   5   5000 300 16 16 0.0429 0.03181 0.07412   0.03122</span></span>
-<span><span class="co">##   6   5000 150  5  5 0.0369 0.01762 0.06279   0.02589</span></span>
-<span><span class="co">##   7   5000 150  4  4 0.0376 0.01495 0.05792   0.02032</span></span>
-<span><span class="co">##   8   5000 150  3  3 0.0290 0.01194 0.05522   0.02622</span></span>
-<span><span class="co">##   9   5000 150  4  4 0.0349 0.01477 0.05997   0.02507</span></span>
-<span><span class="co">##   10  5000 150  5  5 0.0393 0.01832 0.06369   0.02439</span></span>
-<span><span class="co">##   11 10000  50  2  2 0.0315 0.01709 0.08053   0.04903</span></span>
-<span><span class="co">##   12 10000  50  3  3 0.0465 0.02167 0.08881   0.04231</span></span>
-<span><span class="co">##   13 10000  50  2  2 0.0372 0.01679 0.08128   0.04408</span></span>
-<span><span class="co">##   14 10000  50  1  1 0.0428 0.01172 0.06965   0.02685</span></span>
-<span><span class="co">##   15 10000  50  0  0 0.0396 0.00557 0.06191   0.02231</span></span>
-<span><span class="co">##   16 10000  15  0  0 0.0401 0.00896 0.07797   0.03787</span></span>
-<span><span class="co">##   17 10000  15  0  0 0.0383 0.00854 0.07956   0.04126</span></span>
-<span><span class="co">##   18 10000  15  0  0 0.0323 0.00811 0.08168   0.04938</span></span>
-<span><span class="co">##   19 10000  15  1  1 0.0453 0.01630 0.09706   0.05176</span></span>
-<span><span class="co">##   20  4000  15  3  3 0.0455 0.02834 0.14270   0.09720</span></span></code></pre>
+<span><span class="co">##   1   5000 300 21 21 0.0623 0.03972 0.08977   0.02747</span></span>
+<span><span class="co">##   2   5000 300 16 16 0.0483 0.03192 0.07442   0.02612</span></span>
+<span><span class="co">##   3   5000 300 15 15 0.0491 0.03064 0.07056   0.02146</span></span>
+<span><span class="co">##   4   5000 300 14 14 0.0401 0.02800 0.06815   0.02805</span></span>
+<span><span class="co">##   5   5000 300 16 16 0.0465 0.03180 0.07372   0.02722</span></span>
+<span><span class="co">##   6   5000 150  5  5 0.0364 0.01827 0.06387   0.02747</span></span>
+<span><span class="co">##   7   5000 150  4  4 0.0333 0.01507 0.05975   0.02645</span></span>
+<span><span class="co">##   8   5000 150  3  3 0.0305 0.01295 0.05501   0.02451</span></span>
+<span><span class="co">##   9   5000 150  4  4 0.0352 0.01547 0.05893   0.02373</span></span>
+<span><span class="co">##   10  5000 150  5  5 0.0395 0.01845 0.06230   0.02280</span></span>
+<span><span class="co">##   11 10000  50  2  2 0.0383 0.01731 0.07876   0.04046</span></span>
+<span><span class="co">##   12 10000  50  3  3 0.0414 0.02225 0.09087   0.04947</span></span>
+<span><span class="co">##   13 10000  50  2  2 0.0372 0.01711 0.07915   0.04195</span></span>
+<span><span class="co">##   14 10000  50  1  1 0.0320 0.01236 0.07022   0.03822</span></span>
+<span><span class="co">##   15 10000  50  0  0 0.0283 0.00615 0.06162   0.03332</span></span>
+<span><span class="co">##   16 10000  15  0  0 0.0393 0.00861 0.07954   0.04024</span></span>
+<span><span class="co">##   17 10000  15  0  0 0.0367 0.01060 0.07973   0.04303</span></span>
+<span><span class="co">##   18 10000  15  0  0 0.0381 0.00835 0.07899   0.04089</span></span>
+<span><span class="co">##   19 10000  15  1  1 0.0476 0.01755 0.09905   0.05145</span></span>
+<span><span class="co">##   20  4000  15  3  3 0.0503 0.02786 0.13897   0.08867</span></span></code></pre>
 <p>In this case, the output shows that the estimate of the misstatement
-in the population is 4.34%, with the 95% credible interval ranging from
-3.45% to 5.33%. Note that this population estimate is substantially less
-uncertain than that of the no pooling approach. Note that, like in the
-no pooling approach, the stratum estimates are different from each other
-but lie closer together and are less uncertain.</p>
+in the population is 4.34 percent, with the 95 percent credible interval
+ranging from 3.45 percent to 5.33 percent. Note that this population
+estimate is substantially less uncertain than that of the no pooling
+approach. Note that, like in the no pooling approach, the stratum
+estimates are different from each other but lie closer together and are
+less uncertain.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result_pp</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-13-1.png" width="576" style="display: block; margin: auto;"></p>
@@ -589,7 +594,7 @@ line items, each with a booked value <code>bookValue</code> and, for
 illustrative purposes, and audited (true) value <code>auditValue</code>.
 Since the focus of this vignette is the evaluation stage in the audit,
 the sample is already indicated in the data set. The performance
-materiality in this example is set to 5%.</p>
+materiality in this example is set to 5 percent.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">allowances</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">allowances</span><span class="op">)</span></span></code></pre></div>
@@ -638,8 +643,8 @@ classical non-stratified evaluation procedure.</p>
 <span><span class="co">##   Precision:                      0.017311 </span></span>
 <span><span class="co">##   p-value:                        1</span></span></code></pre>
 <p>In this case, the output shows that the estimate of the misstatement
-in the population is 15.77%, with the 95% (one-sided) confidence
-interval ranging from 0% to 17.5%.</p>
+in the population is 15.77 percent, with the 95 percent (one-sided)
+confidence interval ranging from 0 percent to 17.5 percent.</p>
 </div>
 <div class="section level4">
 <h4 id="bayesian-evaluation-1">Bayesian evaluation<a class="anchor" aria-label="anchor" href="#bayesian-evaluation-1"></a>
@@ -674,8 +679,8 @@ Bayesian non-stratified evaluation procedure.</p>
 <span><span class="co">##   Precision:                      0.0173 </span></span>
 <span><span class="co">##   BF₁₀:                            0</span></span></code></pre>
 <p>The output shows that the estimate of the misstatement in the
-population is 15.76%, with the 95% (one-sided) credible interval ranging
-from 0% to 17.49%.</p>
+population is 15.76 percent, with the 95 percent (one-sided) credible
+interval ranging from 0 percent to 17.49 percent.</p>
 </div>
 </div>
 <div class="section level3">
@@ -741,10 +746,11 @@ estimates are poststratified to arrive at the population estimate.</p>
 <span><span class="co">##   15  432007.61 150  39  21.80000 0.14533 0.09026 0.22045   0.07511 0.00001</span></span>
 <span><span class="co">##   16  275403.70  52  39   4.18726 0.08052 0.02237 0.20215   0.12163 0.12258</span></span></code></pre>
 <p>In this case, the output shows that the estimate of the misstatement
-in the population is 14.72%, with the 95% confidence interval ranging
-from 12.55% to 18.26%. The precision of the population estimate is
-3.54%. The stratum estimates can be seen in the output of the
-<code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function and are visualized below.</p>
+in the population is 14.72 percent, with the 95 percent confidence
+interval ranging from 12.55 percent to 18.26 percent. The precision of
+the population estimate is 3.54 percent. The stratum estimates can be
+seen in the output of the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function and are
+visualized below.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-20-1.png" width="576" style="display: block; margin: auto;"></p>
@@ -806,11 +812,12 @@ poststratified to arrive at the population estimate.</p>
 <span><span class="co">##   15  432007.61 150  39  21.80000 0.14437 0.09550 0.21899   0.07462</span></span>
 <span><span class="co">##   16  275403.70  52  39   4.18726 0.07900 0.03262 0.19834   0.11933</span></span></code></pre>
 <p>The output shows that the estimate of the misstatement in the
-population is 15.66%, with the 95% credible interval ranging from 14.59%
-to 17%. The precision of the population estimate is 1.34%, which is
-substantially lower than that of the classical approach. The stratum
-estimates can be seen in the output of the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>
-function and are visualized below.</p>
+population is 15.66 percent, with the 95 percent credible interval
+ranging from 14.59 percent to 17 percent. The precision of the
+population estimate is 1.34 percent, which is substantially lower than
+that of the classical approach. The stratum estimates can be seen in the
+output of the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function and are visualized
+below.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-22-1.png" width="576" style="display: block; margin: auto;"></p>
@@ -825,29 +832,39 @@ can be requested via the <code><a href="https://rdrr.io/r/graphics/plot.default.
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<ul>
-<li>Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., and
-Wetzels, R. (2021). Priors in a Bayesian audit: How integration of
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-derks_2021" class="csl-entry">
+Derks, K., Swart, J. de, Batenburg, P. van, Wagenmakers, E.-J., &amp;
+Wetzels, R. (2021). Priors in a bayesian audit: How integration of
 existing information into the prior distribution can improve audit
 transparency and efficiency. <em>International Journal of Auditing</em>,
-25(3), 621-636. <a href="https://doi.org/10.1111/ijau.12240" class="external-link uri">https://doi.org/10.1111/ijau.12240</a>
-</li>
-<li>Derks, K., de Swart, J., Wagenmakers, E.-J., &amp; Wetzels, R.
-(2021). The Bayesian Approach to Audit Evidence: Quantifying Statistical
-Evidence using the Bayes Factor. <em>PsyArXiv</em>. <a href="https://doi.org/10.31234/osf.io/kzqp5" class="external-link uri">https://doi.org/10.31234/osf.io/kzqp5</a>
-</li>
-<li>Derks, K., de Swart, J., Wagenmakers, E.-J., &amp; Wetzels, R.
-(2022). Bayesian Generalized Linear Modeling for Audit Sampling: How to
-Incorporate Audit Information into the Statistical Model.
-<em>PsyArXiv</em>. <a href="https://doi.org/10.31234/osf.io/byj2a" class="external-link uri">https://doi.org/10.31234/osf.io/byj2a</a>
-</li>
-<li>Stewart, T. R. (2012). <em>Technical Notes on the AICPA Audit Guide
-Audit Sampling</em>. American Institute of Certified Public Accountants,
-New York.</li>
-<li>Stewart, T. R. (2013). <em>A Bayesian Audit Assurance Model with
-Application to the Component Materiality problem in Group Audits</em>.
-VU University, Amsterdam.</li>
-</ul>
+<em>25</em>(3), 621–636. <a href="https://doi.org/10.1111/ijau.12240" class="external-link">https://doi.org/10.1111/ijau.12240</a>
+</div>
+<div id="ref-derks_2021b" class="csl-entry">
+Derks, K., Swart, J. de, Wagenmakers, E.-J., &amp; Wetzels, R. (2021).
+The bayesian approach to audit evidence: Quantifying statistical
+evidence using the bayes factor. <em>PsyArXiv</em>. <a href="https://doi.org/10.31234/osf.io/kzqp5" class="external-link">https://doi.org/10.31234/osf.io/kzqp5</a>
+</div>
+<div id="ref-derks_2022" class="csl-entry">
+Derks, K., Swart, J. de, Wagenmakers, E.-J., &amp; Wetzels, R. (2022a).
+<em>An impartial bayesian hypothesis test for audit sampling</em>. <a href="https://doi.org/10.31234/osf.io/8nf3e" class="external-link">https://doi.org/10.31234/osf.io/8nf3e</a>
+</div>
+<div id="ref-derks_2022b" class="csl-entry">
+Derks, K., Swart, J. de, Wagenmakers, E.-J., &amp; Wetzels, R. (2022b).
+Bayesian generalized linear modeling for audit sampling: How to
+incorporate audit information into the statistical model.
+<em>PsyArXiv</em>. <a href="https://doi.org/10.31234/osf.io/byj2a" class="external-link">https://doi.org/10.31234/osf.io/byj2a</a>
+</div>
+<div id="ref-stewart_2012" class="csl-entry">
+Stewart, T. R. (2012). <em>Technical notes on the AICPA audit guide
+audit sampling</em>. American Institute of Certified Public Accountants.
+</div>
+<div id="ref-stewart_2013" class="csl-entry">
+Stewart, T. R. (2013). <em>A bayesian audit assurance model with
+application to the component materiality problem in group audits</em>
+[PhD thesis, VU University]. <a href="https://hdl.handle.net/1871/39813" class="external-link">https://hdl.handle.net/1871/39813</a>
+</div>
+</div>
 </div>
   </div>
 

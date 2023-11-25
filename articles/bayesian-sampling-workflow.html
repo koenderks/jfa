@@ -197,9 +197,9 @@ risk}\]</span></p>
 three-point scale consisting of low, medium, and high. Different audit
 firms handle different standard percentages for these categories. The
 auditor’s firm defines the probabilities of low, medium, and high
-respectively as 50%, 60%, and 100%. Because the auditor assessed
-BuildIt’s internal control systems, they assess the control risk as
-medium (60%).</p>
+respectively as 50 percent, 60 percent, and 100 percent. Because the
+auditor assessed BuildIt’s internal control systems, they assess the
+control risk as medium (60 percent).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Specify the inherent risk (ir) and control risk (cr).</span></span>
 <span><span class="va">ir</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="co"># 100%</span></span>
@@ -374,10 +374,11 @@ with the prior distribution.</p>
 <span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, prior <span class="op">=</span> <span class="va">prior</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p>The auditor can inspect the outcomes of their inference by using the
-<code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function. The resulting upper bound is 2.278%,
-which is lower than the performance materiality of 5%. Therefore, the
-auditor can concluse that there is a 95 percent probability that the
-misstatement in BuildIt’s population is lower than 2.278 percent.</p>
+<code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function. The resulting upper bound is 2.278
+percent, which is lower than the performance materiality of 5 percent.
+Therefore, the auditor can concluse that there is a 95 percent
+probability that the misstatement in BuildIt’s population is lower than
+2.278 percent.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
