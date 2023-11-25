@@ -99,9 +99,12 @@ first in this vignette.
 
 The simplest way to analyze partial misstatements is to aggregate them and use
 the sum of partial misstatements (i.e., the total taint) to project to the
-population. Under the hood, this employs a binomial likelihood fitted with the
-sum of the taints, denoted as $k = \sum_{i=0}^n t_i$. Note that this approach
-does not yet take into account the abundance of zeros in the data.
+population. Under the hood, this approach employs a binomial likelihood to
+estimate the misstatement in the population $\theta$. The method uses the sum of
+the taints, denoted as $k = \sum_{i=0}^n t_i$. as the number of errors and
+therefore does not take into account the abundance of zeros in the data.
+
+$$k \sim \text{Binomial}(n, \theta)$$
 
 While aggregating the taints may not adhere to a strictly 'clean' modeling
 approach, as the binomial likelihood is only defined for binary data
@@ -172,16 +175,23 @@ appropriate name for this model is therefore a hurdle (i.e., two-component) beta
 model. This terminology reflects the idea that the model has to overcome the
 hurdle of zero values which are not inherently part of the beta distribution.
 
-In `jfa`, the hurdle beta model can be fitted using `method = "hurdle.beta"`.
-Note that this requires specifying the number of items (`N.items`) and the
-number of monetary units (`N.units`) in the population.
+$$
+t =
+\begin{cases}
+    0 & \text{with probability}\, p\\
+    \text{Beta}(\alpha, \beta) & \text{with probability}\, 1 - p
+\end{cases}
+$$
+
+In `jfa`, the hurdle beta model can be fitted using `method = "hurdle.beta"`. To
+estimate the parameters in this model using maximum likelihood estimation, we
+use the default option `prior = FALSE`.
 
 ```{r}
 set.seed(1)
 eval_hurdle <- evaluation(
   method = "hurdle.beta", data = sample, materiality = 0.1,
-  values = "bookValue", values.audit = "auditValue",
-  N.items = nrow(population), N.units = sum(population$bookValue)
+  values = "bookValue", values.audit = "auditValue"
 )
 print(eval_hurdle)
 ```
@@ -233,16 +243,17 @@ plot(eval_beta, type = "posterior")
 
 ### Hurdle beta model
 
-It is also possible to fit a Bayesian variant of the hurlde beta model. This can
-be done using `method = "hurdle.beta"` in comination with `prior = TRUE` (or an
-object created by the `auditPrior()` function).
+It is also possible to fit a Bayesian variant of the hurdle beta model. This can
+be done using `method = "hurdle.beta"` in combination with `prior = TRUE` (or an
+object created by the `auditPrior()` function). In this case, the posterior
+distribution cannot be determined analytically and must be determined using MCMC
+sampling, which is why `set.seed(1)` is called.
 
 ```{r}
 set.seed(1)
 eval_hurdle_bayes <- evaluation(
   method = "hurdle.beta", data = sample, materiality = 0.1,
   values = "bookValue", values.audit = "auditValue",
-  N.items = nrow(population), N.units = sum(population$bookValue),
   prior = TRUE
 )
 print(eval_hurdle_bayes)
