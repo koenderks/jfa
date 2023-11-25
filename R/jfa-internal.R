@@ -657,20 +657,9 @@
     model <- stanmodels[["poisson_zero"]]
   }
   out <- list()
-  suppressWarnings({
-    raw <- rstan::optimizing(
-      object = model,
-      data = c(data, use_likelihood = 1),
-      iter = getOption("mc.iterations", 2000),
-      draws = num_draws,
-      seed = sample.int(.Machine$integer.max, 1),
-      refresh = getOption("mc.refresh", 0),
-      verbose = FALSE
-    )
-  })
   if (no_nonzero_taints) {
     message("Warning: No taints observed, cannot calculate upper and / or lower bound(s)")
-    out[["mle"]] <- as.numeric(raw$par["theta"])
+    out[["mle"]] <- 0
     out[["lb"]] <- switch(alternative,
       "less" = 0,
       "two.sided" = NA,
@@ -682,7 +671,33 @@
       "greater" = 1
     )
   } else {
-    out[["mle"]] <- .comp_mode_bayes(analytical = FALSE, samples = raw$theta_tilde[, "theta"])
+    if (likelihood == "inflated.poisson") {
+      p <- length(which(taints > 0)) / n.obs
+      lambda <- sum(diff) / sum(diff > 0)
+      out[["mle"]] <- (p * lambda * N.items) / N.units
+    } else {
+      if (any(taints == 1)) {
+        p <- sum(taints > 0 & taints < 1) / n.obs
+        phi <- sum(taints[taints > 0 & taints < 1]) / sum(taints > 0 & taints < 1)
+        p2 <- sum(taints == 1) / n.obs
+        out[["mle"]] <- p * phi + p2
+      } else {
+        p <- sum(taints > 0) / n.obs
+        phi <- sum(taints) / sum(taints > 0)
+        out[["mle"]] <- p * phi
+      }
+    }
+    suppressWarnings({
+      raw <- rstan::optimizing(
+        object = model,
+        data = c(data, use_likelihood = 1),
+        iter = getOption("mc.iterations", 2000),
+        draws = num_draws,
+        seed = sample.int(.Machine$integer.max, 1),
+        refresh = getOption("mc.refresh", 0),
+        verbose = FALSE
+      )
+    })
     out[["lb"]] <- switch(alternative,
       "less" = 0,
       "two.sided" = stats::quantile(raw$theta_tilde[, "theta"], (1 - conf.level) / 2),
