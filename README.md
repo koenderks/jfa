@@ -36,7 +36,7 @@ install.packages("jfa")
 
 #### Development Version
 
-To install the development version from GitHub, first make sure that you can install the **rstan** package and C++ toolchain by following these [instructions](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started). Once **rstan** is successfully installed, you can install **jfa** from GitHub using the **remotes** package by executing the following code in R:
+To install the development version from GitHub, first make sure that you can install the **rstan** package and C++ toolchain by following these [instructions](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started). Once **rstan** is successfully installed, you can install **jfa** from GitHub using the **remotes** package by executing the following command in R:
 
 ```r
 # install.packages("remotes")
