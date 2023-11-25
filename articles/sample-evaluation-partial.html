@@ -217,7 +217,9 @@ approach makes it easy to use and therefore it is commonly applied in
 practice.</p>
 <p>For the classical binomial likelihood, aggregating the taints can be
 done using <code>method = "binomial"</code> in the
-<code><a href="../reference/evaluation.html">evaluation()</a></code> function.</p>
+<code><a href="../reference/evaluation.html">evaluation()</a></code> function. Using maximum likelihood estimation,
+<span class="math inline">\(\theta = \frac{\sum t}{n} =
+\frac{4.2294}{50} = 0.084588\)</span>.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eval_binom</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  method <span class="op">=</span> <span class="st">"binomial"</span>, data <span class="op">=</span> <span class="va">sample</span>, materiality <span class="op">=</span> <span class="fl">0.1</span>,</span>
@@ -265,7 +267,8 @@ When calculating the Stringer bound, the taints are placed in descending
 order in the formula as a form of conservatism.</p>
 <p>In <code>jfa</code>, the Stringer bound can be applied using
 <code>method = "stringer"</code> in the <code><a href="../reference/evaluation.html">evaluation()</a></code>
-function.</p>
+function. Using maximum likelihood estimation, <span class="math inline">\(\theta = \frac{\sum t}{n} = \frac{4.2294}{50} =
+0.084588\)</span>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eval_stringer</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  method <span class="op">=</span> <span class="st">"stringer"</span>, data <span class="op">=</span> <span class="va">sample</span>, materiality <span class="op">=</span> <span class="fl">0.1</span>,</span>
@@ -305,15 +308,30 @@ not inherently part of the beta distribution.</p>
 <p><span class="math display">\[
 t =
 \begin{cases}
-    0 &amp; \text{with probability}\, p\\
-    \text{Beta}(\alpha, \beta) &amp; \text{with probability}\, 1 - p
+    0 &amp; \text{with probability}\, 1 - p\\
+    \text{Beta}(\phi \nu,\, (1 - \phi) \nu) &amp; \text{with
+probability}\, p
 \end{cases}
 \]</span></p>
-<p>In <code>jfa</code>, the hurdle beta model can be fitted using
-<code>method = "hurdle.beta"</code> in the <code><a href="../reference/evaluation.html">evaluation()</a></code>
-function. To estimate the parameters in this model using maximum
-likelihood estimation, we use the default option
-<code>prior = FALSE</code>.</p>
+<p>Here, <span class="math inline">\(p\)</span> is the probability of a
+non-zero taint occurring, <span class="math inline">\(\phi\)</span> is
+the average non-zero taint and <span class="math inline">\(\nu\)</span>
+is the concentration of the taints (equal to <span class="math inline">\(n + 2\)</span>). The estimate of the average
+misstatement in the population is <span class="math inline">\(\theta = p
+\times \phi\)</span>. In <code>jfa</code>, this hurdle beta model can be
+fitted using <code>method = "hurdle.beta"</code> in the
+<code><a href="../reference/evaluation.html">evaluation()</a></code> function. To estimate the parameters in this
+model using maximum likelihood estimation, we use the default option
+<code>prior = FALSE</code>. Using maximum likelihood estimation, <span class="math inline">\(p = \frac{n_t}{n} = \frac{12}{50} = 0.24\)</span>,
+where <span class="math inline">\(n_t\)</span> is the number of non-zero
+taints. Furthermore, <span class="math inline">\(\phi = \frac{\sum
+t}{n_t} = \frac{4.2294}{12} = 0.35245\)</span>. Hence, the most likely
+misstatement is estimated as <span class="math inline">\(\theta = p
+\times \phi = 0.084588\)</span> (results can differ slightly due to
+optimization). The upper bound cannot be derived analytically and has to
+be determined by drawing samples from the fitted model. Hence, it is
+recommended to call <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> to make the results
+reproducible.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">eval_hurdle</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
@@ -341,28 +359,40 @@ that of the Stringer bound, the hurdle beta model is more efficient.</p>
 <div class="section level2">
 <h2 id="bayesian-approaches">Bayesian approaches<a class="anchor" aria-label="anchor" href="#bayesian-approaches"></a>
 </h2>
-<p>Within the Bayesian framework, we define a prior distribution for the
-parameters in the model. This approach offers a notable advantage for
-models dealing with partial misstatement, as the prior distribution
-exerts a regularizing influence, reducing the amount of data required
-for reliable inferences. Additionally, the prior distribution enables
-auditors to integrate pre-existing information about the misstatement
-into the statistical analysis.</p>
+<p>In the Bayesian framework, the auditor defines a prior distribution
+for the parameters in the model. This approach offers a notable
+advantage for models dealing with partial misstatement, as the prior
+distribution has a regularizing effect, reducing the amount of data
+required for reliable inferences. More specifically, frequentist models
+cannot be optimized when there are no non-zero taints in the sample.
+Additionally, the prior distribution enables auditors to integrate
+pre-existing information about the misstatement into the statistical
+analysis, thereby increasing efficiency when the auditor has
+pre-existing information about the misstatement.</p>
 <div class="section level3">
 <h3 id="beta-distribution">Beta distribution<a class="anchor" aria-label="anchor" href="#beta-distribution"></a>
 </h3>
-<p>The Bayesian equivalent to the binomial likelihood is represented by
+<p>The prior distribution we typically assign in the binomial model is
 the beta distribution. Just as we handle taints in the binomial
-likelihood, they can also be aggregated and examined utilizing a beta
-distribution. Given that we start with the default beta(1, 1) prior
-(<code>prior = TRUE</code>), the posterior distribution is</p>
-<p><span class="math display">\[\text{Beta}(\alpha = 1 + \sum t, \beta =
-1 + n - \sum t).\]</span></p>
-<p>For the binomial likelihood, the Bayesian model can be applied using
+likelihood, they can also be aggregated given the prior distribution.
+The statistical model is:</p>
+<p><span class="math display">\[
+\begin{align}
+  k &amp;\sim \text{Binomial}(n, \theta)\\
+  \theta &amp;\sim \text{Beta}(\alpha, \, \beta)
+\end{align}
+\]</span></p>
+<p>Given the data <span class="math inline">\(n\)</span> and <span class="math inline">\(k = \sum t\)</span>, the posterior distribution
+for the default beta(1, 1) prior distribution
+(<code>prior = TRUE</code>) can be derived analytically and is</p>
+<p><span class="math display">\[\text{Beta}(\alpha = 1 + \sum t, \,
+\beta = 1 + n - \sum t).\]</span></p>
+<p>For the binomial likelihood, this Bayesian model can be applied in
+the <code><a href="../reference/evaluation.html">evaluation()</a></code> function using
 <code>method = "binomial"</code> in comination with
-<code>prior = TRUE</code> in the <code><a href="../reference/evaluation.html">evaluation()</a></code> function. As
-usual, <code>prior</code> can also be an object created by the
-<code><a href="../reference/auditPrior.html">auditPrior()</a></code> function.</p>
+<code>prior = TRUE</code>. However, the input for the <code>prior</code>
+argument can also be an object created by the <code><a href="../reference/auditPrior.html">auditPrior()</a></code>
+function.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eval_beta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  method <span class="op">=</span> <span class="st">"binomial"</span>, data <span class="op">=</span> <span class="va">sample</span>, materiality <span class="op">=</span> <span class="fl">0.1</span>,</span>
@@ -385,7 +415,7 @@ usual, <code>prior</code> can also be an object created by the
 <p>As shown in the output, the most likely misstatement is estimated to
 be 8.46 percent, with a 95 percent upper bound of 17.63 percent. The
 prior and posterior distribution can be visualized via the
-<code>plot(..., type = "posterior")</code> function.</p>
+<code>plot(..., type = "posterior")</code> command.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eval_beta</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation-partial_files/figure-html/unnamed-chunk-9-1.png" width="576" style="display: block; margin: auto;"></p>
@@ -394,12 +424,24 @@ prior and posterior distribution can be visualized via the
 <h3 id="hurdle-beta-model-1">Hurdle beta model<a class="anchor" aria-label="anchor" href="#hurdle-beta-model-1"></a>
 </h3>
 <p>It is also possible to fit a Bayesian variant of the hurdle beta
-model. This can be done using <code>method = "hurdle.beta"</code> in
-combination with <code>prior = TRUE</code> (or an object created by the
+model. This entails applying prior distributions for the parameters
+<span class="math inline">\(p\)</span>, <span class="math inline">\(\phi\)</span>, and <span class="math inline">\(\nu\)</span>. The prior distributions used by
+<strong>jfa</strong> for the Bayesian hurdle beta model are:</p>
+<p><span class="math display">\[
+\begin{align}
+  p &amp;\sim \text{Beta}(\alpha, \, \beta)\\
+  \phi &amp;\sim \text{Beta}(1, \, 1)\\
+  \nu &amp;\sim \text{Pareto}(1, \, 1.5)
+\end{align}
+\]</span></p>
+<p>This Bayesian hurdle beta model can be applied using
+<code>method = "hurdle.beta"</code> in combination with
+<code>prior = TRUE</code> (or an object created by the
 <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function) in the <code><a href="../reference/evaluation.html">evaluation()</a></code>
 function. In this case, the posterior distribution cannot be determined
-analytically and must be determined using MCMC sampling, which is why
-<code>set.seed(1)</code> is called.</p>
+analytically and must be determined using MCMC sampling, which is why it
+is recommended to call <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> before computing the
+results.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">eval_hurdle_bayes</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
