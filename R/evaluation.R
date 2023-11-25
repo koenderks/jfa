@@ -252,7 +252,6 @@
 #' @seealso \code{\link{auditPrior}}
 #'          \code{\link{planning}}
 #'          \code{\link{selection}}
-#'          \code{\link{report}}
 #'
 #' @keywords audit evaluation prior
 #'

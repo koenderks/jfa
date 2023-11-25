@@ -281,10 +281,3 @@ plot(stage4, type = "posterior")
 Since the 95 percentupper credible bound on the misstatement in population is
 lower than the performance materiality, the auditor has obtained sufficient
 evidence to conclude that the population does not contain material misstatement.
-The auditor can create a `html` or `pdf` report of the statistical results using
-the `report()` function, as shown below.
-
-```{r, eval = FALSE}
-report(stage4, file = "report.html")
-```
-

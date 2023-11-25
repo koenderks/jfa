@@ -7,7 +7,7 @@
   \if{html}{\figure{logo.png}{options: alt='logo' width='120' style='float: right' }}
 
   \code{jfa} is an R package that provides statistical methods for auditing. The package 
-  includes functions for planning, performing, evaluating, and reporting an audit sample 
+  includes functions for planning, performing, and evaluating an audit sample 
   compliant with international auditing standards, as well as functions for auditing data, such as 
   testing the distribution of leading digits in the data against Benford's law. In addition to offering 
   classical frequentist methods, \code{jfa} also provides a straightforward implementation of their 

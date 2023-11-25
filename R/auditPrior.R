@@ -216,7 +216,6 @@
 #' @seealso \code{\link{planning}}
 #'          \code{\link{selection}}
 #'          \code{\link{evaluation}}
-#'          \code{\link{report}}
 #'
 #' @references Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J.,
 #'   & Wetzels, R. (2021). Priors in a Bayesian audit: How integration of

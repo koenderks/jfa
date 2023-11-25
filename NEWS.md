@@ -8,6 +8,10 @@
 
 - For all plotting functions, `type = "estimates"` is now the default option.
 
+**Major changes**
+
+- Removed the `report()` function.
+
 **Bug fixes**
 
 - Fixed a bug in `selection()` where the numeric data in the sample was returned as character if the original data was entered as character only (i.e., `selection(data.frame(x = c("hello", "bye", "hi")), size = 2)`).

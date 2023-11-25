@@ -249,7 +249,6 @@ Derks, K., de Swart, J., Wagenmakers, E.-J., & Wetzels, R.
 \code{\link{planning}}
          \code{\link{selection}}
          \code{\link{evaluation}}
-         \code{\link{report}}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}

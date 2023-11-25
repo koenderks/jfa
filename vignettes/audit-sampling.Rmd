@@ -62,8 +62,10 @@ on the package website.
 
 ```{r}
 # Beta prior based on inherent risk (70%) and control risk (50%)
-prior <- auditPrior(method = "arm", likelihood = "binomial",
-                    materiality = 0.05, ir = 0.7, cr = 0.5)
+prior <- auditPrior(
+  method = "arm", likelihood = "binomial",
+  materiality = 0.05, ir = 0.7, cr = 0.5
+)
 summary(prior)
 ```
 

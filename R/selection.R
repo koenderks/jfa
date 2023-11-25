@@ -114,7 +114,6 @@
 #' @seealso \code{\link{auditPrior}}
 #'          \code{\link{planning}}
 #'          \code{\link{evaluation}}
-#'          \code{\link{report}}
 #'
 #' @references Derks, K., de Swart, J., Wagenmakers, E.-J., Wille, J., &
 #'   Wetzels, R. (2021). JASP for audit: Bayesian tools for the auditing

@@ -144,7 +144,6 @@ Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979).
 \code{\link{auditPrior}}
          \code{\link{planning}}
          \code{\link{evaluation}}
-         \code{\link{report}}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}

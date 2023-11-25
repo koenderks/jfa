@@ -36,8 +36,8 @@ home:
 articles:
   - title: "Audit Sampling"
     desc: >
-      These vignettes provide an introduction to planning, selecting, evaluating
-      and reporting an audit sample compliant with international standards on
+      These vignettes provide an introduction to planning, selecting, and
+      evaluating an audit sample compliant with international standards on
       auditing using the **jfa** package.
     contents:
       - audit-sampling
@@ -71,8 +71,8 @@ reference:
       - jfa-package
   - title: "Audit sampling"
     desc: >
-      Functions for planning, selecting, evaluating and reporting audit samples
-      compliant with international standards on auditing.
+      Functions for planning, selecting, and evaluating audit samples compliant
+      with international standards on auditing.
     contents:
       - auditPrior
       - planning
@@ -82,7 +82,7 @@ reference:
   - title: "Data auditing"
     desc: >
       Functions for data auditing, such as testing the distribution of leading
-      digits in a data set against Benford's law.
+      digits in a data set against Benford's law, and assessing repeated values.
     contents:
       - digit_test
       - repeated_test

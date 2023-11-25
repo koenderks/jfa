@@ -160,7 +160,6 @@ Theory and Methods}, 22(8), 2125-2146. \doi{10.1080/03610929308831139}
 \code{\link{auditPrior}}
          \code{\link{selection}}
          \code{\link{evaluation}}
-         \code{\link{report}}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}

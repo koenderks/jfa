@@ -294,7 +294,6 @@ Touw, P., and Hoogduin, L. (2011). \emph{Statistiek voor Audit en
 \code{\link{auditPrior}}
          \code{\link{planning}}
          \code{\link{selection}}
-         \code{\link{report}}
 }
 \author{
 Koen Derks, \email{k.derks@nyenrode.nl}
