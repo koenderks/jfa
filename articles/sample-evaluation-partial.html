@@ -191,10 +191,13 @@ therefore we will discuss it first in this vignette.</p>
 </h3>
 <p>The simplest way to analyze partial misstatements is to aggregate
 them and use the sum of partial misstatements (i.e., the total taint) to
-project to the population. Under the hood, this employs a binomial
-likelihood fitted with the sum of the taints, denoted as <span class="math inline">\(k = \sum_{i=0}^n t_i\)</span>. Note that this
-approach does not yet take into account the abundance of zeros in the
-data.</p>
+project to the population. Under the hood, this approach employs a
+binomial likelihood to estimate the misstatement in the population <span class="math inline">\(\theta\)</span>. The method uses the sum of the
+taints, denoted as <span class="math inline">\(k = \sum_{i=0}^n
+t_i\)</span>. as the number of errors and therefore does not take into
+account the abundance of zeros in the data.</p>
+<p><span class="math display">\[k \sim \text{Binomial}(n,
+\theta)\]</span></p>
 <p>While aggregating the taints may not adhere to a strictly ‘clean’
 modeling approach, as the binomial likelihood is only defined for binary
 data representing complete misstatements, it proves to be effective in
@@ -287,16 +290,22 @@ zeros to inflate. An appropriate name for this model is therefore a
 hurdle (i.e., two-component) beta model. This terminology reflects the
 idea that the model has to overcome the hurdle of zero values which are
 not inherently part of the beta distribution.</p>
+<p><span class="math display">\[
+t =
+\begin{cases}
+    0 &amp; \text{with probability}\, p\\
+    \text{Beta}(\alpha, \beta) &amp; \text{with probability}\, 1 - p
+\end{cases}
+\]</span></p>
 <p>In <code>jfa</code>, the hurdle beta model can be fitted using
-<code>method = "hurdle.beta"</code>. Note that this requires specifying
-the number of items (<code>N.items</code>) and the number of monetary
-units (<code>N.units</code>) in the population.</p>
+<code>method = "hurdle.beta"</code>. To estimate the parameters in this
+model using maximum likelihood estimation, we use the default option
+<code>prior = FALSE</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">eval_hurdle</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  method <span class="op">=</span> <span class="st">"hurdle.beta"</span>, data <span class="op">=</span> <span class="va">sample</span>, materiality <span class="op">=</span> <span class="fl">0.1</span>,</span>
-<span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>,</span>
-<span>  N.items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">population</span><span class="op">)</span>, N.units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">population</span><span class="op">$</span><span class="va">bookValue</span><span class="op">)</span></span>
+<span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">eval_hurdle</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -370,16 +379,18 @@ prior and posterior distribution can be visualized via the
 <div class="section level3">
 <h3 id="hurdle-beta-model-1">Hurdle beta model<a class="anchor" aria-label="anchor" href="#hurdle-beta-model-1"></a>
 </h3>
-<p>It is also possible to fit a Bayesian variant of the hurlde beta
+<p>It is also possible to fit a Bayesian variant of the hurdle beta
 model. This can be done using <code>method = "hurdle.beta"</code> in
-comination with <code>prior = TRUE</code> (or an object created by the
-<code><a href="../reference/auditPrior.html">auditPrior()</a></code> function).</p>
+combination with <code>prior = TRUE</code> (or an object created by the
+<code><a href="../reference/auditPrior.html">auditPrior()</a></code> function). In this case, the posterior
+distribution cannot be determined analytically and must be determined
+using MCMC sampling, which is why <code>set.seed(1)</code> is
+called.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">eval_hurdle_bayes</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  method <span class="op">=</span> <span class="st">"hurdle.beta"</span>, data <span class="op">=</span> <span class="va">sample</span>, materiality <span class="op">=</span> <span class="fl">0.1</span>,</span>
 <span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>,</span>
-<span>  N.items <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">population</span><span class="op">)</span>, N.units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html" class="external-link">sum</a></span><span class="op">(</span><span class="va">population</span><span class="op">$</span><span class="va">bookValue</span><span class="op">)</span>,</span>
 <span>  prior <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">eval_hurdle_bayes</span><span class="op">)</span></span></code></pre></div>
