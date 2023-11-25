@@ -27,20 +27,21 @@ library(jfa)
 
 Welcome to the 'Algorithm auditing' vignette of the **jfa** package. Here you
 can find a detailed explanation of the functions in the package that facilitate
-auditing of algorithms and predictive models. For more detailed explanations of
-each function, read the other vignettes on the
-[package website](https://koenderks.github.io/jfa/articles/index.html).
+auditing of algorithms and predictive models. Specifically, the functions in
+this section implement techniques to calculate and test fairness metrics. The
+**jfa** package enables users to create a prior probability distribution to
+perform Bayesian algorithm auditing using these functions.
 
 ## Functions and intended usage
 
 Below you can find an explanation of the available algorithm auditing functions
 in **jfa**.
 
-- [`model_fairness()`](#assess-algorithmic-fairness-with-model_fairness)
+- [`model_fairness()`](#testing-algorithmic-fairness)
 
-### Assess algorithmic fairness with `model_fairness()`
+### Testing algorithmic fairness
 
-The `model_fairnesS()` function aims to assess fairness in algorithmic
+The `model_fairness()` function aims to assess fairness in algorithmic
 decision-making systems by computing and testing the equality of one of
 several model-agnostic fairness metrics between protected classes based on a
 set of true labels and the predictions of an algorithm. The ratio of these
@@ -54,7 +55,7 @@ parity, specificity parity, and demographic parity [@friedler_2019;
 be used with associated `summary()` and `plot()` methods.
 
 For more information about this function, see the
-[function documentation](https://koenderks.github.io/jfa/reference/auditPrior.html)
+[function documentation](https://koenderks.github.io/jfa/reference/model_fairness.html)
 on the package website.
 
 *Example usage:*

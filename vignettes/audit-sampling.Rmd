@@ -27,18 +27,21 @@ library(jfa)
 
 Welcome to the 'Audit sampling' vignette of the **jfa** package. Here you can
 find a detailed explanation of the functions in the package that facilitate the
-statistical audit sampling workflow. Specifically, these functions implement
-standard audit sampling techniques to calculate sample sizes, select items from
-a population, and evaluate misstatement in a data sample. The **jfa** package
-enables users to create a prior probability distribution to perform Bayesian
-audit sampling using these functions. For more detailed explanations of each
-function, read the other vignettes on the
-[package website](https://koenderks.github.io/jfa/articles/index.html).
+statistical audit sampling workflow. Specifically, the functions in this section
+implement standard audit sampling techniques to calculate sample sizes, select
+items from a population, and evaluate misstatement in a data sample. The **jfa**
+package enables users to create a prior probability distribution to perform
+Bayesian audit sampling using these functions.
 
 ## Functions and intended usage
 
 Below you can find an explanation of the available functions in **jfa**, sorted
 by their occurrence in the standard audit sampling workflow.
+
+- [`auditPrior()`](#creating-a-prior-distribution)
+- [`planning()`](#planning-a-sample)
+- [`selection()`](#selecting-a-sample)
+- [`evaluation()`](#evaluating-a-sample)
 
 ### Creating a prior distribution
 

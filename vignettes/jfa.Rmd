@@ -25,134 +25,41 @@ library(jfa)
 
 Welcome to the 'Get started' vignette of the **jfa** package. **jfa** is an R
 package that provides Bayesian and classical statistical methods for audit
-sampling, data auditing, and algorithm auditing. First, the package provides
-functions for planning, performing, evaluating, and reporting an audit sample
-compliant with international standards on auditing. Second, the package includes
-functions for auditing data, such as testing the distribution of first digits of
-a data set against Benford's law. Finally, the package implements functions to
-perform bias detection and compute fairness metrics for predictive models.
-
-This vignette provides a simple explanation of the functionality in the package.
-For a more detailed explanation of the functions in the package, see the other
-vignettes at the [package website](https://koenderks.github.io/jfa/).
+sampling, data auditing, and algorithm auditing. The package is divided into
+three sections: audit sampling, data auditing, and algorithm auditing. This page
+points you to the vignettes accompanying each of the three sections.
 
 ## Audit sampling
 
-**jfa** provides a user-friendly interface for statistical audit sampling. The
-standard audit sampling workflow is divided into four distinct parts: planning a
-sample, selecting the sample from the population, executing the audit and
-evaluating the misstatement by extrapolating the errors in the sample to the
-population.
+Firstly, the package provides functions for planning, performing, and evaluating
+an audit sample compliant with international standards on auditing [@iaasb_2018;
+@aicpa_2021; @pcaob_2020].
 
-<center>
-
-![Figure 1: The audit sampling workflow](workflow.png)
-
-</center>
-
-See the package vignette [Audit sampling: Get started](https://koenderks.github.io/jfa/articles/audit-sampling.html)
-for more details about **jfa**'s audit sampling functionality.
-
-### Functions and intended usage
-
-To illustrate **jfa**'s' statistical audit sampling functionality, consider the
-`BuildIt` data set that comes with the package. This data consists of 3500 items
-from a financial statement line item, each of which has a booked value and
-(for illustrative purposes) a true (audit) value.
-
-```{r}
-# Load the BuildIt population
-data("BuildIt")
-head(BuildIt)
-```
-
-The first step in the audit sampling workflow is to calculate a minimum required
-sample size given the purpose of the sample. You can use the sample to 1) obtain
-evidence for or against the hypothesis that the misstatement in the population is
-lower than the performance materiality and / or 2) estimate the misstatement in
-the population. The `planning()` function can be used to calculate this minimum
-required sample size.
-
-```{r}
-# Stage 1: Planning
-stage1 <- planning(
-  materiality = 0.03, expected = 0.01,
-  likelihood = "poisson", conf.level = 0.95
-)
-summary(stage1)
-```
-
-The `selection()` function can be used to select the required samples from the
-population.
-
-```{r}
-# Stage 2: Selection
-stage2 <- selection(
-  data = BuildIt, size = stage1,
-  units = "values", values = "bookValue",
-  method = "interval", start = 1
-)
-summary(stage2)
-# Stage 3: Execution
-sample <- stage2[["sample"]]
-```
-
-The `evaluation()` function can be used to evaluate the misstatement in the
-sample.
-
-```{r}
-# Stage 4: Evaluation
-stage4 <- evaluation(
-  materiality = 0.03, method = "stringer.poisson",
-  conf.level = 0.95, data = sample,
-  values = "bookValue", values.audit = "auditValue"
-)
-summary(stage4)
-```
+- [Audit sampling: Get started](https://koenderks.github.io/jfa/articles/audit-sampling.html)
+- [Creating a prior distribution for audit sampling](https://koenderks.github.io/jfa/articles/creating-prior.html)
+- [Planning statistical audit samples](https://koenderks.github.io/jfa/articles/sample-planning.html)
+- [Selecting statistical audit samples](https://koenderks.github.io/jfa/articles/sample-selection.html)
+- [Evaluating statistical audit samples](https://koenderks.github.io/jfa/articles/sample-evaluation.html)
+- [Evaluating audit samples with partial misstatements](https://koenderks.github.io/jfa/articles/sample-evaluation-partial.html)
+- [Walkthrough of the classical audit sampling workflow](https://koenderks.github.io/jfa/articles/sampling-workflow.html)
+- [Walkthrough of the Bayesian audit sampling workflow](https://koenderks.github.io/jfa/articles/bayesian-sampling-workflow.html)
 
 ## Data auditing
 
-See the package vignette [Data auditing: Get started](https://koenderks.github.io/jfa/articles/data-auditing.html)
-for more details about **jfa**'s data auditing functionality.
+Secondly, the package includes functions for auditing data, such as testing the
+distribution of first digits of a data set against Benford's law, or assessing
+the amount of repeated values in a data set.
 
-### Functions and intended usage
-
-The `digit_test()` function can be used to test the distribution of leading or
-last digits in a variable against a pre-specified distribution (e.g., Benford's
-law).
-
-```{r fig.align="center", fig.height=4, fig.width=6}
-# Digit distribution test
-x <- digit_test(sinoForest$value, check = "first", reference = "benford")
-print(x)
-plot(x, type = "estimates")
-```
-
-The `repeated_test()` function can be used to test the numbers in a variable for
-repeated values.
-
-```{r fig.align="center", fig.height=4, fig.width=6}
-# Repeated values test
-x <- repeated_test(sanitizer$value, check = "lasttwo", samples = 5000)
-print(x)
-plot(x)
-```
+- [Data auditing: Get started](https://koenderks.github.io/jfa/articles/data-auditing.html)
+- [Digit analysis](https://koenderks.github.io/jfa/articles/digit-analysis.html)
 
 ## Algorithm auditing
 
-See the package vignette [Algorithm auditing: Get started](https://koenderks.github.io/jfa/articles/algorithm-auditing.html)
-for more details about **jfa**'s algorithm auditing functionality.
+Finally, the package implements functions for auditing algorithms, such as
+computing and testing fairness metrics for predictive models.
 
-### Functions and intended usage
+- [Algorithm auditing: Get started](https://koenderks.github.io/jfa/articles/algorithm-auditing.html)
+- [Algorithmic fairness](https://koenderks.github.io/jfa/articles/model-fairness.html)
 
-The `model_fairness()` function can be used to assess fairness and bias in a
-machine learning algorithm.
-
-```{r fig.align="center", fig.height=4, fig.width=6}
-# Model Fairness
-x <- model_fairness(compas, "Ethnicity", "TwoYrRecidivism", "Predicted",
-  privileged = "Caucasian", positive = "yes"
-)
-print(x)
-plot(x, type = "estimates")
-```
+## References
+<div id="refs"></div>
