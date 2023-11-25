@@ -6,6 +6,8 @@ output:
   rmarkdown::html_vignette:
     toc: true
     toc_depth: 3
+bibliography: references.bib
+csl: apa.csl
 vignette: >
   %\VignetteIndexEntry{Evaluating audit samples with partial misstatements}
   %\VignetteEngine{knitr::rmarkdown}
@@ -104,7 +106,7 @@ does not yet take into account the abundance of zeros in the data.
 While aggregating the taints may not adhere to a strictly 'clean' modeling
 approach, as the binomial likelihood is only defined for binary data
 representing complete misstatements, it proves to be effective in estimating the
-misstatement (Broeze, 2006, Chapter 4.3). Despite its somewhat unconventional
+misstatement [@broeze_2006, Chapter 4.4]. Despite its somewhat unconventional
 nature, the analytical feasibility of this approach makes it easy to use and
 therefore commonly applied.
 
@@ -128,8 +130,8 @@ take into account the information in the distribution of the taints.
 ### Stringer bound
 
 The Stringer bound is a frequentist method to improve efficiency by taking into
-account the differences between the magnitude of the taints (Stringer, 1963;
-Bickel, 1992). The bound is a variant of the binomial distribution, but
+account the differences between the magnitude of the taints [@stringer_1963;
+@bickel_1992]. The bound is a variant of the binomial distribution, but
 considers the non-binary nature of the taints. The Stringer upper bound on the
 population misstatement is given by
 
@@ -137,8 +139,8 @@ $$p(0, 1 - \alpha) + \sum_{i=1}^k [p(i, 1 - \alpha) - p(i - 1, 1 - \alpha)] \tim
 
 In the formula above, $p(i; 1 - \alpha)$ is the $1 - \alpha$ upper limit for at
 most $i$ misstatements in $n$ items according to the binomial distribution
-(Clopper and Pearson, 1934). This is equal to the $1 - \alpha$ percentile of a
-beta($1 + i$, $n - i$) distribution (Pearson, 1934). When calculating the
+[@clopper_1934]. This is equal to the $1 - \alpha$ percentile of a
+beta($1 + i$, $n - i$) distribution [@pearson_1948]. When calculating the
 Stringer bound, the taints are placed in descending order in the formula as a
 form of conservatism.
 
@@ -255,9 +257,4 @@ plot(eval_hurdle_bayes, type = "posterior")
 ```
 
 ## References
-
-- Bickel, P. J. (1992). Inference and Auditing: The Stringer Bound. *International Statistical Review / Revue Internationale de Statistique*, 60(2), 197-209. - [View online](https://www.jstor.org/stable/1403650)
-- Broeze, G. B. (2006). *Validation of Risk Assessment in Auditing*. PhD-Thesis, Vrije Universiteit Amsterdam. Limperg Instituut. - [View online](https://research.vu.nl/ws/portalfiles/portal/42174612/complete+dissertation.pdf)
-- Clopper, C. J., & Pearson, E. S. (1934). The use of confidence or fiducial limits illustrated in the case of the binomial. *Biometrika*, 26(4), 404-413. - [View online](https://doi.org/10.2307/2331986)
-- Pearson, K. (1934). *Tables of the Incomplete Beta Function*, London: Biometrika Office.
-- Stringer, K. W. (1963). Practical aspects of statistical sampling in auditing. *Proceedings of Business and Economic Statistics Section*, American Statistical Association.
+<div id="refs"></div>

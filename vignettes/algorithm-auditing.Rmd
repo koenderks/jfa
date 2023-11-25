@@ -6,6 +6,8 @@ output:
   rmarkdown::html_vignette:
     toc: true
     toc_depth: 3
+bibliography: references.bib
+csl: apa.csl
 vignette: >
   %\VignetteIndexEntry{Algorithm auditing: Get started}
   %\VignetteEngine{knitr::rmarkdown}
@@ -13,6 +15,8 @@ vignette: >
   %\VignetteKeywords{algorithm, audit, bias, fairness, model, performance}
   %\VignettePackage{jfa}
   %\VignetteEncoding{UTF-8}
+nocite: |
+  @kozodoi_2021
 ---
 
 ```{r, include = FALSE}
@@ -43,13 +47,13 @@ decision-making systems by computing and testing the equality of one of
 several model-agnostic fairness metrics between protected classes based on a
 set of true labels and the predictions of an algorithm. The ratio of these
 metrics between an unpriveleged protected class and a priveleged protected
-class is called parity, and quantifies  relative fairness in the algorithms
+class is called parity, and quantifies relative fairness in the algorithms
 predictions. Available parity metrics include predictive rate parity,
 proportional parity, accuracy parity, false negative rate parity, false
 positive rate parity, true positive rate parity, negative predicted value
-parity, specificity parity, and demographic parity. The function returns an
-object of class `jfaFairness` that can be used with associated
-`summary()` and `plot()` methods.
+parity, specificity parity, and demographic parity [@friedler_2019;
+@pessach_2022]. The function returns an object of class `jfaFairness` that can
+be used with associated `summary()` and `plot()` methods.
 
 *Full function with default arguments:*
 
@@ -95,7 +99,4 @@ benchmarks:
 - [fairness](https://cran.r-project.org/package=fairness) (R package version 1.2.2)
 
 ## References
-
-- Büyük, S. (2023). *Automatic Fairness Criteria and Fair Model Selection for Critical ML Tasks*, Master Thesis, Utrecht University. - [View Online](https://studenttheses.uu.nl/handle/20.500.12932/44225)
-- Friedler, S. A., Scheidegger, C., Venkatasubramanian, S., Choudhary, S., Hamilton, E. P., & Roth, D. (2019). A comparative study of fairness-enhancing interventions in machine learning. In *Proceedings of the Conference on Fairness, Accountability, and Transparency*. - [View Online](https://doi.org/10.1145/3287560.3287589)
-- Pessach, D. & Shmueli, E. (2022). A review on fairness in machine learning. *ACM Computing Surveys*, 55(3), 1-44. - [View Online](https://doi.org/10.1145/3494672)
+<div id="refs"></div>
