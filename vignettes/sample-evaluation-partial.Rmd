@@ -197,14 +197,13 @@ t =
 $$
 
 Here, $p$ is the probability of a non-zero taint occurring, $\phi$ is the
-average non-zero taint and $\nu$ is the concentration of the taints (equal to
-$n + 2$). The estimate of the average misstatement in the population is
-$\theta = p \times \phi$. In `jfa`, this hurdle beta model can be fitted using
-`method = "hurdle.beta"` in the `evaluation()` function. To estimate the
-parameters in this model using maximum likelihood estimation, we use the default
-option `prior = FALSE`. Using maximum likelihood estimation,
-$p = \frac{n_t}{n} = \frac{12}{50} = 0.24$, where $n_t$ is the number of
-non-zero taints. Furthermore,
+average non-zero taint and $\nu$ is the concentration of the taints. The average 
+misstatement in the population is $\theta = p \times \phi$. In `jfa`, this
+hurdle beta model can be fitted using `method = "hurdle.beta"` in the
+`evaluation()` function. To estimate the parameters in this model using the
+maximum likelihood, we use the default option `prior = FALSE`. Using maximum 
+likelihood estimation, $p = \frac{n_t}{n} = \frac{12}{50} = 0.24$, where $n_t$
+is the number of non-zero taints. Furthermore,
 $\phi = \frac{\sum t}{n_t} = \frac{4.2294}{12} = 0.35245$. Hence, the most
 likely misstatement is estimated as $\theta = p \times \phi = 0.084588$ (results
 can differ slightly due to optimization). The upper bound cannot be derived
