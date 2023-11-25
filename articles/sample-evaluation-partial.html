@@ -122,13 +122,17 @@ materiality.</p>
 </h2>
 <p>Partial misstatements occur when there is only a partial discrepancy
 between the true value of an item in the sample and its recorded value.
-From a data perspective, this implies that misstatements are often
-non-binary. However, there is usually a large number of correct items in
-the population.</p>
-<p>As an example, we examine a realistic sample from a financial audit
+From a data perspective, this implies that the misstatements in the
+sample are not binary (i.e., 0 or 1) but often lie between 0 and 1. In
+practice, this means that the usual methods for evaluating audit samples
+do not suffice.</p>
+<p>To illustrate how auditors can adequately deal with this type of
+misstatements, we examine a realistic sample from a financial audit
 using the <code>allowances</code> data set included in the package. For
-clarity, we perform some data pre-processing to arrive at an example
-population.</p>
+clarity, we perform some data pre-processing to arrive at the population
+for our example. In this case, the performance materiality (i.e., the
+maximum tolerable misstatement) for the population is set to ten
+percent.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"allowances"</span><span class="op">)</span></span>
 <span><span class="va">population</span> <span class="op">&lt;-</span> <span class="va">allowances</span></span>
@@ -145,10 +149,9 @@ population.</p>
 <span><span class="co">## 13   13      1450       1450</span></span></code></pre>
 <p>To decide whether the misstatement in the population is lower than
 the performance materiality of ten percent, a sample of 50 items is
-selected from the population, each consisting of a book value and a true
-value. In this case, the sample is selected using a fixed interval
-sampling method in which the items in the population are randomized
-before selection.</p>
+selected from the population of 1177 items. In this case, the sample is
+selected using a fixed interval sampling method in which the items in
+the population are randomized before selection.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span></span>
@@ -156,16 +159,21 @@ before selection.</p>
 <span>  method <span class="op">=</span> <span class="st">"interval"</span>, units <span class="op">=</span> <span class="st">"values"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>,</span>
 <span>  randomize <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span><span class="op">$</span><span class="va">sample</span></span></code></pre></div>
-<p>When evaluating partial misstatements, auditors often calculate the
-‘taint’ <span class="math inline">\(t\)</span> of each item, which is
-defined as the proportional misstatement in the item: <span class="math inline">\(t = \frac{\text{Book value} \, - \, \text{Audit
-value}}{\text{Book value}}\)</span>. For instance, an item that is
-booked for $1,000 but has an audit value of $500, consequently has a
-taint of <span class="math inline">\(t = 0.5\)</span>. On the other
-hand, if an item does not contain misstatement, its taint is <span class="math inline">\(t = 0\)</span>. As is often the case in practice,
-this audit sample contains many taints that are zero, and only some
-taints that are greater than zero. The table below shows this
-distribution of taints.</p>
+<p>After inspecting the items in the sample, each item is annotated with
+its recorded (i.e., book) value and its true (i.e., audit) value. When
+evaluating partial misstatements, auditors often calculate the ‘taint’
+<span class="math inline">\(t\)</span> of each item, which is defined as
+the proportional misstatement in the item:</p>
+<p><span class="math display">\[t = \frac{\text{Book value} \, -  \,
+\text{Audit value}}{\text{Book value}}.\]</span></p>
+<p>For instance, an item that is booked for $1,000 but has an audit
+value of $500 has a taint of <span class="math inline">\(t =
+0.5\)</span>. On the other hand, if an item does not contain any
+misstatement, it has a taint of <span class="math inline">\(t =
+0\)</span>.</p>
+<p>As is often the case in practice, this audit sample contains many
+taints that are zero, and only some taints that are greater than zero.
+The table below shows this distribution of taints.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">sample</span><span class="op">[[</span><span class="st">"difference"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sample</span><span class="op">[[</span><span class="st">"bookValue"</span><span class="op">]</span><span class="op">]</span> <span class="op">-</span> <span class="va">sample</span><span class="op">[[</span><span class="st">"auditValue"</span><span class="op">]</span><span class="op">]</span></span>
 <span><span class="va">sample</span><span class="op">[[</span><span class="st">"taint"</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">sample</span><span class="op">[[</span><span class="st">"difference"</span><span class="op">]</span><span class="op">]</span> <span class="op">/</span> <span class="va">sample</span><span class="op">[[</span><span class="st">"bookValue"</span><span class="op">]</span><span class="op">]</span></span>
@@ -173,40 +181,43 @@ distribution of taints.</p>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##     0 0.045   0.1  0.25 0.333  0.35   0.5 0.531  0.67  0.75 </span></span>
 <span><span class="co">##    38     1     2     2     1     2     1     1     1     1</span></span></code></pre>
-<p>Normally, techniques for assessing audit samples overlook the
-prevalence of zeros in the data. Yet, considering the abundance of zeros
-in the data during the modeling of misstatements in the population can
-enhance efficiency. In the following sections, we demonstrate two
-approaches that can be used to deal with partial misstatements.</p>
+<p>Typically, techniques for evaluating audit samples overlook the
+prevalence of many zeros in the data. Yet, considering the abundance of
+zeros while modeling the misstatement in the population can enhance the
+auditor’s efficiency. In the following sections, we demonstrate two
+approaches that can be used to deal with partial misstatements and show
+how they improve the auditor’s efficiency.</p>
 </div>
 <div class="section level2">
 <h2 id="classical-approaches">Classical approaches<a class="anchor" aria-label="anchor" href="#classical-approaches"></a>
 </h2>
-<p>Traditional (i.e., frequentist) methods depend on the data for
-estimating parameters in a statistical model through maximum likelihood
+<p>Classical (i.e., frequentist) methods solely look to the data for
+estimating the parameters in a statistical model via maximum likelihood
 estimation. This methodology is widely adopted in auditing, and
 therefore we will discuss it first in this vignette.</p>
 <div class="section level3">
 <h3 id="binomial-likelihood">Binomial likelihood<a class="anchor" aria-label="anchor" href="#binomial-likelihood"></a>
 </h3>
 <p>The simplest way to analyze partial misstatements is to aggregate
-them and use the sum of partial misstatements (i.e., the total taint) to
-project to the population. Under the hood, this approach employs a
-binomial likelihood to estimate the misstatement in the population <span class="math inline">\(\theta\)</span>. The method uses the sum of the
-taints, denoted as <span class="math inline">\(k = \sum_{i=0}^n
-t_i\)</span>. as the number of errors and therefore does not take into
-account the abundance of zeros in the data.</p>
+them and use the sum of proportional misstatements (i.e., the total
+taint) to project to the population. Under the hood, this approach
+employs a binomial likelihood to estimate the misstatement in the
+population <span class="math inline">\(\theta\)</span>. The method uses
+the sum of the taints, denoted as <span class="math inline">\(k =
+\sum_{i=0}^n t_i\)</span>, as the number of errors and therefore does
+not take into account the fact that the data contain many zeros.</p>
 <p><span class="math display">\[k \sim \text{Binomial}(n,
 \theta)\]</span></p>
-<p>While aggregating the taints may not adhere to a strictly ‘clean’
-modeling approach, as the binomial likelihood is only defined for binary
-data representing complete misstatements, it proves to be effective in
-estimating the misstatement <span class="citation">(Broeze, 2006,
-Chapter 4.4)</span>. Despite its somewhat unconventional nature, the
-analytical feasibility of this approach makes it easy to use and
-therefore commonly applied.</p>
+<p>While aggregating the taints in this manner may not adhere to a
+strictly ‘clean’ modeling approach, as the binomial likelihood is only
+defined for binary data representing complete misstatements, it proves
+to be effective in estimating the misstatement <span class="citation">(Broeze, 2006, Chapter 4.3)</span>. Despite its
+somewhat unconventional nature, the analytical feasibility of this
+approach makes it easy to use and therefore it is commonly applied in
+practice.</p>
 <p>For the classical binomial likelihood, aggregating the taints can be
-done using <code>method = "binomial"</code>.</p>
+done using <code>method = "binomial"</code> in the
+<code><a href="../reference/evaluation.html">evaluation()</a></code> function.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eval_binom</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  method <span class="op">=</span> <span class="st">"binomial"</span>, data <span class="op">=</span> <span class="va">sample</span>, materiality <span class="op">=</span> <span class="fl">0.1</span>,</span>
@@ -253,7 +264,8 @@ i\)</span>) distribution <span class="citation">(Pearson, 1948)</span>.
 When calculating the Stringer bound, the taints are placed in descending
 order in the formula as a form of conservatism.</p>
 <p>In <code>jfa</code>, the Stringer bound can be applied using
-<code>method = "stringer"</code>.</p>
+<code>method = "stringer"</code> in the <code><a href="../reference/evaluation.html">evaluation()</a></code>
+function.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eval_stringer</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  method <span class="op">=</span> <span class="st">"stringer"</span>, data <span class="op">=</span> <span class="va">sample</span>, materiality <span class="op">=</span> <span class="fl">0.1</span>,</span>
@@ -298,8 +310,9 @@ t =
 \end{cases}
 \]</span></p>
 <p>In <code>jfa</code>, the hurdle beta model can be fitted using
-<code>method = "hurdle.beta"</code>. To estimate the parameters in this
-model using maximum likelihood estimation, we use the default option
+<code>method = "hurdle.beta"</code> in the <code><a href="../reference/evaluation.html">evaluation()</a></code>
+function. To estimate the parameters in this model using maximum
+likelihood estimation, we use the default option
 <code>prior = FALSE</code>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
@@ -347,8 +360,9 @@ distribution. Given that we start with the default beta(1, 1) prior
 1 + n - \sum t).\]</span></p>
 <p>For the binomial likelihood, the Bayesian model can be applied using
 <code>method = "binomial"</code> in comination with
-<code>prior = TRUE</code>. As usual, <code>prior</code> can also be an
-object created by the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function.</p>
+<code>prior = TRUE</code> in the <code><a href="../reference/evaluation.html">evaluation()</a></code> function. As
+usual, <code>prior</code> can also be an object created by the
+<code><a href="../reference/auditPrior.html">auditPrior()</a></code> function.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">eval_beta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  method <span class="op">=</span> <span class="st">"binomial"</span>, data <span class="op">=</span> <span class="va">sample</span>, materiality <span class="op">=</span> <span class="fl">0.1</span>,</span>
@@ -382,10 +396,10 @@ prior and posterior distribution can be visualized via the
 <p>It is also possible to fit a Bayesian variant of the hurdle beta
 model. This can be done using <code>method = "hurdle.beta"</code> in
 combination with <code>prior = TRUE</code> (or an object created by the
-<code><a href="../reference/auditPrior.html">auditPrior()</a></code> function). In this case, the posterior
-distribution cannot be determined analytically and must be determined
-using MCMC sampling, which is why <code>set.seed(1)</code> is
-called.</p>
+<code><a href="../reference/auditPrior.html">auditPrior()</a></code> function) in the <code><a href="../reference/evaluation.html">evaluation()</a></code>
+function. In this case, the posterior distribution cannot be determined
+analytically and must be determined using MCMC sampling, which is why
+<code>set.seed(1)</code> is called.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">eval_hurdle_bayes</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
