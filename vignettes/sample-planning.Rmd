@@ -118,7 +118,7 @@ Performing Bayesian planning requires an input for the `prior` argument in the
 `planning()` function. Setting `prior = TRUE` performs Bayesian planning using a
 [default prior](https://koenderks.github.io/jfa/articles/creating-prior.html#default-priors-method-default)
 conjugate to the specified `likelihood`. For example, the command below uses a
-default gamma(1, 1) prior distribution to plan the sample.
+default gamma($\alpha = 1$, $\beta = 1$) prior distribution to plan the sample.
 
 ```{r}
 plan <- planning(materiality = 0.05, expected = 0, conf.level = 0.95, prior = TRUE)
@@ -137,10 +137,23 @@ plot(plan)
 The input for the `prior` argument can also be an object created by the
 `auditPrior` function. If `planning()` receives a prior for which there is a
 conjugate likelihood available, it will inherit the likelihood from the prior.
-For example, the command below uses a custom beta(1, 10) prior distribution to
-plan the sample using the binomial likelihood.
+For example, the command below uses a custom beta($\alpha = 1$, $\beta = 10$)
+prior distribution to plan the sample using the binomial likelihood.
 
 ```{r}
 prior <- auditPrior(method = "param", likelihood = "binomial", alpha = 1, beta = 10)
 planning(materiality = 0.05, expected = 0, conf.level = 0.95, prior = prior)
+```
+
+However, when there is no conjugate likelihood available, specifying the
+`likelihood` argument in `planning()` is required. For instance, the command
+below uses a Normal($\mu = 0$, $\sigma = 0.1$) prior in combination with the
+binomial likelihood to plan the sample size.
+
+```{r}
+prior <- auditPrior(method = "param", likelihood = "normal", alpha = 0, beta = 0.1)
+planning(
+  materiality = 0.05, expected = 0, conf.level = 0.95,
+  likelihood = "binomial", prior = prior
+)
 ```

@@ -113,8 +113,7 @@ using a Bayesian non-stratified evaluation procedure [@stewart_2013;
 @derks_2021].
 
 ```{r}
-prior <- auditPrior(materiality = 0.05, method = "default", likelihood = "binomial")
-evaluation(materiality = 0.05, x = 1, n = 100, prior = prior)
+evaluation(materiality = 0.05, x = 1, n = 100, method = "binomial", prior = TRUE)
 ```
 
 The output shows that the most likely error in the population is estimated to be

@@ -23,17 +23,17 @@ library(jfa)
 
 ## Introduction
 
-Welcome to the 'Get started' vignette of the **jfa** package. **jfa** is an R
+Welcome to the 'Get started' page of the **jfa** package. **jfa** is an R
 package that provides Bayesian and classical statistical methods for audit
-sampling, data auditing, and algorithm auditing. The package is divided into
-three sections: audit sampling, data auditing, and algorithm auditing. This page
-points you to the vignettes accompanying each of the three sections.
+sampling, data auditing, and algorithm auditing. This page points you to the
+vignettes accompanying each of these three subjects.
 
 ## Audit sampling
 
-Firstly, the package provides functions for planning, performing, and evaluating
-an audit sample compliant with international standards on auditing [@iaasb_2018;
-@aicpa_2021; @pcaob_2020].
+Firstly, **jfa** facilitates statistical audit sampling. That is, the package
+provides functions for planning, performing, and evaluating an audit sample
+compliant with international standards on auditing [@iaasb_2018; @aicpa_2021;
+@pcaob_2020].
 
 - [Audit sampling: Get started](https://koenderks.github.io/jfa/articles/audit-sampling.html)
 - [Creating a prior distribution for audit sampling](https://koenderks.github.io/jfa/articles/creating-prior.html)
@@ -46,17 +46,19 @@ an audit sample compliant with international standards on auditing [@iaasb_2018;
 
 ## Data auditing
 
-Secondly, the package includes functions for auditing data, such as testing the
-distribution of first digits of a data set against Benford's law, or assessing
-the amount of repeated values in a data set.
+Secondly, **jfa** facilitates statistical data auditing. That is, the package
+includes functions for auditing data, such as testing the distribution of first
+digits of a data set against Benford's law, or assessing whether a data set
+includes an unusual amount of repeated values.
 
 - [Data auditing: Get started](https://koenderks.github.io/jfa/articles/data-auditing.html)
 - [Digit analysis](https://koenderks.github.io/jfa/articles/digit-analysis.html)
 
 ## Algorithm auditing
 
-Finally, the package implements functions for auditing algorithms, such as
-computing and testing fairness metrics for predictive models.
+Finally, **jfa** facilitates statistical algorithm auditing. That is, the
+package implements functions for auditing algorithms, such as computing fairness
+metrics and testing the equality of parity metrics across protected groups.
 
 - [Algorithm auditing: Get started](https://koenderks.github.io/jfa/articles/algorithm-auditing.html)
 - [Algorithmic fairness](https://koenderks.github.io/jfa/articles/model-fairness.html)
