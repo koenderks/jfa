@@ -191,26 +191,26 @@ distribution.</li>
 <li>
 <code>param</code>: Manually set the prior parameters.</li>
 <li>
-<code>strict</code>: Improper prior distribution (matches classical
-results).</li>
+<code>strict</code>: Improper prior distribution <span class="citation">(Derks et al., 2022; Weiler, 1965)</span>.</li>
 <li>
-<code>impartial</code>: Impartial prior distribution (Derks et al.,
-2022).</li>
+<code>impartial</code>: Impartial prior distribution <span class="citation">(Derks et al., 2022)</span>.</li>
 <li>
 <code>hyp</code>: Manually provide the prior probability for
-tolerable misstatement (Derks et al., 2021).</li>
+tolerable misstatement <span class="citation">(Derks et al.,
+2021)</span>.</li>
 <li>
 <code>arm</code>: Manually provide the inherent risk and internal
-control risk (Derks et al., 2021).</li>
+control risk <span class="citation">(Derks et al., 2021)</span>.</li>
 <li>
 <code>bram</code>: Manually provide the upper bound of the prior
-distribution (Touw &amp; Hoogduin, 2011).</li>
+distribution <span class="citation">(Touw &amp; Hoogduin,
+2011)</span>.</li>
 <li>
 <code>sample</code>: Manually provide an equivalent prior sample
-(Derks et al., 2021).</li>
+<span class="citation">(Derks et al., 2021)</span>.</li>
 <li>
 <code>factor</code>: Manually provide and weigh an equivalent prior
-sample (Derks et al., 2021).</li>
+sample <span class="citation">(Derks et al., 2021)</span>.</li>
 <li>
 <code>nonparam</code>: Nonparametric prior based on samples.</li>
 </ul>
@@ -219,13 +219,14 @@ argument:</em></p>
 <ul>
 <li>
 <code>poisson</code>: Poisson likelihood and conjugate gamma prior
-distribution (Stewart, 2013).</li>
+distribution <span class="citation">(Stewart, 2013)</span>.</li>
 <li>
 <code>binomial</code>: Binomial likelihood and conjugate beta prior
-distribution (Steele, 1992).</li>
+distribution <span class="citation">(Steele, 1992)</span>.</li>
 <li>
 <code>hypergeometric</code>: Hypergeometric likelihood and conjugate
-beta-binomial prior distribution (Dyer &amp; Pierce, 1991).</li>
+beta-binomial prior distribution <span class="citation">(Dyer &amp;
+Pierce, 1993)</span>.</li>
 <li>
 <code>normal</code>: Normal prior distribution.</li>
 <li>
@@ -309,12 +310,11 @@ function.</p>
 argument:</em></p>
 <ul>
 <li>
-<code>poisson</code>: Poisson likelihood (Stewart, 2012).</li>
+<code>poisson</code>: Poisson likelihood <span class="citation">(Stewart, 2012)</span>.</li>
 <li>
-<code>binomial</code>: Binomial likelihood (Stewart, 2012).</li>
+<code>binomial</code>: Binomial likelihood <span class="citation">(Stewart, 2012)</span>.</li>
 <li>
-<code>hypergeometric</code>: Hypergeometric likelihood (Stewart,
-2012).</li>
+<code>hypergeometric</code>: Hypergeometric likelihood <span class="citation">(Stewart, 2012; Talens, 2005)</span>.</li>
 </ul>
 <p><em>Example usage:</em></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -381,11 +381,9 @@ function.</p>
 <p><em>Supported options for the <code>units</code> argument:</em></p>
 <ul>
 <li>
-<code>items</code>: Sampling units are items (rows) (Leslie,
-Teitlebaum, &amp; Anderson, 1979).</li>
+<code>items</code>: Sampling units are items (rows) <span class="citation">(Leslie et al., 1979)</span>.</li>
 <li>
-<code>values</code>: Sampling units are monetary units (Leslie,
-Teitlebaum, &amp; Anderson, 1979).</li>
+<code>values</code>: Sampling units are monetary units <span class="citation">(Leslie et al., 1979)</span>.</li>
 </ul>
 <p><em>Supported options for the <code>method</code> argument:</em></p>
 <ul>
@@ -396,8 +394,7 @@ Teitlebaum, &amp; Anderson, 1979).</li>
 <li>
 <code>random</code>: Select random units without an interval.</li>
 <li>
-<code>sieve</code>: Select units using modified sieve sampling
-(Hoogduin, Hall, &amp; Tsay, 2010).</li>
+<code>sieve</code>: Select units using modified sieve sampling <span class="citation">(Hoogduin et al., 2010)</span>.</li>
 </ul>
 <p><em>Example usage:</em></p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
@@ -473,54 +470,45 @@ function.</p>
 <p><em>Supported options for the <code>method</code> argument:</em></p>
 <ul>
 <li>
-<code>poisson</code>: Poisson likelihood (Stewart, 2012).</li>
+<code>poisson</code>: Poisson likelihood <span class="citation">(Stewart, 2012)</span>.</li>
 <li>
-<code>binomial</code>: Binomial likelihood (Stewart, 2012).</li>
+<code>binomial</code>: Binomial likelihood <span class="citation">(Stewart, 2012)</span>.</li>
 <li>
-<code>hypergeometric</code>: Hypergeometric likelihood (Stewart,
-2012).</li>
+<code>hypergeometric</code>: Hypergeometric likelihood <span class="citation">(Stewart, 2012)</span>.</li>
 <li>
-<code>stringer.poisson</code>: Stringer bound using Poisson
-distribution (Touw &amp; Hoogduin, 2011).</li>
+<code>stringer.poisson</code>: Stringer bound using the Poisson
+distribution <span class="citation">(Touw &amp; Hoogduin,
+2011)</span>.</li>
 <li>
-<code>stringer.binomial</code>: Stringer bound using binomial
-distribution (Bickel, 1992).</li>
+<code>stringer.binomial</code>: Stringer bound using the binomial
+distribution <span class="citation">(Bickel, 1992)</span>.</li>
 <li>
-<code>stringer.hypergeometric</code>: Stringer bound using
+<code>stringer.hypergeometric</code>: Stringer bound using the
 hypergeometric distribution.</li>
 <li>
 <code>stringer.meikle</code>: Stringer bound with Meikle’s
-correction (Meikle, 1972).</li>
+correction <span class="citation">(Meikle, 1972)</span>.</li>
 <li>
-<code>stringer.lta</code>: Stringer bound with LTA correction
-(Leslie, Teitlebaum, &amp; Anderson, 1979).</li>
+<code>stringer.lta</code>: Stringer bound with LTA correction <span class="citation">(Leslie et al., 1979)</span>.</li>
 <li>
-<code>stringer.pvz</code>: Modified Stringer bound (Pap &amp; van
-Zuijlen, 1996).</li>
+<code>stringer.pvz</code>: Modified Stringer bound <span class="citation">(Pap &amp; Zuijlen, 1996)</span>.</li>
 <li>
-<code>rohrbach</code>: Rohrbach’s augmented variance estimator
-(Rohrbach, 1993).</li>
+<code>rohrbach</code>: Rohrbach’s augmented variance estimator <span class="citation">(Rohrbach, 1993)</span>.</li>
 <li>
-<code>moment</code>: Modified moment bound (Dworin &amp; Grimlund,
-1984).</li>
+<code>moment</code>: Modified moment bound <span class="citation">(Dworin &amp; Grimlund, 1984)</span>.</li>
 <li>
-<code>coxsnell</code>: Cox and Snell bound (Cox &amp; Snell,
-1979).</li>
+<code>coxsnell</code>: Cox and Snell bound <span class="citation">(Cox &amp; Snell, 1979)</span>.</li>
 <li>
-<code>mpu</code>: Mean-per-unit estimator (Touw &amp; Hoogduin,
-2011).</li>
+<code>mpu</code>: Mean-per-unit estimator <span class="citation">(Touw &amp; Hoogduin, 2011)</span>.</li>
 <li>
-<code>direct</code>: Direct estimator (Touw &amp; Hoogduin,
-2011).</li>
+<code>direct</code>: Direct estimator <span class="citation">(Touw
+&amp; Hoogduin, 2011)</span>.</li>
 <li>
-<code>difference</code>: Difference estimator (Touw &amp; Hoogduin,
-2011).</li>
+<code>difference</code>: Difference estimator <span class="citation">(Touw &amp; Hoogduin, 2011)</span>.</li>
 <li>
-<code>quotient</code>: Quotient (ratio) estimator (Touw &amp;
-Hoogduin, 2011).</li>
+<code>quotient</code>: Quotient (ratio) estimator <span class="citation">(Touw &amp; Hoogduin, 2011)</span>.</li>
 <li>
-<code>regression</code>: Regression estimator (Touw &amp; Hoogduin,
-2011).</li>
+<code>regression</code>: Regression estimator <span class="citation">(Touw &amp; Hoogduin, 2011)</span>.</li>
 </ul>
 <p><em>Example usage:</em></p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
@@ -655,96 +643,103 @@ Bayes factors based on the beta-binomial distribution</a></li>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<ul>
-<li>Bickel, P. J. (1992). Inference and auditing: The Stringer bound.
-<em>International Statistical Review</em>, 60(2), 197-209. - <a href="https://www.jstor.org/stable/1403650" class="external-link">View online</a>
-</li>
-<li>Cox, D. R., &amp; Snell, E. J. (1979). On sampling and the
-estimation of rare errors. <em>Biometrika</em>, 66(1), 125-132. - <a href="https://doi.org/10.1093/biomet/66.1.125" class="external-link">View online</a>
-</li>
-<li>Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J.,
-&amp; Wetzels, R. (2021). Priors in a Bayesian audit: How integration of
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-bickel_1992" class="csl-entry">
+Bickel, P. J. (1992). Inference and auditing: The stringer bound.
+<em>International Statistical Review/Revue Internationale de
+Statistique</em>, 197–209. <a href="https://doi.org/10.2307/1403650" class="external-link">https://doi.org/10.2307/1403650</a>
+</div>
+<div id="ref-cox_1979" class="csl-entry">
+Cox, D. R., &amp; Snell, E. J. (1979). On sampling and the estimation of
+rare errors. <em>Biometrika</em>, <em>66</em>(1), 125–132. <a href="https://doi.org/10.1093/biomet/66.1.125" class="external-link">https://doi.org/10.1093/biomet/66.1.125</a>
+</div>
+<div id="ref-derks_2021" class="csl-entry">
+Derks, K., Swart, J. de, Batenburg, P. van, Wagenmakers, E.-J., &amp;
+Wetzels, R. (2021). Priors in a bayesian audit: How integration of
 existing information into the prior distribution can improve audit
 transparency and efficiency. <em>International Journal of Auditing</em>,
-25(3), 621-636. - <a href="https://doi.org/10.1111/ijau.12240" class="external-link">View
-online</a>
-</li>
-<li>Derks, K., de Swart, J., Wagenmakers, E.-J., &amp; Wetzels, R.
-(2021). The Bayesian Approach to Audit Evidence: Quantifying Statistical
-Evidence using the Bayes Factor. <em>PsyArXiv</em> - <a href="https://doi.org/10.31234/osf.io/kzqp5" class="external-link">View online</a>
-</li>
-<li>Derks, K., de Swart. J., Wagenmakers, E.-J., Wille, J., &amp;
-Wetzels, R. (2021). JASP for Audit: Bayesian Tools for the Auditing
-Practice. <em>Journal of Open Source Software</em>, 6(68), 2733. - <a href="https://doi.org/10.21105/joss.02733" class="external-link">View online</a>
-</li>
-<li>Derks, K., de Swart, J., Wagenmakers, E.-J., &amp; Wetzels, R.
-(2022). An Impartial Bayesian Hypothesis Test for Audit Sampling.
-<em>PsyArXiv</em> - <a href="https://doi.org/10.31234/osf.io/8nf3e" class="external-link">View
-online</a>
-</li>
-<li>Derks, K., de Swart, J., Wagenmakers, E.-J., &amp; Wetzels, R.
-(2022). Bayesian Generalized Linear Modeling: How to Incorporate Audit
-Information into the Statistical Model. <em>PsyArXiv</em> - <a href="https://doi.org/10.31234/osf.io/byj2a" class="external-link">View online</a>
-</li>
-<li>Dworin, L. D. and Grimlund, R. A. (1984). Dollar-unit sampling for
+<em>25</em>(3), 621–636. <a href="https://doi.org/10.1111/ijau.12240" class="external-link">https://doi.org/10.1111/ijau.12240</a>
+</div>
+<div id="ref-derks_2022" class="csl-entry">
+Derks, K., Swart, J. de, Wagenmakers, E.-J., &amp; Wetzels, R. (2022).
+<em>An impartial bayesian hypothesis test for audit sampling</em>. <a href="https://doi.org/10.31234/osf.io/8nf3e" class="external-link">https://doi.org/10.31234/osf.io/8nf3e</a>
+</div>
+<div id="ref-dworin_1984" class="csl-entry">
+Dworin, L. D., &amp; Grimlund, R. A. (1984). Dollar-unit sampling for
 accounts receivable and inventory. <em>The Accounting Review</em>,
-59(2), 218-241. - <a href="https://www.jstor.org/stable/247296" class="external-link">View
-online</a>
-</li>
-<li>Dyer, D., &amp; Pierce, R. L. (1993). On the choice of the prior
+<em>59</em>(2), 218–241. <a href="https://www.jstor.org/stable/247296" class="external-link">https://www.jstor.org/stable/247296</a>
+</div>
+<div id="ref-dyer_1993" class="csl-entry">
+Dyer, D., &amp; Pierce, R. L. (1993). On the choice of the prior
 distribution in hypergeometric sampling. <em>Communications in
-Statistics - Theory and Methods</em>, 22(8), 2125-2146. - <a href="https://www.tandfonline.com/doi/abs/10.1080/03610929308831139" class="external-link">View
-online</a>
-</li>
-<li>Hoogduin, L. A., Hall, T. W., &amp; Tsay, J. J. (2010). Modified
-sieve sampling: A method for single-and multi-stage
+Statistics - Theory and Methods</em>, <em>22</em>(8), 2125–2146. <a href="https://doi.org/10.1080/03610929308831139" class="external-link">https://doi.org/10.1080/03610929308831139</a>
+</div>
+<div id="ref-iaasb_2018" class="csl-entry">
+<em>Handbook of international quality control, auditing review, other
+assurance, and related services pronouncements (vol. i)</em>. (2018).
+[Computer software]. International Auditing; Assurance Standards Board
+(IAASB); International Federation of Accountants.
+</div>
+<div id="ref-hoogduin_2010" class="csl-entry">
+Hoogduin, L., Hall, T. W., &amp; Tsay, J. J. (2010). Modified sieve
+sampling: A method for single-and multi-stage
 probability-proportional-to-size sampling. <em>Auditing: A Journal of
-Practice &amp; Theory</em>, 29(1), 125-148. - <a href="https://doi.org/10.2308/aud.2010.29.1.125" class="external-link">View online</a>
-</li>
-<li>International Auditing and Assurance Standards Board (IAASB).
-(2018). <em>Handbook of international quality control, auditing review,
-other assurance, and related services pronouncements (Vol. I)</em>. New
-York: International Federation of Accountants.</li>
-<li>Meikle, G. R. (1972). <em>Statistical Sampling in an Audit
-Context</em>. Canadian Institute of Chartered Accountants.</li>
-<li>Leslie, D. A., Teitlebaum, A. D., &amp; Anderson, R. J. (1979).
-<em>Dollar-unit Sampling: A Practical Guide for Auditors</em>. London:
-Pitman.</li>
-<li>Pap, G., &amp; van Zuijlen, M. C. (1996). On the asymptotic
-behaviour of the Stringer bound. <em>Statistica Neerlandica</em>, 50(3),
-367-389. - <a href="https://doi.org/10.1111/j.1467-9574.1996.tb01503.x" class="external-link">View
-online</a>
-</li>
-<li>Rietveld, C. (1978). De zeefmethode als selectiemethode voor
-statistische steekproeven in de controlepraktijk (1). <em>Compact:
-Computer en Accountant</em>, 15, 2-11.</li>
-<li>Rohrbach, K. J. (1993). Variance augmentation to achieve nominal
+Practice &amp; Theory</em>, <em>29</em>(1), 125–148. <a href="https://doi.org/10.2308/aud.2010.29.1.125" class="external-link">https://doi.org/10.2308/aud.2010.29.1.125</a>
+</div>
+<div id="ref-leslie_1979" class="csl-entry">
+Leslie, D. A., Teitlebaum, A. D., &amp; Anderson, R. J. (1979).
+<em>Dollar-unit sampling: A practical guide for auditors</em>. Pitman.
+</div>
+<div id="ref-manitz_2021" class="csl-entry">
+Manitz, J., Hempelmann, M., Kauermann, G., Kuechenhoff, H., Shao, S.,
+Oberhauser, C., Westerheide, N., &amp; Wiesenfarth, M. (2021).
+<em>Samplingbook: Survey sampling procedures</em>. <a href="https://CRAN.R-project.org/package=samplingbook" class="external-link">https://CRAN.R-project.org/package=samplingbook</a>
+</div>
+<div id="ref-meikle_1972" class="csl-entry">
+Meikle, G. R. (1972). <em>Statistical sampling in an audit context</em>.
+Canadian Institute of Chartered Accountants.
+</div>
+<div id="ref-pap_1996" class="csl-entry">
+Pap, G., &amp; Zuijlen, M. C. van. (1996). On the asymptotic behaviour
+of the stringer bound. <em>Statistica Neerlandica</em>, <em>50</em>(3),
+367–389. <a href="https://doi.org/10.1111/j.1467-9574.1996.tb01503.x" class="external-link">https://doi.org/10.1111/j.1467-9574.1996.tb01503.x</a>
+</div>
+<div id="ref-prompers_2019" class="csl-entry">
+Prömpers, H., &amp; Guimarães, A. (2019). <em>MUS: Monetary unit
+sampling and estimation methods, widely used in auditing</em>. <a href="https://CRAN.R-project.org/package=MUS" class="external-link">https://CRAN.R-project.org/package=MUS</a>
+</div>
+<div id="ref-rohrbach_1993" class="csl-entry">
+Rohrbach, K. J. (1993). Variance augmentation to achieve nominal
 coverage probability in sampling from audit populations. <em>Auditing: A
-Journal of Practice &amp; Theory</em>, 12(2), 79-97.</li>
-<li>Steele, A. (1992). <em>Audit Risk and Audit Evidence: The Bayesian
-Approach to Statistical Auditing</em>. San Diego: Academic Press.</li>
-<li>Stewart, T. R. (2012). <em>Technical Notes on the AICPA Audit Guide
-Audit Sampling</em>. American Institute of Certified Public Accountants,
-New York. - <a href="https://us.aicpa.org/content/dam/aicpa/publications/accountingauditing/keytopics/downloadabledocuments/sampling-guide-technical-notes.pdf" class="external-link">View
-online</a>
-</li>
-<li>Stewart, T. R. (2013). <em>A Bayesian Audit Assurance Model with
-Application to the Component Materiality problem in Group Audits.</em>
-VU University, Amsterdam. - <a href="https://research.vu.nl/en/publications/a-bayesian-audit-assurance-model-with-application-to-the-componen" class="external-link">View
-online</a>
-</li>
-<li>Talens, E. (2005). <em>Statistical Auditing and the
-AOQL-method</em>. University of Groningen, Groningen. - <a href="https://research.rug.nl/en/publications/statistical-auditing-and-the-aoql-method" class="external-link">View
-online</a>
-</li>
-<li>Touw, P., and Hoogduin, L. (2011). <em>Statistiek voor Audit en
-Controlling</em>. Boom uitgevers, Amsterdam.</li>
-<li>Weiler, H. (1965). The use of incomplete beta functions for prior
-distributions in binomial sampling. <em>Technometrics</em>, 7(3),
-335-347. - <a href="https://www.tandfonline.com/doi/abs/10.1080/00401706.1965.10490267" class="external-link">View
-online</a>
-</li>
-</ul>
+Journal of Practice &amp; Theory</em>, <em>12</em>(2), 79–97.
+</div>
+<div id="ref-steele_1992" class="csl-entry">
+Steele, A. (1992). <em>Audit risk and audit evidence: The bayesian
+approach to statistical auditing</em>. Academic Press.
+</div>
+<div id="ref-stewart_2012" class="csl-entry">
+Stewart, T. R. (2012). <em>Technical notes on the AICPA audit guide
+audit sampling</em>. American Institute of Certified Public Accountants.
+</div>
+<div id="ref-stewart_2013" class="csl-entry">
+Stewart, T. R. (2013). <em>A bayesian audit assurance model with
+application to the component materiality problem in group audits</em>
+[PhD thesis, VU University]. <a href="https://hdl.handle.net/1871/39813" class="external-link">https://hdl.handle.net/1871/39813</a>
+</div>
+<div id="ref-talens_2005" class="csl-entry">
+Talens, E. (2005). <em>Statistical auditing and the AOQL-method</em>
+[PhD thesis, University of Groningen]. <a href="https://research.rug.nl/en/publications/statistical-auditing-and-the-aoql-method" class="external-link">https://research.rug.nl/en/publications/statistical-auditing-and-the-aoql-method</a>
+</div>
+<div id="ref-touw_2011" class="csl-entry">
+Touw, P., &amp; Hoogduin, L. (2011). <em>Statistiek voor audit en
+controlling</em>. Boom uitgevers.
+</div>
+<div id="ref-weiler_1965" class="csl-entry">
+Weiler, H. (1965). The use of incomplete beta functions for prior
+distributions in binomial sampling. <em>Technometrics</em>,
+<em>7</em>(3), 335–347. <a href="https://doi.org/10.1080/00401706.1965.10490267" class="external-link">https://doi.org/10.1080/00401706.1965.10490267</a>
+</div>
+</div>
 </div>
   </div>
 
