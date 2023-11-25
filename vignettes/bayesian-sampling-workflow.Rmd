@@ -6,6 +6,8 @@ output:
   rmarkdown::html_vignette:
     toc: true
     toc_depth: 3
+bibliography: references.bib
+csl: apa.csl
 vignette: >
   %\VignetteIndexEntry{Bayesian sampling workflow}
   %\VignetteEngine{knitr::rmarkdown}
@@ -38,7 +40,7 @@ financial statements are large enough that they might influence the decision of
 stakeholders relying on these financial statements. The performance materiality
 is the materiality that applies to each of the populations on which the
 financial statements are based. For this example, the performance materiality is
-set at 5% of the total value of the population.
+set at 5 percent of the total value of the population.
 
 In this example, we focus on the `BuildIt` data set that comes with the **jfa**
 package.
@@ -66,14 +68,15 @@ the misstatement in the population.
 
 ## Setting up the audit
 
-The auditor wants to make a statement that, with 95% confidence, the misstatement
-in the population is lower than the performance materiality of 5%. Based on last
-year's audit at BuildIt, where the upper bound of the misstatement turned out to
-be 2.5%, they want to tolerate at most 2.5% errors in the intended sample. The
-auditor can therefore re-formulate their statistical statement as that they want
-to conclude that, when 2.5% errors are found in the sample, they can conclude
-with 95% confidence that the misstatement in the population is lower than the
-performance materiality of 5%.
+The auditor wants to make a statement that, with 95 percent confidence, the
+misstatement in the population is lower than the performance materiality of 5
+percent. Based on last year's audit at BuildIt, where the upper bound of the
+misstatement turned out to be 2.5 percent, they want to tolerate at most 2.5
+percent errors in the intended sample. The auditor can therefore re-formulate
+their statistical statement as that they want to conclude that, when 2.5 percent
+errors are found in the sample, they can conclude with 95 percent confidence
+that the misstatement in the population is lower than the performance
+materiality of 5 percent.
 
 Below, the auditor defines the performance materiality, confidence level, and
 expected misstatements in the sample.
@@ -164,9 +167,9 @@ stage1 <- planning(materiality = materiality, expected = expected, conf.level = 
 The auditor can then inspect the result from her planning procedure by using the 
 `summary()` function. The result show that, given the prior distribution, the
 auditor needs to select a sample of 178 items so that, when at most 4.45
-misstatements are found, they can conclude with 95% confidence that the
+misstatements are found, they can conclude with 95 percent confidence that the
 misstatement in BuildIt's financial statements is lower the performance
-materiality of 5%.
+materiality of 5 percent.
 
 ```{r}
 summary(stage1)
@@ -259,8 +262,8 @@ stage4 <- evaluation(
 The auditor can inspect the outcomes of their inference by using the `summary()`
 function. The resulting upper bound is 2.278%, which is lower than the
 performance materiality of 5%. Therefore, the auditor can concluse that there is
-a 95% probability that the misstatement in BuildIt's population is lower than
-2.278%.
+a 95 percent probability that the misstatement in BuildIt's population is lower
+than 2.278 percent.
 
 ```{r}
 summary(stage4)
@@ -275,10 +278,10 @@ plot(stage4, type = "posterior")
 
 ## Conclusion
 
-Since the 95% upper credible bound on the misstatement in population is lower
-than the performance materiality, the auditor has obtained sufficient evidence
-to conclude that the population does not contain material misstatements. The
-auditor can create a `html` or `pdf` report of the statistical results using
+Since the 95 percentupper credible bound on the misstatement in population is
+lower than the performance materiality, the auditor has obtained sufficient
+evidence to conclude that the population does not contain material misstatement.
+The auditor can create a `html` or `pdf` report of the statistical results using
 the `report()` function, as shown below.
 
 ```{r, eval = FALSE}

@@ -6,6 +6,8 @@ output:
   rmarkdown::html_vignette:
     toc: true
     toc_depth: 3
+bibliography: references.bib
+csl: apa.csl
 vignette: >
   %\VignetteIndexEntry{Algorithmic fairness}
   %\VignetteEngine{knitr::rmarkdown}
@@ -32,7 +34,8 @@ algorithmic decision-making systems by computing various model-agnostic metrics
 based on the observed and predicted labels in a data set. Calculated metrics
 include demographic parity, proportional parity, predictive rate parity,
 accuracy parity, false negative rate parity, false positive rate parity, true
-positive rate parity, negative predicted value parity, and specificity parity.
+positive rate parity, negative predicted value parity, and specificity parity
+[@calders_2010; @chouldechova_2017; @feldman_2015; @zafar_2017; @friedler_2019].
 
 *Example:*
 
@@ -81,11 +84,11 @@ represents a false positive in the confusion matrix.
 
 For illustrative purposes, let's interpret the full set of fairness metrics for
 the African American, Asian, and Hispanic groups in comparison to the
-privileged group (Caucasian). See Pessach & Shmueli (2022) for a more detailed
+privileged group (Caucasian). See @pessach_2022 for a more detailed
 explanation of some of these metrics. However, note that not all fairness
 measures are equally appropriate in all audit situations. The decision tree
 below aids the auditor with choosing which measure is best for the situation at
-hand (Büyük, 2023).
+hand [@buyuk_2023].
 
 <p align='center'><img src='fairness-tree.png' alt='fairness' width='90%'></p>
 
@@ -154,7 +157,7 @@ model_fairness(
       Caucasians. Again, this suggests potential bias in the algorithm's
       predictions against African Americans. The p-value is smaller than .05,
       indicating that the null hypothesis of proportional parity should be
-      rejected.
+      rejected [@fisher_1970].
     - *Asian*: The proportional parity for Asians is 0.4038, indicating that
       their positive prediction rate is lower than for Caucasians. This may
       suggest potential underestimation of reoffenders among Asians.
@@ -418,9 +421,9 @@ model_fairness(
 ### Bayesian Analysis
 
 For all metrics except demongraphic parity, Bayesian inference is supported and
-provides credible intervals and Bayes factors. Like in the other functions in
-`jfa`, performing a Bayesian analysis using a default prior can be achieved by
-setting `prior = TRUE`.
+provides credible intervals and Bayes factors [@jamil_2017]. Like in the other
+functions in `jfa`, performing a Bayesian analysis using a default prior can be
+achieved by setting `prior = TRUE`.
 
 ```{r}
 x <- model_fairness(
@@ -468,13 +471,4 @@ plot(x, type = "robustness")
 ```
 
 ## References
-
-- Büyük, S. (2023). *Automatic Fairness Criteria and Fair Model Selection for Critical ML Tasks*, Master Thesis, Utrecht University. - [View Online](https://studenttheses.uu.nl/handle/20.500.12932/44225)
-- Calders, T., & Verwer, S. (2010). Three naive Bayes approaches for discrimination-free classification. In *Data Mining and Knowledge Discovery*. Springer Science and Business Media LLC. - [View Online](https://doi.org/10.1007/s10618-010-0190-x)
-- Chouldechova, A. (2017). Fair Prediction with Disparate Impact: A Study of Bias in Recidivism Prediction Instruments. In *Big Data*. Mary Ann Liebert Inc. - [View Online](https://doi.org/10.1089/big.2016.0047)
-- Feldman, M., Friedler, S. A., Moeller, J., Scheidegger, C., & Venkatasubramanian, S. (2015). Certifying and Removing Disparate Impact. In *Proceedings of the 21th ACM SIGKDD International Conference on Knowledge Discovery and Data Mining.* - [View Online](https://doi.org/10.1145/2783258.2783311)
-- Fisher, R. A. (1970). *Statistical Methods for Research Workers*. Oliver & Boyd.
-- Friedler, S. A., Scheidegger, C., Venkatasubramanian, S., Choudhary, S., Hamilton, E. P., & Roth, D. (2019). A comparative study of fairness-enhancing interventions in machine learning. In *Proceedings of the Conference on Fairness, Accountability, and Transparency*. - [View Online](https://doi.org/10.1145/3287560.3287589)
-- Jamil, T., Ly, A., Morey, R. D., Love, J., Marsman, M., & Wagenmakers, E. J. (2017). Default "Gunel and Dickey" Bayes factors for contingency tables. *Behavior Research Methods*, 49, 638-652. - [View Online](https://doi.org/10.3758/s13428-016-0739-8)
-- Pessach, D. & Shmueli, E. (2022). A review on fairness in machine learning. *ACM Computing Surveys*, 55(3), 1-44. - [View Online](https://doi.org/10.1145/3494672)
-- Zafar, M. B., Valera, I., Gomez Rodriguez, M., & Gummadi, K. P. (2017). Fairness Beyond Disparate Treatment & Disparate Impact. In *Proceedings of the 26th International Conference on World Wide Web*. - [View Online](https://doi.org/10.1145/3038912.3052660)
+<div id="refs"></div>
