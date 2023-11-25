@@ -670,6 +670,7 @@
   })
   if (no_nonzero_taints) {
     message("Warning: No taints observed, cannot calculate upper and / or lower bound(s)")
+    out[["mle"]] <- as.numeric(raw$par["theta"])
     out[["lb"]] <- switch(alternative,
       "less" = 0,
       "two.sided" = NA,
@@ -681,6 +682,7 @@
       "greater" = 1
     )
   } else {
+    out[["mle"]] <- .comp_mode_bayes(analytical = FALSE, samples = raw$theta_tilde[, "theta"])
     out[["lb"]] <- switch(alternative,
       "less" = 0,
       "two.sided" = stats::quantile(raw$theta_tilde[, "theta"], (1 - conf.level) / 2),
@@ -692,7 +694,6 @@
       "greater" = 1
     )
   }
-  out[["mle"]] <- as.numeric(raw$par["theta"])
   return(out)
 }
 
