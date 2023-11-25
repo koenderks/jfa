@@ -6,6 +6,8 @@ output:
   rmarkdown::html_vignette:
     toc: true
     toc_depth: 3
+bibliography: references.bib
+csl: apa.csl
 vignette: >
   %\VignetteIndexEntry{Digit analysis}
   %\VignetteEngine{knitr::rmarkdown}
@@ -39,7 +41,7 @@ reference distribution and produces a Bayes factor (Kass & Raftery, 1995).
 
 *Example:*
 
-Benford’s law (Benford, 1938) is a principle that describes a pattern in many
+Benford's law [@benford_1938] is a principle that describes a pattern in many
 naturally-occurring numbers. According to Benford's law, each possible leading
 digit *d* in a naturally occurring, or non-manipulated, set of numbers occurs
 with a probability `p(d) = log10(1 + 1/d)`. The distribution of leading digits
@@ -83,7 +85,7 @@ plot(x, type = "sequential")
 The function `repeated_test()` analyzes the frequency with which values get
 repeated within a set of numbers. Unlike Benford's law, and its generalizations,
 this approach examines the entire number at once, not only the first or last
-digit. For the technical details of this procedure, see Simohnsohn (2019).
+digit. For the technical details of this procedure, see [@simonsohn_2019].
 
 *Example:*
 
@@ -91,9 +93,9 @@ In this example we analyze a data set from a (retracted) paper that describes
 three experiments run in Chinese factories, where workers were nudged to use
 more hand-sanitizer. These data were shown to exhibited two classic markers of
 data tampering: impossibly similar means and the uneven distribution of last
-digits (Yu, Nelson, & Simohnson, 2018). We can use the `repeated_test()`
-function to test if these data also contain a greater amount of repeated values
-than expected if the data were not tampered with.
+digits [@yu_2018]. We can use the `repeated_test()` function to test if these
+data also contain a greater amount of repeated values than expected if the data
+were not tampered with.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 x <- repeated_test(sanitizer$value, check = "lasttwo", samples = 2000)
@@ -102,7 +104,4 @@ plot(x)
 ```
 
 ## References
-
-- Benford, F. (1938). The law of anomalous numbers. In *Proceedings of the American Philosophical Society*, 551-572. https://www.jstor.org/stable/984802
-- Simohnsohn, U. (2019, May 25). *Number-Bunching: A New Tool for Forensic Data Analysis*. https://datacolada.org/77
-- Yo, F., Nelson, L., & Simonsohn, U. (2018, December 5). *In Press at Psychological Science: A New 'Nudge' Supported by Implausible Data*. https://datacolada.org/74
+<div id="refs"></div>

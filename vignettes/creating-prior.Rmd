@@ -6,6 +6,8 @@ output:
   rmarkdown::html_vignette:
     toc: true
     toc_depth: 3
+bibliography: references.bib
+csl: apa.csl
 vignette: >
   %\VignetteIndexEntry{Creating prior distributions}
   %\VignetteEngine{knitr::rmarkdown}
@@ -109,7 +111,7 @@ You can construct an improper prior distribution with classical properties using
 `method = 'strict'`. The posterior distribution of from this prior yields the
 same results as the classical methodology with respect to sample sizes and upper
 limits, but is only proper once a single non-misstated unit is present in the 
-sample (Derks et al., 2022). For example, the command below creates an improper
+sample [@derks_2022]. For example, the command below creates an improper
 beta(1, 0) prior distribution.
 
 *This method requires the `poisson`, `binomial`, or `hypergeometric` likelihood*
@@ -121,9 +123,9 @@ auditPrior(method = "strict", likelihood = "binomial")
 ### Impartial priors (`method = 'impartial'`)
 
 You can incorporate the assumption that tolerable misstatement is equally likely
-as intolerable misstatement (Derks et al., 2022) using `method = 'impartial'`.
-For example, the command below creates an impartial beta prior distribution for
-a performance materiality of 5 percent.
+as intolerable misstatement [@derks_2022] using `method = 'impartial'`. For
+example, the command below creates an impartial beta prior distribution for a
+performance materiality of 5 percent.
 
 *This method requires that you specify a value for the `materiality`.*
 
@@ -136,10 +138,10 @@ auditPrior(method = "impartial", likelihood = "binomial", materiality = 0.05)
 ### Priors with custom prior probabilities (`method = 'hyp'`)
 
 You can manually assign prior probabilities to the hypothesis of tolerable 
-misstatement and the hypotheses of intolerable misstatement (Derks et al., 2021)
+misstatement and the hypotheses of intolerable misstatement [@derks_2021]
 with `method = 'hyp'` in combination with `p.hmin`. For example, the command
 below incorporates the information that the hypothesis of tolerable misstatement 
-has a probability of 60% into a beta prior distribution.
+has a probability of 60 percent into a beta prior distribution.
 
 *This method requires that you specify a value for the `materiality`.*
 
@@ -152,10 +154,11 @@ auditPrior(method = "hyp", likelihood = "binomial", materiality = 0.05, p.hmin =
 ### Priors based on the Audit Risk Model (`method = 'arm'`)
 
 You can translate risk assessments from the Audit Risk Model (inherent risk and
-internal control risk) into a prior distribution (Derks et al., 2021) using
+internal control risk) into a prior distribution [@derks_2021] using
 `method = 'arm'` in combination with the `ir` and `cr` arguments. For example,
 the command below incorporates the information that the inherent risk is equal
-to 90% and internal control risk is equal to 60% into a beta prior distribution.
+to 90 percent and internal control risk is equal to 60 percent into a beta prior
+distribution.
 
 *This method requires the `poisson`, `binomial`, or `hypergeometric` likelihood*
 
@@ -167,8 +170,8 @@ auditPrior(method = "arm", likelihood = "binomial", materiality = 0.05, ir = 0.9
 
 You can incorporate information about the mode and the upper bound of the prior
 distribution using `method = 'bram'`. For example, the code below incorporates
-the information that the mode of the prior distribution is 1% and the upper
-bound is 60% into a beta prior distribution.
+the information that the mode of the prior distribution is 1 percent and the
+upper bound is 60 percent into a beta prior distribution.
 
 *This method requires the `poisson`, `binomial`, or `hypergeometric` likelihood*
 
@@ -179,7 +182,7 @@ auditPrior(method = "bram", likelihood = "binomial", expected = 0.01, materialit
 ### Priors based on an earlier sample (`method = 'sample'`)
 
 You can incorporate information from an earlier sample into the prior
-distribution (Derks et al., 2021) using `method = 'sample'` in combination with
+distribution [@derks_2021] using `method = 'sample'` in combination with
 `x` and `n`. For example, the command below incorporates the information from
 an earlier sample of 30 items in which 0 misstatements were found into a beta
 prior distribution.
@@ -193,7 +196,7 @@ auditPrior(method = "sample", likelihood = "binomial", x = 0, n = 30)
 ### Priors based on a weighted earlier sample (`method = 'factor'`)
 
 You can incorporate information from last years results, weighted by a factor
-(Derks et al., 2021), into the prior distribution using `method = 'factor'` in
+[@derks_2021], into the prior distribution using `method = 'factor'` in
 combination with `x` and `n`. For example, the command below incorporates the
 information from a last years results (a sample of 58 items in which 0
 misstatements were found), weighted by a factor 0.7, into a beta prior
@@ -230,7 +233,7 @@ The prior distribution can be used the planning stage to calculate a minimum
 sample size by providing the objected returned by the `auditPrior()` function to
 the `planning()` function. For example, the command below calculates the minimum
 sample size to test the misstatement in the population against a performance
-materiality of 5%, while using a beta(1, 10) prior distribution.
+materiality of 5 percent, while using a beta(1, 10) prior distribution.
 
 ```{r}
 prior <- auditPrior(method = "param", likelihood = "binomial", alpha = 1, beta = 10)
@@ -242,8 +245,8 @@ planning(materiality = 0.05, likelihood = "binomial", prior = prior)
 The prior distribution can be used the evaluation stage by providing the
 objected returned by the `auditPrior()` function to the `evaluation()` function.
 For example, the command below evaluates the misstatement in the population with
-respect to a performance materiality of 5% after seeing a sample of 60 items
-with 1 misstatement, while using a normal(0.025, 0.05) prior distribution.
+respect to a performance materiality of 5 percent after seeing a sample of 60
+items with 1 misstatement, while using a normal(0.025, 0.05) prior distribution.
 
 ```{r}
 prior <- auditPrior(method = "param", likelihood = "normal", alpha = 0.025, beta = 0.05)
@@ -262,6 +265,4 @@ plot(predict(eval$posterior, n = 10))
 ```
 
 ## References
-
-- Derks, K., de Swart, J., Wagenmakers, E.-J., and Wetzels, R. (2022). An impartial Bayesian hypothesis test for audit sampling. *PsyArXiv*. https://doi.org/10.31234/osf.io/8nf3e
-- Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., and Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information  into the prior distribution can improve audit transparency and efficiency. *International Journal of Auditing*, 25(3), 621-636. https://doi.org/10.1111/ijau.12240
+<div id="refs"></div>

@@ -6,6 +6,8 @@ output:
   rmarkdown::html_vignette:
     toc: true
     toc_depth: 3
+bibliography: references.bib
+csl: apa.csl
 vignette: >
   %\VignetteIndexEntry{Evaluating statistical audit samples}
   %\VignetteEngine{knitr::rmarkdown}
@@ -44,14 +46,14 @@ sample data is available in one of two forms:
   optionally a factor column indicating stratum membership (`strata`).
 
 By default, `evaluation()` estimates the population misstatement and returns a
-point estimate as well as a (`conf.level` $\times$ 100)% confidence / credible
-interval around this estimate. However, in audit sampling, the population is
-typically subject to a certain maximum tolerable misstatement defined by the
-performance materiality $\theta_{max}$. Using the `materiality` argument, you
-can provide this critical value to the `evaluation()` function as a fraction. In
-addition to the estimation that is performed by default, specifying
-`materiality` triggers the comparison of two competing hypotheses. Which
-hypotheses are being compared depends on the input for the `alternative`
+point estimate as well as a (`conf.level` $\times$ 100) percent confidence /
+credible interval around this estimate. However, in audit sampling, the
+population is typically subject to a certain maximum tolerable misstatement
+defined by the performance materiality $\theta_{max}$. Using the `materiality`
+argument, you can provide this critical value to the `evaluation()` function as
+a fraction. In addition to the estimation that is performed by default,
+specifying `materiality` triggers the comparison of two competing hypotheses.
+Which hypotheses are being compared depends on the input for the `alternative`
 argument: 
 
 * `alternative = "less"` (default): $H_1:\theta<\theta_{max}$ versus $H_0:\theta\geq\theta_{max}$
@@ -75,26 +77,28 @@ implying the hypotheses $H_1:\theta<0.05$ and $H_0:\theta\geq0.05$. They have
 taken a sample of 100 items, of which 1 contained an error. They set the
 significance level for the *p*-value to 0.05, implying that $p < 0.05$ will be
 enough to reject the hypothesis $H_0$. The call below evaluates the sample using
-a classical non-stratified evaluation procedure.
+a classical non-stratified evaluation procedure [@stewart_2012].
 
 ```{r}
 evaluation(materiality = 0.05, x = 1, n = 100)
 ```
 
 The output shows that the most likely error in the population is estimated to be
-1 / 100 = 1% and that the 95% (one-sided) confidence interval ranges from 0% to
-4.74%. The output also shows that the *p*-value is lower than 0.05 implying that
-the hypothesis $H_0$ can be rejected. Hence, the auditor is able to conclude
-that the sample provides sufficient evidence to state with reasonable assurance
-that the population does not contain material misstatement.
+1 / 100 = 1 percent and that the 95 percent (one-sided) confidence interval
+ranges from 0 percent to 4.74 percent. The output also shows that the *p*-value
+is lower than 0.05 implying that the hypothesis $H_0$ can be rejected. Hence,
+the auditor is able to conclude that the sample provides sufficient evidence to
+state with reasonable assurance that the population does not contain material
+misstatement.
 
 #### Bayesian evaluation
 
 Bayesian hypothesis testing uses the Bayes factor, $BF_{10}$ or $BF_{01}$, to
 make a statement about the evidence provided by the sample in support for one of
-the two hypotheses $H_1$ or $H_0$. As an example of how to interpret the Bayes
-factor, the value of $BF_{10} = 10$ (provided by the `evaluation()` function)
-can be interpreted as: *the data are 10 times more likely to have occurred under the hypothesis $H_1$ than under the hypothesis $H_0$*.
+the two hypotheses $H_1$ or $H_0$ [@derks_2021b]. As an example of how to
+interpret the Bayes factor, the value of $BF_{10} = 10$ (provided by the
+`evaluation()` function) can be interpreted as:
+*the data are 10 times more likely to have occurred under the hypothesis $H_1$ than under the hypothesis $H_0$*.
 $BF_{10} > 1$ indicates evidence in favor of $H_1$ and against $H_0$, while
 $BF_{10} < 1$ indicates evidence in favor of $H_0$ and against $H_1$. The
 `evaluation()` function returns the value for $BF_{10}$, but $BF_{01}$ can be
@@ -105,7 +109,8 @@ population contains less than 5 percent misstatement, implying the hypotheses
 $H_1:\theta<0.05$ and $H_0:\theta\geq0.05$. They have taken a sample of 100
 items, of which 1 was found to contain a misstatement. The prior distribution is
 assumed to be a default *beta(1,1)* prior. The call below evaluates the sample
-using a Bayesian non-stratified evaluation procedure.
+using a Bayesian non-stratified evaluation procedure [@stewart_2013;
+@derks_2021].
 
 ```{r}
 prior <- auditPrior(materiality = 0.05, method = "default", likelihood = "binomial")
@@ -113,14 +118,15 @@ evaluation(materiality = 0.05, x = 1, n = 100, prior = prior)
 ```
 
 The output shows that the most likely error in the population is estimated to be
-1 / 100 = 1% and that the 95% (one-sided) credible interval ranges from 0% to
-4.61%. The small difference between the classical and default Bayesian results
-is due to the prior distribution, which must be proper in order to calculate a
-Bayes factor (classical results can be emulated by constructing a prior with
-`method = "strict"` in the `auditPrior()` function). The Bayes factor in this
-case is shown to be $BF_{10}=515$, meaning that the data from the sample are
-about 515 times more likely to occur under the hypothesis of tolerable
-misstatement than under the hypothesis of material misstatement.
+1 / 100 = 1 percent and that the 95 percent (one-sided) credible interval ranges
+from 0 percent to 4.61 percent. The small difference between the classical and
+default Bayesian results is due to the prior distribution, which must be proper
+in order to calculate a Bayes factor (classical results can be emulated by
+constructing a prior with `method = "strict"` in the `auditPrior()` function).
+The Bayes factor in this case is shown to be $BF_{10}=515$, meaning that the
+data from the sample are about 515 times more likely to occur under the
+hypothesis of tolerable misstatement than under the hypothesis of material
+misstatement.
 
 Note that this is a very high Bayes factor for the little data that is observed.
 That is because the Bayes factor is dependent on the prior distribution for
@@ -129,7 +135,7 @@ $\theta$. As a rule of thumb, when the prior distribution is highly conservative
 misstatement, the Bayes factor tends to over quantify the evidence in favor of
 this hypothesis. You can mitigate this dependency by using a prior distribution
 that is impartial with respect to the hypotheses via `method = "impartial"` in
-the `auditPrior()` function (Derks et al., 2022).
+the `auditPrior()` function [@derks_2022].
 
 ```{r}
 prior <- auditPrior(materiality = 0.05, method = "impartial", likelihood = "binomial")
@@ -165,7 +171,7 @@ print(retailer)
 ```
 
 In general, there are three approaches to evaluating a stratified sample: no
-pooling, complete pooling, and partial pooling (see Derks et al., 2022). When
+pooling, complete pooling, and partial pooling [see @derks_2022b]. When
 using `evaluation()`, you must to indicate which type of pooling to use via the
 `pooling` argument. No pooling assumes no similarities between strata, which
 means that all strata are analyzed independently. Complete pooling assumes no
@@ -205,9 +211,9 @@ summary(result_np)
 ```
 
 In this case, the output of the `summary()` function shows that the estimate of
-the misstatement in the population is 5.85%, with the 95% credible interval
-ranging from 4.28% to 8.22%. The stratum estimates differ substantially from
-each other but are relatively uncertain.
+the misstatement in the population is 5.85 percent, with the 95 percent credible
+interval ranging from 4.28 percent to 8.22 percent. The stratum estimates differ
+substantially from each other but are relatively uncertain.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(result_np, type = "estimates")
@@ -241,11 +247,11 @@ summary(result_cp)
 ```
 
 For example, the output of the `summary()` function shows that the estimate of
-the misstatement in the population is 4.47%, with the 95% credible interval
-ranging from 3.74% to 5.33%. Since the data is aggregated, the stratum estimates
-contain relatively little uncertainty. However, the probability of misstatement
-in stratum 20 (many misstatements) under this assumption is the same as that of
-stratum 15 (few misstatements).
+the misstatement in the population is 4.47 percent, with the 95 percent credible
+interval ranging from 3.74 percent to 5.33 percent. Since the data is
+aggregated, the stratum estimates contain relatively little uncertainty.
+However, the probability of misstatement in stratum 20 (many misstatements)
+under this assumption is the same as that of stratum 15 (few misstatements).
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(result_cp, type = "estimates")
@@ -278,11 +284,11 @@ summary(result_pp)
 ```
 
 In this case, the output shows that the estimate of the misstatement in the
-population is 4.34%, with the 95% credible interval ranging from 3.45% to 5.33%.
-Note that this population estimate is substantially less uncertain than that of
-the no pooling approach. Note that, like in the no pooling approach, the stratum
-estimates are different from each other but lie closer together and are less
-uncertain.
+population is 4.34 percent, with the 95 percent credible interval ranging from
+3.45 percent to 5.33 percent. Note that this population estimate is
+substantially less uncertain than that of the no pooling approach. Note that,
+like in the no pooling approach, the stratum estimates are different from each
+other but lie closer together and are less uncertain.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(result_pp, type = "estimates")
@@ -302,7 +308,7 @@ This data set contains 3500 financial statement line items, each with a booked
 value `bookValue` and, for illustrative purposes, and audited (true) value
 `auditValue`. Since the focus of this vignette is the evaluation stage in the
 audit, the sample is already indicated in the data set. The performance
-materiality in this example is set to 5%.
+materiality in this example is set to 5 percent.
 
 ```{r}
 data(allowances)
@@ -329,8 +335,8 @@ summary(x)
 ```
 
 In this case, the output shows that the estimate of the misstatement in the
-population is 15.77%, with the 95% (one-sided) confidence interval ranging from
-0% to 17.5%.
+population is 15.77 percent, with the 95 percent (one-sided) confidence interval
+ranging from 0 percent to 17.5 percent.
 
 #### Bayesian evaluation
 
@@ -346,7 +352,8 @@ summary(x)
 ```
 
 The output shows that the estimate of the misstatement in the population is
-15.76%, with the 95% (one-sided) credible interval ranging from 0% to 17.49%.
+15.76 percent, with the 95 percent (one-sided) credible interval ranging from 0
+percent to 17.49 percent.
 
 ### Stratified samples
 
@@ -375,9 +382,10 @@ summary(x)
 ```
 
 In this case, the output shows that the estimate of the misstatement in the
-population is 14.72%, with the 95% confidence interval ranging from 12.55% to
-18.26%. The precision of the population estimate is 3.54%. The stratum estimates
-can be seen in the output of the `summary()` function and are visualized below.
+population is 14.72 percent, with the 95 percent confidence interval ranging
+from 12.55 percent to 18.26 percent. The precision of the population estimate is
+3.54 percent. The stratum estimates can be seen in the output of the `summary()`
+function and are visualized below.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(x, type = "estimates")
@@ -401,10 +409,11 @@ summary(x)
 ```
 
 The output shows that the estimate of the misstatement in the population is
-15.66%, with the 95% credible interval ranging from 14.59% to 17%. The precision
-of the population estimate is 1.34%, which is substantially lower than that of
-the classical approach. The stratum estimates can be seen in the output of the
-`summary()` function and are visualized below.
+15.66 percent, with the 95 percent credible interval ranging from 14.59 percent
+to 17 percent. The precision of the population estimate is 1.34 percent, which
+is substantially lower than that of the classical approach. The stratum
+estimates can be seen in the output of the `summary()` function and are
+visualized below.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(x, type = "estimates")
@@ -418,9 +427,4 @@ plot(x, type = "posterior")
 ```
 
 ## References
-
-- Derks, K., de Swart, J., van Batenburg, P., Wagenmakers, E.-J., and Wetzels, R. (2021). Priors in a Bayesian audit: How integration of existing information into the prior distribution can improve audit transparency and efficiency. *International Journal of Auditing*, 25(3), 621-636. https://doi.org/10.1111/ijau.12240
-- Derks, K., de Swart, J., Wagenmakers, E.-J., & Wetzels, R. (2021). The Bayesian Approach to Audit Evidence: Quantifying Statistical Evidence using the Bayes Factor. *PsyArXiv*. https://doi.org/10.31234/osf.io/kzqp5
-- Derks, K., de Swart, J., Wagenmakers, E.-J., & Wetzels, R. (2022). Bayesian Generalized Linear Modeling for Audit Sampling: How to Incorporate Audit Information into the Statistical Model. *PsyArXiv*. https://doi.org/10.31234/osf.io/byj2a
-- Stewart, T. R. (2012). *Technical Notes on the AICPA Audit Guide Audit Sampling*. American Institute of Certified Public Accountants, New York.
-- Stewart, T. R. (2013). *A Bayesian Audit Assurance Model with Application to the Component Materiality problem in Group Audits*. VU University, Amsterdam.
+<div id="refs"></div>

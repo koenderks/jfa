@@ -108,9 +108,9 @@ $$ \text{Audit risk} = \text{Inherent risk} \,\times\, \text{Control risk} \,\ti
 Usually the auditor judges inherent risk and control risk on a three-point scale
 consisting of low, medium, and high. Different audit firms handle different
 standard percentages for these categories. The auditor's firm defines the
-probabilities of low, medium, and high respectively as 50%, 60%, and 100%.
-Because the auditor assessed BuildIt's internal control systems, they assess the
-control risk as medium (60%).
+probabilities of low, medium, and high respectively as 50 percent, 60 percent,
+and 100 percent. Because the auditor assessed BuildIt's internal control
+systems, they assess the control risk as medium (60 percent).
 
 ```{r}
 # Specify the inherent risk (ir) and control risk (cr).
@@ -260,10 +260,10 @@ stage4 <- evaluation(
 ```
 
 The auditor can inspect the outcomes of their inference by using the `summary()`
-function. The resulting upper bound is 2.278%, which is lower than the
-performance materiality of 5%. Therefore, the auditor can concluse that there is
-a 95 percent probability that the misstatement in BuildIt's population is lower
-than 2.278 percent.
+function. The resulting upper bound is 2.278 percent, which is lower than the
+performance materiality of 5 percent. Therefore, the auditor can concluse that
+there is a 95 percent probability that the misstatement in BuildIt's population
+is lower than 2.278 percent.
 
 ```{r}
 summary(stage4)

@@ -6,6 +6,8 @@ output:
   rmarkdown::html_vignette:
     toc: true
     toc_depth: 3
+bibliography: references.bib
+csl: apa.csl
 vignette: >
   %\VignetteIndexEntry{Selecting statistical audit samples}
   %\VignetteEngine{knitr::rmarkdown}
@@ -31,7 +33,7 @@ number of items. Since they cannot inspect all of these items individually, they
 need to select a subset (i.e., a sample) from the total population to make a
 statement about a certain characteristic of the population. For this purpose,
 various selection methodologies are available that have become standard in an
-audit context.
+audit context [@leslie_1979].
 
 ### Sampling units
 
@@ -259,8 +261,8 @@ head(sample$sample, n = 6)
 
 #### Modified Sieve Sampling
 
-The fourth option for the sampling method is modified sieve sampling (Hoogduin,
-Hall, & Tsay, 2010). The algorithm starts by selecting a standard uniform random
+The fourth option for the sampling method is modified sieve sampling
+[@hoogduin_2010]. The algorithm starts by selecting a standard uniform random
 number $R_i$ between 0 and 1 for each item in the population. Next, the sieve
 ratio:
 
@@ -317,6 +319,4 @@ head(sample$sample, n = 6)
 ```
 
 ## References
-
-- Hoogduin, L. A., Hall, T. W., & Tsay, J. J. (2010). Modified sieve sampling: A method for single-and multi-stage probability-proportional-to-size sampling. *Auditing: A Journal of Practice & Theory*, 29(1), 125-148.
-- Leslie, D. A., Teitlebaum, A. D., & Anderson, R. J. (1979). *Dollar-unit Sampling: A Practical Guide for Auditors*. London: Pitman.
+<div id="refs"></div>
