@@ -71,7 +71,7 @@ x <- model_fairness(
   positive = "yes",
   metric = "prp"
 )
-summry(x)
+summary(x)
 ```
 
 ## Benchmarks
