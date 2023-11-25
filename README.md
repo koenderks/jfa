@@ -9,8 +9,6 @@
 
 **jfa** is an R package that provides statistical methods for auditing. The package includes functions for planning, performing, evaluating, and reporting audit samples compliant with international auditing standards, as well as functions for auditing data, such as testing the distribution of leading digits against Benford's law, and functions for auditing algorithms with respect to fairness. In addition to offering classical (frequentist) methods, **jfa** also provides a straightforward implementation of their Bayesian counterparts.
 
-For information on how to use the package, please consult the following documentation:
-
 - [Audit sampling](https://koenderks.github.io/jfa/articles/audit-sampling.html)
 - [Data auditing](https://koenderks.github.io/jfa/articles/data-auditing.html)
 - [Algorithm auditing](https://koenderks.github.io/jfa/articles/algorithm-auditing.html)
