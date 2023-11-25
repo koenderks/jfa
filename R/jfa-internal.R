@@ -29,15 +29,6 @@
   return(p)
 }
 
-.markdown_call <- function(x) {
-  if (length(grep("::", x)) > 0) {
-    parts <- strsplit(x, "::")[[1]]
-    return(getExportedValue(parts[1], parts[2]))
-  } else {
-    return(x)
-  }
-}
-
 .functional_density <- function(likelihood, analytical = TRUE) {
   if (analytical) {
     form <- switch(likelihood,

@@ -39,7 +39,6 @@ Suggests:
     BenfordTests (>= 1.2.0),
     BeyondBenford (>= 1.4),
     fairness,
-    kableExtra (>= 1.3.4),
     knitr,
     MUS (>= 0.1.6),
     rmarkdown,
