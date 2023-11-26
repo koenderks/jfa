@@ -198,16 +198,13 @@ therefore we will discuss it first in this vignette.</p>
 <div class="section level3">
 <h3 id="binomial-likelihood">Binomial likelihood<a class="anchor" aria-label="anchor" href="#binomial-likelihood"></a>
 </h3>
-<p>The simplest way to analyze partial misstatements is to aggregate
-them and use the sum of proportional misstatements (i.e., the total
-taint) to project to the population. Under the hood, this approach
-employs a binomial likelihood to estimate the misstatement in the
-population <span class="math inline">\(\theta\)</span>. The method uses
-the sum of the taints, denoted as <span class="math inline">\(k =
-\sum_{i=0}^n t_i\)</span>, as the number of errors and therefore does
-not take into account the fact that the data contain many zeros.</p>
-<p><span class="math display">\[k \sim \text{Binomial}(n,
-\theta)\]</span></p>
+<p>The easiest way to analyze partial misstatements is to aggregate them
+and simply extrapolate the sum of proportional misstatements (i.e., the
+total taint) to the population. Under the hood, this approach employs a
+binomial likelihood to estimate the misstatement in the population <span class="math inline">\(\theta\)</span>: <span class="math inline">\(k
+\sim \text{Binomial}(n, \theta)\)</span>. This method uses the sum of
+the taints, denoted as <span class="math inline">\(k = \sum_{i=0}^n
+t_i\)</span> as the number of misstatements, and the sample size <span class="math inline">\(n\)</span>.</p>
 <p>While aggregating the taints in this manner may not adhere to a
 strictly ‘clean’ modeling approach, as the binomial likelihood is only
 defined for binary data representing complete misstatements, it proves
@@ -253,10 +250,9 @@ taking into account the differences between the magnitude of the taints
 <span class="citation">(Bickel, 1992; Stringer, 1963)</span>. The bound
 is a variant of the binomial distribution, but considers the non-binary
 nature of the taints. The Stringer upper bound on the population
-misstatement is given by</p>
-<p><span class="math display">\[p(0, 1 - \alpha) + \sum_{i=1}^k [p(i, 1
-- \alpha) - p(i - 1, 1 - \alpha)] \times t_i.\]</span></p>
-<p>In the formula above, <span class="math inline">\(p(i; 1 -
+misstatement is given by <span class="math inline">\(p(0, 1 - \alpha) +
+\sum_{i=1}^k [p(i, 1 - \alpha) - p(i - 1, 1 - \alpha)] \times
+t_i\)</span>. In this formula, <span class="math inline">\(p(i; 1 -
 \alpha)\)</span> is the <span class="math inline">\(1 - \alpha\)</span>
 upper limit for at most <span class="math inline">\(i\)</span>
 misstatements in <span class="math inline">\(n\)</span> items according
@@ -326,11 +322,12 @@ model using the maximum likelihood, we use the default option
 where <span class="math inline">\(n_t\)</span> is the number of non-zero
 taints. Furthermore, <span class="math inline">\(\phi = \frac{\sum
 t}{n_t} = \frac{4.2294}{12} = 0.35245\)</span>. Hence, the most likely
-misstatement is estimated as <span class="math inline">\(\theta = p
-\times \phi = 0.084588\)</span>. The upper bound cannot be derived
-analytically and has to be determined by drawing samples from the fitted
-model. Hence, it is recommended to call <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> before
-executing the following command to make the results reproducible.</p>
+misstatement is estimated to be <span class="math inline">\(\theta = p
+\times \phi = 0.24 \times 0.35245 = 0.084588\)</span>. The upper bound
+cannot be derived analytically and has to be determined by drawing
+samples from the fitted model. Hence, it is recommended to call
+<code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> before executing the following command to make
+the results reproducible.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">eval_hurdle</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
@@ -374,18 +371,15 @@ pre-existing information about the misstatement.</p>
 <p>The prior distribution we typically assign in the binomial model is
 the beta distribution. Just as we handle taints in the binomial
 likelihood, they can also be aggregated given the prior distribution.
-The statistical model is:</p>
-<p><span class="math display">\[
-\begin{align}
-  k &amp;\sim \text{Binomial}(n, \theta)\\
-  \theta &amp;\sim \text{Beta}(\alpha, \, \beta)
-\end{align}
-\]</span></p>
-<p>Given the data <span class="math inline">\(n\)</span> and <span class="math inline">\(k = \sum t\)</span>, the posterior distribution
-for the default beta(1, 1) prior distribution
-(<code>prior = TRUE</code>) can be derived analytically and is</p>
-<p><span class="math display">\[\text{Beta}(\alpha = 1 + \sum t, \,
-\beta = 1 + n - \sum t).\]</span></p>
+The statistical model is <span class="math inline">\(k &amp;\sim
+\text{Binomial}(n, \theta)\)</span> and the prior distribution that is
+used is <span class="math inline">\(\theta &amp;\sim \text{Beta}(\alpha,
+\, \beta)\)</span>. Given the data <span class="math inline">\(n\)</span> and <span class="math inline">\(k =
+\sum t\)</span>, the posterior distribution for the default beta(1, 1)
+prior distribution (<code>prior = TRUE</code>) can be derived
+analytically and is <span class="math inline">\(\theta \sim
+\text{Beta}(\alpha = 1 + \sum t, \, \beta = 1 + n - \sum
+t)\)</span>.</p>
 <p>For the binomial likelihood, this Bayesian model can be applied in
 the <code><a href="../reference/evaluation.html">evaluation()</a></code> function using
 <code>method = "binomial"</code> in comination with
@@ -425,14 +419,10 @@ prior and posterior distribution can be visualized via the
 <p>It is also possible to fit a Bayesian variant of the hurdle beta
 model. This entails applying prior distributions for the parameters
 <span class="math inline">\(p\)</span>, <span class="math inline">\(\phi\)</span>, and <span class="math inline">\(\nu\)</span>. The prior distributions used by
-<strong>jfa</strong> for the Bayesian hurdle beta model are:</p>
-<p><span class="math display">\[
-\begin{align}
-  p &amp;\sim \text{Beta}(\alpha, \, \beta)\\
-  \phi &amp;\sim \text{Beta}(1, \, 1)\\
-  \nu &amp;\sim \text{Pareto}(1, \, 1.5)
-\end{align}
-\]</span></p>
+<strong>jfa</strong> for the Bayesian hurdle beta model are <span class="math inline">\(p &amp;\sim \text{Beta}(\alpha, \,
+\beta)\)</span>, <span class="math inline">\(\phi &amp;\sim
+\text{Beta}(1, \, 1)\)</span> and <span class="math inline">\(\nu
+&amp;\sim \text{Pareto}(1, \, 1.5)\)</span>.</p>
 <p>This Bayesian hurdle beta model can be applied using
 <code>method = "hurdle.beta"</code> in combination with
 <code>prior = TRUE</code> (or an object created by the

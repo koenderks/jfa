@@ -68,11 +68,11 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.7.1" id="jfa-071">jfa 0.7.1<a class="anchor" aria-label="anchor" href="#jfa-071"></a></h2>
 <p><strong>New features</strong></p>
-<ul><li>Added inflated methods to evaluate taintings in the evaluation function via <code>method = "inflated.poisson"</code> and <code>method = "hurdle.beta"</code>. Since these methods rely on mcmc sampling, they can take any form of prior.</li>
+<ul><li>Added inflated methods to evaluate taintings in the evaluation function via <code>method = "inflated.poisson"</code> and <code>method = "hurdle.beta"</code>. Since these methods rely on mcmc sampling, they can take any form of prior. They can also be fitted using maximum likelihood estimation with <code>prior = FALSE</code>.</li>
 </ul><p><strong>Minor changes</strong></p>
 <ul><li>For all plotting functions, <code>type = "estimates"</code> is now the default option.</li>
 </ul><p><strong>Major changes</strong></p>
-<ul><li>Removed the <code>report()</code> function.</li>
+<ul><li>Removed the <code>report()</code> function as it did not align with the rest of the functionality in the package.</li>
 </ul><p><strong>Bug fixes</strong></p>
 <ul><li>Fixed a bug in <code><a href="../reference/selection.html">selection()</a></code> where the numeric data in the sample was returned as character if the original data was entered as character only (i.e., <code>selection(data.frame(x = c("hello", "bye", "hi")), size = 2)</code>).</li>
 <li>
