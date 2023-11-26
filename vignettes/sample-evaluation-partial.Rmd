@@ -203,7 +203,7 @@ likelihood estimation, $p = \frac{n_t}{n} = \frac{12}{50} = 0.24$, where $n_t$
 is the number of non-zero taints. Furthermore,
 $\phi = \frac{\sum t}{n_t} = \frac{4.2294}{12} = 0.35245$. Hence, the most
 likely misstatement is estimated to be
-$\theta = p \times \phi = 0.24 \times 0.35245 = 0.084588$. The upper bound
+$\theta = p \times \phi$ = $0.24 \times 0.35245 = 0.084588$. The upper bound
 cannot be derived analytically and has to be determined by drawing samples from
 the fitted model. Hence, it is recommended to call `set.seed()` before executing
 the following command to make the results reproducible.
@@ -239,8 +239,8 @@ information about the misstatement.
 The prior distribution we typically assign in the binomial model is the beta
 distribution. Just as we handle taints in the binomial likelihood, they can also
 be aggregated given the prior distribution. The statistical model is
-$k &\sim \text{Binomial}(n, \theta)$ and the prior distribution that is used is
-$\theta &\sim \text{Beta}(\alpha, \, \beta)$. Given the data $n$ and
+$k \sim \text{Binomial}(n, \theta)$ and the prior distribution that is used is
+$\theta \sim \text{Beta}(\alpha, \, \beta)$. Given the data $n$ and
 $k = \sum t$, the posterior distribution for the default beta(1, 1) prior
 distribution (`prior = TRUE`) can be derived analytically and is
 $\theta \sim \text{Beta}(\alpha = 1 + \sum t, \, \beta = 1 + n - \sum t)$.
@@ -272,8 +272,8 @@ plot(eval_beta, type = "posterior")
 It is also possible to fit a Bayesian variant of the hurdle beta model. This
 entails applying prior distributions for the parameters $p$, $\phi$, and $\nu$.
 The prior distributions used by **jfa** for the Bayesian hurdle beta model are
-$p &\sim \text{Beta}(\alpha, \, \beta)$, $\phi &\sim \text{Beta}(1, \, 1)$ and
-$\nu &\sim \text{Pareto}(1, \, 1.5)$.
+$p \sim \text{Beta}(\alpha, \, \beta)$, $\phi \sim \text{Beta}(1, \, 1)$ and
+$\nu \sim \text{Pareto}(1, \, 1.5)$.
 
 This Bayesian hurdle beta model can be applied using `method = "hurdle.beta"` in
 combination with `prior = TRUE` (or an object created by the `auditPrior()`
