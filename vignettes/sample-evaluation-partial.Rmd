@@ -107,14 +107,13 @@ first in this vignette.
 
 ### Binomial likelihood
 
-The simplest way to analyze partial misstatements is to aggregate them and use
-the sum of proportional misstatements (i.e., the total taint) to project to the
+The easiest way to analyze partial misstatements is to aggregate them and simply
+extrapolate the sum of proportional misstatements (i.e., the total taint) to the
 population. Under the hood, this approach employs a binomial likelihood to
-estimate the misstatement in the population $\theta$. The method uses the sum of
-the taints, denoted as $k = \sum_{i=0}^n t_i$, as the number of errors and
-therefore does not take into account the fact that the data contain many zeros.
-
-$$k \sim \text{Binomial}(n, \theta)$$
+estimate the misstatement in the population $\theta$:
+$k \sim \text{Binomial}(n, \theta)$. This method uses the sum of the taints,
+denoted as $k = \sum_{i=0}^n t_i$ as the number of misstatements, and the sample
+size $n$.
 
 While aggregating the taints in this manner may not adhere to a strictly 'clean'
 modeling approach, as the binomial likelihood is only defined for binary data
@@ -148,11 +147,9 @@ account the differences between the magnitude of the taints [@stringer_1963;
 @bickel_1992]. The bound is a variant of the binomial distribution, but
 considers the non-binary nature of the taints. The Stringer upper bound on the
 population misstatement is given by
-
-$$p(0, 1 - \alpha) + \sum_{i=1}^k [p(i, 1 - \alpha) - p(i - 1, 1 - \alpha)] \times t_i.$$
-
-In the formula above, $p(i; 1 - \alpha)$ is the $1 - \alpha$ upper limit for at
-most $i$ misstatements in $n$ items according to the binomial distribution
+$p(0, 1 - \alpha) + \sum_{i=1}^k [p(i, 1 - \alpha) - p(i - 1, 1 - \alpha)] \times t_i$.
+In this formula, $p(i; 1 - \alpha)$ is the $1 - \alpha$ upper limit for at most
+$i$ misstatements in $n$ items according to the binomial distribution
 [@clopper_1934]. This is equal to the $1 - \alpha$ percentile of a
 beta($1 + i$, $n - i$) distribution [@pearson_1948]. When calculating the
 Stringer bound, the taints are placed in descending order in the formula as a
@@ -240,20 +237,12 @@ information about the misstatement.
 
 The prior distribution we typically assign in the binomial model is the beta
 distribution. Just as we handle taints in the binomial likelihood, they can also
-be aggregated given the prior distribution. The statistical model is:
-
-$$
-\begin{align}
-  k &\sim \text{Binomial}(n, \theta)\\
-  \theta &\sim \text{Beta}(\alpha, \, \beta)
-\end{align}
-$$
-
-Given the data $n$ and $k = \sum t$, the posterior distribution for the default
-beta(1, 1) prior distribution (`prior = TRUE`) can be derived analytically and
-is
-
-$$\text{Beta}(\alpha = 1 + \sum t, \, \beta = 1 + n - \sum t).$$
+be aggregated given the prior distribution. The statistical model is
+$k &\sim \text{Binomial}(n, \theta)$ and the prior distribution that is used is
+$\theta &\sim \text{Beta}(\alpha, \, \beta)$. Given the data $n$ and
+$k = \sum t$, the posterior distribution for the default beta(1, 1) prior
+distribution (`prior = TRUE`) can be derived analytically and is
+$\theta \sim \text{Beta}(\alpha = 1 + \sum t, \, \beta = 1 + n - \sum t)$.
 
 For the binomial likelihood, this Bayesian model can be applied in the
 `evaluation()` function using `method = "binomial"` in comination with
@@ -281,15 +270,9 @@ plot(eval_beta, type = "posterior")
 
 It is also possible to fit a Bayesian variant of the hurdle beta model. This
 entails applying prior distributions for the parameters $p$, $\phi$, and $\nu$.
-The prior distributions used by **jfa** for the Bayesian hurdle beta model are:
-
-$$
-\begin{align}
-  p &\sim \text{Beta}(\alpha, \, \beta)\\
-  \phi &\sim \text{Beta}(1, \, 1)\\
-  \nu &\sim \text{Pareto}(1, \, 1.5)
-\end{align}
-$$
+The prior distributions used by **jfa** for the Bayesian hurdle beta model are
+$p &\sim \text{Beta}(\alpha, \, \beta)$, $\phi &\sim \text{Beta}(1, \, 1)$ and
+$\nu &\sim \text{Pareto}(1, \, 1.5)$.
 
 This Bayesian hurdle beta model can be applied using `method = "hurdle.beta"` in
 combination with `prior = TRUE` (or an object created by the `auditPrior()`
