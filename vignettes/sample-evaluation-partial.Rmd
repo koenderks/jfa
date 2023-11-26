@@ -202,10 +202,11 @@ maximum likelihood, we use the default option `prior = FALSE`. Using maximum
 likelihood estimation, $p = \frac{n_t}{n} = \frac{12}{50} = 0.24$, where $n_t$
 is the number of non-zero taints. Furthermore,
 $\phi = \frac{\sum t}{n_t} = \frac{4.2294}{12} = 0.35245$. Hence, the most
-likely misstatement is estimated as $\theta = p \times \phi = 0.084588$. The
-upper bound cannot be derived analytically and has to be determined by drawing
-samples from the fitted model. Hence, it is recommended to call `set.seed()`
-before executing the following command to make the results reproducible.
+likely misstatement is estimated to be
+$\theta = p \times \phi = 0.24 \times 0.35245 = 0.084588$. The upper bound
+cannot be derived analytically and has to be determined by drawing samples from
+the fitted model. Hence, it is recommended to call `set.seed()` before executing
+the following command to make the results reproducible.
 
 ```{r}
 set.seed(1)
