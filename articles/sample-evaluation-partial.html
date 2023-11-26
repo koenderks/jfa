@@ -323,11 +323,11 @@ where <span class="math inline">\(n_t\)</span> is the number of non-zero
 taints. Furthermore, <span class="math inline">\(\phi = \frac{\sum
 t}{n_t} = \frac{4.2294}{12} = 0.35245\)</span>. Hence, the most likely
 misstatement is estimated to be <span class="math inline">\(\theta = p
-\times \phi = 0.24 \times 0.35245 = 0.084588\)</span>. The upper bound
-cannot be derived analytically and has to be determined by drawing
-samples from the fitted model. Hence, it is recommended to call
-<code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> before executing the following command to make
-the results reproducible.</p>
+\times \phi\)</span> = <span class="math inline">\(0.24 \times 0.35245 =
+0.084588\)</span>. The upper bound cannot be derived analytically and
+has to be determined by drawing samples from the fitted model. Hence, it
+is recommended to call <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> before executing the
+following command to make the results reproducible.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">eval_hurdle</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
@@ -371,15 +371,14 @@ pre-existing information about the misstatement.</p>
 <p>The prior distribution we typically assign in the binomial model is
 the beta distribution. Just as we handle taints in the binomial
 likelihood, they can also be aggregated given the prior distribution.
-The statistical model is <span class="math inline">\(k &amp;\sim
+The statistical model is <span class="math inline">\(k \sim
 \text{Binomial}(n, \theta)\)</span> and the prior distribution that is
-used is <span class="math inline">\(\theta &amp;\sim \text{Beta}(\alpha,
-\, \beta)\)</span>. Given the data <span class="math inline">\(n\)</span> and <span class="math inline">\(k =
-\sum t\)</span>, the posterior distribution for the default beta(1, 1)
-prior distribution (<code>prior = TRUE</code>) can be derived
-analytically and is <span class="math inline">\(\theta \sim
-\text{Beta}(\alpha = 1 + \sum t, \, \beta = 1 + n - \sum
-t)\)</span>.</p>
+used is <span class="math inline">\(\theta \sim \text{Beta}(\alpha, \,
+\beta)\)</span>. Given the data <span class="math inline">\(n\)</span>
+and <span class="math inline">\(k = \sum t\)</span>, the posterior
+distribution for the default beta(1, 1) prior distribution
+(<code>prior = TRUE</code>) can be derived analytically and is <span class="math inline">\(\theta \sim \text{Beta}(\alpha = 1 + \sum t, \,
+\beta = 1 + n - \sum t)\)</span>.</p>
 <p>For the binomial likelihood, this Bayesian model can be applied in
 the <code><a href="../reference/evaluation.html">evaluation()</a></code> function using
 <code>method = "binomial"</code> in comination with
@@ -419,10 +418,10 @@ prior and posterior distribution can be visualized via the
 <p>It is also possible to fit a Bayesian variant of the hurdle beta
 model. This entails applying prior distributions for the parameters
 <span class="math inline">\(p\)</span>, <span class="math inline">\(\phi\)</span>, and <span class="math inline">\(\nu\)</span>. The prior distributions used by
-<strong>jfa</strong> for the Bayesian hurdle beta model are <span class="math inline">\(p &amp;\sim \text{Beta}(\alpha, \,
-\beta)\)</span>, <span class="math inline">\(\phi &amp;\sim
-\text{Beta}(1, \, 1)\)</span> and <span class="math inline">\(\nu
-&amp;\sim \text{Pareto}(1, \, 1.5)\)</span>.</p>
+<strong>jfa</strong> for the Bayesian hurdle beta model are <span class="math inline">\(p \sim \text{Beta}(\alpha, \, \beta)\)</span>,
+<span class="math inline">\(\phi \sim \text{Beta}(1, \, 1)\)</span> and
+<span class="math inline">\(\nu \sim \text{Pareto}(1, \,
+1.5)\)</span>.</p>
 <p>This Bayesian hurdle beta model can be applied using
 <code>method = "hurdle.beta"</code> in combination with
 <code>prior = TRUE</code> (or an object created by the
