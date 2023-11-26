@@ -318,8 +318,13 @@ evaluation using the specified prior.</p></dd>
 <li><p><code>hypergeometric</code>:          Evaluates the sample with the
    hypergeometric distribution. If combined with <code>prior = TRUE</code>,
    performs Bayesian evaluation using a <em>beta-binomial</em> prior.</p></li>
-<li><p><code>inflated.poisson</code>:        Inflated Poisson model.</p></li>
-<li><p><code>hurdle.beta</code>:           Inflated beta model.</p></li>
+<li><p><code>inflated.poisson</code>:        Inflated Poisson model incorporating
+    the explicit probability of misstatement being zero. If
+    <code>prior = TRUE</code>, performs Bayesian evaluation using a <em>beta</em>
+    prior.</p></li>
+<li><p><code>hurdle.beta</code>:             Hurdle beta model incorporating the
+    explicit probability of a taint being zero. If <code>prior = TRUE</code>, this
+    setup performs Bayesian evaluation using a <em>beta</em> prior.</p></li>
 <li><p><code>stringer.poisson</code>:        Evaluates the sample with the Stringer
    bound using the Poisson distribution.</p></li>
 <li><p><code>stringer.binomial</code>:       Evaluates the sample with the Stringer
