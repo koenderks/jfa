@@ -327,11 +327,10 @@ where <span class="math inline">\(n_t\)</span> is the number of non-zero
 taints. Furthermore, <span class="math inline">\(\phi = \frac{\sum
 t}{n_t} = \frac{4.2294}{12} = 0.35245\)</span>. Hence, the most likely
 misstatement is estimated as <span class="math inline">\(\theta = p
-\times \phi = 0.084588\)</span> (results can differ slightly due to
-optimization). The upper bound cannot be derived analytically and has to
-be determined by drawing samples from the fitted model. Hence, it is
-recommended to call <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> to make the results
-reproducible.</p>
+\times \phi = 0.084588\)</span>. The upper bound cannot be derived
+analytically and has to be determined by drawing samples from the fitted
+model. Hence, it is recommended to call <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> before
+executing the following command to make the results reproducible.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">eval_hurdle</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
