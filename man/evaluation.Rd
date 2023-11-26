@@ -176,8 +176,13 @@ This section lists the available options for the \code{method}
  \item{\code{hypergeometric}:          Evaluates the sample with the
    hypergeometric distribution. If combined with \code{prior = TRUE},
    performs Bayesian evaluation using a \emph{beta-binomial} prior.}
- \item{\code{inflated.poisson}:        Inflated Poisson model.}
- \item{\code{hurdle.beta}:           Inflated beta model.}
+ \item{\code{inflated.poisson}:        Inflated Poisson model incorporating
+    the explicit probability of misstatement being zero. If
+    \code{prior = TRUE}, performs Bayesian evaluation using a \emph{beta}
+    prior.}
+ \item{\code{hurdle.beta}:             Hurdle beta model incorporating the
+    explicit probability of a taint being zero. If \code{prior = TRUE}, this
+    setup performs Bayesian evaluation using a \emph{beta} prior.}
  \item{\code{stringer.poisson}:        Evaluates the sample with the Stringer
    bound using the Poisson distribution.}
  \item{\code{stringer.binomial}:       Evaluates the sample with the Stringer

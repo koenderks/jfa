@@ -82,29 +82,29 @@
 #'   to the methodology described in Fisher (1970) and Jamil et al. (2017).
 #'
 #'   \itemize{
-#'     \item{Predictive rate parity (\code{prp}): }{calculated as TP / (TP +
+#'     \item{Predictive rate parity (\code{prp}): calculated as TP / (TP +
 #'       FP), its ratio quantifies whether the predictive rate is equal across
 #'       protected classes.}
-#'     \item{Proportional parity (\code{pp}): }{calculated as (TP + FP) / (TP +
+#'     \item{Proportional parity (\code{pp}): calculated as (TP + FP) / (TP +
 #'       FP + TN + FN), its ratio quantifies whether the positive prediction
 #'       rate is equal across protected classes.}
-#'     \item{Accuracy parity (\code{ap}): }{calculated as (TP + TN) / (TP + FP +
+#'     \item{Accuracy parity (\code{ap}): calculated as (TP + TN) / (TP + FP +
 #'       TN + FN), quantifies whether the accuracy is the same across groups.}
 #'     \item{False negative rate parity (\code{fnrp}): }{calculated as FN / (FP
 #'       + FN), quantifies whether the false negative rate is the same across
 #'       groups.}
-#'     \item{False positive rate parity (\code{fprp}): }{calculated as FP / (TN
+#'     \item{False positive rate parity (\code{fprp}): calculated as FP / (TN
 #'       + FP), quantifes whether the false positive rate is the same across
 #'       groups.}
-#'     \item{True positive rate parity (\code{tprp}): }{calculated as TP / (TP +
+#'     \item{True positive rate parity (\code{tprp}): calculated as TP / (TP +
 #'       FN), quantifies whether the true positive rate is the same across
 #'       groups.}
-#'     \item{Negative predicted value parity (\code{npvp}): }{calculated as TN /
+#'     \item{Negative predicted value parity (\code{npvp}): calculated as TN /
 #'       (TN + FN), quantifies whether the negative predicted value is equal
 #'       across groups.}
-#'     \item{Specificity parity (\code{sp}): }{calculated as TN / (TN + FP),
+#'     \item{Specificity parity (\code{sp}): calculated as TN / (TN + FP),
 #'       quantifies whether the true positive rate is the same across groups.}
-#'     \item{Demographic parity (\code{dp}): }{calculated as TP + FP, quantifies
+#'     \item{Demographic parity (\code{dp}): calculated as TP + FP, quantifies
 #'       whether the positive predictions are equal across groups.}
 #'   }
 #'
