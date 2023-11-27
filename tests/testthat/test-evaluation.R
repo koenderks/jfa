@@ -602,8 +602,8 @@ test_that(desc = "(id: f3-v0.6.5-t9) Test Bayesian evaluation with different uni
   prior1 <- auditPrior(method = "default", likelihood = "binomial")
   prior2 <- auditPrior(method = "param", likelihood = "uniform", alpha = 0, beta = 1)
   prior3 <- auditPrior(method = "nonparam", samples = seq(0, 1, length.out = 10001))
-  prior4 <- auditPrior(method = "nonparam", samples = runif(1000000, 0, 1))
-  prior5 <- auditPrior(method = "nonparam", samples = rbeta(1000000, 1, 1))
+  prior4 <- auditPrior(method = "nonparam", samples = stats::runif(1000000, 0, 1))
+  prior5 <- auditPrior(method = "nonparam", samples = stats::rbeta(1000000, 1, 1))
   priors <- list(prior1, prior2, prior3, prior4, prior5)
   for (i in 1:5) {
     res <- evaluation(materiality = 0.05, prior = priors[[i]], method = "binomial", x = 1, n = 100)
@@ -616,7 +616,7 @@ test_that(desc = "(id: f3-v0.6.5-t9) Test Bayesian evaluation with different uni
 test_that(desc = "(id: f3-v0.7.0-t1) Evaluation with stringer.poisson method", {
   testthat::skip_on_cran()
   set.seed(1)
-  population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
+  population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = stats::runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "poisson")
   samp <- selection(population, size = jfaRes, units = "items", method = "random")$sample
   samp$auditValue <- samp[["bookValue"]]
@@ -627,10 +627,32 @@ test_that(desc = "(id: f3-v0.7.0-t1) Evaluation with stringer.poisson method", {
 test_that(desc = "(id: f3-v0.7.0-t2) Evaluation with stringer.hypergeometric method", {
   testthat::skip_on_cran()
   set.seed(1)
-  population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
+  population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = stats::runif(n = 1000, min = 100, max = 500))
   jfaRes <- planning(conf.level = 0.95, materiality = 0.05, likelihood = "poisson")
   samp <- selection(population, size = jfaRes, units = "items", method = "random")$sample
   samp$auditValue <- samp[["bookValue"]]
   jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "stringer.hypergeometric", N.units = sum(population$bookValue))
   expect_equal(jfaEval[["ub"]], 0.04869673, tolerance = 0.001)
+})
+
+# jfa 0.7.1
+
+test_that(desc = "(id: f3-v0.7.0-t1) Evaluation with inflated.poisson method", {
+  testthat::skip_on_cran()
+  set.seed(1)
+  population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = stats::runif(n = 1000, min = 100, max = 500))
+  samp <- selection(population, size = 60, units = "items", method = "random")$sample
+  samp$auditValue <- samp[["bookValue"]] * (1 - stats::rnorm(nrow(samp), 0.5, 0.3) * stats::rbinom(nrow(samp), 1, 0.03))
+  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "inflated.poisson", N.items = nrow(population), N.units = sum(population[["bookValue"]]))
+  expect_equal(jfaEval[["mle"]], 0.04524783, tolerance = 0.001)
+})
+
+test_that(desc = "(id: f3-v0.7.0-t2) Evaluation with hurdle.beta method", {
+  testthat::skip_on_cran()
+  set.seed(1)
+  population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = stats::runif(n = 1000, min = 100, max = 500))
+  samp <- selection(population, size = 60, units = "items", method = "random")$sample
+  samp$auditValue <- samp[["bookValue"]] * (1 - stats::rnorm(nrow(samp), 0.5, 0.3) * stats::rbinom(nrow(samp), 1, 0.03))
+  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "inflated.poisson")
+  expect_equal(jfaEval[["ub"]], 0.03191938, tolerance = 0.001)
 })
