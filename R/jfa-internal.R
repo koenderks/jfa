@@ -553,8 +553,10 @@
     )
     if (any(taints == 1)) {
       model <- stanmodels[["beta_zero_one"]]
+      pars <- c("phi", "nu", "prob")
     } else {
       model <- stanmodels[["beta_zero"]]
+      pars <- c("phi", "nu", "p_error")
     }
   } else if (likelihood == "inflated.poisson") {
     data <- list(
@@ -574,12 +576,13 @@
       exponential_prior = as.numeric(likelihood == "exponential")
     )
     model <- stanmodels[["poisson_zero"]]
+    pars <- c("p_error", "lambda")
   }
   suppressWarnings({
     raw_prior <- rstan::sampling(
       object = model,
       data = c(data, use_likelihood = 0),
-      pars = "theta",
+      pars = c("theta", pars),
       iter = getOption("mc.iterations", 2000),
       warmup = getOption("mc.warmup", 1000),
       chains = getOption("mc.chains", 4),
@@ -591,7 +594,7 @@
     raw_posterior <- rstan::sampling(
       object = model,
       data = c(data, use_likelihood = 1),
-      pars = "theta",
+      pars = c("theta", pars),
       iter = getOption("mc.iterations", 2000),
       warmup = getOption("mc.warmup", 1000),
       chains = getOption("mc.chains", 4),
@@ -601,9 +604,94 @@
       refresh = getOption("mc.refresh", 0)
     )
   })
-  samples <- cbind(rstan::extract(raw_posterior)$theta, rstan::extract(raw_prior)$theta)
-  stopifnot("Stan model could not be fitted...check your priors" = !is.null(samples) && ncol(samples) == 2)
-  return(samples)
+  out <- list()
+  samples <- cbind(
+    rstan::extract(raw_posterior)$theta,
+    rstan::extract(raw_prior)$theta
+  )
+  complete_samples <- !is.null(samples) && ncol(samples) == 2
+  stopifnot("Stan model could not be fitted...check your priors" = complete_samples)
+  out[["samples"]] <- samples
+  # Parameter estimates
+  probs <- c(0.025, 0.05, 0.25, 0.5, 0.75, 0.95, 0.975)
+  samps <- rstan::extract(raw_posterior)
+  if (likelihood == "inflated.poisson") {
+    estimates <- data.frame(
+      mode = c(
+        .comp_mode_bayes(analytical = FALSE, samples = samps[["p_error"]]),
+        .comp_mode_bayes(analytical = FALSE, samples = samps[["lambda"]])
+      ),
+      mean = c(
+        mean(samps[["p_error"]]),
+        mean(samps[["lambda"]])
+      ),
+      sd = c(
+        stats::sd(samps[["p_error"]]),
+        stats::sd(samps[["lambda"]])
+      ),
+      row.names = c("p(error)", "mean")
+    )
+    estimates <- cbind.data.frame(estimates, rbind(
+      stats::quantile(samps[["p_error"]], probs),
+      stats::quantile(samps[["lambda"]], probs)
+    ))
+  } else {
+    if (any(taints == 1)) {
+      estimates <- data.frame(
+        mode = c(
+          .comp_mode_bayes(analytical = FALSE, samples = samps[["prob[3]"]]),
+          .comp_mode_bayes(analytical = FALSE, samples = samps[["phi"]]),
+          .comp_mode_bayes(analytical = FALSE, samples = samps[["nu"]]),
+          .comp_mode_bayes(analytical = FALSE, samples = samps[["prob[2]"]])
+        ),
+        mean = c(
+          mean(samps[["prob[3]"]]),
+          mean(samps[["phi"]]),
+          mean(samps[["nu"]]),
+          mean(samps[["prob[2]"]])
+        ),
+        sd = c(
+          stats::sd(samps[["prob[3]"]]),
+          stats::sd(samps[["phi"]]),
+          stats::sd(samps[["nu"]]),
+          stats::sd(samps[["prob[2]"]])
+        ),
+        row.names = c("p(taint)", "mean", "concentration", "p(full)")
+      )
+      estimates <- cbind.data.frame(estimates, rbind(
+        stats::quantile(samps[["prob[3]"]], probs),
+        stats::quantile(samps[["phi"]], probs),
+        stats::quantile(samps[["nu"]], probs),
+        stats::quantile(samps[["prob[2]"]], probs)
+      ))
+    } else {
+      estimates <- data.frame(
+        mode = c(
+          .comp_mode_bayes(analytical = FALSE, samples = samps[["p_error"]]),
+          .comp_mode_bayes(analytical = FALSE, samples = samps[["phi"]]),
+          .comp_mode_bayes(analytical = FALSE, samples = samps[["nu"]])
+        ),
+        mean = c(
+          mean(samps[["p_error"]]),
+          mean(samps[["phi"]]),
+          mean(samps[["nu"]])
+        ),
+        sd = c(
+          stats::sd(samps[["p_error"]]),
+          stats::sd(samps[["phi"]]),
+          stats::sd(samps[["nu"]])
+        ),
+        row.names = c("p(taint)", "mean", "concentration")
+      )
+      estimates <- cbind.data.frame(estimates, rbind(
+        stats::quantile(samps[["p_error"]], probs),
+        stats::quantile(samps[["phi"]], probs),
+        stats::quantile(samps[["nu"]], probs)
+      ))
+    }
+  }
+  out[["estimates"]] <- estimates
+  return(out)
 }
 
 .optim_twopart_cp <- function(likelihood, n.obs, taints, diff, N.items, N.units, alternative, conf.level) {
@@ -674,19 +762,20 @@
     if (likelihood == "inflated.poisson") {
       p <- length(which(taints > 0)) / n.obs
       lambda <- sum(diff) / sum(diff > 0)
-      out[["mle"]] <- (p * lambda * N.items) / N.units
+      theta <- (p * lambda * N.items) / N.units
     } else {
       if (any(taints == 1)) {
         p <- sum(taints > 0 & taints < 1) / n.obs
         phi <- sum(taints[taints > 0 & taints < 1]) / sum(taints > 0 & taints < 1)
         p2 <- sum(taints == 1) / n.obs
-        out[["mle"]] <- p * phi + p2
+        theta <- p * phi + p2
       } else {
         p <- sum(taints > 0) / n.obs
         phi <- sum(taints) / sum(taints > 0)
-        out[["mle"]] <- p * phi
+        theta <- p * phi
       }
     }
+    out[["mle"]] <- theta
     suppressWarnings({
       raw <- rstan::optimizing(
         object = model,
@@ -708,6 +797,72 @@
       "two.sided" = stats::quantile(raw$theta_tilde[, "theta"], conf.level + (1 - conf.level) / 2),
       "greater" = 1
     )
+    # Parameter estimates
+    probs <- c(0.025, 0.05, 0.25, 0.5, 0.75, 0.95, 0.975)
+    if (likelihood == "inflated.poisson") {
+      estimates <- data.frame(
+        mode = c(
+          .comp_mode_bayes(analytical = FALSE, samples = raw$theta_tilde[, "p_error"]),
+          .comp_mode_bayes(analytical = FALSE, samples = raw$theta_tilde[, "lambda"])
+        ),
+        mean = c(p, lambda),
+        sd = c(
+          stats::sd(raw$theta_tilde[, "p_error"]),
+          stats::sd(raw$theta_tilde[, "lambda"])
+        ),
+        row.names = c("p(error)", "mean")
+      )
+      estimates <- cbind.data.frame(estimates, rbind(
+        stats::quantile(raw$theta_tilde[, "p_error"], probs),
+        stats::quantile(raw$theta_tilde[, "lambda"], probs)
+      ))
+    } else {
+      if (any(taints == 1)) {
+        estimates <- data.frame(
+          mode = c(
+            .comp_mode_bayes(analytical = FALSE, samples = raw$theta_tilde[, "prob[3]"]),
+            .comp_mode_bayes(analytical = FALSE, samples = raw$theta_tilde[, "phi"]),
+            .comp_mode_bayes(analytical = FALSE, samples = raw$theta_tilde[, "nu"]),
+            .comp_mode_bayes(analytical = FALSE, samples = raw$theta_tilde[, "prob[2]"])
+          ),
+          mean = c(p, phi, mean(raw$theta_tilde[, "nu"]), p2),
+          sd = c(
+            stats::sd(raw$theta_tilde[, "prob[3]"]),
+            stats::sd(raw$theta_tilde[, "phi"]),
+            stats::sd(raw$theta_tilde[, "nu"]),
+            stats::sd(raw$theta_tilde[, "prob[2]"])
+          ),
+          row.names = c("p(taint)", "mean", "concentration", "p(full error)")
+        )
+        estimates <- cbind.data.frame(estimates, rbind(
+          stats::quantile(raw$theta_tilde[, "prob[3]"], probs),
+          stats::quantile(raw$theta_tilde[, "phi"], probs),
+          stats::quantile(raw$theta_tilde[, "nu"], probs),
+          stats::quantile(raw$theta_tilde[, "prob[2]"], probs)
+        ))
+      } else {
+        estimates <- data.frame(
+          mode = c(
+            .comp_mode_bayes(analytical = FALSE, samples = raw$theta_tilde[, "p_error"]),
+            .comp_mode_bayes(analytical = FALSE, samples = raw$theta_tilde[, "phi"]),
+            .comp_mode_bayes(analytical = FALSE, samples = raw$theta_tilde[, "nu"])
+          ),
+          mean = c(p, phi, mean(raw$theta_tilde[, "nu"])),
+          sd = c(
+            stats::sd(raw$theta_tilde[, "p_error"]),
+            stats::sd(raw$theta_tilde[, "phi"]),
+            stats::sd(raw$theta_tilde[, "nu"])
+          ),
+          row.names = c("p(taint)", "mean", "concentration")
+        )
+        estimates <- cbind.data.frame(estimates, rbind(
+          stats::quantile(raw$theta_tilde[, "p_error"], probs),
+          stats::quantile(raw$theta_tilde[, "phi"], probs),
+          stats::quantile(raw$theta_tilde[, "nu"], probs)
+        ))
+      }
+    }
+    out[["estimates"]] <- estimates
   }
   return(out)
 }
@@ -733,6 +888,7 @@
       exponential_prior = as.numeric(likelihood == "exponential")
     )
     model <- stanmodels[["pp_error"]]
+    pars <- c("phi", "nu")
   } else if (likelihood == "beta") {
     data <- list(
       S = nstrata - 1,
@@ -750,12 +906,13 @@
       exponential_prior = as.numeric(likelihood == "exponential")
     )
     model <- stanmodels[["pp_taint"]]
+    pars <- c("phi", "nu", "mu", "sigma")
   }
   suppressWarnings({
     raw_prior <- rstan::sampling(
       object = model,
       data = c(data, use_likelihood = 0),
-      pars = "theta_s",
+      pars = c("theta_s", pars),
       iter = getOption("mc.iterations", 2000),
       warmup = getOption("mc.warmup", 1000),
       chains = getOption("mc.chains", 4),
@@ -767,7 +924,7 @@
     raw_posterior <- rstan::sampling(
       object = model,
       data = c(data, use_likelihood = 1),
-      pars = "theta_s",
+      pars = c("theta_s", pars),
       iter = getOption("mc.iterations", 2000),
       warmup = getOption("mc.warmup", 1000),
       chains = getOption("mc.chains", 4),
@@ -777,9 +934,68 @@
       refresh = getOption("mc.refresh", 0)
     )
   })
-  samples <- cbind(rstan::extract(raw_posterior)$theta_s, rstan::extract(raw_prior)$theta_s)
-  stopifnot("Stan model could not be fitted...check your priors" = !is.null(samples) && ncol(samples) == (nstrata - 1) * 2)
-  return(samples)
+  samples <- cbind(
+    rstan::extract(raw_posterior)$theta_s,
+    rstan::extract(raw_prior)$theta_s
+  )
+  complete_samples <- !is.null(samples) && ncol(samples) == (nstrata - 1) * 2
+  stopifnot("Stan model could not be fitted...check your priors" = complete_samples)
+  out <- list()
+  out[["samples"]] <- samples
+  # Parameter estimates
+  probs <- c(0.025, 0.05, 0.25, 0.5, 0.75, 0.95, 0.975)
+  samps <- rstan::extract(raw_posterior)
+  if (likelihood == "binomial" || likelihood == "poisson") {
+    estimates <- data.frame(
+      mode = c(
+        .comp_mode_bayes(analytical = FALSE, samples = samps[["phi"]]),
+        .comp_mode_bayes(analytical = FALSE, samples = samps[["nu"]])
+      ),
+      mean = c(
+        mean(samps[["phi"]]),
+        mean(samps[["nu"]])
+      ),
+      sd = c(
+        stats::sd(samps[["phi"]]),
+        stats::sd(samps[["nu"]])
+      ),
+      row.names = c("mean", "concentration")
+    )
+    estimates <- cbind.data.frame(estimates, rbind(
+      stats::quantile(samps[["phi"]], probs),
+      stats::quantile(samps[["nu"]], probs)
+    ))
+  } else {
+    estimates <- data.frame(
+      mode = c(
+        .comp_mode_bayes(analytical = FALSE, samples = samps[["phi"]]),
+        .comp_mode_bayes(analytical = FALSE, samples = samps[["nu"]]),
+        .comp_mode_bayes(analytical = FALSE, samples = samps[["mu"]]),
+        .comp_mode_bayes(analytical = FALSE, samples = samps[["sigma"]])
+      ),
+      mean = c(
+        mean(samps[["phi"]]),
+        mean(samps[["nu"]]),
+        mean(samps[["mu"]]),
+        mean(samps[["sigma"]])
+      ),
+      sd = c(
+        stats::sd(samps[["phi"]]),
+        stats::sd(samps[["nu"]]),
+        stats::sd(samps[["mu"]]),
+        stats::sd(samps[["sigma"]])
+      ),
+      row.names = c("mean (average)", "mean (concentration)", "concentration (average)", "concentration (sd)")
+    )
+    estimates <- cbind.data.frame(estimates, rbind(
+      stats::quantile(samps[["phi"]], probs),
+      stats::quantile(samps[["nu"]], probs),
+      stats::quantile(samps[["mu"]], probs),
+      stats::quantile(samps[["sigma"]], probs)
+    ))
+  }
+  out[["estimates"]] <- estimates
+  return(out)
 }
 
 .mcmc_analytical <- function(nstrata, t.obs, n.obs, N.units, prior) {

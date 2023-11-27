@@ -541,6 +541,7 @@ evaluation <- function(materiality = NULL,
     }
   }
   mle <- lb <- ub <- precision <- p.val <- K <- numeric(nstrata)
+  model_estimates <- NULL
   # Compute results
   if (!use_stratification || pooling != "partial") {
     for (i in seq_len(nstrata)) {
@@ -569,7 +570,9 @@ evaluation <- function(materiality = NULL,
                 stopifnot("missing value for 'N.items'" = !is.null(N.items))
                 stopifnot("missing value for 'N.units'" = !is.null(N.units))
               }
-              samples <- .mcmc_twopart_cp(method, n.obs[i], taints[[i]], book_values[i][[1]] - audit_values[i][[1]], N.items[i], N.units[i], prior)
+              out <- .mcmc_twopart_cp(method, n.obs[i], taints[[i]], book_values[i][[1]] - audit_values[i][[1]], N.items[i], N.units[i], prior)
+              samples <- out[["samples"]]
+              model_estimates <- out[["estimates"]]
             } else {
               samples <- .mcmc_cp(method, t.obs[i], n.obs[i], prior)
             }
@@ -603,6 +606,7 @@ evaluation <- function(materiality = NULL,
             mle[i] <- out[["mle"]]
             lb[i] <- out[["lb"]]
             ub[i] <- out[["ub"]]
+            model_estimates <- out[["estimates"]]
           }
         }
         if (method == "hypergeometric") {
@@ -647,14 +651,16 @@ evaluation <- function(materiality = NULL,
     stopifnot("pooling = 'partial' only possible when 'prior != FALSE'" = is_bayesian)
     stopifnot("pooling = 'partial' requires a parametric 'prior'" = !mcmc_prior)
     if (broken_taints && has_data) {
-      stratum_samples <- .mcmc_pp("beta", n.obs, t.obs, taints, nstrata, stratum, prior)
+      out <- .mcmc_pp("beta", n.obs, t.obs, taints, nstrata, stratum, prior)
     } else {
       if (broken_taints) {
         message("sum of taints in each stratum is rounded upwards")
         t.obs <- ceiling(t.obs)
       }
-      stratum_samples <- .mcmc_pp(method, n.obs, t.obs, t = NULL, nstrata, stratum, prior)
+      out <- .mcmc_pp(method, n.obs, t.obs, t = NULL, nstrata, stratum, prior)
     }
+    stratum_samples <- out[["samples"]]
+    model_estimates <- out[["estimates"]]
     for (i in 2:nstrata) {
       if (is_bayesian) {
         mle[i] <- .comp_mode_bayes(analytical = FALSE, samples = stratum_samples[, i - 1])
@@ -719,6 +725,7 @@ evaluation <- function(materiality = NULL,
   if (method == "hypergeometric" && !is_bayesian) {
     result[["K"]] <- K[1]
   }
+  result[["estimates"]] <- model_estimates
   # Prior and posterior distribution
   if (is_bayesian) {
     analytical <- !mcmc_prior && !mcmc_posterior

@@ -786,7 +786,7 @@ plot.jfaEvaluation <- function(x, type = c("estimates", "posterior"), ...) {
         linetype = "dashed"
       )
     }
-    p <- p + ggplot2::geom_errorbar(size = 0.5, width = 0.25) +
+    p <- p + ggplot2::geom_errorbar(linewidth = 0.5, width = 0.25) +
       ggplot2::geom_point(size = 2.5, fill = "darkgray", colour = "black", shape = 21) +
       ggplot2::scale_x_continuous(name = NULL, breaks = xBreaks, limits = xLimits, labels = df$lab) +
       ggplot2::scale_y_continuous(name = "Misstatement", limits = c(0, 1), breaks = seq(0, 1, 0.2)) +
