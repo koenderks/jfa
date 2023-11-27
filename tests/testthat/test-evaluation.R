@@ -653,6 +653,6 @@ test_that(desc = "(id: f3-v0.7.0-t2) Evaluation with hurdle.beta method", {
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = stats::runif(n = 1000, min = 100, max = 500))
   samp <- selection(population, size = 60, units = "items", method = "random")$sample
   samp$auditValue <- samp[["bookValue"]] * (1 - stats::rnorm(nrow(samp), 0.5, 0.3) * stats::rbinom(nrow(samp), 1, 0.03))
-  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "inflated.poisson")
+  jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "hurdle.beta")
   expect_equal(jfaEval[["ub"]], 0.03191938, tolerance = 0.001)
 })
