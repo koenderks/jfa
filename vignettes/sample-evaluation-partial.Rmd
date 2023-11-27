@@ -73,14 +73,15 @@ sample <- selection(
 
 After inspecting the items in the sample, each item is annotated with its
 recorded (i.e., book) value and its true (i.e., audit) value. When evaluating
-partial misstatements, auditors often calculate the 'taint' $t$ of each item,
-which is defined as the proportional misstatement in the item:
+partial misstatements, auditors often calculate the 'taint' $t_i$ of each item
+$i$, which is defined as the proportional misstatement in the item:
 
-$$t = \frac{\text{Book value} \, -  \, \text{Audit value}}{\text{Book value}}.$$
+$$t_i = \frac{\text{Book value}_i \, -  \, \text{Audit value}_i}{\text{Book value}_i}.$$
 
-For instance, an item that is booked for $1,000 but has an audit value of $500
-has a taint of $t = 0.5$. On the other hand, if an item does not contain any
-misstatement, it has a taint of $t = 0$.
+For instance, if item $i$ is booked for $1,000 but has an audit value of $500 it
+has a taint of $t_i$ = 0.5. On the other hand, if the item does not contain any
+misstatement, it has a taint of $t_i$ = 0. Lastly, if the item is fully
+misstated (i.e., have a book value of $0), its taint is $t_i$ = 1.
 
 As is often the case in practice, this audit sample contains many taints that
 are zero, and only some taints that are greater than zero. The table below shows
@@ -110,10 +111,10 @@ first in this vignette.
 The easiest way to analyze partial misstatements is to aggregate them and simply
 extrapolate the sum of proportional misstatements (i.e., the total taint) to the
 population. Under the hood, this approach employs a binomial likelihood to
-estimate the misstatement in the population $\theta$:
-$k \sim \text{Binomial}(n, \theta)$. This method uses the sum of the taints,
-denoted as $k = \sum_{i=0}^n t_i$ as the number of misstatements, and the sample
-size $n$.
+estimate the misstatement: *k* $\sim$ Binomial(*n*, $\theta$). In this model,
+$\theta$ represents the misstatement in the population. This method uses the sum
+of the taints, denoted as *k* = $\sum_{i=0}^n t_i$ as the number of
+misstatements, together with the sample size *n*.
 
 While aggregating the taints in this manner may not adhere to a strictly 'clean'
 modeling approach, as the binomial likelihood is only defined for binary data
@@ -124,7 +125,7 @@ therefore it is commonly applied in practice.
 
 For the classical binomial likelihood, aggregating the taints can be done using
 `method = "binomial"` in the `evaluation()` function. Using maximum likelihood
-estimation, $\theta = \frac{\sum t}{n} = \frac{4.2294}{50} = 0.084588$.
+estimation, $\theta$ = $\frac{\sum t}{n}$ = $\frac{4.2294}{50}$ = 0.084588.
 
 ```{r}
 eval_binom <- evaluation(
@@ -147,17 +148,17 @@ account the differences between the magnitude of the taints [@stringer_1963;
 @bickel_1992]. The bound is a variant of the binomial distribution, but
 considers the non-binary nature of the taints. The Stringer upper bound on the
 population misstatement is given by
-$p(0, 1 - \alpha) + \sum_{i=1}^k [p(i, 1 - \alpha) - p(i - 1, 1 - \alpha)] \times t_i$.
-In this formula, $p(i; 1 - \alpha)$ is the $1 - \alpha$ upper limit for at most
-$i$ misstatements in $n$ items according to the binomial distribution
-[@clopper_1934]. This is equal to the $1 - \alpha$ percentile of a
-beta($1 + i$, $n - i$) distribution [@pearson_1948]. When calculating the
+$p(0, 1 - \alpha)$ + $\sum_{i=1}^k [p(i, 1 - \alpha) - p(i - 1, 1 - \alpha)] \cdot t_i$.
+In this formula, $p(i; 1 - \alpha)$ is the 1 - $\alpha$ upper limit for at most
+$i$ misstatements in *n* items according to the binomial distribution
+[@clopper_1934]. This is equal to the 1 - $\alpha$ percentile of a
+beta(1 + *i*, *n* - *i*) distribution [@pearson_1948]. When calculating the
 Stringer bound, the taints are placed in descending order in the formula as a
 form of conservatism.
 
 In `jfa`, the Stringer bound can be applied using `method = "stringer"` in the
-`evaluation()` function. Using maximum likelihood estimation,
-$\theta = \frac{\sum t}{n} = \frac{4.2294}{50} = 0.084588$.
+`evaluation()` function. The maximum likelihood estimate for the Stringer bound
+is the same as that of the binomial likelihood.
 
 ```{r}
 eval_stringer <- evaluation(
@@ -168,8 +169,8 @@ print(eval_stringer)
 ```
 
 As shown in the output, the most likely misstatement is estimated to be 8.46
-percent, with a 95 percent upper bound of 17.23 percent. Since the upper bound of
-the Stringer method is (slightly) lower than that of the binomial likelihood,
+percent, with a 95 percent upper bound of 17.23 percent. Since the upper bound
+of the Stringer method is (slightly) lower than that of the binomial likelihood,
 the Stringer bound is more efficient.
 
 ### Hurdle beta model
@@ -195,18 +196,18 @@ $$
 
 Here, $p$ is the probability of a non-zero taint occurring, $\phi$ is the
 average non-zero taint and $\nu$ is the concentration of the taints. The average 
-misstatement in the population is $\theta = p \times \phi$. In `jfa`, this
+misstatement in the population is $\theta$ = $p \cdot \phi$. In `jfa`, this
 hurdle beta model can be fitted using `method = "hurdle.beta"` in the
 `evaluation()` function. To estimate the parameters in this model using the
 maximum likelihood, we use the default option `prior = FALSE`. Using maximum 
-likelihood estimation, $p = \frac{n_t}{n} = \frac{12}{50} = 0.24$, where $n_t$
-is the number of non-zero taints. Furthermore,
-$\phi = \frac{\sum t}{n_t} = \frac{4.2294}{12} = 0.35245$. Hence, the most
-likely misstatement is estimated to be
-$\theta = p \times \phi$ = $0.24 \times 0.35245 = 0.084588$. The upper bound
-cannot be derived analytically and has to be determined by drawing samples from
-the fitted model. Hence, it is recommended to call `set.seed()` before executing
-the following command to make the results reproducible.
+likelihood estimation, $p$ = $\frac{n_t}{n}$ = $\frac{12}{50}$ = 0.24, where
+$n_t$ is the number of non-zero taints. Furthermore, $\phi$ =
+$\frac{\sum t}{n_t}$ = $\frac{4.2294}{12}$ = 0.35245. Hence, the most likely
+misstatement is estimated to be $\theta$ = $p \cdot \phi$ = 0.24 $\cdot$ 0.35245
+= 0.084588. The upper bound cannot be derived analytically and has to be
+determined by drawing samples from the fitted model. Hence, it is recommended to
+call `set.seed()` before executing the following command to make the results
+reproducible.
 
 ```{r}
 set.seed(1)
@@ -239,11 +240,11 @@ information about the misstatement.
 The prior distribution we typically assign in the binomial model is the beta
 distribution. Just as we handle taints in the binomial likelihood, they can also
 be aggregated given the prior distribution. The statistical model is
-$k \sim \text{Binomial}(n, \theta)$ and the prior distribution that is used is
-$\theta \sim \text{Beta}(\alpha, \, \beta)$. Given the data $n$ and
-$k = \sum t$, the posterior distribution for the default beta(1, 1) prior
-distribution (`prior = TRUE`) can be derived analytically and is
-$\theta \sim \text{Beta}(\alpha = 1 + \sum t, \, \beta = 1 + n - \sum t)$.
+*k* $\sim$ Binomial(*n*, $\theta$) and the prior distribution that is used is
+$\theta$ $\sim$ Beta($\alpha$, $\beta$). Given the data *n* and *k* = $\sum t$,
+the posterior distribution for the default beta(1, 1) prior distribution
+(`prior = TRUE`) can be derived analytically and is $\theta$ $\sim$
+Beta($\alpha$ = 1 + $\sum t$, $\beta$ = 1 + *n* - $\sum t$).
 
 For the binomial likelihood, this Bayesian model can be applied in the
 `evaluation()` function using `method = "binomial"` in comination with
@@ -272,8 +273,8 @@ plot(eval_beta, type = "posterior")
 It is also possible to fit a Bayesian variant of the hurdle beta model. This
 entails applying prior distributions for the parameters $p$, $\phi$, and $\nu$.
 The prior distributions used by **jfa** for the Bayesian hurdle beta model are
-$p \sim \text{Beta}(\alpha, \, \beta)$, $\phi \sim \text{Beta}(1, \, 1)$ and
-$\nu \sim \text{Pareto}(1, \, 1.5)$.
+$p$ $\sim$ Beta($\alpha$, $\beta$) (to be specified by the user), $\phi$ $\sim$
+Beta(1, 1), and $\nu$ $\sim$ Pareto(1, $\frac{3}{2}$).
 
 This Bayesian hurdle beta model can be applied using `method = "hurdle.beta"` in
 combination with `prior = TRUE` (or an object created by the `auditPrior()`
