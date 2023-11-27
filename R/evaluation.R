@@ -398,7 +398,7 @@ evaluation <- function(materiality = NULL,
       "stringer.meikle", "stringer.lta", "stringer.pvz",
       "coxsnell", "rohrbach", "moment", "mpu",
       "direct", "difference", "quotient", "regression",
-      "inflated.poisson", "hurdle.beta", "hurdle.beta2",
+      "inflated.poisson", "hurdle.beta", "hurdle.beta2"
     ))
     stopifnot("missing value for 'data'" = valid_method)
     stopifnot("missing value for 'n'" = !is.null(n))
