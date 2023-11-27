@@ -654,5 +654,5 @@ test_that(desc = "(id: f3-v0.7.0-t2) Evaluation with hurdle.beta method", {
   samp <- selection(population, size = 60, units = "items", method = "random")$sample
   samp$auditValue <- samp[["bookValue"]] * (1 - stats::rnorm(nrow(samp), 0.5, 0.3) * stats::rbinom(nrow(samp), 1, 0.03))
   jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "hurdle.beta")
-  expect_equal(jfaEval[["ub"]], 0.03191938, tolerance = 0.001)
+  expect_equal(jfaEval[["mle"]], 0.03191938, tolerance = 0.001)
 })
