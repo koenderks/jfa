@@ -288,16 +288,31 @@ the binomial likelihood, the Stringer bound is more efficient.</p>
 </h3>
 <p>Efficiency can be further improved by explicitly modeling the
 probability of a taint being zero (i.e., zero-inflation). This is a more
-realistic method because, in practice, most taints are zero. In in the
-context of a zero-inflated Poisson model (i.e.,
-<code>method = inflated.poisson</code>), the idea is to incorporate
-extra zeros into the zeros already present in the Poisson distribution.
-However, this idea does not directly apply to a “zero-inflated beta”
-model. Since beta regression cannot accommodate zeros, there are no
-zeros to inflate. An appropriate name for this model is therefore a
-hurdle (i.e., two-component) beta model. This terminology reflects the
-idea that the model has to overcome the hurdle of zero values which are
-not inherently part of the beta distribution.</p>
+realistic method because, in practice, most taints are zero. More
+formally, if there are explicit zeros present in the data, a model that
+incorporates a separate probability of being zero should be
+unequivocally favored over a model that does not. That is because the
+probability mass associated with the zeros in the adjusted model are
+infinitely larger than their probability densities under the traditional
+model.</p>
+<p>In <strong>jfa</strong>, there are two types of models that
+incorporate a probability of the taint being zero. These are the
+zero-inflated Poisson model and the hurdle beta model. In the
+zero-inflated Poisson model, the idea is to incorporate extra zeros into
+the zeros already present in the Poisson distribution. However, this
+idea does not directly apply to a “zero-inflated beta” model. Since the
+beta likelihood cannot accommodate zeros, there are no zeros to inflate.
+A more appropriate name for this model is therefore a hurdle (i.e.,
+two-component) beta model. This terminology reflects the idea that the
+model has to overcome the hurdle of zero values which are not inherently
+part of the beta likelihood.</p>
+<p>The formal specification of the hurdle beta model is given below.
+Here, <span class="math inline">\(p\)</span> is the probability of a
+non-zero taint occurring, <span class="math inline">\(\phi\)</span> is
+the average non-zero taint and <span class="math inline">\(\nu\)</span>
+is the concentration of the taints. The total misstatement in the
+population is determined as <span class="math inline">\(\theta\)</span>
+= <span class="math inline">\(p \cdot \phi\)</span>.</p>
 <p><span class="math display">\[
 t =
 \begin{cases}
@@ -306,12 +321,7 @@ t =
 probability}\, p
 \end{cases}
 \]</span></p>
-<p>Here, <span class="math inline">\(p\)</span> is the probability of a
-non-zero taint occurring, <span class="math inline">\(\phi\)</span> is
-the average non-zero taint and <span class="math inline">\(\nu\)</span>
-is the concentration of the taints. The average misstatement in the
-population is <span class="math inline">\(\theta\)</span> = <span class="math inline">\(p \cdot \phi\)</span>. In <code>jfa</code>, this
-hurdle beta model can be fitted using
+<p>In <code>jfa</code>, this hurdle beta model can be fitted using
 <code>method = "hurdle.beta"</code> in the <code><a href="../reference/evaluation.html">evaluation()</a></code>
 function. To estimate the parameters in this model using the maximum
 likelihood, we use the default option <code>prior = FALSE</code>. Using
@@ -346,6 +356,12 @@ following command to make the results reproducible.</p>
 be around 8.5 percent, with a 95 percent upper bound of around 14.44
 percent. Since the upper bound of the hurdle beta model is lower than
 that of the Stringer bound, the hurdle beta model is more efficient.</p>
+<p>We leave it to the interested reader to apply the zero-inflated
+Poisson model to the data from this sample using
+<code>method = "inflated.poisson"</code>. Please note that this requires
+specification of the number of items in the population
+(<code>N.items</code>) and the number of monetary units in the
+population (<code>N.units</code>).</p>
 </div>
 </div>
 <div class="section level2">
