@@ -177,14 +177,26 @@ the Stringer bound is more efficient.
 
 Efficiency can be further improved by explicitly modeling the probability of a
 taint being zero (i.e., zero-inflation). This is a more realistic method
-because, in practice, most taints are zero. In in the context of a zero-inflated
-Poisson model (i.e., `method = inflated.poisson`), the idea is to incorporate
-extra zeros into the zeros already present in the Poisson distribution. However,
-this idea does not directly apply to a "zero-inflated beta" model. Since beta
-regression cannot accommodate zeros, there are no zeros to inflate. An
+because, in practice, most taints are zero. More formally, if there are explicit
+zeros present in the data, a model that incorporates a separate probability of
+being zero should be unequivocally favored over a model that does not. That is
+because the probability mass associated with the zeros in the adjusted model are
+infinitely larger than their probability densities under the traditional model.
+
+In **jfa**, there are two types of models that incorporate a probability of the
+taint being zero. These are the zero-inflated Poisson model and the hurdle beta
+model. In the zero-inflated Poisson model, the idea is to incorporate extra
+zeros into the zeros already present in the Poisson distribution. However, this
+idea does not directly apply to a "zero-inflated beta" model. Since the beta
+likelihood cannot accommodate zeros, there are no zeros to inflate. A more
 appropriate name for this model is therefore a hurdle (i.e., two-component) beta
 model. This terminology reflects the idea that the model has to overcome the
-hurdle of zero values which are not inherently part of the beta distribution.
+hurdle of zero values which are not inherently part of the beta likelihood.
+
+The formal specification of the hurdle beta model is given below. Here, $p$ is
+the probability of a non-zero taint occurring, $\phi$ is the average non-zero
+taint and $\nu$ is the concentration of the taints. The total misstatement in
+the population is determined as $\theta$ = $p \cdot \phi$.
 
 $$
 t =
@@ -194,11 +206,8 @@ t =
 \end{cases}
 $$
 
-Here, $p$ is the probability of a non-zero taint occurring, $\phi$ is the
-average non-zero taint and $\nu$ is the concentration of the taints. The average 
-misstatement in the population is $\theta$ = $p \cdot \phi$. In `jfa`, this
-hurdle beta model can be fitted using `method = "hurdle.beta"` in the
-`evaluation()` function. To estimate the parameters in this model using the
+In `jfa`, this hurdle beta model can be fitted using `method = "hurdle.beta"` in
+the `evaluation()` function. To estimate the parameters in this model using the
 maximum likelihood, we use the default option `prior = FALSE`. Using maximum 
 likelihood estimation, $p$ = $\frac{n_t}{n}$ = $\frac{12}{50}$ = 0.24, where
 $n_t$ is the number of non-zero taints. Furthermore, $\phi$ =
@@ -222,6 +231,11 @@ As shown in the output, the most likely misstatement is estimated to be around
 8.5 percent, with a 95 percent upper bound of around 14.44 percent. Since the
 upper bound of the hurdle beta model is lower than that of the Stringer bound,
 the hurdle beta model is more efficient.
+
+We leave it to the interested reader to apply the zero-inflated Poisson model to
+the data from this sample using `method = "inflated.poisson"`. Please note that
+this requires specification of the number of items in the population (`N.items`)
+and the number of monetary units in the population (`N.units`).
 
 ## Bayesian approaches
 
