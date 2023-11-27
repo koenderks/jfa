@@ -534,7 +534,7 @@
 }
 
 .mcmc_twopart_cp <- function(likelihood, n.obs, taints, diff, N.items, N.units, prior) {
-  if (likelihood == "hurdle.beta") {
+  if (likelihood == "hurdle.beta" || likelihood == "hurdle.beta2") {
     data <- list(
       n = n.obs,
       y = taints,
@@ -551,7 +551,7 @@
       poisson_likelihood = as.numeric(likelihood == "poisson"),
       exponential_prior = as.numeric(likelihood == "exponential")
     )
-    if (any(taints == 1)) {
+    if (likelihood == "hurdle.beta") {
       model <- stanmodels[["beta_zero_one"]]
       pars <- c("phi", "nu", "prob")
     } else {
@@ -636,33 +636,33 @@
       stats::quantile(samps[["lambda"]], probs)
     ))
   } else {
-    if (any(taints == 1)) {
+    if (likelihood == "hurdle.beta") {
       estimates <- data.frame(
         mode = c(
-          .comp_mode_bayes(analytical = FALSE, samples = samps[["prob[3]"]]),
+          .comp_mode_bayes(analytical = FALSE, samples = samps[["prob"]][, 3]),
           .comp_mode_bayes(analytical = FALSE, samples = samps[["phi"]]),
           .comp_mode_bayes(analytical = FALSE, samples = samps[["nu"]]),
-          .comp_mode_bayes(analytical = FALSE, samples = samps[["prob[2]"]])
+          .comp_mode_bayes(analytical = FALSE, samples = samps[["prob"]][, 2])
         ),
         mean = c(
-          mean(samps[["prob[3]"]]),
+          mean(1 - samps[["prob"]][, 1]),
           mean(samps[["phi"]]),
           mean(samps[["nu"]]),
-          mean(samps[["prob[2]"]])
+          mean(samps[["prob"]][, 2])
         ),
         sd = c(
-          stats::sd(samps[["prob[3]"]]),
+          stats::sd(1 - samps[["prob"]][, 1]),
           stats::sd(samps[["phi"]]),
           stats::sd(samps[["nu"]]),
-          stats::sd(samps[["prob[2]"]])
+          stats::sd(samps[["prob"]][, 2])
         ),
-        row.names = c("p(taint)", "mean", "concentration", "p(full)")
+        row.names = c("p(error)", "mean", "concentration", "p(full)")
       )
       estimates <- cbind.data.frame(estimates, rbind(
-        stats::quantile(samps[["prob[3]"]], probs),
+        stats::quantile(1 - samps[["prob"]][, 1], probs),
         stats::quantile(samps[["phi"]], probs),
         stats::quantile(samps[["nu"]], probs),
-        stats::quantile(samps[["prob[2]"]], probs)
+        stats::quantile(samps[["prob"]][, 2], probs)
       ))
     } else {
       estimates <- data.frame(
@@ -701,7 +701,7 @@
   } else {
     num_draws <- getOption("mc.iterations", 2000)
   }
-  if (likelihood == "hurdle.beta") {
+  if (likelihood == "hurdle.beta" || likelihood == "hurdle.beta2") {
     data <- list(
       n = n.obs,
       y = taints,
@@ -718,7 +718,7 @@
       poisson_likelihood = 0,
       exponential_prior = 0
     )
-    if (any(taints == 1)) {
+    if (likelihood == "hurdle.beta") {
       model <- stanmodels[["beta_zero_one"]]
     } else {
       model <- stanmodels[["beta_zero"]]
@@ -764,7 +764,7 @@
       lambda <- sum(diff) / sum(diff > 0)
       theta <- (p * lambda * N.items) / N.units
     } else {
-      if (any(taints == 1)) {
+      if (likelihood == "hurdle.beta") {
         p <- sum(taints > 0 & taints < 1) / n.obs
         phi <- sum(taints[taints > 0 & taints < 1]) / sum(taints > 0 & taints < 1)
         p2 <- sum(taints == 1) / n.obs
@@ -817,25 +817,25 @@
         stats::quantile(raw$theta_tilde[, "lambda"], probs)
       ))
     } else {
-      if (any(taints == 1)) {
+      if (likelihood == "hurdle.beta") {
         estimates <- data.frame(
           mode = c(
-            .comp_mode_bayes(analytical = FALSE, samples = raw$theta_tilde[, "prob[3]"]),
+            .comp_mode_bayes(analytical = FALSE, samples = 1 - raw$theta_tilde[, "prob[1]"]),
             .comp_mode_bayes(analytical = FALSE, samples = raw$theta_tilde[, "phi"]),
             .comp_mode_bayes(analytical = FALSE, samples = raw$theta_tilde[, "nu"]),
             .comp_mode_bayes(analytical = FALSE, samples = raw$theta_tilde[, "prob[2]"])
           ),
           mean = c(p, phi, mean(raw$theta_tilde[, "nu"]), p2),
           sd = c(
-            stats::sd(raw$theta_tilde[, "prob[3]"]),
+            stats::sd(1 - raw$theta_tilde[, "prob[1]"]),
             stats::sd(raw$theta_tilde[, "phi"]),
             stats::sd(raw$theta_tilde[, "nu"]),
             stats::sd(raw$theta_tilde[, "prob[2]"])
           ),
-          row.names = c("p(taint)", "mean", "concentration", "p(full error)")
+          row.names = c("p(error)", "mean", "concentration", "p(full error)")
         )
         estimates <- cbind.data.frame(estimates, rbind(
-          stats::quantile(raw$theta_tilde[, "prob[3]"], probs),
+          stats::quantile(1 - raw$theta_tilde[, "prob[1]"], probs),
           stats::quantile(raw$theta_tilde[, "phi"], probs),
           stats::quantile(raw$theta_tilde[, "nu"], probs),
           stats::quantile(raw$theta_tilde[, "prob[2]"], probs)

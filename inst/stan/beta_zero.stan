@@ -45,9 +45,8 @@ parameters {
   real<lower=1> nu; // Concentration parameter
 }
 transformed parameters {
-  real p_discrete = 1 - p_error; // Probability of y being 0 or 1
-  // Probability of y being 0, 1, and (0, 1)
-  simplex[2] prob = [p_discrete, 1 - p_discrete]';
+  // Probability of y being 0 or (0, 1)
+  simplex[2] prob = [1 - p_error, p_error]';
 }
 model {
   // Prior distributions
@@ -78,5 +77,5 @@ model {
 }
 generated quantities {
   // Posterior distribution misstatement
-  real<lower=0, upper=1> theta = p_error * phi;
+  real<lower=0, upper=1> theta = prob[2] * phi;
 }

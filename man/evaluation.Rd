@@ -8,7 +8,7 @@ evaluation(
   materiality = NULL,
   method = c(
     "poisson", "binomial", "hypergeometric",
-    "inflated.poisson", "hurdle.beta",
+    "inflated.poisson", "hurdle.beta", "hurdle.beta2",
     "stringer.poisson", "stringer.binomial", "stringer.hypergeometric",
     "stringer.meikle", "stringer.lta", "stringer.pvz", "stringer",
     "rohrbach", "moment", "coxsnell", "mpu",
@@ -181,6 +181,10 @@ This section lists the available options for the \code{method}
     \code{prior = TRUE}, performs Bayesian evaluation using a \emph{beta}
     prior.}
  \item{\code{hurdle.beta}:             Hurdle beta model incorporating the
+    explicit probability of a taint being zero, one, or in between. If
+    \code{prior = TRUE}, this setup performs Bayesian evaluation using a
+    \emph{beta} prior.}
+ \item{\code{hurdle.beta2}:            Hurdle beta model incorporating the
     explicit probability of a taint being zero. If \code{prior = TRUE}, this
     setup performs Bayesian evaluation using a \emph{beta} prior.}
  \item{\code{stringer.poisson}:        Evaluates the sample with the Stringer

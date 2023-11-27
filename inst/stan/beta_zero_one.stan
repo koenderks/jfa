@@ -44,14 +44,13 @@ transformed data {
 }
 parameters {
   real<lower=[(uniform_prior ? alpha : 0)][1], upper=[(uniform_prior ? beta : 1)][1]> p_error; // Probability of a misstatement occurring
-  real<lower=0, upper=1> p_discrete_one; // Probability of y being 1 given that it is 0 or 1
-  real<lower=0, upper=1> phi; // Average of non-zero-one taint
+  real<lower=0, upper=1> p_error_full; // Probability of y being 1 given that y is non-zero
+  real<lower=0, upper=1> phi; // Average of non-zero-one y
   real<lower=1> nu; // Concentration parameter
 }
 transformed parameters {
-  real p_discrete = 1 - p_error; // Probability of y being 0 or 1
   // Probability of y being 0, 1, and (0, 1)
-  simplex[3] prob = [p_discrete * (1 - p_discrete_one), p_discrete * p_discrete_one, 1 - p_discrete]';
+  simplex[3] prob = [1 - p_error, p_error * p_error_full, p_error * (1 - p_error_full)]';
 }
 model {
   // Prior distributions
@@ -72,7 +71,7 @@ model {
   } else if (exponential_prior) {
     p_error ~ exponential(alpha);
   }
-  p_discrete_one ~ beta(1, 1);
+  p_error_full ~ beta(1, 1);
   phi ~ beta(1, 1);
   nu ~ pareto(1, 1.5);
   // Likelihood

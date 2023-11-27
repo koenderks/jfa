@@ -26,7 +26,7 @@
 #'   materiality = NULL,
 #'   method = c(
 #'     "poisson", "binomial", "hypergeometric",
-#'     "inflated.poisson", "hurdle.beta",
+#'     "inflated.poisson", "hurdle.beta", "hurdle.beta2",
 #'     "stringer.poisson", "stringer.binomial", "stringer.hypergeometric",
 #'     "stringer.meikle", "stringer.lta", "stringer.pvz", "stringer",
 #'     "rohrbach", "moment", "coxsnell", "mpu",
@@ -135,6 +135,10 @@
 #'     \code{prior = TRUE}, performs Bayesian evaluation using a \emph{beta}
 #'     prior.}
 #'  \item{\code{hurdle.beta}:             Hurdle beta model incorporating the
+#'     explicit probability of a taint being zero, one, or in between. If
+#'     \code{prior = TRUE}, this setup performs Bayesian evaluation using a
+#'     \emph{beta} prior.}
+#'  \item{\code{hurdle.beta2}:            Hurdle beta model incorporating the
 #'     explicit probability of a taint being zero. If \code{prior = TRUE}, this
 #'     setup performs Bayesian evaluation using a \emph{beta} prior.}
 #'  \item{\code{stringer.poisson}:        Evaluates the sample with the Stringer
@@ -287,7 +291,7 @@
 evaluation <- function(materiality = NULL,
                        method = c(
                          "poisson", "binomial", "hypergeometric",
-                         "inflated.poisson", "hurdle.beta",
+                         "inflated.poisson", "hurdle.beta", "hurdle.beta2",
                          "stringer.poisson", "stringer.binomial", "stringer.hypergeometric",
                          "stringer.meikle", "stringer.lta", "stringer.pvz", "stringer",
                          "rohrbach", "moment", "coxsnell", "mpu",
@@ -356,10 +360,10 @@ evaluation <- function(materiality = NULL,
       prior[["hypotheses"]] <- hypotheses
     }
   } else if (isTRUE(prior)) {
-    accommodates_simple_prior <- method %in% c("poisson", "inflated.poisson", "binomial", "hurdle.beta", "hypergeometric")
+    accommodates_simple_prior <- method %in% c("poisson", "inflated.poisson", "binomial", "hurdle.beta", "hurdle.beta2", "hypergeometric")
     if (method %in% c("poisson", "inflated.poisson")) {
       priorMethod <- "poisson"
-    } else if (method %in% c("binomial", "hurdle.beta")) {
+    } else if (method %in% c("binomial", "hurdle.beta", "hurdle.beta2")) {
       priorMethod <- "binomial"
     } else {
       priorMethod <- "hypergeometric"
@@ -377,7 +381,7 @@ evaluation <- function(materiality = NULL,
     valid_materiality <- is.numeric(materiality) && materiality > 0 && materiality < 1
     stopifnot("'materiality' must be a single value between 0 and 1" = valid_materiality)
   }
-  valid_test_method <- method %in% c("poisson", "inflated.poisson", "binomial", "hurdle.beta", "hypergeometric", "normal", "uniform", "cauchy", "t", "chisq", "exponential")
+  valid_test_method <- method %in% c("poisson", "inflated.poisson", "binomial", "hurdle.beta", "hurdle.beta2", "hypergeometric", "normal", "uniform", "cauchy", "t", "chisq", "exponential")
   if (is_bayesian) {
     stopifnot("'method' should be one of 'poisson', 'binomial', or 'hypergeometric'" = valid_test_method)
   }
@@ -394,7 +398,7 @@ evaluation <- function(materiality = NULL,
       "stringer.meikle", "stringer.lta", "stringer.pvz",
       "coxsnell", "rohrbach", "moment", "mpu",
       "direct", "difference", "quotient", "regression",
-      "inflated.poisson", "hurdle.beta"
+      "inflated.poisson", "hurdle.beta", "hurdle.beta2",
     ))
     stopifnot("missing value for 'data'" = valid_method)
     stopifnot("missing value for 'n'" = !is.null(n))
@@ -521,7 +525,7 @@ evaluation <- function(materiality = NULL,
     N.units <- ceiling(N.units)
   }
   use_stratification <- length(t.obs) > 1
-  stopifnot("inflated methods do not currently support stratification" = !(method %in% c("inflated.poisson", "hurdle.beta") && use_stratification))
+  stopifnot("inflated methods do not currently support stratification" = !(method %in% c("inflated.poisson", "hurdle.beta", "hurdle.beta2") && use_stratification))
   if (pooling == "complete") {
     nstrata <- 1
   } else {
@@ -529,7 +533,7 @@ evaluation <- function(materiality = NULL,
   }
   no_rows <- length(t.obs) - 1
   if (is_bayesian) {
-    mcmc_posterior <- mcmc_prior || !conjugate_prior || (use_stratification && pooling != "complete") || (method %in% c("inflated.poisson", "hurdle.beta"))
+    mcmc_posterior <- mcmc_prior || !conjugate_prior || (use_stratification && pooling != "complete") || (method %in% c("inflated.poisson", "hurdle.beta", "hurdle.beta2"))
     if (conjugate_prior) {
       stratum_samples <- NULL
     } else {
@@ -547,7 +551,7 @@ evaluation <- function(materiality = NULL,
     for (i in seq_len(nstrata)) {
       if (valid_test_method) {
         if (is_bayesian) {
-          if (conjugate_prior && !(method %in% c("inflated.poisson", "hurdle.beta"))) {
+          if (conjugate_prior && !(method %in% c("inflated.poisson", "hurdle.beta", "hurdle.beta2"))) {
             stratum_alpha <- prior[["description"]]$alpha + t.obs[i]
             if (method == "poisson") {
               stratum_beta <- prior[["description"]]$beta + n.obs[i]
@@ -564,7 +568,7 @@ evaluation <- function(materiality = NULL,
             ub[i] <- .comp_ub_bayes(alternative, conf.level, method, stratum_alpha, stratum_beta, stratum_K, stratum_N)
           } else {
             stopifnot("likelihood = 'hypergeometric' does not support non-conjugate priors" = method != "hypergeometric")
-            if (method %in% c("inflated.poisson", "hurdle.beta")) {
+            if (method %in% c("inflated.poisson", "hurdle.beta", "hurdle.beta2")) {
               mcmc_prior <- TRUE
               if (method == "inflated.poisson") {
                 stopifnot("missing value for 'N.items'" = !is.null(N.items))
@@ -597,7 +601,7 @@ evaluation <- function(materiality = NULL,
             if (materiality < 1) {
               p.val[i] <- .comp_pval(alternative, materiality, method, n.obs[i], x.obs[i], t.obs[i], N.units[i], K[i])
             }
-          } else if (method %in% c("inflated.poisson", "hurdle.beta")) {
+          } else if (method %in% c("inflated.poisson", "hurdle.beta", "hurdle.beta2")) {
             if (method == "inflated.poisson") {
               stopifnot("missing value for 'N.items'" = !is.null(N.items))
               stopifnot("missing value for 'N.units'" = !is.null(N.units))
