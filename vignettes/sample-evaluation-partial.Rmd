@@ -75,7 +75,7 @@ recorded (i.e., book) value and its true (i.e., audit) value. When evaluating
 partial misstatements, auditors often calculate the 'taint' $t_i$ of each item
 $i$, which is defined as the proportional misstatement in the item:
 
-$$t_i = \frac{\text{Book value}_i \, -  \, \text{Audit value}_i}{\text{Book value}_i}.$$
+$$t_i = \frac{\text{Book value}_i - \text{Audit value}_i}{\text{Book value}_i}.$$
 
 For instance, if item $i$ is booked for $1,000 but has an audit value of $500 it
 has a taint of $t_i$ = 0.5. On the other hand, if the item does not contain any
@@ -194,19 +194,19 @@ model. This terminology reflects the idea that the model has to overcome the
 hurdle of zero values which are not inherently part of the beta likelihood.
 
 The formal specification of the hurdle beta model is given below. Here,
-$p_{\,(0,\,1]}$ is the probability of a misstatement occurring, regardless of its
-size. Additionally, $p_{\,1 \,|\, (0,\,1]}$ is the conditional probability of a
+$p_{(0, 1]}$ is the probability of a misstatement occurring, regardless of its
+size. Additionally, $p_{1 | (0, 1]}$ is the conditional probability of a
 misstatement being a full misstatement. Furthermore, $\phi$ is the average
 (non-zero-one) taint and $\nu$ is the concentration of these taints. The total
-misstatement in the population is $\theta$ = $p_{\,(0,\, 1)}$ $\cdot$ $\phi$ +
-$p_{\,1}$.
+misstatement in the population is $\theta$ = $p_{(0, 1)}$ $\cdot$ $\phi$ +
+$p_{1}$.
 
 \begin{align*}
 t = \begin{cases}
-    0 & \text{with probability } p_{\,0} = 1 - p_{\,(0,\,1]} \\
+    0 & \text{with probability } p_{0} = 1 - p_{(0, 1]} \\
     \left(0, 1\right] & \begin{cases}
-      \text{Beta}(\phi \nu, (1 - \phi) \nu) & \text{with probability } p_{\,(0,\,1)} = p_{\,(0,\,1]} \cdot (1 - p_{\,1 \,|\, (0,\,1]}) \\
-      1 & \text{with probability } p_{\,1} = p_{\,(0,\,1]} \cdot p_{\,1 \,|\, (0,\,1]}
+      \text{Beta}(\phi \nu, (1 - \phi) \nu) & \text{with probability } p_{(0, 1)} = p_{(0, 1]} \cdot (1 - p_{1 | (0, 1]}) \\
+      1 & \text{with probability } p_{1} = p_{(0, 1]} \cdot p_{1 | (0, 1]}
     \end{cases}
 \end{cases}
 \end{align*}
@@ -214,17 +214,17 @@ t = \begin{cases}
 In `jfa`, this hurdle beta model can be fitted using `method = "hurdle.beta"` in
 the `evaluation()` function. To estimate the parameters in this model using the
 maximum likelihood, we use the default option `prior = FALSE`. Using maximum 
-likelihood estimation, $p_{\,(0,\,1]}$ = $\frac{n_t}{n}$ = $\frac{26}{60}$ =
-0.433, where $n_t$ is the number of misstatements, and $p_{\,1 \,|\, (0,\,1]}$ =
+likelihood estimation, $p_{(0, 1]}$ = $\frac{n_t}{n}$ = $\frac{26}{60}$ = 0.433,
+where $n_t$ is the number of misstatements, and $p_{1 | (0, 1]}$ =
 $\frac{n_1}{n_t}$ = $\frac{4}{26}$ = 0.1539, where $n_1$ is the number of full
 misstatements. Furthermore, $\phi$ = $\frac{\sum t - n_1}{n_t - n_1}$ =
 $\frac{11.003 - 4}{26 - 4}$ = 0.3183. Hence, the most likely misstatement is
-estimated to be $\theta$ = ($p_{\,(0,\,1]}$ $\cdot$ $(1-p_{\,1 \,|\, (0,\,1]})$
-$\cdot$ $\phi$) + ($p_{\,(0,\,1]}$ $\cdot$ $p_{\,1 \,|\, (0,\,1]}$) = (0.433
-$\cdot$ (1 - 0.1539) $\cdot$ 0.3183) + (0.433 $\cdot$ 0.1539) = 0.18338. The
-upper bound cannot be derived analytically and has to be determined by drawing
-samples from the fitted model. Hence, it is recommended to call `set.seed()`
-before executing the following command to make the results reproducible.
+estimated to be $\theta$ = ($p_{(0, 1]}$ $\cdot$ $(1-p_{1 | (0, 1]})$ $\cdot$
+$\phi$) + ($p_{(0, 1]}$ $\cdot$ $p_{1 | (0, 1]}$) = (0.433 $\cdot$ (1 - 0.1539)
+$\cdot$ 0.3183) + (0.433 $\cdot$ 0.1539) = 0.18338. The upper bound cannot be
+derived analytically and has to be determined by drawing samples from the fitted
+model. Hence, it is recommended to call `set.seed()` before executing the
+following command to make the results reproducible.
 
 ```{r}
 set.seed(1)
@@ -294,8 +294,8 @@ plot(eval_beta, type = "posterior")
 It is also possible to fit a Bayesian variant of the hurdle beta model. This
 entails applying prior distributions for the parameters $p$, $\phi$, and $\nu$.
 The prior distributions used by **jfa** for the Bayesian hurdle beta model are
-$p_{\,(0,\,1]}$ $\sim$ Beta($\alpha$, $\beta$) (to be specified by the user),
-$p_{\,1 \,|\, (0,\,1]}$ $\sim$ Beta(1, 1), $\phi$ $\sim$ Beta(1, 1), and $\nu$
+$p_{(0, 1]}$ $\sim$ Beta($\alpha$, $\beta$) (to be specified by the user),
+$p_{1 | (0, 1]}$ $\sim$ Beta(1, 1), $\phi$ $\sim$ Beta(1, 1), and $\nu$
 $\sim$ Pareto(1, $\frac{3}{2}$).
 
 This Bayesian hurdle beta model can be applied using `method = "hurdle.beta"` in
