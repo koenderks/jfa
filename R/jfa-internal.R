@@ -535,6 +535,9 @@
 
 .mcmc_twopart_cp <- function(likelihood, n.obs, taints, diff, N.items, N.units, prior) {
   if (likelihood == "hurdle.beta" || likelihood == "hurdle.beta2") {
+    if (likelihood == "hurdle.beta2") {
+      taints[taints == 1] <- 1 - 1e-6
+    }
     data <- list(
       n = n.obs,
       y = taints,
@@ -702,6 +705,9 @@
     num_draws <- getOption("mc.iterations", 2000)
   }
   if (likelihood == "hurdle.beta" || likelihood == "hurdle.beta2") {
+    if (likelihood == "hurdle.beta2") {
+      taints[taints == 1] <- 1 - 1e-6
+    }
     data <- list(
       n = n.obs,
       y = taints,
