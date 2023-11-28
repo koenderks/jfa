@@ -233,7 +233,7 @@ selection <- function(data,
     interval <- sum(book_values) / size
     intervals <- 0:size * interval
     sample_items <- NULL
-    for (i in 1:size) {
+    for (i in seq_len(size)) {
       selected_unit <- stats::runif(1, intervals[i], intervals[i + 1])
       selected_item <- which(selected_unit <= cumsum(book_values))[1]
       sample_items <- c(sample_items, row_numbers[selected_item])
@@ -254,7 +254,7 @@ selection <- function(data,
     }
     selected_units <- start + 0:(size - 1) * interval
     sample_items <- NULL
-    for (i in 1:size) {
+    for (i in seq_len(size)) {
       selected_item <- which(selected_units[i] <= cumsum(book_values))[1]
       sample_items <- c(sample_items, row_numbers[selected_item])
     }
@@ -263,7 +263,7 @@ selection <- function(data,
     stopifnot("'method = sieve' does not accomodate 'units = items'" = use_mus)
     ri <- book_values / stats::runif(length(book_values), 0, 1)
     sample_items <- row_numbers[order(-ri)]
-    sample_items <- sample_items[1:size]
+    sample_items <- sample_items[seq_len(size)]
   }
   # Data
   names_match <- match(unique(sample_items), names(table(sample_items)))

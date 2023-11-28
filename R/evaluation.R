@@ -462,7 +462,7 @@ evaluation <- function(materiality = NULL,
       stratum <- data[, strata]
       stopifnot("column 'strata' in 'data' must be a factor variable" = is.factor(stratum))
       x.obs <- t.obs <- n.obs <- numeric(nlevels(stratum))
-      for (i in 1:nlevels(stratum)) {
+      for (i in seq_along(levels(stratum))) {
         stratum_indices <- which(stratum == levels(stratum)[i])
         stratum_data <- data[stratum_indices, ]
         n.obs[i] <- nrow(stratum_data)
@@ -480,7 +480,7 @@ evaluation <- function(materiality = NULL,
         book_values <- c(data[, values], book_values)
         audit_values <- c(data[, values.audit], book_values)
         all_taints <- list(rep(NA, length(stratum)))
-        for (j in 1:nlevels(stratum)) {
+        for (j in seq_along(levels(stratum))) {
           stratum_indices <- which(stratum == levels(stratum)[j])
           all_taints[[1]][stratum_indices] <- taints[[j]]
         }
@@ -682,7 +682,7 @@ evaluation <- function(materiality = NULL,
   use_poststratification <- use_stratification && pooling != "complete" && valid_test_method
   if (use_poststratification) {
     prior_samples <- .poststratification(stratum_samples[, (no_rows + 1):ncol(stratum_samples)], N.units[-1])
-    post_samples <- .poststratification(stratum_samples[, 1:no_rows], N.units[-1])
+    post_samples <- .poststratification(stratum_samples[, seq_len(no_rows)], N.units[-1])
     if (is_bayesian) {
       mle[1] <- .comp_mode_bayes(analytical = FALSE, samples = post_samples)
       if (method == "hypergeometric") {

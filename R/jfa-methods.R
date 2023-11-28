@@ -990,7 +990,7 @@ plot.jfaDistr <- function(x, type = c("estimates", "robustness", "sequential"), 
       type = rep(c("user prior", "uniform prior", "concentrated prior", "ultraconcentrated prior"), each = x[["n"]] + 1)
     )
     loc <- 1
-    for (j in 1:4) {
+    for (j in seq_len(4)) {
       prior_param <- switch(j,
         "1" = as.numeric(x[["prior"]]),
         "2" = 1,
@@ -999,10 +999,10 @@ plot.jfaDistr <- function(x, type = c("estimates", "robustness", "sequential"), 
       )
       for (i in seq_len(x[["n"]] + 1)) {
         if (plotdata$x[loc] != 0) {
-          d <- .extract_digits(x[["data"]][1:i], check = x[["check"]], include.zero = FALSE)
+          d <- .extract_digits(x[["data"]][seq_len(i)], check = x[["check"]], include.zero = FALSE)
           d <- d[!is.na(d)]
           d_tab <- table(d)
-          dig <- if (x[["check"]] == "firsttwo") 10:99 else 1:9
+          dig <- if (x[["check"]] == "firsttwo") 10:99 else seq_len(9)
           obs <- rep(0, length(dig))
           d_included <- as.numeric(names(d_tab))
           index <- if (x[["check"]] == "firsttwo") d_included - 9 else d_included
@@ -1371,7 +1371,7 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior", "robustness",
     for (i in seq_len(x[["n"]] + 1)) {
       if (plotdata$x[loc] != 0) {
         crossTab <- matrix(0, nrow = 2, ncol = length(x[["unprivileged"]]) + 1)
-        tmpdat <- x[["data"]][1:i, ]
+        tmpdat <- x[["data"]][seq_len(i), ]
         for (i in seq_len(nlevels(x[["data"]][, x[["protected"]]]))) {
           group <- levels(x[["data"]][, x[["protected"]]])[i]
           groupDat <- tmpdat[tmpdat[, x[["protected"]]] == group, ]
@@ -1403,7 +1403,7 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior", "robustness",
           crossTab[1, i] <- num
           crossTab[2, i] <- denom - num
         }
-        for (j in 1:4) {
+        for (j in seq_len(4)) {
           prior_param <- switch(j,
             "1" = as.numeric(x[["prior"]]),
             "2" = 1,

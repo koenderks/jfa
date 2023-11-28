@@ -115,7 +115,7 @@ digit_test <- function(x,
   d <- d[!is.na(d)]
   n <- length(d)
   d_tab <- table(d)
-  dig <- if (check == "firsttwo") 10:99 else 1:9
+  dig <- if (check == "firsttwo") 10:99 else seq_len(9)
   obs <- rep(0, length(dig))
   d_included <- as.numeric(names(d_tab))
   index <- if (check == "firsttwo") d_included - 9 else d_included

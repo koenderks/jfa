@@ -249,7 +249,7 @@
         "hypergeometric" = .qhyper(prob, N.units, n.obs, x.obs)
       )
     } else {
-      ub <- as.numeric(stats::quantile(samples[1:(length(samples) / 2)], prob))
+      ub <- as.numeric(stats::quantile(samples[seq_len(length(samples) / 2)], prob))
     }
   }
   return(ub)
@@ -452,7 +452,7 @@
 
 .bf01_twosided_samples <- function(materiality, nstrata, stratum_samples) {
   bf01 <- numeric(nstrata - 1)
-  for (i in 1:(nstrata - 1)) {
+  for (i in seq_len(nstrata - 1)) {
     prior_samples <- stratum_samples[, (nstrata - 1) + i]
     posterior_samples <- stratum_samples[, i]
     prior_densfit <- .bounded_density(as.numeric(prior_samples))
@@ -478,7 +478,7 @@
   less <- function(x) length(which(x < materiality)) / length(x)
   greater <- function(x) length(which(x > materiality)) / length(x)
   prior_samples <- stratum_samples[, nstrata:ncol(stratum_samples)]
-  post_samples <- stratum_samples[, 1:(nstrata - 1)]
+  post_samples <- stratum_samples[, seq_len(nstrata - 1)]
   prior_odds_less <- apply(prior_samples, 2, less) / apply(prior_samples, 2, greater)
   post_odds_less <- apply(post_samples, 2, less) / apply(post_samples, 2, greater)
   bf10 <- post_odds_less / prior_odds_less
@@ -1001,7 +1001,7 @@
 .mcmc_analytical <- function(nstrata, t.obs, n.obs, N.units, prior) {
   iterations <- getOption("jfa.iterations", 1e5)
   samples <- matrix(NA, ncol = nstrata * 2, nrow = iterations)
-  for (i in 1:nstrata) {
+  for (i in seq_len(nstrata)) {
     samples[, i] <- switch(prior[["likelihood"]],
       "poisson" = stats::rgamma(n = iterations, prior[["description"]]$alpha + t.obs[i], prior[["description"]]$beta + n.obs[i]),
       "binomial" = stats::rbeta(n = iterations, prior[["description"]]$alpha + t.obs[i], prior[["description"]]$beta + n.obs[i] - t.obs[i]),
@@ -1021,7 +1021,7 @@
 .mcmc_emulate <- function(likelihood, alternative, nstrata, t.obs, n.obs, N.units) {
   iterations <- getOption("jfa.iterations", 1e5)
   if (alternative == "two.sided") {
-    alpha <- rep(1:0, each = iterations)
+    alpha <- rep(c(1, 0), each = iterations)
     beta <- 1 - alpha
     iterations <- iterations * 2
   } else if (alternative == "less") {
@@ -1032,7 +1032,7 @@
     beta <- 1
   }
   samples <- matrix(NA, ncol = nstrata * 2, nrow = iterations)
-  for (i in 1:nstrata) {
+  for (i in seq_len(nstrata)) {
     samples[, i] <- switch(likelihood,
       "poisson" = stats::rgamma(n = iterations, alpha + t.obs[i], beta + n.obs[i]),
       "binomial" = stats::rbeta(n = iterations, alpha + t.obs[i], beta + n.obs[i] - t.obs[i]),
