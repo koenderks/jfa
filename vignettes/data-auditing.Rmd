@@ -113,5 +113,13 @@ benchmarks:
 - [BenfordTests](https://cran.r-project.org/package=BenfordTests) (R package version 1.2.0)
 - [BeyondBenford](https://cran.r-project.org/package=BeyondBenford) (R package version 1.4)
 
+## Cheat sheet
+
+The cheat sheet below will help you get started with **jfa**'s' intended data
+audit functionality. You can download a `pdf` version of the cheat sheet
+[here](https://github.com/koenderks/jfa/raw/development/man/figures/cheatsheet/cheatsheet-data.pdf).
+
+<p align='center'><img src='cheatsheet-data.png' alt='cheatsheet-data' width='1000'></p>
+
 ## References
 <div id="refs"></div>
