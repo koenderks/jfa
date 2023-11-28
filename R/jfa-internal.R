@@ -699,7 +699,8 @@
 
 .optim_twopart_cp <- function(likelihood, n.obs, taints, diff, N.items, N.units, alternative, conf.level) {
   no_nonzero_taints <- all(taints == 0)
-  if (no_nonzero_taints) {
+  has_nondiscrete_taints <- any(taints > 0 & taints < 1)
+  if (no_nonzero_taints || (likelihood == "hurdle.beta" && !has_nondiscrete_taints)) {
     num_draws <- 0
   } else {
     num_draws <- getOption("mc.iterations", 2000)
@@ -751,9 +752,14 @@
     model <- stanmodels[["poisson_zero"]]
   }
   out <- list()
-  if (no_nonzero_taints) {
-    message("Warning: No taints observed, cannot calculate upper and / or lower bound(s)")
-    out[["mle"]] <- 0
+  if (no_nonzero_taints || (likelihood == "hurdle.beta" && !has_nondiscrete_taints)) {
+    if (no_nonzero_taints) {
+      message("Warning: No misstatements observed, cannot calculate upper and / or lower bound(s)")
+      out[["mle"]] <- 0
+    } else {
+      message("Warning: No taints observed, cannot calculate upper and / or lower bound(s)")
+      out[["mle"]] <- sum(taints == 1) / n.obs
+    }
     out[["lb"]] <- switch(alternative,
       "less" = 0,
       "two.sided" = NA,
