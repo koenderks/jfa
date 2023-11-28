@@ -94,7 +94,7 @@
       <h1 data-toc-skip>Algorithmic fairness</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2023-11-27</h4>
+            <h4 data-toc-skip class="date">2023-11-28</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/model-fairness.Rmd" class="external-link"><code>vignettes/model-fairness.Rmd</code></a></small>
       <div class="hidden name"><code>model-fairness.Rmd</code></div>
@@ -775,11 +775,11 @@ default prior can be achieved by setting <code>prior = TRUE</code>.</p>
 <span><span class="co">## alternative hypothesis: fairness metrics are not equal across groups</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## sample estimates:</span></span>
-<span><span class="co">##   African_American: 1.8245 [1.7794, 1.8857], BF₁₀ = 2.8881e+81</span></span>
-<span><span class="co">##   Asian: 0.2965 [0.17108, 0.89969], BF₁₀ = 3.0278</span></span>
-<span><span class="co">##   Hispanic: 0.87651 [0.78924, 1.0321], BF₁₀ = 0.1127</span></span>
-<span><span class="co">##   Native_American: 1.3813 [0.63716, 2.2343], BF₁₀ = 0.54521</span></span>
-<span><span class="co">##   Other: 0.77902 [0.63203, 0.91325], BF₁₀ = 2.5057</span></span>
+<span><span class="co">##   African_American: 1.8784 [1.8069, 1.915], BF₁₀ = 2.8881e+81</span></span>
+<span><span class="co">##   Asian: 0.2548 [0.16592, 0.92936], BF₁₀ = 3.0278</span></span>
+<span><span class="co">##   Hispanic: 0.91118 [0.80339, 1.0521], BF₁₀ = 0.1127</span></span>
+<span><span class="co">##   Native_American: 1.822 [0.66597, 2.3045], BF₁₀ = 0.54521</span></span>
+<span><span class="co">##   Other: 0.77291 [0.64727, 0.93285], BF₁₀ = 2.5057</span></span>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span></code></pre>
 <p>Bayesian inference measures evidence using the Bayes factor <span class="math inline">\(BF_{01}\)</span>, which quantifies the evidence in
 favor of algorithmic fairness (i.e., equal fairness metrics across all
