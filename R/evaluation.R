@@ -452,7 +452,11 @@ evaluation <- function(materiality = NULL,
       taints[[1]] <- (book_values[[1]] - audit_values[[1]]) / book_values[[1]]
       x.obs <- length(which(taints[[1]] != 0))
       if (!is.null(times)) {
-        taints[[1]] <- taints[[1]] * times
+        if (method %in% c("hurdle.beta", "hurdle.beta2", "inflated.poisson")) {
+          taints[[1]] <- rep(taints[[1]], times = times)
+        } else {
+          taints[[1]] <- taints[[1]] * times
+        }
       }
       t.obs <- sum(taints[[1]])
     } else {
