@@ -94,8 +94,8 @@ This function aims to assess fairness in algorithmic
 decision-making systems by computing and testing the equality of one of
 several model-agnostic fairness metrics between protected classes. The
 metrics are computed based on a set of true labels and the predictions of an
-algorithm. The ratio of these metrics between any unpriveleged protected
-class and the priveleged protected class is called parity. This measure can
+algorithm. The ratio of these metrics between any unprivileged protected
+class and the privileged protected class is called parity. This measure can
 quantify potential fairness or discrimination in the algorithms predictions.
 Available parity metrics include predictive rate parity, proportional parity,
 accuracy parity, false negative rate parity, false positive rate parity, true

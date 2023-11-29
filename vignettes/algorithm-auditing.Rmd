@@ -45,7 +45,7 @@ The `model_fairness()` function aims to assess fairness in algorithmic
 decision-making systems by computing and testing the equality of one of
 several model-agnostic fairness metrics between protected classes based on a
 set of true labels and the predictions of an algorithm. The ratio of these
-metrics between an unpriveleged protected class and a priveleged protected
+metrics between an unprivileged protected class and a privileged protected
 class is called parity, and quantifies relative fairness in the algorithms
 predictions. Available parity metrics include predictive rate parity,
 proportional parity, accuracy parity, false negative rate parity, false
