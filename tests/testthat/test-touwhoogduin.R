@@ -69,3 +69,211 @@ test_that(desc = "(id: f14-v0.5.1-t2) Test Sample sizes on page 23", {
   n <- planning(conf.level = 1 - 0.125, materiality = 100000 / 5000000, likelihood = "poisson")$n
   expect_equal(n, 104)
 })
+
+# Chapter 5
+test_that(desc = "(id: f14-v0.5.1-t3) Test chapter 5", {
+  testthat::skip_on_cran()
+  # Page 123
+  # Example 1: book: n = 45, jfa: n = 45
+  n <- planning(materiality = 60 / 1200, expected = 0, N.units = 1200, conf.level = 0.90, likelihood = "hypergeometric")$n
+  expect_equal(n, 45)
+  # Example 2: book: n = 102, jfa: n = 102
+  n <- planning(materiality = 60 / 1200, expected = 2, N.units = 1200, conf.level = 0.90, likelihood = "hypergeometric")$n
+  expect_equal(n, 102)
+  # Page 125
+  # Table row 1: book: ub = 0.0208, jfa: ub = 0.0208
+  ub <- evaluation(n = 102, x = 0, N.units = 1200, conf.level = 0.90, method = "hypergeometric")$ub
+  expect_equal(ub, 0.02083333)
+  # Table row 2: book: ub = 0.0358, jfa: ub = 0.03583333
+  ub <- evaluation(n = 102, x = 1, N.units = 1200, conf.level = 0.90, method = "hypergeometric")$ub
+  expect_equal(ub, 0.03583333)
+  # Table row 3: book: ub = 0.0492, jfa: ub = 0.04916667
+  ub <- evaluation(n = 102, x = 2, N.units = 1200, conf.level = 0.90, method = "hypergeometric")$ub
+  expect_equal(ub, 0.04916667)
+  # Table row 4: book: ub = 0.0625, jfa: ub = 0.0625
+  ub <- evaluation(n = 102, x = 3, N.units = 1200, conf.level = 0.90, method = "hypergeometric")$ub
+  expect_equal(ub, 0.0625)
+
+  # Page 126
+  # Table 1 first column: n = 299, 473, 628, 773
+  n <- planning(materiality = 0.01, expected = 0, likelihood = "binomial")$n
+  expect_equal(n, 299)
+  n <- planning(materiality = 0.01, expected = 1, likelihood = "binomial")$n
+  expect_equal(n, 473)
+  n <- planning(materiality = 0.01, expected = 2, likelihood = "binomial")$n
+  expect_equal(n, 628)
+  n <- planning(materiality = 0.01, expected = 3, likelihood = "binomial")$n
+  expect_equal(n, 773)
+  # Second column: n = 59, 93, 124, 153
+  n <- planning(materiality = 0.05, expected = 0, likelihood = "binomial")$n
+  expect_equal(n, 59)
+  n <- planning(materiality = 0.05, expected = 1, likelihood = "binomial")$n
+  expect_equal(n, 93)
+  n <- planning(materiality = 0.05, expected = 2, likelihood = "binomial")$n
+  expect_equal(n, 124)
+  n <- planning(materiality = 0.05, expected = 3, likelihood = "binomial")$n
+  expect_equal(n, 153)
+  # Third column: n = 29, 46, 61, 76
+  n <- planning(materiality = 0.1, expected = 0, likelihood = "binomial")$n
+  expect_equal(n, 29)
+  n <- planning(materiality = 0.1, expected = 1, likelihood = "binomial")$n
+  expect_equal(n, 46)
+  n <- planning(materiality = 0.1, expected = 2, likelihood = "binomial")$n
+  expect_equal(n, 61)
+  n <- planning(materiality = 0.1, expected = 3, likelihood = "binomial")$n
+  expect_equal(n, 76)
+  # Fourth column: n = 19, 30, 40, 50
+  n <- planning(materiality = 0.15, expected = 0, likelihood = "binomial")$n
+  expect_equal(n, 19)
+  n <- planning(materiality = 0.15, expected = 1, likelihood = "binomial")$n
+  expect_equal(n, 30)
+  n <- planning(materiality = 0.15, expected = 2, likelihood = "binomial")$n
+  expect_equal(n, 40)
+  n <- planning(materiality = 0.15, expected = 3, likelihood = "binomial")$n
+  expect_equal(n, 50)
+  # Fifth column: n = 14, 22, 30, 37             --> ALL CORRECT
+  n <- planning(materiality = 0.2, expected = 0, likelihood = "binomial")$n
+  expect_equal(n, 14)
+  n <- planning(materiality = 0.2, expected = 1, likelihood = "binomial")$n
+  expect_equal(n, 22)
+  n <- planning(materiality = 0.2, expected = 2, likelihood = "binomial")$n
+  expect_equal(n, 30)
+  n <- planning(materiality = 0.2, expected = 3, likelihood = "binomial")$n
+  expect_equal(n, 37)
+
+  # Table 2 first column: n = 230, 388, 531, 667
+  n <- planning(materiality = 0.01, expected = 0, likelihood = "binomial", conf.level = 0.9)$n
+  expect_equal(n, 230)
+  n <- planning(materiality = 0.01, expected = 1, likelihood = "binomial", conf.level = 0.9)$n
+  expect_equal(n, 388)
+  n <- planning(materiality = 0.01, expected = 2, likelihood = "binomial", conf.level = 0.9)$n
+  expect_equal(n, 531)
+  n <- planning(materiality = 0.01, expected = 3, likelihood = "binomial", conf.level = 0.9)$n
+  expect_equal(n, 667)
+  # Second column: n = 45, 77, 105, 132
+  n <- planning(materiality = 0.05, expected = 0, likelihood = "binomial", conf.level = 0.9)$n
+  expect_equal(n, 45)
+  n <- planning(materiality = 0.05, expected = 1, likelihood = "binomial", conf.level = 0.9)$n
+  expect_equal(n, 77)
+  n <- planning(materiality = 0.05, expected = 2, likelihood = "binomial", conf.level = 0.9)$n
+  expect_equal(n, 105)
+  n <- planning(materiality = 0.05, expected = 3, likelihood = "binomial", conf.level = 0.9)$n
+  expect_equal(n, 132)
+  # Third column: n = 22, 38, 52, 65
+  n <- planning(materiality = 0.1, expected = 0, likelihood = "binomial", conf.level = 0.9)$n
+  expect_equal(n, 22)
+  n <- planning(materiality = 0.1, expected = 1, likelihood = "binomial", conf.level = 0.9)$n
+  expect_equal(n, 38)
+  n <- planning(materiality = 0.1, expected = 2, likelihood = "binomial", conf.level = 0.9)$n
+  expect_equal(n, 52)
+  n <- planning(materiality = 0.1, expected = 3, likelihood = "binomial", conf.level = 0.9)$n
+  expect_equal(n, 65)
+  # Fourth column: n = 15, 25, 34, 43
+  n <- planning(materiality = 0.15, expected = 0, likelihood = "binomial", conf.level = 0.9)$n
+  expect_equal(n, 15)
+  n <- planning(materiality = 0.15, expected = 1, likelihood = "binomial", conf.level = 0.9)$n
+  expect_equal(n, 25)
+  n <- planning(materiality = 0.15, expected = 2, likelihood = "binomial", conf.level = 0.9)$n
+  expect_equal(n, 34)
+  n <- planning(materiality = 0.15, expected = 3, likelihood = "binomial", conf.level = 0.9)$n
+  expect_equal(n, 43)
+  # Fifth column: n = 11, 18, 25, 32
+  n <- planning(materiality = 0.2, expected = 0, likelihood = "binomial", conf.level = 0.9)$n
+  expect_equal(n, 11)
+  n <- planning(materiality = 0.2, expected = 1, likelihood = "binomial", conf.level = 0.9)$n
+  expect_equal(n, 18)
+  n <- planning(materiality = 0.2, expected = 2, likelihood = "binomial", conf.level = 0.9)$n
+  expect_equal(n, 25)
+  n <- planning(materiality = 0.2, expected = 3, likelihood = "binomial", conf.level = 0.9)$n
+  expect_equal(n, 32)
+
+  # Page 131
+  # Example 1: book: n = 299, jfa: n = 299
+  n <- planning(materiality = 120000 / 12000000, expected = 0, likelihood = "binomial")$n
+  expect_equal(n, 299)
+
+  # Page 132
+  # Example 1: book: n = 299, jfa: n = 299
+  n <- planning(materiality = 0.01, expected = 0, likelihood = "binomial")$n
+  expect_equal(n, 299)
+  # Example 2: bookk: n = 473, jfa: n = 473
+  n <- planning(materiality = 120000 / 12000000, expected = 1, likelihood = "binomial")$n
+  expect_equal(n, 473)
+
+  # Page 134
+  # Example 1: book: n = 145, jfa: n = 144  --> DOES NOT MATCH
+  n <- planning(materiality = 450000 / 13500000, expected = 100000 / 13500000, likelihood = "binomial", prior = auditPrior(method = "strict", likelihood = "binomial"))$n
+  expect_equal(n, 145 - 1)
+  # Example 2: book: n = 141, jfa: n = 141
+  n <- planning(materiality = 450000 / 13500000, expected = 1, likelihood = "binomial")$n
+  expect_equal(n, 141)
+  # Example 3: book: n = 187, jfa: n = 187
+  n <- planning(materiality = 450000 / 13500000, expected = 2, likelihood = "binomial")$n
+  expect_equal(n, 187)
+
+  # Page 135
+  # Example 1: book: n = 1100, jfa: n = 1100
+  n <- planning(materiality = 36730 / 13500000, likelihood = "binomial", prior = auditPrior(method = "strict", likelihood = "binomial"))$n
+  expect_equal(n, 1100)
+
+  # Page 137
+  # Example 1: book: ub = 276050 / 13500000 = 0.02044815, jfa: ub = 0.02044826
+  ub <- evaluation(n = 145, x = 0, method = "binomial")$ub
+  expect_equal(ub, 0.02044826)
+  # Example 2: book: ub = 436007 / 13500000 = 0.03229681, jfa: ub = 0.03229696
+  ub <- evaluation(n = 145, x = 1, method = "binomial")$ub
+  expect_equal(ub, 0.03229696)
+  # Example 3: book: ub = 577535 / 13500000 = 0.04278037, jfa: ub = 0.04278054
+  ub <- evaluation(n = 145, x = 2, method = "binomial")$ub
+  expect_equal(ub, 0.04278054)
+  # Example 4: book: ub = 710132 / 13500000 = 0.05260237, jfa: ub = 0.0526026
+  ub <- evaluation(n = 145, x = 3, method = "binomial")$ub
+  expect_equal(ub, 0.0526026)
+
+  # Page 138
+  # Example 1
+  # book: mle = 115448.3 / 13500000 = 0.008551726; ub = 469616.5 / 13500000 = 0.03478641
+  # jfa: mle = 0.008551724, ub = 0.03478656
+  sample <- data.frame(id = seq_len(145), taint = 0)
+  sample$taint[seq_len(3)] <- c(1.00000000, 0.20000072, 0.03999931)
+  sample$book <- rep(1000, 145)
+  sample$audit <- sample$book - (sample$book * sample$taint)
+  res <- evaluation(data = sample, method = "stringer", values = "book", values.audit = "audit")
+  expect_equal(res$mle, 0.008551724)
+  expect_equal(res$ub, 0.03478656)
+
+  # Page 140-141
+  # Example 1: jfa does not support cell bound
+  # Example 1: jfa does not support pps bound
+
+  # Page 142
+  # Example 1: book: n = 187, jfa: n = 187
+  n <- planning(materiality = 450000 / 13500000, expected = 2, likelihood = "binomial")$n
+  expect_equal(n, 187)
+
+  # Page 143
+  # Example 1: book: n = 145, jfa: n = 144 -> DOES NOT MATCH
+  n <- planning(materiality = 450000 / 13500000, expected = 100000 / 13500000, likelihood = "binomial", prior = auditPrior(method = "strict", likelihood = "binomial"))$n
+  expect_equal(n, 145 - 1)
+  # Example 2: book: ub = 449999.9 / 13500000 = 0.03333333, jfa: ub = 0.03333348
+  sample <- data.frame(id = seq_len(145), taint = 0)
+  sample$taint[seq_len(2)] <- c(1, .09887)
+  sample$book <- rep(1000, 145)
+  sample$audit <- sample$book - (sample$book * sample$taint)
+  ub <- evaluation(data = sample, method = "stringer", values = "book", values.audit = "audit")$ub
+  expect_equal(ub, 0.03333348)
+  # Example 3: jfa does not support cell method
+
+  # Page 144
+  # Example 1: book: ub = 439009.3 / 13500000 = 0.03251921, jfa: ub = 0.03251936
+  sample <- data.frame(id = seq_len(145), taint = 0)
+  sample$taint[seq_len(3)] <- c(0.5, 0.4, 0.19887)
+  sample$book <- rep(1000, 145)
+  sample$audit <- sample$book - (sample$book * sample$taint)
+  ub <- evaluation(data = sample, method = "stringer", values = "book", values.audit = "audit")$ub
+  expect_equal(ub, 0.03251936)
+  # Example 2: jfa does not support cell method
+  # Example 3: book: n = 746, jfa: n = 744 --> DOES NOT MATCH
+  n <- planning(materiality = 450000 / 13500000, expected = 300000 / 13500000, likelihood = "binomial", prior = auditPrior(method = "strict", likelihood = "binomial"))$n
+  expect_equal(n, 746 - 2)
+})
