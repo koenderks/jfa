@@ -83,5 +83,13 @@ benchmarks:
 
 - [fairness](https://cran.r-project.org/package=fairness) (R package version 1.2.2)
 
+## Cheat sheet
+
+The cheat sheet below will help you get started with **jfa**'s' intended
+algorithm audit functionality. You can download a `pdf` version of the cheat
+sheet [here](https://github.com/koenderks/jfa/raw/development/man/figures/cheatsheet/cheatsheet-algorithm.pdf).
+
+<p align='center'><img src='cheatsheet-algorithm.png' alt='cheatsheet-algorithm' width='1000'></p>
+
 ## References
 <div id="refs"></div>
