@@ -202,9 +202,9 @@ poststratified to arrive at the population estimate.
 ```{r}
 set.seed(1) # Important because the posterior distribution is determined via sampling
 result_np <- evaluation(
-  materiality = 0.05, method = "binomial", prior = TRUE,
+  materiality = 0.05, method = "binomial",
   n = retailer$samples, x = retailer$errors, N.units = retailer$items,
-  alternative = "two.sided", pooling = "none"
+  alternative = "two.sided", pooling = "none", prior = TRUE
 )
 summary(result_np)
 ```
@@ -238,9 +238,9 @@ which the strata are assumed to be the same.
 
 ```{r}
 result_cp <- evaluation(
-  materiality = 0.05, method = "binomial", prior = TRUE,
+  materiality = 0.05, method = "binomial",
   n = retailer$samples, x = retailer$errors, N.units = retailer$items,
-  alternative = "two.sided", pooling = "complete"
+  alternative = "two.sided", pooling = "complete", prior = TRUE
 )
 summary(result_cp)
 ```
@@ -275,16 +275,16 @@ poststratified to arrive at the population estimate.
 ```{r}
 set.seed(1) # Important because the posterior distribution is determined via sampling
 result_pp <- evaluation(
-  materiality = 0.05, method = "binomial", prior = TRUE,
+  materiality = 0.05, method = "binomial",
   n = retailer$samples, x = retailer$errors, N.units = retailer$items,
-  alternative = "two.sided", pooling = "partial"
+  alternative = "two.sided", pooling = "partial", prior = TRUE
 )
 summary(result_pp)
 ```
 
 In this case, the output shows that the estimate of the misstatement in the
-population is 4.34 percent, with the 95 percent credible interval ranging from
-3.45 percent to 5.33 percent. Note that this population estimate is
+population is 4.28 percent, with the 95 percent credible interval ranging from
+3.26 percent to 5.33 percent. Note that this population estimate is
 substantially less uncertain than that of the no pooling approach. Note that,
 like in the no pooling approach, the stratum estimates are different from each
 other but lie closer together and are less uncertain.
@@ -344,8 +344,9 @@ evaluation procedure.
 
 ```{r}
 x <- evaluation(
-  materiality = 0.05, data = allowances, prior = TRUE,
-  values = "bookValue", values.audit = "auditValue", times = "times"
+  materiality = 0.05, data = allowances,
+  values = "bookValue", values.audit = "auditValue", times = "times",
+  prior = TRUE
 )
 summary(x)
 ```
@@ -372,10 +373,11 @@ evaluation procedure, in which the stratum estimates are poststratified to
 arrive at the population estimate.
 
 ```{r}
+set.seed(1)
 x <- evaluation(
-  materiality = 0.05, data = allowances,
+  materiality = 0.05, data = allowances, 
   values = "bookValue", values.audit = "auditValue", strata = "branch", times = "times",
-  alternative = "two.sided", N.units = N.units
+  N.units = N.units, alternative = "two.sided"
 )
 summary(x)
 ```
@@ -399,10 +401,11 @@ in which the stratum estimates are poststratified to arrive at the population
 estimate.
 
 ```{r}
+set.seed(1)
 x <- evaluation(
-  materiality = 0.05, data = allowances, prior = TRUE,
+  materiality = 0.05, data = allowances,
   values = "bookValue", values.audit = "auditValue", strata = "branch", times = "times",
-  alternative = "two.sided", N.units = N.units
+  N.units = N.units, alternative = "two.sided", prior = TRUE
 )
 summary(x)
 ```
