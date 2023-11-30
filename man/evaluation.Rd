@@ -11,7 +11,7 @@ evaluation(
     "inflated.poisson", "hurdle.beta", "hurdle.beta2",
     "stringer.poisson", "stringer.binomial", "stringer.hypergeometric",
     "stringer.meikle", "stringer.lta", "stringer.pvz", "stringer",
-    "rohrbach", "moment", "coxsnell", "mpu",
+    "rohrbach", "moment", "coxsnell", "mpu", "pps",
     "direct", "difference", "quotient", "regression"
   ),
   alternative = c("less", "two.sided", "greater"),
@@ -41,8 +41,8 @@ options are \code{poisson} (default), \code{binomial},
 \code{hypergeometric}, \code{stringer.poisson}, \code{stringer.binomial},
 \code{stringer.hypergeometric}, \code{stringer.meikle},
 \code{stringer.lta}, \code{stringer.pvz}, \code{rohrbach}, \code{moment},
-\code{mpu}, \code{direct}, \code{difference}, \code{quotient}, or
-\code{regression}. See the details section for more information.}
+\code{mpu}, \code{pps}, \code{direct}, \code{difference}, \code{quotient},
+or \code{regression}. See the details section for more information.}
 
 \item{alternative}{a character indicating the alternative hypothesis and
 the type of confidence / credible interval returned by the function.
@@ -208,8 +208,10 @@ This section lists the available options for the \code{method}
    modified moment bound (Dworin and Grimlund, 1984).}
  \item{\code{coxsnell}:                Evaluates the sample using the Cox and
    Snell bound (Cox and Snell, 1979).}
- \item{\code{mpu}:                     Evaluates the sample using the
-   mean-per-unit estimator.}
+ \item{\code{mpu}:                     Evaluates the sample with the
+   mean-per-unit estimator using the Normal distribution.}
+ \item{\code{pps}:                     Evaluates the sample with the
+   proportional-to-size estimator using the Student-t distribution.}
  \item{\code{direct}:                  Evaluates the sample using the direct
    estimator (Touw and Hoogduin, 2011).}
  \item{\code{difference}:              Evaluates the sample using the

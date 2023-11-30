@@ -183,6 +183,16 @@
   return(result)
 }
 
+.pps <- function(t, conf.level, alternative, n) {
+  result <- list()
+  tVal <- if (alternative == "two.sided") stats::qt(p = conf.level + ((1 - conf.level) / 2), df = sum(t != 0) - 1) else stats::qt(p = conf.level, df = sum(t != 0) - 1)
+  result[["mle"]] <- sum(t) / n
+  result[["lb"]] <- if (alternative == "less") 0 else mean(t) - tVal * (stats::sd(t) / sqrt(n))
+  result[["ub"]] <- if (alternative == "greater") 1 else mean(t) + tVal * (stats::sd(t) / sqrt(n))
+  result[["precision"]] <- if (alternative == "greater") result[["mle"]] - result[["lb"]] else result[["ub"]] - result[["mle"]]
+  return(result)
+}
+
 .direct <- function(bookvalues, auditvalues, conf.level, alternative, N.items = NULL, n, N.units = NULL, correction = FALSE) {
   stopifnot(
     "missing value for 'N.items'" = !is.null(N.items),

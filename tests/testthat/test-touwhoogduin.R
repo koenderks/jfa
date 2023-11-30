@@ -131,7 +131,7 @@ test_that(desc = "(id: f14-v0.5.1-t3) Test chapter 5", {
   expect_equal(n, 40)
   n <- planning(materiality = 0.15, expected = 3, likelihood = "binomial")$n
   expect_equal(n, 50)
-  # Fifth column: n = 14, 22, 30, 37             --> ALL CORRECT
+  # Fifth column: n = 14, 22, 30, 37
   n <- planning(materiality = 0.2, expected = 0, likelihood = "binomial")$n
   expect_equal(n, 14)
   n <- planning(materiality = 0.2, expected = 1, likelihood = "binomial")$n
@@ -140,7 +140,6 @@ test_that(desc = "(id: f14-v0.5.1-t3) Test chapter 5", {
   expect_equal(n, 30)
   n <- planning(materiality = 0.2, expected = 3, likelihood = "binomial")$n
   expect_equal(n, 37)
-
   # Table 2 first column: n = 230, 388, 531, 667
   n <- planning(materiality = 0.01, expected = 0, likelihood = "binomial", conf.level = 0.9)$n
   expect_equal(n, 230)
@@ -201,9 +200,11 @@ test_that(desc = "(id: f14-v0.5.1-t3) Test chapter 5", {
   expect_equal(n, 473)
 
   # Page 134
-  # Example 1: book: n = 145, jfa: n = 144  --> DOES NOT MATCH
+  # Example 1: book: n = 145, jfa: n = 144 --> DOES NOT MATCH BUT IS PROBABLY DUE TO BOOK USING ROUNDING AND INTERPOLATION
   n <- planning(materiality = 450000 / 13500000, expected = 100000 / 13500000, likelihood = "binomial", prior = auditPrior(method = "strict", likelihood = "binomial"))$n
   expect_equal(n, 145 - 1)
+  n <- planning(materiality = 0.0334, expected = 1.098871, prior = auditPrior(method = "strict", likelihood = "binomial"))$n
+  expect_equal(n, 145)
   # Example 2: book: n = 141, jfa: n = 141
   n <- planning(materiality = 450000 / 13500000, expected = 1, likelihood = "binomial")$n
   expect_equal(n, 141)
@@ -231,9 +232,7 @@ test_that(desc = "(id: f14-v0.5.1-t3) Test chapter 5", {
   expect_equal(ub, 0.0526026)
 
   # Page 138
-  # Example 1
-  # book: mle = 115448.3 / 13500000 = 0.008551726; ub = 469616.5 / 13500000 = 0.03478641
-  # jfa: mle = 0.008551724, ub = 0.03478656
+  # Example 1: book: mle = 115448.3 / 13500000 = 0.008551726; ub = 469616.5 / 13500000 = 0.03478641, jfa: mle = 0.008551724, ub = 0.03478656
   sample <- data.frame(id = seq_len(145), taint = 0)
   sample$taint[seq_len(3)] <- c(1.00000000, 0.20000072, 0.03999931)
   sample$book <- rep(1000, 145)
@@ -242,9 +241,16 @@ test_that(desc = "(id: f14-v0.5.1-t3) Test chapter 5", {
   expect_equal(res$mle, 0.008551724)
   expect_equal(res$ub, 0.03478656)
 
-  # Page 140-141
+  # Page 140
   # Example 1: jfa does not support cell bound
+
+  # Page 141
   # Example 1: jfa does not support pps bound
+  res <- evaluation(data = sample, method = "pps", values = "book", values.audit = "audit", alternative = "two.sided")
+  expect_equal(res$mle * 13500000, 115448.2787)
+  expect_equal(13500000 - res$mle * 13500000, 13384551.72)
+  expect_equal(13500000 - res$ub * 13500000, 12976389.01)
+  expect_equal(13500000 - res$lb * 13500000, 13792714.43)
 
   # Page 142
   # Example 1: book: n = 187, jfa: n = 187
@@ -252,9 +258,11 @@ test_that(desc = "(id: f14-v0.5.1-t3) Test chapter 5", {
   expect_equal(n, 187)
 
   # Page 143
-  # Example 1: book: n = 145, jfa: n = 144 -> DOES NOT MATCH
+  # Example 1: book: n = 145, jfa: n = 144 --> DOES NOT MATCH BUT IS PROBABLY DUE TO BOOK USING ROUNDING AND INTERPOLATION
   n <- planning(materiality = 450000 / 13500000, expected = 100000 / 13500000, likelihood = "binomial", prior = auditPrior(method = "strict", likelihood = "binomial"))$n
   expect_equal(n, 145 - 1)
+  n <- planning(materiality = 0.0334, expected = 1.098871, prior = auditPrior(method = "strict", likelihood = "binomial"))$n
+  expect_equal(n, 145)
   # Example 2: book: ub = 449999.9 / 13500000 = 0.03333333, jfa: ub = 0.03333348
   sample <- data.frame(id = seq_len(145), taint = 0)
   sample$taint[seq_len(2)] <- c(1, .09887)
@@ -273,7 +281,7 @@ test_that(desc = "(id: f14-v0.5.1-t3) Test chapter 5", {
   ub <- evaluation(data = sample, method = "stringer", values = "book", values.audit = "audit")$ub
   expect_equal(ub, 0.03251936)
   # Example 2: jfa does not support cell method
-  # Example 3: book: n = 746, jfa: n = 744 --> DOES NOT MATCH
+  # Example 3: book: n = 746, jfa: n = 744 --> DOES NOT MATCH BUT IS PROBABLY DUE TO BOOK USING ROUNDING AND INTERPOLATION
   n <- planning(materiality = 450000 / 13500000, expected = 300000 / 13500000, likelihood = "binomial", prior = auditPrior(method = "strict", likelihood = "binomial"))$n
   expect_equal(n, 746 - 2)
 })
