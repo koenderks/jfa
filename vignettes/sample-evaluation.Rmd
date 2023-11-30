@@ -375,7 +375,7 @@ arrive at the population estimate.
 ```{r}
 set.seed(1)
 x <- evaluation(
-  materiality = 0.05, data = allowances, 
+  materiality = 0.05, data = allowances,
   values = "bookValue", values.audit = "auditValue", strata = "branch", times = "times",
   N.units = N.units, alternative = "two.sided"
 )
