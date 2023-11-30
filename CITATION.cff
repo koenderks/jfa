@@ -38,7 +38,7 @@ preferred-citation:
 repository: https://CRAN.R-project.org/package=jfa
 repository-code: https://github.com/koenderks/jfa
 url: https://koenderks.github.io/jfa/
-date-released: '2023-11-28'
+date-released: '2023-11-30'
 contact:
 - family-names: Derks
   given-names: Koen
@@ -51,9 +51,11 @@ keywords:
 - bayesian
 - data-auditing
 - jasp
+- jasp-for-audit
 - r
 - r-package
 - rstats
+- statistical-audit
 - statistics
 references:
 - type: software
