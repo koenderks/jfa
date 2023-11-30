@@ -19,7 +19,7 @@ data {
 }
 parameters {
   real<lower=0, upper=1> phi;          // average population taint
-  real<lower=1> nu;                    // population taint concentration
+  real<lower=50> nu;                    // population taint concentration
   real<lower=1> mu;                    // average stratum taint concentration
   real<lower=0> sigma;                 // st.dev stratum taint concentration
   vector<lower=0, upper=1>[S] theta_s; // average stratum taint
@@ -44,7 +44,7 @@ model {
   } else if (exponential_prior) {
     phi ~ exponential(alpha);
   }
-  nu ~ pareto(1, 1.5);
+  nu ~ pareto(50, 1.5);
   mu ~ normal(1, 100);
   sigma ~ normal(0, 10);
   // Priors
