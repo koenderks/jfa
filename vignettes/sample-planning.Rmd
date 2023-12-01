@@ -269,3 +269,6 @@ planning(
   likelihood = "binomial", prior = prior
 )
 ```
+
+## References
+<div id="refs"></div>
