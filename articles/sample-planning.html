@@ -304,10 +304,9 @@ single-stage sampling plan expecting <span class="math inline">\(k\)</span> = 0,
 <span><span class="co">## </span></span>
 <span><span class="co">## minimum sample size = 99 </span></span>
 <span><span class="co">## sample size obtained in 100 iterations via method 'binomial'</span></span></code></pre>
-<p>However, it is considerably larger larger than the minimal sample
-size for the first stage if the auditor decides to use a single-stage
-sampling plan expecting <span class="math inline">\(k\)</span> = 1,
-which is <span class="math inline">\(n\)</span> = 157.</p>
+<p>However, the total sample size <span class="math inline">\(n\)</span>
+= 208 is considerably larger larger than the minimal sample size if the
+auditor decides to use a single-stage sampling plan expecting <span class="math inline">\(k\)</span> = 1, which is <span class="math inline">\(n\)</span> = 157.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, expected <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -465,8 +464,8 @@ the binomial likelihood to plan the sample size.</p>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Planning</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## minimum sample size = 95 </span></span>
-<span><span class="co">## sample size obtained in 96 iterations via method 'binomial' + 'prior'</span></span></code></pre>
+<span><span class="co">## minimum sample size = 96 </span></span>
+<span><span class="co">## sample size obtained in 97 iterations via method 'binomial' + 'prior'</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
