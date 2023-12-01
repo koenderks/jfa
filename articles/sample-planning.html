@@ -275,28 +275,28 @@ each stage to the <code><a href="../reference/planning.html">planning()</a></cod
 computed the sample size required if the auditor wants to initially plan
 for <span class="math inline">\(k\)</span> = 0 misstatements, but wants
 to extend the sample if <span class="math inline">\(k\)</span> = 1
-misstatement is found. The required sample size per stage is <span class="math inline">\(n_s\)</span> = 104, with a total sample size (if
+misstatement is found. The required sample size per stage is <span class="math inline">\(n_s\)</span> = 103, with a total sample size (if
 both stages are required) of <span class="math inline">\(n\)</span> =
-208.</p>
+206.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, expected <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Classical Audit Sample Planning</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## minimum sample size = 208 (104 per stage) </span></span>
-<span><span class="co">## sample size obtained in 103 iterations via method 'binomial' + 'sequential'</span></span></code></pre>
+<span><span class="co">## minimum sample size = 206 (103 per stage) </span></span>
+<span><span class="co">## sample size obtained in 102 iterations via method 'binomial' + 'sequential'</span></span></code></pre>
 <p>The correctness of this calculation can be verified by making sure
 that the probability of incorrectly rejecting the null hypothesis under
 the binomial distribution is below the audit risk <span class="math inline">\(\alpha\)</span> = 0.05.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p_k0_n1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">pbinom</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">0</span>, size <span class="op">=</span> <span class="fl">104</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
-<span><span class="va">p_k1_n1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">pbinom</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">1</span>, size <span class="op">=</span> <span class="fl">104</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
-<span><span class="va">p_k0_n2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">pbinom</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">0</span>, size <span class="op">=</span> <span class="fl">104</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">p_k0_n1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">dbinom</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0</span>, size <span class="op">=</span> <span class="fl">103</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
+<span><span class="va">p_k1_n1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">dbinom</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span>, size <span class="op">=</span> <span class="fl">103</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
+<span><span class="va">p_k0_n2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">dbinom</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0</span>, size <span class="op">=</span> <span class="fl">103</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
 <span><span class="va">p_k0_n1</span> <span class="op">+</span> <span class="va">p_k1_n1</span> <span class="op">*</span> <span class="va">p_k0_n2</span> <span class="op">&lt;</span> <span class="fl">0.05</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
-<p>The minimal sample size per stage <span class="math inline">\(n_s\)</span> is only slightly larger than the
-minimal sample size for the first stage if the auditor decides to use a
-single-stage sampling plan expecting <span class="math inline">\(k\)</span> = 0, which is <span class="math inline">\(n\)</span> = 99.</p>
+<p>The minimal sample size per stage <span class="math inline">\(n_s\)</span> = 103 is only slightly larger than
+the minimal sample size for the first stage if the auditor decides to
+use a single-stage sampling plan expecting <span class="math inline">\(k\)</span> = 0, which is <span class="math inline">\(n\)</span> = 99.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, expected <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -305,7 +305,7 @@ single-stage sampling plan expecting <span class="math inline">\(k\)</span> = 0,
 <span><span class="co">## minimum sample size = 99 </span></span>
 <span><span class="co">## sample size obtained in 100 iterations via method 'binomial'</span></span></code></pre>
 <p>However, the total sample size <span class="math inline">\(n\)</span>
-= 208 is considerably larger larger than the minimal sample size if the
+= 206 is considerably larger larger than the minimal sample size if the
 auditor decides to use a single-stage sampling plan expecting <span class="math inline">\(k\)</span> = 1, which is <span class="math inline">\(n\)</span> = 157.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, expected <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
@@ -315,34 +315,34 @@ auditor decides to use a single-stage sampling plan expecting <span class="math 
 <span><span class="co">## minimum sample size = 157 </span></span>
 <span><span class="co">## sample size obtained in 156 iterations via method 'binomial'</span></span></code></pre>
 <p>As another example, we discuss a three-stage sampling plan in which
-the auditor wants to extend the sample after finding <span class="math inline">\(k\)</span> = 3 misstatements in the first stage,
+the auditor wants to extend the sample after finding <span class="math inline">\(k\)</span> = 1 misstatements in the first stage,
 extend further if they find <span class="math inline">\(k\)</span> = 1
-misstatement in the second stage, and approve the population if they
-find <span class="math inline">\(k\)</span> = 0 misstatements in the
-third stage. The required sample size per each of the three stages is
-<span class="math inline">\(n_s\)</span> = 210.</p>
+misstatement in the second stage, and still be able to approve the
+population if they find <span class="math inline">\(k\)</span> = 0
+misstatements in the third stage. The required sample size per each of
+the three stages is <span class="math inline">\(n_s\)</span> = 209.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, expected <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Classical Audit Sample Planning</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## minimum sample size = 630 (210 per stage) </span></span>
-<span><span class="co">## sample size obtained in 206 iterations via method 'binomial' + 'sequential'</span></span></code></pre>
+<span><span class="co">## minimum sample size = 624 (208 per stage) </span></span>
+<span><span class="co">## sample size obtained in 204 iterations via method 'binomial' + 'sequential'</span></span></code></pre>
 <p>Again, this can be verified by making sure that the probability of
 incorrectly rejecting the null hypothesis of three percent misstatement
 is below the audit risk <span class="math inline">\(\alpha\)</span> =
 0.05.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p_k2_n1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">pbinom</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">2</span>, size <span class="op">=</span> <span class="fl">210</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
-<span><span class="va">p_k3_n1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">pbinom</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">3</span>, size <span class="op">=</span> <span class="fl">210</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
-<span><span class="va">p_k1_n2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">pbinom</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">1</span>, size <span class="op">=</span> <span class="fl">210</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
-<span><span class="va">p_k2_n2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">pbinom</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">2</span>, size <span class="op">=</span> <span class="fl">210</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
-<span><span class="va">p_k0_n3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">pbinom</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">0</span>, size <span class="op">=</span> <span class="fl">210</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">p_k2_n1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">pbinom</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">2</span>, size <span class="op">=</span> <span class="fl">209</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
+<span><span class="va">p_k3_n1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">dbinom</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">3</span>, size <span class="op">=</span> <span class="fl">209</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
+<span><span class="va">p_k1_n2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">pbinom</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">1</span>, size <span class="op">=</span> <span class="fl">209</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
+<span><span class="va">p_k2_n2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">dbinom</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">2</span>, size <span class="op">=</span> <span class="fl">209</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
+<span><span class="va">p_k0_n3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">dbinom</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">0</span>, size <span class="op">=</span> <span class="fl">209</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
 <span><span class="va">p_k2_n1</span> <span class="op">+</span> <span class="va">p_k3_n1</span> <span class="op">*</span> <span class="va">p_k1_n2</span> <span class="op">+</span> <span class="va">p_k3_n1</span> <span class="op">*</span> <span class="va">p_k2_n2</span> <span class="op">*</span> <span class="va">p_k0_n3</span> <span class="op">&lt;</span> <span class="fl">0.05</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
-<p>Like before, the minimal sample size per stage is only slightly
-higher than the minimal sample size for the first stage if the auditor
-decides to use a single-stage sampling plan.</p>
+<p>Like before, the minimal sample size per stage <span class="math inline">\(n_s\)</span> = 209 is only slightly larger than
+the minimal sample size for the first stage if the auditor decides to
+use a single-stage sampling plan, which is <span class="math inline">\(n\)</span> = 208.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, expected <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -464,8 +464,8 @@ the binomial likelihood to plan the sample size.</p>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Planning</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## minimum sample size = 96 </span></span>
-<span><span class="co">## sample size obtained in 97 iterations via method 'binomial' + 'prior'</span></span></code></pre>
+<span><span class="co">## minimum sample size = 95 </span></span>
+<span><span class="co">## sample size obtained in 96 iterations via method 'binomial' + 'prior'</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
