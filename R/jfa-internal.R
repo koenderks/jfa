@@ -287,9 +287,9 @@
   p_take <- 1
   for (j in 2:length(expected)) {
     p1 <- switch(likelihood,
-      "poisson" = stats::ppois(expected[j - 1], lambda = n * materiality),
-      "binomial" = stats::pbinom(expected[j - 1], size = n, prob = materiality),
-      "hypergeometric" = stats::phyper(q = expected[j - 1], m = K, n = N.units - K, k = n)
+      "poisson" = stats::dpois(expected[j - 1], lambda = n * materiality),
+      "binomial" = stats::dbinom(expected[j - 1], size = n, prob = materiality),
+      "hypergeometric" = stats::dhyper(expected[j - 1], m = K, n = N.units - K, k = n)
     )
     p2 <- switch(likelihood,
       "poisson" = stats::ppois(expected[j], lambda = n * materiality),

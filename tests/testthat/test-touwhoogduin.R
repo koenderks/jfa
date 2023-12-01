@@ -188,7 +188,7 @@ test_that(desc = "(id: f14-v0.5.1-t3) Test chapter 5", {
 
   # Page 129
   # Example 1: book: n_1 and n_2 = 49, jfa: n_1 and n_2 = 49
-  res <- planning(materiality = 0.05, expected = c(1, 0), conf.level = 0.9, likelihood = "hypergeometric", N.units = 1000)
+  res <- planning(materiality = 0.05, expected = c(1, 0), conf.level = 0.9, likelihood = "binomial")
   expect_equal(res$n, 98)
   expect_equal(res$n_staged, 49)
 

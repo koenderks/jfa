@@ -327,7 +327,7 @@ test_that(desc = "(id: f5-v0.6.5-t1) Test Bayesian planning with different unifo
 test_that(desc = "(id: f5-v0.7.1-t1) Test frequentist two-stage planning", {
   testthat::skip_on_cran()
   n <- planning(materiality = 0.03, expected = c(1, 0), likelihood = "poisson")$n_staged
-  expect_equal(n, 106)
+  expect_equal(n, 105)
   n <- planning(materiality = 0.05, expected = c(1, 0), likelihood = "binomial")$n_staged
-  expect_equal(n, 62)
+  expect_equal(n, 61)
 })

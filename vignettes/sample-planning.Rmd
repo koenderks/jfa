@@ -160,8 +160,8 @@ integer vector of tolerable misstatements in each stage to the `planning()`
 function via its `expected` argument. For instance, the following code computed
 the sample size required if the auditor wants to initially plan for $k$ = 0
 misstatements, but wants to extend the sample if $k$ = 1 misstatement is found.
-The required sample size per stage is $n_s$ = 104, with a total sample size (if
-both stages are required) of $n$ = 208.
+The required sample size per stage is $n_s$ = 103, with a total sample size (if
+both stages are required) of $n$ = 206.
 
 ```{r}
 planning(materiality = 0.03, likelihood = "binomial", expected = c(1, 0))
@@ -172,21 +172,21 @@ probability of incorrectly rejecting the null hypothesis under the binomial
 distribution is below the audit risk $\alpha$ = 0.05.
 
 ```{r}
-p_k0_n1 <- pbinom(q = 0, size = 104, prob = 0.03)
-p_k1_n1 <- pbinom(q = 1, size = 104, prob = 0.03)
-p_k0_n2 <- pbinom(q = 0, size = 104, prob = 0.03)
+p_k0_n1 <- dbinom(x = 0, size = 103, prob = 0.03)
+p_k1_n1 <- dbinom(x = 1, size = 103, prob = 0.03)
+p_k0_n2 <- dbinom(x = 0, size = 103, prob = 0.03)
 p_k0_n1 + p_k1_n1 * p_k0_n2 < 0.05
 ```
 
-The minimal sample size per stage $n_s$ is only slightly larger than the minimal
-sample size for the first stage if the auditor decides to use a single-stage
-sampling plan expecting $k$ = 0, which is $n$ = 99.
+The minimal sample size per stage $n_s$ = 103 is only slightly larger than the
+minimal sample size for the first stage if the auditor decides to use a
+single-stage sampling plan expecting $k$ = 0, which is $n$ = 99.
 
 ```{r}
 planning(materiality = 0.03, likelihood = "binomial", expected = 0)
 ```
 
-However, the total sample size $n$ = 208 is considerably larger larger than the
+However, the total sample size $n$ = 206 is considerably larger larger than the
 minimal sample size if the auditor decides to use a single-stage sampling plan
 expecting $k$ = 1, which is $n$ = 157.
 
@@ -195,10 +195,11 @@ planning(materiality = 0.03, likelihood = "binomial", expected = 1)
 ```
 
 As another example, we discuss a three-stage sampling plan in which the auditor
-wants to extend the sample after finding $k$ = 3 misstatements in the first
+wants to extend the sample after finding $k$ = 1 misstatements in the first
 stage, extend further if they find $k$ = 1 misstatement in the second stage, and
-approve the population if they find $k$ = 0 misstatements in the third stage.
-The required sample size per each of the three stages is $n_s$ = 210.
+still be able to approve the population if they find $k$ = 0 misstatements in
+the third stage. The required sample size per each of the three stages is $n_s$
+= 209.
 
 ```{r}
 planning(materiality = 0.03, likelihood = "binomial", expected = c(3, 1, 0))
@@ -209,17 +210,17 @@ rejecting the null hypothesis of three percent misstatement is below the audit
 risk $\alpha$ = 0.05.
 
 ```{r}
-p_k2_n1 <- pbinom(q = 2, size = 210, prob = 0.03)
-p_k3_n1 <- pbinom(q = 3, size = 210, prob = 0.03)
-p_k1_n2 <- pbinom(q = 1, size = 210, prob = 0.03)
-p_k2_n2 <- pbinom(q = 2, size = 210, prob = 0.03)
-p_k0_n3 <- pbinom(q = 0, size = 210, prob = 0.03)
+p_k2_n1 <- pbinom(q = 2, size = 209, prob = 0.03)
+p_k3_n1 <- dbinom(q = 3, size = 209, prob = 0.03)
+p_k1_n2 <- pbinom(q = 1, size = 209, prob = 0.03)
+p_k2_n2 <- dbinom(q = 2, size = 209, prob = 0.03)
+p_k0_n3 <- dbinom(q = 0, size = 209, prob = 0.03)
 p_k2_n1 + p_k3_n1 * p_k1_n2 + p_k3_n1 * p_k2_n2 * p_k0_n3 < 0.05
 ```
 
-Like before, the minimal sample size per stage is only slightly higher than the
-minimal sample size for the first stage if the auditor decides to use a
-single-stage sampling plan.
+Like before, the minimal sample size per stage $n_s$ = 209 is only slightly
+larger than the minimal sample size for the first stage if the auditor decides
+to use a single-stage sampling plan, which is $n$ = 208.
 
 ```{r}
 planning(materiality = 0.03, likelihood = "binomial", expected = 2)
