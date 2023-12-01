@@ -33,7 +33,13 @@ or a number (>= 1) specifying the expected (tolerable) number of
 misstatements in the sample. It is advised to set this value conservatively
 to minimize the probability of the observed misstatements in the sample
 exceeding the expected misstatements, which would imply that insufficient
-work has been done in the end and that additional samples are required.}
+work has been done in the end and that additional samples are required.
+This argument also facilitates sequential sampling plans since it can also
+be a vector (e.g., \code{c(1, 0)}) of tolerable misstatements in each stage
+of the audit sample. Hence, \code{c(1, 0)} gives the sample size for a
+sequential sampling plan in which the auditor can stop after seeing 0
+misstatements in the first sample, but can extend the sample if more than
+0 misstatements are found.}
 
 \item{likelihood}{a character specifying the likelihood of the data.
 Possible options are \code{poisson} (default) for the Poisson likelihood,
@@ -71,6 +77,8 @@ An object of class \code{jfaPlanning} containing:
 \item{x}{a numeric value larger than, or equal to, 0 giving (the proportional
   sum of) the tolerable errors in the sample.}
 \item{n}{an integer larger than 0 giving the minimal sample size.}
+\item{n_staged}{in the case of a multiple-stage sampling plan, an integer
+  larger than 0 giving the minimal sample size per stage.}
 \item{ub}{a numeric value between 0 and 1 giving the expected upper bound.}
 \item{precision}{a numeric value between 0 and 1 giving the expected
   precision.}
@@ -131,7 +139,10 @@ distributions used by \code{jfa}.
 }
 \examples{
 # Classical planning
-planning(materiality = 0.03)
+planning(materiality = 0.03, expected = 0)
+
+# Classical two-stage planning
+planning(materiality = 0.03, expected = c(1, 0))
 
 # Bayesian planning using a default prior
 planning(materiality = 0.03, prior = TRUE)

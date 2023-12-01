@@ -48,6 +48,12 @@
 #'   to minimize the probability of the observed misstatements in the sample
 #'   exceeding the expected misstatements, which would imply that insufficient
 #'   work has been done in the end and that additional samples are required.
+#'   This argument also facilitates sequential sampling plans since it can also
+#'   be a vector (e.g., \code{c(1, 0)}) of tolerable misstatements in each stage
+#'   of the audit sample. Hence, \code{c(1, 0)} gives the sample size for a
+#'   sequential sampling plan in which the auditor can stop after seeing 0
+#'   misstatements in the first sample, but can extend the sample if more than
+#'   0 misstatements are found.
 #' @param likelihood    a character specifying the likelihood of the data.
 #'   Possible options are \code{poisson} (default) for the Poisson likelihood,
 #'   \code{binomial} for the binomial likelihood, or \code{hypergeometric} for
@@ -104,6 +110,8 @@
 #' \item{x}{a numeric value larger than, or equal to, 0 giving (the proportional
 #'   sum of) the tolerable errors in the sample.}
 #' \item{n}{an integer larger than 0 giving the minimal sample size.}
+#' \item{n_staged}{in the case of a multiple-stage sampling plan, an integer
+#'   larger than 0 giving the minimal sample size per stage.}
 #' \item{ub}{a numeric value between 0 and 1 giving the expected upper bound.}
 #' \item{precision}{a numeric value between 0 and 1 giving the expected
 #'   precision.}
@@ -151,7 +159,10 @@
 #'
 #' @examples
 #' # Classical planning
-#' planning(materiality = 0.03)
+#' planning(materiality = 0.03, expected = 0)
+#'
+#' # Classical two-stage planning
+#' planning(materiality = 0.03, expected = c(1, 0))
 #'
 #' # Bayesian planning using a default prior
 #' planning(materiality = 0.03, prior = TRUE)
@@ -176,6 +187,12 @@ planning <- function(materiality = NULL,
   is_bayesian <- isTRUE(prior) || is_jfa_prior
   mcmc_prior <- is_jfa_prior && prior[["likelihood"]] == "mcmc"
   analytical <- TRUE
+  sequential <- length(expected) > 1 && expected[1] != 0 && isFALSE(prior) && !is.null(materiality)
+  if (sequential) {
+    stopifnot("'expected' must be a vector of integers" = all(expected %% 1 == 0))
+  } else {
+    expected <- sum(expected)
+  }
   if (is_jfa_prior && !mcmc_prior) {
     conjugate_prior <- likelihood == prior[["likelihood"]]
     possible_match <- likelihood %in% c("poisson", "binomial", "hypergeometric") && prior[["likelihood"]] %in% c("poisson", "binomial", "hypergeometric")
@@ -233,20 +250,24 @@ planning <- function(materiality = NULL,
     stopifnot("'min.precision' must be a single value between 0 and 1" = valid_precision)
   }
   n <- NULL
-  if (expected >= 0 && expected < 1) {
-    error_type <- "percentage"
-    if (!is.null(materiality)) {
-      valid_expected <- is.numeric(expected) && expected < materiality
-      stopifnot("'expected' must be a single value < 'materiality'" = valid_expected)
-    }
-  } else if (expected >= 1) {
+  if (sequential) {
     error_type <- "integer"
-    if (expected %% 1 != 0 && likelihood %in% c("binomial", "hypergeometric") && !is_bayesian) {
-      expected <- ceiling(expected)
-      message(paste0("Using 'expected = ", expected, "' since 'expected' must be a single integer >= 0"))
+  } else {
+    if (expected >= 0 && expected < 1) {
+      error_type <- "percentage"
+      if (!is.null(materiality)) {
+        valid_expected <- is.numeric(expected) && expected < materiality
+        stopifnot("'expected' must be a single value < 'materiality'" = valid_expected)
+      }
+    } else if (expected >= 1) {
+      error_type <- "integer"
+      if (expected %% 1 != 0 && likelihood %in% c("binomial", "hypergeometric") && !is_bayesian) {
+        expected <- ceiling(expected)
+        message(paste0("Using 'expected = ", expected, "' since 'expected' must be a single integer >= 0"))
+      }
     }
+    stopifnot("'expected' must be an integer < 'max'" = expected < max)
   }
-  stopifnot("'expected' must be an integer < 'max'" = expected < max)
   if (is.null(materiality)) {
     materiality <- 1
   }
@@ -260,7 +281,7 @@ planning <- function(materiality = NULL,
     valid_units_expected <- N.units > expected
     stopifnot("'N.units' must be > expected" = valid_units_expected)
     N.units <- ceiling(N.units)
-    if (!is.null(materiality)) {
+    if (!is.null(materiality) && !sequential) {
       if (expected >= 1) {
         valid_expected <- (expected < ceiling(materiality * N.units))
         stopifnot("'expected' / 'N.units' must be < 'materiality'" = valid_expected)
@@ -289,7 +310,7 @@ planning <- function(materiality = NULL,
       x <- ceiling(x)
       population.x <- ceiling(materiality * N.units)
     }
-    while (i <= x) {
+    while (i <= sum(x)) {
       sframe <- sframe[-iter]
       i <- sframe[iter]
     }
@@ -317,16 +338,23 @@ planning <- function(materiality = NULL,
       if (likelihood == "binomial") {
         x <- ceiling(x)
       }
-      bound <- .comp_ub_freq("less", conf.level, likelihood, i, x, x, N.units)
+      if (sequential) {
+        prob <- .comp_sequential(i, likelihood, materiality, x, N.units)
+      }
+      bound <- .comp_ub_freq("less", conf.level, likelihood, i, sum(x), sum(x), N.units)
       if (likelihood == "hypergeometric") {
         bound <- bound / N.units
       }
-      mle <- x / i
+      mle <- sum(x) / i
       if (materiality < 1) {
-        p.val <- .comp_pval("less", materiality, likelihood, i, x, x, N.units, population.x)
+        p.val <- .comp_pval("less", materiality, likelihood, i, sum(x), sum(x), N.units, population.x)
       }
     }
-    sufficient <- bound < materiality && (bound - mle) < min.precision
+    if (sequential) {
+      sufficient <- prob < (1 - conf.level)
+    } else {
+      sufficient <- bound < materiality && (bound - mle) < min.precision
+    }
     if (sufficient) {
       n <- i
     } else {
@@ -334,14 +362,20 @@ planning <- function(materiality = NULL,
     }
   }
   stopifnot("the sample size is larger than 'max'" = !is.null(n))
+  if (sequential) {
+    n <- n * length(expected)
+  }
   if (!is.null(N.units) && n > N.units) {
     message("The sample size is larger than 'N.units'")
   }
   # Initialize main results
   result <- list()
   result[["conf.level"]] <- conf.level
-  result[["x"]] <- x
+  result[["x"]] <- sum(x)
   result[["n"]] <- n
+  if (sequential) {
+    result[["n_staged"]] <- result[["n"]] / length(expected)
+  }
   result[["ub"]] <- bound
   result[["precision"]] <- bound - mle
   if (!is_bayesian && materiality < 1) {
@@ -353,10 +387,11 @@ planning <- function(materiality = NULL,
   }
   result[["materiality"]] <- materiality
   result[["min.precision"]] <- min.precision
-  result[["expected"]] <- expected
+  result[["expected"]] <- sum(expected)
   result[["likelihood"]] <- likelihood
   result[["errorType"]] <- error_type
   result[["iterations"]] <- iter
+  result[["sequential"]] <- sequential
   # Prior and posterior distribution
   if (is_bayesian) {
     result[["prior"]] <- prior

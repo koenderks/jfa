@@ -277,6 +277,29 @@
   return(lb)
 }
 
+.comp_sequential <- function(n, likelihood, materiality, expected, N.units = NULL) {
+  K <- ceiling(materiality * N.units)
+  p <- switch(likelihood,
+    "poisson" = stats::ppois(expected[1] - 1, lambda = n * materiality),
+    "binomial" = stats::pbinom(expected[1] - 1, size = n, prob = materiality),
+    "hypergeometric" = stats::phyper(q = expected[1] - 1, m = K, n = N.units - K, k = n)
+  )
+  for (j in 2:length(expected)) {
+    p1 <- switch(likelihood,
+      "poisson" = stats::ppois(expected[j - 1], lambda = n * materiality),
+      "binomial" = stats::pbinom(expected[j - 1], size = n, prob = materiality),
+      "hypergeometric" = stats::phyper(q = expected[j - 1], m = K, n = N.units - K, k = n)
+    )
+    p2 <- switch(likelihood,
+      "poisson" = stats::ppois(expected[j], lambda = n * materiality),
+      "binomial" = stats::pbinom(expected[j], size = n, prob = materiality),
+      "hypergeometric" = stats::phyper(q = expected[j], m = K, n = N.units - K, k = n)
+    )
+    p <- p + (p1 * p2)
+  }
+  return(p)
+}
+
 # Talens, E. (2005). Statistical Auditing and the AOQL-method
 # https://core.ac.uk/download/pdf/232379784.pdf
 .qhyper <- function(p, N, n, k) {

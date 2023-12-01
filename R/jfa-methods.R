@@ -333,7 +333,7 @@ print.jfaPlanning <- function(x, ...) {
   cat("\n")
   if (is.null(x[["prior"]])) cat(strwrap("Classical Audit Sample Planning", prefix = "\t"), sep = "\n") else cat(strwrap("Bayesian Audit Sample Planning", prefix = "\t"), sep = "\n")
   cat("\n")
-  cat("minimum sample size =", x[["n"]], "\nsample size obtained in", x[["iterations"]], "iterations via method", if (is.null(x[["prior"]])) paste0("'", x[["likelihood"]], "'\n") else paste0("'", x[["likelihood"]], "' + 'prior'\n"))
+  cat("minimum sample size =", x[["n"]], if (x[["sequential"]] && is.null(x[["prior"]])) paste0("(", x[["n"]] / 2, " per stage)"), "\nsample size obtained in", x[["iterations"]], "iterations via method", if (is.null(x[["prior"]])) paste0("'", x[["likelihood"]], if (x[["sequential"]]) "' + 'sequential", "'\n") else paste0("'", x[["likelihood"]], "' + 'prior'\n"))
 }
 
 #' @rdname jfa-methods
@@ -390,6 +390,7 @@ summary.jfaPlanning <- function(object, digits = getOption("digits"), ...) {
     "n" = object[["n"]],
     "ub" = round(object[["ub"]], digits),
     "precision" = round(object[["precision"]], digits),
+    "sequential" = object[["sequential"]],
     stringsAsFactors = FALSE
   )
   if (!is.null(object[["p.value"]])) {
