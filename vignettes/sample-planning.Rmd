@@ -211,10 +211,10 @@ risk $\alpha$ = 0.05.
 
 ```{r}
 p_k2_n1 <- pbinom(q = 2, size = 209, prob = 0.03)
-p_k3_n1 <- dbinom(q = 3, size = 209, prob = 0.03)
+p_k3_n1 <- dbinom(x = 3, size = 209, prob = 0.03)
 p_k1_n2 <- pbinom(q = 1, size = 209, prob = 0.03)
-p_k2_n2 <- dbinom(q = 2, size = 209, prob = 0.03)
-p_k0_n3 <- dbinom(q = 0, size = 209, prob = 0.03)
+p_k2_n2 <- dbinom(x = 2, size = 209, prob = 0.03)
+p_k0_n3 <- dbinom(x = 0, size = 209, prob = 0.03)
 p_k2_n1 + p_k3_n1 * p_k1_n2 + p_k3_n1 * p_k2_n2 * p_k0_n3 < 0.05
 ```
 
