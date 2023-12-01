@@ -149,7 +149,7 @@ context, however, <code>poisson</code> is the default likelihood in
 three.</p>
 </div>
 <div class="section level2">
-<h2 id="planning-a-sample">Planning a sample<a class="anchor" aria-label="anchor" href="#planning-a-sample"></a>
+<h2 id="single-stage-sampling-plans">Single-stage sampling plans<a class="anchor" aria-label="anchor" href="#single-stage-sampling-plans"></a>
 </h2>
 <p>To illustrate how the <code><a href="../reference/planning.html">planning()</a></code> function can be used to
 calculate a minimum sample size for audit sampling, we will first
@@ -158,8 +158,11 @@ testing and subsequently show how to plan a sample with the purpose of
 estimation. In both cases, we will tolerate zero misstatements in the
 sample.</p>
 <div class="section level3">
-<h3 id="hypothesis-testing">Hypothesis testing<a class="anchor" aria-label="anchor" href="#hypothesis-testing"></a>
+<h3 id="classical-approach">Classical approach<a class="anchor" aria-label="anchor" href="#classical-approach"></a>
 </h3>
+<div class="section level4">
+<h4 id="hypothesis-testing">Hypothesis testing<a class="anchor" aria-label="anchor" href="#hypothesis-testing"></a>
+</h4>
 <p>First, let’s take a look at how you can use the
 <code><a href="../reference/planning.html">planning()</a></code> function to calculate the minimum sample size
 for testing the hypothesis that the misstatement in the population is
@@ -197,9 +200,9 @@ tolerable errors, the minimum sample size is 60 units.</p>
 <span><span class="co">##   Expected precision:            0.049929 </span></span>
 <span><span class="co">##   Expected p-value:              0.049787</span></span></code></pre>
 </div>
-<div class="section level3">
-<h3 id="estimation">Estimation<a class="anchor" aria-label="anchor" href="#estimation"></a>
-</h3>
+<div class="section level4">
+<h4 id="estimation">Estimation<a class="anchor" aria-label="anchor" href="#estimation"></a>
+</h4>
 <p>Next, let’s take a look at how you can use the
 <code><a href="../reference/planning.html">planning()</a></code> function to calculate the minimum sample size
 for estimating the misstatement in the population with a minimum
@@ -224,8 +227,9 @@ units.</p>
 <span><span class="co">## minimum sample size = 150 </span></span>
 <span><span class="co">## sample size obtained in 151 iterations via method 'poisson'</span></span></code></pre>
 </div>
+</div>
 <div class="section level3">
-<h3 id="bayesian-planning">Bayesian planning<a class="anchor" aria-label="anchor" href="#bayesian-planning"></a>
+<h3 id="bayesian-approach">Bayesian approach<a class="anchor" aria-label="anchor" href="#bayesian-approach"></a>
 </h3>
 <p>Performing Bayesian planning requires an input for the
 <code>prior</code> argument in the <code><a href="../reference/planning.html">planning()</a></code> function.
@@ -292,6 +296,128 @@ the binomial likelihood to plan the sample size.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## minimum sample size = 54 </span></span>
 <span><span class="co">## sample size obtained in 55 iterations via method 'binomial' + 'prior'</span></span></code></pre>
+</div>
+</div>
+<div class="section level2">
+<h2 id="multiple-stage-sampling-plans">Multiple-stage sampling plans<a class="anchor" aria-label="anchor" href="#multiple-stage-sampling-plans"></a>
+</h2>
+<p>Instead of using a single-stage sampling plan, a multi-stage sampling
+plan enables the evaluation of the sample at an intermediate stage. If
+the results do not provide sufficient evidence to make a conclusion, the
+second stage is initiated.</p>
+<p>In short, a multiple-stage sampling plan unfolds as follows. In the
+first stage the auditor draws an initial sample of size <span class="math inline">\(n_1\)</span>. If this sample contains a tolerable
+number of misstatements (typically 0), then the auditor can accept the
+population. However, if thes sample contains more than the tolerable
+number of misstatements (e.g., 1), the population cannot be approved. In
+this case, the sample is extended with another sample of size <span class="math inline">\(n_2\)</span>. If this second sample reveals a
+tolerable number of misstatements, then the population can be accepted.
+If not, then the population should be rejected or a third sample <span class="math inline">\(n_3\)</span> should be accounted for.</p>
+<div class="section level3">
+<h3 id="classical-approach-1">Classical approach<a class="anchor" aria-label="anchor" href="#classical-approach-1"></a>
+</h3>
+<p>In the classical (i.e., frequentist) approach, multiple-stage
+sampling plans can be computed by breaking down the audit risk into
+several components. For instance, if the auditor wants to initially plan
+for 0 misstatements, but wants to extend the sample if 1 misstatement is
+found, then the audit risk consists of:</p>
+<ul>
+<li>
+<span class="math inline">\(p(k = 0 | n_1)\)</span>: The probability
+of finding zero misstatements in the first sample of <span class="math inline">\(n_1\)</span> items; plus</li>
+<li>
+<span class="math inline">\(p(k = 1 | n_1)\)</span>: The probability
+of finding one misstatement in the first sample of <span class="math inline">\(n_1\)</span> items; and</li>
+<li>
+<span class="math inline">\(p(k = 0 | n_2)\)</span>: The probability
+finding one misstatement in the second sample of <span class="math inline">\(n_2\)</span> items.</li>
+</ul>
+<p>The sum of these probabilities should be lower than the audit risk
+<span class="math inline">\(\alpha\)</span>.</p>
+<p><span class="math display">\[\begin{equation}
+  p(k = 0 | n_1) + p(k = 1 | n_1) \cdot p(k = 0 | n_2) \leq \alpha
+\end{equation}\]</span></p>
+<p>If we choose the size of the extension equal to that of the initial
+sample, <span class="math inline">\(n_1\)</span> = <span class="math inline">\(n_2\)</span> = <span class="math inline">\(n\)</span>, we find that the sample size for a
+two-stage sampling plan is the solution to the following equation.</p>
+<p><span class="math display">\[\begin{equation}
+  p(k = 0 | n) + p(k = 1 | n) \cdot p(k = 0 | n) \leq \alpha
+\end{equation}\]</span></p>
+<p>In <strong>jfa</strong>, multiple-stage sampling plans can be
+computed by providing a vector of tolerable errors in each stage to the
+<code><a href="../reference/planning.html">planning()</a></code> function via the <code>expected</code> argument.
+For instance, the following code computed the sample size required if
+the auditor wants to initially plan for 0 misstatements, but wants to
+extend the sample if 1 misstatement is found. The required sample size
+per stage is 104, with a total sample size (if the two stages are
+completed) of 208.</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, expected <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Classical Audit Sample Planning</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## minimum sample size = 208 (104 per stage) </span></span>
+<span><span class="co">## sample size obtained in 103 iterations via method 'binomial' + 'sequential'</span></span></code></pre>
+<p>The correctness of this calculation can be verified by making sure
+that the probability of incorrectly rejecting the null hypothesis is
+below the audit risk <span class="math inline">\(\alpha\)</span> =
+0.05.</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p_k0_n1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">pbinom</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">0</span>, size <span class="op">=</span> <span class="fl">104</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
+<span><span class="va">p_k1_n1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">pbinom</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">1</span>, size <span class="op">=</span> <span class="fl">104</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
+<span><span class="va">p_k0_n2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">pbinom</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">0</span>, size <span class="op">=</span> <span class="fl">104</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
+<span><span class="va">p_k0_n1</span> <span class="op">+</span> <span class="op">(</span><span class="va">p_k1_n1</span> <span class="op">*</span> <span class="va">p_k0_n2</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">0.05</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
+<p>As another example, we discuss a three-stage sampling plan in which
+the auditor wants to extend the sample after finding three misstatements
+in the first stage, extend further if they find one misstatement in the
+second stage, and approve the population if they find zero misstatements
+in the third stage. The required sample size per stage is 210.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, expected <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Classical Audit Sample Planning</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## minimum sample size = 630 (210 per stage) </span></span>
+<span><span class="co">## sample size obtained in 206 iterations via method 'binomial' + 'sequential'</span></span></code></pre>
+<p>Again, this can be verified by making sure that the probability of
+incorrectly rejecting the null hypothesis is below the audit risk <span class="math inline">\(\alpha\)</span> = 0.05.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">p_k2_n1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">pbinom</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">2</span>, size <span class="op">=</span> <span class="fl">210</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
+<span><span class="va">p_k3_n1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">pbinom</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">3</span>, size <span class="op">=</span> <span class="fl">210</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
+<span><span class="va">p_k1_n2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">pbinom</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">1</span>, size <span class="op">=</span> <span class="fl">210</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
+<span><span class="va">p_k2_n2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">pbinom</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">2</span>, size <span class="op">=</span> <span class="fl">210</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
+<span><span class="va">p_k0_n3</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">pbinom</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">0</span>, size <span class="op">=</span> <span class="fl">210</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
+<span><span class="va">p_k2_n1</span> <span class="op">+</span> <span class="op">(</span><span class="va">p_k3_n1</span> <span class="op">*</span> <span class="va">p_k1_n2</span><span class="op">)</span> <span class="op">+</span> <span class="op">(</span><span class="va">p_k3_n1</span> <span class="op">*</span> <span class="va">p_k2_n2</span> <span class="op">*</span> <span class="va">p_k0_n3</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">0.05</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
+</div>
+<div class="section level3">
+<h3 id="bayesian-approach-1">Bayesian approach<a class="anchor" aria-label="anchor" href="#bayesian-approach-1"></a>
+</h3>
+<p>The Bayesian approach to audit sampling does not require a large
+extension of the sample size since it does not have the problems of
+optional stopping <span class="citation">(Rouder, 2014)</span>.</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, expected <span class="op">=</span> <span class="fl">0</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Bayesian Audit Sample Planning</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## minimum sample size = 99 </span></span>
+<span><span class="co">## sample size obtained in 100 iterations via method 'poisson' + 'prior'</span></span></code></pre>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, expected <span class="op">=</span> <span class="fl">1</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Bayesian Audit Sample Planning</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## minimum sample size = 158 </span></span>
+<span><span class="co">## sample size obtained in 157 iterations via method 'poisson' + 'prior'</span></span></code></pre>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-rouder_2014" class="csl-entry">
+Rouder, J. N. (2014). Optional stopping: No problem for
+<span>B</span>ayesians. <em>Psychonomic Bulletin &amp; Review</em>,
+<em>21</em>, 301–308. <a href="https://doi.org/10.3758/s13423-014-0595-4" class="external-link">https://doi.org/10.3758/s13423-014-0595-4</a>
+</div>
+</div>
 </div>
 </div>
   </div>

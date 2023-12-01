@@ -170,7 +170,7 @@ samples from different strata or subgroups in a population. An example
 of such a situation would be where the auditor is auditing the general
 ledger of a small business.</p>
 <div class="section level4">
-<h4 id="classical-evaluation">Classical evaluation<a class="anchor" aria-label="anchor" href="#classical-evaluation"></a>
+<h4 id="classical-approach">Classical approach<a class="anchor" aria-label="anchor" href="#classical-approach"></a>
 </h4>
 <p>Classical hypothesis testing uses the <em>p</em>-value to make a
 decision about whether to reject the hypothesis <span class="math inline">\(H_0\)</span> or not. As an example, consider that
@@ -205,7 +205,7 @@ sufficient evidence to state with reasonable assurance that the
 population does not contain material misstatement.</p>
 </div>
 <div class="section level4">
-<h4 id="bayesian-evaluation">Bayesian evaluation<a class="anchor" aria-label="anchor" href="#bayesian-evaluation"></a>
+<h4 id="bayesian-approach">Bayesian approach<a class="anchor" aria-label="anchor" href="#bayesian-approach"></a>
 </h4>
 <p>Bayesian hypothesis testing uses the Bayes factor, <span class="math inline">\(BF_{10}\)</span> or <span class="math inline">\(BF_{01}\)</span>, to make a statement about the
 evidence provided by the sample in support for one of the two hypotheses
@@ -612,7 +612,7 @@ of the <code>data</code>, <code>values</code> and
 <code>values.audit</code> arguments. The input for these arguments is
 the name of the specific column in <code>data</code>.</p>
 <div class="section level4">
-<h4 id="classical-evaluation-1">Classical evaluation<a class="anchor" aria-label="anchor" href="#classical-evaluation-1"></a>
+<h4 id="classical-approach-1">Classical approach<a class="anchor" aria-label="anchor" href="#classical-approach-1"></a>
 </h4>
 <p>The call below evaluates the <code>allowances</code> sample using a
 classical non-stratified evaluation procedure.</p>
@@ -646,7 +646,7 @@ in the population is 15.77 percent, with the 95 percent (one-sided)
 confidence interval ranging from 0 percent to 17.5 percent.</p>
 </div>
 <div class="section level4">
-<h4 id="bayesian-evaluation-1">Bayesian evaluation<a class="anchor" aria-label="anchor" href="#bayesian-evaluation-1"></a>
+<h4 id="bayesian-approach-1">Bayesian approach<a class="anchor" aria-label="anchor" href="#bayesian-approach-1"></a>
 </h4>
 <p>The call below evaluates the <code>allowances</code> sample using a
 Bayesian non-stratified evaluation procedure.</p>
@@ -694,7 +694,7 @@ aggregating the book values of the items in each stratum.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">N.units</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">allowances</span><span class="op">$</span><span class="va">bookValue</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">allowances</span><span class="op">$</span><span class="va">branch</span><span class="op">)</span>, <span class="va">sum</span><span class="op">)</span><span class="op">$</span><span class="va">x</span></span></code></pre></div>
 <div class="section level4">
-<h4 id="classical-evaluation-2">Classical evaluation<a class="anchor" aria-label="anchor" href="#classical-evaluation-2"></a>
+<h4 id="classical-approach-2">Classical approach<a class="anchor" aria-label="anchor" href="#classical-approach-2"></a>
 </h4>
 <p>The call below evaluates the <code>allowances</code> sample using a
 classical stratified evaluation procedure, in which the stratum
@@ -757,7 +757,7 @@ visualized below.</p>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-20-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
-<h4 id="bayesian-evaluation-2">Bayesian evaluation<a class="anchor" aria-label="anchor" href="#bayesian-evaluation-2"></a>
+<h4 id="bayesian-approach-2">Bayesian approach<a class="anchor" aria-label="anchor" href="#bayesian-approach-2"></a>
 </h4>
 <p>Bayesian inference can improve upon the estimates of the classical
 approach by pooling information between strata where possible. The call
