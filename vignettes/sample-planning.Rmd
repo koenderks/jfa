@@ -57,7 +57,7 @@ aforementioned likelihoods are commonly used in an audit sampling context,
 however, `poisson` is the default likelihood in **jfa** because it is the most
 conservative of the three.
 
-## Single-stage sampling plans
+## Classial approach
 
 To illustrate how the `planning()` function can be used to calculate a
 minimum sample size for audit sampling, we will first demonstrate how to set up
@@ -65,142 +65,72 @@ a sample with the purpose of hypothesis testing and subsequently show how to
 plan a sample with the purpose of estimation. In both cases, we will tolerate
 zero misstatements in the sample.
 
-### Classical approach
-
-#### Hypothesis testing
+### Hypothesis testing
 
 First, let's take a look at how you can use the `planning()` function to
 calculate the minimum sample size for testing the hypothesis that the
 misstatement in the population is lower than the performance materiality. In
-this example the performance materiality is set to 5 percent of the total
-population value, meaning that the population cannot contain more than 5
+this example the performance materiality is set to three percent of the total
+population value, meaning that the population cannot contain more than three
 percent misstatement.
 
 **Sampling objective**: Calculate a minimum sample size such that, when no
 misstatements are found in the sample, there is a 95 percent chance that the
-misstatement in the population is lower than 5 percent of the population value.
+misstatement in the population is lower than three percent of the population
+value.
+
+#### Single-stage sampling plans
 
 A minimum sample size for this sampling objective can be calculated by
 specifying the `materiality` parameter in the `planning()` function, see the
 command below. Next, a summary of the statistical results can be obtained using
 the `summary()` function. The result shows that, given zero tolerable errors,
-the minimum sample size is 60 units.
+the minimum sample size is 99 units.
 
 ```{r}
-plan <- planning(materiality = 0.05, expected = 0, conf.level = 0.95)
+plan <- planning(materiality = 0.03, likelihood = "binomial", expected = 0)
 summary(plan)
 ```
 
-#### Estimation
-
-Next, let's take a look at how you can use the `planning()` function to
-calculate the minimum sample size for estimating the misstatement in the
-population with a minimum precision. The precision is defined as the difference
-between the most likely misstatement and the upper confidence bound on the
-misstatement. For this example, the minimum precision is set to 2 percent of the
-population value.
-
-**Sampling objective**: Calculate a minimum sample size such that, when zero
-misstatements are found in the sample, there is a 95 percent chance that the
-misstatement in the population is at most 2 percent above the most likely
-misstatement.
-
-A minimum sample size for this sampling objective can be calculated by
-specifying the `min.precision` parameter in the `planning()` function, see the
-command below. The result shows that, given zero tolerable errors, the minimum
-sample size is 150 units.
-
-```{r}
-planning(min.precision = 0.02, expected = 0, conf.level = 0.95)
-```
-
-### Bayesian approach
-
-Performing Bayesian planning requires an input for the `prior` argument in the
-`planning()` function. Setting `prior = TRUE` performs Bayesian planning using a
-[default prior](https://koenderks.github.io/jfa/articles/creating-prior.html#default-priors-method-default)
-conjugate to the specified `likelihood`. For example, the command below uses a
-default gamma($\alpha = 1$, $\beta = 1$) prior distribution to plan the sample.
-
-```{r}
-plan <- planning(materiality = 0.05, expected = 0, conf.level = 0.95, prior = TRUE)
-summary(plan)
-```
-
-You can inspect how the prior distribution compares to the expected
-posterior distribution by using the `plot()` function. The expected posterior
-distribution is the posterior distribution that would occur if you actually
-observed the planned sample containing the expected misstatements.
-
-```{r fig.align="center", fig.height=4, fig.width=6}
-plot(plan)
-```
-
-The input for the `prior` argument can also be an object created by the
-`auditPrior` function. If `planning()` receives a prior for which there is a
-conjugate likelihood available, it will inherit the likelihood from the prior.
-For example, the command below uses a custom beta($\alpha = 1$, $\beta = 10$)
-prior distribution to plan the sample using the binomial likelihood.
-
-```{r}
-prior <- auditPrior(method = "param", likelihood = "binomial", alpha = 1, beta = 10)
-planning(materiality = 0.05, expected = 0, conf.level = 0.95, prior = prior)
-```
-
-However, when there is no conjugate likelihood available, specifying the
-`likelihood` argument in `planning()` is required. For instance, the command
-below uses a Normal($\mu = 0$, $\sigma = 0.1$) prior in combination with the
-binomial likelihood to plan the sample size.
-
-```{r}
-prior <- auditPrior(method = "param", likelihood = "normal", alpha = 0, beta = 0.1)
-planning(
-  materiality = 0.05, expected = 0, conf.level = 0.95,
-  likelihood = "binomial", prior = prior
-)
-```
-
-## Multiple-stage sampling plans
+#### Multiple-stage sampling plans
 
 Instead of using a single-stage sampling plan, a multi-stage sampling plan
 enables the evaluation of the sample at an intermediate stage. If the results
 do not provide sufficient evidence to make a conclusion, the second stage is
-initiated.
-
-In short, a multiple-stage sampling plan unfolds as follows. In the first stage
-the auditor draws an initial sample of size $n_1$. If this sample contains a
-tolerable number of misstatements (typically 0), then the auditor can
-accept the population. However, if thes sample contains more than the tolerable
-number of misstatements (e.g., 1), the population cannot be approved. In this
-case, the sample is extended with another sample of size $n_2$. If this second
-sample reveals a tolerable number of misstatements, then the population can be
-accepted. If not, then the population should be rejected or a third sample $n_3$
-should be accounted for.
-
-### Classical approach
+initiated. More specifically, in the first stage of a multiple-stage sampling
+plan the auditor draws an initial sample of size $n_1$. If this sample contains a
+tolerable number of misstatements (typically 0), then the auditor can approve
+the population. However, if the sample contains more than the tolerable number
+of misstatements, the population cannot be approved. In this case, the initial
+sample is extended with a second sample of $n_2$ items. If this second batch of
+items reveals a tolerable number of misstatements, then the population can still
+be approved. If this is not the case, then the population should be rejected or
+a third sample with $n_3$ items should be inspected.
 
 In the classical (i.e., frequentist) approach, multiple-stage sampling plans can
 be computed by breaking down the audit risk into several components. For
-instance, if the auditor wants to initially plan for 0 misstatements, but wants
-to extend the sample if 1 misstatement is found, then the audit risk consists
-of:
+instance, if the auditor wants to initially plan for $k$ = 0 misstatements, but
+wants to extend the sample if $k$ = 1 misstatement is found, then the audit risk
+consists of:
 
-- $p(k = 0 | n_1)$: The probability of finding zero misstatements in the first
-  sample of $n_1$ items; plus
-- $p(k = 1 | n_1)$: The probability of finding one misstatement in the first
-  sample of $n_1$ items; and
-- $p(k = 0 | n_2)$: The probability finding one misstatement in the second sample
-  of $n_2$ items.
+- $p(k = 0 | n_1)$: The probability of finding $k$ = 0$ misstatements in the
+  first sample of $n_1$ items; plus
+- $p(k = 1 | n_1)$: The probability of finding $k$ = 1 misstatement in the first
+  sample of $n_1$ items; multiplied by
+- $p(k = 0 | n_2)$: The probability finding $k$ = 0 misstatements in the second
+  sample of $n_2$ items.
 
-The sum of these probabilities should be lower than the audit risk $\alpha$.
+The sum of these probabilities should be lower than, or equal to, the audit risk
+$\alpha$.
 
 \begin{equation}
   p(k = 0 | n_1) + p(k = 1 | n_1) \cdot p(k = 0 | n_2) \leq \alpha
 \end{equation}
 
-If we choose the size of the extension equal to that of the initial
-sample, $n_1$ = $n_2$ = $n$, we find that the sample size for a two-stage
-sampling plan is the solution to the following equation.
+For computational reasons **jfa** specifies the number of samples in the
+extension to be equal to that of the initial sample ($n_1$ = $n_2$ = $n$). This
+means that the sample size for a two-stage sampling plan is the smallest integer
+$n$ that satisfies the condition below.
 
 \begin{equation}
   p(k = 0 | n) + p(k = 1 | n) \cdot p(k = 0 | n) \leq \alpha
@@ -218,21 +148,21 @@ planning(materiality = 0.03, likelihood = "binomial", expected = c(1, 0))
 ```
 
 The correctness of this calculation can be verified by making sure that the
-probability of incorrectly rejecting the null hypothesis is below the audit risk
-$\alpha$ = 0.05.
+probability of incorrectly rejecting the null hypothesis under the binomial
+distribution is below the audit risk $\alpha$ = 0.05.
 
 ```{r}
 p_k0_n1 <- pbinom(q = 0, size = 104, prob = 0.03)
 p_k1_n1 <- pbinom(q = 1, size = 104, prob = 0.03)
 p_k0_n2 <- pbinom(q = 0, size = 104, prob = 0.03)
-p_k0_n1 + (p_k1_n1 * p_k0_n2) < 0.05
+p_k0_n1 + p_k1_n1 * p_k0_n2 < 0.05
 ```
 
 As another example, we discuss a three-stage sampling plan in which the auditor
-wants to extend the sample after finding three misstatements in the first stage,
-extend further if they find one misstatement in the second stage, and approve
-the population if they find zero misstatements in the third stage. The required
-sample size per stage is 210.
+wants to extend the sample after finding $k$ = 3 misstatements in the first
+stage, extend further if they find $k$ = 1 misstatement in the second stage, and
+approve the population if they find $k$ = 0 misstatements in the third stage.
+The required sample size per each of the three stages is 210.
 
 ```{r}
 planning(materiality = 0.03, likelihood = "binomial", expected = c(3, 1, 0))
@@ -250,16 +180,91 @@ p_k0_n3 <- pbinom(q = 0, size = 210, prob = 0.03)
 p_k2_n1 + (p_k3_n1 * p_k1_n2) + (p_k3_n1 * p_k2_n2 * p_k0_n3) < 0.05
 ```
 
-### Bayesian approach
-
-The Bayesian approach to audit sampling does not require a large extension of
-the sample size since it does not have the problems of optional stopping
-[@rouder_2014].
+The sample size for per stage is only slightly higher than the sample size for
+the first stage if the auditor used a single-stage sampling plan.
 
 ```{r}
-planning(materiality = 0.03, expected = 0, prior = TRUE)
+planning(materiality = 0.03, likelihood = "binomial", expected = 2)
 ```
+
+### Estimation
+
+Next, let's take a look at how you can use the `planning()` function to
+calculate the minimum sample size for estimating the misstatement in the
+population with a minimum precision. The precision is defined as the difference
+between the most likely misstatement and the upper confidence bound on the
+misstatement. For this example, the minimum precision is set to 2 percent of the
+population value.
+
+**Sampling objective**: Calculate a minimum sample size such that, when zero
+misstatements are found in the sample, there is a 95 percent chance that the
+misstatement in the population is at most 2 percent above the most likely
+misstatement.
+
+A minimum sample size for this sampling objective can be calculated by
+specifying the `min.precision` parameter in the `planning()` function, see the
+command below. The result shows that, given zero tolerable errors, the minimum
+sample size is 149 units.
+
+```{r}
+planning(min.precision = 0.02, likelihood = "binomial")
+```
+
+## Bayesian approach
+
+Performing Bayesian planning requires an input for the `prior` argument in the
+`planning()` function. Setting `prior = TRUE` performs Bayesian planning using a
+[default prior](https://koenderks.github.io/jfa/articles/creating-prior.html#default-priors-method-default)
+conjugate to the specified `likelihood`. For example, the command below uses a
+default gamma($\alpha = 1$, $\beta = 1$) prior distribution to plan the sample.
+
+```{r}
+plan <- planning(materiality = 0.03, expected = 0, prior = TRUE)
+summary(plan)
+```
+
+You can inspect how the prior distribution compares to the expected
+posterior distribution by using the `plot()` function. The expected posterior
+distribution is the posterior distribution that would occur if you actually
+observed the planned sample containing the expected misstatements.
+
+```{r fig.align="center", fig.height=4, fig.width=6}
+plot(plan)
+```
+
+Since the Bayesian approach to audit sampling iteratively uses the posterior
+distribution from the observed sample as a prior distribution for a possible
+second sample, it does not compromise the audit risk as a function of the number
+of tests. Therefore, in the Bayesian framework you can simply start sampling
+until there is sufficient evidence to make a decision [@rouder_2014]. That means
+that, whenever you find $k$ = 1 misstatement in the initial $n$ = 60 samples,
+computing the sample size extension simply requires you to compute a
+single-stage sample size under the expectation of one tolerable misstatement.
 
 ```{r}
 planning(materiality = 0.03, expected = 1, prior = TRUE)
+```
+
+The input for the `prior` argument can also be an object created by the
+`auditPrior` function. If `planning()` receives a prior for which there is a
+conjugate likelihood available, it will inherit the likelihood from the prior.
+For example, the command below uses a custom beta($\alpha = 1$, $\beta = 10$)
+prior distribution to plan the sample using the binomial likelihood.
+
+```{r}
+prior <- auditPrior(method = "param", likelihood = "binomial", alpha = 1, beta = 10)
+planning(materiality = 0.03, expected = 0, conf.level = 0.95, prior = prior)
+```
+
+However, when there is no conjugate likelihood available, specifying the
+`likelihood` argument in `planning()` is required. For instance, the command
+below uses a Normal($\mu = 0$, $\sigma = 0.1$) prior in combination with the
+binomial likelihood to plan the sample size.
+
+```{r}
+prior <- auditPrior(method = "param", likelihood = "normal", alpha = 0, beta = 0.1)
+planning(
+  materiality = 0.03, expected = 0, conf.level = 0.95,
+  likelihood = "binomial", prior = prior
+)
 ```
