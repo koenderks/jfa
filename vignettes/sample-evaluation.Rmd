@@ -68,7 +68,7 @@ In a non-stratified sampling procedure, the auditor does not take samples from
 different strata or subgroups in a population. An example of such a situation
 would be where the auditor is auditing the general ledger of a small business.
 
-#### Classical evaluation
+#### Classical approach
 
 Classical hypothesis testing uses the *p*-value to make a decision about whether
 to reject the hypothesis $H_0$ or not. As an example, consider that an auditor
@@ -91,7 +91,7 @@ the auditor is able to conclude that the sample provides sufficient evidence to
 state with reasonable assurance that the population does not contain material
 misstatement.
 
-#### Bayesian evaluation
+#### Bayesian approach
 
 Bayesian hypothesis testing uses the Bayes factor, $BF_{10}$ or $BF_{01}$, to
 make a statement about the evidence provided by the sample in support for one of
@@ -320,7 +320,7 @@ Evaluating a non-stratified sample using data requires specification of the
 `data`, `values` and `values.audit` arguments. The input for these arguments is
 the name of the specific column in `data`.
 
-#### Classical evaluation
+#### Classical approach
 
 The call below evaluates the `allowances` sample using a classical
 non-stratified evaluation procedure.
@@ -337,7 +337,7 @@ In this case, the output shows that the estimate of the misstatement in the
 population is 15.77 percent, with the 95 percent (one-sided) confidence interval
 ranging from 0 percent to 17.5 percent.
 
-#### Bayesian evaluation
+#### Bayesian approach
 
 The call below evaluates the `allowances` sample using a Bayesian non-stratified
 evaluation procedure.
@@ -366,7 +366,7 @@ values of the items in each stratum.
 N.units <- aggregate(allowances$bookValue, list(allowances$branch), sum)$x
 ```
 
-#### Classical evaluation
+#### Classical approach
 
 The call below evaluates the `allowances` sample using a classical stratified
 evaluation procedure, in which the stratum estimates are poststratified to
@@ -392,7 +392,7 @@ function and are visualized below.
 plot(x, type = "estimates")
 ```
 
-#### Bayesian evaluation
+#### Bayesian approach
 
 Bayesian inference can improve upon the estimates of the classical approach by
 pooling information between strata where possible. The call below evaluates the

@@ -284,6 +284,7 @@
     "binomial" = stats::pbinom(expected[1] - 1, size = n, prob = materiality),
     "hypergeometric" = stats::phyper(q = expected[1] - 1, m = K, n = N.units - K, k = n)
   )
+  p_take <- 1
   for (j in 2:length(expected)) {
     p1 <- switch(likelihood,
       "poisson" = stats::ppois(expected[j - 1], lambda = n * materiality),
@@ -295,7 +296,8 @@
       "binomial" = stats::pbinom(expected[j], size = n, prob = materiality),
       "hypergeometric" = stats::phyper(q = expected[j], m = K, n = N.units - K, k = n)
     )
-    p <- p + (p1 * p2)
+    p <- p + (p_take * p1 * p2)
+    p_take <- p_take * p1
   }
   return(p)
 }

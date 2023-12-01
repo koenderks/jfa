@@ -190,6 +190,10 @@ planning <- function(materiality = NULL,
   sequential <- length(expected) > 1 && expected[1] != 0 && isFALSE(prior) && !is.null(materiality)
   if (sequential) {
     stopifnot("'expected' must be a vector of integers" = all(expected %% 1 == 0))
+    first_zero <- which(expected == 0)[1]
+    if (!is.na(first_zero)) {
+      expected <- expected[seq_len(first_zero)]
+    }
   } else {
     expected <- sum(expected)
   }

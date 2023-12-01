@@ -57,7 +57,7 @@ aforementioned likelihoods are commonly used in an audit sampling context,
 however, `poisson` is the default likelihood in **jfa** because it is the most
 conservative of the three.
 
-## Planning a sample
+## Single-stage sampling plans
 
 To illustrate how the `planning()` function can be used to calculate a
 minimum sample size for audit sampling, we will first demonstrate how to set up
@@ -65,7 +65,9 @@ a sample with the purpose of hypothesis testing and subsequently show how to
 plan a sample with the purpose of estimation. In both cases, we will tolerate
 zero misstatements in the sample.
 
-### Hypothesis testing
+### Classical approach
+
+#### Hypothesis testing
 
 First, let's take a look at how you can use the `planning()` function to
 calculate the minimum sample size for testing the hypothesis that the
@@ -89,7 +91,7 @@ plan <- planning(materiality = 0.05, expected = 0, conf.level = 0.95)
 summary(plan)
 ```
 
-### Estimation
+#### Estimation
 
 Next, let's take a look at how you can use the `planning()` function to
 calculate the minimum sample size for estimating the misstatement in the
@@ -112,7 +114,7 @@ sample size is 150 units.
 planning(min.precision = 0.02, expected = 0, conf.level = 0.95)
 ```
 
-### Bayesian planning
+### Bayesian approach
 
 Performing Bayesian planning requires an input for the `prior` argument in the
 `planning()` function. Setting `prior = TRUE` performs Bayesian planning using a
@@ -156,4 +158,108 @@ planning(
   materiality = 0.05, expected = 0, conf.level = 0.95,
   likelihood = "binomial", prior = prior
 )
+```
+
+## Multiple-stage sampling plans
+
+Instead of using a single-stage sampling plan, a multi-stage sampling plan
+enables the evaluation of the sample at an intermediate stage. If the results
+do not provide sufficient evidence to make a conclusion, the second stage is
+initiated.
+
+In short, a multiple-stage sampling plan unfolds as follows. In the first stage
+the auditor draws an initial sample of size $n_1$. If this sample contains a
+tolerable number of misstatements (typically 0), then the auditor can
+accept the population. However, if thes sample contains more than the tolerable
+number of misstatements (e.g., 1), the population cannot be approved. In this
+case, the sample is extended with another sample of size $n_2$. If this second
+sample reveals a tolerable number of misstatements, then the population can be
+accepted. If not, then the population should be rejected or a third sample $n_3$
+should be accounted for.
+
+### Classical approach
+
+In the classical (i.e., frequentist) approach, multiple-stage sampling plans can
+be computed by breaking down the audit risk into several components. For
+instance, if the auditor wants to initially plan for 0 misstatements, but wants
+to extend the sample if 1 misstatement is found, then the audit risk consists
+of:
+
+- $p(k = 0 | n_1)$: The probability of finding zero misstatements in the first
+  sample of $n_1$ items; plus
+- $p(k = 1 | n_1)$: The probability of finding one misstatement in the first
+  sample of $n_1$ items; and
+- $p(k = 0 | n_2)$: The probability finding one misstatement in the second sample
+  of $n_2$ items.
+
+The sum of these probabilities should be lower than the audit risk $\alpha$.
+
+\begin{equation}
+  p(k = 0 | n_1) + p(k = 1 | n_1) \cdot p(k = 0 | n_2) \leq \alpha
+\end{equation}
+
+If we choose the size of the extension equal to that of the initial
+sample, $n_1$ = $n_2$ = $n$, we find that the sample size for a two-stage
+sampling plan is the solution to the following equation.
+
+\begin{equation}
+  p(k = 0 | n) + p(k = 1 | n) \cdot p(k = 0 | n) \leq \alpha
+\end{equation}
+
+In **jfa**, multiple-stage sampling plans can be computed by providing a vector
+of tolerable errors in each stage to the `planning()` function via the
+`expected` argument. For instance, the following code computed the sample size
+required if the auditor wants to initially plan for 0 misstatements, but wants
+to extend the sample if 1 misstatement is found. The required sample size per
+stage is 104, with a total sample size (if the two stages are completed) of 208.
+
+```{r}
+planning(materiality = 0.03, likelihood = "binomial", expected = c(1, 0))
+```
+
+The correctness of this calculation can be verified by making sure that the
+probability of incorrectly rejecting the null hypothesis is below the audit risk
+$\alpha$ = 0.05.
+
+```{r}
+p_k0_n1 <- pbinom(q = 0, size = 104, prob = 0.03)
+p_k1_n1 <- pbinom(q = 1, size = 104, prob = 0.03)
+p_k0_n2 <- pbinom(q = 0, size = 104, prob = 0.03)
+p_k0_n1 + (p_k1_n1 * p_k0_n2) < 0.05
+```
+
+As another example, we discuss a three-stage sampling plan in which the auditor
+wants to extend the sample after finding three misstatements in the first stage,
+extend further if they find one misstatement in the second stage, and approve
+the population if they find zero misstatements in the third stage. The required
+sample size per stage is 210.
+
+```{r}
+planning(materiality = 0.03, likelihood = "binomial", expected = c(3, 1, 0))
+```
+
+Again, this can be verified by making sure that the probability of incorrectly
+rejecting the null hypothesis is below the audit risk $\alpha$ = 0.05.
+
+```{r}
+p_k2_n1 <- pbinom(q = 2, size = 210, prob = 0.03)
+p_k3_n1 <- pbinom(q = 3, size = 210, prob = 0.03)
+p_k1_n2 <- pbinom(q = 1, size = 210, prob = 0.03)
+p_k2_n2 <- pbinom(q = 2, size = 210, prob = 0.03)
+p_k0_n3 <- pbinom(q = 0, size = 210, prob = 0.03)
+p_k2_n1 + (p_k3_n1 * p_k1_n2) + (p_k3_n1 * p_k2_n2 * p_k0_n3) < 0.05
+```
+
+### Bayesian approach
+
+The Bayesian approach to audit sampling does not require a large extension of
+the sample size since it does not have the problems of optional stopping
+[@rouder_2014].
+
+```{r}
+planning(materiality = 0.03, expected = 0, prior = TRUE)
+```
+
+```{r}
+planning(materiality = 0.03, expected = 1, prior = TRUE)
 ```

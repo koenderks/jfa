@@ -333,7 +333,7 @@ print.jfaPlanning <- function(x, ...) {
   cat("\n")
   if (is.null(x[["prior"]])) cat(strwrap("Classical Audit Sample Planning", prefix = "\t"), sep = "\n") else cat(strwrap("Bayesian Audit Sample Planning", prefix = "\t"), sep = "\n")
   cat("\n")
-  cat("minimum sample size =", x[["n"]], if (x[["sequential"]] && is.null(x[["prior"]])) paste0("(", x[["n"]] / 2, " per stage)"), "\nsample size obtained in", x[["iterations"]], "iterations via method", if (is.null(x[["prior"]])) paste0("'", x[["likelihood"]], if (x[["sequential"]]) "' + 'sequential", "'\n") else paste0("'", x[["likelihood"]], "' + 'prior'\n"))
+  cat("minimum sample size =", x[["n"]], if (x[["sequential"]] && is.null(x[["prior"]])) paste0("(", x[["n_staged"]], " per stage)"), "\nsample size obtained in", x[["iterations"]], "iterations via method", if (is.null(x[["prior"]])) paste0("'", x[["likelihood"]], if (x[["sequential"]]) "' + 'sequential", "'\n") else paste0("'", x[["likelihood"]], "' + 'prior'\n"))
 }
 
 #' @rdname jfa-methods
