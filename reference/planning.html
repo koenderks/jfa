@@ -115,7 +115,13 @@ or a number (&gt;= 1) specifying the expected (tolerable) number of
 misstatements in the sample. It is advised to set this value conservatively
 to minimize the probability of the observed misstatements in the sample
 exceeding the expected misstatements, which would imply that insufficient
-work has been done in the end and that additional samples are required.</p></dd>
+work has been done in the end and that additional samples are required.
+This argument also facilitates sequential sampling plans since it can also
+be a vector (e.g., <code>c(1, 0)</code>) of tolerable misstatements in each stage
+of the audit sample. Hence, <code>c(1, 0)</code> gives the sample size for a
+sequential sampling plan in which the auditor can stop after seeing 0
+misstatements in the first sample, but can extend the sample if more than
+0 misstatements are found.</p></dd>
 
 
 <dt>likelihood</dt>
@@ -173,6 +179,10 @@ using a prior that is conjugate to the specified <code>likelihood</code>.</p></d
 
 <dt>n</dt>
 <dd><p>an integer larger than 0 giving the minimal sample size.</p></dd>
+
+<dt>n_staged</dt>
+<dd><p>in the case of a multiple-stage sampling plan, an integer
+  larger than 0 giving the minimal sample size per stage.</p></dd>
 
 <dt>ub</dt>
 <dd><p>a numeric value between 0 and 1 giving the expected upper bound.</p></dd>
@@ -278,12 +288,20 @@ Theory and Methods</em>, 22(8), 2125-2146. <a href="https://doi.org/10.1080/0361
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Classical planning</span></span></span>
-<span class="r-in"><span><span class="fu">planning</span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">planning</span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, expected <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Classical Audit Sample Planning</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> minimum sample size = 100 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> sample size obtained in 101 iterations via method 'poisson'</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Classical two-stage planning</span></span></span>
+<span class="r-in"><span><span class="fu">planning</span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, expected <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Classical Audit Sample Planning</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> minimum sample size = 212 (106 per stage) </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> sample size obtained in 105 iterations via method 'poisson' + 'sequential'</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Bayesian planning using a default prior</span></span></span>
 <span class="r-in"><span><span class="fu">planning</span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
