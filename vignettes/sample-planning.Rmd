@@ -186,9 +186,9 @@ sampling plan expecting $k$ = 0, which is $n$ = 99.
 planning(materiality = 0.03, likelihood = "binomial", expected = 0)
 ```
 
-However, it is considerably larger larger than the minimal sample size for the
-first stage if the auditor decides to use a single-stage sampling plan expecting
-$k$ = 1, which is $n$ = 157.
+However, the total sample size $n$ = 208 is considerably larger larger than the
+minimal sample size if the auditor decides to use a single-stage sampling plan
+expecting $k$ = 1, which is $n$ = 157.
 
 ```{r}
 planning(materiality = 0.03, likelihood = "binomial", expected = 1)
