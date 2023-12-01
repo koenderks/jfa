@@ -8,8 +8,8 @@ functions {
         j += 1;
       }
     }
-    return j; 
-  } 
+    return j;
+  }
 }
 data {
   int<lower=0> n;                // Number of observations in sample
@@ -29,13 +29,13 @@ data {
 transformed data {
   int N_zeros = 0;
   vector[num_non_discrete(y)] y_non_discrete;
-  int j = 1; 
+  int j = 1;
   for (i in 1:n) {
     if (y[i] == 0) {
-      N_zeros += 1; 
+      N_zeros += 1;
     } else {
       y_non_discrete[j] = y[i];
-      j += 1; 
+      j += 1;
     }
   }
 }
