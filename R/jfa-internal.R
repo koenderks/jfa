@@ -285,17 +285,25 @@
     "hypergeometric" = stats::phyper(q = expected[1] - 1, m = K, n = N.units - K, k = n)
   )
   p_take <- 1
-  for (j in 2:length(expected)) {
+  for (j in 1:(length(expected) - 1)) {
     p1 <- switch(likelihood,
-      "poisson" = stats::dpois(expected[j - 1], lambda = n * materiality),
-      "binomial" = stats::dbinom(expected[j - 1], size = n, prob = materiality),
-      "hypergeometric" = stats::dhyper(expected[j - 1], m = K, n = N.units - K, k = n)
+      "poisson" = stats::dpois(expected[j], lambda = n * materiality),
+      "binomial" = stats::dbinom(expected[j], size = n, prob = materiality),
+      "hypergeometric" = stats::dhyper(expected[j], m = K, n = N.units - K, k = n)
     )
-    p2 <- switch(likelihood,
-      "poisson" = stats::ppois(expected[j], lambda = n * materiality),
-      "binomial" = stats::pbinom(expected[j], size = n, prob = materiality),
-      "hypergeometric" = stats::phyper(q = expected[j], m = K, n = N.units - K, k = n)
-    )
+    if (j < (length(expected) - 1)) {
+      p2 <- switch(likelihood,
+        "poisson" = stats::ppois(expected[j + 1] - 1, lambda = n * materiality),
+        "binomial" = stats::pbinom(expected[j + 1] - 1, size = n, prob = materiality),
+        "hypergeometric" = stats::phyper(q = expected[j + 1] - 1, m = K, n = N.units - K, k = n)
+      )
+    } else {
+      p2 <- switch(likelihood,
+        "poisson" = stats::ppois(expected[j + 1], lambda = n * materiality),
+        "binomial" = stats::pbinom(expected[j + 1], size = n, prob = materiality),
+        "hypergeometric" = stats::phyper(q = expected[j + 1], m = K, n = N.units - K, k = n)
+      )
+    }
     p <- p + (p_take * p1 * p2)
     p_take <- p_take * p1
   }
