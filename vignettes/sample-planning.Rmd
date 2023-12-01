@@ -81,15 +81,34 @@ value.
 
 #### Single-stage sampling plans
 
+Concretely, in a single-stage sampling plan the auditor wants to directly apply
+the sampling objective. More specifically, they want to reduce the risk of the
+misstatements $k$ coming from a population in which the misstatement rate is
+equal to $\theta_{max}$. This risk should be lower than the audit risk $\alpha$.
+
+\begin{equation}
+  p(k = 0 | n, $\theta_{max}$) \leq \alpha
+\end{equation}
+
 A minimum sample size for this sampling objective can be calculated by
 specifying the `materiality` parameter in the `planning()` function, see the
 command below. Next, a summary of the statistical results can be obtained using
-the `summary()` function. The result shows that, given zero tolerable errors,
-the minimum sample size is 99 units.
+the `summary()` function. The result shows that, given zero tolerable
+misstatements, the minimum sample size is 99 items or units. The auditor can
+allow for misstatements (e.g., tolerate $k$ = 1 misstament) in the sample by
+providing an integer value to the `expected` argument of the function.
 
 ```{r}
 plan <- planning(materiality = 0.03, likelihood = "binomial", expected = 0)
 summary(plan)
+```
+
+This can be verified by making sure that the probability of finding $k$ = 0
+misstatements in $n$ = 99 samples given $\theta_{max}$ = 0.03 is lower than the
+audit risk $\alpha$ = 0.05
+
+```{r}
+pbinom(q = 0, size = 99, prob = 0.03) < 0.05
 ```
 
 #### Multiple-stage sampling plans
@@ -98,8 +117,8 @@ Instead of using a single-stage sampling plan, a multi-stage sampling plan
 enables the evaluation of the sample at an intermediate stage. If the results
 do not provide sufficient evidence to make a conclusion, the second stage is
 initiated. More specifically, in the first stage of a multiple-stage sampling
-plan the auditor draws an initial sample of size $n_1$. If this sample contains a
-tolerable number of misstatements (typically 0), then the auditor can approve
+plan the auditor draws an initial sample of size $n_1$. If this sample contains
+a tolerable number of misstatements (typically 0), then the auditor can approve
 the population. However, if the sample contains more than the tolerable number
 of misstatements, the population cannot be approved. In this case, the initial
 sample is extended with a second sample of $n_2$ items. If this second batch of
@@ -113,35 +132,36 @@ instance, if the auditor wants to initially plan for $k$ = 0 misstatements, but
 wants to extend the sample if $k$ = 1 misstatement is found, then the audit risk
 consists of:
 
-- $p(k = 0 | n_1)$: The probability of finding $k$ = 0$ misstatements in the
-  first sample of $n_1$ items; plus
-- $p(k = 1 | n_1)$: The probability of finding $k$ = 1 misstatement in the first
-  sample of $n_1$ items; multiplied by
-- $p(k = 0 | n_2)$: The probability finding $k$ = 0 misstatements in the second
-  sample of $n_2$ items.
+- $p(k = 0 | n_1, \theta_{max})$: The probability of finding $k$ = 0
+  misstatements in the first sample of $n_1$ items; plus
+- $p(k = 1 | n_1, \theta_{max})$: The probability of finding $k$ = 1
+  misstatement in the first sample of $n_1$ items; multiplied by
+- $p(k = 0 | n_2, \theta_{max})$: The probability finding $k$ = 0
+  misstatements in the second sample of $n_2$ items.
 
 The sum of these probabilities should be lower than, or equal to, the audit risk
 $\alpha$.
 
 \begin{equation}
-  p(k = 0 | n_1) + p(k = 1 | n_1) \cdot p(k = 0 | n_2) \leq \alpha
+  p(k = 0 | n_1, \theta_{max}) + p(k = 1 | n_1, \theta_{max}) \cdot p(k = 0 | n_2, \theta_{max}) \leq \alpha
 \end{equation}
 
 For computational reasons **jfa** specifies the number of samples in the
-extension to be equal to that of the initial sample ($n_1$ = $n_2$ = $n$). This
+extension to be equal to that of the initial sample ($n_1$ = $n_2$ = $n_s$). This
 means that the sample size for a two-stage sampling plan is the smallest integer
 $n$ that satisfies the condition below.
 
 \begin{equation}
-  p(k = 0 | n) + p(k = 1 | n) \cdot p(k = 0 | n) \leq \alpha
+  p(k = 0 | n_s, \theta_{max}) + p(k = 1 | n_s, \theta_{max}) \cdot p(k = 0 | n_s, \theta_{max}) \leq \alpha
 \end{equation}
 
-In **jfa**, multiple-stage sampling plans can be computed by providing a vector
-of tolerable errors in each stage to the `planning()` function via the
-`expected` argument. For instance, the following code computed the sample size
-required if the auditor wants to initially plan for 0 misstatements, but wants
-to extend the sample if 1 misstatement is found. The required sample size per
-stage is 104, with a total sample size (if the two stages are completed) of 208.
+In **jfa**, multiple-stage sampling plans can be computed by providing an
+integer vector of tolerable misstatements in each stage to the `planning()`
+function via its `expected` argument. For instance, the following code computed
+the sample size required if the auditor wants to initially plan for $k$ = 0
+misstatements, but wants to extend the sample if $k$ = 1 misstatement is found.
+The required sample size per stage is $n_s$ = 104, with a total sample size (if
+both stages are required) of $n$ = 208.
 
 ```{r}
 planning(materiality = 0.03, likelihood = "binomial", expected = c(1, 0))
@@ -158,11 +178,27 @@ p_k0_n2 <- pbinom(q = 0, size = 104, prob = 0.03)
 p_k0_n1 + p_k1_n1 * p_k0_n2 < 0.05
 ```
 
+The minimal sample size per stage $n_s$ is only slightly larger than the minimal
+sample size for the first stage if the auditor decides to use a single-stage
+sampling plan expecting $k$ = 0, which is $n$ = 99.
+
+```{r}
+planning(materiality = 0.03, likelihood = "binomial", expected = 0)
+```
+
+However, it is considerably larger larger than the minimal sample size for the
+first stage if the auditor decides to use a single-stage sampling plan expecting
+$k$ = 1, which is $n$ = 157.
+
+```{r}
+planning(materiality = 0.03, likelihood = "binomial", expected = 1)
+```
+
 As another example, we discuss a three-stage sampling plan in which the auditor
 wants to extend the sample after finding $k$ = 3 misstatements in the first
 stage, extend further if they find $k$ = 1 misstatement in the second stage, and
 approve the population if they find $k$ = 0 misstatements in the third stage.
-The required sample size per each of the three stages is 210.
+The required sample size per each of the three stages is $n_s$ = 210.
 
 ```{r}
 planning(materiality = 0.03, likelihood = "binomial", expected = c(3, 1, 0))
@@ -181,8 +217,9 @@ p_k0_n3 <- pbinom(q = 0, size = 210, prob = 0.03)
 p_k2_n1 + p_k3_n1 * p_k1_n2 + p_k3_n1 * p_k2_n2 * p_k0_n3 < 0.05
 ```
 
-The sample size for per stage is only slightly higher than the sample size for
-the first stage if the auditor used a single-stage sampling plan.
+Like before, the minimal sample size per stage is only slightly higher than the
+minimal sample size for the first stage if the auditor decides to use a
+single-stage sampling plan.
 
 ```{r}
 planning(materiality = 0.03, likelihood = "binomial", expected = 2)
