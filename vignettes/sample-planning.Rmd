@@ -199,7 +199,7 @@ wants to extend the sample after finding $k$ = 1 misstatements in the first
 stage, extend further if they find $k$ = 1 misstatement in the second stage, and
 still be able to approve the population if they find $k$ = 0 misstatements in
 the third stage. The required sample size per each of the three stages is $n_s$
-= 209.
+= 208.
 
 ```{r}
 planning(materiality = 0.03, likelihood = "binomial", expected = c(3, 1, 0))
@@ -210,15 +210,15 @@ rejecting the null hypothesis of three percent misstatement is below the audit
 risk $\alpha$ = 0.05.
 
 ```{r}
-p_k2_n1 <- pbinom(q = 2, size = 209, prob = 0.03)
-p_k3_n1 <- dbinom(x = 3, size = 209, prob = 0.03)
-p_k1_n2 <- pbinom(q = 1, size = 209, prob = 0.03)
-p_k2_n2 <- dbinom(x = 2, size = 209, prob = 0.03)
-p_k0_n3 <- dbinom(x = 0, size = 209, prob = 0.03)
-p_k2_n1 + p_k3_n1 * p_k1_n2 + p_k3_n1 * p_k2_n2 * p_k0_n3 < 0.05
+p_k2_n1 <- pbinom(q = 2, size = 208, prob = 0.03)
+p_k3_n1 <- dbinom(x = 3, size = 208, prob = 0.03)
+p_k0_n2 <- dbinom(x = 0, size = 208, prob = 0.03)
+p_k1_n2 <- dbinom(x = 1, size = 208, prob = 0.03)
+p_k0_n3 <- dbinom(x = 0, size = 208, prob = 0.03)
+p_k2_n1 + p_k3_n1 * p_k0_n2 + p_k3_n1 * p_k1_n2 * p_k0_n3 < 0.05
 ```
 
-Like before, the minimal sample size per stage $n_s$ = 209 is only slightly
+Like before, the minimal sample size per stage $n_s$ = 208 is only slightly
 larger than the minimal sample size for the first stage if the auditor decides
 to use a single-stage sampling plan, which is $n$ = 208.
 
