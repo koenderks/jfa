@@ -58,7 +58,7 @@ confidence level (i.e., 1 - audit risk / detection risk).}
 \code{data} containing the book values of the items.}
 
 \item{values.audit}{a character specifying name of a numeric column in
-\code{data} containing the audit (true) values of the items.}
+\code{data} containing the audit (i.e., true) values of the items.}
 
 \item{strata}{a character specifying name of a factor column in
 \code{data} indicating to which stratum the item belongs.}

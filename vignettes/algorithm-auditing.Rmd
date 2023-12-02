@@ -25,7 +25,7 @@ library(jfa)
 
 ## Introduction
 
-Welcome to the Algorithm auditing' vignette of the **jfa** package. This page
+Welcome to the 'Algorithm auditing' vignette of the **jfa** package. This page
 provides a guide to the functions in the package that are designed to facilitate
 the audit of algorithms and predictive models. In particular, these functions
 implement techniques for calculating and testing fairness metrics. The package

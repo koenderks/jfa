@@ -23,13 +23,14 @@ library(jfa)
 
 ## Introduction
 
-This vignette illustrates the efficient evaluation of samples with partial
-misstatements using the `evaluation()` function from the **jfa** package.
+Welcome to the 'Evaluating audit samples with partial misstatements' vignette of
+the **jfa** package. This page demonstrates how to efficiently audit samples
+with partial misstatements using the `evaluation()` function in the package.
 
 <p align='center'><img src='evaluation.png' alt='evaluation' width='100%'></p>
 
-In auditing, the objective of evaluation is typically to estimate the
-misstatement in the population based on a sample or to test the misstatement
+In auditing, the objective of evaluation is typically 1) to estimate the
+misstatement in the population based on a sample or 2) to test the misstatement
 against a critical upper limit, known as performance materiality.
 
 ## Modeling partial misstatements

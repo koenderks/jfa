@@ -23,7 +23,8 @@ library(jfa)
 
 ## Introduction
 
-This vignette illustrates how to use the `planning()` function from the **jfa**
+Welcome to the 'Planning statistical audit samples' vignette of the **jfa**
+package. This page illustrates how to use the `planning()` function in the
 package to calculate a minimum sample size for audit sampling.
 
 <p align='center'><img src='planning.png' alt='planning' width='100%'></p>

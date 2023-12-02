@@ -26,7 +26,7 @@
 #' \describe{
 #'   \item{account}{account number (between 1 - 87)}
 #'   \item{bookValue}{booked value of the account}
-#'   \item{auditValue}{audited (true) value of the account}
+#'   \item{auditValue}{audited (i.e., true) value of the account}
 #' }
 #'
 #' @keywords datasets

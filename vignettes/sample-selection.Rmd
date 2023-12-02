@@ -23,9 +23,10 @@ library(jfa)
 
 ## Introduction
 
-This vignette outlines the most commonly used sampling methodology for auditing
-and demonstrates how to use the **jfa** package to select a sample using these
-techniques.
+Welcome to the 'Selecting statistical audit samples' vignette of the **jfa**
+package. This page outlines the most commonly used sampling methodology for
+auditing and demonstrates how to select a sample using these techniques via the
+`selection()` function in the package.
 
 <p align='center'><img src='selection.png' alt='selection' width='100%'></p>
 
@@ -82,7 +83,7 @@ will use the `BuildIt` data set that is included in the package. This data set
 can be loaded via the command below.
 
 ```{r}
-data(BuildIt)
+data("BuildIt")
 head(BuildIt)
 ```
 

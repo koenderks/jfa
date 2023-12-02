@@ -29,7 +29,7 @@
 #'   \item{item}{a unique record identification number.}
 #'   \item{branch}{the stratum identifier / branch number.}
 #'   \item{bookValue}{the item book value in US dollars.}
-#'   \item{auditValue}{the item audit (true) value in US dollars.}
+#'   \item{auditValue}{the item audit (i.e., true) value in US dollars.}
 #'   \item{times}{a sample selection indicator (\code{0} = not in sample).}
 #' }
 #'

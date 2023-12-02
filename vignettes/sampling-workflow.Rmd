@@ -23,16 +23,19 @@ library(jfa)
 
 ## Introduction
 
-This vignette aims to demonstrate how the **jfa** package can assist auditors in
-the standard audit sampling workflow (hereafter referred to as "audit
-workflow"). In this audit workflow example, we will be looking at a hypothetical
-scenario involving BuildIt, a fictitious construction company based in the
-United States. BuildIt is undergoing an audit by an external auditor from a
-fictional audit firm. At the end of the fiscal year, BuildIt has presented a
-summary of its financial status in its financial statements. The objective of
-the auditor is to form an opinion on the fairness of BuildIt's financial
-statements. The auditor's opinion should be compliant with professional auditing
-standards [@iaasb_2018; @aicpa_2021; @pcaob_2020].
+Welcome to the 'Walkthrough of the classical audit sampling workflow' vignette
+of the **jfa** package. This page aims to demonstrate how the package can assist
+auditors in the standard audit sampling workflow (hereafter referred to as
+"audit workflow"). 
+
+In this audit workflow example, we will be looking at a hypothetical scenario
+involving BuildIt, a fictitious construction company based in the United States.
+BuildIt is undergoing an audit by an external auditor from a fictional audit
+firm. At the end of the fiscal year, BuildIt has presented a summary of its
+financial status in its financial statements. The objective of the auditor is to
+form an opinion on the fairness of BuildIt's financial statements. The auditor's
+opinion should be compliant with professional auditing standards
+[@iaasb_2018; @aicpa_2021; @pcaob_2020].
 
 The auditor is required to gather appropriate and sufficient evidence to support
 the hypothesis that the misstatement in the financial statements is less than a
@@ -66,9 +69,9 @@ typically divides their audit workflow into four stages. Initially, they need to
 plan the minimum sample size they need to examine to make inferences about the
 population. Next, they have to select the required sample from the population.
 Subsequently, they need to inspect the selected sample and determine the audit
-(true) value of the items it comprises. Finally, they must use the information
-from the audited sample to make inferences about the misstatement in the
-population.
+(i.e., true) value of the items it comprises. Finally, they must use the
+information from the audited sample to make inferences about the misstatement in
+the population.
 
 <p align='center'><img src='workflow.png' alt='workflow' width='100%'></p>
 
