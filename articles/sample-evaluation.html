@@ -555,9 +555,9 @@ municipalities. Each line item has a recorded value book value (column
 <code>bookValue</code>) and an audited value (column
 <code>auditValue</code>), which is the true value for the purpose of
 this illustration. The data set already identifies the items that have
-been audited as part of the sample in the column <code>times</code>.
-sampled. In this scenario, we will be performing estimation and
-therefore do not specify the <code>materiality</code> argument in the
+been audited as part of the sample in the column <code>times</code>. In
+this scenario, we will be performing estimation and therefore do not
+specify the <code>materiality</code> argument in the
 <code><a href="../reference/evaluation.html">evaluation()</a></code> function.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"allowances"</span><span class="op">)</span></span>
@@ -612,7 +612,7 @@ function.</p>
 <p>The call below evaluates the <code>allowances</code> sample using a
 Bayesian non-stratified evaluation procedure.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">allowances</span>, times <span class="op">=</span> <span class="st">"times"</span>,</span>
 <span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>,</span>
 <span>  prior <span class="op">=</span> <span class="cn">TRUE</span></span>
@@ -624,7 +624,7 @@ information can be obtained via <code><a href="https://rdrr.io/r/base/summary.ht
 posterior distribution can be obtained by a call to
 <code>plot(..., type = "posterior")</code>.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-15-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 </div>
@@ -669,12 +669,13 @@ for the entire population. Note that for computational reasons it is
 important to set a seed here via <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code>.</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
+<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">allowances</span>, times <span class="op">=</span> <span class="st">"times"</span>,</span>
 <span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>,</span>
 <span>  N.units <span class="op">=</span> <span class="va">N.units</span>, strata <span class="op">=</span> <span class="st">"branch"</span>,</span>
 <span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Classical Audit Sample Evaluation</span></span>
 <span><span class="co">## </span></span>
@@ -693,7 +694,7 @@ stratum are visualized below. For more detailed information, including
 the actual stratum estimates, you can use the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>
 function.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-18-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
@@ -707,19 +708,19 @@ from each stratum are pooled and poststratified to derive the estimate
 for the entire population.</p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
-<span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, data <span class="op">=</span> <span class="va">allowances</span>,</span>
-<span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, strata <span class="op">=</span> <span class="st">"branch"</span>, times <span class="op">=</span> <span class="st">"times"</span>,</span>
-<span>  N.units <span class="op">=</span> <span class="va">N.units</span>, alternative <span class="op">=</span> <span class="st">"two.sided"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">allowances</span>, times <span class="op">=</span> <span class="st">"times"</span>,</span>
+<span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>,</span>
+<span>  N.units <span class="op">=</span> <span class="va">N.units</span>, strata <span class="op">=</span> <span class="st">"branch"</span>,</span>
+<span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span>,</span>
+<span>  prior <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Evaluation</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  allowances</span></span>
-<span><span class="co">## number of errors = 401, number of samples = 1604, taint = 252.93, BF₁₀</span></span>
-<span><span class="co">## = NaN</span></span>
-<span><span class="co">## alternative hypothesis: true misstatement rate is not equal to 0.05</span></span>
+<span><span class="co">## number of errors = 401, number of samples = 1604, taint = 252.93</span></span>
 <span><span class="co">## 95 percent credible interval:</span></span>
 <span><span class="co">##  0.1347989 0.1810191</span></span>
 <span><span class="co">## most likely estimate:</span></span>
@@ -734,13 +735,13 @@ approach. The estimates for each stratum are visualized below using the
 values can be once again be obtained using the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>
 function.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-20-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>The prior and posterior distribution for the population misstatement
 can be obtained via the <code>plot(..., type = "posterior")</code>
 function.</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-21-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 </div>
