@@ -379,12 +379,13 @@ for computational reasons it is important to set a seed here via `set.seed()`.
 
 ```{r}
 set.seed(1)
-evaluation(
+x <- evaluation(
   data = allowances, times = "times",
   values = "bookValue", values.audit = "auditValue",
   N.units = N.units, strata = "branch",
   alternative = "two.sided"
 )
+print(x)
 ```
 
 In this instance, the output reveals that the estimated misstatement in the
