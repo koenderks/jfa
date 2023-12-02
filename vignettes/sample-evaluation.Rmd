@@ -338,7 +338,7 @@ The call below evaluates the `allowances` sample using a Bayesian non-stratified
 evaluation procedure.
 
 ```{r}
-x <- evaluation(
+result <- evaluation(
   data = allowances, times = "times",
   values = "bookValue", values.audit = "auditValue",
   prior = TRUE
@@ -352,7 +352,7 @@ percent to 17.49 percent. More detailed information can be obtained via
 call to `plot(..., type = "posterior")`.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
-plot(x, type = "posterior")
+plot(result, type = "posterior")
 ```
 
 ### Stratified samples
@@ -379,13 +379,13 @@ for computational reasons it is important to set a seed here via `set.seed()`.
 
 ```{r}
 set.seed(1)
-x <- evaluation(
+result <- evaluation(
   data = allowances, times = "times",
   values = "bookValue", values.audit = "auditValue",
   N.units = N.units, strata = "branch",
   alternative = "two.sided"
 )
-print(x)
+print(result)
 ```
 
 In this instance, the output reveals that the estimated misstatement in the
@@ -396,7 +396,7 @@ more detailed information, including the actual stratum estimates, you can use
 the `summary()` function.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
-plot(x, type = "estimates")
+plot(result, type = "estimates")
 ```
 
 #### Bayesian approach
@@ -409,12 +409,14 @@ poststratified to derive the estimate for the entire population.
 
 ```{r}
 set.seed(1)
-x <- evaluation(
-  materiality = 0.05, data = allowances,
-  values = "bookValue", values.audit = "auditValue", strata = "branch", times = "times",
-  N.units = N.units, alternative = "two.sided", prior = TRUE
+result <- evaluation(
+  data = allowances, times = "times",
+  values = "bookValue", values.audit = "auditValue",
+  N.units = N.units, strata = "branch",
+  alternative = "two.sided",
+  prior = TRUE
 )
-print(x)
+print(result)
 ```
 
 The output indicates that the estimated misstatement in the population is
@@ -426,14 +428,14 @@ command but their actual values can be once again be obtained using the
 `summary()` function.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
-plot(x, type = "estimates")
+plot(result, type = "estimates")
 ```
 
 The prior and posterior distribution for the population misstatement can be
 obtained via the `plot(..., type = "posterior")` function.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
-plot(x, type = "posterior")
+plot(result, type = "posterior")
 ```
 
 ## References
