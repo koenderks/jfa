@@ -107,27 +107,36 @@ workflow</h1>
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>This vignette aims to show how the <strong>jfa</strong> package
-facilitates auditors in the standard audit sampling workflow (hereafter
-“audit workflow”). In this example of the audit workflow, we will
-consider the case of BuildIt. BuildIt is a fictional construction
-company in the United States that is being audited by an external
-auditor for a fictional audit firm. At the end of the year, BuildIt has
-provided a summary of its financial situation in the financial
-statements. The objective of the auditor is to formulate an opinion
-about the fairness BuildIt’s financial statements.</p>
-<p>The auditor needs to obtain sufficient and appropriate evidence for
-the hypothesis that the misstatement in the financial statements is
-lower than a certain amount: the materiality. If the financial
-statements contain misstatements that are considered material, this
-means that the errors in the financial statements are large enough that
-they might influence the decision of stakeholders relying on these
-financial statements. The performance materiality is the materiality
-that applies to each of the populations on which the financial
-statements are based. For this example, the performance materiality is
-set at 5 percent of the total value of the population.</p>
-<p>In this example, we focus on the <code>BuildIt</code> data set that
-comes with the <strong>jfa</strong> package.</p>
+<p>This vignette aims to demonstrate how the <strong>jfa</strong>
+package can assist auditors in the standard audit sampling workflow
+(hereafter referred to as “audit workflow”). In this audit workflow
+example, we will be looking at a hypothetical scenario involving
+BuildIt, a fictitious construction company based in the United States.
+BuildIt is undergoing an audit by an external auditor from a fictional
+audit firm. At the end of the fiscal year, BuildIt has presented a
+summary of its financial status in its financial statements. The
+objective of the auditor is to form an opinion on the fairness of
+BuildIt’s financial statements. The auditor’s opinion should be
+compliant with professional auditing standards <span class="citation">(American Institute of Certified Public Accountants
+(AICPA), 2021; International Auditing and Assurance Standards Board
+(IAASB), 2018; Public Company Accounting Oversight Board (PCAOB),
+2020)</span>.</p>
+<p>The auditor is required to gather appropriate and sufficient evidence
+to support the hypothesis that the misstatement in the financial
+statements is less than a specified amount, known as the materiality. If
+the financial statements contain material misstatements, this means that
+the inaccuracies in the financial statements are substantial enough to
+influence the decisions of stakeholders who depend on these financial
+statements. For this example, the overall materiality of the financial
+statements is set to ten percent. This implies that for the auditor to
+endorse the financial statements, inaccuracies in the financial
+statements should not exceed ten percent.</p>
+<p>During an audit, the auditor examines the populations that underpin
+the line items in the financial statement. In this vignette, we
+concentrate on the <code>BuildIt</code> data set that is included in the
+package, which contains <span class="math inline">\(N\)</span> = 3500
+invoices from the BuildIt’s rental account. The data can be loaded in R
+via <code>data("BuildIt")</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"BuildIt"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">BuildIt</span><span class="op">)</span></span></code></pre></div>
@@ -138,98 +147,96 @@ comes with the <strong>jfa</strong> package.</p>
 <span><span class="co">## 4 71769    431.87     431.87</span></span>
 <span><span class="co">## 5 55080    620.88     620.88</span></span>
 <span><span class="co">## 6 93224    501.76     501.76</span></span></code></pre>
-<p>The population of interest consists of 3500 items, each with a booked
-value. Let’s assume that, before performing audit sampling, the auditor
-has assessed the quality of BuildIt’s internal control systems and found
-that they were working properly.</p>
-<p>In order to formulate an opinion about the misstatement in the
-population, the auditor separates their audit workflow into four stages.
-First, they will need to plan the minimum size of a sample they need to
-inspect to perform inference about the population. Second, they will
-need to select the required sample from the population. Third, they will
-need to inspect the selected sample and determine the audit (true) value
-of the items it contains. Fourth, they will need to use the information
-from the inspected sample to perform inference about the misstatement in
-the population.</p>
+<p>For this population, the auditor determines the performance
+materiality, which is the degree of materiality that applies to this
+specific population. In this case, the performance materiality is
+established at fifty percent of the overall materiality, or five
+percent. This implies that for the auditor to endorse the population,
+the misstatement in the population should not exceed five percent.</p>
+<p>To form an opinion about the misstatement in the population, the
+auditor typically divides their audit workflow into four stages.
+Initially, they need to plan the minimum sample size they need to
+examine to make inferences about the population. Next, they have to
+select the required sample from the population. Subsequently, they need
+to inspect the selected sample and determine the audit (true) value of
+the items it comprises. Finally, they must use the information from the
+audited sample to make inferences about the misstatement in the
+population.</p>
 <p align="center">
 <img src="workflow.png" alt="workflow" width="100%"></p>
 </div>
 <div class="section level2">
 <h2 id="setting-up-the-audit">Setting up the audit<a class="anchor" aria-label="anchor" href="#setting-up-the-audit"></a>
 </h2>
-<p>The auditor wants to make a statement that, with 95 percent
-confidence, the misstatement in the population is lower than the
-performance materiality of 5 percent. Based on last year’s audit at
-BuildIt, where the upper bound of the misstatement turned out to be 2.5
-percent, they want to tolerate at most 2.5 percent errors in the
-intended sample. The auditor can therefore re-formulate their
-statistical statement as that they want to conclude that, when 2.5
-percent errors are found in the sample, they can conclude with 95
-percent confidence that the misstatement in the population is lower than
-the performance materiality of 5 percent.</p>
-<p>Below, the auditor defines the performance materiality, confidence
-level, and expected misstatements in the sample.</p>
+<p>The auditor aims to assert that, with 95 percent confidence, the
+misstatement in the population is less than the performance materiality
+of five percent. Drawing from last year’s audit at BuildIt, where the
+upper limit of the misstatement was found to be 2.5 percent, they are
+willing to accept a maximum of 2.5 percent misstatements in the intended
+sample. Consequently, the auditor can rephrase their statistical
+statement as wanting to conclude that, if 2.5 percent misstatements are
+detected in the sample, they can determine with 95 percent confidence
+that the misstatement in the population is less than the performance
+materiality of five percent.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Specify the confidence, materiality, and expected errors.</span></span>
-<span><span class="va">confidence</span> <span class="op">&lt;-</span> <span class="fl">0.95</span> <span class="co"># 95%</span></span>
-<span><span class="va">materiality</span> <span class="op">&lt;-</span> <span class="fl">0.05</span> <span class="co"># 5%</span></span>
-<span><span class="va">expected</span> <span class="op">&lt;-</span> <span class="fl">0.025</span> <span class="co"># 2.5%</span></span></code></pre></div>
-<p>Many audits are performed according to the <em>audit risk model
-(ARM)</em>, which determines that the uncertainty about the auditor’s
-statement as a whole (1 - the confidence) is a factor of three terms:
-the inherent risk, the control risk, and the detection risk. Inherent
-risk is the risk posed by an error in BuildIt’s financial statement that
-could be material, before consideration of any related control systems
-(e.g., computer systems). Control risk is the risk that a material
-misstatement is not prevented or detected by BuildIt’s internal control
-systems. Detection risk is the risk that the auditor will fail to find
-material misstatements that exist in an BuildIt’s financial statements.
-The <em>ARM</em> is practically useful because for a given level of
-audit risk, the tolerable detection risk bears an inverse relation to
-the other two risks. The <em>ARM</em> is useful for the auditor because
-it enables them to incorporate existing information on BuildIt’s
-organization to increase the required risk that they will fail to find a
-material misstatement.</p>
-<p><span class="math display">\[ \text{Audit risk} = \text{Inherent
-risk} \,\times\, \text{Control risk} \,\times\, \text{Detection
-risk}\]</span></p>
-<p>Usually the auditor judges inherent risk and control risk on a
-three-point scale consisting of low, medium, and high. Different audit
-firms handle different standard percentages for these categories. The
-auditor’s firm defines the probabilities of low, medium, and high
-respectively as 50 percent, 60 percent, and 100 percent. Because the
-auditor assessed BuildIt’s internal control systems, they assess the
-control risk as medium (60 percent).</p>
+<code class="sourceCode R"><span><span class="va">confidence</span> <span class="op">&lt;-</span> <span class="fl">0.95</span> <span class="co"># Confidence level = 95%</span></span>
+<span><span class="va">materiality</span> <span class="op">&lt;-</span> <span class="fl">0.05</span> <span class="co"># Performance materiality = 5%</span></span>
+<span><span class="va">expected</span> <span class="op">&lt;-</span> <span class="fl">0.025</span> <span class="co"># Tolerable sample errors = 2.5%</span></span></code></pre></div>
+<p>Many audits are conducted according to the audit risk model (ARM),
+which posits that the overall uncertainty about the auditor’s statement
+(1 - confidence) is a product of three components: inherent risk,
+control risk, and detection risk.</p>
+<p><span class="math display">\[\begin{equation}
+  \text{Audit risk} = \text{Inherent risk} \,\times\, \text{Control
+risk} \,\times\, \text{Detection risk}
+\end{equation}\]</span></p>
+<ul>
+<li>Inherent risk refers to the risk of a material error occurring in
+BuildIt’s financial statement before considering any related control
+systems (e.g., computer systems).</li>
+<li>Control risk is the risk that BuildIt’s internal control systems
+fail to prevent or detect a material misstatement.</li>
+<li>Detection risk is the risk that the auditor will not discover
+material misstatements that exist in BuildIt’s financial
+statements.</li>
+</ul>
+<p>The ARM is practically useful because for a given level of audit
+risk, the tolerable detection risk is inversely proportional to the
+other two risks. Hence, the ARM can be beneficial for the auditor as it
+allows them to reduce the amount of audit evidence required from the
+sample in the presence of risk-reducing information.</p>
+<p>Typically, auditors assess inherent risk and control risk on a
+three-point scale: low, medium, or high. Different audit firms may
+assign different standard percentages to these categories. In the
+auditor’s firm, the probabilities for low, medium, and high are defined
+as 50 percent, 60 percent, and 100 percent, respectively. After
+evaluating BuildIt’s internal control systems, the auditor has
+classified the internal control risk as medium (60 percent), while they
+have determined the inherent risk to be high (100 percent).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Specify the inherent risk (ir) and control risk (cr).</span></span>
-<span><span class="va">ir</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="co"># 100%</span></span>
-<span><span class="va">cr</span> <span class="op">&lt;-</span> <span class="fl">0.6</span> <span class="co"># 60%</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">ir</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="co"># Inherent risk = 100%</span></span>
+<span><span class="va">cr</span> <span class="op">&lt;-</span> <span class="fl">0.6</span> <span class="co"># Control risk = 60%</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="stage-1-planning-an-audit-sample">Stage 1: Planning an audit sample<a class="anchor" aria-label="anchor" href="#stage-1-planning-an-audit-sample"></a>
 </h2>
 <p align="center">
 <img src="planning.png" alt="planning" width="100%"></p>
-<p>The auditor can choose to either perform a frequentist analysis,
-where they use the increased detection risk as their level of
-uncertainty, or perform a Bayesian analysis, where they incorporate the
-information about the control risk into a prior distribution. For this
-example, we will show how to perform a Bayesian analysis. A frequentist
-analysis can easily be done through the following functions by setting
-<code>prior = FALSE</code>. In a frequentist analysis, the auditor
-immediately uses the adjusted confidence to calculate the sample size
-via the <code><a href="../reference/planning.html">planning()</a></code> function.</p>
+<p>In a frequentist analysis applying the audit risk model, the auditor
+treats the increased detection risk as their level of uncertainty. This
+implies that the auditor promptly uses the adjusted confidence level
+<code>c.adj</code> to compute the sample size via the
+<code><a href="../reference/planning.html">planning()</a></code> function.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Adjust the required confidence for a frequentist analysis.</span></span>
-<span><span class="va">c.adj</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="op">(</span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">confidence</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">ir</span> <span class="op">*</span> <span class="va">cr</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co"># Step 1: Calculate the required sample size.</span></span>
+<code class="sourceCode R"><span><span class="va">c.adj</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">-</span> <span class="op">(</span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">confidence</span><span class="op">)</span> <span class="op">/</span> <span class="op">(</span><span class="va">ir</span> <span class="op">*</span> <span class="va">cr</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">stage1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="va">materiality</span>, expected <span class="op">=</span> <span class="va">expected</span>, conf.level <span class="op">=</span> <span class="va">c.adj</span><span class="op">)</span></span></code></pre></div>
-<p>The auditor can then inspect the result from the planning procedure
-by using the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function. The result shows that the
-auditor needs to select a sample of 178 items so that, when at most 4.45
-misstatements are found, they can conclude with 91.66 percent confidence
-that the misstatement in BuildIt’s population is lower than the
-performance materiality of 5 percent.</p>
+<p>The auditor can review the outcome of their planning procedure using
+the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function. The results indicate that the
+auditor needs to select a sample of <span class="math inline">\(n\)</span> = 178 items. This ensures that if a
+maximum of <span class="math inline">\(k\)</span> = 4.45 misstatements
+are found, they can assert with 91.66 percent confidence that the
+misstatement in BuildIt’s population is less than the performance
+materiality of five percent.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -255,31 +262,32 @@ performance materiality of 5 percent.</p>
 </h2>
 <p align="center">
 <img src="selection.png" alt="selection" width="100%"></p>
-<p>The auditor is now ready to select the required 178 items from the
-population. They can choose to do this according to one of two
-statistical methods. In <em>record sampling</em>
-(<code>units = "items"</code>), inclusion probabilities are assigned on
-the item level, treating item with a high value and a low value the
-same, an item of $5,000 is equally likely to be selected as an item of
-$1,000. In <em>monetary unit sampling</em>
-(<code>units = "values"</code>), inclusion probabilities are assigned on
+<p>The auditor is now prepared to select the required <span class="math inline">\(n\)</span> = 178 items from the population. They
+have two statistical methods to choose from for this task. In record
+sampling (<code>units = "items"</code>), inclusion probabilities are
+assigned at the item level, treating items of high and low value
+equally. This means an item of $5,000 is just as likely to be selected
+as an item of $1,000. In monetary unit sampling
+(<code>units = "values"</code>), inclusion probabilities are assigned at
 the level of individual monetary units (e.g., a dollar). When a dollar
 is selected to be in the sample, the item that includes that dollar is
-selected. This favors items with a higher value, as an item with a value
-of $5,000 is now five times more likely to be selected than an item with
-a value of $1,000.</p>
-<p>The auditor chooses to use <em>monetary unit sampling</em>, as they
-wants to include more high-valued items. The <code><a href="../reference/selection.html">selection()</a></code>
-function enables them to select the sample from the population. She uses
-the <code>stage1</code> object as an input for the
-<code><a href="../reference/selection.html">selection()</a></code> function, since this passes the calculated
-sample size to the function.</p>
+selected. This method favors items with a higher value, as an item with
+a value of $5,000 is now five times more likely to be selected than an
+item with a value of $1,000.</p>
+<p>The auditor opts to use monetary unit sampling, as they want to
+include more high-valued items. The <code><a href="../reference/selection.html">selection()</a></code> function
+enables them to select the sample from the population using this
+sampling scheme. They use the <code>stage1</code> object as input for
+the <code>size</code> argument in the <code><a href="../reference/selection.html">selection()</a></code> function,
+as this passes the calculated sample size from the planning stage
+directly to the function.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Step 2: Draw a sample from the financial statements.</span></span>
-<span><span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="va">stage1</span>, units <span class="op">=</span> <span class="st">"values"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, method <span class="op">=</span> <span class="st">"interval"</span><span class="op">)</span></span></code></pre></div>
-<p>Like before, the auditor can inspect the outcomes of their sampling
-procedure<br>
-by using the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function.</p>
+<code class="sourceCode R"><span><span class="va">stage2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/selection.html">selection</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">BuildIt</span>, size <span class="op">=</span> <span class="va">stage1</span>,</span>
+<span>  units <span class="op">=</span> <span class="st">"values"</span>, values <span class="op">=</span> <span class="st">"bookValue"</span>, method <span class="op">=</span> <span class="st">"interval"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p>Like before, the auditor can examine the results of their sampling
+procedure using the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -305,43 +313,42 @@ by using the <code><a href="https://rdrr.io/r/base/summary.html" class="external
 <div class="section level2">
 <h2 id="stage-3-executing-the-audit">Stage 3: Executing the audit<a class="anchor" aria-label="anchor" href="#stage-3-executing-the-audit"></a>
 </h2>
-<p>The selected sample can be isolated by indexing the
-<code>sample</code> object from the sampling result.</p>
+<p>The selected sample can be singled out by indexing the
+<code>$sample</code> object from the sampling result.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Step 3: Isolate the sample for execution of the audit.</span></span>
-<span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">stage2</span><span class="op">$</span><span class="va">sample</span></span></code></pre></div>
-<p>Next, the auditor can execute the audit by annotating the items in
-the sample with their audit values (for exampling by writing the sample
-to a <em>.csv</em> file using <code><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv()</a></code>). They can then
-load the annotated sample back into the R session for further
-evaluation. For this example, the audit values of the sample items are
-already included in the <code>auditValue</code> column of the data
-set.</p>
+<code class="sourceCode R"><span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="va">stage2</span><span class="op">$</span><span class="va">sample</span></span></code></pre></div>
+<p>Next, the auditor can carry out the audit by annotating the items in
+the sample with their audit values. This can be done, for example, by
+writing the sample to a csv file using <code><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv()</a></code>. The
+annotated sample can then be loaded back into the R session for further
+evaluation.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># To write the sample to a .csv file:</span></span>
+<code class="sourceCode R"><span><span class="co"># Write the sample to a .csv file:</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html" class="external-link">write.csv</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">sample</span>, file <span class="op">=</span> <span class="st">"auditSample.csv"</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># To load annotated sample back into R:</span></span>
+<span><span class="co"># Load annotated sample back into R:</span></span>
 <span><span class="va">sample</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span>file <span class="op">=</span> <span class="st">"auditSample.csv"</span><span class="op">)</span></span></code></pre></div>
+<p>In the case of the <code>BuildIt</code> data set, the audit values of
+the sample items are already provided in the <code>auditValue</code>
+column of the data set.</p>
 </div>
 <div class="section level2">
 <h2 id="stage-4-evaluating-the-sample">Stage 4: Evaluating the sample<a class="anchor" aria-label="anchor" href="#stage-4-evaluating-the-sample"></a>
 </h2>
 <p align="center">
 <img src="evaluation.png" alt="evaluation" width="100%"></p>
-<p>Using the annotated sample, the auditor can perform inference about
-the misstatement in the population via the <code><a href="../reference/evaluation.html">evaluation()</a></code>
+<p>With the annotated sample, the auditor can perform inference about
+the misstatement in the population using the <code><a href="../reference/evaluation.html">evaluation()</a></code>
 function.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Step 4: Evaluate the sample</span></span>
-<span><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="va">stage4</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="va">materiality</span>, conf.level <span class="op">=</span> <span class="va">c.adj</span>, data <span class="op">=</span> <span class="va">sample</span>,</span>
 <span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p>The auditor can inspect the outcomes of her inference by using the
-<code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function. The resulting 91.66 percent upper bound
-is 1.396 percent, which is lower than the performance materiality of 5
-percent.</p>
+<p>The auditor can review the results of their inference using the
+<code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function. The resulting upper bound is 1.396
+percent with a confidence level of 91.66 percent, which is below the
+performance materiality of five percent.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">stage4</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -367,10 +374,32 @@ percent.</p>
 <div class="section level2">
 <h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
 </h2>
-<p>Since the 91.66 percent upper confidence bound on the misstatement in
-population is lower than the performance materiality, the auditor has
-obtained sufficient evidence to conclude that the population does not
-contain material misstatement.</p>
+<p>Given that the 91.66 percent upper confidence bound on the
+misstatement in the population is below the performance materiality, the
+auditor has gathered sufficient evidence to conclude that the population
+does not contain material misstatement.</p>
+</div>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="ref-aicpa_2021" class="csl-entry">
+American Institute of Certified Public Accountants (AICPA). (2021).
+<em>Clarified statements on auditing standards</em>. <span>American
+Institute of Certified Public Accountants (<span>AICPA</span>)</span>.
+</div>
+<div id="ref-iaasb_2018" class="csl-entry">
+International Auditing and Assurance Standards Board (IAASB). (2018).
+<em>Handbook of international quality control, auditing review, other
+assurance, and related services pronouncements (vol. i)</em>.
+<span>International Federation of Accountants</span>.
+</div>
+<div id="ref-pcaob_2020" class="csl-entry">
+Public Company Accounting Oversight Board (PCAOB). (2020). <em>Auditing
+standards</em>. <span>Public Company Accounting Oversight Board
+(<span>PCAOB</span>)</span>.
+</div>
+</div>
 </div>
   </div>
 
