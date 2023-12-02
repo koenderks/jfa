@@ -25,12 +25,12 @@ library(jfa)
 
 ## Introduction
 
-Welcome to the 'Audit sampling' vignette of the **jfa** package. Here you can
-find a detailed explanation of the functions in the package that facilitate the
-statistical audit sampling workflow. Specifically, the functions in this section
+Welcome to the 'Audit sampling' vignette of the **jfa** package. This page
+provides a straightforward guide to the functions in the package that are
+designed to facilitate statistical audit sampling. Specifically, these functions
 implement standard audit sampling techniques to calculate sample sizes, select
-items from a population, and evaluate misstatement in a data sample. The **jfa**
-package enables users to create a prior probability distribution to perform
+items from a population, and evaluate the misstatement in a data sample. The
+package allows enables to specify a prior probability distribution to conduct
 Bayesian audit sampling using these functions.
 
 ## Functions and intended usage
@@ -46,15 +46,15 @@ by their occurrence in the standard audit sampling workflow.
 ### Creating a prior distribution
 
 The `auditPrior()` function is used to specify a prior distribution for Bayesian
-audit sampling. The interface allows a complete customization of the prior
-distribution as well as a formal translation of pre-existing audit information
-into a prior distribution. The function returns an object of class `jfaPrior`
-which can be used with associated `summary()` and `plot()` methods. Objects with
-class `jfaPrior` can also be used as input for the `prior` argument in other
-functions. Moreover, `jfaPrior` objects have a corresponding `predict()`
-function to produce the predictions of the prior distribution on the data level.
+audit sampling. It enables formal translation of pre-existing audit information
+into a prior distribution or complete customization of the prior distribution.
+The function returns an object which can be used with associated `summary()` and
+`plot()` methods. Objects returned by this function can also be used as input
+for the `prior` argument in other functions. Additionally, these objects have a
+corresponding `predict()` method to generate the predictions of the prior
+distribution on the data level.
 
-For more information about this function, see the
+For additional details about this function, please refer to the
 [function documentation](https://koenderks.github.io/jfa/reference/auditPrior.html)
 on the package website.
 
@@ -72,15 +72,14 @@ summary(prior)
 ### Planning a sample
 
 The `planning()` function is used to calculate a minimum sample size for audit
-samples. It allows specification of statistical requirements for the sample with
-respect to the performance materiality or the precision. The function returns an
-object of class `jfaPlanning` which can be used with associated `summary()` and
-`plot()` methods. To perform Bayesian planning, the input for the `prior`
-argument can be an object of class `jfaPrior` as returned by the `auditPrior()`
-function, or an object of class `jfaPosterior` as returned by the `evaluation()`
-function.
+samples. It allows the specification of approval conditions for the sample with
+respect to performance materiality or precision. The function returns an object
+which can be used with associated `summary()` and `plot()` methods. To perform
+Bayesian planning, the input for the `prior` argument can be an object returned
+by the `auditPrior()` function, or an object returned by
+`evaluation()$posterior`.
 
-For more information about this function, see the
+For additional details about this function, please refer to the
 [function documentation](https://koenderks.github.io/jfa/reference/planning.html)
 on the package website.
 
@@ -101,11 +100,11 @@ summary(x)
 The `selection()` function is used to perform statistical selection of audit
 samples. It offers flexible implementations of the most common audit sampling
 algorithms for attributes sampling and monetary unit sampling. The function
-returns an object of class `jfaSelection` which can be used with associated
-`summary()` and `plot()` methods. The input for the `size` argument can be an
-object of class `jfaPlanning` as returned by the `planning()` function.
+returns an object which can be used with associated `summary()` and `plot()`
+methods. For convenience, the input for the `size` argument can be an returned
+by the `planning()` function.
 
-For more information about this function, see the
+For additional details about this function, please refer to the
 [function documentation](https://koenderks.github.io/jfa/reference/selection.html)
 on the package website.
 
@@ -122,15 +121,14 @@ summary(x)
 
 ### Evaluating a sample
 
-The `evaluation()` function takes a sample or summary statistics of the sample
-and performs evaluation according to the specified method and sampling
-objectives. The function returns an object of class `jfaEvalution` which can
-be used with associated `summary()` and `plot()` methods. To perform Bayesian
-evaluation, the input for the `prior` argument can be an object of class
-`jfaPrior` as returned by the `auditPrior()` function, or an object of class
-`jfaPosterior` as returned by the `evaluation()` function.
+The `evaluation()` function accepts a sample or summary statistics of the sample
+and performs evaluation according to the specified `method`. The function
+returns an object which can be used with associated `summary()` and `plot()`
+methods. To perform Bayesian evaluation, the input for the `prior` argument can
+be an object returned by the `auditPrior()` function, or an object returned by
+`evaluation()$posterior`.
 
-For more information about this function, see the
+For additional details about this function, please refer to the
 [function documentation](https://koenderks.github.io/jfa/reference/evaluation.html)
 on the package website.
 
@@ -148,10 +146,10 @@ summary(x)
 
 ## Benchmarks
 
-To validate the statistical results, **jfa**'s automated
+To ensure the accuracy of statistical results, **jfa** employs automated
 [unit tests](https://github.com/koenderks/jfa/tree/development/tests/testthat)
-regularly verify the main output from the package against the following
-benchmarks:
+that regularly validate the output from the package against the following
+established benchmarks in the area of audit sampling:
 
 - [Audit Sampling: Audit Guide](https://www.aicpa-cima.com/cpe-learning/publication/audit-sampling-audit-guide-OPL) (Appendix A and Appendix C)
 - [AuditSampler](https://cplusglobal.wordpress.com/solutions/auditsampler-statistical-sampling-software/)
@@ -164,9 +162,8 @@ benchmarks:
 
 ## Cheat sheet
 
-The cheat sheet below will help you get started with **jfa**'s' intended audit
-sampling workflow. You can download a `pdf` version of the cheat sheet
-[here](https://github.com/koenderks/jfa/raw/development/man/figures/cheatsheet/cheatsheet-sampling.pdf).
+The cheat sheet below will help you get started with **jfa**'s intended audit
+sampling workflow. A pdf version can be downloaded [here](https://github.com/koenderks/jfa/raw/development/man/figures/cheatsheet/cheatsheet-sampling.pdf).
 
 <p align='center'><img src='cheatsheet-sampling.png' alt='cheatsheet-sampling' width='1000'></p>
 

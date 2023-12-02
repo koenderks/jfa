@@ -25,12 +25,12 @@ library(jfa)
 
 ## Introduction
 
-Welcome to the 'Algorithm auditing' vignette of the **jfa** package. Here you
-can find a detailed explanation of the functions in the package that facilitate
-auditing of algorithms and predictive models. Specifically, the functions in
-this section implement techniques to calculate and test fairness metrics. The
-**jfa** package enables users to create a prior probability distribution to
-perform Bayesian algorithm auditing using these functions.
+Welcome to the Algorithm auditing' vignette of the **jfa** package. This page
+provides a guide to the functions in the package that are designed to facilitate
+the audit of algorithms and predictive models. In particular, these functions
+implement techniques for calculating and testing fairness metrics. The package
+allows users to specify a prior probability distribution to conduct Bayesian
+algorithm auditing using these functions.
 
 ## Functions and intended usage
 
@@ -41,20 +41,20 @@ in **jfa**.
 
 ### Testing algorithmic fairness
 
-The `model_fairness()` function aims to assess fairness in algorithmic
-decision-making systems by computing and testing the equality of one of
-several model-agnostic fairness metrics between protected classes based on a
+The `model_fairness()` function is designed to evaluate fairness in algorithmic
+decision-making systems. It does this by computing and testing the equality of
+various model-agnostic fairness metrics between protected classes, based on a
 set of true labels and the predictions of an algorithm. The ratio of these
-metrics between an unprivileged protected class and a privileged protected
-class is called parity, and quantifies relative fairness in the algorithms
+metrics between an unprivileged protected class and a privileged protected class
+is referred to as parity, which quantifies relative fairness in the algorithm's
 predictions. Available parity metrics include predictive rate parity,
-proportional parity, accuracy parity, false negative rate parity, false
-positive rate parity, true positive rate parity, negative predicted value
-parity, specificity parity, and demographic parity [@friedler_2019;
-@pessach_2022]. The function returns an object of class `jfaFairness` that can
-be used with associated `summary()` and `plot()` methods.
+proportional parity, accuracy parity, false negative rate parity, false positive
+rate parity, true positive rate parity, negative predicted value parity,
+specificity parity, and demographic parity [@friedler_2019; @pessach_2022]. The
+function returns an object that can be used with the associated `summary()` and
+`plot()` methods.
 
-For more information about this function, see the
+For additional details about this function, please refer to the
 [function documentation](https://koenderks.github.io/jfa/reference/model_fairness.html)
 on the package website.
 
@@ -76,18 +76,17 @@ summary(x)
 
 ## Benchmarks
 
-To validate the statistical results, **jfa**'s automated
+To ensure the accuracy of statistical results, **jfa** employs automated
 [unit tests](https://github.com/koenderks/jfa/tree/development/tests/testthat)
-regularly verify the main output from the package against the following
-benchmarks:
+that regularly validate the output from the package against the following
+established benchmarks in the area of algorithm auditing:
 
 - [fairness](https://cran.r-project.org/package=fairness) (R package version 1.2.2)
 
 ## Cheat sheet
 
-The cheat sheet below will help you get started with **jfa**'s' intended
-algorithm audit functionality. You can download a `pdf` version of the cheat
-sheet [here](https://github.com/koenderks/jfa/raw/development/man/figures/cheatsheet/cheatsheet-algorithm.pdf).
+The cheat sheet below will help you get started with **jfa**'s algorithm audit
+functionality. A pdf version can be downloaded [here](https://github.com/koenderks/jfa/raw/development/man/figures/cheatsheet/cheatsheet-algorithm.pdf).
 
 <p align='center'><img src='cheatsheet-algorithm.png' alt='cheatsheet-algorithm' width='1000'></p>
 

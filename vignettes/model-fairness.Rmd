@@ -37,7 +37,7 @@ accuracy parity, false negative rate parity, false positive rate parity, true
 positive rate parity, negative predicted value parity, and specificity parity
 [@calders_2010; @chouldechova_2017; @feldman_2015; @zafar_2017; @friedler_2019].
 
-*Example:*
+*Practical example:*
 
 To illustrate how to use the `model_fairness()` function, we will use a
 well-known data set called COMPAS. The COMPAS (Correctional Offender Management

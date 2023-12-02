@@ -23,58 +23,70 @@ library(jfa)
 
 ## Introduction
 
-Welcome to the 'Digit analysis' vignette of the **jfa** package. In this
-vignette you are able to find detailed examples of how you can incorporate the
-`digit_test()` and `repeated_test()` functions provided by the package.
+Welcome to the 'Digit analysis' vignette of the **jfa** package. This page
+provides comprehensive examples of how to use the `digit_test()` and
+`repeated_test()` functions included in the package.
 
 ## Function: `digit_test()`
 
-The function `digit_test()` takes a vector of numeric values, extract the
+The `digit_test()` function accepts a vector of numeric values, extracts the
 requested digits, and compares the frequencies of these digits to a reference
-distribution. The function either performs a frequentist hypothesis test of the
-null hypothesis that the digits are distributed according to the reference
-distribution and produces a *p* value or a Bayesian hypothesis test of the null
-hypothesis that the digits are distributed according to the reference
-distribution against the alternative hypothesis (using the prior parameters
-specified in `prior`) that the digits are not distributed according to the
-reference distribution and produces a Bayes factor (Kass & Raftery, 1995).
+distribution. By default, the function performs a frequentist hypothesis test of
+the null hypothesis that the digits are distributed according to the reference
+distribution, and produces a *p*-value. When a prior is specified, the function
+performs a Bayesian hypothesis test of the null hypothesis that the digits are
+distributed according to the reference distribution against the alternative
+hypothesis that the digits are not distributed according to the reference
+distribution, and produces a Bayes factor [@kass_1995].
 
-*Example:*
+*Practical example:*
 
 Benford's law [@benford_1938] is a principle that describes a pattern in many
 naturally-occurring numbers. According to Benford's law, each possible leading
-digit *d* in a naturally occurring, or non-manipulated, set of numbers occurs
-with a probability `p(d) = log10(1 + 1/d)`. The distribution of leading digits
-in a data set of financial transaction values (e.g., the `sinoForest` data) can
-be extracted and tested against the expected frequencies under Benford's law
-using the code below.
+digit $d$ in a naturally occurring, or non-manipulated, set of numbers occurs
+with a probability:
 
-```{r fig.align="center", fig.height=4, fig.width=6}
-# Frequentist hypothesis test
+\begin{equation}
+  p(d_i) = \text{log}_{10}(1 + \frac{1}{d_i})
+\end{equation}
+
+The distribution of leading digits in a data set of financial transaction values
+(e.g., the `sinoForest` data) can be extracted and tested against the expected
+frequencies under Benford's law using the code below.
+
+```{r}
 x <- digit_test(sinoForest$value, check = "first", reference = "benford")
 print(x)
+```
+
+You can visually compare the distribution of first digits to the reference
+distribution by calling `plot(..., type = "estimates")` on the returned object.
+
+```{r fig.align="center", fig.height=4, fig.width=6}
 plot(x, type = "estimates")
 ```
 
-You can also perform this analysis in a Bayesian fashion by setting
-`prior = TRUE`, or providing a value for the prior concentration parameter.
+You can also conduct this analysis in a Bayesian manner by setting
+`prior = TRUE`, or by providing a value for the prior concentration parameter
+(e.g., `prior = 3`).
 
-```{r fig.align="center", fig.height=4, fig.width=6}
-# Bayesian hypothesis test using default prior
+```{r}
 x <- digit_test(sinoForest$value, check = "first", reference = "benford", prior = TRUE)
 print(x)
 ```
 
-You can then check the robustness of the Bayes factor to the choice of prior
-distribution using the `plot()` function with `type = "robustness"`.
+When performing the analysis in a Bayesian manner, you can invoke
+`plot(..., type = "robustness")` to assess the robustness of the Bayes factor to
+the choice of the prior distribution. This will display the Bayes factor under
+various reasonable specifications of the prior distribution.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(x, type = "robustness")
 ```
 
-You can perform a sequential analysis of the Bayes factor using the `plot()`
-function with the argument `type = "sequential"`. The sequential analysis
-includes a robustness check as well.
+In addition, you can perform a sequential analysis using the Bayes factor by
+invoking `plot(..., type = "sequential")`. This sequential analysis includes a
+robustness check as well.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(x, type = "sequential")
@@ -82,24 +94,30 @@ plot(x, type = "sequential")
 
 ## Function: `repeated_test()`
 
-The function `repeated_test()` analyzes the frequency with which values get
+The `repeated_test()` function analyzes the frequency with which values are
 repeated within a set of numbers. Unlike Benford's law, and its generalizations,
 this approach examines the entire number at once, not only the first or last
 digit. For the technical details of this procedure, see [@simonsohn_2019].
 
-*Example:*
+*Practical example:*
 
-In this example we analyze a data set from a (retracted) paper that describes
+In this example, we analyze a data set from a (retracted) paper that describes
 three experiments run in Chinese factories, where workers were nudged to use
-more hand-sanitizer. These data were shown to exhibited two classic markers of
+more hand-sanitizer. These data were shown to exhibit two classic markers of
 data tampering: impossibly similar means and the uneven distribution of last
 digits [@yu_2018]. We can use the `repeated_test()` function to test if these
 data also contain a greater amount of repeated values than expected if the data
 were not tampered with.
 
-```{r fig.align="center", fig.height=4, fig.width=6}
+```{r}
 x <- repeated_test(sanitizer$value, check = "lasttwo", samples = 2000)
 print(x)
+```
+
+A histogram of the frequency of each value can be obtained via the `plot()`
+function.
+
+```{r fig.align="center", fig.height=4, fig.width=6}
 plot(x)
 ```
 
