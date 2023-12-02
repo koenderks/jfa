@@ -23,72 +23,76 @@ library(jfa)
 
 ## Introduction
 
-Welcome to the 'Algorithmic fairness' vignette of the **jfa** package. In this
-vignette you can find a detailed example of how you can use the
-`model_fairness()` function provided by the package.
+Welcome to the 'Algorithmic fairness' vignette of the **jfa** package. This page
+provides a comprehensive example of how to use the `model_fairness()` function
+in the package.
 
 ## Function: `model_fairness()`
 
-The `model_fairness()` function provides a method to assess fairness in
-algorithmic decision-making systems by computing various model-agnostic metrics
-based on the observed and predicted labels in a data set. Calculated metrics
-include demographic parity, proportional parity, predictive rate parity,
-accuracy parity, false negative rate parity, false positive rate parity, true
-positive rate parity, negative predicted value parity, and specificity parity
-[@calders_2010; @chouldechova_2017; @feldman_2015; @zafar_2017; @friedler_2019].
+The model_fairness() function offers methods to evaluate fairness in algorithmic
+decision-making systems. It computes various model-agnostic metrics based on the
+observed and predicted labels in a dataset. The fairness metrics that can be
+calculated include demographic parity, proportional parity, predictive rate
+parity, accuracy parity, false negative rate parity, false positive rate parity,
+true positive rate parity, negative predicted value parity, and specificity
+parity [@calders_2010; @chouldechova_2017; @feldman_2015; @zafar_2017;
+@friedler_2019]. Furthermore, the metrics are tested for equality between
+protected groups in the data.
 
 *Practical example:*
 
-To illustrate how to use the `model_fairness()` function, we will use a
-well-known data set called COMPAS. The COMPAS (Correctional Offender Management
-Profiling for Alternative Sanctions) software is is a case management and
-decision support tool used by some U.S. courts to assess the likelihood of a
-defendant becoming a recidivist (repeated offender). 
+To demonstrate the usage of the `model_fairness()` function, we will use a
+renowned dataset known as COMPAS. The COMPAS (Correctional Offender Management
+Profiling for Alternative Sanctions) software is a case management and decision
+support tool employed by certain U.S. courts to evaluate the likelihood of a
+defendant becoming a recidivist (repeat offender).
 
-The `compas` data is included in the package and contains predictions of the
-COMPAS software for several cases. The data can be loaded with `data("compas")`
-and contains for each defendant, whether the defendant did commit a crime within
-two years after the court case (`TwoYrRecidivism`), some personal
-characteristics like gender and ethnicity, and whether the software predicted
-the defendant to be a recidivist (`Predicted`). 
+The `compas` data, which is included in the package, contains predictions made
+by the COMPAS algorithm for various defendants. The data can be loaded using
+`data("compas")` and includes information for each defendant, such as whether
+the defendant committed a crime within two years following the court case
+(`TwoYrRecidivism`), personal characteristics like gender and ethnicity, and
+whether the software predicted the defendant to be a recidivist (`Predicted`).
 
 ```{r}
 data("compas")
 head(compas)
 ```
 
-We will investigate whether the algorithm is fair with respect to the sensitive
-attribute `Ethnicity`. Considering the context, a positive prediction means that
-a defendant is classified as a reoffender, and a negative prediction means that
-a defendant is classified as a non-reoffender. The fairness metrics offer
-information on whether there are any disparities in the algorithm's predictions
-across different ethnic groups. By calculating and reviewing these metrics, we
-can get an indication of whether the algorithm exhibits any discriminatory
-behavior towards specific ethnic groups. If substantial disparities exist, we 
-may need to investigate further and potentially modify the algorithm to ensure
-fairness in its predictions.
+We will examine whether the COMPAS algorithm demonstrates fairness with respect
+to the sensitive attribute `Ethnicity`. In this context, a positive prediction
+implies that a defendant is classified as a reoffender, while a negative
+prediction implies that a defendant is classified as a non-reoffender. The
+fairness metrics provide insights into whether there are disparities in the
+predictions of the algorithm for different ethnic groups. By calculating and
+reviewing these metrics, we can determine whether the algorithm displays any
+discriminatory behavior towards specific ethnic groups. If significant
+disparities exist, further investigation may be necessary, and potential
+modifications to the algorithm may be required to ensure fairness in its
+predictions.
 
-Before starting, let's briefly explain the foundation of all fairness metrics:
-the confusion matrix. This matrix presents observed versus predicted labels,
-shedding light on the algorithm's prediction mistakes. Comprising the confusion
-matrix are the true positives (TP), false positives (FP), true negatives (TN),
-and false negatives (FN). To illustrate, the confusion matrix pertaining to the
-`African_American` group is displayed below. For example, there are 629 people
-in this group that are incorrectly predicted to be a reoffender, which
-represents a false positive in the confusion matrix.
+Before we begin, let's briefly explain the basis of all fairness metrics: the
+confusion matrix. This matrix compares observed versus predicted labels,
+highlighting the algorithm's prediction mistakes. The confusion matrix consists
+of true positives (TP), false positives (FP), true negatives (TN), and false
+negatives (FN). The confusion matrix for the `African_American` group is shown
+below. For instance, there are 629 individuals in this group who are incorrectly
+predicted to be reoffenders, representing a false positive in this confusion
+matrix.
 
 |                           | `Predicted` = `no` | `Predicted` = `yes`   |
 | ------------------------: | :----------------: | :-------------------: |
 | `TwoYrRecidivism` = `no`  | 885 (`TN`)         | 629 (`FP`)            |
 | `TwoYrRecidivism` = `yes` | 411 (`FN`)         | 1250 (`TP`)           |
 
-For illustrative purposes, let's interpret the full set of fairness metrics for
-the African American, Asian, and Hispanic groups in comparison to the
-privileged group (Caucasian). See @pessach_2022 for a more detailed
-explanation of some of these metrics. However, note that not all fairness
-measures are equally appropriate in all audit situations. The decision tree
-below aids the auditor with choosing which measure is best for the situation at
-hand [@buyuk_2023].
+To demonstrate the usage of the `model_fairness()` function, let's interpret the
+complete set of fairness metrics for the African American, Asian, and Hispanic
+groups, comparing them to the privileged group (Caucasian). For a more detailed
+explanation of some of these metrics, we refer to @pessach_2022. However, it is
+important to note that not all fairness measures are equally suitable for all
+audit situations. The decision tree provided below (which is far from perfect)
+can assist the auditor in selecting an appropriate measure for the specific
+audit at hand [@buyuk_2023].
 
 <p align='center'><img src='fairness-tree.png' alt='fairness' width='90%'></p>
 
@@ -420,10 +424,16 @@ model_fairness(
 
 ### Bayesian Analysis
 
-For all metrics except demongraphic parity, Bayesian inference is supported and
-provides credible intervals and Bayes factors [@jamil_2017]. Like in the other
-functions in `jfa`, performing a Bayesian analysis using a default prior can be
-achieved by setting `prior = TRUE`.
+Bayesian inference, which is supported for all metrics except demographic
+parity, provides credible intervals and Bayes factors for the fairness metrics
+and tests [@jamil_2017]. Similar to other functions in **jfa**, a Bayesian
+analysis can be conducted using a default prior by setting `prior = TRUE`. The
+prior distribution in this analysis is specified on the log odds ratio and can
+be modified by setting `prior = 1` (equal to `prior = TRUE`), or providing a
+number greater than one that represents the prior concentration parameter (for
+example, `prior = 3`). The larger the concentration parameter, the more the
+prior distribution is focused around zero, implying that it assigns a higher
+probability to the scenario of equal fairness metrics.
 
 ```{r}
 x <- model_fairness(
@@ -439,32 +449,26 @@ x <- model_fairness(
 print(x)
 ```
 
-Bayesian inference measures evidence using the Bayes factor $BF_{01}$, which
-quantifies the evidence in favor of algorithmic fairness (i.e., equal fairness
-metrics across all groups) over algorithmic bias or $BF_{10}$, which quantifies
-the evidence in favor of algorithmic bias over algorithmic fairness. By default,
-**jfa** reports $BF_{10}$, but $BF_{01} = \frac{1}{BF_{10}}$. The resulting
-Bayes factor in favor of rejection of the null hypothesis of equality
-($BF_{10}$) is shown in the output above. As can be seen, $BF_{10}$ > 1000,
-which indicates extreme evidence in favor of bias between the groups. 
+The Bayes factor $BF_{01}$, used in Bayesian inference, quantifies the evidence
+supporting algorithmic fairness (i.e., equal fairness metrics across all groups)
+over algorithmic bias. Conversely, $BF_{10}$ quantifies the evidence supporting
+algorithmic bias over algorithmic fairness. By default, **jfa** reports
+$BF_{10}$, but $BF_{01}$ = $\frac{1}{BF_{10}}$. The output above shows the
+resulting Bayes factor ($BF_{01}$) in favor of rejecting the null hypothesis of
+algorithmic fairness. As shown, $BF_{01}$ > 1000, indicating extreme evidence
+against the hypothesis of equal fairness metrics between the groups. 
 
-In a Bayesian analysis, the auditor specifies a prior distribution that can
-incorporate relevant audit information. The prior distribution for this
-analysis is expressed on the log odds ratio and can be adjusted by setting
-`prior = 1` (the default), or providing a number > 1 representing the prior
-concentration parameter. The larger the concentration parameter, the more
-the prior distribution is concentrated around zero, meaning equal metrics
-are assumed to be more likely. The prior and posterior distributions on the
-log odds ratio can be visualized via the `plot()` function using
-`type = "posterior"`, see the figure below.
+The prior and posterior distribution for the group comparisons can be
+visualized by invoking `plot(..., type = "posterior")`.
 
 ```{r, fig.align="center", fig.height=4, fig.width=6}
 plot(x, type = "posterior")
 ```
 
-You can check the robustness of the Bayes factor to the choice of prior
-distribution via the `plot()` function using `type = "robustness"`, see the
-figure below.
+Additionally, the robustness of the Bayes factor to the choice of prior
+distribution can be examined by calling `plot(..., type = "robustness")`, as
+shown in the code below. Finally, the auditor has the option to conduct a
+sequential analysis using `plot(..., type = "sequential")`.
 
 ```{r, fig.align="center", fig.height=4, fig.width=6}
 plot(x, type = "robustness")

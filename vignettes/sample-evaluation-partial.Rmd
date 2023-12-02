@@ -156,7 +156,7 @@ beta(1 + *i*, *n* - *i*) distribution [@pearson_1948]. When calculating the
 Stringer bound, the taints are placed in descending order in the formula as a
 form of conservatism.
 
-In `jfa`, the Stringer bound can be applied using `method = "stringer"` in the
+In **jfa**, the Stringer bound can be applied using `method = "stringer"` in the
 `evaluation()` function. The maximum likelihood estimate for the Stringer bound
 is the same as that of the binomial likelihood.
 
@@ -211,9 +211,9 @@ t = \begin{cases}
 \end{cases}
 \end{align*}
 
-In `jfa`, this hurdle beta model can be fitted using `method = "hurdle.beta"` in
-the `evaluation()` function. To estimate the parameters in this model using the
-maximum likelihood, we use the default option `prior = FALSE`. Using maximum 
+In **jfa**, this hurdle beta model can be fitted using `method = "hurdle.beta"`
+in the `evaluation()` function. To estimate the parameters in this model using
+the maximum likelihood, we use the default option `prior = FALSE`. Using maximum 
 likelihood estimation, $p_{(0, 1]}$ = $\frac{n_t}{n}$ = $\frac{26}{60}$ = 0.433,
 where $n_t$ is the number of misstatements, and $p_{1 | (0, 1]}$ =
 $\frac{n_1}{n_t}$ = $\frac{4}{26}$ = 0.1539, where $n_1$ is the number of full
