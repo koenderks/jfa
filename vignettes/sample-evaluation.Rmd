@@ -298,9 +298,9 @@ This data set comprises $N$ = 3500 subsidy declarations from municipalities.
 Each line item has a recorded value book value (column `bookValue`) and an
 audited value (column `auditValue`), which is the true value for the purpose of
 this illustration. The data set already identifies the items that have been
-audited as part of the sample in the column `times`. sampled. In this scenario,
-we will be performing estimation and therefore do not specify the `materiality`
-argument in the `evaluation()` function.
+audited as part of the sample in the column `times`. In this scenario, we will
+be performing estimation and therefore do not specify the `materiality` argument
+in the `evaluation()` function.
 
 ```{r}
 data("allowances")
