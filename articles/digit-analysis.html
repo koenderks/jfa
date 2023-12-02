@@ -107,36 +107,37 @@
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>Welcome to the ‘Digit analysis’ vignette of the <strong>jfa</strong>
-package. In this vignette you are able to find detailed examples of how
-you can incorporate the <code><a href="../reference/digit_test.html">digit_test()</a></code> and
-<code><a href="../reference/repeated_test.html">repeated_test()</a></code> functions provided by the package.</p>
+package. This page provides comprehensive examples of how to use the
+<code><a href="../reference/digit_test.html">digit_test()</a></code> and <code><a href="../reference/repeated_test.html">repeated_test()</a></code> functions
+included in the package.</p>
 </div>
 <div class="section level2">
 <h2 id="function-digit_test">Function: <code>digit_test()</code><a class="anchor" aria-label="anchor" href="#function-digit_test"></a>
 </h2>
-<p>The function <code><a href="../reference/digit_test.html">digit_test()</a></code> takes a vector of numeric
-values, extract the requested digits, and compares the frequencies of
-these digits to a reference distribution. The function either performs a
-frequentist hypothesis test of the null hypothesis that the digits are
-distributed according to the reference distribution and produces a
-<em>p</em> value or a Bayesian hypothesis test of the null hypothesis
-that the digits are distributed according to the reference distribution
-against the alternative hypothesis (using the prior parameters specified
-in <code>prior</code>) that the digits are not distributed according to
-the reference distribution and produces a Bayes factor (Kass &amp;
-Raftery, 1995).</p>
-<p><em>Example:</em></p>
+<p>The <code><a href="../reference/digit_test.html">digit_test()</a></code> function accepts a vector of numeric
+values, extracts the requested digits, and compares the frequencies of
+these digits to a reference distribution. By default, the function
+performs a frequentist hypothesis test of the null hypothesis that the
+digits are distributed according to the reference distribution, and
+produces a <em>p</em>-value. When a prior is specified, the function
+performs a Bayesian hypothesis test of the null hypothesis that the
+digits are distributed according to the reference distribution against
+the alternative hypothesis that the digits are not distributed according
+to the reference distribution, and produces a Bayes factor <span class="citation">(Kass &amp; Raftery, 1995)</span>.</p>
+<p><em>Practical example:</em></p>
 <p>Benford’s law <span class="citation">(Benford, 1938)</span> is a
 principle that describes a pattern in many naturally-occurring numbers.
-According to Benford’s law, each possible leading digit <em>d</em> in a
-naturally occurring, or non-manipulated, set of numbers occurs with a
-probability <code>p(d) = log10(1 + 1/d)</code>. The distribution of
-leading digits in a data set of financial transaction values (e.g., the
-<code>sinoForest</code> data) can be extracted and tested against the
-expected frequencies under Benford’s law using the code below.</p>
+According to Benford’s law, each possible leading digit <span class="math inline">\(d\)</span> in a naturally occurring, or
+non-manipulated, set of numbers occurs with a probability:</p>
+<p><span class="math display">\[\begin{equation}
+  p(d_i) = \text{log}_{10}(1 + \frac{1}{d_i})
+\end{equation}\]</span></p>
+<p>The distribution of leading digits in a data set of financial
+transaction values (e.g., the <code>sinoForest</code> data) can be
+extracted and tested against the expected frequencies under Benford’s
+law using the code below.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Frequentist hypothesis test</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/digit_test.html">digit_test</a></span><span class="op">(</span><span class="va">sinoForest</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"first"</span>, reference <span class="op">=</span> <span class="st">"benford"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/digit_test.html">digit_test</a></span><span class="op">(</span><span class="va">sinoForest</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"first"</span>, reference <span class="op">=</span> <span class="st">"benford"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Classical Digit Distribution Test</span></span>
@@ -144,15 +145,17 @@ expected frequencies under Benford’s law using the code below.</p>
 <span><span class="co">## data:  sinoForest$value</span></span>
 <span><span class="co">## n = 772, MAD = 0.0065981, X-squared = 7.6517, df = 8, p-value = 0.4682</span></span>
 <span><span class="co">## alternative hypothesis: leading digit(s) are not distributed according to the benford distribution.</span></span></code></pre>
+<p>You can visually compare the distribution of first digits to the
+reference distribution by calling
+<code>plot(..., type = "estimates")</code> on the returned object.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="digit-analysis_files/figure-html/unnamed-chunk-2-1.png" width="576" style="display: block; margin: auto;"></p>
-<p>You can also perform this analysis in a Bayesian fashion by setting
-<code>prior = TRUE</code>, or providing a value for the prior
-concentration parameter.</p>
+<p><img src="digit-analysis_files/figure-html/unnamed-chunk-3-1.png" width="576" style="display: block; margin: auto;"></p>
+<p>You can also conduct this analysis in a Bayesian manner by setting
+<code>prior = TRUE</code>, or by providing a value for the prior
+concentration parameter (e.g., <code>prior = 3</code>).</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Bayesian hypothesis test using default prior</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/digit_test.html">digit_test</a></span><span class="op">(</span><span class="va">sinoForest</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"first"</span>, reference <span class="op">=</span> <span class="st">"benford"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/digit_test.html">digit_test</a></span><span class="op">(</span><span class="va">sinoForest</span><span class="op">$</span><span class="va">value</span>, check <span class="op">=</span> <span class="st">"first"</span>, reference <span class="op">=</span> <span class="st">"benford"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Digit Distribution Test</span></span>
@@ -160,33 +163,34 @@ concentration parameter.</p>
 <span><span class="co">## data:  sinoForest$value</span></span>
 <span><span class="co">## n = 772, MAD = 0.0065981, BF₁₀ = 1.4493e-07</span></span>
 <span><span class="co">## alternative hypothesis: leading digit(s) are not distributed according to the benford distribution.</span></span></code></pre>
-<p>You can then check the robustness of the Bayes factor to the choice
-of prior distribution using the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function with
-<code>type = "robustness"</code>.</p>
+<p>When performing the analysis in a Bayesian manner, you can invoke
+<code>plot(..., type = "robustness")</code> to assess the robustness of
+the Bayes factor to the choice of the prior distribution. This will
+display the Bayes factor under various reasonable specifications of the
+prior distribution.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"robustness"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="digit-analysis_files/figure-html/unnamed-chunk-4-1.png" width="576" style="display: block; margin: auto;"></p>
-<p>You can perform a sequential analysis of the Bayes factor using the
-<code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function with the argument
-<code>type = "sequential"</code>. The sequential analysis includes a
-robustness check as well.</p>
+<p><img src="digit-analysis_files/figure-html/unnamed-chunk-5-1.png" width="576" style="display: block; margin: auto;"></p>
+<p>In addition, you can perform a sequential analysis using the Bayes
+factor by invoking <code>plot(..., type = "sequential")</code>. This
+sequential analysis includes a robustness check as well.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"sequential"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="digit-analysis_files/figure-html/unnamed-chunk-5-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="digit-analysis_files/figure-html/unnamed-chunk-6-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="function-repeated_test">Function: <code>repeated_test()</code><a class="anchor" aria-label="anchor" href="#function-repeated_test"></a>
 </h2>
-<p>The function <code><a href="../reference/repeated_test.html">repeated_test()</a></code> analyzes the frequency with
-which values get repeated within a set of numbers. Unlike Benford’s law,
+<p>The <code><a href="../reference/repeated_test.html">repeated_test()</a></code> function analyzes the frequency with
+which values are repeated within a set of numbers. Unlike Benford’s law,
 and its generalizations, this approach examines the entire number at
 once, not only the first or last digit. For the technical details of
 this procedure, see <span class="citation">(Simonsohn, 2019)</span>.</p>
-<p><em>Example:</em></p>
-<p>In this example we analyze a data set from a (retracted) paper that
+<p><em>Practical example:</em></p>
+<p>In this example, we analyze a data set from a (retracted) paper that
 describes three experiments run in Chinese factories, where workers were
-nudged to use more hand-sanitizer. These data were shown to exhibited
-two classic markers of data tampering: impossibly similar means and the
+nudged to use more hand-sanitizer. These data were shown to exhibit two
+classic markers of data tampering: impossibly similar means and the
 uneven distribution of last digits <span class="citation">(Yu et al.,
 2018)</span>. We can use the <code><a href="../reference/repeated_test.html">repeated_test()</a></code> function to
 test if these data also contain a greater amount of repeated values than
@@ -198,11 +202,13 @@ expected if the data were not tampered with.</p>
 <span><span class="co">##  Classical Repeated Values Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sanitizer$value</span></span>
-<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0025</span></span>
+<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.002</span></span>
 <span><span class="co">## alternative hypothesis: average frequency in data is greater than for random data.</span></span></code></pre>
+<p>A histogram of the frequency of each value can be obtained via the
+<code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
-<p><img src="digit-analysis_files/figure-html/unnamed-chunk-6-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="digit-analysis_files/figure-html/unnamed-chunk-8-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -211,6 +217,10 @@ expected if the data were not tampered with.</p>
 <div id="ref-benford_1938" class="csl-entry">
 Benford, F. (1938). The law of anomalous numbers. <em>Proceedings of the
 American Philosophical Society</em>, <em>78</em>, 551–572. <a href="https://www.jstor.org/stable/984802" class="external-link">https://www.jstor.org/stable/984802</a>
+</div>
+<div id="ref-kass_1995" class="csl-entry">
+Kass, R. E., &amp; Raftery, A. E. (1995). Bayes factors. <em>Journal of
+the American Statistical Association</em>, <em>90</em>(430), 773–795. <a href="https://doi.org/10.1080/01621459.1995.10476572" class="external-link">https://doi.org/10.1080/01621459.1995.10476572</a>
 </div>
 <div id="ref-simonsohn_2019" class="csl-entry">
 Simonsohn, U. (2019). <em>Number-bunching: A new tool for forensic data

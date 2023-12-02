@@ -107,13 +107,13 @@
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>Welcome to the ‘Data auditing’ vignette of the <strong>jfa</strong>
-package. Here you can find a simple explanation of the functions in the
-package that facilitate data auditing. Specifically, the functions in
-this section implement techniques to test the distribution of (leading)
-digits against a reference distribution (e.g., Benford’s law) and
-techniques to assess whether values are repeated more often than
-expected. The <strong>jfa</strong> package enables users to create a
-prior probability distribution to perform Bayesian data auditing using
+package. This page provides a straightforward guide to the functions in
+the package that are designed to facilitate data auditing. Specifically,
+these functions implement techniques to test the distribution of
+(leading or last) digits against a reference distribution (e.g.,
+Benford’s law), and techniques to assess whether values are repeated
+more frequently than expected. The package enables users to specify a
+prior probability distribution to perform Bayesian data auditing with
 these functions.</p>
 </div>
 <div class="section level2">
@@ -128,29 +128,21 @@ functions in <strong>jfa</strong>.</p>
 <div class="section level3">
 <h3 id="testing-digit-distributions">Testing digit distributions<a class="anchor" aria-label="anchor" href="#testing-digit-distributions"></a>
 </h3>
-<p>The function <code><a href="../reference/digit_test.html">digit_test()</a></code> takes a vector of numeric
-values, extract the requested digits, and compares the frequencies of
+<p>The <code><a href="../reference/digit_test.html">digit_test()</a></code> function accepts a vector of numeric
+values, extracts the requested digits, and compares the frequencies of
 these digits to a reference distribution. By default, the function
 performs a frequentist hypothesis test of the null hypothesis that the
-digits are distributed according to the reference distribution and
-produces a <em>p</em> value. When a prior is specified, the function
+digits are distributed according to the reference distribution, and
+produces a <em>p</em>-value. When a prior is specified, the function
 performs a Bayesian hypothesis test of the null hypothesis that the
 digits are distributed according to the reference distribution against
 the alternative hypothesis that the digits are not distributed according
-to the reference distribution and produces a Bayes factor <span class="citation">(Kass &amp; Raftery, 1995)</span>.</p>
-<p>For more information about this function, see the <a href="https://koenderks.github.io/jfa/reference/digit_test.html">function
+to the reference distribution, and produces a Bayes factor <span class="citation">(Kass &amp; Raftery, 1995)</span>. The function returns
+an object that can be used with the associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>
+and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods.</p>
+<p>For additional details about this function, please refer to the <a href="https://koenderks.github.io/jfa/reference/digit_test.html">function
 documentation</a> on the package website.</p>
 <p><em>Example usage:</em></p>
-<p>Benford’s law <span class="citation">(Benford, 1938)</span> is a
-principle that describes a pattern in many naturally-occurring numbers.
-According to Benford’s law, each possible leading digit <em>d</em> in a
-naturally occurring, or non-manipulated, set of numbers occurs with a
-probability:</p>
-<p><img src="https://latex.codecogs.com/svg.image?p(d_i)&amp;space;=&amp;space;%5Ctext%7Blog%7D_%7B10%7D(1&amp;space;+&amp;space;%5Cfrac%7B1%7D%7Bd_i%7D)" title="p(d_i) = \text{log}_{10}(\frac{1}{d_i})"></p>
-<p>The distribution of leading digits in a data set of financial
-transaction values (e.g., the <code>sinoForest</code> data) can be
-extracted and tested against the expected frequencies under Benford’s
-law using the code below.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Compare first digits to Benford's law</span></span>
 <span><span class="fu"><a href="../reference/digit_test.html">digit_test</a></span><span class="op">(</span><span class="va">sinoForest</span><span class="op">[[</span><span class="st">"value"</span><span class="op">]</span><span class="op">]</span>, check <span class="op">=</span> <span class="st">"first"</span>, reference <span class="op">=</span> <span class="st">"benford"</span><span class="op">)</span></span></code></pre></div>
@@ -164,22 +156,16 @@ law using the code below.</p>
 <div class="section level3">
 <h3 id="testing-for-repeated-values">Testing for repeated values<a class="anchor" aria-label="anchor" href="#testing-for-repeated-values"></a>
 </h3>
-<p>The function <code><a href="../reference/repeated_test.html">repeated_test()</a></code> analyzes the frequency with
-which values get repeated within a set of numbers. Unlike Benford’s law,
+<p>The <code><a href="../reference/repeated_test.html">repeated_test()</a></code> function analyzes the frequency with
+which values are repeated within a set of numbers. Unlike Benford’s law,
 and its generalizations, this approach examines the entire number at
 once, not only the first or last digit. For the technical details of
-this procedure, see <span class="citation">(Simonsohn, 2019)</span>.</p>
-<p>For more information about this function, see the <a href="https://koenderks.github.io/jfa/reference/repeated_test.html">function
+this procedure, see <span class="citation">(Simonsohn, 2019)</span>. The
+function returns an object that can be used with the associated
+<code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods.</p>
+<p>For additional details about this function, please refer to the <a href="https://koenderks.github.io/jfa/reference/repeated_test.html">function
 documentation</a> on the package website.</p>
 <p><em>Example usage:</em></p>
-<p>In this example, we analyze a data set from a (retracted) paper that
-describes three experiments run in Chinese factories, where workers were
-nudged to use more hand-sanitizer. These data were shown to exhibited
-two classic markers of data tampering: impossibly similar means and the
-uneven distribution of last digits <span class="citation">(Yu et al.,
-2018)</span>. We can use the <code>repeated.test()</code> function to
-test if these data also contain a greater amount of repeated values than
-expected if the data were not tampered with.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Inspect last two digits for repeated values</span></span>
 <span><span class="fu"><a href="../reference/repeated_test.html">repeated_test</a></span><span class="op">(</span><span class="va">sanitizer</span><span class="op">[[</span><span class="st">"value"</span><span class="op">]</span><span class="op">]</span>, check <span class="op">=</span> <span class="st">"lasttwo"</span>, samples <span class="op">=</span> <span class="fl">5000</span><span class="op">)</span></span></code></pre></div>
@@ -187,17 +173,17 @@ expected if the data were not tampered with.</p>
 <span><span class="co">##  Classical Repeated Values Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sanitizer[["value"]]</span></span>
-<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0018</span></span>
+<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0014</span></span>
 <span><span class="co">## alternative hypothesis: average frequency in data is greater than for random data.</span></span></code></pre>
 </div>
 </div>
 <div class="section level2">
 <h2 id="benchmarks">Benchmarks<a class="anchor" aria-label="anchor" href="#benchmarks"></a>
 </h2>
-<p>To validate the statistical results, <strong>jfa</strong>’s automated
-<a href="https://github.com/koenderks/jfa/tree/development/tests/testthat" class="external-link">unit
-tests</a> regularly verify the main output from the package against the
-following benchmarks:</p>
+<p>To ensure the accuracy of statistical results, <strong>jfa</strong>
+employs automated <a href="https://github.com/koenderks/jfa/tree/development/tests/testthat" class="external-link">unit
+tests</a> that regularly validate the output from the package against
+the following established benchmarks in the area of data auditing:</p>
 <ul>
 <li>
 <a href="https://cran.r-project.org/package=benford.analysis" class="external-link">benford.analysis</a>
@@ -214,8 +200,8 @@ following benchmarks:</p>
 <h2 id="cheat-sheet">Cheat sheet<a class="anchor" aria-label="anchor" href="#cheat-sheet"></a>
 </h2>
 <p>The cheat sheet below will help you get started with
-<strong>jfa</strong>’s’ intended data audit functionality. You can
-download a <code>pdf</code> version of the cheat sheet <a href="https://github.com/koenderks/jfa/raw/development/man/figures/cheatsheet/cheatsheet-data.pdf" class="external-link">here</a>.</p>
+<strong>jfa</strong>’s data audit functionality. A pdf version can be
+downloaded <a href="https://github.com/koenderks/jfa/raw/development/man/figures/cheatsheet/cheatsheet-data.pdf" class="external-link">here</a>.</p>
 <p align="center">
 <img src="cheatsheet-data.png" alt="cheatsheet-data" width="1000"></p>
 </div>
@@ -223,10 +209,6 @@ download a <code>pdf</code> version of the cheat sheet <a href="https://github.c
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
 <div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
-<div id="ref-benford_1938" class="csl-entry">
-Benford, F. (1938). The law of anomalous numbers. <em>Proceedings of the
-American Philosophical Society</em>, <em>78</em>, 551–572. <a href="https://www.jstor.org/stable/984802" class="external-link">https://www.jstor.org/stable/984802</a>
-</div>
 <div id="ref-cinelli_2018" class="csl-entry">
 Cinelli, C. (2018). <em>Benford.analysis: Benford analysis for data
 validation and forensic analytics</em>. <a href="https://CRAN.R-project.org/package=benford.analysis" class="external-link">https://CRAN.R-project.org/package=benford.analysis</a>
@@ -247,11 +229,6 @@ analysis</em>. <a href="https://datacolada.org/77" class="external-link">https:/
 Stephane, B. D. S. (2020). <em>BeyondBenford: Compare the goodness of
 fit of benford’s and blondeau da silva’s digit distributions to a given
 dataset</em>. <a href="https://CRAN.R-project.org/package=BeyondBenford" class="external-link">https://CRAN.R-project.org/package=BeyondBenford</a>
-</div>
-<div id="ref-yu_2018" class="csl-entry">
-Yu, F., Nelson, L., &amp; Simonsohn, U. (2018). <em>In press at
-psychological science: A new ’nudge’ supported by implausible data</em>.
-<a href="https://datacolada.org/74" class="external-link">https://datacolada.org/74</a>
 </div>
 </div>
 </div>

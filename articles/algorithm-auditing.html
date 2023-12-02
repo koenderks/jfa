@@ -106,14 +106,13 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>Welcome to the ‘Algorithm auditing’ vignette of the
-<strong>jfa</strong> package. Here you can find a detailed explanation
-of the functions in the package that facilitate auditing of algorithms
-and predictive models. Specifically, the functions in this section
-implement techniques to calculate and test fairness metrics. The
-<strong>jfa</strong> package enables users to create a prior probability
-distribution to perform Bayesian algorithm auditing using these
-functions.</p>
+<p>Welcome to the Algorithm auditing’ vignette of the
+<strong>jfa</strong> package. This page provides a guide to the
+functions in the package that are designed to facilitate the audit of
+algorithms and predictive models. In particular, these functions
+implement techniques for calculating and testing fairness metrics. The
+package allows users to specify a prior probability distribution to
+conduct Bayesian algorithm auditing using these functions.</p>
 </div>
 <div class="section level2">
 <h2 id="functions-and-intended-usage">Functions and intended usage<a class="anchor" aria-label="anchor" href="#functions-and-intended-usage"></a>
@@ -126,21 +125,20 @@ functions in <strong>jfa</strong>.</p>
 <div class="section level3">
 <h3 id="testing-algorithmic-fairness">Testing algorithmic fairness<a class="anchor" aria-label="anchor" href="#testing-algorithmic-fairness"></a>
 </h3>
-<p>The <code><a href="../reference/model_fairness.html">model_fairness()</a></code> function aims to assess fairness in
-algorithmic decision-making systems by computing and testing the
-equality of one of several model-agnostic fairness metrics between
-protected classes based on a set of true labels and the predictions of
-an algorithm. The ratio of these metrics between an unprivileged
-protected class and a privileged protected class is called parity, and
-quantifies relative fairness in the algorithms predictions. Available
-parity metrics include predictive rate parity, proportional parity,
-accuracy parity, false negative rate parity, false positive rate parity,
-true positive rate parity, negative predicted value parity, specificity
-parity, and demographic parity <span class="citation">(Friedler et al.,
-2019; Pessach &amp; Shmueli, 2022)</span>. The function returns an
-object of class <code>jfaFairness</code> that can be used with
+<p>The <code><a href="../reference/model_fairness.html">model_fairness()</a></code> function is designed to evaluate
+fairness in algorithmic decision-making systems. It does this by
+computing and testing the equality of various model-agnostic fairness
+metrics between protected classes, based on a set of true labels and the
+predictions of an algorithm. The ratio of these metrics between an
+unprivileged protected class and a privileged protected class is
+referred to as parity, which quantifies relative fairness in the
+algorithm’s predictions. Available parity metrics include predictive
+rate parity, proportional parity, accuracy parity, false negative rate
+parity, false positive rate parity, true positive rate parity, negative
+predicted value parity, specificity parity, and demographic parity <span class="citation">(Friedler et al., 2019; Pessach &amp; Shmueli,
+2022)</span>. The function returns an object that can be used with the
 associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods.</p>
-<p>For more information about this function, see the <a href="https://koenderks.github.io/jfa/reference/model_fairness.html">function
+<p>For additional details about this function, please refer to the <a href="https://koenderks.github.io/jfa/reference/model_fairness.html">function
 documentation</a> on the package website.</p>
 <p><em>Example usage:</em></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -203,10 +201,11 @@ documentation</a> on the package website.</p>
 <div class="section level2">
 <h2 id="benchmarks">Benchmarks<a class="anchor" aria-label="anchor" href="#benchmarks"></a>
 </h2>
-<p>To validate the statistical results, <strong>jfa</strong>’s automated
-<a href="https://github.com/koenderks/jfa/tree/development/tests/testthat" class="external-link">unit
-tests</a> regularly verify the main output from the package against the
-following benchmarks:</p>
+<p>To ensure the accuracy of statistical results, <strong>jfa</strong>
+employs automated <a href="https://github.com/koenderks/jfa/tree/development/tests/testthat" class="external-link">unit
+tests</a> that regularly validate the output from the package against
+the following established benchmarks in the area of algorithm
+auditing:</p>
 <ul>
 <li>
 <a href="https://cran.r-project.org/package=fairness" class="external-link">fairness</a>
@@ -217,8 +216,8 @@ following benchmarks:</p>
 <h2 id="cheat-sheet">Cheat sheet<a class="anchor" aria-label="anchor" href="#cheat-sheet"></a>
 </h2>
 <p>The cheat sheet below will help you get started with
-<strong>jfa</strong>’s’ intended algorithm audit functionality. You can
-download a <code>pdf</code> version of the cheat sheet <a href="https://github.com/koenderks/jfa/raw/development/man/figures/cheatsheet/cheatsheet-algorithm.pdf" class="external-link">here</a>.</p>
+<strong>jfa</strong>’s algorithm audit functionality. A pdf version can
+be downloaded <a href="https://github.com/koenderks/jfa/raw/development/man/figures/cheatsheet/cheatsheet-algorithm.pdf" class="external-link">here</a>.</p>
 <p align="center">
 <img src="cheatsheet-algorithm.png" alt="cheatsheet-algorithm" width="1000"></p>
 </div>

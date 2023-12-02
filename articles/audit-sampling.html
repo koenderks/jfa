@@ -107,14 +107,13 @@
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>Welcome to the ‘Audit sampling’ vignette of the <strong>jfa</strong>
-package. Here you can find a detailed explanation of the functions in
-the package that facilitate the statistical audit sampling workflow.
-Specifically, the functions in this section implement standard audit
-sampling techniques to calculate sample sizes, select items from a
-population, and evaluate misstatement in a data sample. The
-<strong>jfa</strong> package enables users to create a prior probability
-distribution to perform Bayesian audit sampling using these
-functions.</p>
+package. This page provides a straightforward guide to the functions in
+the package that are designed to facilitate statistical audit sampling.
+Specifically, these functions implement standard audit sampling
+techniques to calculate sample sizes, select items from a population,
+and evaluate the misstatement in a data sample. The package allows
+enables to specify a prior probability distribution to conduct Bayesian
+audit sampling using these functions.</p>
 </div>
 <div class="section level2">
 <h2 id="functions-and-intended-usage">Functions and intended usage<a class="anchor" aria-label="anchor" href="#functions-and-intended-usage"></a>
@@ -132,17 +131,16 @@ sampling workflow.</p>
 <h3 id="creating-a-prior-distribution">Creating a prior distribution<a class="anchor" aria-label="anchor" href="#creating-a-prior-distribution"></a>
 </h3>
 <p>The <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function is used to specify a prior
-distribution for Bayesian audit sampling. The interface allows a
-complete customization of the prior distribution as well as a formal
-translation of pre-existing audit information into a prior distribution.
-The function returns an object of class <code>jfaPrior</code> which can
-be used with associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>
-methods. Objects with class <code>jfaPrior</code> can also be used as
-input for the <code>prior</code> argument in other functions. Moreover,
-<code>jfaPrior</code> objects have a corresponding
-<code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> function to produce the predictions of the prior
-distribution on the data level.</p>
-<p>For more information about this function, see the <a href="https://koenderks.github.io/jfa/reference/auditPrior.html">function
+distribution for Bayesian audit sampling. It enables formal translation
+of pre-existing audit information into a prior distribution or complete
+customization of the prior distribution. The function returns an object
+which can be used with associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and
+<code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods. Objects returned by this function can also
+be used as input for the <code>prior</code> argument in other functions.
+Additionally, these objects have a corresponding <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code>
+method to generate the predictions of the prior distribution on the data
+level.</p>
+<p>For additional details about this function, please refer to the <a href="https://koenderks.github.io/jfa/reference/auditPrior.html">function
 documentation</a> on the package website.</p>
 <p><em>Example usage:</em></p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -174,17 +172,14 @@ documentation</a> on the package website.</p>
 <h3 id="planning-a-sample">Planning a sample<a class="anchor" aria-label="anchor" href="#planning-a-sample"></a>
 </h3>
 <p>The <code><a href="../reference/planning.html">planning()</a></code> function is used to calculate a minimum
-sample size for audit samples. It allows specification of statistical
-requirements for the sample with respect to the performance materiality
-or the precision. The function returns an object of class
-<code>jfaPlanning</code> which can be used with associated
-<code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods. To perform
-Bayesian planning, the input for the <code>prior</code> argument can be
-an object of class <code>jfaPrior</code> as returned by the
-<code><a href="../reference/auditPrior.html">auditPrior()</a></code> function, or an object of class
-<code>jfaPosterior</code> as returned by the <code><a href="../reference/evaluation.html">evaluation()</a></code>
-function.</p>
-<p>For more information about this function, see the <a href="https://koenderks.github.io/jfa/reference/planning.html">function
+sample size for audit samples. It allows the specification of approval
+conditions for the sample with respect to performance materiality or
+precision. The function returns an object which can be used with
+associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods. To
+perform Bayesian planning, the input for the <code>prior</code> argument
+can be an object returned by the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function, or
+an object returned by <code>evaluation()$posterior</code>.</p>
+<p>For additional details about this function, please refer to the <a href="https://koenderks.github.io/jfa/reference/planning.html">function
 documentation</a> on the package website.</p>
 <p><em>Example usage:</em></p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
@@ -221,13 +216,11 @@ documentation</a> on the package website.</p>
 <p>The <code><a href="../reference/selection.html">selection()</a></code> function is used to perform statistical
 selection of audit samples. It offers flexible implementations of the
 most common audit sampling algorithms for attributes sampling and
-monetary unit sampling. The function returns an object of class
-<code>jfaSelection</code> which can be used with associated
-<code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods. The input for
-the <code>size</code> argument can be an object of class
-<code>jfaPlanning</code> as returned by the <code><a href="../reference/planning.html">planning()</a></code>
-function.</p>
-<p>For more information about this function, see the <a href="https://koenderks.github.io/jfa/reference/selection.html">function
+monetary unit sampling. The function returns an object which can be used
+with associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods.
+For convenience, the input for the <code>size</code> argument can be an
+returned by the <code><a href="../reference/planning.html">planning()</a></code> function.</p>
+<p>For additional details about this function, please refer to the <a href="https://koenderks.github.io/jfa/reference/selection.html">function
 documentation</a> on the package website.</p>
 <p><em>Example usage:</em></p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
@@ -260,17 +253,15 @@ documentation</a> on the package website.</p>
 <div class="section level3">
 <h3 id="evaluating-a-sample">Evaluating a sample<a class="anchor" aria-label="anchor" href="#evaluating-a-sample"></a>
 </h3>
-<p>The <code><a href="../reference/evaluation.html">evaluation()</a></code> function takes a sample or summary
+<p>The <code><a href="../reference/evaluation.html">evaluation()</a></code> function accepts a sample or summary
 statistics of the sample and performs evaluation according to the
-specified method and sampling objectives. The function returns an object
-of class <code>jfaEvalution</code> which can be used with associated
-<code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods. To perform
-Bayesian evaluation, the input for the <code>prior</code> argument can
-be an object of class <code>jfaPrior</code> as returned by the
-<code><a href="../reference/auditPrior.html">auditPrior()</a></code> function, or an object of class
-<code>jfaPosterior</code> as returned by the <code><a href="../reference/evaluation.html">evaluation()</a></code>
-function.</p>
-<p>For more information about this function, see the <a href="https://koenderks.github.io/jfa/reference/evaluation.html">function
+specified <code>method</code>. The function returns an object which can
+be used with associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>
+methods. To perform Bayesian evaluation, the input for the
+<code>prior</code> argument can be an object returned by the
+<code><a href="../reference/auditPrior.html">auditPrior()</a></code> function, or an object returned by
+<code>evaluation()$posterior</code>.</p>
+<p>For additional details about this function, please refer to the <a href="https://koenderks.github.io/jfa/reference/evaluation.html">function
 documentation</a> on the package website.</p>
 <p><em>Example usage:</em></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
@@ -304,10 +295,10 @@ documentation</a> on the package website.</p>
 <div class="section level2">
 <h2 id="benchmarks">Benchmarks<a class="anchor" aria-label="anchor" href="#benchmarks"></a>
 </h2>
-<p>To validate the statistical results, <strong>jfa</strong>’s automated
-<a href="https://github.com/koenderks/jfa/tree/development/tests/testthat" class="external-link">unit
-tests</a> regularly verify the main output from the package against the
-following benchmarks:</p>
+<p>To ensure the accuracy of statistical results, <strong>jfa</strong>
+employs automated <a href="https://github.com/koenderks/jfa/tree/development/tests/testthat" class="external-link">unit
+tests</a> that regularly validate the output from the package against
+the following established benchmarks in the area of audit sampling:</p>
 <ul>
 <li>
 <a href="https://www.aicpa-cima.com/cpe-learning/publication/audit-sampling-audit-guide-OPL" class="external-link">Audit
@@ -330,8 +321,8 @@ controlling</em>. Boom uitgevers, Amsterdam.</li>
 <h2 id="cheat-sheet">Cheat sheet<a class="anchor" aria-label="anchor" href="#cheat-sheet"></a>
 </h2>
 <p>The cheat sheet below will help you get started with
-<strong>jfa</strong>’s’ intended audit sampling workflow. You can
-download a <code>pdf</code> version of the cheat sheet <a href="https://github.com/koenderks/jfa/raw/development/man/figures/cheatsheet/cheatsheet-sampling.pdf" class="external-link">here</a>.</p>
+<strong>jfa</strong>’s intended audit sampling workflow. A pdf version
+can be downloaded <a href="https://github.com/koenderks/jfa/raw/development/man/figures/cheatsheet/cheatsheet-sampling.pdf" class="external-link">here</a>.</p>
 <p align="center">
 <img src="cheatsheet-sampling.png" alt="cheatsheet-sampling" width="1000"></p>
 </div>
