@@ -76,9 +76,9 @@ An object of class \code{jfaPlanning} containing:
   level.}
 \item{x}{a numeric value larger than, or equal to, 0 giving (the proportional
   sum of) the tolerable errors in the sample.}
-\item{n}{an integer larger than 0 giving the minimal sample size.}
-\item{n_staged}{in the case of a multiple-stage sampling plan, an integer
-  larger than 0 giving the minimal sample size per stage.}
+\item{n}{an integer larger than 0 giving the minimum sample size.}
+\item{n_staged}{in the case of a multi-stage sampling plan, an integer
+  larger than 0 giving the minimum sample size per stage.}
 \item{ub}{a numeric value between 0 and 1 giving the expected upper bound.}
 \item{precision}{a numeric value between 0 and 1 giving the expected
   precision.}
