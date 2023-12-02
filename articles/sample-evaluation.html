@@ -106,47 +106,48 @@
 <div class="section level2">
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>This vignette demonstrates how to evaluate a sample with the
-<code><a href="../reference/evaluation.html">evaluation()</a></code> function from the <strong>jfa</strong>
-package.</p>
+<p>Welcome to the ‘Evaluating statistical audit samples’ vignette of the
+<strong>jfa</strong> package. This page demonstrates how to evaluate the
+misstatement in an audit sample using the <code><a href="../reference/evaluation.html">evaluation()</a></code>
+function in package.</p>
 <p align="center">
 <img src="evaluation.png" alt="evaluation" width="100%"></p>
-<p>In auditing, the goal of the evaluation is typically to estimate the
-misstatement in the population based on a sample, or to test the
-misstatement in the population against a critical upper limit, referred
-to as the performance materiality.</p>
+<p>In auditing, the objective of evaluation is typically 1) to estimate
+the misstatement in the population based on a sample or 2) to test the
+misstatement against a critical upper limit, known as performance
+materiality.</p>
 </div>
 <div class="section level2">
 <h2 id="required-information">Required information<a class="anchor" aria-label="anchor" href="#required-information"></a>
 </h2>
-<p>Evaluating an audit sample using the <code><a href="../reference/evaluation.html">evaluation()</a></code>
-function requires that the sample data is available in one of two
-forms:</p>
+<p>Firstly, to evaluate an audit sample using the
+<code><a href="../reference/evaluation.html">evaluation()</a></code> function, the sample data must be available in
+one of two formats:</p>
 <ul>
 <li>
 <strong>Summary statistics:</strong> This includes (a vector of) the
-number of items (<code>n</code>), (a vector of) the sum of errors /
-taints (<code>x</code>) and optionally (a vector of) the number of units
-in the population (<code>N.units</code>).</li>
+number of items (<code>n</code>), (a vector of) the sum of
+misstatements/taints (<code>x</code>) and optionally (a vector of) the
+number of units in the population (<code>N.units</code>).</li>
 <li>
-<strong>Data:</strong> A <code>data.frame</code> containing a
-numeric column with book values (<code>values</code>), a numeric column
-with audit (true) values (<code>values.audit</code>) and optionally a
-factor column indicating stratum membership (<code>strata</code>).</li>
+<strong>Data:</strong> A <code>data.frame</code> that contains a
+numeric column with book values (<code>values)</code>, a numeric column
+with audit (i.e., true) values (<code>values.audit</code>), and
+optionally a factor column indicating stratum membership
+(<code>strata</code>).</li>
 </ul>
 <p>By default, <code><a href="../reference/evaluation.html">evaluation()</a></code> estimates the population
 misstatement and returns a point estimate as well as a
-(<code>conf.level</code> <span class="math inline">\(\times\)</span>
-100) percent confidence / credible interval around this estimate.
-However, in audit sampling, the population is typically subject to a
-certain maximum tolerable misstatement defined by the performance
-materiality <span class="math inline">\(\theta_{max}\)</span>. Using the
-<code>materiality</code> argument, you can provide this critical value
-to the <code><a href="../reference/evaluation.html">evaluation()</a></code> function as a fraction. In addition to
-the estimation that is performed by default, specifying
-<code>materiality</code> triggers the comparison of two competing
-hypotheses. Which hypotheses are being compared depends on the input for
-the <code>alternative</code> argument:</p>
+confidence/credible interval around this estimate, expressed as a
+percentage (<code>conf.level</code> <span class="math inline">\(\cdot\)</span> 100). However, in audit sampling,
+the population is typically subject to a certain maximum tolerable
+misstatement defined by the performance materiality <span class="math inline">\(\theta_{max}\)</span>. You can provide the
+performance materiality to the <code><a href="../reference/evaluation.html">evaluation()</a></code> function as a
+fraction using the <code>materiality</code> argument. In addition to the
+default estimation, specifying a value for <code>materiality</code>
+triggers the comparison of two competing hypotheses. The hypotheses
+being compared depend on the input for the <code>alternative</code>
+argument.</p>
 <ul>
 <li>
 <code>alternative = "less"</code> (default): <span class="math inline">\(H_1:\theta&lt;\theta_{max}\)</span> versus <span class="math inline">\(H_0:\theta\geq\theta_{max}\)</span>
@@ -158,29 +159,44 @@ the <code>alternative</code> argument:</p>
 <code>alternative = "two.sided"</code>: <span class="math inline">\(H_1:\theta \neq\theta_{max}\)</span> versus <span class="math inline">\(H_0:\theta=\theta_{max}\)</span>
 </li>
 </ul>
+<p>Once the auditor has established the materiality (if applicable),
+they must make a decision on whether to stratify the population.
+Stratification is the process of dividing the population into smaller
+subgroups that contain similar items, referred to as strata, and
+selecting a sample from each stratum. In the following sections, we will
+demonstrate how to evaluate statistical audit samples, both stratified
+and non-stratified.</p>
 </div>
 <div class="section level2">
 <h2 id="evaluation-using-summary-statistics">Evaluation using summary statistics<a class="anchor" aria-label="anchor" href="#evaluation-using-summary-statistics"></a>
 </h2>
+<p>We first consider the scenario where the auditor does not have access
+to the sample data and wants to perform inference about the misstatement
+using summary statistics from the sample.</p>
 <div class="section level3">
 <h3 id="non-stratified-samples">Non-stratified samples<a class="anchor" aria-label="anchor" href="#non-stratified-samples"></a>
 </h3>
-<p>In a non-stratified sampling procedure, the auditor does not take
-samples from different strata or subgroups in a population. An example
-of such a situation would be where the auditor is auditing the general
-ledger of a small business.</p>
+<p>In a non-stratified sampling approach, the auditor does not divide
+the population into different strata. This approach might be suitable
+when the auditor is auditing the general ledger of a small business and
+has substantiated that the population comprises homogeneous items, such
+as all items being employment contracts subject to a shared ensemble of
+control systems.</p>
 <div class="section level4">
 <h4 id="classical-approach">Classical approach<a class="anchor" aria-label="anchor" href="#classical-approach"></a>
 </h4>
-<p>Classical hypothesis testing uses the <em>p</em>-value to make a
-decision about whether to reject the hypothesis <span class="math inline">\(H_0\)</span> or not. As an example, consider that
-an auditor wants to verify whether the population contains less than 5
-percent misstatement, implying the hypotheses <span class="math inline">\(H_1:\theta&lt;0.05\)</span> and <span class="math inline">\(H_0:\theta\geq0.05\)</span>. They have taken a
-sample of 100 items, of which 1 contained an error. They set the
-significance level for the <em>p</em>-value to 0.05, implying that <span class="math inline">\(p &lt; 0.05\)</span> will be enough to reject the
-hypothesis <span class="math inline">\(H_0\)</span>. The call below
-evaluates the sample using a classical non-stratified evaluation
-procedure <span class="citation">(Stewart, 2012)</span>.</p>
+<p>Classical hypothesis testing employs the <em>p</em>-value to
+determine whether to reject the null hypothesis of material misstatement
+<span class="math inline">\(H_0\)</span>. For instance, let’s assume an
+auditor aims to confirm if the population contains less than five
+percent misstatement. This suggests the hypotheses <span class="math inline">\(H_1\)</span>: <span class="math inline">\(\theta
+&lt;\)</span> 0.05 and <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\theta \geq\)</span> 0.05. The auditor selects a
+sample of <span class="math inline">\(n\)</span> = 100 items, with <span class="math inline">\(k\)</span> = 1 item containing a misstatement.
+They establish the significance level for the <em>p</em>-value (i.e.,
+the sampling risk) at <span class="math inline">\(\alpha\)</span> =
+0.05, indicating that a <em>p</em>-value below 0.05 will suffice to
+reject the null hypothesis. The following command evaluates the sample
+using a classical non-stratified evaluation method <span class="citation">(Stewart, 2012)</span>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -195,38 +211,41 @@ procedure <span class="citation">(Stewart, 2012)</span>.</p>
 <span><span class="co">## most likely estimate:</span></span>
 <span><span class="co">##  0.01 </span></span>
 <span><span class="co">## results obtained via method 'poisson'</span></span></code></pre>
-<p>The output shows that the most likely error in the population is
-estimated to be 1 / 100 = 1 percent and that the 95 percent (one-sided)
-confidence interval ranges from 0 percent to 4.74 percent. The output
-also shows that the <em>p</em>-value is lower than 0.05 implying that
-the hypothesis <span class="math inline">\(H_0\)</span> can be rejected.
-Hence, the auditor is able to conclude that the sample provides
-sufficient evidence to state with reasonable assurance that the
-population does not contain material misstatement.</p>
+<p>The output indicates that the most likely misstatement in the
+population is estimated to be <span class="math inline">\(\frac{k}{n}\)</span> = <span class="math inline">\(\frac{1}{100}\)</span> = 0.01, or 1 percent, and
+the 95 percent (one-sided) confidence interval spans from 0 percent to
+4.74 percent. It also reveals that the <em>p</em>-value is below 0.05,
+suggesting that the null hypothesis should be rejected. Consequently,
+the auditor can infer that the sample provides sufficient evidence to
+conclude with a reasonable degree of certainty that the population does
+not contain material misstatement.</p>
 </div>
 <div class="section level4">
 <h4 id="bayesian-approach">Bayesian approach<a class="anchor" aria-label="anchor" href="#bayesian-approach"></a>
 </h4>
-<p>Bayesian hypothesis testing uses the Bayes factor, <span class="math inline">\(BF_{10}\)</span> or <span class="math inline">\(BF_{01}\)</span>, to make a statement about the
-evidence provided by the sample in support for one of the two hypotheses
-<span class="math inline">\(H_1\)</span> or <span class="math inline">\(H_0\)</span> <span class="citation">(Derks, Swart,
-Wagenmakers, et al., 2021)</span>. As an example of how to interpret the
-Bayes factor, the value of <span class="math inline">\(BF_{10} =
-10\)</span> (provided by the <code><a href="../reference/evaluation.html">evaluation()</a></code> function) can be
-interpreted as: <em>the data are 10 times more likely to have occurred
-under the hypothesis <span class="math inline">\(H_1\)</span> than under
-the hypothesis <span class="math inline">\(H_0\)</span></em>. <span class="math inline">\(BF_{10} &gt; 1\)</span> indicates evidence in
-favor of <span class="math inline">\(H_1\)</span> and against <span class="math inline">\(H_0\)</span>, while <span class="math inline">\(BF_{10} &lt; 1\)</span> indicates evidence in
-favor of <span class="math inline">\(H_0\)</span> and against <span class="math inline">\(H_1\)</span>. The <code><a href="../reference/evaluation.html">evaluation()</a></code>
-function returns the value for <span class="math inline">\(BF_{10}\)</span>, but <span class="math inline">\(BF_{01}\)</span> can be computed as <span class="math inline">\(\frac{1}{BF_{10}}\)</span>.</p>
-<p>Consider the previous example of an auditor who wants to verify
-whether the population contains less than 5 percent misstatement,
-implying the hypotheses <span class="math inline">\(H_1:\theta&lt;0.05\)</span> and <span class="math inline">\(H_0:\theta\geq0.05\)</span>. They have taken a
-sample of 100 items, of which 1 was found to contain a misstatement. The
-prior distribution is assumed to be a default <em>beta(1,1)</em> prior.
-The call below evaluates the sample using a Bayesian non-stratified
-evaluation procedure <span class="citation">(Derks, Swart, Batenburg, et
-al., 2021; Stewart, 2013)</span>.</p>
+<p>Bayesian hypothesis testing employs the Bayes factor, either <span class="math inline">\(BF_{10}\)</span> or <span class="math inline">\(BF_{01}\)</span>, to quantify the evidence that
+the sample provides in support of either of the two hypotheses <span class="math inline">\(H_1\)</span> or <span class="math inline">\(H_0\)</span> <span class="citation">(Derks, Swart,
+Wagenmakers, et al., 2021)</span>. For instance, a Bayes factor value of
+<span class="math inline">\(BF_{10}\)</span> = 10 (provided by the
+<code><a href="../reference/evaluation.html">evaluation()</a></code> function) can be interpreted as the data being
+10 times more likely under the hypothesis of tolerable misstatement
+<span class="math inline">\(H_1\)</span> than under the hypothesis of
+material misstatement <span class="math inline">\(H_0\)</span>. A value
+of <span class="math inline">\(BF_{10} &gt;\)</span> 1 indicates
+evidence in favor of <span class="math inline">\(H_1\)</span> and
+opposing <span class="math inline">\(H_0\)</span>, while a value of
+<span class="math inline">\(BF_{10} &lt;\)</span> 1 indicates evidence
+supporting <span class="math inline">\(H_0\)</span> and contradicting
+<span class="math inline">\(H_1\)</span>. The <code><a href="../reference/evaluation.html">evaluation()</a></code>
+function returns the value for <span class="math inline">\(BF_{10}\)</span>, but <span class="math inline">\(BF_{01}\)</span> can be calculated as <span class="math inline">\(\frac{1}{BF_{10}}\)</span>.</p>
+<p>Consider the earlier example where an auditor wishes to confirm if
+the population contains less than five percent misstatement, suggesting
+the hypotheses <span class="math inline">\(H_1\)</span>: <span class="math inline">\(\theta &lt;\)</span> 0.05 and <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\theta
+\geq\)</span> 0.05. They have selected a sample of <span class="math inline">\(n\)</span> = 100 items, with <span class="math inline">\(k\)</span> = 1 item found to contain a
+misstatement. The prior distribution is presumed to be a default
+beta(1,1) prior. The subsequent call evaluates the sample using a
+Bayesian non-stratified evaluation procedure <span class="citation">(Derks, Swart, Batenburg, et al., 2021; Stewart,
+2013)</span>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, method <span class="op">=</span> <span class="st">"binomial"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -240,28 +259,33 @@ al., 2021; Stewart, 2013)</span>.</p>
 <span><span class="co">## most likely estimate:</span></span>
 <span><span class="co">##  0.01 </span></span>
 <span><span class="co">## results obtained via method 'binomial' + 'prior'</span></span></code></pre>
-<p>The output shows that the most likely error in the population is
-estimated to be 1 / 100 = 1 percent and that the 95 percent (one-sided)
-credible interval ranges from 0 percent to 4.61 percent. The small
-difference between the classical and default Bayesian results is due to
-the prior distribution, which must be proper in order to calculate a
-Bayes factor (classical results can be emulated by constructing a prior
-with <code>method = "strict"</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code>
-function). The Bayes factor in this case is shown to be <span class="math inline">\(BF_{10}=515\)</span>, meaning that the data from
-the sample are about 515 times more likely to occur under the hypothesis
-of tolerable misstatement than under the hypothesis of material
-misstatement.</p>
-<p>Note that this is a very high Bayes factor for the little data that
-is observed. That is because the Bayes factor is dependent on the prior
-distribution for <span class="math inline">\(\theta\)</span>. As a rule
-of thumb, when the prior distribution is highly conservative (as with
-<code>method = 'default'</code>) with respect to the hypothesis of
-tolerable misstatement, the Bayes factor tends to over quantify the
-evidence in favor of this hypothesis. You can mitigate this dependency
-by using a prior distribution that is impartial with respect to the
-hypotheses via <code>method = "impartial"</code> in the
-<code><a href="../reference/auditPrior.html">auditPrior()</a></code> function <span class="citation">(Derks et al.,
-2022a)</span>.</p>
+<p>The output indicates that the most likely misstatement in the
+population is estimated to be <span class="math inline">\(\frac{k}{n}\)</span> = <span class="math inline">\(\frac{1}{100}\)</span> = 0.01, or 1 percent, and
+the 95 percent (one-sided) credible interval spans from 0 percent to
+4.61 percent. The minor discrepancy between the classical and default
+Bayesian results in the upper limit can be attributed to the prior
+distribution, which needs to be proper for the calculation of a Bayes
+factor. Classical results can be replicated by formulating an improper
+prior distribution using <code>method = "strict"</code> in the
+<code><a href="../reference/auditPrior.html">auditPrior()</a></code> function. The Bayes factor in this scenario is
+demonstrated to be <span class="math inline">\(BF_{10}\)</span> = 515,
+signifying that the sample data are approximately 515 times more likely
+to occur under the hypothesis of tolerable misstatement than under the
+hypothesis of material misstatement.</p>
+<p>It is important to note that this is a considerably high Bayes factor
+given the small amount of data observed. This can be explained by the
+fact that the Bayes factor is influenced by the prior distribution for
+<span class="math inline">\(\theta\)</span>. The default prior
+distribution is <strong>not</strong> a good prior for hypothesis
+testing. As a general guideline, when the prior distribution is
+extremely conservative in relation to the hypothesis of tolerable
+misstatement (as with <code>method = 'default'</code>), the Bayes factor
+tends to overstate the evidence supporting this hypothesis. This
+dependency can be alleviated by employing a prior distribution that is
+impartial towards the hypotheses <span class="citation">(Derks et al.,
+2022a)</span>, which can be achieved using
+<code>method = "impartial"</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code>
+function.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"impartial"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></code></pre></div>
@@ -276,33 +300,35 @@ hypotheses via <code>method = "impartial"</code> in the
 <span><span class="co">## most likely estimate:</span></span>
 <span><span class="co">##  0.0088878 </span></span>
 <span><span class="co">## results obtained via method 'binomial' + 'prior'</span></span></code></pre>
-<p>The output shows that <span class="math inline">\(BF_{10}=47\)</span>, implying that under the
-assumption of impartiality there is strong evidence for <span class="math inline">\(H_1\)</span>, the hypothesis that the population
-contains misstatements lower than 5 percent of the population (tolerable
-misstatement). Since the two prior distributions both resulted in
-convincing Bayes factors, the results can be considered robust to the
-choice of prior distribution. Hence, the auditor is able to conclude
-that the sample provides convincing evidence to state that the
-population does not contain material misstatement.</p>
+<p>The output reveals that <span class="math inline">\(BF_{10}\)</span>
+= 47, suggesting that under the presumption of impartiality, there is
+substantial evidence for <span class="math inline">\(H_1\)</span>, the
+hypothesis that the population contains misstatements less than five
+percent of the population (tolerable misstatement). Given that both
+prior distributions resulted in persuasive Bayes factors, the results
+can be deemed robust to the selection of prior distribution.
+Consequently, the auditor can deduce that the sample provides compelling
+evidence to conclude that the population does not contain material
+misstatement.</p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="stratified-samples">Stratified samples<a class="anchor" aria-label="anchor" href="#stratified-samples"></a>
 </h3>
-<p>In a stratified sampling procedure, the auditor takes samples from
-different strata (or subgroups) in a population. An example of such a
-situation would be a group audit where the audited organization consists
-of different components or branches. Stratification is relevant for the
-group auditor if they must form an opinion on the group as a whole
-because they must aggregate the samples taken by the component
-auditors.</p>
-<p>As a data example, consider the <code>retailer</code> data set that
-comes with the package. The organization in question consists of 20
-branches across the country. In each of the 20 strata, a component
-auditor has taken a statistical sample and reported the outcomes to the
-group auditor.</p>
+<p>In a stratified sampling method, the auditor extracts samples from
+various subgroups, or strata, within a population. This could be
+applicable in a group audit scenario where the audited organization
+comprises different components or branches. Stratification becomes
+pertinent for the group auditor when they need to form an opinion on the
+group as a whole, as they are required to consolidate the samples taken
+by the component auditors.</p>
+<p>For instance, consider the <code>retailer</code> data set included in
+the package. The organization in question has twenty branches spread
+across the country. In each of the twenty strata, a component auditor
+has conducted a statistical sample and reported the results to the group
+auditor.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">retailer</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"retailer"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">retailer</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##    stratum items samples errors</span></span>
 <span><span class="co">## 1        1  5000     300     21</span></span>
@@ -325,43 +351,49 @@ group auditor.</p>
 <span><span class="co">## 18      18 10000      15      0</span></span>
 <span><span class="co">## 19      19 10000      15      1</span></span>
 <span><span class="co">## 20      20  4000      15      3</span></span></code></pre>
-<p>In general, there are three approaches to evaluating a stratified
-sample: no pooling, complete pooling, and partial pooling <span class="citation">(see Derks et al., 2022b)</span>. When using
-<code><a href="../reference/evaluation.html">evaluation()</a></code>, you must to indicate which type of pooling to
-use via the <code>pooling</code> argument. No pooling assumes no
-similarities between strata, which means that all strata are analyzed
-independently. Complete pooling assumes no difference between strata,
-which means that all data is aggregated and analyzed as a whole.
-Finally, partial pooling assumes differences and similarities between
-strata, which means that information can be shared between strata.
-Partial pooling (i.e., multilevel/hierarchical modeling) is a powerful
-technique that can result in more efficient population and stratum
-estimates but is currently only feasible when performing a Bayesian
-analysis. For this reason, this vignette only describes the Bayesian
-approach to stratified evaluation but going from this approach to a
-classical approach only requires setting <code>prior = FALSE</code>.</p>
-<p>The number of units per stratum in the population can be provided
-with <code>N.units</code> to weigh the stratum estimates to determine
-population estimate. This is called poststratification. If
-<code>N.units</code> is not specified, each stratum is assumed to be
-equally represented in the population.</p>
+<p>Generally, there are two methodologies for evaluating a stratified
+sample: no pooling and partial pooling <span class="citation">(see Derks
+et al., 2022b)</span>. When using the <code><a href="../reference/evaluation.html">evaluation()</a></code> function
+in a stratified sampling context, you need to specify the type of
+pooling to be used via its <code>pooling</code> argument. No pooling
+presumes no similarities between strata, implying that all strata are
+analyzed independently. Partial pooling presumes both differences and
+similarities between strata, implying that information can be shared
+between strata. This technique is also known as multilevel or
+hierarchical modeling and can lead to more efficient population and
+stratum estimates. However, it is currently only available in
+<strong>jfa</strong> when conducting a Bayesian analysis. For this
+reason, this vignette primarily describes the Bayesian approach to
+evaluating stratified audit samples. However, transitioning from a
+Bayesian approach to a classical approach only requires setting
+<code>prior = FALSE</code>.</p>
+<p>The number of units (this can be items or monetary units depending on
+the audit objective) per stratum in the population can be supplied with
+<code>N.units</code> to weigh the stratum estimates for determining the
+population estimate. This process is known as poststratification. If
+<code>N.units</code> is not specified, it is assumed that each stratum
+is equally represented in the population.</p>
 <div class="section level4">
 <h4 id="approach-1-no-pooling">Approach 1: No pooling<a class="anchor" aria-label="anchor" href="#approach-1-no-pooling"></a>
 </h4>
-<p>No pooling (<code>pooling = "none"</code>, default) assumes no
-similarities between strata. This means that the prior distribution
-specified through <code>prior</code> is applied independently for each
-stratum. This allows for independent estimates for the misstatement in
-each stratum but also results in a relatively high uncertainty in the
-population estimate. The call below evaluates the sample using a
-Bayesian stratified evaluation procedure, in which the stratum estimates
-are poststratified to arrive at the population estimate.</p>
+<p>The no pooling approach (<code>pooling = "none"</code>) is the
+default option and assumes there are no similarities between strata.
+This implies that the prior distribution, specified through
+<code>prior</code>, is applied independently in each stratum. This
+approach allows for independent estimates of the misstatement in each
+stratum, but for this reason it also results in a relatively high
+uncertainty in the population estimate. The following command evaluates
+the sample using a Bayesian stratified evaluation procedure, where the
+stratum estimates are poststratified to derive the population estimate.
+Note that it is important to set the seed via <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code>
+because the posterior distribution is determined via sampling.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="co"># Important because the posterior distribution is determined via sampling</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">result_np</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"binomial"</span>,</span>
-<span>  n <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">samples</span>, x <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">errors</span>, N.units <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">items</span>,</span>
-<span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span>, pooling <span class="op">=</span> <span class="st">"none"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  n <span class="op">=</span> <span class="va">retailer</span><span class="op">[[</span><span class="st">"samples"</span><span class="op">]</span><span class="op">]</span>, x <span class="op">=</span> <span class="va">retailer</span><span class="op">[[</span><span class="st">"errors"</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  N.units <span class="op">=</span> <span class="va">retailer</span><span class="op">[[</span><span class="st">"items"</span><span class="op">]</span><span class="op">]</span>, pooling <span class="op">=</span> <span class="st">"none"</span>,</span>
+<span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_np</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -409,116 +441,41 @@ are poststratified to arrive at the population estimate.</p>
 <span><span class="co">##   18 10000  15  0  0 0.00000 0.00158 0.20591   0.20591</span></span>
 <span><span class="co">##   19 10000  15  1  1 0.06667 0.01551 0.30232   0.23565</span></span>
 <span><span class="co">##   20  4000  15  3  3 0.20000 0.07266 0.45646   0.25646</span></span></code></pre>
-<p>In this case, the output of the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function shows
-that the estimate of the misstatement in the population is 5.98 percent,
-with the 95 percent credible interval ranging from 4.28 percent to 8.22
-percent. The stratum estimates differ substantially from each other but
-are relatively uncertain.</p>
+<p>In this scenario, the output of the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function
+indicates that the estimated misstatement in the population is 5.98
+percent, with the 95 percent (two-sided) credible interval extending
+from 4.28 percent to 8.22 percent. The estimates for each stratum vary
+significantly from one another but exhibit relative uncertainty. They
+can be visualized via the call below to
+<code>plot(..., type = "estimates")</code></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result_np</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>The prior and posterior distribution for the population misstatement
-can be requested via the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
+can be obtained using the <code>plot(..., type = "posterior")</code>
+function.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result_np</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-8-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
-<h4 id="approach-2-complete-pooling">Approach 2: Complete pooling<a class="anchor" aria-label="anchor" href="#approach-2-complete-pooling"></a>
+<h4 id="approach-2-partial-pooling">Approach 2: Partial pooling<a class="anchor" aria-label="anchor" href="#approach-2-partial-pooling"></a>
 </h4>
-<p>Complete pooling (<code>pooling = "complete"</code>) assumes no
-differences between strata. This has the advantages that data from all
-strata can be aggregated, which decreases the uncertainty in the
-population estimate compared to the no pooling approach. However, the
-disadvantage of this approach is that it does not facilitate the
-distinction between between strata, as every stratum receives the same
-estimate equal to that of the population. The call below evaluates the
-sample using a Bayesian stratified evaluation procedure, in which the
-strata are assumed to be the same.</p>
+<p>The partial pooling approach (<code>pooling = "partial"</code>)
+presumes both differences and similarities between strata. This enables
+the auditor to share information among the strata to minimize
+uncertainty in the population estimate. The following call evaluates the
+sample using a Bayesian stratified evaluation procedure, where the
+stratum estimates are poststratified to derive the population estimate.
+Remember, it is important to set the seed via <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code> to
+make the results reproducible.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">result_cp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
-<span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"binomial"</span>,</span>
-<span>  n <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">samples</span>, x <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">errors</span>, N.units <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">items</span>,</span>
-<span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span>, pooling <span class="op">=</span> <span class="st">"complete"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_cp</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Bayesian Audit Sample Evaluation Summary</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Options:</span></span>
-<span><span class="co">##   Confidence level:               0.95 </span></span>
-<span><span class="co">##   Population size:                144000 </span></span>
-<span><span class="co">##   Materiality:                    0.05 </span></span>
-<span><span class="co">##   Hypotheses:                     H₀: Θ = 0.05 vs. H₁: Θ ≠ 0.05 </span></span>
-<span><span class="co">##   Method:                         binomial </span></span>
-<span><span class="co">##   Prior distribution:             beta(α = 1, β = 1) </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Data:</span></span>
-<span><span class="co">##   Sample size:                    2575 </span></span>
-<span><span class="co">##   Number of errors:               115 </span></span>
-<span><span class="co">##   Sum of taints:                  115 </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Results:</span></span>
-<span><span class="co">##   Posterior distribution:         beta(α = 116, β = 2461) </span></span>
-<span><span class="co">##   Most likely error:              0.04466 </span></span>
-<span><span class="co">##   95 percent credible interval:   [0.03735, 0.053345] </span></span>
-<span><span class="co">##   Precision:                      0.0086852 </span></span>
-<span><span class="co">##   BF₁₀:                            0.022725 </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Strata (20):</span></span>
-<span><span class="co">##          N   n  x  t     mle      lb      ub precision    bf10</span></span>
-<span><span class="co">##   1   5000 300 21 21 0.04466 0.03735 0.05335   0.00869 0.02273</span></span>
-<span><span class="co">##   2   5000 300 16 16 0.04466 0.03735 0.05335   0.00869 0.02273</span></span>
-<span><span class="co">##   3   5000 300 15 15 0.04466 0.03735 0.05335   0.00869 0.02273</span></span>
-<span><span class="co">##   4   5000 300 14 14 0.04466 0.03735 0.05335   0.00869 0.02273</span></span>
-<span><span class="co">##   5   5000 300 16 16 0.04466 0.03735 0.05335   0.00869 0.02273</span></span>
-<span><span class="co">##   6   5000 150  5  5 0.04466 0.03735 0.05335   0.00869 0.02273</span></span>
-<span><span class="co">##   7   5000 150  4  4 0.04466 0.03735 0.05335   0.00869 0.02273</span></span>
-<span><span class="co">##   8   5000 150  3  3 0.04466 0.03735 0.05335   0.00869 0.02273</span></span>
-<span><span class="co">##   9   5000 150  4  4 0.04466 0.03735 0.05335   0.00869 0.02273</span></span>
-<span><span class="co">##   10  5000 150  5  5 0.04466 0.03735 0.05335   0.00869 0.02273</span></span>
-<span><span class="co">##   11 10000  50  2  2 0.04466 0.03735 0.05335   0.00869 0.02273</span></span>
-<span><span class="co">##   12 10000  50  3  3 0.04466 0.03735 0.05335   0.00869 0.02273</span></span>
-<span><span class="co">##   13 10000  50  2  2 0.04466 0.03735 0.05335   0.00869 0.02273</span></span>
-<span><span class="co">##   14 10000  50  1  1 0.04466 0.03735 0.05335   0.00869 0.02273</span></span>
-<span><span class="co">##   15 10000  50  0  0 0.04466 0.03735 0.05335   0.00869 0.02273</span></span>
-<span><span class="co">##   16 10000  15  0  0 0.04466 0.03735 0.05335   0.00869 0.02273</span></span>
-<span><span class="co">##   17 10000  15  0  0 0.04466 0.03735 0.05335   0.00869 0.02273</span></span>
-<span><span class="co">##   18 10000  15  0  0 0.04466 0.03735 0.05335   0.00869 0.02273</span></span>
-<span><span class="co">##   19 10000  15  1  1 0.04466 0.03735 0.05335   0.00869 0.02273</span></span>
-<span><span class="co">##   20  4000  15  3  3 0.04466 0.03735 0.05335   0.00869 0.02273</span></span></code></pre>
-<p>For example, the output of the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function shows
-that the estimate of the misstatement in the population is 4.47 percent,
-with the 95 percent credible interval ranging from 3.74 percent to 5.33
-percent. Since the data is aggregated, the stratum estimates contain
-relatively little uncertainty. However, the probability of misstatement
-in stratum 20 (many misstatements) under this assumption is the same as
-that of stratum 15 (few misstatements).</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result_cp</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-10-1.png" width="576" style="display: block; margin: auto;"></p>
-<p>The prior and posterior distribution for the population misstatement
-can be requested via the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result_cp</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-11-1.png" width="576" style="display: block; margin: auto;"></p>
-</div>
-<div class="section level4">
-<h4 id="approach-3-partial-pooling">Approach 3: Partial pooling<a class="anchor" aria-label="anchor" href="#approach-3-partial-pooling"></a>
-</h4>
-<p>Finally, partial pooling (<code>pooling = "partial"</code>) assumes
-differences and similarities between strata. This allows the auditor to
-differentiate between strata, while also sharing information between the
-strata to reduce uncertainty in the population estimate. The call below
-evaluates the sample using a Bayesian stratified evaluation procedure,
-in which the stratum estimates are poststratified to arrive at the
-population estimate.</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="co"># Important because the posterior distribution is determined via sampling</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">result_pp</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, method <span class="op">=</span> <span class="st">"binomial"</span>,</span>
-<span>  n <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">samples</span>, x <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">errors</span>, N.units <span class="op">=</span> <span class="va">retailer</span><span class="op">$</span><span class="va">items</span>,</span>
-<span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span>, pooling <span class="op">=</span> <span class="st">"partial"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  n <span class="op">=</span> <span class="va">retailer</span><span class="op">[[</span><span class="st">"samples"</span><span class="op">]</span><span class="op">]</span>, x <span class="op">=</span> <span class="va">retailer</span><span class="op">[[</span><span class="st">"errors"</span><span class="op">]</span><span class="op">]</span>,</span>
+<span>  N.units <span class="op">=</span> <span class="va">retailer</span><span class="op">[[</span><span class="st">"items"</span><span class="op">]</span><span class="op">]</span>, pooling <span class="op">=</span> <span class="st">"partial"</span>,</span>
+<span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">result_pp</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -566,36 +523,44 @@ population estimate.</p>
 <span><span class="co">##   18 10000  15  0  0 0.0389 0.01193 0.07906   0.04016</span></span>
 <span><span class="co">##   19 10000  15  1  1 0.0450 0.01766 0.08977   0.04477</span></span>
 <span><span class="co">##   20  4000  15  3  3 0.0470 0.02719 0.11301   0.06601</span></span></code></pre>
-<p>In this case, the output shows that the estimate of the misstatement
-in the population is 4.16 percent, with the 95 percent credible interval
-ranging from 3.30 percent to 5.29 percent. Note that this population
-estimate is substantially less uncertain than that of the no pooling
-approach. Note that, like in the no pooling approach, the stratum
-estimates are different from each other but lie closer together and are
-less uncertain.</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<p>In this scenario, the output indicates that the estimated
+misstatement in the population is 4.16 percent, with the 95 percent
+credible interval extending from 3.30 percent to 5.29 percent. Note that
+this population estimate is considerably less uncertain compared to the
+no pooling approach. Similarly to the no pooling approach, the stratum
+estimates differ from each other but are closer together and exhibit
+less uncertainty. This can be explained by the fact that the partial
+pooling approach allows for information to be shared between strata. The
+stratum estimates can be visualized via a call to
+<code>plot(..., type = "estimates")</code>.</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result_pp</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-13-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-10-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>The prior and posterior distribution for the population misstatement
-can be requested via the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+can be obtained using the <code>plot(..., type = "posterior")</code>
+function.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result_pp</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-14-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-11-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="evaluation-using-data">Evaluation using data<a class="anchor" aria-label="anchor" href="#evaluation-using-data"></a>
 </h2>
-<p>For this example, we take the <code>allowances</code> that set that
-comes with the package. This data set contains 3500 financial statement
-line items, each with a booked value <code>bookValue</code> and, for
-illustrative purposes, and audited (true) value <code>auditValue</code>.
-Since the focus of this vignette is the evaluation stage in the audit,
-the sample is already indicated in the data set. The performance
-materiality in this example is set to 5 percent.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">allowances</span><span class="op">)</span></span>
+<p>In this example, we will demonstrate how to evaluate a stratified
+sample using a data set. We will use the <code>allowances</code> data
+set that is included in the package. This data set comprises <span class="math inline">\(N\)</span> = 3500 subsidy declarations from
+municipalities. Each line item has a recorded value book value (column
+<code>bookValue</code>) and an audited value (column
+<code>auditValue</code>), which is the true value for the purpose of
+this illustration. The data set already identifies the items that have
+been audited as part of the sample in the column <code>times</code>.
+sampled. In this scenario, we will be performing estimation and
+therefore do not specify the <code>materiality</code> argument in the
+<code><a href="../reference/evaluation.html">evaluation()</a></code> function.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"allowances"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">allowances</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##   item branch bookValue auditValue times</span></span>
 <span><span class="co">## 1    1     12      1600       1600     1</span></span>
@@ -607,226 +572,176 @@ materiality in this example is set to 5 percent.</p>
 <div class="section level3">
 <h3 id="non-stratified-samples-1">Non-stratified samples<a class="anchor" aria-label="anchor" href="#non-stratified-samples-1"></a>
 </h3>
-<p>Evaluating a non-stratified sample using data requires specification
-of the <code>data</code>, <code>values</code> and
-<code>values.audit</code> arguments. The input for these arguments is
-the name of the specific column in <code>data</code>.</p>
+<p>To evaluate a non-stratified sample using data, you need to specify
+the <code>data</code>, <code>values</code>, and
+<code>values.audit</code> arguments. The input for these arguments
+should be the name of the corresponding column in the input for the
+<code>data</code> argument.</p>
 <div class="section level4">
 <h4 id="classical-approach-1">Classical approach<a class="anchor" aria-label="anchor" href="#classical-approach-1"></a>
 </h4>
-<p>The call below evaluates the <code>allowances</code> sample using a
-classical non-stratified evaluation procedure.</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
-<span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, data <span class="op">=</span> <span class="va">allowances</span>,</span>
-<span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, times <span class="op">=</span> <span class="st">"times"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<p>The command below evaluates the <code>allowances</code> sample using
+a classical non-stratified evaluation approach. Note that the sample is
+automatically separated from the population because the
+<code>times</code> value for items not in the sample is
+<code>0</code>.</p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">allowances</span>, times <span class="op">=</span> <span class="st">"times"</span>,</span>
+<span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Classical Audit Sample Evaluation Summary</span></span>
+<span><span class="co">##  Classical Audit Sample Evaluation</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Options:</span></span>
-<span><span class="co">##   Confidence level:               0.95 </span></span>
-<span><span class="co">##   Materiality:                    0.05 </span></span>
-<span><span class="co">##   Hypotheses:                     H₀: Θ &gt;= 0.05 vs. H₁: Θ &lt; 0.05 </span></span>
-<span><span class="co">##   Method:                         poisson </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Data:</span></span>
-<span><span class="co">##   Sample size:                    1604 </span></span>
-<span><span class="co">##   Number of errors:               401 </span></span>
-<span><span class="co">##   Sum of taints:                  252.9281046 </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Results:</span></span>
-<span><span class="co">##   Most likely error:              0.15769 </span></span>
-<span><span class="co">##   95 percent confidence interval: [0, 0.175] </span></span>
-<span><span class="co">##   Precision:                      0.017311 </span></span>
-<span><span class="co">##   p-value:                        1</span></span></code></pre>
-<p>In this case, the output shows that the estimate of the misstatement
-in the population is 15.77 percent, with the 95 percent (one-sided)
-confidence interval ranging from 0 percent to 17.5 percent.</p>
+<span><span class="co">## data:  allowances</span></span>
+<span><span class="co">## number of errors = 401, number of samples = 1604, taint = 252.93</span></span>
+<span><span class="co">## 95 percent confidence interval:</span></span>
+<span><span class="co">##  0.000000 0.174997</span></span>
+<span><span class="co">## most likely estimate:</span></span>
+<span><span class="co">##  0.15769 </span></span>
+<span><span class="co">## results obtained via method 'poisson'</span></span></code></pre>
+<p>In this instance, the output indicates that the estimated
+misstatement in the population is 15.77 percent. The 95 percent
+(one-sided) confidence interval extends from 0 percent to 17.5 percent.
+More detailed information can be obtained via the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>
+function.</p>
 </div>
 <div class="section level4">
 <h4 id="bayesian-approach-1">Bayesian approach<a class="anchor" aria-label="anchor" href="#bayesian-approach-1"></a>
 </h4>
 <p>The call below evaluates the <code>allowances</code> sample using a
 Bayesian non-stratified evaluation procedure.</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
-<span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, data <span class="op">=</span> <span class="va">allowances</span>,</span>
-<span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, times <span class="op">=</span> <span class="st">"times"</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">allowances</span>, times <span class="op">=</span> <span class="st">"times"</span>,</span>
+<span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>,</span>
 <span>  prior <span class="op">=</span> <span class="cn">TRUE</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Bayesian Audit Sample Evaluation Summary</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Options:</span></span>
-<span><span class="co">##   Confidence level:               0.95 </span></span>
-<span><span class="co">##   Materiality:                    0.05 </span></span>
-<span><span class="co">##   Hypotheses:                     H₀: Θ &gt; 0.05 vs. H₁: Θ &lt; 0.05 </span></span>
-<span><span class="co">##   Method:                         poisson </span></span>
-<span><span class="co">##   Prior distribution:             gamma(α = 1, β = 1) </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Data:</span></span>
-<span><span class="co">##   Sample size:                    1604 </span></span>
-<span><span class="co">##   Number of errors:               401 </span></span>
-<span><span class="co">##   Sum of taints:                  252.9281046 </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Results:</span></span>
-<span><span class="co">##   Posterior distribution:         gamma(α = 253.928, β = 1605) </span></span>
-<span><span class="co">##   Most likely error:              0.15759 </span></span>
-<span><span class="co">##   95 percent credible interval:   [0, 0.17489] </span></span>
-<span><span class="co">##   Precision:                      0.0173 </span></span>
-<span><span class="co">##   BF₁₀:                            0</span></span></code></pre>
+<span><span class="op">)</span></span></code></pre></div>
 <p>The output shows that the estimate of the misstatement in the
 population is 15.76 percent, with the 95 percent (one-sided) credible
-interval ranging from 0 percent to 17.49 percent.</p>
+interval ranging from 0 percent to 17.49 percent. More detailed
+information can be obtained via <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> and the prior and
+posterior distribution can be obtained by a call to
+<code>plot(..., type = "posterior")</code>.</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-15-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="stratified-samples-1">Stratified samples<a class="anchor" aria-label="anchor" href="#stratified-samples-1"></a>
 </h3>
-<p>Evaluating a stratified sample using data requires specification of
-the <code>data</code>, <code>values</code>, <code>values.audit</code>
+<p>To evaluate a stratified sample using a data set, you need to specify
+the <code>data</code>, <code>values</code>, <code>values.audit</code>,
 and <code>strata</code> arguments in the <code><a href="../reference/evaluation.html">evaluation()</a></code>
-function. In this case, the units are monetary and calculated by
-aggregating the book values of the items in each stratum.</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">N.units</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">allowances</span><span class="op">$</span><span class="va">bookValue</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">allowances</span><span class="op">$</span><span class="va">branch</span><span class="op">)</span>, <span class="va">sum</span><span class="op">)</span><span class="op">$</span><span class="va">x</span></span></code></pre></div>
+function. The input for <code>N.units</code> is once again optional. In
+this example, the units are monetary, determined by summing up the book
+values of the items within each stratum. For instance, we can see that
+stratum two is the largest, with a total value of $2,792,814.33 and
+stratum five is the smallest, with a total value of $96,660.53.</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">N.units</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">allowances</span><span class="op">$</span><span class="va">bookValue</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">allowances</span><span class="op">$</span><span class="va">branch</span><span class="op">)</span>, <span class="va">sum</span><span class="op">)</span><span class="op">$</span><span class="va">x</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">N.units</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##       N.units</span></span>
+<span><span class="co">## 1   317200.09</span></span>
+<span><span class="co">## 2  2792814.33</span></span>
+<span><span class="co">## 3  1144231.69</span></span>
+<span><span class="co">## 4   414202.89</span></span>
+<span><span class="co">## 5    96660.53</span></span>
+<span><span class="co">## 6   348006.13</span></span>
+<span><span class="co">## 7  2384079.33</span></span>
+<span><span class="co">## 8  1840399.33</span></span>
+<span><span class="co">## 9   563957.70</span></span>
+<span><span class="co">## 10 3198877.73</span></span>
+<span><span class="co">## 11 1983299.06</span></span>
+<span><span class="co">## 12  319144.13</span></span>
+<span><span class="co">## 13  148905.79</span></span>
+<span><span class="co">## 14  513058.76</span></span>
+<span><span class="co">## 15  432007.61</span></span>
+<span><span class="co">## 16  275403.70</span></span></code></pre>
 <div class="section level4">
 <h4 id="classical-approach-2">Classical approach<a class="anchor" aria-label="anchor" href="#classical-approach-2"></a>
 </h4>
-<p>The call below evaluates the <code>allowances</code> sample using a
-classical stratified evaluation procedure, in which the stratum
-estimates are poststratified to arrive at the population estimate.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<p>The following command evaluates the <code>allowances</code> sample
+using a classical stratified evaluation method. In this process, the
+estimates from each stratum are poststratified to derive the estimate
+for the entire population. Note that for computational reasons it is
+important to set a seed here via <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code>.</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
-<span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
-<span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, data <span class="op">=</span> <span class="va">allowances</span>,</span>
-<span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, strata <span class="op">=</span> <span class="st">"branch"</span>, times <span class="op">=</span> <span class="st">"times"</span>,</span>
-<span>  N.units <span class="op">=</span> <span class="va">N.units</span>, alternative <span class="op">=</span> <span class="st">"two.sided"</span></span>
-<span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
+<span>  data <span class="op">=</span> <span class="va">allowances</span>, times <span class="op">=</span> <span class="st">"times"</span>,</span>
+<span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>,</span>
+<span>  N.units <span class="op">=</span> <span class="va">N.units</span>, strata <span class="op">=</span> <span class="st">"branch"</span>,</span>
+<span>  alternative <span class="op">=</span> <span class="st">"two.sided"</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Classical Audit Sample Evaluation Summary</span></span>
+<span><span class="co">##  Classical Audit Sample Evaluation</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Options:</span></span>
-<span><span class="co">##   Confidence level:               0.95 </span></span>
-<span><span class="co">##   Population size:                16772249 </span></span>
-<span><span class="co">##   Materiality:                    0.05 </span></span>
-<span><span class="co">##   Hypotheses:                     H₀: Θ = 0.05 vs. H₁: Θ ≠ 0.05 </span></span>
-<span><span class="co">##   Method:                         poisson </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Data:</span></span>
-<span><span class="co">##   Sample size:                    1604 </span></span>
-<span><span class="co">##   Number of errors:               401 </span></span>
-<span><span class="co">##   Sum of taints:                  252.9281046 </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Results:</span></span>
-<span><span class="co">##   Most likely error:              0.14723 </span></span>
-<span><span class="co">##   95 percent confidence interval: [0.12546, 0.18276] </span></span>
-<span><span class="co">##   Precision:                      0.035526 </span></span>
-<span><span class="co">##   p-value:                        NA </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Strata (16):</span></span>
-<span><span class="co">##               N   n   x         t     mle      lb      ub precision p.value</span></span>
-<span><span class="co">##   1   317200.09  87   6   1.27814 0.01469 0.00073 0.06950   0.05481 0.46285</span></span>
-<span><span class="co">##   2  2792814.33 305 233 193.23313 0.63355 0.54558 0.72945   0.09590 0.00000</span></span>
-<span><span class="co">##   3  1144231.69  55   3   3.00000 0.05455 0.01105 0.15940   0.10486 0.75827</span></span>
-<span><span class="co">##   4   414202.89  70  45  15.05094 0.21501 0.11878 0.35434   0.13933 0.00000</span></span>
-<span><span class="co">##   5    96660.53  18   1   0.64537 0.03585 0.00015 0.27456   0.23871 0.59343</span></span>
-<span><span class="co">##   6   348006.13  34   1   0.17866 0.00525 0.00000 0.11926   0.11401 1.00000</span></span>
-<span><span class="co">##   7  2384079.33  55  14   9.44448 0.17172 0.07885 0.32122   0.14950 0.00058</span></span>
-<span><span class="co">##   8  1840399.33  96   1   0.00813 0.00008 0.00000 0.03860   0.03852 0.10355</span></span>
-<span><span class="co">##   9   563957.70  92   0   0.00000 0.00000 0.00000 0.04010   0.04010 0.01783</span></span>
-<span><span class="co">##   10 3198877.73 201   7   0.92023 0.00458 0.00009 0.02703   0.02245 0.00122</span></span>
-<span><span class="co">##   11 1983299.06 128   7   1.50034 0.01172 0.00084 0.05013   0.03841 0.10773</span></span>
-<span><span class="co">##   12  319144.13  86   5   1.68141 0.01955 0.00174 0.07806   0.05851 0.46069</span></span>
-<span><span class="co">##   13  148905.79  25   0   0.00000 0.00000 0.00000 0.14756   0.14756 0.64187</span></span>
-<span><span class="co">##   14  513058.76 150   0   0.00000 0.00000 0.00000 0.02459   0.02459 0.00134</span></span>
-<span><span class="co">##   15  432007.61 150  39  21.80000 0.14533 0.09026 0.22045   0.07511 0.00001</span></span>
-<span><span class="co">##   16  275403.70  52  39   4.18726 0.08052 0.02237 0.20215   0.12163 0.12258</span></span></code></pre>
-<p>In this case, the output shows that the estimate of the misstatement
-in the population is 14.72 percent, with the 95 percent confidence
-interval ranging from 12.55 percent to 18.28 percent. The precision of
-the population estimate is 3.56 percent. The stratum estimates can be
-seen in the output of the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function and are
-visualized below.</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<span><span class="co">## data:  allowances</span></span>
+<span><span class="co">## number of errors = 401, number of samples = 1604, taint = 252.93</span></span>
+<span><span class="co">## 95 percent confidence interval:</span></span>
+<span><span class="co">##  0.1254576 0.1827606</span></span>
+<span><span class="co">## most likely estimate:</span></span>
+<span><span class="co">##  0.14723 </span></span>
+<span><span class="co">## results obtained via method 'poisson' + 'no-pooling'</span></span></code></pre>
+<p>In this instance, the output reveals that the estimated misstatement
+in the population is 14.72 percent. The 95 percent confidence interval
+spans from 12.55 percent to 18.28 percent. The precision of the
+population estimate is therefore 3.56 percent. The estimates for each
+stratum are visualized below. For more detailed information, including
+the actual stratum estimates, you can use the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>
+function.</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-20-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-18-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
 <h4 id="bayesian-approach-2">Bayesian approach<a class="anchor" aria-label="anchor" href="#bayesian-approach-2"></a>
 </h4>
-<p>Bayesian inference can improve upon the estimates of the classical
-approach by pooling information between strata where possible. The call
-below evaluates the <code>allowances</code> sample using a Bayesian
-stratified evaluation procedure, in which the stratum estimates are
-poststratified to arrive at the population estimate.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<p>Bayesian inference can enhance the estimates obtained from the
+classical approach by pooling information across strata where feasible.
+The following command evaluates the <code>allowances</code> sample using
+a Bayesian stratified evaluation method. In this process, the estimates
+from each stratum are pooled and poststratified to derive the estimate
+for the entire population.</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  materiality <span class="op">=</span> <span class="fl">0.05</span>, data <span class="op">=</span> <span class="va">allowances</span>,</span>
 <span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, strata <span class="op">=</span> <span class="st">"branch"</span>, times <span class="op">=</span> <span class="st">"times"</span>,</span>
 <span>  N.units <span class="op">=</span> <span class="va">N.units</span>, alternative <span class="op">=</span> <span class="st">"two.sided"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
-<span><span class="co">##  Bayesian Audit Sample Evaluation Summary</span></span>
+<span><span class="co">##  Bayesian Audit Sample Evaluation</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## Options:</span></span>
-<span><span class="co">##   Confidence level:               0.95 </span></span>
-<span><span class="co">##   Population size:                16772249 </span></span>
-<span><span class="co">##   Materiality:                    0.05 </span></span>
-<span><span class="co">##   Hypotheses:                     H₀: Θ = 0.05 vs. H₁: Θ ≠ 0.05 </span></span>
-<span><span class="co">##   Method:                         poisson </span></span>
-<span><span class="co">##   Prior distribution:             Nonparametric </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Data:</span></span>
-<span><span class="co">##   Sample size:                    1604 </span></span>
-<span><span class="co">##   Number of errors:               401 </span></span>
-<span><span class="co">##   Sum of taints:                  252.9281046 </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Results:</span></span>
-<span><span class="co">##   Posterior distribution:         Nonparametric </span></span>
-<span><span class="co">##   Most likely error:              0.1564 </span></span>
-<span><span class="co">##   95 percent credible interval:   [0.1348, 0.18102] </span></span>
-<span><span class="co">##   Precision:                      0.024619 </span></span>
-<span><span class="co">##   BF₁₀:                            NaN </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## Strata (16):</span></span>
-<span><span class="co">##               N   n   x         t     mle      lb      ub precision</span></span>
-<span><span class="co">##   1   317200.09  87   6   1.27814 0.01452 0.00380 0.06871   0.05419</span></span>
-<span><span class="co">##   2  2792814.33 305 233 193.23313 0.63148 0.54862 0.72707   0.09559</span></span>
-<span><span class="co">##   3  1144231.69  55   3   3.00000 0.05357 0.01946 0.15656   0.10299</span></span>
-<span><span class="co">##   4   414202.89  70  45  15.05094 0.21199 0.12935 0.34935   0.13736</span></span>
-<span><span class="co">##   5    96660.53  18   1   0.64537 0.03397 0.00749 0.26011   0.22614</span></span>
-<span><span class="co">##   6   348006.13  34   1   0.17866 0.00510 0.00137 0.11585   0.11075</span></span>
-<span><span class="co">##   7  2384079.33  55  14   9.44448 0.16865 0.09112 0.31548   0.14683</span></span>
-<span><span class="co">##   8  1840399.33  96   1   0.00813 0.00008 0.00027 0.03821   0.03812</span></span>
-<span><span class="co">##   9   563957.70  92   0   0.00000 0.00000 0.00027 0.03967   0.03967</span></span>
-<span><span class="co">##   10 3198877.73 201   7   0.92023 0.00456 0.00108 0.02689   0.02234</span></span>
-<span><span class="co">##   11 1983299.06 128   7   1.50034 0.01163 0.00322 0.04974   0.03811</span></span>
-<span><span class="co">##   12  319144.13  86   5   1.68141 0.01933 0.00559 0.07716   0.05784</span></span>
-<span><span class="co">##   13  148905.79  25   0   0.00000 0.00000 0.00097 0.14188   0.14188</span></span>
-<span><span class="co">##   14  513058.76 150   0   0.00000 0.00000 0.00017 0.02443   0.02443</span></span>
-<span><span class="co">##   15  432007.61 150  39  21.80000 0.14437 0.09550 0.21899   0.07462</span></span>
-<span><span class="co">##   16  275403.70  52  39   4.18726 0.07900 0.03262 0.19834   0.11933</span></span></code></pre>
-<p>The output shows that the estimate of the misstatement in the
-population is 15.64 percent, with the 95 percent credible interval
-ranging from 13.48 percent to 18.1 percent. The precision of the
-population estimate is 2.46 percent, which is lower than that of the
-classical approach. The stratum estimates can be seen in the output of
-the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code> function and are visualized below.</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<span><span class="co">## data:  allowances</span></span>
+<span><span class="co">## number of errors = 401, number of samples = 1604, taint = 252.93, BF₁₀</span></span>
+<span><span class="co">## = NaN</span></span>
+<span><span class="co">## alternative hypothesis: true misstatement rate is not equal to 0.05</span></span>
+<span><span class="co">## 95 percent credible interval:</span></span>
+<span><span class="co">##  0.1347989 0.1810191</span></span>
+<span><span class="co">## most likely estimate:</span></span>
+<span><span class="co">##  0.1564 </span></span>
+<span><span class="co">## results obtained via method 'poisson' + 'no-pooling' + 'prior'</span></span></code></pre>
+<p>The output indicates that the estimated misstatement in the
+population is 15.64 percent. The 95 percent credible interval spans from
+13.48 percent to 18.1 percent. The precision of the population estimate
+is therefore 2.46 percent, which is lower than that of the classical
+approach. The estimates for each stratum are visualized below using the
+<code>plot(..., type = "estimates)</code> command but their actual
+values can be once again be obtained using the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>
+function.</p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-22-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-20-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>The prior and posterior distribution for the population misstatement
-can be requested via the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+can be obtained via the <code>plot(..., type = "posterior")</code>
+function.</p>
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-23-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-21-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 </div>
 </div>
