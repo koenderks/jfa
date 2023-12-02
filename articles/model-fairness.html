@@ -107,36 +107,38 @@
 <h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
 <p>Welcome to the ‘Algorithmic fairness’ vignette of the
-<strong>jfa</strong> package. In this vignette you can find a detailed
-example of how you can use the <code><a href="../reference/model_fairness.html">model_fairness()</a></code> function
-provided by the package.</p>
+<strong>jfa</strong> package. This page provides a comprehensive example
+of how to use the <code><a href="../reference/model_fairness.html">model_fairness()</a></code> function in the
+package.</p>
 </div>
 <div class="section level2">
 <h2 id="function-model_fairness">Function: <code>model_fairness()</code><a class="anchor" aria-label="anchor" href="#function-model_fairness"></a>
 </h2>
-<p>The <code><a href="../reference/model_fairness.html">model_fairness()</a></code> function provides a method to
-assess fairness in algorithmic decision-making systems by computing
-various model-agnostic metrics based on the observed and predicted
-labels in a data set. Calculated metrics include demographic parity,
+<p>The model_fairness() function offers methods to evaluate fairness in
+algorithmic decision-making systems. It computes various model-agnostic
+metrics based on the observed and predicted labels in a dataset. The
+fairness metrics that can be calculated include demographic parity,
 proportional parity, predictive rate parity, accuracy parity, false
 negative rate parity, false positive rate parity, true positive rate
 parity, negative predicted value parity, and specificity parity <span class="citation">(Calders &amp; Verwer, 2010; Chouldechova, 2017;
-Feldman et al., 2015; Friedler et al., 2019; Zafar et al.,
-2017)</span>.</p>
+Feldman et al., 2015; Friedler et al., 2019; Zafar et al., 2017)</span>.
+Furthermore, the metrics are tested for equality between protected
+groups in the data.</p>
 <p><em>Practical example:</em></p>
-<p>To illustrate how to use the <code><a href="../reference/model_fairness.html">model_fairness()</a></code> function,
-we will use a well-known data set called COMPAS. The COMPAS
+<p>To demonstrate the usage of the <code><a href="../reference/model_fairness.html">model_fairness()</a></code>
+function, we will use a renowned dataset known as COMPAS. The COMPAS
 (Correctional Offender Management Profiling for Alternative Sanctions)
-software is is a case management and decision support tool used by some
-U.S. courts to assess the likelihood of a defendant becoming a
-recidivist (repeated offender).</p>
-<p>The <code>compas</code> data is included in the package and contains
-predictions of the COMPAS software for several cases. The data can be
-loaded with <code>data("compas")</code> and contains for each defendant,
-whether the defendant did commit a crime within two years after the
-court case (<code>TwoYrRecidivism</code>), some personal characteristics
-like gender and ethnicity, and whether the software predicted the
-defendant to be a recidivist (<code>Predicted</code>).</p>
+software is a case management and decision support tool employed by
+certain U.S. courts to evaluate the likelihood of a defendant becoming a
+recidivist (repeat offender).</p>
+<p>The <code>compas</code> data, which is included in the package,
+contains predictions made by the COMPAS algorithm for various
+defendants. The data can be loaded using <code>data("compas")</code> and
+includes information for each defendant, such as whether the defendant
+committed a crime within two years following the court case
+(<code>TwoYrRecidivism</code>), personal characteristics like gender and
+ethnicity, and whether the software predicted the defendant to be a
+recidivist (<code>Predicted</code>).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"compas"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">compas</span><span class="op">)</span></span></code></pre></div>
@@ -154,26 +156,26 @@ defendant to be a recidivist (<code>Predicted</code>).</p>
 <span><span class="co">## 11 African_American        no</span></span>
 <span><span class="co">## 14         Hispanic        no</span></span>
 <span><span class="co">## 24            Other        no</span></span></code></pre>
-<p>We will investigate whether the algorithm is fair with respect to the
-sensitive attribute <code>Ethnicity</code>. Considering the context, a
-positive prediction means that a defendant is classified as a
-reoffender, and a negative prediction means that a defendant is
-classified as a non-reoffender. The fairness metrics offer information
-on whether there are any disparities in the algorithm’s predictions
-across different ethnic groups. By calculating and reviewing these
-metrics, we can get an indication of whether the algorithm exhibits any
-discriminatory behavior towards specific ethnic groups. If substantial
-disparities exist, we may need to investigate further and potentially
-modify the algorithm to ensure fairness in its predictions.</p>
-<p>Before starting, let’s briefly explain the foundation of all fairness
-metrics: the confusion matrix. This matrix presents observed versus
-predicted labels, shedding light on the algorithm’s prediction mistakes.
-Comprising the confusion matrix are the true positives (TP), false
-positives (FP), true negatives (TN), and false negatives (FN). To
-illustrate, the confusion matrix pertaining to the
-<code>African_American</code> group is displayed below. For example,
-there are 629 people in this group that are incorrectly predicted to be
-a reoffender, which represents a false positive in the confusion
+<p>We will examine whether the COMPAS algorithm demonstrates fairness
+with respect to the sensitive attribute <code>Ethnicity</code>. In this
+context, a positive prediction implies that a defendant is classified as
+a reoffender, while a negative prediction implies that a defendant is
+classified as a non-reoffender. The fairness metrics provide insights
+into whether there are disparities in the predictions of the algorithm
+for different ethnic groups. By calculating and reviewing these metrics,
+we can determine whether the algorithm displays any discriminatory
+behavior towards specific ethnic groups. If significant disparities
+exist, further investigation may be necessary, and potential
+modifications to the algorithm may be required to ensure fairness in its
+predictions.</p>
+<p>Before we begin, let’s briefly explain the basis of all fairness
+metrics: the confusion matrix. This matrix compares observed versus
+predicted labels, highlighting the algorithm’s prediction mistakes. The
+confusion matrix consists of true positives (TP), false positives (FP),
+true negatives (TN), and false negatives (FN). The confusion matrix for
+the <code>African_American</code> group is shown below. For instance,
+there are 629 individuals in this group who are incorrectly predicted to
+be reoffenders, representing a false positive in this confusion
 matrix.</p>
 <table class="table">
 <colgroup>
@@ -207,14 +209,15 @@ matrix.</p>
 </tr>
 </tbody>
 </table>
-<p>For illustrative purposes, let’s interpret the full set of fairness
-metrics for the African American, Asian, and Hispanic groups in
-comparison to the privileged group (Caucasian). See <span class="citation">Pessach &amp; Shmueli (2022)</span> for a more detailed
-explanation of some of these metrics. However, note that not all
-fairness measures are equally appropriate in all audit situations. The
-decision tree below aids the auditor with choosing which measure is best
-for the situation at hand <span class="citation">(Büyük,
-2023)</span>.</p>
+<p>To demonstrate the usage of the <code><a href="../reference/model_fairness.html">model_fairness()</a></code>
+function, let’s interpret the complete set of fairness metrics for the
+African American, Asian, and Hispanic groups, comparing them to the
+privileged group (Caucasian). For a more detailed explanation of some of
+these metrics, we refer to <span class="citation">Pessach &amp; Shmueli
+(2022)</span>. However, it is important to note that not all fairness
+measures are equally suitable for all audit situations. The decision
+tree provided below (which is far from perfect) can assist the auditor
+in selecting an appropriate measure for the specific audit at hand <span class="citation">(Büyük, 2023)</span>.</p>
 <p align="center">
 <img src="fairness-tree.png" alt="fairness" width="90%"></p>
 <ol style="list-style-type: decimal">
@@ -751,10 +754,19 @@ non-reoffenders among Hispanics.</li>
 <div class="section level3">
 <h3 id="bayesian-analysis">Bayesian Analysis<a class="anchor" aria-label="anchor" href="#bayesian-analysis"></a>
 </h3>
-<p>For all metrics except demongraphic parity, Bayesian inference is
-supported and provides credible intervals and Bayes factors <span class="citation">(Jamil et al., 2017)</span>. Like in the other
-functions in <code>jfa</code>, performing a Bayesian analysis using a
-default prior can be achieved by setting <code>prior = TRUE</code>.</p>
+<p>Bayesian inference, which is supported for all metrics except
+demographic parity, provides credible intervals and Bayes factors for
+the fairness metrics and tests <span class="citation">(Jamil et al.,
+2017)</span>. Similar to other functions in <strong>jfa</strong>, a
+Bayesian analysis can be conducted using a default prior by setting
+<code>prior = TRUE</code>. The prior distribution in this analysis is
+specified on the log odds ratio and can be modified by setting
+<code>prior = 1</code> (equal to <code>prior = TRUE</code>), or
+providing a number greater than one that represents the prior
+concentration parameter (for example, <code>prior = 3</code>). The
+larger the concentration parameter, the more the prior distribution is
+focused around zero, implying that it assigns a higher probability to
+the scenario of equal fairness metrics.</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
@@ -775,37 +787,32 @@ default prior can be achieved by setting <code>prior = TRUE</code>.</p>
 <span><span class="co">## alternative hypothesis: fairness metrics are not equal across groups</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## sample estimates:</span></span>
-<span><span class="co">##   African_American: 1.8554 [1.8056, 1.9125], BF₁₀ = 2.8881e+81</span></span>
-<span><span class="co">##   Asian: 0.31395 [0.17351, 0.91023], BF₁₀ = 3.0278</span></span>
-<span><span class="co">##   Hispanic: 0.89001 [0.80275, 1.0464], BF₁₀ = 0.1127</span></span>
-<span><span class="co">##   Native_American: 1.3862 [0.64588, 2.2644], BF₁₀ = 0.54521</span></span>
-<span><span class="co">##   Other: 0.74041 [0.64616, 0.92976], BF₁₀ = 2.5057</span></span>
+<span><span class="co">##   African_American: 1.8588 [1.8109, 1.9197], BF₁₀ = 2.8881e+81</span></span>
+<span><span class="co">##   Asian: 0.46707 [0.16859, 0.9231], BF₁₀ = 3.0278</span></span>
+<span><span class="co">##   Hispanic: 0.88875 [0.80372, 1.0531], BF₁₀ = 0.1127</span></span>
+<span><span class="co">##   Native_American: 1.5585 [0.66992, 2.2864], BF₁₀ = 0.54521</span></span>
+<span><span class="co">##   Other: 0.75008 [0.64861, 0.93579], BF₁₀ = 2.5057</span></span>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span></code></pre>
-<p>Bayesian inference measures evidence using the Bayes factor <span class="math inline">\(BF_{01}\)</span>, which quantifies the evidence in
-favor of algorithmic fairness (i.e., equal fairness metrics across all
-groups) over algorithmic bias or <span class="math inline">\(BF_{10}\)</span>, which quantifies the evidence in
-favor of algorithmic bias over algorithmic fairness. By default,
-<strong>jfa</strong> reports <span class="math inline">\(BF_{10}\)</span>, but <span class="math inline">\(BF_{01} = \frac{1}{BF_{10}}\)</span>. The
-resulting Bayes factor in favor of rejection of the null hypothesis of
-equality (<span class="math inline">\(BF_{10}\)</span>) is shown in the
-output above. As can be seen, <span class="math inline">\(BF_{10}\)</span> &gt; 1000, which indicates
-extreme evidence in favor of bias between the groups.</p>
-<p>In a Bayesian analysis, the auditor specifies a prior distribution
-that can incorporate relevant audit information. The prior distribution
-for this analysis is expressed on the log odds ratio and can be adjusted
-by setting <code>prior = 1</code> (the default), or providing a number
-&gt; 1 representing the prior concentration parameter. The larger the
-concentration parameter, the more the prior distribution is concentrated
-around zero, meaning equal metrics are assumed to be more likely. The
-prior and posterior distributions on the log odds ratio can be
-visualized via the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function using
-<code>type = "posterior"</code>, see the figure below.</p>
+<p>The Bayes factor <span class="math inline">\(BF_{01}\)</span>, used
+in Bayesian inference, quantifies the evidence supporting algorithmic
+fairness (i.e., equal fairness metrics across all groups) over
+algorithmic bias. Conversely, <span class="math inline">\(BF_{10}\)</span> quantifies the evidence
+supporting algorithmic bias over algorithmic fairness. By default,
+<strong>jfa</strong> reports <span class="math inline">\(BF_{10}\)</span>, but <span class="math inline">\(BF_{01}\)</span> = <span class="math inline">\(\frac{1}{BF_{10}}\)</span>. The output above shows
+the resulting Bayes factor (<span class="math inline">\(BF_{01}\)</span>) in favor of rejecting the null
+hypothesis of algorithmic fairness. As shown, <span class="math inline">\(BF_{01}\)</span> &gt; 1000, indicating extreme
+evidence against the hypothesis of equal fairness metrics between the
+groups.</p>
+<p>The prior and posterior distribution for the group comparisons can be
+visualized by invoking <code>plot(..., type = "posterior")</code>.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="model-fairness_files/figure-html/unnamed-chunk-14-1.png" width="576" style="display: block; margin: auto;"></p>
-<p>You can check the robustness of the Bayes factor to the choice of
-prior distribution via the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function using
-<code>type = "robustness"</code>, see the figure below.</p>
+<p>Additionally, the robustness of the Bayes factor to the choice of
+prior distribution can be examined by calling
+<code>plot(..., type = "robustness")</code>, as shown in the code below.
+Finally, the auditor has the option to conduct a sequential analysis
+using <code>plot(..., type = "sequential")</code>.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"robustness"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="model-fairness_files/figure-html/unnamed-chunk-15-1.png" width="576" style="display: block; margin: auto;"></p>
