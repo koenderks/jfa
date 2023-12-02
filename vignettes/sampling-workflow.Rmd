@@ -23,126 +23,128 @@ library(jfa)
 
 ## Introduction
 
-This vignette aims to show how the **jfa** package facilitates auditors in the
-standard audit sampling workflow (hereafter "audit workflow"). In this example
-of the audit workflow, we will consider the case of BuildIt. BuildIt is a
-fictional construction company in the United States that is being audited by
-an external auditor for a fictional audit firm. At the end of the year, BuildIt
-has provided a summary of its financial situation in the financial
-statements. The objective of the auditor is to formulate an opinion about the
-fairness BuildIt's financial statements.
+This vignette aims to demonstrate how the **jfa** package can assist auditors in
+the standard audit sampling workflow (hereafter referred to as "audit
+workflow"). In this audit workflow example, we will be looking at a hypothetical
+scenario involving BuildIt, a fictitious construction company based in the
+United States. BuildIt is undergoing an audit by an external auditor from a
+fictional audit firm. At the end of the fiscal year, BuildIt has presented a
+summary of its financial status in its financial statements. The objective of
+the auditor is to form an opinion on the fairness of BuildIt's financial
+statements. The auditor's opinion should be compliant with professional auditing
+standards [@iaasb_2018; @aicpa_2021; @pcaob_2020].
 
-The auditor needs to obtain sufficient and appropriate evidence for the
-hypothesis that the misstatement in the financial statements is lower than a
-certain amount: the materiality. If the financial statements contain
-misstatements that are considered material, this means that the errors in the
-financial statements are large enough that they might influence the decision of
-stakeholders relying on these financial statements. The performance materiality
-is the materiality that applies to each of the populations on which the
-financial statements are based. For this example, the performance materiality is
-set at 5 percent of the total value of the population.
+The auditor is required to gather appropriate and sufficient evidence to support
+the hypothesis that the misstatement in the financial statements is less than a
+specified amount, known as the materiality. If the financial statements contain
+material misstatements, this means that the inaccuracies in the financial
+statements are substantial enough to influence the decisions of stakeholders who
+depend on these financial statements. For this example, the overall materiality
+of the financial statements is set to ten percent. This implies that for the
+auditor to endorse the financial statements, inaccuracies in the financial
+statements should not exceed ten percent.
 
-In this example, we focus on the `BuildIt` data set that comes with the **jfa**
-package.
+During an audit, the auditor examines the populations that underpin the line
+items in the financial statement. In this vignette, we concentrate on the
+`BuildIt` data set that is included in the package, which contains $N$ = 3500
+invoices from the BuildIt's rental account. The data can be loaded in R via
+`data("BuildIt")`.
 
 ```{r}
 data("BuildIt")
 head(BuildIt)
 ```
 
-The population of interest consists of 3500 items, each with a booked value.
-Let's assume that, before performing audit sampling, the auditor has assessed
-the quality of BuildIt's internal control systems and found that they were
-working properly.
+For this population, the auditor determines the performance materiality, which
+is the degree of materiality that applies to this specific population. In this
+case, the performance materiality is established at fifty percent of the overall
+materiality, or five percent. This implies that for the auditor to endorse the
+population, the misstatement in the population should not exceed five percent.
 
-In order to formulate an opinion about the misstatement in the population, the
-auditor separates their audit workflow into four stages. First, they will need
-to plan the minimum size of a sample they need to inspect to perform inference
-about the population. Second, they will need to select the required sample from
-the population. Third, they will need to inspect the selected sample and
-determine the audit (true) value of the items it contains. Fourth, they will
-need to use the information from the inspected sample to perform inference about
-the misstatement in the population.
+To form an opinion about the misstatement in the population, the auditor
+typically divides their audit workflow into four stages. Initially, they need to
+plan the minimum sample size they need to examine to make inferences about the
+population. Next, they have to select the required sample from the population.
+Subsequently, they need to inspect the selected sample and determine the audit
+(true) value of the items it comprises. Finally, they must use the information
+from the audited sample to make inferences about the misstatement in the
+population.
 
 <p align='center'><img src='workflow.png' alt='workflow' width='100%'></p>
 
 ## Setting up the audit
 
-The auditor wants to make a statement that, with 95 percent confidence, the
-misstatement in the population is lower than the performance materiality of 5
-percent. Based on last year's audit at BuildIt, where the upper bound of the
-misstatement turned out to be 2.5 percent, they want to tolerate at most 2.5
-percent errors in the intended sample. The auditor can therefore re-formulate
-their statistical statement as that they want to conclude that, when 2.5 percent
-errors are found in the sample, they can conclude with 95 percent confidence
-that the misstatement in the population is lower than the performance
-materiality of 5 percent.
-
-Below, the auditor defines the performance materiality, confidence level, and
-expected misstatements in the sample.
+The auditor aims to assert that, with 95 percent confidence, the misstatement in
+the population is less than the performance materiality of five percent. Drawing
+from last year's audit at BuildIt, where the upper limit of the misstatement was
+found to be 2.5 percent, they are willing to accept a maximum of 2.5 percent
+misstatements in the intended sample. Consequently, the auditor can rephrase
+their statistical statement as wanting to conclude that, if 2.5 percent
+misstatements are detected in the sample, they can determine with 95 percent
+confidence that the misstatement in the population is less than the performance
+materiality of five percent.
 
 ```{r}
-# Specify the confidence, materiality, and expected errors.
-confidence <- 0.95 # 95%
-materiality <- 0.05 # 5%
-expected <- 0.025 # 2.5%
+confidence <- 0.95 # Confidence level = 95%
+materiality <- 0.05 # Performance materiality = 5%
+expected <- 0.025 # Tolerable sample errors = 2.5%
 ```
 
-Many audits are performed according to the *audit risk model (ARM)*, which
-determines that the uncertainty about the auditor's statement as a whole
-(1 - the confidence) is a factor of three terms: the inherent risk, the control
-risk, and the detection risk. Inherent risk is the risk posed by an error in
-BuildIt's financial statement that could be material, before consideration of
-any related control systems (e.g., computer systems). Control risk is the risk
-that a material misstatement is not prevented or detected by BuildIt's internal
-control systems. Detection risk is the risk that the auditor will fail to find
-material misstatements that exist in an BuildIt's financial statements. The
-*ARM* is practically useful because for a given level of audit risk, the
-tolerable detection risk bears an inverse relation to the other two risks. The
-*ARM* is useful for the auditor because it enables them to incorporate existing
-information on BuildIt's organization to increase the required risk that they
-will fail to find a material misstatement.
+Many audits are conducted according to the audit risk model (ARM), which posits
+that the overall uncertainty about the auditor's statement (1 - confidence) is a
+product of three components: inherent risk, control risk, and detection risk.
 
-$$ \text{Audit risk} = \text{Inherent risk} \,\times\, \text{Control risk} \,\times\, \text{Detection risk}$$
+\begin{equation}
+  \text{Audit risk} = \text{Inherent risk} \,\times\, \text{Control risk} \,\times\, \text{Detection risk}
+\end{equation}
 
-Usually the auditor judges inherent risk and control risk on a three-point scale
-consisting of low, medium, and high. Different audit firms handle different
-standard percentages for these categories. The auditor's firm defines the
-probabilities of low, medium, and high respectively as 50 percent, 60 percent,
-and 100 percent. Because the auditor assessed BuildIt's internal control
-systems, they assess the control risk as medium (60 percent).
+- Inherent risk refers to the risk of a material error occurring in BuildIt's
+  financial statement before considering any related control systems (e.g.,
+  computer systems).
+- Control risk is the risk that BuildIt's internal control systems fail to
+  prevent or detect a material misstatement.
+- Detection risk is the risk that the auditor will not discover material
+  misstatements that exist in BuildIt's financial statements.
+  
+The ARM is practically useful because for a given level of audit risk, the
+tolerable detection risk is inversely proportional to the other two risks.
+Hence, the ARM can be beneficial for the auditor as it allows them to reduce the
+amount of audit evidence required from the sample in the presence of
+risk-reducing information.
+
+Typically, auditors assess inherent risk and control risk on a three-point
+scale: low, medium, or high. Different audit firms may assign different standard
+percentages to these categories. In the auditor's firm, the probabilities for
+low, medium, and high are defined as 50 percent, 60 percent, and 100 percent,
+respectively. After evaluating BuildIt's internal control systems, the auditor
+has classified the internal control risk as medium (60 percent), while they
+have determined the inherent risk to be high (100 percent).
 
 ```{r}
-# Specify the inherent risk (ir) and control risk (cr).
-ir <- 1 # 100%
-cr <- 0.6 # 60%
+ir <- 1 # Inherent risk = 100%
+cr <- 0.6 # Control risk = 60%
 ```
 
 ## Stage 1: Planning an audit sample
 
 <p align='center'><img src='planning.png' alt='planning' width='100%'></p>
 
-The auditor can choose to either perform a frequentist analysis, where they use
-the increased detection risk as their level of uncertainty, or perform a
-Bayesian analysis, where they incorporate the information about the control risk
-into a prior distribution. For this example, we will show how to perform a
-Bayesian analysis. A frequentist analysis can easily be done through the
-following functions by setting `prior = FALSE`. In a frequentist analysis, the
-auditor immediately uses the adjusted confidence to calculate the sample size
-via the `planning()` function.
+In a frequentist analysis applying the audit risk model, the auditor treats the
+increased detection risk as their level of uncertainty. This implies that the
+auditor promptly uses the adjusted confidence level `c.adj` to compute the
+sample size via the `planning()` function.
 
 ```{r}
-# Adjust the required confidence for a frequentist analysis.
 c.adj <- 1 - ((1 - confidence) / (ir * cr))
-# Step 1: Calculate the required sample size.
 stage1 <- planning(materiality = materiality, expected = expected, conf.level = c.adj)
 ```
 
-The auditor can then inspect the result from the planning procedure by using the
-`summary()` function. The result shows that the auditor needs to select a sample
-of 178 items so that, when at most 4.45 misstatements are found, they can
-conclude with 91.66 percent confidence that the misstatement in BuildIt's
-population is lower than the performance materiality of 5 percent.
+The auditor can review the outcome of their planning procedure using the
+`summary()` function. The results indicate that the auditor needs to select a
+sample of $n$ = 178 items. This ensures that if a maximum of $k$ = 4.45
+misstatements are found, they can assert with 91.66 percent confidence that the
+misstatement in BuildIt's population is less than the performance materiality of
+five percent.
 
 ```{r}
 summary(stage1)
@@ -152,31 +154,32 @@ summary(stage1)
 
 <p align='center'><img src='selection.png' alt='selection' width='100%'></p>
 
-The auditor is now ready to select the required 178 items from the population.
-They can choose to do this according to one of two statistical methods. In
-*record sampling* (`units = "items"`), inclusion probabilities are assigned on
-the item level, treating item with a high value and a low value the same, an 
-item of $5,000 is equally likely to be selected as an item of $1,000. In 
-*monetary unit sampling* (`units = "values"`), inclusion probabilities are
-assigned on the level of individual monetary units (e.g., a dollar). When a
-dollar is selected to be in the sample, the item that includes that dollar is
-selected. This favors items with a higher value, as an item with a value of 
-\$5,000 is now five times more likely to be selected than an item with a value
-of \$1,000.
+The auditor is now prepared to select the required $n$ = 178 items from the
+population. They have two statistical methods to choose from for this task. In
+record sampling (`units = "items"`), inclusion probabilities are assigned at the
+item level, treating items of high and low value equally. This means an item of
+$5,000 is just as likely to be selected as an item of $1,000. In monetary unit
+sampling (`units = "values"`), inclusion probabilities are assigned at the level
+of individual monetary units (e.g., a dollar). When a dollar is selected to be
+in the sample, the item that includes that dollar is selected. This method
+favors items with a higher value, as an item with a value of $5,000 is now five
+times more likely to be selected than an item with a value of $1,000.
 
-The auditor chooses to use *monetary unit sampling*, as they wants to include
-more high-valued items. The `selection()` function enables them to select the
-sample from the population. She uses the `stage1` object as an input for the
-`selection()` function, since this passes the calculated sample size to the
-function.
+The auditor opts to use monetary unit sampling, as they want to include more
+high-valued items. The `selection()` function enables them to select the sample
+from the population using this sampling scheme. They use the `stage1` object as
+input for the `size` argument in the `selection()` function, as this passes the
+calculated sample size from the planning stage directly to the function.
 
 ```{r}
-# Step 2: Draw a sample from the financial statements.
-stage2 <- selection(data = BuildIt, size = stage1, units = "values", values = "bookValue", method = "interval")
+stage2 <- selection(
+  data = BuildIt, size = stage1,
+  units = "values", values = "bookValue", method = "interval"
+)
 ```
 
-Like before, the auditor can inspect the outcomes of their sampling procedure\
-by using the `summary()` function.
+Like before, the auditor can examine the results of their sampling procedure
+using the `summary()` function.
 
 ```{r}
 summary(stage2)
@@ -184,46 +187,46 @@ summary(stage2)
 
 ## Stage 3: Executing the audit
 
-The selected sample can be isolated by indexing the `sample` object from the
+The selected sample can be singled out by indexing the `$sample` object from the
 sampling result.
 
 ```{r}
-# Step 3: Isolate the sample for execution of the audit.
 sample <- stage2$sample
 ```
 
-Next, the auditor can execute the audit by annotating the items in the sample
-with their audit values (for exampling by writing the sample to a *.csv* file
-using `write.csv()`). They can then load the annotated sample back into the R
-session for further evaluation. For this example, the audit values of the sample
-items are already included in the `auditValue` column of the data set.
+Next, the auditor can carry out the audit by annotating the items in the sample
+with their audit values. This can be done, for example, by writing the sample to
+a csv file using `write.csv()`. The annotated sample can then be loaded back
+into the R session for further evaluation.
 
 ```{r, eval = FALSE}
-# To write the sample to a .csv file:
+# Write the sample to a .csv file:
 write.csv(x = sample, file = "auditSample.csv", row.names = FALSE)
 
-# To load annotated sample back into R:
+# Load annotated sample back into R:
 sample <- read.csv(file = "auditSample.csv")
 ```
+
+In the case of the `BuildIt` data set, the audit values of the sample items are
+already provided in the `auditValue` column of the data set.
 
 ## Stage 4: Evaluating the sample
 
 <p align='center'><img src='evaluation.png' alt='evaluation' width='100%'></p>
 
-Using the annotated sample, the auditor can perform inference about the
-misstatement in the population via the `evaluation()` function.
+With the annotated sample, the auditor can perform inference about the
+misstatement in the population using the `evaluation()` function. 
 
 ```{r}
-# Step 4: Evaluate the sample
 stage4 <- evaluation(
   materiality = materiality, conf.level = c.adj, data = sample,
   values = "bookValue", values.audit = "auditValue"
 )
 ```
 
-The auditor can inspect the outcomes of her inference by using the `summary()`
-function. The resulting 91.66 percent upper bound is 1.396 percent, which is
-lower than the performance materiality of 5 percent.
+The auditor can review the results of their inference using the `summary()`
+function. The resulting upper bound is 1.396 percent with a confidence level of
+91.66 percent, which is below the performance materiality of five percent.
 
 ```{r}
 summary(stage4)
@@ -231,6 +234,10 @@ summary(stage4)
 
 ## Conclusion
 
-Since the 91.66 percent upper confidence bound on the misstatement in population
-is lower than the performance materiality, the auditor has obtained sufficient
-evidence to conclude that the population does not contain material misstatement.
+Given that the 91.66 percent upper confidence bound on the misstatement in the
+population is below the performance materiality, the auditor has gathered
+sufficient evidence to conclude that the population does not contain material
+misstatement.
+
+## References
+<div id="refs"></div>
