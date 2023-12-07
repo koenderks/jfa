@@ -179,7 +179,7 @@ selection <- function(data,
     stop(paste0("'", order, "' is not a column in 'data'"))
   }
   if (method == "interval") {
-    stopifnot("'start' must be a positive value >= 1" = start >= 1)
+    stopifnot("'start' must be a positive value > 0" = start > 0)
   }
   interval <- NULL
   book_values <- NULL
