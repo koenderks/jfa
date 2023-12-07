@@ -167,7 +167,8 @@ discovered. The required sample size per stage is $n_s$ = 103, resulting in a
 total sample size (if both stages are necessary) of $n$ = 206.
 
 ```{r}
-planning(materiality = 0.03, likelihood = "binomial", expected = c(1, 0))
+multiplan <- planning(materiality = 0.03, likelihood = "binomial", expected = c(1, 0))
+print(multiplan)
 ```
 
 To confirm this calculation, we need to ensure that that the probability of
@@ -181,7 +182,7 @@ p_k0_n2 <- pbinom(q = 0, size = 103, prob = 0.03)
 p_k0_n1 + p_k1_n1 * p_k0_n2 < 0.05
 ```
 
-The minimum sample size per stage, $n_2$ = 103, is only slighly larger than the
+The minimum sample size per stage, $n_s$ = 103, is only slighly larger than the
 minimum sample size for the first stage if the auditor opts for a single-stage
 sampling plan expecting $k$ = 0, which is $n$ = 99.
 
@@ -196,6 +197,15 @@ a sample size extension in the classical approach.
 
 ```{r}
 planning(materiality = 0.03, likelihood = "binomial", expected = 1)
+```
+
+Note that the sample size per stage $n_s$ = 103 is based on $n_1$ = $n_2$ but
+that this does not have to be the case. To visualize the balance between the
+initial sample and the follow-up sample, we can use the `plot()` function. The
+total sample size is specified in text in the figure.
+
+```{r fig.align="center", fig.height=4, fig.width=6}
+plot(multiplan)
 ```
 
 As another example, consider a three-stage sampling plan where the auditor plans

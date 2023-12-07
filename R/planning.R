@@ -379,6 +379,7 @@ planning <- function(materiality = NULL,
   result[["n"]] <- n
   if (sequential) {
     result[["n_staged"]] <- result[["n"]] / length(expected)
+    result[["k_staged"]] <- expected
   }
   result[["ub"]] <- bound
   result[["precision"]] <- bound - mle
