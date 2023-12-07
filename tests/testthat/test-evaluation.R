@@ -248,13 +248,13 @@ test_that(desc = "(id: f3-v0.4.0-t1) Bayes factors", {
   samp <- selection(BuildIt, size = jfaRes, units = "items", method = "interval")$sample
   prior <- auditPrior(method = "default", likelihood = "binomial")
   jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "binomial", times = "times", prior = prior)
-  expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf.h1, 44957.32, tolerance = 0.001)
+  expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf.h1, 1734.728, tolerance = 0.001)
   prior <- auditPrior(method = "strict", likelihood = "poisson")
   jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "poisson", times = "times", prior = prior)
-  expect_equal(jfaEval[["posterior"]][["hypotheses"]]$odds.h1, 1822.754944, tolerance = 0.001)
+  expect_equal(jfaEval[["posterior"]][["hypotheses"]]$odds.h1, 77.39047, tolerance = 0.001)
   prior <- auditPrior(method = "default", likelihood = "hypergeometric", N.units = 1000)
   jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "hypergeometric", times = "times", prior = prior, N.units = 1000)
-  expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf.h1, 113607.5198, tolerance = 0.001)
+  expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf.h1, 2103.842, tolerance = 0.001)
 })
 
 # jfa version 0.5.0

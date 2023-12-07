@@ -179,8 +179,7 @@ selection <- function(data,
     stop(paste0("'", order, "' is not a column in 'data'"))
   }
   if (method == "interval") {
-    valid_start <- (start >= 1) && (start %% 1 == 0)
-    stopifnot("'start' must be an integer >= 1" = valid_start)
+    stopifnot("'start' must be a positive value >= 1" = start >= 1)
   }
   interval <- NULL
   book_values <- NULL
@@ -244,7 +243,7 @@ selection <- function(data,
     if (start > interval) {
       stop(paste0("'start' must be <= the selectioninterval (", interval, ")"))
     }
-    selected_items <- start + 0:(size - 1) * interval
+    selected_items <- ceiling(start + 0:(size - 1) * interval)
     sample_items <- row_numbers[selected_items]
   } else if (method == "interval" && use_mus) {
     # Fixed interval monetary unit sampling

@@ -70,8 +70,21 @@ test_that(desc = "(id: f14-v0.5.1-t2) Test Sample sizes on page 23", {
   expect_equal(n, 104)
 })
 
+# Chapter 1
+test_that(desc = "(id: f14-v0.7.1-t3) Test chapter 1", {
+  testthat::skip_on_cran()
+  # Page 31
+  population <- data.frame(id = LETTERS[seq_len(5)], value = c(700, 750, 1000, 900, 6000))
+  sample <- selection(data = population, size = 2, units = "items", start = 1.2)$sample
+  expect_equal(sample[["id"]], c("B", "D"))
+  # Page 34
+  population <- data.frame(id = LETTERS[seq_len(10)], value = c(7, 3, 4, 9, 0, 1, 8, 2, 6, 5))
+  sample <- selection(data = population, size = 5, units = "values", values = "value", start = 2)$sample
+  expect_equal(sample[["id"]], c("A", "C", "D", "G", "I"))
+})
+
 # Chapter 5
-test_that(desc = "(id: f14-v0.5.1-t3) Test chapter 5", {
+test_that(desc = "(id: f14-v0.7.1-t4) Test chapter 5", {
   testthat::skip_on_cran()
   # Page 123
   # Example 1: book: n = 45, jfa: n = 45
