@@ -59,9 +59,9 @@ test_that(desc = "Test for extraction of all digits after the dot (with 0)", {
 # Last two digits
 
 test_that(desc = "Test for extraction of last two digits (without 0)", {
-  values <- c(0.00, 0.20, 1.23, 40.00, 54.04)
+  values <- c(0.00, 0.20, 1.23, 40.00, 54.040)
   digits <- .extract_digits(x = values, check = "lasttwo", include.zero = FALSE)
-  expect_equal(digits, c(NA, 20, 23, NA, 4))
+  expect_equal(digits, c(NA, 20, 23, 40, 40))
 })
 
 test_that(desc = "Test for extraction of last two digits (with 0)", {

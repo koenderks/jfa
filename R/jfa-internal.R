@@ -1133,7 +1133,7 @@
     if (include.zero) {
       digits <- as.numeric(substring(abs(x), 1, 1))
     } else {
-      digits <- as.numeric(substring(format(abs(x), scientific = TRUE), 1, 1))
+      digits <- trunc((10^((floor(log10(abs(x))) * -1))) * abs(x))
       digits[x == 0] <- NA
     }
   } else if (check == "firsttwo") {
@@ -1142,7 +1142,7 @@
       x <- gsub(x = x, pattern = "[.]", replacement = "")
       digits <- as.numeric(substring(x, 1, 2))
     } else {
-      digits <- as.numeric(substring(format(abs(x), scientific = TRUE), 1, 3)) * 10
+      digits <- trunc((10^((floor(log10(abs(x))) * -1) + 1)) * abs(x))
       digits[x == 0] <- NA
     }
   } else if (check == "before") {
@@ -1166,9 +1166,10 @@
       stringedX <- format(abs(x) %% 1, drop0trailing = FALSE)
       digits <- as.numeric(substring(stringedX, nchar(stringedX) - 1, nchar(stringedX)))
     } else {
-      stringedX <- format(abs(x) %% 1, drop0trailing = FALSE)
+      stringedX <- format(abs(x), scientific = FALSE, drop0trailing = TRUE)
       digits <- as.numeric(substring(stringedX, nchar(stringedX) - 1, nchar(stringedX)))
-      digits[x %% 2 == 0] <- NA
+      digits <- ifelse(digits <= 9 & digits >= 1, digits * 10, ifelse(digits < 1, digits * 100, digits))
+      digits[x == 0] <- NA
     }
   } else if (check == "last") {
     if (include.zero) {

@@ -6,7 +6,7 @@
 \usage{
 digit_test(
   x,
-  check = c("first", "last", "firsttwo"),
+  check = c("first", "last", "firsttwo", "lasttwo"),
   reference = "benford",
   conf.level = 0.95,
   prior = FALSE
@@ -16,7 +16,7 @@ digit_test(
 \item{x}{a numeric vector.}
 
 \item{check}{location of the digits to analyze. Can be \code{first},
-\code{firsttwo}, or \code{last}.}
+\code{last}, \code{firsttwo}, or \code{lasttwo}.}
 
 \item{reference}{which character string given the reference distribution for
 the digits, or a vector of probabilities for each digit. Can be

@@ -21,7 +21,7 @@
 #'
 #' @usage digit_test(
 #'   x,
-#'   check = c("first", "last", "firsttwo"),
+#'   check = c("first", "last", "firsttwo", "lasttwo"),
 #'   reference = "benford",
 #'   conf.level = 0.95,
 #'   prior = FALSE
@@ -29,7 +29,7 @@
 #'
 #' @param x          a numeric vector.
 #' @param check      location of the digits to analyze. Can be \code{first},
-#'   \code{firsttwo}, or \code{last}.
+#'   \code{last}, \code{firsttwo}, or \code{lasttwo}.
 #' @param reference  which character string given the reference distribution for
 #'   the digits, or a vector of probabilities for each digit. Can be
 #'   \code{benford} for Benford's law, \code{uniform} for the uniform
@@ -100,7 +100,7 @@
 #' @export
 
 digit_test <- function(x,
-                       check = c("first", "last", "firsttwo"),
+                       check = c("first", "last", "firsttwo", "lasttwo"),
                        reference = "benford",
                        conf.level = 0.95,
                        prior = FALSE) {
@@ -115,10 +115,10 @@ digit_test <- function(x,
   d <- d[!is.na(d)]
   n <- length(d)
   d_tab <- table(d)
-  dig <- if (check == "firsttwo") 10:99 else seq_len(9)
+  dig <- if (check %in% c("firsttwo", "lasttwo")) 10:99 else seq_len(9)
   obs <- rep(0, length(dig))
   d_included <- as.numeric(names(d_tab))
-  index <- if (check == "firsttwo") d_included - 9 else d_included
+  index <- if (check %in% c("firsttwo", "lasttwo")) d_included - 9 else d_included
   obs[index] <- as.numeric(d_tab)
   if (is.numeric(reference)) {
     stopifnot(
@@ -137,6 +137,9 @@ digit_test <- function(x,
   if (!bayesian) {
     statistic <- sum((obs - exp)^2 / exp)
     parameter <- length(dig) - 1
+    if (!(sum(exp >= 5) > 0.8 * length(dig) && all(exp > 0))) {
+      message("Expected counts < 5 in > 20 percent cells or < 1 in any cell, Chi-square test may be unreliable")
+    }
     pval <- stats::pchisq(q = statistic, df = parameter, lower.tail = FALSE)
     names(statistic) <- "X-squared"
     names(parameter) <- "df"
