@@ -34,7 +34,9 @@ test_that(desc = "Validate Derks et al. (2020)", {
 
 test_that(desc = "Validate uniform distribution", {
   testthat::skip_on_cran()
-  res <- digit_test(x = 1:9, check = "first", reference = "uniform")
+  expect_warning({
+    res <- digit_test(x = 1:9, check = "first", reference = "uniform")
+  })
   expect_equal(as.numeric(res$n), 9)
   expect_equal(as.numeric(res$statistic), 0)
   expect_equal(as.numeric(res$parameter), 8)
@@ -54,7 +56,9 @@ test_that(desc = "Validate benford.analysis package first digits", {
 test_that(desc = "Validate benford.analysis package first and second digits", {
   testthat::skip_on_cran()
   ba <- benford.analysis::benford(data = sinoForest$value, number.of.digits = 2)
-  dt <- digit_test(x = sinoForest$value, check = "firsttwo")
+  expect_warning({
+    dt <- digit_test(x = sinoForest$value, check = "firsttwo")
+  })
   expect_equal(as.numeric(ba$bfd$data.dist.freq), as.numeric(dt$observed))
   expect_equal(as.numeric(ba[["stats"]]$chisq$statistic), as.numeric(dt$statistic))
   expect_equal(as.numeric(ba[["stats"]]$chisq$parameter), as.numeric(dt$parameter))

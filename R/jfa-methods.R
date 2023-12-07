@@ -418,7 +418,7 @@ summary.jfaPlanning <- function(object, digits = getOption("digits"), ...) {
 #' @method plot jfaPlanning
 #' @export
 plot.jfaPlanning <- function(x, ...) {
-  if (!x[["sequential"]]) {
+  if (is.null(x[["sequential"]]) || isFALSE(x[["sequential"]])) {
     if (is.null(x[["prior"]])) {
       if (inherits(x, "jfaPlanning")) {
         likelihood <- x[["likelihood"]]
