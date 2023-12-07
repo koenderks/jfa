@@ -137,8 +137,8 @@ digit_test <- function(x,
   if (!bayesian) {
     statistic <- sum((obs - exp)^2 / exp)
     parameter <- length(dig) - 1
-    if (!(sum(exp >= 5) > 0.8 * length(dig) && all(exp > 0))) {
-      message("Expected counts < 5 in > 20 percent cells or < 1 in any cell, Chi-square test may be unreliable")
+    if (any(exp < 5)) {
+      warning("Some expected counts < 5, Chi-squared approximation may be incorrect")
     }
     pval <- stats::pchisq(q = statistic, df = parameter, lower.tail = FALSE)
     names(statistic) <- "X-squared"
@@ -181,7 +181,7 @@ digit_test <- function(x,
   result[["reference"]] <- reference
   result[["match"]] <- split(x = data.frame(row = seq_along(d), value = x), f = d)
   result[["estimates"]] <- data.frame(d = dig, n = obs, p.exp = p_exp, p.obs = obs / n)
-  if (!prior) {
+  if (isFALSE(prior)) {
     result[["estimates"]]$lb <- stats::qbeta((1 - conf.level) / 2, obs, 1 + n - obs)
     result[["estimates"]]$ub <- stats::qbeta(conf.level + (1 - conf.level) / 2, 1 + obs, n - obs)
     result[["estimates"]]$p.value <- apply(result[["estimates"]], 1, function(x, n) stats::binom.test(x[2], n, x[3], alternative = "two.sided")$p.value, n = n)

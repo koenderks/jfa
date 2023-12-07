@@ -979,6 +979,7 @@ plot.jfaDistr <- function(x, type = c("estimates", "robustness", "sequential"), 
       )))
   } else if (type == "robustness") {
     stopifnot('plot(..., type = "robustness") not supported for frequentist analyses with "prior = FALSE"' = !isFALSE(x[["prior"]]))
+    stopifnot('plot(..., type = "robustness") not supported for Bayesian analyses with custom prior' = length(x[["prior"]]) == 1)
     plotdata <- data.frame(x = seq(1, 101, 0.1), y = 1)
     for (i in seq_len(nrow(plotdata))) {
       plotdata[i, "y"] <- .multinomialBf(x[["observed"]], x[["estimates"]][["p.exp"]], rep(plotdata[i, "x"], length(x[["observed"]])))
@@ -986,6 +987,7 @@ plot.jfaDistr <- function(x, type = c("estimates", "robustness", "sequential"), 
     p <- .plotBfRobustness(x, plotdata)
   } else if (type == "sequential") {
     stopifnot('plot(..., type = "sequential") not supported for frequentist analyses with "prior = FALSE"' = !isFALSE(x[["prior"]]))
+    stopifnot('plot(..., type = "robustness") not supported for Bayesian analyses with custom prior' = length(x[["prior"]]) == 1)
     plotdata <- data.frame(
       x = rep(0:x[["n"]], 4), y = 1,
       type = rep(c("user prior", "uniform prior", "concentrated prior", "ultraconcentrated prior"), each = x[["n"]] + 1)
