@@ -68,7 +68,8 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.7.1" id="jfa-071">jfa 0.7.1<a class="anchor" aria-label="anchor" href="#jfa-071"></a></h2>
 <p><strong>New features</strong></p>
-<ul><li>Added inflated methods to evaluate taintings in the evaluation function via <code>method = "inflated.poisson"</code> and <code>method = "hurdle.beta"</code>. Since these methods rely on mcmc sampling, they can take any form of prior. They can also be fitted using maximum likelihood estimation with <code>prior = FALSE</code>.</li>
+<ul><li>Added the option to calculate a frequentist multi-stage sampling plan with the <code><a href="../reference/planning.html">planning()</a></code> function. This can be done by providing a vector of integers to the <code>expected</code> argument that specifies the intended sampling plan. For instance, <code>expected = c(1, 0)</code> gives the sample size for a two-stage sampling plan in which the auditor is allowed to extend the initial sample after finding one misstatement and is allowed to approve the population if the initial sample contains no misstatements.</li>
+<li>Added inflated methods to evaluate taintings in the evaluation function via <code>method = "inflated.poisson"</code> and <code>method = "hurdle.beta"</code>. Since these methods rely on mcmc sampling, they can take any form of prior. They can also be fitted using maximum likelihood estimation with <code>prior = FALSE</code>.</li>
 </ul><p><strong>Minor changes</strong></p>
 <ul><li>For all plotting functions, <code>type = "estimates"</code> is now the default option.</li>
 </ul><p><strong>Major changes</strong></p>

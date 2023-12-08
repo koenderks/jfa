@@ -233,8 +233,8 @@ multi-stage sampling plan, the auditor selects an initial sample of size
 tolerable number of misstatements (usually 0), the auditor can approve
 the population. However, if the sample contains more misstatements than
 the tolerable number, the auditor cannot approve the population. In such
-a scenario, the initial sample is supplemented with a second sample of
-<span class="math inline">\(n_2\)</span> items. If this additional
+a scenario, the initial sample is supplemented with a follow-up sample
+of <span class="math inline">\(n_2\)</span> items. If this additional
 sample contains a tolerable number of misstatements, the population can
 still be approved. If not, the population should either be rejected or a
 third sample of <span class="math inline">\(n_3\)</span> items should be
@@ -249,16 +249,16 @@ rejecting the hypothesis of material misstatement comprises:</p>
 <ul>
 <li>
 <span class="math inline">\(p(k \leq 0 | n_1,
-\theta_{max})\)</span>: The probability of finding <span class="math inline">\(k\)</span> = 0 misstatements in the first sample
+\theta_{max})\)</span>: The probability of finding <span class="math inline">\(k\)</span> = 0 misstatements in the initial sample
 of <span class="math inline">\(n_1\)</span> items; plus</li>
 <li>
 <span class="math inline">\(p(k = 1 | n_1, \theta_{max})\)</span>:
 The probability of finding <span class="math inline">\(k\)</span> = 1
-misstatement in the first sample of <span class="math inline">\(n_1\)</span> items; multiplied by</li>
+misstatement in the initial sample of <span class="math inline">\(n_1\)</span> items; multiplied by</li>
 <li>
 <span class="math inline">\(p(k \leq 0 | n_2,
-\theta_{max})\)</span>: The probability finding <span class="math inline">\(k\)</span> = 0 misstatements in the second sample
-of <span class="math inline">\(n_2\)</span> items.</li>
+\theta_{max})\)</span>: The probability finding <span class="math inline">\(k\)</span> = 0 misstatements in the follow-up
+sample of <span class="math inline">\(n_2\)</span> items.</li>
 </ul>
 <p>The sum of these probabilities should be less than or equal to the
 sampling risk <span class="math inline">\(\alpha\)</span>.</p>
@@ -407,7 +407,7 @@ observed.</p>
 <p><img src="sample-planning_files/figure-html/unnamed-chunk-11-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>The Bayesian approach to audit sampling uses the posterior
 distribution from the observed sample as a prior distribution for a
-potential second sample in an iterative manner. For this reason, this
+potential follow-up sample in an iterative manner. For this reason, this
 approach does not affect the sampling risk based on the number of tests
 <span class="citation">(Rouder, 2014)</span>. Hence, in the Bayesian
 framework, it is entirely appropriate to start sampling until there is
@@ -456,8 +456,8 @@ this case is <span class="math inline">\(n\)</span> = 96 items.</p>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Planning</span></span>
 <span><span class="co">## </span></span>
-<span><span class="co">## minimum sample size = 96 </span></span>
-<span><span class="co">## sample size obtained in 97 iterations via method 'binomial' + 'prior'</span></span></code></pre>
+<span><span class="co">## minimum sample size = 95 </span></span>
+<span><span class="co">## sample size obtained in 96 iterations via method 'binomial' + 'prior'</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
