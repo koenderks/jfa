@@ -1406,7 +1406,7 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior", "robustness",
     stopifnot('plot(..., type = "robustness") not supported for demographic parity' = x[["measure"]] != "dp")
     plotdata <- data.frame(x = seq(1, 101, 0.1), y = 0)
     for (i in seq_len(nrow(plotdata))) {
-      plotdata[i, "y"] <- .contingencyTableBf(x[["crossTab"]], plotdata[i, "x"], "columns")
+      plotdata[i, "y"] <- .contingencyTableBf(x[["crossTab"]], plotdata[i, "x"], "none")
     }
     p <- .plotBfRobustness(x, plotdata)
   } else if (type == "sequential") {
@@ -1459,7 +1459,7 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior", "robustness",
             "3" = 10,
             "4" = 50
           )
-          plotdata[loc, "y"] <- .contingencyTableBf(crossTab, prior_param, "columns")
+          plotdata[loc, "y"] <- .contingencyTableBf(crossTab, prior_param, "none")
           loc <- loc + 1
         }
       } else {
