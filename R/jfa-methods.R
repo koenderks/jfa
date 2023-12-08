@@ -524,12 +524,12 @@ plot.jfaPlanning <- function(x, ...) {
     for (i in seq_along(n1)) {
       for (n in seq_len(100000)) {
         p <- switch(x[["likelihood"]],
-          "poisson" = stats::ppois(k_1_approve, lambda = n1[i] * x[["materiality"]]) + stats::dpois(k_1_disapprove, lambda = n1[i] * x[["materiality"]]) * stats::ppois(k_2_approve, lambda = n * x[["materiality"]]),
-          "binomial" = stats::pbinom(k_1_approve, size = n1[i], prob = x[["materiality"]]) + stats::dbinom(k_1_disapprove, size = n1[i], prob = x[["materiality"]]) * stats::pbinom(k_2_approve, size = n, prob = x[["materiality"]]),
-          "hypergeometric" = stats::phyper(k_1_approve, m = x[["K"]], n = x[["N.units"]] - x[["K"]], k = n1[i]) + stats::dhyper(k_1_disapprove, m = x[["K"]], n = x[["N.units"]] - x[["K"]], k = n1[i]) * stats::phyper(k_2_approve, m = x[["K"]], n = x[["N.units"]] - x[["K"]], k = n)
+          "poisson" = stats::ppois(k_1_approve, lambda = n1[i] * x[["materiality"]]) + stats::dpois(k_1_disapprove, lambda = n1[i] * x[["materiality"]]) * stats::ppois(k_2_approve, lambda = (n - 1) * x[["materiality"]]),
+          "binomial" = stats::pbinom(k_1_approve, size = n1[i], prob = x[["materiality"]]) + stats::dbinom(k_1_disapprove, size = n1[i], prob = x[["materiality"]]) * stats::pbinom(k_2_approve, size = (n - 1), prob = x[["materiality"]]),
+          "hypergeometric" = stats::phyper(k_1_approve, m = x[["K"]], n = x[["N.units"]] - x[["K"]], k = n1[i]) + stats::dhyper(k_1_disapprove, m = x[["K"]], n = x[["N.units"]] - x[["K"]], k = n1[i]) * stats::phyper(k_2_approve, m = x[["K"]], n = x[["N.units"]] - x[["K"]], k = (n - 1))
         )
         if (p < 1 - x[["conf.level"]]) {
-          n2[i] <- n
+          n2[i] <- (n - 1)
           break
         }
       }
