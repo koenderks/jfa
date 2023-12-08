@@ -535,19 +535,24 @@ plot.jfaPlanning <- function(x, ...) {
       }
     }
     lines <- seq(1, length(n1), length.out = 5)
-    xBreaks <- pretty(n1, min.n = 4)
-    yBreaks <- pretty(n2, min.n = 4)
+    xBreaks <- pretty(c(n1, x[["n_staged"]]), min.n = 4)
+    yBreaks <- pretty(c(n2, x[["n_staged"]]), min.n = 4)
     n1_lines <- n1[lines]
     n2_lines <- n2[lines]
     p <- ggplot2::ggplot(data.frame(x = n1, y = n2), ggplot2::aes(x = x, y = y)) +
-      ggplot2::scale_x_continuous(name = "Initial sample size", breaks = xBreaks, limits = range(xBreaks)) +
-      ggplot2::scale_y_continuous(name = "Follow-up sample size", breaks = yBreaks, limits = range(yBreaks))
+      ggplot2::scale_x_continuous(name = parse(text = "Initial~sample~size~n[1]"), breaks = xBreaks, limits = range(xBreaks)) +
+      ggplot2::scale_y_continuous(name = parse(text = "Follow*'-'*up~sample~size~n[2]"), breaks = yBreaks, limits = range(yBreaks))
     for (i in seq_along(n1_lines)) {
       p <- p + ggplot2::geom_segment(x = n1_lines[i], xend = n1_lines[i], y = -Inf, yend = n2_lines[i], color = "lightgray", linewidth = 0.25) +
         ggplot2::geom_segment(x = -Inf, xend = n1_lines[i], y = n2_lines[i], yend = n2_lines[i], color = "lightgray", linewidth = 0.25) +
         ggplot2::annotate(geom = "text", x = n1_lines[i], y = n2_lines[i], label = sum(n1_lines[i] + n2_lines[i]), hjust = -0.25, vjust = 0, size = 3)
     }
-    p <- p + ggplot2::geom_line() +
+    p <- p + ggplot2::geom_segment(x = x[["n_staged"]], xend = x[["n_staged"]], y = -Inf, yend = x[["n_staged"]], color = "red", linewidth = 0.25) +
+      ggplot2::geom_segment(x = -Inf, xend = x[["n_staged"]], y = x[["n_staged"]], yend = x[["n_staged"]], color = "red", linewidth = 0.25) +
+      ggplot2::annotate(geom = "text", x = x[["n_staged"]], y = x[["n_staged"]], label = paste0(x[["n"]], "~(n[1] == n[2])"), hjust = -0.05, vjust = 0, size = 3, col = "red", parse = TRUE) +
+      ggplot2::geom_line() +
+      ggplot2::geom_point(data = data.frame(x = x[["n_staged"]], y = x[["n_staged"]]), fill = "red", shape = 21) +
+      ggplot2::geom_point(data = data.frame(x = n1_lines, y = n2_lines), ggplot2::aes(x = x, y = y), fill = "lightgray", shape = 21) +
       ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks)) +
       ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf)
     p <- .theme_jfa(p)
