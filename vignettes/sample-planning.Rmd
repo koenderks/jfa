@@ -199,46 +199,17 @@ a sample size extension in the classical approach.
 planning(materiality = 0.03, likelihood = "binomial", expected = 1)
 ```
 
-Note that the sample size per stage $n_s$ = 103 is based on $n_1$ = $n_2$ but
-that this does not have to be the case. To visualize the balance between the
-initial sample and the follow-up sample, we can use the `plot()` function. The
-total sample size is specified in text in the figure.
+Note that the sample size per stage $n_s$ = 103 is determined based on $n_s$ =
+$n_1$ = $n_2$. However, it is important to note that this equality is not
+mandatory. If the auditor opts for an initial sample size larger than $n_s$,
+they can decrease the size of the follow-up sample. To illustrate this tradeoff,
+you can use the `plot()` function. The resulting figure includes textual
+information specifying the total sample size under the equality constrained
+multi-stage sampling plan (red) and under multiple choices for the initial
+sample size $n_1$.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(multiplan)
-```
-
-As another example, consider a three-stage sampling plan where the auditor plans
-to extend the sample after finding $k$ = 1 misstatement in the first stage,
-extend further if they find $k$ = 1 misstatement in the second stage, and still
-be able to approve the population if they find $k$ = 0 misstatements in the
-third stage. The required sample size in each of the three stages is $n_s$ =
-208.
-
-```{r}
-planning(materiality = 0.03, likelihood = "binomial", expected = c(3, 1, 0))
-```
-
-This can be confirmed by ensuring that the probability of incorrectly rejecting
-the null hypothesis of the population containing three percent misstatement is
-below the acceptable sampling risk $\alpha$ = 0.05.
-
-```{r}
-p_k2_n1 <- pbinom(q = 2, size = 208, prob = 0.03)
-p_k3_n1 <- dbinom(x = 3, size = 208, prob = 0.03)
-p_k0_n2 <- pbinom(q = 0, size = 208, prob = 0.03)
-p_k1_n2 <- dbinom(x = 1, size = 208, prob = 0.03)
-p_k0_n3 <- pbinom(q = 0, size = 208, prob = 0.03)
-p_k2_n1 + p_k3_n1 * p_k0_n2 + p_k3_n1 * p_k1_n2 * p_k0_n3 < 0.05
-```
-
-Unlike the previous example, the minimum sample size per stage, $n_s$ = 208, is
-not larger than the minimum sample size for the first stage if the auditor
-decides to use a single-stage sampling plan expecting $k$ = 2 misstatements,
-which is also $n$ = 208.
-
-```{r}
-planning(materiality = 0.03, likelihood = "binomial", expected = 2)
 ```
 
 ### Estimation
