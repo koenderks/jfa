@@ -1,7 +1,7 @@
 Package: jfa
 Title: Statistical Methods for Auditing
 Version: 0.7.1
-Date: 2023-12-07
+Date: 2023-12-08
 Authors@R:
     person(given = "Koen",
            family = "Derks",

@@ -124,7 +124,7 @@ sampling plan, the auditor selects an initial sample of size $n_1$. If this
 sample contains a tolerable number of misstatements (usually 0), the auditor can
 approve the population. However, if the sample contains more misstatements than
 the tolerable number, the auditor cannot approve the population. In such a
-scenario, the initial sample is supplemented with a second sample of $n_2$
+scenario, the initial sample is supplemented with a follow-up sample of $n_2$
 items. If this additional sample contains a tolerable number of misstatements,
 the population can still be approved. If not, the population should either be
 rejected or a third sample of $n_3$ items should be added.
@@ -136,11 +136,11 @@ extending the sample if $k$ = 1 misstatement is discovered, then the probability
 of erroneously rejecting the hypothesis of material misstatement comprises:
 
 - $p(k \leq 0 | n_1, \theta_{max})$: The probability of finding $k$ = 0
-  misstatements in the first sample of $n_1$ items; plus
+  misstatements in the initial sample of $n_1$ items; plus
 - $p(k = 1 | n_1, \theta_{max})$: The probability of finding $k$ = 1
-  misstatement in the first sample of $n_1$ items; multiplied by
+  misstatement in the initial sample of $n_1$ items; multiplied by
 - $p(k \leq 0 | n_2, \theta_{max})$: The probability finding $k$ = 0
-  misstatements in the second sample of $n_2$ items.
+  misstatements in the follow-up sample of $n_2$ items.
 
 The sum of these probabilities should be less than or equal to the sampling risk
 $\alpha$.
@@ -261,7 +261,7 @@ plot(plan)
 ```
 
 The Bayesian approach to audit sampling uses the posterior distribution from the
-observed sample as a prior distribution for a potential second sample in an
+observed sample as a prior distribution for a potential follow-up sample in an
 iterative manner. For this reason, this approach does not affect the sampling
 risk based on the number of tests [@rouder_2014]. Hence, in the Bayesian
 framework, it is entirely appropriate to start sampling until there is enough

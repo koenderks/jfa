@@ -2,6 +2,7 @@
 
 **New features**
 
+- Added the option to calculate a frequentist multi-stage sampling plan with the `planning()` function. This can be done by providing a vector of integers to the `expected` argument that specifies the intended sampling plan. For instance, `expected = c(1, 0)` gives the sample size for a two-stage sampling plan in which the auditor is allowed to extend the initial sample after finding one misstatement and is allowed to approve the population if the initial sample contains no misstatements.
 - Added inflated methods to evaluate taintings in the evaluation function via `method = "inflated.poisson"` and `method = "hurdle.beta"`. Since these methods rely on mcmc sampling, they can take any form of prior. They can also be fitted using maximum likelihood estimation with `prior = FALSE`.
 
 **Minor changes**
