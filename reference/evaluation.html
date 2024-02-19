@@ -85,7 +85,7 @@ an object of class <code>jfaEvaluation</code> that can be used with associated
 <span>  materiality <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    <span class="st">"poisson"</span>, <span class="st">"binomial"</span>, <span class="st">"hypergeometric"</span>,</span>
-<span>    <span class="st">"inflated.poisson"</span>, <span class="st">"hurdle.beta"</span>, <span class="st">"hurdle.beta2"</span>,</span>
+<span>    <span class="st">"inflated.poisson"</span>, <span class="st">"hurdle.beta"</span>,</span>
 <span>    <span class="st">"stringer.poisson"</span>, <span class="st">"stringer.binomial"</span>, <span class="st">"stringer.hypergeometric"</span>,</span>
 <span>    <span class="st">"stringer.meikle"</span>, <span class="st">"stringer.lta"</span>, <span class="st">"stringer.pvz"</span>, <span class="st">"stringer"</span>,</span>
 <span>    <span class="st">"rohrbach"</span>, <span class="st">"moment"</span>, <span class="st">"coxsnell"</span>, <span class="st">"mpu"</span>, <span class="st">"pps"</span>,</span>
@@ -326,9 +326,6 @@ evaluation using the specified prior.</p></dd>
     explicit probability of a taint being zero, one, or in between. If
     <code>prior = TRUE</code>, this setup performs Bayesian evaluation using a
     <em>beta</em> prior.</p></li>
-<li><p><code>hurdle.beta2</code>:            Hurdle beta model incorporating the
-    explicit probability of a taint being zero. If <code>prior = TRUE</code>, this
-    setup performs Bayesian evaluation using a <em>beta</em> prior.</p></li>
 <li><p><code>stringer.poisson</code>:        Evaluates the sample with the Stringer
    bound using the Poisson distribution.</p></li>
 <li><p><code>stringer.binomial</code>:       Evaluates the sample with the Stringer
