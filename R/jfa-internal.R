@@ -567,10 +567,7 @@
 }
 
 .mcmc_twopart_cp <- function(likelihood, n.obs, taints, diff, N.items, N.units, prior) {
-  if (likelihood == "hurdle.beta" || likelihood == "hurdle.beta2") {
-    if (likelihood == "hurdle.beta2") {
-      taints[taints == 1] <- 1 - 1e-6
-    }
+  if (likelihood == "hurdle.beta") {
     data <- list(
       n = n.obs,
       y = taints,
@@ -587,13 +584,8 @@
       poisson_likelihood = as.numeric(likelihood == "poisson"),
       exponential_prior = as.numeric(likelihood == "exponential")
     )
-    if (likelihood == "hurdle.beta") {
-      model <- stanmodels[["beta_zero_one"]]
-      pars <- c("phi", "nu", "prob")
-    } else {
-      model <- stanmodels[["beta_zero"]]
-      pars <- c("phi", "nu", "p_error")
-    }
+    model <- stanmodels[["beta_zero_one"]]
+    pars <- c("phi", "nu", "prob")
   } else if (likelihood == "inflated.poisson") {
     data <- list(
       n = n.obs,
@@ -738,10 +730,7 @@
   } else {
     num_draws <- getOption("mc.iterations", 2000)
   }
-  if (likelihood == "hurdle.beta" || likelihood == "hurdle.beta2") {
-    if (likelihood == "hurdle.beta2") {
-      taints[taints == 1] <- 1 - 1e-6
-    }
+  if (likelihood == "hurdle.beta") {
     data <- list(
       n = n.obs,
       y = taints,
@@ -758,11 +747,7 @@
       poisson_likelihood = 0,
       exponential_prior = 0
     )
-    if (likelihood == "hurdle.beta") {
-      model <- stanmodels[["beta_zero_one"]]
-    } else {
-      model <- stanmodels[["beta_zero"]]
-    }
+    model <- stanmodels[["beta_zero_one"]]
   } else if (likelihood == "inflated.poisson") {
     data <- list(
       n = n.obs,
