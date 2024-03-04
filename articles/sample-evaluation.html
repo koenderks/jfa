@@ -94,7 +94,7 @@
       <h1 data-toc-skip>Evaluating statistical audit samples</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2024-02-19</h4>
+            <h4 data-toc-skip class="date">2024-03-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/sample-evaluation.Rmd" class="external-link"><code>vignettes/sample-evaluation.Rmd</code></a></small>
       <div class="hidden name"><code>sample-evaluation.Rmd</code></div>
@@ -496,33 +496,33 @@ make the results reproducible.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
 <span><span class="co">##   Posterior distribution:         Nonparametric </span></span>
-<span><span class="co">##   Most likely error:              0.0428 </span></span>
-<span><span class="co">##   95 percent credible interval:   [0.032852, 0.05307] </span></span>
-<span><span class="co">##   Precision:                      0.01027 </span></span>
-<span><span class="co">##   BF₁₀:                            0.017347 </span></span>
+<span><span class="co">##   Most likely error:              0.0385 </span></span>
+<span><span class="co">##   95 percent credible interval:   [0.032694, 0.053169] </span></span>
+<span><span class="co">##   Precision:                      0.014669 </span></span>
+<span><span class="co">##   BF₁₀:                            0.057895 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Strata (20):</span></span>
 <span><span class="co">##          N   n  x  t    mle      lb      ub precision</span></span>
-<span><span class="co">##   1   5000 300 21 21 0.0618 0.03881 0.08628   0.02448</span></span>
-<span><span class="co">##   2   5000 300 16 16 0.0475 0.03183 0.07049   0.02299</span></span>
-<span><span class="co">##   3   5000 300 15 15 0.0438 0.03029 0.06940   0.02560</span></span>
-<span><span class="co">##   4   5000 300 14 14 0.0410 0.02849 0.06666   0.02566</span></span>
-<span><span class="co">##   5   5000 300 16 16 0.0472 0.03201 0.07361   0.02641</span></span>
-<span><span class="co">##   6   5000 150  5  5 0.0330 0.01926 0.06343   0.03043</span></span>
-<span><span class="co">##   7   5000 150  4  4 0.0393 0.01657 0.05893   0.01963</span></span>
-<span><span class="co">##   8   5000 150  3  3 0.0318 0.01356 0.05500   0.02320</span></span>
-<span><span class="co">##   9   5000 150  4  4 0.0393 0.01625 0.05818   0.01888</span></span>
-<span><span class="co">##   10  5000 150  5  5 0.0329 0.01964 0.06277   0.02987</span></span>
-<span><span class="co">##   11 10000  50  2  2 0.0427 0.01849 0.07621   0.03351</span></span>
-<span><span class="co">##   12 10000  50  3  3 0.0387 0.02282 0.08545   0.04675</span></span>
-<span><span class="co">##   13 10000  50  2  2 0.0444 0.01820 0.07629   0.03189</span></span>
-<span><span class="co">##   14 10000  50  1  1 0.0367 0.01386 0.06887   0.03217</span></span>
-<span><span class="co">##   15 10000  50  0  0 0.0277 0.00940 0.06276   0.03506</span></span>
-<span><span class="co">##   16 10000  15  0  0 0.0457 0.01254 0.07686   0.03116</span></span>
-<span><span class="co">##   17 10000  15  0  0 0.0395 0.01296 0.07681   0.03731</span></span>
-<span><span class="co">##   18 10000  15  0  0 0.0386 0.01318 0.07479   0.03619</span></span>
-<span><span class="co">##   19 10000  15  1  1 0.0456 0.01861 0.08706   0.04146</span></span>
-<span><span class="co">##   20  4000  15  3  3 0.0450 0.02798 0.10985   0.06485</span></span></code></pre>
+<span><span class="co">##   1   5000 300 21 21 0.0529 0.03982 0.08621   0.03331</span></span>
+<span><span class="co">##   2   5000 300 16 16 0.0465 0.03162 0.07268   0.02618</span></span>
+<span><span class="co">##   3   5000 300 15 15 0.0488 0.02986 0.06897   0.02017</span></span>
+<span><span class="co">##   4   5000 300 14 14 0.0462 0.02843 0.06612   0.01992</span></span>
+<span><span class="co">##   5   5000 300 16 16 0.0532 0.03229 0.07215   0.01895</span></span>
+<span><span class="co">##   6   5000 150  5  5 0.0326 0.01847 0.06264   0.03004</span></span>
+<span><span class="co">##   7   5000 150  4  4 0.0335 0.01549 0.05911   0.02561</span></span>
+<span><span class="co">##   8   5000 150  3  3 0.0304 0.01304 0.05529   0.02489</span></span>
+<span><span class="co">##   9   5000 150  4  4 0.0368 0.01612 0.05887   0.02207</span></span>
+<span><span class="co">##   10  5000 150  5  5 0.0342 0.01867 0.06229   0.02809</span></span>
+<span><span class="co">##   11 10000  50  2  2 0.0425 0.01692 0.07835   0.03585</span></span>
+<span><span class="co">##   12 10000  50  3  3 0.0450 0.02180 0.08537   0.04037</span></span>
+<span><span class="co">##   13 10000  50  2  2 0.0427 0.01751 0.08016   0.03746</span></span>
+<span><span class="co">##   14 10000  50  1  1 0.0376 0.01316 0.06864   0.03104</span></span>
+<span><span class="co">##   15 10000  50  0  0 0.0381 0.00795 0.06155   0.02345</span></span>
+<span><span class="co">##   16 10000  15  0  0 0.0358 0.01067 0.07687   0.04107</span></span>
+<span><span class="co">##   17 10000  15  0  0 0.0365 0.01090 0.07775   0.04125</span></span>
+<span><span class="co">##   18 10000  15  0  0 0.0432 0.01119 0.07747   0.03427</span></span>
+<span><span class="co">##   19 10000  15  1  1 0.0399 0.01781 0.08943   0.04953</span></span>
+<span><span class="co">##   20  4000  15  3  3 0.0494 0.02699 0.11578   0.06638</span></span></code></pre>
 <p>In this scenario, the output indicates that the estimated
 misstatement in the population is 4.16 percent, with the 95 percent
 credible interval extending from 3.30 percent to 5.29 percent. Note that
@@ -749,7 +749,7 @@ function.</p>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
-<div id="refs" class="references csl-bib-body hanging-indent" line-spacing="2">
+<div id="refs" class="references csl-bib-body hanging-indent" entry-spacing="0" line-spacing="2">
 <div id="ref-derks_2021" class="csl-entry">
 Derks, K., Swart, J. de, Batenburg, P. van, Wagenmakers, E.-J., &amp;
 Wetzels, R. (2021). Priors in a <span>B</span>ayesian audit: How

@@ -1,4 +1,4 @@
-pandoc: 2.19.2
+pandoc: 3.1.11
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
@@ -15,7 +15,7 @@ articles:
   sample-planning: sample-planning.html
   sample-selection: sample-selection.html
   sampling-workflow: sampling-workflow.html
-last_built: 2024-02-19T16:55Z
+last_built: 2024-03-04T09:08Z
 urls:
   reference: https://koenderks.github.io/jfa/reference
   article: https://koenderks.github.io/jfa/articles
