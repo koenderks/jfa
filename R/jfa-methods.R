@@ -1017,7 +1017,7 @@ plot.jfaDistr <- function(x, type = c("estimates", "robustness", "sequential"), 
       ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yBreaks)) +
       ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf) +
       ggplot2::labs(fill = "") +
-      ggplot2::theme(legend.text = ggplot2::element_text(margin = ggplot2::margin(l = -5, r = 50))) +
+      ggplot2::theme(legend.text = ggplot2::element_text(margin = ggplot2::margin(l = 0, r = 25))) +
       ggplot2::guides(fill = ggplot2::guide_legend(override.aes = list(
         size = sizes, shape = shapes, fill = fills, color = "black", alpha = 1
       )))
