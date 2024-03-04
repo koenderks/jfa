@@ -38,7 +38,7 @@ preferred-citation:
 repository: https://CRAN.R-project.org/package=jfa
 repository-code: https://github.com/koenderks/jfa
 url: https://koenderks.github.io/jfa/
-date-released: '2024-02-19'
+date-released: '2024-03-04'
 contact:
 - family-names: Derks
   given-names: Koen
@@ -131,6 +131,9 @@ references:
   - family-names: Dunnington
     given-names: Dewey
     orcid: https://orcid.org/0000-0002-9415-4582
+  - family-names: van den Brand
+    given-names: Teun
+    orcid: https://orcid.org/0000-0002-9335-7468
   year: '2024'
   version: '>= 3.4.2'
 - type: software
