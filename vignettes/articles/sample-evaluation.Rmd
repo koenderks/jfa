@@ -14,7 +14,6 @@ vignette: >
 
 ```{r, include = FALSE}
 library(jfa)
-options(mc.iterations = 10000, mc.warmup = 5000)
 ```
 
 ## Introduction
@@ -247,6 +246,10 @@ plot(result_np, type = "posterior")
 
 #### Approach 2: Partial pooling
 
+```{r, include = FALSE}
+options(mc.iterations = 10000, mc.warmup = 2000)
+```
+
 The partial pooling approach (`pooling = "partial"`) presumes both differences
 and similarities between strata. This enables the auditor to share information
 among the strata to minimize uncertainty in the population estimate. The
@@ -397,6 +400,10 @@ plot(result, type = "estimates")
 ```
 
 #### Bayesian approach
+
+```{r, include = FALSE}
+options(mc.iterations = 15000, mc.warmup = 5000)
+```
 
 Bayesian inference can enhance the estimates obtained from the classical
 approach by pooling information across strata where feasible. The following
