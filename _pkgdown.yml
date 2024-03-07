@@ -40,28 +40,28 @@ articles:
       evaluating an audit sample compliant with international standards on
       auditing using the **jfa** package.
     contents:
-      - articles/audit_sampling
-      - articles/creating_prior
-      - articles/sample_planning
-      - articles/sample_selection
-      - articles/sample_evaluation
-      - articles/sample_evaluation_partial
-      - articles/sampling_workflow
-      - articles/bayesian_sampling_workflow
+      - articles/audit-sampling
+      - articles/creating-prior
+      - articles/sample-planning
+      - articles/sample-selection
+      - articles/sample-evaluation
+      - articles/sample-evaluation-partial
+      - articles/sampling-workflow
+      - articles/bayesian-sampling-workflow
   - title: Data Auditing
     desc: >
       These vignettes provide an introduction to data auditing using the **jfa**
       package.
     contents:
-      - articles/data_auditing
-      - articles/digit_analysis
+      - articles/data-auditing
+      - articles/digit-analysis
   - title: Algorithm Auditing
     desc: >
       These vignettes provide an introduction to algorithm auditing using the **jfa**
       package.
     contents:
-      - articles/algorithm_auditing
-      - articles/model_fairness
+      - articles/algorithm-auditing
+      - articles/model-fairness
 
 reference:
   - title: Overview
