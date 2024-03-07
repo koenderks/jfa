@@ -1,19 +1,14 @@
 ---
-title: "Walkthrough of the classical audit sampling workflow"
+title: Walkthrough of the Bayesian audit sampling workflow
 author: Koen Derks
-date: "`r Sys.Date()`"
 output: 
-  rmarkdown::html_vignette:
+  html_document:
     toc: true
     toc_depth: 3
 bibliography: references.bib
 csl: apa.csl
 vignette: >
-  %\VignetteIndexEntry{Classical sampling workflow}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteDepends{jfa}
-  %\VignetteKeywords{audit, classical, sampling, workflow}
-  %\VignettePackage{jfa}
   %\VignetteEncoding{UTF-8}
 ---
 
@@ -23,10 +18,10 @@ library(jfa)
 
 ## Introduction
 
-Welcome to the 'Walkthrough of the classical audit sampling workflow' vignette
+Welcome to the 'Walkthrough of the Bayesian audit sampling workflow' vignette
 of the **jfa** package. This page aims to demonstrate how the package can assist
 auditors in the standard audit sampling workflow (hereafter referred to as
-"audit workflow"). 
+"audit workflow") in a Bayesian fashion.
 
 In this audit workflow example, we will be looking at a hypothetical scenario
 involving BuildIt, a fictitious construction company based in the United States.
@@ -132,25 +127,55 @@ cr <- 0.6 # Control risk = 60%
 
 <p align='center'><img src='planning.png' alt='planning' width='100%'></p>
 
-In a frequentist analysis applying the audit risk model, the auditor treats the
-increased detection risk as their level of uncertainty. This implies that the
-auditor promptly uses the adjusted confidence level `c.adj` to compute the
-sample size via the `planning()` function.
+In a Bayesian audit, the initial step for the auditor is to define the prior
+distribution that aligns with their assessment of the inherent risk and control
+risk. They can create a prior distribution that integrates the information from
+the risk assessments in the ARM using the `auditPrior()` function. For more
+details on how this is accomplished, we refer to @derks_2021.
 
 ```{r}
-c.adj <- 1 - ((1 - confidence) / (ir * cr))
-stage1 <- planning(materiality = materiality, expected = expected, conf.level = c.adj)
+prior <- auditPrior(
+  method = "arm", ir = ir, cr = cr,
+  likelihood = "poisson", materiality = materiality, expected = expected
+)
 ```
 
-The auditor can review the outcome of their planning procedure using the
-`summary()` function. The results indicate that the auditor needs to select a
-sample of $n$ = 178 items. This ensures that if a maximum of $k$ = 4.45
-misstatements are found, they can assert with 91.66 percent confidence that the
-misstatement in BuildIt's population is less than the performance materiality of
-five percent.
+The prior distribution can be visualized via the `plot()` function.
+
+```{r fig.align="center", fig.height=4, fig.width=6}
+plot(prior)
+```
+
+With the prior distribution now defined, the auditor can determine the necessary
+sample size for their intended inference using the `planning()` function. They
+use the `prior` object as an input for the `planning()` function.
+
+```{r}
+stage1 <- planning(
+  materiality = materiality, expected = expected,
+  conf.level = confidence, prior = prior
+)
+```
+
+The auditor can then examine the outcome of their planning procedure using the
+`summary()` function. The results indicate that, given the prior distribution,
+the auditor needs to select a sample of $n$ = 178 items. This ensures that if a
+maximum of $k$ = 4.45 misstatements are found, they can assert with 95 percent
+confidence that the misstatement in BuildIt's financial statements is less than
+the performance materiality of five percent.
 
 ```{r}
 summary(stage1)
+```
+
+The auditor can examine how the prior distribution compares to the expected
+posterior distribution by using the `plot()` function. The expected posterior
+distribution is the posterior distribution that would result if the auditor were
+to actually observe a sample of $n$ = 178 items, with $k$ = 4.45 of them being
+misstated.
+
+```{r fig.align="center", fig.height=4, fig.width=6}
+plot(stage1)
 ```
 
 ## Stage 2: Selecting a sample
@@ -218,29 +243,39 @@ already provided in the `auditValue` column of the data set.
 <p align='center'><img src='evaluation.png' alt='evaluation' width='100%'></p>
 
 With the annotated sample, the auditor can perform inference about the
-misstatement in the population using the `evaluation()` function. 
+misstatement in the population using the `evaluation()` function. By supplying
+the `prior` object to the function, it automatically sets `method = "binomial"`
+to align with the prior distribution.
 
 ```{r}
 stage4 <- evaluation(
-  materiality = materiality, conf.level = c.adj, data = sample,
-  values = "bookValue", values.audit = "auditValue"
+  materiality = materiality, conf.level = confidence, data = sample,
+  values = "bookValue", values.audit = "auditValue", prior = prior
 )
 ```
 
-The auditor can review the results of their inference using the `summary()`
-function. The resulting upper bound is 1.396 percent with a confidence level of
-91.66 percent, which is below the performance materiality of five percent.
+The outcomes of their inference can be examined by the auditor using the
+`summary()` function. The upper bound on the population misstatement is 2.278
+percent, which is below the performance materiality of five percent. Hence, the
+auditor can conclude that there is a 95 percent probability that the
+misstatement in BuildIt's population is less than 2.278 percent.
 
 ```{r}
 summary(stage4)
 ```
 
+The prior and posterior distribution can be inspected using the `plot()`
+function.
+
+```{r fig.align="center", fig.height=4, fig.width=6}
+plot(stage4, type = "posterior")
+```
+
 ## Conclusion
 
-Given that the 91.66 percent upper confidence bound on the misstatement in the
-population is below the performance materiality, the auditor has gathered
-sufficient evidence to conclude that the population does not contain material
-misstatement.
+As the 95 percent upper credible bound on the misstatement in the population is
+lower than the performance materiality, the auditor has gathered sufficient
+evidence to conclude that the population does not contain material misstatement.
 
 ## References
 <div id="refs"></div>

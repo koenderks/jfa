@@ -1,19 +1,14 @@
 ---
 title: "Audit sampling: Get started"
 author: Koen Derks
-date: "`r Sys.Date()`"
-output: 
-  rmarkdown::html_vignette:
+output:
+  html_document:
     toc: true
     toc_depth: 3
 bibliography: references.bib
 csl: apa.csl
 vignette: >
-  %\VignetteIndexEntry{Audit sampling: Get started}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteDepends{jfa}
-  %\VignetteKeywords{audit, classical, sampling, workflow}
-  %\VignettePackage{jfa}
   %\VignetteEncoding{UTF-8}
 nocite: |
   @iaasb_2018, @prompers_2019, @manitz_2021
@@ -29,9 +24,10 @@ Welcome to the 'Audit sampling' vignette of the **jfa** package. This page
 provides a straightforward guide to the functions in the package that are
 designed to facilitate statistical audit sampling. Specifically, these functions
 implement standard audit sampling techniques to calculate sample sizes, select
-items from a population, and evaluate the misstatement in a data sample. The
-package allows enables to specify a prior probability distribution to conduct
-Bayesian audit sampling using these functions.
+items from a population, and evaluate the misstatement in a data sample
+compliant with international standards on auditing [@iaasb_2018; @aicpa_2021;
+@pcaob_2020]. The package allows enables to specify a prior probability
+distribution to conduct Bayesian audit sampling using these functions.
 
 ## Functions and intended usage
 

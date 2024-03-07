@@ -14,3 +14,4 @@ jfaRelease.R
 ^CITATION\.cff$
 ^\.github$
 .lintr
+^vignettes/articles$

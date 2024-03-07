@@ -1,25 +1,18 @@
 ---
-title: "Get started with the jfa package"
+title: Get started with the jfa package
 author: Koen Derks
-date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: true
     toc_depth: 3
-bibliography: references.bib
-csl: apa.csl
 vignette: >
   %\VignetteIndexEntry{Get started with the jfa package}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteDepends{jfa}
-  %\VignetteKeywords{audit, evaluation, jfa, planning, sampling}
+  %\VignetteKeywords{audit, jfa}
   %\VignettePackage{jfa}
   %\VignetteEncoding{UTF-8}
 ---
-
-```{r, include = FALSE}
-library(jfa)
-```
 
 ## Introduction
 
@@ -32,17 +25,16 @@ vignettes accompanying each of these three subjects.
 
 Firstly, **jfa** facilitates statistical audit sampling. That is, the package
 provides functions for planning, performing, and evaluating an audit sample
-compliant with international standards on auditing [@iaasb_2018; @aicpa_2021;
-@pcaob_2020].
+compliant with international standards on auditing.
 
-- [Audit sampling: Get started](https://koenderks.github.io/jfa/articles/audit-sampling.html)
-- [Creating a prior distribution for audit sampling](https://koenderks.github.io/jfa/articles/creating-prior.html)
-- [Planning statistical audit samples](https://koenderks.github.io/jfa/articles/sample-planning.html)
-- [Selecting statistical audit samples](https://koenderks.github.io/jfa/articles/sample-selection.html)
-- [Evaluating statistical audit samples](https://koenderks.github.io/jfa/articles/sample-evaluation.html)
-- [Evaluating audit samples with partial misstatements](https://koenderks.github.io/jfa/articles/sample-evaluation-partial.html)
-- [Walkthrough of the classical audit sampling workflow](https://koenderks.github.io/jfa/articles/sampling-workflow.html)
-- [Walkthrough of the Bayesian audit sampling workflow](https://koenderks.github.io/jfa/articles/bayesian-sampling-workflow.html)
+- [Audit sampling: Get started](https://koenderks.github.io/jfa/articles/audit_sampling.html)
+- [Creating a prior distribution for audit sampling](https://koenderks.github.io/jfa/articles/creating_prior.html)
+- [Planning statistical audit samples](https://koenderks.github.io/jfa/articles/sample_planning.html)
+- [Selecting statistical audit samples](https://koenderks.github.io/jfa/articles/sample_selection.html)
+- [Evaluating statistical audit samples](https://koenderks.github.io/jfa/articles/sample_evaluation.html)
+- [Evaluating audit samples with partial misstatements](https://koenderks.github.io/jfa/articles/sample_evaluation_partial.html)
+- [Walkthrough of the classical audit sampling workflow](https://koenderks.github.io/jfa/articles/sampling_workflow.html)
+- [Walkthrough of the Bayesian audit sampling workflow](https://koenderks.github.io/jfa/articles/bayesian_sampling_workflow.html)
 
 ## Data auditing
 
@@ -51,8 +43,8 @@ includes functions for auditing data, such as testing the distribution of first
 digits of a data set against Benford's law, or assessing whether a data set
 includes an unusual amount of repeated values.
 
-- [Data auditing: Get started](https://koenderks.github.io/jfa/articles/data-auditing.html)
-- [Digit analysis](https://koenderks.github.io/jfa/articles/digit-analysis.html)
+- [Data auditing: Get started](https://koenderks.github.io/jfa/articles/data_auditing.html)
+- [Digit analysis](https://koenderks.github.io/jfa/articles/digit_analysis.html)
 
 ## Algorithm auditing
 
@@ -60,8 +52,5 @@ Finally, **jfa** facilitates statistical algorithm auditing. That is, the
 package implements functions for auditing algorithms, such as computing fairness
 metrics and testing the equality of parity metrics across protected groups.
 
-- [Algorithm auditing: Get started](https://koenderks.github.io/jfa/articles/algorithm-auditing.html)
-- [Algorithmic fairness](https://koenderks.github.io/jfa/articles/model-fairness.html)
-
-## References
-<div id="refs"></div>
+- [Algorithm auditing: Get started](https://koenderks.github.io/jfa/articles/algorithm_auditing.html)
+- [Algorithmic fairness](https://koenderks.github.io/jfa/articles/model_fairness.html)

@@ -1,19 +1,14 @@
 ---
-title: "Evaluating audit samples with partial misstatements"
+title: Evaluating audit samples with partial misstatements
 author: Koen Derks
-date: "`r Sys.Date()`"
 output: 
-  rmarkdown::html_vignette:
+  html_document:
     toc: true
     toc_depth: 3
 bibliography: references.bib
 csl: apa.csl
 vignette: >
-  %\VignetteIndexEntry{Evaluating audit samples with partial misstatements}
   %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteDepends{jfa}
-  %\VignetteKeywords{audit, evaluation, jfa}
-  %\VignettePackage{jfa}
   %\VignetteEncoding{UTF-8}
 ---
 
