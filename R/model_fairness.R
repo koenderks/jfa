@@ -94,7 +94,7 @@
 #'       + FN), quantifies whether the false negative rate is the same across
 #'       groups.}
 #'     \item{False positive rate parity (\code{fprp}): calculated as FP / (TN
-#'       + FP), quantifes whether the false positive rate is the same across
+#'       + FP), quantifies whether the false positive rate is the same across
 #'       groups.}
 #'     \item{True positive rate parity (\code{tprp}): calculated as TP / (TP +
 #'       FN), quantifies whether the true positive rate is the same across
@@ -153,7 +153,7 @@
 #'   for discrimination-free classification. In \emph{Data Mining and Knowledge
 #'   Discovery}. Springer Science and Business Media LLC.
 #'   \doi{10.1007/s10618-010-0190-x}
-#' @references Chouldechova, A. (2017). Fair Pprediction with disparate impact:
+#' @references Chouldechova, A. (2017). Fair prediction with disparate impact:
 #'   A study of bias in recidivism prediction instruments. In \emph{Big Data}.
 #'   Mary Ann Liebert Inc. \doi{10.1089/big.2016.0047}
 #' @references Feldman, M., Friedler, S. A., Moeller, J., Scheidegger, C., &

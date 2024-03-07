@@ -125,7 +125,7 @@ The following model-agnostic fairness metrics are computed based on
       + FN), quantifies whether the false negative rate is the same across
       groups.}
     \item{False positive rate parity (\code{fprp}): calculated as FP / (TN
-      + FP), quantifes whether the false positive rate is the same across
+      + FP), quantifies whether the false positive rate is the same across
       groups.}
     \item{True positive rate parity (\code{tprp}): calculated as TP / (TP +
       FN), quantifies whether the true positive rate is the same across
@@ -168,7 +168,7 @@ Calders, T., & Verwer, S. (2010). Three naive Bayes approaches
   Discovery}. Springer Science and Business Media LLC.
   \doi{10.1007/s10618-010-0190-x}
 
-Chouldechova, A. (2017). Fair Pprediction with disparate impact:
+Chouldechova, A. (2017). Fair prediction with disparate impact:
   A study of bias in recidivism prediction instruments. In \emph{Big Data}.
   Mary Ann Liebert Inc. \doi{10.1089/big.2016.0047}
 
