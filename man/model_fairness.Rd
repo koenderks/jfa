@@ -121,7 +121,7 @@ The following model-agnostic fairness metrics are computed based on
       rate is equal across protected classes.}
     \item{Accuracy parity (\code{ap}): calculated as (TP + TN) / (TP + FP +
       TN + FN), quantifies whether the accuracy is the same across groups.}
-    \item{False negative rate parity (\code{fnrp}): }{calculated as FN / (FP
+    \item{False negative rate parity (\code{fnrp}): calculated as FN / (FP
       + FN), quantifies whether the false negative rate is the same across
       groups.}
     \item{False positive rate parity (\code{fprp}): calculated as FP / (TN

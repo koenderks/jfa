@@ -14,6 +14,7 @@ vignette: >
 
 ```{r, include = FALSE}
 library(jfa)
+options(mc.iterations = 50000, mc.warmup = 10000)
 ```
 
 ## Introduction
@@ -232,14 +233,14 @@ print(eval_hurdle)
 ```
 
 As shown in the output, the most likely misstatement is estimated to be 18.34
-percent, with a 95 percent upper bound of around 26.28 percent. Since the upper
+percent, with a 95 percent upper bound of around 26.31 percent. Since the upper
 bound of the hurdle beta model is (slightly) lower than that of the Stringer
 bound, the hurdle beta model is more efficient.
 
 We leave it to the interested reader to apply the zero-inflated Poisson model to
-the data from this sample using `method = "inflated.poisson"`. Please note that
-this requires specification of the number of items in the population (`N.items`)
-and the number of monetary units in the population (`N.units`).
+the data from this sample using `method = "inflated.poisson"`. Note that this
+method requires specification of the number of items in the population
+(`N.items`) and the number of monetary units in the population (`N.units`).
 
 ## Bayesian approaches
 
@@ -311,7 +312,7 @@ print(eval_hurdle_bayes)
 ```
 
 As shown in the output, the most likely misstatement is estimated to be 19.35
-percent, with a 95 percent upper bound of around 26.4 percent. The prior and
+percent, with a 95 percent upper bound of around 26.7 percent. The prior and
 posterior distribution can be visualized using the `plot()` function.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}

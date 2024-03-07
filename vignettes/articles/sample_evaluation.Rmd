@@ -14,6 +14,7 @@ vignette: >
 
 ```{r, include = FALSE}
 library(jfa)
+options(mc.iterations = 10000, mc.warmup = 5000)
 ```
 
 ## Introduction
@@ -266,8 +267,8 @@ summary(result_pp)
 ```
 
 In this scenario, the output indicates that the estimated misstatement in the
-population is 4.16 percent, with the 95 percent credible interval extending from
-3.30 percent to 5.29 percent. Note that this population estimate is considerably
+population is 4.18 percent, with the 95 percent credible interval extending from
+3.29 percent to 5.33 percent. Note that this population estimate is considerably
 less uncertain compared to the no pooling approach. Similarly to the no pooling
 approach, the stratum estimates differ from each other but are closer together
 and exhibit less uncertainty. This can be explained by the fact that the partial
@@ -317,14 +318,14 @@ sample is `0`.
 
 ```{r}
 evaluation(
-  data = allowances, times = "times",
+  data = allowances, times = "times", method = "binomial",
   values = "bookValue", values.audit = "auditValue"
 )
 ```
 
 In this instance, the output indicates that the estimated misstatement in the
 population is 15.77 percent. The 95 percent (one-sided) confidence interval
-extends from 0 percent to 17.5 percent. More detailed information can be
+extends from 0 percent to 17.34 percent. More detailed information can be
 obtained via the `summary()` function.
 
 #### Bayesian approach
@@ -334,15 +335,16 @@ evaluation procedure.
 
 ```{r}
 result <- evaluation(
-  data = allowances, times = "times",
+  data = allowances, times = "times", method = "binomial",
   values = "bookValue", values.audit = "auditValue",
   prior = TRUE
 )
+print(result)
 ```
 
 The output shows that the estimate of the misstatement in the population is
-15.76 percent, with the 95 percent (one-sided) credible interval ranging from 0
-percent to 17.49 percent. More detailed information can be obtained via
+15.77 percent, with the 95 percent (one-sided) credible interval ranging from 0
+percent to 17.33 percent. More detailed information can be obtained via
 `summary()` and the prior and posterior distribution can be obtained by a
 call to `plot(..., type = "posterior")`.
 
@@ -375,7 +377,7 @@ for computational reasons it is important to set a seed here via `set.seed()`.
 ```{r}
 set.seed(1)
 result <- evaluation(
-  data = allowances, times = "times",
+  data = allowances, times = "times", method = "binomial",
   values = "bookValue", values.audit = "auditValue",
   N.units = N.units, strata = "branch",
   alternative = "two.sided"
@@ -385,8 +387,8 @@ print(result)
 
 In this instance, the output reveals that the estimated misstatement in the
 population is 14.72 percent. The 95 percent confidence interval spans from
-12.55 percent to 18.28 percent. The precision of the population estimate is
-therefore 3.56 percent. The estimates for each stratum are visualized below. For
+12.98 percent to 17.6 percent. The precision of the population estimate is
+therefore 4.26 percent. The estimates for each stratum are visualized below. For
 more detailed information, including the actual stratum estimates, you can use
 the `summary()` function.
 
@@ -405,9 +407,9 @@ poststratified to derive the estimate for the entire population.
 ```{r}
 set.seed(1)
 result <- evaluation(
-  data = allowances, times = "times",
+  data = allowances, times = "times", method = "binomial",
   values = "bookValue", values.audit = "auditValue",
-  N.units = N.units, strata = "branch",
+  N.units = N.units, strata = "branch", pooling = "partial",
   alternative = "two.sided",
   prior = TRUE
 )
@@ -415,8 +417,8 @@ print(result)
 ```
 
 The output indicates that the estimated misstatement in the population is
-15.64 percent. The 95 percent credible interval spans from 13.48 percent to
-18.1 percent. The precision of the population estimate is therefore 2.46
+15.42 percent. The 95 percent credible interval spans from 14.65 percent to
+16.3 percent. The precision of the population estimate is therefore 1.65
 percent, which is lower than that of the classical approach. The estimates for
 each stratum are visualized below using the `plot(..., type = "estimates)`
 command but their actual values can be once again be obtained using the
