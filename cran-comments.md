@@ -1,8 +1,9 @@
 # jfa version 0.7.1
 
-This is a resubmission for version 0.7.1. In this version I have:
+This is a submission for version 0.7.1. In this version I have:
 
-* Fixed a bug.
+* Fixed a bug and a resolved a CRAN note.
+* Implemented new functionality in existing functions.
 
 ## Test environments
 
