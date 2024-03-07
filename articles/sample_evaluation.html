@@ -94,10 +94,9 @@
       <h1 data-toc-skip>Evaluating statistical audit samples</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2024-03-07</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/sample-evaluation.Rmd" class="external-link"><code>vignettes/sample-evaluation.Rmd</code></a></small>
-      <div class="hidden name"><code>sample-evaluation.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/articles/sample_evaluation.Rmd" class="external-link"><code>vignettes/articles/sample_evaluation.Rmd</code></a></small>
+      <div class="hidden name"><code>sample_evaluation.Rmd</code></div>
 
     </div>
 
@@ -450,13 +449,13 @@ can be visualized via the call below to
 <code>plot(..., type = "estimates")</code></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result_np</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample_evaluation_files/figure-html/unnamed-chunk-7-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>The prior and posterior distribution for the population misstatement
 can be obtained using the <code>plot(..., type = "posterior")</code>
 function.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result_np</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-8-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample_evaluation_files/figure-html/unnamed-chunk-8-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
 <h4 id="approach-2-partial-pooling">Approach 2: Partial pooling<a class="anchor" aria-label="anchor" href="#approach-2-partial-pooling"></a>
@@ -535,13 +534,13 @@ stratum estimates can be visualized via a call to
 <code>plot(..., type = "estimates")</code>.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result_pp</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-10-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample_evaluation_files/figure-html/unnamed-chunk-10-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>The prior and posterior distribution for the population misstatement
 can be obtained using the <code>plot(..., type = "posterior")</code>
 function.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result_pp</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-11-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample_evaluation_files/figure-html/unnamed-chunk-11-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 </div>
 </div>
@@ -625,7 +624,7 @@ posterior distribution can be obtained by a call to
 <code>plot(..., type = "posterior")</code>.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-15-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample_evaluation_files/figure-html/unnamed-chunk-15-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level3">
@@ -695,7 +694,7 @@ the actual stratum estimates, you can use the <code><a href="https://rdrr.io/r/b
 function.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-18-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample_evaluation_files/figure-html/unnamed-chunk-18-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
 <h4 id="bayesian-approach-2">Bayesian approach<a class="anchor" aria-label="anchor" href="#bayesian-approach-2"></a>
@@ -736,13 +735,13 @@ values can be once again be obtained using the <code><a href="https://rdrr.io/r/
 function.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-20-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample_evaluation_files/figure-html/unnamed-chunk-20-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>The prior and posterior distribution for the population misstatement
 can be obtained via the <code>plot(..., type = "posterior")</code>
 function.</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-21-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample_evaluation_files/figure-html/unnamed-chunk-21-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 </div>
 </div>

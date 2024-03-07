@@ -94,10 +94,9 @@
       <h1 data-toc-skip>Digit analysis</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2024-03-07</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/digit-analysis.Rmd" class="external-link"><code>vignettes/digit-analysis.Rmd</code></a></small>
-      <div class="hidden name"><code>digit-analysis.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/articles/digit_analysis.Rmd" class="external-link"><code>vignettes/articles/digit_analysis.Rmd</code></a></small>
+      <div class="hidden name"><code>digit_analysis.Rmd</code></div>
 
     </div>
 
@@ -150,7 +149,7 @@ reference distribution by calling
 <code>plot(..., type = "estimates")</code> on the returned object.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="digit-analysis_files/figure-html/unnamed-chunk-3-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="digit_analysis_files/figure-html/unnamed-chunk-3-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>You can also conduct this analysis in a Bayesian manner by setting
 <code>prior = TRUE</code>, or by providing a value for the prior
 concentration parameter (e.g., <code>prior = 3</code>).</p>
@@ -170,13 +169,13 @@ display the Bayes factor under various reasonable specifications of the
 prior distribution.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"robustness"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="digit-analysis_files/figure-html/unnamed-chunk-5-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="digit_analysis_files/figure-html/unnamed-chunk-5-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>In addition, you can perform a sequential analysis using the Bayes
 factor by invoking <code>plot(..., type = "sequential")</code>. This
 sequential analysis includes a robustness check as well.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"sequential"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="digit-analysis_files/figure-html/unnamed-chunk-6-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="digit_analysis_files/figure-html/unnamed-chunk-6-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="function-repeated_test">Function: <code>repeated_test()</code><a class="anchor" aria-label="anchor" href="#function-repeated_test"></a>
@@ -202,13 +201,13 @@ expected if the data were not tampered with.</p>
 <span><span class="co">##  Classical Repeated Values Test</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sanitizer$value</span></span>
-<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0015</span></span>
+<span><span class="co">## n = 1600, AF = 1.5225, p-value = 0.0035</span></span>
 <span><span class="co">## alternative hypothesis: average frequency in data is greater than for random data.</span></span></code></pre>
 <p>A histogram of the frequency of each value can be obtained via the
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
-<p><img src="digit-analysis_files/figure-html/unnamed-chunk-8-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="digit_analysis_files/figure-html/unnamed-chunk-8-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

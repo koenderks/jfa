@@ -95,10 +95,9 @@
 sampling</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2024-03-07</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/creating-prior.Rmd" class="external-link"><code>vignettes/creating-prior.Rmd</code></a></small>
-      <div class="hidden name"><code>creating-prior.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/articles/creating_prior.Rmd" class="external-link"><code>vignettes/articles/creating_prior.Rmd</code></a></small>
+      <div class="hidden name"><code>creating_prior.Rmd</code></div>
 
     </div>
 
@@ -189,7 +188,7 @@ to one.</p>
 using the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">prior</span><span class="op">)</span></span></code></pre></div>
-<p><img src="creating-prior_files/figure-html/unnamed-chunk-2-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="creating_prior_files/figure-html/unnamed-chunk-2-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>Additionally, the <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> function generates the
 predictions of the prior distribution at the data level for a sample of
 <span class="math inline">\(n\)</span> items. For instance, the command
@@ -204,7 +203,7 @@ items.</p>
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">prior</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="creating-prior_files/figure-html/unnamed-chunk-4-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="creating_prior_files/figure-html/unnamed-chunk-4-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level3">
 <h3 id="priors-with-custom-parameters">Priors with custom parameters<a class="anchor" aria-label="anchor" href="#priors-with-custom-parameters"></a>
@@ -464,15 +463,15 @@ materiality of five percent after observing a sample of <span class="math inline
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
 <span><span class="co">##   Posterior distribution:         Nonparametric </span></span>
-<span><span class="co">##   Most likely error:              0.018 </span></span>
-<span><span class="co">##   95 percent credible interval:   [0, 0.066] </span></span>
-<span><span class="co">##   Precision:                      0.048 </span></span>
-<span><span class="co">##   BF₁₀:                            4.8584</span></span></code></pre>
+<span><span class="co">##   Most likely error:              0.016 </span></span>
+<span><span class="co">##   95 percent credible interval:   [0, 0.067] </span></span>
+<span><span class="co">##   Precision:                      0.051 </span></span>
+<span><span class="co">##   BF₁₀:                            4.825</span></span></code></pre>
 <p>The prior and posterior distribution can be visualized by calling
 <code>plot(..., type = "posterior")</code>.</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">eval</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="creating-prior_files/figure-html/unnamed-chunk-16-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="creating_prior_files/figure-html/unnamed-chunk-16-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>Furthermore, the predictions of the posterior distribution at the
 data level can be visualized by combining the <code><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict()</a></code> and
 <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> functions. For instance, the command below displays
@@ -480,7 +479,7 @@ the predictions of the posterior distribution for a hypothetical (next)
 sample of <span class="math inline">\(n\)</span> = 10 items.</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/predict.html" class="external-link">predict</a></span><span class="op">(</span><span class="va">eval</span><span class="op">$</span><span class="va">posterior</span>, n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="creating-prior_files/figure-html/unnamed-chunk-17-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="creating_prior_files/figure-html/unnamed-chunk-17-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level2">

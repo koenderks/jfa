@@ -94,10 +94,9 @@
       <h1 data-toc-skip>Algorithmic fairness</h1>
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
-            <h4 data-toc-skip class="date">2024-03-07</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/model-fairness.Rmd" class="external-link"><code>vignettes/model-fairness.Rmd</code></a></small>
-      <div class="hidden name"><code>model-fairness.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/articles/model_fairness.Rmd" class="external-link"><code>vignettes/articles/model_fairness.Rmd</code></a></small>
+      <div class="hidden name"><code>model_fairness.Rmd</code></div>
 
     </div>
 
@@ -391,7 +390,7 @@ object.</p>
 <span><span class="co">##   Other                343 0.6938776 0.6117647 0.4193548 0.4976077</span></span></code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="model-fairness_files/figure-html/unnamed-chunk-5-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="model_fairness_files/figure-html/unnamed-chunk-5-1.png" width="576" style="display: block; margin: auto;"></p>
 </li>
 <li>
 <p><strong>Predictive rate parity (Equalized odds)</strong>:
@@ -787,11 +786,11 @@ the scenario of equal fairness metrics.</p>
 <span><span class="co">## alternative hypothesis: fairness metrics are not equal across groups</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## sample estimates:</span></span>
-<span><span class="co">##   African_American: 1.8478 [1.7892, 1.8969], BF₁₀ = 4.1528e+81</span></span>
-<span><span class="co">##   Asian: 0.43978 [0.16238, 0.89138], BF₁₀ = 0.26796</span></span>
-<span><span class="co">##   Hispanic: 0.88391 [0.79659, 1.0361], BF₁₀ = 0.10615</span></span>
-<span><span class="co">##   Native_American: 1.2652 [0.6402, 2.2669], BF₁₀ = 0.018438</span></span>
-<span><span class="co">##   Other: 0.76595 [0.6388, 0.92], BF₁₀ = 1.815</span></span>
+<span><span class="co">##   African_American: 1.8535 [1.8085, 1.9129], BF₁₀ = 4.1528e+81</span></span>
+<span><span class="co">##   Asian: 0.27539 [0.16134, 0.91766], BF₁₀ = 0.26796</span></span>
+<span><span class="co">##   Hispanic: 0.96196 [0.80155, 1.044], BF₁₀ = 0.10615</span></span>
+<span><span class="co">##   Native_American: 1.2053 [0.64356, 2.2454], BF₁₀ = 0.018438</span></span>
+<span><span class="co">##   Other: 0.74725 [0.65285, 0.93188], BF₁₀ = 1.815</span></span>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span></code></pre>
 <p>The Bayes factor <span class="math inline">\(BF_{01}\)</span>, used
 in Bayesian inference, quantifies the evidence supporting algorithmic
@@ -807,7 +806,7 @@ groups.</p>
 visualized by invoking <code>plot(..., type = "posterior")</code>.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="model-fairness_files/figure-html/unnamed-chunk-14-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="model_fairness_files/figure-html/unnamed-chunk-14-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>Additionally, the robustness of the Bayes factor to the choice of
 prior distribution can be examined by calling
 <code>plot(..., type = "robustness")</code>, as shown in the code below.
@@ -815,7 +814,7 @@ Finally, the auditor has the option to conduct a sequential analysis
 using <code>plot(..., type = "sequential")</code>.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"robustness"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="model-fairness_files/figure-html/unnamed-chunk-15-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="model_fairness_files/figure-html/unnamed-chunk-15-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level2">
