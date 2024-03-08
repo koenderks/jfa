@@ -3,7 +3,7 @@ citHeader("To cite jfa in publications, please use:")
 bibentry(bibtype = "Manual",
          title = "jfa: Statistical methods for auditing",
          author = person("Koen", "Derks"),
-         year = "2023",
-         note = "R package version 0.7.1",
+         year = "2024",
+         note = "R package version 0.7.2",
          url = "https://CRAN.R-project.org/package=jfa",
-         textVersion = "Derks, K. (2023). jfa: Statistical methods for auditing. R package version 0.7.1.")
+         textVersion = "Derks, K. (2024). jfa: Statistical methods for auditing. R package version 0.7.2.")
