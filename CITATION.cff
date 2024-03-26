@@ -1,5 +1,5 @@
 # -----------------------------------------------------------
-# CITATION file created with {cffr} R package, v0.5.0
+# CITATION file created with {cffr} R package, v1.0.0
 # See also: https://docs.ropensci.org/cffr/
 # -----------------------------------------------------------
  
@@ -10,15 +10,16 @@ license: GPL-3.0-or-later
 title: 'jfa: Statistical Methods for Auditing'
 version: 0.7.2
 abstract: Provides statistical methods for auditing as implemented in JASP for Audit
-  (Derks et al., 2021 <doi:10.21105/joss.02733>). First, the package makes it easy
-  for an auditor to plan a statistical sample, select the sample from the population,
-  and evaluate the misstatement in the sample compliant with international auditing
-  standards. Second, the package provides statistical methods for auditing data, including
-  tests of digit distributions and repeated values. Finally, the package includes
-  methods for auditing algorithms on the aspect of fairness and bias. Next to classical
-  statistical methodology, the package implements Bayesian equivalents of these methods
-  whose statistical underpinnings are described in Derks et al. (2021) <doi:10.1111/ijau.12240>,
-  Derks et al. (2021) <doi:10.31234/osf.io/kzqp5>, and Derks et al. (2022) <doi:10.31234/osf.io/8nf3e>.
+  (Derks et al., 2021 <https://doi.org/10.21105/joss.02733>). First, the package makes
+  it easy for an auditor to plan a statistical sample, select the sample from the
+  population, and evaluate the misstatement in the sample compliant with international
+  auditing standards. Second, the package provides statistical methods for auditing
+  data, including tests of digit distributions and repeated values. Finally, the package
+  includes methods for auditing algorithms on the aspect of fairness and bias. Next
+  to classical statistical methodology, the package implements Bayesian equivalents
+  of these methods whose statistical underpinnings are described in Derks et al. (2021)
+  <https://doi.org/10.1111/ijau.12240>, Derks et al. (2021) <https://doi.org/10.31234/osf.io/kzqp5>,
+  and Derks et al. (2022) <https://doi.org/10.31234/osf.io/8nf3e>.
 authors:
 - family-names: Derks
   given-names: Koen
@@ -38,7 +39,7 @@ preferred-citation:
 repository: https://CRAN.R-project.org/package=jfa
 repository-code: https://github.com/koenderks/jfa
 url: https://koenderks.github.io/jfa/
-date-released: '2024-03-08'
+date-released: '2024-03-26'
 contact:
 - family-names: Derks
   given-names: Koen
@@ -64,11 +65,10 @@ references:
   url: https://www.R-project.org/
   authors:
   - name: R Core Team
-  location:
-    name: Vienna, Austria
-  year: '2024'
   institution:
     name: R Foundation for Statistical Computing
+    address: Vienna, Austria
+  year: '2024'
   version: '>= 3.5.0'
 - type: software
   title: bde
@@ -131,8 +131,9 @@ references:
   - family-names: Dunnington
     given-names: Dewey
     orcid: https://orcid.org/0000-0002-9415-4582
-  - family-names: van den Brand
+  - family-names: Brand
     given-names: Teun
+    name-particle: van den
     orcid: https://orcid.org/0000-0002-9335-7468
   year: '2024'
   version: '>= 3.4.2'
@@ -142,11 +143,10 @@ references:
   notes: Imports
   authors:
   - name: R Core Team
-  location:
-    name: Vienna, Austria
-  year: '2024'
   institution:
     name: R Foundation for Statistical Computing
+    address: Vienna, Austria
+  year: '2024'
 - type: software
   title: Rcpp
   abstract: 'Rcpp: Seamless R and C++ Integration'
@@ -193,7 +193,9 @@ references:
     given-names: Gregory
   - family-names: Geelnard
     given-names: Marcus
+    website: https://tinythreadpp.bitsnbites.eu/
   - name: Intel
+    website: https://www.threadingbuildingblocks.org/
   year: '2024'
   version: '>= 5.0.1'
 - type: software
@@ -250,11 +252,10 @@ references:
   notes: Imports
   authors:
   - name: R Core Team
-  location:
-    name: Vienna, Austria
-  year: '2024'
   institution:
     name: R Foundation for Statistical Computing
+    address: Vienna, Austria
+  year: '2024'
 - type: software
   title: truncdist
   abstract: 'truncdist: Truncated Random Variables'
