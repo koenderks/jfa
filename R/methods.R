@@ -32,7 +32,7 @@
       propSum <- switch(likelihood,
         "binomial" = propSum + (stats::qbeta(p = conf.level, shape1 = i + 1, shape2 = n - i) - stats::qbeta(p = conf.level, shape1 = (i - 1) + 1, shape2 = n - (i - 1))) * t[i],
         "poisson" = propSum + (stats::qgamma(p = conf.level, shape = i + 1, rate = n) - stats::qgamma(p = conf.level, shape = (i - 1) + 1, rate = n)) * t[i],
-        "hypergeometric" = propSum + (.qhyper(p = conf.level, N = N.units, k = i, n = n) - .qhyper(p = conf.level, N = N.units, k = i - 1, n = n)) / N.units * t[i],
+        "hypergeometric" = propSum + (.qhyper(p = conf.level, N = N.units, k = i, n = n) - .qhyper(p = conf.level, N = N.units, k = i - 1, n = n)) / N.units * t[i]
       )
     }
     bound <- bound + propSum
@@ -47,7 +47,7 @@
           prop.sum.min.2 <- switch(likelihood,
             "binomial" = prop.sum.min.2 + (stats::qbeta(shape1 = i + 1, shape2 = n - 1, p = conf.level) - stats::qbeta(shape1 = (i - 1) + 1, shape2 = n - 1, p = conf.level)) * abs(tmin[i]),
             "poisson" = prop.sum.min.2 + (stats::qgamma(shape = i + 1, rate = n, p = conf.level) - stats::qgamma(shape = (i - 1) + 1, rate = n, p = conf.level)) * abs(tmin[i]),
-            "hypergeometric" = prop.sum.min.2 + (.qhyper(p = conf.level, N = N.units, k = i, n = n) - .qhyper(p = conf.level, N = N.units, k = i - 1, n = n)) / N.units * abs(tmin[i]),
+            "hypergeometric" = prop.sum.min.2 + (.qhyper(p = conf.level, N = N.units, k = i, n = n) - .qhyper(p = conf.level, N = N.units, k = i - 1, n = n)) / N.units * abs(tmin[i])
           )
         }
         prop.sum.min <- prop.sum.min + prop.sum.min.2

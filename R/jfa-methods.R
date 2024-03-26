@@ -510,7 +510,7 @@ plot.jfaPlanning <- function(x, ...) {
       }
       p <- p + ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yBreaks)) +
         ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf)
-      p <- .theme_jfa(p, legend.position = c(0.8, 0.8))
+      p <- .theme_jfa(p, legend.position = "inside", legend.position.inside = c(0.8, 0.8))
     }
   } else {
     stopifnot("plot(...) not supported for multi-stage sampling plans with > 2 stages" = length(x[["k_staged"]]) == 2)
@@ -1467,6 +1467,6 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior", "robustness",
     plotdata$type <- factor(plotdata$type, levels = c("user prior", "uniform prior", "concentrated prior", "ultraconcentrated prior"))
     p <- .plotBfSequential(x, plotdata)
   }
-  p <- .theme_jfa(p, legend.position = if (length(unprivileged) == 1 && type == "posterior") c(0.8, 0.8) else "top")
+  p <- .theme_jfa(p, legend.position = if (length(unprivileged) == 1 && type == "posterior") "inside" else "top", legend.position.inside = c(0.8, 0.8))
   return(p)
 }
