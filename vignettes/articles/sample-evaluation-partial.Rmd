@@ -311,8 +311,8 @@ eval_hurdle_bayes <- evaluation(
 print(eval_hurdle_bayes)
 ```
 
-As shown in the output, the most likely misstatement is estimated to be 19.35
-percent, with a 95 percent upper bound of around 26.7 percent. The prior and
+As shown in the output, the most likely misstatement is estimated to be 18.77
+percent, with a 95 percent upper bound of around 26.05 percent. The prior and
 posterior distribution can be visualized using the `plot()` function.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
