@@ -356,7 +356,7 @@ the results reproducible.</p>
 <span><span class="co">## number of errors = 26, number of samples = 60, taint = 11.003</span></span>
 <span><span class="co">## alternative hypothesis: true misstatement rate is less than 0.1</span></span>
 <span><span class="co">## 95 percent confidence interval:</span></span>
-<span><span class="co">##  0.0000000 0.2631842</span></span>
+<span><span class="co">##  0.0000000 0.2582679</span></span>
 <span><span class="co">## most likely estimate:</span></span>
 <span><span class="co">##  0.18338 </span></span>
 <span><span class="co">## results obtained via method 'hurdle.beta'</span></span></code></pre>
@@ -435,7 +435,7 @@ prior and posterior distribution can be visualized via the
 model. This entails applying prior distributions for the parameters
 <span class="math inline">\(p\)</span>, <span class="math inline">\(\phi\)</span>, and <span class="math inline">\(\nu\)</span>. The prior distributions used by
 <strong>jfa</strong> for the Bayesian hurdle beta model are <span class="math inline">\(p_{(0, 1]}\)</span> <span class="math inline">\(\sim\)</span> Beta(<span class="math inline">\(\alpha\)</span>, <span class="math inline">\(\beta\)</span>) (to be specified by the user),
-<span class="math inline">\(p_{1 | (0, 1]}\)</span> <span class="math inline">\(\sim\)</span> Beta(1, 1), <span class="math inline">\(\phi\)</span> <span class="math inline">\(\sim\)</span> Beta(1, 1), and <span class="math inline">\(\nu\)</span> <span class="math inline">\(\sim\)</span> Pareto(1, <span class="math inline">\(\frac{3}{2}\)</span>).</p>
+<span class="math inline">\(p_{1 | (0, 1]}\)</span> <span class="math inline">\(\sim\)</span> Beta(1, 1), <span class="math inline">\(\phi\)</span> <span class="math inline">\(\sim\)</span> Beta(1, 1), and <span class="math inline">\(\nu\)</span> <span class="math inline">\(\sim\)</span> Normal(0, 100).</p>
 <p>This Bayesian hurdle beta model can be applied using
 <code>method = "hurdle.beta"</code> in combination with
 <code>prior = TRUE</code> (or an object created by the
@@ -456,12 +456,12 @@ results.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  sample</span></span>
 <span><span class="co">## number of errors = 26, number of samples = 60, taint = 11.003, BF₁₀ =</span></span>
-<span><span class="co">## 0.0071736</span></span>
+<span><span class="co">## 0.0071396</span></span>
 <span><span class="co">## alternative hypothesis: true misstatement rate is less than 0.1</span></span>
 <span><span class="co">## 95 percent credible interval:</span></span>
-<span><span class="co">##  0.0000000 0.2669475</span></span>
+<span><span class="co">##  0.0000000 0.2605292</span></span>
 <span><span class="co">## most likely estimate:</span></span>
-<span><span class="co">##  0.191 </span></span>
+<span><span class="co">##  0.1877 </span></span>
 <span><span class="co">## results obtained via method 'hurdle.beta' + 'prior'</span></span></code></pre>
 <p>As shown in the output, the most likely misstatement is estimated to
 be 19.35 percent, with a 95 percent upper bound of around 26.7 percent.
