@@ -2,7 +2,7 @@
 
 This is a submission for version 0.7.2. In this version I have:
 
-* Done nothing yet.
+* Made some internal changes.
 
 ## Test environments
 

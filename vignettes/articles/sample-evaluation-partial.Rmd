@@ -293,7 +293,7 @@ entails applying prior distributions for the parameters $p$, $\phi$, and $\nu$.
 The prior distributions used by **jfa** for the Bayesian hurdle beta model are
 $p_{(0, 1]}$ $\sim$ Beta($\alpha$, $\beta$) (to be specified by the user),
 $p_{1 | (0, 1]}$ $\sim$ Beta(1, 1), $\phi$ $\sim$ Beta(1, 1), and $\nu$
-$\sim$ Pareto(1, $\frac{3}{2}$).
+$\sim$ Normal(0, 100).
 
 This Bayesian hurdle beta model can be applied using `method = "hurdle.beta"` in
 combination with `prior = TRUE` (or an object created by the `auditPrior()`
