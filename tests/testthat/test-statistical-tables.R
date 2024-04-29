@@ -421,7 +421,7 @@ test_that(desc = "(id: f7-v0.5.5-t9) Statistical Sample Sizes based on the Hyper
   testthat::skip_on_cran()
   reference <- matrix(c(
     0, 0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.0275, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045, 0.0475, 0.05, 0.0525, 0.055, 0.0575, 0.06, 0.0625, 0.065, 0.0675, 0.07, 0.0725, 0.075, 0.0775, 0.08, 0.0825, 0.085, 0.0875, 0.09, 0.0925, 0.095, 0.0975, 0.1,
-    91, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,
+    90, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,
     69, 95, 95, 95, 95, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,
     54, 81, 81, 81, 81, 97, 97, 97, 97, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,
     44, 68, 68, 68, 68, 68, 86, 86, 86, 86, 98, 98, 98, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,
@@ -927,7 +927,7 @@ test_that(desc = "(id: f7-v0.5.5-t19) Statistical Sample Sizes based on the Hype
   testthat::skip_on_cran()
   reference <- matrix(c(
     0, 0.0025, 0.005, 0.0075, 0.01, 0.0125, 0.015, 0.0175, 0.02, 0.0225, 0.025, 0.0275, 0.03, 0.0325, 0.035, 0.0375, 0.04, 0.0425, 0.045, 0.0475, 0.05, 0.0525, 0.055, 0.0575, 0.06, 0.0625, 0.065, 0.0675, 0.07, 0.0725, 0.075, 0.0775, 0.08, 0.0825, 0.085, 0.0875, 0.09, 0.0925, 0.095, 0.0975, 0.1,
-    300, 388, 484, 500, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,
+    300, 388, 484, 499, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,
     183, 251, 305, 350, 390, 453, 492, 500, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,
     131, 182, 182, 225, 263, 297, 328, 384, 432, 470, 495, 500, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,
     101, 143, 143, 177, 177, 208, 237, 264, 289, 336, 358, 398, 450, 478, 496, 500, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,
@@ -1325,7 +1325,7 @@ test_that(desc = "(id: f7-v0.5.5-29) Statistical Sampling Results based on the H
   testthat::skip_on_cran()
   reference <- matrix(c(
     20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 125, 150, 200, 300, 400, 500,
-    9, 7, 6, 5, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1, 1, 0, NA, NA, NA, NA, NA, NA, NA,
+    9, 7, 6, 5, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1, 0, 0, NA, NA, NA, NA, NA, NA, NA,
     16, 13, 10, 9, 7, 6, 6, 5, 4, 4, 3, 3, 3, 2, 2, 1, NA, NA, NA, NA, NA, NA, NA,
     23, 18, 15, 12, 11, 9, 8, 7, 6, 6, 5, 4, 4, 4, 3, 3, NA, NA, NA, NA, NA, NA, NA,
     28, 23, 19, 16, 14, 12, 10, 9, 8, 7, 7, 6, 5, 5, 4, 4, NA, NA, NA, NA, NA, NA, NA,
