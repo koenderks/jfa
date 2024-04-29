@@ -1,5 +1,5 @@
 pandoc: 3.1.11
-pkgdown: 2.0.7
+pkgdown: 2.0.9
 pkgdown_sha: ~
 articles:
   algorithm-auditing: algorithm-auditing.html
@@ -8,14 +8,14 @@ articles:
   creating-prior: creating-prior.html
   data-auditing: data-auditing.html
   digit-analysis: digit-analysis.html
+  jfa: jfa.html
   model-fairness: model-fairness.html
   sample-evaluation-partial: sample-evaluation-partial.html
   sample-evaluation: sample-evaluation.html
   sample-planning: sample-planning.html
   sample-selection: sample-selection.html
   sampling-workflow: sampling-workflow.html
-  jfa: jfa.html
-last_built: 2024-04-08T16:03Z
+last_built: 2024-04-29T07:43Z
 urls:
   reference: https://koenderks.github.io/jfa/reference
   article: https://koenderks.github.io/jfa/articles
