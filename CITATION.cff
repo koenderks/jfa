@@ -1,7 +1,7 @@
-# -----------------------------------------------------------
-# CITATION file created with {cffr} R package, v1.0.0
+# --------------------------------------------
+# CITATION file created with {cffr} R package
 # See also: https://docs.ropensci.org/cffr/
-# -----------------------------------------------------------
+# --------------------------------------------
  
 cff-version: 1.2.0
 message: 'To cite package "jfa" in publications use:'
@@ -39,7 +39,7 @@ preferred-citation:
 repository: https://CRAN.R-project.org/package=jfa
 repository-code: https://github.com/koenderks/jfa
 url: https://koenderks.github.io/jfa/
-date-released: '2024-04-08'
+date-released: '2024-04-29'
 contact:
 - family-names: Derks
   given-names: Koen
@@ -515,3 +515,4 @@ references:
     orcid: https://orcid.org/0000-0002-9808-2344
   year: '2024'
   version: '>= 2.26.0'
+
