@@ -225,7 +225,7 @@ plot.jfaPrior <- function(x, ...) {
       p <- p + ggplot2::geom_line(linetype = "solid")
     }
     p <- p + ggplot2::scale_x_continuous(name = "Population misstatement", breaks = xBreaks, limits = range(xBreaks)) +
-      ggplot2::scale_y_continuous(name = "Density", breaks = yBreaks, limits = range(yBreaks))
+      ggplot2::scale_y_continuous(name = "Density", breaks = yBreaks, limits = c(0, max(yBreaks)))
   } else {
     if (inherits(x, "jfaPrior")) {
       p <- p + ggplot2::geom_col(colour = "black", fill = "lightgray")
@@ -233,7 +233,7 @@ plot.jfaPrior <- function(x, ...) {
       p <- p + ggplot2::geom_col(colour = "black", fill = "darkgray")
     }
     p <- p + ggplot2::scale_x_continuous(name = "Population misstatements", breaks = xBreaks, limits = c(xBreaks[1] - 1, max(xBreaks) + 1)) +
-      ggplot2::scale_y_continuous(name = "Probability", breaks = yBreaks, limits = range(yBreaks))
+      ggplot2::scale_y_continuous(name = "Probability", breaks = yBreaks, limits = c(0, max(yBreaks)))
   }
   p <- p + ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yBreaks)) +
     ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf)
@@ -488,12 +488,12 @@ plot.jfaPlanning <- function(x, ...) {
         p <- p + ggplot2::geom_line(mapping = ggplot2::aes(linetype = type)) +
           ggplot2::scale_linetype_manual(name = NULL, values = c("solid", "dashed")) +
           ggplot2::scale_x_continuous(name = "Population misstatement", breaks = xBreaks, limits = c(0, 1)) +
-          ggplot2::scale_y_continuous(name = "Density", breaks = yBreaks, limits = range(yBreaks))
+          ggplot2::scale_y_continuous(name = "Density", breaks = yBreaks, limits = c(0, max(yBreaks)))
       } else {
         p <- p + ggplot2::geom_col(mapping = ggplot2::aes(fill = type), alpha = 0.75, colour = "black", position = "identity") +
           ggplot2::scale_fill_manual(name = NULL, values = c("darkgray", "lightgray")) +
           ggplot2::scale_x_continuous(name = "Population misstatements", breaks = xBreaks, limits = c(xBreaks[1] - 1, max(xBreaks) + 1)) +
-          ggplot2::scale_y_continuous(name = "Probability", breaks = yBreaks, limits = range(yBreaks))
+          ggplot2::scale_y_continuous(name = "Probability", breaks = yBreaks, limits = c(0, max(yBreaks)))
       }
       if (inherits(x, "jfaEvaluation")) {
         if (x[["prior"]][["description"]]$density != "beta-binomial") {
@@ -1110,7 +1110,7 @@ plot.jfaRv <- function(x, ...) {
   p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = x, y = y)) +
     ggplot2::geom_bar(fill = "darkgray", color = "black", linewidth = 0.2, stat = "identity") +
     ggplot2::scale_x_continuous(name = "Value", breaks = xBreaks, limits = range(xBreaks)) +
-    ggplot2::scale_y_continuous(name = "Frequency", breaks = yBreaks, limits = range(yBreaks)) +
+    ggplot2::scale_y_continuous(name = "Frequency", breaks = yBreaks, limits = c(0, max(yBreaks))) +
     ggplot2::geom_segment(x = -Inf, xend = -Inf, y = 0, yend = max(yBreaks)) +
     ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf)
   p <- .theme_jfa(p)
@@ -1382,7 +1382,7 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior", "robustness",
     p <- ggplot2::ggplot(data = plotdata, mapping = ggplot2::aes(x = x, y = y, color = factor(group))) +
       ggplot2::geom_path(data = subset(plotdata, plotdata$type == "Prior"), linetype = "dashed", color = "black") +
       ggplot2::geom_path(data = subset(plotdata, plotdata$type == "Posterior"), linetype = "solid", show.legend = length(unprivileged) > 1) +
-      ggplot2::scale_y_continuous(name = "Density", breaks = yBreaks, limits = range(yBreaks)) +
+      ggplot2::scale_y_continuous(name = "Density", breaks = yBreaks, limits = c(0, max(yBreaks))) +
       ggplot2::scale_x_continuous(name = "Log odds ratio", breaks = xBreaks, limits = range(xBreaks)) +
       ggplot2::geom_segment(x = -Inf, xend = -Inf, y = min(yBreaks), yend = max(yBreaks), inherit.aes = FALSE) +
       ggplot2::geom_segment(x = min(xBreaks), xend = max(xBreaks), y = -Inf, yend = -Inf, inherit.aes = FALSE) +
