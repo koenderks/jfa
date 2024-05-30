@@ -98,7 +98,7 @@
       "uniform" = NA,
       "cauchy" = alpha,
       "t" = alpha,
-      "chisq" = alpha,
+      "chisq" = if (alpha - 2 <= 0) 0 else NA,
       "exponential" = 0
     )
   } else {
