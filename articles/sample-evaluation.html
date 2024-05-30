@@ -223,9 +223,8 @@ not contain material misstatement.</p>
 <h4 id="bayesian-approach">Bayesian approach<a class="anchor" aria-label="anchor" href="#bayesian-approach"></a>
 </h4>
 <p>Bayesian hypothesis testing employs the Bayes factor, either <span class="math inline">\(BF_{10}\)</span> or <span class="math inline">\(BF_{01}\)</span>, to quantify the evidence that
-the sample provides in support of either of the two hypotheses <span class="math inline">\(H_1\)</span> or <span class="math inline">\(H_0\)</span> <span class="citation">(Derks, Swart,
-Wagenmakers, et al., 2021)</span>. For instance, a Bayes factor value of
-<span class="math inline">\(BF_{10}\)</span> = 10 (provided by the
+the sample provides in support of either of the two hypotheses <span class="math inline">\(H_1\)</span> or <span class="math inline">\(H_0\)</span> <span class="citation">(Derks et al.,
+2024)</span>. For instance, a Bayes factor value of <span class="math inline">\(BF_{10}\)</span> = 10 (provided by the
 <code><a href="../reference/evaluation.html">evaluation()</a></code> function) can be interpreted as the data being
 10 times more likely under the hypothesis of tolerable misstatement
 <span class="math inline">\(H_1\)</span> than under the hypothesis of
@@ -243,8 +242,7 @@ the hypotheses <span class="math inline">\(H_1\)</span>: <span class="math inlin
 \geq\)</span> 0.05. They have selected a sample of <span class="math inline">\(n\)</span> = 100 items, with <span class="math inline">\(k\)</span> = 1 item found to contain a
 misstatement. The prior distribution is presumed to be a default
 beta(1,1) prior. The subsequent call evaluates the sample using a
-Bayesian non-stratified evaluation procedure <span class="citation">(Derks, Swart, Batenburg, et al., 2021; Stewart,
-2013)</span>.</p>
+Bayesian non-stratified evaluation procedure <span class="citation">(Derks et al., 2021; Stewart, 2013)</span>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, method <span class="op">=</span> <span class="st">"binomial"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -767,11 +765,6 @@ integration of existing information into the prior distribution can
 improve audit transparency and efficiency. <em>International Journal of
 Auditing</em>, <em>25</em>(3), 621–636. <a href="https://doi.org/10.1111/ijau.12240" class="external-link">https://doi.org/10.1111/ijau.12240</a>
 </div>
-<div id="ref-derks_2021b" class="csl-entry">
-Derks, K., Swart, J. de, Wagenmakers, E.-J., &amp; Wetzels, R. (2021).
-The <span>B</span>ayesian approach to audit evidence: Quantifying
-statistical evidence using the bayes factor. <em>PsyArXiv</em>. <a href="https://doi.org/10.31234/osf.io/kzqp5" class="external-link">https://doi.org/10.31234/osf.io/kzqp5</a>
-</div>
 <div id="ref-derks_2022" class="csl-entry">
 Derks, K., Swart, J. de, Wagenmakers, E.-J., &amp; Wetzels, R. (2022a).
 <em>An impartial <span>B</span>ayesian hypothesis test for audit
@@ -782,6 +775,12 @@ Derks, K., Swart, J. de, Wagenmakers, E.-J., &amp; Wetzels, R. (2022b).
 Bayesian generalized linear modeling for audit sampling: How to
 incorporate audit information into the statistical model.
 <em>PsyArXiv</em>. <a href="https://doi.org/10.31234/osf.io/byj2a" class="external-link">https://doi.org/10.31234/osf.io/byj2a</a>
+</div>
+<div id="ref-derks_2021b" class="csl-entry">
+Derks, K., Swart, J. de, Wagenmakers, E.-J., &amp; Wetzels, R. (2024).
+The <span>B</span>ayesian approach to audit evidence: Quantifying
+statistical evidence using the bayes factor. <em>Auditing: A Journal of
+Practice &amp; Theory</em>. <a href="https://doi.org/10.31234/osf.io/kzqp5" class="external-link">https://doi.org/10.31234/osf.io/kzqp5</a>
 </div>
 <div id="ref-stewart_2012" class="csl-entry">
 Stewart, T. R. (2012). <em>Technical notes on the <span>AICPA</span>
