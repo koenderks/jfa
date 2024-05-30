@@ -343,7 +343,7 @@ test_that(desc = "(id: f3-v0.2.0-t4) Test for Bayesian plot function", {
 
 test_that(desc = "(id: f3-v0.6.0-t1) Test Bayes factors for beta prior", {
   # Compute a Bayes factor from a noninformative beta(1, 1) prior, n = 160, k = 1
-  # Derks, K., de Swart, J., Wagenmakers, E-.J., and Wetzels, R. (2021). The Bayesian approach to audit evidence: Quantifying statistical evidence using the Bayes factor.
+  # Derks, K., de Swart, J., Wagenmakers, E-.J., and Wetzels, R. (2024). The Bayesian approach to audit evidence: Quantifying statistical evidence using the Bayes factor.
   # BF-+ = 696.696
   BF <- evaluation(materiality = 0.03, n = 160, x = 1, prior = auditPrior(method = "param", alpha = 1, beta = 1, likelihood = "binomial"))$posterior$hypotheses$bf.h1
   expect_equal(BF, 696.696)

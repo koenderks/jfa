@@ -186,9 +186,9 @@
 #'   practice. \emph{Journal of Open Source Software}, \emph{6}(68), 2733.
 #'   \doi{10.21105/joss.02733}
 #' @references Derks, K., de Swart, J., Wagenmakers, E.-J., & Wetzels, R.
-#'   (2021). The Bayesian approach to audit evidence: Quantifying statistical
-#'   evidence using the Bayes factor. \emph{PsyArXiv}.
-#'   \doi{10.31234/osf.io/kzqp5}
+#'   (2024). The Bayesian approach to audit evidence: Quantifying statistical
+#'   evidence using the Bayes factor. \emph{Auditing: A Journal of Practice &
+#'   Theory}. \doi{10.2308/AJPT-2021-086}
 #' @references Derks, K., de Swart, J., Wagenmakers, E.-J., & Wetzels, R.
 #'   (2022). An impartial Bayesian hypothesis test for audit sampling.
 #'   \emph{PsyArXiv}. \doi{10.31234/osf.io/8nf3e}
