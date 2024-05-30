@@ -18,7 +18,7 @@ abstract: Provides statistical methods for auditing as implemented in JASP for A
   includes methods for auditing algorithms on the aspect of fairness and bias. Next
   to classical statistical methodology, the package implements Bayesian equivalents
   of these methods whose statistical underpinnings are described in Derks et al. (2021)
-  <https://doi.org/10.1111/ijau.12240>, Derks et al. (2021) <https://doi.org/10.31234/osf.io/kzqp5>,
+  <https://doi.org/10.1111/ijau.12240>, Derks et al. (2024) <https://doi.org/10.2308/AJPT-2021-086>,
   and Derks et al. (2022) <https://doi.org/10.31234/osf.io/8nf3e>.
 authors:
 - family-names: Derks
@@ -39,7 +39,7 @@ preferred-citation:
 repository: https://CRAN.R-project.org/package=jfa
 repository-code: https://github.com/koenderks/jfa
 url: https://koenderks.github.io/jfa/
-date-released: '2024-04-29'
+date-released: '2024-05-30'
 contact:
 - family-names: Derks
   given-names: Koen
