@@ -22,9 +22,7 @@
 #' class \code{jfaPrior} that can be used in the \code{planning()} and
 #' \code{evaluation()} functions via their \code{prior} argument. Objects with
 #' class \code{jfaPrior} can be further inspected via associated
-#' \code{summary()} and \code{plot()} methods. They can also be used to compute
-#' a convoluted prior using the \code{+} (for addition) and \code{*} (for
-#' weighing) operators.
+#' \code{summary()} and \code{plot()} methods.
 #'
 #' @usage auditPrior(
 #'   method = c(
