@@ -30,7 +30,7 @@ test_that(desc = "(id: f6-v0.1.0-t2) Test for units = 'values' and method = 'ran
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- selection(population, size = 100, units = "values", method = "random", values = "bookValue")
   expect_equal(ncol(jfaRes[["sample"]]), 4)
-  expect_equal(nrow(jfaRes[["sample"]]), 100)
+  expect_equal(nrow(jfaRes[["sample"]]), 94)
 })
 
 test_that(desc = "(id: f6-v0.1.0-t3) Test for units = 'items' and method = 'cell'", {
@@ -86,7 +86,7 @@ test_that(desc = "(id: f6-v0.5.0-t1) Test for summary and print function", {
   invisible(capture.output(print(jfaRes)))
   invisible(capture.output(summary(jfaRes)))
   expect_equal(ncol(jfaRes[["sample"]]), 4)
-  expect_equal(nrow(jfaRes[["sample"]]), 100)
+  expect_equal(nrow(jfaRes[["sample"]]), 96)
   jfaRes <- selection(population, size = 100, units = "items", method = "random")
   invisible(capture.output(print(jfaRes)))
   invisible(capture.output(summary(jfaRes)))

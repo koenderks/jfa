@@ -47,7 +47,7 @@ prior to selection. Note that \code{randomize = TRUE} overrules
 \code{order}.}
 
 \item{replace}{a logical specifying if sampling units should be selected
-with replacement. Only used for method \code{random}.}
+with replacement. Only used for method \code{random} when selecting items.}
 
 \item{start}{an integer larger than 0 specifying index of the unit that
 should be selected. Only used for method \code{interval}.}

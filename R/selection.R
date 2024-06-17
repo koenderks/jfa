@@ -55,7 +55,7 @@
 #'   prior to selection. Note that \code{randomize = TRUE} overrules
 #'   \code{order}.
 #' @param replace    a logical specifying if sampling units should be selected
-#'   with replacement. Only used for method \code{random}.
+#'   with replacement. Only used for method \code{random} when selecting items.
 #' @param start      an integer larger than 0 specifying index of the unit that
 #'   should be selected. Only used for method \code{interval}.
 #'
@@ -162,10 +162,7 @@ selection <- function(data,
     size <- size[["n"]]
   }
   stopifnot("'size' must be a single integer > 0" = (size > 0) && (size %% 1 == 0))
-  if (units == "items") {
-    valid_replace <- !(size > nrow(data) && !replace)
-    stopifnot("cannot take a sample larger than the population when 'replace = FALSE'" = valid_replace)
-  } else {
+  if (units == "values") {
     stopifnot("missing value for 'values'" = !is.null(values))
   }
   if (!is.null(values)) {
@@ -211,13 +208,14 @@ selection <- function(data,
   # Compute results
   if (method == "random" && !use_mus) {
     # Random record sampling
+    if (size > nrow(data) && !replace) {
+      message("using 'replace = TRUE' since sample size is larger than population")
+      replace <- TRUE
+    }
     sample_items <- sample(row_numbers, size, replace)
   } else if (method == "random" && use_mus) {
     # Random monetary unit sampling
-    if (size > nrow(data)) {
-      replace <- TRUE
-    }
-    sample_items <- sample(row_numbers, size, replace, book_values)
+    sample_items <- sample(row_numbers, size, TRUE, book_values)
   } else if (method == "cell" && !use_mus) {
     # Cell record sampling
     interval <- nrow(data) / size
