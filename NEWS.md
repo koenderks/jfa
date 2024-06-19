@@ -1,5 +1,9 @@
 # jfa 0.7.2
 
+**Minor changes**
+
+- `selection()` now always performs sampling with replacement when using `items = "values"` and `method = "random"` (Thanks to @lottemensink for the suggestion). This should not lead to substantial differences in typical audit populations.
+
 # jfa 0.7.1
 
 **New features**
