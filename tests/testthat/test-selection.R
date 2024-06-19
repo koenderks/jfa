@@ -55,6 +55,17 @@ test_that(desc = "(id: f6-v0.1.0-t5) Test for units = 'items' and method = 'inte
   jfaRes <- selection(population, size = 100, units = "items", method = "interval", start = 3)
   expect_equal(ncol(jfaRes[["sample"]]), 4)
   expect_equal(nrow(jfaRes[["sample"]]), 100)
+  sample_rows <- c(
+    3, 13, 23, 33, 43, 53, 63, 73, 83, 93, 103, 113, 123, 133, 143,
+    153, 163, 173, 183, 193, 203, 213, 223, 233, 243, 253, 263, 273,
+    283, 293, 303, 313, 323, 333, 343, 353, 363, 373, 383, 393, 403,
+    413, 423, 433, 443, 453, 463, 473, 483, 493, 503, 513, 523, 533,
+    543, 553, 563, 573, 583, 593, 603, 613, 623, 633, 643, 653, 663,
+    673, 683, 693, 703, 713, 723, 733, 743, 753, 763, 773, 783, 793,
+    803, 813, 823, 833, 843, 853, 863, 873, 883, 893, 903, 913, 923,
+    933, 943, 953, 963, 973, 983, 993
+  )
+  expect_equal(jfaRes[["sample"]]$row, sample_rows)
 })
 
 test_that(desc = "(id: f6-v0.1.0-t6) Test for units = 'values' and method = 'interval'", {
@@ -63,6 +74,17 @@ test_that(desc = "(id: f6-v0.1.0-t6) Test for units = 'values' and method = 'int
   jfaRes <- selection(population, size = 100, units = "values", method = "interval", values = "bookValue", start = 3)
   expect_equal(ncol(jfaRes[["sample"]]), 4)
   expect_equal(nrow(jfaRes[["sample"]]), 100)
+  sample_rows <- c(
+    1, 11, 21, 32, 45, 54, 65, 76, 86, 97, 107, 118, 128, 139, 151,
+    162, 171, 180, 192, 203, 213, 220, 228, 239, 248, 257, 269, 278,
+    289, 297, 306, 316, 327, 338, 347, 357, 367, 377, 386, 396, 408,
+    419, 430, 440, 450, 457, 468, 477, 487, 497, 508, 516, 524, 533,
+    546, 556, 567, 576, 585, 594, 604, 613, 623, 634, 646, 656, 665,
+    673, 682, 691, 700, 713, 723, 734, 741, 753, 763, 774, 784, 794,
+    803, 813, 823, 831, 842, 850, 860, 868, 878, 887, 899, 907, 916,
+    926, 936, 948, 962, 971, 980, 991
+  )
+  expect_equal(jfaRes[["sample"]]$row, sample_rows)
 })
 
 test_that(desc = "(id: f6-v0.1.0-t7) Test for units = 'values' and method = 'interval' using negative book values", {
@@ -71,6 +93,17 @@ test_that(desc = "(id: f6-v0.1.0-t7) Test for units = 'values' and method = 'int
   jfaRes <- expect_message(selection(population, size = 100, units = "values", method = "interval", values = "bookValue", start = 3))
   expect_equal(ncol(jfaRes[["sample"]]), 4)
   expect_equal(nrow(jfaRes[["sample"]]), 100)
+  sample_rows <- c(
+    2, 12, 22, 33, 46, 55, 66, 77, 86, 98, 108, 119, 129, 140, 152,
+    163, 172, 181, 192, 204, 214, 221, 229, 240, 249, 258, 269, 279,
+    290, 298, 307, 317, 328, 339, 348, 358, 367, 378, 387, 396, 409,
+    420, 431, 441, 451, 458, 469, 478, 488, 498, 509, 516, 525, 534,
+    546, 557, 567, 577, 586, 595, 605, 614, 624, 635, 647, 657, 665,
+    674, 683, 692, 700, 713, 724, 734, 742, 754, 764, 775, 784, 795,
+    804, 813, 824, 832, 842, 850, 861, 868, 879, 888, 899, 907, 916,
+    926, 937, 949, 962, 971, 980, 991
+  )
+  expect_equal(jfaRes[["sample"]]$row, sample_rows)
 })
 
 
@@ -80,6 +113,7 @@ test_that(desc = "(id: f6-v0.1.0-t7) Test for units = 'values' and method = 'int
 # jfa version 0.5.0
 
 test_that(desc = "(id: f6-v0.5.0-t1) Test for summary and print function", {
+  testthat::skip_on_cran()
   set.seed(1)
   population <- data.frame(ID = sample(1000:100000, size = 1000, replace = FALSE), bookValue = runif(n = 1000, min = 100, max = 500))
   jfaRes <- selection(population, size = 100, units = "values", method = "random", order = "bookValue", values = "bookValue")
