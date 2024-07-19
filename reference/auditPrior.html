@@ -88,7 +88,7 @@ class <code>jfaPrior</code> can be further inspected via associated
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">auditPrior</span><span class="op">(</span></span>
 <span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    <span class="st">"default"</span>, <span class="st">"param"</span>, <span class="st">"strict"</span>, <span class="st">"impartial"</span>, <span class="st">"hyp"</span>,</span>
-<span>    <span class="st">"arm"</span>, <span class="st">"bram"</span>, <span class="st">"sample"</span>, <span class="st">"factor"</span>, <span class="st">"nonparam"</span></span>
+<span>    <span class="st">"arm"</span>, <span class="st">"bram"</span>, <span class="st">"sample"</span>, <span class="st">"power"</span>, <span class="st">"nonparam"</span></span>
 <span>  <span class="op">)</span>,</span>
 <span>  likelihood <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>    <span class="st">"poisson"</span>, <span class="st">"binomial"</span>, <span class="st">"hypergeometric"</span>,</span>
@@ -106,7 +106,7 @@ class <code>jfaPrior</code> can be further inspected via associated
 <span>  p.hmin <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  x <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  n <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  factor <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  delta <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  samples <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  conf.level <span class="op">=</span> <span class="fl">0.95</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -120,7 +120,7 @@ class <code>jfaPrior</code> can be further inspected via associated
 <dd><p>a character specifying the method by which the prior
 distribution is constructed. Possible options are <code>default</code>,
 <code>strict</code>, <code>impartial</code>, <code>param</code>, <code>arm</code>, <code>bram</code>,
-<code>hyp</code>, <code>sample</code>, and <code>factor</code>. See the details section for
+<code>hyp</code>, <code>sample</code>, and <code>power</code>. See the details section for
 more information.</p></dd>
 
 
@@ -190,19 +190,19 @@ materiality). Required for method <code>hyp</code>.</p></dd>
 <dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>a numeric value larger than, or equal to, 0 specifying the
 sum of proportional misstatements (taints) in a prior sample. Required for
-methods <code>sample</code> and <code>factor</code>.</p></dd>
+methods <code>sample</code> and <code>power</code>.</p></dd>
 
 
 <dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
 <dd><p>a numeric value larger than 0 specifying the number of
 units in a prior sample. Required for methods <code>sample</code> and
-<code>factor</code>.</p></dd>
+<code>power</code>.</p></dd>
 
 
-<dt id="arg-factor">factor<a class="anchor" aria-label="anchor" href="#arg-factor"></a></dt>
+<dt id="arg-delta">delta<a class="anchor" aria-label="anchor" href="#arg-delta"></a></dt>
 <dd><p>a numeric value between 0 and 1 specifying the weight of
 a prior sample specified via <code>x</code> and <code>n</code>. Required for method
-<code>factor</code>.</p></dd>
+<code>power</code>.</p></dd>
 
 
 <dt id="arg-samples">samples<a class="anchor" aria-label="anchor" href="#arg-samples"></a></dt>
@@ -311,8 +311,8 @@ level (1 - audit risk).</p></dd>
    distribution.</p></li>
 <li><p><code>sample</code>:    This method translates the outcome of an earlier
    sample to a prior distribution.</p></li>
-<li><p><code>factor</code>:    This method translates and weighs the outcome of an
-   earlier sample to a prior distribution.</p></li>
+<li><p><code>power</code>:    This method translates and weighs the outcome of an
+   earlier sample to a prior distribution (i.e., a power prior).</p></li>
 <li><p><code>nonparam</code>:  This method takes a vector of samples from the prior
     distribution (via <code>samples</code>) and constructs a bounded density
     (between 0 and 1) on the basis of these samples to act as the prior.</p></li>
