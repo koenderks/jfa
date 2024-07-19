@@ -20,7 +20,7 @@ data {
 }
 parameters {
   real<lower=0, upper=1> phi;          // population probability of misstatement
-  real<lower=50> nu;                    // population concentration
+  real<lower=1> nu;                    // population concentration
   vector<lower=0, upper=1>[S] theta_s; // stratum probability of misstatement
 }
 model {
@@ -42,7 +42,7 @@ model {
   } else if (exponential_prior) {
     phi ~ exponential(alpha);
   }
-  nu ~ pareto(50, 1.5);
+  nu ~ pareto(1, 1.5);
   // Prior
   theta_s ~ beta(phi * nu, (1 - phi) * nu);
   // Likelihood
