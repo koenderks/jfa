@@ -59,8 +59,8 @@ print.summary.jfaPrior <- function(x, digits = getOption("digits"), ...) {
     "hyp" = paste0("p(\u0398 < ", x[["materiality"]], ") = ", x[["p.h1"]], "; p(\u0398 > ", x[["materiality"]], ") = ", x[["p.h0"]]),
     "arm" = paste0("ir = ", x[["ir"]], "; cr = ", x[["icr"]], "; dr = ", x[["dr"]]),
     "bram" = paste0("mode = ", x[["mode.prior"]], "; upper bound = ", x[["ub.prior"]]),
-    "sample" = paste0("earlier sample of ", x[["n.prior"]], " items with ", x[["x.prior"]], " misstatement(s)"),
-    "power" = paste0("earlier sample of ", x[["n.prior"]], " items with ", x[["x.prior"]], " misstatement(s) weighted by ", x[["delta"]]),
+    "sample" = paste0("earlier sample of ", x[["n.prior"]], " items with ", x[["x.prior"]], " error(s)"),
+    "power" = paste0("earlier sample of ", x[["n.prior"]], " items with ", x[["x.prior"]], " error(s) weighted by ", x[["delta"]]),
     "param" = paste0("\u03B1 = ", x[["alpha"]], "; \u03B2 = ", x[["beta"]]),
     "nonparam" = "nonparametric prior",
     "mcmc" = "nonparametric prior"

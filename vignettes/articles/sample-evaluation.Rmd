@@ -270,8 +270,8 @@ summary(result_pp)
 ```
 
 In this scenario, the output indicates that the estimated misstatement in the
-population is 4.18 percent, with the 95 percent credible interval extending from
-3.28 percent to 5.36 percent. Note that this population estimate is considerably
+population is 4.23 percent, with the 95 percent credible interval extending from
+3.25 percent to 5.37 percent. Note that this population estimate is considerably
 less uncertain compared to the no pooling approach. Similarly to the no pooling
 approach, the stratum estimates differ from each other but are closer together
 and exhibit less uncertainty. This can be explained by the fact that the partial
@@ -424,8 +424,8 @@ print(result)
 ```
 
 The output indicates that the estimated misstatement in the population is
-15.32 percent. The 95 percent credible interval spans from 14.65 percent to
-16.29 percent. The precision of the population estimate is therefore 1.64
+16.59 percent. The 95 percent credible interval spans from 15.71 percent to
+17.57 percent. The precision of the population estimate is therefore 1.86
 percent, which is lower than that of the classical approach. The estimates for
 each stratum are visualized below using the `plot(..., type = "estimates)`
 command but their actual values can be once again be obtained using the
