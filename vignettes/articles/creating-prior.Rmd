@@ -196,11 +196,11 @@ auditPrior(method = "sample", likelihood = "binomial", x = 0, n = 30)
 ### Priors based on a weighted earlier sample
 
 You can integrate information from the previous year's results, adjusted by a
-factor [@derks_2021], into the prior distribution using `method = 'factor'` in
+factor [@derks_2021], into the prior distribution using `method = 'power'` in
 conjunction with the `x` and `n` arguments. For instance, the code below
 demonstrates how to include the data from the previous year's results (i.e., a
 sample of $n$ = 58 items with $k$ = 0 misstatements found), weighed by a factor
-of 0.7, into a beta prior distribution. This weighting factor of 0.7 could be
+of 0.7, into a beta prior distribution. This factor `delta` of 0.7 could be
 derived from the fact that 70 percent of the auditee's contracts are with
 businesses that have remained unchanged over the years, implying that last
 year's population is for 70 percent comparable to the population of this year.
@@ -208,7 +208,7 @@ year's population is for 70 percent comparable to the population of this year.
 *Note: This method requires the `poisson`, `binomial`, or `hypergeometric` likelihood.*
 
 ```{r}
-auditPrior(method = "factor", likelihood = "binomial", x = 0, n = 58, factor = 0.7)
+auditPrior(method = "power", likelihood = "binomial", x = 0, n = 58, delta = 0.7)
 ```
 
 ### Nonparametric prior distributions

@@ -90,17 +90,17 @@ test_that(desc = "(id: f2-v0.1.0-t5) Test for method = 'sample'", {
   expect_equal(prior[["description"]]$beta, 29)
 })
 
-test_that(desc = "(id: f2-v0.1.0-t6) Test for method = 'factor'", {
+test_that(desc = "(id: f2-v0.1.0-t6) Test for method = 'power'", {
   testthat::skip_on_cran()
-  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "factor", likelihood = "binomial", n = 30, x = 1, factor = 0.6)
+  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "power", likelihood = "binomial", n = 30, x = 1, delta = 0.6)
   expect_equal(prior[["description"]]$alpha, 1.6, tolerance = 0.001)
   expect_equal(prior[["description"]]$beta, 17.4, tolerance = 0.001)
 
-  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "factor", likelihood = "poisson", n = 30, x = 1, factor = 0.6)
+  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "power", likelihood = "poisson", n = 30, x = 1, delta = 0.6)
   expect_equal(prior[["description"]]$alpha, 1.6, tolerance = 0.001)
   expect_equal(prior[["description"]]$beta, 18, tolerance = 0.001)
 
-  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "factor", likelihood = "hypergeometric", n = 30, x = 1, N.units = 3500, factor = 0.6)
+  prior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "power", likelihood = "hypergeometric", n = 30, x = 1, N.units = 3500, delta = 0.6)
   expect_equal(prior[["description"]]$alpha, 1.6, tolerance = 0.001)
   expect_equal(prior[["description"]]$beta, 17.4, tolerance = 0.001)
 })

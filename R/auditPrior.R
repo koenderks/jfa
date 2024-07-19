@@ -27,7 +27,7 @@
 #' @usage auditPrior(
 #'   method = c(
 #'     "default", "param", "strict", "impartial", "hyp",
-#'     "arm", "bram", "sample", "factor", "nonparam"
+#'     "arm", "bram", "sample", "power", "nonparam"
 #'   ),
 #'   likelihood = c(
 #'     "poisson", "binomial", "hypergeometric",
@@ -45,7 +45,7 @@
 #'   p.hmin = NULL,
 #'   x = NULL,
 #'   n = NULL,
-#'   factor = NULL,
+#'   delta = NULL,
 #'   samples = NULL,
 #'   conf.level = 0.95
 #' )
@@ -53,7 +53,7 @@
 #' @param method      a character specifying the method by which the prior
 #'   distribution is constructed. Possible options are \code{default},
 #'   \code{strict}, \code{impartial}, \code{param}, \code{arm}, \code{bram},
-#'   \code{hyp}, \code{sample}, and \code{factor}. See the details section for
+#'   \code{hyp}, \code{sample}, and \code{power}. See the details section for
 #'   more information.
 #' @param likelihood  a character specifying the likelihood for updating the
 #'   prior distribution. Possible options are \code{poisson} (default) for a
@@ -90,13 +90,13 @@
 #'   materiality). Required for method \code{hyp}.
 #' @param x           a numeric value larger than, or equal to, 0 specifying the
 #'   sum of proportional misstatements (taints) in a prior sample. Required for
-#'   methods \code{sample} and \code{factor}.
+#'   methods \code{sample} and \code{power}.
 #' @param n           a numeric value larger than 0 specifying the number of
 #'   units in a prior sample. Required for methods \code{sample} and
-#'   \code{factor}.
-#' @param factor      a numeric value between 0 and 1 specifying the weight of
+#'   \code{power}.
+#' @param delta      a numeric value between 0 and 1 specifying the weight of
 #'   a prior sample specified via \code{x} and \code{n}. Required for method
-#'   \code{factor}.
+#'   \code{power}.
 #' @param samples     a numeric vector containing samples of the prior
 #'   distribution. Required for method \code{nonparam}.
 #' @param conf.level  a numeric value between 0 and 1 specifying the confidence
@@ -147,8 +147,8 @@
 #'    distribution.}
 #'  \item{\code{sample}:    This method translates the outcome of an earlier
 #'    sample to a prior distribution.}
-#'  \item{\code{factor}:    This method translates and weighs the outcome of an
-#'    earlier sample to a prior distribution.}
+#'  \item{\code{power}:    This method translates and weighs the outcome of an
+#'    earlier sample to a prior distribution (i.e., a power prior).}
 #'  \item{\code{nonparam}:  This method takes a vector of samples from the prior
 #'     distribution (via \code{samples}) and constructs a bounded density
 #'     (between 0 and 1) on the basis of these samples to act as the prior.}
@@ -243,7 +243,7 @@
 
 auditPrior <- function(method = c(
                          "default", "param", "strict", "impartial", "hyp",
-                         "arm", "bram", "sample", "factor", "nonparam"
+                         "arm", "bram", "sample", "power", "nonparam"
                        ),
                        likelihood = c(
                          "poisson", "binomial", "hypergeometric",
@@ -261,7 +261,7 @@ auditPrior <- function(method = c(
                        p.hmin = NULL,
                        x = NULL,
                        n = NULL,
-                       factor = NULL,
+                       delta = NULL,
                        samples = NULL,
                        conf.level = 0.95) {
   # Input checking
@@ -279,7 +279,7 @@ auditPrior <- function(method = c(
   if (!is.null(materiality) && expected < 1) {
     stopifnot("'expected' must be a single value < 'materiality'" = expected < materiality)
   }
-  requires_expected_percentage <- method %in% c("default", "sample", "factor", "param", "strict")
+  requires_expected_percentage <- method %in% c("default", "sample", "power", "param", "strict")
   if (expected >= 1 && !requires_expected_percentage) {
     stop(paste0("'expected' must be a single value between 0 and 1 for 'method = ", method, "'"))
   }
@@ -471,7 +471,7 @@ auditPrior <- function(method = c(
         prior_beta <- 0
       }
     }
-  } else if (method == "sample" || method == "factor") {
+  } else if (method == "sample" || method == "power") {
     stopifnot("'method' not supported for the current 'likelihood'" = accomodates_elicitation)
     stopifnot("missing value for 'n'" = !is.null(n))
     valid_n <- is.numeric(n) && length(n) == 1 && n >= 0
@@ -479,13 +479,13 @@ auditPrior <- function(method = c(
     stopifnot("missing value for 'x'" = !is.null(x))
     valid_x <- is.numeric(x) && length(x) == 1 && x >= 0
     stopifnot("'x' must be a single value >= 0" = valid_x)
-    if (method == "factor") {
-      stopifnot("missing value for 'factor'" = !is.null(factor))
+    if (method == "power") {
+      stopifnot("missing value for 'delta'" = !is.null(delta))
     } else {
-      factor <- 1
+      delta <- 1
     }
-    prior.n <- n * factor
-    prior.x <- x * factor
+    prior.n <- n * delta
+    prior.x <- x * delta
     prior_alpha <- 1 + prior.x
     if (likelihood == "poisson") {
       prior_beta <- prior.n
@@ -560,10 +560,10 @@ auditPrior <- function(method = c(
     if (method == "impartial" || method == "hyp") {
       specifics[["p.h1"]] <- p.h1
       specifics[["p.h0"]] <- p.h0
-    } else if (method == "sample" || method == "factor") {
+    } else if (method == "sample" || method == "power") {
       specifics[["x"]] <- x
       specifics[["n"]] <- n
-      specifics[["factor"]] <- factor
+      specifics[["delta"]] <- delta
     } else if (method == "arm") {
       specifics[["ir"]] <- ir
       specifics[["cr"]] <- cr

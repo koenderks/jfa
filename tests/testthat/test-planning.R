@@ -138,9 +138,9 @@ test_that(desc = "(id: f5-v0.1.0-t20) Bayesian binomial 5% materiality 1% errors
   expect_equal(jfaRes[["x"]], 0.55, tolerance = 0.001)
 })
 
-test_that(desc = "(id: f5-v0.1.0-t21) Bayesian poisson 5% materiality 1% errors factor prior", {
+test_that(desc = "(id: f5-v0.1.0-t21) Bayesian poisson 5% materiality 1% errors power prior", {
   testthat::skip_on_cran()
-  jfaPrior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "factor", factor = 0.6, n = 58, x = 0, expected = 0.025, likelihood = "binomial")
+  jfaPrior <- auditPrior(materiality = 0.05, conf.level = 0.95, method = "power", delta = 0.6, n = 58, x = 0, expected = 0.025, likelihood = "binomial")
   jfaRes <- planning(materiality = 0.05, conf.level = 0.95, expected = 0.01, likelihood = "binomial", N.units = 1000, prior = jfaPrior)
   expect_equal(jfaRes[["n"]], 38)
   expect_equal(jfaRes[["x"]], 0.38, tolerance = 0.001)

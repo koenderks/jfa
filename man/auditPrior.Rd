@@ -7,7 +7,7 @@
 auditPrior(
   method = c(
     "default", "param", "strict", "impartial", "hyp",
-    "arm", "bram", "sample", "factor", "nonparam"
+    "arm", "bram", "sample", "power", "nonparam"
   ),
   likelihood = c(
     "poisson", "binomial", "hypergeometric",
@@ -25,7 +25,7 @@ auditPrior(
   p.hmin = NULL,
   x = NULL,
   n = NULL,
-  factor = NULL,
+  delta = NULL,
   samples = NULL,
   conf.level = 0.95
 )
@@ -34,7 +34,7 @@ auditPrior(
 \item{method}{a character specifying the method by which the prior
 distribution is constructed. Possible options are \code{default},
 \code{strict}, \code{impartial}, \code{param}, \code{arm}, \code{bram},
-\code{hyp}, \code{sample}, and \code{factor}. See the details section for
+\code{hyp}, \code{sample}, and \code{power}. See the details section for
 more information.}
 
 \item{likelihood}{a character specifying the likelihood for updating the
@@ -82,15 +82,15 @@ materiality). Required for method \code{hyp}.}
 
 \item{x}{a numeric value larger than, or equal to, 0 specifying the
 sum of proportional misstatements (taints) in a prior sample. Required for
-methods \code{sample} and \code{factor}.}
+methods \code{sample} and \code{power}.}
 
 \item{n}{a numeric value larger than 0 specifying the number of
 units in a prior sample. Required for methods \code{sample} and
-\code{factor}.}
+\code{power}.}
 
-\item{factor}{a numeric value between 0 and 1 specifying the weight of
+\item{delta}{a numeric value between 0 and 1 specifying the weight of
 a prior sample specified via \code{x} and \code{n}. Required for method
-\code{factor}.}
+\code{power}.}
 
 \item{samples}{a numeric vector containing samples of the prior
 distribution. Required for method \code{nonparam}.}
@@ -184,8 +184,8 @@ This section elaborates on the available input options for the
    distribution.}
  \item{\code{sample}:    This method translates the outcome of an earlier
    sample to a prior distribution.}
- \item{\code{factor}:    This method translates and weighs the outcome of an
-   earlier sample to a prior distribution.}
+ \item{\code{power}:    This method translates and weighs the outcome of an
+   earlier sample to a prior distribution (i.e., a power prior).}
  \item{\code{nonparam}:  This method takes a vector of samples from the prior
     distribution (via \code{samples}) and constructs a bounded density
     (between 0 and 1) on the basis of these samples to act as the prior.}
