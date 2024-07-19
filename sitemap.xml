@@ -1,123 +1,43 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://koenderks.github.io/jfa/404.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/CODE_OF_CONDUCT.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/CONTRIBUTING.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/articles/algorithm-auditing.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/articles/audit-sampling.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/articles/bayesian-sampling-workflow.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/articles/creating-prior.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/articles/data-auditing.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/articles/digit-analysis.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/articles/jfa.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/articles/model-fairness.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/articles/sample-evaluation-partial.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/articles/sample-evaluation.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/articles/sample-planning.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/articles/sample-selection.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/articles/sampling-workflow.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/index.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/reference/BuildIt.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/reference/accounts.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/reference/allowances.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/reference/auditPrior.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/reference/benchmark.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/reference/carrier.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/reference/compas.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/reference/digit_test.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/reference/evaluation.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/reference/jfa-methods.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/reference/jfa.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/reference/model_fairness.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/reference/planning.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/reference/repeated_test.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/reference/retailer.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/reference/sanitizer.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/reference/selection.html</loc>
-  </url>
-  <url>
-    <loc>https://koenderks.github.io/jfa/reference/sinoForest.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://koenderks.github.io/jfa/404.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/CONTRIBUTING.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/LICENSE.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/articles/algorithm-auditing.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/articles/audit-sampling.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/articles/bayesian-sampling-workflow.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/articles/creating-prior.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/articles/data-auditing.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/articles/digit-analysis.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/articles/index.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/articles/jfa.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/articles/model-fairness.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/articles/sample-evaluation-partial.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/articles/sample-evaluation.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/articles/sample-planning.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/articles/sample-selection.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/articles/sampling-workflow.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/authors.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/index.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/news/index.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/reference/BuildIt.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/reference/accounts.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/reference/allowances.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/reference/auditPrior.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/reference/benchmark.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/reference/carrier.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/reference/compas.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/reference/digit_test.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/reference/evaluation.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/reference/index.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/reference/jfa-methods.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/reference/jfa.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/reference/model_fairness.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/reference/planning.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/reference/repeated_test.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/reference/retailer.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/reference/sanitizer.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/reference/selection.html</loc></url>
+<url><loc>https://koenderks.github.io/jfa/reference/sinoForest.html</loc></url>
 </urlset>
+

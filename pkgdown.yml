@@ -1,22 +1,21 @@
 pandoc: 3.1.11
-pkgdown: 2.0.9
+pkgdown: 2.1.0
 pkgdown_sha: ~
 articles:
-  algorithm-auditing: algorithm-auditing.html
-  audit-sampling: audit-sampling.html
-  bayesian-sampling-workflow: bayesian-sampling-workflow.html
-  creating-prior: creating-prior.html
-  data-auditing: data-auditing.html
-  digit-analysis: digit-analysis.html
+  articles/algorithm-auditing: algorithm-auditing.html
+  articles/audit-sampling: audit-sampling.html
+  articles/bayesian-sampling-workflow: bayesian-sampling-workflow.html
+  articles/creating-prior: creating-prior.html
+  articles/data-auditing: data-auditing.html
+  articles/digit-analysis: digit-analysis.html
   jfa: jfa.html
-  model-fairness: model-fairness.html
-  sample-evaluation-partial: sample-evaluation-partial.html
-  sample-evaluation: sample-evaluation.html
-  sample-planning: sample-planning.html
-  sample-selection: sample-selection.html
-  sampling-workflow: sampling-workflow.html
-last_built: 2024-06-26T13:44Z
+  articles/model-fairness: model-fairness.html
+  articles/sample-evaluation-partial: sample-evaluation-partial.html
+  articles/sample-evaluation: sample-evaluation.html
+  articles/sample-planning: sample-planning.html
+  articles/sample-selection: sample-selection.html
+  articles/sampling-workflow: sampling-workflow.html
+last_built: 2024-07-19T06:09Z
 urls:
   reference: https://koenderks.github.io/jfa/reference
   article: https://koenderks.github.io/jfa/articles
-

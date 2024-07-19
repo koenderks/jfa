@@ -6,27 +6,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Algorithmic fairness • jfa</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Algorithmic fairness">
-<meta property="og:description" content="jfa">
-<meta property="og:image" content="https://koenderks.github.io/jfa/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -49,7 +41,7 @@
 <li>
   <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
-     
+
   </a>
 </li>
 <li>
@@ -69,13 +61,13 @@
 <li>
   <a href="https://github.com/koenderks/jfa" class="external-link">
     <span class="fa fa-github"></span>
-     
+
   </a>
 </li>
 <li>
   <a href="https://github.com/koenderks/jfa/discussions" class="external-link">
     <span class="fa fa-users"></span>
-     
+
   </a>
 </li>
       </ul>
@@ -86,7 +78,7 @@
 </div>
 <!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
@@ -95,7 +87,7 @@
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/articles/model-fairness.Rmd" class="external-link"><code>vignettes/articles/model-fairness.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/development/vignettes/articles/model-fairness.Rmd" class="external-link"><code>vignettes/articles/model-fairness.Rmd</code></a></small>
       <div class="hidden name"><code>model-fairness.Rmd</code></div>
 
     </div>
@@ -227,10 +219,12 @@ each unprivileged (i.e., ethnic) group and the privileged group. Note
 that, since demographic parity is not a proportion, statistical
 inference about its equality to the privileged group is not
 supported.</p>
-<p>The formula for the number of positive predictions is <span class="math inline">\(P = TP + FP\)</span>, and the demographic parity
-for unprivileged group <span class="math inline">\(i\)</span> is given
-by <span class="math inline">\(DP =
-\frac{P_{i}}{P_{privileged}}\)</span>.</p>
+<p>The formula for the number of positive predictions is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mi>T</mi><mi>P</mi><mo>+</mo><mi>F</mi><mi>P</mi></mrow><annotation encoding="application/x-tex">P = TP + FP</annotation></semantics></math>,
+and the demographic parity for unprivileged group
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+is given by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mi>P</mi><mo>=</mo><mfrac><msub><mi>P</mi><mi>i</mi></msub><msub><mi>P</mi><mrow><mi>p</mi><mi>r</mi><mi>i</mi><mi>v</mi><mi>i</mi><mi>l</mi><mi>e</mi><mi>g</mi><mi>e</mi><mi>d</mi></mrow></msub></mfrac></mrow><annotation encoding="application/x-tex">DP = \frac{P_{i}}{P_{privileged}}</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
@@ -279,8 +273,12 @@ that in the privileged group. For example, in the case that a positive
 prediction represents a reoffender, proportional parity requires the
 proportion of predicted reoffenders to be similar across ethnic
 groups.</p>
-<p>The formula for the proportion of positive predictions is <span class="math inline">\(PP = \frac{TP + FP}{TP + FP + TN + FN}\)</span>,
-and the proportional parity for unprivileged group <span class="math inline">\(i\)</span> is given by <span class="math inline">\(\frac{PP_{i}}{PP_{privileged}}\)</span>.</p>
+<p>The formula for the proportion of positive predictions is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>P</mi><mo>=</mo><mfrac><mrow><mi>T</mi><mi>P</mi><mo>+</mo><mi>F</mi><mi>P</mi></mrow><mrow><mi>T</mi><mi>P</mi><mo>+</mo><mi>F</mi><mi>P</mi><mo>+</mo><mi>T</mi><mi>N</mi><mo>+</mo><mi>F</mi><mi>N</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">PP = \frac{TP + FP}{TP + FP + TN + FN}</annotation></semantics></math>,
+and the proportional parity for unprivileged group
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+is given by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mrow><mi>P</mi><msub><mi>P</mi><mi>i</mi></msub></mrow><mrow><mi>P</mi><msub><mi>P</mi><mrow><mi>p</mi><mi>r</mi><mi>i</mi><mi>v</mi><mi>i</mi><mi>l</mi><mi>e</mi><mi>g</mi><mi>e</mi><mi>d</mi></mrow></msub></mrow></mfrac><annotation encoding="application/x-tex">\frac{PP_{i}}{PP_{privileged}}</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
@@ -396,11 +394,12 @@ object.</p>
 <p><strong>Predictive rate parity (Equalized odds)</strong>:
 Compares the overall positive prediction rates (e.g., the precision) of
 each unprivileged group to the privileged group.</p>
-<p>The formula for the precision is <span class="math inline">\(PR =
-\frac{TP}{TP + FP}\)</span>, and the predictive rate parity for
-unprivileged group <span class="math inline">\(i\)</span> is given by
-<span class="math inline">\(PRP =
-\frac{PR_{i}}{PR_{privileged}}\)</span>.</p>
+<p>The formula for the precision is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>R</mi><mo>=</mo><mfrac><mrow><mi>T</mi><mi>P</mi></mrow><mrow><mi>T</mi><mi>P</mi><mo>+</mo><mi>F</mi><mi>P</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">PR = \frac{TP}{TP + FP}</annotation></semantics></math>,
+and the predictive rate parity for unprivileged group
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+is given by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>R</mi><mi>P</mi><mo>=</mo><mfrac><mrow><mi>P</mi><msub><mi>R</mi><mi>i</mi></msub></mrow><mrow><mi>P</mi><msub><mi>R</mi><mrow><mi>p</mi><mi>r</mi><mi>i</mi><mi>v</mi><mi>i</mi><mi>l</mi><mi>e</mi><mi>g</mi><mi>e</mi><mi>d</mi></mrow></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">PRP = \frac{PR_{i}}{PR_{privileged}}</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
@@ -448,11 +447,12 @@ fair treatment in the algorithm’s overall positive predictions.</li>
 <li>
 <p><strong>Accuracy parity</strong>: Compares the accuracy of each
 unprivileged group’s predictions with the privileged group.</p>
-<p>The formula for the accuracy is <span class="math inline">\(A =
-\frac{TP + TN}{TP + FP + TN + FN}\)</span>, and the accuracy parity for
-unprivileged group <span class="math inline">\(i\)</span> is given by
-<span class="math inline">\(AP =
-\frac{A_{i}}{A_{privileged}}\)</span>.</p>
+<p>The formula for the accuracy is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mfrac><mrow><mi>T</mi><mi>P</mi><mo>+</mo><mi>T</mi><mi>N</mi></mrow><mrow><mi>T</mi><mi>P</mi><mo>+</mo><mi>F</mi><mi>P</mi><mo>+</mo><mi>T</mi><mi>N</mi><mo>+</mo><mi>F</mi><mi>N</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">A = \frac{TP + TN}{TP + FP + TN + FN}</annotation></semantics></math>,
+and the accuracy parity for unprivileged group
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+is given by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>P</mi><mo>=</mo><mfrac><msub><mi>A</mi><mi>i</mi></msub><msub><mi>A</mi><mrow><mi>p</mi><mi>r</mi><mi>i</mi><mi>v</mi><mi>i</mi><mi>l</mi><mi>e</mi><mi>g</mi><mi>e</mi><mi>d</mi></mrow></msub></mfrac></mrow><annotation encoding="application/x-tex">AP = \frac{A_{i}}{A_{privileged}}</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
@@ -497,9 +497,12 @@ indicating potential favoritism in overall accuracy.</li>
 <p><strong>False negative rate parity (Treatment equality)</strong>:
 Compares the false negative rates of each unprivileged group with the
 privileged group.</p>
-<p>The formula for the false negative rate is <span class="math inline">\(FNR = \frac{FN}{TP + FN}\)</span>, and the false
-negative rate parity for unprivileged group <span class="math inline">\(i\)</span> is given by <span class="math inline">\(FNRP =
-\frac{FNR_{i}}{FNR_{privileged}}\)</span>.</p>
+<p>The formula for the false negative rate is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mi>N</mi><mi>R</mi><mo>=</mo><mfrac><mrow><mi>F</mi><mi>N</mi></mrow><mrow><mi>T</mi><mi>P</mi><mo>+</mo><mi>F</mi><mi>N</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">FNR = \frac{FN}{TP + FN}</annotation></semantics></math>,
+and the false negative rate parity for unprivileged group
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+is given by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mi>N</mi><mi>R</mi><mi>P</mi><mo>=</mo><mfrac><mrow><mi>F</mi><mi>N</mi><msub><mi>R</mi><mi>i</mi></msub></mrow><mrow><mi>F</mi><mi>N</mi><msub><mi>R</mi><mrow><mi>p</mi><mi>r</mi><mi>i</mi><mi>v</mi><mi>i</mi><mi>l</mi><mi>e</mi><mi>g</mi><mi>e</mi><mi>d</mi></mrow></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">FNRP = \frac{FNR_{i}}{FNR_{privileged}}</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
@@ -547,9 +550,12 @@ indicating relatively similar rates as the privileged group
 <p><strong>False positive rate parity</strong>: Compares the false
 positive rates (e.g., for non-reoffenders) of each unprivileged group
 with the privileged group.</p>
-<p>The formula for the false positive rate is <span class="math inline">\(FPR = \frac{FP}{TN + FP}\)</span>, and the false
-positive rate parity for unprivileged group <span class="math inline">\(i\)</span> is given by <span class="math inline">\(FPRP =
-\frac{FPR_{i}}{FPR_{privileged}}\)</span>.</p>
+<p>The formula for the false positive rate is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mi>P</mi><mi>R</mi><mo>=</mo><mfrac><mrow><mi>F</mi><mi>P</mi></mrow><mrow><mi>T</mi><mi>N</mi><mo>+</mo><mi>F</mi><mi>P</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">FPR = \frac{FP}{TN + FP}</annotation></semantics></math>,
+and the false positive rate parity for unprivileged group
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+is given by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mi>P</mi><mi>R</mi><mi>P</mi><mo>=</mo><mfrac><mrow><mi>F</mi><mi>P</mi><msub><mi>R</mi><mi>i</mi></msub></mrow><mrow><mi>F</mi><mi>P</mi><msub><mi>R</mi><mrow><mi>p</mi><mi>r</mi><mi>i</mi><mi>v</mi><mi>i</mi><mi>l</mi><mi>e</mi><mi>g</mi><mi>e</mi><mi>d</mi></mrow></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">FPRP = \frac{FPR_{i}}{FPR_{privileged}}</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
@@ -599,9 +605,12 @@ treatment of Hispanics in false positive predictions.</li>
 <p><strong>True positive rate parity (Equal opportunity)</strong>:
 Compares the true positive rates (e.g., for reoffenders) of each
 unprivileged group with the privileged group.</p>
-<p>The formula for the true positive rate is <span class="math inline">\(TPR = \frac{TP}{TP + FN}\)</span>, and the true
-positive rate parity for unprivileged group <span class="math inline">\(i\)</span> is given by <span class="math inline">\(TPRP =
-\frac{TPR_{i}}{TPR_{privileged}}\)</span>.</p>
+<p>The formula for the true positive rate is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mi>P</mi><mi>R</mi><mo>=</mo><mfrac><mrow><mi>T</mi><mi>P</mi></mrow><mrow><mi>T</mi><mi>P</mi><mo>+</mo><mi>F</mi><mi>N</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">TPR = \frac{TP}{TP + FN}</annotation></semantics></math>,
+and the true positive rate parity for unprivileged group
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+is given by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mi>P</mi><mi>R</mi><mi>P</mi><mo>=</mo><mfrac><mrow><mi>T</mi><mi>P</mi><msub><mi>R</mi><mi>i</mi></msub></mrow><mrow><mi>T</mi><mi>P</mi><msub><mi>R</mi><mrow><mi>p</mi><mi>r</mi><mi>i</mi><mi>v</mi><mi>i</mi><mi>l</mi><mi>e</mi><mi>g</mi><mi>e</mi><mi>d</mi></mrow></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">TPRP = \frac{TPR_{i}}{TPR_{privileged}}</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
@@ -651,9 +660,12 @@ treatment in the algorithm’s true positive predictions.</li>
 <p><strong>Negative predicted value parity</strong>: Compares the
 negative predicted value (e.g., for non-reoffenders) of each
 unprivileged group with that of the privileged group.</p>
-<p>The formula for the negative predicted value is <span class="math inline">\(NPV = \frac{TN}{TN + FN}\)</span>, and the
-negative predicted value parity for unprivileged group <span class="math inline">\(i\)</span> is given by <span class="math inline">\(NPVP =
-\frac{NPV_{i}}{NPV_{privileged}}\)</span>.</p>
+<p>The formula for the negative predicted value is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi>P</mi><mi>V</mi><mo>=</mo><mfrac><mrow><mi>T</mi><mi>N</mi></mrow><mrow><mi>T</mi><mi>N</mi><mo>+</mo><mi>F</mi><mi>N</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">NPV = \frac{TN}{TN + FN}</annotation></semantics></math>,
+and the negative predicted value parity for unprivileged group
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+is given by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi>P</mi><mi>V</mi><mi>P</mi><mo>=</mo><mfrac><mrow><mi>N</mi><mi>P</mi><msub><mi>V</mi><mi>i</mi></msub></mrow><mrow><mi>N</mi><mi>P</mi><msub><mi>V</mi><mrow><mi>p</mi><mi>r</mi><mi>i</mi><mi>v</mi><mi>i</mi><mi>l</mi><mi>e</mi><mi>g</mi><mi>e</mi><mi>d</mi></mrow></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">NPVP = \frac{NPV_{i}}{NPV_{privileged}}</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
@@ -702,9 +714,12 @@ Hispanics in predicting non-reoffenders.</li>
 <p><strong>Specificity parity (True negative rate parity)</strong>:
 Compares the specificity (true negative rate) of each unprivileged group
 with the privileged group.</p>
-<p>The formula for the specificity is <span class="math inline">\(S =
-\frac{TN}{TN + FP}\)</span>, and the specificity parity for unprivileged
-group <span class="math inline">\(i\)</span> is given by <span class="math inline">\(SP = \frac{S_{i}}{S_{privileged}}\)</span>.</p>
+<p>The formula for the specificity is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mfrac><mrow><mi>T</mi><mi>N</mi></mrow><mrow><mi>T</mi><mi>N</mi><mo>+</mo><mi>F</mi><mi>P</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">S = \frac{TN}{TN + FP}</annotation></semantics></math>,
+and the specificity parity for unprivileged group
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+is given by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>P</mi><mo>=</mo><mfrac><msub><mi>S</mi><mi>i</mi></msub><msub><mi>S</mi><mrow><mi>p</mi><mi>r</mi><mi>i</mi><mi>v</mi><mi>i</mi><mi>l</mi><mi>e</mi><mi>g</mi><mi>e</mi><mi>d</mi></mrow></msub></mfrac></mrow><annotation encoding="application/x-tex">SP = \frac{S_{i}}{S_{privileged}}</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
@@ -792,16 +807,26 @@ the scenario of equal fairness metrics.</p>
 <span><span class="co">##   Native_American: 1.4864 [0.64076, 2.2547], BF₁₀ = 0.018438</span></span>
 <span><span class="co">##   Other: 0.73551 [0.64728, 0.92786], BF₁₀ = 1.815</span></span>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span></code></pre>
-<p>The Bayes factor <span class="math inline">\(BF_{01}\)</span>, used
-in Bayesian inference, quantifies the evidence supporting algorithmic
-fairness (i.e., equal fairness metrics across all groups) over
-algorithmic bias. Conversely, <span class="math inline">\(BF_{10}\)</span> quantifies the evidence
-supporting algorithmic bias over algorithmic fairness. By default,
-<strong>jfa</strong> reports <span class="math inline">\(BF_{10}\)</span>, but <span class="math inline">\(BF_{01}\)</span> = <span class="math inline">\(\frac{1}{BF_{10}}\)</span>. The output above shows
-the resulting Bayes factor (<span class="math inline">\(BF_{01}\)</span>) in favor of rejecting the null
-hypothesis of algorithmic fairness. As shown, <span class="math inline">\(BF_{01}\)</span> &gt; 1000, indicating extreme
-evidence against the hypothesis of equal fairness metrics between the
-groups.</p>
+<p>The Bayes factor
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><msub><mi>F</mi><mn>01</mn></msub></mrow><annotation encoding="application/x-tex">BF_{01}</annotation></semantics></math>,
+used in Bayesian inference, quantifies the evidence supporting
+algorithmic fairness (i.e., equal fairness metrics across all groups)
+over algorithmic bias. Conversely,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><msub><mi>F</mi><mn>10</mn></msub></mrow><annotation encoding="application/x-tex">BF_{10}</annotation></semantics></math>
+quantifies the evidence supporting algorithmic bias over algorithmic
+fairness. By default, <strong>jfa</strong> reports
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><msub><mi>F</mi><mn>10</mn></msub></mrow><annotation encoding="application/x-tex">BF_{10}</annotation></semantics></math>,
+but
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><msub><mi>F</mi><mn>01</mn></msub></mrow><annotation encoding="application/x-tex">BF_{01}</annotation></semantics></math>
+=
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mn>1</mn><mrow><mi>B</mi><msub><mi>F</mi><mn>10</mn></msub></mrow></mfrac><annotation encoding="application/x-tex">\frac{1}{BF_{10}}</annotation></semantics></math>.
+The output above shows the resulting Bayes factor
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><msub><mi>F</mi><mn>01</mn></msub></mrow><annotation encoding="application/x-tex">BF_{01}</annotation></semantics></math>)
+in favor of rejecting the null hypothesis of algorithmic fairness. As
+shown,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><msub><mi>F</mi><mn>01</mn></msub></mrow><annotation encoding="application/x-tex">BF_{01}</annotation></semantics></math>
+&gt; 1000, indicating extreme evidence against the hypothesis of equal
+fairness metrics between the groups.</p>
 <p>The prior and posterior distribution for the group comparisons can be
 visualized by invoking <code>plot(..., type = "posterior")</code>.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
@@ -873,9 +898,7 @@ Web</em>. <a href="https://doi.org/10.1145/3038912.3052660" class="external-link
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
+      </div>
 
 </div>
 
@@ -888,16 +911,16 @@ Web</em>. <a href="https://doi.org/10.1145/3038912.3052660" class="external-link
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer>
 </div>
 
-  
 
 
-  
+
+
 
   </body>
 </html>

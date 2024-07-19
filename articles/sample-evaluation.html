@@ -6,27 +6,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Evaluating statistical audit samples • jfa</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Evaluating statistical audit samples">
-<meta property="og:description" content="jfa">
-<meta property="og:image" content="https://koenderks.github.io/jfa/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -49,7 +41,7 @@
 <li>
   <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
-     
+
   </a>
 </li>
 <li>
@@ -69,13 +61,13 @@
 <li>
   <a href="https://github.com/koenderks/jfa" class="external-link">
     <span class="fa fa-github"></span>
-     
+
   </a>
 </li>
 <li>
   <a href="https://github.com/koenderks/jfa/discussions" class="external-link">
     <span class="fa fa-users"></span>
-     
+
   </a>
 </li>
       </ul>
@@ -86,7 +78,7 @@
 </div>
 <!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
@@ -95,7 +87,7 @@
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/articles/sample-evaluation.Rmd" class="external-link"><code>vignettes/articles/sample-evaluation.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/development/vignettes/articles/sample-evaluation.Rmd" class="external-link"><code>vignettes/articles/sample-evaluation.Rmd</code></a></small>
       <div class="hidden name"><code>sample-evaluation.Rmd</code></div>
 
     </div>
@@ -138,24 +130,36 @@ optionally a factor column indicating stratum membership
 <p>By default, <code><a href="../reference/evaluation.html">evaluation()</a></code> estimates the population
 misstatement and returns a point estimate as well as a
 confidence/credible interval around this estimate, expressed as a
-percentage (<code>conf.level</code> <span class="math inline">\(\cdot\)</span> 100). However, in audit sampling,
-the population is typically subject to a certain maximum tolerable
-misstatement defined by the performance materiality <span class="math inline">\(\theta_{max}\)</span>. You can provide the
-performance materiality to the <code><a href="../reference/evaluation.html">evaluation()</a></code> function as a
-fraction using the <code>materiality</code> argument. In addition to the
-default estimation, specifying a value for <code>materiality</code>
-triggers the comparison of two competing hypotheses. The hypotheses
-being compared depend on the input for the <code>alternative</code>
-argument.</p>
+percentage (<code>conf.level</code>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>⋅</mo><annotation encoding="application/x-tex">\cdot</annotation></semantics></math>
+100). However, in audit sampling, the population is typically subject to
+a certain maximum tolerable misstatement defined by the performance
+materiality
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>θ</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><annotation encoding="application/x-tex">\theta_{max}</annotation></semantics></math>.
+You can provide the performance materiality to the
+<code><a href="../reference/evaluation.html">evaluation()</a></code> function as a fraction using the
+<code>materiality</code> argument. In addition to the default
+estimation, specifying a value for <code>materiality</code> triggers the
+comparison of two competing hypotheses. The hypotheses being compared
+depend on the input for the <code>alternative</code> argument.</p>
 <ul>
 <li>
-<code>alternative = "less"</code> (default): <span class="math inline">\(H_1:\theta&lt;\theta_{max}\)</span> versus <span class="math inline">\(H_0:\theta\geq\theta_{max}\)</span>
+<code>alternative = "less"</code> (default):
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>1</mn></msub><mo>:</mo><mi>θ</mi><mo>&lt;</mo><msub><mi>θ</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub></mrow><annotation encoding="application/x-tex">H_1:\theta&lt;\theta_{max}</annotation></semantics></math>
+versus
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><mi>θ</mi><mo>≥</mo><msub><mi>θ</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub></mrow><annotation encoding="application/x-tex">H_0:\theta\geq\theta_{max}</annotation></semantics></math>
 </li>
 <li>
-<code>alternative = "greater"</code>: <span class="math inline">\(H_1:\theta&gt;\theta_{max}\)</span> versus <span class="math inline">\(H_0:\theta\leq\theta_{max}\)</span>
+<code>alternative = "greater"</code>:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>1</mn></msub><mo>:</mo><mi>θ</mi><mo>&gt;</mo><msub><mi>θ</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub></mrow><annotation encoding="application/x-tex">H_1:\theta&gt;\theta_{max}</annotation></semantics></math>
+versus
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><mi>θ</mi><mo>≤</mo><msub><mi>θ</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub></mrow><annotation encoding="application/x-tex">H_0:\theta\leq\theta_{max}</annotation></semantics></math>
 </li>
 <li>
-<code>alternative = "two.sided"</code>: <span class="math inline">\(H_1:\theta \neq\theta_{max}\)</span> versus <span class="math inline">\(H_0:\theta=\theta_{max}\)</span>
+<code>alternative = "two.sided"</code>:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>1</mn></msub><mo>:</mo><mi>θ</mi><mo>≠</mo><msub><mi>θ</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub></mrow><annotation encoding="application/x-tex">H_1:\theta \neq\theta_{max}</annotation></semantics></math>
+versus
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mn>0</mn></msub><mo>:</mo><mi>θ</mi><mo>=</mo><msub><mi>θ</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub></mrow><annotation encoding="application/x-tex">H_0:\theta=\theta_{max}</annotation></semantics></math>
 </li>
 </ul>
 <p>Once the auditor has established the materiality (if applicable),
@@ -186,14 +190,23 @@ control systems.</p>
 </h4>
 <p>Classical hypothesis testing employs the <em>p</em>-value to
 determine whether to reject the null hypothesis of material misstatement
-<span class="math inline">\(H_0\)</span>. For instance, let’s assume an
-auditor aims to confirm if the population contains less than five
-percent misstatement. This suggests the hypotheses <span class="math inline">\(H_1\)</span>: <span class="math inline">\(\theta
-&lt;\)</span> 0.05 and <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\theta \geq\)</span> 0.05. The auditor selects a
-sample of <span class="math inline">\(n\)</span> = 100 items, with <span class="math inline">\(k\)</span> = 1 item containing a misstatement.
-They establish the significance level for the <em>p</em>-value (i.e.,
-the sampling risk) at <span class="math inline">\(\alpha\)</span> =
-0.05, indicating that a <em>p</em>-value below 0.05 will suffice to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>0</mn></msub><annotation encoding="application/x-tex">H_0</annotation></semantics></math>.
+For instance, let’s assume an auditor aims to confirm if the population
+contains less than five percent misstatement. This suggests the
+hypotheses
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>1</mn></msub><annotation encoding="application/x-tex">H_1</annotation></semantics></math>:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>&lt;</mo></mrow><annotation encoding="application/x-tex">\theta &lt;</annotation></semantics></math>
+0.05 and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>0</mn></msub><annotation encoding="application/x-tex">H_0</annotation></semantics></math>:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>≥</mo></mrow><annotation encoding="application/x-tex">\theta \geq</annotation></semantics></math>
+0.05. The auditor selects a sample of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+= 100 items, with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+= 1 item containing a misstatement. They establish the significance
+level for the <em>p</em>-value (i.e., the sampling risk) at
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+= 0.05, indicating that a <em>p</em>-value below 0.05 will suffice to
 reject the null hypothesis. The following command evaluates the sample
 using a classical non-stratified evaluation method <span class="citation">(Stewart, 2012)</span>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -211,38 +224,71 @@ using a classical non-stratified evaluation method <span class="citation">(Stewa
 <span><span class="co">##  0.01 </span></span>
 <span><span class="co">## results obtained via method 'poisson'</span></span></code></pre>
 <p>The output indicates that the most likely misstatement in the
-population is estimated to be <span class="math inline">\(\frac{k}{n}\)</span> = <span class="math inline">\(\frac{1}{100}\)</span> = 0.01, or 1 percent, and
-the 95 percent (one-sided) confidence interval spans from 0 percent to
-4.74 percent. It also reveals that the <em>p</em>-value is below 0.05,
-suggesting that the null hypothesis should be rejected. Consequently,
-the auditor can infer that the sample provides sufficient evidence to
-conclude with a reasonable degree of certainty that the population does
-not contain material misstatement.</p>
+population is estimated to be
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mi>k</mi><mi>n</mi></mfrac><annotation encoding="application/x-tex">\frac{k}{n}</annotation></semantics></math>
+=
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mn>1</mn><mn>100</mn></mfrac><annotation encoding="application/x-tex">\frac{1}{100}</annotation></semantics></math>
+= 0.01, or 1 percent, and the 95 percent (one-sided) confidence interval
+spans from 0 percent to 4.74 percent. It also reveals that the
+<em>p</em>-value is below 0.05, suggesting that the null hypothesis
+should be rejected. Consequently, the auditor can infer that the sample
+provides sufficient evidence to conclude with a reasonable degree of
+certainty that the population does not contain material
+misstatement.</p>
 </div>
 <div class="section level4">
 <h4 id="bayesian-approach">Bayesian approach<a class="anchor" aria-label="anchor" href="#bayesian-approach"></a>
 </h4>
-<p>Bayesian hypothesis testing employs the Bayes factor, either <span class="math inline">\(BF_{10}\)</span> or <span class="math inline">\(BF_{01}\)</span>, to quantify the evidence that
-the sample provides in support of either of the two hypotheses <span class="math inline">\(H_1\)</span> or <span class="math inline">\(H_0\)</span> <span class="citation">(Derks et al.,
-2024)</span>. For instance, a Bayes factor value of <span class="math inline">\(BF_{10}\)</span> = 10 (provided by the
-<code><a href="../reference/evaluation.html">evaluation()</a></code> function) can be interpreted as the data being
-10 times more likely under the hypothesis of tolerable misstatement
-<span class="math inline">\(H_1\)</span> than under the hypothesis of
-material misstatement <span class="math inline">\(H_0\)</span>. A value
-of <span class="math inline">\(BF_{10} &gt;\)</span> 1 indicates
-evidence in favor of <span class="math inline">\(H_1\)</span> and
-opposing <span class="math inline">\(H_0\)</span>, while a value of
-<span class="math inline">\(BF_{10} &lt;\)</span> 1 indicates evidence
-supporting <span class="math inline">\(H_0\)</span> and contradicting
-<span class="math inline">\(H_1\)</span>. The <code><a href="../reference/evaluation.html">evaluation()</a></code>
-function returns the value for <span class="math inline">\(BF_{10}\)</span>, but <span class="math inline">\(BF_{01}\)</span> can be calculated as <span class="math inline">\(\frac{1}{BF_{10}}\)</span>.</p>
+<p>Bayesian hypothesis testing employs the Bayes factor, either
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><msub><mi>F</mi><mn>10</mn></msub></mrow><annotation encoding="application/x-tex">BF_{10}</annotation></semantics></math>
+or
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><msub><mi>F</mi><mn>01</mn></msub></mrow><annotation encoding="application/x-tex">BF_{01}</annotation></semantics></math>,
+to quantify the evidence that the sample provides in support of either
+of the two hypotheses
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>1</mn></msub><annotation encoding="application/x-tex">H_1</annotation></semantics></math>
+or
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>0</mn></msub><annotation encoding="application/x-tex">H_0</annotation></semantics></math><span class="citation">(Derks et al., 2024)</span>. For instance, a
+Bayes factor value of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><msub><mi>F</mi><mn>10</mn></msub></mrow><annotation encoding="application/x-tex">BF_{10}</annotation></semantics></math>
+= 10 (provided by the <code><a href="../reference/evaluation.html">evaluation()</a></code> function) can be
+interpreted as the data being 10 times more likely under the hypothesis
+of tolerable misstatement
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>1</mn></msub><annotation encoding="application/x-tex">H_1</annotation></semantics></math>
+than under the hypothesis of material misstatement
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>0</mn></msub><annotation encoding="application/x-tex">H_0</annotation></semantics></math>.
+A value of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><msub><mi>F</mi><mn>10</mn></msub><mo>&gt;</mo></mrow><annotation encoding="application/x-tex">BF_{10} &gt;</annotation></semantics></math>
+1 indicates evidence in favor of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>1</mn></msub><annotation encoding="application/x-tex">H_1</annotation></semantics></math>
+and opposing
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>0</mn></msub><annotation encoding="application/x-tex">H_0</annotation></semantics></math>,
+while a value of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><msub><mi>F</mi><mn>10</mn></msub><mo>&lt;</mo></mrow><annotation encoding="application/x-tex">BF_{10} &lt;</annotation></semantics></math>
+1 indicates evidence supporting
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>0</mn></msub><annotation encoding="application/x-tex">H_0</annotation></semantics></math>
+and contradicting
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>1</mn></msub><annotation encoding="application/x-tex">H_1</annotation></semantics></math>.
+The <code><a href="../reference/evaluation.html">evaluation()</a></code> function returns the value for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><msub><mi>F</mi><mn>10</mn></msub></mrow><annotation encoding="application/x-tex">BF_{10}</annotation></semantics></math>,
+but
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><msub><mi>F</mi><mn>01</mn></msub></mrow><annotation encoding="application/x-tex">BF_{01}</annotation></semantics></math>
+can be calculated as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mn>1</mn><mrow><mi>B</mi><msub><mi>F</mi><mn>10</mn></msub></mrow></mfrac><annotation encoding="application/x-tex">\frac{1}{BF_{10}}</annotation></semantics></math>.</p>
 <p>Consider the earlier example where an auditor wishes to confirm if
 the population contains less than five percent misstatement, suggesting
-the hypotheses <span class="math inline">\(H_1\)</span>: <span class="math inline">\(\theta &lt;\)</span> 0.05 and <span class="math inline">\(H_0\)</span>: <span class="math inline">\(\theta
-\geq\)</span> 0.05. They have selected a sample of <span class="math inline">\(n\)</span> = 100 items, with <span class="math inline">\(k\)</span> = 1 item found to contain a
-misstatement. The prior distribution is presumed to be a default
-beta(1,1) prior. The subsequent call evaluates the sample using a
-Bayesian non-stratified evaluation procedure <span class="citation">(Derks et al., 2021; Stewart, 2013)</span>.</p>
+the hypotheses
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>1</mn></msub><annotation encoding="application/x-tex">H_1</annotation></semantics></math>:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>&lt;</mo></mrow><annotation encoding="application/x-tex">\theta &lt;</annotation></semantics></math>
+0.05 and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>0</mn></msub><annotation encoding="application/x-tex">H_0</annotation></semantics></math>:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>≥</mo></mrow><annotation encoding="application/x-tex">\theta \geq</annotation></semantics></math>
+0.05. They have selected a sample of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+= 100 items, with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+= 1 item found to contain a misstatement. The prior distribution is
+presumed to be a default beta(1,1) prior. The subsequent call evaluates
+the sample using a Bayesian non-stratified evaluation procedure <span class="citation">(Derks et al., 2021; Stewart, 2013)</span>.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.05</span>, x <span class="op">=</span> <span class="fl">1</span>, n <span class="op">=</span> <span class="fl">100</span>, method <span class="op">=</span> <span class="st">"binomial"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -257,25 +303,29 @@ Bayesian non-stratified evaluation procedure <span class="citation">(Derks et al
 <span><span class="co">##  0.01 </span></span>
 <span><span class="co">## results obtained via method 'binomial' + 'prior'</span></span></code></pre>
 <p>The output indicates that the most likely misstatement in the
-population is estimated to be <span class="math inline">\(\frac{k}{n}\)</span> = <span class="math inline">\(\frac{1}{100}\)</span> = 0.01, or 1 percent, and
-the 95 percent (one-sided) credible interval spans from 0 percent to
-4.61 percent. The minor discrepancy between the classical and default
-Bayesian results in the upper limit can be attributed to the prior
-distribution, which needs to be proper for the calculation of a Bayes
-factor. Classical results can be replicated by formulating an improper
-prior distribution using <code>method = "strict"</code> in the
-<code><a href="../reference/auditPrior.html">auditPrior()</a></code> function. The Bayes factor in this scenario is
-demonstrated to be <span class="math inline">\(BF_{10}\)</span> = 515,
-signifying that the sample data are approximately 515 times more likely
-to occur under the hypothesis of tolerable misstatement than under the
-hypothesis of material misstatement.</p>
+population is estimated to be
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mi>k</mi><mi>n</mi></mfrac><annotation encoding="application/x-tex">\frac{k}{n}</annotation></semantics></math>
+=
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mn>1</mn><mn>100</mn></mfrac><annotation encoding="application/x-tex">\frac{1}{100}</annotation></semantics></math>
+= 0.01, or 1 percent, and the 95 percent (one-sided) credible interval
+spans from 0 percent to 4.61 percent. The minor discrepancy between the
+classical and default Bayesian results in the upper limit can be
+attributed to the prior distribution, which needs to be proper for the
+calculation of a Bayes factor. Classical results can be replicated by
+formulating an improper prior distribution using
+<code>method = "strict"</code> in the <code><a href="../reference/auditPrior.html">auditPrior()</a></code>
+function. The Bayes factor in this scenario is demonstrated to be
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><msub><mi>F</mi><mn>10</mn></msub></mrow><annotation encoding="application/x-tex">BF_{10}</annotation></semantics></math>
+= 515, signifying that the sample data are approximately 515 times more
+likely to occur under the hypothesis of tolerable misstatement than
+under the hypothesis of material misstatement.</p>
 <p>It is important to note that this is a considerably high Bayes factor
 given the small amount of data observed. This can be explained by the
 fact that the Bayes factor is influenced by the prior distribution for
-<span class="math inline">\(\theta\)</span>. The default prior
-distribution is <strong>not</strong> a good prior for hypothesis
-testing. As a general guideline, when the prior distribution is
-extremely conservative in relation to the hypothesis of tolerable
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>.
+The default prior distribution is <strong>not</strong> a good prior for
+hypothesis testing. As a general guideline, when the prior distribution
+is extremely conservative in relation to the hypothesis of tolerable
 misstatement (as with <code>method = 'default'</code>), the Bayes factor
 tends to overstate the evidence supporting this hypothesis. This
 dependency can be alleviated by employing a prior distribution that is
@@ -297,10 +347,12 @@ function.</p>
 <span><span class="co">## most likely estimate:</span></span>
 <span><span class="co">##  0.0088878 </span></span>
 <span><span class="co">## results obtained via method 'binomial' + 'prior'</span></span></code></pre>
-<p>The output reveals that <span class="math inline">\(BF_{10}\)</span>
+<p>The output reveals that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><msub><mi>F</mi><mn>10</mn></msub></mrow><annotation encoding="application/x-tex">BF_{10}</annotation></semantics></math>
 = 47, suggesting that under the presumption of impartiality, there is
-substantial evidence for <span class="math inline">\(H_1\)</span>, the
-hypothesis that the population contains misstatements less than five
+substantial evidence for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>1</mn></msub><annotation encoding="application/x-tex">H_1</annotation></semantics></math>,
+the hypothesis that the population contains misstatements less than five
 percent of the population (tolerable misstatement). Given that both
 prior distributions resulted in persuasive Bayes factors, the results
 can be deemed robust to the selection of prior distribution.
@@ -493,33 +545,33 @@ make the results reproducible.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
 <span><span class="co">##   Posterior distribution:         Nonparametric </span></span>
-<span><span class="co">##   Most likely error:              0.041 </span></span>
-<span><span class="co">##   95 percent credible interval:   [0.032817, 0.05335] </span></span>
-<span><span class="co">##   Precision:                      0.01235 </span></span>
-<span><span class="co">##   BF₁₀:                            0.032715 </span></span>
+<span><span class="co">##   Most likely error:              0.0423 </span></span>
+<span><span class="co">##   95 percent credible interval:   [0.032494, 0.053654] </span></span>
+<span><span class="co">##   Precision:                      0.011354 </span></span>
+<span><span class="co">##   BF₁₀:                            0.030086 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Strata (20):</span></span>
 <span><span class="co">##          N   n  x  t    mle      lb      ub precision</span></span>
-<span><span class="co">##   1   5000 300 21 21 0.0557 0.03965 0.08652   0.03082</span></span>
-<span><span class="co">##   2   5000 300 16 16 0.0478 0.03198 0.07196   0.02416</span></span>
-<span><span class="co">##   3   5000 300 15 15 0.0490 0.03027 0.06969   0.02069</span></span>
-<span><span class="co">##   4   5000 300 14 14 0.0427 0.02841 0.06650   0.02380</span></span>
-<span><span class="co">##   5   5000 300 16 16 0.0496 0.03185 0.07239   0.02279</span></span>
-<span><span class="co">##   6   5000 150  5  5 0.0410 0.01889 0.06321   0.02221</span></span>
-<span><span class="co">##   7   5000 150  4  4 0.0354 0.01643 0.05914   0.02374</span></span>
-<span><span class="co">##   8   5000 150  3  3 0.0318 0.01346 0.05564   0.02384</span></span>
-<span><span class="co">##   9   5000 150  4  4 0.0340 0.01620 0.05933   0.02533</span></span>
-<span><span class="co">##   10  5000 150  5  5 0.0385 0.01916 0.06337   0.02487</span></span>
-<span><span class="co">##   11 10000  50  2  2 0.0429 0.01798 0.07726   0.03436</span></span>
-<span><span class="co">##   12 10000  50  3  3 0.0507 0.02204 0.08572   0.03502</span></span>
-<span><span class="co">##   13 10000  50  2  2 0.0430 0.01807 0.07640   0.03340</span></span>
-<span><span class="co">##   14 10000  50  1  1 0.0415 0.01355 0.06915   0.02765</span></span>
-<span><span class="co">##   15 10000  50  0  0 0.0349 0.00868 0.06217   0.02727</span></span>
-<span><span class="co">##   16 10000  15  0  0 0.0354 0.01218 0.07674   0.04134</span></span>
-<span><span class="co">##   17 10000  15  0  0 0.0455 0.01195 0.07694   0.03144</span></span>
-<span><span class="co">##   18 10000  15  0  0 0.0418 0.01204 0.07700   0.03520</span></span>
-<span><span class="co">##   19 10000  15  1  1 0.0458 0.01772 0.08816   0.04236</span></span>
-<span><span class="co">##   20  4000  15  3  3 0.0524 0.02750 0.11513   0.06273</span></span></code></pre>
+<span><span class="co">##   1   5000 300 21 21 0.0579 0.04003 0.08836   0.03046</span></span>
+<span><span class="co">##   2   5000 300 16 16 0.0503 0.03217 0.07359   0.02329</span></span>
+<span><span class="co">##   3   5000 300 15 15 0.0424 0.03042 0.07060   0.02820</span></span>
+<span><span class="co">##   4   5000 300 14 14 0.0425 0.02849 0.06764   0.02514</span></span>
+<span><span class="co">##   5   5000 300 16 16 0.0437 0.03195 0.07382   0.03012</span></span>
+<span><span class="co">##   6   5000 150  5  5 0.0378 0.01823 0.06365   0.02585</span></span>
+<span><span class="co">##   7   5000 150  4  4 0.0360 0.01511 0.05944   0.02344</span></span>
+<span><span class="co">##   8   5000 150  3  3 0.0341 0.01177 0.05539   0.02129</span></span>
+<span><span class="co">##   9   5000 150  4  4 0.0364 0.01474 0.05940   0.02300</span></span>
+<span><span class="co">##   10  5000 150  5  5 0.0357 0.01783 0.06357   0.02787</span></span>
+<span><span class="co">##   11 10000  50  2  2 0.0433 0.01658 0.08010   0.03680</span></span>
+<span><span class="co">##   12 10000  50  3  3 0.0431 0.02147 0.09121   0.04811</span></span>
+<span><span class="co">##   13 10000  50  2  2 0.0373 0.01676 0.07932   0.04202</span></span>
+<span><span class="co">##   14 10000  50  1  1 0.0356 0.01120 0.07089   0.03529</span></span>
+<span><span class="co">##   15 10000  50  0  0 0.0392 0.00548 0.06181   0.02261</span></span>
+<span><span class="co">##   16 10000  15  0  0 0.0364 0.00895 0.08006   0.04366</span></span>
+<span><span class="co">##   17 10000  15  0  0 0.0374 0.00861 0.07943   0.04203</span></span>
+<span><span class="co">##   18 10000  15  0  0 0.0387 0.00867 0.08028   0.04158</span></span>
+<span><span class="co">##   19 10000  15  1  1 0.0403 0.01598 0.09819   0.05789</span></span>
+<span><span class="co">##   20  4000  15  3  3 0.0472 0.02772 0.13675   0.08955</span></span></code></pre>
 <p>In this scenario, the output indicates that the estimated
 misstatement in the population is 4.18 percent, with the 95 percent
 credible interval extending from 3.28 percent to 5.36 percent. Note that
@@ -547,15 +599,16 @@ function.</p>
 </h2>
 <p>In this example, we will demonstrate how to evaluate a stratified
 sample using a data set. We will use the <code>allowances</code> data
-set that is included in the package. This data set comprises <span class="math inline">\(N\)</span> = 3500 subsidy declarations from
-municipalities. Each line item has a recorded value book value (column
-<code>bookValue</code>) and an audited value (column
-<code>auditValue</code>), which is the true value for the purpose of
-this illustration. The data set already identifies the items that have
-been audited as part of the sample in the column <code>times</code>. In
-this scenario, we will be performing estimation and therefore do not
-specify the <code>materiality</code> argument in the
-<code><a href="../reference/evaluation.html">evaluation()</a></code> function.</p>
+set that is included in the package. This data set comprises
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+= 3500 subsidy declarations from municipalities. Each line item has a
+recorded value book value (column <code>bookValue</code>) and an audited
+value (column <code>auditValue</code>), which is the true value for the
+purpose of this illustration. The data set already identifies the items
+that have been audited as part of the sample in the column
+<code>times</code>. In this scenario, we will be performing estimation
+and therefore do not specify the <code>materiality</code> argument in
+the <code><a href="../reference/evaluation.html">evaluation()</a></code> function.</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"allowances"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">allowances</span><span class="op">)</span></span></code></pre></div>
@@ -730,9 +783,9 @@ for the entire population.</p>
 <span><span class="co">## data:  allowances</span></span>
 <span><span class="co">## number of errors = 401, number of samples = 1350, taint = 224.66</span></span>
 <span><span class="co">## 95 percent credible interval:</span></span>
-<span><span class="co">##  0.1465308 0.1628786</span></span>
+<span><span class="co">##  0.1571337 0.1757009</span></span>
 <span><span class="co">## most likely estimate:</span></span>
-<span><span class="co">##  0.1538 </span></span>
+<span><span class="co">##  0.1659 </span></span>
 <span><span class="co">## results obtained via method 'binomial' + 'partial-pooling' + 'prior'</span></span></code></pre>
 <p>The output indicates that the estimated misstatement in the
 population is 15.32 percent. The 95 percent credible interval spans from
@@ -798,9 +851,7 @@ audits</em> [PhD thesis, VU University]. <a href="https://hdl.handle.net/1871/39
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
+      </div>
 
 </div>
 
@@ -813,16 +864,16 @@ audits</em> [PhD thesis, VU University]. <a href="https://hdl.handle.net/1871/39
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer>
 </div>
 
-  
 
 
-  
+
+
 
   </body>
 </html>

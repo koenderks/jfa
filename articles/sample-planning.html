@@ -6,27 +6,19 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Planning statistical audit samples • jfa</title>
-<!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32x32.png">
-<link rel="apple-touch-icon" type="image/png" sizes="180x180" href="../apple-touch-icon.png">
-<link rel="apple-touch-icon" type="image/png" sizes="120x120" href="../apple-touch-icon-120x120.png">
-<link rel="apple-touch-icon" type="image/png" sizes="76x76" href="../apple-touch-icon-76x76.png">
-<link rel="apple-touch-icon" type="image/png" sizes="60x60" href="../apple-touch-icon-60x60.png">
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/cosmo/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><meta property="og:title" content="Planning statistical audit samples">
-<meta property="og:description" content="jfa">
-<meta property="og:image" content="https://koenderks.github.io/jfa/logo.png">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -49,7 +41,7 @@
 <li>
   <a href="../index.html">
     <span class="fa fa-home fa-lg"></span>
-     
+
   </a>
 </li>
 <li>
@@ -69,13 +61,13 @@
 <li>
   <a href="https://github.com/koenderks/jfa" class="external-link">
     <span class="fa fa-github"></span>
-     
+
   </a>
 </li>
 <li>
   <a href="https://github.com/koenderks/jfa/discussions" class="external-link">
     <span class="fa fa-users"></span>
-     
+
   </a>
 </li>
       </ul>
@@ -86,7 +78,7 @@
 </div>
 <!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
@@ -95,7 +87,7 @@
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/HEAD/vignettes/articles/sample-planning.Rmd" class="external-link"><code>vignettes/articles/sample-planning.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/development/vignettes/articles/sample-planning.Rmd" class="external-link"><code>vignettes/articles/sample-planning.Rmd</code></a></small>
       <div class="hidden name"><code>sample-planning.Rmd</code></div>
 
     </div>
@@ -176,23 +168,29 @@ three percent of the population value.</p>
 </h4>
 <p>In a single-stage sampling plan, the auditor aims to implement the
 sampling objective in its simplest form. Specifically, they aim to
-minimize the risk of the observed misstatements in the sample <span class="math inline">\(k\)</span> originating from a population that is
-materially misstated (i.e., a population in which the misstatement rate
-is equal to, or higher than, <span class="math inline">\(\theta_{max}\)</span>). This risk should be less
-than the sampling risk <span class="math inline">\(\alpha\)</span>.</p>
-<p><span class="math display">\[\begin{equation}
+minimize the risk of the observed misstatements in the sample
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+originating from a population that is materially misstated (i.e., a
+population in which the misstatement rate is equal to, or higher than,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>θ</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><annotation encoding="application/x-tex">\theta_{max}</annotation></semantics></math>).
+This risk should be less than the sampling risk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>k</mi><mo>≤</mo><mn>0</mn><mo stretchy="false" form="prefix">|</mo><mi>n</mi><mo>,</mo><msub><mi>θ</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>≤</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">\begin{equation}
   p(k \leq 0 | n, \theta_{max}) \leq \alpha
-\end{equation}\]</span></p>
+\end{equation}</annotation></semantics></math></p>
 <p>The minimum sample size for this sampling objective can be computed
 by specifying the <code>materiality</code> argument in the
 <code><a href="../reference/planning.html">planning()</a></code> function. Following this, a summary of the
 statistical results can be obtained using the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>
-function. The results indicates that, assuming <span class="math inline">\(k\)</span> = 0 tolerable misstatements, the
-minimum sample size is <span class="math inline">\(n\)</span> = 99 items
-or units. The auditor can accommodate misstatements (for instance,
-tolerate <span class="math inline">\(k\)</span> = 1 misstatement) in the
-sample by providing an integer value to the expected argument of the
-function (e.g., <code>expected = 1</code>).</p>
+function. The results indicates that, assuming
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+= 0 tolerable misstatements, the minimum sample size is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+= 99 items or units. The auditor can accommodate misstatements (for
+instance, tolerate
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+= 1 misstatement) in the sample by providing an integer value to the
+expected argument of the function (e.g., <code>expected = 1</code>).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plan</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, expected <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">plan</span><span class="op">)</span></span></code></pre></div>
@@ -214,10 +212,15 @@ function (e.g., <code>expected = 1</code>).</p>
 <span><span class="co">##   Expected precision:            0.029807 </span></span>
 <span><span class="co">##   Expected p-value:              0.049023</span></span></code></pre>
 <p>To confirm this calculation, we must verify that the probability of
-detecting <span class="math inline">\(k\)</span> = 0 misstatements (or
-less) in <span class="math inline">\(n\)</span> = 99 samples, given a
-misstatement rate of <span class="math inline">\(\theta_{max}\)</span> =
-0.03, is less than the acceptable sampling risk of <span class="math inline">\(\alpha\)</span> = 0.05.</p>
+detecting
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+= 0 misstatements (or less) in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+= 99 samples, given a misstatement rate of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>θ</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><annotation encoding="application/x-tex">\theta_{max}</annotation></semantics></math>
+= 0.03, is less than the acceptable sampling risk of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+= 0.05.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">pbinom</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">0</span>, size <span class="op">=</span> <span class="fl">99</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span> <span class="op">&lt;</span> <span class="fl">0.05</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
@@ -228,60 +231,83 @@ misstatement rate of <span class="math inline">\(\theta_{max}\)</span> =
 <p>A multi-stage sampling plan, as opposed to a single-stage one, allows
 for an intermediate evaluation of the sample. In the first stage of a
 multi-stage sampling plan, the auditor selects an initial sample of size
-<span class="math inline">\(n_1\)</span>. If this sample contains a
-tolerable number of misstatements (usually 0), the auditor can approve
-the population. However, if the sample contains more misstatements than
-the tolerable number, the auditor cannot approve the population. In such
-a scenario, the initial sample is supplemented with a follow-up sample
-of <span class="math inline">\(n_2\)</span> items. If this additional
-sample contains a tolerable number of misstatements, the population can
-still be approved. If not, the population should either be rejected or a
-third sample of <span class="math inline">\(n_3\)</span> items should be
-added.</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mn>1</mn></msub><annotation encoding="application/x-tex">n_1</annotation></semantics></math>.
+If this sample contains a tolerable number of misstatements (usually 0),
+the auditor can approve the population. However, if the sample contains
+more misstatements than the tolerable number, the auditor cannot approve
+the population. In such a scenario, the initial sample is supplemented
+with a follow-up sample of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mn>2</mn></msub><annotation encoding="application/x-tex">n_2</annotation></semantics></math>
+items. If this additional sample contains a tolerable number of
+misstatements, the population can still be approved. If not, the
+population should either be rejected or a third sample of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mn>3</mn></msub><annotation encoding="application/x-tex">n_3</annotation></semantics></math>
+items should be added.</p>
 <p>In the classical (i.e., frequentist) methodology, multi-stage
 sampling plans can be formulated by decomposing the sampling risk into
 multiple components. For example, if the auditor initially plans for
-<span class="math inline">\(k\)</span> = 0 misstatements but considers
-extending the sample if <span class="math inline">\(k\)</span> = 1
-misstatement is discovered, then the probability of erroneously
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+= 0 misstatements but considers extending the sample if
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+= 1 misstatement is discovered, then the probability of erroneously
 rejecting the hypothesis of material misstatement comprises:</p>
 <ul>
 <li>
-<span class="math inline">\(p(k \leq 0 | n_1,
-\theta_{max})\)</span>: The probability of finding <span class="math inline">\(k\)</span> = 0 misstatements in the initial sample
-of <span class="math inline">\(n_1\)</span> items; plus</li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>k</mi><mo>≤</mo><mn>0</mn><mo stretchy="false" form="prefix">|</mo><msub><mi>n</mi><mn>1</mn></msub><mo>,</mo><msub><mi>θ</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">p(k \leq 0 | n_1, \theta_{max})</annotation></semantics></math>:
+The probability of finding
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+= 0 misstatements in the initial sample of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mn>1</mn></msub><annotation encoding="application/x-tex">n_1</annotation></semantics></math>
+items; plus</li>
 <li>
-<span class="math inline">\(p(k = 1 | n_1, \theta_{max})\)</span>:
-The probability of finding <span class="math inline">\(k\)</span> = 1
-misstatement in the initial sample of <span class="math inline">\(n_1\)</span> items; multiplied by</li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>k</mi><mo>=</mo><mn>1</mn><mo stretchy="false" form="prefix">|</mo><msub><mi>n</mi><mn>1</mn></msub><mo>,</mo><msub><mi>θ</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">p(k = 1 | n_1, \theta_{max})</annotation></semantics></math>:
+The probability of finding
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+= 1 misstatement in the initial sample of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mn>1</mn></msub><annotation encoding="application/x-tex">n_1</annotation></semantics></math>
+items; multiplied by</li>
 <li>
-<span class="math inline">\(p(k \leq 0 | n_2,
-\theta_{max})\)</span>: The probability finding <span class="math inline">\(k\)</span> = 0 misstatements in the follow-up
-sample of <span class="math inline">\(n_2\)</span> items.</li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>k</mi><mo>≤</mo><mn>0</mn><mo stretchy="false" form="prefix">|</mo><msub><mi>n</mi><mn>2</mn></msub><mo>,</mo><msub><mi>θ</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">p(k \leq 0 | n_2, \theta_{max})</annotation></semantics></math>:
+The probability finding
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+= 0 misstatements in the follow-up sample of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mn>2</mn></msub><annotation encoding="application/x-tex">n_2</annotation></semantics></math>
+items.</li>
 </ul>
 <p>The sum of these probabilities should be less than or equal to the
-sampling risk <span class="math inline">\(\alpha\)</span>.</p>
-<p><span class="math display">\[\begin{equation}
-  p(k \leq 0 | n_1, \theta_{max}) + p(k = 1 | n_1, \theta_{max}) \cdot
-p(k \leq 0 | n_2, \theta_{max}) \leq \alpha
-\end{equation}\]</span></p>
+sampling risk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>k</mi><mo>≤</mo><mn>0</mn><mo stretchy="false" form="prefix">|</mo><msub><mi>n</mi><mn>1</mn></msub><mo>,</mo><msub><mi>θ</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>k</mi><mo>=</mo><mn>1</mn><mo stretchy="false" form="prefix">|</mo><msub><mi>n</mi><mn>1</mn></msub><mo>,</mo><msub><mi>θ</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>⋅</mo><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>k</mi><mo>≤</mo><mn>0</mn><mo stretchy="false" form="prefix">|</mo><msub><mi>n</mi><mn>2</mn></msub><mo>,</mo><msub><mi>θ</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>≤</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">\begin{equation}
+  p(k \leq 0 | n_1, \theta_{max}) + p(k = 1 | n_1, \theta_{max}) \cdot p(k \leq 0 | n_2, \theta_{max}) \leq \alpha
+\end{equation}</annotation></semantics></math></p>
 <p>To constrain the problem, <strong>jfa</strong> sets the number of
-samples in the extension equal to the initial sample size (<span class="math inline">\(n_1\)</span> = <span class="math inline">\(n_2\)</span> = <span class="math inline">\(n_s\)</span>). This implies that the sample size
-per stage in this two-stage sampling plan is the smallest integer <span class="math inline">\(n_s\)</span> that fulfills the following
-condition.</p>
-<p><span class="math display">\[\begin{equation}
-  p(k \leq 0 | n_s, \theta_{max}) + p(k = 1 | n_s, \theta_{max}) \cdot
-p(k \leq 0 | n_s, \theta_{max}) \leq \alpha
-\end{equation}\]</span></p>
+samples in the extension equal to the initial sample size
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mn>1</mn></msub><annotation encoding="application/x-tex">n_1</annotation></semantics></math>
+=
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mn>2</mn></msub><annotation encoding="application/x-tex">n_2</annotation></semantics></math>
+=
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mi>s</mi></msub><annotation encoding="application/x-tex">n_s</annotation></semantics></math>).
+This implies that the sample size per stage in this two-stage sampling
+plan is the smallest integer
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mi>s</mi></msub><annotation encoding="application/x-tex">n_s</annotation></semantics></math>
+that fulfills the following condition.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>k</mi><mo>≤</mo><mn>0</mn><mo stretchy="false" form="prefix">|</mo><msub><mi>n</mi><mi>s</mi></msub><mo>,</mo><msub><mi>θ</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>k</mi><mo>=</mo><mn>1</mn><mo stretchy="false" form="prefix">|</mo><msub><mi>n</mi><mi>s</mi></msub><mo>,</mo><msub><mi>θ</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>⋅</mo><mi>p</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>k</mi><mo>≤</mo><mn>0</mn><mo stretchy="false" form="prefix">|</mo><msub><mi>n</mi><mi>s</mi></msub><mo>,</mo><msub><mi>θ</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>≤</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">\begin{equation}
+  p(k \leq 0 | n_s, \theta_{max}) + p(k = 1 | n_s, \theta_{max}) \cdot p(k \leq 0 | n_s, \theta_{max}) \leq \alpha
+\end{equation}</annotation></semantics></math></p>
 <p>In <strong>jfa</strong>, multi-stage sampling plans can be calculated
 by supplying an integer vector of misstatements, after which each stage
 should be extended, to the <code><a href="../reference/planning.html">planning()</a></code> function via its
 <code>expected</code> argument. For example, the following code
 calculates the required sample size if the auditor initially plans for
-<span class="math inline">\(k\)</span> = 0 misstatements but considers
-extending the sample if <span class="math inline">\(k\)</span> = 1
-misstatement is discovered. The required sample size per stage is <span class="math inline">\(n_s\)</span> = 103, resulting in a total sample
-size (if both stages are necessary) of <span class="math inline">\(n\)</span> = 206.</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+= 0 misstatements but considers extending the sample if
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+= 1 misstatement is discovered. The required sample size per stage is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mi>s</mi></msub><annotation encoding="application/x-tex">n_s</annotation></semantics></math>
+= 103, resulting in a total sample size (if both stages are necessary)
+of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+= 206.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">multiplan</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, expected <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">multiplan</span><span class="op">)</span></span></code></pre></div>
@@ -293,16 +319,23 @@ size (if both stages are necessary) of <span class="math inline">\(n\)</span> = 
 <p>To confirm this calculation, we need to ensure that that the
 probability of incorrectly rejecting the null hypothesis of material
 misstatement, under the binomial distribution, is less than the sampling
-risk <span class="math inline">\(\alpha\)</span> = 0.05.</p>
+risk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+= 0.05.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">p_k0_n1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">pbinom</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">0</span>, size <span class="op">=</span> <span class="fl">103</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
 <span><span class="va">p_k1_n1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">dbinom</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span>, size <span class="op">=</span> <span class="fl">103</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
 <span><span class="va">p_k0_n2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">pbinom</a></span><span class="op">(</span>q <span class="op">=</span> <span class="fl">0</span>, size <span class="op">=</span> <span class="fl">103</span>, prob <span class="op">=</span> <span class="fl">0.03</span><span class="op">)</span></span>
 <span><span class="va">p_k0_n1</span> <span class="op">+</span> <span class="va">p_k1_n1</span> <span class="op">*</span> <span class="va">p_k0_n2</span> <span class="op">&lt;</span> <span class="fl">0.05</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] TRUE</span></span></code></pre>
-<p>The minimum sample size per stage, <span class="math inline">\(n_s\)</span> = 103, is only slighly larger than
-the minimum sample size for the first stage if the auditor opts for a
-single-stage sampling plan expecting <span class="math inline">\(k\)</span> = 0, which is <span class="math inline">\(n\)</span> = 99.</p>
+<p>The minimum sample size per stage,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mi>s</mi></msub><annotation encoding="application/x-tex">n_s</annotation></semantics></math>
+= 103, is only slighly larger than the minimum sample size for the first
+stage if the auditor opts for a single-stage sampling plan expecting
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+= 0, which is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+= 99.</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, expected <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -310,10 +343,15 @@ single-stage sampling plan expecting <span class="math inline">\(k\)</span> = 0,
 <span><span class="co">## </span></span>
 <span><span class="co">## minimum sample size = 99 </span></span>
 <span><span class="co">## sample size obtained in 100 iterations via method 'binomial'</span></span></code></pre>
-<p>However, the total sample size, <span class="math inline">\(n\)</span> = 206, is considerably larger than the
-minimum sample size if the auditor opts for a single-stage sampling plan
-expecting <span class="math inline">\(k\)</span> = 1, which is <span class="math inline">\(n\)</span> = 157. This illustrates the cost of
-allowing a sample size extension in the classical approach.</p>
+<p>However, the total sample size,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+= 206, is considerably larger than the minimum sample size if the
+auditor opts for a single-stage sampling plan expecting
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+= 1, which is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+= 157. This illustrates the cost of allowing a sample size extension in
+the classical approach.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, expected <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -321,14 +359,23 @@ allowing a sample size extension in the classical approach.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## minimum sample size = 157 </span></span>
 <span><span class="co">## sample size obtained in 156 iterations via method 'binomial'</span></span></code></pre>
-<p>Note that the sample size per stage <span class="math inline">\(n_s\)</span> = 103 is determined based on <span class="math inline">\(n_s\)</span> = <span class="math inline">\(n_1\)</span> = <span class="math inline">\(n_2\)</span>. However, it is important to note
-that this equality is not mandatory. If the auditor opts for an initial
-sample size larger than <span class="math inline">\(n_s\)</span>, they
-can decrease the size of the follow-up sample. To illustrate this
+<p>Note that the sample size per stage
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mi>s</mi></msub><annotation encoding="application/x-tex">n_s</annotation></semantics></math>
+= 103 is determined based on
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mi>s</mi></msub><annotation encoding="application/x-tex">n_s</annotation></semantics></math>
+=
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mn>1</mn></msub><annotation encoding="application/x-tex">n_1</annotation></semantics></math>
+=
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mn>2</mn></msub><annotation encoding="application/x-tex">n_2</annotation></semantics></math>.
+However, it is important to note that this equality is not mandatory. If
+the auditor opts for an initial sample size larger than
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mi>s</mi></msub><annotation encoding="application/x-tex">n_s</annotation></semantics></math>,
+they can decrease the size of the follow-up sample. To illustrate this
 tradeoff, you can use the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function. The resulting
 figure includes textual information specifying the total sample size
 under the equality constrained multi-stage sampling plan (red) and under
-multiple choices for the initial sample size <span class="math inline">\(n_1\)</span>.</p>
+multiple choices for the initial sample size
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mn>1</mn></msub><annotation encoding="application/x-tex">n_1</annotation></semantics></math>.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">multiplan</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-planning_files/figure-html/unnamed-chunk-8-1.png" width="576" style="display: block; margin: auto;"></p>
@@ -352,9 +399,11 @@ percent above the most likely misstatement.</p>
 <p>You can calculate the minimum sample size for this sampling objective
 by specifying the <code>min.precision</code> argument in the
 <code><a href="../reference/planning.html">planning()</a></code> function, as shown in the command below. The
-result indicates that, assuming <span class="math inline">\(k\)</span> =
-0 tolerable misstatements in the sample, the minimum sample size is
-<span class="math inline">\(n\)</span> = 149 items or units.</p>
+result indicates that, assuming
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+= 0 tolerable misstatements in the sample, the minimum sample size is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+= 149 items or units.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>min.precision <span class="op">=</span> <span class="fl">0.02</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -372,8 +421,11 @@ result indicates that, assuming <span class="math inline">\(k\)</span> =
 you set <code>prior = TRUE</code>, the function will perform Bayesian
 planning using a <a href="https://koenderks.github.io/jfa/articles/creating-prior.html#default-priors-method-default">default
 prior</a> that is conjugate to the specified <code>likelihood</code>.
-For instance, the command below employs a default gamma(<span class="math inline">\(\alpha\)</span> = 1, <span class="math inline">\(\beta\)</span> = 1) prior distribution to plan the
-sample.</p>
+For instance, the command below employs a default
+gamma(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+= 1,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+= 1) prior distribution to plan the sample.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plan</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, expected <span class="op">=</span> <span class="fl">0</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">plan</span><span class="op">)</span></span></code></pre></div>
@@ -411,12 +463,17 @@ approach does not affect the sampling risk based on the number of tests
 <span class="citation">(Rouder, 2014)</span>. Hence, in the Bayesian
 framework, it is entirely appropriate to start sampling until there is
 enough evidence to make a decision <span class="citation">(Edwards et
-al., 1963)</span>. This means that if you find <span class="math inline">\(k\)</span> = 1 misstatement in the initial <span class="math inline">\(n_1\)</span> = 99 samples, calculating the sample
-size extension simply involves computing the single-stage sample size
-under the expectation of <span class="math inline">\(k\)</span> = 1
-tolerable misstatement. The total required sample size then becomes
-<span class="math inline">\(n\)</span> = 157, and the sample size
-extension therefore amounts to <span class="math inline">\(n_2\)</span>
+al., 1963)</span>. This means that if you find
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+= 1 misstatement in the initial
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mn>1</mn></msub><annotation encoding="application/x-tex">n_1</annotation></semantics></math>
+= 99 samples, calculating the sample size extension simply involves
+computing the single-stage sample size under the expectation of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+= 1 tolerable misstatement. The total required sample size then becomes
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+= 157, and the sample size extension therefore amounts to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mn>2</mn></msub><annotation encoding="application/x-tex">n_2</annotation></semantics></math>
 = 158 - 99 = 59 items.</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, expected <span class="op">=</span> <span class="fl">1</span>, prior <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
@@ -429,9 +486,14 @@ extension therefore amounts to <span class="math inline">\(n_2\)</span>
 the <code><a href="../reference/auditPrior.html">auditPrior()</a></code> function. If <code><a href="../reference/planning.html">planning()</a></code>
 receives a prior for which a conjugate likelihood is available, the
 planning will inherit the likelihood from the prior. For example, the
-command below uses a custom beta(<span class="math inline">\(\alpha\)</span> = 1, <span class="math inline">\(\beta\)</span> = 10) prior distribution to plan
-the sample using the binomial likelihood. The minimum sample size in
-this case is <span class="math inline">\(n\)</span> = 89.</p>
+command below uses a custom
+beta(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+= 1,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>
+= 10) prior distribution to plan the sample using the binomial
+likelihood. The minimum sample size in this case is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+= 89.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"param"</span>, likelihood <span class="op">=</span> <span class="st">"binomial"</span>, alpha <span class="op">=</span> <span class="fl">1</span>, beta <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span>materiality <span class="op">=</span> <span class="fl">0.03</span>, expected <span class="op">=</span> <span class="fl">0</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, prior <span class="op">=</span> <span class="va">prior</span><span class="op">)</span></span></code></pre></div>
@@ -443,9 +505,14 @@ this case is <span class="math inline">\(n\)</span> = 89.</p>
 <p>However, if there is no conjugate likelihood available for the
 specified prior distribution, you need to manually specify the
 <code>likelihood</code> argument in the <code><a href="../reference/planning.html">planning()</a></code>
-function. For instance, the command below uses a Normal(<span class="math inline">\(\mu\)</span> = 0, <span class="math inline">\(\sigma\)</span> = 0.1) prior in combination with
-the binomial likelihood to plan the sample. The minimum sample size in
-this case is <span class="math inline">\(n\)</span> = 96 items.</p>
+function. For instance, the command below uses a
+Normal(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math>
+= 0,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>σ</mi><annotation encoding="application/x-tex">\sigma</annotation></semantics></math>
+= 0.1) prior in combination with the binomial likelihood to plan the
+sample. The minimum sample size in this case is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+= 96 items.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">prior</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auditPrior.html">auditPrior</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"param"</span>, likelihood <span class="op">=</span> <span class="st">"normal"</span>, alpha <span class="op">=</span> <span class="fl">0</span>, beta <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/planning.html">planning</a></span><span class="op">(</span></span>
@@ -478,9 +545,7 @@ Rouder, J. N. (2014). Optional stopping: No problem for
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
-    </nav>
-</div>
+      </div>
 
 </div>
 
@@ -493,16 +558,16 @@ Rouder, J. N. (2014). Optional stopping: No problem for
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.9.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer>
 </div>
 
-  
 
 
-  
+
+
 
   </body>
 </html>
