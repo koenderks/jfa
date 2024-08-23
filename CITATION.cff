@@ -38,7 +38,7 @@ preferred-citation:
     email: k.derks@nyenrode.nl
     orcid: https://orcid.org/0000-0002-5533-9349
   year: '2024'
-  notes: R package version 0.7.2
+  notes: R package version 0.7.3
   url: https://CRAN.R-project.org/package=jfa
   doi: 10.32614/CRAN.package.jfa
 repository: https://CRAN.R-project.org/package=jfa
