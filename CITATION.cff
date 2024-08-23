@@ -8,7 +8,7 @@ message: 'To cite package "jfa" in publications use:'
 type: software
 license: GPL-3.0-or-later
 title: 'jfa: Statistical Methods for Auditing'
-version: 0.7.2
+version: 0.7.3
 doi: 10.32614/CRAN.package.jfa
 identifiers:
 - type: doi
