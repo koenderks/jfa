@@ -1,8 +1,8 @@
-# jfa version 0.7.2
+# jfa version 0.7.3
 
-This is a submission for version 0.7.2. In this version I have:
+This is a submission for version 0.7.3. In this version I have:
 
-* Made some minor internal changes.
+* Done nothing yet.
 
 ## Test environments
 
