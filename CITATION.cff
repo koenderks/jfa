@@ -23,7 +23,8 @@ abstract: Provides statistical methods for auditing as implemented in JASP for A
   to classical statistical methodology, the package implements Bayesian equivalents
   of these methods whose statistical underpinnings are described in Derks et al. (2021)
   <https://doi.org/10.1111/ijau.12240>, Derks et al. (2024) <https://doi.org/10.2308/AJPT-2021-086>,
-  and Derks et al. (2022) <https://doi.org/10.31234/osf.io/8nf3e>.
+  Derks et al. (2022) <https://doi.org/10.31234/osf.io/8nf3e> and Derks et al. (2024)
+  <https://doi.org/10.31234/osf.io/tgq5z>.
 authors:
 - family-names: Derks
   given-names: Koen
@@ -44,7 +45,7 @@ preferred-citation:
 repository: https://CRAN.R-project.org/package=jfa
 repository-code: https://github.com/koenderks/jfa
 url: https://koenderks.github.io/jfa/
-date-released: '2024-08-23'
+date-released: '2024-09-17'
 contact:
 - family-names: Derks
   given-names: Koen
@@ -479,8 +480,10 @@ references:
     orcid: https://orcid.org/0000-0001-6419-907X
   - family-names: Francois
     given-names: Romain
+    orcid: https://orcid.org/0000-0002-2444-4226
   - family-names: Qiu
     given-names: Yixuan
+    orcid: https://orcid.org/0000-0003-0109-6692
   year: '2024'
   doi: 10.32614/CRAN.package.RcppEigen
   version: '>= 0.3.3.3.0'
