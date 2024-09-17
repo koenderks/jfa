@@ -1,6 +1,12 @@
 # jfa 0.7.3
 
-- No changes yet.
+**New features**
+
+- @lottemensink added `plot(x, type = "sequential")` to the `evaluation()` function when used with `prior`, `materiality` and `data`. The plot shows Bayes factors as a function of the sample size.
+
+**Bug fixes**
+
+- Fixed a bug in the `evaluation()` function using `method = "hypergeometric"` where the user could provide broken taints. These taints are now rounded to the nearest integer value.
 
 # jfa 0.7.2
 

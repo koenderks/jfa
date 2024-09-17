@@ -2,7 +2,7 @@
 
 This is a submission for version 0.7.3. In this version I have:
 
-* Done nothing yet.
+* Implemented some bug fixes.
 
 ## Test environments
 
