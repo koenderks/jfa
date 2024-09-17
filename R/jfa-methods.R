@@ -805,23 +805,22 @@ plot.jfaEvaluation <- function(x, type = c("estimates", "posterior", "sequential
     }
     p <- plot.jfaPlanning(x, ...)
   } else if (type == "sequential") {
-    if (is.null(x[["data"]])) {
-      stop(paste0('plot(..., type = "sequential") not supported when "data" is not supplied'))
-    }
-    if (is.null(x[["prior"]])) {
-      stop(paste0('plot(..., type = "sequential") not supported without "prior = TRUE"'))
-    }
-    if (is.null(x[["posterior"]][["hypotheses"]])) {
-      stop(paste0('plot(..., type = "sequential") not supported when "materiality" is not supplied'))
-    }
+    stopifnot('plot(..., type = "sequential") not supported when "data" is not provided' = !is.null(x[["data"]]))
+    stopifnot('plot(..., type = "sequential") not supported for frequentist analyses with "prior = FALSE"' = !is.null(x[["prior"]]))
+    stopifnot('plot(..., type = "sequential") not supported when "materiality" is not provided' = !is.null(x[["posterior"]][["hypotheses"]]))
     bf <- numeric(x[["n"]])
     for (i in seq_len(x[["n"]])) {
       bf[i] <- jfa::evaluation(
-        materiality = x[["materiality"]], method = x[["method"]], alternative = x[["alternative"]], prior = x[["prior"]], N.units = x[["N.units"]],
-        n = i, x = sum(x[["data"]][["taint"]][1:i])
+        materiality = x[["materiality"]],
+        method = x[["method"]],
+        alternative = x[["alternative"]],
+        prior = x[["prior"]],
+        N.units = x[["N.units"]],
+        n = i,
+        x = sum(x[["data"]][["taint"]][1:i])
       )[["posterior"]][["hypotheses"]][["bf.h1"]]
     }
-    plotdata <- data.frame(x = seq(0, x[["n"]]), y = c(1, bf))
+    plotdata <- data.frame(x = seq(0, x[["n"]], 1), y = c(1, bf))
     p <- .plotBfSequential(x, plotdata)
     p <- .theme_jfa(p)
   } else {
