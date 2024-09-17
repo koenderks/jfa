@@ -823,6 +823,7 @@ plot.jfaEvaluation <- function(x, type = c("estimates", "posterior", "sequential
     plotdata$x <- seq(1:n)
     plotdata$y <- bf
     p <- .plotBfSequential(x, plotdata)
+    p <- .theme_jfa(p)
   } else {
     xs <- 0
     labels <- "Population"
