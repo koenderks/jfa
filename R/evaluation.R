@@ -409,7 +409,7 @@ evaluation <- function(materiality = NULL,
     stopifnot("all values in 'x' must be <= 'n'" = all(x <= n))
     stopifnot("length(x) must be = length(n)" = length(x) == length(n))
     broken_taints <- any(x %% 1 != 0)
-    if (broken_taints && method == "hypergeometric" && !is_bayesian) {
+    if (broken_taints && method == "hypergeometric") {
       x <- ceiling(x)
       message(paste0("Using 'x = ", x, "' since 'x' must contain integers >= 0"))
     }
@@ -555,12 +555,16 @@ evaluation <- function(materiality = NULL,
       if (valid_test_method) {
         if (is_bayesian) {
           if (conjugate_prior && !(method %in% c("inflated.poisson", "hurdle.beta"))) {
-            stratum_alpha <- prior[["description"]]$alpha + t.obs[i]
-            if (method == "poisson") {
-              stratum_beta <- prior[["description"]]$beta + n.obs[i]
+            if (method == "hypergeometric") {
+              stratum_alpha <- prior[["description"]]$alpha + x.obs[i]
             } else {
-              stratum_beta <- prior[["description"]]$beta + n.obs[i] - t.obs[i]
+              stratum_alpha <- prior[["description"]]$alpha + t.obs[i]
             }
+            stratum_beta <- switch(method,
+              "poisson" = prior[["description"]]$beta + n.obs[i],
+              "binomial" = prior[["description"]]$beta + n.obs[i] - t.obs[i],
+              "hypergeometric" = prior[["description"]]$beta + n.obs[i] - x.obs[i]
+            )
             stratum_N <- N.units[i] - n.obs[i]
             stratum_K <- NULL
             if (!is.null(N.units)) {
@@ -775,13 +779,17 @@ evaluation <- function(materiality = NULL,
       }
       result[["prior"]]$conf.level <- conf.level
     }
-    # Posterior distribution{
-    post_alpha <- result[["prior"]][["description"]]$alpha + result[["t"]]
-    if (method == "poisson") {
-      post_beta <- result[["prior"]][["description"]]$beta + result[["n"]]
+    # Posterior distribution
+    if (method == "hypergeometric") {
+      post_alpha <- result[["prior"]][["description"]]$alpha + result[["x"]]
     } else {
-      post_beta <- result[["prior"]][["description"]]$beta + result[["n"]] - result[["t"]]
+      post_alpha <- result[["prior"]][["description"]]$alpha + result[["t"]]
     }
+    post_beta <- switch(method,
+      "poisson" = result[["prior"]][["description"]]$beta + result[["n"]],
+      "binomial" = result[["prior"]][["description"]]$beta + result[["n"]] - result[["t"]],
+      "hypergeometric" = result[["prior"]][["description"]]$beta + result[["n"]] - result[["x"]]
+    )
     post_N <- result[["N.units"]] - result[["n"]]
     post_K <- NULL
     if (!is.null(N.units)) {
