@@ -806,20 +806,27 @@ plot.jfaEvaluation <- function(x, type = c("estimates", "posterior", "sequential
     p <- plot.jfaPlanning(x, ...)
   } else if (type == "sequential") {
     if (is.null(x[["data"]])) {
-      stop(paste0('plot(..., type = "sequential") not supported when data is not supplied'))
-    } else if (is.null(x[["prior"]])) {
+      stop(paste0('plot(..., type = "sequential") not supported when "data" is not supplied'))
+    }
+    if (is.null(x[["prior"]])) {
       stop(paste0('plot(..., type = "sequential") not supported without "prior = TRUE"'))
     }
-    n <- x[["n"]]
-    prior <- x[["prior"]]
+    if (is.null(x[["posterior"]][["hypotheses"]])) {
+      stop(paste0('plot(..., type = "sequential") not supported when "materiality" is not supplied'))
+    }
     bf <- c()
-    for (i in 1:n) {
+    if (x[["method"]] == "hypergeometric") {
+      N.units <- x[["N.units"]]
+    } else {
+      N.units <- NULL
+    }
+    for (i in 1:x[["n"]]) {
       bf[i] <- jfa::evaluation(
-        materiality = x[["materiality"]], method = x[["method"]], alternative = x[["alternative"]], prior = prior,
+        materiality = x[["materiality"]], method = x[["method"]], alternative = x[["alternative"]], prior = x[["prior"]], N.units = N.units,
         n = i, x = sum(x[["data"]][["taint"]][1:i])
       )[["posterior"]][["hypotheses"]][["bf.h1"]]
     }
-    plotdata <- data.frame(x = seq(1:n), y = bf)
+    plotdata <- data.frame(x = seq(0, x[["n"]]), y = c(1, bf))
     p <- .plotBfSequential(x, plotdata)
     p <- .theme_jfa(p)
   } else {
