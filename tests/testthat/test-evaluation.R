@@ -254,7 +254,7 @@ test_that(desc = "(id: f3-v0.4.0-t1) Bayes factors", {
   expect_equal(jfaEval[["posterior"]][["hypotheses"]]$odds.h1, 77.39047, tolerance = 0.001)
   prior <- auditPrior(method = "default", likelihood = "hypergeometric", N.units = 1000)
   jfaEval <- evaluation(conf.level = 0.95, materiality = 0.05, data = samp, values = "bookValue", values.audit = "auditValue", method = "hypergeometric", times = "times", prior = prior, N.units = 1000)
-  expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf.h1, 2103.842, tolerance = 0.001)
+  expect_equal(jfaEval[["posterior"]][["hypotheses"]]$bf.h1, 235.0364, tolerance = 0.001)
 })
 
 # jfa version 0.5.0

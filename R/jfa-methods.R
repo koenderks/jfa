@@ -810,6 +810,11 @@ plot.jfaEvaluation <- function(x, type = c("estimates", "posterior", "sequential
     stopifnot('plot(..., type = "sequential") not supported when "materiality" is not provided' = !is.null(x[["posterior"]][["hypotheses"]]))
     bf <- numeric(x[["n"]])
     for (i in seq_len(x[["n"]])) {
+      if (x[["method"]] == "hypergeometric") {
+        taints <- sum(ceiling(x[["data"]][["taint"]][1:i]))
+      } else {
+        taints <- sum(x[["data"]][["taint"]][1:i])
+      }
       bf[i] <- jfa::evaluation(
         materiality = x[["materiality"]],
         method = x[["method"]],
@@ -817,7 +822,7 @@ plot.jfaEvaluation <- function(x, type = c("estimates", "posterior", "sequential
         prior = x[["prior"]],
         N.units = x[["N.units"]],
         n = i,
-        x = sum(x[["data"]][["taint"]][1:i])
+        x = taints
       )[["posterior"]][["hypotheses"]][["bf.h1"]]
     }
     plotdata <- data.frame(x = seq(0, x[["n"]], 1), y = c(1, bf))
