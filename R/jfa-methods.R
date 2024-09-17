@@ -819,9 +819,7 @@ plot.jfaEvaluation <- function(x, type = c("estimates", "posterior", "sequential
         n = i, x = sum(x[["data"]][["taint"]][1:i])
       )[["posterior"]][["hypotheses"]][["bf.h1"]]
     }
-    plotdata <- data.frame(x = numeric(), y = numeric())
-    plotdata$x <- seq(1:n)
-    plotdata$y <- bf
+    plotdata <- data.frame(x = seq(1:n), y = bf)
     p <- .plotBfSequential(x, plotdata)
     p <- .theme_jfa(p)
   } else {
