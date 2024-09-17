@@ -794,7 +794,7 @@ summary.jfaEvaluation <- function(object, digits = getOption("digits"), ...) {
 #' @rdname jfa-methods
 #' @method plot jfaEvaluation
 #' @export
-plot.jfaEvaluation <- function(x, type = c("estimates", "posterior"), ...) {
+plot.jfaEvaluation <- function(x, type = c("estimates", "posterior", "sequential"), ...) {
   y <- lb <- ub <- NULL
   type <- match.arg(type)
   if (type == "posterior") {
@@ -804,6 +804,26 @@ plot.jfaEvaluation <- function(x, type = c("estimates", "posterior"), ...) {
       stop(paste0('plot(..., type = "posterior") not supported for method = "', x[["method"]], '" without "prior = TRUE"'))
     }
     p <- plot.jfaPlanning(x, ...)
+  } else if (type == "sequential") {
+    if (is.null(x[["data"]])) {
+      stop(paste0('plot(..., type = "sequential") not supported when "data" is not supplied'))
+    }
+    if (is.null(x[["prior"]])) {
+      stop(paste0('plot(..., type = "sequential") not supported without "prior = TRUE"'))
+    }
+    if (is.null(x[["posterior"]][["hypotheses"]])) {
+      stop(paste0('plot(..., type = "sequential") not supported when "materiality" is not supplied'))
+    }
+    bf <- numeric(x[["n"]])
+    for (i in seq_len(x[["n"]])) {
+      bf[i] <- jfa::evaluation(
+        materiality = x[["materiality"]], method = x[["method"]], alternative = x[["alternative"]], prior = x[["prior"]], N.units = x[["N.units"]],
+        n = i, x = sum(x[["data"]][["taint"]][1:i])
+      )[["posterior"]][["hypotheses"]][["bf.h1"]]
+    }
+    plotdata <- data.frame(x = seq(0, x[["n"]]), y = c(1, bf))
+    p <- .plotBfSequential(x, plotdata)
+    p <- .theme_jfa(p)
   } else {
     xs <- 0
     labels <- "Population"
