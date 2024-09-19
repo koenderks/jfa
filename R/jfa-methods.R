@@ -808,12 +808,14 @@ plot.jfaEvaluation <- function(x, type = c("estimates", "posterior", "sequential
     stopifnot('plot(..., type = "sequential") not supported when "data" is not provided' = !is.null(x[["data"]]))
     stopifnot('plot(..., type = "sequential") not supported for frequentist analyses with "prior = FALSE"' = !is.null(x[["prior"]]))
     stopifnot('plot(..., type = "sequential") not supported when "materiality" is not provided' = !is.null(x[["posterior"]][["hypotheses"]]))
+    stopifnot('plot(..., type = "sequential") not supported when "stratum" is provided' = is.null(x[["data"]][["strata"]]))
     bf <- numeric(x[["n"]])
+    taints <- rep(x[["data"]][["taint"]], times = x[["data"]][["times"]])
     for (i in seq_len(x[["n"]])) {
       if (x[["method"]] == "hypergeometric") {
-        taints <- sum(ceiling(x[["data"]][["taint"]][1:i]))
+        subtaints <- sum(ceiling(taints[seq_len(i)]))
       } else {
-        taints <- sum(x[["data"]][["taint"]][1:i])
+        subtaints <- sum(taints[seq_len(i)])
       }
       bf[i] <- jfa::evaluation(
         materiality = x[["materiality"]],
@@ -822,7 +824,7 @@ plot.jfaEvaluation <- function(x, type = c("estimates", "posterior", "sequential
         prior = x[["prior"]],
         N.units = x[["N.units"]],
         n = i,
-        x = taints
+        x = subtaints
       )[["posterior"]][["hypotheses"]][["bf.h1"]]
     }
     plotdata <- data.frame(x = seq(0, x[["n"]], 1), y = c(1, bf))
