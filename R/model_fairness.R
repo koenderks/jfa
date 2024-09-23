@@ -206,7 +206,11 @@ model_fairness <- function(data,
                            alternative = c("two.sided", "less", "greater"),
                            conf.level = 0.95,
                            prior = FALSE) {
-  metric <- match.arg(metric)
+  if (inherits(metric, "jfaFairnessWorkflow")) {
+    metric <- metric[["measure"]]
+  } else {
+    metric <- match.arg(metric)
+  }
   alternative <- match.arg(alternative)
   dname <- deparse(substitute(data))
   data <- as.data.frame(data, row.names = seq_len(nrow(data)))
