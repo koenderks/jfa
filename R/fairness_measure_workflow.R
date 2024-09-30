@@ -13,114 +13,95 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#' Algorithm Auditing: Fairness Metrics Decision-Making Workflow
+#' Algorithm Auditing: Fairness Measures Decision-Making Workflow
 #'
-#' @description DESCRIZIONE DI COSA FA LA FUNZIONE This function aims to assess fairness in algorithmic
-#' decision-making systems by computing and testing the equality of one of
-#' several model-agnostic fairness metrics between protected classes. The
-#' metrics are computed based on a set of true labels and the predictions of an
-#' algorithm. The ratio of these metrics between any unprivileged protected
-#' class and the privileged protected class is called parity. This measure can
-#' quantify potential fairness or discrimination in the algorithms predictions.
-#' Available parity metrics include predictive rate parity, proportional parity,
-#' accuracy parity, false negative rate parity, false positive rate parity, true
-#' positive rate parity, negative predicted value parity, specificity parity,
-#' and demographic parity. The function returns an object of class
-#' \code{jfaFairness} that can be used with associated \code{summary()} and
-#' \code{plot()} methods.
+#' @description This function aims to provide a fairness measure tailored
+#' to a specific context and dataset by answering the questions in the developed
+#' decision-making workflow. The questions within the decision-making workflow are based
+#' on observable data characteristics, the properties of fairness measures and the
+#' information required for their calculation. However, these questions are posed to the user
+#' in an easily understandable manner, requiring no statistical background or in-depth knowledge of the fairness measures.
+#' Obtainable fairness measures include Disparate Impact, Equalized Odds, Predictive Rate Parity,
+#' Equal Opportunity, Specificity Parity, Negative Predictive Rate Parity, Accuracy Parity,
+#' False Positive Rate Parity and False Negative Rate Parity. The function returns an object
+#' of class \code{jfaFairnessWorkflow} that can be used with associated \code{print()} and \code{plot()} methods.
 #'
-#' @usage model_fairness(
-#'   data,
-#'   protected,
-#'   target,
-#'   predictions,
-#'   privileged = NULL,
-#'   positive = NULL,
-#'   metric = c(
-#'     "prp", "pp", "ap", "fnrp", "fprp",
-#'     "tprp", "npvp", "sp", "dp"
-#'   ),
-#'   alternative = c("two.sided", "less", "greater"),
-#'   conf.level = 0.95,
-#'   prior = FALSE
+#' @usage DecisionMakingWorkflow(
+#'   q1 = NULL,
+#'   q2 = NULL,
+#'   q3 = NULL,
+#'   q4 = NULL
 #' )
 #'
-#' @param data        DESCRIZIONE ARGOMENTI FUNZIONE a data frame containing the input data.
-#' @param protected    a character specifying the column name in \code{data}
-#'   containing the protected classes (i.e., the sensitive attribute).
-#' @param target       a character specifying the column name in \code{data}
-#'   containing the true labels of the target (i.e., to be predicted) variable.
-#' @param predictions  a character specifying the column name in \code{data}
-#'   containing the predicted labels of the target variable.
-#' @param privileged  a character specifying the factor level of the column
-#'   \code{protected} to be used as the privileged group. If \code{NULL} (the
-#'   default), the first factor level of the \code{protected} column is used.
-#' @param positive     a character specifying the factor level positive class of
-#'   the column \code{target} to be used as the positive class. If \code{NULL}
-#'   (the default), the first factor level of the \code{target} column is used.
-#' @param metric      a character indicating the fairness metrics to compute.
-#'   See the Details section below for more information.
-#' @param alternative   a character indicating the alternative hypothesis and
-#'   the type of confidence / credible interval used in the individual
-#'   comparisons to the privileged group. Possible options are  \code{two.sided}
-#'   (default), \code{less}, or \code{greater}. The alternative hypothesis
-#'   relating to the overall equality is always two sided.
-#' @param conf.level   a numeric value between 0 and 1 specifying the
-#'   confidence level (i.e., 1 - audit risk / detection risk).
-#' @param prior        a logical specifying whether to use a prior distribution,
-#'   or a numeric value equal to or larger than 1 specifying the prior
-#'   concentration parameter. If this argument is specified as \code{FALSE}
-#'   (default), classical estimation is performed and if it is \code{TRUE},
-#'   Bayesian estimation using a default prior with concentration parameter 1 is
-#'   performed.
+#' @param q1  a character indicating the answer to the first question of the decision-making workflow.
+#'    If \code{NULL} (the default) the user is presented with the first question of the decision-making
+#'    workflow and can respond interactively by selecting the numerical value corresponding to their
+#'    desired answer. Possible options are \code{NULL} (default), \code{1} (to indicate 'Yes'), or
+#'    \code{2} (to indicate 'No').
+#' @param q2   a character indicating the answer to the second question of the decision-making workflow.
+#'    If \code{NULL} (the default) the user is presented with the second question of the decision-making
+#'    workflow and can respond interactively by selecting the numerical value corresponding to their
+#'    desired answer. Possible options are \code{NULL} (default), \code{1} (to indicate 'Correct Classification'),
+#'    \code{2} (to indicate 'Incorrect Classification'), or \code{3} (to indicate 'Correct and
+#'    Incorrect Classification').
+#' @param q3  a character indicating the answer to the third question of the decision-making workflow.
+#'    If \code{NULL} (the default) the user is presented with the third question of the decision-making
+#'    workflow and can respond interactively by selecting the numerical value corresponding to their
+#'    desired answer. Possible options are \code{NULL} (default), \code{1} (to indicate 'Everythig not positive'),
+#'    or \code{2} (to indicate 'Well-defined').
+#' @param q4  a character indicating the answer to the fourth question of the decision-making workflow.
+#'    If \code{NULL} (the default) the user is presented with the fourth question of the decision-making
+#'    workflow and can respond interactively by selecting the numerical value corresponding to their
+#'    desired answer. Possible options are \code{NULL} (default), \code{1} (to indicate 'False Positive'),
+#'    \code{2} (to indicate 'False Negative'), or \code{3} (to indicate 'No preference').
 #'
-#' @details The fairness decision-making workflow below aids in choosing
-#'   which fairness measure is appropriate for the situation at hand. AGGIUNGERE RIFERIMENTI
+#' @details Several fairness measures can be used to assess the fairness of AI-predicted classifications. These include:
+#'
+#'   \itemize{
+#'     \item{Disparate Impact. See Friedler et al. (2019), Feldman et al. (2015),
+#'          Castelnovo et al. (2022) and and Büyük, S. (2023) for a more detailed explanation of this measure.}
+#'     \item{Equalized Odds. See Hardt et al. (2016), Verma et al. (2018) and Büyük, S. (2023)
+#'            for a more detailed explanation of this measure.}
+#'     \item{False Positive Rate Parity. See Castelnovo et al. (2022) (under the name Predictive Equality),
+#'            Verma et al. (2018) and Büyük, S. (2023) for a more detailed explanation of this measure.}
+#'     \item{False Negative Rate Parity. See Castelnovo et al. (2022) (under the name Equality of Opportunity),
+#'            Verma et al. (2018) and Büyük, S. (2023) for a more detailed explanation of this measure.}
+#'     \item{Predictive Rate Parity. See Castelnovo et al. (2022) (under the name Predictive Parity) and Büyük, S. (2023) for
+#'            a more detailed explanation of this measure.}
+#'     \item{Equal Opportunity. See Hardt et al. (2016), Friedler et al. (2019), Verma et al. (2018) and Büyük, S. (2023) for
+#'            a more detailed explanation of this measure.}
+#'     \item{Specificity Parity. See Friedler et al. (2019), Verma et al. (2018) and Büyük, S. (2023) for
+#'            a more detailed explanation of this measure.}
+#'     \item{Negative Predictive Rate Parity. See Verma et al. (2018) and Büyük, S. (2023) for a more detailed explanation of this measure.}
+#'     \item{Accuracy Parity. See Friedler et al. (2019) and Büyük, S. (2023) for a more detailed explanation of this measure.}
+#'   }
+#'
+#' The fairness decision-making workflow below aids in choosing
+#'   which fairness measure is appropriate for the situation at hand. It is important to note that
+#'   there are three specific input parameter combinations ((q1="1", q2="2", q3="1", q4="3"),
+#'   (q1="1", q2="2", q3="2", q4="3") and (q1="1", q2="1", q3="1", q4="3")) for which a fairness measure is currently
+#'   unavailable as outcome that meet the required input criteria.
 #'
 #'   \if{html}{\figure{fairness-tree.png}{options: width="100\%" alt="fairness-tree"}}
 #'   \if{latex}{\figure{fairness-tree.pdf}{options: width=5in}}
 #'
-#' @return An object of class \code{jfaFairness} containing: 
+#' @return An object of class \code{jfaFairness} containing:
 #'
-#' \item{data}{the specified data.}
-#' \item{conf.level}{a numeric value between 0 and 1 giving the confidence
-#'   level.}
-#' \item{privileged}{The privileged group for computing the fairness metrics.}
-#' \item{unprivileged}{The unprivileged group(s).}
-#' \item{target}{The target variable used in computing the fairness metrics.}
-#' \item{predictions}{The predictions used to compute the fairness metrics.}
-#' \item{protected}{The variable indicating the protected classes.}
-#' \item{positive}{The positive class used in computing the fairness metrics.}
-#' \item{negative}{The negative class used in computing the fairness metrics.}
-#' \item{alternative}{The type of confidence interval.}
-#' \item{confusion.matrix}{A list of confusion matrices for each group.}
-#' \item{performance}{A data frame containing performance metrics for each
-#'   group, including accuracy, precision, recall, and F1 score.}
-#' \item{metric}{A data frame containing, for each group, the estimates of the
-#'   fairness metric along with the associated confidence / credible interval.}
-#' \item{parity}{A data frame containing, for each unprivileged group, the
-#'   parity and associated confidence / credible interval when compared to the
-#'   privileged group.}
-#' \item{odds.ratio}{A data frame containing, for each unprivileged group, the
-#'   odds ratio of the fairness metric and its associated confidence/credible
-#'   interval, along with inferential measures such as uncorrected p-values or
-#'   Bayes factors.}
-#' \item{measure}{The abbreviation of the selected fairness measure}
-#' \item{name}{The full name of the selected fairness measure}
-#' \item{prior}{a logical indicating whether a prior distribution was used.}
-#' \item{data.name}{The name of the input data object.}
+#' \item{measure}{The abbreviation of the selected fairness measure. Possible options are \code{di},
+#'                \code{eo}, \code{eodds}, \code{prp}, \code{eo}, \code{sp}, \code{nprp}, \code{ap},
+#'                \code{fprp}, \code{fnrp} and \code{error}. }
+#' \item{name}{The name of the selected fairness measure. Possible options are \code{Disparate Impact},
+#'              \code{Equalized Odds}, \code{Predictive Rate Parity}, \code{Equal Opportunity}, \code{Specificity Parity},
+#'              \code{Negative Predictive Rate Parity}, \code{Accuracy Parity}, \code{False Positive Rate Parity},
+#'              \code{False Negative Rate Parity}, \code{No measure with these characteristics is available in the Decision-Making Workflow}.}
 #'
-#' @author Koen Derks, \email{k.derks@nyenrode.nl}
+#' @author Federica Picogna, \email{f.picogna@nyenrode.nl}
 #'
 #' @references Büyük, S. (2023). \emph{Automatic Fairness Criteria and Fair
 #'   Model Selection for Critical ML Tasks}, Master Thesis, Utrecht University.
-#' @references Calders, T., & Verwer, S. (2010). Three naive Bayes approaches
-#'   for discrimination-free classification. In \emph{Data Mining and Knowledge
-#'   Discovery}. Springer Science and Business Media LLC.
-#'   \doi{10.1007/s10618-010-0190-x}
-#' @references Chouldechova, A. (2017). Fair prediction with disparate impact:
-#'   A study of bias in recidivism prediction instruments. In \emph{Big Data}.
-#'   Mary Ann Liebert Inc. \doi{10.1089/big.2016.0047}
+#' @references Castelnovo, A., Crupi, R., Greco, G. et al. (2022). A clarification
+#' of the nuances in the fairness metrics landscape. In \emph{Sci Rep 12, 4209}.
+#' \doi{10.1038/s41598-022-07939-1}
 #' @references Feldman, M., Friedler, S. A., Moeller, J., Scheidegger, C., &
 #'   Venkatasubramanian, S. (2015). Certifying and removing disparate impact. In
 #'   \emph{Proceedings of the 21th ACM SIGKDD International Conference on
@@ -130,31 +111,23 @@
 #'   fairness-enhancing interventions in machine learning. In \emph{Proceedings
 #'   of the Conference on Fairness, Accountability, and Transparency}.
 #'   \doi{10.1145/3287560.3287589}
-#' @references Fisher, R. A. (1970). \emph{Statistical Methods for Research
-#'   Workers}. Oliver & Boyd.
-#' @references Jamil, T., Ly, A., Morey, R. D., Love, J., Marsman, M., &
-#'   Wagenmakers, E. J. (2017). Default "Gunel and Dickey" Bayes factors for
-#'   contingency tables. \emph{Behavior Research Methods}, 49, 638-652.
-#'   \doi{10.3758/s13428-016-0739-8}
-#' @references Pessach, D. & Shmueli, E. (2022). A review on fairness in machine
-#'   learning. \emph{ACM Computing Surveys}, 55(3), 1-44. \doi{10.1145/3494672}
-#' @references Zafar, M. B., Valera, I., Gomez Rodriguez, M., & Gummadi, K. P.
-#'   (2017). Fairness beyond disparate Ttreatment & disparate impact. In
-#'   \emph{Proceedings of the 26th International Conference on World Wide Web}.
-#'   \doi{10.1145/3038912.3052660}
+#' @references Hardt M. , Price E., Srebro N. (2016). Equality of opportunity in
+#'    supervised learning. In \emph{Advances in neural information processing systems, 29}.
+#'    \doi{10.48550/arXiv.1610.02413}
+#' @references Verma S., Rubin J. (2018). Fairness definitions explained. In \emph{Proceedings
+#'     of the international workshop on software fairness, 1--7}. \doi{10.1145/3194770.3194776}
+
+
 #'
-#' @keywords algorithm audit bias fairness workflow 
+#' @keywords algorithm audit bias fairness workflow
 #'
 #' @examples
-#' # Frequentist test of specificy parity
-#' model_fairness(
-#'   data = compas,
-#'   protected = "Gender",
-#'   target = "TwoYrRecidivism",
-#'   predictions = "Predicted",
-#'   privileged = "Male",
-#'   positive = "yes",
-#'   metric = "sp"
+#' # Combination to obtain Accuracy Parity
+#' DecisionMakingWorkflow(
+#'   q1 = "1",
+#'   q2 = "1",
+#'   q3 = "2",
+#'   q4 = "3"
 #' )
 #' @export
 
@@ -171,7 +144,7 @@ fairness_measure_workflow <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL
     q2 <- utils::menu(choices = c("Correct Classification", "Incorrect Classification", "Correct and Incorrect Classification"), title = "In what type of classification are you interested?")
   } else {
     if (!(q2 %in% c(1, 2, 3))) {
-      stop("Invalid input: The value of the second argument must be 1 (to indicate 'Correct Classification'), 2 (to indicate Well-defined') or 3 (to indicate 'Correct and Incorrect Classification )")
+      stop("Invalid input: The value of the second argument must be 1 (to indicate 'Correct Classification'), 2 (to indicate 'Incorrect Classification') or 3 (to indicate 'Correct and Incorrect Classification')")
     }
   }
 
@@ -197,7 +170,7 @@ fairness_measure_workflow <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL
   } else if (q1 == 1) {
     if (q2 == 3) {
       name <- "Equalized Odds"
-      measure <- "eo"
+      measure <- "eodds"
     } else {
       if (q2 == 1) {
         if (q3 == 1) {
@@ -208,7 +181,7 @@ fairness_measure_workflow <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL
             name <- "Equal Opportunity"
             measure <- "eo"
           } else if (q4 == 3) {
-            name <- "No measure with these characteristics is available in the Decision-Making Workflow if the Negative Class is Everything not positive"
+            name <- "No measure with these characteristics is available in the Decision-Making Workflow"
             measure <- "error"
           } else {
             stop("Invalid imput:  The value of the fourth argument must be 1 (to indicate 'False Positive'), 2 (to indicate 'False Negative'), or 3 (to indicate 'No preference').")
@@ -237,7 +210,7 @@ fairness_measure_workflow <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL
           name <- "False Negative Rate Parity"
           measure <- "fnrp"
         } else if (q4 == 3) {
-          name <- "No measure with these characteristics is available in the Decision-Making Workflow if the interest is in the incorrect classification"
+          name <- "No measure with these characteristics is available in the Decision-Making Workflow"
           measure <- "error"
         } else {
           stop("Invalid imput:  The value of the fourth argument must be 1 (to indicate 'False Positive'), 2 (to indicate 'False Negative'), or 3 (to indicate 'No preference').")
@@ -253,7 +226,6 @@ fairness_measure_workflow <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL
   output <- list()
   output[["measure"]] <- measure
   output[["name"]] <- name
-  # output[["qq"]]<- qq
   class(output) <- c(class(output), "jfaFairnessWorkflow")
   return(output)
 }
