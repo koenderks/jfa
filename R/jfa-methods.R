@@ -1496,3 +1496,339 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior", "robustness",
   p <- .theme_jfa(p, legend.position = if (length(unprivileged) == 1 && type == "posterior") "inside" else "top", legend.position.inside = c(0.8, 0.8))
   return(p)
 }
+
+# Methods for class: jfaFairnessSelection #####################################################
+
+#' @rdname jfa-methods
+#' @method plot jfaFairnessSelection
+#' @export
+plot.jfaFairnessSelection <- function(x, ...) {
+  xmin <- xmax <- ymin <- ymax <- label <- fill <- text_color <- NULL
+  measure <- x$name
+  if (measure == "Predictive Rate Parity") {
+    rects <- data.frame(
+      xmin = c(-0.5, -5, 5.5, -11.4, -2.2, 5.5, -15.7, -6.4, -20, -10.5),
+      xmax = c(6, 0.2, 9.5, -4, 3.2, 9.5, -9.8, -0.8, -14.5, -5.8),
+      ymin = c(3, -4, -4, -8, -8, -8, -16, -16, -22, -22),
+      ymax = c(6, -1, -1, -12, -12, -12, -19, -19, -25, -25),
+      label = c("1. Do you have the ground \ntruth information on the true \nvalues of the classification?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. Can the negative class be \nconsidered as Everything not \npositive or is it Well-defined?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Predictive Rate Parity", "Equal Opportunity"),
+      fill = c("white", "white", "lightgrey", "white", "lightgrey", "lightgrey", "white", "lightgrey", "white", "lightgrey"),
+      text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
+    )
+    plotWorkflow <- ggplot2::ggplot() +
+      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill), color = "black") +
+      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 2.5) +
+      ggplot2::scale_fill_identity() +
+      ggplot2::scale_color_identity() +
+      ggplot2::xlim(-20, 12) +
+      ggplot2::ylim(-28, 7) +
+      ggplot2::theme_void() +
+      ggplot2::geom_segment(ggplot2::aes(x = -0.5, xend = -2.6, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -2.7, y = 1, label = "YES"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = 6, xend = 7.5, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = 7.6, y = 1, label = "NO"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -5, xend = -7.7, y = -4.1, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -8.1, y = -6, label = "CORRECT"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -2.6, xend = 0.5, y = -4.1, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgray", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -3.3, y = -6, label = "INCORRECT"), color = "darkgray", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = 0.2, xend = 7.5, y = -4.1, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = 8.9, y = -6, label = "CORRECT AND INCORRECT"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -11.4, xend = -12.2, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -12.8, y = -14, label = "ENP"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -4, xend = -4, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgray", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -3, y = -14, label = "WD"), color = "darkgray", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -15.4, xend = -17.25, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -16.9, y = -20.5, label = "FP"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -9.8, xend = -8.15, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgray", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -8.2, y = -20.5, label = "FN"), color = "darkgray", size = 3)
+  } else if (measure == "Equal Opportunity") {
+    rects <- data.frame(
+      xmin = c(-0.5, -5, 5.5, -11.4, -2.2, 5.5, -15.7, -6.4, -20, -10.5),
+      xmax = c(6, 0.2, 9.5, -4, 3.2, 9.5, -9.8, -0.8, -14.5, -5.8),
+      ymin = c(3, -4, -4, -8, -8, -8, -16, -16, -22, -22),
+      ymax = c(6, -1, -1, -12, -12, -12, -19, -19, -25, -25),
+      label = c("1. Do you have the ground \ntruth information on the true \nvalues of the classification?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. Can the negative class be \nconsidered as Everything not \npositive or is it Well-defined?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Predictive Rate Parity", "Equal Opportunity"),
+      fill = c("white", "white", "lightgrey", "white", "lightgrey", "lightgrey", "white", "lightgrey", "lightgrey", "white"),
+      text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
+    )
+    plotWorkflow <- ggplot2::ggplot() +
+      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill), color = "black") +
+      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 2.5) +
+      ggplot2::scale_fill_identity() +
+      ggplot2::scale_color_identity() +
+      ggplot2::xlim(-20, 12) +
+      ggplot2::ylim(-28, 7) +
+      ggplot2::theme_void() +
+      ggplot2::geom_segment(ggplot2::aes(x = -0.5, xend = -2.6, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -2.7, y = 1, label = "YES"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = 6, xend = 7.5, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = 7.6, y = 1, label = "NO"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -5, xend = -7.7, y = -4.1, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -8.1, y = -6, label = "CORRECT"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -2.6, xend = 0.5, y = -4.1, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgray", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -3.3, y = -6, label = "INCORRECT"), color = "darkgray", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = 0.2, xend = 7.5, y = -4.1, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = 8.9, y = -6, label = "CORRECT AND INCORRECT"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -11.4, xend = -12.2, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -12.8, y = -14, label = "ENP"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -4, xend = -4, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgray", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -3, y = -14, label = "WD"), color = "darkgray", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -15.4, xend = -17.25, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -16.9, y = -20.5, label = "FP"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -9.8, xend = -8.15, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -8.2, y = -20.5, label = "FN"), color = "black", size = 3)
+  } else if (measure == "Specificity Parity") {
+    rects <- data.frame(
+      xmin = c(-0.5, -5, 5.5, -11.4, -2.2, 5.5, -15.7, -6.4, -12, -5.3, 2),
+      xmax = c(6, 0.2, 9.5, -4, 3.2, 9.5, -9.8, -0.8, -8, -0.7, 6),
+      ymin = c(3, -4, -4, -8, -8, -8, -16, -16, -22, -22, -22),
+      ymax = c(6, -1, -1, -12, -12, -12, -19, -19, -25, -25, -25),
+      label = c("1. Do you have the ground \ntruth information on the true \nvalues of the classification?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. Can the negative class be \nconsidered as Everything not \npositive or is it Well-defined?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Specificity Parity", "Negative Predictive \nRate Parity", "Accuracy Parity"),
+      fill = c("white", "white", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "white", "white", "lightgrey", "lightgrey"),
+      text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
+    )
+    plotWorkflow <- ggplot2::ggplot() +
+      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill), color = "black") +
+      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 2.5) +
+      ggplot2::scale_fill_identity() +
+      ggplot2::scale_color_identity() +
+      ggplot2::xlim(-20, 12) +
+      ggplot2::ylim(-28, 7) +
+      ggplot2::theme_void() +
+      ggplot2::geom_segment(ggplot2::aes(x = -0.5, xend = -2.4, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -2.6, y = 1, label = "YES"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = 6, xend = 7.5, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = 7.7, y = 1, label = "NO"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -5, xend = -7.7, y = -4, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -8.3, y = -6, label = "CORRECT"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -2.4, xend = 0.5, y = -4, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgray", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -3, y = -6, label = "INCORRECT"), color = "darkgray", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = 0.2, xend = 7.5, y = -4, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = 8.9, y = -6, label = "CORRECT AND INCORRECT"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -11.4, xend = -12.6, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -12.8, y = -14, label = "ENP"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -4, xend = -4, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -3, y = -14, label = "WD"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -6.4, xend = -10, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -9, y = -20.5, label = "FP"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -3.6, xend = -3.6, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgray", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -4.2, y = -20.5, label = "FN"), color = "darkgray", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -0.8, xend = 4, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgray", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = 4.9, y = -20.5, label = "NO PREFERENCE"), color = "darkgray", size = 3)
+  } else if (measure == "Negative Predictive Rate Parity") {
+    rects <- data.frame(
+      xmin = c(-0.5, -5, 5.5, -11.4, -2.2, 5.5, -15.7, -6.4, -12, -5.3, 2),
+      xmax = c(6, 0.2, 9.5, -4, 3.2, 9.5, -9.8, -0.8, -8, -0.7, 6),
+      ymin = c(3, -4, -4, -8, -8, -8, -16, -16, -22, -22, -22),
+      ymax = c(6, -1, -1, -12, -12, -12, -19, -19, -25, -25, -25),
+      label = c("1. Do you have the ground \ntruth information on the true \nvalues of the classification?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. Can the negative class be \nconsidered as Everything not \npositive or is it Well-defined?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Specificity Parity", "Negative Predictive \nRate Parity", "Accuracy Parity"),
+      fill = c("white", "white", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "white", "lightgrey", "white", "lightgrey"),
+      text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
+    )
+    plotWorkflow <- ggplot2::ggplot() +
+      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill), color = "black") +
+      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 2.5) +
+      ggplot2::scale_fill_identity() +
+      ggplot2::scale_color_identity() +
+      ggplot2::xlim(-20, 12) +
+      ggplot2::ylim(-28, 7) +
+      ggplot2::theme_void() +
+      ggplot2::geom_segment(ggplot2::aes(x = -0.5, xend = -2.4, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -2.6, y = 1, label = "YES"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = 6, xend = 7.5, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = 7.7, y = 1, label = "NO"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -5, xend = -7.7, y = -4, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -8.3, y = -6, label = "CORRECT"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -2.4, xend = 0.5, y = -4, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgray", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -3, y = -6, label = "INCORRECT"), color = "darkgray", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = 0.2, xend = 7.5, y = -4, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = 8.9, y = -6, label = "CORRECT AND INCORRECT"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -11.4, xend = -12.6, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -12.8, y = -14, label = "ENP"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -4, xend = -4, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -3, y = -14, label = "WD"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -6.4, xend = -10, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -9, y = -20.5, label = "FP"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -3.6, xend = -3.6, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -4.2, y = -20.5, label = "FN"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -0.8, xend = 4, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgray", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = 4.9, y = -20.5, label = "NO PREFERENCE"), color = "darkgray", size = 3)
+  } else if (measure == "Accuracy Parity") {
+    rects <- data.frame(
+      xmin = c(-0.5, -5, 5.5, -11.4, -2.2, 5.5, -15.7, -6.4, -12, -5.3, 2),
+      xmax = c(6, 0.2, 9.5, -4, 3.2, 9.5, -9.8, -0.8, -8, -0.7, 6),
+      ymin = c(3, -4, -4, -8, -8, -8, -16, -16, -22, -22, -22),
+      ymax = c(6, -1, -1, -12, -12, -12, -19, -19, -25, -25, -25),
+      label = c("1. Do you have the ground \ntruth information on the true \nvalues of the classification?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. Can the negative class be \nconsidered as Everything not \npositive or is it Well-defined?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Specificity Parity", "Negative Predictive \nRate Parity", "Accuracy Parity"),
+      fill = c("white", "white", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "white", "lightgrey", "lightgrey", "white"),
+      text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
+    )
+    plotWorkflow <- ggplot2::ggplot() +
+      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill), color = "black") +
+      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 2.5) +
+      ggplot2::scale_fill_identity() +
+      ggplot2::scale_color_identity() +
+      ggplot2::xlim(-20, 12) +
+      ggplot2::ylim(-28, 7) +
+      ggplot2::theme_void() +
+      ggplot2::geom_segment(ggplot2::aes(x = -0.5, xend = -2.4, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -2.6, y = 1, label = "YES"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = 6, xend = 7.5, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = 7.7, y = 1, label = "NO"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -5, xend = -7.7, y = -4, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -8.3, y = -6, label = "CORRECT"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -2.4, xend = 0.5, y = -4, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgray", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -3, y = -6, label = "INCORRECT"), color = "darkgray", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = 0.2, xend = 7.5, y = -4, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = 8.9, y = -6, label = "CORRECT AND INCORRECT"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -11.4, xend = -12.6, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -12.8, y = -14, label = "ENP"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -4, xend = -4, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -3, y = -14, label = "WD"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -6.4, xend = -10, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -9, y = -20.5, label = "FP"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -3.6, xend = -3.6, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgray", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -4.2, y = -20.5, label = "FN"), color = "darkgray", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -0.8, xend = 4, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = 5.2, y = -20.5, label = "NO PREFERENCE"), color = "black", size = 3)
+  } else if (measure == "False Positive Rate Parity") {
+    rects <- data.frame(
+      xmin = c(-0.5, -5, 5.5, -11.4, -2.2, 5.5, -18, -9, -4.2, 0.8),
+      xmax = c(6, 0.2, 9.5, -4, 3.2, 9.5, -12, -3, 0.2, 5.2),
+      ymin = c(3, -4, -4, -8, -8, -8, -22, -22, -16, -16),
+      ymax = c(6, -1, -1, -12, -12, -12, -25, -25, -19, -19),
+      label = c("1. Do you have the ground \ntruth information on the true \nvalues of the classification?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. Can the negative class be \nconsidered as Everything not \npositive or is it Well-defined?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "False Positive \nRate Parity", "False Negative \nRate Parity"),
+      fill = c("white", "white", "lightgrey", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "white", "lightgrey"),
+      text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
+    )
+    plotWorkflow <- ggplot2::ggplot() +
+      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill), color = "black") +
+      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 2.5) +
+      ggplot2::scale_fill_identity() +
+      ggplot2::scale_color_identity() +
+      ggplot2::xlim(-20, 12) +
+      ggplot2::ylim(-28, 7) +
+      ggplot2::theme_void() +
+      ggplot2::geom_segment(ggplot2::aes(x = -0.5, xend = -2.4, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -2.7, y = 1, label = "YES"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = 6, xend = 7.5, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = 7.7, y = 1, label = "NO"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -5, xend = -7.7, y = -4, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -8.2, y = -6, label = "CORRECT"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -2.4, xend = 0.5, y = -4, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -3.2, y = -6, label = "INCORRECT"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = 0.2, xend = 7.5, y = -4, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = 9, y = -6, label = "CORRECT AND INCORRECT"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -11.4, xend = -15, y = -12, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -14.6, y = -18, label = "ENP"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -7.7, xend = -7.7, y = -12, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -7, y = -18, label = "WD"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -2.2, xend = -2.2, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -2.8, y = -14, label = "FP"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = 3.2, xend = 3.2, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = 4, y = -14, label = "FN"), color = "darkgrey", size = 3)
+  } else if (measure == "False Negative Rate Parity") {
+    rects <- data.frame(
+      xmin = c(-0.5, -5, 5.5, -11.4, -2.2, 5.5, -18, -9, -4.2, 0.8),
+      xmax = c(6, 0.2, 9.5, -4, 3.2, 9.5, -12, -3, 0.2, 5.2),
+      ymin = c(3, -4, -4, -8, -8, -8, -22, -22, -16, -16),
+      ymax = c(6, -1, -1, -12, -12, -12, -25, -25, -19, -19),
+      label = c("1. Do you have the ground \ntruth information on the true \nvalues of the classification?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. Can the negative class be \nconsidered as Everything not \npositive or is it Well-defined?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "False Positive \nRate Parity", "False Negative \nRate Parity"),
+      fill = c("white", "white", "lightgrey", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "lightgrey", "white"),
+      text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
+    )
+    plotWorkflow <- ggplot2::ggplot() +
+      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill), color = "black") +
+      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 2.5) +
+      ggplot2::scale_fill_identity() +
+      ggplot2::scale_color_identity() +
+      ggplot2::xlim(-20, 12) +
+      ggplot2::ylim(-28, 7) +
+      ggplot2::theme_void() +
+      ggplot2::geom_segment(ggplot2::aes(x = -0.5, xend = -2.4, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -2.7, y = 1, label = "YES"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = 6, xend = 7.5, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = 7.7, y = 1, label = "NO"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -5, xend = -7.7, y = -4, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -8.2, y = -6, label = "CORRECT"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -2.4, xend = 0.5, y = -4, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -3.2, y = -6, label = "INCORRECT"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = 0.2, xend = 7.5, y = -4, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = 9, y = -6, label = "CORRECT AND INCORRECT"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -11.4, xend = -15, y = -12, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -14.6, y = -18, label = "ENP"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -7.7, xend = -7.7, y = -12, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -7, y = -18, label = "WD"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -2.2, xend = -2.2, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -2.8, y = -14, label = "FP"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = 3.2, xend = 3.2, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = 4, y = -14, label = "FN"), color = "black", size = 3)
+  } else if (measure == "Equalized Odds") {
+    rects <- data.frame(
+      xmin = c(0, -4.2, 5.5, -10, -2, 5.5, -15, -2),
+      xmax = c(5.5, 0, 9, -4, 3, 9, -10, 3),
+      ymin = c(3, -4, -4, -8, -8, -8, -16, -16),
+      ymax = c(6, -1, -1, -12, -12, -12, -19, -19),
+      label = c("1. Do you have the ground \ntruth information on the true \nvalues of the classification?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. Can the negative class be \nconsidered as Everything not \npositive or is it Well-defined?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?"),
+      fill = c("white", "white", "lightgrey", "lightgrey", "lightgrey", "white", "lightgrey", "lightgrey"),
+      text_color = c("black", "black", "black", "black", "black", "black", "black", "black")
+    )
+    plotWorkflow <- ggplot2::ggplot() +
+      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill), color = "black") +
+      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 2.5) +
+      ggplot2::scale_fill_identity() +
+      ggplot2::scale_color_identity() +
+      ggplot2::xlim(-15, 11) +
+      ggplot2::ylim(-25, 7) +
+      ggplot2::theme_void() +
+      ggplot2::geom_segment(ggplot2::aes(x = 0, xend = -2, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -1.9, y = 1, label = "YES"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = 5.5, xend = 7.25, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = 7.4, y = 1, label = "NO"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -4.2, xend = -7, y = -4, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgray", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -7, y = -6, label = "CORRECT"), color = "darkgray", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -2.1, xend = 0.5, y = -4, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgray", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -2.5, y = -6, label = "INCORRECT"), color = "darkgray", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = 0, xend = 7.25, y = -4, yend = -7.87), arrow = ggplot2::arrow(length = unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = 8, y = -6, label = "CORRECT AND INCORRECT"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -10, xend = -12.5, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgray", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -12, y = -14, label = "ENP"), color = "darkgray", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -4, xend = 0.5, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgray", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -0.8, y = -14, label = "WD"), color = "darkgray", size = 3)
+  } else if (measure == "Disparate Impact") {
+    rects <- data.frame(
+      xmin = c(0, -4.2, 5.5, -10, -2, 5.5, -15, -2),
+      xmax = c(5.5, 0, 9, -4, 3, 9, -10, 3),
+      ymin = c(3, -4, -4, -8, -8, -8, -16, -16),
+      ymax = c(6, -1, -1, -12, -12, -12, -19, -19),
+      label = c("1. Do you have the ground \ntruth information on the true \nvalues of the classification?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. Can the negative class be \nconsidered as Everything not \npositive or is it Well-defined?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?"),
+      fill = c("white", "white", "white", "lightgrey", "lightgrey", "lightgrey", "lightgrey", "lightgrey"),
+      text_color = c("black", "black", "black", "black", "black", "black", "black", "black")
+    )
+    plotWorkflow <- ggplot2::ggplot() +
+      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill), color = "black") +
+      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 2.5) +
+      ggplot2::scale_fill_identity() +
+      ggplot2::scale_color_identity() +
+      ggplot2::xlim(-15, 11) +
+      ggplot2::ylim(-25, 7) +
+      ggplot2::theme_void() +
+      ggplot2::geom_segment(ggplot2::aes(x = 0, xend = -2, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -1.9, y = 1, label = "YES"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = 5.5, xend = 7.25, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = 7.4, y = 1, label = "NO"), color = "black", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -4.2, xend = -7, y = -4, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgray", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -7, y = -6, label = "CORRECT"), color = "darkgray", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -2.1, xend = 0.5, y = -4, yend = -7.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgray", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -2.5, y = -6, label = "INCORRECT"), color = "darkgray", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = 0, xend = 7.25, y = -4, yend = -7.87), arrow = ggplot2::arrow(length = unit(0.05, "inches")), color = "darkgrey", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = 8, y = -6, label = "CORRECT AND INCORRECT"), color = "darkgrey", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -10, xend = -12.5, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgray", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -12, y = -14, label = "ENP"), color = "darkgray", size = 3) +
+      ggplot2::geom_segment(ggplot2::aes(x = -4, xend = 0.5, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "darkgray", size = 1) +
+      ggplot2::geom_text(ggplot2::aes(x = -0.8, y = -14, label = "WD"), color = "darkgray", size = 3)
+  } else {
+    stop("No plot is available because no measure with these characteristics is currently available in the Decision-Making Workflow")
+  }
+  return(plotWorkflow)
+}

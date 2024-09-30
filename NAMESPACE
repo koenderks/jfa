@@ -3,6 +3,7 @@
 S3method(plot,jfaDistr)
 S3method(plot,jfaEvaluation)
 S3method(plot,jfaFairness)
+S3method(plot,jfaFairnessSelection)
 S3method(plot,jfaPlanning)
 S3method(plot,jfaPosterior)
 S3method(plot,jfaPredict)
