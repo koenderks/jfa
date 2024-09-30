@@ -24,9 +24,9 @@
 #' Obtainable fairness measures include Disparate Impact, Equalized Odds, Predictive Rate Parity,
 #' Equal Opportunity, Specificity Parity, Negative Predictive Rate Parity, Accuracy Parity,
 #' False Positive Rate Parity and False Negative Rate Parity. The function returns an object
-#' of class \code{jfaFairnessWorkflow} that can be used with associated \code{print()} and \code{plot()} methods.
+#' of class \code{jfaFairnessSelection} that can be used with associated \code{print()} and \code{plot()} methods.
 #'
-#' @usage DecisionMakingWorkflow(
+#' @usage fairness_selection(
 #'   q1 = NULL,
 #'   q2 = NULL,
 #'   q3 = NULL,
@@ -85,15 +85,10 @@
 #'   \if{html}{\figure{fairness-tree.png}{options: width="100\%" alt="fairness-tree"}}
 #'   \if{latex}{\figure{fairness-tree.pdf}{options: width=5in}}
 #'
-#' @return An object of class \code{jfaFairness} containing:
+#' @return An object of class \code{jfaFairnessSelection} containing:
 #'
-#' \item{measure}{The abbreviation of the selected fairness measure. Possible options are \code{di},
-#'                \code{eo}, \code{eodds}, \code{prp}, \code{eo}, \code{sp}, \code{nprp}, \code{ap},
-#'                \code{fprp}, \code{fnrp} and \code{error}. }
-#' \item{name}{The name of the selected fairness measure. Possible options are \code{Disparate Impact},
-#'              \code{Equalized Odds}, \code{Predictive Rate Parity}, \code{Equal Opportunity}, \code{Specificity Parity},
-#'              \code{Negative Predictive Rate Parity}, \code{Accuracy Parity}, \code{False Positive Rate Parity},
-#'              \code{False Negative Rate Parity}, \code{No measure with these characteristics is available in the Decision-Making Workflow}.}
+#' \item{measure}{The abbreviation of the selected fairness measure.}
+#' \item{name}{The name of the selected fairness measure.}
 #'
 #' @author Federica Picogna, \email{f.picogna@nyenrode.nl}
 #'
@@ -123,7 +118,7 @@
 #'
 #' @examples
 #' # Combination to obtain Accuracy Parity
-#' DecisionMakingWorkflow(
+#' fairness_selection(
 #'   q1 = "1",
 #'   q2 = "1",
 #'   q3 = "2",
@@ -131,7 +126,7 @@
 #' )
 #' @export
 
-fairness_measure_workflow <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL) {
+fairness_selection <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL) {
   if (is.null(q1)) {
     q1 <- utils::menu(choices = c("Yes", "No"), title = "Do you have the information on the true values of the classification?")
   } else {
@@ -226,6 +221,6 @@ fairness_measure_workflow <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL
   output <- list()
   output[["measure"]] <- measure
   output[["name"]] <- name
-  class(output) <- c(class(output), "jfaFairnessWorkflow")
+  class(output) <- c(class(output), "jfaFairnessSelection")
   return(output)
 }
