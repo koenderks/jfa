@@ -38,7 +38,7 @@ desired answer. Possible options are \code{NULL} (default), \code{1} (to indicat
 \code{2} (to indicate 'False Negative'), or \code{3} (to indicate 'No preference').}
 }
 \value{
-An object of class \code{jfaFairness} containing:
+An object of class \code{jfaFairnessSelection} containing:
 
 \item{measure}{The abbreviation of the selected fairness measure.}
 \item{name}{The name of the selected fairness measure.}
@@ -53,7 +53,7 @@ in an easily understandable manner, requiring no statistical background or in-de
 Obtainable fairness measures include Disparate Impact, Equalized Odds, Predictive Rate Parity,
 Equal Opportunity, Specificity Parity, Negative Predictive Rate Parity, Accuracy Parity,
 False Positive Rate Parity and False Negative Rate Parity. The function returns an object
-of class \code{jfaFairnessWorkflow} that can be used with associated \code{print()} and \code{plot()} methods.
+of class \code{jfaFairnessSelection} that can be used with associated \code{print()} and \code{plot()} methods.
 }
 \details{
 Several fairness measures can be used to assess the fairness of AI-predicted classifications. These include:
