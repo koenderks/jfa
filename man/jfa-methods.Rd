@@ -35,6 +35,7 @@
 \alias{print.summary.jfaFairness}
 \alias{summary.jfaFairness}
 \alias{plot.jfaFairness}
+\alias{print.jfaFairnessSelection}
 \alias{plot.jfaFairnessSelection}
 \title{Methods for jfa objects}
 \usage{
@@ -103,6 +104,8 @@
 \method{summary}{jfaFairness}(object, digits = getOption("digits"), ...)
 
 \method{plot}{jfaFairness}(x, type = c("estimates", "posterior", "robustness", "sequential"), ...)
+
+\method{print}{jfaFairnessSelection}(x, ...)
 
 \method{plot}{jfaFairnessSelection}(x, ...)
 }

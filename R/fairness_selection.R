@@ -221,6 +221,10 @@ fairness_selection <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL) {
   output <- list()
   output[["measure"]] <- measure
   output[["name"]] <- name
+  output[["q1"]] <- q1
+  output[["q2"]] <- q2
+  output[["q3"]] <- q3
+  output[["q4"]] <- q4
   class(output) <- c(class(output), "jfaFairnessSelection")
   return(output)
 }
