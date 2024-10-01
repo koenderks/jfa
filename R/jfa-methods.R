@@ -1514,14 +1514,6 @@ print.jfaFairnessSelection <- function(x, ...) {
   cat("The answer to the fourth question is:", x[["q4"]])
 }
 
-print.jfaSelection <- function(x, ...) {
-  cat("\n")
-  cat(strwrap("Audit Sample Selection", prefix = "\t"), sep = "\n")
-  cat("\n")
-  cat(paste("data: ", x[["data.name"]]), sep = "\n")
-  cat(paste0("number of sampling units = ", x[["n.units"]], ", number of items = ", x[["n.items"]], "\nsample selected via method ", paste0("'", x[["units"]], "' + '", x[["method"]], "'\n")))
-}
-
 #' @rdname jfa-methods
 #' @method plot jfaFairnessSelection
 #' @export
