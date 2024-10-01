@@ -33,23 +33,33 @@
 #'   q4 = NULL
 #' )
 #'
-#' @param q1  a character indicating the answer to the first question of the decision-making workflow.
+#' @param q1  a character indicating the answer to the first question of the decision-making workflow ('Do you
+#'            have the information on the true values of the classification?').
 #'    If \code{NULL} (the default) the user is presented with the first question of the decision-making
 #'    workflow and can respond interactively by selecting the numerical value corresponding to their
 #'    desired answer. Possible options are \code{NULL} (default), \code{1} (to indicate 'Yes'), or
 #'    \code{2} (to indicate 'No').
-#' @param q2   a character indicating the answer to the second question of the decision-making workflow.
+#' @param q2   a character indicating the answer to the second question of the decision-making workflow ('In what type
+#'              of classification are you interested?').
 #'    If \code{NULL} (the default) the user is presented with the second question of the decision-making
 #'    workflow and can respond interactively by selecting the numerical value corresponding to their
 #'    desired answer. Possible options are \code{NULL} (default), \code{1} (to indicate 'Correct Classification'),
 #'    \code{2} (to indicate 'Incorrect Classification'), or \code{3} (to indicate 'Correct and
 #'    Incorrect Classification').
-#' @param q3  a character indicating the answer to the third question of the decision-making workflow.
+#' @param q3  a character indicating the answer to the third question of the decision-making workflow ('Can the negative class
+#'            be considered as everything not positive or is it well defined?').
 #'    If \code{NULL} (the default) the user is presented with the third question of the decision-making
 #'    workflow and can respond interactively by selecting the numerical value corresponding to their
 #'    desired answer. Possible options are \code{NULL} (default), \code{1} (to indicate 'Everythig not positive'),
-#'    or \code{2} (to indicate 'Well-defined').
-#' @param q4  a character indicating the answer to the fourth question of the decision-making workflow.
+#'    or \code{2} (to indicate 'Well-defined'). To understand the concept of a negative class defined as Everything Not Positive,
+#'      consider the example of evaluating customer satisfaction for a service, where customers can either be satisfied or dissatisfied.
+#'      Dissatisfaction, however, can stem from various reasons (such as 'not satisfied due to shipping delays', 'not satisfied because the
+#'      product or its features are malfunctioning', or 'not satisfied due to unhelpful customer service'). Despite the different reasons,
+#'     they all fall under the category of 'not satisfied' and can be grouped together without further distinction. On the other hand,
+#'      to understand the concept of a negative class as Well Defined, consider the example of classifying bank transactions as either fraudulent or legitimate.
+#'        In this case, the negative class simply refers to all fraudulent transactions, without needing to analyze why a transaction is considered non-legitimate (i.e. fraudulent).
+#' @param q4  a character indicating the answer to the fourth question of the decision-making workflow ('What are the
+#'          errors with the highest cost?').
 #'    If \code{NULL} (the default) the user is presented with the fourth question of the decision-making
 #'    workflow and can respond interactively by selecting the numerical value corresponding to their
 #'    desired answer. Possible options are \code{NULL} (default), \code{1} (to indicate 'False Positive'),
@@ -161,11 +171,11 @@ fairness_selection <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL) {
 
   if (q1 == 2) {
     name <- "Disparate Impact"
-    measure <- "di"
+    measure <- "pp"
   } else if (q1 == 1) {
     if (q2 == 3) {
       name <- "Equalized Odds"
-      measure <- "eodds"
+      measure <- "dp"
     } else {
       if (q2 == 1) {
         if (q3 == 1) {
@@ -174,7 +184,7 @@ fairness_selection <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL) {
             measure <- "prp"
           } else if (q4 == 2) {
             name <- "Equal Opportunity"
-            measure <- "eo"
+            measure <- "tprp"
           } else if (q4 == 3) {
             name <- "No measure with these characteristics is available in the Decision-Making Workflow"
             measure <- "error"
@@ -187,7 +197,7 @@ fairness_selection <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL) {
             measure <- "sp"
           } else if (q4 == 2) {
             name <- "Negative Predictive Rate Parity"
-            measure <- "nprp"
+            measure <- "npvp"
           } else if (q4 == 3) {
             name <- "Accuracy Parity"
             measure <- "ap"
