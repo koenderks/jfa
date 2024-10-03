@@ -334,13 +334,13 @@ obtained via the `summary()` function.
 #### Bayesian approach
 
 The call below evaluates the `allowances` sample using a Bayesian non-stratified
-evaluation procedure.
+evaluation procedure. The performance materiality for this example is set to
+twenty percen of the population value.
 
 ```{r}
 result <- evaluation(
-  data = allowances, times = "times", method = "binomial",
-  values = "bookValue", values.audit = "auditValue",
-  prior = TRUE
+  materiality = 0.2, data = allowances, times = "times", method = "binomial",
+  values = "bookValue", values.audit = "auditValue", prior = TRUE
 )
 print(result)
 ```
@@ -356,7 +356,8 @@ plot(result, type = "posterior")
 ```
 
 It is also possible to see how the Bayes factor evolves as a function of the
-sample size. This can be done using `plot(..., type = "sequential")`.
+sample size. This can be done using `plot(..., type = "sequential")`. In this
+case, the Bayes factor is very large due to the large sample.
 
 ```{r fig.align="center", fig.height=4, fig.width=6}
 plot(result, type = "sequential")
