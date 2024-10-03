@@ -228,13 +228,47 @@ fairness_selection <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL) {
     stop("Invalid input: The value of the first argument must be 1 (to indicate 'Yes') or 2 (to indicate 'No')")
   }
 
+  q1_name <- q2_name <- q3_name <- q4_name <- NULL
+
+  if (q1 == 1) {
+    q1_name <- "Yes"
+  } else {
+    q1_name <- "No"
+  }
+
+  if (q2 == 1) {
+    q2_name <- "Correct Classification"
+  } else if (q2 == 2) {
+    q2_name <- "Incorrect Classification"
+  } else {
+    q2_name <- "Correct and Incorrect Classification"
+  }
+
+  if (q3 == 1) {
+    q3_name <- "Everything Not Positive"
+  } else {
+    q3_name <- "Well-Defined"
+  }
+
+  if (q4 == 1) {
+    q4_name <- "False Positive"
+  } else if (q4 == 2) {
+    q4_name <- "False Negative"
+  } else if (q4 == 3) {
+    q4_name <- "No Preference"
+  }
+
   output <- list()
   output[["measure"]] <- measure
   output[["name"]] <- name
   output[["q1"]] <- q1
+  output[["q1_name"]] <- q1_name
   output[["q2"]] <- q2
+  output[["q2_name"]] <- q2_name
   output[["q3"]] <- q3
+  output[["q3_name"]] <- q3_name
   output[["q4"]] <- q4
+  output[["q4_name"]] <- q4_name
   class(output) <- c(class(output), "jfaFairnessSelection")
   return(output)
 }
