@@ -355,6 +355,13 @@ call to `plot(..., type = "posterior")`.
 plot(result, type = "posterior")
 ```
 
+It is also possible to see how the Bayes factor evolves as a function of the
+sample size. This can be done using `plot(..., type = "sequential")`.
+
+```{r fig.align="center", fig.height=4, fig.width=6}
+plot(result, type = "sequential")
+```
+
 ### Stratified samples
 
 To evaluate a stratified sample using a data set, you need to specify the
