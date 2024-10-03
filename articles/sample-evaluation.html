@@ -660,19 +660,22 @@ function.</p>
 <h4 id="bayesian-approach-1">Bayesian approach<a class="anchor" aria-label="anchor" href="#bayesian-approach-1"></a>
 </h4>
 <p>The call below evaluates the <code>allowances</code> sample using a
-Bayesian non-stratified evaluation procedure.</p>
+Bayesian non-stratified evaluation procedure. The performance
+materiality for this example is set to twenty percen of the population
+value.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">allowances</span>, times <span class="op">=</span> <span class="st">"times"</span>, method <span class="op">=</span> <span class="st">"binomial"</span>,</span>
-<span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>,</span>
-<span>  prior <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  materiality <span class="op">=</span> <span class="fl">0.2</span>, data <span class="op">=</span> <span class="va">allowances</span>, times <span class="op">=</span> <span class="st">"times"</span>, method <span class="op">=</span> <span class="st">"binomial"</span>,</span>
+<span>  values <span class="op">=</span> <span class="st">"bookValue"</span>, values.audit <span class="op">=</span> <span class="st">"auditValue"</span>, prior <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
 <span><span class="co">##  Bayesian Audit Sample Evaluation</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## data:  allowances</span></span>
-<span><span class="co">## number of errors = 401, number of samples = 1604, taint = 252.93</span></span>
+<span><span class="co">## number of errors = 401, number of samples = 1604, taint = 252.93, BF₁₀</span></span>
+<span><span class="co">## = 545408</span></span>
+<span><span class="co">## alternative hypothesis: true misstatement rate is less than 0.2</span></span>
 <span><span class="co">## 95 percent credible interval:</span></span>
 <span><span class="co">##  0.0000000 0.1733213</span></span>
 <span><span class="co">## most likely estimate:</span></span>
@@ -687,6 +690,13 @@ posterior distribution can be obtained by a call to
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="sample-evaluation_files/figure-html/unnamed-chunk-16-1.png" width="576" style="display: block; margin: auto;"></p>
+<p>It is also possible to see how the Bayes factor evolves as a function
+of the sample size. This can be done using
+<code>plot(..., type = "sequential")</code>. In this case, the Bayes
+factor is very large due to the large sample.</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result</span>, type <span class="op">=</span> <span class="st">"sequential"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-17-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level3">
@@ -700,7 +710,7 @@ this example, the units are monetary, determined by summing up the book
 values of the items within each stratum. For instance, we can see that
 stratum two is the largest, with a total value of $2,792,814.33 and
 stratum five is the smallest, with a total value of $96,660.53.</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">N.units</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/aggregate.html" class="external-link">aggregate</a></span><span class="op">(</span><span class="va">allowances</span><span class="op">$</span><span class="va">bookValue</span>, <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">allowances</span><span class="op">$</span><span class="va">branch</span><span class="op">)</span>, <span class="va">sum</span><span class="op">)</span><span class="op">$</span><span class="va">x</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="va">N.units</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##       N.units</span></span>
@@ -728,7 +738,7 @@ using a classical stratified evaluation method. In this process, the
 estimates from each stratum are poststratified to derive the estimate
 for the entire population. Note that for computational reasons it is
 important to set a seed here via <code><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed()</a></code>.</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">allowances</span>, times <span class="op">=</span> <span class="st">"times"</span>, method <span class="op">=</span> <span class="st">"binomial"</span>,</span>
@@ -754,9 +764,9 @@ population estimate is therefore 4.26 percent. The estimates for each
 stratum are visualized below. For more detailed information, including
 the actual stratum estimates, you can use the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>
 function.</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-19-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-20-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
 <h4 id="bayesian-approach-2">Bayesian approach<a class="anchor" aria-label="anchor" href="#bayesian-approach-2"></a>
@@ -767,7 +777,7 @@ The following command evaluates the <code>allowances</code> sample using
 a Bayesian stratified evaluation method. In this process, the estimates
 from each stratum are pooled and poststratified to derive the estimate
 for the entire population.</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">result</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/evaluation.html">evaluation</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">allowances</span>, times <span class="op">=</span> <span class="st">"times"</span>, method <span class="op">=</span> <span class="st">"binomial"</span>,</span>
@@ -795,15 +805,15 @@ approach. The estimates for each stratum are visualized below using the
 <code>plot(..., type = "estimates)</code> command but their actual
 values can be once again be obtained using the <code><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary()</a></code>
 function.</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-22-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-23-1.png" width="576" style="display: block; margin: auto;"></p>
 <p>The prior and posterior distribution for the population misstatement
 can be obtained via the <code>plot(..., type = "posterior")</code>
 function.</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-23-1.png" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-24-1.png" width="576" style="display: block; margin: auto;"></p>
 </div>
 </div>
 </div>
