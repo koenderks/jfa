@@ -2,6 +2,7 @@
 
 This is a submission for version 0.7.3. In this version I have:
 
+* Added new functionality.
 * Implemented some bug fixes.
 
 ## Test environments

@@ -70,11 +70,11 @@ statistics from the sample.
 
 ### Non-stratified samples
 
-In a non-stratified sampling approach, the auditor does not divide the population
-into different strata. This approach might be suitable when the auditor is
-auditing the general ledger of a small business and has substantiated that the
-population comprises homogeneous items, such as all items being employment
-contracts subject to a shared ensemble of control systems.
+In a non-stratified sampling approach, the auditor does not divide the
+population into different strata. This approach might be suitable when the
+auditor is auditing the general ledger of a small business and has substantiated
+that the population comprises homogeneous items, such as all items being
+employment contracts subject to a shared ensemble of control systems.
 
 #### Classical approach
 
@@ -291,6 +291,107 @@ plot(result_pp, type = "posterior")
 
 ## Evaluation using data
 
+We now consider the situation where the auditor has access to the sample (and
+potentially the population) data and wants to perform inference about the
+misstatement using these data.
+
+### Non-stratified samples
+
+In this example, we will demonstrate how to evaluate a non-stratified sample
+using a data set. For this, we will use the `accounts` data that is included in
+the package. These data represent an audit sample obtained from a population of
+$N$ = 87 accounts receivable, totaling $612,824 in book value [@higgins_2009;
+@lohr_2021].
+
+```{r}
+data("accounts")
+head(accounts)
+```
+
+To evaluate a non-stratified sample using data, you need to specify the `data`,
+`values`, and `values.audit` arguments in the `evaluation()` function. The input
+for the latter two arguments should be the name of the corresponding column in
+the input for the `data` argument. In the `accounts` data, these two columns are
+called `bookValue` and `auditValue`, respectively.
+
+#### Classical approach
+
+The command below evaluates the `allowances` sample using a classical
+non-stratified evaluation approach.
+
+```{r}
+evaluation(
+  data = accounts, method = "binomial",
+  values = "bookValue", values.audit = "auditValue"
+)
+```
+
+In this instance, the output indicates that the estimated most likely
+misstatement in the population is 0.81 percent. The 95 percent (one-sided)
+confidence interval extends from 0 percent to 15.27 percent. More detailed
+information about the results can be obtained via the `summary()` function.
+
+#### Bayesian approach
+
+The call below evaluates the `accounts` sample using a Bayesian non-stratified
+evaluation procedure.
+
+```{r}
+result <- evaluation(
+  data = accounts, method = "binomial",
+  values = "bookValue", values.audit = "auditValue", prior = TRUE
+)
+print(result)
+```
+
+The output shows that the estimate of the misstatement in the population is
+again 0.81 percent, with the 95 percent (one-sided) credible interval ranging
+from 0 percent to 14.6 percent. For the Bayesian analysis, the prior and
+posterior distribution can be visualized by a call to
+`plot(..., type = "posterior")`.
+
+```{r fig.align="center", fig.height=4, fig.width=6}
+plot(result, type = "posterior")
+```
+
+You can also quantify and monitor evidence for or against the claim that the
+misstatement is lower than a specific performance materiality using the Bayes
+factor. Suppose that the performance materiality for this example is set to ten
+percent of the population value. It is recommended to use an impartial prior
+distribution when calculating the Bayes factor, which can be set up using the
+code below.
+
+```{r}
+prior <- auditPrior(
+  materiality = 0.1, method = "impartial", likelihood = "binomial"
+)
+```
+
+After it has been specified, you can use the impartial prior distribution in the
+`evaluation()` function as input for the `prior` argument.
+
+```{r}
+result <- evaluation(
+  materiality = 0.1, data = accounts, method = "binomial",
+  values = "bookValue", values.audit = "auditValue", prior = prior
+)
+print(result)
+```
+
+It can be seen from the output that the Bayes factor in favor of the hypothesis
+of tolerable misstatement is 11.274. This indicates that the data is roughly 11
+times more likely under the hypothesis of tolerable misstatement than under the
+hypothesis of intolerable misstatement. Besides computing the Bayes factor for
+the total sample, it is also possible to see how the Bayes factor evolves
+as a function of the sample size. This can be done via a call to
+`plot(..., type = "sequential")`.
+
+```{r fig.align="center", fig.height=4, fig.width=6}
+plot(result, type = "sequential")
+```
+
+### Stratified samples
+
 In this example, we will demonstrate how to evaluate a stratified sample using a
 data set. We will use the `allowances` data set that is included in the package.
 This data set comprises $N$ = 3500 subsidy declarations from municipalities.
@@ -298,72 +399,13 @@ Each line item has a recorded value book value (column `bookValue`) and an
 audited value (column `auditValue`), which is the true value for the purpose of
 this illustration. The data set already identifies the items that have been
 audited as part of the sample in the column `times`. In this scenario, we will
-be performing estimation and therefore do not specify the `materiality` argument
-in the `evaluation()` function.
+only be performing estimation and therefore do not specify the `materiality`
+argument in the `evaluation()` function.
 
 ```{r}
 data("allowances")
 head(allowances)
 ```
-
-### Non-stratified samples
-
-To evaluate a non-stratified sample using data, you need to specify the `data`,
-`values`, and `values.audit` arguments. The input for these arguments should be
-the name of the corresponding column in the input for the `data` argument.
-
-#### Classical approach
-
-The command below evaluates the `allowances` sample using a classical
-non-stratified evaluation approach. Note that the sample is automatically
-separated from the population because the `times` value for items not in the
-sample is `0`.
-
-```{r}
-evaluation(
-  data = allowances, times = "times", method = "binomial",
-  values = "bookValue", values.audit = "auditValue"
-)
-```
-
-In this instance, the output indicates that the estimated misstatement in the
-population is 15.77 percent. The 95 percent (one-sided) confidence interval
-extends from 0 percent to 17.34 percent. More detailed information can be
-obtained via the `summary()` function.
-
-#### Bayesian approach
-
-The call below evaluates the `allowances` sample using a Bayesian non-stratified
-evaluation procedure. The performance materiality for this example is set to
-twenty percen of the population value.
-
-```{r}
-result <- evaluation(
-  materiality = 0.2, data = allowances, times = "times", method = "binomial",
-  values = "bookValue", values.audit = "auditValue", prior = TRUE
-)
-print(result)
-```
-
-The output shows that the estimate of the misstatement in the population is
-15.77 percent, with the 95 percent (one-sided) credible interval ranging from 0
-percent to 17.33 percent. More detailed information can be obtained via
-`summary()` and the prior and posterior distribution can be obtained by a
-call to `plot(..., type = "posterior")`.
-
-```{r fig.align="center", fig.height=4, fig.width=6}
-plot(result, type = "posterior")
-```
-
-It is also possible to see how the Bayes factor evolves as a function of the
-sample size. This can be done using `plot(..., type = "sequential")`. In this
-case, the Bayes factor is very large due to the large sample.
-
-```{r fig.align="center", fig.height=4, fig.width=6}
-plot(result, type = "sequential")
-```
-
-### Stratified samples
 
 To evaluate a stratified sample using a data set, you need to specify the
 `data`, `values`, `values.audit`, and `strata` arguments in the `evaluation()`
@@ -384,6 +426,8 @@ The following command evaluates the `allowances` sample using a classical
 stratified evaluation method. In this process, the estimates from each stratum
 are poststratified to derive the estimate for the entire population. Note that
 for computational reasons it is important to set a seed here via `set.seed()`.
+Furthermore, note that the sample is automatically separated from the population
+because the `times` value for items not in the sample is `0`.
 
 ```{r}
 set.seed(1)

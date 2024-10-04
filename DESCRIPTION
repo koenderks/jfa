@@ -1,7 +1,7 @@
 Package: jfa
 Title: Statistical Methods for Auditing
 Version: 0.7.3
-Date: 2024-10-03
+Date: 2024-10-04
 Authors@R: c(
     person("Koen", "Derks", email = "k.derks@nyenrode.nl", role = c("aut", "cre"),
            comment = c(ORCID = '0000-0002-5533-9349')),

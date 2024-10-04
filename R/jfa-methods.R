@@ -517,8 +517,8 @@ plot.jfaPlanning <- function(x, ...) {
     k_1_approve <- x[["k_staged"]][1] - 1
     k_1_disapprove <- x[["k_staged"]][1]
     k_2_approve <- x[["k_staged"]][2]
-    n_min <- jfa::planning(materiality = x[["materiality"]], expected = k_1_approve, likelihood = x[["likelihood"]], N.units = x[["N.units"]], conf.level = x[["conf.level"]])$n
-    n_max <- jfa::planning(materiality = x[["materiality"]], expected = sum(k_1_disapprove + k_2_approve), likelihood = x[["likelihood"]], N.units = x[["N.units"]], conf.level = x[["conf.level"]])$n
+    n_min <- planning(materiality = x[["materiality"]], expected = k_1_approve, likelihood = x[["likelihood"]], N.units = x[["N.units"]], conf.level = x[["conf.level"]])$n
+    n_max <- planning(materiality = x[["materiality"]], expected = sum(k_1_disapprove + k_2_approve), likelihood = x[["likelihood"]], N.units = x[["N.units"]], conf.level = x[["conf.level"]])$n
     n1 <- seq(n_min, n_max, 1)
     n2 <- rep(-1, length(n1))
     for (i in seq_along(n1)) {
@@ -817,7 +817,7 @@ plot.jfaEvaluation <- function(x, type = c("estimates", "posterior", "sequential
       } else {
         subtaints <- sum(taints[seq_len(i)])
       }
-      bf[i] <- jfa::evaluation(
+      bf[i] <- evaluation(
         materiality = x[["materiality"]],
         method = x[["method"]],
         alternative = x[["alternative"]],
