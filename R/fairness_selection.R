@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-#' Algorithm Auditing: Fairness Measures Decision-Making Workflow
+#' Algorithm Auditing: Fairness Measures Selection
 #'
 #' @description This function aims to provide a fairness measure tailored
 #' to a specific context and dataset by answering the questions in the developed
@@ -121,8 +121,6 @@
 #'    \doi{10.48550/arXiv.1610.02413}
 #' @references Verma S., Rubin J. (2018). Fairness definitions explained. In \emph{Proceedings
 #'     of the international workshop on software fairness, 1--7}. \doi{10.1145/3194770.3194776}
-
-
 #'
 #' @keywords algorithm audit bias fairness workflow
 #'
@@ -137,37 +135,33 @@
 #' @export
 
 fairness_selection <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL) {
+
   if (is.null(q1)) {
-    q1 <- utils::menu(choices = c("Yes", "No"), title = "Do you have the information on the true values of the classification?")
-  } else {
-    if (!(q1 %in% c(1, 2))) {
+    q1 <- utils::menu(choices = c("Yes", "No"), title = "Do you have information on the true values of the classification?")
+  } else if (!(q1 %in% c(1, 2))){
       stop("Invalid input: The value of the first argument must be 1 (to indicate 'Yes') or 2 (to indicate 'No')")
-    }
   }
 
+  if (q1 == 1){
   if (is.null(q2)) {
     q2 <- utils::menu(choices = c("Correct Classification", "Incorrect Classification", "Correct and Incorrect Classification"), title = "In what type of classification are you interested?")
-  } else {
-    if (!(q2 %in% c(1, 2, 3))) {
+  } else if (!(q2 %in% c(1, 2, 3))) {
       stop("Invalid input: The value of the second argument must be 1 (to indicate 'Correct Classification'), 2 (to indicate 'Incorrect Classification') or 3 (to indicate 'Correct and Incorrect Classification')")
     }
-  }
-
+  if(q2 == 1){
   if (is.null(q3)) {
     q3 <- utils::menu(choices = c("Everything not positive", "Well-defined"), title = "Can the negative class be considered as everything not positive or is it well-defined?")
-  } else {
-    if (!(q3 %in% c(1, 2))) {
+  } else if (!(q3 %in% c(1, 2))) {
       stop("Invalid input: The value of the third argument must be 1 (to indicate 'Everythig not positive') or 2 (to indicate 'Well-defined')")
-    }
+  }
   }
 
+  if(!(q1 == 3)){
   if (is.null(q4)) {
     q4 <- utils::menu(choices = c("False Positive", "False Negative", "No preference"), title = "What are the errors with the highest cost?")
-  } else {
-    if (!(q4 %in% c(1, 2, 3))) {
+  } else if (!(q4 %in% c(1, 2, 3))) {
       stop("Invalid input: The value of the fourth argument must be 1 (to indicate 'False Positive'), 2 (to indicate 'False Negative'), or 3 (to indicate 'No preference').")
-    }
-  }
+  }}}
 
   if (q1 == 2) {
     name <- "Disparate Impact"
