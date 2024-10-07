@@ -2,7 +2,7 @@
 % Please edit documentation in R/fairness_selection.R
 \name{fairness_selection}
 \alias{fairness_selection}
-\title{Algorithm Auditing: Fairness Measures Decision-Making Workflow}
+\title{Algorithm Auditing: Fairness Measures Selection}
 \usage{
 fairness_selection(
   q1 = NULL,
@@ -70,7 +70,7 @@ Several fairness measures can be used to assess the fairness of AI-predicted cla
 
   \itemize{
     \item{Disparate Impact. See Friedler et al. (2019), Feldman et al. (2015),
-         Castelnovo et al. (2022) and and Büyük, S. (2023) for a more detailed explanation of this measure.}
+         Castelnovo et al. (2022) and Büyük, S. (2023) for a more detailed explanation of this measure.}
     \item{Equalized Odds. See Hardt et al. (2016), Verma et al. (2018) and Büyük, S. (2023)
            for a more detailed explanation of this measure.}
     \item{False Positive Rate Parity. See Castelnovo et al. (2022) (under the name Predictive Equality),
@@ -99,10 +99,10 @@ The fairness decision-making workflow below aids in choosing
 \examples{
 # Combination to obtain Accuracy Parity
 fairness_selection(
-  q1 = "1",
-  q2 = "1",
-  q3 = "2",
-  q4 = "3"
+  q1 = 1,
+  q2 = 1,
+  q3 = 2,
+  q4 = 3
 )
 }
 \references{

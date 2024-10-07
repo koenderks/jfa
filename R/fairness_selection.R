@@ -69,7 +69,7 @@
 #'
 #'   \itemize{
 #'     \item{Disparate Impact. See Friedler et al. (2019), Feldman et al. (2015),
-#'          Castelnovo et al. (2022) and and Büyük, S. (2023) for a more detailed explanation of this measure.}
+#'          Castelnovo et al. (2022) and Büyük, S. (2023) for a more detailed explanation of this measure.}
 #'     \item{Equalized Odds. See Hardt et al. (2016), Verma et al. (2018) and Büyük, S. (2023)
 #'            for a more detailed explanation of this measure.}
 #'     \item{False Positive Rate Parity. See Castelnovo et al. (2022) (under the name Predictive Equality),
@@ -127,14 +127,16 @@
 #' @examples
 #' # Combination to obtain Accuracy Parity
 #' fairness_selection(
-#'   q1 = "1",
-#'   q2 = "1",
-#'   q3 = "2",
-#'   q4 = "3"
+#'   q1 = 1,
+#'   q2 = 1,
+#'   q3 = 2,
+#'   q4 = 3
 #' )
 #' @export
 
 fairness_selection <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL) {
+  q1_name <- q2_name <- q3_name <- q4_name <- NULL
+
   if (is.null(q1)) {
     q1 <- utils::menu(choices = c("Yes", "No"), title = "Do you have information on the true values of the classification?")
   } else if (!(q1 %in% c(1, 2))) {
@@ -147,15 +149,21 @@ fairness_selection <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL) {
     } else if (!(q2 %in% c(1, 2, 3))) {
       stop("Invalid input: The value of the second argument must be 1 (to indicate 'Correct Classification'), 2 (to indicate 'Incorrect Classification') or 3 (to indicate 'Correct and Incorrect Classification')")
     }
+    if (q2 == 2) {
+      if (is.null(q4)) {
+        q4 <- utils::menu(choices = c("False Positive", "False Negative", "No preference"), title = "What are the errors with the highest cost?")
+      } else if (!(q4 %in% c(1, 2, 3))) {
+        stop("Invalid input: The value of the fourth argument must be 1 (to indicate 'False Positive'), 2 (to indicate 'False Negative'), or 3 (to indicate 'No preference').")
+      }
+    }
+
     if (q2 == 1) {
       if (is.null(q3)) {
         q3 <- utils::menu(choices = c("Everything not positive", "Well-defined"), title = "Can the negative class be considered as everything not positive or is it well-defined?")
       } else if (!(q3 %in% c(1, 2))) {
         stop("Invalid input: The value of the third argument must be 1 (to indicate 'Everythig not positive') or 2 (to indicate 'Well-defined')")
       }
-    }
 
-    if (!(q1 == 3)) {
       if (is.null(q4)) {
         q4 <- utils::menu(choices = c("False Positive", "False Negative", "No preference"), title = "What are the errors with the highest cost?")
       } else if (!(q4 %in% c(1, 2, 3))) {
@@ -167,53 +175,67 @@ fairness_selection <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL) {
   if (q1 == 2) {
     name <- "Disparate Impact"
     measure <- "pp"
+    q1_name <- "No"
   } else if (q1 == 1) {
+    q1_name <- "Yes"
     if (q2 == 3) {
       name <- "Equalized Odds"
       measure <- "dp"
+      q2_name <- "Correct and Incorrect Classification"
     } else {
       if (q2 == 1) {
+        q2_name <- "Correct Classification"
         if (q3 == 1) {
+          q3_name <- "Everything Not Positive"
           if (q4 == 1) {
             name <- "Predictive Rate Parity"
             measure <- "prp"
+            q4_name <- "False Positive"
           } else if (q4 == 2) {
             name <- "Equal Opportunity"
             measure <- "tprp"
+            q4_name <- "False Negative"
           } else if (q4 == 3) {
             name <- "No measure with these characteristics is available in the Decision-Making Workflow"
             measure <- "error"
           } else {
-            stop("Invalid imput:  The value of the fourth argument must be 1 (to indicate 'False Positive'), 2 (to indicate 'False Negative'), or 3 (to indicate 'No preference').")
+            stop("Invalid input: The value of the fourth argument must be 1 (to indicate 'False Positive'), 2 (to indicate 'False Negative'), or 3 (to indicate 'No preference').")
           }
         } else if (q3 == 2) {
+          q3_name <- "Well-Defined"
           if (q4 == 1) {
             name <- "Specificity Parity"
             measure <- "sp"
+            q4_name <- "False Positive"
           } else if (q4 == 2) {
             name <- "Negative Predictive Rate Parity"
             measure <- "npvp"
+            q4_name <- "False Negative"
           } else if (q4 == 3) {
             name <- "Accuracy Parity"
             measure <- "ap"
+            q4_name <- "No Preference"
           } else {
-            stop("Invalid imput:  The value of the fourth argument must be 1 (to indicate 'False Positive'), 2 (to indicate 'False Negative'), or 3 (to indicate 'No preference').")
+            stop("Invalid input: The value of the fourth argument must be 1 (to indicate 'False Positive'), 2 (to indicate 'False Negative'), or 3 (to indicate 'No preference').")
           }
         } else {
           stop("Invalid input: The value of the third argument must be 1 (to indicate 'Everythig not positive') or 2 (to indicate Well-defined')")
         }
       } else if (q2 == 2) {
+        q2_name <- "Incorrect Classification"
         if (q4 == 1) {
           name <- "False Positive Rate Parity"
           measure <- "fprp"
+          q4_name <- "False Positive"
         } else if (q4 == 2) {
           name <- "False Negative Rate Parity"
           measure <- "fnrp"
+          q4_name <- "False Negative"
         } else if (q4 == 3) {
           name <- "No measure with these characteristics is available in the Decision-Making Workflow"
           measure <- "error"
         } else {
-          stop("Invalid imput:  The value of the fourth argument must be 1 (to indicate 'False Positive'), 2 (to indicate 'False Negative'), or 3 (to indicate 'No preference').")
+          stop("Invalid input: The value of the fourth argument must be 1 (to indicate 'False Positive'), 2 (to indicate 'False Negative'), or 3 (to indicate 'No preference').")
         }
       } else {
         stop("Invalid input: The value of the second argument must be 1 (to indicate 'Correct Classification'), 2 (to indicate Well-defined') or 3 (to indicate 'Correct and Incorrect Classification )")
@@ -223,47 +245,13 @@ fairness_selection <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL) {
     stop("Invalid input: The value of the first argument must be 1 (to indicate 'Yes') or 2 (to indicate 'No')")
   }
 
-  q1_name <- q2_name <- q3_name <- q4_name <- NULL
-
-  if (q1 == 1) {
-    q1_name <- "Yes"
-  } else {
-    q1_name <- "No"
-  }
-
-  if (q2 == 1) {
-    q2_name <- "Correct Classification"
-  } else if (q2 == 2) {
-    q2_name <- "Incorrect Classification"
-  } else {
-    q2_name <- "Correct and Incorrect Classification"
-  }
-
-  if (q3 == 1) {
-    q3_name <- "Everything Not Positive"
-  } else {
-    q3_name <- "Well-Defined"
-  }
-
-  if (q4 == 1) {
-    q4_name <- "False Positive"
-  } else if (q4 == 2) {
-    q4_name <- "False Negative"
-  } else if (q4 == 3) {
-    q4_name <- "No Preference"
-  }
-
   output <- list()
   output[["measure"]] <- measure
   output[["name"]] <- name
-  output[["q1"]] <- q1
-  output[["q1_name"]] <- q1_name
-  output[["q2"]] <- q2
-  output[["q2_name"]] <- q2_name
-  output[["q3"]] <- q3
-  output[["q3_name"]] <- q3_name
-  output[["q4"]] <- q4
-  output[["q4_name"]] <- q4_name
+  output[["q1"]] <- list(value = q1, name = q1_name)
+  output[["q2"]] <- list(value = q2, name = q2_name)
+  output[["q3"]] <- list(value = q3, name = q3_name)
+  output[["q4"]] <- list(value = q4, name = q4_name)
   class(output) <- c(class(output), "jfaFairnessSelection")
   return(output)
 }
