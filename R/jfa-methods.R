@@ -1504,10 +1504,10 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior", "robustness",
 #' @export
 print.jfaFairnessSelection <- function(x, ...) {
   cat("The selected fairness measure is", x[["name"]], "\n\n")
-  cat("The answer to the first question is:", x[["q1_name"]], "(", x[["q1"]], ")\n")
-  cat("The answer to the second question is:", x[["q2_name"]], "(", x[["q2"]], ")\n")
-  cat("The answer to the third question is:", x[["q3_name"]], "(", x[["q3"]], ")\n")
-  cat("The answer to the fourth question is:", x[["q4_name"]], "(", x[["q4"]], ")\n")
+  cat("The answer to the first question is:", x[["q1_name"]], paste0("(", x[["q1"]], ")\n"))
+  cat("The answer to the second question is:", x[["q2_name"]], paste0("(", x[["q2"]], ")\n"))
+  cat("The answer to the third question is:", x[["q3_name"]], paste0("(", x[["q3"]], ")\n"))
+  cat("The answer to the fourth question is:", x[["q4_name"]], paste0("(", x[["q4"]], ")\n"))
 }
 
 #' @rdname jfa-methods
