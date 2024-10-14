@@ -68,7 +68,8 @@
     <div class="section level2">
 <h2 class="page-header" data-toc-text="0.7.3" id="jfa-073">jfa 0.7.3<a class="anchor" aria-label="anchor" href="#jfa-073"></a></h2>
 <p><strong>New features</strong></p>
-<ul><li>@lottemensink added <code>plot(x, type = "sequential")</code> to the <code><a href="../reference/evaluation.html">evaluation()</a></code> function when used with <code>prior</code>, <code>materiality</code> and <code>data</code>. The plot shows Bayes factors as a function of the sample size.</li>
+<ul><li>@federicapicogna added <code><a href="../reference/fairness_selection.html">fairness_selection()</a></code> to aid in the decision between fairness metrics. The function has an accompanying <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> method.</li>
+<li>@lottemensink added <code>plot(x, type = "sequential")</code> to the <code><a href="../reference/evaluation.html">evaluation()</a></code> function when used with <code>prior</code>, <code>materiality</code> and <code>data</code>. The plot shows Bayes factors as a function of the sample size.</li>
 </ul><p><strong>Bug fixes</strong></p>
 <ul><li>Fixed a bug in the <code><a href="../reference/evaluation.html">evaluation()</a></code> function using <code>method = "hypergeometric"</code> where the user could provide broken taints. These taints are now rounded to the nearest integer value.</li>
 </ul></div>
