@@ -25,19 +25,12 @@ abstract: Provides statistical methods for auditing as implemented in JASP for A
   <https://doi.org/10.1111/ijau.12240>, Derks et al. (2024) <https://doi.org/10.2308/AJPT-2021-086>,
   Derks et al. (2022) <https://doi.org/10.31234/osf.io/8nf3e> and Derks et al. (2024)
   <https://doi.org/10.31234/osf.io/tgq5z>.
-authors:
-- family-names: Derks
-  given-names: Koen
-  email: k.derks@nyenrode.nl
-  orcid: https://orcid.org/0000-0002-5533-9349
 preferred-citation:
   type: manual
   title: 'jfa: Statistical methods for auditing'
   authors:
   - family-names: Derks
     given-names: Koen
-    email: k.derks@nyenrode.nl
-    orcid: https://orcid.org/0000-0002-5533-9349
   year: '2024'
   notes: R package version 0.7.3
   url: https://CRAN.R-project.org/package=jfa
@@ -45,12 +38,7 @@ preferred-citation:
 repository: https://CRAN.R-project.org/package=jfa
 repository-code: https://github.com/koenderks/jfa
 url: https://koenderks.github.io/jfa/
-date-released: '2024-10-04'
-contact:
-- family-names: Derks
-  given-names: Koen
-  email: k.derks@nyenrode.nl
-  orcid: https://orcid.org/0000-0002-5533-9349
+date-released: '2024-10-14'
 keywords:
 - algorithm-auditing
 - audit
