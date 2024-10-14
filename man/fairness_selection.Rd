@@ -12,8 +12,8 @@ fairness_selection(
 )
 }
 \arguments{
-\item{q1}{a character indicating the answer to the first question of the decision-making workflow ('Do you
-        have the information on the true values of the classification?').
+\item{q1}{a character indicating the answer to the first question of the decision-making workflow ('Is the
+ information on the true values of the classification relevant in your context?').
 If \code{NULL} (the default) the user is presented with the first question of the decision-making
 workflow and can respond interactively by selecting the numerical value corresponding to their
 desired answer. Possible options are \code{NULL} (default), \code{1} (to indicate 'Yes'), or
@@ -88,10 +88,7 @@ Several fairness measures can be used to assess the fairness of AI-predicted cla
   }
 
 The fairness decision-making workflow below aids in choosing
-  which fairness measure is appropriate for the situation at hand. It is important to note that
-  there are three specific input parameter combinations ((q1="1", q2="2", q3="1", q4="3"),
-  (q1="1", q2="2", q3="2", q4="3") and (q1="1", q2="1", q3="1", q4="3")) for which a fairness measure is currently
-  unavailable as outcome that meet the required input criteria.
+  which fairness measure is appropriate for the situation at hand.
 
   \if{html}{\figure{fairness-tree.png}{options: width="100\%" alt="fairness-tree"}}
   \if{latex}{\figure{fairness-tree.pdf}{options: width=5in}}

@@ -33,8 +33,8 @@
 #'   q4 = NULL
 #' )
 #'
-#' @param q1  a character indicating the answer to the first question of the decision-making workflow ('Do you
-#'            have the information on the true values of the classification?').
+#' @param q1  a character indicating the answer to the first question of the decision-making workflow ('Is the
+#'     information on the true values of the classification relevant in your context?').
 #'    If \code{NULL} (the default) the user is presented with the first question of the decision-making
 #'    workflow and can respond interactively by selecting the numerical value corresponding to their
 #'    desired answer. Possible options are \code{NULL} (default), \code{1} (to indicate 'Yes'), or
@@ -87,10 +87,7 @@
 #'   }
 #'
 #' The fairness decision-making workflow below aids in choosing
-#'   which fairness measure is appropriate for the situation at hand. It is important to note that
-#'   there are three specific input parameter combinations ((q1="1", q2="2", q3="1", q4="3"),
-#'   (q1="1", q2="2", q3="2", q4="3") and (q1="1", q2="1", q3="1", q4="3")) for which a fairness measure is currently
-#'   unavailable as outcome that meet the required input criteria.
+#'   which fairness measure is appropriate for the situation at hand.
 #'
 #'   \if{html}{\figure{fairness-tree.png}{options: width="100\%" alt="fairness-tree"}}
 #'   \if{latex}{\figure{fairness-tree.pdf}{options: width=5in}}
@@ -138,7 +135,7 @@ fairness_selection <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL) {
   q1_name <- q2_name <- q3_name <- q4_name <- NULL
 
   if (is.null(q1)) {
-    q1 <- utils::menu(choices = c("Yes", "No"), title = "Do you have information on the true values of the classification?")
+    q1 <- utils::menu(choices = c("Yes", "No"), title = "Is the information on the true values of the classification relevant in your context?")
   } else if (!(q1 %in% c(1, 2))) {
     stop("Invalid input: The value of the first argument must be 1 (to indicate 'Yes') or 2 (to indicate 'No')")
   }
@@ -151,9 +148,10 @@ fairness_selection <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL) {
     }
     if (q2 == 2) {
       if (is.null(q4)) {
-        q4 <- utils::menu(choices = c("False Positive", "False Negative", "No preference"), title = "What are the errors with the highest cost?")
+        choices <- c("False Positive", "False Negative")
+        q4 <- utils::menu(choices = choices, title = "What are the errors with the highest cost?")
       } else if (!(q4 %in% c(1, 2, 3))) {
-        stop("Invalid input: The value of the fourth argument must be 1 (to indicate 'False Positive'), 2 (to indicate 'False Negative'), or 3 (to indicate 'No preference').")
+        stop("Invalid input: The value of the fourth argument must be 1 (to indicate 'False Positive') or 2 (to indicate 'False Negative').")
       }
     }
 
@@ -165,9 +163,18 @@ fairness_selection <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL) {
       }
 
       if (is.null(q4)) {
-        q4 <- utils::menu(choices = c("False Positive", "False Negative", "No preference"), title = "What are the errors with the highest cost?")
+        if (q2 == 2 || (q2 == 1 && q3 == 1)) {
+          choices <- c("False Positive", "False Negative")
+        } else {
+          choices <- c("False Positive", "False Negative", "No preference")
+        }
+        q4 <- utils::menu(choices = choices, title = "What are the errors with the highest cost?")
       } else if (!(q4 %in% c(1, 2, 3))) {
-        stop("Invalid input: The value of the fourth argument must be 1 (to indicate 'False Positive'), 2 (to indicate 'False Negative'), or 3 (to indicate 'No preference').")
+        if (q2 == 2 || q2 == 1 && q3 == 1) {
+          stop("Invalid input: The value of the fourth argument must be 1 (to indicate 'False Positive') or 2 (to indicate 'False Negative').")
+        } else {
+          stop("Invalid input: The value of the fourth argument must be 1 (to indicate 'False Positive'), 2 (to indicate 'False Negative'), or 3 (to indicate 'No preference').")
+        }
       }
     }
   }
@@ -195,11 +202,8 @@ fairness_selection <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL) {
             name <- "Equal Opportunity"
             measure <- "tprp"
             q4_name <- "False Negative"
-          } else if (q4 == 3) {
-            name <- "No measure with these characteristics is available in the Decision-Making Workflow"
-            measure <- "error"
           } else {
-            stop("Invalid input: The value of the fourth argument must be 1 (to indicate 'False Positive'), 2 (to indicate 'False Negative'), or 3 (to indicate 'No preference').")
+            stop("Invalid input: The value of the fourth argument must be 1 (to indicate 'False Positive') or 2 (to indicate 'False Negative').")
           }
         } else if (q3 == 2) {
           q3_name <- "Well-Defined"
@@ -231,11 +235,8 @@ fairness_selection <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL) {
           name <- "False Negative Rate Parity"
           measure <- "fnrp"
           q4_name <- "False Negative"
-        } else if (q4 == 3) {
-          name <- "No measure with these characteristics is available in the Decision-Making Workflow"
-          measure <- "error"
         } else {
-          stop("Invalid input: The value of the fourth argument must be 1 (to indicate 'False Positive'), 2 (to indicate 'False Negative'), or 3 (to indicate 'No preference').")
+          stop("Invalid input: The value of the fourth argument must be 1 (to indicate 'False Positive') or 2 (to indicate 'False Negative').")
         }
       } else {
         stop("Invalid input: The value of the second argument must be 1 (to indicate 'Correct Classification'), 2 (to indicate Well-defined') or 3 (to indicate 'Correct and Incorrect Classification )")
@@ -249,9 +250,15 @@ fairness_selection <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL) {
   output[["measure"]] <- measure
   output[["name"]] <- name
   output[["q1"]] <- list(value = q1, name = q1_name)
-  output[["q2"]] <- list(value = q2, name = q2_name)
-  output[["q3"]] <- list(value = q3, name = q3_name)
-  output[["q4"]] <- list(value = q4, name = q4_name)
+  if (!is.null(q2_name)) {
+    output[["q2"]] <- list(value = q2, name = q2_name)
+  }
+  if (!is.null(q3_name)) {
+    output[["q3"]] <- list(value = q3, name = q3_name)
+  }
+  if (!is.null(q4_name)) {
+    output[["q4"]] <- list(value = q4, name = q4_name)
+  }
   class(output) <- c(class(output), "jfaFairnessSelection")
   return(output)
 }
