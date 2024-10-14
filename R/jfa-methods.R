@@ -1503,16 +1503,20 @@ plot.jfaFairness <- function(x, type = c("estimates", "posterior", "robustness",
 #' @method print jfaFairnessSelection
 #' @export
 print.jfaFairnessSelection <- function(x, ...) {
+  cat("\n")
+  cat(strwrap("Fairness Measure for Model Evaluation", prefix = "\t"), sep = "\n")
+  cat("\n")
   cat("Selected fairness measure:", x[["name"]], "\n\n")
-  cat(paste0("Answer to question 1 (q1):\t", x[["q1"]][["name"]], " (", x[["q1"]][["value"]], ")\n"))
+  cat("Based on:\n")
+  cat(paste0("  Answer to question 1 (q1):\t", x[["q1"]][["name"]], " (", x[["q1"]][["value"]], ")\n"))
   if (!is.null(x[["q2"]])) {
-    cat(paste0("Answer to question 2 (q2):\t", x[["q2"]][["name"]], " (", x[["q2"]][["value"]], ")\n"))
+    cat(paste0("  Answer to question 2 (q2):\t", x[["q2"]][["name"]], " (", x[["q2"]][["value"]], ")\n"))
   }
   if (!is.null(x[["q3"]])) {
-    cat(paste0("Answer to question 3 (q3):\t", x[["q3"]][["name"]], " (", x[["q3"]][["value"]], ")\n"))
+    cat(paste0("  Answer to question 3 (q3):\t", x[["q3"]][["name"]], " (", x[["q3"]][["value"]], ")\n"))
   }
   if (!is.null(x[["q4"]])) {
-    cat(paste0("Answer to question 4 (q4):\t", x[["q4"]][["name"]], " (", x[["q4"]][["value"]], ")\n"))
+    cat(paste0("  Answer to question 4 (q4):\t", x[["q4"]][["name"]], " (", x[["q4"]][["value"]], ")\n"))
   }
 }
 

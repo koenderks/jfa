@@ -41,7 +41,9 @@ the column \code{target} to be used as the positive class. If \code{NULL}
 (the default), the first factor level of the \code{target} column is used.}
 
 \item{metric}{a character indicating the fairness metrics to compute.
-See the Details section below for more information.}
+This can also be an object of class \code{jfaFairnessSelection} as returned
+by the \code{fairness_selection} function. See the Details section below
+for more information on possible fairness metrics.}
 
 \item{alternative}{a character indicating the alternative hypothesis and
 the type of confidence / credible interval used in the individual

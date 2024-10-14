@@ -45,29 +45,31 @@
 #'   prior = FALSE
 #' )
 #'
-#' @param data         a data frame containing the input data.
-#' @param protected    a character specifying the column name in \code{data}
+#' @param data        a data frame containing the input data.
+#' @param protected   a character specifying the column name in \code{data}
 #'   containing the protected classes (i.e., the sensitive attribute).
-#' @param target       a character specifying the column name in \code{data}
+#' @param target      a character specifying the column name in \code{data}
 #'   containing the true labels of the target (i.e., to be predicted) variable.
-#' @param predictions  a character specifying the column name in \code{data}
+#' @param predictions a character specifying the column name in \code{data}
 #'   containing the predicted labels of the target variable.
 #' @param privileged  a character specifying the factor level of the column
 #'   \code{protected} to be used as the privileged group. If \code{NULL} (the
 #'   default), the first factor level of the \code{protected} column is used.
-#' @param positive     a character specifying the factor level positive class of
+#' @param positive    a character specifying the factor level positive class of
 #'   the column \code{target} to be used as the positive class. If \code{NULL}
 #'   (the default), the first factor level of the \code{target} column is used.
 #' @param metric      a character indicating the fairness metrics to compute.
-#'   See the Details section below for more information.
-#' @param alternative   a character indicating the alternative hypothesis and
+#'   This can also be an object of class \code{jfaFairnessSelection} as returned
+#'   by the \code{fairness_selection} function. See the Details section below
+#'   for more information on possible fairness metrics.
+#' @param alternative a character indicating the alternative hypothesis and
 #'   the type of confidence / credible interval used in the individual
 #'   comparisons to the privileged group. Possible options are  \code{two.sided}
 #'   (default), \code{less}, or \code{greater}. The alternative hypothesis
 #'   relating to the overall equality is always two sided.
-#' @param conf.level   a numeric value between 0 and 1 specifying the
+#' @param conf.level  a numeric value between 0 and 1 specifying the
 #'   confidence level (i.e., 1 - audit risk / detection risk).
-#' @param prior        a logical specifying whether to use a prior distribution,
+#' @param prior       a logical specifying whether to use a prior distribution,
 #'   or a numeric value equal to or larger than 1 specifying the prior
 #'   concentration parameter. If this argument is specified as \code{FALSE}
 #'   (default), classical estimation is performed and if it is \code{TRUE},
