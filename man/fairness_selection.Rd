@@ -31,7 +31,7 @@ Incorrect Classification').}
         be considered as everything not positive or is it well defined?').
 If \code{NULL} (the default) the user is presented with the third question of the decision-making
 workflow and can respond interactively by selecting the numerical value corresponding to their
-desired answer. Possible options are \code{NULL} (default), \code{1} (to indicate 'Everythig not positive'),
+desired answer. Possible options are \code{NULL} (default), \code{1} (to indicate 'Everything not positive'),
 or \code{2} (to indicate 'Well-defined'). To understand the concept of a negative class defined as Everything Not Positive,
   consider the example of evaluating customer satisfaction for a service, where customers can either be satisfied or dissatisfied.
   Dissatisfaction, however, can stem from various reasons (such as 'not satisfied due to shipping delays', 'not satisfied because the
