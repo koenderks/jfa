@@ -1,12 +1,13 @@
 Package: jfa
 Title: Statistical Methods for Auditing
 Version: 0.7.3
-Date: 2024-10-04
+Date: 2024-10-14
 Authors@R: c(
     person("Koen", "Derks", email = "k.derks@nyenrode.nl", role = c("aut", "cre"),
            comment = c(ORCID = '0000-0002-5533-9349')),
     person("Lotte", "Mensink", email = "l.mensink@nyenrode.nl", role = "ctb",
-           comment = c(ORCID = '0009-0001-8321-4690'))
+           comment = c(ORCID = '0009-0001-8321-4690'),
+    person("Federica", "Picogna", email = "f.picogna@nyenrode.nl", role = "ctb")
   )
 Description: Provides statistical methods for auditing as implemented in JASP
     for Audit (Derks et al., 2021 <doi:10.21105/joss.02733>). First, the package

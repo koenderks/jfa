@@ -2,6 +2,7 @@
 
 **New features**
 
+- @federicapicogna added `fairness_selection()` to aid in the decision between fairness metrics. The function has an accompanying `print()` and `plot()` method.
 - @lottemensink added `plot(x, type = "sequential")` to the `evaluation()` function when used with `prior`, `materiality` and `data`. The plot shows Bayes factors as a function of the sample size.
 
 **Bug fixes**

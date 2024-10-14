@@ -89,6 +89,7 @@ reference:
     desc: >
       Functions for auditing the output of algorithms with respect to fairness.
     contents:
+      - fairness_selection
       - model_fairness
   - title: Data sets
     desc: >

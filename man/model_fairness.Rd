@@ -195,7 +195,7 @@ Pessach, D. & Shmueli, E. (2022). A review on fairness in machine
   learning. \emph{ACM Computing Surveys}, 55(3), 1-44. \doi{10.1145/3494672}
 
 Zafar, M. B., Valera, I., Gomez Rodriguez, M., & Gummadi, K. P.
-  (2017). Fairness beyond disparate Ttreatment & disparate impact. In
+  (2017). Fairness beyond disparate treatment & disparate impact. In
   \emph{Proceedings of the 26th International Conference on World Wide Web}.
   \doi{10.1145/3038912.3052660}
 }
