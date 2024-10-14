@@ -155,21 +155,21 @@
 fairness_selection <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL) {
   q1_name <- q2_name <- q3_name <- q4_name <- NULL
   if (is.null(q1)) {
-    stopifnot("Function must be run in an interactive environment", interactive())
+    stopifnot("Function must be run in an interactive environment" = interactive())
     q1 <- utils::menu(choices = c("Yes", "No"), title = "Is the information on the true values of the classification relevant in your context?")
   } else if (!(q1 %in% c(1, 2))) {
     stop("Invalid input: The value of the first argument must be 1 (to indicate 'Yes') or 2 (to indicate 'No')")
   }
   if (q1 == 1) {
     if (is.null(q2)) {
-      stopifnot("Function must be run in an interactive environment", interactive())
+      stopifnot("Function must be run in an interactive environment" = interactive())
       q2 <- utils::menu(choices = c("Correct Classification", "Incorrect Classification", "Correct and Incorrect Classification"), title = "In what type of classification are you interested?")
     } else if (!(q2 %in% c(1, 2, 3))) {
       stop("Invalid input: The value of the second argument must be 1 (to indicate 'Correct Classification'), 2 (to indicate 'Incorrect Classification') or 3 (to indicate 'Correct and Incorrect Classification')")
     }
     if (q2 == 2) {
       if (is.null(q4)) {
-        stopifnot("Function must be run in an interactive environment", interactive())
+        stopifnot("Function must be run in an interactive environment" = interactive())
         q4 <- utils::menu(choices = c("False Positive", "False Negative"), title = "What are the errors with the highest cost?")
       } else if (!(q4 %in% c(1, 2, 3))) {
         stop("Invalid input: The value of the fourth argument must be 1 (to indicate 'False Positive') or 2 (to indicate 'False Negative').")
@@ -177,7 +177,7 @@ fairness_selection <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL) {
     }
     if (q2 == 1) {
       if (is.null(q3)) {
-        stopifnot("Function must be run in an interactive environment", interactive())
+        stopifnot("Function must be run in an interactive environment" = interactive())
         q3 <- utils::menu(choices = c("Everything not positive", "Well-defined"), title = "Can the negative class be considered as everything not positive or is it well-defined?")
       } else if (!(q3 %in% c(1, 2))) {
         stop("Invalid input: The value of the third argument must be 1 (to indicate 'Everythig not positive') or 2 (to indicate 'Well-defined')")
@@ -188,8 +188,8 @@ fairness_selection <- function(q1 = NULL, q2 = NULL, q3 = NULL, q4 = NULL) {
         } else {
           choices <- c("False Positive", "False Negative", "No preference")
         }
+        stopifnot("Function must be run in an interactive environment" = interactive())
         q4 <- utils::menu(choices = choices, title = "What are the errors with the highest cost?")
-        stopifnot("Function must be run in an interactive environment", interactive())
       } else if (!(q4 %in% c(1, 2, 3))) {
         if (q2 == 2 || (q2 == 1 && q3 == 1)) {
           stop("Invalid input: The value of the fourth argument must be 1 (to indicate 'False Positive') or 2 (to indicate 'False Negative').")
