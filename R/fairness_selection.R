@@ -261,6 +261,6 @@ fairness_selection <- function(q1 = NULL,
   if (!is.null(q4_name)) {
     output[["q4"]] <- list(value = q4, name = q4_name)
   }
-  class(output) <- c(class(output), "jfaFairnessSelection")
+  class(output) <- c("jfaFairnessSelection", "list")
   return(output)
 }
