@@ -101,9 +101,11 @@
 <strong>jfa</strong> package. This page provides a guide to the
 functions in the package that are designed to facilitate the audit of
 algorithms and predictive models. In particular, these functions
-implement techniques for calculating and testing fairness metrics. The
-package allows users to specify a prior probability distribution to
-conduct Bayesian algorithm auditing using these functions.</p>
+implement techniques for determining an appropriate fairness measure and
+subsequently calculating and testing algorithmic fairness using this
+measure. The package also allows users to specify a prior probability
+distribution to conduct Bayesian algorithm auditing using these
+functions.</p>
 </div>
 <div class="section level2">
 <h2 id="functions-and-intended-usage">Functions and intended usage<a class="anchor" aria-label="anchor" href="#functions-and-intended-usage"></a>
@@ -111,8 +113,38 @@ conduct Bayesian algorithm auditing using these functions.</p>
 <p>Below you can find an explanation of the available algorithm auditing
 functions in <strong>jfa</strong>.</p>
 <ul>
+<li><a href="#selecting-a-fairness-measure"><code>fairness_selection()</code></a></li>
 <li><a href="#testing-algorithmic-fairness"><code>model_fairness()</code></a></li>
 </ul>
+<div class="section level3">
+<h3 id="selecting-a-fairness-measure">Selecting a fairness measure<a class="anchor" aria-label="anchor" href="#selecting-a-fairness-measure"></a>
+</h3>
+<p>The <code><a href="../reference/fairness_selection.html">fairness_selection()</a></code> function is designed to help
+auditors to select the appropariate fairness metric to perform algorithm
+auditing. The questions within the decision-making workflow are based on
+observable data characteristics, the properties of fairness measures and
+the information required for their calculation. However, these questions
+are posed to the user in an easily understandable manner, requiring no
+statistical background or in-depth knowledge of the fairness measures.
+The function returns an object that can be used with associated
+<code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> and <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> methods.</p>
+<p>For additional details about this function, please refer to the <a href="https://koenderks.github.io/jfa/reference/fairness_selection.html">function
+documentation</a> on the package website.</p>
+<p><em>Example usage:</em></p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Workflow leading to accuracy parity</span></span>
+<span><span class="fu"><a href="../reference/fairness_selection.html">fairness_selection</a></span><span class="op">(</span>q1 <span class="op">=</span> <span class="fl">1</span>, q2 <span class="op">=</span> <span class="fl">1</span>, q3 <span class="op">=</span> <span class="fl">2</span>, q4 <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## </span></span>
+<span><span class="co">##  Fairness Measure for Model Evaluation</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Selected fairness measure: Accuracy Parity </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## Based on:</span></span>
+<span><span class="co">##   Answer to question 1 (q1): Yes (1)</span></span>
+<span><span class="co">##   Answer to question 2 (q2): Correct Classification (1)</span></span>
+<span><span class="co">##   Answer to question 3 (q3): Well-Defined (2)</span></span>
+<span><span class="co">##   Answer to question 4 (q4): No Preference (3)</span></span></code></pre>
+</div>
 <div class="section level3">
 <h3 id="testing-algorithmic-fairness">Testing algorithmic fairness<a class="anchor" aria-label="anchor" href="#testing-algorithmic-fairness"></a>
 </h3>
@@ -132,7 +164,7 @@ associated <code><a href="https://rdrr.io/r/base/summary.html" class="external-l
 <p>For additional details about this function, please refer to the <a href="https://koenderks.github.io/jfa/reference/model_fairness.html">function
 documentation</a> on the package website.</p>
 <p><em>Example usage:</em></p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Compare predictive rate parity</span></span>
 <span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/model_fairness.html">model_fairness</a></span><span class="op">(</span></span>
 <span>  data <span class="op">=</span> <span class="va">compas</span>,</span>
