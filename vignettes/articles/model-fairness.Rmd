@@ -19,8 +19,7 @@ library(jfa)
 ## Introduction
 
 Welcome to the 'Algorithmic fairness' vignette of the **jfa** package. This page
-provides a comprehensive example of how to use the `model_fairness()` function
-in the package.
+provides a comprehensive example of how to use the `model_fairness()` and the `fairness_selection()` functions in the package. 
 
 ## Function: `model_fairness()`
 
@@ -34,13 +33,26 @@ parity, and specificity parity [@calders_2010; @chouldechova_2017;
 @feldman_2015; @zafar_2017; @friedler_2019]. Furthermore, the metrics are tested
 for equality between protected groups in the data.
 
+## Function: `fairness_selection()`
+
+The fairness_selection() function offer a method to select a fairness measure 
+tailored to a specific context and dataset by answering the questions in the 
+developed decision-making workflow. The fairness measure that can be selected 
+include disparate impact, equalized odds, false positive rate parity, false 
+negative rate parity, predictive rate parity, equal opportunity, specificity 
+parity, negative predictive rate parity, accuracy parity [@castelnovo_2022;
+@feldman_2015; @friedler_2019; @hardt_2016, @verma_2018]. After answering the 
+questions in the decision-making workflow and selecting the fairness measure to 
+apply, a graphical representation of the followed path can be created based 
+on the responses.
+
 *Practical example:*
 
-To demonstrate the usage of the `model_fairness()` function, we will use a
-renowned dataset known as COMPAS. The COMPAS (Correctional Offender Management
-Profiling for Alternative Sanctions) software is a case management and decision
-support tool employed by certain U.S. courts to evaluate the likelihood of a
-defendant becoming a recidivist (repeat offender).
+To demonstrate the usage of the`model_fairness()` and the `fairness_selection()`
+functions, we will use a renowned dataset known as COMPAS. The COMPAS 
+(Correctional Offender Management Profiling for Alternative Sanctions) software 
+is a case management and decision support tool employed by certain U.S. courts 
+to evaluate the likelihood of a defendant becoming a recidivist (repeat offender).
 
 The `compas` data, which is included in the package, contains predictions made
 by the COMPAS algorithm for various defendants. The data can be loaded using
@@ -85,9 +97,7 @@ complete set of fairness metrics for the African American, Asian, and Hispanic
 groups, comparing them to the privileged group (Caucasian). For a more detailed
 explanation of some of these metrics, we refer to @pessach_2022. However, it is
 important to note that not all fairness measures are equally suitable for all
-audit situations. The decision tree provided below (which is far from perfect)
-can assist the auditor in selecting an appropriate measure for the specific
-audit at hand [@buyuk_2023].
+audit situations. 
 
 <p align='center'><img src='fairness-tree.png' alt='fairness' width='90%'></p>
 
@@ -467,6 +477,72 @@ sequential analysis using `plot(..., type = "sequential")`.
 
 ```{r, fig.align="center", fig.height=4, fig.width=6}
 plot(x, type = "robustness")
+```
+
+As mentioned earlier, not all fairness measures are equally suitable for every 
+audit situation. For this reason, the `fairness_selection()` function we propose 
+can assist the auditor in selecting the most appropriate measure for the 
+specific audit at hand. To demonstrate the usage of the 
+`fairness_selection()` function, , we will answer each necessary question in the
+decision-making workflow, explaining the reasoning behind each response.
+
+The first question in the workflow checks if the dataset includes the ground 
+truth information (i.e., the true classification values). The data available in 
+this dataset were collected during a retrospective study, so we have information 
+on whether offenders committed a crime within 2 years of being released 
+(`TwoYrRecidivism`). Therefore, we can answer the first question with `Yes` (in 
+the function the value `1` is used to indicate `Yes`).
+
+The second question focuses on the type of classification of interest: correct,
+incorrect, or both. We can imagine a scenario where the analysis of this dataset
+is tied to U.S. Attorney General Eric Holder's concerns about potential 
+discrimination against certain social groups resulting from anomalies 
+in AI-generated classifications, particularly errors in classifying offenders. 
+Given the importance of identifying such irregularities, our focus here is on 
+the incorrect classification of offenders.  Therefore, we can answer the first 
+question with `Incorrect Classification` (in the function the value `2` is 
+used to indicate `Incorrect Classification`).
+
+Given the answer to the second question and following the decision-making 
+workflow path, we can skip the third question and proceed directly to the 
+fourth and final question.
+
+The fourth question addresses the costs of classification errors meaning which 
+classification error results in highest cost. The classification errors can be 
+made when classifying someone who would not commit another crime within two 
+years of release as someone who would (leading a longer incarceration or 
+failing to release someone from prison in a timely manner) and when classifying 
+a dangerous individual who would commit another crime as someone who would not 
+(leading to an early release or shorter incarceration period). To answer the 
+question, we assume a scenario where AI is being developed and promoted within 
+the U.S. criminal justice system, with the goal of reducing incarceration and 
+alleviating prison overcrowding. Thus, higher costs are associated with
+mistakenly incarcerating individuals who would not reoffend within two years 
+of release, as this results in unnecessary prolonged imprisonment. Therefore,
+we can answer the fourth question with `False Positive` (in the function the 
+value `1` is used to indicate `False Positive`).
+
+```{r}
+measure <- fairness_selection(q1 = 1, q2 = 2, q4 = 1)
+print(measure)
+```
+
+It is worth noticing that the function can also be called without any 
+arguments (`measure <- fairness_selection()`). In this case, an interactive mode 
+is activated, allowing the user to answer the necessary questions in real time. 
+By applying this function, an object of class `jfaFairnessSelection` is created.
+
+Additionally, the `print` function, applied to an object of class 
+`jfaFairnessSelection`, allows us to display not only which fairness measure is 
+selected as the most suitable for the audit situation, but also a summary of 
+how we answered the questions in the decision-making workflow.
+
+Finally, as mentioned earlier, it is possible to visualize the path followed 
+by answering the questions in the decision-making workflow. This is done by 
+applying the `plot` function an object of class `jfaFairnessSelection`.
+
+```{r, fig.align="center", fig.height=4, fig.width=6}
+plot(measure)
 ```
 
 ## References
