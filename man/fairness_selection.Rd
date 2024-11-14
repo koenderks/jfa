@@ -30,26 +30,13 @@ Classification'), or \code{3} (to indicate 'Correct and Incorrect
 Classification').}
 
 \item{q3}{a character indicating the answer to the third question of the
-decision-making workflow ('Can the negative class be considered as
-everything not positive or is it well defined?'). If \code{NULL} (the
-default) the user is presented with the third question of the
-decision-making workflow and can respond interactively by selecting the
-numerical value corresponding to their desired answer. Possible options
-are \code{NULL} (default), \code{1} (to indicate 'Everything not
-positive'), or \code{2} (to indicate 'Well-defined'). To understand the
-concept of a negative class defined as Everything Not Positive, consider
-the example of evaluating customer satisfaction for a service, where
-customers can either be satisfied or dissatisfied. Dissatisfaction,
-however, can stem from various reasons (such as 'not satisfied due to
-shipping delays', 'not satisfied because the product or its features are
-malfunctioning', or 'not satisfied due to unhelpful customer service').
-Despite the different reasons, they all fall under the category of 'not
-satisfied' and can be grouped together without further distinction. On the
-other hand, to understand the concept of a negative class as Well Defined,
-consider the example of classifying bank transactions as either fraudulent
-or legitimate. In this case, the negative class simply refers to all
-fraudulent transactions, without needing to analyze why a transaction is
-considered non-legitimate (i.e. fraudulent).}
+  decision-making workflow ('What Is More Important: a Correct Classification
+ of the Positive Class or a Correct Classification of the Negative Class?').
+If \code{NULL} (the default) the user is presented with the third
+  question of the decision-making workflow and can respond interactively by
+  selecting the numerical value corresponding to their desired answer.
+Possible options are  \code{NULL} (default), \code{1} (to indicate
+  'Positive') or \code{2} (to indicate 'Negative').}
 
 \item{q4}{a character indicating the answer to the fourth question of the
 decision-making workflow ('What are the errors with the highest cost?').

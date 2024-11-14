@@ -52,13 +52,13 @@
 #'   indicate 'Correct Classification'), \code{2} (to indicate 'Incorrect
 #'   Classification'), or \code{3} (to indicate 'Correct and Incorrect
 #'   Classification').
-#' @param q3 a character indicating the answer to the third question of the 
+#' @param q3 a character indicating the answer to the third question of the
 #'   decision-making workflow ('What Is More Important: a Correct Classification
 #'  of the Positive Class or a Correct Classification of the Negative Class?').
 #' If \code{NULL} (the default) the user is presented with the third
 #'   question of the decision-making workflow and can respond interactively by
 #'   selecting the numerical value corresponding to their desired answer.
-#' Possible options are  \code{NULL} (default), \code{1} (to indicate 
+#' Possible options are  \code{NULL} (default), \code{1} (to indicate
 #'   'Positive') or \code{2} (to indicate 'Negative').
 #' @param q4 a character indicating the answer to the fourth question of the
 #'   decision-making workflow ('What are the errors with the highest cost?').
