@@ -31,12 +31,13 @@ Classification').}
 
 \item{q3}{a character indicating the answer to the third question of the
   decision-making workflow ('What Is More Important: a Correct Classification
- of the Positive Class or a Correct Classification of the Negative Class?').
+ of the Positive Class, a Correct Classification of the Negative Class, or Both?').
 If \code{NULL} (the default) the user is presented with the third
   question of the decision-making workflow and can respond interactively by
   selecting the numerical value corresponding to their desired answer.
 Possible options are  \code{NULL} (default), \code{1} (to indicate
-  'Positive') or \code{2} (to indicate 'Negative').}
+  'Positive'), \code{2} (to indicate 'Negative') or \code{3} (to indicate
+  'Both a correct classification of the positive and of the negative class').}
 
 \item{q4}{a character indicating the answer to the fourth question of the
 decision-making workflow ('What are the errors with the highest cost?').
@@ -44,8 +45,7 @@ If \code{NULL} (the default) the user is presented with the fourth
 question of the decision-making workflow and can respond interactively by
 selecting the numerical value corresponding to their desired answer.
 Possible options are \code{NULL} (default), \code{1} (to indicate 'False
-Positive'), \code{2} (to indicate 'False Negative'), or \code{3} (to
-indicate 'No preference').}
+Positive') or \code{2} (to indicate 'False Negative').}
 }
 \value{
 An object of class \code{jfaFairnessSelection} containing:
@@ -105,8 +105,8 @@ Several fairness measures can be used to assess the fairness of
   \if{latex}{\figure{fairness-tree.pdf}{options: width=5in}}
 }
 \examples{
-# Workflow leading to accuracy parity
-fairness_selection(q1 = 1, q2 = 1, q3 = 2, q4 = 3)
+# Workflow leading to Predictive Rate Parity
+fairness_selection(q1 = 1, q2 = 1, q3 = 1, q4 = 1)
 }
 \references{
 Büyük, S. (2023). \emph{Automatic Fairness Criteria and Fair

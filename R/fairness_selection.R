@@ -54,7 +54,7 @@
 #'   Classification').
 #' @param q3 a character indicating the answer to the third question of the
 #'   decision-making workflow ('What Is More Important: a Correct Classification
-#'  of the Positive Class, a Correct Classification of the Negative Class or Both?').
+#'  of the Positive Class, a Correct Classification of the Negative Class, or Both?').
 #' If \code{NULL} (the default) the user is presented with the third
 #'   question of the decision-making workflow and can respond interactively by
 #'   selecting the numerical value corresponding to their desired answer.
@@ -67,7 +67,7 @@
 #'   question of the decision-making workflow and can respond interactively by
 #'   selecting the numerical value corresponding to their desired answer.
 #'   Possible options are \code{NULL} (default), \code{1} (to indicate 'False
-#'   Positive')or \code{2} (to indicate 'False Negative').
+#'   Positive') or \code{2} (to indicate 'False Negative').
 #'
 #' @details Several fairness measures can be used to assess the fairness of
 #'   AI-predicted classifications. These include:
@@ -135,8 +135,8 @@
 #' @keywords algorithm audit bias fairness workflow
 #'
 #' @examples
-#' # Workflow leading to accuracy parity
-#' fairness_selection(q1 = 1, q2 = 1, q3 = 2, q4 = 3)
+#' # Workflow leading to Predictive Rate Parity
+#' fairness_selection(q1 = 1, q2 = 1, q3 = 1, q4 = 1)
 #' @export
 
 fairness_selection <- function(q1 = NULL,
@@ -198,16 +198,16 @@ fairness_selection <- function(q1 = NULL,
           name <- "Specificity Parity"
           measure <- "sp"
           q4_name <- "False Positive"
-        } else (q4 == 2) {
+        } else if (q4 == 2) {
           name <- "Negative Predictive Rate Parity"
           measure <- "npvp"
           q4_name <- "False Negative"
         }
-      } else if (q3 == 3){
-          name <- "Accuracy Parity"
-          measure <- "ap"
-          q3_name <- "Correct Classification of the Positive Class and of the Negative Class"
-        }
+      } else if (q3 == 3) {
+        name <- "Accuracy Parity"
+        measure <- "ap"
+        q3_name <- "Correct Classification of the Positive Class and of the Negative Class"
+      }
     } else if (q2 == 2) {
       q2_name <- "Incorrect Classification"
       if (is.null(q4)) {
