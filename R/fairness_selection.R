@@ -49,17 +49,18 @@
 #'   second question of the decision-making workflow and can respond
 #'   interactively by selecting the numerical value corresponding to their
 #'   desired answer. Possible options are \code{NULL} (default), \code{1} (to
-#'   indicate 'Correct Classification'), \code{2} (to indicate 'Incorrect
-#'   Classification'), or \code{3} (to indicate 'Correct and Incorrect
-#'   Classification').
+#'   indicate 'Correct classification'), \code{2} (to indicate 'Incorrect
+#'   classification'), or \code{3} (to indicate 'Correct and incorrect
+#'   classification').
 #' @param q3 a character indicating the answer to the third question of the
-#'   decision-making workflow ('What Is More Important: a Correct Classification
-#'  of the Positive Class, a Correct Classification of the Negative Class, or Both?').
-#' If \code{NULL} (the default) the user is presented with the third
+#'   decision-making workflow ('What is more important: a correct classification
+#'  of the positive class, a correct classification of the negative class, or both?').
+#'  If \code{NULL} (the default) the user is presented with the third
 #'   question of the decision-making workflow and can respond interactively by
 #'   selecting the numerical value corresponding to their desired answer.
-#' Possible options are  \code{NULL} (default), \code{1} (to indicate
-#'   'Positive'), \code{2} (to indicate 'Negative') or \code{3} (to indicate
+#'   Possible options are  \code{NULL} (default), \code{1} (to indicate
+#'   'Correct classificvation of the positive class'), \code{2} (to indicate
+#'   'Correct classificvation of the negative class') or \code{3} (to indicate
 #'   'Both a correct classification of the positive and of the negative class').
 #' @param q4 a character indicating the answer to the fourth question of the
 #'   decision-making workflow ('What are the errors with the highest cost?').
@@ -106,7 +107,7 @@
 #'
 #' @return An object of class \code{jfaFairnessSelection} containing:
 #'
-#' \item{measure}{The abbreviation of the selected fairness measure.}
+#' \item{measure}{The abbreviation for the selected fairness measure's name.}
 #' \item{name}{The name of the selected fairness measure.}
 #'
 #' @author Federica Picogna, \email{f.picogna@nyenrode.nl}
@@ -154,35 +155,27 @@ fairness_selection <- function(q1 = NULL,
     q1_name <- "Yes"
     if (is.null(q2)) {
       stopifnot("Function must be run in an interactive environment" = interactive())
-      q2 <- utils::menu(choices = c("Correct Classification", "Incorrect Classification", "Correct and Incorrect Classification"), title = "(q2) In what type of classification are you interested?")
+      q2 <- utils::menu(choices = c("Correct classification", "Incorrect classification", "Correct and incorrect classification"), title = "(q2) In what type of classification are you interested?")
     } else {
-      stopifnot("Invalid input: The value of `q2` must be 1 (to indicate 'Correct Classification'), 2 (to indicate 'Incorrect Classification') or 3 (to indicate 'Correct and Incorrect Classification')" = q2 %in% c(1, 2, 3))
+      stopifnot("Invalid input: The value of `q2` must be 1 (to indicate 'Correct classification'), 2 (to indicate 'Incorrect classification') or 3 (to indicate 'Correct and incorrect classification')" = q2 %in% c(1, 2, 3))
     }
     if (q2 == 1) {
-      q2_name <- "Correct Classification"
+      q2_name <- "Correct classification"
       if (is.null(q3)) {
         stopifnot("Function must be run in an interactive environment" = interactive())
-        q3 <- utils::menu(choices = c("Positive", "Negative", "Both"), title = "(q3) What Is More Important: a Correct Classification of the Positive Class, a Correct Classification of the Negative Class or Both?")
+        q3 <- utils::menu(choices = c("Correct classification of the positive class", "Correct classification of the negative class", "Both a correct classification of the positive and of the negative class"), title = "(q3) What is more important: a correct classification of the positive class, a correct classification of the negative class or both?")
       } else {
-        stopifnot("Invalid input: The value of `q3` must be 1 (to indicate 'Positive'), 2 (to indicate 'Negative') or 3 (to indicate 'Both a correct classification of the positive and of the negative class)" = q3 %in% c(1, 2, 3))
-      }
-      if (is.null(q4)) {
-        if (q3 == 1) {
-          choices <- c("False Positive", "False Negative")
-        } else {
-          choices <- c("False Positive", "False Negative")
-        }
-        stopifnot("Function must be run in an interactive environment" = interactive())
-        q4 <- utils::menu(choices = choices, title = "(q4) What are the errors with the highest cost?")
-      } else {
-        if (q3 == 1) {
-          stopifnot("Invalid input: The value of `q4` must be 1 (to indicate 'False Positive') or 2 (to indicate 'False Negative')" = q4 %in% c(1, 2))
-        } else {
-          stopifnot("Invalid input: The value of `q4` must be 1 (to indicate 'False Positive') or 2 (to indicate 'False Negative'))" = q4 %in% c(1, 2))
-        }
+        stopifnot("Invalid input: The value of `q3` must be 1 (to indicate 'Correct classification of the positive class'), 2 (to indicate 'Correct classification of the negative class') or 3 (to indicate 'Both a correct classification of the positive and of the negative class)" = q3 %in% c(1, 2, 3))
       }
       if (q3 == 1) {
-        q3_name <- "Correct Classification of the Positive Class"
+        q3_name <- "Correct classification of the positive class"
+        if (is.null(q4)) {
+          choices <- c("False Positive", "False Negative")
+          stopifnot("Function must be run in an interactive environment" = interactive())
+          q4 <- utils::menu(choices = choices, title = "(q4) What are the errors with the highest cost?")
+        } else {
+          stopifnot("Invalid input: The value of `q4` must be 1 (to indicate 'False Positive') or 2 (to indicate 'False Negative')" = q4 %in% c(1, 2))
+        }
         if (q4 == 1) {
           name <- "Predictive Rate Parity"
           measure <- "prp"
@@ -193,23 +186,30 @@ fairness_selection <- function(q1 = NULL,
           q4_name <- "False Negative"
         }
       } else if (q3 == 2) {
-        q3_name <- "Correct Classification of the Negative Class"
+        q3_name <- "Correct classification of the negative class"
+        if (is.null(q4)) {
+          choices <- c("False Positive", "False Negative")
+          stopifnot("Function must be run in an interactive environment" = interactive())
+          q4 <- utils::menu(choices = choices, title = "(q4) What are the errors with the highest cost?")
+        } else {
+          stopifnot("Invalid input: The value of `q4` must be 1 (to indicate 'False Positive') or 2 (to indicate 'False Negative')" = q4 %in% c(1, 2))
+        }
         if (q4 == 1) {
           name <- "Specificity Parity"
           measure <- "sp"
           q4_name <- "False Positive"
-        } else if (q4 == 2) {
+        } else {
           name <- "Negative Predictive Rate Parity"
-          measure <- "npvp"
+          measure <- "nprp"
           q4_name <- "False Negative"
         }
       } else if (q3 == 3) {
+        q3_name <- "Correct classification of the positive class and of the negative class"
         name <- "Accuracy Parity"
         measure <- "ap"
-        q3_name <- "Correct Classification of the Positive Class and of the Negative Class"
       }
     } else if (q2 == 2) {
-      q2_name <- "Incorrect Classification"
+      q2_name <- "Incorrect classification"
       if (is.null(q4)) {
         stopifnot("Function must be run in an interactive environment" = interactive())
         q4 <- utils::menu(choices = c("False Positive", "False Negative"), title = "(q4) What are the errors with the highest cost?")
@@ -228,7 +228,7 @@ fairness_selection <- function(q1 = NULL,
     } else if (q2 == 3) {
       name <- "Equalized Odds"
       measure <- "dp"
-      q2_name <- "Correct and Incorrect Classification"
+      q2_name <- "Correct and incorrect classification"
     }
   } else if (q1 == 2) {
     name <- "Disparate Impact"

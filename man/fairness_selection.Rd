@@ -25,19 +25,20 @@ interested?'). If \code{NULL} (the default) the user is presented with the
 second question of the decision-making workflow and can respond
 interactively by selecting the numerical value corresponding to their
 desired answer. Possible options are \code{NULL} (default), \code{1} (to
-indicate 'Correct Classification'), \code{2} (to indicate 'Incorrect
-Classification'), or \code{3} (to indicate 'Correct and Incorrect
-Classification').}
+indicate 'Correct classification'), \code{2} (to indicate 'Incorrect
+classification'), or \code{3} (to indicate 'Correct and incorrect
+classification').}
 
 \item{q3}{a character indicating the answer to the third question of the
-  decision-making workflow ('What Is More Important: a Correct Classification
- of the Positive Class, a Correct Classification of the Negative Class, or Both?').
+ decision-making workflow ('What is more important: a correct classification
+of the positive class, a correct classification of the negative class, or both?').
 If \code{NULL} (the default) the user is presented with the third
-  question of the decision-making workflow and can respond interactively by
-  selecting the numerical value corresponding to their desired answer.
-Possible options are  \code{NULL} (default), \code{1} (to indicate
-  'Positive'), \code{2} (to indicate 'Negative') or \code{3} (to indicate
-  'Both a correct classification of the positive and of the negative class').}
+ question of the decision-making workflow and can respond interactively by
+ selecting the numerical value corresponding to their desired answer.
+ Possible options are  \code{NULL} (default), \code{1} (to indicate
+ 'Correct classificvation of the positive class'), \code{2} (to indicate
+ 'Correct classificvation of the negative class') or \code{3} (to indicate
+ 'Both a correct classification of the positive and of the negative class').}
 
 \item{q4}{a character indicating the answer to the fourth question of the
 decision-making workflow ('What are the errors with the highest cost?').
@@ -50,7 +51,7 @@ Positive') or \code{2} (to indicate 'False Negative').}
 \value{
 An object of class \code{jfaFairnessSelection} containing:
 
-\item{measure}{The abbreviation of the selected fairness measure.}
+\item{measure}{The abbreviation for the selected fairness measure's name.}
 \item{name}{The name of the selected fairness measure.}
 }
 \description{
