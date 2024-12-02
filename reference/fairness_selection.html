@@ -123,33 +123,22 @@ interested?'). If <code>NULL</code> (the default) the user is presented with the
 second question of the decision-making workflow and can respond
 interactively by selecting the numerical value corresponding to their
 desired answer. Possible options are <code>NULL</code> (default), <code>1</code> (to
-indicate 'Correct Classification'), <code>2</code> (to indicate 'Incorrect
-Classification'), or <code>3</code> (to indicate 'Correct and Incorrect
-Classification').</p></dd>
+indicate 'Correct classification'), <code>2</code> (to indicate 'Incorrect
+classification'), or <code>3</code> (to indicate 'Correct and incorrect
+classification').</p></dd>
 
 
 <dt id="arg-q-">q3<a class="anchor" aria-label="anchor" href="#arg-q-"></a></dt>
 <dd><p>a character indicating the answer to the third question of the
-decision-making workflow ('Can the negative class be considered as
-everything not positive or is it well defined?'). If <code>NULL</code> (the
-default) the user is presented with the third question of the
-decision-making workflow and can respond interactively by selecting the
-numerical value corresponding to their desired answer. Possible options
-are <code>NULL</code> (default), <code>1</code> (to indicate 'Everything not
-positive'), or <code>2</code> (to indicate 'Well-defined'). To understand the
-concept of a negative class defined as Everything Not Positive, consider
-the example of evaluating customer satisfaction for a service, where
-customers can either be satisfied or dissatisfied. Dissatisfaction,
-however, can stem from various reasons (such as 'not satisfied due to
-shipping delays', 'not satisfied because the product or its features are
-malfunctioning', or 'not satisfied due to unhelpful customer service').
-Despite the different reasons, they all fall under the category of 'not
-satisfied' and can be grouped together without further distinction. On the
-other hand, to understand the concept of a negative class as Well Defined,
-consider the example of classifying bank transactions as either fraudulent
-or legitimate. In this case, the negative class simply refers to all
-fraudulent transactions, without needing to analyze why a transaction is
-considered non-legitimate (i.e. fraudulent).</p></dd>
+ decision-making workflow ('What is more important: a correct classification
+of the positive class, a correct classification of the negative class, or both?').
+If <code>NULL</code> (the default) the user is presented with the third
+ question of the decision-making workflow and can respond interactively by
+ selecting the numerical value corresponding to their desired answer.
+ Possible options are  <code>NULL</code> (default), <code>1</code> (to indicate
+ 'Correct classificvation of the positive class'), <code>2</code> (to indicate
+ 'Correct classificvation of the negative class') or <code>3</code> (to indicate
+ 'Both a correct classification of the positive and of the negative class').</p></dd>
 
 
 <dt id="arg-q-">q4<a class="anchor" aria-label="anchor" href="#arg-q-"></a></dt>
@@ -159,15 +148,14 @@ If <code>NULL</code> (the default) the user is presented with the fourth
 question of the decision-making workflow and can respond interactively by
 selecting the numerical value corresponding to their desired answer.
 Possible options are <code>NULL</code> (default), <code>1</code> (to indicate 'False
-Positive'), <code>2</code> (to indicate 'False Negative'), or <code>3</code> (to
-indicate 'No preference').</p></dd>
+Positive') or <code>2</code> (to indicate 'False Negative').</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
     <p>An object of class <code>jfaFairnessSelection</code> containing:</p>
 <dl><dt>measure</dt>
-<dd><p>The abbreviation of the selected fairness measure.</p></dd>
+<dd><p>The abbreviation for the selected fairness measure's name.</p></dd>
 
 <dt>name</dt>
 <dd><p>The name of the selected fairness measure.</p></dd>
@@ -234,18 +222,18 @@ indicate 'No preference').</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Workflow leading to accuracy parity</span></span></span>
-<span class="r-in"><span><span class="fu">fairness_selection</span><span class="op">(</span>q1 <span class="op">=</span> <span class="fl">1</span>, q2 <span class="op">=</span> <span class="fl">1</span>, q3 <span class="op">=</span> <span class="fl">2</span>, q4 <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Workflow leading to predictive rate parity</span></span></span>
+<span class="r-in"><span><span class="fu">fairness_selection</span><span class="op">(</span>q1 <span class="op">=</span> <span class="fl">1</span>, q2 <span class="op">=</span> <span class="fl">1</span>, q3 <span class="op">=</span> <span class="fl">1</span>, q4 <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 	Fairness Measure for Model Evaluation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Selected fairness measure: Accuracy Parity </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Selected fairness measure: Predictive Rate Parity </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Based on:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   Answer to question 1 (q1):	Yes (1)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Answer to question 2 (q2):	Correct Classification (1)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Answer to question 3 (q3):	Well-Defined (2)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Answer to question 4 (q4):	No Preference (3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Answer to question 2 (q2):	Correct classification (1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Answer to question 3 (q3):	Correct classification of the positive class (1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Answer to question 4 (q4):	False Positive (1)</span>
 </code></pre></div>
     </div>
   </div>
