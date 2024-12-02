@@ -163,7 +163,7 @@ fairness_selection <- function(q1 = NULL,
       q2_name <- "Correct classification"
       if (is.null(q3)) {
         stopifnot("Function must be run in an interactive environment" = interactive())
-        q3 <- utils::menu(choices = c("Correct classification of the positive class", "Correct classification of the negative class", "Both a correct classification of the positive and of the negative class"), title = "(q3) What is more important: a correct classification of the positive class, a correct classification of the negative class or both?")
+        q3 <- utils::menu(choices = c("Correct classification of the positive class", "Correct classification of the negative class", "Both a correct classification of the positive and of the negative class"), title = "(q3) What is more important: a correct classification of the positive class, a correct classification of the negative class, or both?")
       } else {
         stopifnot("Invalid input: The value of `q3` must be 1 (to indicate 'Correct classification of the positive class'), 2 (to indicate 'Correct classification of the negative class') or 3 (to indicate 'Both a correct classification of the positive and of the negative class)" = q3 %in% c(1, 2, 3))
       }
