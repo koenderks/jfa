@@ -33,19 +33,6 @@ parity, and specificity parity [@calders_2010; @chouldechova_2017;
 @feldman_2015; @zafar_2017; @friedler_2019]. Furthermore, the metrics are tested
 for equality between protected groups in the data.
 
-## Function: `fairness_selection()`
-
-The `fairness_selection()` function offers a method to select a fairness measure 
-tailored to a specific context and dataset by answering the questions in the 
-developed decision-making workflow. The fairness measure that can be selected 
-include disparate impact, equalized odds, false positive rate parity, false 
-negative rate parity, predictive rate parity, equal opportunity, specificity 
-parity, negative predictive rate parity, accuracy parity [@castelnovo_2022;
-@feldman_2015; @friedler_2019; @hardt_2016, @verma_2018]. After answering the 
-questions in the decision-making workflow and selecting the fairness measure to 
-apply, a graphical representation of the followed path can be created based 
-on the responses.
-
 *Practical example:*
 
 To demonstrate the usage of the`model_fairness()` and the `fairness_selection()`
@@ -479,11 +466,24 @@ sequential analysis using `plot(..., type = "sequential")`.
 plot(x, type = "robustness")
 ```
 
+## Function: `fairness_selection()`
+
+The `fairness_selection()` function offers a method to select a fairness measure 
+tailored to a specific context and dataset by answering the questions in the 
+developed decision-making workflow. The fairness measure that can be selected 
+include disparate impact, equalized odds, false positive rate parity, false 
+negative rate parity, predictive rate parity, equal opportunity, specificity 
+parity, negative predictive rate parity, accuracy parity [@castelnovo_2022;
+@feldman_2015; @friedler_2019; @hardt_2016, @verma_2018]. After answering the 
+questions in the decision-making workflow and selecting the fairness measure to 
+apply, a graphical representation of the followed path can be created based 
+on the responses.
+
 As mentioned earlier, not all fairness measures are equally suitable for every 
 audit situation. For this reason, the `fairness_selection()` function we propose 
 can assist the auditor in selecting the most appropriate measure for the 
 specific audit at hand. To demonstrate the usage of the 
-`fairness_selection()` function, , we will answer each necessary question in the
+`fairness_selection()` function, we will answer each necessary question in the
 decision-making workflow, explaining the reasoning behind each response.
 
 The first question in the workflow checks if the dataset includes the ground 
@@ -541,7 +541,7 @@ Finally, as mentioned earlier, it is possible to visualize the path followed
 by answering the questions in the decision-making workflow. This is done by 
 applying the `plot` function an object of class `jfaFairnessSelection`.
 
-```{r, fig.align="center", fig.height=4, fig.width=6}
+```{r, fig.align="center"}
 plot(measure)
 ```
 
