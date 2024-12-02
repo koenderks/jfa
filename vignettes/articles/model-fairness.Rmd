@@ -35,7 +35,7 @@ for equality between protected groups in the data.
 
 ## Function: `fairness_selection()`
 
-The fairness_selection() function offers a method to select a fairness measure 
+The `fairness_selection()` function offers a method to select a fairness measure 
 tailored to a specific context and dataset by answering the questions in the 
 developed decision-making workflow. The fairness measure that can be selected 
 include disparate impact, equalized odds, false positive rate parity, false 
