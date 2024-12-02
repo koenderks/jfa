@@ -200,7 +200,7 @@ fairness_selection <- function(q1 = NULL,
           q4_name <- "False Positive"
         } else {
           name <- "Negative Predictive Rate Parity"
-          measure <- "nprp"
+          measure <- "npvp"
           q4_name <- "False Negative"
         }
       } else if (q3 == 3) {

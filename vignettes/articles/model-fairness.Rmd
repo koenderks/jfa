@@ -527,7 +527,7 @@ measure <- fairness_selection(q1 = 1, q2 = 2, q4 = 1)
 print(measure)
 ```
 
-It is worth noticing that the function can also be called without any 
+It is worth noting that the function can also be called without any 
 arguments (`measure <- fairness_selection()`). In this case, an interactive mode 
 is activated, allowing the user to answer the necessary questions in real time. 
 By applying this function, an object of class `jfaFairnessSelection` is created.

@@ -1532,7 +1532,7 @@ plot.jfaFairnessSelection <- function(x, ...) {
       xmax = c(6.2, 0.2, 9.5, -4, 7, 13.8, -12, -4, 2, -17.5, -8),
       ymin = c(3, -4, -4, -8, -8, -8, -16, -16, -16, -22, -22),
       ymax = c(6, -1, -1, -12, -12, -12, -19, -19, -19, -25, -25),
-      label = c("1. Is the ground \ntruth information on the true \nvalues of the classification \nrelevant in your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. What Is More Important: a Correct \nClassification of the Positive Class \nor a Correct Classification \nof the Negative Class?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity", "Predictive Rate Parity", "Equal Opportunity"),
+      label = c("1. Is the ground \ntruth information on the true \nvalues of the classification \nrelevant in your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. What is more important: \na correct classification of the positive class \n a correct classification of the negative class \nor both?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity", "Predictive Rate Parity", "Equal Opportunity"),
       fill = c("white", "white", "lightgrey", "white", "lightgrey", "lightgrey", "white", "lightgrey", "lightgrey", "white", "lightgrey"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
@@ -1570,7 +1570,7 @@ plot.jfaFairnessSelection <- function(x, ...) {
       xmax = c(6.2, 0.2, 9.5, -4, 7, 13.8, -12, -4, 2, -17.5, -8),
       ymin = c(3, -4, -4, -8, -8, -8, -16, -16, -16, -22, -22),
       ymax = c(6, -1, -1, -12, -12, -12, -19, -19, -19, -25, -25),
-      label = c("1. Is the ground \ntruth information on the true \nvalues of the classification \nrelevant in your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. What Is More Important: a Correct \nClassification of the Positive Class \nor a Correct Classification \nof the Negative Class?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity", "Predictive Rate Parity", "Equal Opportunity"),
+      label = c("1. Is the ground \ntruth information on the true \nvalues of the classification \nrelevant in your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. What is more important: \na correct classification of the positive class \n a correct classification of the negative class \nor both?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity", "Predictive Rate Parity", "Equal Opportunity"),
       fill = c("white", "white", "lightgrey", "white", "lightgrey", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "white"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
@@ -1608,7 +1608,7 @@ plot.jfaFairnessSelection <- function(x, ...) {
       xmax = c(6.2, 0.2, 9.5, -4, 7, 13.8, -12, -4, 2, -8.4, -1.2),
       ymin = c(3, -4, -4, -8, -8, -8, -16, -16, -16, -22, -22),
       ymax = c(6, -1, -1, -12, -12, -12, -19, -19, -19, -25, -25),
-      label = c("1. Is the ground \ntruth information on the true \nvalues of the classification \nrelevant in your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. What Is More Important: a Correct \nClassification of the Positive Class \nor a Correct Classification \nof the Negative Class?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity", "Specificity Parity", "Negative Predictive\n Rate Parity"),
+      label = c("1. Is the ground \ntruth information on the true \nvalues of the classification \nrelevant in your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. What is more important: \na correct classification of the positive class \n a correct classification of the negative class \nor both?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity", "Specificity Parity", "Negative Predictive\n Rate Parity"),
       fill = c("white", "white", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "white", "lightgrey", "white", "lightgrey"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
@@ -1646,7 +1646,7 @@ plot.jfaFairnessSelection <- function(x, ...) {
       xmax = c(6.2, 0.2, 9.5, -4, 7, 13.8, -12, -4, 2, -8.4, -1.2),
       ymin = c(3, -4, -4, -8, -8, -8, -16, -16, -16, -22, -22),
       ymax = c(6, -1, -1, -12, -12, -12, -19, -19, -19, -25, -25),
-      label = c("1. Is the ground \ntruth information on the true \nvalues of the classification \nrelevant in your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. What Is More Important: a Correct \nClassification of the Positive Class \nor a Correct Classification \nof the Negative Class?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity", "Specificity Parity", "Negative Predictive\n Rate Parity"),
+      label = c("1. Is the ground \ntruth information on the true \nvalues of the classification \nrelevant in your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. What is more important: \na correct classification of the positive class \n a correct classification of the negative class \nor both?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity", "Specificity Parity", "Negative Predictive\n Rate Parity"),
       fill = c("white", "white", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "white", "lightgrey", "lightgrey", "white"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
@@ -1684,7 +1684,7 @@ plot.jfaFairnessSelection <- function(x, ...) {
       xmax = c(5.5, 0, 9, -4, 3, 9, -10, -4, 3),
       ymin = c(3, -4, -4, -8, -8, -8, -16, -16, -16),
       ymax = c(6, -1, -1, -12, -12, -12, -19, -19, -19),
-      label = c("1. Is the ground truth \ninformation on the true values \nof the classification relevant \nin your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. What Is More Important: a Correct \nClassification of the Positive Class, \na Correct Classification \nof the Negative Class, or both?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity"),
+      label = c("1. Is the ground truth \ninformation on the true values \nof the classification relevant \nin your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. What is more important: \na correct classification of the positive class, \na correct classification of the negative class, \nor both?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity"),
       fill = c("white", "white", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "lightgrey", "white"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
@@ -1718,7 +1718,7 @@ plot.jfaFairnessSelection <- function(x, ...) {
       xmax = c(6.2, 0.2, 9.5, -4, 7, 13.8, -12, -4, 2, 4.4, 9.4),
       ymin = c(3, -4, -4, -8, -8, -8, -22, -22, -22, -16, -16),
       ymax = c(6, -1, -1, -12, -12, -12, -25, -25, -25, -19, -19),
-      label = c("1. Is the ground truth \ninformation on the true values \nof the classification relevant \nin your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. What Is More Important: a Correct \nClassification of the Positive Class, \na Correct Classification \nof the Negative Class, or both?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity", "False Positive \nRate Parity", "False Negative \nRate Parity"),
+      label = c("1. Is the ground truth \ninformation on the true values \nof the classification relevant \nin your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3.What is more important: \na correct classification of the positive class \n a correct classification of the negative class \nor both?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity", "False Positive \nRate Parity", "False Negative \nRate Parity"),
       fill = c("white", "white", "lightgrey", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "lightgrey", "white", "lightgrey"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
@@ -1756,7 +1756,7 @@ plot.jfaFairnessSelection <- function(x, ...) {
       xmax = c(6.2, 0.2, 9.5, -4, 7, 13.8, -12, -4, 2, 4.4, 9.4),
       ymin = c(3, -4, -4, -8, -8, -8, -22, -22, -22, -16, -16),
       ymax = c(6, -1, -1, -12, -12, -12, -25, -25, -25, -19, -19),
-      label = c("1. Is the ground truth \ninformation on the true values \nof the classification relevant \nin your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. What Is More Important: a Correct \nClassification of the Positive Class, \na Correct Classification \nof the Negative Class, or both?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity", "False Positive \nRate Parity", "False Negative \nRate Parity"),
+      label = c("1. Is the ground truth \ninformation on the true values \nof the classification relevant \nin your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3.What is more important: \na correct classification of the positive class \n a correct classification of the negative class \nor both?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity", "False Positive \nRate Parity", "False Negative \nRate Parity"),
       fill = c("white", "white", "lightgrey", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "lightgrey", "lightgrey", "white"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
@@ -1794,7 +1794,7 @@ plot.jfaFairnessSelection <- function(x, ...) {
       xmax = c(5.5, 0, 9, -4, 3, 9, -10, -4, 3),
       ymin = c(3, -4, -4, -8, -8, -8, -16, -16, -16),
       ymax = c(6, -1, -1, -12, -12, -12, -19, -19, -19),
-      label = c("1. Is the ground truth \ninformation on the true values \nof the classification relevant \nin your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. What Is More Important: a Correct \nClassification of the Positive Class, \na Correct Classification \nof the Negative Class, or both?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity"),
+      label = c("1. Is the ground truth \ninformation on the true values \nof the classification relevant \nin your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3.What is more important: \na correct classification of the positive class \n a correct classification of the negative class \nor both?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity"),
       fill = c("white", "white", "lightgrey", "lightgrey", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
@@ -1828,7 +1828,7 @@ plot.jfaFairnessSelection <- function(x, ...) {
       xmax = c(5.5, 0, 9, -4, 3, 9, -10, 3),
       ymin = c(3, -4, -4, -8, -8, -8, -16, -16),
       ymax = c(6, -1, -1, -12, -12, -12, -19, -19),
-      label = c("1. Is the ground truth \ninformation on the true values \nof the classification relevant \nin your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. What Is More Important: a Correct \nClassification of the Positive Class \nor a Correct Classification \nof the Negative Class?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?"),
+      label = c("1. Is the ground truth \ninformation on the true values \nof the classification relevant \nin your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. What is more important: \na correct classification of the positive class \n a correct classification of the negative class \nor both?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?"),
       fill = c("white", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "lightgrey", "lightgrey"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black")
     )
