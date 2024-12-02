@@ -30,7 +30,7 @@ test_that(desc = "Validation of fairness selection", {
   outcome <- fairness_selection(q1 = 1, q2 = 2, q3 = NULL, q4 = 1)
   expect_equal(outcome$measure, "fprp")
   # Accuracy parity
-  outcome <- fairness_selection(q1 = 1, q2 = 1, q3 = 2, q4 = 3)
+  outcome <- fairness_selection(q1 = 1, q2 = 1, q3 = 3)
   expect_equal(outcome$measure, "ap")
   # Negative predictive rate parity
   outcome <- fairness_selection(q1 = 1, q2 = 1, q3 = 2, q4 = 2)

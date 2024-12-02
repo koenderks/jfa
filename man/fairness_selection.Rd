@@ -106,7 +106,7 @@ Several fairness measures can be used to assess the fairness of
   \if{latex}{\figure{fairness-tree.pdf}{options: width=5in}}
 }
 \examples{
-# Workflow leading to Predictive Rate Parity
+# Workflow leading to predictive rate parity
 fairness_selection(q1 = 1, q2 = 1, q3 = 1, q4 = 1)
 }
 \references{
