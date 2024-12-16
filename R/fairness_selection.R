@@ -232,7 +232,7 @@ fairness_selection <- function(q1 = NULL,
     }
   } else if (q1 == 2) {
     name <- "Disparate Impact"
-    measure <- "pp"
+    measure <- "dp"
     q1_name <- "No"
   }
   output <- list()
