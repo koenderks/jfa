@@ -1531,18 +1531,19 @@ plot.jfaFairnessSelection <- function(x, ...) {
       xmin = c(-0.8, -6, 5.5, -11.4, 1, 9.8, -18, -10, -2, -23, -13.5),
       xmax = c(6.2, 0.2, 9.5, -4, 7, 13.8, -12, -4, 2, -17.5, -8),
       ymin = c(3, -4, -4, -8, -8, -8, -16, -16, -16, -22, -22),
-      ymax = c(6, -1, -1, -12, -12, -12, -19, -19, -19, -25, -25),
+      ymax = c(7, -1, -1, -12, -12, -12, -19, -19, -19, -25, -25),
       label = c("1. Is the ground \ntruth information on the true \nvalues of the classification \nrelevant in your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. What is more important: \na correct classification of the positive class, \n a correct classification of the negative class, \nor both?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity", "Predictive Rate Parity", "Equal Opportunity"),
       fill = c("white", "white", "lightgrey", "white", "lightgrey", "lightgrey", "white", "lightgrey", "lightgrey", "white", "lightgrey"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
+    rects$path_type <- ifelse(rects$fill == "white", "Followed Path", "Ignored Path")
     plotWorkflow <- ggplot2::ggplot() +
-      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill), color = "black") +
-      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 2.5) +
-      ggplot2::scale_fill_identity() +
+      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = path_type), color = "black") +
+      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 3.20) +
+      ggplot2::scale_fill_manual(values = c("Followed Path" = "white", "Ignored Path" = "lightgrey"), name = NULL, labels = c("Followed Path", "Ignored Path")) +
       ggplot2::scale_color_identity() +
       ggplot2::xlim(-23, 20) +
-      ggplot2::ylim(-28, 7) +
+      ggplot2::ylim(-28, 9) +
       ggplot2::theme_void() +
       ggplot2::geom_segment(ggplot2::aes(x = -0.8, xend = -3.1, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = -1.95, y = 1, label = "YES (1)"), color = "black", size = 3) +
@@ -1563,24 +1564,27 @@ plot.jfaFairnessSelection <- function(x, ...) {
       ggplot2::geom_segment(ggplot2::aes(x = -18, xend = -20.25, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = -19.125, y = -20.5, label = "FP (1)"), color = "black", size = 3) +
       ggplot2::geom_segment(ggplot2::aes(x = -12, xend = -10.75, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "lightgray", linewidth = 1) +
-      ggplot2::geom_label(ggplot2::aes(x = -11.375, y = -20.5, label = "FN (2)"), fill = "lightgray", size = 3)
+      ggplot2::geom_label(ggplot2::aes(x = -11.375, y = -20.5, label = "FN (2)"), fill = "lightgray", size = 3) +
+      ggplot2::theme(legend.position = "top", legend.justification = "left", legend.box.margin = ggplot2::margin(30, 10, 10, 50), legend.key.height = ggplot2::unit(1, "lines")) +
+      ggplot2::guides(fill = ggplot2::guide_legend(nrow = 3))
   } else if (measure == "Equal Opportunity") {
     rects <- data.frame(
       xmin = c(-0.8, -6, 5.5, -11.4, 1, 9.8, -18, -10, -2, -23, -13.5),
       xmax = c(6.2, 0.2, 9.5, -4, 7, 13.8, -12, -4, 2, -17.5, -8),
       ymin = c(3, -4, -4, -8, -8, -8, -16, -16, -16, -22, -22),
-      ymax = c(6, -1, -1, -12, -12, -12, -19, -19, -19, -25, -25),
+      ymax = c(7, -1, -1, -12, -12, -12, -19, -19, -19, -25, -25),
       label = c("1. Is the ground \ntruth information on the true \nvalues of the classification \nrelevant in your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. What is more important: \na correct classification of the positive class, \n a correct classification of the negative class, \nor both?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity", "Predictive Rate Parity", "Equal Opportunity"),
       fill = c("white", "white", "lightgrey", "white", "lightgrey", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "white"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
+    rects$path_type <- ifelse(rects$fill == "white", "Followed Path", "Ignored Path")
     plotWorkflow <- ggplot2::ggplot() +
-      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill), color = "black") +
-      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 2.5) +
-      ggplot2::scale_fill_identity() +
+      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = path_type), color = "black") +
+      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 3.20) +
+      ggplot2::scale_fill_manual(values = c("Followed Path" = "white", "Ignored Path" = "lightgrey"), name = NULL, labels = c("Followed Path", "Ignored Path")) +
       ggplot2::scale_color_identity() +
       ggplot2::xlim(-23, 20) +
-      ggplot2::ylim(-28, 7) +
+      ggplot2::ylim(-28, 9) +
       ggplot2::theme_void() +
       ggplot2::geom_segment(ggplot2::aes(x = -0.8, xend = -3.1, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = -1.95, y = 1, label = "YES (1)"), color = "black", size = 3) +
@@ -1601,24 +1605,27 @@ plot.jfaFairnessSelection <- function(x, ...) {
       ggplot2::geom_segment(ggplot2::aes(x = -18, xend = -20.25, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "lightgrey", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = -19.125, y = -20.5, label = "FP (1)"), fill = "lightgrey", size = 3) +
       ggplot2::geom_segment(ggplot2::aes(x = -12, xend = -10.75, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", linewidth = 1) +
-      ggplot2::geom_label(ggplot2::aes(x = -11.375, y = -20.5, label = "FN (2)"), color = "black", size = 3)
+      ggplot2::geom_label(ggplot2::aes(x = -11.375, y = -20.5, label = "FN (2)"), color = "black", size = 3) +
+      ggplot2::theme(legend.position = "top", legend.justification = "left", legend.box.margin = ggplot2::margin(30, 10, 10, 50), legend.key.height = ggplot2::unit(1, "lines")) +
+      ggplot2::guides(fill = ggplot2::guide_legend(nrow = 3))
   } else if (measure == "Specificity Parity") {
     rects <- data.frame(
       xmin = c(-0.8, -6, 5.5, -11.4, 1, 9.8, -18, -10, -2, -13, -5.6),
       xmax = c(6.2, 0.2, 9.5, -4, 7, 13.8, -12, -4, 2, -8.4, -1.2),
       ymin = c(3, -4, -4, -8, -8, -8, -16, -16, -16, -22, -22),
-      ymax = c(6, -1, -1, -12, -12, -12, -19, -19, -19, -25, -25),
+      ymax = c(7, -1, -1, -12, -12, -12, -19, -19, -19, -25, -25),
       label = c("1. Is the ground \ntruth information on the true \nvalues of the classification \nrelevant in your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. What is more important: \na correct classification of the positive class, \n a correct classification of the negative class, \nor both?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity", "Specificity Parity", "Negative Predictive\n Value Parity"),
       fill = c("white", "white", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "white", "lightgrey", "white", "lightgrey"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
+    rects$path_type <- ifelse(rects$fill == "white", "Followed Path", "Ignored Path")
     plotWorkflow <- ggplot2::ggplot() +
-      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill), color = "black") +
-      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 2.5) +
-      ggplot2::scale_fill_identity() +
+      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = path_type), color = "black") +
+      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 3.20) +
+      ggplot2::scale_fill_manual(values = c("Followed Path" = "white", "Ignored Path" = "lightgrey"), name = NULL, labels = c("Followed Path", "Ignored Path")) +
       ggplot2::scale_color_identity() +
       ggplot2::xlim(-23, 20) +
-      ggplot2::ylim(-28, 7) +
+      ggplot2::ylim(-28, 9) +
       ggplot2::theme_void() +
       ggplot2::geom_segment(ggplot2::aes(x = -0.8, xend = -3.1, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = -1.95, y = 1, label = "YES (1)"), color = "black", size = 3) +
@@ -1639,24 +1646,27 @@ plot.jfaFairnessSelection <- function(x, ...) {
       ggplot2::geom_segment(ggplot2::aes(x = -10, xend = -10.7, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = -10.35, y = -20.5, label = "FP (1)"), color = "black", size = 3) +
       ggplot2::geom_segment(ggplot2::aes(x = -4, xend = -3.4, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "lightgrey", linewidth = 1) +
-      ggplot2::geom_label(ggplot2::aes(x = -3.7, y = -20.5, label = "FN (2)"), fill = "lightgrey", size = 3)
+      ggplot2::geom_label(ggplot2::aes(x = -3.7, y = -20.5, label = "FN (2)"), fill = "lightgrey", size = 3) +
+      ggplot2::theme(legend.position = "top", legend.justification = "left", legend.box.margin = ggplot2::margin(30, 10, 10, 50), legend.key.height = ggplot2::unit(1, "lines")) +
+      ggplot2::guides(fill = ggplot2::guide_legend(nrow = 3))
   } else if (measure == "Negative Predictive Value Parity") {
     rects <- data.frame(
       xmin = c(-0.8, -6, 5.5, -11.4, 1, 9.8, -18, -10, -2, -13, -5.6),
       xmax = c(6.2, 0.2, 9.5, -4, 7, 13.8, -12, -4, 2, -8.4, -1.2),
       ymin = c(3, -4, -4, -8, -8, -8, -16, -16, -16, -22, -22),
-      ymax = c(6, -1, -1, -12, -12, -12, -19, -19, -19, -25, -25),
+      ymax = c(7, -1, -1, -12, -12, -12, -19, -19, -19, -25, -25),
       label = c("1. Is the ground \ntruth information on the true \nvalues of the classification \nrelevant in your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. What is more important: \na correct classification of the positive class, \n a correct classification of the negative class, \nor both?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity", "Specificity Parity", "Negative Predictive\n Value Parity"),
       fill = c("white", "white", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "white", "lightgrey", "lightgrey", "white"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
+    rects$path_type <- ifelse(rects$fill == "white", "Followed Path", "Ignored Path")
     plotWorkflow <- ggplot2::ggplot() +
-      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill), color = "black") +
-      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 2.5) +
-      ggplot2::scale_fill_identity() +
+      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = path_type), color = "black") +
+      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 3.20) +
+      ggplot2::scale_fill_manual(values = c("Followed Path" = "white", "Ignored Path" = "lightgrey"), name = NULL, labels = c("Followed Path", "Ignored Path")) +
       ggplot2::scale_color_identity() +
       ggplot2::xlim(-23, 20) +
-      ggplot2::ylim(-28, 7) +
+      ggplot2::ylim(-28, 9) +
       ggplot2::theme_void() +
       ggplot2::geom_segment(ggplot2::aes(x = -0.8, xend = -3.1, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = -1.95, y = 1, label = "YES (1)"), color = "black", size = 3) +
@@ -1677,24 +1687,27 @@ plot.jfaFairnessSelection <- function(x, ...) {
       ggplot2::geom_segment(ggplot2::aes(x = -10, xend = -10.7, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "lightgrey", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = -10.35, y = -20.5, label = "FP (1)"), fill = "lightgrey", size = 3) +
       ggplot2::geom_segment(ggplot2::aes(x = -4, xend = -3.4, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", linewidth = 1) +
-      ggplot2::geom_label(ggplot2::aes(x = -3.7, y = -20.5, label = "FN (2)"), color = "black", size = 3)
+      ggplot2::geom_label(ggplot2::aes(x = -3.7, y = -20.5, label = "FN (2)"), color = "black", size = 3) +
+      ggplot2::theme(legend.position = "top", legend.justification = "left", legend.box.margin = ggplot2::margin(30, 10, 10, 50), legend.key.height = ggplot2::unit(1, "lines")) +
+      ggplot2::guides(fill = ggplot2::guide_legend(nrow = 3))
   } else if (measure == "Accuracy Parity") {
     rects <- data.frame(
       xmin = c(0, -4.2, 5.5, -10, -2, 5.5, -15, -9, -2),
       xmax = c(5.5, 0, 9, -4, 3, 9, -10, -4, 3),
       ymin = c(3, -4, -4, -8, -8, -8, -16, -16, -16),
-      ymax = c(6, -1, -1, -12, -12, -12, -19, -19, -19),
+      ymax = c(7, -1, -1, -12, -12, -12, -19, -19, -19),
       label = c("1. Is the ground truth \ninformation on the true values \nof the classification relevant \nin your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3. What is more important: \na correct classification of the positive class, \na correct classification of the negative class, \nor both?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity"),
       fill = c("white", "white", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "lightgrey", "white"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
+    rects$path_type <- ifelse(rects$fill == "white", "Followed Path", "Ignored Path")
     plotWorkflow <- ggplot2::ggplot() +
-      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill), color = "black") +
-      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 2.5) +
-      ggplot2::scale_fill_identity() +
+      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = path_type), color = "black") +
+      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 3.20) +
+      ggplot2::scale_fill_manual(values = c("Followed Path" = "white", "Ignored Path" = "lightgrey"), name = NULL, labels = c("Followed Path", "Ignored Path")) +
       ggplot2::scale_color_identity() +
       ggplot2::xlim(-15, 13) +
-      ggplot2::ylim(-25, 7) +
+      ggplot2::ylim(-25, 9) +
       ggplot2::theme_void() +
       ggplot2::geom_segment(ggplot2::aes(x = 0, xend = -2, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = -1, y = 1, label = "YES (1)"), color = "black", size = 3) +
@@ -1711,24 +1724,27 @@ plot.jfaFairnessSelection <- function(x, ...) {
       ggplot2::geom_segment(ggplot2::aes(x = -7, xend = -7, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "lightgray", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = -7, y = -14, label = "NEGATIVE (2)"), fill = "lightgray", size = 3) +
       ggplot2::geom_segment(ggplot2::aes(x = -4, xend = 0.5, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", linewidth = 1) +
-      ggplot2::geom_label(ggplot2::aes(x = -1.75, y = -14, label = "BOTH (3)"), color = "black", size = 3)
+      ggplot2::geom_label(ggplot2::aes(x = -1.75, y = -14, label = "BOTH (3)"), color = "black", size = 3) +
+      ggplot2::theme(legend.position = "top", legend.justification = "left", legend.box.margin = ggplot2::margin(30, 10, 10, 50), legend.key.height = ggplot2::unit(1, "lines")) +
+      ggplot2::guides(fill = ggplot2::guide_legend(nrow = 3))
   } else if (measure == "False Positive Rate Parity") {
     rects <- data.frame(
       xmin = c(-0.8, -6, 5.5, -11.4, 1, 9.8, -18, -10, -2, 0, 5),
       xmax = c(6.2, 0.2, 9.5, -4, 7, 13.8, -12, -4, 2, 4.4, 9.4),
       ymin = c(3, -4, -4, -8, -8, -8, -22, -22, -22, -16, -16),
-      ymax = c(6, -1, -1, -12, -12, -12, -25, -25, -25, -19, -19),
+      ymax = c(7, -1, -1, -12, -12, -12, -25, -25, -25, -19, -19),
       label = c("1. Is the ground truth \ninformation on the true values \nof the classification relevant \nin your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3.What is more important: \na correct classification of the positive class, \n a correct classification of the negative class, \nor both?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity", "False Positive \nRate Parity", "False Negative \nRate Parity"),
       fill = c("white", "white", "lightgrey", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "lightgrey", "white", "lightgrey"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
+    rects$path_type <- ifelse(rects$fill == "white", "Followed Path", "Ignored Path")
     plotWorkflow <- ggplot2::ggplot() +
-      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill), color = "black") +
-      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 2.5) +
-      ggplot2::scale_fill_identity() +
+      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = path_type), color = "black") +
+      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 3.20) +
+      ggplot2::scale_fill_manual(values = c("Followed Path" = "white", "Ignored Path" = "lightgrey"), name = NULL, labels = c("Followed Path", "Ignored Path")) +
       ggplot2::scale_color_identity() +
       ggplot2::xlim(-20, 20) +
-      ggplot2::ylim(-28, 7) +
+      ggplot2::ylim(-28, 9) +
       ggplot2::theme_void() +
       ggplot2::geom_segment(ggplot2::aes(x = -0.8, xend = -3.1, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = -1.95, y = 1, label = "YES (1)"), color = "black", size = 3) +
@@ -1749,24 +1765,27 @@ plot.jfaFairnessSelection <- function(x, ...) {
       ggplot2::geom_segment(ggplot2::aes(x = 1, xend = 1, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = 1, y = -14, label = "FP (1)"), color = "black", size = 3) +
       ggplot2::geom_segment(ggplot2::aes(x = 7, xend = 7, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "lightgrey", linewidth = 1) +
-      ggplot2::geom_label(ggplot2::aes(x = 7, y = -14, label = "FN (2)"), fill = "lightgrey", size = 3)
+      ggplot2::geom_label(ggplot2::aes(x = 7, y = -14, label = "FN (2)"), fill = "lightgrey", size = 3) +
+      ggplot2::theme(legend.position = "top", legend.justification = "left", legend.box.margin = ggplot2::margin(30, 10, 10, 50), legend.key.height = ggplot2::unit(1, "lines")) +
+      ggplot2::guides(fill = ggplot2::guide_legend(nrow = 3))
   } else if (measure == "False Negative Rate Parity") {
     rects <- data.frame(
       xmin = c(-0.8, -6, 5.5, -11.4, 1, 9.8, -18, -10, -2, 0, 5),
       xmax = c(6.2, 0.2, 9.5, -4, 7, 13.8, -12, -4, 2, 4.4, 9.4),
       ymin = c(3, -4, -4, -8, -8, -8, -22, -22, -22, -16, -16),
-      ymax = c(6, -1, -1, -12, -12, -12, -25, -25, -25, -19, -19),
+      ymax = c(7, -1, -1, -12, -12, -12, -25, -25, -25, -19, -19),
       label = c("1. Is the ground truth \ninformation on the true values \nof the classification relevant \nin your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3.What is more important: \na correct classification of the positive class, \n a correct classification of the negative class, \nor both?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity", "False Positive \nRate Parity", "False Negative \nRate Parity"),
       fill = c("white", "white", "lightgrey", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "lightgrey", "lightgrey", "white"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
+    rects$path_type <- ifelse(rects$fill == "white", "Followed Path", "Ignored Path")
     plotWorkflow <- ggplot2::ggplot() +
-      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill), color = "black") +
-      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 2.5) +
-      ggplot2::scale_fill_identity() +
+      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = path_type), color = "black") +
+      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 3.20) +
+      ggplot2::scale_fill_manual(values = c("Followed Path" = "white", "Ignored Path" = "lightgrey"), name = NULL, labels = c("Followed Path", "Ignored Path")) +
       ggplot2::scale_color_identity() +
       ggplot2::xlim(-20, 20) +
-      ggplot2::ylim(-28, 7) +
+      ggplot2::ylim(-28, 9) +
       ggplot2::theme_void() +
       ggplot2::geom_segment(ggplot2::aes(x = -0.8, xend = -3.1, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = -1.95, y = 1, label = "YES (1)"), color = "black", size = 3) +
@@ -1787,24 +1806,27 @@ plot.jfaFairnessSelection <- function(x, ...) {
       ggplot2::geom_segment(ggplot2::aes(x = 1, xend = 1, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "lightgrey", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = 1, y = -14, label = "FP (1)"), fill = "lightgrey", size = 3) +
       ggplot2::geom_segment(ggplot2::aes(x = 7, xend = 7, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", linewidth = 1) +
-      ggplot2::geom_label(ggplot2::aes(x = 7, y = -14, label = "FN (2)"), color = "black", size = 3)
+      ggplot2::geom_label(ggplot2::aes(x = 7, y = -14, label = "FN (2)"), color = "black", size = 3) +
+      ggplot2::theme(legend.position = "top", legend.justification = "left", legend.box.margin = ggplot2::margin(30, 10, 10, 50), legend.key.height = ggplot2::unit(1, "lines")) +
+      ggplot2::guides(fill = ggplot2::guide_legend(nrow = 3))
   } else if (measure == "Equalized Odds") {
     rects <- data.frame(
       xmin = c(0, -4.2, 5.5, -10, -2, 5.5, -15, -9, -2),
       xmax = c(5.5, 0, 9, -4, 3, 9, -10, -4, 3),
       ymin = c(3, -4, -4, -8, -8, -8, -16, -16, -16),
-      ymax = c(6, -1, -1, -12, -12, -12, -19, -19, -19),
+      ymax = c(7, -1, -1, -12, -12, -12, -19, -19, -19),
       label = c("1. Is the ground truth \ninformation on the true values \nof the classification relevant \nin your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3.What is more important: \na correct classification of the positive class, \na correct classification of the negative class, \nor both?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity"),
       fill = c("white", "white", "lightgrey", "lightgrey", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
+    rects$path_type <- ifelse(rects$fill == "white", "Followed Path", "Ignored Path")
     plotWorkflow <- ggplot2::ggplot() +
-      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill), color = "black") +
-      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 2.5) +
-      ggplot2::scale_fill_identity() +
+      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = path_type), color = "black") +
+      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 3.20) +
+      ggplot2::scale_fill_manual(values = c("Followed Path" = "white", "Ignored Path" = "lightgrey"), name = NULL, labels = c("Followed Path", "Ignored Path")) +
       ggplot2::scale_color_identity() +
       ggplot2::xlim(-15, 13) +
-      ggplot2::ylim(-25, 7) +
+      ggplot2::ylim(-25, 9) +
       ggplot2::theme_void() +
       ggplot2::geom_segment(ggplot2::aes(x = 0, xend = -2, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = -1, y = 1, label = "YES (1)"), color = "black", size = 3) +
@@ -1821,24 +1843,27 @@ plot.jfaFairnessSelection <- function(x, ...) {
       ggplot2::geom_segment(ggplot2::aes(x = -7, xend = -7, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "lightgray", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = -7, y = -14, label = "NEGATIVE (2)"), fill = "lightgray", size = 3) +
       ggplot2::geom_segment(ggplot2::aes(x = -4, xend = 0.5, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "lightgray", linewidth = 1) +
-      ggplot2::geom_label(ggplot2::aes(x = -1.75, y = -14, label = "BOTH (3)"), fill = "lightgray", size = 3)
+      ggplot2::geom_label(ggplot2::aes(x = -1.75, y = -14, label = "BOTH (3)"), fill = "lightgray", size = 3) +
+      ggplot2::theme(legend.position = "top", legend.justification = "left", legend.box.margin = ggplot2::margin(30, 10, 10, 50), legend.key.height = ggplot2::unit(1, "lines")) +
+      ggplot2::guides(fill = ggplot2::guide_legend(nrow = 3))
   } else if (measure == "Disparate Impact") {
     rects <- data.frame(
       xmin = c(0, -4.2, 5.5, -10, -2, 5.5, -15, -9, -2),
       xmax = c(5.5, 0, 9, -4, 3, 9, -10, -4, 3),
       ymin = c(3, -4, -4, -8, -8, -8, -16, -16, -16),
-      ymax = c(6, -1, -1, -12, -12, -12, -19, -19, -19),
+      ymax = c(7, -1, -1, -12, -12, -12, -19, -19, -19),
       label = c("1. Is the ground truth \ninformation on the true values \nof the classification relevant \nin your context?", "2. In what type of \nclassification are you \ninterested?", "Disparate Impact", "3.What is more important: \na correct classification of the positive class, \na correct classification of the negative class, \nor both?", "4. What are the errors \nwith the highest cost?", "Equalized Odds", "4. What are the errors \nwith the highest cost?", "4. What are the errors \nwith the highest cost?", "Accuracy Parity"),
       fill = c("white", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "lightgrey", "lightgrey", "lightgrey"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
+    rects$path_type <- ifelse(rects$fill == "white", "Followed Path", "Ignored Path")
     plotWorkflow <- ggplot2::ggplot() +
-      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = fill), color = "black") +
-      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 2.5) +
-      ggplot2::scale_fill_identity() +
+      ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = path_type), color = "black") +
+      ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 3.20) +
+      ggplot2::scale_fill_manual(values = c("Followed Path" = "white", "Ignored Path" = "lightgrey"), name = NULL, labels = c("Followed Path", "Ignored Path")) +
       ggplot2::scale_color_identity() +
       ggplot2::xlim(-15, 13) +
-      ggplot2::ylim(-25, 7) +
+      ggplot2::ylim(-25, 9) +
       ggplot2::theme_void() +
       ggplot2::geom_segment(ggplot2::aes(x = 0, xend = -2, y = 3, yend = -0.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "lightgrey", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = -1, y = 1, label = "YES (1)"), fill = "lightgray", size = 3) +
@@ -1855,7 +1880,9 @@ plot.jfaFairnessSelection <- function(x, ...) {
       ggplot2::geom_segment(ggplot2::aes(x = -7, xend = -7, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "lightgray", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = -7, y = -14, label = "NEGATIVE (2)"), fill = "lightgray", size = 3) +
       ggplot2::geom_segment(ggplot2::aes(x = -4, xend = 0.5, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "lightgray", linewidth = 1) +
-      ggplot2::geom_label(ggplot2::aes(x = -1.75, y = -14, label = "BOTH (3)"), fill = "lightgray", size = 3)
+      ggplot2::geom_label(ggplot2::aes(x = -1.75, y = -14, label = "BOTH (3)"), fill = "lightgray", size = 3) +
+      ggplot2::theme(legend.position = "top", legend.justification = "left", legend.box.margin = ggplot2::margin(30, 10, 10, 50), legend.key.height = ggplot2::unit(1, "lines")) +
+      ggplot2::guides(fill = ggplot2::guide_legend(nrow = 3))
   } else {
     stop("No plot is available for the requested measure.")
   }
