@@ -1524,7 +1524,7 @@ print.jfaFairnessSelection <- function(x, ...) {
 #' @method plot jfaFairnessSelection
 #' @export
 plot.jfaFairnessSelection <- function(x, ...) {
-  xmin <- xmax <- ymin <- ymax <- label <- text_color <- NULL
+  xmin <- xmax <- ymin <- ymax <- label <- text_color <- path_type <- NULL
   measure <- x$name
   if (measure == "Predictive Rate Parity") {
     rects <- data.frame(
