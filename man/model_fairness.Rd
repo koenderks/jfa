@@ -13,7 +13,7 @@ model_fairness(
   positive = NULL,
   metric = c(
     "prp", "pp", "ap", "fnrp", "fprp",
-    "tprp", "npvp", "sp", "dp"
+    "tprp", "npvp", "sp", "dp", "eo"
   ),
   alternative = c("two.sided", "less", "greater"),
   conf.level = 0.95,
@@ -129,9 +129,9 @@ The following model-agnostic fairness metrics are computed based on
     \item{False positive rate parity (\code{fprp}): calculated as FP / (TN
       + FP), quantifies whether the false positive rate is the same across
       groups.}
-    \item{True positive rate parity (\code{tprp}, also known as Equal opportunity): calculated as TP / (TP +
-      FN), quantifies whether the true positive rate is the same across
-      groups.}
+    \item{True positive rate parity (\code{tprp}, also known as Equal opportunity):
+     calculated as TP / (TP + FN), quantifies whether the true positive rate
+     is the same across groups.}
     \item{Negative predictive value parity (\code{npvp}): calculated as TN /
       (TN + FN), quantifies whether the negative predictive value is equal
       across groups.}
@@ -139,6 +139,9 @@ The following model-agnostic fairness metrics are computed based on
       quantifies whether the true positive rate is the same across groups.}
     \item{Demographic parity (\code{dp}): calculated as TP + FP, quantifies
       whether the positive predictions are equal across groups.}
+    \item{Equalized odds (\code{eo}): calculated as a combination of the true
+     positive rate and the false positive rate, quantifies whether the true
+     positive rate and, simultaneously, the false positive rate are the same across groups}
   }
 
   Note that, in an audit context, not all fairness measures are equally
