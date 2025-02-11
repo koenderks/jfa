@@ -111,7 +111,7 @@ model-agnostic metrics based on the observed and predicted labels in a
 dataset. The fairness metrics that can be calculated include demographic
 parity, proportional parity, predictive rate parity, accuracy parity,
 false negative rate parity, false positive rate parity, true positive
-rate parity, negative predicted value parity, and specificity parity
+rate parity, negative predictive value parity, and specificity parity
 <span class="citation">(Calders &amp; Verwer, 2010; Chouldechova, 2017;
 Feldman et al., 2015; Friedler et al., 2019; Zafar et al., 2017)</span>.
 Furthermore, the metrics are tested for equality between protected
@@ -656,12 +656,12 @@ treatment in the algorithm’s true positive predictions.</li>
 </ul>
 </li>
 <li>
-<p><strong>Negative predicted value parity</strong>: Compares the
-negative predicted value (e.g., for non-reoffenders) of each
+<p><strong>Negative predictive value parity</strong>: Compares the
+negative predictive value (e.g., for non-reoffenders) of each
 unprivileged group with that of the privileged group.</p>
-<p>The formula for the negative predicted value is
+<p>The formula for the negative predictive value is
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi>P</mi><mi>V</mi><mo>=</mo><mfrac><mrow><mi>T</mi><mi>N</mi></mrow><mrow><mi>T</mi><mi>N</mi><mo>+</mo><mi>F</mi><mi>N</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">NPV = \frac{TN}{TN + FN}</annotation></semantics></math>,
-and the negative predicted value parity for unprivileged group
+and the negative predictive value parity for unprivileged group
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
 is given by
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi>P</mi><mi>V</mi><mi>P</mi><mo>=</mo><mfrac><mrow><mi>N</mi><mi>P</mi><msub><mi>V</mi><mi>i</mi></msub></mrow><mrow><mi>N</mi><mi>P</mi><msub><mi>V</mi><mrow><mi>p</mi><mi>r</mi><mi>i</mi><mi>v</mi><mi>i</mi><mi>l</mi><mi>e</mi><mi>g</mi><mi>e</mi><mi>d</mi></mrow></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">NPVP = \frac{NPV_{i}}{NPV_{privileged}}</annotation></semantics></math>.</p>
@@ -692,21 +692,21 @@ is given by
 <p><strong><em>Interpretation:</em></strong></p>
 <ul>
 <li>
-<em>African American</em>: The negative predicted value parity for
+<em>African American</em>: The negative predictive value parity for
 African Americans is 0.98013. A value close to 1 indicates that the
 negative predicted value for African Americans is very similar to the
 privileged group (Caucasians). This suggests fair treatment in
 predicting non-reoffenders among African Americans.</li>
 <li>
-<em>Asian</em>: The negative predicted value parity for Asians is
-1.1163, indicating that their negative predicted value is slightly
+<em>Asian</em>: The negative predictive value parity for Asians is
+1.1163, indicating that their negative predictive value is slightly
 higher than for Caucasians. This could suggest potential favoritism
 towards Asians in predicting non-reoffenders.</li>
 <li>
-<em>Hispanic</em>: The negative predicted value parity for Hispanics
-is 1.0326, suggesting that their negative predicted value is slightly
-higher than for Caucasians. This indicates potential favoritism towards
-Hispanics in predicting non-reoffenders.</li>
+<em>Hispanic</em>: The negative predictive value parity for
+Hispanics is 1.0326, suggesting that their negative predictive value is
+slightly higher than for Caucasians. This indicates potential favoritism
+towards Hispanics in predicting non-reoffenders.</li>
 </ul>
 </li>
 <li>
@@ -849,12 +849,12 @@ select a fairness measure tailored to a specific context and dataset by
 answering the questions in the developed decision-making workflow. The
 fairness measure that can be selected include disparate impact,
 equalized odds, false positive rate parity, false negative rate parity,
-predictive rate parity, equal opportunity, specificity parity, negative
-predictive value parity, accuracy parity <span class="citation">Verma
-&amp; Rubin (2018)</span>. After answering the questions in the
-decision-making workflow and selecting the fairness measure to apply, a
-graphical representation of the followed path can be created based on
-the responses.</p>
+predictive rate parity, equal opportunity (also known as true positive
+rate parity), specificity parity, negative predictive rate parity,
+accuracy parity <span class="citation">Verma &amp; Rubin (2018)</span>.
+After answering the questions in the decision-making workflow and
+selecting the fairness measure to apply, a graphical representation of
+the followed path can be created based on the responses.</p>
 <p>As mentioned earlier, not all fairness measures are equally suitable
 for every audit situation. For this reason, the
 <code><a href="../reference/fairness_selection.html">fairness_selection()</a></code> function we propose can assist the
