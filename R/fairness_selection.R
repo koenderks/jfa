@@ -151,7 +151,6 @@ fairness_selection <- function(q1 = NULL,
     stopifnot("Invalid input: The value of `q1` must be 1 (to indicate 'Yes') or 2 (to indicate 'No')" = q1 %in% c(1, 2))
     if (q1 == 2 && (!is.null(q2) || !is.null(q3) || !is.null(q4))) {
       warning("The values assigned to 'q2, 'q3 and 'q4' are not relevant in this path of the decision-making workflow and will be ignored.")
-      q2 <- q3 <- q4 <- NULL
     }
   }
   q2_name <- q3_name <- q4_name <- NULL
@@ -164,13 +163,11 @@ fairness_selection <- function(q1 = NULL,
       stopifnot("Invalid input: The value of `q2` must be 1 (to indicate 'Correct classification'), 2 (to indicate 'Incorrect classification') or 3 (to indicate 'Correct and incorrect classification')" = q2 %in% c(1, 2, 3))
       if (q1 == 1 && q2 == 2 && !is.null(q3)) {
         warning("The value assigned to 'q3' is not relevant in this path of the decision-making workflow and will be ignored.")
-        q3 <- NULL
       }
     }
 
     if (q2 == 3 && (!is.null(q3) || !is.null(q4))) {
       warning("The values assigned to 'q3 and 'q4' are not relevant in this path of the decision-making workflow and will be ignored.")
-      q3 <- q4 <- NULL
     }
 
     if (q2 == 1) {
@@ -181,10 +178,8 @@ fairness_selection <- function(q1 = NULL,
       } else {
         stopifnot("Invalid input: The value of `q3` must be 1 (to indicate 'Correct classification of the positive class'), 2 (to indicate 'Correct classification of the negative class') or 3 (to indicate 'Both a correct classification of the positive and of the negative class)" = q3 %in% c(1, 2, 3))
       }
-      # Se q1 = 1, q2 = 1 e q3 = 3, q4 non è rilevante
       if (q3 == 3 && !is.null(q4)) {
         warning("The value assigned to 'q4' is not relevant in this path of the decision-making workflow and will be ignored.")
-        q4 <- NULL
       }
 
       if (q3 == 1 || q3 == 2) {
@@ -261,7 +256,7 @@ fairness_selection <- function(q1 = NULL,
     }
   } else if (q1 == 2) {
     name <- "Disparate Impact"
-    measure <- "dp"
+    measure <- "pp"
     q1_name <- "No"
   }
   output <- list()
