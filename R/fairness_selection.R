@@ -170,15 +170,6 @@ fairness_selection <- function(q1 = NULL,
         stopifnot("Invalid input: The value of `q3` must be 1 (to indicate 'Correct classification of the positive class'), 2 (to indicate 'Correct classification of the negative class') or 3 (to indicate 'Both a correct classification of the positive and of the negative class)" = q3 %in% c(1, 2, 3))
       }
 
-      if (q3 == 1 || q3 == 2) {
-        if (is.null(q4)) {
-          stopifnot("Function must be run in an interactive environment" = interactive())
-          q4 <- utils::menu(choices = c("False Positive", "False Negative"), title = "(q4) What are the errors with the highest cost?")
-        } else {
-          stopifnot("Invalid input: The value of `q4` must be 1 (to indicate 'False Positive') or 2 (to indicate 'False Negative')" = q4 %in% c(1, 2))
-        }
-      }
-
       if (q3 == 1) {
         q3_name <- "Correct classification of the positive class"
         if (is.null(q4)) {
