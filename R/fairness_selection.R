@@ -151,6 +151,7 @@ fairness_selection <- function(q1 = NULL,
     stopifnot("Invalid input: The value of `q1` must be 1 (to indicate 'Yes') or 2 (to indicate 'No')" = q1 %in% c(1, 2))
     if (q1 == 2 && (!is.null(q2) || !is.null(q3) || !is.null(q4))) {
       warning("The values assigned to 'q2, 'q3 and 'q4' are not relevant in this path of the decision-making workflow and will be ignored.")
+      
       q2 <- q3 <- q4 <- NULL
     }
   }
