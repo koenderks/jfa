@@ -149,9 +149,6 @@ fairness_selection <- function(q1 = NULL,
     q1 <- utils::menu(choices = c("Yes", "No"), title = "(q1) Is the information on the true values of the classification relevant in your context?")
   } else {
     stopifnot("Invalid input: The value of `q1` must be 1 (to indicate 'Yes') or 2 (to indicate 'No')" = q1 %in% c(1, 2))
-    if (q1 == 2 && (!is.null(q2) || !is.null(q3) || !is.null(q4))) {
-      warning("The values assigned to 'q2, 'q3 and 'q4' are not relevant in this path of the decision-making workflow and will be ignored.")
-    }
   }
   q2_name <- q3_name <- q4_name <- NULL
   if (q1 == 1) {
@@ -161,14 +158,8 @@ fairness_selection <- function(q1 = NULL,
       q2 <- utils::menu(choices = c("Correct classification", "Incorrect classification", "Correct and incorrect classification"), title = "(q2) In what type of classification are you interested?")
     } else {
       stopifnot("Invalid input: The value of `q2` must be 1 (to indicate 'Correct classification'), 2 (to indicate 'Incorrect classification') or 3 (to indicate 'Correct and incorrect classification')" = q2 %in% c(1, 2, 3))
-      if (q1 == 1 && q2 == 2 && !is.null(q3)) {
-        warning("The value assigned to 'q3' is not relevant in this path of the decision-making workflow and will be ignored.")
-      }
     }
 
-    if (q2 == 3 && (!is.null(q3) || !is.null(q4))) {
-      warning("The values assigned to 'q3 and 'q4' are not relevant in this path of the decision-making workflow and will be ignored.")
-    }
 
     if (q2 == 1) {
       q2_name <- "Correct classification"
@@ -177,9 +168,6 @@ fairness_selection <- function(q1 = NULL,
         q3 <- utils::menu(choices = c("Correct classification of the positive class", "Correct classification of the negative class", "Both a correct classification of the positive and of the negative class"), title = "(q3) What is more important: a correct classification of the positive class, a correct classification of the negative class, or both?")
       } else {
         stopifnot("Invalid input: The value of `q3` must be 1 (to indicate 'Correct classification of the positive class'), 2 (to indicate 'Correct classification of the negative class') or 3 (to indicate 'Both a correct classification of the positive and of the negative class)" = q3 %in% c(1, 2, 3))
-      }
-      if (q3 == 3 && !is.null(q4)) {
-        warning("The value assigned to 'q4' is not relevant in this path of the decision-making workflow and will be ignored.")
       }
 
       if (q3 == 1 || q3 == 2) {
@@ -231,6 +219,9 @@ fairness_selection <- function(q1 = NULL,
         q3_name <- "Correct classification of the positive class and of the negative class"
         name <- "Accuracy Parity"
         measure <- "ap"
+        if (!is.null(q4)) {
+          warning("The value assigned to 'q4' is not relevant in this path of the decision-making workflow and will be ignored.")
+        }
       }
     } else if (q2 == 2) {
       q2_name <- "Incorrect classification"
@@ -239,6 +230,9 @@ fairness_selection <- function(q1 = NULL,
         q4 <- utils::menu(choices = c("False Positive", "False Negative"), title = "(q4) What are the errors with the highest cost?")
       } else {
         stopifnot("Invalid input: The value of `q4` must be 1 (to indicate 'False Positive') or 2 (to indicate 'False Negative')" = q4 %in% c(1, 2))
+      }
+      if (!is.null(q3)) {
+        warning("The value assigned to 'q3' is not relevant in this path of the decision-making workflow and will be ignored.")
       }
       if (q4 == 1) {
         name <- "False Positive Rate Parity"
@@ -253,11 +247,17 @@ fairness_selection <- function(q1 = NULL,
       name <- "Equalized Odds"
       measure <- "eo"
       q2_name <- "Correct and incorrect classification"
+      if (!is.null(q3) || !is.null(q4)) {
+        warning("The values assigned to 'q3 and 'q4' are not relevant in this path of the decision-making workflow and will be ignored.")
+      }
     }
   } else if (q1 == 2) {
     name <- "Disparate Impact"
     measure <- "pp"
     q1_name <- "No"
+    if (!is.null(q2) || !is.null(q3) || !is.null(q4)) {
+      warning("The values assigned to 'q2, 'q3 and 'q4' are not relevant in this path of the decision-making workflow and will be ignored.")
+    }
   }
   output <- list()
   output[["measure"]] <- measure
