@@ -116,8 +116,7 @@
 #'
 #'   Note that, in an audit context, not all fairness measures are equally
 #'   appropriate in all situations. The fairness tree below aids in choosing
-#'   which fairness measure is appropriate for the situation at hand (Büyük,
-#'   2023).
+#'   which fairness measure is appropriate for the situation at hand.
 #'
 #'   \if{html}{\figure{fairness-tree.png}{options: width="100\%" alt="fairness-tree"}}
 #'   \if{latex}{\figure{fairness-tree.pdf}{options: width=5in}}
@@ -153,8 +152,6 @@
 #'
 #' @author Koen Derks, \email{k.derks@nyenrode.nl}
 #'
-#' @references Büyük, S. (2023). \emph{Automatic Fairness Criteria and Fair
-#'   Model Selection for Critical ML Tasks}, Master Thesis, Utrecht University.
 #' @references Calders, T., & Verwer, S. (2010). Three naive Bayes approaches
 #'   for discrimination-free classification. In \emph{Data Mining and Knowledge
 #'   Discovery}. Springer Science and Business Media LLC.
