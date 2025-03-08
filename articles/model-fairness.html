@@ -846,46 +846,44 @@ using <code>plot(..., type = "sequential")</code>.</p>
 </h2>
 <p>The <code><a href="../reference/fairness_selection.html">fairness_selection()</a></code> function offers a method to
 select a fairness measure tailored to a specific context and dataset by
-answering the questions in the developed decision-making workflow. The
-fairness measure that can be selected include disparate impact,
-equalized odds, false positive rate parity, false negative rate parity,
-predictive rate parity, equal opportunity (also known as true positive
-rate parity), specificity parity, negative predictive rate parity,
-accuracy parity <span class="citation">Verma &amp; Rubin (2018)</span>.
-After answering the questions in the decision-making workflow and
-selecting the fairness measure to apply, a graphical representation of
-the followed path can be created based on the responses.</p>
+answering the questions in a decision-making workflow <span class="citation">(Picogna et al., 2025)</span>. The measures that can be
+selected include disparate impact, equalized odds, false positive rate
+parity, false negative rate parity, predictive rate parity, equal
+opportunity (also known as true positive rate parity), specificity
+parity, negative predictive rate parity, and accuracy parity <span class="citation">Verma &amp; Rubin (2018)</span>. After answering the
+questions in the decision-making workflow and selecting the fairness
+measure, a graphical representation of the followed path can be created
+via the <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code> function.</p>
 <p>As mentioned earlier, not all fairness measures are equally suitable
-for every audit situation. For this reason, the
-<code><a href="../reference/fairness_selection.html">fairness_selection()</a></code> function we propose can assist the
-auditor in selecting the most appropriate measure for the specific audit
-at hand. To demonstrate the usage of the
-<code><a href="../reference/fairness_selection.html">fairness_selection()</a></code> function, we will answer each
-necessary question in the decision-making workflow, explaining the
-reasoning behind each response.</p>
-<p>The first question in the workflow checks if the dataset includes the
-ground truth information (i.e., the true classification values). The
-data available in this dataset were collected during a retrospective
-study, so we have information on whether offenders committed a crime
-within 2 years of being released (<code>TwoYrRecidivism</code>).
-Therefore, we can answer the first question with <code>Yes</code> (in
-the function the value <code>1</code> is used to indicate
-<code>Yes</code>).</p>
+for a specific situation. For this reason, the
+<code><a href="../reference/fairness_selection.html">fairness_selection()</a></code> function assists auditors in selecting
+the most appropriate measure for the situation at hand. To demonstrate
+the usage of this function, we will answer each question in the
+decision-making workflow, explaining the reasoning behind the
+responses.</p>
+<p>The first question in the workflow checks if the information about
+the ground truth (i.e., the true classification values) is relevant in
+the current context. The data available in this dataset were collected
+during a retrospective study, so we have information on whether
+offenders committed a crime within two years of being released
+(<code>TwoYrRecidivism</code>). Therefore, we answer the first question
+with <code>Yes</code> (in the function the value <code>1</code> is used
+to indicate <code>Yes</code>).</p>
 <p>The second question focuses on the type of classification of
 interest: correct, incorrect, or both. We can imagine a scenario where
-the analysis of this dataset is tied to U.S. Attorney General Eric
-Holder’s concerns about potential discrimination against certain social
-groups resulting from anomalies in AI-generated classifications,
-particularly errors in classifying offenders. Given the importance of
-identifying such irregularities, our focus here is on the incorrect
-classification of offenders. Therefore, we can answer the first question
-with <code>Incorrect Classification</code> (in the function the value
+the analysis of this dataset is tied to U.S. Attorney General’s concerns
+about potential discrimination against certain social groups resulting
+from anomalies in AI-generated classifications, particularly errors in
+classifying offenders. Given the importance of identifying such
+irregularities, our focus here is on the incorrect classification of
+offenders. Therefore, we can answer the first question with
+<code>Incorrect Classification</code> (in the function the value
 <code>2</code> is used to indicate
 <code>Incorrect Classification</code>).</p>
 <p>Given the answer to the second question and following the
-decision-making workflow path, we can skip the third question and
-proceed directly to the fourth and final question.</p>
-<p>The fourth question addresses the costs of classification errors
+decision-making workflow path, we do not need to answer the third
+question and proceed directly to the fourth and final question.</p>
+<p>The fourth question addresses the costs of classification errors,
 meaning which classification error results in highest cost. The
 classification errors can be made when classifying someone who would not
 commit another crime within two years of release as someone who would
@@ -914,19 +912,13 @@ used to indicate <code>False Positive</code>).</p>
 <span><span class="co">##   Answer to question 2 (q2): Incorrect classification (2)</span></span>
 <span><span class="co">##   Answer to question 4 (q4): False Positive (1)</span></span></code></pre>
 <p>It is worth noting that the function can also be called without any
-arguments (<code>measure &lt;- fairness_selection()</code>). In this
-case, an interactive mode is activated, allowing the user to answer the
-necessary questions in real time. By applying this function, an object
-of class <code>jfaFairnessSelection</code> is created.</p>
-<p>Additionally, the <code>print</code> function, applied to an object
-of class <code>jfaFairnessSelection</code>, allows us to display not
-only which fairness measure is selected as the most suitable for the
-audit situation, but also a summary of how we answered the questions in
-the decision-making workflow.</p>
+arguments (i.e., <code>measure &lt;- fairness_selection()</code>). In
+this case, an interactive mode is activated, which enables the user to
+answer the questions interactively.</p>
 <p>Finally, as mentioned earlier, it is possible to visualize the path
 followed by answering the questions in the decision-making workflow.
-This is done by applying the <code>plot</code> function an object of
-class <code>jfaFairnessSelection</code>.</p>
+This is done by using the <code>plot</code> function on the output of
+this function.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">measure</span><span class="op">)</span></span></code></pre></div>
 <p><img src="model-fairness_files/figure-html/unnamed-chunk-17-1.png" width="700" style="display: block; margin: auto;"></p>
@@ -979,6 +971,11 @@ Wagenmakers, E.-J. (2017). Default "<span>G</span>unel and
 <div id="ref-pessach_2022" class="csl-entry">
 Pessach, D., &amp; Shmueli, E. (2022). A review on fairness in machine
 learning. <em>ACM Computing Surveys</em>, <em>55</em>(3), 1–44. <a href="https://doi.org/10.1145/3494672" class="external-link">https://doi.org/10.1145/3494672</a>
+</div>
+<div id="ref-picogna_2025" class="csl-entry">
+Picogna, F., Swart, J. de, Kaya, H., &amp; Wetzels, R. (2025). How to
+choose a fairness measure: A decision-making workflow for auditors.
+<em>OSF Preprints</em>. <a href="https://doi.org/10.31219/osf.io/cpxmf_v1" class="external-link">https://doi.org/10.31219/osf.io/cpxmf_v1</a>
 </div>
 <div id="ref-verma_2018" class="csl-entry">
 Verma, S., &amp; Rubin, J. (2018). Fairness definitions explained.
