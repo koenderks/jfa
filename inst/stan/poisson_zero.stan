@@ -1,7 +1,7 @@
 #include /include/license.stan
 
 functions {
-  int num_zeros(int[] y) {
+  int num_zeros(array[] int y) {
     int sum = 0;
     for (i in 1:size(y))
       sum += (y[i] == 0);
@@ -10,7 +10,7 @@ functions {
 }
 data {
   int<lower=0> n;                // Number of observations in sample
-  int<lower=0> y[n];             // Sample differences
+  array[n] int<lower=0> y;             // Sample differences
   int<lower=0> N;                // Number of items in population
   real<lower=0> B;               // Total book value
   real<lower=0> alpha;           // prior parameter alpha
@@ -27,7 +27,7 @@ data {
 }
 transformed data {
   int<lower = 0> N_zero = num_zeros(y);
-  int<lower = 0> y_nonzero[n - N_zero];
+  array[n - N_zero] int<lower = 0> y_nonzero;
   int N_nonzero = 0;
   for (i in 1:n) {
     if (y[i] == 0) continue;
