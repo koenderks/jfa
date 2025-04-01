@@ -809,6 +809,7 @@ plot.jfaEvaluation <- function(x, type = c("estimates", "posterior", "sequential
     stopifnot('plot(..., type = "sequential") not supported for frequentist analyses with "prior = FALSE"' = !is.null(x[["prior"]]))
     stopifnot('plot(..., type = "sequential") not supported when "materiality" is not provided' = !is.null(x[["posterior"]][["hypotheses"]]))
     stopifnot('plot(..., type = "sequential") not supported when "stratum" is provided' = is.null(x[["data"]][["strata"]]))
+    stopifnot('plot(..., type = "sequential") not supported for method = "hurdle.beta" or method = "inflated.poisson"' = !(x[["method"]] %in% c("hurdle.beta", "inflated.poisson")))
     bf <- numeric(x[["n"]])
     taints <- rep(x[["data"]][["taint"]], times = x[["data"]][["times"]])
     for (i in seq_len(x[["n"]])) {
