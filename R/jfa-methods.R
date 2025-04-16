@@ -1537,11 +1537,11 @@ plot.jfaFairnessSelection <- function(x, ...) {
       fill = c("white", "white", "lightgrey", "white", "lightgrey", "lightgrey", "white", "lightgrey", "lightgrey", "white", "lightgrey"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
-    rects$path_type <- ifelse(rects$fill == "white", "Followed Path", "Ignored Path")
+    rects$path_type <- ifelse(rects$fill == "white", "Followed path", "Ignored path")
     plotWorkflow <- ggplot2::ggplot() +
       ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = path_type), color = "black") +
       ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 3.20) +
-      ggplot2::scale_fill_manual(values = c("Followed Path" = "white", "Ignored Path" = "lightgrey"), name = NULL, labels = c("Followed Path", "Ignored Path")) +
+      ggplot2::scale_fill_manual(values = c("Followed path" = "white", "Ignored path" = "lightgrey"), name = NULL, labels = c("Followed path", "Ignored path")) +
       ggplot2::scale_color_identity() +
       ggplot2::xlim(-23, 20) +
       ggplot2::ylim(-28, 9) +
@@ -1566,7 +1566,7 @@ plot.jfaFairnessSelection <- function(x, ...) {
       ggplot2::geom_label(ggplot2::aes(x = -19.125, y = -20.5, label = "FP (1)"), color = "black", size = 3) +
       ggplot2::geom_segment(ggplot2::aes(x = -12, xend = -10.75, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "lightgray", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = -11.375, y = -20.5, label = "FN (2)"), fill = "lightgray", size = 3) +
-      ggplot2::theme(legend.position = c(.07, .95), legend.justification = c("left", "top"), legend.box.just = "left", legend.margin = ggplot2::margin(6, 6, 6, 6), legend.title = ggplot2::element_text(color = "black", size = 2)) +
+      ggplot2::theme(legend.position = "inside", legend.position.inside = c(.1, .9)) +
       ggplot2::guides(fill = ggplot2::guide_legend(title = "Legend", title.theme = ggplot2::element_text(size = 11)))
   } else if (measure == "Equal Opportunity") {
     rects <- data.frame(
@@ -1578,11 +1578,11 @@ plot.jfaFairnessSelection <- function(x, ...) {
       fill = c("white", "white", "lightgrey", "white", "lightgrey", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "white"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
-    rects$path_type <- ifelse(rects$fill == "white", "Followed Path", "Ignored Path")
+    rects$path_type <- ifelse(rects$fill == "white", "Followed path", "Ignored path")
     plotWorkflow <- ggplot2::ggplot() +
       ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = path_type), color = "black") +
       ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 3.20) +
-      ggplot2::scale_fill_manual(values = c("Followed Path" = "white", "Ignored Path" = "lightgrey"), name = NULL, labels = c("Followed Path", "Ignored Path")) +
+      ggplot2::scale_fill_manual(values = c("Followed path" = "white", "Ignored path" = "lightgrey"), name = NULL, labels = c("Followed path", "Ignored path")) +
       ggplot2::scale_color_identity() +
       ggplot2::xlim(-23, 20) +
       ggplot2::ylim(-28, 9) +
@@ -1607,7 +1607,7 @@ plot.jfaFairnessSelection <- function(x, ...) {
       ggplot2::geom_label(ggplot2::aes(x = -19.125, y = -20.5, label = "FP (1)"), fill = "lightgrey", size = 3) +
       ggplot2::geom_segment(ggplot2::aes(x = -12, xend = -10.75, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = -11.375, y = -20.5, label = "FN (2)"), color = "black", size = 3) +
-      ggplot2::theme(legend.position = c(.07, .95), legend.justification = c("left", "top"), legend.box.just = "left", legend.margin = ggplot2::margin(6, 6, 6, 6), legend.title = ggplot2::element_text(color = "black", size = 2)) +
+      ggplot2::theme(legend.position = "inside", legend.position.inside = c(.1, .9)) +
       ggplot2::guides(fill = ggplot2::guide_legend(title = "Legend", title.theme = ggplot2::element_text(size = 11)))
   } else if (measure == "Specificity Parity") {
     rects <- data.frame(
@@ -1619,11 +1619,11 @@ plot.jfaFairnessSelection <- function(x, ...) {
       fill = c("white", "white", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "white", "lightgrey", "white", "lightgrey"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
-    rects$path_type <- ifelse(rects$fill == "white", "Followed Path", "Ignored Path")
+    rects$path_type <- ifelse(rects$fill == "white", "Followed path", "Ignored path")
     plotWorkflow <- ggplot2::ggplot() +
       ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = path_type), color = "black") +
       ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 3.20) +
-      ggplot2::scale_fill_manual(values = c("Followed Path" = "white", "Ignored Path" = "lightgrey"), name = NULL, labels = c("Followed Path", "Ignored Path")) +
+      ggplot2::scale_fill_manual(values = c("Followed path" = "white", "Ignored path" = "lightgrey"), name = NULL, labels = c("Followed path", "Ignored path")) +
       ggplot2::scale_color_identity() +
       ggplot2::xlim(-23, 20) +
       ggplot2::ylim(-28, 9) +
@@ -1648,7 +1648,7 @@ plot.jfaFairnessSelection <- function(x, ...) {
       ggplot2::geom_label(ggplot2::aes(x = -10.35, y = -20.5, label = "FP (1)"), color = "black", size = 3) +
       ggplot2::geom_segment(ggplot2::aes(x = -4, xend = -3.4, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "lightgrey", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = -3.7, y = -20.5, label = "FN (2)"), fill = "lightgrey", size = 3) +
-      ggplot2::theme(legend.position = c(.07, .95), legend.justification = c("left", "top"), legend.box.just = "left", legend.margin = ggplot2::margin(6, 6, 6, 6), legend.title = ggplot2::element_text(color = "black", size = 2)) +
+      ggplot2::theme(legend.position = "inside", legend.position.inside = c(.1, .9)) +
       ggplot2::guides(fill = ggplot2::guide_legend(title = "Legend", title.theme = ggplot2::element_text(size = 11)))
   } else if (measure == "Negative Predictive Value Parity") {
     rects <- data.frame(
@@ -1660,11 +1660,11 @@ plot.jfaFairnessSelection <- function(x, ...) {
       fill = c("white", "white", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "white", "lightgrey", "lightgrey", "white"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
-    rects$path_type <- ifelse(rects$fill == "white", "Followed Path", "Ignored Path")
+    rects$path_type <- ifelse(rects$fill == "white", "Followed path", "Ignored path")
     plotWorkflow <- ggplot2::ggplot() +
       ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = path_type), color = "black") +
       ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 3.20) +
-      ggplot2::scale_fill_manual(values = c("Followed Path" = "white", "Ignored Path" = "lightgrey"), name = NULL, labels = c("Followed Path", "Ignored Path")) +
+      ggplot2::scale_fill_manual(values = c("Followed path" = "white", "Ignored path" = "lightgrey"), name = NULL, labels = c("Followed path", "Ignored path")) +
       ggplot2::scale_color_identity() +
       ggplot2::xlim(-23, 20) +
       ggplot2::ylim(-28, 9) +
@@ -1689,7 +1689,7 @@ plot.jfaFairnessSelection <- function(x, ...) {
       ggplot2::geom_label(ggplot2::aes(x = -10.35, y = -20.5, label = "FP (1)"), fill = "lightgrey", size = 3) +
       ggplot2::geom_segment(ggplot2::aes(x = -4, xend = -3.4, y = -19, yend = -21.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = -3.7, y = -20.5, label = "FN (2)"), color = "black", size = 3) +
-      ggplot2::theme(legend.position = c(.07, .95), legend.justification = c("left", "top"), legend.box.just = "left", legend.margin = ggplot2::margin(6, 6, 6, 6), legend.title = ggplot2::element_text(color = "black", size = 2)) +
+      ggplot2::theme(legend.position = "inside", legend.position.inside = c(.1, .9)) +
       ggplot2::guides(fill = ggplot2::guide_legend(title = "Legend", title.theme = ggplot2::element_text(size = 11)))
   } else if (measure == "Accuracy Parity") {
     rects <- data.frame(
@@ -1701,11 +1701,11 @@ plot.jfaFairnessSelection <- function(x, ...) {
       fill = c("white", "white", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "lightgrey", "white"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
-    rects$path_type <- ifelse(rects$fill == "white", "Followed Path", "Ignored Path")
+    rects$path_type <- ifelse(rects$fill == "white", "Followed path", "Ignored path")
     plotWorkflow <- ggplot2::ggplot() +
       ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = path_type), color = "black") +
       ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 3.20) +
-      ggplot2::scale_fill_manual(values = c("Followed Path" = "white", "Ignored Path" = "lightgrey"), name = NULL, labels = c("Followed Path", "Ignored Path")) +
+      ggplot2::scale_fill_manual(values = c("Followed path" = "white", "Ignored path" = "lightgrey"), name = NULL, labels = c("Followed path", "Ignored path")) +
       ggplot2::scale_color_identity() +
       ggplot2::xlim(-15, 13) +
       ggplot2::ylim(-25, 9) +
@@ -1726,7 +1726,7 @@ plot.jfaFairnessSelection <- function(x, ...) {
       ggplot2::geom_label(ggplot2::aes(x = -7, y = -14, label = "NEGATIVE (2)"), fill = "lightgray", size = 3) +
       ggplot2::geom_segment(ggplot2::aes(x = -4, xend = 0.5, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = -1.75, y = -14, label = "BOTH (3)"), color = "black", size = 3) +
-      ggplot2::theme(legend.position = c(.07, .95), legend.justification = c("left", "top"), legend.box.just = "left", legend.margin = ggplot2::margin(6, 6, 6, 6), legend.title = ggplot2::element_text(color = "black", size = 2)) +
+      ggplot2::theme(legend.position = "inside", legend.position.inside = c(.1, .9)) +
       ggplot2::guides(fill = ggplot2::guide_legend(title = "Legend", title.theme = ggplot2::element_text(size = 11)))
   } else if (measure == "False Positive Rate Parity") {
     rects <- data.frame(
@@ -1738,11 +1738,11 @@ plot.jfaFairnessSelection <- function(x, ...) {
       fill = c("white", "white", "lightgrey", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "lightgrey", "white", "lightgrey"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
-    rects$path_type <- ifelse(rects$fill == "white", "Followed Path", "Ignored Path")
+    rects$path_type <- ifelse(rects$fill == "white", "Followed path", "Ignored path")
     plotWorkflow <- ggplot2::ggplot() +
       ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = path_type), color = "black") +
       ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 3.20) +
-      ggplot2::scale_fill_manual(values = c("Followed Path" = "white", "Ignored Path" = "lightgrey"), name = NULL, labels = c("Followed Path", "Ignored Path")) +
+      ggplot2::scale_fill_manual(values = c("Followed path" = "white", "Ignored path" = "lightgrey"), name = NULL, labels = c("Followed path", "Ignored path")) +
       ggplot2::scale_color_identity() +
       ggplot2::xlim(-20, 20) +
       ggplot2::ylim(-28, 9) +
@@ -1767,7 +1767,7 @@ plot.jfaFairnessSelection <- function(x, ...) {
       ggplot2::geom_label(ggplot2::aes(x = 1, y = -14, label = "FP (1)"), color = "black", size = 3) +
       ggplot2::geom_segment(ggplot2::aes(x = 7, xend = 7, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "lightgrey", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = 7, y = -14, label = "FN (2)"), fill = "lightgrey", size = 3) +
-      ggplot2::theme(legend.position = c(.07, .95), legend.justification = c("left", "top"), legend.box.just = "left", legend.margin = ggplot2::margin(6, 6, 6, 6), legend.title = ggplot2::element_text(color = "black", size = 2)) +
+      ggplot2::theme(legend.position = "inside", legend.position.inside = c(.1, .9)) +
       ggplot2::guides(fill = ggplot2::guide_legend(title = "Legend", title.theme = ggplot2::element_text(size = 11)))
   } else if (measure == "False Negative Rate Parity") {
     rects <- data.frame(
@@ -1779,11 +1779,11 @@ plot.jfaFairnessSelection <- function(x, ...) {
       fill = c("white", "white", "lightgrey", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "lightgrey", "lightgrey", "white"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
-    rects$path_type <- ifelse(rects$fill == "white", "Followed Path", "Ignored Path")
+    rects$path_type <- ifelse(rects$fill == "white", "Followed path", "Ignored path")
     plotWorkflow <- ggplot2::ggplot() +
       ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = path_type), color = "black") +
       ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 3.20) +
-      ggplot2::scale_fill_manual(values = c("Followed Path" = "white", "Ignored Path" = "lightgrey"), name = NULL, labels = c("Followed Path", "Ignored Path")) +
+      ggplot2::scale_fill_manual(values = c("Followed path" = "white", "Ignored path" = "lightgrey"), name = NULL, labels = c("Followed path", "Ignored path")) +
       ggplot2::scale_color_identity() +
       ggplot2::xlim(-20, 20) +
       ggplot2::ylim(-28, 9) +
@@ -1808,7 +1808,7 @@ plot.jfaFairnessSelection <- function(x, ...) {
       ggplot2::geom_label(ggplot2::aes(x = 1, y = -14, label = "FP (1)"), fill = "lightgrey", size = 3) +
       ggplot2::geom_segment(ggplot2::aes(x = 7, xend = 7, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "black", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = 7, y = -14, label = "FN (2)"), color = "black", size = 3) +
-      ggplot2::theme(legend.position = c(.07, .95), legend.justification = c("left", "top"), legend.box.just = "left", legend.margin = ggplot2::margin(6, 6, 6, 6), legend.title = ggplot2::element_text(color = "black", size = 2)) +
+      ggplot2::theme(legend.position = "inside", legend.position.inside = c(.1, .9)) +
       ggplot2::guides(fill = ggplot2::guide_legend(title = "Legend", title.theme = ggplot2::element_text(size = 11)))
   } else if (measure == "Equalized Odds") {
     rects <- data.frame(
@@ -1820,11 +1820,11 @@ plot.jfaFairnessSelection <- function(x, ...) {
       fill = c("white", "white", "lightgrey", "lightgrey", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
-    rects$path_type <- ifelse(rects$fill == "white", "Followed Path", "Ignored Path")
+    rects$path_type <- ifelse(rects$fill == "white", "Followed path", "Ignored path")
     plotWorkflow <- ggplot2::ggplot() +
       ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = path_type), color = "black") +
       ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 3.20) +
-      ggplot2::scale_fill_manual(values = c("Followed Path" = "white", "Ignored Path" = "lightgrey"), name = NULL, labels = c("Followed Path", "Ignored Path")) +
+      ggplot2::scale_fill_manual(values = c("Followed path" = "white", "Ignored path" = "lightgrey"), name = NULL, labels = c("Followed path", "Ignored path")) +
       ggplot2::scale_color_identity() +
       ggplot2::xlim(-15, 13) +
       ggplot2::ylim(-25, 9) +
@@ -1845,7 +1845,7 @@ plot.jfaFairnessSelection <- function(x, ...) {
       ggplot2::geom_label(ggplot2::aes(x = -7, y = -14, label = "NEGATIVE (2)"), fill = "lightgray", size = 3) +
       ggplot2::geom_segment(ggplot2::aes(x = -4, xend = 0.5, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "lightgray", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = -1.75, y = -14, label = "BOTH (3)"), fill = "lightgray", size = 3) +
-      ggplot2::theme(legend.position = c(.07, .95), legend.justification = c("left", "top"), legend.box.just = "left", legend.margin = ggplot2::margin(6, 6, 6, 6), legend.title = ggplot2::element_text(color = "black", size = 2)) +
+      ggplot2::theme(legend.position = "inside", legend.position.inside = c(.1, .9)) +
       ggplot2::guides(fill = ggplot2::guide_legend(title = "Legend", title.theme = ggplot2::element_text(size = 11)))
   } else if (measure == "Disparate Impact") {
     rects <- data.frame(
@@ -1857,11 +1857,11 @@ plot.jfaFairnessSelection <- function(x, ...) {
       fill = c("white", "lightgrey", "white", "lightgrey", "lightgrey", "lightgrey", "lightgrey", "lightgrey", "lightgrey"),
       text_color = c("black", "black", "black", "black", "black", "black", "black", "black", "black")
     )
-    rects$path_type <- ifelse(rects$fill == "white", "Followed Path", "Ignored Path")
+    rects$path_type <- ifelse(rects$fill == "white", "Followed path", "Ignored path")
     plotWorkflow <- ggplot2::ggplot() +
       ggplot2::geom_rect(data = rects, ggplot2::aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax, fill = path_type), color = "black") +
       ggplot2::geom_text(data = rects, ggplot2::aes(x = (xmin + xmax) / 2, y = (ymin + ymax) / 2, label = label, color = text_color), size = 3.20) +
-      ggplot2::scale_fill_manual(values = c("Followed Path" = "white", "Ignored Path" = "lightgrey"), name = NULL, labels = c("Followed Path", "Ignored Path")) +
+      ggplot2::scale_fill_manual(values = c("Followed path" = "white", "Ignored path" = "lightgrey"), name = NULL, labels = c("Followed path", "Ignored path")) +
       ggplot2::scale_color_identity() +
       ggplot2::xlim(-15, 13) +
       ggplot2::ylim(-25, 9) +
@@ -1882,7 +1882,7 @@ plot.jfaFairnessSelection <- function(x, ...) {
       ggplot2::geom_label(ggplot2::aes(x = -7, y = -14, label = "NEGATIVE (2)"), fill = "lightgray", size = 3) +
       ggplot2::geom_segment(ggplot2::aes(x = -4, xend = 0.5, y = -12, yend = -15.87), arrow = ggplot2::arrow(length = ggplot2::unit(0.05, "inches")), color = "lightgray", linewidth = 1) +
       ggplot2::geom_label(ggplot2::aes(x = -1.75, y = -14, label = "BOTH (3)"), fill = "lightgray", size = 3) +
-      ggplot2::theme(legend.position = c(.07, .95), legend.justification = c("left", "top"), legend.box.just = "left", legend.margin = ggplot2::margin(6, 6, 6, 6), legend.title = ggplot2::element_text(color = "black", size = 2)) +
+      ggplot2::theme(legend.position = "inside", legend.position.inside = c(.1, .9)) +
       ggplot2::guides(fill = ggplot2::guide_legend(title = "Legend", title.theme = ggplot2::element_text(size = 11)))
   } else {
     stop("No plot is available for the requested measure.")
