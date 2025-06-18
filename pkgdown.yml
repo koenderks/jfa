@@ -1,5 +1,5 @@
 pandoc: 3.1.11
-pkgdown: 2.1.1
+pkgdown: 2.1.3
 pkgdown_sha: ~
 articles:
   articles/algorithm-auditing: algorithm-auditing.html
@@ -15,7 +15,7 @@ articles:
   articles/sample-planning: sample-planning.html
   articles/sample-selection: sample-selection.html
   articles/sampling-workflow: sampling-workflow.html
-last_built: 2025-04-16T06:19Z
+last_built: 2025-06-18T19:38Z
 urls:
   reference: https://koenderks.github.io/jfa/reference
   article: https://koenderks.github.io/jfa/articles
