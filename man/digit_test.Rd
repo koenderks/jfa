@@ -89,6 +89,15 @@ digit_test(x, check = "last", reference = 1:9, prior = TRUE)
 \references{
 Benford, F. (1938). The law of anomalous numbers.
   \emph{In Proceedings of the American Philosophical Society}, 551-572.
+
+Preece, D. A. (1981). Distributions of final digits in data.
+  \emph{Journal of the Royal Statistical Society Series D: The Statistician},
+  30(1), 31-60. \doi{10.2307/2987702}
+
+Dlugosz, S., & Müller-Funk, U. (2009). The value of the last
+  digit: Statistical fraud detection with digit analysis.
+  \emph{Advances in data analysis and classification}, 3(3), 281-290.
+  \doi{10.1007/s11634-009-0048-5}
 }
 \seealso{
 \code{\link{repeated_test}}
