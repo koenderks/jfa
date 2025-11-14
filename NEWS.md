@@ -1,5 +1,9 @@
 # jfa 0.7.4
 
+**Bug fixes**
+
+- Addressed the Rd file NOTE on CRAN.
+
 # jfa 0.7.3
 
 **New features**

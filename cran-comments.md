@@ -2,7 +2,7 @@
 
 This is a submission for version 0.7.4. In this version I have:
 
-* Done nothing yet.
+* Addressed the Rd file NOTE on CRAN.
 
 ## Test environments
 

@@ -150,7 +150,7 @@ The following model-agnostic fairness metrics are computed based on
   which fairness measure is appropriate for the situation at hand (Picogna et
   al., 2025).
 
-  \if{html}{\figure{fairness-tree.png}{options: width="100\%" alt="fairness-tree"}}
+  \if{html}{\figure{fairness-tree.png}{options: style="width: 25\%;" alt="fairness-tree"}}
   \if{latex}{\figure{fairness-tree.pdf}{options: width=5in}}
 }
 \examples{
