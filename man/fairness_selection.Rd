@@ -103,7 +103,7 @@ Several fairness measures can be used to assess the fairness of
   The fairness decision-making workflow below aids in choosing which fairness
   measure is appropriate for the situation at hand (Picogna et al., 2025).
 
-  \if{html}{\figure{fairness-tree.png}{options: style="width: 25\%;" alt="fairness-tree"}}
+  \if{html}{\figure{fairness-tree.png}{options: style="width: 100\%;" alt="fairness-tree"}}
   \if{latex}{\figure{fairness-tree.pdf}{options: width=5in}}
 }
 \examples{
