@@ -1,14 +1,14 @@
-# --------------------------------------------
-# CITATION file created with {cffr} R package
+# ------------------------------------------------
+# CITATION.cff file created with {cffr} R package
 # See also: https://docs.ropensci.org/cffr/
-# --------------------------------------------
+# ------------------------------------------------
  
 cff-version: 1.2.0
 message: 'To cite package "jfa" in publications use:'
 type: software
 license: GPL-3.0-or-later
 title: 'jfa: Statistical Methods for Auditing'
-version: 0.7.4
+version: 0.7.5
 doi: 10.32614/CRAN.package.jfa
 identifiers:
 - type: doi
@@ -23,8 +23,8 @@ abstract: Provides statistical methods for auditing as implemented in JASP for A
   to classical statistical methodology, the package implements Bayesian equivalents
   of these methods whose statistical underpinnings are described in Derks et al. (2021)
   <https://doi.org/10.1111/ijau.12240>, Derks et al. (2024) <https://doi.org/10.2308/AJPT-2021-086>,
-  Derks et al. (2022) <https://doi.org/10.31234/osf.io/8nf3e> Derks et al. (2024)
-  <https://doi.org/10.31234/osf.io/tgq5z>, and Derks et al. (2025) <https://doi.org/10.31234/osf.io/b8tu2>.
+  Derks et al. (2026) <https://doi.org/10.1504/IJADS.2027.10078699> Derks et al. (2026)
+  <https://doi.org/10.1111/ijau.70027>, and Derks et al. (2025) <https://doi.org/10.31234/osf.io/b8tu2>.
 authors:
 - family-names: Derks
   given-names: Koen
@@ -38,14 +38,14 @@ preferred-citation:
     given-names: Koen
     email: k.derks@nyenrode.nl
     orcid: https://orcid.org/0000-0002-5533-9349
-  year: '2025'
-  notes: R package version 0.7.4
+  year: '2026'
+  notes: R package version 0.7.5
   url: https://CRAN.R-project.org/package=jfa
   doi: 10.32614/CRAN.package.jfa
 repository: https://CRAN.R-project.org/package=jfa
 repository-code: https://github.com/koenderks/jfa
 url: https://koenderks.github.io/jfa/
-date-released: '2025-11-14'
+date-released: '2026-11-02'
 contact:
 - family-names: Derks
   given-names: Koen
@@ -71,10 +71,13 @@ references:
   url: https://www.R-project.org/
   authors:
   - name: R Core Team
+    website: https://ror.org/02zz1nj61
   institution:
     name: R Foundation for Statistical Computing
+    website: https://ror.org/05qewa988
     address: Vienna, Austria
-  year: '2025'
+  year: '2026'
+  doi: 10.32614/R.manuals
   version: '>= 3.5.0'
 - type: software
   title: bde
@@ -90,19 +93,20 @@ references:
     given-names: Aritz
   - family-names: Lozano
     given-names: Jose A.
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.bde
   version: '>= 1.0.1.1'
 - type: software
   title: extraDistr
   abstract: 'extraDistr: Additional Univariate and Multivariate Distributions'
   notes: Imports
-  url: https://github.com/twolodzko/extraDistr
+  url: https://github.com/sigbertklinke/extraDistr
   repository: https://CRAN.R-project.org/package=extraDistr
   authors:
   - family-names: Wolodzko
     given-names: Tymoteusz
-  year: '2025'
+    email: twolodzko+extradistr@gmail.com
+  year: '2026'
   doi: 10.32614/CRAN.package.extraDistr
   version: '>= 1.9.1'
 - type: software
@@ -143,7 +147,7 @@ references:
     given-names: Teun
     name-particle: van den
     orcid: https://orcid.org/0000-0002-9335-7468
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.ggplot2
   version: '>= 3.4.2'
 - type: software
@@ -152,10 +156,13 @@ references:
   notes: Imports
   authors:
   - name: R Core Team
+    website: https://ror.org/02zz1nj61
   institution:
     name: R Foundation for Statistical Computing
+    website: https://ror.org/05qewa988
     address: Vienna, Austria
-  year: '2025'
+  year: '2026'
+  doi: 10.32614/R.manuals
 - type: software
   title: Rcpp
   abstract: 'Rcpp: Seamless R and C++ Integration'
@@ -189,7 +196,7 @@ references:
     orcid: https://orcid.org/0000-0001-8316-9503
   - family-names: Chambers
     given-names: John
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.Rcpp
   version: '>= 0.12.0'
 - type: software
@@ -199,22 +206,26 @@ references:
   url: https://rcppcore.github.io/RcppParallel/
   repository: https://CRAN.R-project.org/package=RcppParallel
   authors:
+  - family-names: Ushey
+    given-names: Kevin
+    email: kevin@rstudio.com
+    orcid: https://orcid.org/0000-0003-2880-7407
   - family-names: Allaire
     given-names: JJ
     email: jj@rstudio.com
   - family-names: Francois
     given-names: Romain
-  - family-names: Ushey
-    given-names: Kevin
-    email: kevin@rstudio.com
   - family-names: Vandenbrouck
     given-names: Gregory
   - family-names: Geelnard
     given-names: Marcus
-    website: https://tinythreadpp.bitsnbites.eu/
+  - family-names: Eddelbuettel
+    given-names: Dirk
+    email: edd@debian.org
+    orcid: https://orcid.org/0000-0001-6419-907X
   - name: Intel
-    website: https://www.threadingbuildingblocks.org/
-  year: '2025'
+  - name: UXL Foundation
+  year: '2026'
   doi: 10.32614/CRAN.package.RcppParallel
   version: '>= 5.0.1'
 - type: software
@@ -243,7 +254,7 @@ references:
     given-names: Hamada S.
     email: badr@jhu.edu
     orcid: https://orcid.org/0000-0002-9808-2344
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.rstan
   version: '>= 2.26.0'
 - type: software
@@ -255,7 +266,7 @@ references:
   authors:
   - family-names: Gabry
     given-names: Jonah
-    email: jsg2201@columbia.edu
+    email: jgabry@gmail.com
   - family-names: Goodrich
     given-names: Ben
     email: benjamin.goodrich@columbia.edu
@@ -264,7 +275,8 @@ references:
     email: mlysy@uwaterloo.ca
   - family-names: Johnson
     given-names: Andrew
-  year: '2025'
+    email: andrew.johnson@arjohnsonau.com
+  year: '2026'
   doi: 10.32614/CRAN.package.rstantools
   version: '>= 2.2.0'
 - type: software
@@ -273,10 +285,13 @@ references:
   notes: Imports
   authors:
   - name: R Core Team
+    website: https://ror.org/02zz1nj61
   institution:
     name: R Foundation for Statistical Computing
+    website: https://ror.org/05qewa988
     address: Vienna, Austria
-  year: '2025'
+  year: '2026'
+  doi: 10.32614/R.manuals
 - type: software
   title: truncdist
   abstract: 'truncdist: Truncated Random Variables'
@@ -289,7 +304,7 @@ references:
   - family-names: Nadarajah
     given-names: Saralees
     email: saralees.nadarajah@manchester.ac.uk
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.truncdist
   version: '>= 1.0-2'
 - type: software
@@ -301,7 +316,7 @@ references:
   authors:
   - family-names: Cinelli
     given-names: Carlos
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.benford.analysis
   version: '>= 0.1.5'
 - type: software
@@ -315,7 +330,7 @@ references:
   - family-names: Joenssen
     given-names: Dieter William
     email: Dieter.Joenssen@googlemail.com
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.BenfordTests
   version: '>= 1.2.0'
 - type: software
@@ -327,14 +342,14 @@ references:
   authors:
   - family-names: Stephane
     given-names: Blondeau Da Silva
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.BeyondBenford
   version: '>= 1.4'
 - type: software
   title: fairness
   abstract: 'fairness: Algorithmic Fairness Metrics'
   notes: Suggests
-  url: https://kozodoi.me/r/fairness/packages/2020/05/01/fairness-tutorial.html
+  url: https://www.kozodoi.me/blog/algorithmic-fairness-in-r
   repository: https://CRAN.R-project.org/package=fairness
   authors:
   - family-names: Kozodoi
@@ -344,7 +359,7 @@ references:
     given-names: Tibor
     email: tirgit@hotmail.com
     orcid: https://orcid.org/0000-0002-2383-699X
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.fairness
 - type: software
   title: knitr
@@ -357,7 +372,7 @@ references:
     given-names: Yihui
     email: xie@yihui.name
     orcid: https://orcid.org/0000-0003-0645-5666
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.knitr
 - type: software
   title: MUS
@@ -370,7 +385,7 @@ references:
     given-names: Henning
   - family-names: Guimarães
     given-names: André
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.MUS
   version: '>= 0.1.6'
 - type: software
@@ -415,7 +430,7 @@ references:
     given-names: Richard
     email: rich@posit.co
     orcid: https://orcid.org/0000-0003-3925-190X
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.rmarkdown
 - type: software
   title: samplingbook
@@ -440,7 +455,7 @@ references:
     given-names: Nina
   - family-names: Wiesenfarth
     given-names: Manuel
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.samplingbook
   version: '>= 1.2.4'
 - type: software
@@ -453,7 +468,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@posit.co
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.testthat
 - type: software
   title: BH
@@ -471,7 +486,7 @@ references:
   - family-names: Kane
     given-names: Michael J.
     orcid: https://orcid.org/0000-0003-1899-6662
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.BH
   version: '>= 1.66.0'
 - type: software
@@ -495,7 +510,7 @@ references:
   - family-names: Qiu
     given-names: Yixuan
     orcid: https://orcid.org/0000-0003-0109-6692
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.RcppEigen
   version: '>= 0.3.3.3.0'
 - type: software
@@ -554,7 +569,7 @@ references:
     given-names: Hamada S.
     email: badr@jhu.edu
     orcid: https://orcid.org/0000-0002-9808-2344
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.StanHeaders
   version: '>= 2.26.0'
 
