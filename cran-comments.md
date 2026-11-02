@@ -1,8 +1,8 @@
 # jfa version 0.7.4
 
-This is a submission for version 0.7.4. In this version I have:
+This is a submission for version 0.7.5. In this version I have:
 
-* Addressed the Rd file NOTE on CRAN.
+* Fixed a bug in one of the functions.
 
 ## Test environments
 

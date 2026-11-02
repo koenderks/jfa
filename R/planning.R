@@ -300,7 +300,7 @@ planning <- function(materiality = NULL,
   iter <- 1
   sufficient <- FALSE
   K <- NULL
-  if (!is.null(N.units)) {
+  if (!is.null(N.units) && likelihood == "hypergeometric") {
     K <- 0:N.units
   }
   # Compute results

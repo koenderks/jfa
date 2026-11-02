@@ -1,3 +1,9 @@
+# jfa 0.7.5
+
+**Bug fixes**
+
+- Fixed a bug where a non-integer value for N.units could result in a large memory usage.
+
 # jfa 0.7.4
 
 **Bug fixes**
