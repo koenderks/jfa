@@ -246,7 +246,7 @@ plot.jfaPrior <- function(x, ...) {
 #' @export
 plot.jfaPredict <- function(x, ...) {
   y <- NULL
-  df <- data.frame(x = seq_len(length(x)) - 1, y = as.numeric(x), lab = names(x))
+  df <- data.frame(x = seq_along(x) - 1, y = as.numeric(x), lab = names(x))
   yBreaks <- pretty(c(0, df$y), min.n = 4)
   xBreaks <- pretty(df$x, min.n = 4)
   p <- ggplot2::ggplot(data = df, mapping = ggplot2::aes(x = x, y = y)) +
