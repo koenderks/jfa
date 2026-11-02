@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">jfa</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.5</span>
       </span>
     </div>
 
@@ -87,7 +87,7 @@
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/CRAN-v0.7.4/vignettes/articles/sample-evaluation.Rmd" class="external-link"><code>vignettes/articles/sample-evaluation.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/development/vignettes/articles/sample-evaluation.Rmd" class="external-link"><code>vignettes/articles/sample-evaluation.Rmd</code></a></small>
       <div class="hidden name"><code>sample-evaluation.Rmd</code></div>
 
     </div>
@@ -131,7 +131,7 @@ optionally a factor column indicating stratum membership
 misstatement and returns a point estimate as well as a
 confidence/credible interval around this estimate, expressed as a
 percentage (<code>conf.level</code>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mo>⋅</mo><annotation encoding="application/x-tex">\cdot</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>⋅</mi><annotation encoding="application/x-tex">\cdot</annotation></semantics></math>
 100). However, in audit sampling, the population is typically subject to
 a certain maximum tolerable misstatement defined by the performance
 materiality
@@ -499,13 +499,13 @@ can be visualized via the call below to
 <code>plot(..., type = "estimates")</code></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result_np</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 <p>The prior and posterior distribution for the population misstatement
 can be obtained using the <code>plot(..., type = "posterior")</code>
 function.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result_np</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
 <h4 id="approach-2-partial-pooling">Approach 2: Partial pooling<a class="anchor" aria-label="anchor" href="#approach-2-partial-pooling"></a>
@@ -545,33 +545,33 @@ make the results reproducible.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Results:</span></span>
 <span><span class="co">##   Posterior distribution:         Nonparametric </span></span>
-<span><span class="co">##   Most likely error:              0.0423 </span></span>
-<span><span class="co">##   95 percent credible interval:   [0.032494, 0.053654] </span></span>
-<span><span class="co">##   Precision:                      0.011354 </span></span>
-<span><span class="co">##   BF₁₀:                            0.030086 </span></span>
+<span><span class="co">##   Most likely error:              0.0422 </span></span>
+<span><span class="co">##   95 percent credible interval:   [0.032664, 0.053689] </span></span>
+<span><span class="co">##   Precision:                      0.011489 </span></span>
+<span><span class="co">##   BF₁₀:                            0.032215 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## Strata (20):</span></span>
 <span><span class="co">##          N   n  x  t    mle      lb      ub precision</span></span>
-<span><span class="co">##   1   5000 300 21 21 0.0579 0.04003 0.08836   0.03046</span></span>
-<span><span class="co">##   2   5000 300 16 16 0.0503 0.03217 0.07359   0.02329</span></span>
-<span><span class="co">##   3   5000 300 15 15 0.0424 0.03042 0.07060   0.02820</span></span>
-<span><span class="co">##   4   5000 300 14 14 0.0425 0.02849 0.06764   0.02514</span></span>
-<span><span class="co">##   5   5000 300 16 16 0.0437 0.03195 0.07382   0.03012</span></span>
-<span><span class="co">##   6   5000 150  5  5 0.0378 0.01823 0.06365   0.02585</span></span>
-<span><span class="co">##   7   5000 150  4  4 0.0360 0.01511 0.05944   0.02344</span></span>
-<span><span class="co">##   8   5000 150  3  3 0.0341 0.01177 0.05539   0.02129</span></span>
-<span><span class="co">##   9   5000 150  4  4 0.0364 0.01474 0.05940   0.02300</span></span>
-<span><span class="co">##   10  5000 150  5  5 0.0357 0.01783 0.06357   0.02787</span></span>
-<span><span class="co">##   11 10000  50  2  2 0.0433 0.01658 0.08010   0.03680</span></span>
-<span><span class="co">##   12 10000  50  3  3 0.0431 0.02147 0.09121   0.04811</span></span>
-<span><span class="co">##   13 10000  50  2  2 0.0373 0.01676 0.07932   0.04202</span></span>
-<span><span class="co">##   14 10000  50  1  1 0.0356 0.01120 0.07089   0.03529</span></span>
-<span><span class="co">##   15 10000  50  0  0 0.0392 0.00548 0.06181   0.02261</span></span>
-<span><span class="co">##   16 10000  15  0  0 0.0364 0.00895 0.08006   0.04366</span></span>
-<span><span class="co">##   17 10000  15  0  0 0.0374 0.00861 0.07943   0.04203</span></span>
-<span><span class="co">##   18 10000  15  0  0 0.0387 0.00867 0.08028   0.04158</span></span>
-<span><span class="co">##   19 10000  15  1  1 0.0403 0.01598 0.09819   0.05789</span></span>
-<span><span class="co">##   20  4000  15  3  3 0.0472 0.02772 0.13675   0.08955</span></span></code></pre>
+<span><span class="co">##   1   5000 300 21 21 0.0567 0.03985 0.08834   0.03164</span></span>
+<span><span class="co">##   2   5000 300 16 16 0.0467 0.03187 0.07317   0.02647</span></span>
+<span><span class="co">##   3   5000 300 15 15 0.0427 0.03006 0.07064   0.02794</span></span>
+<span><span class="co">##   4   5000 300 14 14 0.0462 0.02811 0.06744   0.02124</span></span>
+<span><span class="co">##   5   5000 300 16 16 0.0482 0.03181 0.07373   0.02553</span></span>
+<span><span class="co">##   6   5000 150  5  5 0.0413 0.01842 0.06390   0.02260</span></span>
+<span><span class="co">##   7   5000 150  4  4 0.0327 0.01498 0.05927   0.02657</span></span>
+<span><span class="co">##   8   5000 150  3  3 0.0347 0.01193 0.05551   0.02081</span></span>
+<span><span class="co">##   9   5000 150  4  4 0.0330 0.01519 0.05935   0.02635</span></span>
+<span><span class="co">##   10  5000 150  5  5 0.0361 0.01818 0.06388   0.02778</span></span>
+<span><span class="co">##   11 10000  50  2  2 0.0387 0.01693 0.07989   0.04119</span></span>
+<span><span class="co">##   12 10000  50  3  3 0.0405 0.02153 0.09124   0.05074</span></span>
+<span><span class="co">##   13 10000  50  2  2 0.0386 0.01664 0.07970   0.04110</span></span>
+<span><span class="co">##   14 10000  50  1  1 0.0342 0.01141 0.06993   0.03573</span></span>
+<span><span class="co">##   15 10000  50  0  0 0.0311 0.00588 0.06153   0.03043</span></span>
+<span><span class="co">##   16 10000  15  0  0 0.0376 0.00905 0.08038   0.04278</span></span>
+<span><span class="co">##   17 10000  15  0  0 0.0391 0.00891 0.07982   0.04072</span></span>
+<span><span class="co">##   18 10000  15  0  0 0.0398 0.00921 0.07909   0.03929</span></span>
+<span><span class="co">##   19 10000  15  1  1 0.0446 0.01656 0.09721   0.05261</span></span>
+<span><span class="co">##   20  4000  15  3  3 0.0450 0.02758 0.13898   0.09398</span></span></code></pre>
 <p>In this scenario, the output indicates that the estimated
 misstatement in the population is 4.23 percent, with the 95 percent
 credible interval extending from 3.25 percent to 5.37 percent. Note that
@@ -584,13 +584,13 @@ stratum estimates can be visualized via a call to
 <code>plot(..., type = "estimates")</code>.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result_pp</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-11-1.png" class="r-plt" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-11-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 <p>The prior and posterior distribution for the population misstatement
 can be obtained using the <code>plot(..., type = "posterior")</code>
 function.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result_pp</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 </div>
 </div>
 </div>
@@ -681,7 +681,7 @@ Bayesian analysis, the prior and posterior distribution can be
 visualized by a call to <code>plot(..., type = "posterior")</code>.</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-16-1.png" class="r-plt" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-16-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 <p>You can also quantify and monitor evidence for or against the claim
 that the misstatement is lower than a specific performance materiality
 using the Bayes factor. Suppose that the performance materiality for
@@ -723,7 +723,7 @@ size. This can be done via a call to
 <code>plot(..., type = "sequential")</code>.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result</span>, type <span class="op">=</span> <span class="st">"sequential"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-19-1.png" class="r-plt" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-19-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level3">
@@ -818,7 +818,7 @@ the actual stratum estimates, you can use the <code><a href="https://rdrr.io/r/b
 function.</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-23-1.png" class="r-plt" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-23-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level4">
 <h4 id="bayesian-approach-2">Bayesian approach<a class="anchor" aria-label="anchor" href="#bayesian-approach-2"></a>
@@ -845,9 +845,9 @@ for the entire population.</p>
 <span><span class="co">## data:  allowances</span></span>
 <span><span class="co">## number of errors = 401, number of samples = 1350, taint = 224.66</span></span>
 <span><span class="co">## 95 percent credible interval:</span></span>
-<span><span class="co">##  0.1571337 0.1757009</span></span>
+<span><span class="co">##  0.1572088 0.1756188</span></span>
 <span><span class="co">## most likely estimate:</span></span>
-<span><span class="co">##  0.1659 </span></span>
+<span><span class="co">##  0.1646 </span></span>
 <span><span class="co">## results obtained via method 'binomial' + 'partial-pooling' + 'prior'</span></span></code></pre>
 <p>The output indicates that the estimated misstatement in the
 population is 16.59 percent. The 95 percent credible interval spans from
@@ -859,13 +859,13 @@ values can be once again be obtained using the <code><a href="https://rdrr.io/r/
 function.</p>
 <div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-26-1.png" class="r-plt" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-26-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 <p>The prior and posterior distribution for the population misstatement
 can be obtained via the <code>plot(..., type = "posterior")</code>
 function.</p>
 <div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">result</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-27-1.png" class="r-plt" width="576" style="display: block; margin: auto;"></p>
+<p><img src="sample-evaluation_files/figure-html/unnamed-chunk-27-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 </div>
 </div>
 </div>
@@ -935,7 +935,7 @@ audits</em> [PhD thesis, VU University]. <a href="https://hdl.handle.net/1871/39
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer>

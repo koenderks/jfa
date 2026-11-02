@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">jfa</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.7.5</span>
       </span>
     </div>
 
@@ -87,7 +87,7 @@
                         <h4 data-toc-skip class="author">Koen Derks</h4>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/CRAN-v0.7.4/vignettes/articles/model-fairness.Rmd" class="external-link"><code>vignettes/articles/model-fairness.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/koenderks/jfa/blob/development/vignettes/articles/model-fairness.Rmd" class="external-link"><code>vignettes/articles/model-fairness.Rmd</code></a></small>
       <div class="hidden name"><code>model-fairness.Rmd</code></div>
 
     </div>
@@ -387,7 +387,7 @@ object.</p>
 <span><span class="co">##   Other                343 0.6938776 0.6117647 0.4193548 0.4976077</span></span></code></pre>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"estimates"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="model-fairness_files/figure-html/unnamed-chunk-5-1.png" class="r-plt" width="576" style="display: block; margin: auto;"></p>
+<p><img src="model-fairness_files/figure-html/unnamed-chunk-5-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 </li>
 <li>
 <p><strong>Predictive rate parity</strong>: Compares the overall
@@ -800,11 +800,11 @@ the scenario of equal fairness metrics.</p>
 <span><span class="co">## alternative hypothesis: fairness metrics are not equal across groups</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## sample estimates:</span></span>
-<span><span class="co">##   African_American: 1.8505 [1.7986, 1.9066], BF₁₀ = 4.1528e+81</span></span>
-<span><span class="co">##   Asian: 0.32748 [0.16714, 0.93262], BF₁₀ = 0.26796</span></span>
-<span><span class="co">##   Hispanic: 0.92228 [0.8021, 1.0434], BF₁₀ = 0.10615</span></span>
-<span><span class="co">##   Native_American: 1.4864 [0.64076, 2.2547], BF₁₀ = 0.018438</span></span>
-<span><span class="co">##   Other: 0.73551 [0.64728, 0.92786], BF₁₀ = 1.815</span></span>
+<span><span class="co">##   African_American: 1.8586 [1.8084, 1.9178], BF₁₀ = 4.1528e+81</span></span>
+<span><span class="co">##   Asian: 0.34709 [0.16128, 0.91007], BF₁₀ = 0.26796</span></span>
+<span><span class="co">##   Hispanic: 0.91811 [0.80103, 1.0525], BF₁₀ = 0.10615</span></span>
+<span><span class="co">##   Native_American: 1.4268 [0.67793, 2.2481], BF₁₀ = 0.018438</span></span>
+<span><span class="co">##   Other: 0.80283 [0.64999, 0.92995], BF₁₀ = 1.815</span></span>
 <span><span class="co">## alternative hypothesis: true odds ratio is not equal to 1</span></span></code></pre>
 <p>The Bayes factor
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><msub><mi>F</mi><mn>01</mn></msub></mrow><annotation encoding="application/x-tex">BF_{01}</annotation></semantics></math>,
@@ -830,7 +830,7 @@ fairness metrics between the groups.</p>
 visualized by invoking <code>plot(..., type = "posterior")</code>.</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"posterior"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="model-fairness_files/figure-html/unnamed-chunk-14-1.png" class="r-plt" width="576" style="display: block; margin: auto;"></p>
+<p><img src="model-fairness_files/figure-html/unnamed-chunk-14-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 <p>Additionally, the robustness of the Bayes factor to the choice of
 prior distribution can be examined by calling
 <code>plot(..., type = "robustness")</code>, as shown in the code below.
@@ -838,7 +838,7 @@ Finally, the auditor has the option to conduct a sequential analysis
 using <code>plot(..., type = "sequential")</code>.</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, type <span class="op">=</span> <span class="st">"robustness"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="model-fairness_files/figure-html/unnamed-chunk-15-1.png" class="r-plt" width="576" style="display: block; margin: auto;"></p>
+<p><img src="model-fairness_files/figure-html/unnamed-chunk-15-1.png" class="r-plt" alt="" width="576" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div class="section level2">
@@ -921,7 +921,7 @@ This is done by using the <code>plot</code> function on the output of
 this function.</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">measure</span><span class="op">)</span></span></code></pre></div>
-<p><img src="model-fairness_files/figure-html/unnamed-chunk-17-1.png" class="r-plt" width="1440" style="display: block; margin: auto;"></p>
+<p><img src="model-fairness_files/figure-html/unnamed-chunk-17-1.png" class="r-plt" alt="" width="1440" style="display: block; margin: auto;"></p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -1007,7 +1007,7 @@ Web</em>. <a href="https://doi.org/10.1145/3038912.3052660" class="external-link
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
       </footer>
